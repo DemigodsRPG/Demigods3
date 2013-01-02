@@ -1,0 +1,25 @@
+#Global Settings
+auto_update: false
+inactive_worlds:
+globalfavormultiplier: 1.0
+globalexpmultiplier: 1.0
+globalfavorcap: 20000
+max_target_range: 100
+pvp_exp_bonus: 1.5
+broadcast_new_deities: true
+stat_display_frequency_in_seconds: 0
+start_delay_seconds: 0.1
+favor_regen_seconds: 0.5
+save_interval_seconds: 300
+balance_teams: true
+ascension_cap: 100
+allow_skills_everywhere: false
+friendly_fire: false
+database:
+    mysql:
+        use: true
+        db_name: minecraft
+        username: root
+        password:
+        host: localhost
+        port: '3306'
