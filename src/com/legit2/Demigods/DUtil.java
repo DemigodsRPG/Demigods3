@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,6 +47,14 @@ public class DUtil
 	public static Demigods getPlugin()
 	{
 		return plugin;
+	}
+	
+	/*
+	 *  getOnlinePlayers() : Returns a string array of all online players.
+	 */
+	public static Player[] getOnlinePlayers()
+	{
+		return Bukkit.getOnlinePlayers();
 	}
 	
 	/*

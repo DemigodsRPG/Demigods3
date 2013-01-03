@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.entity.Player;
+
 import com.google.common.base.Joiner;
 
 public class DDatabase
@@ -28,7 +30,7 @@ public class DDatabase
 			DUtil.severe("Couldn't connect to MySQL");
 		}
 	}
-	
+
 	/*
 	 *  uninitializeHandler() : Unloads the MySQL database or FlatFile.
 	 */
@@ -40,10 +42,10 @@ public class DDatabase
 		}
 		else
 		{
-			
+
 		}
 	}
-	
+
 	/*
 	 *  loadAllData() : Loads all data from database into HashMaps.
 	 */
@@ -54,7 +56,7 @@ public class DDatabase
 			// Define variables
 			int player_count = 0;
 			long startStopwatch = System.currentTimeMillis();
-			
+
 			// Load data from player table.
 			String selectAllPlayers = "SELECT * FROM " + DSettings.player_table + ";";
 			ResultSet all_players = DMySQL.runQuery(selectAllPlayers);
@@ -63,17 +65,18 @@ public class DDatabase
 				while(all_players.next())
 				{
 					player_count++;
-					
+
 					// Define variables
 					String username = all_players.getString("player");
 					ArrayList<String> deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
-					
+
 					// Add HashMaps
 					DSave.newPlayer(username);
 					DSave.saveData(username, "favor", all_players.getString("favor"));
 					DSave.saveData(username, "ascensions", all_players.getString("ascensions"));
 					DSave.saveData(username, "kills", all_players.getString("kills"));
 					DSave.saveData(username, "deaths", all_players.getString("deaths"));
+					DSave.saveData(username, "alliance", all_players.getString("alliance"));
 					DSave.saveData(username, "deities", deities);
 				}
 			}
@@ -82,7 +85,7 @@ public class DDatabase
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-						
+
 			// Load data from playerdata table.
 			String selectAllPlayerData = "SELECT * FROM " + DSettings.playerdata_table + ";";
 			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
@@ -91,7 +94,7 @@ public class DDatabase
 				while(all_playerdata.next())
 				{					
 					String username = all_playerdata.getString("player");
-					
+
 					DSave.saveData(username, all_playerdata.getString("datakey"), all_playerdata.getString("datavalue"));
 				}
 			}
@@ -100,19 +103,19 @@ public class DDatabase
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			long stopStopwatch = System.currentTimeMillis();
 			double totalTime = (double) (stopStopwatch - startStopwatch);
-			
+
 			DUtil.info("Loaded data for " + player_count + " players in " + totalTime/1000 + " seconds.");
-			
+
 		}
 		else
 		{
-			
+
 		}
 	}
-	
+
 	/*
 	 *  addPlayer() : Adds the (String)username to the database with default values.
 	 */
@@ -120,14 +123,14 @@ public class DDatabase
 	{
 		// First we save the player to a HashMap
 		DSave.newPlayer(username);
-		
+
 		// Next we add them to the Database if needed
 		if(DSettings.mysql && DMySQL.checkConnection())
 		{	
 			if(!DMySQL.dataExists(DSettings.player_table, "player", username))
 			{
 				// Setup query string to add player to MySQL database
-				String addPlayerQuery = "INSERT INTO " + DSettings.player_table + " (player, deities, favor, ascensions, kills, deaths) VALUES ('" + username + "', NULL, 100, 1, 0, 0);";
+				String addPlayerQuery = "INSERT INTO " + DSettings.player_table + " (player, alliance, deities, favor, ascensions, kills, deaths) VALUES ('" + username + "', NULL, NULL, 100, 1, 0, 0);";
 				DMySQL.runQuery(addPlayerQuery);
 				DUtil.info("User \"" + username + "\" added to database!");
 			}
@@ -138,10 +141,10 @@ public class DDatabase
 		}
 		else
 		{
-			
+
 		}
 	}
-	
+
 	/*
 	 *  getPlayerInfo() : Grabs the player info from MySQL/FlatFile and returns (ResultSet)result.
 	 */
@@ -152,9 +155,9 @@ public class DDatabase
 			// Check to see if user exists
 			String query = "SELECT * FROM " + DSettings.player_table + " WHERE player = '" + username + "';";
 			ResultSet result = null;
-			
+
 			result = DMySQL.runQuery(query);
-						
+
 			if(result.next()) return result;
 			else
 			{
@@ -163,29 +166,12 @@ public class DDatabase
 		}
 		else
 		{
-			
+
 		}
-		
+
 		return null;
 	}
-	
-	/*
-	 *  addPlayerDeity() : Adds (String)deity to (String)player.
-	 */
-	public static boolean addPlayerDeity(String deity, String username) throws SQLException
-	{
-		if(DSettings.mysql && DMySQL.checkConnection())
-		{
-			// TODO: Make this work.
-		}
-		else
-		{
-			
-		}		
-		
-		return false;
-	}
-	
+
 	/*
 	 *  saveAllPlayerData() : Saves all player HashMap data to database.
 	 */
@@ -194,69 +180,54 @@ public class DDatabase
 		if(DSettings.mysql && DMySQL.checkConnection())
 		{
 			DUtil.info("Saving player data...");
-			
+
 			// Define variables
 			int player_count = 0;
-			long startStopwatch = System.currentTimeMillis();
-			
-			String query = "SELECT * FROM " + DSettings.player_table + ";";
-			ResultSet result = null;
-			
-			result = DMySQL.runQuery(query);
-						
-			try
+			long startTimer = System.currentTimeMillis();
+
+			for(Player player : DUtil.getOnlinePlayers())
 			{
-				while(result.next())
+				// Add 1 to player count
+				player_count++;
+
+				// Define variables
+				String username = player.getName();
+				HashMap<String, Object> player_data = DSave.getPlayerData(username);	
+
+				// Initialize arrays and stuff					
+				for(Map.Entry<String, Object> entry : player_data.entrySet())
 				{
-					// Add 1 to player count
-					player_count++;
-					
-					// Define variables
-					String username = result.getString("player");
-					HashMap<String, Object> player_data = DSave.getPlayerData(username);	
-					
-					// Initialize arrays and stuff					
-					for(Map.Entry<String, Object> entry : player_data.entrySet())
+					String id = entry.getKey();
+					Object data = entry.getValue();
+
+					// Don't save if it's temporary data
+					if(id.contains("temp")) continue;
+
+					// Don't save them to the data table if they belong in the user table
+					if(!id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths"))
 					{
-						String id = entry.getKey();
-						Object data = entry.getValue();
-						
-						// Don't save if it's temporary data
-						if(id.contains("temp")) continue;
-						
-						// Don't save them to the data table if they belong in the user table
-						if(!id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths"))
+						if(DMySQL.runQuery("UPDATE " + DSettings.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';") == null)
 						{
-							if(DMySQL.runQuery("UPDATE " + DSettings.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';") == null)
-							{
-								DMySQL.runQuery("INSERT INTO " + DSettings.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', '" + data + "');");
-							}
+							DMySQL.runQuery("INSERT INTO " + DSettings.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', '" + data + "');");
 						}
 					}
-					
-					String deities = Joiner.on(",").join(DUtil.getDeities(username));
-					// Save specific data to user table
-					DMySQL.runQuery("UPDATE " + DSettings.player_table + " SET deities='" + deities + "', favor=" + DSave.getData(username, "favor") + ", ascensions=" + DSave.getData(username, "ascensions") + ", kills=" + DSave.getData(username, "kills") + ", deaths=" + DSave.getData(username, "deaths") + " WHERE player='" + username + "';");
-					
-					// Send message for player
-					DUtil.info(username + " saved!");
 				}
-				
-				long stopStopwatch = System.currentTimeMillis();
-				double totalTime = (double) (stopStopwatch - startStopwatch);
-				
-				DUtil.info("Success! Saved " + player_count + " player(s) in " + totalTime/1000 + " seconds.");
+
+				String deities = Joiner.on(",").join(DUtil.getDeities(username));
+				// Save specific data to user table
+				DMySQL.runQuery("UPDATE " + DSettings.player_table + " SET alliance='" + DSave.getData(username, "alliance") + "', deities='" + deities + "', favor=" + DSave.getData(username, "favor") + ", ascensions=" + DSave.getData(username, "ascensions") + ", kills=" + DSave.getData(username, "kills") + ", deaths=" + DSave.getData(username, "deaths") + " WHERE player='" + username + "';");
 			}
-			catch(SQLException e)
-			{
-				DUtil.severe("Player data save failed:");
-				e.printStackTrace();
-			}
-            
+
+			// Stop the timer
+			long stopTimer = System.currentTimeMillis();
+			double totalTime = (double) (stopTimer - startTimer);
+
+			DUtil.info("Success! Saved " + player_count + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DSettings.player_table + ";")) + " total players in " + totalTime/1000 + " seconds.");
+
 		}
 		else
 		{
-			
+			// TODO
 		}
 	}
 }

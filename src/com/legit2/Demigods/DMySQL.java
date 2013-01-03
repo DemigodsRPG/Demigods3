@@ -23,7 +23,7 @@ public class DMySQL
 			DUtil.info("MySQL Connection Successful!");
 			
 			createTable(DSettings.playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
-			createTable(DSettings.player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
+			createTable(DSettings.player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
 		}
 		else
 		{
