@@ -27,7 +27,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 public class DUtil
 {
-	static Demigods plugin;
+	public static Demigods plugin;
 	
 	// Define variables
 	private static FileConfiguration customConfig = null;
@@ -160,7 +160,7 @@ public class DUtil
 	 */
 	public static int getFavor(String username)
 	{
-		return (Integer)getData(username, "favor");
+		return Integer.parseInt(getData(username, "favor").toString());
 	}
 	
 	/*
@@ -176,7 +176,7 @@ public class DUtil
 	 */
 	public static int getAscensions(String username)
 	{
-		return (Integer)getData(username, "ascensions");
+		return Integer.parseInt(getData(username, "ascensions").toString());
 	}
 	
 	/*
@@ -192,7 +192,7 @@ public class DUtil
 	 */
 	public static int getDevotion(String username, String deity)
 	{
-		if(getDeityData(username, deity, "devotion") != null) return (Integer)getDeityData(username, deity, "devotion");
+		if(getDeityData(username, deity, "devotion") != null) return Integer.parseInt(getDeityData(username, deity, "devotion").toString());
 		return -1;
 
 	}

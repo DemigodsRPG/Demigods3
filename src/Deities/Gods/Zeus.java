@@ -1,4 +1,4 @@
-package com.legit2.Demigods.Deities.Gods;
+package Deities.Gods;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -22,7 +21,7 @@ import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.ReflectCommand;
 import com.legit2.Demigods.Deities.Deity;
 
-public class Zeus implements Deity, Listener
+public class Zeus implements Deity,Listener
 {
 	private static final long serialVersionUID = 2242753324910371936L;
 
@@ -54,6 +53,12 @@ public class Zeus implements Deity, Listener
 		return "God";
 	}
 	
+	public String loadDeity()
+	{
+		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		return "Zeus loaded.";
+	}
+	
 	@Override
 	public ArrayList<Material> getClaimItems()
 	{
@@ -61,6 +66,72 @@ public class Zeus implements Deity, Listener
 		claimItems.add(Material.IRON_INGOT);
 		
 		return claimItems;
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onEntityDamange(EntityDamageEvent damageEvent)
+	{
+		if(damageEvent.getEntity() instanceof Player)
+		{
+			Player player = (Player)damageEvent.getEntity();
+			if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player)) return;
+
+			if(damageEvent.getCause()==DamageCause.FALL)
+			{
+				damageEvent.setDamage(0);
+				return;
+			}
+			else if(damageEvent.getCause()==DamageCause.LIGHTNING)
+			{
+				damageEvent.setDamage(0);
+				return;
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onPlayerInteract(PlayerInteractEvent interactEvent)
+	{
+		Player player = interactEvent.getPlayer();
+
+		if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player)) return;
+
+		if(SHOVE || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == SHOVEBIND)))
+		{
+			if(ZEUSSHOVETIME > System.currentTimeMillis()) return;
+
+			ZEUSSHOVETIME = System.currentTimeMillis()+SHOVEDELAY;
+
+			if(DUtil.getFavor(player.getName()) >= SHOVECOST)
+			{
+				shove(player);
+				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-SHOVECOST);
+				return;
+			}
+			else
+			{
+				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
+				DUtil.setData(player.getName(), "shove", false);
+			}
+		}
+		if(LIGHTNING || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == LIGHTNINGBIND)))
+		{
+			if(ZEUSLIGHTNINGTIME > System.currentTimeMillis()) return;
+
+			ZEUSLIGHTNINGTIME = System.currentTimeMillis()+LIGHTNINGDELAY;
+
+			if(DUtil.getFavor(player.getName()) >= LIGHTNINGCOST)
+			{
+				lightning(player);
+				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-LIGHTNINGCOST);
+				return;
+			}
+			else
+			{
+				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
+				DUtil.setData(player.getName(), "lightning", false);
+			}
+		}
 	}
 	
 	@Override
@@ -117,140 +188,6 @@ public class Zeus implements Deity, Listener
 		return "Zeus";
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onEntityDamange(EntityDamageEvent damageEvent)
-	{
-		if(damageEvent.getEntity() instanceof Player)
-		{
-			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player)) return;
-			
-			if(damageEvent.getCause()==DamageCause.FALL)
-			{
-				damageEvent.setDamage(0);
-				return;
-			}
-			else if(damageEvent.getCause()==DamageCause.LIGHTNING)
-			{
-				damageEvent.setDamage(0);
-				return;
-			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onPlayerInteract(PlayerInteractEvent interactEvent)
-	{
-		Player player = interactEvent.getPlayer();
-		
-		if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player)) return;
-		
-		if(SHOVE || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == SHOVEBIND)))
-		{
-			if(ZEUSSHOVETIME > System.currentTimeMillis()) return;
-			
-			ZEUSSHOVETIME = System.currentTimeMillis()+SHOVEDELAY;
-			
-			if(DUtil.getFavor(player.getName()) >= SHOVECOST)
-			{
-				shove(player);
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-SHOVECOST);
-				return;
-			}
-			else
-			{
-				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-				DUtil.setData(player.getName(), "shove", false);
-			}
-		}
-		if(LIGHTNING || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == LIGHTNINGBIND)))
-		{
-			if(ZEUSLIGHTNINGTIME > System.currentTimeMillis()) return;
-			
-			ZEUSLIGHTNINGTIME = System.currentTimeMillis()+LIGHTNINGDELAY;
-			
-			if(DUtil.getFavor(player.getName()) >= LIGHTNINGCOST)
-			{
-				lightning(player);
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-LIGHTNINGCOST);
-				return;
-			}
-			else
-			{
-				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-				DUtil.setData(player.getName(), "lightning", false);
-			}
-		}
-	}
-	
-	@Override
-	public void onEvent(Event event)
-	{
-		if(event instanceof EntityDamageEvent)
-		{
-			EntityDamageEvent damageEvent = (EntityDamageEvent)event;
-			if(damageEvent.getEntity() instanceof Player)
-			{
-				Player player = (Player)damageEvent.getEntity();
-				if(!DUtil.hasDeity(player.getName(), getName()) || !DUtil.isImmortal(player)) return;
-				
-				if(damageEvent.getCause()==DamageCause.FALL)
-				{
-					damageEvent.setDamage(0);
-					return;
-				}
-				else if(damageEvent.getCause()==DamageCause.LIGHTNING)
-				{
-					damageEvent.setDamage(0);
-					return;
-				}
-			}
-		}
-		else if(event instanceof PlayerInteractEvent)
-		{
-			PlayerInteractEvent interactEvent = (PlayerInteractEvent)event;
-			Player player = interactEvent.getPlayer();
-			
-			if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player)) return;
-			
-			if(SHOVE || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == SHOVEBIND)))
-			{
-				if(ZEUSSHOVETIME > System.currentTimeMillis()) return;
-				
-				ZEUSSHOVETIME = System.currentTimeMillis()+SHOVEDELAY;
-				
-				if(DUtil.getFavor(player.getName()) >= SHOVECOST)
-				{
-					shove(player);
-					DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-SHOVECOST);
-					return;
-				}
-				else
-				{
-					player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-					DUtil.setData(player.getName(), "shove", false);
-				}
-			}
-			if(LIGHTNING || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == LIGHTNINGBIND)))
-			{
-				if(ZEUSLIGHTNINGTIME > System.currentTimeMillis()) return;
-				
-				ZEUSLIGHTNINGTIME = System.currentTimeMillis()+LIGHTNINGDELAY;
-				
-				if(DUtil.getFavor(player.getName()) >= LIGHTNINGCOST)
-				{
-					lightning(player);
-					DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-LIGHTNINGCOST);
-					return;
-				}
-				else
-				{
-					player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-					DUtil.setData(player.getName(), "lightning", false);
-				}
-			}
-		}
-	}
 	
 	/*
 	 *  Commands

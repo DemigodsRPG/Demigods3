@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 /*
  * Each Deity is attached to a player.
@@ -40,11 +39,6 @@ public interface Deity extends Serializable
 	 * @param p
 	 */
 	public void printInfo(Player p);
-	
-	/*
-	 * Make sure to use helper methods and instanceof.
-	 */
-	public void onEvent(Event e);
 	
 	/*
 	 * Used for events that execute repeatedly

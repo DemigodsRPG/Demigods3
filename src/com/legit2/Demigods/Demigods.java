@@ -1,10 +1,12 @@
 package com.legit2.Demigods;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.clashnia.ClashniaUpdate.DemigodsUpdate;
-import com.legit2.Demigods.Deities.Gods.Zeus;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -14,6 +16,7 @@ public class Demigods extends JavaPlugin
 	// Soft dependencies
 	protected static WorldGuardPlugin WORLDGUARD = null;
 	protected static P FACTIONS = null;
+	public ReflectCommand commandRegistrator;
 	
 	@Override
 	public void onEnable()
@@ -25,14 +28,16 @@ public class Demigods extends JavaPlugin
 		DConfig.initializeConfig();
 		DScheduler.startThreads();
 		loadListeners();			
-		loadCommands();		
+		loadCommands();
+		loadDeities();
 		loadMetrics();
 		loadDependencies();
 		
-		DSave.saveData("_Alex", "favor", 99999);
-		DSave.saveData("_Alex", "ascensions", 99999);
-		DSave.saveData("_Alex", "immortal", true);
-		DSave.saveDeityData("_Alex", "zeus", "devotion", 99999);		
+		
+		DSave.saveData("HmmmQuestionMark", "favor", 99999);
+		DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
+		DSave.saveData("HmmmQuestionMark", "immortal", true);
+		DSave.saveDeityData("HmmmQuestionMark", "zeus", "devotion", 99999);		
 		
 		checkUpdate();
 		
@@ -45,7 +50,7 @@ public class Demigods extends JavaPlugin
 	{
 		// Uninitialize Plugin
 		DDatabase.uninitializeDatabase();
-		//DScheduler.stopThreads();
+		DScheduler.stopThreads();
 		
 		DUtil.info("Disabled!");
 	}
@@ -56,9 +61,8 @@ public class Demigods extends JavaPlugin
 	private void loadCommands()
 	{
 		// Define Main CommandExecutor
-		ReflectCommand commandRegistrator = new ReflectCommand(this);
+		commandRegistrator = new ReflectCommand(this);
 		commandRegistrator.register(DCommandExecutor.class);
-		commandRegistrator.register(Zeus.class);
 	}
 	
 	/*
@@ -70,12 +74,48 @@ public class Demigods extends JavaPlugin
 		
 		/* Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
-		
-		getServer().getPluginManager().registerEvents(new Zeus(), this);
 	}
 	
 	/*
-	 *  loadDeities() : Loads the metrics.
+	 *  loadDeities() : Loads the deities.
+	 */
+	@SuppressWarnings("rawtypes")
+	public void loadDeities()
+	{
+		ArrayList<String> deityList = new ArrayList<String>();
+		
+		// Find all deities
+		deityList.add("Deities.Gods.Zeus");
+		
+		for(String deity : deityList)
+		{
+			 try  
+			 {  
+				//no paramater
+				Class noparams[] = {};
+				
+				Object obj = Class.forName(deity, true, this.getClass().getClassLoader()).newInstance();
+				 
+				// Load Deity commands
+				commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
+				 
+				// Load everything else for the Deity (Listener, etc.)
+				Method loadDeity = Class.forName(deity, true, this.getClass().getClassLoader()).getMethod("loadDeity", noparams);
+				String deityMessage = (String)loadDeity.invoke(obj, (Object[])null);
+				 
+				// Display the success message
+				DUtil.info(deityMessage);
+			 }
+			 catch(Exception e)
+			 {
+				 DUtil.severe("Something went wrong while loading Deities!");
+				 e.printStackTrace();
+			 }
+		}
+	}
+	
+	/*
+	 *  loadMetrics() : Loads the metrics.
 	 */
 	private void loadMetrics()
 	{

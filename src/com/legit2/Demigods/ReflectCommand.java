@@ -233,7 +233,7 @@ public class ReflectCommand
     {
         CONSOLE(new Class[]{ConsoleCommandSender.class}),
         PLAYER(new Class[]{Player.class}),
-        EVERYONE(new Class[]{CommandSender.class});
+        EVERYONE(new Class[]{ConsoleCommandSender.class, Player.class});
  
         @SuppressWarnings("rawtypes")
 		Sender(Class[] who) {}
