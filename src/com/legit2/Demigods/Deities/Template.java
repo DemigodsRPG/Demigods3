@@ -155,7 +155,7 @@ public class Template implements Deity,Listener
 			}
 		}
 
-		if(DUtil.getData(player.getName(), TEST_NAME) != null && (Boolean) DUtil.getData(player.getName(), "lightning")) 
+		if(DUtil.getData(player.getName(), TEST_NAME) != null && (Boolean) DUtil.getData(player.getName(), TEST_NAME)) 
 		{
 			DUtil.setData(player.getName(), TEST_NAME, false);
 			player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
