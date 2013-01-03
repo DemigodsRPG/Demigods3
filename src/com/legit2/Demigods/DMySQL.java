@@ -8,27 +8,30 @@ import lib.PatPeter.SQLibrary.MySQL;
 
 public class DMySQL
 {
+	// Define variables
 	private static MySQL mysql;
+	public static String playerdata_table = "dg_playerdata";
+	public static String player_table = "dg_players";
 	
 	/*
 	 *  initializeDatabase() : Sets up the database and creates user table if needed.
 	 */
 	public static void initializeMySQL()
 	{
-		DUtil.info("Initializing MySQL");
+		DUtil.info("Initializing MySQL...");
 				
 		if(checkConnection())
 		{
 			// Success! Tell the world!
 			DUtil.info("MySQL Connection Successful!");
 			
-			createTable(DSettings.playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
-			createTable(DSettings.player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
+			createTable(playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
+			createTable(player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
 		}
 		else
 		{
 			// Connection failed... :(
-			DUtil.severe("MySQL Connection Failed."); 
+			DUtil.severe("MySQL Connection Failed!"); 
 		}
 	}
 
@@ -45,7 +48,13 @@ public class DMySQL
 	 */
 	public static boolean createConnection()
 	{
-		mysql = new MySQL(Logger.getLogger("Minecraft"), "", DSettings.host, DSettings.port, DSettings.db_name, DSettings.username, DSettings.password);
+		String db_name = DConfig.getSettingString("database.mysql.db_name");
+		String username = DConfig.getSettingString("database.mysql.username");
+		String password = DConfig.getSettingString("database.mysql.password");
+		String host = DConfig.getSettingString("database.mysql.host");
+		String port = DConfig.getSettingString("database.mysql.port");
+		
+		mysql = new MySQL(Logger.getLogger("Minecraft"), "", host, port, db_name, username, password);
 		
 		// Initialize handler
 		try

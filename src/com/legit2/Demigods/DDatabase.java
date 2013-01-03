@@ -14,35 +14,35 @@ import com.google.common.base.Joiner;
 public class DDatabase
 {
 	/*
-	 *  initializeHandler() : Loads the MySQL database or FlatFile.
+	 *  initializeDatabase() : Loads the MySQL or SQLite database.
 	 */
 	public static void initializeDatabase()
 	{
 		// Check if MySQL is enabled in the configuration and if so, attempts to connect.
-		if(DSettings.mysql)
+		if(DConfig.getSettingBoolean("mysql"))
 		{
 			DMySQL.createConnection();
 			DMySQL.initializeMySQL();
 			loadAllData();
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-			DUtil.severe("Couldn't connect to MySQL");
+			// TODO: SQLite
 		}
 	}
 
 	/*
-	 *  uninitializeHandler() : Unloads the MySQL database or FlatFile.
+	 *  uninitializeDatabase() : Unloads the MySQL or SQLite database.
 	 */
 	public static void uninitializeDatabase()
 	{
-		if(DSettings.mysql && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
 			DMySQL.uninitializeMySQL();
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-
+			// TODO: SQLite
 		}
 	}
 
@@ -51,20 +51,20 @@ public class DDatabase
 	 */
 	public static void loadAllData()
 	{
-		if(DSettings.mysql && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
 			// Define variables
-			int player_count = 0;
+			int playerCount = 0;
 			long startStopwatch = System.currentTimeMillis();
 
 			// Load data from player table.
-			String selectAllPlayers = "SELECT * FROM " + DSettings.player_table + ";";
+			String selectAllPlayers = "SELECT * FROM " + DMySQL.player_table + ";";
 			ResultSet all_players = DMySQL.runQuery(selectAllPlayers);
 			try 
 			{
 				while(all_players.next())
 				{
-					player_count++;
+					playerCount++;
 
 					// Define variables
 					String username = all_players.getString("player");
@@ -87,7 +87,7 @@ public class DDatabase
 			}
 
 			// Load data from playerdata table.
-			String selectAllPlayerData = "SELECT * FROM " + DSettings.playerdata_table + ";";
+			String selectAllPlayerData = "SELECT * FROM " + DMySQL.playerdata_table + ";";
 			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
 			try 
 			{
@@ -107,12 +107,12 @@ public class DDatabase
 			long stopStopwatch = System.currentTimeMillis();
 			double totalTime = (double) (stopStopwatch - startStopwatch);
 
-			DUtil.info("Loaded data for " + player_count + " players in " + totalTime/1000 + " seconds.");
+			DUtil.info("Loaded data for " + playerCount + " players in " + totalTime/1000 + " seconds.");
 
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-
+			// TODO: SQLite
 		}
 	}
 
@@ -125,12 +125,12 @@ public class DDatabase
 		DSave.newPlayer(username);
 
 		// Next we add them to the Database if needed
-		if(DSettings.mysql && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
-			if(!DMySQL.dataExists(DSettings.player_table, "player", username))
+			if(!DMySQL.dataExists(DMySQL.player_table, "player", username))
 			{
 				// Setup query string to add player to MySQL database
-				String addPlayerQuery = "INSERT INTO " + DSettings.player_table + " (player, alliance, deities, favor, ascensions, kills, deaths) VALUES ('" + username + "', NULL, NULL, 100, 1, 0, 0);";
+				String addPlayerQuery = "INSERT INTO " + DMySQL.player_table + " (player, alliance, deities, favor, ascensions, kills, deaths) VALUES ('" + username + "', NULL, NULL, 100, 1, 0, 0);";
 				DMySQL.runQuery(addPlayerQuery);
 				DUtil.info("User \"" + username + "\" added to database!");
 			}
@@ -139,9 +139,9 @@ public class DDatabase
 				DUtil.info("User " + username + " has already been added.");
 			}
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-
+			// TODO: SQLite
 		}
 	}
 
@@ -150,10 +150,10 @@ public class DDatabase
 	 */
 	public static ResultSet getPlayerInfo(String username) throws SQLException
 	{
-		if(DSettings.mysql && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
 			// Check to see if user exists
-			String query = "SELECT * FROM " + DSettings.player_table + " WHERE player = '" + username + "';";
+			String query = "SELECT * FROM " + DMySQL.player_table + " WHERE player = '" + username + "';";
 			ResultSet result = null;
 
 			result = DMySQL.runQuery(query);
@@ -164,9 +164,9 @@ public class DDatabase
 				DUtil.severe(username + " tried to check their info but they aren't entered in the database!");
 			}
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-
+			// TODO: SQLite
 		}
 
 		return null;
@@ -177,18 +177,18 @@ public class DDatabase
 	 */
 	public static void saveAllPlayerData()
 	{
-		if(DSettings.mysql && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
 			DUtil.info("Saving player data...");
 
 			// Define variables
-			int player_count = 0;
+			int playerCount = 0;
 			long startTimer = System.currentTimeMillis();
 
 			for(Player player : DUtil.getOnlinePlayers())
 			{
 				// Add 1 to player count
-				player_count++;
+				playerCount++;
 
 				// Define variables
 				String username = player.getName();
@@ -206,28 +206,28 @@ public class DDatabase
 					// Don't save them to the data table if they belong in the user table
 					if(!id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths"))
 					{
-						if(DMySQL.runQuery("UPDATE " + DSettings.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';") == null)
+						if(DMySQL.runQuery("UPDATE " + DMySQL.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';") == null)
 						{
-							DMySQL.runQuery("INSERT INTO " + DSettings.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', '" + data + "');");
+							DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', '" + data + "');");
 						}
 					}
 				}
 
 				String deities = Joiner.on(",").join(DUtil.getDeities(username));
 				// Save specific data to user table
-				DMySQL.runQuery("UPDATE " + DSettings.player_table + " SET alliance='" + DSave.getData(username, "alliance") + "', deities='" + deities + "', favor=" + DSave.getData(username, "favor") + ", ascensions=" + DSave.getData(username, "ascensions") + ", kills=" + DSave.getData(username, "kills") + ", deaths=" + DSave.getData(username, "deaths") + " WHERE player='" + username + "';");
+				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET alliance='" + DSave.getData(username, "alliance") + "', deities='" + deities + "', favor=" + DSave.getData(username, "favor") + ", ascensions=" + DSave.getData(username, "ascensions") + ", kills=" + DSave.getData(username, "kills") + ", deaths=" + DSave.getData(username, "deaths") + " WHERE player='" + username + "';");
 			}
 
 			// Stop the timer
 			long stopTimer = System.currentTimeMillis();
 			double totalTime = (double) (stopTimer - startTimer);
 
-			DUtil.info("Success! Saved " + player_count + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DSettings.player_table + ";")) + " total players in " + totalTime/1000 + " seconds.");
+			DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " total players in " + totalTime/1000 + " seconds.");
 
 		}
-		else
+		else if(DConfig.getSettingBoolean("sqlite"))
 		{
-			// TODO
+			// TODO: SQLite
 		}
 	}
 }

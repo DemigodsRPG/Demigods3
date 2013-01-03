@@ -1,7 +1,11 @@
 package com.legit2.Demigods;
 
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -82,34 +86,60 @@ public class Demigods extends JavaPlugin
 		ArrayList<String> deityList = new ArrayList<String>();
 		
 		// Find all deities
-		deityList.add("Deities.Gods.Zeus");
-		
-		for(String deity : deityList)
+		CodeSource demigodsSrc = Demigods.class.getProtectionDomain().getCodeSource();
+		if(demigodsSrc != null)
 		{
-			 try  
-			 {  
-				// No Paramaters
-				Class noparams[] = {};
+			try
+			{
+				URL demigodsJar = demigodsSrc.getLocation();
+				ZipInputStream demigodsZip = new ZipInputStream(demigodsJar.openStream());
 				
-				Object obj = Class.forName(deity, true, this.getClass().getClassLoader()).newInstance();
-				 
-				// Load Deity commands
-				commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
-				 
-				// Load everything else for the Deity (Listener, etc.)
-				Method loadDeity = Class.forName(deity, true, this.getClass().getClassLoader()).getMethod("loadDeity", noparams);
-				String deityMessage = (String)loadDeity.invoke(obj, (Object[])null);
-				 
-				// Display the success message
-				DUtil.info(deityMessage);
-			 }
-			 catch(Exception e)
-			 {
-				 DUtil.severe("Something went wrong while loading Deities!");
-				 e.printStackTrace();
-			 }
+				ZipEntry demigodsFile = null;
+				
+				// Define variables
+				int deityCount = 0;
+				long startTimer = System.currentTimeMillis();
+				
+				while((demigodsFile = demigodsZip.getNextEntry()) != null)
+				{
+					String deityName = demigodsFile.getName().replace("/", ".").replace(".class", "");
+					if(deityName.contains("_deity"))
+					{
+						deityCount++;
+						deityList.add(deityName);
+					}
+				}
+				
+				for(String deity : deityList)
+				{
+					// No Paramaters
+					Class noparams[] = {};
+					
+					Object obj = Class.forName(deity, true, this.getClass().getClassLoader()).newInstance();
+					 
+					// Load Deity commands
+					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
+					 
+					// Load everything else for the Deity (Listener, etc.)
+					Method loadDeity = Class.forName(deity, true, this.getClass().getClassLoader()).getMethod("loadDeity", noparams);
+					String deityMessage = (String)loadDeity.invoke(obj, (Object[])null);
+					 
+					// Display the success message
+					DUtil.info(deityMessage);
+
+				}
+				// Stop the timer
+				long stopTimer = System.currentTimeMillis();
+				double totalTime = (double) (stopTimer - startTimer);
+
+				DUtil.info(deityCount + " deities loaded in " + totalTime/1000 + " seconds.");
+			}
+			catch(Exception e)
+			{
+				DUtil.severe("There was a problem while loading deities!");
+				e.printStackTrace();
+			}
 		}
-		DUtil.info("Deities loaded!");
 	}
 	
 	/*

@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.ReflectCommand;
 
-public class Template implements Deity,Listener
+public class Template_deity implements Deity,Listener
 {
 	private static final long serialVersionUID = 2242753324910371936L;
 
@@ -41,7 +41,7 @@ public class Template implements Deity,Listener
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
-	public Template()
+	public Template_deity()
 	{
 		ULTIMATE_TIME = System.currentTimeMillis();
 		TEST_TIME = System.currentTimeMillis();
