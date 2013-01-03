@@ -33,16 +33,14 @@ public class Demigods extends JavaPlugin
 		loadMetrics();
 		loadDependencies();
 		
-		
-		DSave.saveData("HmmmQuestionMark", "favor", 99999);
-		DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
-		DSave.saveData("HmmmQuestionMark", "immortal", true);
-		DSave.saveDeityData("HmmmQuestionMark", "zeus", "devotion", 99999);		
+		DSave.saveData("_Alex", "favor", 99999);
+		DSave.saveData("_Alex", "ascensions", 99999);
+		DSave.saveData("_Alex", "immortal", true);
+		DSave.saveDeityData("_Alex", "zeus", "devotion", 99999);		
 		
 		checkUpdate();
 		
 		DUtil.info("Enabled!");
-		//DUtil.serverMsg(ChatColor.GRAY + "This server is running Demigods version: " + DUtil.getPlugin().getDescription().getVersion());
 	}
 
 	@Override
@@ -70,8 +68,6 @@ public class Demigods extends JavaPlugin
 	 */
 	private void loadListeners()
 	{		
-		// Start Listeners
-		
 		/* Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
 	}
@@ -82,6 +78,7 @@ public class Demigods extends JavaPlugin
 	@SuppressWarnings("rawtypes")
 	public void loadDeities()
 	{
+		DUtil.info("Loading deities...");
 		ArrayList<String> deityList = new ArrayList<String>();
 		
 		// Find all deities
@@ -91,7 +88,7 @@ public class Demigods extends JavaPlugin
 		{
 			 try  
 			 {  
-				//no paramater
+				// No Paramaters
 				Class noparams[] = {};
 				
 				Object obj = Class.forName(deity, true, this.getClass().getClassLoader()).newInstance();
@@ -112,6 +109,7 @@ public class Demigods extends JavaPlugin
 				 e.printStackTrace();
 			 }
 		}
+		DUtil.info("Deities loaded!");
 	}
 	
 	/*

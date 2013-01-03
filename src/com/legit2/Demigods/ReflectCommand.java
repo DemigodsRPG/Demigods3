@@ -67,7 +67,8 @@ public class ReflectCommand
                             }
                         }
                     }
-                    return (Boolean) returnValue;
+                    if(returnValue != null) return (Boolean) returnValue;
+                    else return false;
                 }
                 catch (Exception e)
                 {
@@ -233,7 +234,7 @@ public class ReflectCommand
     {
         CONSOLE(new Class[]{ConsoleCommandSender.class}),
         PLAYER(new Class[]{Player.class}),
-        EVERYONE(new Class[]{ConsoleCommandSender.class, Player.class});
+        EVERYONE(new Class[]{CommandSender.class});
  
         @SuppressWarnings("rawtypes")
 		Sender(Class[] who) {}

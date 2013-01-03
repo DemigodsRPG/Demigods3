@@ -169,7 +169,8 @@ public class DUtil
 	 */
 	public static int getFavor(String username)
 	{
-		return Integer.parseInt(getData(username, "favor").toString());
+		if(getData(username, "favor") != null) return Integer.parseInt(getData(username, "favor").toString());
+		else return -1;
 	}
 	
 	/*

@@ -2,8 +2,6 @@ package com.legit2.Demigods;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -16,38 +14,6 @@ public class DCommandExecutor
 	public DCommandExecutor(Demigods instance)
 	{
 		plugin = instance;
-	}
-
-	/*
-	 *  Command: "test"
-	 */
-	@ReflectCommand.Command(name = "test", sender = ReflectCommand.Sender.EVERYONE, usage = "/test")
-	public static boolean test(CommandSender sender)
-	{
-		String username = sender.getName();
-		
-		DUtil.taggedMessage(sender, ChatColor.RED + username + "!");
-		
-		//DUtil.giveDeity(sender.getName(), "Zeus");
-
-		HashMap<String, Object> player_data = DSave.getPlayerData(username);
-				
-		for(Map.Entry<String, Object> entry : player_data.entrySet())
-		{
-			String id = entry.getKey();
-			Object data = entry.getValue();
-			
-			DUtil.taggedMessage(sender, ChatColor.GREEN + id + ", " + data);
-		}
-		
-		sender.sendMessage("" + DUtil.getFavor(username));
-		
-		if(DUtil.hasDeity(username, "Zeus")) sender.sendMessage("You have Zeus!");
-		else sender.sendMessage("You do not have Zeus!");
-		
-		DDatabase.saveAllPlayerData();
-		
-		return true;
 	}
 	
 	/*

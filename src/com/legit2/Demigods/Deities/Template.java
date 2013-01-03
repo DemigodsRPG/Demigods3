@@ -46,7 +46,7 @@ public class Template implements Deity,Listener
 		ULTIMATE_TIME = System.currentTimeMillis();
 		TEST_TIME = System.currentTimeMillis();
 	}
-
+	
 	@Override
 	public ArrayList<Material> getClaimItems()
 	{
@@ -128,7 +128,7 @@ public class Template implements Deity,Listener
 	/*
 	 *  Command: "/test"
 	 */
-	@ReflectCommand.Command(name = "test", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god." + DEITYNAME)
+	@ReflectCommand.Command(name = "test", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void testCommand(Player player, String arg1)
 	{
 		// Check the player for DEITYNAME
@@ -227,4 +227,5 @@ public class Template implements Deity,Listener
 	public String getName() { return DEITYNAME; }
 	@Override
 	public String getAlliance() { return DEITYALLIANCE; }
+	public String loadDeity() { DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin); return DEITYNAME + " loaded."; }
 }
