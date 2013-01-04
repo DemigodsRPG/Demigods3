@@ -1,4 +1,4 @@
-package com.legit2.Demigods.Update;
+package com.legit2.Demigods.Libraries;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

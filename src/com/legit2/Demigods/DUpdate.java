@@ -1,4 +1,4 @@
-package com.legit2.Demigods.Update;
+package com.legit2.Demigods;
 
 import java.io.FileNotFoundException;
 import java.io.File;
@@ -12,16 +12,15 @@ import java.net.URLConnection;
 
 import org.bukkit.Bukkit;
 
-import com.legit2.Demigods.DUtil;
-import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Libraries.UpdateChecker;
 
-public class DemigodsUpdate
+public class DUpdate
 {
 	static Demigods plugin;
 	
 	public static UpdateChecker checker = new UpdateChecker("http://dev.bukkit.org/server-mods/demigods/files.rss");
 	
-	public DemigodsUpdate(Demigods demigods)
+	public DUpdate(Demigods demigods)
 	{
 		plugin = demigods;
 	}

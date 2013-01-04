@@ -13,9 +13,9 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
+import com.legit2.Demigods.DUpdate;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
-import com.legit2.Demigods.Update.DemigodsUpdate;
 
 public class DPlayerListener implements Listener
 {
@@ -55,7 +55,7 @@ public class DPlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY+"Type "+ChatColor.GREEN+"/dg"+ChatColor.GRAY+" for more info.");
 		}
 		
-		if((!DConfig.getSettingBoolean("auto_update")) && (DemigodsUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(player, "demigods.admin"))
+		if((!DConfig.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(player, "demigods.admin"))
 		{
 			player.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 			player.sendMessage(ChatColor.RED + "Please update ASAP.");

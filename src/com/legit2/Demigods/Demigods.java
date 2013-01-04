@@ -12,7 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DPlayerListener;
-import com.legit2.Demigods.Update.DemigodsUpdate;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -183,11 +182,11 @@ public class Demigods extends JavaPlugin
 	private void checkUpdate()
 	{
 		// Check for updates, and then update if need be		
-		new DemigodsUpdate(this);
-		Boolean shouldUpdate = DemigodsUpdate.shouldUpdate();
+		new DUpdate(this);
+		Boolean shouldUpdate = DUpdate.shouldUpdate();
 		if(shouldUpdate && DConfig.getSettingBoolean("auto_update"))
 		{
-			DemigodsUpdate.demigodsUpdate();
+			DUpdate.demigodsUpdate();
 		}
 	}
 }
