@@ -23,126 +23,46 @@ public class DMetrics
 		    // New Graph
 		    Graph graph = metrics.createGraph("Alliances for the Past Week");
 		
-		    // Gods
-		    graph.addPlotter(new Metrics.Plotter("Gods")
+		    // Alliance List
+		    ArrayList<String> allianceList = new ArrayList<String>();
+		    for(String player : DSave.getAllData().keySet())
 		    {
-
+		    	String alliance = DSave.getData(player, "alliance").toString();
+		    	if(allianceList.contains(alliance)) continue;
+		    	allianceList.add(alliance);
+		    }
+		    
+		    for(final String ALLIANCE : allianceList)
+		    {
+			    graph.addPlotter(new Metrics.Plotter(ALLIANCE)
+			    {
+		
 		            @Override
 		            public int getValue()
 		            {
-		            	int numGods;
-		            	ArrayList<String> gods = new ArrayList<String>();
+		            	int numAlliance;
+		            	ArrayList<String> allianceMembers = new ArrayList<String>();
 		            	
-		            	if(DUtil.getImmortalList() == null) numGods = 0;
+		            	if(DUtil.getImmortalList() == null) numAlliance = 0;
 		            	else
 		            	{
 							for (String s : DUtil.getImmortalList())
 							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("god"))
+								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase(ALLIANCE))
 								{
 									if (DSave.hasData(s, "LASTLOGINTIME"))
 									{
 										if ((Long)DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
 									}
-									gods.add(s);
+									allianceMembers.add(s);
 								}
 							}    
-							numGods = gods.size();
+							numAlliance = allianceMembers.size();
 		            	}
-		            	return numGods; // Number of players who are in other alliances
+		            	return numAlliance;
 		            }
-		
-		    });
-		
-		    // Titans
-		    graph.addPlotter(new Metrics.Plotter("Titans")
-		    {
-		
-		            @Override
-		            public int getValue() {
-		            	int numTitans;
-		            	ArrayList<String> titans = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numTitans = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("titan"))
-								{
-									if (DSave.hasData(s, "LASTLOGINTIME"))
-									{
-										if ((Long)DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
-									}
-									titans.add(s);
-								}
-							}    
-							numTitans = titans.size();
-		            	}
-		            	return numTitans; // Number of players who are in other alliances
-		            }
-		
-		    });
-		    
-		    // Giants
-		    graph.addPlotter(new Metrics.Plotter("Giants")
-		    {
-		
-		            @Override
-		            public int getValue() {
-		            	int numGiants;
-		            	ArrayList<String> giants = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numGiants = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("giant"))
-								{
-									if (DSave.hasData(s, "LASTLOGINTIME"))
-									{
-										if ((Long)DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
-									}
-									giants.add(s);
-								}
-							}  
-							numGiants = giants.size();
-		            	}
-		            	return numGiants; // Number of players who are in other alliances
-		            }
-		
-		    });
-		    
-		    // Other
-		    graph.addPlotter(new Metrics.Plotter("Other")
-		    {
-		
-		            @Override
-		            public int getValue() {
-		            	int numOthers;
-		            	ArrayList<String> others = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numOthers = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && !DUtil.getAlliance(s).equalsIgnoreCase("god") && (!DUtil.getAlliance(s).equalsIgnoreCase("titan")) && (!DUtil.getAlliance(s).equalsIgnoreCase("giant")))
-								{
-									if (DSave.hasData(s, "LASTLOGINTIME"))
-									{
-										if ((Long)DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
-									}
-									others.add(s);
-								}
-							}    
-							numOthers = others.size();
-		            	}
-		            	return numOthers; // Number of players who are in other alliances
-		            }
-		
-		    });
+			    });
+			  }
 		
 		    metrics.start();
 		}
@@ -161,113 +81,45 @@ public class DMetrics
 		    // New Graph
 		    Graph graph = metrics.createGraph("Alliances for All Time");
 		
-		    // Gods
-		    graph.addPlotter(new Metrics.Plotter("Gods")
+		    // Alliance List
+		    ArrayList<String> allianceList = new ArrayList<String>();
+		    for(String player : DSave.getAllData().keySet())
 		    {
+		    	String alliance = DSave.getData(player, "alliance").toString();
+		    	if(allianceList.contains(alliance)) continue;
+		    	allianceList.add(alliance);
+		    }
+		    
+		    for(final String ALLIANCE : allianceList)
+		    {
+		    	// Better looking name for the graph.
+		    	String graphName = ALLIANCE.substring(0,1).toUpperCase() + ALLIANCE.substring(1) + "s";
+		    	
+			    graph.addPlotter(new Metrics.Plotter(graphName)
+			    {
 		
 		            @Override
 		            public int getValue()
 		            {
-		            	int numGods;
-		            	ArrayList<String> gods = new ArrayList<String>();
+		            	int numAlliance;
+		            	ArrayList<String> allianceMembers = new ArrayList<String>();
 		            	
-		            	if(DUtil.getImmortalList() == null) numGods = 0;
+		            	if(DUtil.getImmortalList() == null) numAlliance = 0;
 		            	else
 		            	{
 							for (String s : DUtil.getImmortalList())
 							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("god"))
+								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase(ALLIANCE))
 								{
-									gods.add(s);
+									allianceMembers.add(s);
 								}
 							}    
-							numGods = gods.size();
+							numAlliance = allianceMembers.size();
 		            	}
-		            	return numGods; // Number of players who are in the God Alliance
+		            	return numAlliance;
 		            }
-		
-		    });
-		
-		    // Titans
-		    graph.addPlotter(new Metrics.Plotter("Titans")
-		    {
-		
-		            @Override
-		            public int getValue()
-		            {
-		            	int numTitans;
-		            	ArrayList<String> titans = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numTitans = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("titan"))
-								{
-									titans.add(s);
-								}
-							}
-							numTitans = titans.size();
-		            	}
-		            	return numTitans; // Number of players who are in the Titan Alliance
-		            }
-		
-		    });
-		    
-		    // Giants
-		    graph.addPlotter(new Metrics.Plotter("Giants")
-		    {
-		
-		            @Override
-		            public int getValue()
-		            {
-		            	int numGiants;
-		            	ArrayList<String> giants = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numGiants = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase("giant"))
-								{
-									giants.add(s);
-								}
-							}
-							numGiants = giants.size();
-		            	}
-		            	return numGiants; // Number of players who are in the Giant Alliance
-		            }
-		
-		    });
-		    
-		    // Other
-		    graph.addPlotter(new Metrics.Plotter("Other")
-		    {
-		
-		            @Override
-		            public int getValue()
-		            {
-		            	int numOthers;
-		            	ArrayList<String> others = new ArrayList<String>();
-		            	
-		            	if(DUtil.getImmortalList() == null) numOthers = 0;
-		            	else
-		            	{
-							for (String s : DUtil.getImmortalList())
-							{
-								if (DUtil.getAlliance(s) != null && !DUtil.getAlliance(s).equalsIgnoreCase("god") && (!DUtil.getAlliance(s).equalsIgnoreCase("titan")) && (!DUtil.getAlliance(s).equalsIgnoreCase("giant")))
-								{
-									others.add(s);
-								}
-							}
-							numOthers = others.size();
-		            	}
-		            	return numOthers; // Number of players who are in other alliances
-		            }
-		
-		    });
+			    });
+			  }
 		
 		    metrics.start();
 		}

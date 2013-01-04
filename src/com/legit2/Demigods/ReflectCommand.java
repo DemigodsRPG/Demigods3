@@ -37,33 +37,46 @@ public class ReflectCommand
             {
                 Object returnValue = false;
                 String commandName = command.getName();
-                Object[] varargs = prepend(args, commandSender);
+                Object[] varargs;
+                
+                String[] noargs = new String[1];
+                noargs[0] = "noargs";
+                
+                if(args.length == 0)
+                {
+                    varargs = prepend(noargs, commandSender);
+                }
+                else
+                {
+                    varargs = prepend(args, commandSender);
+                }
+
                 try
                 {
-                    if (everyoneCommands.containsKey(commandName))
+                    if(everyoneCommands.containsKey(commandName))
                     {
-                        for (Method m : everyoneCommands.get(command.getName()))
+                        for(Method m : everyoneCommands.get(command.getName()))
                         {
-                            if (varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
+                            if(varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
                         }
                     }
                     if (commandSender instanceof Player)
                     {
-                        if (playerCommands.containsKey(commandName))
+                        if(playerCommands.containsKey(commandName))
                         {
                             for (Method m : playerCommands.get(commandName))
                             {
-                                if (varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
+                                if(varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
                             }
                         }
                     }
-                    if (commandSender instanceof ConsoleCommandSender)
+                    if(commandSender instanceof ConsoleCommandSender)
                     {
-                        if (consoleCommands.containsKey(commandName))
+                        if(consoleCommands.containsKey(commandName))
                         {
-                            for (Method m : consoleCommands.get(commandName))
+                            for(Method m : consoleCommands.get(commandName))
                             {
-                                if (varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
+                                if(varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
                             }
                         }
                     }

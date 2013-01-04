@@ -10,6 +10,7 @@ public class DScheduler
 	/*
 	 *  startThreads() : Starts the scheduler threads.
 	 */
+	@SuppressWarnings("deprecation")
 	public static void startThreads()
 	{
 		// Setup threads for saving, health, and favor

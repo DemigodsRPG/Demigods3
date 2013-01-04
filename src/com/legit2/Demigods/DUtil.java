@@ -72,18 +72,22 @@ public class DUtil
 	/*
 	 *  isBound() : Checks if (Material)material is bound for (Player)player.
 	 */
-	public static boolean isBound(Player player, Material material)
+	public static boolean isBound(String username, Material material)
 	{
-		if(DSave.hasDataEqualTo(player.getName(), "bind", material)) return true;
+		if(DSave.hasDataEqualTo(username.toLowerCase(), "bind", material)) return true;
 		else return false;
 	}
 	
 	/*
-	 *  setBind() : Checks if (Material)material is bound for (Player)player and returns success or failure.
+	 *  setBound() : Sets (Material)material to be bound for (Player)player.
 	 */
-	public static boolean setBind(Player player, Material material)
+	public static boolean setBound(String username, Material material)
 	{
-		if(isBound(player, material))
+		// Set variables
+		Player player = Bukkit.getPlayer(username);
+		username = username.toLowerCase();
+		
+		if(isBound(username, material))
 		{
 			player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
 			return false;
@@ -94,16 +98,14 @@ public class DUtil
 			return false;
 		}
 		else
-		{
-			String username = player.getName();
-			
+		{			
 			if(DSave.hasData(username, "bindings"))
 			{
-				ArrayList<Material> bindings = getBindings(player);
+				ArrayList<Material> bindings = getBindings(username);
 				
 				if(!bindings.contains(material)) bindings.add(material);
 				
-				DSave.saveData(player.getName(), "bindings", bindings);
+				DSave.saveData(username, "bindings", bindings);
 			}
 			
 			return true;
@@ -113,17 +115,17 @@ public class DUtil
 	/*
 	 *  removeBind() : Checks if (Material)material is bound for (Player)player.
 	 */
-	public static boolean removeBind(Player player, Material material)
+	public static boolean removeBind(String username, Material material)
 	{
-		String username = player.getName();
+		username = username.toLowerCase();
 				
 		if(DSave.hasData(username, "bindings"))
 		{
-			ArrayList<Material> bindings = getBindings(player);
+			ArrayList<Material> bindings = getBindings(username);
 			
 			if(bindings != null && bindings.contains(material)) bindings.remove(material);
 			
-			DSave.saveData(player.getName(), "bindings", bindings);
+			DSave.saveData(username, "bindings", bindings);
 		}
 		
 		return true;
@@ -133,9 +135,9 @@ public class DUtil
 	 *  getBindings() : Returns all bindings for (Player)player.
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Material> getBindings(Player player)
+	public static ArrayList<Material> getBindings(String username)
 	{
-		String username = player.getName();
+		username = username.toLowerCase();
 		
 		ArrayList<Material> bindings = new ArrayList<Material>();
 		
@@ -150,10 +152,13 @@ public class DUtil
 	/*
 	 *  getImmortal() : Gets if the player is immortal or not.
 	 */
-	public static boolean isImmortal(Player player)
+	public static boolean isImmortal(String username)
 	{
-		if(getData(player.getName(), "immortal") == null) return false;
-		else return (Boolean)getData(player.getName(), "immortal");
+		// Set variables
+		username = username.toLowerCase();
+		
+		if(getData(username, "immortal") == null) return false;
+		else return (Boolean)getData(username, "immortal");
 	}
 	
 	/*
@@ -212,13 +217,14 @@ public class DUtil
 	 */
 	public static ArrayList<String> getImmortalList()
 	{		
+				
 		// Define variables
 		ArrayList<String> immortalList = new ArrayList<String>();
 		HashMap<String, HashMap<String, Object>> players = getAllData();
 		
 		for(Map.Entry<String, HashMap<String, Object>> player : players.entrySet())
 		{
-			String username = player.getKey();
+			String username = player.getKey().toLowerCase();
 			if(getDeities(username) != null) immortalList.add(username);
 		}
 		
@@ -247,11 +253,15 @@ public class DUtil
 	 */
 	public static boolean giveDeity(String username, String deity)
 	{	
+		// Set variables
+		username = username.toLowerCase();
+		deity.toLowerCase();
+			
 		if(DSave.hasData(username, "deities"))
 		{
 			ArrayList<String> deities = getDeities(username);
 			
-			if(deities == null || !deities.contains(deity.toLowerCase())) deities.add(deity.toLowerCase());
+			if(deities == null || !deities.contains(deity)) deities.add(deity.toLowerCase());
 			
 			setData(username, "deities", deities);
 		}
@@ -271,6 +281,9 @@ public class DUtil
 	@SuppressWarnings("unchecked")
 	public static ArrayList<String> getDeities(String username)
 	{		
+		// Set variables
+		username = username.toLowerCase();
+		
 		ArrayList<String> deities = new ArrayList<String>();
 		
 		if(DSave.hasData(username, "deities"))
@@ -290,11 +303,19 @@ public class DUtil
 	}
 	
 	/*
-	 *  getData() : Returns the data with id (String)key for (Player)player.
+	 *  setData() : Sets the data with id (String)key for (Player)player.
+	 */
+	public static boolean setData(String username, String id, Object data)
+	{
+		return DSave.saveData(username, id, data);
+	}
+	
+	/*
+	 *  getDeityData() : Returns the deity data with id (String)key for (Player)player.
 	 */
 	public static Object getDeityData(String username, String deity, String id)
 	{
-		return DSave.getDeityData(username, deity, id);
+		return DSave.getDeityData(username.toLowerCase(), deity.toLowerCase(), id.toLowerCase());
 	}
 	
 	/*
@@ -302,15 +323,7 @@ public class DUtil
 	 */
 	public static boolean setDeityData(String username, String deity, String id, Object data)
 	{
-		return DSave.saveDeityData(username, deity, id, data);
-	}
-	
-	/*
-	 *  setData() : Sets the data with id (String)key for (Player)player.
-	 */
-	public static boolean setData(String username, String id, Object data)
-	{
-		return DSave.saveData(username, id, data);
+		return DSave.saveDeityData(username.toLowerCase(), deity.toLowerCase(), id.toLowerCase(), data);
 	}
 	
 	/*

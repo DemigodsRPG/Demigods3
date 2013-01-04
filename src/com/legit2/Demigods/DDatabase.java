@@ -47,76 +47,6 @@ public class DDatabase
 	}
 
 	/*
-	 *  loadAllData() : Loads all data from database into HashMaps.
-	 */
-	public static void loadAllData()
-	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
-		{	
-			// Define variables
-			int playerCount = 0;
-			long startStopwatch = System.currentTimeMillis();
-
-			// Load data from player table.
-			String selectAllPlayers = "SELECT * FROM " + DMySQL.player_table + ";";
-			ResultSet all_players = DMySQL.runQuery(selectAllPlayers);
-			try 
-			{
-				while(all_players.next())
-				{
-					playerCount++;
-
-					// Define variables
-					String username = all_players.getString("player");
-					ArrayList<String> deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
-
-					// Add HashMaps
-					DSave.newPlayer(username);
-					DSave.saveData(username, "favor", all_players.getString("favor"));
-					DSave.saveData(username, "ascensions", all_players.getString("ascensions"));
-					DSave.saveData(username, "kills", all_players.getString("kills"));
-					DSave.saveData(username, "deaths", all_players.getString("deaths"));
-					DSave.saveData(username, "alliance", all_players.getString("alliance"));
-					DSave.saveData(username, "deities", deities);
-				}
-			}
-			catch(SQLException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			// Load data from playerdata table.
-			String selectAllPlayerData = "SELECT * FROM " + DMySQL.playerdata_table + ";";
-			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
-			try 
-			{
-				while(all_playerdata.next())
-				{					
-					String username = all_playerdata.getString("player");
-
-					DSave.saveData(username, all_playerdata.getString("datakey"), all_playerdata.getString("datavalue"));
-				}
-			}
-			catch(SQLException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			long stopStopwatch = System.currentTimeMillis();
-			double totalTime = (double) (stopStopwatch - startStopwatch);
-
-			DUtil.info("Loaded data for " + playerCount + " players in " + totalTime/1000 + " seconds.");
-
-		}
-		else if(DConfig.getSettingBoolean("sqlite"))
-		{
-			// TODO: SQLite
-		}
-	}
-
-	/*
 	 *  addPlayer() : Adds the (String)username to the database with default values.
 	 */
 	public static void addPlayer(String username) throws SQLException
@@ -223,6 +153,78 @@ public class DDatabase
 			double totalTime = (double) (stopTimer - startTimer);
 
 			DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " total players in " + totalTime/1000 + " seconds.");
+
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+	}
+	
+	/*
+	 *  loadAllData() : Loads all data from database into HashMaps.
+	 */
+	public static void loadAllData()
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{	
+			DUtil.info("Loading player data...");
+
+			// Define variables
+			int playerCount = 0;
+			long startStopwatch = System.currentTimeMillis();
+
+			// Load data from player table.
+			String selectAllPlayers = "SELECT * FROM " + DMySQL.player_table + ";";
+			ResultSet all_players = DMySQL.runQuery(selectAllPlayers);
+			try 
+			{
+				while(all_players.next())
+				{
+					playerCount++;
+
+					// Define variables
+					String username = all_players.getString("player");
+					ArrayList<String> deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
+
+					// Add HashMaps
+					DSave.newPlayer(username);
+					DSave.saveData(username, "favor", all_players.getString("favor"));
+					DSave.saveData(username, "ascensions", all_players.getString("ascensions"));
+					DSave.saveData(username, "kills", all_players.getString("kills"));
+					DSave.saveData(username, "deaths", all_players.getString("deaths"));
+					DSave.saveData(username, "alliance", all_players.getString("alliance"));
+					DSave.saveData(username, "deities", deities);
+				}
+			}
+			catch(SQLException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// Load data from playerdata table.
+			String selectAllPlayerData = "SELECT * FROM " + DMySQL.playerdata_table + ";";
+			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
+			try 
+			{
+				while(all_playerdata.next())
+				{					
+					String username = all_playerdata.getString("player");
+
+					DSave.saveData(username, all_playerdata.getString("datakey"), all_playerdata.getString("datavalue"));
+				}
+			}
+			catch(SQLException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			long stopStopwatch = System.currentTimeMillis();
+			double totalTime = (double) (stopStopwatch - startStopwatch);
+
+			DUtil.info("Loaded data for " + playerCount + " players in " + totalTime/1000 + " seconds.");
 
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))

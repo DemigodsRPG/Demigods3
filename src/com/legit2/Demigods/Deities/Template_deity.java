@@ -15,10 +15,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.ReflectCommand;
 
-public class Template_deity implements Deity,Listener
-{
-	private static final long serialVersionUID = 2242753324910371936L;
-
+public class Template_deity implements Listener
+{	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";
 	private static final String DEITYALLIANCE = "Test";
@@ -26,17 +24,15 @@ public class Template_deity implements Deity,Listener
 	/*
 	 *  Set deity-specific ability variable(s).
 	 */
-	// "/test" Command:
-	private static String TEST_NAME = "Testcommand"; // Sets the command to not being inactive
-	private static boolean ABILITY1 = false; // Sets the command to not being inactive
-	private static long TEST_TIME; 
+	// "/testabil" Command:
+	private static String TEST_NAME = "Testabil"; // Sets the name of this command
+	private static long TEST_TIME; // Creates the variable for later use
 	private static final int TEST_COST = 170; // Cost to run command in "favor"
 	private static final int TEST_DELAY = 1500; // In milliseconds
-	private static Material TEST_BIND = null; // Sets the bind material to false for the command
 
-	// "/ultimate" Command:
-	private static String ULTIMATE_NAME = "Storm";
-	private static long ULTIMATE_TIME;
+	// "/testult" Command:
+	private static String ULTIMATE_NAME = "Testult";
+	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
@@ -47,19 +43,21 @@ public class Template_deity implements Deity,Listener
 		TEST_TIME = System.currentTimeMillis();
 	}
 	
-	@Override
 	public ArrayList<Material> getClaimItems()
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
-		claimItems.add(Material.IRON_INGOT);
+		
+		// Add new items in this format: claimItems.add(Material. NAME_OF_MATERIAL );
 
 		return claimItems;
 	}
 
-	@Override
 	public void printInfo(Player player)
 	{
-		if(DUtil.hasDeity(player.getName(), DEITYNAME) && DUtil.isImmortal(player))
+		// Set variables
+		String username = player.getName();
+		
+		if(DUtil.hasDeity(username, DEITYNAME) && DUtil.isImmortal(username))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
@@ -71,7 +69,7 @@ public class Template_deity implements Deity,Listener
 		// TODO Deity Info
 	}
 
-	// This sets the particular passive ability for the Template deity.
+	// This sets the particular passive ability for the Template_deity deity.
 	// Whether or not this is used, along with other things, will vary depending
 	// on the particular deity you're creating.
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -80,10 +78,10 @@ public class Template_deity implements Deity,Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.hasDeity(player.getName(), DEITYNAME) || !DUtil.isImmortal(player)) return;
+			if(!DUtil.hasDeity(player.getName(), DEITYNAME) || !DUtil.isImmortal(player.getName())) return;
 
 			// If the player receives falling damage, cancel it
-			if(damageEvent.getCause()==DamageCause.FALL)
+			if(damageEvent.getCause() == DamageCause.FALL)
 			{
 				damageEvent.setDamage(0);
 				return;
@@ -94,11 +92,13 @@ public class Template_deity implements Deity,Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onPlayerInteract(PlayerInteractEvent interactEvent)
 	{
+		// Set variables
 		Player player = interactEvent.getPlayer();
+		String username = player.getName();
 
-		if(!DUtil.hasDeity(player.getName(), DEITYNAME) || !DUtil.isImmortal(player)) return;
+		if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
 
-		if(ABILITY1 || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == TEST_BIND)))
+		if((boolean) DUtil.getData(username, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getData(username, TEST_NAME + "_bind"))))
 		{
 			if(TEST_TIME > System.currentTimeMillis()) return;
 
@@ -106,16 +106,16 @@ public class Template_deity implements Deity,Listener
 			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DUtil.getFavor(player.getName()) >= TEST_COST)
+			if(DUtil.getFavor(username) >= TEST_COST)
 			{
-				test(player);
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName()) - TEST_COST);
+				testabil(player);
+				DUtil.setFavor(username, DUtil.getFavor(username) - TEST_COST);
 				return;
 			}
 			else
 			{
-				player.sendMessage(ChatColor.YELLOW+"You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setData(player.getName(), "shove", false);
+				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+				DUtil.setData(username, TEST_NAME, false);
 			}
 		}
 	}
@@ -123,64 +123,71 @@ public class Template_deity implements Deity,Listener
 	/* ------------------
 	 *  Command Handlers
 	 * ------------------
-	 */
-
-	/*
+	 *
 	 *  Command: "/test"
 	 */
-	@ReflectCommand.Command(name = "test", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
+	@ReflectCommand.Command(name = "testabil", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void testCommand(Player player, String arg1)
 	{
-		// Check the player for DEITYNAME
-		if(!DUtil.hasDeity(player.getName(), DEITYNAME)) return;
+		// Set variables
+		String username = player.getName();
+		
+		if(!canUseDeity(player)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
-		{
-			if(TEST_BIND == null)
+		{			
+			if(DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind") == null)
 			{
-				DUtil.isBound(player, player.getItemInHand().getType());
-				if(player.getItemInHand().getType() == Material.AIR) player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
+				DUtil.isBound(username, player.getItemInHand().getType());
+				if(player.getItemInHand().getType() == Material.AIR)
+				{
+					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
+				}
 				else
 				{
-					DUtil.setBind(player, player.getItemInHand().getType());
-					TEST_BIND = player.getItemInHand().getType();
-					player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now bound to a(n) " + player.getItemInHand().getType().name().toLowerCase() + ".");
+					DUtil.setBound(username, player.getItemInHand().getType());
+					DUtil.setDeityData(username, DEITYNAME, TEST_NAME + "_bind", player.getItemInHand().getType());
+					player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now bound to: " + player.getItemInHand().getType().name().toLowerCase());
 				}
 			}
 			else
 			{
-				DUtil.removeBind(player, TEST_BIND);
-				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer bound to " + TEST_BIND.name() + ".");
-				TEST_BIND = null;
+				DUtil.removeBind(username, (Material) DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"));
+				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer bound to: " + ((Material) DUtil.getData(username, TEST_NAME + "_bind")).name().toLowerCase());
 			}
-		}
-
-		if(DUtil.getData(player.getName(), TEST_NAME) != null && (Boolean) DUtil.getData(player.getName(), TEST_NAME)) 
-		{
-			DUtil.setData(player.getName(), TEST_NAME, false);
-			player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 		}
 		else
 		{
-			DUtil.setData(player.getName(), TEST_NAME, true);
-			player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
+			if(DUtil.getData(username, TEST_NAME) != null && (Boolean) DUtil.getData(username, TEST_NAME)) 
+			{
+				DUtil.setData(username, TEST_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
+			}
+			else
+			{
+				DUtil.setData(username, TEST_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
+			}
 		}
 	}
 
 	// The actual ability command
-	public static void test(Player player)
+	public static void testabil(Player player)
 	{
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");
 	}
 
 	/*
-	 *  Command: "/storm"
+	 *  Command: "/testult"
 	 */
-	@ReflectCommand.Command(name = "storm", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god." + DEITYNAME + ".ultimate")
+	@ReflectCommand.Command(name = "testult", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god." + DEITYNAME + ".ultimate")
 	public static void ultimateCommand(Player player)
 	{
+		// Set variables
+		String username = player.getName();
+		
 		// Check the player for DEITYNAME
-		if(!DUtil.hasDeity(player.getName(), DEITYNAME)) return;
+		if(!DUtil.hasDeity(username, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -191,7 +198,7 @@ public class Template_deity implements Deity,Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DUtil.getFavor(player.getName()) >= ULTIMATE_COST)
+		if(DUtil.getFavor(username) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canPVP(player.getLocation()))
 			{
@@ -203,9 +210,9 @@ public class Template_deity implements Deity,Listener
 			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
 
 			// Set favor and cooldown
-			DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName()) - ULTIMATE_COST);
+			DUtil.setFavor(username, DUtil.getFavor(username) - ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DUtil.getAscensions(player.getName()) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DUtil.getAscensions(username) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor
@@ -221,11 +228,22 @@ public class Template_deity implements Deity,Listener
 	}
 
 	// Don't touch these, they're required to work.
-	@Override
-	public void onTick(long timeSent) {}
-	@Override
 	public String getName() { return DEITYNAME; }
-	@Override
 	public String getAlliance() { return DEITYALLIANCE; }
 	public String loadDeity() { DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin); return DEITYNAME + " loaded."; }
+	public static boolean canUseDeity(Player player)
+	{		
+		// Check the player for DEITYNAME
+		if(!DUtil.hasDeity(player.getName(), DEITYNAME))
+		{
+			player.sendMessage(ChatColor.RED + "You haven't claimed " + DEITYNAME + "! You can't do that!");
+			return false;
+		}
+		else if(!DUtil.isImmortal(player.getName()))
+		{
+			player.sendMessage(ChatColor.RED + "You are a mere mortal! You can't do that!");
+			return false;
+		}
+		return true;
+	}
 }

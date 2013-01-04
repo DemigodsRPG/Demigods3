@@ -13,6 +13,9 @@ public class DSave
 	 */
 	public static boolean isNewPlayer(String username)
 	{
+		// Set variables
+		username = username.toLowerCase();
+
 		if(playerData.containsKey(username)) return false;
 		else return true;
 	}
@@ -22,6 +25,9 @@ public class DSave
 	 */
 	public static boolean newPlayer(String username)
 	{
+		// Set variables
+		username = username.toLowerCase();
+
 		// Returns false if the player already has the playerData.
 		if(isNewPlayer(username))
 		{
@@ -38,6 +44,10 @@ public class DSave
 	 */
 	public static boolean hasData(String username, String id)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		
 		if(playerData.get(username).containsKey(id)) return true;
 		else return false;
 	}
@@ -45,10 +55,15 @@ public class DSave
 	/*
 	 *  hasDeityData() : Checks to see if deity data (String)id exists in (String)username HashMap.
 	 */
-	public static boolean hasDeityData(String username, String id)
+	public static boolean hasDeityData(String username, String deity, String id)
 	{
-		if(playerDeityData.get(username).containsKey(id)) return true;
-		else return false;
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		deity = deity.toLowerCase();
+
+		if(playerDeityData.get(username).get(deity).containsKey(id)) return true;
+		else return true;
 	}
 	
 	/*
@@ -56,6 +71,10 @@ public class DSave
 	 */
 	public static boolean hasDataEqualTo(String username, String id, Object data)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		
 		if(playerData.get(username).get(id) != null && playerData.get(username).get(id).equals(data)) return true;
 		else return false;
 	}
@@ -65,6 +84,10 @@ public class DSave
 	 */
 	public static boolean saveData(String username, String id, Object data)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		
 		// Returns false if the player is new.
 		if(isNewPlayer(username)) return false;
 		
@@ -81,19 +104,49 @@ public class DSave
 	 */
 	public static boolean saveDeityData(String username, String deity, String id, Object data)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		deity = deity.toLowerCase();
+		
 		// Returns false if the player is new.
 		if(isNewPlayer(username)) return false;
 		
 		if(DUtil.hasDeity(username, deity))
-		{
-			// If the player already has the data, remove it to re-save.
-			if(playerDeityData.get(username).get(deity) != null && playerDeityData.get(username).get(deity).get(id) != null && hasDeityData(username, id)) playerDeityData.get(username).get(deity).remove(id);
-			
+		{			
 			// Save the data now.
-			if(playerDeityData.get(username).get(deity) != null && playerDeityData.get(username).get(deity).get(id) != null) playerDeityData.get(username).get(deity).put(id, data);
+			if(playerDeityData.get(username).get(deity) != null) playerDeityData.get(username).get(deity).put(id, data);
 			return true;
 		}
 		else return false;
+	}
+	
+	/*
+	 *  removeData() : Removes (String)id data for (String)username.
+	 */
+	public static boolean removeData(String username, String id)
+	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+				
+		// Remove data
+		if(hasData(username, id)) playerData.get(username).remove(id);
+		
+		return true;
+	}
+	
+	/*
+	 *  removeAllUserData() : Removes all HashMap data for (String)username.
+	 */
+	public static boolean removeAllUserData(String username)
+	{
+		// Set variables
+		username = username.toLowerCase();
+				
+		// Remove data
+		playerData.remove(username);
+		return true;
 	}
 	
 	/*
@@ -101,6 +154,10 @@ public class DSave
 	 */
 	public static Object getData(String username, String id)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+
 		// If player has specific data with correct id, return it
 		if(hasData(username, id)) return playerData.get(username).get(id);
 		return null;
@@ -111,18 +168,56 @@ public class DSave
 	 */
 	public static Object getDeityData(String username, String deity, String id)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		deity = deity.toLowerCase();
+		
 		// If player has specific data with correct id, return it
-		if(hasDeityData(username, id)) return playerDeityData.get(username).get(deity).get(id);
+		if(hasDeityData(username, deity, id)) return playerDeityData.get(username).get(deity).get(id);
 		return null;
+	}
+	
+	/*
+	 *  removeDeityData() : Removes (String)id deity ata for (String)username.
+	 */
+	public static boolean removeDeityData(String username, String deity, String id)
+	{
+		// Set variables
+		username = username.toLowerCase();
+		id = id.toLowerCase();
+		deity = deity.toLowerCase();
+				
+		// Remove data
+		if(hasDeityData(username, deity, id)) playerData.get(username).remove(id);
+		
+		return true;
+	}
+	
+	/*
+	 *  removeAllDeityData() : Removes all deity HashMap data for (String)username.
+	 */
+	public static boolean removeAllDeityData(String username, String deity)
+	{
+		// Set variables
+		username = username.toLowerCase();
+		deity = deity.toLowerCase();
+		
+		// Remove data
+		playerDeityData.get(username).remove(deity);
+		return true;
 	}
 	
 	/*
 	 *  getAllData() : Returns a HashMap of all of (String)username's playerData.
 	 */
-	public static HashMap<String, Object> getPlayerData(String player)
+	public static HashMap<String, Object> getPlayerData(String username)
 	{
+		// Set variables
+		username = username.toLowerCase();
+		
 		// If player is not new, return
-		if(!isNewPlayer(player)) return playerData.get(player);
+		if(!isNewPlayer(username)) return playerData.get(username);
 		return null;
 	}
 	
