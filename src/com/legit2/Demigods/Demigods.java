@@ -23,8 +23,7 @@ public class Demigods extends JavaPlugin
 	public ReflectCommand commandRegistrator;
 	
 	// Did dependencies load correctly?
-	ArrayList<String> hardDependenciesLoaded = new ArrayList<String>();
-	boolean okayToLoad = false;
+	boolean okayToLoad = true;
 	
 	@Override
 	public void onEnable()
@@ -177,8 +176,11 @@ public class Demigods extends JavaPlugin
 	{
 		// Check for the SQLibrary plugin (needed)
 		Plugin pg = getServer().getPluginManager().getPlugin("SQLibrary");
-		if (pg == null)	DUtil.severe("SQLibrary plugin (required) not found!");
-		else if (pg != null) hardDependenciesLoaded.add("SQLibrary");		
+		if (pg == null)
+		{
+			DUtil.severe("SQLibrary plugin (required) not found!");
+			okayToLoad = false;
+		}
 		
 		// Check for the WorldGuard plugin (optional)
 		pg = getServer().getPluginManager().getPlugin("WorldGuard");
@@ -198,9 +200,6 @@ public class Demigods extends JavaPlugin
 
 		// Check to see if a player has the SimpleNotice client mod installed
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "SimpleNotice");
-		
-		// If all the dependencies are loaded, boolean to true
-		if(hardDependenciesLoaded.contains("SQLibrary")) okayToLoad = true;
 	}
 	
 	private void checkUpdate()
