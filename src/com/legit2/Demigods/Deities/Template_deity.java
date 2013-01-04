@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.legit2.Demigods.DUtil;
-import com.legit2.Demigods.ReflectCommand;
+import com.legit2.Demigods.Libraries.ReflectCommand;
 
 public class Template_deity implements Listener
 {	
@@ -89,7 +89,7 @@ public class Template_deity implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteract(PlayerInteractEvent interactEvent)
 	{
 		// Set variables
@@ -98,7 +98,7 @@ public class Template_deity implements Listener
 
 		if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
 
-		if((boolean) DUtil.getData(username, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getData(username, TEST_NAME + "_bind"))))
+		if(((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"))))
 		{
 			if(TEST_TIME > System.currentTimeMillis()) return;
 
@@ -138,7 +138,6 @@ public class Template_deity implements Listener
 		{			
 			if(DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind") == null)
 			{
-				DUtil.isBound(username, player.getItemInHand().getType());
 				if(player.getItemInHand().getType() == Material.AIR)
 				{
 					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
@@ -152,8 +151,9 @@ public class Template_deity implements Listener
 			}
 			else
 			{
-				DUtil.removeBind(username, (Material) DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"));
-				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer bound to: " + ((Material) DUtil.getData(username, TEST_NAME + "_bind")).name().toLowerCase());
+				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer bound to: " + ((Material) DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind")).name().toLowerCase());
+				DUtil.removeBind(username, (Material)DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"));
+				DUtil.removeDeityData(username, DEITYNAME, TEST_NAME + "_bind");
 			}
 		}
 		else

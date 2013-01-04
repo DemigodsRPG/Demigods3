@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -74,7 +75,7 @@ public class DUtil
 	 */
 	public static boolean isBound(String username, Material material)
 	{
-		if(DSave.hasDataEqualTo(username.toLowerCase(), "bind", material)) return true;
+		if(DSave.hasDataEqualTo(username.toLowerCase(), "bindings", material)) return true;
 		else return false;
 	}
 	
@@ -105,6 +106,13 @@ public class DUtil
 				
 				if(!bindings.contains(material)) bindings.add(material);
 				
+				DSave.saveData(username, "bindings", bindings);
+			}
+			else
+			{
+				ArrayList<Material> bindings = new ArrayList<Material>();
+				
+				bindings.add(material);
 				DSave.saveData(username, "bindings", bindings);
 			}
 			
@@ -278,17 +286,14 @@ public class DUtil
 	/*
 	 *  getDeites() : Returns an ArrayList<String> of (Player)player's deities.
 	 */
-	@SuppressWarnings("unchecked")
 	public static ArrayList<String> getDeities(String username)
 	{		
 		// Set variables
 		username = username.toLowerCase();
 		
-		ArrayList<String> deities = new ArrayList<String>();
-		
 		if(DSave.hasData(username, "deities"))
 		{
-			deities = (ArrayList<String>)DSave.getData(username, "deities");
+			ArrayList<String> deities = new ArrayList<String>(Arrays.asList(((String) DSave.getData(username, "deities")).split(",")));
 			return deities;
 		}
 		else return null;
@@ -325,6 +330,15 @@ public class DUtil
 	{
 		return DSave.saveDeityData(username.toLowerCase(), deity.toLowerCase(), id.toLowerCase(), data);
 	}
+	
+	/*
+	 *  removeDeityData() : Sets the data with id (String)key for (Player)player's (String)deity.
+	 */
+	public static boolean removeDeityData(String username, String deity, String id)
+	{
+		return DSave.removeDeityData(username.toLowerCase(), deity.toLowerCase(), id.toLowerCase());
+	}
+	
 	
 	/*
 	 *  getAllData() : Returns all saved HashMaps.

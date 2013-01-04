@@ -3,7 +3,8 @@ package com.legit2.Demigods;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.legit2.Demigods.Metrics.Graph;
+import com.legit2.Demigods.Libraries.Metrics;
+import com.legit2.Demigods.Libraries.Metrics.Graph;
 
 public class DMetrics
 {
@@ -27,9 +28,13 @@ public class DMetrics
 		    ArrayList<String> allianceList = new ArrayList<String>();
 		    for(String player : DSave.getAllData().keySet())
 		    {
-		    	String alliance = DSave.getData(player, "alliance").toString();
-		    	if(allianceList.contains(alliance)) continue;
-		    	allianceList.add(alliance);
+		    	String alliance;
+		    	if(DSave.getData(player, "alliance") != null)
+		    	{
+			    	alliance= DSave.getData(player, "alliance").toString();
+			    	if(allianceList.contains(alliance)) continue;
+			    	allianceList.add(alliance);
+		    	}
 		    }
 		    
 		    for(final String ALLIANCE : allianceList)
@@ -85,9 +90,13 @@ public class DMetrics
 		    ArrayList<String> allianceList = new ArrayList<String>();
 		    for(String player : DSave.getAllData().keySet())
 		    {
-		    	String alliance = DSave.getData(player, "alliance").toString();
-		    	if(allianceList.contains(alliance)) continue;
-		    	allianceList.add(alliance);
+		    	String alliance;
+		    	if(DSave.getData(player, "alliance") != null)
+		    	{
+			    	alliance= DSave.getData(player, "alliance").toString();
+			    	if(allianceList.contains(alliance)) continue;
+			    	allianceList.add(alliance);
+		    	}
 		    }
 		    
 		    for(final String ALLIANCE : allianceList)

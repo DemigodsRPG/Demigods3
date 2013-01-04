@@ -1,4 +1,4 @@
-package com.clashnia.ClashniaUpdate;
+package com.legit2.Demigods.Update;
 
 import java.io.FileNotFoundException;
 import java.io.File;
@@ -19,10 +19,6 @@ public class DemigodsUpdate
 {
 	static Demigods plugin;
 	
-	/*
-	 *  (String)OLD_DOWNLOAD_LINK : The download link for what should be this exact jar, or the last stable jar if this is a development build.
-	 */
-
 	public static UpdateChecker checker = new UpdateChecker("http://dev.bukkit.org/server-mods/demigods/files.rss");
 	
 	public DemigodsUpdate(Demigods demigods)
@@ -32,7 +28,8 @@ public class DemigodsUpdate
 
 	public static boolean shouldUpdate()
 	{
-		if (checker.updateNeeded()){
+		if (checker.updateNeeded())
+		{
 			DUtil.info("A new version is available: " + checker.getVersion());
 			return true;
 		}

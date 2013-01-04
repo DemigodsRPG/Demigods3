@@ -11,11 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Update.DemigodsUpdate;
 
 public class DPlayerListener implements Listener
 {

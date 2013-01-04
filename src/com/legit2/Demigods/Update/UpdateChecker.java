@@ -1,4 +1,4 @@
-package com.clashnia.ClashniaUpdate;
+package com.legit2.Demigods.Update;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

@@ -143,7 +143,8 @@ public class DDatabase
 					}
 				}
 
-				String deities = Joiner.on(",").join(DUtil.getDeities(username));
+				String deities = null;
+				if(DUtil.getDeities(username) != null) deities = Joiner.on(",").join(DUtil.getDeities(username));
 				// Save specific data to user table
 				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET alliance='" + DSave.getData(username, "alliance") + "', deities='" + deities + "', favor=" + DSave.getData(username, "favor") + ", ascensions=" + DSave.getData(username, "ascensions") + ", kills=" + DSave.getData(username, "kills") + ", deaths=" + DSave.getData(username, "deaths") + " WHERE player='" + username + "';");
 			}
@@ -185,7 +186,8 @@ public class DDatabase
 
 					// Define variables
 					String username = all_players.getString("player");
-					ArrayList<String> deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
+					ArrayList<String> deities = null;
+					if(all_players.getString("deities") != null) deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
 
 					// Add HashMaps
 					DSave.newPlayer(username);

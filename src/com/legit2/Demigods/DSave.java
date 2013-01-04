@@ -62,7 +62,8 @@ public class DSave
 		id = id.toLowerCase();
 		deity = deity.toLowerCase();
 
-		if(playerDeityData.get(username).get(deity).containsKey(id)) return true;
+		if(playerDeityData.get(username).get(deity) == null) return false;
+		else if(playerDeityData.get(username).get(deity).containsKey(id)) return true;
 		else return true;
 	}
 	
@@ -116,6 +117,12 @@ public class DSave
 		{			
 			// Save the data now.
 			if(playerDeityData.get(username).get(deity) != null) playerDeityData.get(username).get(deity).put(id, data);
+			else
+			{
+				HashMap<String, Object> newData = new HashMap<String, Object>();
+				newData.put(id, data);
+				playerDeityData.get(username).put(deity, newData);
+			}
 			return true;
 		}
 		else return false;
@@ -189,7 +196,7 @@ public class DSave
 		deity = deity.toLowerCase();
 				
 		// Remove data
-		if(hasDeityData(username, deity, id)) playerData.get(username).remove(id);
+		if(hasDeityData(username, deity, id)) playerDeityData.get(username).get(deity).remove(id);
 		
 		return true;
 	}

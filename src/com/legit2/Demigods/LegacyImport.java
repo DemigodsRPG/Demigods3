@@ -3,18 +3,17 @@ package com.legit2.Demigods;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
-
-import org.bukkit.Material;
 
 import com.legit2.Demigods.Serializable.WriteLocation;
 
 public class LegacyImport
 {
+	 @SuppressWarnings({ "resource", "unused" })
 	 public static boolean loadData(String p) throws FileNotFoundException
 	 {
-         try {
+         try
+         {
                  File toread = new File("plugins/Demigods/Legacy/"+p+".txt");
                  if ((toread == null) || !toread.exists()) return false;
                  Scanner s = new Scanner(toread);
@@ -61,27 +60,30 @@ public class LegacyImport
                  DSave.saveData(p, "DEATHS", Integer.parseInt(deaths.split(" ")[1]));
                  
                  //accessible (guest list)
-                 if (s.nextLine().trim().equals("Accessible:")) {
+                 if (s.nextLine().trim().equals("Accessible:"))
+                 {
                          String in = s.nextLine();
-                         while (!in.trim().equals("Shrines:")) {
+                         while (!in.trim().equals("Shrines:"))
+                         {
                                  String[] info = in.split(" ");
-                                 WriteLocation shrine = new WriteLocation(info[4], Integer.parseInt(info[1]),
-                                                 Integer.parseInt(info[2]), Integer.parseInt(info[3]));
+                                 WriteLocation shrine = new WriteLocation(info[4], Integer.parseInt(info[1]), Integer.parseInt(info[2]), Integer.parseInt(info[3]));
                                  //DUtil.removeGuest(shrine, p);
-                                // DUtil.addGuest(shrine, p);
+                                 //DUtil.addGuest(shrine, p);
                                  in = s.nextLine();
                          }
                  }
                  String in = s.nextLine();
-                 while (in.trim().substring(0, 10).equals("All keys ")) {
+                 while (in.trim().substring(0, 10).equals("All keys "))
+                 {
                          String[] info = in.split(" ");
                          String name = info[0];
                          WriteLocation shrine = new WriteLocation(info[4], Integer.parseInt(info[1]),
                                          Integer.parseInt(info[2]), Integer.parseInt(info[3]));
                          //DUtil.removeShrine(shrine);
-                        // DUtil.addShrine(p, name, shrine);
+                         //DUtil.addShrine(p, name, shrine);
                          if (info.length > 5) {
-                                 for (int i=5;i<info.length;i++) {
+                                 for (int i=5;i<info.length;i++)
+                                 {
                                          //DUtil.addGuest(shrine, DUtil.getPlayer(info[i]));
                                  }
                          }
@@ -90,7 +92,9 @@ public class LegacyImport
                  //shrines
                  DUtil.info("[Demigods] Loaded "+p+"'s data from legacy file.");
                  DDatabase.saveAllPlayerData();
-         } catch (Exception e) {
+         }
+         catch (Exception e)
+         {
                  DUtil.warning("[Demigods] Encountered a problem while loading "+p+"'s legacy file.");
                  e.printStackTrace();
                  DUtil.warning("[Demigods] End stack trace.");

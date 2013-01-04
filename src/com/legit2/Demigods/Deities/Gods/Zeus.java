@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import com.legit2.Demigods.DUtil;
-import com.legit2.Demigods.ReflectCommand;
+import com.legit2.Demigods.Libraries.ReflectCommand;
 
 public class Zeus implements Listener
 {

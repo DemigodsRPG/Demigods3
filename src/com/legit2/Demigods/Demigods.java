@@ -10,8 +10,9 @@ import java.util.zip.ZipInputStream;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.clashnia.ClashniaUpdate.DemigodsUpdate;
+import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DPlayerListener;
+import com.legit2.Demigods.Update.DemigodsUpdate;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -31,16 +32,18 @@ public class Demigods extends JavaPlugin
 		DDatabase.initializeDatabase();
 		DConfig.initializeConfig();
 		DScheduler.startThreads();
-		loadListeners();			
+		loadListeners();
 		loadCommands();
 		loadDeities();
 		loadMetrics();
 		loadDependencies();
 		
-		DSave.saveData("_Alex", "favor", 99999);
-		DSave.saveData("_Alex", "ascensions", 99999);
-		DSave.saveData("_Alex", "immortal", true);
-		DSave.saveDeityData("_Alex", "zeus", "devotion", 99999);		
+		DSave.saveData("HmmmQuestionMark", "favor", 99999);
+		DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
+		DSave.saveData("HmmmQuestionMark", "immortal", true);
+		DSave.saveData("HmmmQuestionMark", "alliance", "test");
+		DSave.saveData("HmmmQuestionMark", "deities", "template");
+		DSave.saveDeityData("HmmmQuestionMark", "template", "devotion", 99999);
 		
 		checkUpdate();
 		

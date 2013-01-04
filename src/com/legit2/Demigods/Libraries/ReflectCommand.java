@@ -1,4 +1,4 @@
-package com.legit2.Demigods;
+package com.legit2.Demigods.Libraries;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.ArrayUtils;

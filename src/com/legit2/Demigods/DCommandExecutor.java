@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.Libraries.ReflectCommand;
+
 public class DCommandExecutor
 {
 	static Demigods plugin;
@@ -20,9 +22,9 @@ public class DCommandExecutor
 	 *  Command: "dg"
 	 */
 	@ReflectCommand.Command(name = "dg", sender = ReflectCommand.Sender.EVERYONE, permission = "demigods.basic")
-	public static boolean dg(CommandSender sender, String[] args)
+	public static boolean dg(CommandSender sender, String arg1)
 	{
-		if(args.length != 0) dg_info(sender, args[0]);
+		if(arg1 != "noargs") dg_info(sender, arg1);
 				
 		// Define Player
 		Player player = DUtil.definePlayer(sender);
@@ -120,6 +122,7 @@ public class DCommandExecutor
 			// Send the user their info via chat
 			DUtil.taggedMessage(sender, "Player check: " + ChatColor.YELLOW + username);
 			//sender.sendMessage("com.legit2.Demigods.Deities: " + ChatColor.GREEN + player_info.getString("deities"));
+			sender.sendMessage("Deities: " + ChatColor.DARK_GREEN + player_info.getString("deities"));
 			sender.sendMessage("Favor: " + ChatColor.GREEN + player_info.getString("favor"));
 			sender.sendMessage("Ascensions: " + ChatColor.GREEN + player_info.getString("ascensions"));
 			sender.sendMessage(" ");
