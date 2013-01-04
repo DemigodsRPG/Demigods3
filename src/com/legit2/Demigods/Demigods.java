@@ -22,41 +22,57 @@ public class Demigods extends JavaPlugin
 	protected static P FACTIONS = null;
 	public ReflectCommand commandRegistrator;
 	
+	// Did dependencies load correctly?
+	ArrayList<String> hardDependenciesLoaded = new ArrayList<String>();
+	boolean okayToLoad = false;
+	
 	@Override
 	public void onEnable()
 	{
 		// Initialize Configuration
 		new DUtil(this);
 		
-		DDatabase.initializeDatabase();
-		DConfig.initializeConfig();
-		DScheduler.startThreads();
-		loadListeners();
-		loadCommands();
-		loadDeities();
-		loadMetrics();
 		loadDependencies();
 		
-		DSave.saveData("HmmmQuestionMark", "favor", 99999);
-		DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
-		DSave.saveData("HmmmQuestionMark", "immortal", true);
-		DSave.saveData("HmmmQuestionMark", "alliance", "test");
-		DSave.saveData("HmmmQuestionMark", "deities", "template");
-		DSave.saveDeityData("HmmmQuestionMark", "template", "devotion", 99999);
-		
-		checkUpdate();
-		
-		DUtil.info("Enabled!");
+		if(okayToLoad)
+		{
+			DDatabase.initializeDatabase();
+			DConfig.initializeConfig();
+			DScheduler.startThreads();
+			loadListeners();
+			loadCommands();
+			loadDeities();
+			loadMetrics();
+			
+			DSave.saveData("HmmmQuestionMark", "favor", 99999);
+			DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
+			DSave.saveData("HmmmQuestionMark", "immortal", true);
+			DSave.saveData("HmmmQuestionMark", "alliance", "test");
+			DSave.saveData("HmmmQuestionMark", "deities", "template");
+			DSave.saveDeityData("HmmmQuestionMark", "template", "devotion", 99999);
+			
+			checkUpdate();
+			
+			DUtil.info("Enabled!");
+		}
+		else
+		{
+			DUtil.severe("Demigods cannot enable correctly because at least one required dependency was not found.");
+			getPluginLoader().disablePlugin(getServer().getPluginManager().getPlugin("Demigods"));
+		}		
 	}
 
 	@Override
 	public void onDisable()
 	{
-		// Uninitialize Plugin
-		DDatabase.uninitializeDatabase();
-		DScheduler.stopThreads();
-		
-		DUtil.info("Disabled!");
+		if(okayToLoad)
+		{
+			// Uninitialize Plugin
+			DDatabase.uninitializeDatabase();
+			DScheduler.stopThreads();
+			
+			DUtil.info("Disabled!");
+		}		
 	}
 	
 	/*
@@ -159,15 +175,20 @@ public class Demigods extends JavaPlugin
 	 */
 	public void loadDependencies()
 	{
-		// Check for the WorldGuard plugin
-		Plugin pg = getServer().getPluginManager().getPlugin("WorldGuard");
+		// Check for the SQLibrary plugin (needed)
+		Plugin pg = getServer().getPluginManager().getPlugin("SQLibrary");
+		if (pg == null)	DUtil.severe("SQLibrary plugin (required) not found!");
+		else if (pg != null) hardDependenciesLoaded.add("SQLibrary");		
+		
+		// Check for the WorldGuard plugin (optional)
+		pg = getServer().getPluginManager().getPlugin("WorldGuard");
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
 			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("WorldGuard detected. Skills are disabled in no-PvP zones.");
 		}
 
-		// Check for the Factions plugin
+		// Check for the Factions plugin (optional)
 		pg = getServer().getPluginManager().getPlugin("Factions");
 		if (pg != null)
 		{
@@ -177,6 +198,9 @@ public class Demigods extends JavaPlugin
 
 		// Check to see if a player has the SimpleNotice client mod installed
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "SimpleNotice");
+		
+		// If all the dependencies are loaded, boolean to true
+		if(hardDependenciesLoaded.contains("SQLibrary")) okayToLoad = true;
 	}
 	
 	private void checkUpdate()
