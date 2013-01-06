@@ -29,6 +29,15 @@ public class DScheduler
 				DDatabase.saveAllData();
 			}
 		}, start_delay, save_frequency);
+		
+		plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				DUtil.regenerateAllFavor();
+			}
+		}, 0, favor_frequency);
 	}
 	
 	/*

@@ -323,7 +323,6 @@ public class Zeus_deity implements Listener
 			}
 			
 			player.sendMessage(ChatColor.YELLOW + "Zeus has sent lightning to " + storm(player) + " targets!");
-			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
 
 			// Set favor and cooldown
 			DUtil.subtractFavor(username, ULTIMATE_COST);

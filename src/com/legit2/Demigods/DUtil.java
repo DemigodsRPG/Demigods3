@@ -276,7 +276,17 @@ public class DUtil
 	 */
 	public static void giveFavor(String username, int amount)
 	{
-		setPlayerData(username, "favor", getFavor(username) + amount);
+		// Define variables
+		int favor;
+		
+		// Perform favor cap check
+		if((getFavor(username) + amount) > DConfig.getSettingInt("max_favor"))
+		{
+			favor = DConfig.getSettingInt("max_favor");
+		}
+		else favor = getFavor(username) + amount;
+		
+		setPlayerData(username, "favor", favor);
 	}
 
 	/*
@@ -504,6 +514,21 @@ public class DUtil
 		return DSave.removeDeityData(username.toLowerCase(), deity.toLowerCase(), id.toLowerCase());
 	}
 	
+	/*
+     *  regenerateAllFavor() : Regenerates favor for every player based on their stats.
+     */
+	public static void regenerateAllFavor()
+	{
+		Player[] onlinePlayers = getOnlinePlayers();
+		
+		for(Player player : onlinePlayers)
+		{
+			String username = player.getName();
+			int regenRate = DUtil.getAscensions(username);
+			if (regenRate < 1) regenRate = 1;
+			giveFavor(username, regenRate);
+		}
+	}
 	
 	/*
 	 *  getAllData() : Returns all saved HashMaps.
@@ -595,11 +620,8 @@ public class DUtil
 	 */
 	public static void saveCustomConfig(String name)
 	{
-		if(customConfig == null || customConfigFile == null)
-		{
-			return;
-		}
-
+		if(customConfig == null || customConfigFile == null) return; 
+		
 		try
 		{
 			getCustomConfig(name).save(customConfigFile);
