@@ -91,6 +91,19 @@ public class DUtil
 	}
 	
 	/*
+	 *  isCooledDown() : Returns a boolean for is (String)ability is cooled down.
+	 */
+	public static boolean isCooledDown(Player player, String ability, long ability_time, boolean sendMsg)
+	{
+		if(ability_time > System.currentTimeMillis())
+		{
+			if(sendMsg) player.sendMessage(ChatColor.RED + ability + " has not cooled down!");
+			return false;
+		}
+		else return true;
+	}
+	
+	/*
 	 *  getBindings() : Returns all bindings for (Player)player.
 	 */
 	@SuppressWarnings("unchecked")

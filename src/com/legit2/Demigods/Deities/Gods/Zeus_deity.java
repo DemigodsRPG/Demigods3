@@ -31,19 +31,19 @@ public class Zeus_deity implements Listener
 	 *  Set deity-specific ability variable(s).
 	 */
 	// "/shove" Command:
-	private static String SHOVE_NAME = "shove"; // Sets the name of this command
+	private static String SHOVE_NAME = "Shove"; // Sets the name of this command
 	private static long SHOVE_TIME; // Creates the variable for later use
 	private static final int SHOVE_COST = 170; // Cost to run command in "favor"
 	private static final int SHOVE_DELAY = 1500; // In milliseconds
 
 	// "/lightning" Command:
-	private static String LIGHTNING_NAME = "lightning"; // Sets the name of this command
+	private static String LIGHTNING_NAME = "Lightning"; // Sets the name of this command
 	private static long LIGHTNING_TIME; // Creates the variable for later use
 	private static final int LIGHTNING_COST = 140; // Cost to run command in "favor"
 	private static final int LIGHTNING_DELAY = 1000; // In milliseconds
 
 	// "/storm" Command:
-	private static String ULTIMATE_NAME = "storm";
+	private static String ULTIMATE_NAME = "Storm";
 	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
@@ -127,7 +127,7 @@ public class Zeus_deity implements Listener
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, SHOVE_NAME + "_bind"))))
 		{
-			if(SHOVE_TIME > System.currentTimeMillis()) return;
+			if(!DUtil.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, true)) return;
 
 			// Set the ability's delay
 			SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
@@ -147,7 +147,7 @@ public class Zeus_deity implements Listener
 		}
 		else if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, LIGHTNING_NAME + "_bind"))))
 		{
-			if(LIGHTNING_TIME > System.currentTimeMillis()) return;
+			if(!DUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, true)) return;
 
 			// Set the ability's delay
 			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
@@ -237,8 +237,6 @@ public class Zeus_deity implements Listener
 				Vector victor = livingEntity.getLocation().toVector().subtract(vector);
 				victor.multiply(multiply);
 				livingEntity.setVelocity(victor);
-				
-				player.sendMessage(ChatColor.YELLOW + "You just used the \"" + SHOVE_NAME.toLowerCase() + "\" ability!");
 			}
 		}
 	}
@@ -282,19 +280,17 @@ public class Zeus_deity implements Listener
 		Block block = player.getTargetBlock(null, 200);
 		Location target = block.getLocation();
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
+		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		if (player.getLocation().distance(target) > 2)
 		{
 			try
 			{
 				strikeLightning(player, target);
-				
-				player.sendMessage(ChatColor.YELLOW + "You just used the \"" + LIGHTNING_NAME.toLowerCase() + "\" ability!");
 			} 
 			catch (Exception nullpointer) {} //ignore it if something went wrong
 		}
-		else player.sendMessage(ChatColor.YELLOW+"Your target is too far away, or too close to you.");		
+		else player.sendMessage(ChatColor.YELLOW + "Your target is too far away, or too close to you.");		
 	}
 
 	/*
@@ -312,8 +308,8 @@ public class Zeus_deity implements Listener
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
 		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000)))/60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and "+((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000)))/60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
 			return;
 		}
 
@@ -336,7 +332,7 @@ public class Zeus_deity implements Listener
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor
-		else player.sendMessage(ChatColor.YELLOW + ULTIMATE_NAME + " requires " + ULTIMATE_COST + ChatColor.GREEN + " favor" + ChatColor.RESET + ".");
+		else player.sendMessage(ChatColor.YELLOW + ULTIMATE_NAME + " requires " + ULTIMATE_COST + ChatColor.GREEN + " favor" + ChatColor.YELLOW + ".");
 	}
 	
 	// The actual ability command

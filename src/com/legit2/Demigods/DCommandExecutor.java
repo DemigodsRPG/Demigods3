@@ -59,12 +59,54 @@ public class DCommandExecutor
 	 *  Command: "setalliance"
 	 */
 	@ReflectCommand.Command(name = "setalliance", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean giveAlliance(CommandSender sender, String arg1, String arg2)
+	public static boolean setAlliance(CommandSender sender, String arg1, String arg2)
 	{
 		if(arg1 == "noargs") return false;
 		
 		DUtil.setAlliance(arg1, arg2);
-		sender.sendMessage(ChatColor.GREEN + "You've given " + arg2 + " to " + arg1 + "!");
+		sender.sendMessage(ChatColor.YELLOW + "You've given " + arg2 + " to " + arg1 + "!");
+		
+		return true;
+	}
+	
+	/*
+	 *  Command: "setfavor"
+	 */
+	@ReflectCommand.Command(name = "setfavor", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
+	public static boolean setFavor(CommandSender sender, String arg1, String arg2)
+	{
+		if(arg1 == "noargs") return false;
+		
+		DUtil.setFavor(arg1, new Integer(arg2));
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "favor " + ChatColor.YELLOW + "to " + ChatColor.GREEN + arg2 +  ChatColor.YELLOW + "!");
+		
+		return true;
+	}
+	
+	/*
+	 *  Command: "setascensions"
+	 */
+	@ReflectCommand.Command(name = "setascensions", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
+	public static boolean setAscensions(CommandSender sender, String arg1, String arg2)
+	{
+		if(arg1 == "noargs") return false;
+		
+		DUtil.setAscensions(arg1, new Integer(arg2));
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "ascensions " + ChatColor.YELLOW + "to " + ChatColor.GREEN + arg2 +  ChatColor.YELLOW + "!");
+		
+		return true;
+	}
+	
+	/*
+	 *  Command: "setdevotion"
+	 */
+	@ReflectCommand.Command(name = "setdevotion", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
+	public static boolean setDevotion(CommandSender sender, String arg1, String arg2, String arg3)
+	{
+		if(arg1 == "noargs") return false;
+		
+		DUtil.setDevotion(arg1, arg2, new Integer(arg3));
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "devotion " + ChatColor.YELLOW + "for " + ChatColor.GREEN + arg2 + ChatColor.YELLOW + " to " + ChatColor.GREEN + arg3 +  ChatColor.YELLOW + "!");
 		
 		return true;
 	}
@@ -84,7 +126,7 @@ public class DCommandExecutor
 		DUtil.setDevotion(arg1, arg2, 9999);
 		DUtil.setKills(arg1, 9999);
 		
-		sender.sendMessage(ChatColor.GREEN + "You've given " + arg2 + " to " + arg1 + "!");
+		sender.sendMessage(ChatColor.YELLOW + "You've given " + arg2 + " to " + arg1 + "!");
 		
 		return true;
 	}
