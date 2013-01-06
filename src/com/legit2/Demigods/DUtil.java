@@ -524,13 +524,13 @@ public class DUtil
 	/*
 	 *  customDamage() : Creates custom damage for (LivingEntity)target from (LivingEntity)source with ammount (int)amount.
 	 */
-	public static void customDamage(LivingEntity source, LivingEntity target, int amount)
+	public static void customDamage(LivingEntity source, LivingEntity target, int amount, DamageCause cause)
 	{
 		if(target instanceof Player)
 		{
 			if(source instanceof Player)
 			{
-				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, DamageCause.CUSTOM, amount));
+				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
 			}
 			else target.damage(amount);
 		}

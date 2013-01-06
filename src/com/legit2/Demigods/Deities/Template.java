@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
-public class Template_deity implements Listener
+public class Template implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";
@@ -37,10 +37,12 @@ public class Template_deity implements Listener
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
-	public Template_deity()
+	public String loadDeity()
 	{
+		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
 		ULTIMATE_TIME = System.currentTimeMillis();
 		TEST_TIME = System.currentTimeMillis();
+		return DEITYNAME + " loaded.";
 	}
 	
 	public ArrayList<Material> getClaimItems()
@@ -213,7 +215,6 @@ public class Template_deity implements Listener
 	// Don't touch these, they're required to work.
 	public String getName() { return DEITYNAME; }
 	public String getAlliance() { return DEITYALLIANCE; }
-	public String loadDeity() { DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin); return DEITYNAME + " loaded."; }
 	public static boolean canUseDeity(Player player)
 	{		
 		// Check the player for DEITYNAME
