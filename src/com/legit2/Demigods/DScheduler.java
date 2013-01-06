@@ -26,7 +26,7 @@ public class DScheduler
 			@Override
 			public void run()
 			{
-				DDatabase.saveAllPlayerData();
+				DDatabase.saveAllData();
 			}
 		}, start_delay, save_frequency);
 	}

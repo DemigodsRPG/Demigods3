@@ -29,9 +29,9 @@ public class DMetrics
 		    for(String player : DSave.getAllData().keySet())
 		    {
 		    	String alliance;
-		    	if(DSave.getData(player, "alliance") != null)
+		    	if(DSave.getPlayerData(player, "alliance") != null)
 		    	{
-			    	alliance= DSave.getData(player, "alliance").toString();
+			    	alliance= DSave.getPlayerData(player, "alliance").toString();
 			    	if(allianceList.contains(alliance)) continue;
 			    	allianceList.add(alliance);
 		    	}
@@ -57,7 +57,7 @@ public class DMetrics
 								{
 									if (DSave.hasData(s, "LASTLOGINTIME"))
 									{
-										if ((Long)DSave.getData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
+										if ((Long)DSave.getPlayerData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
 									}
 									allianceMembers.add(s);
 								}
@@ -91,9 +91,9 @@ public class DMetrics
 		    for(String player : DSave.getAllData().keySet())
 		    {
 		    	String alliance;
-		    	if(DSave.getData(player, "alliance") != null)
+		    	if(DSave.getPlayerData(player, "alliance") != null)
 		    	{
-			    	alliance= DSave.getData(player, "alliance").toString();
+			    	alliance= DSave.getPlayerData(player, "alliance").toString();
 			    	if(allianceList.contains(alliance)) continue;
 			    	allianceList.add(alliance);
 		    	}

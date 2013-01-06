@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.legit2.Demigods.Serializable.WriteLocation;
+import com.legit2.Demigods.Libraries.Serializable.WriteLocation;
 
 public class LegacyImport
 {
@@ -24,22 +24,22 @@ public class LegacyImport
                  
                  //alliance
                  String alliance = s.nextLine();
-                 DSave.saveData(p, "ALLIANCE", alliance.split(" ")[1]);
+                 DSave.savePlayerData(p, "ALLIANCE", alliance.split(" ")[1]);
 
                  //favor
                  String favor = s.nextLine();
-                 DSave.saveData(p, "FAVOR", Integer.parseInt(favor.split(" ")[1]));
+                 DSave.savePlayerData(p, "FAVOR", Integer.parseInt(favor.split(" ")[1]));
                  
                  //maxfavor
                  String maxfavor = s.nextLine();
-                 DSave.saveData(p, "FAVORCAP", Integer.parseInt(maxfavor.split(" ")[1]));
+                 DSave.savePlayerData(p, "FAVORCAP", Integer.parseInt(maxfavor.split(" ")[1]));
                  
                  //deities //TODO
                  String deity = s.nextLine();
                  String[] deities = deity.split(" ");
                  if (deities.length > 1) {
-                         DSave.removeData(p, "DEITIES");
-                         DSave.saveData(p, "DEITIES", new ArrayList<String>());
+                         DSave.removePlayerData(p, "DEITIES");
+                         DSave.savePlayerData(p, "DEITIES", new ArrayList<String>());
                          for (int i=1;i<deities.length;i++) {
                                  String[] info = deities[i].split(";");
                                //  DUtil.removeDeity(p, info[0]); 
@@ -49,15 +49,15 @@ public class LegacyImport
                  
                  //ascensions
                  String ascensions = s.nextLine();
-                 DSave.saveData(p, "ASCENSIONS", Integer.parseInt(ascensions.split(" ")[1]));
+                 DSave.savePlayerData(p, "ASCENSIONS", Integer.parseInt(ascensions.split(" ")[1]));
                  
                  //kills
                  String kills = s.nextLine();              
-                 DSave.saveData(p, "KILLS", Integer.parseInt(kills.split(" ")[1]));
+                 DSave.savePlayerData(p, "KILLS", Integer.parseInt(kills.split(" ")[1]));
                  
                  //deaths
                  String deaths = s.nextLine();
-                 DSave.saveData(p, "DEATHS", Integer.parseInt(deaths.split(" ")[1]));
+                 DSave.savePlayerData(p, "DEATHS", Integer.parseInt(deaths.split(" ")[1]));
                  
                  //accessible (guest list)
                  if (s.nextLine().trim().equals("Accessible:"))
@@ -91,7 +91,7 @@ public class LegacyImport
                  }
                  //shrines
                  DUtil.info("[Demigods] Loaded "+p+"'s data from legacy file.");
-                 DDatabase.saveAllPlayerData();
+                 DDatabase.saveAllData();
          }
          catch (Exception e)
          {

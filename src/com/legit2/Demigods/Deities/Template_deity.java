@@ -28,7 +28,7 @@ public class Template_deity implements Listener
 	private static String TEST_NAME = "Testabil"; // Sets the name of this command
 	private static long TEST_TIME; // Creates the variable for later use
 	private static final int TEST_COST = 170; // Cost to run command in "favor"
-	private static final int TEST_DELAY = 1500; // In milliseconds
+	private static final int TEST_DELAY = 0; // In milliseconds
 
 	// "/testult" Command:
 	private static String ULTIMATE_NAME = "Testult";
@@ -109,13 +109,13 @@ public class Template_deity implements Listener
 			if(DUtil.getFavor(username) >= TEST_COST)
 			{
 				testabil(player);
-				DUtil.setFavor(username, DUtil.getFavor(username) - TEST_COST);
+				DUtil.subtractFavor(username, TEST_COST);
 				return;
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setData(username, TEST_NAME, false);
+				DUtil.setPlayerData(username, TEST_NAME, false);
 			}
 		}
 	}
@@ -158,14 +158,14 @@ public class Template_deity implements Listener
 		}
 		else
 		{
-			if(DUtil.getData(username, TEST_NAME) != null && (Boolean) DUtil.getData(username, TEST_NAME)) 
+			if(DUtil.getPlayerData(username, TEST_NAME) != null && (Boolean) DUtil.getPlayerData(username, TEST_NAME)) 
 			{
-				DUtil.setData(username, TEST_NAME, false);
+				DUtil.setPlayerData(username, TEST_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setData(username, TEST_NAME, true);
+				DUtil.setPlayerData(username, TEST_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}
@@ -210,7 +210,7 @@ public class Template_deity implements Listener
 			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
 
 			// Set favor and cooldown
-			DUtil.setFavor(username, DUtil.getFavor(username) - ULTIMATE_COST);
+			DUtil.subtractFavor(username, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
 			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DUtil.getAscensions(username) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
@@ -236,12 +236,12 @@ public class Template_deity implements Listener
 		// Check the player for DEITYNAME
 		if(!DUtil.hasDeity(player.getName(), DEITYNAME))
 		{
-			player.sendMessage(ChatColor.RED + "You haven't claimed " + DEITYNAME + "! You can't do that!");
+			player.sendMessage(ChatColor.RED + "You haven't even claimed " + DEITYNAME + "! You can't do that!");
 			return false;
 		}
 		else if(!DUtil.isImmortal(player.getName()))
 		{
-			player.sendMessage(ChatColor.RED + "You are a mere mortal! You can't do that!");
+			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
 		}
 		return true;

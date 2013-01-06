@@ -34,6 +34,11 @@ public class DSave
 			// Creates new player HashMap save.
 			playerData.put(username, new HashMap<String, Object>());
 			playerDeityData.put(username, new HashMap<String, HashMap<String, Object>>());
+			
+			savePlayerData(username, "favor", 0);
+			savePlayerData(username, "ascensions", 0);
+			savePlayerData(username, "kills", 0);
+			savePlayerData(username, "deaths", 0);
 			return true;
 		}
 		else return false;
@@ -48,7 +53,8 @@ public class DSave
 		username = username.toLowerCase();
 		id = id.toLowerCase();
 		
-		if(playerData.get(username).containsKey(id)) return true;
+		if(playerData.get(username) == null) return false;
+		if(playerData.get(username).get(id) != null && playerData.get(username).containsKey(id)) return true;
 		else return false;
 	}
 	
@@ -62,8 +68,8 @@ public class DSave
 		id = id.toLowerCase();
 		deity = deity.toLowerCase();
 
-		if(playerDeityData.get(username).get(deity) == null) return false;
-		else if(playerDeityData.get(username).get(deity).containsKey(id)) return true;
+		if(playerDeityData.get(username) == null || playerDeityData.get(username).get(deity) == null) return false;
+		else if(playerDeityData.get(username).get(deity).get(id) != null && playerDeityData.get(username).get(deity).containsKey(id)) return true;
 		else return true;
 	}
 	
@@ -81,9 +87,9 @@ public class DSave
 	}
 	
 	/*
-	 *  saveData() : Saves (Object)data to (String)username in HashMap with (String)id.
+	 *  savePlayerData() : Saves (Object)data to (String)username in HashMap with (String)id.
 	 */
-	public static boolean saveData(String username, String id, Object data)
+	public static boolean savePlayerData(String username, String id, Object data)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -92,11 +98,9 @@ public class DSave
 		// Returns false if the player is new.
 		if(isNewPlayer(username)) return false;
 		
-		// If the player already has the data, remove it to re-save.
-		if(hasData(username, id)) playerData.get(username).remove(id);
-		
 		// Save the data now.
 		playerData.get(username).put(id, data);
+		
 		return true;
 	}
 	
@@ -129,9 +133,9 @@ public class DSave
 	}
 	
 	/*
-	 *  removeData() : Removes (String)id data for (String)username.
+	 *  removePlayerData() : Removes (String)id data for (String)username.
 	 */
-	public static boolean removeData(String username, String id)
+	public static boolean removePlayerData(String username, String id)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -144,9 +148,9 @@ public class DSave
 	}
 	
 	/*
-	 *  removeAllUserData() : Removes all HashMap data for (String)username.
+	 *  removeAllPlayerData() : Removes all HashMap data for (String)username.
 	 */
-	public static boolean removeAllUserData(String username)
+	public static boolean removeAllPlayerData(String username)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -157,9 +161,9 @@ public class DSave
 	}
 	
 	/*
-	 *  getData() : Returns a specific HashMap from (String)username's data with (String)id.
+	 *  getPlayerData() : Returns a specific HashMap from (String)username's data with (String)id.
 	 */
-	public static Object getData(String username, String id)
+	public static Object getPlayerData(String username, String id)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -216,7 +220,7 @@ public class DSave
 	}
 	
 	/*
-	 *  getAllData() : Returns a HashMap of all of (String)username's playerData.
+	 *  getPlayerData() : Returns a HashMap of all of (String)username's player data.
 	 */
 	public static HashMap<String, Object> getPlayerData(String username)
 	{
@@ -225,6 +229,19 @@ public class DSave
 		
 		// If player is not new, return
 		if(!isNewPlayer(username)) return playerData.get(username);
+		return null;
+	}
+	
+	/*
+	 *  getDeityData() : Returns a HashMap of all of (String)username's deity data.
+	 */
+	public static HashMap<String, HashMap<String, Object>> getAllDeityData(String username)
+	{
+		// Set variables
+		username = username.toLowerCase();
+		
+		// If player is not new, return
+		if(!isNewPlayer(username)) return playerDeityData.get(username);
 		return null;
 	}
 	

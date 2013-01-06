@@ -43,13 +43,6 @@ public class Demigods extends JavaPlugin
 			loadDeities();
 			loadMetrics();
 			
-			DSave.saveData("HmmmQuestionMark", "favor", 99999);
-			DSave.saveData("HmmmQuestionMark", "ascensions", 99999);
-			DSave.saveData("HmmmQuestionMark", "immortal", true);
-			DSave.saveData("HmmmQuestionMark", "alliance", "test");
-			DSave.saveData("HmmmQuestionMark", "deities", "template");
-			DSave.saveDeityData("HmmmQuestionMark", "template", "devotion", 99999);
-			
 			checkUpdate();
 			
 			DUtil.info("Enabled!");

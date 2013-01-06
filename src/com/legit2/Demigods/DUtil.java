@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -59,7 +58,19 @@ public class DUtil
 	}
 	
 	/*
-	 *  areAllied() : Returns true if (String)player1 is allied with (String)player2.
+	 *  definePlayer() : Defines the player from (CommandSender)sender.
+	 */
+	public static Player definePlayer(CommandSender sender)
+	{
+		// Define the Player
+		Player player = null;
+		if(sender instanceof Player) player = (Player) sender;
+		
+		return player;
+	}
+	
+	/*
+	 *  areAllied() : Returns true if (String)player is allied with (String)otherPlayer.
 	 */
 	public static boolean areAllied(String player, String otherPlayer)
 	{
@@ -71,12 +82,21 @@ public class DUtil
 	}
 	
 	/*
-	 *  isBound() : Checks if (Material)material is bound for (Player)player.
+	 *  getBindings() : Returns all bindings for (Player)player.
 	 */
-	public static boolean isBound(String username, Material material)
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Material> getBindings(String username)
 	{
-		if(DSave.hasDataEqualTo(username.toLowerCase(), "bindings", material)) return true;
-		else return false;
+		username = username.toLowerCase();
+		
+		ArrayList<Material> bindings = new ArrayList<Material>();
+		
+		if(DSave.hasData(username, "bindings"))
+		{
+			bindings = (ArrayList<Material>)DSave.getPlayerData(username, "bindings");
+			return bindings;
+		}
+		else return null;
 	}
 	
 	/*
@@ -106,18 +126,27 @@ public class DUtil
 				
 				if(!bindings.contains(material)) bindings.add(material);
 				
-				DSave.saveData(username, "bindings", bindings);
+				DSave.savePlayerData(username, "bindings", bindings);
 			}
 			else
 			{
 				ArrayList<Material> bindings = new ArrayList<Material>();
 				
 				bindings.add(material);
-				DSave.saveData(username, "bindings", bindings);
+				DSave.savePlayerData(username, "bindings", bindings);
 			}
 			
 			return true;
 		}
+	}
+	
+	/*
+	 *  isBound() : Checks if (Material)material is bound for (Player)player.
+	 */
+	public static boolean isBound(String username, Material material)
+	{
+		if(DSave.hasDataEqualTo(username.toLowerCase(), "bindings", material)) return true;
+		else return false;
 	}
 	
 	/*
@@ -126,35 +155,17 @@ public class DUtil
 	public static boolean removeBind(String username, Material material)
 	{
 		username = username.toLowerCase();
-				
+
 		if(DSave.hasData(username, "bindings"))
 		{
 			ArrayList<Material> bindings = getBindings(username);
 			
 			if(bindings != null && bindings.contains(material)) bindings.remove(material);
 			
-			DSave.saveData(username, "bindings", bindings);
+			DSave.savePlayerData(username, "bindings", bindings);
 		}
 		
 		return true;
-	}
-	
-	/*
-	 *  getBindings() : Returns all bindings for (Player)player.
-	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Material> getBindings(String username)
-	{
-		username = username.toLowerCase();
-		
-		ArrayList<Material> bindings = new ArrayList<Material>();
-		
-		if(DSave.hasData(username, "bindings"))
-		{
-			bindings = (ArrayList<Material>)DSave.getData(username, "bindings");
-			return bindings;
-		}
-		else return null;
 	}
 	
 	/*
@@ -165,59 +176,8 @@ public class DUtil
 		// Set variables
 		username = username.toLowerCase();
 		
-		if(getData(username, "immortal") == null) return false;
-		else return (Boolean)getData(username, "immortal");
-	}
-	
-	/*
-	 *  setFavor() : Sets the (String)username's favor to (int)amount.
-	 */
-	public static void setFavor(String username, int amount)
-	{
-		setData(username, "favor", amount);
-	}
-	
-	/*
-	 *  getFavor() : Returns the (String)username's favor.
-	 */
-	public static int getFavor(String username)
-	{
-		if(getData(username, "favor") != null) return Integer.parseInt(getData(username, "favor").toString());
-		else return -1;
-	}
-	
-	/*
-	 *  setAscensions() : Sets the (String)username's ascensions to (int)amount.
-	 */
-	public static void setAscensions(String username, int amount)
-	{
-		setData(username, "ascensions", amount);
-	}
-	
-	/*
-	 *  getAscensions() : Returns the (String)username's ascensions.
-	 */
-	public static int getAscensions(String username)
-	{
-		return Integer.parseInt(getData(username, "ascensions").toString());
-	}
-	
-	/*
-	 *  setDevotion() : Sets the (String)username's devotions to (int)amount.
-	 */
-	public static void setDevotion(String username, String deity, int amount)
-	{
-		setDeityData(username, deity, "devotion", amount);
-	}
-	
-	/*
-	 *  getDevotion() : Returns the (String)username's devotion for (String)deity.
-	 */
-	public static int getDevotion(String username, String deity)
-	{
-		if(getDeityData(username, deity, "devotion") != null) return Integer.parseInt(getDeityData(username, deity, "devotion").toString());
-		return -1;
-
+		if(getPlayerData(username, "immortal") == null) return false;
+		else return Boolean.parseBoolean(getPlayerData(username, "immortal").toString());
 	}
 	
 	/*
@@ -225,7 +185,6 @@ public class DUtil
 	 */
 	public static ArrayList<String> getImmortalList()
 	{		
-				
 		// Define variables
 		ArrayList<String> immortalList = new ArrayList<String>();
 		HashMap<String, HashMap<String, Object>> players = getAllData();
@@ -240,11 +199,185 @@ public class DUtil
 	}
 	
 	/*
+	 *  getFavor() : Returns the (String)username's favor.
+	 */
+	public static int getFavor(String username)
+	{
+		if(getPlayerData(username, "favor") != null) return Integer.parseInt(getPlayerData(username, "favor").toString());
+		else return -1;
+	}
+	
+	/*
+	 *  setFavor() : Sets the (String)username's favor to (int)amount.
+	 */
+	public static void setFavor(String username, int amount)
+	{
+		setPlayerData(username, "favor", amount);
+	}
+	
+	/*
+	 *  subtractFavor() : Subtracts (int)amount from the (String)username's favor.
+	 */
+	public static void subtractFavor(String username, int amount)
+	{
+		setFavor(username, getFavor(username) - amount);
+	}
+	
+	/*
+	 *  giveFavor() : Gives (int)amount favor to (String)username.
+	 */
+	public static void giveFavor(String username, int amount)
+	{
+		setPlayerData(username, "favor", getFavor(username) + amount);
+	}
+
+	/*
+	 *  getAscensions() : Returns the (String)username's ascensions.
+	 */
+	public static int getAscensions(String username)
+	{
+		if(getPlayerData(username, "ascensions") != null) return Integer.parseInt(getPlayerData(username, "ascensions").toString());
+		else return -1;
+	}
+	
+	/*
+	 *  setAscensions() : Sets the (String)username's ascensions to (int)amount.
+	 */
+	public static void setAscensions(String username, int amount)
+	{
+		setPlayerData(username, "ascensions", amount);
+	}
+
+	/*
+	 *  subtractAscensions() : Subtracts (int)amount from the (String)username's ascensions.
+	 */
+	public static void subtractAscensions(String username, int amount)
+	{
+		setAscensions(username, getAscensions(username) - amount);
+	}
+	
+	/*
+	 *  giveAscensions() : Gives (int)amount ascensions to (String)username.
+	 */
+	public static void giveAscensions(String username, int amount)
+	{
+		setPlayerData(username, "ascensions", getAscensions(username) + amount);
+	}
+	
+	/*
+	 *  getDevotion() : Returns the (String)username's devotion for (String)deity.
+	 */
+	public static int getDevotion(String username, String deity)
+	{
+		if(getDeityData(username, deity, "devotion") != null) return Integer.parseInt(getDeityData(username, deity, "devotion").toString());
+		return -1;
+	}
+	
+	/*
+	 *  setDevotion() : Sets the (String)username's devotion to (int)amount for (String)deity.
+	 */
+	public static void setDevotion(String username, String deity, int amount)
+	{
+		setDeityData(username, deity, "devotion", amount);
+	}
+
+	/*
+	 *  subtractDevotion() : Subtracts (int)amount from the (String)username's (String)deity devotion.
+	 */
+	public static void subtractDevotion(String username, String deity, int amount)
+	{
+		setDevotion(username, deity, getDevotion(username, deity) - amount);
+	}
+	
+	/*
+	 *  giveDevotion() : Gives (int)amount devotion to (String)username for (String)deity.
+	 */
+	public static void giveDevotion(String username, String deity, int amount)
+	{
+		setDeityData(username, deity, "devotion", getDevotion(username, deity) + amount);
+	}
+	
+	/*
 	 *  getAlliance() : Returns the alliance of a player.
 	 */
 	public static String getAlliance(String username)
 	{
-		return (String)getData(username, "alliance");
+		return (String)getPlayerData(username, "alliance");
+	}
+	
+	/*
+	 *  setAlliance() : Sets the (String)username's alliance to (String)alliance.
+	 */
+	public static void setAlliance(String username, String alliance)
+	{
+		setPlayerData(username, "alliance", alliance);
+	}
+	
+	/*
+	 *  getKills() : Returns (int)kills for (String)username.
+	 */
+	public static int getKills(String username)
+	{
+		if(getPlayerData(username, "kills") != null) return Integer.parseInt(getPlayerData(username, "kills").toString());
+		return -1;
+	}
+	
+	/*
+	 *  setKills() : Sets the (String)username's kills to (int)amount.
+	 */
+	public static void setKills(String username, int amount)
+	{
+		setPlayerData(username, "kills", amount);
+	}
+	
+	/*
+	 *  addKill() : Gives (String)username 1 kill.
+	 */
+	public static void addKill(String username)
+	{
+		setPlayerData(username, "kills", getKills(username) + 1);
+	}
+	
+	/*
+	 *  getDeaths() : Returns (int)deaths for (String)username.
+	 */
+	public static int getDeaths(String username)
+	{
+		if(getPlayerData(username, "deaths") != null) return Integer.parseInt(getPlayerData(username, "deaths").toString());
+		return -1;
+	}
+	
+	/*
+	 *  setDeaths() : Sets the (String)username's kills to (int)amount.
+	 */
+	public static void setDeaths(String username, int amount)
+	{
+		setPlayerData(username, "deaths", amount);
+	}
+	
+	/*
+	 *  addDeath() : Gives (String)username 1 death.
+	 */
+	public static void addDeath(String username)
+	{
+		setPlayerData(username, "deaths", getKills(username) + 1);
+	}
+	
+	/*
+	 *  getDeites() : Returns an ArrayList<String> of (Player)player's deities.
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<String> getDeities(String username)
+	{		
+		// Set variables
+		username = username.toLowerCase();
+		//ArrayList<String> deities = new ArrayList<String>();
+
+		if(DSave.hasData(username, "deities"))
+		{
+			return (ArrayList<String>) DSave.getPlayerData(username, "deities");
+		}
+		else return null;
 	}
 	
 	/*
@@ -271,48 +404,32 @@ public class DUtil
 			
 			if(deities == null || !deities.contains(deity)) deities.add(deity.toLowerCase());
 			
-			setData(username, "deities", deities);
+			setPlayerData(username, "deities", deities);
 		}
 		else
 		{
 			ArrayList<String> deities = new ArrayList<String>();
 			deities.add(deity.toLowerCase());
-			setData(username, "deities", deities);
+			setPlayerData(username, "deities", (ArrayList<String>)deities);
 		}
 		
 		return true;
 	}
-	
-	/*
-	 *  getDeites() : Returns an ArrayList<String> of (Player)player's deities.
-	 */
-	public static ArrayList<String> getDeities(String username)
-	{		
-		// Set variables
-		username = username.toLowerCase();
-		
-		if(DSave.hasData(username, "deities"))
-		{
-			ArrayList<String> deities = new ArrayList<String>(Arrays.asList(((String) DSave.getData(username, "deities")).split(",")));
-			return deities;
-		}
-		else return null;
-	}
 
 	/*
-	 *  getData() : Returns the data with id (String)key for (Player)player.
+	 *  getPlayerData() : Returns the data with id (String)key for (Player)player.
 	 */
-	public static Object getData(String username, String id)
+	public static Object getPlayerData(String username, String id)
 	{
-		return DSave.getData(username, id);
+		return DSave.getPlayerData(username, id);
 	}
 	
 	/*
-	 *  setData() : Sets the data with id (String)key for (Player)player.
+	 *  setPlayerData() : Sets the data with id (String)key for (Player)player.
 	 */
-	public static boolean setData(String username, String id, Object data)
+	public static boolean setPlayerData(String username, String id, Object data)
 	{
-		return DSave.saveData(username, id, data);
+		return DSave.savePlayerData(username, id, data);
 	}
 	
 	/*
@@ -346,6 +463,22 @@ public class DUtil
 	public static HashMap<String, HashMap<String, Object>> getAllData()
 	{
 		return DSave.getAllData();
+	}
+	
+	/*
+	 *  toInteger() : Returns an object as an integer.
+	 */
+	public static int toInteger(Object object)
+	{
+		return Integer.parseInt(object.toString());
+	}
+	
+	/*
+	 *  toBoolean() : Returns an object as a boolean.
+	 */
+	public static boolean toBoolean(Object object)
+	{
+		return Boolean.parseBoolean(object.toString());
 	}
 	
 	/*
@@ -402,18 +535,6 @@ public class DUtil
 	public static void serverMsg(String msg)
 	{
 		plugin.getServer().broadcastMessage(msg);
-	}
-		
-	/*
-	 *  definePlayer() : Defines the player from (CommandSender)sender.
-	 */
-	public static Player definePlayer(CommandSender sender)
-	{
-		// Define the Player
-		Player player = null;
-		if(sender instanceof Player) player = (Player) sender;
-		
-		return player;
 	}
 
 	/*

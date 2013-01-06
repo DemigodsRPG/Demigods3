@@ -20,7 +20,7 @@ import org.bukkit.util.Vector;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
-public class Zeus implements Listener
+public class Zeus_deity implements Listener
 {
 	private static final int SHOVECOST = 170;
 	private static final int SHOVEDELAY = 1500; //milliseconds
@@ -35,10 +35,9 @@ public class Zeus implements Listener
 	private static long ZEUSLIGHTNINGTIME;
 	private static Material SHOVEBIND = null;
 	private static Material LIGHTNINGBIND = null;
-	private static boolean LIGHTNING = false;
 	private static boolean SHOVE = false;
 
-	public Zeus()
+	public Zeus_deity()
 	{
 		ZEUSULTIMATETIME = System.currentTimeMillis();
 		ZEUSSHOVETIME = System.currentTimeMillis();
@@ -52,7 +51,7 @@ public class Zeus implements Listener
 	public String loadDeity()
 	{
 		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
-		return "Zeus loaded.";
+		return "Zeus_deity loaded.";
 	}
 	
 	public ArrayList<Material> getClaimItems()
@@ -69,7 +68,7 @@ public class Zeus implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player.getName())) return;
+			if(!DUtil.hasDeity(player.getName(), "Zeus_deity") || !DUtil.isImmortal(player.getName())) return;
 
 			if(damageEvent.getCause()==DamageCause.FALL)
 			{
@@ -89,7 +88,7 @@ public class Zeus implements Listener
 	{
 		Player player = interactEvent.getPlayer();
 
-		if(!DUtil.hasDeity(player.getName(), "Zeus") || !DUtil.isImmortal(player.getName())) return;
+		if(!DUtil.hasDeity(player.getName(), "Zeus_deity") || !DUtil.isImmortal(player.getName())) return;
 
 		if(SHOVE || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == SHOVEBIND)))
 		{
@@ -100,16 +99,16 @@ public class Zeus implements Listener
 			if(DUtil.getFavor(player.getName()) >= SHOVECOST)
 			{
 				shove(player);
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-SHOVECOST);
+				DUtil.subtractFavor(player.getName(), SHOVECOST);
 				return;
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-				DUtil.setData(player.getName(), "shove", false);
+				DUtil.setPlayerData(player.getName(), "shove", false);
 			}
 		}
-		if(LIGHTNING || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == LIGHTNINGBIND)))
+		if(DUtil.toBoolean(DUtil.getPlayerData(player.getName(), "lightning")) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == LIGHTNINGBIND)))
 		{
 			if(ZEUSLIGHTNINGTIME > System.currentTimeMillis()) return;
 
@@ -118,13 +117,13 @@ public class Zeus implements Listener
 			if(DUtil.getFavor(player.getName()) >= LIGHTNINGCOST)
 			{
 				lightning(player);
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-LIGHTNINGCOST);
+				DUtil.subtractFavor(player.getName(), LIGHTNINGCOST);
 				return;
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW+"You do not have enough Favor.");
-				DUtil.setData(player.getName(), "lightning", false);
+				DUtil.setPlayerData(player.getName(), "lightning", false);
 			}
 		}
 	}
@@ -149,7 +148,7 @@ public class Zeus implements Listener
 			 *  The printed text
 			 */
 			
-			player.sendMessage("--"+ChatColor.GOLD+"Zeus"+ChatColor.GRAY+" ["+devotion+"]");
+			player.sendMessage("--"+ChatColor.GOLD+"Zeus_deity"+ChatColor.GRAY+" ["+devotion+"]");
 			player.sendMessage(":Immune to fall damage.");
 			player.sendMessage(":Strike lightning at a target location. " + ChatColor.GREEN + "/lightning");
 			player.sendMessage(ChatColor.YELLOW+"Costs "+LIGHTNINGCOST+" Favor.");
@@ -160,25 +159,25 @@ public class Zeus implements Listener
 			player.sendMessage("Affects up to "+targets+" targets with power " + (int)(Math.round(multiply*10))+".");
 			if(SHOVEBIND != null) player.sendMessage(ChatColor.AQUA+"    Bound to "+ SHOVEBIND.name());
 			else player.sendMessage(ChatColor.AQUA+"    Use /bind to bind this skill to an item.");
-			player.sendMessage(":Zeus strikes lightning on nearby enemies as they are");
+			player.sendMessage(":Zeus_deity strikes lightning on nearby enemies as they are");
 			player.sendMessage("raised in the air and dropped. "+ChatColor.GREEN+"/storm");
 			player.sendMessage(ChatColor.YELLOW+"Costs "+ZEUSULTIMATECOST+" Favor. Cooldown time: "+t+" seconds.");
 			return;
 		}
-		player.sendMessage("--"+ChatColor.GOLD+"Zeus");
+		player.sendMessage("--"+ChatColor.GOLD+"Zeus_deity");
 		player.sendMessage("Passive: Immune to fall damage.");
 		player.sendMessage("Active: Strike lightning at a target location. "+ChatColor.GREEN+"/lightning");
 		player.sendMessage(ChatColor.YELLOW+"Costs "+LIGHTNINGCOST+" Favor. Can bind.");
 		player.sendMessage("Active: Use the force of wind to knock back enemies. "+ChatColor.GREEN+"/shove");
 		player.sendMessage(ChatColor.YELLOW+"Costs "+SHOVECOST+" Favor. Can bind.");
-		player.sendMessage("Ultimate: Zeus strikes lightning on nearby enemies as they are");
+		player.sendMessage("Ultimate: Zeus_deity strikes lightning on nearby enemies as they are");
 		player.sendMessage("raised in the air and dropped. "+ChatColor.GREEN+"/storm");
 		player.sendMessage(ChatColor.YELLOW+"Costs "+ZEUSULTIMATECOST+" Favor. Has cooldown.");
 		player.sendMessage(ChatColor.YELLOW+"Select item: iron ingot");
 	}
 	public String getName()
 	{
-		return "Zeus";
+		return "Zeus_deity";
 	}
 	
 	
@@ -188,7 +187,7 @@ public class Zeus implements Listener
 	@ReflectCommand.Command(name = "lightning", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god.zeus")
 	public static void lightningCommand(Player player, String arg1)
 	{
-		if(!DUtil.hasDeity(player.getName(), "Zeus")) return;
+		if(!DUtil.hasDeity(player.getName(), "Zeus_deity")) return;
 		
 		if(arg1.equalsIgnoreCase("bind"))
 		{
@@ -211,14 +210,14 @@ public class Zeus implements Listener
 			}
 		}
 		
-		if(DUtil.getData(player.getName(), "lightning") != null && (Boolean) DUtil.getData(player.getName(), "lightning")) 
+		if(DUtil.getPlayerData(player.getName(), "lightning") != null && DUtil.toBoolean(DUtil.getPlayerData(player.getName(), "lightning"))) 
 		{
-			DUtil.setData(player.getName(), "lightning", false);
+			DUtil.setPlayerData(player.getName(), "lightning", false);
 			player.sendMessage(ChatColor.YELLOW+"Lightning is no longer active.");
 		}
 		else
 		{
-			DUtil.setData(player.getName(), "lightning", true);
+			DUtil.setPlayerData(player.getName(), "lightning", true);
 			player.sendMessage(ChatColor.YELLOW+"Lightning is now active.");
 		}
 	}
@@ -226,7 +225,7 @@ public class Zeus implements Listener
 	@ReflectCommand.Command(name = "shove", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god.zeus")
 	public static void shoveCommand(Player player, String[] args)
 	{
-		if(!DUtil.hasDeity(player.getName(), "Zeus")) return;
+		if(!DUtil.hasDeity(player.getName(), "Zeus_deity")) return;
 		
 		if(args.length == 1 && args[0].equalsIgnoreCase("bind"))
 		{
@@ -249,14 +248,14 @@ public class Zeus implements Listener
 			}
 		}
 		
-		if(DUtil.getData(player.getName(), "shove") != null && (Boolean) DUtil.getData(player.getName(), "shove"))
+		if(DUtil.getPlayerData(player.getName(), "shove") != null && (Boolean) DUtil.getPlayerData(player.getName(), "shove"))
 		{
-			DUtil.setData(player.getName(), "shove", false);
+			DUtil.setPlayerData(player.getName(), "shove", false);
 			player.sendMessage(ChatColor.YELLOW+"Shove is no longer active.");
 		}
 		else
 		{
-			DUtil.setData(player.getName(), "shove", true);
+			DUtil.setPlayerData(player.getName(), "shove", true);
 			player.sendMessage(ChatColor.YELLOW+"Shove is now active.");
 		}
 	}
@@ -264,7 +263,7 @@ public class Zeus implements Listener
 	@ReflectCommand.Command(name = "storm", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god.zeus.ultimate")
 	public static void stormCommand(Player player)
 	{
-		if(!DUtil.hasDeity(player.getName(), "Zeus")) return;
+		if(!DUtil.hasDeity(player.getName(), "Zeus_deity")) return;
 		long TIME = ZEUSULTIMATETIME;
 		if(System.currentTimeMillis() < TIME)
 		{
@@ -284,8 +283,8 @@ public class Zeus implements Listener
 			if(num > 0)
 			{
 				player.sendMessage("In exchange for "+ChatColor.AQUA+ZEUSULTIMATECOST+ChatColor.WHITE+" Favor, ");
-				player.sendMessage(ChatColor.GOLD+"Zeus"+ChatColor.WHITE+" has unloaded his wrath on "+num+" targets.");
-				DUtil.setFavor(player.getName(), DUtil.getFavor(player.getName())-ZEUSULTIMATECOST);
+				player.sendMessage(ChatColor.GOLD+"Zeus_deity"+ChatColor.WHITE+" has unloaded his wrath on "+num+" targets.");
+				DUtil.subtractFavor(player.getName(), ZEUSULTIMATECOST);
 				player.setNoDamageTicks(1000);
 				ZEUSULTIMATETIME = System.currentTimeMillis()+t*1000;
 			} else player.sendMessage(ChatColor.YELLOW+"There are no targets nearby.");
@@ -308,7 +307,7 @@ public class Zeus implements Listener
 		
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
 		
-		int devotion = DUtil.getDevotion(player.getName(), "Zeus");
+		int devotion = DUtil.getDevotion(player.getName(), "Zeus_deity");
 		int targets = (int)Math.ceil(1.561*Math.pow(devotion, 0.128424));
 		double multiply = 0.1753*Math.pow(devotion, 0.322917);
 		

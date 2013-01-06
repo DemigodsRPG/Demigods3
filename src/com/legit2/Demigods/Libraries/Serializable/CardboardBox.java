@@ -1,4 +1,4 @@
-package com.legit2.Demigods.Serializable;
+package com.legit2.Demigods.Libraries.Serializable;
 
 import java.io.Serializable;
 import java.util.HashMap;

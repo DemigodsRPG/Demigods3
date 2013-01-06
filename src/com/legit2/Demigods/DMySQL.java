@@ -10,8 +10,9 @@ public class DMySQL
 {
 	// Define variables
 	private static MySQL mysql;
-	public static String playerdata_table = "dg_playerdata";
 	public static String player_table = "dg_players";
+	public static String playerdata_table = "dg_playerdata";
+	public static String deitydata_table = "dg_deitydata";
 	
 	/*
 	 *  initializeDatabase() : Sets up the database and creates user table if needed.
@@ -25,8 +26,9 @@ public class DMySQL
 			// Success! Tell the world!
 			DUtil.info("MySQL Connection Successful!");
 			
-			createTable(playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
 			createTable(player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
+			createTable(playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
+			createTable(deitydata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), deity VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
 		}
 		else
 		{
@@ -120,8 +122,8 @@ public class DMySQL
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	/*
