@@ -252,4 +252,13 @@ public class DSave
 	{
 		return playerData;
 	}
+	
+	/*
+	 *  removeAllData() : Removes all HashMaps.
+	 */
+	public static void removeAllData()
+	{
+		playerData.clear();
+		playerDeityData.clear();
+	}
 }

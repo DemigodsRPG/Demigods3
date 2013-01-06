@@ -98,7 +98,7 @@ public class Template_deity implements Listener
 
 		if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
 
-		if(((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"))))
+		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"))))
 		{
 			if(TEST_TIME > System.currentTimeMillis()) return;
 
@@ -115,7 +115,7 @@ public class Template_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setPlayerData(username, TEST_NAME, false);
+				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, false);
 			}
 		}
 	}
@@ -135,37 +135,20 @@ public class Template_deity implements Listener
 		if(!canUseDeity(player)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
-		{			
-			if(DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind") == null)
-			{
-				if(player.getItemInHand().getType() == Material.AIR)
-				{
-					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-				}
-				else
-				{
-					DUtil.setBound(username, player.getItemInHand().getType());
-					DUtil.setDeityData(username, DEITYNAME, TEST_NAME + "_bind", player.getItemInHand().getType());
-					player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now bound to: " + player.getItemInHand().getType().name().toLowerCase());
-				}
-			}
-			else
-			{
-				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer bound to: " + ((Material) DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind")).name().toLowerCase());
-				DUtil.removeBind(username, (Material)DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"));
-				DUtil.removeDeityData(username, DEITYNAME, TEST_NAME + "_bind");
-			}
+		{		
+			// Bind item
+			DUtil.setBound(username, DEITYNAME, TEST_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DUtil.getPlayerData(username, TEST_NAME) != null && (Boolean) DUtil.getPlayerData(username, TEST_NAME)) 
+			if(DUtil.getDeityData(username, DEITYNAME, TEST_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, TEST_NAME)) 
 			{
-				DUtil.setPlayerData(username, TEST_NAME, false);
+				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setPlayerData(username, TEST_NAME, true);
+				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}

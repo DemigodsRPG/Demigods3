@@ -42,7 +42,6 @@ public class Demigods extends JavaPlugin
 			loadCommands();
 			loadDeities();
 			loadMetrics();
-			
 			checkUpdate();
 			
 			DUtil.info("Enabled!");
@@ -62,7 +61,7 @@ public class Demigods extends JavaPlugin
 			// Uninitialize Plugin
 			DDatabase.uninitializeDatabase();
 			DScheduler.stopThreads();
-			
+						
 			DUtil.info("Disabled!");
 		}		
 	}

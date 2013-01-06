@@ -27,6 +27,7 @@ public class DCommandExecutor
 	public static boolean test(CommandSender sender)
 	{
 		HashMap<String, Object> player_data = DSave.getPlayerData(sender.getName());	
+		HashMap<String, HashMap<String, Object>> player_deities = DSave.getAllDeityData(sender.getName());	
 
 		// Loop through player data entry set and add to database
 		for(Map.Entry<String, Object> entry : player_data.entrySet())
@@ -37,13 +38,27 @@ public class DCommandExecutor
 			sender.sendMessage(id + ": " + data.toString());
 		}
 		
+		for(Map.Entry<String, HashMap<String, Object>> deity : player_deities.entrySet())
+		{
+			String deity_name = deity.getKey();
+			HashMap<String, Object> deity_data = deity.getValue();
+			
+			for(Map.Entry<String, Object> entry : deity_data.entrySet())
+			{
+				String id = entry.getKey();
+				Object data = entry.getValue();
+				
+				sender.sendMessage(deity_name + ": " + id + ", " + data);
+			}
+		}
+		
 		return true;
 	}
 	
 	/*
-	 *  Command: "givealliance"
+	 *  Command: "setalliance"
 	 */
-	@ReflectCommand.Command(name = "givealliance", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
+	@ReflectCommand.Command(name = "setalliance", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
 	public static boolean giveAlliance(CommandSender sender, String arg1, String arg2)
 	{
 		if(arg1 == "noargs") return false;
@@ -63,6 +78,7 @@ public class DCommandExecutor
 		if(arg1 == "noargs") return false;
 		
 		DUtil.giveDeity(arg1, arg2);
+		DUtil.setImmortal(arg1, true);
 		DUtil.setFavor(arg1, 9999);
 		DUtil.setAscensions(arg1, 9999);
 		DUtil.setDevotion(arg1, arg2, 9999);
@@ -119,7 +135,7 @@ public class DCommandExecutor
 		{
 			if(DUtil.hasPermissionOrOP(player, "demigods.admin"))
 			{
-				DUtil.serverMsg(ChatColor.YELLOW + sender.getName() + ChatColor.GREEN + " is saving all Demigods data...");
+				DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
 				if(DDatabase.saveAllData())
 				{
 					DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
@@ -127,7 +143,7 @@ public class DCommandExecutor
 				else
 				{
 					DUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
-					DUtil.serverMsg(ChatColor.RED + "An admin should check the log.");
+					DUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
 				}
 			}
 			else DUtil.noPermission(player);

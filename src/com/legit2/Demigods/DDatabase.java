@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
@@ -24,6 +25,9 @@ public class DDatabase
 			DMySQL.createConnection();
 			DMySQL.initializeMySQL();
 			loadAllData();
+			
+			// Save data just to be safe...
+			saveAllData();
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -168,13 +172,17 @@ public class DDatabase
 						values[0] = username;
 						values[1] = id;
 													
-						if(DMySQL.multDataExists(DMySQL.deitydata_table, column, values))
+						DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
+						if(!id.equalsIgnoreCase("bindings"))
 						{
-							DMySQL.runQuery("UPDATE " + DMySQL.deitydata_table + " SET datavalue=" + data + " WHERE datakey='" + id + "' AND player='" + username + "';");
-						}
-						else
-						{
-							DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', " + data + ");");
+							if(data.getClass().equals(Boolean.class))
+							{
+								DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', " + data + ");");
+							}
+							else
+							{
+								DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', '" + data + "');");
+							}
 						}
 					}
 				}
@@ -189,7 +197,7 @@ public class DDatabase
 					if(id.contains("temp")) continue;
 
 					// Don't save them to the data table if they belong in the user table
-					if(!id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("alliance") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths") && !id.equalsIgnoreCase("deities"))
+					if(!id.equalsIgnoreCase("immortal") && !id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("alliance") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths") && !id.equalsIgnoreCase("deities"))
 					{						
 						String[] column = new String[2];
 						String[] values = new String[2];
@@ -198,37 +206,15 @@ public class DDatabase
 						values[0] = username;
 						values[1] = id;
 						
-						if(data.getClass().equals(ArrayList.class))
-						{
-							data = Joiner.on(",").join((ArrayList<?>) data);
-							
-							if(DMySQL.multDataExists(DMySQL.playerdata_table, column, values))
-							{
-								DMySQL.runQuery("UPDATE " + DMySQL.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';");
-							}
-							else
-							{
-								DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', '" + data + "');");
-							}
-						}
-						else
-						{
-							if(DMySQL.multDataExists(DMySQL.playerdata_table, column, values))
-							{
-								DMySQL.runQuery("UPDATE " + DMySQL.playerdata_table + " SET datavalue='" + data + "' WHERE datakey='" + id + "';");
-							}
-							else
-							{
-								DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', " + data + ");");
-							}
-						}
+						DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
+						DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', " + data + ");");
 					}
 				}
 				
 				String deities = null;
 				if(DUtil.getDeities(username) != null) deities = Joiner.on(",").join(DUtil.getDeities(username));
 				// Save specific data to user table
-				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET alliance='" + DUtil.getAlliance(username) + "', deities='" + deities + "', favor=" + DUtil.getFavor(username) + ", ascensions=" + DUtil.getAscensions(username) + ", kills=" + DUtil.getKills(username) + ", deaths=" + DUtil.getDeaths("deaths") + " WHERE player='" + username + "';");
+				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET immortal=" + DUtil.isImmortal(username) + ", alliance='" + DUtil.getAlliance(username) + "', deities='" + deities + "', favor=" + DUtil.getFavor(username) + ", ascensions=" + DUtil.getAscensions(username) + ", kills=" + DUtil.getKills(username) + ", deaths=" + DUtil.getDeaths(username) + " WHERE player='" + username + "';");
 			}
 
 			// Stop the timer
@@ -258,7 +244,7 @@ public class DDatabase
 			int playerCount = 0;
 			long startStopwatch = System.currentTimeMillis();
 
-			// Load data from player table.
+			// Load data from player table
 			ResultSet all_players = DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";");
 			
 			try 
@@ -279,6 +265,7 @@ public class DDatabase
 					DUtil.setAscensions(username, all_players.getInt("ascensions"));
 					DUtil.setKills(username, all_players.getInt("kills"));
 					DUtil.setDeaths(username, all_players.getInt("deaths"));
+					DUtil.setImmortal(username, all_players.getBoolean("immortal"));
 					
 					// Save stuff from ArrayLists
 					DSave.savePlayerData(username, "deities", deities);
@@ -288,7 +275,7 @@ public class DDatabase
 					{
 						while(player_deitydata.next())
 						{
-							DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getString("datavalue"));
+							DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getObject("datavalue"));
 						}
 					}
 				}
@@ -299,38 +286,55 @@ public class DDatabase
 				e.printStackTrace();
 			}
 
-			// Load data from playerdata table.
+			// Load data from other tables
 			String selectAllPlayerData = "SELECT * FROM " + DMySQL.playerdata_table + ";";
 			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
-			try 
+			String selectAllPlayerDeityData = "SELECT * FROM " + DMySQL.deitydata_table + ";";
+			ResultSet all_playerdeitydata = DMySQL.runQuery(selectAllPlayerDeityData);
+			try
 			{
 				while(all_playerdata.next())
 				{					
 					// Define variables
 					String username = all_playerdata.getString("player");
-					ArrayList<String> bindings = null;
-
-					if(all_playerdata.getString("datakey").equalsIgnoreCase("bindings"))
-					{
-						bindings = new ArrayList<String>(Arrays.asList(all_playerdata.getString("datavalue").split(",")));
-						DSave.savePlayerData(username, "bindings", bindings);
-					}
-
+										
 					// Save the data
-					DSave.savePlayerData(username, all_playerdata.getString("datakey"), all_playerdata.getString("datavalue"));
+					DSave.savePlayerData(username, all_playerdata.getString("datakey"), all_playerdata.getObject("datavalue"));
+				}
+				
+				while(all_playerdeitydata.next())
+				{					
+					// Define variables
+					String id = all_playerdeitydata.getString("datakey");
+					Object data =  all_playerdeitydata.getObject("datavalue");
+					String username = all_playerdeitydata.getString("player");
+					String deity = all_playerdeitydata.getString("deity");
+					ArrayList<Material> bindings = new ArrayList<Material>();
+
+					if(all_playerdeitydata.getString("datakey").contains("_bind"))
+					{
+						String ability_bind = all_playerdeitydata.getString("datakey");
+						Material material = Material.getMaterial(all_playerdeitydata.getString("datavalue").toUpperCase());
+						
+						bindings.add(material);
+						DSave.saveDeityData(username, deity, "bindings", bindings);
+						DSave.saveDeityData(username, deity, ability_bind, material);
+						 
+					}
+					
+					// Save the data
+					if(!id.contains("bind")) DSave.saveDeityData(username, deity, id, data);
 				}
 			}
 			catch(SQLException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// TODO
 			}
 
 			long stopStopwatch = System.currentTimeMillis();
 			double totalTime = (double) (stopStopwatch - startStopwatch);
 
 			DUtil.info("Loaded data for " + playerCount + " players in " + totalTime/1000 + " seconds.");
-
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{

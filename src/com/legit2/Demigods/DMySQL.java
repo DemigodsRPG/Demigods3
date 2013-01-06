@@ -26,7 +26,7 @@ public class DMySQL
 			// Success! Tell the world!
 			DUtil.info("MySQL Connection Successful!");
 			
-			createTable(player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
+			createTable(player_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), immortal BOOLEAN, alliance varchar(24), deities VARCHAR(256), favor INT(11), ascensions INT(11), kills INT(11), deaths INT(11)");
 			createTable(playerdata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
 			createTable(deitydata_table, "id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, player VARCHAR(24), deity VARCHAR(24), datakey VARCHAR(128), datavalue VARCHAR(256)");
 		}
