@@ -102,7 +102,7 @@ public class Template implements Listener
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"))))
 		{
-			if(TEST_TIME > System.currentTimeMillis()) return;
+			if(!DUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
 			// Set the ability's delay
 			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
