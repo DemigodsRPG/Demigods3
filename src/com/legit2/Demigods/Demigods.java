@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,6 +47,11 @@ public class Demigods extends JavaPlugin
 			loadMetrics();
 			checkUpdate();
 			
+			
+			//////// Test Code Loader
+			// loadTestCode();
+			//////// End Test Code Loader
+			
 			DUtil.info("Enabled!");
 		}
 		else
@@ -66,6 +72,23 @@ public class Demigods extends JavaPlugin
 						
 			DUtil.info("Disabled!");
 		}		
+	}
+	
+	/*
+	 *  loadTestCode() : Loads the code upon plugin enable.
+	 */
+	@SuppressWarnings("unused")
+	private void loadTestCode()
+	{
+		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
+		int numberOfSouls = 0;
+		
+		for(ItemStack soul : allSouls)
+		{
+			DUtil.severe("Soul: " + soul.getType().name());
+			numberOfSouls++;
+		}
+		DUtil.severe("Total Souls: " + numberOfSouls);
 	}
 	
 	/*

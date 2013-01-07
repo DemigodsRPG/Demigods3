@@ -35,10 +35,6 @@ public class DEntityListener implements Listener
 			Player attackedPlayer = (Player) attackedEntity;
 			// EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
 			
-			// Define attacker and name
-			// Player attacker = (Player) damageEvent.getDamager();
-			// String attackerName = attacker.getName();
-			
 			// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
 			if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
 			{

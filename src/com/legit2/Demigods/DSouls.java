@@ -11,15 +11,14 @@ public class DSouls
 {
 	// Define variables
 	public static ArrayList<ItemStack> allSouls = new ArrayList<ItemStack>();
+	static ItemStack mortalSoul;
+	static ItemStack immortalSoul;
 	
-	/*
-	 *  getSoulFromEntity : Returns soul for type of entity passed in.
-	 */
-	public static ItemStack getSoulFromEntity(Entity entity)
+	private static void loadSouls()
 	{
 		// Define Mortal Soul
+		mortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
 		String mortalSoulName = "Mortal Soul";
-		ItemStack mortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
 		ArrayList<String> mortalSoulLore = new ArrayList<String>();
 		mortalSoulLore.add("Brings you back to life.");
 		mortalSoulLore.add("Regain half health!");
@@ -30,8 +29,8 @@ public class DSouls
 		allSouls.add(mortalSoul);
 		
 		// Define Mortal Soul
+		immortalSoul = new ItemStack(Material.GLOWSTONE_DUST, 1);
 		String immortalSoulName = "Immortal Soul";
-		ItemStack immortalSoul = new ItemStack(Material.GLOWSTONE_DUST, 1);
 		ArrayList<String> immortalSoulLore = new ArrayList<String>();
 		immortalSoulLore.add("Brings you back to life.");
 		immortalSoulLore.add("Regain full health!");
@@ -40,6 +39,15 @@ public class DSouls
 		immortalSoulMeta.setLore(immortalSoulLore);
 		immortalSoul.setItemMeta(immortalSoulMeta);
 		allSouls.add(immortalSoul);
+	}
+	
+	/*
+	 *  getSoulFromEntity : Returns soul for type of entity passed in.
+	 */
+	public static ItemStack getSoulFromEntity(Entity entity)
+	{
+		// Load all souls
+		loadSouls();
 		
 		// Determine soul information based on entity type
 		switch(entity.getType())
@@ -56,6 +64,10 @@ public class DSouls
 	 */
 	public static ArrayList<ItemStack> returnAllSouls()
 	{
+		// Load all souls
+		loadSouls();
+		
+		// Return data
 		return allSouls;
 	}
 }
