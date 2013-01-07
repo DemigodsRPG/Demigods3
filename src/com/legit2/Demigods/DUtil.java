@@ -148,7 +148,7 @@ public class DUtil
 					// Find amount of souls and subtract 1 upon use
 					int amount = inventoryItem.getAmount();
 					
-					numberOfSouls += amount;
+					numberOfSouls = numberOfSouls + amount;
 				}
 			}
 		}
