@@ -46,51 +46,67 @@ public class DDivineBlockListener implements Listener
 	@EventHandler (priority = EventPriority.HIGH)
 	public static void destroyDivineBlock(BlockBreakEvent event)
 	{
-		for(Location center : DDivineBlocks.getAllDivineBlocks())
+		try
 		{
-			if(event.getBlock().getLocation().equals(center))
+			for(Location center : DDivineBlocks.getAllDivineBlocks())
 			{
-				event.getPlayer().sendMessage(ChatColor.YELLOW+"DivineBlocks cannot be broken by hand.");
-				event.setCancelled(true);
-				return;
+				if(event.getBlock().getLocation().equals(center))
+				{
+					event.getPlayer().sendMessage(ChatColor.YELLOW+"DivineBlocks cannot be broken by hand.");
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
+		catch (Exception e) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopDivineBlockDamage(BlockDamageEvent event)
 	{
-		for(Location center : DDivineBlocks.getAllDivineBlocks())
+		try
 		{
-			if(event.getBlock().getLocation().equals(center))
+			for(Location center : DDivineBlocks.getAllDivineBlocks())
 			{
-				event.setCancelled(true);
+				if(event.getBlock().getLocation().equals(center))
+				{
+					event.setCancelled(true);
+				}
 			}
 		}
+		catch (Exception e) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopDivineBlockIgnite(BlockIgniteEvent event)
 	{
-		for(Location center : DDivineBlocks.getAllDivineBlocks())
+		try
 		{
-			if(event.getBlock().getLocation().equals(center))
+			for(Location center : DDivineBlocks.getAllDivineBlocks())
 			{
-				event.setCancelled(true);
+				if(event.getBlock().getLocation().equals(center))
+				{
+					event.setCancelled(true);
+				}
 			}
 		}
+		catch (Exception e) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void stopDivineBlockBurn(BlockBurnEvent event)
 	{
-		for(Location center : DDivineBlocks.getAllDivineBlocks())
+		try
 		{
-			if(event.getBlock().getLocation().equals(center))
+			for(Location center : DDivineBlocks.getAllDivineBlocks())
 			{
-				event.setCancelled(true);
+				if(event.getBlock().getLocation().equals(center))
+				{
+					event.setCancelled(true);
+				}
 			}
 		}
+		catch (Exception e) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -101,14 +117,18 @@ public class DDivineBlockListener implements Listener
 		CHECKBLOCKS:
 		for(Block block : blocks)
 		{
-			for(Location center : DDivineBlocks.getAllDivineBlocks())
+			try
 			{
-				if(block.getLocation().equals(center))
+				for(Location center : DDivineBlocks.getAllDivineBlocks())
 				{
-					event.setCancelled(true);
-					break CHECKBLOCKS;
+					if(block.getLocation().equals(center))
+					{
+						event.setCancelled(true);
+						break CHECKBLOCKS;
+					}
 				}
 			}
+			catch (Exception e) {}
 		}
 	}
 	
@@ -118,13 +138,17 @@ public class DDivineBlockListener implements Listener
 		// Define variables
 		final Block block = event.getBlock().getRelative(event.getDirection(), 2);
 		
-		for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+		try
 		{
-			if(block.getLocation().equals((divineBlock)) && event.isSticky())
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				event.setCancelled(true);
+				if(block.getLocation().equals((divineBlock)) && event.isSticky())
+				{
+					event.setCancelled(true);
+				}
 			}
 		}
+		catch (Exception e) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
@@ -154,23 +178,27 @@ public class DDivineBlockListener implements Listener
 		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
 		if(!DUtil.isImmortal(event.getPlayer().getName())) return;
 		
-		//check if block is divineBlock
-		String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
-		
-		if(deityName == null) return;
-		
-		//check if player has deity
-		Player player = event.getPlayer();
-		if(DUtil.hasDeity(player.getName(), deityName))
+		try
 		{
-			//open the tribute inventory
-			Inventory ii = DUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
-			player.openInventory(ii);
-			DSave.saveDeityData(player.getName(), deityName, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
-			event.setCancelled(true);
-			return;
+			//check if block is divineBlock
+			String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
+			
+			if(deityName == null) return;
+			
+			//check if player has deity
+			Player player = event.getPlayer();
+			if(DUtil.hasDeity(player.getName(), deityName))
+			{
+				//open the tribute inventory
+				Inventory ii = DUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
+				player.openInventory(ii);
+				DSave.saveDeityData(player.getName(), deityName, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+				event.setCancelled(true);
+				return;
+			}
+			player.sendMessage(ChatColor.YELLOW+"You must be allianced to " + deityName + " in order to tribute here.");
 		}
-		player.sendMessage(ChatColor.YELLOW+"You must be allianced to " + deityName + " in order to tribute here.");
+		catch (Exception er) {}
 	}
 	
 	@EventHandler (priority = EventPriority.HIGH)
@@ -179,100 +207,107 @@ public class DDivineBlockListener implements Listener
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
 		for(String player : DUtil.getImmortalList())
 		{
-			if(DDivineBlocks.getShrines(player) != null)
-				for(Location center : DDivineBlocks.getShrines(player))
-				{
-					// Check for world errors
-					if(!center.getWorld().equals(event.getPlayer().getWorld())) return;
-					if(event.getFrom().getWorld() != center.getWorld()) return;
-					
-					/*
-					 * Outside coming in
-					 */
-					if(event.getFrom().distance(center) > RADIUS)
+			try
+			{
+				if(DDivineBlocks.getShrines(player) != null)
+					for(Location center : DDivineBlocks.getShrines(player))
 					{
-						if(center.distance(event.getTo()) <= RADIUS)
+						// Check for world errors
+						if(!center.getWorld().equals(event.getPlayer().getWorld())) return;
+						if(event.getFrom().getWorld() != center.getWorld()) return;
+						
+						/*
+						 * Outside coming in
+						 */
+						if(event.getFrom().distance(center) > RADIUS)
 						{
-							event.getPlayer().sendMessage(ChatColor.GRAY+"You have entered "+player+"'s divineBlock to "+ChatColor.YELLOW+DDivineBlocks.getDeityAtShrine(center)+ChatColor.GRAY+".");
-							return;
+							if(center.distance(event.getTo()) <= RADIUS)
+							{
+								event.getPlayer().sendMessage(ChatColor.GRAY+"You have entered "+player+"'s divineBlock to "+ChatColor.YELLOW+DDivineBlocks.getDeityAtShrine(center)+ChatColor.GRAY+".");
+								return;
+							}
+						}
+						
+						/*
+						 * Leaving
+						 */
+						else if(event.getFrom().distance(center) <= RADIUS)
+						{
+							if(center.distance(event.getTo()) > RADIUS)
+							{
+								event.getPlayer().sendMessage(ChatColor.GRAY+"You have left a divineBlock.");
+								return;
+							}
 						}
 					}
-					
-					/*
-					 * Leaving
-					 */
-					else if(event.getFrom().distance(center) <= RADIUS)
-					{
-						if(center.distance(event.getTo()) > RADIUS)
-						{
-							event.getPlayer().sendMessage(ChatColor.GRAY+"You have left a divineBlock.");
-							return;
-						}
-					}
-				}
+			} catch (Exception e) {}
 		}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void tributeSuccess(InventoryCloseEvent event)
 	{
-		if(!(event.getPlayer() instanceof Player)) return;
-		Player player = (Player)event.getPlayer();
-		String username = player.getName();
-		
-		if(!DUtil.isImmortal(username)) return;
-		
-		//continue if tribute chest
-		if(!event.getInventory().getName().equals("Tributes")) return;
-		
-		//get which deity tribute goes to
-		String toGive = null;
-		for(String immortalPlayer : DUtil.getImmortalList())
+		try
 		{
-			for(String deity : DUtil.getDeities(immortalPlayer))
+			if(!(event.getPlayer() instanceof Player)) return;
+			Player player = (Player)event.getPlayer();
+			String username = player.getName();
+			
+			if(!DUtil.isImmortal(username)) return;
+			
+			//continue if tribute chest
+			if(!event.getInventory().getName().equals("Tributes")) return;
+			
+			//get which deity tribute goes to
+			String toGive = null;
+			for(String immortalPlayer : DUtil.getImmortalList())
 			{
-				if(DSave.hasDeityData(immortalPlayer, deity, "tributing_temp"))
+				for(String deity : DUtil.getDeities(immortalPlayer))
 				{
-					toGive = deity;
-					break;
+					if(DSave.hasDeityData(immortalPlayer, deity, "tributing_temp"))
+					{
+						toGive = deity;
+						break;
+					}
 				}
 			}
-		}
-		
-		if(toGive == null) return;
-		
-		String creator = DDivineBlocks.getOwnerOfShrine((Location) DUtil.getDeityData(username, toGive, "tributing_temp")); //get the creator of the shrine
-		DSave.removeDeityData(username, toGive, "tributing_temp"); 
-		
-		//calculate value of chest
-		int value = 0;
-		int items = 0;
-		for(ItemStack ii : event.getInventory().getContents())
-		{
-			if(ii != null)
+			
+			if(toGive == null) return;
+			
+			String creator = DDivineBlocks.getOwnerOfShrine((Location) DUtil.getDeityData(username, toGive, "tributing_temp")); //get the creator of the shrine
+			DSave.removeDeityData(username, toGive, "tributing_temp"); 
+			
+			//calculate value of chest
+			int value = 0;
+			int items = 0;
+			for(ItemStack ii : event.getInventory().getContents())
 			{
-				value += DTributeValue.getTributeValue(ii);
-				items ++;
+				if(ii != null)
+				{
+					value += DTributeValue.getTributeValue(ii);
+					items ++;
+				}
 			}
+			
+			value *= FAVORMULTIPLIER;
+			
+			//give devotion
+			int devotionBefore = DUtil.getDevotion(username, toGive);
+			DUtil.setDevotion(username, toGive, DUtil.getDevotion(username, toGive) + value);
+			DUtil.setDevotion(creator, toGive, DUtil.getDevotion(creator, toGive) + value / 7);
+			
+			//give favor
+			int favorBefore = DUtil.getFavorCap(username);
+			//DUtil.setFavorCap(player, DUtil.getFavorCap(username)+value/5); TODO
+			
+			//devotion lock TODO
+			if(devotionBefore < DUtil.getDevotion(username, toGive)) player.sendMessage(ChatColor.YELLOW + "Your Devotion for " + toGive + " has increased to " + DUtil.getDevotion(username, toGive) + ".");
+			if(favorBefore < DUtil.getFavorCap(username)) player.sendMessage(ChatColor.YELLOW + "Your Favor Cap has increased to " + DUtil.getFavorCap(username) + ".");
+			if((favorBefore == DUtil.getFavorCap(username)) && (devotionBefore == DUtil.getDevotion(username, toGive)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + toGive + "'s blessings.");
+			
+			//clear inventory
+			event.getInventory().clear();
 		}
-		
-		value *= FAVORMULTIPLIER;
-		
-		//give devotion
-		int devotionBefore = DUtil.getDevotion(username, toGive);
-		DUtil.setDevotion(username, toGive, DUtil.getDevotion(username, toGive) + value);
-		DUtil.setDevotion(creator, toGive, DUtil.getDevotion(creator, toGive) + value / 7);
-		
-		//give favor
-		int favorBefore = DUtil.getFavorCap(username);
-		//DUtil.setFavorCap(player, DUtil.getFavorCap(username)+value/5); TODO
-		
-		//devotion lock TODO
-		if(devotionBefore < DUtil.getDevotion(username, toGive)) player.sendMessage(ChatColor.YELLOW + "Your Devotion for " + toGive + " has increased to " + DUtil.getDevotion(username, toGive) + ".");
-		if(favorBefore < DUtil.getFavorCap(username)) player.sendMessage(ChatColor.YELLOW + "Your Favor Cap has increased to " + DUtil.getFavorCap(username) + ".");
-		if((favorBefore == DUtil.getFavorCap(username)) && (devotionBefore == DUtil.getDevotion(username, toGive)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + toGive + "'s blessings.");
-		
-		//clear inventory
-		event.getInventory().clear();
+		catch (Exception er) {}
 	}
 }

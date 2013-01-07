@@ -20,7 +20,7 @@ public class DDivineBlocks
 	 *  getShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Location> getShrines(String username)
+	public static ArrayList<Location> getShrines(String username) throws Exception
 	{		
 		// Set variables
 		username = username.toLowerCase();
@@ -35,7 +35,7 @@ public class DDivineBlocks
 	/*
 	 *  getShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
-	public static ArrayList<Location> getAllShrines()
+	public static ArrayList<Location> getAllShrines() throws Exception
 	{		
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		
@@ -50,7 +50,7 @@ public class DDivineBlocks
 		return shrines;
 	}
 	
-	public static String getOwnerOfShrine(Location shrine)
+	public static String getOwnerOfShrine(Location shrine) throws Exception
 	{
 		String owner = null;
 		
@@ -70,7 +70,7 @@ public class DDivineBlocks
 		return owner;
 	}
 	
-	public static String getDeityAtShrine(Location shrine)
+	public static String getDeityAtShrine(Location shrine) throws Exception
 	{
 		String owner = getOwnerOfShrine(shrine);
 		String deity = null;
@@ -103,12 +103,12 @@ public class DDivineBlocks
 	/*
 	 *  getAltars() : Returns an ArrayList<Location> the server's Altars.
 	 */
-	public static ArrayList<Location> getAllAltars()
+	public static ArrayList<Location> getAllAltars() throws Exception
 	{		
 		return null; //TODO
 	}
 	
-	public static ArrayList<Location> getAllDivineBlocks()
+	public static ArrayList<Location> getAllDivineBlocks() throws Exception
 	{
 		ArrayList<Location> divineBlocks = new ArrayList<Location>();
 		
