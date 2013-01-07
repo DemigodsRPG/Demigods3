@@ -86,8 +86,33 @@ public class DUtil
 	 */
 	public static boolean isEnabledAbility(String username, String deity, String ability)
 	{
-		if(getDeityData(username, deity, ability) != null && toBoolean(getDeityData(username, deity, ability)) == true) return true;
+		if(getDeityData(username, deity, ability.toLowerCase() + "_boolean") != null)
+		{
+			return toBoolean(getDeityData(username, deity, ability.toLowerCase() + "_boolean"));
+		}
 		else return false;
+	}
+	
+	/*
+	 *  enableAbility() : Enables (String)ability for (String)player.
+	 */
+	public static void enableAbility(String username, String deity, String ability)
+	{
+		if(!isEnabledAbility(username, deity, ability))
+		{
+			setDeityData(username, deity, ability.toLowerCase() + "_boolean", true);
+		}
+	}
+	
+	/*
+	 *  disableAbility() : Disables (String)ability for (String)player.
+	 */
+	public static void disableAbility(String username, String deity, String ability)
+	{
+		if(isEnabledAbility(username, deity, ability))
+		{
+			setDeityData(username, deity, ability.toLowerCase() + "_boolean", false);
+		}
 	}
 	
 	/*
@@ -104,6 +129,19 @@ public class DUtil
 	}
 	
 	/*
+	 *  getBind() : Returns the bind for (String)username's (String)ability.
+	 */
+	public static Material getBind(String username, String deity, String ability)
+	{
+		if(getDeityData(username, deity, ability + "_bind") != null)
+		{
+			Material material = (Material) getDeityData(username, deity, ability + "_bind");
+			return material;
+		}
+		else return null;
+	}
+	
+	/*
 	 *  getBindings() : Returns all bindings for (Player)player.
 	 */
 	@SuppressWarnings("unchecked")
@@ -114,7 +152,7 @@ public class DUtil
 	
 		if(DSave.hasData(username, "deities"))
 		{
-			return (ArrayList<Material>) DSave.getDeityData(username, deity, "bindings");
+			return (ArrayList<Material>) getDeityData(username, deity, "bindings");
 		}
 		else return new ArrayList<Material>();
 	}
@@ -567,7 +605,11 @@ public class DUtil
 	 */
 	public static boolean toBoolean(Object object)
 	{
-		if(object instanceof Integer)
+		if(object instanceof Boolean)
+		{
+			return (Boolean) object;
+		}
+		else if(object instanceof Integer)
 		{
 			if((Integer) object == 1) return true;
 			else if((Integer) object == 0) return false;

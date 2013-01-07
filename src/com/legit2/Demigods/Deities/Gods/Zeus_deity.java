@@ -70,11 +70,8 @@ public class Zeus_deity implements Listener
 	}
 
 	public void printInfo(Player player)
-	{
-		// Set variables
-		String username = player.getName();
-		
-		if(DUtil.hasDeity(username, DEITYNAME) && DUtil.isImmortal(username))
+	{		
+		if(canUseDeity(player))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
@@ -105,7 +102,7 @@ public class Zeus_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.hasDeity(player.getName(), DEITYNAME) || !DUtil.isImmortal(player.getName())) return;
+			if(!canUseDeity(player)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -123,9 +120,9 @@ public class Zeus_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
+		if(!canUseDeity(player)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, SHOVE_NAME + "_bind"))))
+		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, SHOVE_NAME))))
 		{
 			if(!DUtil.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
 			if(!DUtil.canPVP(interactEvent.getPlayer().getLocation())) return;
@@ -138,7 +135,6 @@ public class Zeus_deity implements Listener
 			{
 				shove(player);
 				DUtil.subtractFavor(username, SHOVE_COST);
-				return;
 			}
 			else
 			{
@@ -146,7 +142,8 @@ public class Zeus_deity implements Listener
 				DUtil.setDeityData(username, DEITYNAME, SHOVE_NAME, false);
 			}
 		}
-		else if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, LIGHTNING_NAME + "_bind"))))
+		
+		if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, LIGHTNING_NAME))))
 		{
 			if(!DUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
 			if(!DUtil.canPVP(interactEvent.getPlayer().getLocation())) return;
@@ -159,7 +156,6 @@ public class Zeus_deity implements Listener
 			{
 				lightning(player);
 				DUtil.subtractFavor(username, LIGHTNING_COST);
-				return;
 			}
 			else
 			{
@@ -190,14 +186,14 @@ public class Zeus_deity implements Listener
 		}
 		else
 		{
-			if(DUtil.getDeityData(username, DEITYNAME, SHOVE_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, SHOVE_NAME)) 
+			if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME))
 			{
-				DUtil.setDeityData(username, DEITYNAME, SHOVE_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, SHOVE_NAME);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setDeityData(username, DEITYNAME, SHOVE_NAME, true);
+				DUtil.enableAbility(username, DEITYNAME, SHOVE_NAME);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is now active.");
 			}
 		}
@@ -212,7 +208,7 @@ public class Zeus_deity implements Listener
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
+		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		// Get Targets as an ArrayList
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
@@ -262,14 +258,14 @@ public class Zeus_deity implements Listener
 		}
 		else
 		{
-			if(DUtil.getDeityData(username, DEITYNAME, LIGHTNING_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, LIGHTNING_NAME)) 
+			if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME)) 
 			{
-				DUtil.setDeityData(username, DEITYNAME, LIGHTNING_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, LIGHTNING_NAME);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setDeityData(username, DEITYNAME, LIGHTNING_NAME, true);
+				DUtil.enableAbility(username, DEITYNAME, LIGHTNING_NAME);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is now active.");
 			}
 		}

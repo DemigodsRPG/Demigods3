@@ -116,7 +116,7 @@ public class DDatabase
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
 			DUtil.info("Saving player data...");
-
+			
 			// Define variables
 			int playerCount = 0;
 			long startTimer = System.currentTimeMillis();
@@ -128,6 +128,10 @@ public class DDatabase
 				// Define variables
 				String username = player.getName();
 				
+				// Remove all data for re-saving
+				DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
+				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
+
 				if(DSave.getAllPlayerData(username) != null && DSave.getAllDeityData(username) != null)
 				{
 					player_data = DSave.getAllPlayerData(username);	
@@ -166,25 +170,10 @@ public class DDatabase
 						
 						// Don't save if it's temporary data
 						if(id.contains("temp")) continue;
-						
-						String[] column = new String[2];
-						String[] values = new String[2];
-						column[0] = "player";
-						column[1] = "datakey";
-						values[0] = username;
-						values[1] = id;
-													
-						DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
+												
 						if(!id.equalsIgnoreCase("bindings"))
 						{
-							if(data.getClass().equals(Boolean.class))
-							{
-								DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', " + data + ");");
-							}
-							else
-							{
-								DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', '" + data + "');");
-							}
+							DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', '" + data.toString() + "');");
 						}
 					}
 				}
@@ -208,7 +197,6 @@ public class DDatabase
 						values[0] = username;
 						values[1] = id;
 						
-						DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
 						DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', " + data + ");");
 					}
 				}
@@ -277,7 +265,14 @@ public class DDatabase
 					{
 						while(player_deitydata.next())
 						{
-							DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getObject("datavalue"));
+							if(player_deitydata.getString("datakey").contains("_boolean"))
+							{
+								DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getBoolean("datavalue"));
+							}
+							else
+							{
+								DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getObject("datavalue"));
+							}
 						}
 					}
 				}

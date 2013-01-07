@@ -72,11 +72,8 @@ public class Cronus_deity implements Listener
 	}
 
 	public void printInfo(Player player)
-	{
-		// Set variables
-		String username = player.getName();
-		
-		if(DUtil.hasDeity(username, DEITYNAME) && DUtil.isImmortal(username))
+	{		
+		if(!canUseDeity(player))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);

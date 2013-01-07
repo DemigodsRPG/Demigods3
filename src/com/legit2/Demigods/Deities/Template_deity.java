@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
-public class Template implements Listener
+public class Template_deity implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";
@@ -49,17 +49,14 @@ public class Template implements Listener
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
 		
-		// Add new items in this format: claimItems.add(Material. NAME_OF_MATERIAL );
+		claimItems.add(Material.BEDROCK);
 
 		return claimItems;
 	}
 
 	public void printInfo(Player player)
-	{
-		// Set variables
-		String username = player.getName();
-		
-		if(DUtil.hasDeity(username, DEITYNAME) && DUtil.isImmortal(username))
+	{		
+		if(!canUseDeity(player))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
@@ -98,9 +95,9 @@ public class Template implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
+		if(!canUseDeity(player)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, TEST_NAME + "_bind"))))
+		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, TEST_NAME))))
 		{
 			if(!DUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
@@ -171,8 +168,7 @@ public class Template implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		// Check the player for DEITYNAME
-		if(!DUtil.hasDeity(username, DEITYNAME)) return;
+		if(!canUseDeity(player)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
