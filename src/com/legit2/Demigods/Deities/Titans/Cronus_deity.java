@@ -111,7 +111,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DUtil.hasDeity(username, DEITYNAME) || !DUtil.isImmortal(username)) return;
 			
-			if (!DUtil.canPVP(damageEvent.getEntity().getLocation())) return;
+			if(!DUtil.canPVP(damageEvent.getEntity().getLocation())) return;
 
 			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
 			
@@ -125,7 +125,7 @@ public class Cronus_deity implements Listener
 			
 			if(DUtil.isEnabledAbility(username, DEITYNAME, CLEAVE_NAME))
 			{
-				if(!DUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, true)) return;
+				if(!DUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
 
 				// Set the ability's delay
 				CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;

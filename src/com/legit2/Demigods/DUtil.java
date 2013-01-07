@@ -739,6 +739,17 @@ public class DUtil
 		return true;
 	}
 	
+	/*
+	 *  canPVP() : Checks if PVP is allowed in (Location)location.
+	 */
+    public static boolean canPVP(Location location)
+    {
+        if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
+        
+        if(canWorldGuardPVP(location) && canFactionsPVP(location)) return true;
+        else return false;
+    }
+	
     /*
      *  WORLDGUARD SUPPORT START
      */
@@ -780,11 +791,5 @@ public class DUtil
         if(plugin.FACTIONS == null) return true;
         Faction faction = Board.getFactionAt(new FLocation(location.getBlock()));
         return !(faction.isPeaceful() || faction.isSafeZone());
-    }
-    public static boolean canPVP(Location location)
-    {
-        if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
-        
-        return (canWorldGuardPVP(location)&&canFactionsPVP(location));
     }
 }
