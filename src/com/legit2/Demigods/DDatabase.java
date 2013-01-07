@@ -40,6 +40,8 @@ public class DDatabase
 	 */
 	public static void uninitializeDatabase()
 	{
+		saveAllData();
+		
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
 			DMySQL.uninitializeMySQL();

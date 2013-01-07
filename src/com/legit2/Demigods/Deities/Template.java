@@ -165,7 +165,7 @@ public class Template implements Listener
 	/*
 	 *  Command: "/testult"
 	 */
-	@ReflectCommand.Command(name = "testult", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god." + DEITYNAME + ".ultimate")
+	@ReflectCommand.Command(name = "testult", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
 	public static void ultimateCommand(Player player)
 	{
 		// Set variables

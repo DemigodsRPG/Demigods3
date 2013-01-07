@@ -181,6 +181,12 @@ public class DCommandExecutor
 		// Define Player and Username
 		Player player = DUtil.definePlayer(sender);
 		String username = player.getName();
+		
+		if(!DUtil.isImmortal(username))
+		{
+			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
+			return true;
+		}
 				
 		// Define variables
 		HashMap<String, Object> player_data = DUtil.getAllPlayerData(username);
@@ -225,7 +231,7 @@ public class DCommandExecutor
 				{
 					devotion = data.toString();
 					deity_list.add(deity_name + " [" + devotion + "]");
-				}	
+				}
 			}
 		}
 		

@@ -147,7 +147,7 @@ public class Zeus_deity implements Listener
 		}
 		else if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, LIGHTNING_NAME + "_bind"))))
 		{
-			if(!DUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, true)) return;
+			if(!DUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
 
 			// Set the ability's delay
 			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
@@ -207,8 +207,8 @@ public class Zeus_deity implements Listener
 		// Define variables
 		String username = player.getName().toLowerCase();
 		int devotion = DUtil.getDevotion(username, DEITYNAME);
-		int targets = (int)Math.ceil(1.561*Math.pow(devotion, 0.128424));
-		double multiply = 0.1753*Math.pow(devotion, 0.322917);
+		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
+		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
 		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
 		
@@ -296,7 +296,7 @@ public class Zeus_deity implements Listener
 	/*
 	 *  Command: "/storm"
 	 */
-	@ReflectCommand.Command(name = "storm", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.god." + DEITYNAME + ".ultimate")
+	@ReflectCommand.Command(name = "storm", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
 	public static void ultimateCommand(Player player)
 	{
 		// Set variables
