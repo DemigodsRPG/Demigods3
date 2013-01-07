@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
 import com.massivecraft.factions.P;
@@ -85,7 +86,8 @@ public class Demigods extends JavaPlugin
 		/* Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
 		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);
-	}
+		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
+}
 	
 	/*
 	 *  loadDeities() : Loads the deities.

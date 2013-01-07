@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.legit2.Demigods.DSouls;
+import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
 
 public class DEntityListener implements Listener
@@ -23,19 +24,45 @@ public class DEntityListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void onEntityDeath(EntityDeathEvent event)
+	public static void entityDeath(EntityDeathEvent event)
 	{
-		if(event.getEntityType().equals(EntityType.VILLAGER))
+		// Define variables
+		LivingEntity attackedEntity;
+		if(event.getEntityType().equals(EntityType.PLAYER)) // IF IT'S A PLAYER
+		{
+			// Define entity as player and other variables
+			attackedEntity = event.getEntity();
+			Player attackedPlayer = (Player) attackedEntity;
+			// EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
+			
+			// Define attacker and name
+			// Player attacker = (Player) damageEvent.getDamager();
+			// String attackerName = attacker.getName();
+			
+			// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
+			if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
+			{
+				attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
+			}
+			else // Else we cancel their death and subtract a soul
+			{
+				if(DUtil.useSoul(attackedPlayer))
+				{
+					// TODO: Add code to cancel death and set health corresponding to soul used.
+				}
+			}
+		}
+		else if(event.getEntityType().equals(EntityType.VILLAGER)) // IF IT'S A VILLAGER
 		{
 			// Define villager
 			LivingEntity villager = event.getEntity();
-			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent)villager.getLastDamageCause();
+			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
 			
 			// Define attacker and name
-			Player attacker = (Player)damageEvent.getDamager();
+			Player attacker = (Player) damageEvent.getDamager();
 			//String attackerName = attacker.getName();
-		
-			villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoul(villager));
+
+			villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
 			attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 		}
 	}

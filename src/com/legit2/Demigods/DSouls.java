@@ -9,46 +9,53 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class DSouls
 {
+	// Define variables
+	public static ArrayList<ItemStack> allSouls = new ArrayList<ItemStack>();
+	
 	/*
-	 *  getSoul : Returns soul for type of entity passed in.
+	 *  getSoulFromEntity : Returns soul for type of entity passed in.
 	 */
-	@SuppressWarnings("null")
-	public static ItemStack getSoul(Entity entity)
+	public static ItemStack getSoulFromEntity(Entity entity)
 	{
 		// Define Mortal Soul
-		String soulName = null;
-		ItemStack soulItem = null;
-		ArrayList<String> soulLore = new ArrayList<String>();
-		ItemMeta soulMeta = soulItem.getItemMeta();
-
+		String mortalSoulName = "Mortal Soul";
+		ItemStack mortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
+		ArrayList<String> mortalSoulLore = new ArrayList<String>();
+		mortalSoulLore.add("Brings you back to life.");
+		mortalSoulLore.add("Regain half health!");
+		ItemMeta mortalSoulMeta = mortalSoul.getItemMeta();
+		mortalSoulMeta.setDisplayName(mortalSoulName);
+		mortalSoulMeta.setLore(mortalSoulLore);
+		mortalSoul.setItemMeta(mortalSoulMeta);
+		allSouls.add(mortalSoul);
+		
+		// Define Mortal Soul
+		String immortalSoulName = "Immortal Soul";
+		ItemStack immortalSoul = new ItemStack(Material.GLOWSTONE_DUST, 1);
+		ArrayList<String> immortalSoulLore = new ArrayList<String>();
+		immortalSoulLore.add("Brings you back to life.");
+		immortalSoulLore.add("Regain full health!");
+		ItemMeta immortalSoulMeta = immortalSoul.getItemMeta();
+		immortalSoulMeta.setDisplayName(immortalSoulName);
+		immortalSoulMeta.setLore(immortalSoulLore);
+		immortalSoul.setItemMeta(immortalSoulMeta);
+		allSouls.add(immortalSoul);
+		
 		// Determine soul information based on entity type
 		switch(entity.getType())
 		{
-			// Soul dropped by VILLAGER
-			case VILLAGER: 
-				soulName = "Mortal Soul";
-				soulItem = new ItemStack(Material.GOLD_NUGGET, 1);
-				soulLore.add("Brings you back to life.");
-				soulLore.add("Regain half health!");
-				break;
-				
-			// Soul dropped by PLAYER
-			case PLAYER: 
-				soulName = "Immortal Soul";
-				soulItem = new ItemStack(Material.GLOWSTONE_DUST, 1);
-				soulLore.add("Brings you back to life.");
-				soulLore.add("Regain full health!");
-				break;
-				
-			// Break if default
-			default: break;
+			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
+			case PLAYER: return immortalSoul; // Soul dropped by PLAYER
+			default: break;	// Break if default
 		}
-
-		// Set the information for the soul
-		soulMeta.setDisplayName(soulName);
-		soulMeta.setLore(soulLore);
-		soulItem.setItemMeta(soulMeta);
-
-		return soulItem;
+		return null;
+	}
+	
+	/*
+	 *  returnAllSouls() : Returns an array of all possible souls.
+	 */
+	public static ArrayList<ItemStack> returnAllSouls()
+	{
+		return allSouls;
 	}
 }

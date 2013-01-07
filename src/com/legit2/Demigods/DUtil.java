@@ -19,6 +19,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
@@ -126,6 +127,60 @@ public class DUtil
 			return false;
 		}
 		else return true;
+	}
+	
+	/*
+	 *  getNumberOfSouls() : Returns the number of souls (Player)player has in their inventory.
+	 */
+	public static int getNumberOfSouls(Player player)
+	{
+		// Define inventory contents & other variables
+		ItemStack[] inventory = player.getInventory().getContents();
+		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
+		int numberOfSouls = 0;
+		
+		for(ItemStack soul : allSouls)
+		{
+			for(ItemStack inventoryItem : inventory)
+			{
+				if(inventoryItem.isSimilar(soul))
+				{
+					// Find amount of souls and subtract 1 upon use
+					int amount = inventoryItem.getAmount();
+					
+					numberOfSouls += amount;
+				}
+			}
+		}
+		return numberOfSouls;
+	}
+	
+	/*
+	 *  useSoul() : Uses first soul found in (Player)player's inventory.
+	 */
+	public static boolean useSoul(Player player)
+	{		
+		// Define inventory contents
+		ItemStack[] inventory = player.getInventory().getContents();
+		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
+		
+		for(ItemStack soul : allSouls)
+		{
+			for(ItemStack inventoryItem : inventory)
+			{
+				if(inventoryItem.isSimilar(soul))
+				{
+					// Find amount of souls and subtract 1 upon use
+					int amount = inventoryItem.getAmount();
+					player.getInventory().removeItem(inventoryItem);
+					inventoryItem.setAmount(amount - 1);
+					player.getInventory().addItem(inventoryItem);
+					
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/*
