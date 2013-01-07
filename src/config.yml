@@ -20,7 +20,7 @@ max_favor: 10000
 save_interval_seconds: 300
 ascension_cap: 100
 
-#Database Settings
+## Database Settings ##
 database:
     mysql:
         use: true
