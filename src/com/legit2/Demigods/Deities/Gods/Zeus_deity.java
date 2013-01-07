@@ -71,14 +71,13 @@ public class Zeus_deity implements Listener
 
 	public void printInfo(Player player)
 	{		
-		if(canUseDeity(player))
+		if(!canUseDeity(player, false))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
 			// TODO Deity Info
 			return;
 		}
-
 		DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
 		// TODO Deity Info
 		
@@ -90,7 +89,7 @@ public class Zeus_deity implements Listener
 		}
 		
 		// Make Claim Items readable.
-		String claimItems = Joiner.on(",").join(claimItemNames);
+		String claimItems = Joiner.on(", ").join(claimItemNames);
 		
 		player.sendMessage("Claim Items: " + claimItems);
 	}
@@ -102,7 +101,7 @@ public class Zeus_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!canUseDeity(player)) return;
+			if(!canUseDeity(player, false)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -120,7 +119,7 @@ public class Zeus_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!canUseDeity(player)) return;
+		if(!canUseDeity(player, false)) return;
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, SHOVE_NAME))))
 		{
@@ -177,7 +176,7 @@ public class Zeus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!canUseDeity(player)) return;
+		if(!canUseDeity(player, true)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -249,7 +248,7 @@ public class Zeus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!canUseDeity(player)) return;
+		if(!canUseDeity(player, true)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -394,17 +393,17 @@ public class Zeus_deity implements Listener
 	// Don't touch these, they're required to work.
 	public String getName() { return DEITYNAME; }
 	public String getAlliance() { return DEITYALLIANCE; }
-	public static boolean canUseDeity(Player player)
+	public static boolean canUseDeity(Player player, Boolean sendMsg)
 	{		
 		// Check the player for DEITYNAME
 		if(!DUtil.hasDeity(player.getName(), DEITYNAME))
 		{
-			player.sendMessage(ChatColor.RED + "You haven't even claimed " + DEITYNAME + "! You can't do that!");
+			if(sendMsg) player.sendMessage(ChatColor.RED + "You haven't even claimed " + DEITYNAME + "! You can't do that!");
 			return false;
 		}
 		else if(!DUtil.isImmortal(player.getName()))
 		{
-			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
+			if(sendMsg) player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
 		}
 		return true;
