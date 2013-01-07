@@ -126,9 +126,9 @@ public class DDatabase
 				// Define variables
 				String username = player.getName();
 				
-				if(DSave.getPlayerData(username) != null && DSave.getAllDeityData(username) != null)
+				if(DSave.getAllPlayerData(username) != null && DSave.getAllDeityData(username) != null)
 				{
-					player_data = DSave.getPlayerData(username);	
+					player_data = DSave.getAllPlayerData(username);	
 					player_deities = DSave.getAllDeityData(username);	
 				}
 				else
@@ -138,7 +138,7 @@ public class DDatabase
 						// No HashMap data was found, let's create some...
 						addPlayer(username);
 						
-						player_data = DSave.getPlayerData(username);	
+						player_data = DSave.getAllPlayerData(username);	
 						player_deities = DSave.getAllDeityData(username);	
 					}
 					catch(SQLException e)

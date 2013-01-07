@@ -222,7 +222,7 @@ public class DSave
 	/*
 	 *  getPlayerData() : Returns a HashMap of all of (String)username's player data.
 	 */
-	public static HashMap<String, Object> getPlayerData(String username)
+	public static HashMap<String, Object> getAllPlayerData(String username)
 	{
 		// Set variables
 		username = username.toLowerCase();

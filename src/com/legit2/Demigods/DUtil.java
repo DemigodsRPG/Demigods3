@@ -539,6 +539,22 @@ public class DUtil
 	}
 	
 	/*
+	 *  getAllPlayerData() : Returns all saved HashMaps.
+	 */
+	public static HashMap<String, Object> getAllPlayerData(String username)
+	{
+		return DSave.getAllPlayerData(username);
+	}
+	
+	/*
+	 *  getAllDeityData() : Returns all saved HashMaps.
+	 */
+	public static HashMap<String, HashMap<String, Object>> getAllDeityData(String username)
+	{
+		return DSave.getAllDeityData(username);
+	}
+	
+	/*
 	 *  toInteger() : Returns an object as an integer.
 	 */
 	public static int toInteger(Object object)

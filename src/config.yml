@@ -10,6 +10,7 @@ broadcast_new_deities: true
 stat_display_frequency_in_seconds: 0
 start_delay_seconds: 60.0
 favor_regen_seconds: 0.5
+max_favor: 10000
 save_interval_seconds: 300
 balance_teams: true
 ascension_cap: 100
