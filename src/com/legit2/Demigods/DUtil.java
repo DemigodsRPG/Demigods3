@@ -150,7 +150,7 @@ public class DUtil
 		// Set variables
 		username = username.toLowerCase();
 	
-		if(DSave.hasData(username, "deities"))
+		if(DSave.hasPlayerData(username, "deities"))
 		{
 			return (ArrayList<Material>) getDeityData(username, deity, "bindings");
 		}
@@ -186,7 +186,7 @@ public class DUtil
 				}
 				else
 				{			
-					if(DSave.hasData(username, "bindings"))
+					if(DSave.hasPlayerData(username, "bindings"))
 					{
 						ArrayList<Material> bindings = getBindings(username, deity);
 						
@@ -233,7 +233,7 @@ public class DUtil
 		username = username.toLowerCase();
 		ArrayList<Material> bindings = null;
 
-		if(DSave.hasData(username, "bindings"))
+		if(DSave.hasPlayerData(username, "bindings"))
 		{
 			bindings = getBindings(username, deity);
 			
@@ -282,6 +282,14 @@ public class DUtil
 	public static void setImmortal(String username, Boolean option)
 	{
 		setPlayerData(username, "immortal", toBoolean(option));
+	}
+	
+	/*
+	 *  getFavorCap() : Returns the favor cap for (String)username.
+	 */
+	public static int getFavorCap(String username)
+	{
+		return DConfig.getSettingInt("max_favor"); //TODO
 	}
 	
 	/*
@@ -469,7 +477,7 @@ public class DUtil
 		username = username.toLowerCase();
 		//ArrayList<String> deities = new ArrayList<String>();
 
-		if(DSave.hasData(username, "deities"))
+		if(DSave.hasPlayerData(username, "deities"))
 		{
 			return (ArrayList<String>) DSave.getPlayerData(username, "deities");
 		}
@@ -494,7 +502,7 @@ public class DUtil
 		username = username.toLowerCase();
 		deity.toLowerCase();
 			
-		if(DSave.hasData(username, "deities"))
+		if(DSave.hasPlayerData(username, "deities"))
 		{
 			ArrayList<String> deities = getDeities(username);
 			
@@ -511,7 +519,7 @@ public class DUtil
 		
 		return true;
 	}
-
+	
 	/*
 	 *  getPlayerData() : Returns the data with id (String)key for (Player)player.
 	 */
@@ -778,6 +786,25 @@ public class DUtil
 	public static boolean noPlayer(CommandSender sender)
 	{
 		sender.sendMessage("This command can only be executed by the console.");
+		return true;
+	}
+	
+	/*
+	 *  canUseDeity() : Checks is a player can use a specfic deity.
+	 */
+	public static boolean canUseDeity(Player player, String deity, Boolean sendMsg)
+	{		
+		// Check the player for DEITYNAME
+		if(!DUtil.hasDeity(player.getName(), deity))
+		{
+			if(sendMsg) player.sendMessage(ChatColor.RED + "You haven't even claimed " + deity + "! You can't do that!");
+			return false;
+		}
+		else if(!DUtil.isImmortal(player.getName()))
+		{
+			if(sendMsg) player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
+			return false;
+		}
 		return true;
 	}
 	

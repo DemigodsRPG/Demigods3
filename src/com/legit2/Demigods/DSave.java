@@ -47,7 +47,7 @@ public class DSave
 	/*
 	 *  hasData() : Checks to see if data (String)id exists in (String)username HashMap.
 	 */
-	public static boolean hasData(String username, String id)
+	public static boolean hasPlayerData(String username, String id)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -142,7 +142,7 @@ public class DSave
 		id = id.toLowerCase();
 				
 		// Remove data
-		if(hasData(username, id)) playerData.get(username).remove(id);
+		if(hasPlayerData(username, id)) playerData.get(username).remove(id);
 		
 		return true;
 	}
@@ -170,7 +170,7 @@ public class DSave
 		id = id.toLowerCase();
 
 		// If player has specific data with correct id, return it
-		if(hasData(username, id)) return playerData.get(username).get(id);
+		if(hasPlayerData(username, id)) return playerData.get(username).get(id);
 		return null;
 	}
 	

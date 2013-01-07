@@ -73,7 +73,7 @@ public class Cronus_deity implements Listener
 
 	public void printInfo(Player player)
 	{		
-		if(!canUseDeity(player, false))
+		if(!DUtil.canUseDeity(player, DEITYNAME, false))
 		{
 			// Print Deity Info to Chat
 			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
@@ -106,7 +106,7 @@ public class Cronus_deity implements Listener
 			Player player = (Player)damageEvent.getDamager();
 			String username = player.getName();
 			
-			if(!canUseDeity(player, false)) return;
+			if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
 			
 			if(!DUtil.canPVP(damageEvent.getEntity().getLocation())) return;
 
@@ -150,7 +150,7 @@ public class Cronus_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!canUseDeity(player, false)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, SLOW_NAME + "_bind"))))
 		{
@@ -186,7 +186,7 @@ public class Cronus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!canUseDeity(player, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
 
 		if(DUtil.getDeityData(username, DEITYNAME, CLEAVE_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, CLEAVE_NAME)) 
 		{
@@ -237,7 +237,7 @@ public class Cronus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!canUseDeity(player, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -367,19 +367,4 @@ public class Cronus_deity implements Listener
 	// Don't touch these, they're required to work.
 	public String getName() { return DEITYNAME; }
 	public String getAlliance() { return DEITYALLIANCE; }
-	public static boolean canUseDeity(Player player, Boolean sendMsg)
-	{		
-		// Check the player for DEITYNAME
-		if(!DUtil.hasDeity(player.getName(), DEITYNAME))
-		{
-			if(sendMsg) player.sendMessage(ChatColor.RED + "You haven't even claimed " + DEITYNAME + "! You can't do that!");
-			return false;
-		}
-		else if(!DUtil.isImmortal(player.getName()))
-		{
-			if(sendMsg) player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
-			return false;
-		}
-		return true;
-	}
 }

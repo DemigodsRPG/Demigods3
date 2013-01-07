@@ -55,7 +55,7 @@ public class DMetrics
 							{
 								if (DUtil.getAlliance(s) != null && DUtil.getAlliance(s).equalsIgnoreCase(ALLIANCE))
 								{
-									if (DSave.hasData(s, "LASTLOGINTIME"))
+									if (DSave.hasPlayerData(s, "LASTLOGINTIME"))
 									{
 										if ((Long)DSave.getPlayerData(s, "LASTLOGINTIME") < System.currentTimeMillis()-604800000) continue;
 									}

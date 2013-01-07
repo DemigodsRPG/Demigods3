@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import com.legit2.Demigods.Libraries.Serializable.WriteLocation;
 
-public class LegacyImport
+public class DLegacyImport
 {
 	 @SuppressWarnings({ "resource", "unused" })
 	 public static boolean loadData(String p) throws FileNotFoundException
