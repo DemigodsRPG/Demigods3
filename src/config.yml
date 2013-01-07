@@ -1,21 +1,26 @@
-#Global Settings
+## Global Settings ##
 auto_update: false
+broadcast_new_deities: true
+friendly_fire: false
+allow_skills_everywhere: false
+balance_teams: true
 inactive_worlds:
+#- world_nodemigods
+
+## Statistic Caps, Multipliers, and Related ##
 globalfavormultiplier: 1.0
 globalexpmultiplier: 1.0
 globalfavorcap: 20000
 max_target_range: 100
 pvp_exp_bonus: 1.5
-broadcast_new_deities: true
 stat_display_frequency_in_seconds: 0
 start_delay_seconds: 60.0
 favor_regen_seconds: 0.5
 max_favor: 10000
 save_interval_seconds: 300
-balance_teams: true
 ascension_cap: 100
-allow_skills_everywhere: false
-friendly_fire: false
+
+#Database Settings
 database:
     mysql:
         use: true
