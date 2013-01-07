@@ -101,7 +101,7 @@ public class Cronus_deity implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onEntityDamange(EntityDamageByEntityEvent damageEvent)
 	{
-		if(damageEvent.getEntity() instanceof Player)
+		if(damageEvent.getDamager() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getDamager();
 			String username = player.getName();
