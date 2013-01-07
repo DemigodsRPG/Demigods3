@@ -10,8 +10,8 @@ public class DTributeValue
 	public static int getTributeValue(ItemStack itemStack)
 	{
 		int val = 0;
-		if (itemStack == null) return 0;
-		switch (itemStack.getType())
+		if(itemStack == null) return 0;
+		switch(itemStack.getType())
 		{
 			case STONE: val+=itemStack.getAmount()*0.5; break;
 			case COBBLESTONE: val+=itemStack.getAmount()*0.3; break;
