@@ -42,8 +42,8 @@ public class Demigods extends JavaPlugin
 			DDatabase.initializeDatabase();
 			DConfig.initializeConfig();
 			DScheduler.startThreads();
-			loadDeities();
 			loadCommands();
+			loadDeities();
 			loadListeners();
 			loadMetrics();
 			//checkUpdate();
