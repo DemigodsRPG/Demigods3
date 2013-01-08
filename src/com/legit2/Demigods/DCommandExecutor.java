@@ -323,7 +323,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		
 		Bukkit.getPlayer(username).sendMessage(ChatColor.YELLOW + "You have been reset in the Demigods database by " + ChatColor.AQUA + sender.getName() + ChatColor.YELLOW + ".");
-		sender.sendMessage(ChatColor.RED + "You have removed " + ChatColor.AQUA + username + ChatColor.YELLOW + " from the database!");
+		sender.sendMessage(ChatColor.RED + "You have removed " + ChatColor.AQUA + username + ChatColor.RED + " from the database!");
 		
 		return true;
 	}
