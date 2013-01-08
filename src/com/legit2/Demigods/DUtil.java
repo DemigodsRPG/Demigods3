@@ -575,7 +575,7 @@ public class DUtil
 	 */
 	public static String getAlliance(String username)
 	{
-		return (String)getPlayerData(username, "alliance");
+		return (String) getPlayerData(username, "alliance");
 	}
 	
 	/*
