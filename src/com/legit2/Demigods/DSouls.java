@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -17,7 +18,7 @@ public class DSouls
 	private static void loadSouls()
 	{
 		// Define Mortal Soul
-		mortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
+		mortalSoul = new ItemStack(Material.GHAST_TEAR, 1);
 		String mortalSoulName = "Mortal Soul";
 		ArrayList<String> mortalSoulLore = new ArrayList<String>();
 		mortalSoulLore.add("Brings you back to life.");
@@ -29,7 +30,7 @@ public class DSouls
 		allSouls.add(mortalSoul);
 		
 		// Define Immortal Soul
-		immortalSoul = new ItemStack(Material.GLOWSTONE_DUST, 1);
+		immortalSoul = new ItemStack(Material.LOCKED_CHEST, 1);
 		String immortalSoulName = "Immortal Soul";
 		ArrayList<String> immortalSoulLore = new ArrayList<String>();
 		immortalSoulLore.add("Brings you back to life.");
@@ -52,8 +53,22 @@ public class DSouls
 		// Determine soul information based on entity type
 		switch(entity.getType())
 		{
+			case PLAYER: // Soul dropped by PLAYER
+				if(DUtil.isImmortal(((Player) entity).getName()))
+				{
+					return immortalSoul; 
+				}
+				else
+				{
+					return mortalSoul;
+				}
 			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
-			case PLAYER: return immortalSoul; // Soul dropped by PLAYER
+			
+			/*
+			 *  TODO: Add soul drops for other entities based on a random chance of dropped.
+			 *  ----  Possibly introduces ability to spawn rare super-souls for players to use.
+			 */
+				
 			default: break;	// Break if default
 		}
 		return null;

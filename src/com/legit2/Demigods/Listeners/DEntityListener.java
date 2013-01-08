@@ -56,8 +56,13 @@ public class DEntityListener implements Listener
 						ItemStack usedSoul = DUtil.useSoul(attackedPlayer);
 					
 						DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
+						
 						// Cancel it
-						damageEvent.setCancelled(true);
+						if(damageEvent.getDamage() > attackedPlayer.getHealth())
+						{
+							DUtil.serverMsg("TEMP: Attempting to cancel death...");
+							damageEvent.setCancelled(true);
+						}
 					}
 				}
 			}
