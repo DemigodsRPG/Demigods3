@@ -16,7 +16,7 @@ import com.google.common.base.Joiner;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
-public class Template_deity implements Listener
+public class Template implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";
