@@ -415,10 +415,13 @@ public class DCommandExecutor implements CommandExecutor
 			return false;
 		}
 		
-		if(DUtil.getAlliance(username) != null && (DUtil.getAlliance(username).toLowerCase() != DUtil.getDeityAlliance(deity).toLowerCase()))
+		String alliance;
+		
+		if(DUtil.getAlliance(username) != null) alliance = DUtil.getDeityAlliance(deity);
+		else alliance = DUtil.getAlliance(username);
+		
+		if(alliance != DUtil.getDeityAlliance(deity).toLowerCase())
 		{
-			player.sendMessage("Your alliance: " + DUtil.getAlliance(username).toLowerCase());
-			player.sendMessage(deity + "'s alliance: " + DUtil.getDeityAlliance(deity).toLowerCase());
 			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
 			return true;
 		}
@@ -448,6 +451,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		
 		DUtil.giveDeity(username, deity);
+		DUtil.setAlliance(username, alliance);
 		DUtil.setImmortal(username, true);
 		DUtil.setFavor(username, 500);
 		DUtil.setAscensions(username, 9);
