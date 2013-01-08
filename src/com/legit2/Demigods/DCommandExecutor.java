@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +33,10 @@ public class DCommandExecutor implements CommandExecutor
 		else if (command.getName().equalsIgnoreCase("setascensions")) return setAscensions(sender,args);
 		else if (command.getName().equalsIgnoreCase("setdevotion")) return setDevotion(sender,args);
 		else if (command.getName().equalsIgnoreCase("givedeity")) return giveDeity(sender,args);
+		
+		// BETA TESTING ONLY
+		else if (command.getName().equalsIgnoreCase("claim")) return claim(sender,args);
+		
 		return false;
 	}
 	
@@ -383,6 +388,73 @@ public class DCommandExecutor implements CommandExecutor
 		DUtil.setKills(username, 2);
 		
 		sender.sendMessage(ChatColor.YELLOW + "You've given " + deity + " to " + username + "!");
+		
+		return true;
+	}
+	
+	/*
+	 *  Command: "claim"
+	 */
+	public static boolean claim(CommandSender sender, String[] args)
+	{
+		Player player = DUtil.definePlayer(sender);
+		
+		if(player == null) return DUtil.noConsole(sender);
+		
+		if(args.length != 1) return false;
+		
+		// Define args
+		String username = player.getName();
+		String deity = args[0];
+		
+		ArrayList<String> loadedDeities = DUtil.getLoadedDeityNames();
+		
+		if(!loadedDeities.contains(deity))
+		{
+			player.sendMessage(ChatColor.RED + "That deity does not exist.");
+			return false;
+		}
+		
+		if(DUtil.getAlliance(username) != null && (DUtil.getAlliance(username).toLowerCase() != DUtil.getDeityAlliance(deity).toLowerCase()))
+		{
+			player.sendMessage("Your alliance: " + DUtil.getAlliance(username).toLowerCase());
+			player.sendMessage(deity + "'s alliance: " + DUtil.getDeityAlliance(deity).toLowerCase());
+			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
+			return true;
+		}
+		
+		if(DUtil.hasDeity(username, deity))
+		{
+			player.sendMessage(ChatColor.RED + "You cannot claim a the same deity twice.");
+			return true;
+		}
+		
+		ArrayList<Material> claimItems = DUtil.getDeityClaimItems(args[0]);
+		int needs = claimItems.size();
+		int count = 0;
+			
+		for(Material claimItem : claimItems)
+		{
+			if(player.getInventory().contains(claimItem))
+			{
+				count++;
+			}
+		}
+		
+		if(count != needs)
+		{
+			player.sendMessage(ChatColor.RED + "You do not have the correct claim items.");
+			return true;
+		}
+		
+		DUtil.giveDeity(username, deity);
+		DUtil.setImmortal(username, true);
+		DUtil.setFavor(username, 500);
+		DUtil.setAscensions(username, 9);
+		DUtil.setDevotion(username, deity, 900);
+		DUtil.setKills(username, 2);
+		
+		player.sendMessage(ChatColor.YELLOW + "You've claimed " + deity + "!");
 		
 		return true;
 	}

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,6 +108,9 @@ public class Demigods extends JavaPlugin
 		getCommand("setascensions").setExecutor(ce);
 		getCommand("setdevotion").setExecutor(ce);
 		getCommand("givedeity").setExecutor(ce);
+		
+		// BETA TESTING ONLY
+		getCommand("claim").setExecutor(ce);
 	}
 	
 	/*
@@ -123,6 +127,7 @@ public class Demigods extends JavaPlugin
 	/*
 	 *  loadDeities() : Loads the deities.
 	 */
+	@SuppressWarnings("unchecked")
 	public void loadDeities()
 	{
 		DUtil.info("Loading deities...");
@@ -163,10 +168,12 @@ public class Demigods extends JavaPlugin
 					String deityMessage = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
 					String deityName = (String) DUtil.invokeDeityMethod(deity, "getName");
 					String alliance = (String) DUtil.invokeDeityMethod(deity, "getAlliance");
+					ArrayList<Material> claimItems = (ArrayList<Material>) DUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
 					DSave.saveData("deity_classes_temp", deityName, deity);
 					DSave.saveData("deity_alliances_temp", deityName, alliance);
+					DSave.saveData("deity_claim_items_temp", deityName, claimItems);
 					 
 					// Display the success message
 					DUtil.info(deityMessage);

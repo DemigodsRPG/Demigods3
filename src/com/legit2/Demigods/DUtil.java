@@ -138,6 +138,16 @@ public class DUtil
 	}
 	
 	/*
+	 *  getDeityClaimItems() : Returns an ArrayList<Material> of a loaded (String)deity's claim items.
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Material> getDeityClaimItems(String deity)
+	{
+		ArrayList<Material> toReturn = (ArrayList<Material>) DSave.getData("deity_claim_items_temp", deity);
+		return toReturn;
+	}
+	
+	/*
 	 *  getAllDeitiesInAlliance() : Returns a ArrayList<String> of all the loaded deities' names.
 	 */
 	public static ArrayList<String> getAllDeitiesInAlliance(String alliance)

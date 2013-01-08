@@ -76,6 +76,7 @@ public class Zeus_deity implements Listener
 		if(DUtil.canUseDeitySilent(username, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
 		}

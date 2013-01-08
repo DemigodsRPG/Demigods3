@@ -12,6 +12,9 @@ commands:
     check:
         usage: /check
         permission: demigods.basic
+    claim:
+        usage: /claim <deity>
+        permission: demigods.basic
     setalliance:
         usage: /setalliance <player> <alliance>
         permission: demigods.admin
