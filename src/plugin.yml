@@ -30,6 +30,9 @@ commands:
     givedeity:
         usage: /givedeity <player> <deity>
         permission: demigods.admin
+    removeplayer:
+        usage: /removeplayer <player>
+        permission: demigods.admin
 permissions:
     demigods.basic:
         description: The default permission for players.
