@@ -41,7 +41,7 @@ public class DEntityListener implements Listener
 			if(attacker instanceof Player)
 			{
 				// Cancel soul drop if player kills themselves
-				if(((Player) attacker).getName().equals(attackedPlayer)) return;
+				if(attackedEntity.getKiller().equals(attackedPlayer)) return;
 				
 				// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
 				if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
