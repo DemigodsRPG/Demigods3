@@ -42,9 +42,8 @@ public class DEntityListener implements Listener
 			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
 			Entity attacker = damageEvent.getDamager();
 			
-			if(attacker instanceof Player)
+			if(attacker instanceof Player && damageEvent.getDamage() > attackedPlayer.getHealth())
 			{
-				
 				// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
 				if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
 				{
@@ -58,12 +57,8 @@ public class DEntityListener implements Listener
 					
 						DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
 						
-						// Cancel it
-						if(damageEvent.getDamage() > attackedPlayer.getHealth())
-						{
-							DUtil.serverMsg("TEMP: Attempting to cancel death...");
-							damageEvent.setCancelled(true);
-						}
+						DUtil.serverMsg("TEMP: Attempting to cancel death...");
+						damageEvent.setCancelled(true);
 					}
 				}
 			}
@@ -76,10 +71,12 @@ public class DEntityListener implements Listener
 			
 			// Define attacker and name
 			Player attacker = (Player) damageEvent.getDamager();
-			//String attackerName = attacker.getName();
 
-			villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
-			attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+			if(attacker instanceof Player && damageEvent.getDamage() > villager.getHealth())
+			{
+				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
+				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+			}
 		}
 	}
 	
