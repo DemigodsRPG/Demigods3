@@ -425,7 +425,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		else alliance = DUtil.getAlliance(username);
 		
-		if(alliance != DUtil.getDeityAlliance(deity).toLowerCase())
+		if(!alliance.equalsIgnoreCase(DUtil.getDeityAlliance(deity)))
 		{
 			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
 			return true;
