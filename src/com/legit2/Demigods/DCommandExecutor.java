@@ -416,8 +416,13 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		
 		String alliance;
+		Boolean firstTime = false;
 		
-		if(DUtil.getAlliance(username) != null) alliance = DUtil.getDeityAlliance(deity);
+		if(DUtil.getAlliance(username) == null) 
+		{
+			alliance = DUtil.getDeityAlliance(deity);
+			firstTime = true;
+		}
 		else alliance = DUtil.getAlliance(username);
 		
 		if(alliance != DUtil.getDeityAlliance(deity).toLowerCase())
@@ -451,12 +456,12 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		
 		DUtil.giveDeity(username, deity);
-		DUtil.setAlliance(username, alliance);
-		DUtil.setImmortal(username, true);
-		DUtil.setFavor(username, 500);
-		DUtil.setAscensions(username, 9);
+		if(firstTime) DUtil.setAlliance(username, alliance);
+		if(firstTime) DUtil.setImmortal(username, true);
+		if(firstTime) DUtil.setFavor(username, 500);
+		if(firstTime) DUtil.setAscensions(username, 9);
 		DUtil.setDevotion(username, deity, 900);
-		DUtil.setKills(username, 2);
+		if(firstTime) DUtil.setKills(username, 2);
 		
 		player.sendMessage(ChatColor.YELLOW + "You've claimed " + deity + "!");
 		
