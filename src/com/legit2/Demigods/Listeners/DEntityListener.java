@@ -58,7 +58,7 @@ public class DEntityListener implements Listener
 						DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
 						
 						DUtil.serverMsg("TEMP: Attempting to cancel death...");
-						damageEvent.setCancelled(true);
+						event.setCancelled(true);
 					}
 				}
 			}
@@ -72,7 +72,7 @@ public class DEntityListener implements Listener
 			// Define attacker and name
 			Player attacker = (Player) damageEvent.getDamager();
 
-			if(attacker instanceof Player && damageEvent.getDamage() > villager.getHealth())
+			if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
 			{
 				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
 				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
