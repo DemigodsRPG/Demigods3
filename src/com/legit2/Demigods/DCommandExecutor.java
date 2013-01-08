@@ -418,7 +418,7 @@ public class DCommandExecutor implements CommandExecutor
 		String alliance;
 		Boolean firstTime = false;
 		
-		if(DUtil.getAlliance(username) == (String) null) 
+		if(DUtil.getAlliance(username).equalsIgnoreCase("null"))
 		{
 			alliance = DUtil.getDeityAlliance(deity);
 			firstTime = true;
