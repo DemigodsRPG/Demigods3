@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,17 +27,17 @@ public class DEntityListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void entityDeath(EntityDeathEvent event)
+	public static void damageEvent(EntityDamageEvent event)
 	{
 		// Define variables
 		LivingEntity attackedEntity;
 		if(event.getEntityType().equals(EntityType.PLAYER)) // IF IT'S A PLAYER
 		{
 			// Cancel soul drop if player kills themselves
-			if(event.getEntity().getKiller() == null) return;
+			if(((LivingEntity) event.getEntity()).getKiller() == null) return;
 
 			// Define entity as player and other variables
-			attackedEntity = event.getEntity();
+			attackedEntity = (LivingEntity) event.getEntity();
 			Player attackedPlayer = (Player) attackedEntity;
 			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
 			Entity attacker = damageEvent.getDamager();
@@ -70,7 +71,7 @@ public class DEntityListener implements Listener
 		else if(event.getEntityType().equals(EntityType.VILLAGER)) // IF IT'S A VILLAGER
 		{
 			// Define villager
-			LivingEntity villager = event.getEntity();
+			LivingEntity villager = (LivingEntity) event.getEntity();
 			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
 			
 			// Define attacker and name
@@ -80,6 +81,12 @@ public class DEntityListener implements Listener
 			villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
 			attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void entityDeath(EntityDeathEvent event)
+	{
+
 	}
 
 }
