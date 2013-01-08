@@ -116,11 +116,19 @@ public class DCommandExecutor
 					{
 						if(subcategory.equalsIgnoreCase(deity))
 						{
-							for(String toPrint : (ArrayList<String>) DSave.getData("deity_info_temp", deity))
+							try
 							{
-								sender.sendMessage(toPrint);
+								for(String toPrint : (ArrayList<String>) DUtil.invokeDeityMethodWithString(deity, "getInfo", player.getName()))
+								{
+									sender.sendMessage(toPrint);
+								}
+								return true;
 							}
-							return true;
+							catch (Exception e)
+							{
+								sender.sendMessage(ChatColor.RED + "Something went wrong with deity loading.");
+								return true;
+							}
 						}
 					}
 					sender.sendMessage(ChatColor.DARK_RED + "No such deity, please try again.");

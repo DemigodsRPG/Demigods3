@@ -62,10 +62,10 @@ public class DUtil
 	}
 	
 	/*
-	 *  directInvokeDeityMethod() : Invokes a static method (with no paramaters) from inside a deity class.
+	 *  InvokeDeityMethod() : Invokes a static method (with no paramaters) from inside a deity class.
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Object directInvokeDeityMethod(String deityClass, String method) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public static Object invokeDeityMethod(String deityClass, String method) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{		
 		// No Paramaters
 		Class noparams[] = {};
@@ -77,6 +77,22 @@ public class DUtil
 		Method toInvoke = Class.forName(deityClass, true, plugin.getClass().getClassLoader()).getMethod(method, noparams);
 		
 		Object toReturn = toInvoke.invoke(obj, (Object[])null);
+		
+		return toReturn;
+	}
+	
+	/*
+	 *  InvokeDeityMethodWithString() : Invokes a static method (with no paramaters) from inside a deity class.
+	 */
+	public static Object invokeDeityMethodWithString(String deityClass, String method, String paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{			
+		// Creates a new instance of the deity class
+		Object obj = Class.forName(deityClass, true, plugin.getClass().getClassLoader()).newInstance();
+		
+		// Load everything else for the Deity (Listener, etc.)
+		Method toInvoke = Class.forName(deityClass, true, plugin.getClass().getClassLoader()).getMethod(method, String.class);
+		
+		Object toReturn = toInvoke.invoke(obj, paramater);
 		
 		return toReturn;
 	}

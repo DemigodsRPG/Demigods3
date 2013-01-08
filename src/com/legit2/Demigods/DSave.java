@@ -111,7 +111,13 @@ public class DSave
 		id = id.toLowerCase();
 		
 		// Save the data now.
-		data.get(key).put(id, object);
+		if(data.get(key) != null) data.get(key).put(id, object);
+		else
+		{
+			HashMap<String, Object> toPut = new HashMap<String, Object>();
+			toPut.put(id, object);
+			data.put(key, toPut);
+		}
 		
 		return true;
 	}

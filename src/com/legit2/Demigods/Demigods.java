@@ -115,7 +115,6 @@ public class Demigods extends JavaPlugin
 	/*
 	 *  loadDeities() : Loads the deities.
 	 */
-	@SuppressWarnings("unchecked")
 	public void loadDeities()
 	{
 		DUtil.info("Loading deities...");
@@ -148,24 +147,20 @@ public class Demigods extends JavaPlugin
 				
 				for(String deity : deityList)
 				{
-				 
 					// Load Deity commands
 					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
 					 
 					// Load everything else for the Deity (Listener, etc.)
-					String deityMessage =(String) DUtil.directInvokeDeityMethod(deity, "loadDeity");
-					String deityName =(String) DUtil.directInvokeDeityMethod(deity, "getName");
-					String alliance = (String) DUtil.directInvokeDeityMethod(deity, "getAlliance");
-					ArrayList<String> info = (ArrayList<String>) DUtil.directInvokeDeityMethod(deity, "getInfo");
+					String deityMessage = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
+					String deityName = (String) DUtil.invokeDeityMethod(deity, "getName");
+					String alliance = (String) DUtil.invokeDeityMethod(deity, "getAlliance");
 					
 					// Add to HashMap
 					DSave.saveData("deity_classes_temp", deityName, deity);
 					DSave.saveData("deity_allainces_temp", deityName, alliance);
-					DSave.saveData("deity_info_temp", deityName, info);
 					 
 					// Display the success message
 					DUtil.info(deityMessage);
-
 				}
 				// Stop the timer
 				long stopTimer = System.currentTimeMillis();
