@@ -34,7 +34,7 @@ public class Zeus_deity implements Listener
 	private static String SHOVE_NAME = "Shove"; // Sets the name of this command
 	private static long SHOVE_TIME; // Creates the variable for later use
 	private static final int SHOVE_COST = 170; // Cost to run command in "favor"
-	private static final int SHOVE_DELAY = 1500; // In milliseconds
+	private static final int SHOVE_DELAY = 10000; // In milliseconds
 
 	// "/lightning" Command:
 	private static String LIGHTNING_NAME = "Lightning"; // Sets the name of this command
