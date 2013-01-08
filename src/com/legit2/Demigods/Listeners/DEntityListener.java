@@ -33,7 +33,7 @@ public class DEntityListener implements Listener
 		if(event.getEntityType().equals(EntityType.PLAYER)) // IF IT'S A PLAYER
 		{
 			// Cancel soul drop if player kills themselves
-			if(event.getEntity().getKiller().equals((Player) event.getEntity())) return;
+			if(event.getEntity().getKiller() == null) return;
 
 			// Define entity as player and other variables
 			attackedEntity = event.getEntity();
