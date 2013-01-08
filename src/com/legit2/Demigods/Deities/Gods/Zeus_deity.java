@@ -143,7 +143,7 @@ public class Zeus_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setDeityData(username, DEITYNAME, SHOVE_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, SHOVE_NAME);
 			}
 		}
 		
@@ -164,7 +164,7 @@ public class Zeus_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setDeityData(username, DEITYNAME, LIGHTNING_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, LIGHTNING_NAME);
 			}
 		}
 	}
@@ -343,7 +343,7 @@ public class Zeus_deity implements Listener
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		Vector playerLocation = player.getLocation().toVector();
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW+"You can't do that from a no-PVP zone.");
+		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		for(Entity anEntity : player.getWorld().getEntities()) if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
 

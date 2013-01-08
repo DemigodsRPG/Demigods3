@@ -141,7 +141,7 @@ public class Cronus_deity implements Listener
 				else
 				{
 					player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-					DUtil.setDeityData(username, DEITYNAME, CLEAVE_NAME, false);
+					DUtil.disableAbility(username, DEITYNAME, CLEAVE_NAME);
 				}
 			}
 		}
@@ -173,7 +173,7 @@ public class Cronus_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setDeityData(username, DEITYNAME, SLOW_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, SLOW_NAME);
 			}
 		}
 	}
@@ -192,14 +192,14 @@ public class Cronus_deity implements Listener
 		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(DUtil.getDeityData(username, DEITYNAME, CLEAVE_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, CLEAVE_NAME)) 
+		if(DUtil.isEnabledAbility(username, DEITYNAME, CLEAVE_NAME))
 		{
-			DUtil.setDeityData(username, DEITYNAME, CLEAVE_NAME, false);
+			DUtil.disableAbility(username, DEITYNAME, CLEAVE_NAME);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is no longer active.");
 		}
 		else
 		{
-			DUtil.setDeityData(username, DEITYNAME, CLEAVE_NAME, true);
+			DUtil.enableAbility(username, DEITYNAME, CLEAVE_NAME);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
 		}
 	}
@@ -250,14 +250,14 @@ public class Cronus_deity implements Listener
 		}
 		else
 		{
-			if(DUtil.getDeityData(username, DEITYNAME, SLOW_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, SLOW_NAME)) 
+			if(DUtil.isEnabledAbility(username, DEITYNAME, SLOW_NAME))
 			{
-				DUtil.setDeityData(username, DEITYNAME, SLOW_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, SLOW_NAME);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setDeityData(username, DEITYNAME, SLOW_NAME, true);
+				DUtil.enableAbility(username, DEITYNAME, SLOW_NAME);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is now active.");
 			}
 		}

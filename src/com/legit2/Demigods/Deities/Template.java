@@ -131,7 +131,7 @@ public class Template implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, TEST_NAME);
 			}
 		}
 	}
@@ -157,14 +157,14 @@ public class Template implements Listener
 		}
 		else
 		{
-			if(DUtil.getDeityData(username, DEITYNAME, TEST_NAME) != null && (Boolean) DUtil.getDeityData(username, DEITYNAME, TEST_NAME)) 
+			if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME))
 			{
-				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, false);
+				DUtil.disableAbility(username, DEITYNAME, TEST_NAME);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.setDeityData(username, DEITYNAME, TEST_NAME, true);
+				DUtil.enableAbility(username, DEITYNAME, TEST_NAME);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}

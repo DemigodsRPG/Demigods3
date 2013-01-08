@@ -51,7 +51,7 @@ public class DPlayerListener implements Listener
 		// Define Variables
 		Player player = event.getPlayer();
 		
-		DUtil.setPlayerData(player.getName(), "LASTLOGINTIME", System.currentTimeMillis());
+		DUtil.setPlayerData(player.getName(), "lastlogintime", System.currentTimeMillis());
 		
 		// if(!DConfig.getEnabledWorlds().contains(player.getWorld())) return;
 		
