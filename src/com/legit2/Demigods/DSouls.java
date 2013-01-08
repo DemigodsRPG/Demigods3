@@ -28,7 +28,7 @@ public class DSouls
 		mortalSoul.setItemMeta(mortalSoulMeta);
 		allSouls.add(mortalSoul);
 		
-		// Define Mortal Soul
+		// Define Immortal Soul
 		immortalSoul = new ItemStack(Material.GLOWSTONE_DUST, 1);
 		String immortalSoulName = "Immortal Soul";
 		ArrayList<String> immortalSoulLore = new ArrayList<String>();

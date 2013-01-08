@@ -1,6 +1,7 @@
 package com.legit2.Demigods.Listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.legit2.Demigods.DSouls;
 import com.legit2.Demigods.DUtil;
@@ -33,18 +35,29 @@ public class DEntityListener implements Listener
 			// Define entity as player and other variables
 			attackedEntity = event.getEntity();
 			Player attackedPlayer = (Player) attackedEntity;
-			// EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
+			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
+			Entity attacker = damageEvent.getDamager();
 			
-			// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
-			if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
+			if(attacker instanceof Player)
 			{
-				attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
-			}
-			else // Else we cancel their death and subtract a soul
-			{
-				if(DUtil.useSoul(attackedPlayer))
+				// Cancel soul drop if player kills themselves
+				if(((Player) attacker).getName().equals(attackedPlayer)) return;
+				
+				// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
+				if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
 				{
-					// TODO: Add code to cancel death and set health corresponding to soul used.
+					attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
+				}
+				else // Else we cancel their death and subtract a soul
+				{
+					if(DUtil.getNumberOfSouls(attackedPlayer) > 0)
+					{
+						ItemStack usedSoul = DUtil.useSoul(attackedPlayer);
+					
+						DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
+						// Cancel it
+						damageEvent.setCancelled(true);
+					}
 				}
 			}
 		}

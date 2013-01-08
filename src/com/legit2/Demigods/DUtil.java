@@ -158,8 +158,9 @@ public class DUtil
 	/*
 	 *  useSoul() : Uses first soul found in (Player)player's inventory.
 	 */
-	public static boolean useSoul(Player player)
-	{		
+	public static ItemStack useSoul(Player player)
+	{	
+		if(getNumberOfSouls(player) == 0) return null;
 		// Define inventory contents
 		ItemStack[] inventory = player.getInventory().getContents();
 		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
@@ -176,11 +177,11 @@ public class DUtil
 					inventoryItem.setAmount(amount - 1);
 					player.getInventory().addItem(inventoryItem);
 					
-					return true;
+					return inventoryItem;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	/*
