@@ -14,31 +14,41 @@ public class DSouls
 	public static ArrayList<ItemStack> allSouls = new ArrayList<ItemStack>();
 	static ItemStack mortalSoul;
 	static ItemStack immortalSoul;
+	static ItemStack dragonSoul;
 	
+	/*
+	 *  loadSouls() : Loads all souls.
+	 */
 	private static void loadSouls()
 	{
-		// Define Mortal Soul
-		mortalSoul = new ItemStack(Material.GHAST_TEAR, 1);
+		// Define soul name
 		String mortalSoulName = "Mortal Soul";
+		mortalSoul = new ItemStack(Material.GHAST_TEAR, 1);
+		// Define lore
 		ArrayList<String> mortalSoulLore = new ArrayList<String>();
 		mortalSoulLore.add("Brings you back to life.");
 		mortalSoulLore.add("Regain half health!");
+		// Add meta data
 		ItemMeta mortalSoulMeta = mortalSoul.getItemMeta();
 		mortalSoulMeta.setDisplayName(mortalSoulName);
 		mortalSoulMeta.setLore(mortalSoulLore);
 		mortalSoul.setItemMeta(mortalSoulMeta);
+		// Add to soul array
 		allSouls.add(mortalSoul);
 		
-		// Define Immortal Soul
-		immortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
+		// Define soul name
 		String immortalSoulName = "Immortal Soul";
+		immortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
+		// Define lore
 		ArrayList<String> immortalSoulLore = new ArrayList<String>();
 		immortalSoulLore.add("Brings you back to life.");
 		immortalSoulLore.add("Regain full health!");
+		// Add meta data
 		ItemMeta immortalSoulMeta = immortalSoul.getItemMeta();
 		immortalSoulMeta.setDisplayName(immortalSoulName);
 		immortalSoulMeta.setLore(immortalSoulLore);
 		immortalSoul.setItemMeta(immortalSoulMeta);
+		// Add to soul array
 		allSouls.add(immortalSoul);
 	}
 	
@@ -53,6 +63,7 @@ public class DSouls
 		// Determine soul information based on entity type
 		switch(entity.getType())
 		{
+			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
 			case PLAYER: // Soul dropped by PLAYER
 				if(DUtil.isImmortal(((Player) entity).getName()))
 				{
@@ -62,8 +73,7 @@ public class DSouls
 				{
 					return mortalSoul;
 				}
-			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
-			
+				
 			/*
 			 *  TODO: Add soul drops for other entities based on a random chance of dropped.
 			 *  ----  Possibly introduces ability to spawn rare super-souls for players to use.

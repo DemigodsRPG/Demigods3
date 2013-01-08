@@ -85,7 +85,7 @@ public class Demigods extends JavaPlugin
 		
 		for(ItemStack soul : allSouls)
 		{
-			DUtil.severe("Soul: " + soul.getType().name());
+			DUtil.severe("Soul: " + soul.toString());
 			numberOfSouls++;
 		}
 		DUtil.severe("Total Souls: " + numberOfSouls);

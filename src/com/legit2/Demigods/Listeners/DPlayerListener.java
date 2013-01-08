@@ -1,6 +1,7 @@
 package com.legit2.Demigods.Listeners;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,11 +9,15 @@ import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
+import com.legit2.Demigods.DSouls;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
 
@@ -52,8 +57,8 @@ public class DPlayerListener implements Listener
 		
 		if(DConfig.getSettingBoolean("motd"))
 		{
-			player.sendMessage("This server is running Demigods v"+ChatColor.YELLOW+DUtil.getPlugin().getDescription().getVersion()+ChatColor.WHITE+".");
-			player.sendMessage(ChatColor.GRAY+"Type "+ChatColor.GREEN+"/dg"+ChatColor.GRAY+" for more info.");
+			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + DUtil.getPlugin().getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "Type "+ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 		
 		/*
@@ -64,5 +69,31 @@ public class DPlayerListener implements Listener
 			player.sendMessage(ChatColor.RED + "Latest: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
 		}
 		*/
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerCraft(CraftItemEvent event)
+	{
+		// Define variables
+		Player player = (Player) event.getWhoClicked();
+		InventoryType invType = event.getInventory().getType();
+		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
+		
+		if(invType.equals(InventoryType.CRAFTING) || invType.equals(InventoryType.WORKBENCH))
+		{
+			ItemStack[] invItems = event.getInventory().getContents();
+			
+			for(ItemStack soul : allSouls)
+			{
+				for(ItemStack invItem : invItems)
+				{
+					if(invItem.isSimilar(soul)) 
+					{
+						event.setCancelled(true);
+						player.sendMessage(ChatColor.RED + "You cannot craft with souls!");
+					}
+				}
+			}
+		}
 	}
 }
