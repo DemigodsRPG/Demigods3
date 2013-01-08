@@ -848,19 +848,30 @@ public class DUtil
 	/*
 	 *  canUseDeity() : Checks is a player can use a specfic deity.
 	 */
-	public static boolean canUseDeity(Player player, String deity, Boolean sendMsg)
+	public static boolean canUseDeity(Player player, String deity)
 	{		
 		// Check the player for DEITYNAME
 		if(!DUtil.hasDeity(player.getName(), deity))
 		{
-			if(sendMsg) player.sendMessage(ChatColor.RED + "You haven't even claimed " + deity + "! You can't do that!");
+			player.sendMessage(ChatColor.RED + "You haven't even claimed " + deity + "! You can't do that!");
 			return false;
 		}
 		else if(!DUtil.isImmortal(player.getName()))
 		{
-			if(sendMsg) player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
+			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
 		}
+		return true;
+	}
+	
+	/*
+	 *  canUseDeity() : Checks is a player can use a specfic deity.
+	 */
+	public static boolean canUseDeitySilent(String username, String deity)
+	{		
+		// Check the player for DEITYNAME
+		if(!DUtil.hasDeity(username, deity)) return false;
+		else if(!DUtil.isImmortal(username)) return false;
 		return true;
 	}
 	

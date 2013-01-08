@@ -69,29 +69,33 @@ public class Zeus_deity implements Listener
 		return claimItems;
 	}
 
-	public void printInfo(Player player)
+	public ArrayList<String> getInfo(String username)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME, false))
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		if(DUtil.canUseDeitySilent(username, DEITYNAME))
 		{
-			// Print Deity Info to Chat
-			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
-			// TODO Deity Info
-			return;
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			
+			return toReturn;
 		}
-		DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
-		// TODO Deity Info
-		
-		// Get Claim Item Names from ArrayList
-		ArrayList<String> claimItemNames = new ArrayList<String>();
-		for(Material item : getClaimItems())
+		else
 		{
-			claimItemNames.add(item.name());
+			// Get Claim Item Names from ArrayList
+			ArrayList<String> claimItemNames = new ArrayList<String>();
+			for(Material item : getClaimItems())
+			{
+				claimItemNames.add(item.name());
+			}
+			
+			// Make Claim Items readable.
+			String claimItems = Joiner.on(", ").join(claimItemNames);
+			
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add("Claim Items: " + claimItems);
+			
+			return toReturn;
 		}
-		
-		// Make Claim Items readable.
-		String claimItems = Joiner.on(", ").join(claimItemNames);
-		
-		player.sendMessage("Claim Items: " + claimItems);
 	}
 
 	// This sets the particular passive ability for the Zeus_deity deity.
@@ -101,7 +105,7 @@ public class Zeus_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
+			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -119,7 +123,7 @@ public class Zeus_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
+		if(!DUtil.canUseDeitySilent(username, DEITYNAME)) return;
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, SHOVE_NAME))))
 		{
@@ -176,7 +180,7 @@ public class Zeus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -248,7 +252,7 @@ public class Zeus_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		

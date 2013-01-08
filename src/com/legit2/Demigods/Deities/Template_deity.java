@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.google.common.base.Joiner;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
@@ -54,19 +55,32 @@ public class Template_deity implements Listener
 		return claimItems;
 	}
 
-	public void printInfo(Player player)
+	public ArrayList<String> getInfo(String username)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME, false))
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		if(DUtil.canUseDeitySilent(username, DEITYNAME))
 		{
-			// Print Deity Info to Chat
-			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
-			// TODO Deity Info
-			return;
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			
+			return toReturn;
 		}
 		else
 		{
-			DUtil.taggedMessage(player, ChatColor.AQUA + DEITYNAME);
-			// TODO Deity Info
+			// Get Claim Item Names from ArrayList
+			ArrayList<String> claimItemNames = new ArrayList<String>();
+			for(Material item : getClaimItems())
+			{
+				claimItemNames.add(item.name());
+			}
+			
+			// Make Claim Items readable.
+			String claimItems = Joiner.on(", ").join(claimItemNames);
+			
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add("Claim Items: " + claimItems);
+			
+			return toReturn;
 		}
 	}
 
@@ -79,7 +93,7 @@ public class Template_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
+			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
 			
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -97,7 +111,7 @@ public class Template_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		String username = player.getName();
 
-		if(!DUtil.canUseDeity(player, DEITYNAME, false)) return;
+		if(!DUtil.canUseDeitySilent(username, DEITYNAME)) return;
 
 		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, TEST_NAME))))
 		{
@@ -133,7 +147,7 @@ public class Template_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -170,7 +184,7 @@ public class Template_deity implements Listener
 		// Set variables
 		String username = player.getName();
 		
-		if(!DUtil.canUseDeity(player, DEITYNAME, true)) return;
+		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
