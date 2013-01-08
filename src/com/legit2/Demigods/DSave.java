@@ -292,7 +292,16 @@ public class DSave
 		deity = deity.toLowerCase();
 		
 		// Remove data
-		playerDeityData.get(username).remove(deity);
+		if(deity.equals((String) "ALL"))
+		{
+			// Remove all data for (String)username.
+			playerDeityData.remove(username);
+		}
+		else
+		{
+			// Remove all data for (String)username's (String)deity.
+			playerDeityData.get(username).remove(deity);
+		}
 		return true;
 	}
 	

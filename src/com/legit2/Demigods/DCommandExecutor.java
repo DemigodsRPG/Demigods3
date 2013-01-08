@@ -33,6 +33,7 @@ public class DCommandExecutor implements CommandExecutor
 		else if (command.getName().equalsIgnoreCase("setascensions")) return setAscensions(sender,args);
 		else if (command.getName().equalsIgnoreCase("setdevotion")) return setDevotion(sender,args);
 		else if (command.getName().equalsIgnoreCase("givedeity")) return giveDeity(sender,args);
+		else if (command.getName().equalsIgnoreCase("removeplayer")) return removePlayer(sender,args);
 		
 		// BETA TESTING ONLY
 		else if (command.getName().equalsIgnoreCase("claim")) return claim(sender,args);
@@ -297,6 +298,23 @@ public class DCommandExecutor implements CommandExecutor
 		sender.sendMessage(" ");
 		sender.sendMessage("Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
 	
+		return true;
+	}
+	
+	/*
+	 *  Command: "removePlayer"
+	 */
+	public static boolean removePlayer(CommandSender sender, String[] args)
+	{	
+		if(args.length != 1) return false;
+		
+		// Define args
+		String username = args[0];
+		
+		DSave.removeAllPlayerData(username);
+		DSave.removeAllDeityData(username, "ALL");
+		sender.sendMessage(ChatColor.RED + "You have removed " + username + " from the database!");
+		
 		return true;
 	}
 	
