@@ -30,7 +30,7 @@ public class DSouls
 		allSouls.add(mortalSoul);
 		
 		// Define Immortal Soul
-		immortalSoul = new ItemStack(Material.LOCKED_CHEST, 1);
+		immortalSoul = new ItemStack(Material.GOLD_NUGGET, 1);
 		String immortalSoulName = "Immortal Soul";
 		ArrayList<String> immortalSoulLore = new ArrayList<String>();
 		immortalSoulLore.add("Brings you back to life.");
