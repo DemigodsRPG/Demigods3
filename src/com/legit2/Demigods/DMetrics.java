@@ -26,7 +26,7 @@ public class DMetrics
 		
 		    // Alliance List
 		    ArrayList<String> allianceList = new ArrayList<String>();
-		    for(String player : DSave.getAllData().keySet())
+		    for(String player : DSave.getAllPlayersData().keySet())
 		    {
 		    	String alliance;
 		    	if(DSave.getPlayerData(player, "alliance") != null)
@@ -88,7 +88,7 @@ public class DMetrics
 		
 		    // Alliance List
 		    ArrayList<String> allianceList = new ArrayList<String>();
-		    for(String player : DSave.getAllData().keySet())
+		    for(String player : DSave.getAllPlayersData().keySet())
 		    {
 		    	String alliance;
 		    	if(DSave.getPlayerData(player, "alliance") != null)

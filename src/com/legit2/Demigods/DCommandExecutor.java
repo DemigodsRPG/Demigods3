@@ -58,11 +58,11 @@ public class DCommandExecutor
 	 *  Command: "dg"
 	 */
 	@ReflectCommand.Command(name = "dg", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean dg(CommandSender sender, String arg1)
+	public static boolean dg(CommandSender sender, String arg1, String arg2)
 	{
 		if(arg1 != "noargs")
 		{
-			dg_info(sender, arg1);
+			dg_info(sender, arg1, arg2);
 			return true;
 		}
 				
@@ -73,8 +73,7 @@ public class DCommandExecutor
 		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
 		
 		DUtil.taggedMessage(sender, "Information Directory");
-		sender.sendMessage(ChatColor.GRAY + "/dg god");
-		sender.sendMessage(ChatColor.GRAY + "/dg titan");
+		for(String alliance : DUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase());
 		sender.sendMessage(ChatColor.GRAY + "/dg claim");
 		sender.sendMessage(ChatColor.GRAY + "/dg shrine");
 		sender.sendMessage(ChatColor.GRAY + "/dg tribute");
@@ -89,13 +88,46 @@ public class DCommandExecutor
 	/*
 	 *  Command: "dg_info"
 	 */
-	public static boolean dg_info(CommandSender sender, String category)
+	@SuppressWarnings("unchecked")
+	public static boolean dg_info(CommandSender sender, String category, String subcategory)
 	{
 		// Define Player
 		Player player = DUtil.definePlayer(sender);
 		
 		// Check Permissions
 		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
+		
+		for(String alliance : DUtil.getLoadedDeityAlliances())
+		{
+			if(category.equalsIgnoreCase("alliance"))
+			{
+				if(subcategory == "noargs")
+				{
+					DUtil.taggedMessage(sender, alliance + " Directory");
+				
+					for(String deity : DUtil.getAllDeitiesInAlliance(alliance))
+					{
+						sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());
+					}
+				}
+				else
+				{
+					for(String deity : DUtil.getAllDeitiesInAlliance(alliance))
+					{
+						if(subcategory.equalsIgnoreCase(deity))
+						{
+							for(String toPrint : (ArrayList<String>) DSave.getData("deity_info_temp", deity))
+							{
+								sender.sendMessage(toPrint);
+							}
+							return true;
+						}
+					}
+					sender.sendMessage(ChatColor.DARK_RED + "No such deity, please try again.");
+					return false;
+				}
+			}
+		}
 		
 		if(category.equalsIgnoreCase("save"))
 		{
@@ -113,16 +145,6 @@ public class DCommandExecutor
 				}
 			}
 			else DUtil.noPermission(player);
-		}
-		else if(category.equalsIgnoreCase("god"))
-		{
-			DUtil.taggedMessage(sender, "Gods");
-			sender.sendMessage(ChatColor.GRAY + " This is some info about Gods.");
-		}
-		else if(category.equalsIgnoreCase("titan"))
-		{
-			DUtil.taggedMessage(sender, "Titans");
-			sender.sendMessage(ChatColor.GRAY + " This is some info about Titans.");
 		}
 		else if(category.equalsIgnoreCase("claim"))
 		{

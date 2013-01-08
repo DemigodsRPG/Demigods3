@@ -3,6 +3,8 @@ package com.legit2.Demigods;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,91 @@ public class DUtil
 	public static Demigods getPlugin()
 	{
 		return plugin;
+	}
+	
+	/*
+	 *  getDeityClass() : Returns the string of the (String)deity's classpath.
+	 */
+	public static String getDeityClass(String deity)
+	{
+		String toReturn = (String) DSave.getData("deity_classes_temp", deity);
+		return toReturn;
+	}
+	
+	/*
+	 *  directInvokeDeityMethod() : Invokes a static method (with no paramaters) from inside a deity class.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Object directInvokeDeityMethod(String deityClass, String method) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{		
+		// No Paramaters
+		Class noparams[] = {};
+		
+		// Creates a new instance of the deity class
+		Object obj = Class.forName(deityClass, true, plugin.getClass().getClassLoader()).newInstance();
+		
+		// Load everything else for the Deity (Listener, etc.)
+		Method toInvoke = Class.forName(deityClass, true, plugin.getClass().getClassLoader()).getMethod(method, noparams);
+		
+		Object toReturn = toInvoke.invoke(obj, (Object[])null);
+		
+		return toReturn;
+	}
+	
+	/*
+	 *  getLoadedDeityNames() : Returns a ArrayList<String> of all the loaded deities' names.
+	 */
+	public static ArrayList<String> getLoadedDeityNames()
+	{
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		for(String deity : DSave.getAllData().get("deity_alliances_temp").keySet())
+		{
+			toReturn.add(deity);
+		}
+		
+		return toReturn;
+	}
+	
+	/*
+	 *  getLoadedDeityAlliances() : Returns a ArrayList<String> of all the loaded deities' alliances.
+	 */
+	public static ArrayList<String> getLoadedDeityAlliances()
+	{
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		for(Object alliance : DSave.getAllData().get("deity_alliances_temp").values())
+		{
+			if(toReturn.contains((String) alliance)) continue;
+			toReturn.add((String) alliance);
+		}
+		
+		return toReturn;
+	}
+	
+	/*
+	 *  getDeityAlliance() : Returns a String of a loaded (String)deity's alliance.
+	 */
+	public static String getDeityAlliance(String deity)
+	{
+		String toReturn = (String) DSave.getData("deity_alliances_temp", deity);
+		return toReturn;
+	}
+	
+	/*
+	 *  getAllDeitiesInAlliance() : Returns a ArrayList<String> of all the loaded deities' names.
+	 */
+	public static ArrayList<String> getAllDeitiesInAlliance(String alliance)
+	{
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		for(String deity : DSave.getAllData().get("deity_alliances_temp").keySet())
+		{
+			if(!(getDeityAlliance(deity)).equalsIgnoreCase(alliance)) continue;
+			toReturn.add(deity);
+		}
+		
+		return toReturn;
 	}
 	
 	/*
@@ -309,7 +396,7 @@ public class DUtil
 	{		
 		// Define variables
 		ArrayList<String> immortalList = new ArrayList<String>();
-		HashMap<String, HashMap<String, Object>> players = getAllData();
+		HashMap<String, HashMap<String, Object>> players = getAllPlayersData();
 		
 		for(Map.Entry<String, HashMap<String, Object>> player : players.entrySet())
 		{
@@ -633,11 +720,11 @@ public class DUtil
 	}
 	
 	/*
-	 *  getAllData() : Returns all saved HashMaps.
+	 *  getAllPlayersData() : Returns all saved HashMaps.
 	 */
-	public static HashMap<String, HashMap<String, Object>> getAllData()
+	public static HashMap<String, HashMap<String, Object>> getAllPlayersData()
 	{
-		return DSave.getAllData();
+		return DSave.getAllPlayersData();
 	}
 	
 	/*

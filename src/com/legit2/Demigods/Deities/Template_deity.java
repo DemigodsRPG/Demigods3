@@ -225,6 +225,6 @@ public class Template_deity implements Listener
 	}
 
 	// Don't touch these, they're required to work.
-	public String getName() { return DEITYNAME; }
-	public String getAlliance() { return DEITYALLIANCE; }
+	public static String getName() { return DEITYNAME; }
+	public static String getAlliance() { return DEITYALLIANCE; }
 }

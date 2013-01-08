@@ -39,7 +39,7 @@ public class DDivineBlocks
 	{		
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		
-		for(String username : DSave.getAllData().keySet())
+		for(String username : DSave.getAllPlayersData().keySet())
 		{
 			for(Location shrine : getShrines(username))
 			{
@@ -55,7 +55,7 @@ public class DDivineBlocks
 		String owner = null;
 		
 		CHECKSHRINES:
-		for(String username : DSave.getAllData().keySet())
+		for(String username : DSave.getAllPlayersData().keySet())
 		{
 			for(Location knownShrine : getShrines(username))
 			{

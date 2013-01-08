@@ -1,9 +1,9 @@
 package com.legit2.Demigods;
 
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -24,6 +24,7 @@ public class Demigods extends JavaPlugin
 	protected static WorldGuardPlugin WORLDGUARD = null;
 	protected static P FACTIONS = null;
 	public ReflectCommand commandRegistrator;
+	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
 	// Did dependencies load correctly?
 	boolean okayToLoad = true;
@@ -41,9 +42,9 @@ public class Demigods extends JavaPlugin
 			DDatabase.initializeDatabase();
 			DConfig.initializeConfig();
 			DScheduler.startThreads();
-			loadListeners();
-			loadCommands();
 			loadDeities();
+			loadCommands();
+			loadListeners();
 			loadMetrics();
 			//checkUpdate();
 			
@@ -114,7 +115,7 @@ public class Demigods extends JavaPlugin
 	/*
 	 *  loadDeities() : Loads the deities.
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public void loadDeities()
 	{
 		DUtil.info("Loading deities...");
@@ -147,17 +148,20 @@ public class Demigods extends JavaPlugin
 				
 				for(String deity : deityList)
 				{
-					// No Paramaters
-					Class noparams[] = {};
-					
-					Object obj = Class.forName(deity, true, this.getClass().getClassLoader()).newInstance();
-					 
+				 
 					// Load Deity commands
 					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
 					 
 					// Load everything else for the Deity (Listener, etc.)
-					Method loadDeity = Class.forName(deity, true, this.getClass().getClassLoader()).getMethod("loadDeity", noparams);
-					String deityMessage = (String)loadDeity.invoke(obj, (Object[])null);
+					String deityMessage =(String) DUtil.directInvokeDeityMethod(deity, "loadDeity");
+					String deityName =(String) DUtil.directInvokeDeityMethod(deity, "getName");
+					String alliance = (String) DUtil.directInvokeDeityMethod(deity, "getAlliance");
+					ArrayList<String> info = (ArrayList<String>) DUtil.directInvokeDeityMethod(deity, "getInfo");
+					
+					// Add to HashMap
+					DSave.saveData("deity_classes_temp", deityName, deity);
+					DSave.saveData("deity_allainces_temp", deityName, alliance);
+					DSave.saveData("deity_info_temp", deityName, info);
 					 
 					// Display the success message
 					DUtil.info(deityMessage);

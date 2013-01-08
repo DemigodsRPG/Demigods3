@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class DSave
 {
 	// Define HashMaps
+	private static HashMap<String, HashMap<String, Object>> data = new HashMap<String, HashMap<String, Object>>();
 	private static HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
 	private static HashMap<String, HashMap<String, HashMap<String, Object>>> playerDeityData = new HashMap<String, HashMap<String, HashMap<String, Object>>>();
 	
@@ -45,7 +46,21 @@ public class DSave
 	}
 	
 	/*
-	 *  hasData() : Checks to see if data (String)id exists in (String)username HashMap.
+	 *  hasData() : Checks to see if data (String)id exists in (String)key HashMap.
+	 */
+	public static boolean hasData(String key, String id)
+	{
+		// Set variables
+		key = key.toLowerCase();
+		id = id.toLowerCase();
+		
+		if(data.get(key) == null) return false;
+		if(data.get(key).get(id) != null && data.get(key).containsKey(id)) return true;
+		else return false;
+	}
+	
+	/*
+	 *  hasPlayerData() : Checks to see if data (String)id exists in (String)username HashMap.
 	 */
 	public static boolean hasPlayerData(String username, String id)
 	{
@@ -74,9 +89,9 @@ public class DSave
 	}
 	
 	/*
-	 *  hasDataEqualTo() : Checks to see if data (String)id exists in (String)username HashMap with (Object)playerData.
+	 *  hasPlayerDataEqualTo() : Checks to see if data (String)id exists in (String)username HashMap with (Object)playerData.
 	 */
-	public static boolean hasDataEqualTo(String username, String id, Object data)
+	public static boolean hasPlayerDataEqualTo(String username, String id, Object data)
 	{
 		// Set variables
 		username = username.toLowerCase();
@@ -84,6 +99,21 @@ public class DSave
 		
 		if(playerData.get(username).get(id) != null && playerData.get(username).get(id).equals(data)) return true;
 		else return false;
+	}
+	
+	/*
+	 *  saveData() : Saves (Object)object to (String)key in HashMap with (String)id.
+	 */
+	public static boolean saveData(String key, String id, Object object)
+	{
+		// Set variables
+		key = key.toLowerCase();
+		id = id.toLowerCase();
+		
+		// Save the data now.
+		data.get(key).put(id, object);
+		
+		return true;
 	}
 	
 	/*
@@ -133,6 +163,21 @@ public class DSave
 	}
 	
 	/*
+	 *  removeData() : Removes (String)id data for (String)key.
+	 */
+	public static boolean removeData(String key, String id)
+	{
+		// Set variables
+		key = key.toLowerCase();
+		id = id.toLowerCase();
+				
+		// Remove data
+		if(hasData(key, id)) data.get(key).remove(id);
+		
+		return true;
+	}
+	
+	/*
 	 *  removePlayerData() : Removes (String)id data for (String)username.
 	 */
 	public static boolean removePlayerData(String username, String id)
@@ -144,6 +189,18 @@ public class DSave
 		// Remove data
 		if(hasPlayerData(username, id)) playerData.get(username).remove(id);
 		
+		return true;
+	}
+	/*
+	 *  removeAllData() : Removes all HashMap data for (String)key.
+	 */
+	public static boolean removeAllData(String key)
+	{
+		// Set variables
+		key = key.toLowerCase();
+				
+		// Remove data
+		data.remove(key);
 		return true;
 	}
 	
@@ -158,6 +215,20 @@ public class DSave
 		// Remove data
 		playerData.remove(username);
 		return true;
+	}
+	
+	/*
+	 *  getData() : Returns a specific HashMap from (String)key's data with (String)id.
+	 */
+	public static Object getData(String key, String id)
+	{
+		// Set variables
+		key = key.toLowerCase();
+		id = id.toLowerCase();
+
+		// If player has specific data with correct id, return it
+		if(hasData(key, id)) return playerData.get(key).get(id);
+		return null;
 	}
 	
 	/*
@@ -220,7 +291,7 @@ public class DSave
 	}
 	
 	/*
-	 *  getPlayerData() : Returns a HashMap of all of (String)username's player data.
+	 *  getAllPlayerData() : Returns a HashMap of all of (String)username's player data.
 	 */
 	public static HashMap<String, Object> getAllPlayerData(String username)
 	{
@@ -230,6 +301,14 @@ public class DSave
 		// If player is not new, return
 		if(!isNewPlayer(username)) return playerData.get(username);
 		return null;
+	}
+	
+	/*
+	 *  getAllData() : Returns all HashMaps currently loaded.
+	 */
+	public static HashMap<String, HashMap<String, Object>> getAllData()
+	{
+		return data;
 	}
 	
 	/*
@@ -246,18 +325,19 @@ public class DSave
 	}
 	
 	/*
-	 *  getAllData() : Returns all HashMaps currently loaded.
+	 *  getAllPlayersData() : Returns all HashMaps currently loaded.
 	 */
-	public static HashMap<String, HashMap<String, Object>> getAllData()
+	public static HashMap<String, HashMap<String, Object>> getAllPlayersData()
 	{
 		return playerData;
 	}
 	
 	/*
-	 *  removeAllData() : Removes all HashMaps.
+	 *  nukeAllData() : Like it never existed.
 	 */
-	public static void removeAllData()
+	public static void nukeAllData()
 	{
+		data.clear();
 		playerData.clear();
 		playerDeityData.clear();
 	}
