@@ -233,7 +233,7 @@ public class DSave
 		id = id.toLowerCase();
 
 		// If player has specific data with correct id, return it
-		if(hasData(key, id)) return playerData.get(key).get(id);
+		if(hasData(key, id)) return data.get(key).get(id);
 		return null;
 	}
 	

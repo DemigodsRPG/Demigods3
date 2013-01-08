@@ -5,12 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
-public class DCommandExecutor
+public class DCommandExecutor implements CommandExecutor
 {
 	static Demigods plugin;
 	
@@ -19,10 +21,23 @@ public class DCommandExecutor
 		plugin = instance;
 	}
 	
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	{
+		if (command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
+		else if (command.getName().equalsIgnoreCase("viewhashmaps")) return viewhashmaps(sender);
+		else if (command.getName().equalsIgnoreCase("check")) return check(sender);
+		else if (command.getName().equalsIgnoreCase("setalliance")) return setAlliance(sender,args);
+		else if (command.getName().equalsIgnoreCase("setfavor")) return setFavor(sender,args);
+		else if (command.getName().equalsIgnoreCase("setascensions")) return setAscensions(sender,args);
+		else if (command.getName().equalsIgnoreCase("setdevotion")) return setDevotion(sender,args);
+		else if (command.getName().equalsIgnoreCase("givedeity")) return giveDeity(sender,args);
+		return false;
+	}
+	
 	/*
 	 *  Command: "viewhashmaps"
 	 */
-	@ReflectCommand.Command(name = "viewhashmaps", sender = ReflectCommand.Sender.EVERYONE, permission = "demigods.basic")
 	public static boolean viewhashmaps(CommandSender sender)
 	{
 		HashMap<String, Object> player_data = DSave.getAllPlayerData(sender.getName());	
@@ -58,11 +73,11 @@ public class DCommandExecutor
 	 *  Command: "dg"
 	 */
 	@ReflectCommand.Command(name = "dg", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean dg(CommandSender sender, String arg1, String arg2)
-	{
-		if(arg1 != "noargs")
+	public static boolean dg(CommandSender sender, String[] args)
+	{		
+		if(args.length > 0)
 		{
-			dg_info(sender, arg1, arg2);
+			dg_info(sender, args);
 			return true;
 		}
 				
@@ -89,19 +104,22 @@ public class DCommandExecutor
 	 *  Command: "dg_info"
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean dg_info(CommandSender sender, String category, String subcategory)
+	public static boolean dg_info(CommandSender sender, String[] args)
 	{
 		// Define Player
 		Player player = DUtil.definePlayer(sender);
+		
+		// Define args
+		String category = args[0];
 		
 		// Check Permissions
 		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
 		
 		for(String alliance : DUtil.getLoadedDeityAlliances())
 		{
-			if(category.equalsIgnoreCase("alliance"))
+			if(category.equalsIgnoreCase(alliance))
 			{
-				if(subcategory == "noargs")
+				if(args.length < 2)
 				{
 					DUtil.taggedMessage(sender, alliance + " Directory");
 				
@@ -114,11 +132,11 @@ public class DCommandExecutor
 				{
 					for(String deity : DUtil.getAllDeitiesInAlliance(alliance))
 					{
-						if(subcategory.equalsIgnoreCase(deity))
+						if(args[1].equalsIgnoreCase(deity))
 						{
 							try
 							{
-								for(String toPrint : (ArrayList<String>) DUtil.invokeDeityMethodWithString(deity, "getInfo", player.getName()))
+								for(String toPrint : (ArrayList<String>) DUtil.invokeDeityMethodWithString(DUtil.getDeityClass(deity), "getInfo", player.getName()))
 								{
 									sender.sendMessage(toPrint);
 								}
@@ -205,7 +223,6 @@ public class DCommandExecutor
 	/*
 	 *  Command: "check"
 	 */
-	@ReflectCommand.Command(name = "check", sender = ReflectCommand.Sender.EVERYONE, usage = "/check", permission = "demigods.basic")
 	public static boolean check(CommandSender sender)
 	{
 		// Define Player and Username
@@ -281,13 +298,16 @@ public class DCommandExecutor
 	/*
 	 *  Command: "setalliance"
 	 */
-	@ReflectCommand.Command(name = "setalliance", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean setAlliance(CommandSender sender, String arg1, String arg2)
-	{
-		if(arg1 == "noargs") return false;
+	public static boolean setAlliance(CommandSender sender, String[] args)
+	{	
+		if(args.length != 2) return false;
 		
-		DUtil.setAlliance(arg1, arg2);
-		sender.sendMessage(ChatColor.YELLOW + "You've given " + arg2 + " to " + arg1 + "!");
+		// Define args
+		String username = args[0];
+		String alliance = args[1];
+		
+		DUtil.setAlliance(username, alliance);
+		sender.sendMessage(ChatColor.YELLOW + "You've given " + alliance + " to " + username + "!");
 		
 		return true;
 	}
@@ -295,13 +315,16 @@ public class DCommandExecutor
 	/*
 	 *  Command: "setfavor"
 	 */
-	@ReflectCommand.Command(name = "setfavor", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean setFavor(CommandSender sender, String arg1, String arg2)
+	public static boolean setFavor(CommandSender sender, String[] args)
 	{
-		if(arg1 == "noargs") return false;
+		if(args.length != 2) return false;
 		
-		DUtil.setFavor(arg1, new Integer(arg2));
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "favor " + ChatColor.YELLOW + "to " + ChatColor.GREEN + arg2 +  ChatColor.YELLOW + "!");
+		// Define args
+		String username = args[0];
+		Integer favor = new Integer(args[1]);
+		
+		DUtil.setFavor(username, favor);
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "favor " + ChatColor.YELLOW + "to " + ChatColor.GREEN + favor +  ChatColor.YELLOW + "!");
 		
 		return true;
 	}
@@ -309,13 +332,16 @@ public class DCommandExecutor
 	/*
 	 *  Command: "setascensions"
 	 */
-	@ReflectCommand.Command(name = "setascensions", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean setAscensions(CommandSender sender, String arg1, String arg2)
+	public static boolean setAscensions(CommandSender sender, String[] args)
 	{
-		if(arg1 == "noargs") return false;
+		if(args.length != 2) return false;
 		
-		DUtil.setAscensions(arg1, new Integer(arg2));
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "ascensions " + ChatColor.YELLOW + "to " + ChatColor.GREEN + arg2 +  ChatColor.YELLOW + "!");
+		// Define args
+		String username = args[0];
+		Integer ascensions = new Integer(args[1]);
+		
+		DUtil.setAscensions(username, ascensions);
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "ascensions " + ChatColor.YELLOW + "to " + ChatColor.GREEN + ascensions +  ChatColor.YELLOW + "!");
 		
 		return true;
 	}
@@ -323,13 +349,17 @@ public class DCommandExecutor
 	/*
 	 *  Command: "setdevotion"
 	 */
-	@ReflectCommand.Command(name = "setdevotion", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean setDevotion(CommandSender sender, String arg1, String arg2, String arg3)
+	public static boolean setDevotion(CommandSender sender, String[] args)
 	{
-		if(arg1 == "noargs") return false;
+		if(args.length != 3) return false;
 		
-		DUtil.setDevotion(arg1, arg2, new Integer(arg3));
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + arg1 + "'s " + ChatColor.GREEN + "devotion " + ChatColor.YELLOW + "for " + ChatColor.GREEN + arg2 + ChatColor.YELLOW + " to " + ChatColor.GREEN + arg3 +  ChatColor.YELLOW + "!");
+		// Define args
+		String username = args[0];
+		String deity = args[1];
+		Integer devotion = new Integer(args[2]);
+		
+		DUtil.setDevotion(username, deity, devotion);
+		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "devotion " + ChatColor.YELLOW + "for " + ChatColor.GREEN + deity + ChatColor.YELLOW + " to " + ChatColor.GREEN + devotion +  ChatColor.YELLOW + "!");
 		
 		return true;
 	}
@@ -337,19 +367,22 @@ public class DCommandExecutor
 	/*
 	 *  Command: "givedeity"
 	 */
-	@ReflectCommand.Command(name = "givedeity", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
-	public static boolean giveDeity(CommandSender sender, String arg1, String arg2)
+	public static boolean giveDeity(CommandSender sender, String[] args)
 	{
-		if(arg1 == "noargs") return false;
+		if(args.length != 2) return false;
 		
-		DUtil.giveDeity(arg1, arg2);
-		DUtil.setImmortal(arg1, true);
-		DUtil.setFavor(arg1, 9999);
-		DUtil.setAscensions(arg1, 9999);
-		DUtil.setDevotion(arg1, arg2, 9999);
-		DUtil.setKills(arg1, 9999);
+		// Define args
+		String username = args[0];
+		String deity = args[1];
 		
-		sender.sendMessage(ChatColor.YELLOW + "You've given " + arg2 + " to " + arg1 + "!");
+		DUtil.giveDeity(username, deity);
+		DUtil.setImmortal(username, true);
+		DUtil.setFavor(username, 500);
+		DUtil.setAscensions(username, 9);
+		DUtil.setDevotion(username, deity, 900);
+		DUtil.setKills(username, 2);
+		
+		sender.sendMessage(ChatColor.YELLOW + "You've given " + deity + " to " + username + "!");
 		
 		return true;
 	}

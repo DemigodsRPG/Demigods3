@@ -119,7 +119,7 @@ public class DUtil
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		for(Object alliance : DSave.getAllData().get("deity_alliances_temp").values())
+		for(Object alliance : DSave.getAllData().get("deity_alliances_temp").values().toArray())
 		{
 			if(toReturn.contains((String) alliance)) continue;
 			toReturn.add((String) alliance);

@@ -23,7 +23,6 @@ public class Demigods extends JavaPlugin
 	// Soft dependencies
 	protected static WorldGuardPlugin WORLDGUARD = null;
 	protected static P FACTIONS = null;
-	public ReflectCommand commandRegistrator;
 	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
 	// Did dependencies load correctly?
@@ -97,8 +96,17 @@ public class Demigods extends JavaPlugin
 	private void loadCommands()
 	{
 		// Define Main CommandExecutor
-		commandRegistrator = new ReflectCommand(this);
-		commandRegistrator.register(DCommandExecutor.class);
+		DCommandExecutor ce = new DCommandExecutor(this);
+		
+		// Define General Commands
+		getCommand("dg").setExecutor(ce);
+		getCommand("viewhashmaps").setExecutor(ce);
+		getCommand("check").setExecutor(ce);
+		getCommand("setalliance").setExecutor(ce);
+		getCommand("setfavor").setExecutor(ce);
+		getCommand("setascensions").setExecutor(ce);
+		getCommand("setdevotion").setExecutor(ce);
+		getCommand("givedeity").setExecutor(ce);
 	}
 	
 	/*
@@ -119,6 +127,7 @@ public class Demigods extends JavaPlugin
 	{
 		DUtil.info("Loading deities...");
 		ArrayList<String> deityList = new ArrayList<String>();
+		ReflectCommand commandRegistrator = new ReflectCommand(this);
 		
 		// Find all deities
 		CodeSource demigodsSrc = Demigods.class.getProtectionDomain().getCodeSource();
@@ -157,7 +166,7 @@ public class Demigods extends JavaPlugin
 					
 					// Add to HashMap
 					DSave.saveData("deity_classes_temp", deityName, deity);
-					DSave.saveData("deity_allainces_temp", deityName, alliance);
+					DSave.saveData("deity_alliances_temp", deityName, alliance);
 					 
 					// Display the success message
 					DUtil.info(deityMessage);
