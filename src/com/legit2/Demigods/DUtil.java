@@ -143,7 +143,7 @@ public class DUtil
 		{
 			for(ItemStack inventoryItem : inventory)
 			{
-				if(inventoryItem.isSimilar(soul))
+				if(inventoryItem != null && inventoryItem.isSimilar(soul))
 				{
 					// Find amount of souls and subtract 1 upon use
 					int amount = inventoryItem.getAmount();

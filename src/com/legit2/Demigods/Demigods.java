@@ -45,11 +45,11 @@ public class Demigods extends JavaPlugin
 			loadCommands();
 			loadDeities();
 			loadMetrics();
-			checkUpdate();
+			//checkUpdate();
 			
 			
 			//////// Test Code Loader
-			// loadTestCode();
+			loadTestCode();
 			//////// End Test Code Loader
 			
 			DUtil.info("Enabled!");
@@ -77,7 +77,6 @@ public class Demigods extends JavaPlugin
 	/*
 	 *  loadTestCode() : Loads the code upon plugin enable.
 	 */
-	@SuppressWarnings("unused")
 	private void loadTestCode()
 	{
 		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
@@ -221,6 +220,7 @@ public class Demigods extends JavaPlugin
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "SimpleNotice");
 	}
 	
+	@SuppressWarnings("unused")
 	private void checkUpdate()
 	{
 		// Check for updates, and then update if need be		
