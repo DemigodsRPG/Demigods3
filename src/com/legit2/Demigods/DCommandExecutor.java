@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -310,10 +311,19 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String username = args[0];
+
+		try
+		{
+			DDatabase.removePlayer(username);
+			DDatabase.addPlayer(username);
+		}
+		catch(Exception e)
+		{
+			
+		}
 		
-		DSave.removeAllPlayerData(username);
-		DSave.removeAllDeityData(username, "ALL");
-		sender.sendMessage(ChatColor.RED + "You have removed " + username + " from the database!");
+		Bukkit.getPlayer(username).sendMessage(ChatColor.YELLOW + "You have been reset in the Demigods database by " + ChatColor.AQUA + sender.getName() + ChatColor.YELLOW + ".");
+		sender.sendMessage(ChatColor.RED + "You have removed " + ChatColor.AQUA + username + ChatColor.YELLOW + " from the database!");
 		
 		return true;
 	}

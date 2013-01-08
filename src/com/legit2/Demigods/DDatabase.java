@@ -80,6 +80,36 @@ public class DDatabase
 			// TODO: SQLite
 		}
 	}
+	
+	/*
+	 *  addPlayer() : Adds the (String)username to the database with default values.
+	 */
+	public static void removePlayer(String username) throws SQLException
+	{
+		// Next we add them to the Database if needed
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{	
+			// Remove their HashMap data first
+			DSave.removeAllPlayerData(username);
+			DSave.removeAllDeityData(username, "ALL");
+			
+			// Remove their MySQL info
+			if(!DMySQL.dataExists(DMySQL.player_table, "player", username))
+			{
+				DMySQL.runQuery("DELETE FROM " + DMySQL.player_table + " WHERE player='" + username + "';");
+				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
+				DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
+			}
+			else
+			{
+				DUtil.info("User " + username + " could not be found.");
+			}
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+	}
 
 	/*
 	 *  getPlayerInfo() : Grabs the player info from MySQL/FlatFile and returns (ResultSet)result.
