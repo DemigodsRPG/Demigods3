@@ -63,7 +63,7 @@ public class DMetrics
 								{
 									if (DSave.hasPlayerData(s, "LASTLOGINTIME"))
 									{
-										if ((Long.decode((String) DSave.getPlayerData(s, "LASTLOGINTIME"))) < System.currentTimeMillis()-604800000) continue;
+										if ((Long.decode(DSave.getPlayerData(s, "LASTLOGINTIME").toString())) < System.currentTimeMillis()-604800000) continue;
 									}
 									allianceMembers.add(s);
 								}
