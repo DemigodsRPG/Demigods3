@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
@@ -13,10 +14,13 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
+import com.legit2.Demigods.DSave;
 import com.legit2.Demigods.DSouls;
 import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
@@ -95,5 +99,47 @@ public class DPlayerListener implements Listener
 				}
 			}
 		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerMove(PlayerMoveEvent event)
+	{
+		// PREVENT LINE JUMPING
+		int pvp_area_delay = (int)(DConfig.getSettingDouble("pvp_area_delay_seconds")*20);
+		final Player player = (Player) event.getPlayer();
+		final String username = player.getName();
+		final Location from = event.getFrom();
+		final Location to = event.getTo();
+		Location PVP;
+		
+		if(DUtil.canPVP(to) != DUtil.canPVP(from))
+		{
+			if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
+			{
+				event.getPlayer().setVelocity(new Vector().zero());
+			}
+			
+			// Find the PVP zone
+			if(DUtil.canPVP(to)) PVP = to;
+			else PVP = from;
+			
+			// Set data to prevent this from triggering more than once
+			DSave.savePlayerData(username, "pvp_area_cooldown_temp", true);
+			
+			event.setCancelled(true);
+			player.teleport(PVP);
+
+			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					player.teleport(to);
+					DSave.removePlayerData(username, "pvp_area_cooldown_temp");
+				}
+			}, pvp_area_delay);
+			
+		}
+		
 	}
 }

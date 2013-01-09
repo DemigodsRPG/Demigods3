@@ -4,6 +4,7 @@ broadcast_new_deities: true
 friendly_fire: false
 allow_skills_anywhere: false
 balance_teams: true
+pvp_area_delay_seconds: 15.0
 inactive_worlds:
 #- world_nodemigods
 
