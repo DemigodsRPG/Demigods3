@@ -29,9 +29,15 @@ public class DMetrics
 		    for(String player : DSave.getAllPlayersData().keySet())
 		    {
 		    	String alliance;
-		    	if(DSave.getPlayerData(player, "alliance") != null)
+		    	if(DSave.getPlayerData(player, "alliance") != null && DSave.getPlayerData(player, "alliance") != "null")
 		    	{
-			    	alliance= DSave.getPlayerData(player, "alliance").toString();
+			    	alliance = DSave.getPlayerData(player, "alliance").toString();
+			    	if(allianceList.contains(alliance)) continue;
+			    	allianceList.add(alliance);
+		    	}
+		    	else
+		    	{
+		    		alliance = "mortal";
 			    	if(allianceList.contains(alliance)) continue;
 			    	allianceList.add(alliance);
 		    	}
