@@ -40,3 +40,6 @@ permissions:
     demigods.admin:
         description: The default permission for admins.
         default: op
+    demigods.bypass.pvpareacooldown:
+        description: Bypass the wait for leaving/entering PVP zones.
+        default: false
