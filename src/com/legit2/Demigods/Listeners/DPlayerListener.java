@@ -109,15 +109,10 @@ public class DPlayerListener implements Listener
 		final String username = player.getName();
 		final Location from = event.getFrom();
 		final Location to = event.getTo();
-		Location PVP;
-		
-		// Find the PVP Zone
-		if(DUtil.canPVP(to)) PVP = to;
-		else PVP = from;
 		
 		if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
 		{
-			player.teleport(PVP);
+			player.teleport((Location) DSave.getPlayerData(username, "pvp_area_cooldown_temp"));
 			return;
 		}
 		
@@ -125,8 +120,13 @@ public class DPlayerListener implements Listener
 		{
 			if(DUtil.hasPermission(player, "demigods.bypass.pvpareacooldown")) return;
 			
+			// Find the PVP Zone
+			Location PVP;
+			if(DUtil.canPVP(to)) PVP = to;
+			else PVP = from;
+			
 			// Set data to prevent this from triggering more than once
-			DSave.savePlayerData(username, "pvp_area_cooldown_temp", true);
+			DSave.savePlayerData(username, "pvp_area_cooldown_temp", PVP);
 			player.sendMessage(ChatColor.YELLOW + "Please wait while you cooldown...");
 			
 			player.teleport(PVP);
