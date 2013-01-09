@@ -70,12 +70,13 @@ public class DEntityListener implements Listener
 			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
 			
 			// Define attacker and name
-			Player attacker = (Player) damageEvent.getDamager();
+			Player attacker = null;
+			if(damageEvent.getDamager() != null) attacker = (Player) damageEvent.getDamager();
 
 			if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
 			{
 				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
-				attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+				if(attacker != null) attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 			}
 		}
 	}
