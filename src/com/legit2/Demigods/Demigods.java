@@ -152,7 +152,7 @@ public class Demigods extends JavaPlugin
 				
 				while((demigodsFile = demigodsZip.getNextEntry()) != null)
 				{
-					String deityName = demigodsFile.getName().replace("/", ".").replace(".class", "");
+					String deityName = demigodsFile.getName().replace("/", ".").replace(".class", "").replace("$", "").replaceAll("\\d*$", "");
 					if(deityName.contains("_deity"))
 					{
 						deityCount++;
@@ -166,18 +166,18 @@ public class Demigods extends JavaPlugin
 					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
 					 
 					// Load everything else for the Deity (Listener, etc.)
-					String deityMessage = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
-					String deityName = (String) DUtil.invokeDeityMethod(deity, "getName");
+					String message = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
+					String name = (String) DUtil.invokeDeityMethod(deity, "getName");
 					String alliance = (String) DUtil.invokeDeityMethod(deity, "getAlliance");
 					ArrayList<Material> claimItems = (ArrayList<Material>) DUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
-					DSave.saveData("deity_classes_temp", deityName, deity);
-					DSave.saveData("deity_alliances_temp", deityName, alliance);
-					DSave.saveData("deity_claim_items_temp", deityName, claimItems);
+					DSave.saveData("deity_classes_temp", name, deity);
+					DSave.saveData("deity_alliances_temp", name, alliance);
+					DSave.saveData("deity_claim_items_temp", name, claimItems);
 					 
 					// Display the success message
-					DUtil.info(deityMessage);
+					DUtil.info(message);
 				}
 				// Stop the timer
 				long stopTimer = System.currentTimeMillis();
