@@ -112,13 +112,14 @@ public class DPlayerListener implements Listener
 		final Location to = event.getTo();
 		Location PVP;
 		
-		if(DUtil.canPVP(to) != DUtil.canPVP(from))
+		if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
 		{
-			if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
-			{
-				event.getPlayer().setVelocity(new Vector().zero());
-			}
-			
+			event.getPlayer().setVelocity(new Vector().zero());
+			return;
+		}
+		
+		if(DUtil.canPVP(to) != DUtil.canPVP(from))
+		{			
 			// Find the PVP zone
 			if(DUtil.canPVP(to)) PVP = to;
 			else PVP = from;
