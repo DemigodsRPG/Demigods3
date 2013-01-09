@@ -251,7 +251,7 @@ public class DCommandExecutor implements CommandExecutor
 		String kills = null;
 		String deaths = null;
 		String alliance = null;
-		ArrayList<String> deity_list = new ArrayList<String>();
+		ArrayList<Object> deity_list = new ArrayList<Object>();
 		
 		// Loop through player data entry set and them to variables
 		for(Map.Entry<String, Object> entry : player_data.entrySet())
@@ -284,18 +284,27 @@ public class DCommandExecutor implements CommandExecutor
 				if(id.contains("devotion"))
 				{
 					devotion = data.toString();
-					deity_list.add(deity_name + " [" + devotion + "]");
+					deity_list.add(ChatColor.LIGHT_PURPLE + DObjUtils.capitalize(deity_name) + ChatColor.RESET + " (" + ChatColor.GREEN + devotion + ChatColor.RESET + ChatColor.RESET + " Devotion)");
 				}
 			}
 		}
 		
 			
 		// Send the user their info via chat
-		DUtil.taggedMessage(sender, "Player check: " + ChatColor.YELLOW + username);
-		sender.sendMessage("Alliance: " + ChatColor.DARK_GREEN + alliance);
-		sender.sendMessage("Deities: " + ChatColor.DARK_GREEN + deity_list.toString());
+		DUtil.customTaggedMessage(sender, "Demigods Player Check", null);
+		sender.sendMessage(ChatColor.RESET + "Name: " + ChatColor.AQUA + username + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtils.capitalize(alliance) + "s");
 		sender.sendMessage("Favor: " + ChatColor.GREEN + favor);
 		sender.sendMessage("Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(" ");
+		
+		sender.sendMessage("Deities: ");
+		
+			// List each deity separately
+			for(Object deity : deity_list)
+			{
+				sender.sendMessage("  " + deity);
+			}
+			
 		sender.sendMessage(" ");
 		sender.sendMessage("Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
 	
@@ -446,7 +455,7 @@ public class DCommandExecutor implements CommandExecutor
 		String alliance;
 		Boolean firstTime = false;
 		
-		if(DUtil.getAlliance(username).equalsIgnoreCase(null) || DUtil.getAlliance(username).equalsIgnoreCase("null"))
+		if(DUtil.getAlliance(username) == null || DUtil.getAlliance(username).equalsIgnoreCase("null"))
 		{
 			alliance = DUtil.getDeityAlliance(deity);
 			firstTime = true;

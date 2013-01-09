@@ -818,7 +818,16 @@ public class DUtil
 	 */
 	public static void taggedMessage(CommandSender sender, String msg)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "] " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "]");
+	}
+	
+	/*
+	 *  taggedMessage() : Sends tagged message (String)msg to the (CommandSender)sender.
+	 */
+	public static void customTaggedMessage(CommandSender sender, String title, String msg)
+	{
+		if(msg != null) sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "] " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.YELLOW + "[" + title + "]");
 	}
 	
 	/*
