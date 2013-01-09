@@ -110,6 +110,8 @@ public class DPlayerListener implements Listener
 		final Location from = event.getFrom();
 		final Location to = event.getTo();
 		Location PVP;
+		
+		// Find the PVP Zone
 		if(DUtil.canPVP(to)) PVP = to;
 		else PVP = from;
 		
@@ -120,9 +122,8 @@ public class DPlayerListener implements Listener
 		}
 		
 		if(DUtil.canPVP(to) != DUtil.canPVP(from))
-		{			
-			// Find the PVP zone
-
+		{
+			if(DUtil.hasPermission(player, "demigods.bypass.pvpareacooldown")) return;
 			
 			// Set data to prevent this from triggering more than once
 			DSave.savePlayerData(username, "pvp_area_cooldown_temp", true);
