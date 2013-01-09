@@ -39,7 +39,7 @@ public class Poseidon_deity implements Listener
 	private static String DROWN_NAME = "Drown"; // Sets the name of this command
 	private static long DROWN_TIME; // Creates the variable for later use
 	private static final int DROWN_COST = 240; // Cost to run command in "favor"
-	private static final int DROWN_DELAY = 15000; // In milliseconds
+	private static final int DROWN_DELAY = 10000; // In milliseconds
 
 	public String loadDeity()
 	{
@@ -210,6 +210,7 @@ public class Poseidon_deity implements Listener
 		if(target == null)
 		{
 			player.sendMessage(ChatColor.YELLOW + "No target found.");
+			return;
 		}
 		
 		if(target instanceof Player)
@@ -278,6 +279,7 @@ public class Poseidon_deity implements Listener
 		if(target == null)
 		{
 			player.sendMessage(ChatColor.YELLOW + "No target found.");
+			return;
 		}
 		
 		if(target instanceof Player)
@@ -285,7 +287,7 @@ public class Poseidon_deity implements Listener
 			if(DUtil.areAllied(player.getName(), ((Player) target).getName())) return;
 		}
 		
-		if (DUtil.canPVP(target.getLocation()))
+		if(DUtil.canPVP(target.getLocation()))
 		{
 			final ArrayList<Block> toReset = new ArrayList<Block>();
 			for(int x =- radius; x <= radius; x++)

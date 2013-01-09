@@ -218,6 +218,7 @@ public class Zeus_deity implements Listener
 		if(target == null)
 		{
 			player.sendMessage(ChatColor.YELLOW + "No target found.");
+			return;
 		}
 		
 		for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
@@ -287,6 +288,7 @@ public class Zeus_deity implements Listener
 		if(target == null)
 		{
 			player.sendMessage(ChatColor.YELLOW + "No target found.");
+			return;
 		}
 		
 		if(target instanceof Player)
