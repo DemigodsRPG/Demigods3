@@ -126,6 +126,7 @@ public class DPlayerListener implements Listener
 			
 			// Set data to prevent this from triggering more than once
 			DSave.savePlayerData(username, "pvp_area_cooldown_temp", true);
+			player.sendMessage(ChatColor.YELLOW + "Please wait while you cooldown...");
 			
 			player.teleport(PVP);
 
@@ -136,6 +137,7 @@ public class DPlayerListener implements Listener
 				{
 					player.teleport(to);
 					DSave.removePlayerData(username, "pvp_area_cooldown_temp");
+					player.sendMessage(ChatColor.YELLOW + "Cooldown complete!");
 				}
 			}, pvp_area_delay);
 			
