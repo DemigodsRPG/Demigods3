@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -281,20 +280,24 @@ public class Zeus_deity implements Listener
 	public static void lightning(Player player)
 	{
 		// Define variables
-		Block block = player.getTargetBlock(null, 200);
-		Location target = block.getLocation();
+		LivingEntity target = DUtil.autoTarget(player);
 		
 		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
-		if (player.getLocation().distance(target) > 2)
+		if(target == null)
 		{
-			try
-			{
-				strikeLightning(player, target);
-			} 
-			catch (Exception nullpointer) {} //ignore it if something went wrong
+			player.sendMessage(ChatColor.YELLOW + "No target found.");
 		}
-		else player.sendMessage(ChatColor.YELLOW + "Your target is too far away, or too close to you.");		
+		
+		for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
+		{			
+			if(livingEntity instanceof Player)
+			{
+				if(DUtil.areAllied(player.getName(), ((Player)livingEntity).getName())) continue;
+			}
+			
+			if(livingEntity.equals(target)) if (DUtil.canPVP(livingEntity.getLocation())) strikeLightning(player, livingEntity.getLocation());
+		}
 	}
 
 	/*

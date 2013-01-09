@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -270,21 +269,11 @@ public class Cronus_deity implements Listener
 		String username = player.getName();
 		int devotion = DUtil.getDevotion(username, DEITYNAME);
 		int duration = (int) Math.ceil(3.635 * Math.pow(devotion, 0.2576)); //seconds
-		int strength = (int) Math.ceil(2.757 * Math.pow(devotion, 0.097));
-		Player target = null;
-		Block block = player.getTargetBlock(null, 200);
+		int strength = (int) Math.ceil(1.757 * Math.pow(devotion, 0.097));
+		Player target = null; 
+		if(DUtil.autoTarget(player) instanceof Player) target = (Player) DUtil.autoTarget(player);
 		
-		for (Player onlinePlayer : block.getWorld().getPlayers())
-		{
-			if (onlinePlayer.getLocation().distance(block.getLocation()) < 4)
-			{
-				if (!DUtil.areAllied(onlinePlayer.getName(), username) && DUtil.canPVP(onlinePlayer.getLocation()))
-				{
-					target = onlinePlayer;
-					break;
-				}
-			}
-		}
+		if(DUtil.areAllied(target.getName(), username) || !DUtil.canPVP(target.getLocation()))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
 		{
