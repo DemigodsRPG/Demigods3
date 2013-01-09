@@ -129,7 +129,6 @@ public class Zeus_deity implements Listener
 		if(DUtil.isEnabledAbility(username, DEITYNAME, SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, SHOVE_NAME))))
 		{
 			if(!DUtil.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
-			if(!DUtil.canPVP(interactEvent.getPlayer().getLocation())) return;
 
 			// Set the ability's delay
 			SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
@@ -150,7 +149,6 @@ public class Zeus_deity implements Listener
 		if(DUtil.isEnabledAbility(username, DEITYNAME, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, LIGHTNING_NAME))))
 		{
 			if(!DUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
-			if(!DUtil.canPVP(interactEvent.getPlayer().getLocation())) return;
 
 			// Set the ability's delay
 			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
