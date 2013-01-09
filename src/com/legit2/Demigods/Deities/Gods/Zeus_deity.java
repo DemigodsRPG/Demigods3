@@ -289,15 +289,12 @@ public class Zeus_deity implements Listener
 			player.sendMessage(ChatColor.YELLOW + "No target found.");
 		}
 		
-		for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
-		{			
-			if(livingEntity instanceof Player)
-			{
-				if(DUtil.areAllied(player.getName(), ((Player)livingEntity).getName())) continue;
-			}
-			
-			if(livingEntity.equals(target)) if (DUtil.canPVP(livingEntity.getLocation())) strikeLightning(player, livingEntity.getLocation());
+		if(target instanceof Player)
+		{
+			if(DUtil.areAllied(player.getName(), ((Player) target).getName())) return;
 		}
+		
+		if(target.equals(target)) if (DUtil.canPVP(target.getLocation())) strikeLightning(player, target.getLocation());
 	}
 
 	/*
