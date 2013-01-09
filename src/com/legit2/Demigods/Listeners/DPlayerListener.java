@@ -110,23 +110,23 @@ public class DPlayerListener implements Listener
 		final Location from = event.getFrom();
 		final Location to = event.getTo();
 		Location PVP;
+		if(DUtil.canPVP(to)) PVP = to;
+		else PVP = from;
 		
 		if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
 		{
-			event.setCancelled(true);
+			player.teleport(PVP);
 			return;
 		}
 		
 		if(DUtil.canPVP(to) != DUtil.canPVP(from))
 		{			
 			// Find the PVP zone
-			if(DUtil.canPVP(to)) PVP = to;
-			else PVP = from;
+
 			
 			// Set data to prevent this from triggering more than once
 			DSave.savePlayerData(username, "pvp_area_cooldown_temp", true);
 			
-			event.setCancelled(true);
 			player.teleport(PVP);
 
 			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
