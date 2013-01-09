@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
@@ -114,7 +113,7 @@ public class DPlayerListener implements Listener
 		
 		if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
 		{
-			event.getPlayer().setVelocity(new Vector().zero());
+			event.setCancelled(true);
 			return;
 		}
 		
