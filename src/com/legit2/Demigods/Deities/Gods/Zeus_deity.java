@@ -217,10 +217,8 @@ public class Zeus_deity implements Listener
 		// Get Targets as an ArrayList
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
 		
-		for (Block block : player.getLineOfSight(null, 10)) 
+		for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
 		{
-			for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
-			{
 				if(targets == hit.size()) break;
 				
 				if(livingEntity instanceof Player)
@@ -228,9 +226,9 @@ public class Zeus_deity implements Listener
 					if(DUtil.areAllied(username, ((Player)livingEntity).getName())) continue;
 				}
 				
-				if((livingEntity.getLocation().distance(block.getLocation()) <= 5) && !hit.contains(livingEntity)) if (DUtil.canPVP(livingEntity.getLocation())) hit.add(livingEntity);
-			}
+				if((livingEntity.equals(DUtil.autoTarget(player))) && !hit.contains(livingEntity)) if (DUtil.canPVP(livingEntity.getLocation())) hit.add(livingEntity);
 		}
+		
 		if (hit.size() > 0)
 		{
 			for (LivingEntity livingEntity : hit)

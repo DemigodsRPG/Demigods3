@@ -14,14 +14,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockIterator;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
@@ -1040,5 +1043,54 @@ public class DUtil
         if(plugin.FACTIONS == null) return true;
         Faction faction = Board.getFactionAt(new FLocation(location.getBlock()));
         return !(faction.isPeaceful() || faction.isSafeZone());
+    }
+    
+    public static LivingEntity autoTarget(Player player)
+    {
+    	int range = 3;
+    	ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) player.getNearbyEntities(range, range, range);
+        ArrayList<LivingEntity> livingEntities = new ArrayList<LivingEntity>();
+
+        for(Entity entity : nearbyEntities)
+        {
+            if(entity instanceof LivingEntity)
+            {
+            	livingEntities.add((LivingEntity) entity);
+            }
+        }
+
+        LivingEntity toReturn = null;
+        BlockIterator blockIterator = new BlockIterator(player, range);
+        Block block;
+        Location location;
+        
+        int blockX, blockY, blockZ;
+        double entityX, entityY, entityZ;
+        
+        // Loop through player's line of sight
+        while(blockIterator.hasNext())
+        {
+            block = blockIterator.next();
+            blockX = block.getX();
+            blockY = block.getY();
+            blockZ = block.getZ();
+            // Check for entities near this block in the line of sight
+            for(LivingEntity entity : livingEntities)
+            {
+                    location = entity.getLocation();
+                    entityX = location.getX();
+                    entityY = location.getY();
+                    entityZ = location.getZ();
+                    
+                    if((blockX - 0.75 <= entityX && entityX <= blockX + 1.75) && (blockZ - 0.75 <= entityZ && entityZ <= blockZ + 1.75) && (blockY - 1.00 <= entityY && entityY <= blockY + 2.50))
+                    {
+                            // Entity is close enough, set target and stop
+                            toReturn = entity;
+                            break;
+                    }
+            }
+        }
+        
+        return toReturn;
     }
 }
