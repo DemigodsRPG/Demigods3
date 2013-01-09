@@ -1047,50 +1047,32 @@ public class DUtil
     
     public static LivingEntity autoTarget(Player player)
     {
-    	int range = 3;
-    	ArrayList<Entity> nearbyEntities = (ArrayList<Entity>) player.getNearbyEntities(range, range, range);
-        ArrayList<LivingEntity> livingEntities = new ArrayList<LivingEntity>();
-
-        for(Entity entity : nearbyEntities)
+    	BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, 100);
+        
+        while (iterator.hasNext())
         {
-            if(entity instanceof LivingEntity)
+            Block item = iterator.next();
+            for(Entity entity : player.getNearbyEntities(100, 100, 100))
             {
-            	livingEntities.add((LivingEntity) entity);
+            	if(entity instanceof LivingEntity)
+            	{
+	                int acc = 2;
+	                for(int x = -acc; x < acc; x++)
+	                {
+	                    for(int z = -acc; z < acc; z++)
+	                    {
+	                        for(int y = -acc; y < acc; y++)
+	                        {
+	                            if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item))
+	                            {
+	                                return (LivingEntity) entity;
+	                            }
+	                        }
+	                    }
+	                }
+            	}
             }
         }
-
-        LivingEntity toReturn = null;
-        BlockIterator blockIterator = new BlockIterator(player, range);
-        Block block;
-        Location location;
-        
-        int blockX, blockY, blockZ;
-        double entityX, entityY, entityZ;
-        
-        // Loop through player's line of sight
-        while(blockIterator.hasNext())
-        {
-            block = blockIterator.next();
-            blockX = block.getX();
-            blockY = block.getY();
-            blockZ = block.getZ();
-            // Check for entities near this block in the line of sight
-            for(LivingEntity entity : livingEntities)
-            {
-                    location = entity.getLocation();
-                    entityX = location.getX();
-                    entityY = location.getY();
-                    entityZ = location.getZ();
-                    
-                    if((blockX - 0.75 <= entityX && entityX <= blockX + 1.75) && (blockZ - 0.75 <= entityZ && entityZ <= blockZ + 1.75) && (blockY - 1.00 <= entityY && entityY <= blockY + 2.50))
-                    {
-                            // Entity is close enough, set target and stop
-                            toReturn = entity;
-                            break;
-                    }
-            }
-        }
-        
-        return toReturn;
+        return null;
     }
 }
