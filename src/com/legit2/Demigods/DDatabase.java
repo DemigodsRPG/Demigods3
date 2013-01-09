@@ -94,7 +94,7 @@ public class DDatabase
 			DSave.removeAllDeityData(username, "ALL");
 			
 			// Remove their MySQL info
-			if(!DMySQL.dataExists(DMySQL.player_table, "player", username))
+			if(DMySQL.dataExists(DMySQL.player_table, "player", username))
 			{
 				DMySQL.runQuery("DELETE FROM " + DMySQL.player_table + " WHERE player='" + username + "';");
 				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
@@ -179,8 +179,9 @@ public class DDatabase
 					}
 					catch(SQLException e)
 					{
+						DUtil.plugin.getPluginLoader().disablePlugin(DUtil.plugin);
 						DUtil.severe("There was a severe problem with saving...");
-						DUtil.severe("Please do a full restart of your server.");
+						DUtil.severe("Demigods has been disabled. Please do a full restart of your Bukkit server.");
 					}
 				}
 				
@@ -276,7 +277,7 @@ public class DDatabase
 					// Define variables
 					String username = all_players.getString("player");
 					ArrayList<String> deities = null;
-					if(all_players.getString("deities") != null) deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
+					if(!all_players.getString("deities").isEmpty() && !all_players.getString("deities").equalsIgnoreCase("null")) deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
 
 					// Add HashMaps
 					DSave.newPlayer(username);
