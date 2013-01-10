@@ -31,6 +31,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class DUtil
 {
@@ -1031,7 +1032,11 @@ public class DUtil
 	    if(plugin.WORLDGUARD == null) return true;
 	    
 	    ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);
-	    return set.allows(DefaultFlag.PVP);
+	    for (ProtectedRegion region : set)
+		{
+	    	if(region.getId().toLowerCase().contains("nopvp")) return false;
+		}
+	    return true;
     }
 
     @SuppressWarnings("static-access")

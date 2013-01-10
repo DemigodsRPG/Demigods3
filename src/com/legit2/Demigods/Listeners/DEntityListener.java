@@ -44,14 +44,7 @@ public class DEntityListener implements Listener
 			
 			if(attacker instanceof Player)
 			{
-				if(!DUtil.canLocationPVP(attackedPlayer.getLocation()) && DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
-				{
-					// Punish people who try to line-jump
-					int toDamage = event.getDamage() * 2;
-					event.setCancelled(true);
-					
-					attackedPlayer.damage(toDamage);
-				}
+				if(DUtil.canLocationPVP(attackedPlayer.getLocation())) event.setCancelled(true);
 				
 				if(damageEvent.getDamage() > attackedPlayer.getHealth())
 				{
