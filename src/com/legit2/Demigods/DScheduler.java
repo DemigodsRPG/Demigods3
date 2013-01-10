@@ -53,7 +53,7 @@ public class DScheduler
 				{
 					if(DSave.hasPlayerData(player.getName(), "was_PVP_temp"))
 					{				
-						if(Long.valueOf(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString()) + (long) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 1000) > System.currentTimeMillis()) continue;
+						if(Long.valueOf(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString()) > System.currentTimeMillis()) continue;
 						
 						DSave.removePlayerData(player.getName(), "was_PVP_temp");
 						player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP.");

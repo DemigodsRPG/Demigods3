@@ -110,6 +110,6 @@ public class DPlayerListener implements Listener
 		Location from = event.getFrom();
 			
 		// Save the time that a player left a PVP zone
-		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", System.currentTimeMillis());
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", (System.currentTimeMillis() + (long) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)));
 	}
 }
