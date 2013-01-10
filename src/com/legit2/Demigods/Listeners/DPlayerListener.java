@@ -110,7 +110,7 @@ public class DPlayerListener implements Listener
 		Location to = event.getTo();
 		Location from = event.getFrom();
 			
-		// Save the time that a player left a PVP zone
+		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
 		{
 			DSave.savePlayerData(username, "was_PVP_temp", true);
@@ -121,10 +121,12 @@ public class DPlayerListener implements Listener
 				public void run()
 				{
 					DSave.removePlayerData(username, "was_PVP_temp");
-					player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
+					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
 			}, (pvp_area_delay_time * 20));
 		}
 		
+		// Let players know where they can PVP
+		if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 	}
 }
