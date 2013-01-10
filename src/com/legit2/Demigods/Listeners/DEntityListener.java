@@ -26,7 +26,7 @@ public class DEntityListener implements Listener
 		plugin = instance;
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		// Define variables
