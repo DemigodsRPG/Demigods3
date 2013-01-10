@@ -44,10 +44,9 @@ public class DEntityListener implements Listener
 			
 			if(attacker instanceof Player)
 			{
-				if(!DUtil.canLocationPVP(attackedPlayer.getLocation()) && !DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
+				if(!DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
 				{
 					event.setCancelled(true);
-					damageEvent.setCancelled(true);
 					return;
 				}
 				
