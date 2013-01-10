@@ -106,7 +106,7 @@ public class DPlayerListener implements Listener
 		// Define variables
 		final Player player = (Player) event.getPlayer();
 		final String username = player.getName();
-		int pvp_area_delay_time = DConfig.getSettingInt("pvp_area_delay_time");
+		final int pvp_area_delay_time = DConfig.getSettingInt("pvp_area_delay_time");
 		Location to = event.getTo();
 		Location from = event.getFrom();
 			
@@ -121,6 +121,7 @@ public class DPlayerListener implements Listener
 				public void run()
 				{
 					DSave.removePlayerData(username, "was_PVP_temp");
+					player.sendMessage("Delay Time: " + (pvp_area_delay_time * 20));
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
 				}
 			}, (pvp_area_delay_time * 20));
