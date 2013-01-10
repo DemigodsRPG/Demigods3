@@ -1001,14 +1001,24 @@ public class DUtil
 	}
 	
 	/*
-	 *  canPVP() : Checks if PVP is allowed in (Location)location.
+	 *  canLocationPVP() : Checks if PVP is allowed in (Location)location.
 	 */
-    public static boolean canPVP(Location location)
+    public static boolean canLocationPVP(Location location)
     {
         if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
         
         if(canWorldGuardPVP(location) && canFactionsPVP(location)) return true;
         else return false;
+    }
+    
+	/*
+	 *  canPlayerPVP() : Checks if PVP is allowed in (Location)location.
+	 */
+    public static boolean canTarget(LivingEntity player, Location location)
+    {      
+    	if(!(player instanceof Player)) return true;
+        if(DSave.hasPlayerData(((Player) player).getName(), "was_PVP_temp")) return true;
+        return canLocationPVP(location);
     }
 	
     /*

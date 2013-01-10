@@ -3,7 +3,6 @@ package com.legit2.Demigods.Deities.Gods;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -209,7 +208,7 @@ public class Zeus_deity implements Listener
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		// Get Targets as an ArrayList
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
@@ -230,7 +229,7 @@ public class Zeus_deity implements Listener
 				if(DUtil.areAllied(username, ((Player)livingEntity).getName())) continue;
 			}
 			
-			if((livingEntity.equals(target)) && !hit.contains(livingEntity)) if (DUtil.canPVP(livingEntity.getLocation())) hit.add(livingEntity);
+			if((livingEntity.equals(target)) && !hit.contains(livingEntity)) if (DUtil.canTarget(livingEntity, livingEntity.getLocation())) hit.add(livingEntity);
 		}
 		
 		if (hit.size() > 0)
@@ -283,7 +282,7 @@ public class Zeus_deity implements Listener
 		// Define variables
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		if(target == null)
 		{
@@ -296,7 +295,7 @@ public class Zeus_deity implements Listener
 			if(DUtil.areAllied(player.getName(), ((Player) target).getName())) return;
 		}
 		
-		if(target.equals(target)) if (DUtil.canPVP(target.getLocation())) strikeLightning(player, target.getLocation());
+		if(target.equals(target)) if (DUtil.canTarget(target, target.getLocation())) strikeLightning(player, target);
 	}
 
 	/*
@@ -322,7 +321,7 @@ public class Zeus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DUtil.getFavor(username) >= ULTIMATE_COST)
 		{
-			if(!DUtil.canPVP(player.getLocation()))
+			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 
@@ -347,7 +346,7 @@ public class Zeus_deity implements Listener
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		Vector playerLocation = player.getLocation().toVector();
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		for(Entity anEntity : player.getWorld().getEntities()) if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
 
@@ -361,18 +360,18 @@ public class Zeus_deity implements Listener
 					Player otherPlayer = (Player) entity;
 					if (!DUtil.areAllied(player.getName(), otherPlayer.getName()) && !otherPlayer.equals(player))
 					{
-						strikeLightning(player, otherPlayer.getLocation());
-						strikeLightning(player, otherPlayer.getLocation());
-						strikeLightning(player, otherPlayer.getLocation());
+						strikeLightning(player, otherPlayer);
+						strikeLightning(player, otherPlayer);
+						strikeLightning(player, otherPlayer);
 						count++;
 					}
 				}
 				else if(entity instanceof LivingEntity)
 				{
 					LivingEntity livingEntity = (LivingEntity) entity;
-					strikeLightning(player, livingEntity.getLocation());
-					strikeLightning(player, livingEntity.getLocation());
-					strikeLightning(player, livingEntity.getLocation());
+					strikeLightning(player, livingEntity);
+					strikeLightning(player, livingEntity);
+					strikeLightning(player, livingEntity);
 					count++;
 				}
 			}
@@ -382,19 +381,19 @@ public class Zeus_deity implements Listener
 		return count;
 	}
 
-	private static void strikeLightning(Player player, Location target)
+	private static void strikeLightning(Player player, LivingEntity target)
 	{
 		if(!player.getWorld().equals(target.getWorld())) return;
-		if(!DUtil.canPVP(target)) return;
+		if(!DUtil.canTarget(target, target.getLocation())) return;
 		
-		player.getWorld().strikeLightningEffect(target);
+		player.getWorld().strikeLightningEffect(target.getLocation());
 		
-		for(Entity entity : target.getBlock().getChunk().getEntities())
+		for(Entity entity : target.getLocation().getBlock().getChunk().getEntities())
 		{
 			if(entity instanceof LivingEntity)
 			{
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(target) < 1.5) DUtil.customDamage(player, livingEntity, DUtil.getAscensions(player.getName())*2, DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(target.getLocation()) < 1.5) DUtil.customDamage(player, livingEntity, DUtil.getAscensions(player.getName())*2, DamageCause.LIGHTNING);
 			}
 		}
 	}

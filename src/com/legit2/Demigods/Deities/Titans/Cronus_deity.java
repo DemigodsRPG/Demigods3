@@ -111,7 +111,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
 			
-			if(!DUtil.canPVP(damageEvent.getEntity().getLocation())) return;
+			if(!DUtil.canLocationPVP(damageEvent.getEntity().getLocation())) return;
 
 			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
 			
@@ -273,7 +273,7 @@ public class Cronus_deity implements Listener
 		Player target = null; 
 		if(DUtil.autoTarget(player) instanceof Player) target = (Player) DUtil.autoTarget(player);
 		
-		if(DUtil.areAllied(target.getName(), username) || !DUtil.canPVP(target.getLocation()))  return;
+		if(DUtil.areAllied(target.getName(), username) || !DUtil.canTarget(target, target.getLocation()))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
 		{
@@ -312,7 +312,7 @@ public class Cronus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DUtil.getFavor(username) >= ULTIMATE_COST)
 		{
-			if(!DUtil.canPVP(player.getLocation()))
+			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 
@@ -343,7 +343,7 @@ public class Cronus_deity implements Listener
 		{
 			if(!(onlinePlayer.getLocation().toVector().isInSphere(player.getLocation().toVector(), 70))) continue;
 			
-			if(!DUtil.canPVP(onlinePlayer.getLocation())) continue;
+			if(!DUtil.canLocationPVP(onlinePlayer.getLocation())) continue;
 			
 			if (DUtil.isImmortal(onlinePlayer.getName()) && DUtil.areAllied(username, onlinePlayer.getName())) continue;
 

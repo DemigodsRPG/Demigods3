@@ -103,46 +103,12 @@ public class DPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		// PREVENT LINE JUMPING
-		int pvp_area_delay = (int)(DConfig.getSettingDouble("pvp_area_delay_seconds")*20);
-		final Player player = (Player) event.getPlayer();
-		final String username = player.getName();
-		final Location from = event.getFrom();
-		final Location to = event.getTo();
-		
-		if(DSave.hasPlayerData(username, "pvp_area_cooldown_temp"))
-		{
-			player.teleport((Location) DSave.getPlayerData(username, "pvp_area_cooldown_temp"));
-			return;
-		}
-		
-		if(DUtil.canPVP(to) != DUtil.canPVP(from))
-		{
-			if(DUtil.hasPermission(player, "demigods.bypass.pvpareacooldown")) return;
+		// Define variables
+		Player player = (Player) event.getPlayer();
+		String username = player.getName();
+		Location from = event.getFrom();
 			
-			// Find the PVP Zone
-			Location PVP;
-			if(DUtil.canPVP(to)) PVP = to;
-			else PVP = from;
-			
-			// Set data to prevent this from triggering more than once
-			DSave.savePlayerData(username, "pvp_area_cooldown_temp", PVP);
-			player.sendMessage(ChatColor.YELLOW + "Please wait while you cooldown...");
-			
-			player.teleport(PVP);
-
-			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					player.teleport(to);
-					DSave.removePlayerData(username, "pvp_area_cooldown_temp");
-					player.sendMessage(ChatColor.YELLOW + "Cooldown complete!");
-				}
-			}, pvp_area_delay);
-			
-		}
-		
+		// Save the time that a player left a PVP zone
+		if(DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", System.currentTimeMillis());
 	}
 }

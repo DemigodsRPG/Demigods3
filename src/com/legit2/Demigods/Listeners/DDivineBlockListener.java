@@ -161,7 +161,7 @@ public class DDivineBlockListener implements Listener
 			while(i.hasNext())
 			{
 				Block block = i.next();
-				if(!DUtil.canPVP(block.getLocation())) i.remove();
+				if(!DUtil.canLocationPVP(block.getLocation())) i.remove();
 				for(Location center : DDivineBlocks.getAllDivineBlocks())
 				{
 					if(block.getLocation().equals(center)) i.remove();

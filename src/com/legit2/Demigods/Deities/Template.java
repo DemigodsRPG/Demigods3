@@ -198,11 +198,11 @@ public class Template implements Listener
 		// Perform ultimate if there is enough favor
 		if(DUtil.getFavor(username) >= ULTIMATE_COST)
 		{
-			if(!DUtil.canPVP(player.getLocation()))
+			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
 				testHelper(player);
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-				return; 
+				return;
 			}
 
 			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");

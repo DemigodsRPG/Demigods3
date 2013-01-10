@@ -206,7 +206,7 @@ public class Poseidon_deity implements Listener
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DUtil.getDevotion(username, DEITYNAME), 0.371238));
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		if(target == null)
 		{
@@ -219,7 +219,7 @@ public class Poseidon_deity implements Listener
 			if(DUtil.areAllied(username, ((Player) target).getName())) return;
 		}
 			
-		if(target.equals(target)) if (DUtil.canPVP(target.getLocation()))
+		if(target.equals(target)) if (DUtil.canTarget(target, target.getLocation()))
 		{
 			if (target.getLocation().getBlock().getType() == Material.AIR)
 			{
@@ -275,7 +275,7 @@ public class Poseidon_deity implements Listener
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		if(target == null)
 		{
@@ -288,7 +288,7 @@ public class Poseidon_deity implements Listener
 			if(DUtil.areAllied(player.getName(), ((Player) target).getName())) return;
 		}
 		
-		if(DUtil.canPVP(target.getLocation()))
+		if(DUtil.canTarget(target, target.getLocation()))
 		{
 			final ArrayList<Block> toReset = new ArrayList<Block>();
 			for(int x =- radius; x <= radius; x++)

@@ -1,5 +1,9 @@
 package com.legit2.Demigods;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 @SuppressWarnings("unused")
 public class DScheduler
 {
@@ -38,6 +42,25 @@ public class DScheduler
 				DUtil.regenerateAllFavor();
 			}
 		}, 0, favor_frequency);
+		
+		// Expiring Hashmaps
+		plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player player : Bukkit.getOnlinePlayers())
+				{
+					if(DSave.hasPlayerData(player.getName(), "was_PVP"))
+					{
+						if(Long.getLong(DSave.getPlayerData(player.getName(), "was_PVP").toString()) < System.currentTimeMillis() - (int) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)) continue;
+						
+						DSave.removePlayerData(player.getName(), "was_PVP");
+						player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP.");
+					}
+				}
+			}
+		}, 0, 1);
 
 	}
 	
