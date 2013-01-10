@@ -121,7 +121,6 @@ public class DPlayerListener implements Listener
 				public void run()
 				{
 					DSave.removePlayerData(username, "was_PVP_temp");
-					player.sendMessage("Delay Time: " + (pvp_area_delay_time * 20));
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
 				}
 			}, (pvp_area_delay_time * 20));
