@@ -53,14 +53,14 @@ public class DScheduler
 				{
 					if(DSave.hasPlayerData(player.getName(), "was_PVP_temp"))
 					{				
-						if(DUtil.toInteger(DSave.getPlayerData(player.getName(), "was_PVP_temp")) > (int) System.currentTimeMillis() - (int) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)) continue;
+						if(Long.valueOf(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString()) > System.currentTimeMillis() - (long) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)) continue;
 						
 						DSave.removePlayerData(player.getName(), "was_PVP_temp");
 						player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP.");
 					}
 				}
 			}
-		}, 0, 15);
+		}, 0, 10);
 
 	}
 	
