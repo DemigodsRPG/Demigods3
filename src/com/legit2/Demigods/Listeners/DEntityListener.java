@@ -26,7 +26,7 @@ public class DEntityListener implements Listener
 		plugin = instance;
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		// Define variables
@@ -94,7 +94,7 @@ public class DEntityListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void entityDeath(EntityDeathEvent event)
 	{
-
+		// TODO
 	}
 
 }
