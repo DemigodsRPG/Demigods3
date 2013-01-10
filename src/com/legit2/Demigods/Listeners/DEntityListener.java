@@ -42,23 +42,35 @@ public class DEntityListener implements Listener
 			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
 			Entity attacker = damageEvent.getDamager();
 			
-			if(attacker instanceof Player && damageEvent.getDamage() > attackedPlayer.getHealth())
+			if(attacker instanceof Player)
 			{
-				// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
-				if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
+				if(!DUtil.canLocationPVP(attackedPlayer.getLocation()) && DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
 				{
-					attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
-				}
-				else // Else we cancel their death and subtract a soul
-				{
-					if(DUtil.getNumberOfSouls(attackedPlayer) > 0)
-					{
-						ItemStack usedSoul = DUtil.useSoul(attackedPlayer);
+					// Punish people who try to line-jump
+					int toDamage = event.getDamage() * 2;
+					event.setCancelled(true);
 					
-						DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
+					attackedPlayer.damage(toDamage);
+				}
+				
+				if(damageEvent.getDamage() > attackedPlayer.getHealth())
+				{
+					// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
+					if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
+					{
+						attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
+					}
+					else // Else we cancel their death and subtract a soul
+					{
+						if(DUtil.getNumberOfSouls(attackedPlayer) > 0)
+						{
+							ItemStack usedSoul = DUtil.useSoul(attackedPlayer);
 						
-						DUtil.serverMsg("TEMP: Attempting to cancel death...");
-						event.setCancelled(true);
+							DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
+							
+							DUtil.serverMsg("TEMP: Attempting to cancel death...");
+							event.setCancelled(true);
+						}
 					}
 				}
 			}
