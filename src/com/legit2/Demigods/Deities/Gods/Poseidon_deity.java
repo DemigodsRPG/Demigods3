@@ -162,6 +162,7 @@ public class Poseidon_deity implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		Player player = event.getPlayer();
+		if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
 		
 		// PHELPS SWIMMING
 		if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
