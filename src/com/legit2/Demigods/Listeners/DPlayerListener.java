@@ -106,9 +106,10 @@ public class DPlayerListener implements Listener
 		// Define variables
 		Player player = (Player) event.getPlayer();
 		String username = player.getName();
+		Location to = event.getTo();
 		Location from = event.getFrom();
 			
 		// Save the time that a player left a PVP zone
-		if(DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", System.currentTimeMillis());
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", System.currentTimeMillis());
 	}
 }
