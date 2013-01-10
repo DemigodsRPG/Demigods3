@@ -104,12 +104,27 @@ public class DPlayerListener implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Define variables
-		Player player = (Player) event.getPlayer();
-		String username = player.getName();
+		final Player player = (Player) event.getPlayer();
+		final String username = player.getName();
+		int pvp_area_delay_time = DConfig.getSettingInt("pvp_area_delay_time");
 		Location to = event.getTo();
 		Location from = event.getFrom();
 			
 		// Save the time that a player left a PVP zone
-		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from)) DSave.savePlayerData(username, "was_PVP_temp", (System.currentTimeMillis() + (long) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)));
+		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		{
+			DSave.savePlayerData(username, "was_PVP_temp", true);
+		}
+		
+		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				DSave.removePlayerData(username, "was_PVP_temp");
+				player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
+			}
+		}, pvp_area_delay_time);
+		
 	}
 }

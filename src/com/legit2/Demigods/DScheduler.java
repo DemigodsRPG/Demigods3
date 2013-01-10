@@ -42,25 +42,6 @@ public class DScheduler
 				DUtil.regenerateAllFavor();
 			}
 		}, 0, favor_frequency);
-		
-		// Expiring Hashmaps
-		plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player player : Bukkit.getOnlinePlayers())
-				{
-					if(DSave.hasPlayerData(player.getName(), "was_PVP_temp"))
-					{				
-						if(Long.valueOf(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString()) > System.currentTimeMillis()) continue;
-						
-						DSave.removePlayerData(player.getName(), "was_PVP_temp");
-						player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP.");
-					}
-				}
-			}
-		}, 0, 10);
 
 	}
 	
