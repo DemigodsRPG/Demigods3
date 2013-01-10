@@ -52,17 +52,17 @@ public class DScheduler
 				for(Player player : Bukkit.getOnlinePlayers())
 				{
 					if(DSave.hasPlayerData(player.getName(), "was_PVP_temp"))
-					{
-						if(DSave.getPlayerData(player.getName(), "was_PVP_temp") == null) return;
-						
-						if(Long.getLong(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString()) > System.currentTimeMillis() - (int) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)) continue;
+					{				
+						if(Long.getLong(DSave.getPlayerData(player.getName(), "was_PVP_temp").toString())
+								> System.currentTimeMillis() - 
+								(long) (DConfig.getSettingDouble("pvp_area_delay_seconds") * 20)) continue;
 						
 						DSave.removePlayerData(player.getName(), "was_PVP_temp");
 						player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP.");
 					}
 				}
 			}
-		}, 0, 1);
+		}, 0, 15);
 
 	}
 	
