@@ -114,17 +114,17 @@ public class DPlayerListener implements Listener
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
 		{
 			DSave.savePlayerData(username, "was_PVP_temp", true);
-		}
-		
-		DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
-		{
-			@Override
-			public void run()
+			
+			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
 			{
-				DSave.removePlayerData(username, "was_PVP_temp");
-				player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
-			}
-		}, pvp_area_delay_time);
+				@Override
+				public void run()
+				{
+					DSave.removePlayerData(username, "was_PVP_temp");
+					player.sendMessage(ChatColor.YELLOW + "You are now safe from PVP!");
+				}
+			}, pvp_area_delay_time);
+		}
 		
 	}
 }

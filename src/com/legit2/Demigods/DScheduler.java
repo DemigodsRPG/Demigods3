@@ -42,7 +42,6 @@ public class DScheduler
 				DUtil.regenerateAllFavor();
 			}
 		}, 0, favor_frequency);
-
 	}
 	
 	/*
