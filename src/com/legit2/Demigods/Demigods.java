@@ -7,11 +7,14 @@ import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DChatCommands;
@@ -71,6 +74,18 @@ public class Demigods extends JavaPlugin
 		if(okayToLoad)
 		{
 			// Uninitialize Plugin
+			if(TAGAPI != null)
+			{	
+				for(Player player : Bukkit.getServer().getOnlinePlayers())
+				{
+					for(Player otherPlayer : Bukkit.getServer().getOnlinePlayers())
+					{
+						if(player == otherPlayer) continue;
+						TagAPI.refreshPlayer(player, otherPlayer);
+					}
+				}
+			}
+			
 			DDatabase.uninitializeDatabase();
 			DScheduler.stopThreads();
 						
