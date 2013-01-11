@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
@@ -53,6 +54,9 @@ public class DPlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
+		
+		// TagAPI support
+		if(plugin.TAGAPI != null) TagAPI.refreshPlayer(player);
 		
 		DUtil.setPlayerData(player.getName(), "lastlogintime", System.currentTimeMillis());
 		

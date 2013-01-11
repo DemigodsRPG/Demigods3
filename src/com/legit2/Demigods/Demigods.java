@@ -26,6 +26,7 @@ public class Demigods extends JavaPlugin
 {
 	// Soft dependencies
 	protected static WorldGuardPlugin WORLDGUARD = null;
+	public Plugin TAGAPI = null;
 	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
 	// Did dependencies load correctly?
@@ -222,8 +223,8 @@ public class Demigods extends JavaPlugin
 		}
 		
 		// Check for the TagAPI plugin (optional)
-		pg = getServer().getPluginManager().getPlugin("TagAPI");
-		if (pg != null)
+		TAGAPI = getServer().getPluginManager().getPlugin("TagAPI");
+		if (TAGAPI != null)
 		{
 			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
 		}
