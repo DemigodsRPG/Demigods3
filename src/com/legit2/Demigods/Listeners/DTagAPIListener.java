@@ -28,9 +28,9 @@ public class DTagAPIListener implements Listener
 				{
 					ChatColor color = (ChatColor) DSave.getData("deity_colors_temp", deity);
 					
-					String newTag = color + username;
-					if(ChatColor.stripColor(newTag) == username) event.setTag(newTag);
-										
+					String tag = color + username;
+					if(username.length() >= 14) event.setTag(tag);
+					
 					break;
 				}
 			}
