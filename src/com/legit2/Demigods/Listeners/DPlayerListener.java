@@ -3,6 +3,7 @@ package com.legit2.Demigods.Listeners;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -56,7 +57,15 @@ public class DPlayerListener implements Listener
 		Player player = event.getPlayer();
 		
 		// TagAPI support
-		if(plugin.TAGAPI != null) TagAPI.refreshPlayer(player);
+		if(plugin.TAGAPI != null)
+		{
+			TagAPI.refreshPlayer(player);
+			
+			for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
+			{
+				TagAPI.refreshPlayer(onlinePlayer, player);
+			}
+		}
 		
 		DUtil.setPlayerData(player.getName(), "lastlogintime", System.currentTimeMillis());
 		
