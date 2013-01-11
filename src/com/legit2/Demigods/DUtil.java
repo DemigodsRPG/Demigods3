@@ -658,11 +658,20 @@ public class DUtil
 	}
 	
 	/*
-	 *  hasDeity() : Checks if (Player)player has (String)deity.
+	 *  hasDeity() : Checks if (String)username has (String)deity.
 	 */
 	public static boolean hasDeity(String username, String deity)
 	{
 		if(getDeities(username) != null && getDeities(username).contains(deity.toLowerCase())) return true;
+		else return false;
+	}
+	
+	/*
+	 *  hasADeity() : Checks if (String)username has a deity claimed.
+	 */
+	public static boolean hasADeity(String username)
+	{
+		if(getDeities(username) != null) return true;
 		else return false;
 	}
 	

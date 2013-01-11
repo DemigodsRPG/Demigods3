@@ -462,15 +462,15 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		else alliance = DUtil.getAlliance(username);
 		
-		if(!alliance.equalsIgnoreCase(DUtil.getDeityAlliance(deity)))
+		if(DUtil.hasADeity(username))
 		{
-			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
+			player.sendMessage(ChatColor.RED + "You cannot claim more than one deity.");
 			return true;
 		}
 		
-		if(DUtil.hasDeity(username, deity))
+		if(!alliance.equalsIgnoreCase(DUtil.getDeityAlliance(deity)))
 		{
-			player.sendMessage(ChatColor.RED + "You cannot claim a the same deity twice.");
+			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
 			return true;
 		}
 		
