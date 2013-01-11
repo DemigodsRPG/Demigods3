@@ -56,7 +56,7 @@ public class DMySQL
 		String host = DConfig.getSettingString("database.mysql.host");
 		int port = DConfig.getSettingInt("database.mysql.port");
 		
-		mysql = new MySQL(Logger.getLogger("Minecraft"), "", host, port, db_name, username, password);
+		mysql = new MySQL(Logger.getLogger("Minecraft"), "Demigods", host, port, db_name, username, password);
 		
 		// Initialize handler
 		try
