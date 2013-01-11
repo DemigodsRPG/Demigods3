@@ -21,10 +21,10 @@ public class DChatCommands implements Listener
 		
 		if(!DUtil.isImmortal(player.getName())) return;
 		
-		if(event.getMessage().equals("dg")) dg(player,event);
+		if(event.getMessage().equals("pl")) pl(player,event);
 	}
 	
-	private void dg(Player player, AsyncPlayerChatEvent event)
+	private void pl(Player player, AsyncPlayerChatEvent event)
 	{
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
 		
