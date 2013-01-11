@@ -63,6 +63,7 @@ public class DPlayerListener implements Listener
 			
 			for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
 			{
+				if(onlinePlayer == player) continue;
 				TagAPI.refreshPlayer(onlinePlayer, player);
 			}
 		}
