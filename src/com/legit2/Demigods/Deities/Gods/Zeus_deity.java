@@ -24,7 +24,7 @@ public class Zeus_deity implements Listener
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Zeus";
 	private static final String DEITYALLIANCE = "God";
-	private static final ChatColor DEITYCOLOR = ChatColor.GOLD;
+	private static final ChatColor DEITYCOLOR = ChatColor.YELLOW;
 
 	/*
 	 *  Set deity-specific ability variable(s).

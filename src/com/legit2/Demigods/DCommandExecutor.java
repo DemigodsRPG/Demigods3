@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
 
@@ -499,6 +500,9 @@ public class DCommandExecutor implements CommandExecutor
 		if(firstTime) DUtil.setAscensions(username, 9);
 		DUtil.setDevotion(username, deity, 900);
 		if(firstTime) DUtil.setKills(username, 2);
+		
+		// TagAPI support
+		if(plugin.TAGAPI != null) TagAPI.refreshPlayer(player);
 		
 		player.sendMessage(ChatColor.YELLOW + "You've claimed " + deity + "!");
 		
