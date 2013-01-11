@@ -26,9 +26,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -1017,7 +1014,7 @@ public class DUtil
     {
         if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
         
-        if(canWorldGuardPVP(location) && canFactionsPVP(location)) return true;
+        if(canWorldGuardPVP(location)) return true;
         else return false;
     }
     
@@ -1068,15 +1065,6 @@ public class DUtil
     /*
      *  WORLDGUARD SUPPORT END
      */
-    @SuppressWarnings("static-access")
-    public static boolean canFactionsPVP(Location location)
-    {
-        if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
-        
-        if(plugin.FACTIONS == null) return true;
-        Faction faction = Board.getFactionAt(new FLocation(location.getBlock()));
-        return !(faction.isPeaceful() || faction.isSafeZone());
-    }
     
     public static LivingEntity autoTarget(Player player)
     {

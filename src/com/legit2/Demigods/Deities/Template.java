@@ -21,6 +21,7 @@ public class Template implements Listener
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";
 	private static final String DEITYALLIANCE = "Test";
+	private static final ChatColor DEITYCOLOR = ChatColor.BLACK;
 
 	/*
 	 *  Set deity-specific ability variable(s).
@@ -228,4 +229,5 @@ public class Template implements Listener
 	// Don't touch these, they're required to work.
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
+	public static ChatColor getColor() { return DEITYCOLOR; }
 }

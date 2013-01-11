@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -17,14 +18,13 @@ import com.legit2.Demigods.Listeners.DChatCommands;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
-import com.massivecraft.factions.P;
+
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods extends JavaPlugin
 {
 	// Soft dependencies
 	protected static WorldGuardPlugin WORLDGUARD = null;
-	protected static P FACTIONS = null;
 	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
 	// Did dependencies load correctly?
@@ -124,8 +124,7 @@ public class Demigods extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
 		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
 		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
-		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);
-		
+		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 }
 	
 	/*
@@ -172,11 +171,13 @@ public class Demigods extends JavaPlugin
 					String message = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
 					String name = (String) DUtil.invokeDeityMethod(deity, "getName");
 					String alliance = (String) DUtil.invokeDeityMethod(deity, "getAlliance");
+					ChatColor color = (ChatColor) DUtil.invokeDeityMethod(deity, "getColor");
 					ArrayList<Material> claimItems = (ArrayList<Material>) DUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
 					DSave.saveData("deity_classes_temp", name, deity);
 					DSave.saveData("deity_alliances_temp", name, alliance);
+					DSave.saveData("deity_colors_temp", name, color);
 					DSave.saveData("deity_claim_items_temp", name, claimItems);
 					 
 					// Display the success message
@@ -219,20 +220,20 @@ public class Demigods extends JavaPlugin
 			okayToLoad = false;
 		}
 		
+		// Check for the SQLibrary plugin (needed)
+		pg = getServer().getPluginManager().getPlugin("TagAPI");
+		if (pg == null)
+		{
+			DUtil.severe("TagAPI plugin (required) not found!");
+			okayToLoad = false;
+		}
+		
 		// Check for the WorldGuard plugin (optional)
 		pg = getServer().getPluginManager().getPlugin("WorldGuard");
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
 			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("WorldGuard detected. Skills are disabled in no-PvP zones.");
-		}
-
-		// Check for the Factions plugin (optional)
-		pg = getServer().getPluginManager().getPlugin("Factions");
-		if (pg != null)
-		{
-			FACTIONS = ((P)pg);
-			if(!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("Factions detected. Skills are disabled in peaceful zones.");
 		}
 
 		// Check to see if a player has the SimpleNotice client mod installed

@@ -27,6 +27,7 @@ public class Cronus_deity implements Listener
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Cronus";
 	private static final String DEITYALLIANCE = "Titan";
+	private static final ChatColor DEITYCOLOR = ChatColor.DARK_PURPLE;
 
 	/*
 	 *  Set deity-specific ability variable(s).
@@ -360,4 +361,5 @@ public class Cronus_deity implements Listener
 	// Don't touch these, they're required to work.
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
+	public static ChatColor getColor() { return DEITYCOLOR; }
 }

@@ -8,8 +8,7 @@
         <pathelement location="bin"/>
     	<pathelement location="lib/SQLibrary.jar"/>
         <pathelement location="lib/bukkit.jar"/>
-    	<pathelement location="lib/craftbukkit.jar"/>
-        <pathelement location="lib/factions.jar"/>
+    	<pathelement location="lib/TagAPI.jar"/>
         <pathelement location="lib/worldedit.jar"/>
         <pathelement location="lib/worldguard.jar"/>
     </path>
