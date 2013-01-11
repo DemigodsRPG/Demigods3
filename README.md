@@ -13,7 +13,7 @@ To install, simply place the [Demigods.jar](http://dev.bukkit.org/server-mods/de
 Upgrading from Demigods 2
 =========================
 
-Not ready for upgrade yet.
+You may not upgrade from Demigods 2 to Demigods 3.  Too much has changed to allow any sort of meaningful conversion process.  It is best that you just start over completely.
 
 
 Features
