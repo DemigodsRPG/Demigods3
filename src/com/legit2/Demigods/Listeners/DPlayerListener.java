@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDatabase;
@@ -96,31 +95,6 @@ public class DPlayerListener implements Listener
 						event.setCancelled(true);
 						player.sendMessage(ChatColor.RED + "You cannot craft with souls!");
 					}
-				}
-			}
-		}
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerNameTag(PlayerReceiveNameTagEvent event)
-	{
-		// Define Variables
-		Player player = event.getNamedPlayer();
-		String username = player.getName();
-		
-		// Recolor names based on deity.
-		if(DUtil.hasADeity(username))
-		{
-			for(String deity : DUtil.getLoadedDeityNames())
-			{
-				if(DUtil.hasDeity(username, deity))
-				{
-					ChatColor color = (ChatColor) DSave.getData("deity_colors_temp", deity);
-					
-					String tag = event.getTag();
-					event.setTag(color + tag);
-					
-					break;
 				}
 			}
 		}

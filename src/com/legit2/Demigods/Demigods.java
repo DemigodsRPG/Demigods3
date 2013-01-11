@@ -18,6 +18,7 @@ import com.legit2.Demigods.Listeners.DChatCommands;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
+import com.legit2.Demigods.Listeners.DTagAPIListener;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -220,12 +221,11 @@ public class Demigods extends JavaPlugin
 			okayToLoad = false;
 		}
 		
-		// Check for the SQLibrary plugin (needed)
+		// Check for the TagAPI plugin (optional)
 		pg = getServer().getPluginManager().getPlugin("TagAPI");
-		if (pg == null)
+		if (pg != null)
 		{
-			DUtil.severe("TagAPI plugin (required) not found!");
-			okayToLoad = false;
+			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
 		}
 		
 		// Check for the WorldGuard plugin (optional)
@@ -233,11 +233,8 @@ public class Demigods extends JavaPlugin
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
-			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("WorldGuard detected. Skills are disabled in no-PvP zones.");
+			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
 		}
-
-		// Check to see if a player has the SimpleNotice client mod installed
-		getServer().getMessenger().registerOutgoingPluginChannel(this, "SimpleNotice");
 	}
 	
 	@SuppressWarnings("unused")
