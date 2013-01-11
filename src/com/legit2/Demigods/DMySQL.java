@@ -54,7 +54,7 @@ public class DMySQL
 		String username = DConfig.getSettingString("database.mysql.username");
 		String password = DConfig.getSettingString("database.mysql.password");
 		String host = DConfig.getSettingString("database.mysql.host");
-		String port = DConfig.getSettingString("database.mysql.port");
+		int port = DConfig.getSettingInt("database.mysql.port");
 		
 		mysql = new MySQL(Logger.getLogger("Minecraft"), "", host, port, db_name, username, password);
 		
@@ -75,6 +75,7 @@ public class DMySQL
 	/*
 	 *  createTable() : Checks to see if the (String)table exists and if not, create it with (String)options.
 	 */
+	@SuppressWarnings("deprecation")
 	public static void createTable(String table, String options)
 	{
 		// Check to see if tables exists, if not then create it
