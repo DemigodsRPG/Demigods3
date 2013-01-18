@@ -117,7 +117,7 @@ public class Template_deity implements Listener
 
 		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DCharUtil.isEnabledAbility(player, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DPlayerUtil.getBind(player, TEST_NAME))))
+		if(DCharUtil.isEnabledAbility(player, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, TEST_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
@@ -153,7 +153,7 @@ public class Template_deity implements Listener
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DPlayerUtil.setBound(player, TEST_NAME, player.getItemInHand().getType());
+			DCharUtil.setBound(player, TEST_NAME, player.getItemInHand().getType());
 		}
 		else
 		{

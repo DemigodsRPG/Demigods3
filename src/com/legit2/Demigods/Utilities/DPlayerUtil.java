@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -146,124 +145,6 @@ public class DPlayerUtil
 			if (regenRate < 1) regenRate = 1;
 			DCharUtil.giveFavor(player, charID, regenRate);
 		}
-	}
-	
-	/*
-	 *  getBind() : Returns the bind for (String)username's (String)ability.
-	 */
-	public static Material getBind(OfflinePlayer player, String ability)
-	{
-		int charID = getCurrentChar(player);
-
-		if(DDataUtil.getCharData(player, charID, ability + "_bind") != null)
-		{
-			Material material = (Material) DDataUtil.getCharData(player, charID, ability + "_bind");
-			return material;
-		}
-		else return null;
-	}
-	
-	/*
-	 *  getBindings() : Returns all bindings for (Player)player.
-	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Material> getBindings(OfflinePlayer player)
-	{		
-		int charID = getCurrentChar(player);
-
-		if(hasChar(player, charID))
-		{
-			return (ArrayList<Material>) DDataUtil.getCharData(player, charID, "bindings");
-		}
-		else return new ArrayList<Material>();
-	}
-	
-	/*
-	 *  setBound() : Sets (Material)material to be bound for (Player)player.
-	 */
-	public static boolean setBound(OfflinePlayer player, String ability, Material material)
-	{	
-		int charID = getCurrentChar(player);
-		
-		if(DDataUtil.getCharData(player, charID, ability + "_bind") == null)
-		{
-			if(((Player) player).getItemInHand().getType() == Material.AIR)
-			{
-				((Player) player).sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-			}
-			else
-			{
-				if(isBound(player, material))
-				{
-					((Player) player).sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-					return false;
-				}
-				else if(material == Material.AIR)
-				{
-					((Player) player).sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-					return false;
-				}
-				else
-				{			
-					if(DDataUtil.hasCharData(player, charID, "bindings"))
-					{
-						ArrayList<Material> bindings = getBindings(player);
-						
-						if(!bindings.contains(material)) bindings.add(material);
-						
-						DDataUtil.saveCharData(player, charID, "bindings", bindings);
-					}
-					else
-					{
-						ArrayList<Material> bindings = new ArrayList<Material>();
-						
-						bindings.add(material);
-						DDataUtil.saveCharData(player, charID, "bindings", bindings);
-					}
-					
-					DDataUtil.saveCharData(player, charID, ability + "_bind", material);
-					((Player) player).sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
-					return true;
-				}
-			}
-		}
-		else
-		{
-			removeBind(player, ability, ((Material) DDataUtil.getCharData(player, charID, ability + "_bind")));
-			((Player) player).sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
-		}
-		return false;
-	}
-	
-	/*
-	 *  isBound() : Checks if (Material)material is bound for (Player)player.
-	 */
-	public static boolean isBound(OfflinePlayer player, Material material)
-	{
-		if(getBindings(player) != null && getBindings(player).contains(material)) return true;
-		else return false;
-	}
-	
-	/*
-	 *  removeBind() : Checks if (Material)material is bound for (Player)player.
-	 */
-	public static boolean removeBind(OfflinePlayer player, String ability, Material material)
-	{
-		int charID = getCurrentChar(player);
-
-		ArrayList<Material> bindings = null;
-
-		if(DDataUtil.hasCharData(player, charID, "bindings"))
-		{
-			bindings = getBindings(player);
-			
-			if(bindings != null && bindings.contains(material)) bindings.remove(material);
-		}
-		
-		DDataUtil.saveCharData(player, charID, "bindings", bindings);
-		DDataUtil.removeCharData(player, charID, ability + "_bind");
-
-		return true;
 	}
 	
 	/*
