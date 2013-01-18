@@ -2,15 +2,16 @@ package com.legit2.Demigods;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Map.Entry;
 
-import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.google.common.base.Joiner;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
 public class DDatabase
 {
@@ -25,9 +26,6 @@ public class DDatabase
 			DMySQL.createConnection();
 			DMySQL.initializeMySQL();
 			loadAllData();
-			
-			// Save data just to be safe...
-			saveAllData();
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -53,27 +51,21 @@ public class DDatabase
 	}
 
 	/*
-	 *  addPlayer() : Adds the (String)username to the database with default values.
+	 *  addPlayerToDB() : Adds the player to the database.
 	 */
-	public static void addPlayer(String username) throws SQLException
+	public static void addPlayerToDB(OfflinePlayer player) throws SQLException
 	{
-		// First we save the player to a HashMap
-		DSave.newPlayer(username);
+		// Define variables
+		Long firstLoginTime = System.currentTimeMillis();
 
 		// Next we add them to the Database if needed
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
-			if(!DMySQL.dataExists(DMySQL.player_table, "player", username))
-			{
-				// Setup query string to add player to MySQL database
-				String addPlayerQuery = "INSERT INTO " + DMySQL.player_table + " (player, alliance, deities, favor, ascensions, kills, deaths) VALUES ('" + username + "', NULL, NULL, 100, 1, 0, 0);";
-				DMySQL.runQuery(addPlayerQuery);
-				DUtil.info("User \"" + username + "\" added to database!");
-			}
-			else
-			{
-				DUtil.info("User " + username + " has already been added.");
-			}
+			int playerID = DPlayerUtil.getPlayerID(player);
+			String playerName = player.getName();
+			
+			String addQuery = "INSERT INTO " + DMySQL.player_table + " (player_id, player_name, player_characters, player_kills, player_deaths, player_firstlogin, player_lastlogin) VALUES (" + playerID + ",'" + playerName + "', NULL, 0, 0," + firstLoginTime + "," + firstLoginTime +");";
+			DMySQL.runQuery(addQuery);
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -82,28 +74,66 @@ public class DDatabase
 	}
 	
 	/*
-	 *  addPlayer() : Adds the (String)username to the database with default values.
+	 *  removePlayerFromDB() : Removes the player from the database.
 	 */
-	public static void removePlayer(String username) throws SQLException
+	public static void removePlayerFromDB(OfflinePlayer player) throws SQLException
 	{
 		// Next we add them to the Database if needed
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
-			// Remove their HashMap data first
-			DSave.removeAllPlayerData(username);
-			DSave.removeAllDeityData(username, "ALL");
+			// TODO: Remove player from MySQL
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+	}
+	
+	/*
+	 *  addPlayerToDB() : Adds the player to the database.
+	 */
+	public static void addCharToDB(OfflinePlayer player, int charID) throws SQLException
+	{
+		// Next we add them to the Database if needed
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{	
+			int playerID = DPlayerUtil.getPlayerID(player);
+			String charName = DCharUtil.getName(player, charID);
+			String charDeity = DCharUtil.getDeity(player, charID);
+			String charAlliance = DCharUtil.getAlliance(player, charID);
+			boolean charImmortal = DCharUtil.getImmortal(player, charID);
+			int charHP = DCharUtil.getHP(player, charID);
+			int charExp = DCharUtil.getExp(player, charID);
+			int charFavor = DCharUtil.getFavor(player, charID);
+			int charDevotion = DCharUtil.getDevotion(player, charID);
+			int charAscensions = DCharUtil.getAscensions(player, charID);
+			double charLastX = 0.0;
+			double charLastY = 0.0;
+			double charLastZ = 0.0;
+			String charLastW = "";
 			
-			// Remove their MySQL info
-			if(DMySQL.dataExists(DMySQL.player_table, "player", username))
-			{
-				DMySQL.runQuery("DELETE FROM " + DMySQL.player_table + " WHERE player='" + username + "';");
-				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
-				DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
-			}
-			else
-			{
-				DUtil.info("User " + username + " could not be found.");
-			}
+			String addQuery = 
+					"INSERT INTO " + DMySQL.character_table +
+					"(char_id,player_id,char_name,char_deity,char_alliance,char_immortal,char_hp,char_exp,char_favor,char_devotion,char_ascensions,char_lastX,char_lastY,char_lastZ,char_lastW)" + 
+					"VALUES (" +
+						charID + "," +
+						playerID + "," +
+						"'" + charName + "'," +
+						"'" + charDeity + "'," +
+						"'" + charAlliance + "'," +
+						charImmortal + "," +
+						charHP + "," +
+						charExp + "," +
+						charFavor + "," +
+						charDevotion + "," +
+						charAscensions + "," +
+						charLastX + "," +
+						charLastY + "," +
+						charLastZ + "," +
+						"'" + charLastW + "'" +
+					");";
+			
+			DMySQL.runQuery(addQuery);
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -118,17 +148,7 @@ public class DDatabase
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{
-			// Check to see if user exists
-			String query = "SELECT * FROM " + DMySQL.player_table + " WHERE player = '" + username + "';";
-			ResultSet result = null;
-
-			result = DMySQL.runQuery(query);
-
-			if(result.next()) return result;
-			else
-			{
-				DUtil.severe(username + " tried to check their info but they aren't entered in the database!");
-			}
+			// TODO: Return player info from MySQL
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -139,110 +159,103 @@ public class DDatabase
 	}
 
 	/*
+	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
+	 */
+	public static boolean savePlayerData(OfflinePlayer player)
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{			
+			int playerID = DPlayerUtil.getPlayerID(player);
+
+			// Clear tables first
+			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID);
+
+			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
+			for(Entry<String, Object> playerData : allPlayerData.entrySet())
+			{		
+				if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
+				if(playerData.getKey().contains("player_"))
+				{
+					//
+					// REWRITE THESE SAVING METHODS
+					//
+					
+					if(playerData.getValue() instanceof Boolean || playerData.getValue() instanceof Integer) DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET " + playerData.getKey() + "=" + playerData.getValue() + " WHERE player_id=" + playerID + ";");
+					else DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET " + playerData.getKey() + "='" + playerData.getValue() + "' WHERE player_id=" + playerID + ";");
+					
+					//
+					//
+					//
+				}
+				
+				// Save their character data now
+				HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
+				
+				for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
+				{
+					int charID = playerChar.getKey();
+					HashMap<String, Object> charData = playerChar.getValue();
+					
+					// Clear character data table
+					DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
+					
+					for(Entry<String, Object> character : charData.entrySet())
+					{	
+						if(!character.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + character.getKey() + "','" + character.getValue() + "');");
+
+						//
+						// REWRITE THESE SAVING METHODS
+						//
+						
+						if(character.getValue() instanceof Boolean || character.getValue() instanceof Integer) if(character.getKey().contains("char_")) DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET " + character.getKey() + "=" + character.getValue() + " WHERE char_id=" + charID + ";");
+						else if(character.getKey().contains("char_")) DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET " + character.getKey() + "='" + character.getValue() + "' WHERE char_id=" + charID + ";");
+					
+						//
+						//
+						//
+					}
+				}
+			}
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
 	 *  saveAllData() : Saves all HashMap data to database.
 	 */
 	public static boolean saveAllData()
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
-		{
-			DUtil.info("Saving player data...");
-			
+		{			
 			// Define variables
 			int playerCount = 0;
 			long startTimer = System.currentTimeMillis();
-			HashMap<String, Object> player_data = null;
-			HashMap<String, HashMap<String, Object>> player_deities = null;
-			
+						
 			for(Player player : DUtil.getOnlinePlayers())
 			{
-				// Define variables
-				String username = player.getName();
-				
-				// Remove all data for re-saving
-				DMySQL.runQuery("DELETE FROM " + DMySQL.deitydata_table + " WHERE player='" + username + "';");
-				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player='" + username + "';");
-
-				if(DSave.getAllPlayerData(username) != null && DSave.getAllDeityData(username) != null)
-				{
-					player_data = DSave.getAllPlayerData(username);	
-					player_deities = DSave.getAllDeityData(username);	
-				}
-				else
-				{
-					try
-					{
-						// No HashMap data was found, let's create some...
-						addPlayer(username);
-						
-						player_data = DSave.getAllPlayerData(username);	
-						player_deities = DSave.getAllDeityData(username);	
-					}
-					catch(SQLException e)
-					{
-						DUtil.plugin.getPluginLoader().disablePlugin(DUtil.plugin);
-						DUtil.severe("There was a severe problem with saving...");
-						DUtil.severe("Demigods has been disabled. Please do a full restart of your Bukkit server.");
-					}
-				}
-				
-				// Add 1 to player count
-				playerCount++;
-				
-				// Loop through deity data entry set and add to database
-				for(Map.Entry<String, HashMap<String, Object>> deity : player_deities.entrySet())
-				{
-					String deity_name = deity.getKey();
-					HashMap<String, Object> deity_data = deity.getValue();
-					
-					for(Map.Entry<String, Object> entry : deity_data.entrySet())
-					{
-						String id = entry.getKey();
-						Object data = entry.getValue();
-						
-						// Don't save if it's temporary data
-						if(id.contains("temp")) continue;
-												
-						if(!id.equalsIgnoreCase("bindings"))
-						{
-							DMySQL.runQuery("INSERT INTO " + DMySQL.deitydata_table + " (player, deity, datakey, datavalue) VALUES ('" + username + "', '" + deity_name + "', '" + id + "', '" + data.toString() + "');");
-						}
-					}
-				}
-				
-				// Loop through player data entry set and add to database
-				for(Map.Entry<String, Object> entry : player_data.entrySet())
-				{
-					String id = entry.getKey();
-					Object data = entry.getValue();
-
-					// Don't save if it's temporary data
-					if(id.contains("temp")) continue;
-
-					// Don't save them to the data table if they belong in the user table
-					if(!id.equalsIgnoreCase("immortal") && !id.equalsIgnoreCase("favor") && !id.equalsIgnoreCase("alliance") && !id.equalsIgnoreCase("ascensions") && !id.equalsIgnoreCase("kills") && !id.equalsIgnoreCase("deaths") && !id.equalsIgnoreCase("deities"))
-					{						
-						String[] column = new String[2];
-						String[] values = new String[2];
-						column[0] = "player";
-						column[1] = "datakey";
-						values[0] = username;
-						values[1] = id;
-						
-						DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player, datakey, datavalue) VALUES ('" + username + "', '" + id + "', " + data + ");");
-					}
-				}
-				
-				String deities = null;
-				if(DUtil.getDeities(username) != null) deities = Joiner.on(",").join(DUtil.getDeities(username));
-				// Save specific data to user table
-				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET immortal=" + DUtil.isImmortal(username) + ", alliance='" + DUtil.getAlliance(username) + "', deities='" + deities + "', favor=" + DUtil.getFavor(username) + ", ascensions=" + DUtil.getAscensions(username) + ", kills=" + DUtil.getKills(username) + ", deaths=" + DUtil.getDeaths(username) + " WHERE player='" + username + "';");
+				if(savePlayerData(player)) playerCount++;
 			}
 
 			// Stop the timer
 			long stopTimer = System.currentTimeMillis();
 			double totalTime = (double) (stopTimer - startTimer);
 
-			DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " total players in " + totalTime/1000 + " seconds.");
+			// Send save success message
+			if(DConfig.getSettingBoolean("data_debug"))
+			{
+				// Give the time if data_debug is enabled in the config.yml
+				DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
+			}
+			else
+			{
+				// Don't give the time if data_debug is disabled in the config.yml
+				DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
+			}
 			return true;
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
@@ -259,50 +272,83 @@ public class DDatabase
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
-			DUtil.info("Loading player data...");
+			DUtil.info("Loading Demigods data...");
 
 			// Define variables
 			int playerCount = 0;
+			int characterCount = 0;
 			long startStopwatch = System.currentTimeMillis();
 
-			// Load data from player table
-			ResultSet all_players = DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";");
+			// Define SELECT queries
+			String selectPlayer = "SELECT * FROM " + DMySQL.player_table + " LEFT JOIN " + DMySQL.playerdata_table + " ON " + DMySQL.player_table + ".player_id = " + DMySQL.playerdata_table + ".player_id;";
+			ResultSet playerResult = DMySQL.runQuery(selectPlayer);
 			
 			try 
 			{
-				while(all_players.next())
+				while(playerResult.next())
 				{
 					playerCount++;
-
-					// Define variables
-					String username = all_players.getString("player");
-					ArrayList<String> deities = null;
-					if(!all_players.getString("deities").isEmpty() && !all_players.getString("deities").equalsIgnoreCase("null")) deities = new ArrayList<String>(Arrays.asList(all_players.getString("deities").split(",")));
-
-					// Add HashMaps
-					DSave.newPlayer(username);
-					DUtil.setFavor(username, all_players.getInt("favor"));
-					DUtil.setAlliance(username, all_players.getString("alliance"));
-					DUtil.setAscensions(username, all_players.getInt("ascensions"));
-					DUtil.setKills(username, all_players.getInt("kills"));
-					DUtil.setDeaths(username, all_players.getInt("deaths"));
-					DUtil.setImmortal(username, all_players.getBoolean("immortal"));
 					
-					// Save stuff from ArrayLists
-					DSave.savePlayerData(username, "deities", deities);
+					OfflinePlayer player = DPlayerUtil.definePlayer(playerResult.getString("player_name"));
+					int playerID = playerResult.getInt("player_id");
 					
-					ResultSet player_deitydata = DMySQL.runQuery("SELECT * FROM " + DMySQL.deitydata_table + " WHERE player = '" + username + "';");
-					if(player_deitydata.next())
+					// Load the main player data
+					DDataUtil.addPlayer(player, playerID);
+					DDataUtil.savePlayerData(player, "player_id", playerResult.getString("player_id"));
+					DDataUtil.savePlayerData(player, "player_characters", playerResult.getString("player_characters"));
+					DDataUtil.savePlayerData(player, "player_kills", playerResult.getInt("player_kills"));
+					DDataUtil.savePlayerData(player, "player_deaths", playerResult.getInt("player_deaths"));
+					DDataUtil.savePlayerData(player, "player_firstlogin", playerResult.getLong("player_firstlogin"));
+				
+					// Load other player data
+					if(playerResult.getString("datakey") != null)
 					{
-						while(player_deitydata.next())
+						if(playerResult.getString("datakey").contains("_boolean"))
 						{
-							if(player_deitydata.getString("datakey").contains("_boolean"))
+							DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getBoolean("datavalue"));
+						}
+						else
+						{
+							DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getString("datavalue"));
+						}
+					}
+				
+					String selectCharacter = "SELECT * FROM " + DMySQL.character_table + " LEFT JOIN " + DMySQL.chardata_table + " ON " + DMySQL.character_table + ".char_id = " + DMySQL.chardata_table + ".char_id AND " + DMySQL.character_table + ".player_id=" + playerID + ";";
+					ResultSet charResult = DMySQL.runQuery(selectCharacter);
+
+
+					while(charResult.next())
+					{
+						characterCount++;
+						
+						int charID = charResult.getInt("char_id");
+						
+						// Load the main character data
+						DDataUtil.addChar(player, charID);
+						DDataUtil.saveCharData(player, charID, "char_name", charResult.getString("char_name"));
+						DDataUtil.saveCharData(player, charID, "char_deity", charResult.getString("char_deity"));
+						DDataUtil.saveCharData(player, charID, "char_alliance", charResult.getString("char_alliance"));
+						DDataUtil.saveCharData(player, charID, "char_immortal", charResult.getBoolean("char_immortal"));
+						DDataUtil.saveCharData(player, charID, "char_hp", charResult.getInt("char_hp"));
+						DDataUtil.saveCharData(player, charID, "char_exp", charResult.getInt("char_exp"));
+						DDataUtil.saveCharData(player, charID, "char_lastX", charResult.getDouble("char_lastX"));
+						DDataUtil.saveCharData(player, charID, "char_lastY", charResult.getDouble("char_lastY"));
+						DDataUtil.saveCharData(player, charID, "char_lastZ", charResult.getDouble("char_lastZ"));
+						DDataUtil.saveCharData(player, charID, "char_lastW", charResult.getString("char_lastW"));
+						DDataUtil.saveCharData(player, charID, "char_favor", charResult.getInt("char_favor"));
+						DDataUtil.saveCharData(player, charID, "char_devotion", charResult.getInt("char_devotion"));
+						DDataUtil.saveCharData(player, charID, "char_ascensions", charResult.getInt("char_ascensions"));
+						
+						// Load other character data
+						if(charResult.getString("datakey") != null)
+						{
+							if(charResult.getString("datakey").contains("_boolean"))
 							{
-								DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getBoolean("datavalue"));
+								DDataUtil.saveCharData(player, charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
 							}
 							else
 							{
-								DSave.saveDeityData(username, player_deitydata.getString("deity"), player_deitydata.getString("datakey"), player_deitydata.getObject("datavalue"));
+								DDataUtil.saveCharData(player, charID, charResult.getString("datakey"), charResult.getString("datavalue"));
 							}
 						}
 					}
@@ -310,59 +356,26 @@ public class DDatabase
 			}
 			catch(SQLException e)
 			{
-				// TODO Auto-generated catch block
+				// There was an error with the SQL.
+				DUtil.severe("Error while loading Demigods data. (ERR: 1001)");
 				e.printStackTrace();
 			}
-
-			// Load data from other tables
-			String selectAllPlayerData = "SELECT * FROM " + DMySQL.playerdata_table + ";";
-			ResultSet all_playerdata = DMySQL.runQuery(selectAllPlayerData);
-			String selectAllPlayerDeityData = "SELECT * FROM " + DMySQL.deitydata_table + ";";
-			ResultSet all_playerdeitydata = DMySQL.runQuery(selectAllPlayerDeityData);
-			try
-			{
-				while(all_playerdata.next())
-				{					
-					// Define variables
-					String username = all_playerdata.getString("player");
-										
-					// Save the data
-					DSave.savePlayerData(username, all_playerdata.getString("datakey"), all_playerdata.getObject("datavalue"));
-				}
-				
-				while(all_playerdeitydata.next())
-				{					
-					// Define variables
-					String id = all_playerdeitydata.getString("datakey");
-					Object data =  all_playerdeitydata.getObject("datavalue");
-					String username = all_playerdeitydata.getString("player");
-					String deity = all_playerdeitydata.getString("deity");
-					ArrayList<Material> bindings = new ArrayList<Material>();
-
-					if(all_playerdeitydata.getString("datakey").contains("_bind"))
-					{
-						String ability_bind = all_playerdeitydata.getString("datakey");
-						Material material = Material.getMaterial(all_playerdeitydata.getString("datavalue").toUpperCase());
-						
-						bindings.add(material);
-						DSave.saveDeityData(username, deity, "bindings", bindings);
-						DSave.saveDeityData(username, deity, ability_bind, material);
-						 
-					}
-					
-					// Save the data
-					if(!id.contains("bind")) DSave.saveDeityData(username, deity, id, data);
-				}
-			}
-			catch(SQLException e)
-			{
-				// TODO
-			}
-
+			
+			// Stop the timer
 			long stopStopwatch = System.currentTimeMillis();
 			double totalTime = (double) (stopStopwatch - startStopwatch);
-
-			DUtil.info("Loaded data for " + playerCount + " players in " + totalTime/1000 + " seconds.");
+			
+			// Send data load success message
+			if(DConfig.getSettingBoolean("data_debug"))
+			{
+				// Give the time if data_debug is enabled in the config.yml
+				DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
+			}
+			else
+			{
+				// Don't give the time if data_debug is disabled in the config.yml
+				DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
+			}
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{

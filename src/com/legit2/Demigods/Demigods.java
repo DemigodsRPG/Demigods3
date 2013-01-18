@@ -11,24 +11,24 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DChatCommands;
-import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
-import com.legit2.Demigods.Listeners.DDivineBlockListener;
-import com.legit2.Demigods.Listeners.DTagAPIListener;
+import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DDeityUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods extends JavaPlugin
 {
 	// Soft dependencies
-	protected static WorldGuardPlugin WORLDGUARD = null;
+	public static WorldGuardPlugin WORLDGUARD = null;
 	public Plugin TAGAPI = null;
 	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
@@ -45,16 +45,15 @@ public class Demigods extends JavaPlugin
 		
 		if(okayToLoad)
 		{
-			DDatabase.initializeDatabase();
 			DConfig.initializeConfig();
+			DDatabase.initializeDatabase();
 			DScheduler.startThreads();
 			loadCommands();
 			loadDeities();
 			loadListeners();
 			loadMetrics();
 			//checkUpdate();
-			
-			
+						
 			//////// Test Code Loader
 			loadTestCode();
 			//////// End Test Code Loader
@@ -98,15 +97,14 @@ public class Demigods extends JavaPlugin
 	 */
 	private void loadTestCode()
 	{
-		ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
-		int numberOfSouls = 0;
+		// Don't remove the header and footer of the test code.
+		DUtil.info("====== Begin Test Code =============================");
 		
-		for(ItemStack soul : allSouls)
-		{
-			DUtil.severe("Soul: " + soul.toString());
-			numberOfSouls++;
-		}
-		DUtil.severe("Total Souls: " + numberOfSouls);
+		// Put the test code here
+		DUtil.info("Random integer: " + DObjUtil.generateInt(5));
+		
+		// K, thanks
+		DUtil.info("====== End Test Code ===============================");
 	}
 	
 	/*
@@ -119,7 +117,7 @@ public class Demigods extends JavaPlugin
 		
 		// Define General Commands
 		getCommand("dg").setExecutor(ce);
-		getCommand("viewhashmaps").setExecutor(ce);
+		getCommand("viewmaps").setExecutor(ce);
 		getCommand("check").setExecutor(ce);
 		getCommand("setalliance").setExecutor(ce);
 		getCommand("setfavor").setExecutor(ce);
@@ -127,6 +125,8 @@ public class Demigods extends JavaPlugin
 		getCommand("setdevotion").setExecutor(ce);
 		getCommand("givedeity").setExecutor(ce);
 		getCommand("removeplayer").setExecutor(ce);
+		getCommand("createchar").setExecutor(ce);
+		getCommand("test1").setExecutor(ce);
 		
 		// BETA TESTING ONLY
 		getCommand("claim").setExecutor(ce);
@@ -139,9 +139,9 @@ public class Demigods extends JavaPlugin
 	{		
 		/* Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
-		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
+		//getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
 		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
-		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
+		//getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 }
 	
 	/*
@@ -185,17 +185,17 @@ public class Demigods extends JavaPlugin
 					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
 					 
 					// Load everything else for the Deity (Listener, etc.)
-					String message = (String) DUtil.invokeDeityMethod(deity, "loadDeity");
-					String name = (String) DUtil.invokeDeityMethod(deity, "getName");
-					String alliance = (String) DUtil.invokeDeityMethod(deity, "getAlliance");
-					ChatColor color = (ChatColor) DUtil.invokeDeityMethod(deity, "getColor");
-					ArrayList<Material> claimItems = (ArrayList<Material>) DUtil.invokeDeityMethod(deity, "getClaimItems");
+					String message = (String) DDeityUtil.invokeDeityMethod(deity, "loadDeity");
+					String name = (String) DDeityUtil.invokeDeityMethod(deity, "getName");
+					String alliance = (String) DDeityUtil.invokeDeityMethod(deity, "getAlliance");
+					ChatColor color = (ChatColor) DDeityUtil.invokeDeityMethod(deity, "getColor");
+					ArrayList<Material> claimItems = (ArrayList<Material>) DDeityUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
-					DSave.saveData("deity_classes_temp", name, deity);
-					DSave.saveData("deity_alliances_temp", name, alliance);
-					DSave.saveData("deity_colors_temp", name, color);
-					DSave.saveData("deity_claim_items_temp", name, claimItems);
+					DDataUtil.savePluginData("deity_classes_temp", name, deity);
+					DDataUtil.savePluginData("deity_alliances_temp", name, alliance);
+					DDataUtil.savePluginData("deity_colors_temp", name, color);
+					DDataUtil.savePluginData("deity_claim_items_temp", name, claimItems);
 					 
 					// Display the success message
 					DUtil.info(message);
@@ -219,10 +219,11 @@ public class Demigods extends JavaPlugin
 	 */
 	private void loadMetrics()
 	{
-		new DMetrics(this);
-		DMetrics.allianceStatsPastWeek();
-		DMetrics.allianceStatsAllTime();
+		//new DMetrics(this);
+		//DMetrics.allianceStatsPastWeek();
+		//DMetrics.allianceStatsAllTime();
 	}
+	
 	
 	/*
 	 *  loadDependencies() : Loads all dependencies.
@@ -241,7 +242,7 @@ public class Demigods extends JavaPlugin
 		TAGAPI = getServer().getPluginManager().getPlugin("TagAPI");
 		if (TAGAPI != null)
 		{
-			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
+			//getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
 		}
 		
 		// Check for the WorldGuard plugin (optional)

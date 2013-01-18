@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.legit2.Demigods.DUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
 public class UpdateChecker
 {

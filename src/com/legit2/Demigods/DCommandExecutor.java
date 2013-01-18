@@ -2,18 +2,17 @@ package com.legit2.Demigods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Utilities.*;
 
 public class DCommandExecutor implements CommandExecutor
 {
@@ -28,52 +27,40 @@ public class DCommandExecutor implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		if (command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
-		else if (command.getName().equalsIgnoreCase("viewhashmaps")) return viewhashmaps(sender);
 		else if (command.getName().equalsIgnoreCase("check")) return check(sender);
 		else if (command.getName().equalsIgnoreCase("setalliance")) return setAlliance(sender,args);
 		else if (command.getName().equalsIgnoreCase("setfavor")) return setFavor(sender,args);
 		else if (command.getName().equalsIgnoreCase("setascensions")) return setAscensions(sender,args);
 		else if (command.getName().equalsIgnoreCase("setdevotion")) return setDevotion(sender,args);
-		else if (command.getName().equalsIgnoreCase("givedeity")) return giveDeity(sender,args);
-		else if (command.getName().equalsIgnoreCase("removeplayer")) return removePlayer(sender,args);
+		else if (command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
+		else if (command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
+		//else if (command.getName().equalsIgnoreCase("removeplayer")) return removePlayer(sender,args);
 		
 		// BETA TESTING ONLY
-		else if (command.getName().equalsIgnoreCase("claim")) return claim(sender,args);
-		
+		else if (command.getName().equalsIgnoreCase("test1")) return test1(sender);
+
 		return false;
 	}
 	
 	/*
-	 *  Command: "viewhashmaps"
+	 *  Command: "test1"
 	 */
-	public static boolean viewhashmaps(CommandSender sender)
+	public static boolean test1(CommandSender sender)
 	{
-		HashMap<String, Object> player_data = DSave.getAllPlayerData(sender.getName());	
-		HashMap<String, HashMap<String, Object>> player_deities = DSave.getAllDeityData(sender.getName());	
-
-		// Loop through player data entry set and add to database
-		for(Map.Entry<String, Object> entry : player_data.entrySet())
+		if(DUtil.hasPermissionOrOP((Player) DPlayerUtil.definePlayer(sender.getName()), "demigods.admin"))
 		{
-			String id = entry.getKey();
-			Object data = entry.getValue();
-
-			sender.sendMessage(id + ": " + data.toString());
-		}
-		
-		for(Map.Entry<String, HashMap<String, Object>> deity : player_deities.entrySet())
-		{
-			String deity_name = deity.getKey();
-			HashMap<String, Object> deity_data = deity.getValue();
-			
-			for(Map.Entry<String, Object> entry : deity_data.entrySet())
+			DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
+			if(DDatabase.saveAllData())
 			{
-				String id = entry.getKey();
-				Object data = entry.getValue();
-				
-				sender.sendMessage(deity_name + ": " + id + ", " + data);
+				DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
+			}
+			else
+			{
+				DUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
+				DUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
 			}
 		}
-		
+		else DUtil.noPermission((Player) DPlayerUtil.definePlayer(sender.getName()));
 		return true;
 	}
 
@@ -90,13 +77,13 @@ public class DCommandExecutor implements CommandExecutor
 		}
 				
 		// Define Player
-		Player player = DUtil.definePlayer(sender);
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		
 		// Check Permissions
 		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
 		
 		DUtil.taggedMessage(sender, "Information Directory");
-		for(String alliance : DUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase());
+		for(String alliance : DDeityUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase());
 		sender.sendMessage(ChatColor.GRAY + "/dg claim");
 		sender.sendMessage(ChatColor.GRAY + "/dg shrine");
 		sender.sendMessage(ChatColor.GRAY + "/dg tribute");
@@ -115,7 +102,7 @@ public class DCommandExecutor implements CommandExecutor
 	public static boolean dg_info(CommandSender sender, String[] args)
 	{
 		// Define Player
-		Player player = DUtil.definePlayer(sender);
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		
 		// Define args
 		String category = args[0];
@@ -123,7 +110,7 @@ public class DCommandExecutor implements CommandExecutor
 		// Check Permissions
 		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
 		
-		for(String alliance : DUtil.getLoadedDeityAlliances())
+		for(String alliance : DDeityUtil.getLoadedDeityAlliances())
 		{
 			if(category.equalsIgnoreCase(alliance))
 			{
@@ -131,20 +118,20 @@ public class DCommandExecutor implements CommandExecutor
 				{
 					DUtil.taggedMessage(sender, alliance + " Directory");
 				
-					for(String deity : DUtil.getAllDeitiesInAlliance(alliance))
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
 					{
 						sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());
 					}
 				}
 				else
 				{
-					for(String deity : DUtil.getAllDeitiesInAlliance(alliance))
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
 					{
 						if(args[1].equalsIgnoreCase(deity))
 						{
 							try
 							{
-								for(String toPrint : (ArrayList<String>) DUtil.invokeDeityMethodWithString(DUtil.getDeityClass(deity), "getInfo", player.getName()))
+								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithString(DDeityUtil.getDeityClass(deity), "getInfo", player.getName()))
 								{
 									sender.sendMessage(toPrint);
 								}
@@ -163,6 +150,7 @@ public class DCommandExecutor implements CommandExecutor
 			}
 		}
 		
+	
 		if(category.equalsIgnoreCase("save"))
 		{
 			if(DUtil.hasPermissionOrOP(player, "demigods.admin"))
@@ -234,66 +222,20 @@ public class DCommandExecutor implements CommandExecutor
 	public static boolean check(CommandSender sender)
 	{
 		// Define Player and Username
-		Player player = DUtil.definePlayer(sender);
-		String username = player.getName();
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
+		//String username = player.getName();
 		
-		if(!DUtil.isImmortal(username))
+		if(!DPlayerUtil.isImmortal(player))
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
-		}
-				
-		// Define variables
-		HashMap<String, Object> player_data = DUtil.getAllPlayerData(username);
-		HashMap<String, HashMap<String, Object>> player_deities = DUtil.getAllDeityData(username);
-
-		String favor = null;
-		String ascensions = null;
-		String kills = null;
-		String deaths = null;
-		String alliance = null;
-		ArrayList<Object> deity_list = new ArrayList<Object>();
-		
-		// Loop through player data entry set and them to variables
-		for(Map.Entry<String, Object> entry : player_data.entrySet())
-		{
-			String id = entry.getKey();
-			Object data = entry.getValue();
-
-			// Don't save if it's temporary data
-			if(id.equalsIgnoreCase("alliance")) alliance = data.toString();
-			if(id.equalsIgnoreCase("favor")) favor = data.toString();
-			if(id.equalsIgnoreCase("ascensions")) ascensions = data.toString();
-			if(id.equalsIgnoreCase("kills")) kills = data.toString();
-			if(id.equalsIgnoreCase("deaths")) deaths = data.toString();
-		}
-		
-		// Loop through deity data entry set and add them to variables
-		for(Map.Entry<String, HashMap<String, Object>> deity : player_deities.entrySet())
-		{
-			String deity_name = deity.getKey();
-			HashMap<String, Object> deity_data = deity.getValue();
-			
-			for(Map.Entry<String, Object> entry : deity_data.entrySet())
-			{
-				// Create variables
-				String id = entry.getKey();
-				Object data = entry.getValue();
-				String devotion = null;
-				
-				// Don't save if it's temporary data
-				if(id.contains("devotion"))
-				{
-					devotion = data.toString();
-					deity_list.add(ChatColor.LIGHT_PURPLE + DObjUtils.capitalize(deity_name) + ChatColor.RESET + " (" + ChatColor.GREEN + devotion + ChatColor.RESET + ChatColor.RESET + " Devotion)");
-				}
-			}
-		}
-		
+		}		
 			
 		// Send the user their info via chat
 		DUtil.customTaggedMessage(sender, "Demigods Player Check", null);
-		sender.sendMessage(ChatColor.RESET + "Name: " + ChatColor.AQUA + username + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtils.capitalize(alliance) + "s");
+		
+		/*
+		sender.sendMessage(ChatColor.RESET + "Name: " + ChatColor.AQUA + username + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtil.capitalize(alliance) + "s");
 		sender.sendMessage("Favor: " + ChatColor.GREEN + favor);
 		sender.sendMessage("Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(" ");
@@ -308,13 +250,73 @@ public class DCommandExecutor implements CommandExecutor
 			
 		sender.sendMessage(" ");
 		sender.sendMessage("Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
+		*/
+		
+		return true;
+	}
 	
+	/*
+	 *  Command: "viewMaps"
+	 */
+	public static boolean viewMaps(CommandSender sender)
+	{
+		sender.sendMessage("-- Players ------------------");
+		sender.sendMessage(" ");
+
+		for(Entry<String, HashMap<String, Object>> player : DDataUtil.getAllPlayers().entrySet())
+		{
+
+			String playerName = player.getKey();
+			HashMap<String, Object> playerData = player.getValue();
+			
+			sender.sendMessage(playerName + ": ");
+
+			for(Entry<String, Object> playerDataEntry : playerData.entrySet())
+			{
+				sender.sendMessage("  - " + playerDataEntry.getKey() + ": " + playerDataEntry.getValue());
+			}
+		}
+		
+		sender.sendMessage(" ");
+		sender.sendMessage("-- Characters ---------------");
+		sender.sendMessage(" ");
+
+		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllPlayerChars(Bukkit.getPlayer(sender.getName())).entrySet())
+		{
+			int charID = character.getKey();
+			HashMap<String, Object> charData = character.getValue();
+			
+			sender.sendMessage(charID + ": ");
+
+			for(Entry<String, Object> charDataEntry : charData.entrySet())
+			{
+				sender.sendMessage("  - " + charDataEntry.getKey() + ": " + charDataEntry.getValue());
+			}
+		}
+		return true;
+	}
+	
+	/*
+	 *  Command: "createChar"
+	 */
+	public static boolean createChar(CommandSender sender, String[] args)
+	{
+		if(args.length != 2) return false;
+		
+		// Define args
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
+		String charName = args[0];
+		String charDeity = args[1];
+		
+		if(DCharUtil.createChar(player, charName, charDeity)) sender.sendMessage(ChatColor.YELLOW + "Character " + charName + "(" + charDeity + ") created!");
+		else player.sendMessage(ChatColor.RED + "You already have a character with that name.");
+
 		return true;
 	}
 	
 	/*
 	 *  Command: "removePlayer"
-	 */
+	 *
 	public static boolean removePlayer(CommandSender sender, String[] args)
 	{	
 		if(args.length != 1) return false;
@@ -337,6 +339,7 @@ public class DCommandExecutor implements CommandExecutor
 		
 		return true;
 	}
+	*/
 	
 	/*
 	 *  Command: "setalliance"
@@ -347,9 +350,11 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String username = args[0];
+		Player player = (Player) DPlayerUtil.definePlayer(username); 
+		int charID = DPlayerUtil.getCurrentChar(player);
 		String alliance = args[1];
 		
-		DUtil.setAlliance(username, alliance);
+		DCharUtil.setAlliance(player, charID, alliance);
 		sender.sendMessage(ChatColor.YELLOW + "You've given " + alliance + " to " + username + "!");
 		
 		return true;
@@ -364,9 +369,10 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String username = args[0];
+		Player player = (Player) DPlayerUtil.definePlayer(username); 
 		Integer favor = new Integer(args[1]);
 		
-		DUtil.setFavor(username, favor);
+		DCharUtil.setFavor(player, favor);
 		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "favor " + ChatColor.YELLOW + "to " + ChatColor.GREEN + favor +  ChatColor.YELLOW + "!");
 		
 		return true;
@@ -381,9 +387,10 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String username = args[0];
+		Player player = (Player) DPlayerUtil.definePlayer(username); 
 		Integer ascensions = new Integer(args[1]);
 		
-		DUtil.setAscensions(username, ascensions);
+		DCharUtil.setAscensions(player, ascensions);
 		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "ascensions " + ChatColor.YELLOW + "to " + ChatColor.GREEN + ascensions +  ChatColor.YELLOW + "!");
 		
 		return true;
@@ -398,114 +405,16 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String username = args[0];
+		Player player = (Player) DPlayerUtil.definePlayer(username); 
+		int charID = DPlayerUtil.getCurrentChar(player);
 		String deity = args[1];
 		Integer devotion = new Integer(args[2]);
 		
-		DUtil.setDevotion(username, deity, devotion);
+		DCharUtil.setDevotion(player, charID, devotion);
 		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "devotion " + ChatColor.YELLOW + "for " + ChatColor.GREEN + deity + ChatColor.YELLOW + " to " + ChatColor.GREEN + devotion +  ChatColor.YELLOW + "!");
 		
 		return true;
 	}
+
 	
-	/*
-	 *  Command: "givedeity"
-	 */
-	public static boolean giveDeity(CommandSender sender, String[] args)
-	{
-		if(args.length != 2) return false;
-		
-		// Define args
-		String username = args[0];
-		String deity = args[1];
-		
-		DUtil.giveDeity(username, deity);
-		DUtil.setImmortal(username, true);
-		DUtil.setFavor(username, 500);
-		DUtil.setAscensions(username, 9);
-		DUtil.setDevotion(username, deity, 900);
-		DUtil.setKills(username, 2);
-		
-		sender.sendMessage(ChatColor.YELLOW + "You've given " + deity + " to " + username + "!");
-		
-		return true;
-	}
-	
-	/*
-	 *  Command: "claim"
-	 */
-	public static boolean claim(CommandSender sender, String[] args)
-	{
-		Player player = DUtil.definePlayer(sender);
-		
-		if(player == null) return DUtil.noConsole(sender);
-		
-		if(args.length != 1) return false;
-		
-		// Define args
-		String username = player.getName();
-		String deity = args[0];
-		
-		ArrayList<String> loadedDeities = DUtil.getLoadedDeityNames();
-		
-		if(!loadedDeities.contains(deity))
-		{
-			player.sendMessage(ChatColor.RED + "That deity does not exist.");
-			return false;
-		}
-		
-		String alliance;
-		Boolean firstTime = false;
-		
-		if(DUtil.getAlliance(username) == null || DUtil.getAlliance(username).equalsIgnoreCase("null"))
-		{
-			alliance = DUtil.getDeityAlliance(deity);
-			firstTime = true;
-		}
-		else alliance = DUtil.getAlliance(username);
-		
-		if(DUtil.hasADeity(username))
-		{
-			player.sendMessage(ChatColor.RED + "You cannot claim more than one deity.");
-			return true;
-		}
-		
-		if(!alliance.equalsIgnoreCase(DUtil.getDeityAlliance(deity)))
-		{
-			player.sendMessage(ChatColor.RED + "You cannot claim a deity from another alliance.");
-			return true;
-		}
-		
-		ArrayList<Material> claimItems = DUtil.getDeityClaimItems(args[0]);
-		int needs = claimItems.size();
-		int count = 0;
-			
-		for(Material claimItem : claimItems)
-		{
-			if(player.getInventory().contains(claimItem))
-			{
-				count++;
-			}
-		}
-		
-		if(count != needs)
-		{
-			player.sendMessage(ChatColor.RED + "You do not have the correct claim items.");
-			return true;
-		}
-		
-		DUtil.giveDeity(username, deity);
-		if(firstTime) DUtil.setAlliance(username, alliance);
-		if(firstTime) DUtil.setImmortal(username, true);
-		if(firstTime) DUtil.setFavor(username, 500);
-		if(firstTime) DUtil.setAscensions(username, 9);
-		DUtil.setDevotion(username, deity, 900);
-		if(firstTime) DUtil.setKills(username, 2);
-		
-		// TagAPI support
-		if(plugin.TAGAPI != null) TagAPI.refreshPlayer(player);
-		
-		player.sendMessage(ChatColor.YELLOW + "You've claimed " + deity + "!");
-		
-		return true;
-	}
 }

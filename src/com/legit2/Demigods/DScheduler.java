@@ -4,6 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.Utilities.DPlayerUtil;
+import com.legit2.Demigods.Utilities.DUtil;
+
 @SuppressWarnings("unused")
 public class DScheduler
 {
@@ -39,7 +42,7 @@ public class DScheduler
 			@Override
 			public void run()
 			{
-				DUtil.regenerateAllFavor();
+				//DPlayerUtil.regenerateAllFavor();
 			}
 		}, 0, favor_frequency);
 	}

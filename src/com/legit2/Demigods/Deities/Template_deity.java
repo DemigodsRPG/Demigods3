@@ -13,13 +13,15 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.google.common.base.Joiner;
-import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
-public class Template implements Listener
+public class Template_deity implements Listener
 {	
 	// Create required universal deity variables
-	private static final String DEITYNAME = "Template";
+	private static final String DEITYNAME = "Template_deity";
 	private static final String DEITYALLIANCE = "Test";
 	private static final ChatColor DEITYCOLOR = ChatColor.BLACK;
 
@@ -38,7 +40,7 @@ public class Template implements Listener
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
-
+	
 	public String loadDeity()
 	{
 		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
@@ -56,11 +58,11 @@ public class Template implements Listener
 		return claimItems;
 	}
 
-	public ArrayList<String> getInfo(String username)
+	public ArrayList<String> getInfo(Player player)
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(username, DEITYNAME))
+		if(DUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -95,7 +97,7 @@ public class Template implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
+			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -111,28 +113,28 @@ public class Template implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		String username = player.getName();
+		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(username, DEITYNAME)) return;
+		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, TEST_NAME))))
+		if(DCharUtil.isEnabledAbility(player, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DPlayerUtil.getBind(player, TEST_NAME))))
 		{
-			if(!DUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
+			if(!DCharUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
 			// Set the ability's delay
 			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DUtil.getFavor(username) >= TEST_COST)
+			if(DCharUtil.getFavor(player, charID) >= TEST_COST)
 			{
 				testabil(player);
-				DUtil.subtractFavor(username, TEST_COST);
+				DCharUtil.subtractFavor(player, charID, TEST_COST);
 				return;
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.disableAbility(username, DEITYNAME, TEST_NAME);
+				DCharUtil.disableAbility(player, TEST_NAME);
 			}
 		}
 	}
@@ -145,27 +147,24 @@ public class Template implements Listener
 	 */
 	@ReflectCommand.Command(name = "testabil", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void testCommand(Player player, String arg1)
-	{
-		// Set variables
-		String username = player.getName();
-		
+	{		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DUtil.setBound(username, DEITYNAME, TEST_NAME, player.getItemInHand().getType());
+			DPlayerUtil.setBound(player, TEST_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DUtil.isEnabledAbility(username, DEITYNAME, TEST_NAME))
+			if(DCharUtil.isEnabledAbility(player, TEST_NAME))
 			{
-				DUtil.disableAbility(username, DEITYNAME, TEST_NAME);
+				DCharUtil.disableAbility(player, TEST_NAME);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.enableAbility(username, DEITYNAME, TEST_NAME);
+				DCharUtil.enableAbility(player, TEST_NAME);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}
@@ -182,10 +181,10 @@ public class Template implements Listener
 	 */
 	@ReflectCommand.Command(name = "testult", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
 	public static void ultimateCommand(Player player)
-	{
+	{		
 		// Set variables
-		String username = player.getName();
-		
+		int charID = DPlayerUtil.getCurrentChar(player);
+
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
@@ -197,7 +196,7 @@ public class Template implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DUtil.getFavor(username) >= ULTIMATE_COST)
+		if(DCharUtil.getFavor(player, charID) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
@@ -209,9 +208,9 @@ public class Template implements Listener
 			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
 
 			// Set favor and cooldown
-			DUtil.subtractFavor(username, ULTIMATE_COST);
+			DCharUtil.subtractFavor(player, charID, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DUtil.getAscensions(username) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(player, charID) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor

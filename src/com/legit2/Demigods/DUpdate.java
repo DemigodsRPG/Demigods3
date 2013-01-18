@@ -13,6 +13,7 @@ import java.net.URLConnection;
 import org.bukkit.Bukkit;
 
 import com.legit2.Demigods.Libraries.UpdateChecker;
+import com.legit2.Demigods.Utilities.DUtil;
 
 public class DUpdate
 {

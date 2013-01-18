@@ -1,5 +1,6 @@
 ## Global Settings ##
 auto_update: false
+data_debug: false
 broadcast_new_deities: true
 friendly_fire: false
 allow_skills_anywhere: false
@@ -27,6 +28,6 @@ database:
         use: true
         db_name: minecraft
         username: root
-        password:
+        password: ''
         host: localhost
         port: 3306

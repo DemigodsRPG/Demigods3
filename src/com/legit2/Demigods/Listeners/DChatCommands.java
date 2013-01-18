@@ -9,7 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.legit2.Demigods.DUtil;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
 public class DChatCommands implements Listener
 {
@@ -19,7 +21,7 @@ public class DChatCommands implements Listener
 		// Define variables
 		Player player = event.getPlayer();
 		
-		if(!DUtil.isImmortal(player.getName())) return;
+		if(!DPlayerUtil.isImmortal(player)) return;
 		
 		if(event.getMessage().equals("pl")) pl(player,event);
 	}
@@ -30,21 +32,22 @@ public class DChatCommands implements Listener
 		
 		for(Player onlinePlayer : DUtil.getPlugin().getServer().getOnlinePlayers())
 		{
-			if (DUtil.isImmortal(onlinePlayer.getName()))
+			int currentCharID = DPlayerUtil.getCurrentChar(player);
+
+			if(DPlayerUtil.isImmortal(onlinePlayer))
 			{
-				if (!alliances.containsKey(DUtil.getAlliance(onlinePlayer.getName()).toUpperCase()))  alliances.put(DUtil.getAlliance(onlinePlayer.getName()).toUpperCase(), new ArrayList<String>());
+				if (!alliances.containsKey(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase()))  alliances.put(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase(), new ArrayList<String>());
 				
-				alliances.get(DUtil.getAlliance(onlinePlayer.getName()).toUpperCase()).add(onlinePlayer.getName());
+				alliances.get(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase()).add(onlinePlayer.getName());
 			}
 		}
 	
 		for(String alliance : alliances.keySet())
 		{
-			{
-				String names = "";
-				for (String name : alliances.get(alliance)) names+=" "+name;
-				player.sendMessage(ChatColor.YELLOW+alliance+": "+ChatColor.WHITE+names);
-			}
+			String names = "";
+			for (String name : alliances.get(alliance)) names+=" "+name;
+			player.sendMessage(ChatColor.YELLOW+alliance+": "+ChatColor.WHITE+names);
+			
 			event.getRecipients().clear();
 			event.setCancelled(true);
 		}

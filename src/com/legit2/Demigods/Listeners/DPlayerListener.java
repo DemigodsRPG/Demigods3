@@ -1,8 +1,5 @@
 package com.legit2.Demigods.Listeners;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,20 +8,17 @@ import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryType;
+
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.DConfig;
-import com.legit2.Demigods.DDatabase;
-import com.legit2.Demigods.DSave;
-import com.legit2.Demigods.DSouls;
-import com.legit2.Demigods.DUtil;
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
+import com.legit2.Demigods.Utilities.DUtil;
 
 public class DPlayerListener implements Listener
 {
@@ -37,14 +31,13 @@ public class DPlayerListener implements Listener
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerLogin(PlayerLoginEvent event)
-	{
-		String username = event.getPlayer().getName();
-		
+	{		
 		try 
 		{
-			DDatabase.addPlayer(username);
+			Player player = event.getPlayer();		
+			DPlayerUtil.createNewPlayer(player);
 		}
-		catch(SQLException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -52,10 +45,13 @@ public class DPlayerListener implements Listener
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) throws EventException
-	{
+	{	
 		// Define Variables
 		Player player = event.getPlayer();
-		
+
+		// Set their lastlogintime
+		DDataUtil.savePlayerData(player, "player_lastlogin", System.currentTimeMillis());
+	
 		// TagAPI support
 		if(plugin.TAGAPI != null)
 		{
@@ -67,9 +63,7 @@ public class DPlayerListener implements Listener
 				TagAPI.refreshPlayer(onlinePlayer, player);
 			}
 		}
-		
-		DUtil.setPlayerData(player.getName(), "lastlogintime", System.currentTimeMillis());
-		
+			
 		// if(!DConfig.getEnabledWorlds().contains(player.getWorld())) return;
 		
 		if(DConfig.getSettingBoolean("motd"))
@@ -88,6 +82,7 @@ public class DPlayerListener implements Listener
 		*/
 	}
 	
+	/*
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerCraft(CraftItemEvent event)
 	{
@@ -113,13 +108,14 @@ public class DPlayerListener implements Listener
 			}
 		}
 	}
+	*/
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		final String username = player.getName();
+		//final String username = player.getName();
 		final int pvp_area_delay_time = DConfig.getSettingInt("pvp_area_delay_time");
 		Location to = event.getTo();
 		Location from = event.getFrom();
@@ -127,14 +123,14 @@ public class DPlayerListener implements Listener
 		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
 		{
-			DSave.savePlayerData(username, "was_PVP_temp", true);
+			DDataUtil.savePlayerData(player, "was_PVP_temp", true);
 			
 			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					DSave.removePlayerData(username, "was_PVP_temp");
+					DDataUtil.removePlayerData(player, "was_PVP_temp");
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
 			}, (pvp_area_delay_time * 20));

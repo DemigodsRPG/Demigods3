@@ -6,8 +6,8 @@ commands:
     dg:
         usage: /dg [category] [subcategory]
         permission: demigods.basic
-    viewhashmaps:
-        usage: /viewhashmaps
+    viewmaps:
+        usage: /viewmaps
         permission: demigods.basic
     check:
         usage: /check
@@ -33,6 +33,12 @@ commands:
     removeplayer:
         usage: /removeplayer <player>
         permission: demigods.admin
+    createchar:
+        usage: /createchar <name> <deity>
+        permission: demigods.basic
+    test1:
+        usage: /test1
+        permission: demigods.basic
 permissions:
     demigods.basic:
         description: The default permission for players.
