@@ -75,23 +75,6 @@ public class DPlayerUtil
 	}
 	
 	/*
-	 *  isImmortal() : Gets if the player is immortal or not.
-	 */
-	public static Boolean isImmortal(OfflinePlayer player)
-	{
-		if(DDataUtil.getCharData(player, getCurrentChar(player), "char_immortal") == null) return false;
-		else return DObjUtil.toBoolean(DDataUtil.getCharData(player, getCurrentChar(player), "char_immortal"));
-	}
-	
-	/*
-	 *  setImmortal() : Sets the player's immortal boolean.
-	 */
-	public static void setImmortal(OfflinePlayer player, boolean option)
-	{			
-		DDataUtil.savePlayerData(player, "immortal", option);
-	}
-	
-	/*
 	 *  getCurrentChar() : Returns the current charID for (Player)player.
 	 */
 	public static int getCurrentChar(OfflinePlayer player)

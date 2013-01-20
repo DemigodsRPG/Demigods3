@@ -276,7 +276,7 @@ public class DUtil
 	}
 	
 	/*
-	 *  canUseDeity() : Checks is a player can use a specfic deity.
+	 *  canUseDeity() : Checks is a player can use a specfic deity and returns a message
 	 */
 	public static boolean canUseDeity(Player player, String deity)
 	{		
@@ -286,7 +286,7 @@ public class DUtil
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
 		}
-		else if(!DPlayerUtil.isImmortal(player))
+		else if(!DCharUtil.isImmortal(player))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
@@ -295,13 +295,14 @@ public class DUtil
 	}
 	
 	/*
-	 *  canUseDeity() : Checks is a player can use a specfic deity.
+	 *  canUseDeitySilent() : Checks is a player can use a specfic deity without returning a message.
 	 */
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{		
 		// Check the player for DEITYNAME
 		if(!DCharUtil.hasDeity(player, deity)) return false;
-		else return false;
+		else if(!DCharUtil.isImmortal(player)) return false;
+		else return true;
 	}
 	
 	/*

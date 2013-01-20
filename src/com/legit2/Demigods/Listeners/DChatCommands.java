@@ -21,7 +21,7 @@ public class DChatCommands implements Listener
 		// Define variables
 		Player player = event.getPlayer();
 		
-		if(!DPlayerUtil.isImmortal(player)) return;
+		if(!DCharUtil.isImmortal(player)) return;
 		
 		if(event.getMessage().equals("pl")) pl(player,event);
 	}
@@ -34,7 +34,7 @@ public class DChatCommands implements Listener
 		{
 			int currentCharID = DPlayerUtil.getCurrentChar(player);
 
-			if(DPlayerUtil.isImmortal(onlinePlayer))
+			if(DCharUtil.isImmortal(onlinePlayer))
 			{
 				if (!alliances.containsKey(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase()))  alliances.put(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase(), new ArrayList<String>());
 				

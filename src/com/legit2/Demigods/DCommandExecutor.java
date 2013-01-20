@@ -225,7 +225,7 @@ public class DCommandExecutor implements CommandExecutor
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		//String username = player.getName();
 		
-		if(!DPlayerUtil.isImmortal(player))
+		if(!DCharUtil.isImmortal(player))
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
