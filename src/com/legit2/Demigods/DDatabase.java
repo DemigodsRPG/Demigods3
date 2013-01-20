@@ -157,73 +157,6 @@ public class DDatabase
 
 		return null;
 	}
-
-	/*
-	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
-	 */
-	public static boolean savePlayerData(OfflinePlayer player)
-	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
-		{			
-			int playerID = DPlayerUtil.getPlayerID(player);
-
-			// Clear tables first
-			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID);
-
-			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
-			for(Entry<String, Object> playerData : allPlayerData.entrySet())
-			{		
-				if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
-				if(playerData.getKey().contains("player_"))
-				{
-					//
-					// REWRITE THESE SAVING METHODS
-					//
-					
-					if(playerData.getValue() instanceof Boolean || playerData.getValue() instanceof Integer) DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET " + playerData.getKey() + "=" + playerData.getValue() + " WHERE player_id=" + playerID + ";");
-					else DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET " + playerData.getKey() + "='" + playerData.getValue() + "' WHERE player_id=" + playerID + ";");
-					
-					//
-					//
-					//
-				}
-				
-				// Save their character data now
-				HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
-				
-				for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
-				{
-					int charID = playerChar.getKey();
-					HashMap<String, Object> charData = playerChar.getValue();
-					
-					// Clear character data table
-					DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
-					
-					for(Entry<String, Object> character : charData.entrySet())
-					{	
-						if(!character.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + character.getKey() + "','" + character.getValue() + "');");
-
-						//
-						// REWRITE THESE SAVING METHODS
-						//
-						
-						if(character.getValue() instanceof Boolean || character.getValue() instanceof Integer) if(character.getKey().contains("char_")) DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET " + character.getKey() + "=" + character.getValue() + " WHERE char_id=" + charID + ";");
-						else if(character.getKey().contains("char_")) DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET " + character.getKey() + "='" + character.getValue() + "' WHERE char_id=" + charID + ";");
-					
-						//
-						//
-						//
-					}
-				}
-			}
-			return true;
-		}
-		else if(DConfig.getSettingBoolean("sqlite"))
-		{
-			// TODO: SQLite
-		}
-		return false;
-	}
 	
 	/*
 	 *  saveAllData() : Saves all HashMap data to database.
@@ -381,5 +314,65 @@ public class DDatabase
 		{
 			// TODO: SQLite
 		}
+	}
+	
+	/*
+	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
+	 */
+	public static boolean savePlayerData(OfflinePlayer player)
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{			
+			int playerID = DPlayerUtil.getPlayerID(player);
+
+			// Clear tables first
+			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID);
+
+			// Save their player-specific data
+			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
+			//: Define player-specific variables
+				String playerChars = (String) allPlayerData.get("player_chars");
+				int playerKills = (int) allPlayerData.get("player_kills");
+				int playerDeaths = (int) allPlayerData.get("player_deaths");
+				Long playerLastLogin = (Long) allPlayerData.get("player_lastlogin");
+			//: Update main player table
+				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET player_characters='" + playerChars + "',player_kills=" + playerKills + ",player_deaths=" + playerDeaths + ",player_lastlogin=" + playerLastLogin + " WHERE player_id=" + playerID + ";");
+			//: Save miscellaneous player data
+				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
+				for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
+				
+				
+			// Save their character-specific data now
+			HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
+			for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
+			{
+				// Define character-specific variables
+				int charID = playerChar.getKey();
+				boolean charImmortal = (boolean) playerCharData.get(charID).get("char_immortal");
+				int charHP = (int) playerCharData.get(charID).get("char_hp");
+				int charExp = (int) playerCharData.get(charID).get("char_exp");
+				int charFavor = (int) playerCharData.get(charID).get("char_favor");
+				int charDevotion = (int) playerCharData.get(charID).get("char_devotion");
+				int charAscensions = (int) playerCharData.get(charID).get("char_ascensions");
+				Double charLastX = (Double) playerCharData.get(charID).get("char_lastx");
+				Double charLastY = (Double) playerCharData.get(charID).get("char_lasty");
+				Double charLastZ = (Double) playerCharData.get(charID).get("char_lastz");
+				String charLastW = (String) playerCharData.get(charID).get("char_lastw");
+				
+				// Update main character table
+				DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET char_immortal=" + charImmortal + ",char_hp=" + charHP + ",char_exp=" + charExp + ",char_favor=" + charFavor + ",char_devotion=" + charDevotion + ",char_ascensions=" + charAscensions + ",char_lastX=" + charLastX + ",char_lastY=" + charLastY + ",char_lastZ=" + charLastZ + ",char_lastW='" + charLastW + "'  WHERE char_id=" + charID + ";");
+
+				// Save miscellaneous character data
+				HashMap<String, Object> charData = playerChar.getValue();
+				DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
+				for(Entry<String, Object> character : charData.entrySet()) if(!character.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + character.getKey() + "','" + character.getValue() + "');");
+			}
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
 	}
 }
