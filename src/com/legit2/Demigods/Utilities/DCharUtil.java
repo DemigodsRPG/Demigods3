@@ -1,6 +1,5 @@
 package com.legit2.Demigods.Utilities;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,26 +80,28 @@ public class DCharUtil
 			
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 	
 	/*
 	 *  removeChar() : Removes the character with (int)id. Returns true on success, false on fail.
 	 */
-	public static boolean removeChar(int id)
+	public static boolean removeChar(OfflinePlayer player, int charID)
 	{
-		return true;
+		if(DDataUtil.removeChar(player, charID))
+		{
+			DDatabase.savePlayerData(player);
+			return true;
+		}
+		return false;
 	}
 	
 	/*
 	 *  getCharByID() : Returns the complete character info for the character with (int)id.
 	 */
-	public static ResultSet getCharByID(int id)
+	public static HashMap<String, Object> getCharInfo(OfflinePlayer player, int charID)
 	{
-		return null;
+		return DDataUtil.getAllCharData(player, charID);
 	}
 	
 	/*
@@ -138,6 +139,22 @@ public class DCharUtil
 	 */
 	public static int getPlayer(int charID)
 	{
+		return -1;
+	}
+	
+	/*
+	 *  getCharID() : Returns the (int)charID for the character with the name (String)charName.
+	 */
+	public static int getCharID(OfflinePlayer player, String charName)
+	{
+		HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
+		for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
+		{
+			// Define character-specific variables
+			int charID = playerChar.getKey();
+			
+			if(((String) playerCharData.get(charID).get("char_name")).equalsIgnoreCase(charName)) return charID;
+		}
 		return -1;
 	}
 	
@@ -344,9 +361,9 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(DDataUtil.getCharData(player, charID, ability.toLowerCase() + "_boolean") != null)
+		if(DDataUtil.getCharData(player, charID, "boolean_" + ability.toLowerCase()) != null)
 		{
-			return DObjUtil.toBoolean(DDataUtil.getCharData(player, charID, ability.toLowerCase() + "_boolean"));
+			return DObjUtil.toBoolean(DDataUtil.getCharData(player, charID, "boolean_" + ability.toLowerCase()));
 		}
 		else return false;
 	}
@@ -360,7 +377,7 @@ public class DCharUtil
 		
 		if(!isEnabledAbility(player, ability))
 		{
-			DDataUtil.saveCharData(player, charID, ability.toLowerCase() + "_boolean", true);
+			DDataUtil.saveCharData(player, charID,  "boolean_" + ability.toLowerCase(), true);
 		}
 	}
 	
@@ -373,7 +390,7 @@ public class DCharUtil
 		
 		if(isEnabledAbility(player, ability))
 		{
-			DDataUtil.saveCharData(player, charID, ability.toLowerCase() + "_boolean", false);
+			DDataUtil.saveCharData(player, charID,  "boolean_" + ability.toLowerCase(), false);
 		}
 	}
 	

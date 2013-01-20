@@ -12,29 +12,14 @@ commands:
     check:
         usage: /check
         permission: demigods.basic
-    claim:
-        usage: /claim <deity>
-        permission: demigods.basic
-    setalliance:
-        usage: /setalliance <player> <alliance>
-        permission: demigods.admin
-    setfavor:
-        usage: /setfavor <player> <favor>
-        permission: demigods.admin
-    setascensions:
-        usage: /setascensions <player> <ascensions>
-        permission: demigods.admin
-    setdevotion:
-        usage: /setdevotion <player> <deity> <devotion>
-        permission: demigods.admin
-    givedeity:
-        usage: /givedeity <player> <deity>
-        permission: demigods.admin
-    removeplayer:
-        usage: /removeplayer <player>
-        permission: demigods.admin
     createchar:
         usage: /createchar <name> <deity>
+        permission: demigods.basic
+    switchchar:
+        usage: /switchchar <name>
+        permission: demigods.basic
+    removechar:
+        usage: /removechar <name>
         permission: demigods.basic
     test1:
         usage: /test1

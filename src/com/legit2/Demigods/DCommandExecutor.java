@@ -28,11 +28,9 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		if (command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
 		else if (command.getName().equalsIgnoreCase("check")) return check(sender);
-		else if (command.getName().equalsIgnoreCase("setalliance")) return setAlliance(sender,args);
-		else if (command.getName().equalsIgnoreCase("setfavor")) return setFavor(sender,args);
-		else if (command.getName().equalsIgnoreCase("setascensions")) return setAscensions(sender,args);
-		else if (command.getName().equalsIgnoreCase("setdevotion")) return setDevotion(sender,args);
 		else if (command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
+		else if (command.getName().equalsIgnoreCase("switchchar")) return switchChar(sender,args);
+		else if (command.getName().equalsIgnoreCase("removechar")) return removeChar(sender,args);
 		else if (command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
 		//else if (command.getName().equalsIgnoreCase("removeplayer")) return removePlayer(sender,args);
 		
@@ -295,7 +293,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		return true;
 	}
-	
+
 	/*
 	 *  Command: "createChar"
 	 */
@@ -315,106 +313,49 @@ public class DCommandExecutor implements CommandExecutor
 	}
 	
 	/*
-	 *  Command: "removePlayer"
-	 *
-	public static boolean removePlayer(CommandSender sender, String[] args)
-	{	
+	 *  Command: "switchChar"
+	 */
+	public static boolean switchChar(CommandSender sender, String[] args)
+	{
 		if(args.length != 1) return false;
 		
 		// Define args
-		String username = args[0];
-
-		try
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
+		String charName = args[0];
+		
+		if(DDataUtil.hasChar(player, charName))
 		{
-			DDatabase.removePlayer(username);
-			DDatabase.addPlayer(username);
-		}
-		catch(Exception e)
-		{
+			int charID = DCharUtil.getCharID(player, charName);
+			DDataUtil.savePlayerData(player, "current_char", charID);
 			
+			sender.sendMessage(ChatColor.YELLOW + "Your current character has been changed!");
 		}
-		
-		Bukkit.getPlayer(username).sendMessage(ChatColor.YELLOW + "You have been reset in the Demigods database by " + ChatColor.AQUA + sender.getName() + ChatColor.YELLOW + ".");
-		sender.sendMessage(ChatColor.RED + "You have removed " + ChatColor.AQUA + username + ChatColor.RED + " from the database!");
-		
-		return true;
-	}
-	*/
-	
-	/*
-	 *  Command: "setalliance"
-	 */
-	public static boolean setAlliance(CommandSender sender, String[] args)
-	{	
-		if(args.length != 2) return false;
-		
-		// Define args
-		String username = args[0];
-		Player player = (Player) DPlayerUtil.definePlayer(username); 
-		int charID = DPlayerUtil.getCurrentChar(player);
-		String alliance = args[1];
-		
-		DCharUtil.setAlliance(player, charID, alliance);
-		sender.sendMessage(ChatColor.YELLOW + "You've given " + alliance + " to " + username + "!");
+		else sender.sendMessage(ChatColor.RED + "There was an error while changing your current character.");
 		
 		return true;
 	}
 	
 	/*
-	 *  Command: "setfavor"
+	 *  Command: "removeChar"
 	 */
-	public static boolean setFavor(CommandSender sender, String[] args)
+	public static boolean removeChar(CommandSender sender, String[] args)
 	{
-		if(args.length != 2) return false;
+		if(args.length != 1) return false;
 		
 		// Define args
-		String username = args[0];
-		Player player = (Player) DPlayerUtil.definePlayer(username); 
-		Integer favor = new Integer(args[1]);
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
+		String charName = args[0];
 		
-		DCharUtil.setFavor(player, favor);
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "favor " + ChatColor.YELLOW + "to " + ChatColor.GREEN + favor +  ChatColor.YELLOW + "!");
+		if(DDataUtil.hasChar(player, charName))
+		{
+			int charID = DCharUtil.getCharID(player, charName);
+			DDataUtil.removeChar(player, charID);
+			
+			sender.sendMessage(ChatColor.RED + "Character removed!");
+		}
+		else sender.sendMessage(ChatColor.RED + "There was an error while removing your character.");
+		
 		
 		return true;
 	}
-	
-	/*
-	 *  Command: "setascensions"
-	 */
-	public static boolean setAscensions(CommandSender sender, String[] args)
-	{
-		if(args.length != 2) return false;
-		
-		// Define args
-		String username = args[0];
-		Player player = (Player) DPlayerUtil.definePlayer(username); 
-		Integer ascensions = new Integer(args[1]);
-		
-		DCharUtil.setAscensions(player, ascensions);
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "ascensions " + ChatColor.YELLOW + "to " + ChatColor.GREEN + ascensions +  ChatColor.YELLOW + "!");
-		
-		return true;
-	}
-	
-	/*
-	 *  Command: "setdevotion"
-	 */
-	public static boolean setDevotion(CommandSender sender, String[] args)
-	{
-		if(args.length != 3) return false;
-		
-		// Define args
-		String username = args[0];
-		Player player = (Player) DPlayerUtil.definePlayer(username); 
-		int charID = DPlayerUtil.getCurrentChar(player);
-		String deity = args[1];
-		Integer devotion = new Integer(args[2]);
-		
-		DCharUtil.setDevotion(player, charID, devotion);
-		sender.sendMessage(ChatColor.YELLOW + "You've set " + username + "'s " + ChatColor.GREEN + "devotion " + ChatColor.YELLOW + "for " + ChatColor.GREEN + deity + ChatColor.YELLOW + " to " + ChatColor.GREEN + devotion +  ChatColor.YELLOW + "!");
-		
-		return true;
-	}
-
-	
 }

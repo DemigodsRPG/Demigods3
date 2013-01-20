@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
@@ -236,7 +237,7 @@ public class DDatabase
 					// Load other player data
 					if(playerResult.getString("datakey") != null)
 					{
-						if(playerResult.getString("datakey").contains("_boolean"))
+						if(playerResult.getString("datakey").contains("boolean_"))
 						{
 							DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getBoolean("datavalue"));
 						}
@@ -275,7 +276,7 @@ public class DDatabase
 						// Load other character data
 						if(charResult.getString("datakey") != null)
 						{
-							if(charResult.getString("datakey").contains("_boolean"))
+							if(charResult.getString("datakey").contains("boolean_"))
 							{
 								DDataUtil.saveCharData(player, charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
 							}
@@ -330,17 +331,20 @@ public class DDatabase
 
 			// Save their player-specific data
 			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
-			//: Define player-specific variables
-				String playerChars = (String) allPlayerData.get("player_chars");
-				int playerKills = (int) allPlayerData.get("player_kills");
-				int playerDeaths = (int) allPlayerData.get("player_deaths");
-				Long playerLastLogin = (Long) allPlayerData.get("player_lastlogin");
-			//: Update main player table
-				DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET player_characters='" + playerChars + "',player_kills=" + playerKills + ",player_deaths=" + playerDeaths + ",player_lastlogin=" + playerLastLogin + " WHERE player_id=" + playerID + ";");
-			//: Save miscellaneous player data
-				DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
-				for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
-				
+		
+			// Define player-specific variables
+			String playerChars = (String) allPlayerData.get("player_characters");
+			int playerKills = DObjUtil.toInteger(allPlayerData.get("player_kills"));
+			int playerDeaths = DObjUtil.toInteger(allPlayerData.get("player_deaths"));
+			Long playerLastLogin = (Long) allPlayerData.get("player_lastlogin");
+			
+			// Update main player table
+			DMySQL.runQuery("UPDATE " + DMySQL.player_table + " SET player_characters='" + playerChars + "',player_kills=" + playerKills + ",player_deaths=" + playerDeaths + ",player_lastlogin=" + playerLastLogin + " WHERE player_id=" + playerID + ";");
+			
+			// Save miscellaneous player data
+			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
+			for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
+			
 				
 			// Save their character-specific data now
 			HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
@@ -348,12 +352,12 @@ public class DDatabase
 			{
 				// Define character-specific variables
 				int charID = playerChar.getKey();
-				boolean charImmortal = (boolean) playerCharData.get(charID).get("char_immortal");
-				int charHP = (int) playerCharData.get(charID).get("char_hp");
-				int charExp = (int) playerCharData.get(charID).get("char_exp");
-				int charFavor = (int) playerCharData.get(charID).get("char_favor");
-				int charDevotion = (int) playerCharData.get(charID).get("char_devotion");
-				int charAscensions = (int) playerCharData.get(charID).get("char_ascensions");
+				boolean charImmortal = DObjUtil.toBoolean(playerCharData.get(charID).get("char_immortal"));
+				int charHP = DObjUtil.toInteger(playerCharData.get(charID).get("char_hp"));
+				int charExp = DObjUtil.toInteger(playerCharData.get(charID).get("char_exp"));
+				int charFavor = DObjUtil.toInteger(playerCharData.get(charID).get("char_favor"));
+				int charDevotion = DObjUtil.toInteger(playerCharData.get(charID).get("char_devotion"));
+				int charAscensions = DObjUtil.toInteger(playerCharData.get(charID).get("char_ascensions"));
 				Double charLastX = (Double) playerCharData.get(charID).get("char_lastx");
 				Double charLastY = (Double) playerCharData.get(charID).get("char_lasty");
 				Double charLastZ = (Double) playerCharData.get(charID).get("char_lastz");

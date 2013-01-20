@@ -119,17 +119,10 @@ public class Demigods extends JavaPlugin
 		getCommand("dg").setExecutor(ce);
 		getCommand("viewmaps").setExecutor(ce);
 		getCommand("check").setExecutor(ce);
-		getCommand("setalliance").setExecutor(ce);
-		getCommand("setfavor").setExecutor(ce);
-		getCommand("setascensions").setExecutor(ce);
-		getCommand("setdevotion").setExecutor(ce);
-		getCommand("givedeity").setExecutor(ce);
-		getCommand("removeplayer").setExecutor(ce);
 		getCommand("createchar").setExecutor(ce);
+		getCommand("switchchar").setExecutor(ce);
+		getCommand("removechar").setExecutor(ce);
 		getCommand("test1").setExecutor(ce);
-		
-		// BETA TESTING ONLY
-		getCommand("claim").setExecutor(ce);
 	}
 	
 	/*

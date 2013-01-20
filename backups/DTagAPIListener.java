@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 import com.legit2.Demigods.DSave;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 public class DTagAPIListener implements Listener
@@ -20,13 +22,13 @@ public class DTagAPIListener implements Listener
 		String username = player.getName();
 		
 		// Recolor names based on deity.
-		if(DUtil.hasADeity(username))
+		if(DCharUtil.hasADeity(username))
 		{
 			for(String deity : DUtil.getLoadedDeityNames())
 			{
-				if(DUtil.hasDeity(username, deity))
+				if(DCharUtil.hasDeity(username, deity))
 				{
-					ChatColor color = (ChatColor) DSave.getData("deity_colors_temp", deity);
+					ChatColor color = (ChatColor) DDataUtil.getData("deity_colors_temp", deity);
 					
 					String tag = color + username;
 					if(username.length() <= 14) event.setTag(tag);

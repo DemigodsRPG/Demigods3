@@ -21,7 +21,7 @@ import com.legit2.Demigods.Utilities.DUtil;
 public class Template_deity implements Listener
 {	
 	// Create required universal deity variables
-	private static final String DEITYNAME = "Template_deity";
+	private static final String DEITYNAME = "Template";
 	private static final String DEITYALLIANCE = "Test";
 	private static final ChatColor DEITYCOLOR = ChatColor.BLACK;
 

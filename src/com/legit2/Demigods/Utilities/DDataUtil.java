@@ -27,7 +27,12 @@ public class DDataUtil
 			pluginData.get(dataID).put(dataKey, dataValue);
 			return true;
 		}
-		else return false;
+		else
+		{
+			pluginData.put(dataID, new HashMap<String, Object>());
+			pluginData.get(dataID).put(dataKey, dataValue);
+			return true;
+		}
 	}
 	
 	/*
@@ -196,7 +201,7 @@ public class DDataUtil
 		}
 		return false;
 	}
-	
+
 	/*
 	 *  addChar() : Saves the (int)charID to the charData HashMap.
 	 */
@@ -204,6 +209,16 @@ public class DDataUtil
 	{
 		String playerName = player.getName();;
 		charData.get(playerName).put(charID, new HashMap<String, Object>());
+		return true;
+	}
+	
+	/*
+	 *  removeChar() : Removes the (int)charID from the charData HashMap.
+	 */
+	public static boolean removeChar(OfflinePlayer player, int charID)
+	{
+		String playerName = player.getName();;
+		charData.get(playerName).remove(charID);
 		return true;
 	}
 	
