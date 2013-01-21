@@ -314,7 +314,7 @@ public class DUtil
     public static boolean canTarget(LivingEntity player, Location location)
     {      
     	if(!(player instanceof Player)) return true;
-        if(DDataUtil.hasPlayerData((Player) player, "was_PVP_temp")) return true;
+        if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return true;
         return canLocationPVP(location);
     }
 	

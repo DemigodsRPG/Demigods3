@@ -16,7 +16,7 @@ public class DDeityUtil
 	 */
 	public static String getDeityClass(String deity)
 	{
-		return DDataUtil.getPluginData("deity_classes_temp", deity).toString();
+		return DDataUtil.getPluginData("temp_deity_classes", deity).toString();
 	}
 	
 	/*
@@ -72,7 +72,7 @@ public class DDeityUtil
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		for(String deity : DDataUtil.getAllPluginData().get("deity_alliances_temp").keySet())
+		for(String deity : DDataUtil.getAllPluginData().get("temp_deity_alliances").keySet())
 		{
 			toReturn.add(deity);
 		}
@@ -87,7 +87,7 @@ public class DDeityUtil
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		for(Object alliance : DDataUtil.getAllPluginData().get("deity_alliances_temp").values().toArray())
+		for(Object alliance : DDataUtil.getAllPluginData().get("temp_deity_alliances").values().toArray())
 		{
 			if(toReturn.contains((String) alliance)) continue;
 			toReturn.add((String) alliance);
@@ -101,7 +101,7 @@ public class DDeityUtil
 	 */
 	public static String getDeityAlliance(String deity)
 	{
-		String toReturn = (String) DDataUtil.getPluginData("deity_alliances_temp", deity);
+		String toReturn = (String) DDataUtil.getPluginData("temp_deity_alliances", deity);
 		return toReturn;
 	}
 	
@@ -111,7 +111,7 @@ public class DDeityUtil
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Material> getDeityClaimItems(String deity)
 	{
-		ArrayList<Material> toReturn = (ArrayList<Material>) DDataUtil.getPluginData("deity_claim_items_temp", deity);
+		ArrayList<Material> toReturn = (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", deity);
 		return toReturn;
 	}
 	
@@ -122,7 +122,7 @@ public class DDeityUtil
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		for(String deity : DDataUtil.getAllPluginData().get("deity_alliances_temp").keySet())
+		for(String deity : DDataUtil.getAllPluginData().get("temp_deity_alliances").keySet())
 		{
 			if(!(getDeityAlliance(deity)).equalsIgnoreCase(alliance)) continue;
 			toReturn.add(deity);
