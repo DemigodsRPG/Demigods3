@@ -12,6 +12,9 @@ public class DMySQL
 {
 	// Define variables
 	private static MySQL mysql;
+		// Plugin-specific
+		public static String plugindata_table = "dg_plugindata";
+	
 		// Player-specific
 		public static String player_table = "dg_players";
 		public static String playerdata_table = "dg_playerdata";
@@ -35,6 +38,15 @@ public class DMySQL
 			// Success! Tell the world!
 			DUtil.info("MySQL Connection Successful!");
 			
+			// Create Plugin Data Table
+			createTable(
+				plugindata_table,
+				"entry_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+				"data_id VARCHAR(128)," +
+				"datakey VARCHAR(128)," +
+				"datavalue VARCHAR(256)"
+			);
+
 			// Create Player Table
 			createTable(
 				player_table,

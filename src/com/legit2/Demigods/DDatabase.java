@@ -165,31 +165,30 @@ public class DDatabase
 	public static boolean saveAllData()
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
-		{			
+		{	
 			// Define variables
 			int playerCount = 0;
 			long startTimer = System.currentTimeMillis();
-						
+			
+			// Save plugin-specific data
+			savePluginData();
+			long stopTimer = System.currentTimeMillis();
+			double totalTime = (double) (stopTimer - startTimer);
+			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
+			else DUtil.info("Demigods plugin data saved.");
+					
 			for(Player player : DUtil.getOnlinePlayers())
 			{
 				if(savePlayerData(player)) playerCount++;
 			}
 
 			// Stop the timer
-			long stopTimer = System.currentTimeMillis();
-			double totalTime = (double) (stopTimer - startTimer);
+			stopTimer = System.currentTimeMillis();
+			totalTime = (double) (stopTimer - startTimer);
 
 			// Send save success message
-			if(DConfig.getSettingBoolean("data_debug"))
-			{
-				// Give the time if data_debug is enabled in the config.yml
-				DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
-			}
-			else
-			{
-				// Don't give the time if data_debug is disabled in the config.yml
-				DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
-			}
+			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
+			else DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
 			return true;
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
@@ -300,16 +299,8 @@ public class DDatabase
 			double totalTime = (double) (stopStopwatch - startStopwatch);
 			
 			// Send data load success message
-			if(DConfig.getSettingBoolean("data_debug"))
-			{
-				// Give the time if data_debug is enabled in the config.yml
-				DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
-			}
-			else
-			{
-				// Don't give the time if data_debug is disabled in the config.yml
-				DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
-			}
+			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
+			else DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
@@ -371,6 +362,43 @@ public class DDatabase
 				DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
 				for(Entry<String, Object> character : charData.entrySet()) if(!character.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + character.getKey() + "','" + character.getValue() + "');");
 			}
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
+	 *  savePluginData() : Saves all HashMap data for the plugin to the database.
+	 */
+	public static boolean savePluginData()
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{			
+			// Clear tables first
+			DMySQL.runQuery("TRUNCATE TABLE " + DMySQL.plugindata_table + ";");
+
+			// Save their player-specific data
+			HashMap<String, HashMap<String, Object>> allPluginData = DDataUtil.getAllPluginData();				
+
+			// Save data
+			for(Entry<String, HashMap<String, Object>> pluginData : allPluginData.entrySet())
+			{
+				String dataID = pluginData.getKey();
+				
+				for(Entry<String, Object> data : pluginData.getValue().entrySet())
+				if(!pluginData.getKey().contains("temp_"))
+				{
+					String dataKey = data.getKey();
+					Object dataValue = data.getValue();
+					
+					DMySQL.runQuery("INSERT INTO " + DMySQL.plugindata_table + " (data_id, datakey, datavalue) VALUES('" + dataID + "','" + dataKey + "','" + dataValue + "');");
+				}
+			}
+					
 			return true;
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))

@@ -247,7 +247,7 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		DDataUtil.saveCharData(player, charID, "favor", amount);
+		DDataUtil.saveCharData(player, charID, "char_favor", amount);
 	}
 	
 	/*
@@ -283,7 +283,7 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		DDataUtil.saveCharData(player, charID, "ascensions", amount);
+		DDataUtil.saveCharData(player, charID, "char_ascensions", amount);
 	}
 
 	/*
@@ -303,7 +303,7 @@ public class DCharUtil
 	 */
 	public static void giveAscensions(Player player, int charID, int amount)
 	{
-		DDataUtil.saveCharData(player, charID, "ascensions", getAscensions(player, charID) + amount);
+		DDataUtil.saveCharData(player, charID, "char_ascensions", getAscensions(player, charID) + amount);
 	}
 
 	/*
@@ -311,7 +311,7 @@ public class DCharUtil
 	 */
 	public static void setDevotion(Player player, int charID, int amount)
 	{
-		DDataUtil.saveCharData(player, charID, "devotion", amount);
+		DDataUtil.saveCharData(player, charID, "char_devotion", amount);
 	}
 
 	/*
@@ -331,11 +331,11 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  setAlliance() : Sets the (String)username's alliance to (String)alliance.
+	 *  setAlliance() : Sets the (int)charID's alliance to (String)alliance.
 	 */
 	public static void setAlliance(Player player, int charID, String alliance)
 	{
-		DDataUtil.saveCharData(player, charID, "alliance", alliance);
+		DDataUtil.saveCharData(player, charID, "char_alliance", alliance);
 	}
 	
 	/*

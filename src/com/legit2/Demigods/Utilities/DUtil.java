@@ -73,15 +73,7 @@ public class DUtil
 		
 		return immortalList;
 	}
-	
-	/*
-	 *  getServerFavorCap() : Returns the favor cap for (String)username.
-	 */
-	public static int getServerFavorCap(String username)
-	{
-		return DConfig.getSettingInt("max_favor"); //TODO
-	}
-	
+
 	/*
 	 *  getOnlinePlayers() : Returns a string array of all online players.
 	 */

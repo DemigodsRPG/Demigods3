@@ -30,6 +30,9 @@ import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.DSave;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 public class DDivineBlockListener implements Listener
@@ -176,7 +179,7 @@ public class DDivineBlockListener implements Listener
 	{
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
-		if(!DUtil.isImmortal(event.getPlayer().getName())) return;
+		if(!DCharUtil.isImmortal(event.getPlayer())) return;
 		
 		try
 		{
@@ -187,12 +190,12 @@ public class DDivineBlockListener implements Listener
 			
 			//check if player has deity
 			Player player = event.getPlayer();
-			if(DUtil.hasDeity(player.getName(), deityName))
+			if(DCharUtil.hasDeity(player, deityName))
 			{
 				//open the tribute inventory
 				Inventory ii = DUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
 				player.openInventory(ii);
-				DSave.saveDeityData(player.getName(), deityName, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+				DDataUtil.saveCharData(player, DPlayerUtil.getCurrentChar(player), "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
 				event.setCancelled(true);
 				return;
 			}
@@ -205,12 +208,12 @@ public class DDivineBlockListener implements Listener
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
-		for(String player : DUtil.getImmortalList())
+		for(int charID : DUtil.getImmortalList())
 		{
 			try
 			{
-				if(DDivineBlocks.getShrines(player) != null)
-					for(Location center : DDivineBlocks.getShrines(player))
+				if(DDivineBlocks.getShrines(charID) != null)
+					for(Location center : DDivineBlocks.getShrines(charID))
 					{
 						// Check for world errors
 						if(!center.getWorld().equals(event.getPlayer().getWorld())) return;
@@ -223,7 +226,7 @@ public class DDivineBlockListener implements Listener
 						{
 							if(center.distance(event.getTo()) <= RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY+"You have entered "+player+"'s divineBlock to "+ChatColor.YELLOW+DDivineBlocks.getDeityAtShrine(center)+ChatColor.GRAY+".");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + player + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(center) + ChatColor.GRAY + ".");
 								return;
 							}
 						}
@@ -235,7 +238,7 @@ public class DDivineBlockListener implements Listener
 						{
 							if(center.distance(event.getTo()) > RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY+"You have left a divineBlock.");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a divineBlock.");
 								return;
 							}
 						}
@@ -253,18 +256,18 @@ public class DDivineBlockListener implements Listener
 			Player player = (Player)event.getPlayer();
 			String username = player.getName();
 			
-			if(!DUtil.isImmortal(username)) return;
+			if(!DCharUtil.isImmortal(player)) return;
 			
 			//continue if tribute chest
 			if(!event.getInventory().getName().equals("Tributes")) return;
 			
 			//get which deity tribute goes to
 			String toGive = null;
-			for(String immortalPlayer : DUtil.getImmortalList())
+			for(int charID : DUtil.getImmortalList())
 			{
 				for(String deity : DUtil.getDeities(immortalPlayer))
 				{
-					if(DSave.hasDeityData(immortalPlayer, deity, "tributing_temp"))
+					if(DDataUtil.hasCharData(immortalPlayer, deity, "temp_tributing"))
 					{
 						toGive = deity;
 						break;
@@ -275,7 +278,7 @@ public class DDivineBlockListener implements Listener
 			if(toGive == null) return;
 			
 			String creator = DDivineBlocks.getOwnerOfShrine((Location) DUtil.getDeityData(username, toGive, "tributing_temp")); //get the creator of the shrine
-			DSave.removeDeityData(username, toGive, "tributing_temp"); 
+			DDataUtil.removeCharData(username, toGive, "temp_tributing"); 
 			
 			//calculate value of chest
 			int value = 0;

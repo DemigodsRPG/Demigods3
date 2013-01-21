@@ -42,7 +42,7 @@ public class DScheduler
 			@Override
 			public void run()
 			{
-				//DPlayerUtil.regenerateAllFavor();
+				DPlayerUtil.regenerateAllFavor();
 			}
 		}, 0, favor_frequency);
 	}

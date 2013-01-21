@@ -185,10 +185,10 @@ public class Demigods extends JavaPlugin
 					ArrayList<Material> claimItems = (ArrayList<Material>) DDeityUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
-					DDataUtil.savePluginData("deity_classes_temp", name, deity);
-					DDataUtil.savePluginData("deity_alliances_temp", name, alliance);
-					DDataUtil.savePluginData("deity_colors_temp", name, color);
-					DDataUtil.savePluginData("deity_claim_items_temp", name, claimItems);
+					DDataUtil.savePluginData("temp_deity_classes", name, deity);
+					DDataUtil.savePluginData("temp_deity_alliances", name, alliance);
+					DDataUtil.savePluginData("temp_deity_colors", name, color);
+					DDataUtil.savePluginData("temp_deity_claim_items", name, claimItems);
 					 
 					// Display the success message
 					DUtil.info(message);

@@ -143,7 +143,6 @@ public class Zeus_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DCharUtil.disableAbility(player, SHOVE_NAME);
 			}
 		}
 		
@@ -163,7 +162,6 @@ public class Zeus_deity implements Listener
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DCharUtil.disableAbility(player, LIGHTNING_NAME);
 			}
 		}
 	}
