@@ -342,6 +342,7 @@ public class DCharUtil
 	 */
 	public static Boolean isImmortal(OfflinePlayer player)
 	{
+		if(DPlayerUtil.getCurrentChar(player) == -1) return false;
 		if(DDataUtil.getCharData(player, DPlayerUtil.getCurrentChar(player), "char_immortal") == null) return false;
 		else return DObjUtil.toBoolean(DDataUtil.getCharData(player, DPlayerUtil.getCurrentChar(player), "char_immortal"));
 	}

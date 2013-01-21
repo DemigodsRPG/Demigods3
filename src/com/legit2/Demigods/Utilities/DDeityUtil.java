@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Utilities.DUtil;
 
@@ -40,7 +41,7 @@ public class DDeityUtil
 	}
 	
 	/*
-	 *  InvokeDeityMethodWithString() : Invokes a static method (with no paramaters) from inside a deity class.
+	 *  InvokeDeityMethodWithString() : Invokes a static method, with a String, from inside a deity class.
 	 */
 	public static Object invokeDeityMethodWithString(String deityClass, String method, String paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
@@ -49,6 +50,22 @@ public class DDeityUtil
 		
 		// Load everything else for the Deity (Listener, etc.)
 		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
+		
+		Object toReturn = toInvoke.invoke(obj, paramater);
+		
+		return toReturn;
+	}
+	
+	/*
+	 *  InvokeDeityMethodWithPlayer() : Invokes a static method, with a Player, from inside a deity class.
+	 */
+	public static Object invokeDeityMethodWithPlayer(String deityClass, String method, Player paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{			
+		// Creates a new instance of the deity class
+		Object obj = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).newInstance();
+		
+		// Load everything else for the Deity (Listener, etc.)
+		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class);
 		
 		Object toReturn = toInvoke.invoke(obj, paramater);
 		
