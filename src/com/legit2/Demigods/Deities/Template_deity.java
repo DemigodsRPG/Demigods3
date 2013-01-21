@@ -88,7 +88,7 @@ public class Template_deity implements Listener
 		}
 	}
 
-	// This sets the particular passive ability for the Template_deity deity.
+	// This sets the particular passive ability for the Template deity.
 	// Whether or not this is used, along with other things, will vary depending
 	// on the particular deity you're creating.
 	@EventHandler(priority = EventPriority.MONITOR)

@@ -16,8 +16,7 @@ public class DDeityUtil
 	 */
 	public static String getDeityClass(String deity)
 	{
-		String toReturn = (String) DDataUtil.getPluginData("deity_classes_temp", deity);
-		return toReturn;
+		return DDataUtil.getPluginData("deity_classes_temp", deity).toString();
 	}
 	
 	/*
@@ -35,9 +34,7 @@ public class DDeityUtil
 		// Load everything else for the Deity (Listener, etc.)
 		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, noparams);
 		
-		Object toReturn = toInvoke.invoke(obj, (Object[])null);
-		
-		return toReturn;
+		return toInvoke.invoke(obj, (Object[])null);
 	}
 	
 	/*
@@ -51,9 +48,7 @@ public class DDeityUtil
 		// Load everything else for the Deity (Listener, etc.)
 		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
 		
-		Object toReturn = toInvoke.invoke(obj, paramater);
-		
-		return toReturn;
+		return toInvoke.invoke(obj, paramater);
 	}
 	
 	/*
@@ -67,9 +62,7 @@ public class DDeityUtil
 		// Load everything else for the Deity (Listener, etc.)
 		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class);
 		
-		Object toReturn = toInvoke.invoke(obj, paramater);
-		
-		return toReturn;
+		return toInvoke.invoke(obj, paramater);
 	}
 	
 	/*

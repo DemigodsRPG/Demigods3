@@ -137,7 +137,8 @@ public class DCommandExecutor implements CommandExecutor
 							}
 							catch (Exception e)
 							{
-								sender.sendMessage(ChatColor.RED + "Something went wrong with deity loading.");
+								sender.sendMessage(ChatColor.RED + "Error code: 3001.  Please report this immediatly.");
+								e.printStackTrace(); //DEBUG
 								return true;
 							}
 						}
