@@ -79,8 +79,14 @@ public class DPlayerUtil
 	 */
 	public static int getCurrentChar(OfflinePlayer player)
 	{
-		if(DDataUtil.getPlayerData(player, "current_char").toString() == null) return -1;
-		return DObjUtil.toInteger(DDataUtil.getPlayerData(player, "current_char").toString());
+		try
+		{
+			return DObjUtil.toInteger(DDataUtil.getPlayerData(player, "current_char").toString());
+		}
+		catch (Exception e)
+		{
+			return -1;
+		}
 	}
 	
 	/*
