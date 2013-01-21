@@ -129,7 +129,7 @@ public class DCommandExecutor implements CommandExecutor
 						{
 							try
 							{
-								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithString(DDeityUtil.getDeityClass(deity), "getInfo", player.getName()))
+								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithPlayer(DDeityUtil.getDeityClass(deity), "getInfo", player))
 								{
 									sender.sendMessage(toPrint);
 								}
