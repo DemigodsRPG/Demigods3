@@ -129,6 +129,7 @@ public class DCharUtil
 	public static boolean hasDeity(Player player, String deity)
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
+		if(charID == -1) return false;
 
 		if(getDeity(player, charID).equalsIgnoreCase(deity)) return true;
 		else return false;
