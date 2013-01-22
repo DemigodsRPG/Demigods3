@@ -171,7 +171,7 @@ public class DDatabase
 			long startTimer = System.currentTimeMillis();
 			
 			// Save plugin-specific data
-			savePluginData();
+			savePlugin();
 			long stopTimer = System.currentTimeMillis();
 			double totalTime = (double) (stopTimer - startTimer);
 			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
@@ -179,7 +179,7 @@ public class DDatabase
 					
 			for(Player player : DUtil.getOnlinePlayers())
 			{
-				if(savePlayerData(player)) playerCount++;
+				if(savePlayer(player)) playerCount++;
 			}
 
 			// Stop the timer
@@ -311,7 +311,7 @@ public class DDatabase
 	/*
 	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
 	 */
-	public static boolean savePlayerData(OfflinePlayer player)
+	public static boolean savePlayer(OfflinePlayer player)
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{			
@@ -374,7 +374,7 @@ public class DDatabase
 	/*
 	 *  savePluginData() : Saves all HashMap data for the plugin to the database.
 	 */
-	public static boolean savePluginData()
+	public static boolean savePlugin()
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{			
@@ -399,6 +399,47 @@ public class DDatabase
 				}
 			}
 					
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
+	 *  removePlayer() : Removes the player completely from the database.
+	 */
+	public static boolean removePlayer(OfflinePlayer player)
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{			
+			int playerID = DPlayerUtil.getPlayerID(player);
+			
+			DMySQL.runQuery("DELETE FROM " + DMySQL.player_table + " WHERE player_id=" + playerID + ";");
+			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
+			DMySQL.runQuery("DELETE FROM " + DMySQL.character_table + " WHERE player_id=" + playerID + ";");
+			
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
+	 *  removeChar() : Removes the character completely from the database.
+	 */
+	public static boolean removeChar(OfflinePlayer player, int charID)
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{						
+			DMySQL.runQuery("DELETE FROM " + DMySQL.character_table + " WHERE char_id=" + charID + ";");
+			DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
+			
 			return true;
 		}
 		else if(DConfig.getSettingBoolean("sqlite"))

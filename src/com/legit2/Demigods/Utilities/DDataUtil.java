@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
 
+import com.legit2.Demigods.DDatabase;
+
 public class DDataUtil 
 {
 	// Define HashMaps
@@ -219,6 +221,7 @@ public class DDataUtil
 	{
 		String playerName = player.getName();;
 		charData.get(playerName).remove(charID);
+		DDatabase.removeChar(player, charID);
 		return true;
 	}
 	
@@ -316,6 +319,18 @@ public class DDataUtil
 
 		if(playerData.containsKey(playerName)) return false;
 		else return true;
+	}
+	
+	/*
+	 *  removePlayer() : Removes the (OfflinePlayer)player from the playerData HashMap.
+	 */
+	public static boolean removePlayer(OfflinePlayer player)
+	{
+		String playerName = player.getName();;
+		playerData.remove(playerName);
+		charData.remove(playerName);
+		DDatabase.removePlayer(player);
+		return true;
 	}
 	
 	/*

@@ -20,7 +20,6 @@ import com.legit2.Demigods.Listeners.DChatCommands;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
-import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -55,7 +54,7 @@ public class Demigods extends JavaPlugin
 			//checkUpdate();
 						
 			//////// Test Code Loader
-			loadTestCode();
+			//loadTestCode();
 			//////// End Test Code Loader
 			
 			DUtil.info("Enabled!");
@@ -95,13 +94,13 @@ public class Demigods extends JavaPlugin
 	/*
 	 *  loadTestCode() : Loads the code upon plugin enable.
 	 */
+	@SuppressWarnings("unused")
 	private void loadTestCode()
 	{
 		// Don't remove the header and footer of the test code.
 		DUtil.info("====== Begin Test Code =============================");
 		
-		// Put the test code here
-		DUtil.info("Random integer: " + DObjUtil.generateInt(5));
+		
 		
 		// K, thanks
 		DUtil.info("====== End Test Code ===============================");

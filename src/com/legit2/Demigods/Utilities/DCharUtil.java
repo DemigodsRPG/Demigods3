@@ -56,7 +56,7 @@ public class DCharUtil
 			
 			// Add character to player's character list
 			String chars;
-			if(DPlayerUtil.getChars(player) != null)
+			if(!DPlayerUtil.getChars(player).isEmpty())
 			{
 				ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
 				charsTemp.add("" + charID);
@@ -69,7 +69,7 @@ public class DCharUtil
 			try
 			{
 				DDatabase.addCharToDB(player, charID);
-				DDatabase.savePlayerData(player);
+				DDatabase.savePlayer(player);
 			}
 			catch(SQLException e)
 			{
@@ -90,7 +90,13 @@ public class DCharUtil
 	{
 		if(DDataUtil.removeChar(player, charID))
 		{
-			DDatabase.savePlayerData(player);
+			// Remove from player_characters
+			ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
+			charsTemp.remove(charID);
+			String chars = Joiner.on(",").join(charsTemp);
+			DDataUtil.savePlayerData(player, "player_characters", chars);
+
+			DDatabase.savePlayer(player);
 			return true;
 		}
 		return false;
