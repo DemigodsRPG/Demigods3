@@ -18,7 +18,7 @@ import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
-public class Template_deity implements Listener
+public class Template implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Template";

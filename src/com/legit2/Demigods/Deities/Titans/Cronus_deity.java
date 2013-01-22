@@ -20,6 +20,8 @@ import org.bukkit.util.Vector;
 
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 public class Cronus_deity implements Listener
@@ -71,11 +73,11 @@ public class Cronus_deity implements Listener
 		return claimItems;
 	}
 
-	public ArrayList<String> getInfo(String username)
+	public ArrayList<String> getInfo(Player player)
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(username, DEITYNAME))
+		if(DUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -108,9 +110,9 @@ public class Cronus_deity implements Listener
 		if(damageEvent.getDamager() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getDamager();
-			String username = player.getName();
+			int charID = DPlayerUtil.getCurrentChar(player);
 			
-			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
+			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
 			if(!DUtil.canLocationPVP(damageEvent.getEntity().getLocation())) return;
 
@@ -121,27 +123,27 @@ public class Cronus_deity implements Listener
 				Player attacked = (Player)damageEvent.getEntity();
 				
 				// Cronus Passive: Stop movement
-				if(!DUtil.isImmortal(attacked.getName()) || (DUtil.isImmortal(attacked.getName()) && !DUtil.areAllied(username, attacked.getName()))) attacked.setVelocity(new Vector(0,0,0));
+				if(!DCharUtil.isImmortal(attacked) || (DCharUtil.isImmortal(attacked) && !DUtil.areAllied(player, attacked))) attacked.setVelocity(new Vector(0,0,0));
 			}
 			
-			if(DUtil.isEnabledAbility(username, DEITYNAME, CLEAVE_NAME))
+			if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
 			{
-				if(!DUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
+				if(!DCharUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
 
 				// Set the ability's delay
 				CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
 				
 				// Check to see if player has enough favor to perform ability
-				if(DUtil.getFavor(username) >= CLEAVE_COST)
+				if(DCharUtil.getFavor(player, charID) >= CLEAVE_COST)
 				{
 					cleave(damageEvent);
-					DUtil.subtractFavor(username, CLEAVE_COST);
+					DCharUtil.subtractFavor(player, charID, CLEAVE_COST);
 					return;
 				}
 				else
 				{
 					player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-					DUtil.disableAbility(username, DEITYNAME, CLEAVE_NAME);
+					DCharUtil.disableAbility(player, CLEAVE_NAME);
 				}
 			}
 		}
@@ -152,28 +154,28 @@ public class Cronus_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		String username = player.getName();
+		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(username, DEITYNAME)) return;
+		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getDeityData(username, DEITYNAME, SLOW_NAME + "_bind"))))
+		if(DCharUtil.isEnabledAbility(player, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, SLOW_NAME))))
 		{
-			if(!DUtil.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
+			if(!DCharUtil.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
 
 			// Set the ability's delay
 			SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DUtil.getFavor(username) >= SLOW_COST)
+			if(DCharUtil.getFavor(player, charID) >= SLOW_COST)
 			{
 				slow(player);
-				DUtil.subtractFavor(username, SLOW_COST);
+				DCharUtil.subtractFavor(player, charID, SLOW_COST);
 				return;
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.disableAbility(username, DEITYNAME, SLOW_NAME);
+				DCharUtil.disableAbility(player, SLOW_NAME);
 			}
 		}
 	}
@@ -187,19 +189,16 @@ public class Cronus_deity implements Listener
 	@ReflectCommand.Command(name = "cleave", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void cleaveCommand(Player player)
 	{
-		// Set variables
-		String username = player.getName();
-		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, CLEAVE_NAME))
+		if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
 		{
-			DUtil.disableAbility(username, DEITYNAME, CLEAVE_NAME);
+			DCharUtil.disableAbility(player, CLEAVE_NAME);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is no longer active.");
 		}
 		else
 		{
-			DUtil.enableAbility(username, DEITYNAME, CLEAVE_NAME);
+			DCharUtil.enableAbility(player, CLEAVE_NAME);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
 		}
 	}
@@ -209,16 +208,16 @@ public class Cronus_deity implements Listener
 	{
 		// Define variables
 		Player player = (Player)damageEvent.getDamager();
+		int charID = DPlayerUtil.getCurrentChar(player);
 		Entity attacked = damageEvent.getEntity();
-		String username = player.getName();
 		
-		if (DUtil.getFavor(username) >= CLEAVE_COST)
+		if (DCharUtil.getFavor(player, charID) >= CLEAVE_COST)
 		{
 			if (!(attacked instanceof LivingEntity)) return;
 			
 			for (int i = 1; i <= 31; i += 4) attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
 			
-			DUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DUtil.getDevotion(username, DEITYNAME), 0.35)), DamageCause.ENTITY_ATTACK);
+			DUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(player, charID), 0.35)), DamageCause.ENTITY_ATTACK);
 			
 			if ((LivingEntity)attacked instanceof Player)
 			{
@@ -237,27 +236,24 @@ public class Cronus_deity implements Listener
 	
 	@ReflectCommand.Command(name = "slow", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void slowCommand(Player player, String arg1)
-	{
-		// Set variables
-		String username = player.getName();
-		
+	{		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DUtil.setBound(username, DEITYNAME, SLOW_NAME, player.getItemInHand().getType());
+			DCharUtil.setBound(player, SLOW_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DUtil.isEnabledAbility(username, DEITYNAME, SLOW_NAME))
+			if(DCharUtil.isEnabledAbility(player, SLOW_NAME))
 			{
-				DUtil.disableAbility(username, DEITYNAME, SLOW_NAME);
+				DCharUtil.disableAbility(player, SLOW_NAME);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.enableAbility(username, DEITYNAME, SLOW_NAME);
+				DCharUtil.enableAbility(player, SLOW_NAME);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is now active.");
 			}
 		}
@@ -267,14 +263,14 @@ public class Cronus_deity implements Listener
 	public static void slow(Player player)
 	{
 		// Define variables
-		String username = player.getName();
-		int devotion = DUtil.getDevotion(username, DEITYNAME);
+		int charID = DPlayerUtil.getCurrentChar(player);
+		int devotion = DCharUtil.getDevotion(player, charID);
 		int duration = (int) Math.ceil(3.635 * Math.pow(devotion, 0.2576)); //seconds
 		int strength = (int) Math.ceil(1.757 * Math.pow(devotion, 0.097));
 		Player target = null; 
 		if(DUtil.autoTarget(player) instanceof Player) target = (Player) DUtil.autoTarget(player);
 		
-		if(DUtil.areAllied(target.getName(), username) || !DUtil.canTarget(target, target.getLocation()))  return;
+		if(DUtil.areAllied(player, (Player) target) || !DUtil.canTarget(target, target.getLocation()))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
 		{
@@ -297,10 +293,10 @@ public class Cronus_deity implements Listener
 	public static void ultimateCommand(Player player)
 	{
 		// Set variables
-		String username = player.getName();
+		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		// Check the player for DEITYNAME
-		if(!DUtil.hasDeity(username, DEITYNAME)) return;
+		if(!DCharUtil.hasDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -311,7 +307,7 @@ public class Cronus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DUtil.getFavor(username) >= ULTIMATE_COST)
+		if(DCharUtil.getFavor(player, charID) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
@@ -319,13 +315,13 @@ public class Cronus_deity implements Listener
 				return; 
 			}
 			
-			int duration = (int) Math.round(9.9155621 * Math.pow(DUtil.getAscensions(username), 0.459019));
+			int duration = (int) Math.round(9.9155621 * Math.pow(DCharUtil.getAscensions(player, charID), 0.459019));
 			player.sendMessage(ChatColor.YELLOW + "Cronus has stopped time for " + duration + " seconds, for " + timestop(player, duration) + " enemies!");
 
 			// Set favor and cooldown
-			DUtil.subtractFavor(username, ULTIMATE_COST);
+			DCharUtil.subtractFavor(player, charID, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DUtil.getAscensions(username) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double) DCharUtil.getAscensions(player, charID) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor
@@ -336,8 +332,9 @@ public class Cronus_deity implements Listener
 	public static int timestop(Player player, int duration)
 	{
 		// Define variables
-		String username = player.getName();
-		int slowamount = (int)Math.round(4.77179 * Math.pow(DUtil.getAscensions(username), 0.17654391));
+		int charID = DPlayerUtil.getCurrentChar(player);
+
+		int slowamount = (int)Math.round(4.77179 * Math.pow(DCharUtil.getAscensions(player, charID), 0.17654391));
 		int count = 0;
 		
 		for(Player onlinePlayer : player.getWorld().getPlayers())
@@ -346,7 +343,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DUtil.canLocationPVP(onlinePlayer.getLocation())) continue;
 			
-			if (DUtil.isImmortal(onlinePlayer.getName()) && DUtil.areAllied(username, onlinePlayer.getName())) continue;
+			if (DCharUtil.isImmortal(onlinePlayer) && DUtil.areAllied(player, onlinePlayer)) continue;
 
 			onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, slowamount));
 			

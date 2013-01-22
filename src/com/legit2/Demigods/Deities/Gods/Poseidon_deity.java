@@ -19,6 +19,8 @@ import org.bukkit.util.Vector;
 
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 public class Poseidon_deity implements Listener
@@ -62,11 +64,11 @@ public class Poseidon_deity implements Listener
 		return claimItems;
 	}
 
-	public ArrayList<String> getInfo(String username)
+	public ArrayList<String> getInfo(Player player)
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(username, DEITYNAME))
+		if(DUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -99,7 +101,7 @@ public class Poseidon_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
+			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.DROWNING)
@@ -115,47 +117,47 @@ public class Poseidon_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		String username = player.getName();
+		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(username, DEITYNAME)) return;
+		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
+		if(DCharUtil.isEnabledAbility(player, REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
-			if(!DUtil.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
+			if(!DCharUtil.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
 			
 			// Set the ability's delay
 			REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DUtil.getFavor(username) >= REEL_COST)
+			if(DCharUtil.getFavor(player, charID) >= REEL_COST)
 			{
 				reel(player);
-				DUtil.subtractFavor(username, REEL_COST);
+				DCharUtil.subtractFavor(player, charID, REEL_COST);
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.disableAbility(username, DEITYNAME, REEL_NAME);
+				DCharUtil.disableAbility(player, REEL_NAME);
 			}
 		}
 		
-		if(DUtil.isEnabledAbility(username, DEITYNAME, DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DUtil.getBind(username, DEITYNAME, DROWN_NAME))))
+		if(DCharUtil.isEnabledAbility(player, DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, DROWN_NAME))))
 		{
-			if(!DUtil.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
+			if(!DCharUtil.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
 
 			// Set the ability's delay
 			DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DUtil.getFavor(username) >= DROWN_COST)
+			if(DCharUtil.getFavor(player, charID) >= DROWN_COST)
 			{
 				drown(player);
-				DUtil.subtractFavor(username, DROWN_COST);
+				DCharUtil.subtractFavor(player, charID, DROWN_COST);
 			}
 			else
 			{
 				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
-				DUtil.disableAbility(username, DEITYNAME, DROWN_NAME);
+				DCharUtil.disableAbility(player, DROWN_NAME);
 			}
 		}
 	}
@@ -164,7 +166,7 @@ public class Poseidon_deity implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		Player player = event.getPlayer();
-		if(!DUtil.canUseDeitySilent(player.getName(), DEITYNAME)) return;
+		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
 		
 		// PHELPS SWIMMING
 		if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
@@ -183,20 +185,17 @@ public class Poseidon_deity implements Listener
 	 */
 	@ReflectCommand.Command(name = "reel", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void reelCommand(Player player, String arg1)
-	{
-		// Set variables
-		String username = player.getName();
-		
+	{		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(DUtil.isEnabledAbility(username, DEITYNAME, REEL_NAME))
+		if(DCharUtil.isEnabledAbility(player, REEL_NAME))
 		{
-			DUtil.disableAbility(username, DEITYNAME, REEL_NAME);
+			DCharUtil.disableAbility(player, REEL_NAME);
 			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is no longer active.");
 		}
 		else
 		{
-			DUtil.enableAbility(username, DEITYNAME, REEL_NAME);
+			DCharUtil.enableAbility(player, REEL_NAME);
 			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is now active.");
 		}
 	}
@@ -204,8 +203,10 @@ public class Poseidon_deity implements Listener
 	// The actual ability command
 	public static void reel(Player player)
 	{
-		String username = player.getName();
-		int damage = (int) Math.ceil(0.37286 * Math.pow(DUtil.getDevotion(username, DEITYNAME), 0.371238));
+		// Set variables
+		int charID = DPlayerUtil.getCurrentChar(player);
+		
+		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(player, charID), 0.371238));
 		LivingEntity target = DUtil.autoTarget(player);
 		
 		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
@@ -218,7 +219,7 @@ public class Poseidon_deity implements Listener
 		
 		if(target instanceof Player)
 		{
-			if(DUtil.areAllied(username, ((Player) target).getName())) return;
+			if(DUtil.areAllied(player, (Player) target)) return;
 		}
 			
 		if(target.equals(target)) if (DUtil.canTarget(target, target.getLocation()))
@@ -241,27 +242,24 @@ public class Poseidon_deity implements Listener
 	
 	@ReflectCommand.Command(name = "drown", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void drownCommand(Player player, String arg1)
-	{
-		// Set variables
-		String username = player.getName();
-		
+	{		
 		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DUtil.setBound(username, DEITYNAME, DROWN_NAME, player.getItemInHand().getType());
+			DCharUtil.setBound(player, DROWN_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DUtil.isEnabledAbility(username, DEITYNAME, DROWN_NAME)) 
+			if(DCharUtil.isEnabledAbility(player, DROWN_NAME)) 
 			{
-				DUtil.disableAbility(username, DEITYNAME, DROWN_NAME);
+				DCharUtil.disableAbility(player, DROWN_NAME);
 				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is no longer active.");
 			}
 			else
 			{
-				DUtil.enableAbility(username, DEITYNAME, DROWN_NAME);
+				DCharUtil.enableAbility(player, DROWN_NAME);
 				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is now active.");
 			}
 		}
@@ -271,8 +269,8 @@ public class Poseidon_deity implements Listener
 	public static void drown(Player player)
 	{
 		// Define variables
-		String username = player.getName();
-		int devotion = DUtil.getDevotion(username, DEITYNAME);
+		int charID = DPlayerUtil.getCurrentChar(player);
+		int devotion = DCharUtil.getDevotion(player, charID);
 		int radius = (int) Math.ceil(1.6955424 * Math.pow(devotion, 0.129349));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DUtil.autoTarget(player);
@@ -287,7 +285,7 @@ public class Poseidon_deity implements Listener
 		
 		if(target instanceof Player)
 		{
-			if(DUtil.areAllied(player.getName(), ((Player) target).getName())) return;
+			if(DUtil.areAllied(player, (Player) target)) return;
 		}
 		
 		if(DUtil.canTarget(target, target.getLocation()))
