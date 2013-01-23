@@ -37,6 +37,15 @@
             </filterset>
             <classpath refid="Demigods.classpath"/>
         </javac>
+    	<copy todir="bin" overwrite="true">
+            <fileset dir="resources" includes="plugin.yml" />
+            <filterset>
+                <filter token="VERSION" value="${env.BUILD_NUMBER}" />
+            </filterset>
+    	</copy>
+        <copy todir="bin" overwrite="true">
+             <fileset dir="resources" includes="config.yml" />
+        </copy>
     	<jar jarfile="build/Demigods.jar" basedir="bin"/>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
