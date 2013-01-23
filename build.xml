@@ -32,6 +32,9 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
             <src path="src"/>
+        	<filterset>
+        		   <filter token="VERSION" value="${env.BUILD_NUMBER}" />
+            </filterset>
             <classpath refid="Demigods.classpath"/>
         </javac>
     	<jar jarfile="build/Demigods.jar" basedir="bin"/>
