@@ -163,7 +163,8 @@ public class Demigods extends JavaPlugin
 				
 				while((demigodsFile = demigodsZip.getNextEntry()) != null)
 				{
-					String deityName = demigodsFile.getName().replace("/", ".").replace(".class", "").replace("$", "").replaceAll("\\d*$", "");
+					String deityName = demigodsFile.getName().replace("/", ".").replace(".class", "").replaceAll("\\d*$", "");
+					if(deityName.contains("$")) break;
 					if(deityName.contains("_deity"))
 					{
 						deityCount++;
