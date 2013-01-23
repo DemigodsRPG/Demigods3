@@ -37,7 +37,7 @@
     	<copy todir="bin" overwrite="true">
             <fileset dir="resources" includes="plugin.yml" />
             <filterset>
-                <filter token="VERSION" value="${env.BUILD_NUMBER}" />
+                <filter token="BUILD" value="${env.BUILD_NUMBER}" />
             </filterset>
     	</copy>
         <copy todir="bin" overwrite="true">
