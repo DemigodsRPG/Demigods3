@@ -1,6 +1,6 @@
 name: Demigods
 main: com.legit2.Demigods.Demigods
-version: @VERSION@
+version: 3.0.@VERSION@
 softdepend: [SQLibrary, TagAPI, WorldEdit, WorldGuard]
 commands:
     dg:
