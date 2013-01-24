@@ -190,7 +190,7 @@ public class DDatabase
 					
 					// Load the main player data
 					DDataUtil.addPlayer(player, playerID);
-					DDataUtil.savePlayerData(player, "player_id", playerResult.getString("player_id"));
+					DDataUtil.savePlayerData(player, "player_id", playerResult.getInt("player_id"));
 					DDataUtil.savePlayerData(player, "player_characters", playerResult.getString("player_characters"));
 					DDataUtil.savePlayerData(player, "player_kills", playerResult.getInt("player_kills"));
 					DDataUtil.savePlayerData(player, "player_deaths", playerResult.getInt("player_deaths"));
