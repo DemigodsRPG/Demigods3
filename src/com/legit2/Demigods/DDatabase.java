@@ -221,14 +221,14 @@ public class DDatabase
 						
 						// Load the main character data
 						DDataUtil.addChar(charID);
-						DDataUtil.saveCharData(charID, "char_owner", charResult.getString("player_id"));
+						DDataUtil.saveCharData(charID, "char_owner", charResult.getInt("player_id"));
 						DDataUtil.saveCharData(charID, "char_name", charResult.getString("char_name"));
-						DDataUtil.saveCharData(charID, "char_active", charResult.getString("char_active"));
+						DDataUtil.saveCharData(charID, "char_active", charResult.getBoolean("char_active"));
 						DDataUtil.saveCharData(charID, "char_deity", charResult.getString("char_deity"));
 						DDataUtil.saveCharData(charID, "char_alliance", charResult.getString("char_alliance"));
 						DDataUtil.saveCharData(charID, "char_immortal", charResult.getBoolean("char_immortal"));
 						DDataUtil.saveCharData(charID, "char_hp", charResult.getInt("char_hp"));
-						DDataUtil.saveCharData(charID, "char_exp", charResult.getInt("char_exp"));
+						DDataUtil.saveCharData(charID, "char_exp", charResult.getFloat("char_exp"));
 						DDataUtil.saveCharData(charID, "char_lastX", charResult.getDouble("char_lastX"));
 						DDataUtil.saveCharData(charID, "char_lastY", charResult.getDouble("char_lastY"));
 						DDataUtil.saveCharData(charID, "char_lastZ", charResult.getDouble("char_lastZ"));
