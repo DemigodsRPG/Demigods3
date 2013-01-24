@@ -36,9 +36,9 @@ public class DChatCommands implements Listener
 
 			if(DCharUtil.isImmortal(onlinePlayer))
 			{
-				if (!alliances.containsKey(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase()))  alliances.put(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase(), new ArrayList<String>());
+				if (!alliances.containsKey(DCharUtil.getAlliance(currentCharID).toUpperCase()))  alliances.put(DCharUtil.getAlliance(currentCharID).toUpperCase(), new ArrayList<String>());
 				
-				alliances.get(DCharUtil.getAlliance(onlinePlayer, currentCharID).toUpperCase()).add(onlinePlayer.getName());
+				alliances.get(DCharUtil.getAlliance(currentCharID).toUpperCase()).add(onlinePlayer.getName());
 			}
 		}
 	

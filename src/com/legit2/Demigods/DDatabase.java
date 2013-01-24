@@ -99,15 +99,15 @@ public class DDatabase
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
 			int playerID = DPlayerUtil.getPlayerID(player);
-			String charName = DCharUtil.getName(player, charID);
-			String charDeity = DCharUtil.getDeity(player, charID);
-			String charAlliance = DCharUtil.getAlliance(player, charID);
-			boolean charImmortal = DCharUtil.getImmortal(player, charID);
-			int charHP = DCharUtil.getHP(player, charID);
-			int charExp = DCharUtil.getExp(player, charID);
-			int charFavor = DCharUtil.getFavor(player, charID);
-			int charDevotion = DCharUtil.getDevotion(player, charID);
-			int charAscensions = DCharUtil.getAscensions(player, charID);
+			String charName = DCharUtil.getName(charID);
+			String charDeity = DCharUtil.getDeity(charID);
+			String charAlliance = DCharUtil.getAlliance(charID);
+			boolean charImmortal = DCharUtil.getImmortal(charID);
+			int charHP = DCharUtil.getHP(charID);
+			int charExp = DCharUtil.getExp(charID);
+			int charFavor = DCharUtil.getFavor(charID);
+			int charDevotion = DCharUtil.getDevotion(charID);
+			int charAscensions = DCharUtil.getAscensions(charID);
 			double charLastX = 0.0;
 			double charLastY = 0.0;
 			double charLastZ = 0.0;

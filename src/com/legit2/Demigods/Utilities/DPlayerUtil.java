@@ -94,7 +94,7 @@ public class DPlayerUtil
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		return DDataUtil.getCharData(player, getCurrentChar(player), "alliance").toString();
+		return DDataUtil.getCharData(getCurrentChar(player), "alliance").toString();
 	}
 	
 	/*
@@ -126,7 +126,7 @@ public class DPlayerUtil
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		int charID = DCharUtil.getCharID(player, charName);
+		int charID = DCharUtil.getCharID(charName);
 		if(DPlayerUtil.getChars(player) != null && DPlayerUtil.getChars(player).contains(charID)) return true;
 		return false;
 	}
@@ -141,9 +141,9 @@ public class DPlayerUtil
 		for(Player player : onlinePlayers)
 		{
 			int charID = DPlayerUtil.getCurrentChar(player);
-			int regenRate = DCharUtil.getAscensions(player, charID);
+			int regenRate = DCharUtil.getAscensions(charID);
 			if (regenRate < 1) regenRate = 1;
-			DCharUtil.giveFavor(player, charID, regenRate);
+			DCharUtil.giveFavor(charID, regenRate);
 		}
 	}
 	

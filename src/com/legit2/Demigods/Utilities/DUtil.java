@@ -58,17 +58,14 @@ public class DUtil
 	{		
 		// Define variables
 		ArrayList<Integer> immortalList = new ArrayList<Integer>();
-		HashMap<String, HashMap<Integer, HashMap<String, Object>>> characters = DDataUtil.getAllChars();
+		HashMap<Integer, HashMap<String, Object>> characters = DDataUtil.getAllChars();
 		
-		for(Entry<String, HashMap<Integer, HashMap<String, Object>>> playerChar : characters.entrySet())
+		for(Entry<Integer, HashMap<String, Object>> character : characters.entrySet())
 		{
-			HashMap<Integer, HashMap<String, Object>> playerChars = playerChar.getValue();
+			int charID = character.getKey();
+			HashMap<String, Object> data = character.getValue();
 			
-			for(Entry<Integer, HashMap<String, Object>> player : playerChars.entrySet())
-			{
-				int charID = player.getKey();
-				immortalList.add(charID);
-			}
+			if(data.get("char_immortal") != null && DObjUtil.toBoolean(data.get("char_immortal"))) immortalList.add(charID);
 		}
 		
 		return immortalList;
@@ -273,7 +270,7 @@ public class DUtil
 	public static boolean canUseDeity(Player player, String deity)
 	{		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(player, deity))
+		if(!DCharUtil.hasDeity(DPlayerUtil.getCurrentChar(player), deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
@@ -292,7 +289,7 @@ public class DUtil
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(player, deity)) return false;
+		if(!DCharUtil.hasDeity(DPlayerUtil.getCurrentChar(player), deity)) return false;
 		else if(!DCharUtil.isImmortal(player)) return false;
 		else return true;
 	}

@@ -8,7 +8,6 @@ import org.bukkit.OfflinePlayer;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
 
 public class DDivineBlocks
 {	
@@ -77,10 +76,10 @@ public class DDivineBlocks
 		int charID = DPlayerUtil.getCurrentChar(player);
 		String deity = null;
 		
-		DCharUtil.getDeity(player, charID);
+		DCharUtil.getDeity(charID);
 		
-		if(!DDataUtil.hasCharData(player, charID, "shrine")) continue;
-		Location knownShrine = (Location) DDataUtil.getCharData(player, charID, "shrine");
+		//if(!DDataUtil.hasCharData(charID, "shrine")) continue;
+		//Location knownShrine = (Location) DDataUtil.getCharData(charID, "shrine");
 		
 		return deity;
 	}
