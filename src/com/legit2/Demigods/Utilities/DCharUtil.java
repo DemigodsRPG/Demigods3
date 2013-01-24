@@ -56,7 +56,7 @@ public class DCharUtil
 			
 			// Add character to player's character list
 			String chars;
-			if(!DPlayerUtil.getChars(player).isEmpty() && !DPlayerUtil.getChars(player).contains("null"))
+			if(DPlayerUtil.getChars(player) != null && !DPlayerUtil.getChars(player).contains("null"))
 			{
 				ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
 				charsTemp.add("" + charID);
