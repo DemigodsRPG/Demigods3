@@ -25,6 +25,7 @@ public class DCharUtil
 		if(!DPlayerUtil.hasCharName(player, charName))
 		{
 			// Define variables
+			int playerID = DPlayerUtil.getPlayerID(player);
 			int charID = DObjUtil.generateInt(5);
 			String charAlliance = DDeityUtil.getDeityAlliance(charDeity);
 			int charHP = 20;
@@ -40,6 +41,7 @@ public class DCharUtil
 			DDataUtil.addChar(charID);
 			DDataUtil.removePlayerData(player, "current_char");
 			DDataUtil.savePlayerData(player, "current_char", charID);
+			DDataUtil.saveCharData(charID, "char_owner", playerID);
 			DDataUtil.saveCharData(charID, "char_active", true);
 			DDataUtil.saveCharData(charID, "char_name", charName);
 			DDataUtil.saveCharData(charID, "char_alliance", charAlliance);

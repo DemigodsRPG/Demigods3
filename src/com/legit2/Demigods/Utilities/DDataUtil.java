@@ -332,13 +332,13 @@ public class DDataUtil
 	public static HashMap<Integer, HashMap<String, Object>> getAllPlayerChars(OfflinePlayer player)
 	{
 		HashMap<Integer, HashMap<String, Object>> temp = new HashMap<Integer, HashMap<String, Object>>();
-		String playerName = player.getName();
-
+		int playerID = DPlayerUtil.getPlayerID(player);
+		
 		for(Entry<Integer, HashMap<String, Object>> characters : getAllChars().entrySet())
 		{
 			int charID = characters.getKey();
 			
-			if(characters.getValue().get("char_owner") != null && ((String) characters.getValue().get("char_owner")).equalsIgnoreCase(playerName))
+			if(characters.getValue().get("char_owner") != null && characters.getValue().get("char_owner").equals(playerID))
 			{
 				temp.put(charID, characters.getValue());
 			}

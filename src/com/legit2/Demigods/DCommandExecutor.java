@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -280,7 +279,7 @@ public class DCommandExecutor implements CommandExecutor
 		sender.sendMessage("-- Characters ---------------");
 		sender.sendMessage(" ");
 
-		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllPlayerChars(Bukkit.getPlayer(sender.getName())).entrySet())
+		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllPlayerChars((Player) sender).entrySet())
 		{
 			int charID = character.getKey();
 			HashMap<String, Object> charData = character.getValue();
