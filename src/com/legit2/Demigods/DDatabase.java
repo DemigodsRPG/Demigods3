@@ -260,7 +260,7 @@ public class DDatabase
 						
 						// Load the main character data
 						DDataUtil.addChar(charID);
-						DDataUtil.saveCharData(charID, "char_owner", charResult.getString("char_owner"));
+						DDataUtil.saveCharData(charID, "char_owner", charResult.getString("player_id"));
 						DDataUtil.saveCharData(charID, "char_name", charResult.getString("char_name"));
 						DDataUtil.saveCharData(charID, "char_active", charResult.getString("char_active"));
 						DDataUtil.saveCharData(charID, "char_deity", charResult.getString("char_deity"));
