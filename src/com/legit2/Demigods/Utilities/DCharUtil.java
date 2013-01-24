@@ -128,16 +128,34 @@ public class DCharUtil
 		}
 		return -1;
 	}
+	
+	
+	/*
+	 *  isImmortal() : Gets if the player is immortal or not.
+	 */
+	public static Boolean isImmortal(OfflinePlayer player)
+	{
+		if(DPlayerUtil.getCurrentChar(player) == -1) return false;
+		if(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal") == null) return false;
+		else return DObjUtil.toBoolean(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal"));
+	}
+	
+	/*
+	 *  setImmortal() : Sets the player's immortal boolean.
+	 */
+	public static void setImmortal(OfflinePlayer player, boolean option)
+	{			
+		DDataUtil.savePlayerData(player, "immortal", option);
+	}
 
 	/*
 	 *  hasDeity() : Returns boolean for if the character has the deity.
 	 */
-	public static boolean hasDeity(Player player, String deity)
+	public static boolean hasDeity(int charID, String deity)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
 		if(charID == -1) return false;
 
-		if(getDeity(player, charID).equalsIgnoreCase(deity)) return true;
+		if(getDeity(charID).equalsIgnoreCase(deity)) return true;
 		else return false;
 	}	
 	
@@ -152,15 +170,15 @@ public class DCharUtil
 	/*
 	 *  getCharID() : Returns the (int)charID for the character with the name (String)charName.
 	 */
-	public static int getCharID(OfflinePlayer player, String charName)
+	public static int getCharID(String charName)
 	{
-		HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
-		for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
+		HashMap<Integer, HashMap<String, Object>> characters = DDataUtil.getAllChars();
+		for(Entry<Integer, HashMap<String, Object>> playerChar : characters.entrySet())
 		{
 			// Define character-specific variables
 			int charID = playerChar.getKey();
 			
-			if(((String) playerCharData.get(charID).get("char_name")).equalsIgnoreCase(charName)) return charID;
+			if(((String) characters.get(charID).get("char_name")).equalsIgnoreCase(charName)) return charID;
 		}
 		return -1;
 	}
@@ -168,7 +186,7 @@ public class DCharUtil
 	/*
 	 *  getName() : Returns the (String)charName of the character with (int)charID.
 	 */
-	public static String getName(OfflinePlayer player, int charID)
+	public static String getName(int charID)
 	{
 		if(DDataUtil.charExistsByID(charID)) return (String) DDataUtil.getCharData(charID, "char_name");
 		else return null;
@@ -177,7 +195,7 @@ public class DCharUtil
 	/*
 	 *  getDeity() : Returns the (String)deity for (int)charID.
 	 */
-	public static String getDeity(OfflinePlayer player, int charID)
+	public static String getDeity(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_deity")) return (String) DDataUtil.getCharData(charID, "char_deity");
 		else return null;
@@ -186,7 +204,7 @@ public class DCharUtil
 	/*
 	 *  getAlliance() : Returns the (String)alliance for (int)charID.
 	 */
-	public static String getAlliance(OfflinePlayer player, int charID)
+	public static String getAlliance(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_alliance")) return (String) DDataUtil.getCharData(charID, "char_alliance");
 		else return null;
@@ -195,7 +213,7 @@ public class DCharUtil
 	/*
 	 *  getImmortal() : Returns the (Boolean)immortal for (int)charID.
 	 */
-	public static boolean getImmortal(OfflinePlayer player, int charID)
+	public static boolean getImmortal(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_immortal")) return DObjUtil.toBoolean(DDataUtil.getCharData(charID, "char_immortal"));
 		else return false;
@@ -204,7 +222,7 @@ public class DCharUtil
 	/*
 	 *  getFavor() : Returns the (int)favor for (int)charID.
 	 */
-	public static int getFavor(OfflinePlayer player, int charID)
+	public static int getFavor(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_favor")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_favor"));
 		else return -1;
@@ -213,7 +231,7 @@ public class DCharUtil
 	/*
 	 *  getHP() : Returns the (int)hp for (int)charID.
 	 */
-	public static int getHP(OfflinePlayer player, int charID)
+	public static int getHP(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_hp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_hp"));
 		else return -1;
@@ -222,7 +240,7 @@ public class DCharUtil
 	/*
 	 *  getExp() : Returns the (int)favor for (int)charID.
 	 */
-	public static int getExp(OfflinePlayer player, int charID)
+	public static int getExp(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_exp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_exp"));
 		else return -1;
@@ -231,7 +249,7 @@ public class DCharUtil
 	/*
 	 *  getDevotion() : Returns the (int)favor for (int)charID.
 	 */
-	public static int getDevotion(OfflinePlayer player, int charID)
+	public static int getDevotion(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_devotion")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_devotion"));
 		else return -1;
@@ -240,7 +258,7 @@ public class DCharUtil
 	/*
 	 *  getAscensions() : Returns the (int)favor for (int)charID.
 	 */
-	public static int getAscensions(OfflinePlayer player, int charID)
+	public static int getAscensions(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_ascensions")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_ascensions"));
 		else return -1;
@@ -259,61 +277,59 @@ public class DCharUtil
 	 */
 	public static void subtractFavor(int charID, int amount)
 	{
-		setFavor(getFavor(player, charID) - amount);
+		setFavor(charID, getFavor(charID) - amount);
 	}
 	
 	/*
 	 *  giveFavor() : Gives (int)amount favor to (int)charID.
 	 */
-	public static void giveFavor(Player player, int charID, int amount)
+	public static void giveFavor(int charID, int amount)
 	{
 		// Define variables
 		int favor;
 
 		// Perform favor cap check
-		if((getFavor(player, charID) + amount) > DConfig.getSettingInt("max_favor"))
+		if((getFavor(charID) + amount) > DConfig.getSettingInt("max_favor"))
 		{
 			favor = DConfig.getSettingInt("max_favor");
 		}
-		else favor = getFavor(player, charID) + amount;
+		else favor = getFavor(charID) + amount;
 		
-		setFavor(player, favor);
+		setFavor(charID, favor);
 	}
 	
 	/*
 	 *  setAscensions() : Sets the (String)username's ascensions to (int)amount.
 	 */
-	public static void setAscensions(Player player, int amount)
+	public static void setAscensions(int charID, int amount)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
-
 		DDataUtil.saveCharData(charID, "char_ascensions", amount);
 	}
 
 	/*
 	 *  subtractAscensions() : Subtracts (int)amount from the (String)username's ascensions.
 	 */
-	public static void subtractAscensions(Player player, int charID, int amount)
+	public static void subtractAscensions(int charID, int amount)
 	{
-		if(getAscensions(player, charID) - amount < 0)
+		if(getAscensions(charID) - amount < 0)
 		{
-			setAscensions(player, 0);
+			setAscensions(charID, 0);
 		}
-		else setAscensions(player, getAscensions(player, charID) - amount);
+		else setAscensions(charID, getAscensions(charID) - amount);
 	}
 	
 	/*
 	 *  giveAscensions() : Gives (int)amount ascensions to (String)username.
 	 */
-	public static void giveAscensions(Player player, int charID, int amount)
+	public static void giveAscensions(int charID, int amount)
 	{
-		DDataUtil.saveCharData(charID, "char_ascensions", getAscensions(player, charID) + amount);
+		DDataUtil.saveCharData(charID, "char_ascensions", getAscensions(charID) + amount);
 	}
 
 	/*
 	 *  setDevotion() : Sets the (String)username's devotion to (int)amount for (String)deity.
 	 */
-	public static void setDevotion(Player player, int charID, int amount)
+	public static void setDevotion(int charID, int amount)
 	{
 		DDataUtil.saveCharData(charID, "char_devotion", amount);
 	}
@@ -321,9 +337,9 @@ public class DCharUtil
 	/*
 	 *  subtractDevotion() : Subtracts (int)amount from the (String)username's (String)deity devotion.
 	 */
-	public static void subtractDevotion(Player player, int charID, int amount)
+	public static void subtractDevotion(int charID, int amount)
 	{
-		setDevotion(player, charID, getDevotion(player, charID) - amount);
+		setDevotion(charID, getDevotion(charID) - amount);
 	}
 	
 	/*
@@ -331,7 +347,7 @@ public class DCharUtil
 	 */
 	public static void giveDevotion(Player player, int charID, int amount)
 	{
-		setDevotion(player, charID, getDevotion(player, charID) + amount);
+		setDevotion(charID, getDevotion(charID) + amount);
 	}
 	
 	/*
@@ -340,24 +356,6 @@ public class DCharUtil
 	public static void setAlliance(Player player, int charID, String alliance)
 	{
 		DDataUtil.saveCharData(charID, "char_alliance", alliance);
-	}
-	
-	/*
-	 *  isImmortal() : Gets if the player is immortal or not.
-	 */
-	public static Boolean isImmortal(OfflinePlayer player)
-	{
-		if(DPlayerUtil.getCurrentChar(player) == -1) return false;
-		if(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal") == null) return false;
-		else return DObjUtil.toBoolean(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal"));
-	}
-	
-	/*
-	 *  setImmortal() : Sets the player's immortal boolean.
-	 */
-	public static void setImmortal(OfflinePlayer player, boolean option)
-	{			
-		DDataUtil.savePlayerData(player, "immortal", option);
 	}
 	
 	/*

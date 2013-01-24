@@ -121,10 +121,10 @@ public class Poseidon_deity implements Listener
 			REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= REEL_COST)
+			if(DCharUtil.getFavor(charID) >= REEL_COST)
 			{
 				reel(player);
-				DCharUtil.subtractFavor(player, charID, REEL_COST);
+				DCharUtil.subtractFavor(charID, REEL_COST);
 			}
 			else
 			{
@@ -141,10 +141,10 @@ public class Poseidon_deity implements Listener
 			DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= DROWN_COST)
+			if(DCharUtil.getFavor(charID) >= DROWN_COST)
 			{
 				drown(player);
-				DCharUtil.subtractFavor(player, charID, DROWN_COST);
+				DCharUtil.subtractFavor(charID, DROWN_COST);
 			}
 			else
 			{
@@ -198,7 +198,7 @@ public class Poseidon_deity implements Listener
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(player, charID), 0.371238));
+		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
 		LivingEntity target = DUtil.autoTarget(player);
 		
 		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
@@ -262,7 +262,7 @@ public class Poseidon_deity implements Listener
 	{
 		// Define variables
 		int charID = DPlayerUtil.getCurrentChar(player);
-		int devotion = DCharUtil.getDevotion(player, charID);
+		int devotion = DCharUtil.getDevotion(charID);
 		int radius = (int) Math.ceil(1.6955424 * Math.pow(devotion, 0.129349));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DUtil.autoTarget(player);

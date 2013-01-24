@@ -126,10 +126,10 @@ public class Zeus_deity implements Listener
 			SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= SHOVE_COST)
+			if(DCharUtil.getFavor(charID) >= SHOVE_COST)
 			{
 				shove(player);
-				DCharUtil.subtractFavor(player, charID, SHOVE_COST);
+				DCharUtil.subtractFavor(charID, SHOVE_COST);
 			}
 			else
 			{
@@ -145,10 +145,10 @@ public class Zeus_deity implements Listener
 			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= LIGHTNING_COST)
+			if(DCharUtil.getFavor(charID) >= LIGHTNING_COST)
 			{
 				lightning(player);
-				DCharUtil.subtractFavor(player, charID, LIGHTNING_COST);
+				DCharUtil.subtractFavor(charID, LIGHTNING_COST);
 			}
 			else
 			{
@@ -193,7 +193,7 @@ public class Zeus_deity implements Listener
 	{
 		// Define variables
 		int charID = DPlayerUtil.getCurrentChar(player);
-		int devotion = DCharUtil.getDevotion(player, charID);
+		int devotion = DCharUtil.getDevotion(charID);
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
@@ -294,7 +294,7 @@ public class Zeus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(player, DEITYNAME)) return;
+		if(!DCharUtil.hasDeity(charID, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -305,7 +305,7 @@ public class Zeus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(player, charID) >= ULTIMATE_COST)
+		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
@@ -316,9 +316,9 @@ public class Zeus_deity implements Listener
 			player.sendMessage(ChatColor.YELLOW + "Zeus has struck " + storm(player) + " targets!");
 
 			// Set favor and cooldown
-			DCharUtil.subtractFavor(player, charID, ULTIMATE_COST);
+			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(player, charID) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor
@@ -382,7 +382,7 @@ public class Zeus_deity implements Listener
 			if(entity instanceof LivingEntity)
 			{
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(target.getLocation()) < 1.5) DUtil.customDamage(player, livingEntity, DCharUtil.getAscensions(player, charID)*2, DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(target.getLocation()) < 1.5) DUtil.customDamage(player, livingEntity, DCharUtil.getAscensions(charID)*2, DamageCause.LIGHTNING);
 			}
 		}
 	}

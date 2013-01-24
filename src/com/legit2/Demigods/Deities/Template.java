@@ -117,10 +117,10 @@ public class Template implements Listener
 			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= TEST_COST)
+			if(DCharUtil.getFavor(charID) >= TEST_COST)
 			{
 				testabil(player);
-				DCharUtil.subtractFavor(player, charID, TEST_COST);
+				DCharUtil.subtractFavor(charID, TEST_COST);
 				return;
 			}
 			else
@@ -188,7 +188,7 @@ public class Template implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(player, charID) >= ULTIMATE_COST)
+		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
@@ -200,9 +200,9 @@ public class Template implements Listener
 			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
 
 			// Set favor and cooldown
-			DCharUtil.subtractFavor(player, charID, ULTIMATE_COST);
+			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(player, charID) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(charID) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor

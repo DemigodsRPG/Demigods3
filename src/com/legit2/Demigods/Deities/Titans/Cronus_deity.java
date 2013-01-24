@@ -125,10 +125,10 @@ public class Cronus_deity implements Listener
 				CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
 				
 				// Check to see if player has enough favor to perform ability
-				if(DCharUtil.getFavor(player, charID) >= CLEAVE_COST)
+				if(DCharUtil.getFavor(charID) >= CLEAVE_COST)
 				{
 					cleave(damageEvent);
-					DCharUtil.subtractFavor(player, charID, CLEAVE_COST);
+					DCharUtil.subtractFavor(charID, CLEAVE_COST);
 					return;
 				}
 				else
@@ -157,10 +157,10 @@ public class Cronus_deity implements Listener
 			SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
 
 			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(player, charID) >= SLOW_COST)
+			if(DCharUtil.getFavor(charID) >= SLOW_COST)
 			{
 				slow(player);
-				DCharUtil.subtractFavor(player, charID, SLOW_COST);
+				DCharUtil.subtractFavor(charID, SLOW_COST);
 				return;
 			}
 			else
@@ -202,13 +202,13 @@ public class Cronus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		Entity attacked = damageEvent.getEntity();
 		
-		if (DCharUtil.getFavor(player, charID) >= CLEAVE_COST)
+		if (DCharUtil.getFavor(charID) >= CLEAVE_COST)
 		{
 			if (!(attacked instanceof LivingEntity)) return;
 			
 			for (int i = 1; i <= 31; i += 4) attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
 			
-			DUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(player, charID), 0.35)), DamageCause.ENTITY_ATTACK);
+			DUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(charID), 0.35)), DamageCause.ENTITY_ATTACK);
 			
 			if ((LivingEntity)attacked instanceof Player)
 			{
@@ -255,7 +255,7 @@ public class Cronus_deity implements Listener
 	{
 		// Define variables
 		int charID = DPlayerUtil.getCurrentChar(player);
-		int devotion = DCharUtil.getDevotion(player, charID);
+		int devotion = DCharUtil.getDevotion( charID);
 		int duration = (int) Math.ceil(3.635 * Math.pow(devotion, 0.2576)); //seconds
 		int strength = (int) Math.ceil(1.757 * Math.pow(devotion, 0.097));
 		Player target = null; 
@@ -287,7 +287,7 @@ public class Cronus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(player, DEITYNAME)) return;
+		if(!DCharUtil.hasDeity(charID, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -298,7 +298,7 @@ public class Cronus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(player, charID) >= ULTIMATE_COST)
+		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
 			if(!DUtil.canLocationPVP(player.getLocation()))
 			{
@@ -306,13 +306,13 @@ public class Cronus_deity implements Listener
 				return; 
 			}
 			
-			int duration = (int) Math.round(9.9155621 * Math.pow(DCharUtil.getAscensions(player, charID), 0.459019));
+			int duration = (int) Math.round(9.9155621 * Math.pow(DCharUtil.getAscensions(charID), 0.459019));
 			player.sendMessage(ChatColor.YELLOW + "Cronus has stopped time for " + duration + " seconds, for " + timestop(player, duration) + " enemies!");
 
 			// Set favor and cooldown
-			DCharUtil.subtractFavor(player, charID, ULTIMATE_COST);
+			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
 			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double) DCharUtil.getAscensions(player, charID) / 100)));
+			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double) DCharUtil.getAscensions(charID) / 100)));
 			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 		}
 		// Give a message if there is not enough favor
@@ -325,7 +325,7 @@ public class Cronus_deity implements Listener
 		// Define variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		int slowamount = (int)Math.round(4.77179 * Math.pow(DCharUtil.getAscensions(player, charID), 0.17654391));
+		int slowamount = (int)Math.round(4.77179 * Math.pow(DCharUtil.getAscensions(charID), 0.17654391));
 		int count = 0;
 		
 		for(Player onlinePlayer : player.getWorld().getPlayers())
