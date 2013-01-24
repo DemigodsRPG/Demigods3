@@ -10,17 +10,22 @@ inactive_worlds:
 #- world_nodemigods
 
 ## Statistic Caps, Multipliers, and Related ##
-globalfavormultiplier: 1.0
-globalexpmultiplier: 1.0
-globalfavorcap: 20000
+global_favor_multiplier: 1.0
+global_exp_multiplier: 1.0
+global_max_favor: 20000
 max_target_range: 100
 pvp_exp_bonus: 1.5
 stat_display_frequency_in_seconds: 0
 start_delay_seconds: 60.0
 favor_regen_seconds: 0.5
-max_favor: 10000
 save_interval_seconds: 300
 ascension_cap: 100
+
+## Character creation default values ##
+default_favor: 500
+default_max_favor: 10000
+default_devotion: 500
+default_ascensions: 5
 
 ## Database Settings ##
 database:

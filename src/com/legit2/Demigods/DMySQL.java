@@ -79,7 +79,7 @@ public class DMySQL
 				"char_alliance VARCHAR(24)," +
 				"char_immortal TINYINT(1)," +
 				"char_hp INT(11)," +
-				"char_exp INT(11)," +
+				"char_exp FLOAT," +
 				"char_lastX DOUBLE," +
 				"char_lastY DOUBLE," +
 				"char_lastZ DOUBLE," +

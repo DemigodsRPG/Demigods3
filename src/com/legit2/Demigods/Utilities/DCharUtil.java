@@ -28,18 +28,18 @@ public class DCharUtil
 			int playerID = DPlayerUtil.getPlayerID(player);
 			int charID = DObjUtil.generateInt(5);
 			String charAlliance = DDeityUtil.getDeityAlliance(charDeity);
-			int charHP = 20;
-			int charExp = 25;
+			int charHP = player.getHealth();
+			float charExp = player.getExp();
 			double charX = player.getLocation().getX();
 			double charY = player.getLocation().getY();
 			double charZ = player.getLocation().getZ();
 			String charW = player.getLocation().getWorld().getName();
-			int charFavor = 500;
-			int charDevotion = 500;
-			int charAscensions = 1;
+			int charFavor = DConfig.getSettingInt("default_char_favor");
+			int charMaxFavor = DConfig.getSettingInt("default_max_favor");
+			int charDevotion = DConfig.getSettingInt("default_devotion");
+			int charAscensions = DConfig.getSettingInt("default_ascensions");
 			
 			DDataUtil.addChar(charID);
-			DDataUtil.removePlayerData(player, "current_char");
 			DDataUtil.savePlayerData(player, "current_char", charID);
 			DDataUtil.saveCharData(charID, "char_owner", playerID);
 			DDataUtil.saveCharData(charID, "char_active", true);
@@ -54,6 +54,7 @@ public class DCharUtil
 			DDataUtil.saveCharData(charID, "char_lastZ", charZ);
 			DDataUtil.saveCharData(charID, "char_lastW", charW);
 			DDataUtil.saveCharData(charID, "char_favor", charFavor);
+			DDataUtil.saveCharData(charID, "char_max_favor", charMaxFavor);
 			DDataUtil.saveCharData(charID, "char_devotion", charDevotion);
 			DDataUtil.saveCharData(charID, "char_ascensions", charAscensions);
 			
@@ -250,7 +251,7 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  getDevotion() : Returns the (int)favor for (int)charID.
+	 *  getDevotion() : Returns the (int)devotion for (int)charID.
 	 */
 	public static int getDevotion(int charID)
 	{
@@ -259,7 +260,7 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  getAscensions() : Returns the (int)favor for (int)charID.
+	 *  getAscensions() : Returns the (int)ascensions for (int)charID.
 	 */
 	public static int getAscensions(int charID)
 	{
@@ -292,9 +293,9 @@ public class DCharUtil
 		int favor;
 
 		// Perform favor cap check
-		if((getFavor(charID) + amount) > DConfig.getSettingInt("max_favor"))
+		if((getFavor(charID) + amount) > DConfig.getSettingInt("global_max_favor"))
 		{
-			favor = DConfig.getSettingInt("max_favor");
+			favor = DConfig.getSettingInt("global_max_favor");
 		}
 		else favor = getFavor(charID) + amount;
 		

@@ -126,8 +126,7 @@ public class DPlayerUtil
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		int charID = DCharUtil.getCharID(charName);
-		if(DPlayerUtil.getChars(player) != null && DPlayerUtil.getChars(player).contains(charID)) return true;
+		if(DCharUtil.getCharID(charName) != -1) return true;
 		return false;
 	}
 	
