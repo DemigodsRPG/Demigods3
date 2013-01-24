@@ -40,6 +40,7 @@ public class DCharUtil
 			DDataUtil.addChar(charID);
 			DDataUtil.removePlayerData(player, "current_char");
 			DDataUtil.savePlayerData(player, "current_char", charID);
+			DDataUtil.saveCharData(charID, "char_active", true);
 			DDataUtil.saveCharData(charID, "char_name", charName);
 			DDataUtil.saveCharData(charID, "char_alliance", charAlliance);
 			DDataUtil.saveCharData(charID, "char_deity", charDeity);

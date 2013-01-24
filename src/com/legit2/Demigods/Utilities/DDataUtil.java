@@ -338,7 +338,7 @@ public class DDataUtil
 		{
 			int charID = characters.getKey();
 			
-			if(characters.getValue().get("char_owner") != null && characters.getValue().get("char_owner").equals(playerName))
+			if(characters.getValue().get("char_owner") != null && ((String) characters.getValue().get("char_owner")).equalsIgnoreCase(playerName))
 			{
 				temp.put(charID, characters.getValue());
 			}
