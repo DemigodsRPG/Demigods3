@@ -257,31 +257,31 @@ public class DDatabase
 						int charID = charResult.getInt("char_id");
 						
 						// Load the main character data
-						DDataUtil.addChar(player, charID);
-						DDataUtil.saveCharData(player, charID, "char_name", charResult.getString("char_name"));
-						DDataUtil.saveCharData(player, charID, "char_deity", charResult.getString("char_deity"));
-						DDataUtil.saveCharData(player, charID, "char_alliance", charResult.getString("char_alliance"));
-						DDataUtil.saveCharData(player, charID, "char_immortal", charResult.getBoolean("char_immortal"));
-						DDataUtil.saveCharData(player, charID, "char_hp", charResult.getInt("char_hp"));
-						DDataUtil.saveCharData(player, charID, "char_exp", charResult.getInt("char_exp"));
-						DDataUtil.saveCharData(player, charID, "char_lastX", charResult.getDouble("char_lastX"));
-						DDataUtil.saveCharData(player, charID, "char_lastY", charResult.getDouble("char_lastY"));
-						DDataUtil.saveCharData(player, charID, "char_lastZ", charResult.getDouble("char_lastZ"));
-						DDataUtil.saveCharData(player, charID, "char_lastW", charResult.getString("char_lastW"));
-						DDataUtil.saveCharData(player, charID, "char_favor", charResult.getInt("char_favor"));
-						DDataUtil.saveCharData(player, charID, "char_devotion", charResult.getInt("char_devotion"));
-						DDataUtil.saveCharData(player, charID, "char_ascensions", charResult.getInt("char_ascensions"));
+						DDataUtil.addChar(charID);
+						DDataUtil.saveCharData(charID, "char_name", charResult.getString("char_name"));
+						DDataUtil.saveCharData(charID, "char_deity", charResult.getString("char_deity"));
+						DDataUtil.saveCharData(charID, "char_alliance", charResult.getString("char_alliance"));
+						DDataUtil.saveCharData(charID, "char_immortal", charResult.getBoolean("char_immortal"));
+						DDataUtil.saveCharData(charID, "char_hp", charResult.getInt("char_hp"));
+						DDataUtil.saveCharData(charID, "char_exp", charResult.getInt("char_exp"));
+						DDataUtil.saveCharData(charID, "char_lastX", charResult.getDouble("char_lastX"));
+						DDataUtil.saveCharData(charID, "char_lastY", charResult.getDouble("char_lastY"));
+						DDataUtil.saveCharData(charID, "char_lastZ", charResult.getDouble("char_lastZ"));
+						DDataUtil.saveCharData(charID, "char_lastW", charResult.getString("char_lastW"));
+						DDataUtil.saveCharData(charID, "char_favor", charResult.getInt("char_favor"));
+						DDataUtil.saveCharData(charID, "char_devotion", charResult.getInt("char_devotion"));
+						DDataUtil.saveCharData(charID, "char_ascensions", charResult.getInt("char_ascensions"));
 						
 						// Load other character data
 						if(charResult.getString("datakey") != null)
 						{
 							if(charResult.getString("datakey").contains("boolean_"))
 							{
-								DDataUtil.saveCharData(player, charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
+								DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
 							}
 							else
 							{
-								DDataUtil.saveCharData(player, charID, charResult.getString("datakey"), charResult.getString("datavalue"));
+								DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getString("datavalue"));
 							}
 						}
 					}
@@ -433,7 +433,7 @@ public class DDatabase
 	/*
 	 *  removeChar() : Removes the character completely from the database.
 	 */
-	public static boolean removeChar(OfflinePlayer player, int charID)
+	public static boolean removeChar(int charID)
 	{
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{						

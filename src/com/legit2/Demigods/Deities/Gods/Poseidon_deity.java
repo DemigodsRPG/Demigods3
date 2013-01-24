@@ -44,14 +44,6 @@ public class Poseidon_deity implements Listener
 	private static long DROWN_TIME; // Creates the variable for later use
 	private static final int DROWN_COST = 240; // Cost to run command in "favor"
 	private static final int DROWN_DELAY = 10000; // In milliseconds
-
-	public String loadDeity()
-	{
-		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
-		REEL_TIME = System.currentTimeMillis();
-		DROWN_TIME = System.currentTimeMillis();
-		return DEITYNAME + " loaded.";
-	}
 	
 	public ArrayList<Material> getClaimItems()
 	{
@@ -326,6 +318,13 @@ public class Poseidon_deity implements Listener
 	}
 	
 	// Don't touch these, they're required to work.
+	public String loadDeity()
+	{
+		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		REEL_TIME = System.currentTimeMillis();
+		DROWN_TIME = System.currentTimeMillis();
+		return DEITYNAME + " loaded.";
+	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
 	public static ChatColor getColor() { return DEITYCOLOR; }

@@ -12,7 +12,7 @@ public class DDataUtil
 	// Define HashMaps
 	private static HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
 	private static HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
-	private static HashMap<String, HashMap<Integer, HashMap<String, Object>>> charData = new HashMap<String, HashMap<Integer, HashMap<String, Object>>>();
+	private static HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
 
 	/* ---------------------------------------------------
 	 * Begin Plugin Data Methods
@@ -154,88 +154,52 @@ public class DDataUtil
 	 * Begin Character Data Methods
 	 * ---------------------------------------------------
 	 * 
-	 *  hasChar() : Returns true/false depending on if the player has a character by the 
-	 *  name (String)charName.
-	 */
-	public static boolean hasChar(OfflinePlayer player, String charName)
-	{
-		String playerName = player.getName();
-
-		if(charData.containsKey(playerName))
-		{
-			for(Entry<Integer, HashMap<String, Object>> characters : charData.get(playerName).entrySet())
-			{
-				for(Entry<String, Object> character : characters.getValue().entrySet())
-				{
-					if(character.getKey().equalsIgnoreCase("char_name") && ((String) character.getValue()).equalsIgnoreCase(charName)) return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	/*
 	 *  charExists() : Returns true/false depening on if the character exists.
 	 */
-	public static boolean charExists(OfflinePlayer player, String charName)
+	public static boolean charExists(String charName)
 	{
-		String playerName = player.getName();;
-		
-		if(charData.containsKey(playerName))
-		{
-			if(charData.get(playerName).containsKey(charName)) return true;
-			else return false;
-		}
-		return false;
+		if(charData.containsKey(charName)) return true;
+		else return false;
 	}
 	
 	/*
 	 *  charExistsByID() : Returns true/false depening on if the character exists.
 	 */
-	public static boolean charExistsByID(OfflinePlayer player, int charID)
-	{
-		String playerName = player.getName();
-		
-		if(charData.containsKey(playerName))
-		{
-			if(charData.get(playerName).containsKey(charID)) return true;
-			else return false;
-		}
-		return false;
+	public static boolean charExistsByID(int charID)
+	{		
+		if(charData.containsKey(charID)) return true;
+		else return false;
 	}
 
 	/*
 	 *  addChar() : Saves the (int)charID to the charData HashMap.
 	 */
-	public static boolean addChar(OfflinePlayer player, int charID)
+	public static boolean addChar(int charID)
 	{
-		String playerName = player.getName();;
-		charData.get(playerName).put(charID, new HashMap<String, Object>());
+		charData.put(charID, new HashMap<String, Object>());
 		return true;
 	}
 	
 	/*
 	 *  removeChar() : Removes the (int)charID from the charData HashMap.
 	 */
-	public static boolean removeChar(OfflinePlayer player, int charID)
+	public static boolean removeChar(int charID)
 	{
-		String playerName = player.getName();;
-		charData.get(playerName).remove(charID);
-		DDatabase.removeChar(player, charID);
+		charData.remove(charID);
+		DDatabase.removeChar(charID);
 		return true;
 	}
 	
 	/*
 	 *  saveCharData() : Saves (String)dataKey to (int)charID HashMap.
 	 */
-	public static boolean saveCharData(OfflinePlayer player, int charID, String dataKey, Object dataValue)
+	public static boolean saveCharData(int charID, String dataKey, Object dataValue)
 	{
-		String playerName = player.getName();;
 		dataKey = dataKey.toLowerCase();
 		
-		if(charData.containsKey(playerName) && charData.get(playerName).containsKey(charID))
+		if(charData.containsKey(charID))
 		{
-			charData.get(playerName).get(charID).put(dataKey, dataValue);
+			charData.get(charID).put(dataKey, dataValue);
 			return true;
 		}
 		else return false;
@@ -244,14 +208,13 @@ public class DDataUtil
 	/*
 	 *  removeCharData() : Removes (String)dataKey from (int)charID's HashMap.
 	 */
-	public static boolean removeCharData(OfflinePlayer player, int charID, String dataKey)
+	public static boolean removeCharData(int charID, String dataKey)
 	{
-		String playerName = player.getName();;
 		dataKey = dataKey.toLowerCase();
 		
-		if(charData.containsKey(playerName) && charData.get(playerName).containsKey(charID))
+		if(charData.containsKey(charID))
 		{
-			charData.get(playerName).get(charID).remove(dataKey);
+			charData.get(charID).remove(dataKey);
 			return true;
 		}
 		else return false;
@@ -260,14 +223,13 @@ public class DDataUtil
 	/*
 	 *  hashCharData() : Returns true/false according to if (String)dataKey exists for (int)charID.
 	 */
-	public static boolean hasCharData(OfflinePlayer player, int charID, String dataKey)
+	public static boolean hasCharData(int charID, String dataKey)
 	{
-		String playerName = player.getName();;
 		dataKey = dataKey.toLowerCase();
 		
-		if(charData.containsKey(playerName) && charData.get(playerName).containsKey(charID))
+		if(charData.containsKey(charID))
 		{
-			if(charData.get(playerName).get(charID).get(dataKey) != null) return true;
+			if(charData.get(charID).get(dataKey) != null) return true;
 			else return false;
 		}
 		else return false;
@@ -276,14 +238,13 @@ public class DDataUtil
 	/*
 	 *  getCharData() : Returns (Object)dataValue for (int)charID's (String)dataKey.
 	 */
-	public static Object getCharData(OfflinePlayer player, int charID, String dataKey)
+	public static Object getCharData(int charID, String dataKey)
 	{
-		String playerName = player.getName();;
 		dataKey = dataKey.toLowerCase();
 		
-		if(charData.containsKey(playerName) && charData.get(playerName).containsKey(charID))
+		if(charData.containsKey(charID))
 		{
-			if(charData.get(playerName).get(charID).get(dataKey) != null) return charData.get(playerName).get(charID).get(dataKey);
+			if(charData.get(charID).get(dataKey) != null) return charData.get(charID).get(dataKey);
 			else return null;
 		}
 		else return null;
@@ -304,7 +265,6 @@ public class DDataUtil
 		{
 			// Creates new player HashMap save.
 			playerData.put(playerName, new HashMap<String, Object>());
-			charData.put(playerName, new HashMap<Integer, HashMap<String, Object>>());
 			return true;
 		}
 		else return false;
@@ -353,7 +313,7 @@ public class DDataUtil
 	/*
 	 *  getAllPlayers() : Returns all players in the playerData HashMap.
 	 */
-	public static HashMap<String, HashMap<Integer, HashMap<String, Object>>> getAllChars()
+	public static HashMap<Integer, HashMap<String, Object>> getAllChars()
 	{
 		return charData;
 	}
@@ -361,10 +321,9 @@ public class DDataUtil
 	/*
 	 *  getAllCharData() : Returns all charData for (int)charID.
 	 */
-	public static HashMap<String, Object> getAllCharData(OfflinePlayer player, int charID)
+	public static HashMap<String, Object> getAllCharData(int charID)
 	{
-		String playerName = player.getName();;
-		return charData.get(playerName).get(charID);
+		return charData.get(charID);
 	}
 	
 	/*
@@ -372,8 +331,19 @@ public class DDataUtil
 	 */
 	public static HashMap<Integer, HashMap<String, Object>> getAllPlayerChars(OfflinePlayer player)
 	{
-		String playerName = player.getName();;
-		return charData.get(playerName);
+		HashMap<Integer, HashMap<String, Object>> temp = new HashMap<Integer, HashMap<String, Object>>();
+		String playerName = player.getName();
+
+		for(Entry<Integer, HashMap<String, Object>> characters : getAllChars().entrySet())
+		{
+			int charID = characters.getKey();
+			
+			if(characters.getValue().get("char_owner") != null && characters.getValue().get("char_owner").equals(playerName))
+			{
+				temp.put(charID, characters.getValue());
+			}
+		}
+		return temp;
 	}
 	
 	/*

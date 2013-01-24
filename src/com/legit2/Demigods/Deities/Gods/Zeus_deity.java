@@ -50,15 +50,6 @@ public class Zeus_deity implements Listener
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
-	public String loadDeity()
-	{
-		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		SHOVE_TIME = System.currentTimeMillis();
-		LIGHTNING_TIME = System.currentTimeMillis();
-		return DEITYNAME + " loaded.";
-	}
-	
 	public ArrayList<Material> getClaimItems()
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
@@ -397,6 +388,14 @@ public class Zeus_deity implements Listener
 	}
 	
 	// Don't touch these, they're required to work.
+	public String loadDeity()
+	{
+		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		ULTIMATE_TIME = System.currentTimeMillis();
+		SHOVE_TIME = System.currentTimeMillis();
+		LIGHTNING_TIME = System.currentTimeMillis();
+		return DEITYNAME + " loaded.";
+	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
 	public static ChatColor getColor() { return DEITYCOLOR; }

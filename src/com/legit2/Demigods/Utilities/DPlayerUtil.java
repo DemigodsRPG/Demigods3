@@ -113,11 +113,21 @@ public class DPlayerUtil
 	}
 	
 	/*
-	 *  hasChar() : Checks to see if (Player)player has (int)charID.
+	 *  hasCharID() : Checks to see if (OfflinePlayer)player has (int)charID.
 	 */
-	public static boolean hasChar(OfflinePlayer player, int charID)
+	public static boolean hasCharID(OfflinePlayer player, int charID)
 	{
 		if(getChars(player) != null && getChars(player).contains(charID)) return true;
+		return false;
+	}
+	
+	/*
+	 *  hasCharName() : Checks to see if (OfflinePlayer)player has (String)charName.
+	 */
+	public static boolean hasCharName(OfflinePlayer player, String charName)
+	{
+		int charID = DCharUtil.getCharID(player, charName);
+		if(DPlayerUtil.getChars(player) != null && DPlayerUtil.getChars(player).contains(charID)) return true;
 		return false;
 	}
 	

@@ -22,7 +22,7 @@ public class DCharUtil
 	 */
 	public static boolean createChar(Player player, String charName, String charDeity)
 	{
-		if(!DDataUtil.hasChar(player, charName))
+		if(!DPlayerUtil.hasCharName(player, charName))
 		{
 			// Define variables
 			int charID = DObjUtil.generateInt(5);
@@ -37,26 +37,26 @@ public class DCharUtil
 			int charDevotion = 500;
 			int charAscensions = 1;
 			
-			DDataUtil.addChar(player, charID);
+			DDataUtil.addChar(charID);
 			DDataUtil.removePlayerData(player, "current_char");
 			DDataUtil.savePlayerData(player, "current_char", charID);
-			DDataUtil.saveCharData(player, charID, "char_name", charName);
-			DDataUtil.saveCharData(player, charID, "char_alliance", charAlliance);
-			DDataUtil.saveCharData(player, charID, "char_deity", charDeity);
-			DDataUtil.saveCharData(player, charID, "char_immortal", true);
-			DDataUtil.saveCharData(player, charID, "char_hp", charHP);
-			DDataUtil.saveCharData(player, charID, "char_exp", charExp);
-			DDataUtil.saveCharData(player, charID, "char_lastX", charX);
-			DDataUtil.saveCharData(player, charID, "char_lastY", charY);
-			DDataUtil.saveCharData(player, charID, "char_lastZ", charZ);
-			DDataUtil.saveCharData(player, charID, "char_lastW", charW);
-			DDataUtil.saveCharData(player, charID, "char_favor", charFavor);
-			DDataUtil.saveCharData(player, charID, "char_devotion", charDevotion);
-			DDataUtil.saveCharData(player, charID, "char_ascensions", charAscensions);
+			DDataUtil.saveCharData(charID, "char_name", charName);
+			DDataUtil.saveCharData(charID, "char_alliance", charAlliance);
+			DDataUtil.saveCharData(charID, "char_deity", charDeity);
+			DDataUtil.saveCharData(charID, "char_immortal", true);
+			DDataUtil.saveCharData(charID, "char_hp", charHP);
+			DDataUtil.saveCharData(charID, "char_exp", charExp);
+			DDataUtil.saveCharData(charID, "char_lastX", charX);
+			DDataUtil.saveCharData(charID, "char_lastY", charY);
+			DDataUtil.saveCharData(charID, "char_lastZ", charZ);
+			DDataUtil.saveCharData(charID, "char_lastW", charW);
+			DDataUtil.saveCharData(charID, "char_favor", charFavor);
+			DDataUtil.saveCharData(charID, "char_devotion", charDevotion);
+			DDataUtil.saveCharData(charID, "char_ascensions", charAscensions);
 			
 			// Add character to player's character list
 			String chars;
-			if(!DPlayerUtil.getChars(player).isEmpty())
+			if(!DPlayerUtil.getChars(player).isEmpty() && !DPlayerUtil.getChars(player).contains("null"))
 			{
 				ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
 				charsTemp.add("" + charID);
@@ -88,7 +88,7 @@ public class DCharUtil
 	 */
 	public static boolean removeChar(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.removeChar(player, charID))
+		if(DDataUtil.removeChar(charID))
 		{
 			// Remove from player_characters
 			ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
@@ -105,9 +105,9 @@ public class DCharUtil
 	/*
 	 *  getCharByID() : Returns the complete character info for the character with (int)id.
 	 */
-	public static HashMap<String, Object> getCharInfo(OfflinePlayer player, int charID)
+	public static HashMap<String, Object> getCharInfo(int charID)
 	{
-		return DDataUtil.getAllCharData(player, charID);
+		return DDataUtil.getAllCharData(charID);
 	}
 	
 	/*
@@ -170,7 +170,7 @@ public class DCharUtil
 	 */
 	public static String getName(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.charExistsByID(player, charID)) return (String) DDataUtil.getCharData(player, charID, "char_name");
+		if(DDataUtil.charExistsByID(charID)) return (String) DDataUtil.getCharData(charID, "char_name");
 		else return null;
 	}
 	
@@ -179,7 +179,7 @@ public class DCharUtil
 	 */
 	public static String getDeity(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_deity")) return (String) DDataUtil.getCharData(player, charID, "char_deity");
+		if(DDataUtil.hasCharData(charID, "char_deity")) return (String) DDataUtil.getCharData(charID, "char_deity");
 		else return null;
 	}
 
@@ -188,7 +188,7 @@ public class DCharUtil
 	 */
 	public static String getAlliance(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_alliance")) return (String) DDataUtil.getCharData(player, charID, "char_alliance");
+		if(DDataUtil.hasCharData(charID, "char_alliance")) return (String) DDataUtil.getCharData(charID, "char_alliance");
 		else return null;
 	}
 	
@@ -197,7 +197,7 @@ public class DCharUtil
 	 */
 	public static boolean getImmortal(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_immortal")) return DObjUtil.toBoolean(DDataUtil.getCharData(player, charID, "char_immortal"));
+		if(DDataUtil.hasCharData(charID, "char_immortal")) return DObjUtil.toBoolean(DDataUtil.getCharData(charID, "char_immortal"));
 		else return false;
 	}
 	
@@ -206,7 +206,7 @@ public class DCharUtil
 	 */
 	public static int getFavor(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_favor")) return DObjUtil.toInteger(DDataUtil.getCharData(player, charID, "char_favor"));
+		if(DDataUtil.hasCharData(charID, "char_favor")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_favor"));
 		else return -1;
 	}
 	
@@ -215,7 +215,7 @@ public class DCharUtil
 	 */
 	public static int getHP(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_hp")) return DObjUtil.toInteger(DDataUtil.getCharData(player, charID, "char_hp"));
+		if(DDataUtil.hasCharData(charID, "char_hp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_hp"));
 		else return -1;
 	}
 	
@@ -224,7 +224,7 @@ public class DCharUtil
 	 */
 	public static int getExp(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_exp")) return DObjUtil.toInteger(DDataUtil.getCharData(player, charID, "char_exp"));
+		if(DDataUtil.hasCharData(charID, "char_exp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_exp"));
 		else return -1;
 	}
 	
@@ -233,7 +233,7 @@ public class DCharUtil
 	 */
 	public static int getDevotion(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_devotion")) return DObjUtil.toInteger(DDataUtil.getCharData(player, charID, "char_devotion"));
+		if(DDataUtil.hasCharData(charID, "char_devotion")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_devotion"));
 		else return -1;
 	}
 	
@@ -242,26 +242,24 @@ public class DCharUtil
 	 */
 	public static int getAscensions(OfflinePlayer player, int charID)
 	{
-		if(DDataUtil.hasCharData(player, charID, "char_ascensions")) return DObjUtil.toInteger(DDataUtil.getCharData(player, charID, "char_ascensions"));
+		if(DDataUtil.hasCharData(charID, "char_ascensions")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_ascensions"));
 		else return -1;
 	}
 	
 	/*
 	 *  setFavor() : Sets the (String)username's favor to (int)amount.
 	 */
-	public static void setFavor(Player player, int amount)
+	public static void setFavor(int charID, int amount)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
-
-		DDataUtil.saveCharData(player, charID, "char_favor", amount);
+		DDataUtil.saveCharData(charID, "char_favor", amount);
 	}
 	
 	/*
 	 *  subtractFavor() : Subtracts (int)amount from the (String)username's favor.
 	 */
-	public static void subtractFavor(Player player, int charID, int amount)
+	public static void subtractFavor(int charID, int amount)
 	{
-		setFavor(player, getFavor(player, charID) - amount);
+		setFavor(getFavor(player, charID) - amount);
 	}
 	
 	/*
@@ -289,7 +287,7 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		DDataUtil.saveCharData(player, charID, "char_ascensions", amount);
+		DDataUtil.saveCharData(charID, "char_ascensions", amount);
 	}
 
 	/*
@@ -309,7 +307,7 @@ public class DCharUtil
 	 */
 	public static void giveAscensions(Player player, int charID, int amount)
 	{
-		DDataUtil.saveCharData(player, charID, "char_ascensions", getAscensions(player, charID) + amount);
+		DDataUtil.saveCharData(charID, "char_ascensions", getAscensions(player, charID) + amount);
 	}
 
 	/*
@@ -317,7 +315,7 @@ public class DCharUtil
 	 */
 	public static void setDevotion(Player player, int charID, int amount)
 	{
-		DDataUtil.saveCharData(player, charID, "char_devotion", amount);
+		DDataUtil.saveCharData(charID, "char_devotion", amount);
 	}
 
 	/*
@@ -341,7 +339,7 @@ public class DCharUtil
 	 */
 	public static void setAlliance(Player player, int charID, String alliance)
 	{
-		DDataUtil.saveCharData(player, charID, "char_alliance", alliance);
+		DDataUtil.saveCharData(charID, "char_alliance", alliance);
 	}
 	
 	/*
@@ -350,8 +348,8 @@ public class DCharUtil
 	public static Boolean isImmortal(OfflinePlayer player)
 	{
 		if(DPlayerUtil.getCurrentChar(player) == -1) return false;
-		if(DDataUtil.getCharData(player, DPlayerUtil.getCurrentChar(player), "char_immortal") == null) return false;
-		else return DObjUtil.toBoolean(DDataUtil.getCharData(player, DPlayerUtil.getCurrentChar(player), "char_immortal"));
+		if(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal") == null) return false;
+		else return DObjUtil.toBoolean(DDataUtil.getCharData(DPlayerUtil.getCurrentChar(player), "char_immortal"));
 	}
 	
 	/*
@@ -369,9 +367,9 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(DDataUtil.getCharData(player, charID, "boolean_" + ability.toLowerCase()) != null)
+		if(DDataUtil.getCharData(charID, "boolean_" + ability.toLowerCase()) != null)
 		{
-			return DObjUtil.toBoolean(DDataUtil.getCharData(player, charID, "boolean_" + ability.toLowerCase()));
+			return DObjUtil.toBoolean(DDataUtil.getCharData(charID, "boolean_" + ability.toLowerCase()));
 		}
 		else return false;
 	}
@@ -385,7 +383,7 @@ public class DCharUtil
 		
 		if(!isEnabledAbility(player, ability))
 		{
-			DDataUtil.saveCharData(player, charID,  "boolean_" + ability.toLowerCase(), true);
+			DDataUtil.saveCharData(charID,  "boolean_" + ability.toLowerCase(), true);
 		}
 	}
 	
@@ -398,7 +396,7 @@ public class DCharUtil
 		
 		if(isEnabledAbility(player, ability))
 		{
-			DDataUtil.saveCharData(player, charID,  "boolean_" + ability.toLowerCase(), false);
+			DDataUtil.saveCharData(charID,  "boolean_" + ability.toLowerCase(), false);
 		}
 	}
 	
@@ -422,9 +420,9 @@ public class DCharUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(DDataUtil.getCharData(player, charID, ability + "_bind") != null)
+		if(DDataUtil.getCharData(charID, ability + "_bind") != null)
 		{
-			Material material = (Material) DDataUtil.getCharData(player, charID, ability + "_bind");
+			Material material = (Material) DDataUtil.getCharData(charID, ability + "_bind");
 			return material;
 		}
 		else return null;
@@ -438,9 +436,9 @@ public class DCharUtil
 	{		
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(DPlayerUtil.hasChar(player, charID))
+		if(DPlayerUtil.hasCharID(player, charID))
 		{
-			return (ArrayList<Material>) DDataUtil.getCharData(player, charID, "bindings");
+			return (ArrayList<Material>) DDataUtil.getCharData(charID, "bindings");
 		}
 		else return new ArrayList<Material>();
 	}
@@ -452,7 +450,7 @@ public class DCharUtil
 	{	
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		if(DDataUtil.getCharData(player, charID, ability + "_bind") == null)
+		if(DDataUtil.getCharData(charID, ability + "_bind") == null)
 		{
 			if(((Player) player).getItemInHand().getType() == Material.AIR)
 			{
@@ -472,23 +470,23 @@ public class DCharUtil
 				}
 				else
 				{			
-					if(DDataUtil.hasCharData(player, charID, "bindings"))
+					if(DDataUtil.hasCharData(charID, "bindings"))
 					{
 						ArrayList<Material> bindings = getBindings(player);
 						
 						if(!bindings.contains(material)) bindings.add(material);
 						
-						DDataUtil.saveCharData(player, charID, "bindings", bindings);
+						DDataUtil.saveCharData(charID, "bindings", bindings);
 					}
 					else
 					{
 						ArrayList<Material> bindings = new ArrayList<Material>();
 						
 						bindings.add(material);
-						DDataUtil.saveCharData(player, charID, "bindings", bindings);
+						DDataUtil.saveCharData(charID, "bindings", bindings);
 					}
 					
-					DDataUtil.saveCharData(player, charID, ability + "_bind", material);
+					DDataUtil.saveCharData(charID, ability + "_bind", material);
 					((Player) player).sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
 					return true;
 				}
@@ -496,7 +494,7 @@ public class DCharUtil
 		}
 		else
 		{
-			removeBind(player, ability, ((Material) DDataUtil.getCharData(player, charID, ability + "_bind")));
+			removeBind(player, ability, ((Material) DDataUtil.getCharData(charID, ability + "_bind")));
 			((Player) player).sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
 		}
 		return false;
@@ -520,15 +518,15 @@ public class DCharUtil
 
 		ArrayList<Material> bindings = null;
 
-		if(DDataUtil.hasCharData(player, charID, "bindings"))
+		if(DDataUtil.hasCharData(charID, "bindings"))
 		{
 			bindings = getBindings(player);
 			
 			if(bindings != null && bindings.contains(material)) bindings.remove(material);
 		}
 		
-		DDataUtil.saveCharData(player, charID, "bindings", bindings);
-		DDataUtil.removeCharData(player, charID, ability + "_bind");
+		DDataUtil.saveCharData(charID, "bindings", bindings);
+		DDataUtil.removeCharData(charID, ability + "_bind");
 
 		return true;
 	}
