@@ -162,45 +162,6 @@ public class DDatabase
 	}
 	
 	/*
-	 *  saveAllData() : Saves all HashMap data to database.
-	 */
-	public static boolean saveAllData()
-	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
-		{	
-			// Define variables
-			int playerCount = 0;
-			long startTimer = System.currentTimeMillis();
-			
-			// Save plugin-specific data
-			savePlugin();
-			long stopTimer = System.currentTimeMillis();
-			double totalTime = (double) (stopTimer - startTimer);
-			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
-			else DUtil.info("Demigods plugin data saved.");
-					
-			for(Player player : DUtil.getOnlinePlayers())
-			{
-				if(savePlayer(player)) playerCount++;
-			}
-
-			// Stop the timer
-			stopTimer = System.currentTimeMillis();
-			totalTime = (double) (stopTimer - startTimer);
-
-			// Send save success message
-			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
-			else DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
-			return true;
-		}
-		else if(DConfig.getSettingBoolean("sqlite"))
-		{
-			// TODO: SQLite
-		}
-		return false;
-	}
-	
-	/*
 	 *  loadAllData() : Loads all data from database into HashMaps.
 	 */
 	public static void loadAllData()
@@ -313,6 +274,45 @@ public class DDatabase
 	}
 	
 	/*
+	 *  saveAllData() : Saves all HashMap data to database.
+	 */
+	public static boolean saveAllData()
+	{
+		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		{	
+			// Define variables
+			int playerCount = 0;
+			long startTimer = System.currentTimeMillis();
+			
+			// Save plugin-specific data
+			savePlugin();
+			long stopTimer = System.currentTimeMillis();
+			double totalTime = (double) (stopTimer - startTimer);
+			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
+			else DUtil.info("Demigods plugin data saved.");
+					
+			for(Player player : DUtil.getOnlinePlayers())
+			{
+				if(savePlayer(player)) playerCount++;
+			}
+
+			// Stop the timer
+			stopTimer = System.currentTimeMillis();
+			totalTime = (double) (stopTimer - startTimer);
+
+			// Send save success message
+			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
+			else DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("sqlite"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
 	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
 	 */
 	public static boolean savePlayer(OfflinePlayer player)
@@ -349,7 +349,7 @@ public class DDatabase
 				int charID = playerChar.getKey();
 				boolean charImmortal = DObjUtil.toBoolean(playerCharData.get(charID).get("char_immortal"));
 				int charHP = DObjUtil.toInteger(playerCharData.get(charID).get("char_hp"));
-				int charExp = DObjUtil.toInteger(playerCharData.get(charID).get("char_exp"));
+				float charExp = DObjUtil.toFloat(playerCharData.get(charID).get("char_exp"));
 				int charFavor = DObjUtil.toInteger(playerCharData.get(charID).get("char_favor"));
 				int charDevotion = DObjUtil.toInteger(playerCharData.get(charID).get("char_devotion"));
 				int charAscensions = DObjUtil.toInteger(playerCharData.get(charID).get("char_ascensions"));
