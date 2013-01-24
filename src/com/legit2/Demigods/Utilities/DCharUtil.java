@@ -244,9 +244,9 @@ public class DCharUtil
 	/*
 	 *  getExp() : Returns the (int)favor for (int)charID.
 	 */
-	public static int getExp(int charID)
+	public static float getExp(int charID)
 	{
-		if(DDataUtil.hasCharData(charID, "char_exp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_exp"));
+		if(DDataUtil.hasCharData(charID, "char_exp")) return DObjUtil.toFloat(DDataUtil.getCharData(charID, "char_exp"));
 		else return -1;
 	}
 	
@@ -360,6 +360,15 @@ public class DCharUtil
 	public static void setAlliance(Player player, int charID, String alliance)
 	{
 		DDataUtil.saveCharData(charID, "char_alliance", alliance);
+	}
+	
+	/*
+	 *  isActive() : Returns a boolean for if the (int)charID is active.
+	 */
+	public static boolean isActive(int charID)
+	{
+		if(DDataUtil.getCharData(charID, "char_active") == null) return false;
+		else return DObjUtil.toBoolean(DDataUtil.getCharData(charID, "char_active"));
 	}
 	
 	/*

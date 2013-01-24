@@ -14,6 +14,14 @@ public class DObjUtil
 	}
 	
 	/*
+	 *  toFloat() : Returns an object as a float.
+	 */
+	public static float toFloat(Object object)
+	{
+		return Float.parseFloat(object.toString());
+	}
+	
+	/*
 	 *  toInteger() : Returns an object as an integer.
 	 */
 	public static int toInteger(Object object)

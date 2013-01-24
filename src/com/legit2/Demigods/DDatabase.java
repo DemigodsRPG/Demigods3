@@ -99,12 +99,13 @@ public class DDatabase
 		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
 		{	
 			int playerID = DPlayerUtil.getPlayerID(player);
+			boolean charActive = DCharUtil.isActive(charID);
 			String charName = DCharUtil.getName(charID);
 			String charDeity = DCharUtil.getDeity(charID);
 			String charAlliance = DCharUtil.getAlliance(charID);
 			boolean charImmortal = DCharUtil.getImmortal(charID);
 			int charHP = DCharUtil.getHP(charID);
-			int charExp = DCharUtil.getExp(charID);
+			float charExp = DCharUtil.getExp(charID);
 			int charFavor = DCharUtil.getFavor(charID);
 			int charDevotion = DCharUtil.getDevotion(charID);
 			int charAscensions = DCharUtil.getAscensions(charID);
@@ -115,10 +116,11 @@ public class DDatabase
 			
 			String addQuery = 
 					"INSERT INTO " + DMySQL.character_table +
-					"(char_id,player_id,char_name,char_deity,char_alliance,char_immortal,char_hp,char_exp,char_favor,char_devotion,char_ascensions,char_lastX,char_lastY,char_lastZ,char_lastW)" + 
+					"(char_id,player_id,char_active,char_name,char_deity,char_alliance,char_immortal,char_hp,char_exp,char_favor,char_devotion,char_ascensions,char_lastX,char_lastY,char_lastZ,char_lastW)" + 
 					"VALUES (" +
 						charID + "," +
 						playerID + "," +
+						charActive + "," +
 						"'" + charName + "'," +
 						"'" + charDeity + "'," +
 						"'" + charAlliance + "'," +
@@ -258,7 +260,9 @@ public class DDatabase
 						
 						// Load the main character data
 						DDataUtil.addChar(charID);
+						DDataUtil.saveCharData(charID, "char_owner", charResult.getString("char_owner"));
 						DDataUtil.saveCharData(charID, "char_name", charResult.getString("char_name"));
+						DDataUtil.saveCharData(charID, "char_active", charResult.getString("char_active"));
 						DDataUtil.saveCharData(charID, "char_deity", charResult.getString("char_deity"));
 						DDataUtil.saveCharData(charID, "char_alliance", charResult.getString("char_alliance"));
 						DDataUtil.saveCharData(charID, "char_immortal", charResult.getBoolean("char_immortal"));
