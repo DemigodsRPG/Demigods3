@@ -331,7 +331,7 @@ public class DCommandExecutor implements CommandExecutor
 		
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
-			int charID = DCharUtil.getCharID(charName);
+			int charID = DCharUtil.getID(charName);
 			DDataUtil.savePlayerData(player, "current_char", charID);
 			
 			sender.sendMessage(ChatColor.YELLOW + "Your current character has been changed!");
@@ -354,7 +354,7 @@ public class DCommandExecutor implements CommandExecutor
 		
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
-			int charID = DCharUtil.getCharID(charName);
+			int charID = DCharUtil.getID(charName);
 			DDataUtil.removeChar(charID);
 			
 			sender.sendMessage(ChatColor.RED + "Character removed!");

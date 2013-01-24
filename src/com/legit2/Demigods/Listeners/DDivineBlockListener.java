@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDivineBlocks;
-import com.legit2.Demigods.DSave;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -55,7 +55,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(event.getBlock().getLocation().equals(center))
 				{
-					event.getPlayer().sendMessage(ChatColor.YELLOW+"DivineBlocks cannot be broken by hand.");
+					event.getPlayer().sendMessage(ChatColor.YELLOW + "DivineBlocks cannot be broken by hand.");
 					event.setCancelled(true);
 					return;
 				}
@@ -183,23 +183,25 @@ public class DDivineBlockListener implements Listener
 		
 		try
 		{
-			//check if block is divineBlock
+			// Check if block is divine
 			String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
 			
 			if(deityName == null) return;
 			
-			//check if player has deity
+			// Check if character has deity
 			Player player = event.getPlayer();
-			if(DCharUtil.hasDeity(player, deityName))
+			int charID = DPlayerUtil.getCurrentChar(player);
+			
+			if(DCharUtil.hasDeity(charID, deityName))
 			{
-				//open the tribute inventory
+				// Open the tribute inventory
 				Inventory ii = DUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
 				player.openInventory(ii);
-				DDataUtil.saveCharData(player, DPlayerUtil.getCurrentChar(player), "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+				DDataUtil.saveCharData(charID, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
 				event.setCancelled(true);
 				return;
 			}
-			player.sendMessage(ChatColor.YELLOW+"You must be allianced to " + deityName + " in order to tribute here.");
+			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + deityName + " in order to tribute here.");
 		}
 		catch (Exception er) {}
 	}
@@ -213,6 +215,9 @@ public class DDivineBlockListener implements Listener
 			try
 			{
 				if(DDivineBlocks.getShrines(charID) != null)
+				{
+					// Define variables
+					OfflinePlayer charOwner = DCharUtil.getOwner(charID);
 					for(Location center : DDivineBlocks.getShrines(charID))
 					{
 						// Check for world errors
@@ -226,7 +231,7 @@ public class DDivineBlockListener implements Listener
 						{
 							if(center.distance(event.getTo()) <= RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + player + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(center) + ChatColor.GRAY + ".");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(center) + ChatColor.GRAY + ".");
 								return;
 							}
 						}
@@ -243,7 +248,8 @@ public class DDivineBlockListener implements Listener
 							}
 						}
 					}
-			} catch (Exception e) {}
+				}
+			} catch(Exception e){}
 		}
 	}
 	
@@ -254,61 +260,47 @@ public class DDivineBlockListener implements Listener
 		{
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player)event.getPlayer();
-			String username = player.getName();
+			int charID = DPlayerUtil.getCurrentChar(player);
 			
 			if(!DCharUtil.isImmortal(player)) return;
 			
-			//continue if tribute chest
+			// If it isn't a tribute chest then break the method
 			if(!event.getInventory().getName().equals("Tributes")) return;
 			
-			//get which deity tribute goes to
-			String toGive = null;
-			for(int charID : DUtil.getImmortalList())
-			{
-				for(String deity : DUtil.getDeities(immortalPlayer))
-				{
-					if(DDataUtil.hasCharData(immortalPlayer, deity, "temp_tributing"))
-					{
-						toGive = deity;
-						break;
-					}
-				}
-			}
-			
-			if(toGive == null) return;
-			
-			String creator = DDivineBlocks.getOwnerOfShrine((Location) DUtil.getDeityData(username, toGive, "tributing_temp")); //get the creator of the shrine
-			DDataUtil.removeCharData(username, toGive, "temp_tributing"); 
+			// Get the creator of the shrine
+			//int shrineCreator = DDivineBlocks.getOwnerOfShrine((Location) DDataUtil.getCharData(charID, "tributing_temp"));
+			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
 			//calculate value of chest
-			int value = 0;
+			int tirbuteValue = 0;
 			int items = 0;
 			for(ItemStack ii : event.getInventory().getContents())
 			{
 				if(ii != null)
 				{
-					value += DTributeValue.getTributeValue(ii);
+					tirbuteValue += DTributeValue.getTributeValue(ii);
 					items ++;
 				}
 			}
 			
-			value *= FAVORMULTIPLIER;
+			tirbuteValue *= FAVORMULTIPLIER;
 			
-			//give devotion
-			int devotionBefore = DUtil.getDevotion(username, toGive);
-			DUtil.setDevotion(username, toGive, DUtil.getDevotion(username, toGive) + value);
-			DUtil.setDevotion(creator, toGive, DUtil.getDevotion(creator, toGive) + value / 7);
+			// Give devotion
+			int devotionBefore = DCharUtil.getDevotion(charID);
+			DCharUtil.giveDevotion(charID, tirbuteValue);
+			DCharUtil.giveDevotion(charID, tirbuteValue / 7);
 			
-			//give favor
-			int favorBefore = DUtil.getFavorCap(username);
+			// Give favor
+			int favorBefore = DCharUtil.getMaxFavor(charID);
 			//DUtil.setFavorCap(player, DUtil.getFavorCap(username)+value/5); TODO
 			
-			//devotion lock TODO
-			if(devotionBefore < DUtil.getDevotion(username, toGive)) player.sendMessage(ChatColor.YELLOW + "Your Devotion for " + toGive + " has increased to " + DUtil.getDevotion(username, toGive) + ".");
-			if(favorBefore < DUtil.getFavorCap(username)) player.sendMessage(ChatColor.YELLOW + "Your Favor Cap has increased to " + DUtil.getFavorCap(username) + ".");
-			if((favorBefore == DUtil.getFavorCap(username)) && (devotionBefore == DUtil.getDevotion(username, toGive)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + toGive + "'s blessings.");
+			// Devotion lock TODO
+			String charName = DCharUtil.getName(charID);
+			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.YELLOW + "Your devotion to " + charName + " has increased to " + DCharUtil.getDevotion(charID) + ".");
+			if(favorBefore < DCharUtil.getMaxFavor(charID)) player.sendMessage(ChatColor.YELLOW + "Your favor cap has increased to " + DCharUtil.getMaxFavor(charID) + ".");
+			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + charName + "'s blessings.");
 			
-			//clear inventory
+			// Clear the tribute case
 			event.getInventory().clear();
 		}
 		catch (Exception er) {}

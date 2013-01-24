@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -109,7 +110,7 @@ public class DCharUtil
 	/*
 	 *  getCharByID() : Returns the complete character info for the character with (int)id.
 	 */
-	public static HashMap<String, Object> getCharInfo(int charID)
+	public static HashMap<String, Object> getInfo(int charID)
 	{
 		return DDataUtil.getAllCharData(charID);
 	}
@@ -133,6 +134,21 @@ public class DCharUtil
 		return -1;
 	}
 	
+	/*
+	 *  getCharOwner() : Returns the (OfflinePlayer)player who owns (int)charID.
+	 */
+	public static OfflinePlayer getOwner(int charID)
+	{
+		OfflinePlayer charOwner = null;
+		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllChars().entrySet())
+		{
+			if(character.getValue().containsKey("char_owner"))
+			{
+				charOwner = Bukkit.getOfflinePlayer((String) character.getValue().get("char_owner"));
+			}
+		}
+		return charOwner;
+	}
 	
 	/*
 	 *  isImmortal() : Gets if the player is immortal or not.
@@ -174,7 +190,7 @@ public class DCharUtil
 	/*
 	 *  getCharID() : Returns the (int)charID for the character with the name (String)charName.
 	 */
-	public static int getCharID(String charName)
+	public static int getID(String charName)
 	{
 		HashMap<Integer, HashMap<String, Object>> characters = DDataUtil.getAllChars();
 		for(Entry<Integer, HashMap<String, Object>> playerChar : characters.entrySet())
@@ -229,6 +245,15 @@ public class DCharUtil
 	public static int getFavor(int charID)
 	{
 		if(DDataUtil.hasCharData(charID, "char_favor")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_favor"));
+		else return -1;
+	}
+	
+	/*
+	 *  getMaxFavor() : Returns the (int)maxFavor for (int)charID.
+	 */
+	public static int getMaxFavor(int charID)
+	{
+		if(DDataUtil.hasCharData(charID, "char_max_favor")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_max_favor"));
 		else return -1;
 	}
 	
@@ -349,7 +374,7 @@ public class DCharUtil
 	/*
 	 *  giveDevotion() : Gives (int)amount devotion to (String)username for (String)deity.
 	 */
-	public static void giveDevotion(Player player, int charID, int amount)
+	public static void giveDevotion(int charID, int amount)
 	{
 		setDevotion(charID, getDevotion(charID) + amount);
 	}
@@ -357,7 +382,7 @@ public class DCharUtil
 	/*
 	 *  setAlliance() : Sets the (int)charID's alliance to (String)alliance.
 	 */
-	public static void setAlliance(Player player, int charID, String alliance)
+	public static void setAlliance(int charID, String alliance)
 	{
 		DDataUtil.saveCharData(charID, "char_alliance", alliance);
 	}

@@ -3,11 +3,9 @@ package com.legit2.Demigods;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DPlayerUtil;
 
 public class DDivineBlocks
 {	
@@ -25,10 +23,9 @@ public class DDivineBlocks
 	 *  getShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Location> getShrines(String username) throws Exception
+	public static ArrayList<Location> getShrines(int charID) throws Exception
 	{		
-		OfflinePlayer player = DPlayerUtil.definePlayer(username);
-		if(DDataUtil.hasPlayerData(player, "shrines")) return (ArrayList<Location>) DDataUtil.getPlayerData(player, "shrines");
+		if(DDataUtil.hasCharData(charID, "shrines")) return (ArrayList<Location>) DDataUtil.getCharData(charID, "shrines");
 		else return null;
 	}
 	
@@ -39,9 +36,9 @@ public class DDivineBlocks
 	{		
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		
-		for(String username : DDataUtil.getAllPlayers().keySet())
+		for(int charID : DDataUtil.getAllChars().keySet())
 		{
-			for(Location shrine : getShrines(username))
+			for(Location shrine : getShrines(charID))
 			{
 				if(!shrines.contains(shrine)) shrines.add(shrine);
 			}
@@ -50,37 +47,29 @@ public class DDivineBlocks
 		return shrines;
 	}
 	
-	public static OfflinePlayer getOwnerOfShrine(Location shrine) throws Exception
+	public static int getOwnerOfShrine(Location shrine) throws Exception
 	{
-		OfflinePlayer owner = null;
+		int charID = 0;
 		
 		CHECKSHRINES:
-		for(String username : DDataUtil.getAllPlayers().keySet())
+		for(int character : DDataUtil.getAllChars().keySet())
 		{
-			for(Location knownShrine : getShrines(username))
+			for(Location knownShrine : getShrines(character))
 			{
 				if(shrine.equals(knownShrine))
 				{
-					owner = DPlayerUtil.definePlayer(username);
+					charID = character;
 					break CHECKSHRINES;
 				}
 			}
 		}
-		
-		return owner;
+		return charID;
 	}
 	
 	public static String getDeityAtShrine(Location shrine) throws Exception
 	{
-		OfflinePlayer player = getOwnerOfShrine(shrine);
-		int charID = DPlayerUtil.getCurrentChar(player);
-		String deity = null;
-		
-		DCharUtil.getDeity(charID);
-		
-		//if(!DDataUtil.hasCharData(charID, "shrine")) continue;
-		//Location knownShrine = (Location) DDataUtil.getCharData(charID, "shrine");
-		
+		int charID = getOwnerOfShrine(shrine);
+		String deity = DCharUtil.getDeity(charID);
 		return deity;
 	}
 	
