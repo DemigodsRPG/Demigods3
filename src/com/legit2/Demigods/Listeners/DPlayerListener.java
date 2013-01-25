@@ -123,14 +123,14 @@ public class DPlayerListener implements Listener
 		// No Spawn Line-Jumping
 		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
 		{
-			DDataUtil.savePlayerData(player, "was_PVP_temp", true);
+			DDataUtil.savePlayerData(player, "temp_was_PVP", true);
 			
 			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					DDataUtil.removePlayerData(player, "was_PVP_temp");
+					DDataUtil.removePlayerData(player, "temp_was_PVP");
 					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
 				}
 			}, (pvp_area_delay_time * 20));

@@ -11,9 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
-import com.legit2.Demigods.DSouls;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Utilities.DUtil;
 
@@ -50,6 +48,7 @@ public class DEntityListener implements Listener
 					return;
 				}
 				
+				/*
 				if(damageEvent.getDamage() > attackedPlayer.getHealth())
 				{
 					// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
@@ -70,6 +69,7 @@ public class DEntityListener implements Listener
 						}
 					}
 				}
+				*/
 			}
 		}
 		else if(event.getEntityType().equals(EntityType.VILLAGER)) // IF IT'S A VILLAGER
@@ -84,7 +84,7 @@ public class DEntityListener implements Listener
 
 			if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
 			{
-				villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
+				//villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
 				if(attacker != null) attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
 			}
 		}
