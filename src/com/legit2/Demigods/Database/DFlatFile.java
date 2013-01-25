@@ -67,7 +67,7 @@ public class DFlatFile
 	{
 		// Data
 		File f1 = new File(path + "Data/");
-		if (!f1.exists())
+		if(!f1.exists())
 		{
 			DUtil.info("Creating a new data save.");
 			f1.mkdirs();
@@ -75,10 +75,10 @@ public class DFlatFile
 		File[] list1 = f1.listFiles();
 		if(list1 != null)
 		{
-			for (File element : list1)
+			for(File element : list1)
 			{
 				String load = element.getName();
-				if (load.endsWith(".demi"))
+				if(load.endsWith(".demi"))
 				{
 					load = load.substring(0, load.length() - 5);
 					
@@ -89,7 +89,7 @@ public class DFlatFile
 						DDataUtil.getAllPluginData().put(load, (HashMap<String, Object>) result);
 						ois.close();
 					}
-					catch (Exception error)
+					catch(Exception error)
 					{
 						DUtil.severe("Could not load data " + load);
 						error.printStackTrace();
@@ -101,7 +101,7 @@ public class DFlatFile
 		
 		// Players
 		File f2 = new File(path + "Players/");
-		if (!f2.exists())
+		if(!f2.exists())
 		{
 			DUtil.info("Creating a new player save.");
 			f2.mkdirs();
@@ -109,10 +109,10 @@ public class DFlatFile
 		File[] list2 = f2.listFiles();
 		if(list2 != null)
 		{
-			for (File element : list2)
+			for(File element : list2)
 			{
 				String load = element.getName();
-				if (load.endsWith(".demi"))
+				if(load.endsWith(".demi"))
 				{
 					load = load.substring(0, load.length() - 5);
 					
@@ -123,7 +123,7 @@ public class DFlatFile
 						DDataUtil.getAllPlayers().put(load, (HashMap<String, Object>) result);
 						ois.close();
 					}
-					catch (Exception error)
+					catch(Exception error)
 					{
 						DUtil.severe("Could not load player " + load);
 						error.printStackTrace();
@@ -135,7 +135,7 @@ public class DFlatFile
 		
 		// Characters
 		File f3 = new File(path + "Characters/");
-		if (!f2.exists())
+		if(!f2.exists())
 		{
 			DUtil.info("Creating a new character save.");
 			f3.mkdirs();
@@ -143,10 +143,10 @@ public class DFlatFile
 		File[] list3 = f3.listFiles();
 		if(list3 != null)
 		{
-			for (File element : list3)
+			for(File element : list3)
 			{
 				String load = element.getName();
-				if (load.endsWith(".demi"))
+				if(load.endsWith(".demi"))
 				{
 					load = load.substring(0, load.length() - 5);
 					
@@ -159,7 +159,7 @@ public class DFlatFile
 						DDataUtil.getAllChars().put(intLoad, (HashMap<String, Object>) result);
 						ois.close();
 					}
-					catch (Exception error)
+					catch(Exception error)
 					{
 						DUtil.severe("Could not load character " + load);
 						error.printStackTrace();
