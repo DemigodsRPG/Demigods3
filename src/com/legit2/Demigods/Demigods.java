@@ -219,7 +219,7 @@ public class Demigods extends JavaPlugin
 	 */
 	private void loadMetrics()
 	{
-		//new DMetrics(this);
+		new DMetrics(this);
 		//DMetrics.allianceStatsPastWeek();
 		//DMetrics.allianceStatsAllTime();
 	}
