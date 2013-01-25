@@ -44,7 +44,7 @@ public class DEntityListener implements Listener
 			{
 				if(!DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
 				{
-					DUtil.serverMsg("This works!");
+					((Player) attacker).sendMessage(ChatColor.GRAY + "Stop, you!");
 					event.setCancelled(true);
 					return;
 				}
