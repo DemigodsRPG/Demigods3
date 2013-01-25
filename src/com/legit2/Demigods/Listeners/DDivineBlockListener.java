@@ -175,38 +175,6 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler (priority = EventPriority.HIGH)
-	public void playerTribute(PlayerInteractEvent event)
-	{
-		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
-		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-		
-		try
-		{
-			// Check if block is divine
-			String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
-			
-			if(deityName == null) return;
-			
-			// Check if character has deity
-			Player player = event.getPlayer();
-			int charID = DPlayerUtil.getCurrentChar(player);
-			
-			if(DCharUtil.hasDeity(charID, deityName))
-			{
-				// Open the tribute inventory
-				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
-				player.openInventory(ii);
-				DDataUtil.saveCharData(charID, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
-				event.setCancelled(true);
-				return;
-			}
-			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + deityName + " in order to tribute here.");
-		}
-		catch (Exception er) {}
-	}
-	
-	@EventHandler (priority = EventPriority.HIGH)
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
@@ -251,6 +219,38 @@ public class DDivineBlockListener implements Listener
 				}
 			} catch(Exception e){}
 		}
+	}
+	
+	@EventHandler (priority = EventPriority.HIGH)
+	public void playerTribute(PlayerInteractEvent event)
+	{
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+		
+		try
+		{
+			// Check if block is divine
+			String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
+			
+			if(deityName == null) return;
+			
+			// Check if character has deity
+			Player player = event.getPlayer();
+			int charID = DPlayerUtil.getCurrentChar(player);
+			
+			if(DCharUtil.hasDeity(charID, deityName))
+			{
+				// Open the tribute inventory
+				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
+				player.openInventory(ii);
+				DDataUtil.saveCharData(charID, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+				event.setCancelled(true);
+				return;
+			}
+			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + deityName + " in order to tribute here.");
+		}
+		catch (Exception er) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)

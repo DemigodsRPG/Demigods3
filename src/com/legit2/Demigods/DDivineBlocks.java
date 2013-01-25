@@ -30,7 +30,7 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  getShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
+	 *  getShrines() : Returns an ArrayList<Location> of (int)charID's Shrines.
 	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Location> getShrines(int charID) throws Exception
@@ -61,7 +61,6 @@ public class DDivineBlocks
 	{
 		int charID = 0;
 		
-		CHECKSHRINES:
 		for(int character : DDataUtil.getAllChars().keySet())
 		{
 			for(Location knownShrine : getShrines(character))
@@ -69,7 +68,7 @@ public class DDivineBlocks
 				if(shrine.equals(knownShrine))
 				{
 					charID = character;
-					break CHECKSHRINES;
+					break;
 				}
 			}
 		}

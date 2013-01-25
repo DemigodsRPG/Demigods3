@@ -68,7 +68,7 @@ public class DTributeValue
 			case COOKIE: val+=itemStack.getAmount()*0.45; break;
 			case VINE: val+=itemStack.getAmount()*1.2; break;
 			case EMERALD: val+=itemStack.getAmount()*7; break;
-			case EMERALD_BLOCK: val+=itemStack.getAmount()*69; break;
+			case EMERALD_BLOCK: val+=itemStack.getAmount()*70; break;
 			case DRAGON_EGG: val+=itemStack.getAmount()*10000; break;
 			
 			default: val += itemStack.getAmount() * 0.1; break;
