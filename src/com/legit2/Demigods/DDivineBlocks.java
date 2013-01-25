@@ -3,18 +3,28 @@ package com.legit2.Demigods;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 
 public class DDivineBlocks
 {	
-	public static void createShrine(String username, String deity, Location shrineLocation)
+	/* ---------------------------------------------------
+	 * Begin Shrine-related Methods
+	 * ---------------------------------------------------
+	 * 
+	 *  createShrine() : Creates a shrine at (Location)location.
+	 */
+	public static void createShrine(OfflinePlayer player, String deity, Location location)
 	{
 		// TODO
 	}
 	
-	public static void removeShrine(String username, String deity)
+	/*
+	 *  removeShrine() : Removes the shrine at (Location)location.
+	 */
+	public static void removeShrine(Location location)
 	{
 		// TODO
 	}
@@ -73,12 +83,21 @@ public class DDivineBlocks
 		return deity;
 	}
 	
-	public static void createAltar(Location altarLocation)
+	/* ---------------------------------------------------
+	 * Begin Altar-related Methods
+	 * ---------------------------------------------------
+	 * 
+	 *  createAltar() : Creates an altar at (Location)location.
+	 */
+	public static void createAltar(Location location)
 	{
 		// TODO
 	}
 	
-	public static void removeAltar(Location altarLocation)
+	/*
+	 *  removeAltar() : Removes the altar from (Location)location.
+	 */
+	public static void removeAltar(Location location)
 	{
 		// TODO
 	}

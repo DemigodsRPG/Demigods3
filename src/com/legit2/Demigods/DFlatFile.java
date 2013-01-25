@@ -59,7 +59,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public DFlatFile()
+	public static void load()
 	{
 		// Data
 		File f1 = new File(path + "Data/");

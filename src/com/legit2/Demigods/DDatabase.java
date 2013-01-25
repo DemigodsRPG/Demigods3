@@ -32,6 +32,11 @@ public class DDatabase
 		{
 			// TODO: SQLite
 		}
+		else
+		{
+			// If nothing else works then use a FlatFile
+			DFlatFile.load();
+		}
 	}
 
 	/*
@@ -308,6 +313,11 @@ public class DDatabase
 		else if(DConfig.getSettingBoolean("sqlite"))
 		{
 			// TODO: SQLite
+		}
+		else
+		{
+			// If nothing else works then use a FlatFile
+			DFlatFile.save();
 		}
 		return false;
 	}
