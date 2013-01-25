@@ -11,7 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DChatCommands implements Listener
 {
@@ -30,7 +30,7 @@ public class DChatCommands implements Listener
 	{
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
 		
-		for(Player onlinePlayer : DUtil.getPlugin().getServer().getOnlinePlayers())
+		for(Player onlinePlayer : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
 		{
 			int currentCharID = DPlayerUtil.getCurrentChar(player);
 

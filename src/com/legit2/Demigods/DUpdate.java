@@ -13,7 +13,7 @@ import java.net.URLConnection;
 import org.bukkit.Bukkit;
 
 import com.legit2.Demigods.Libraries.UpdateChecker;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DUpdate
 {
@@ -30,7 +30,7 @@ public class DUpdate
 	{
 		if (checker.updateNeeded())
 		{
-			DUtil.info("A new version is available: " + checker.getVersion());
+			DMiscUtil.info("A new version is available: " + checker.getVersion());
 			return true;
 		}
 		return false;
@@ -49,7 +49,7 @@ public class DUpdate
 			int bytesTransferred = 0;
 			String downloadLink = getDownloadLink();
 
-			DUtil.info("Attempting to update to latest version...");
+			DMiscUtil.info("Attempting to update to latest version...");
 			
 			// Set latest build URL
 			URL plugin = new URL(downloadLink);
@@ -61,7 +61,7 @@ public class DUpdate
 
             // Create new .jar file and add it to plugins directory
             File pluginUpdate = new File("plugins" + File.separator + "Demigods.jar");
-            DUtil.info("File has been written to: " + pluginUpdate.getCanonicalPath());
+            DMiscUtil.info("File has been written to: " + pluginUpdate.getCanonicalPath());
 			
 			InputStream is = pluginCon.getInputStream();
 			OutputStream os = new FileOutputStream(pluginUpdate);
@@ -78,7 +78,7 @@ public class DUpdate
 					
 					if(percentTransferred != 100)
 					{
-						DUtil.info(percentTransferred + "%");
+						DMiscUtil.info(percentTransferred + "%");
 					}
 				}
 			}
@@ -88,20 +88,20 @@ public class DUpdate
 			os.close();
 			
 			// Update complete! Reload the server now
-			DUtil.info("Download complete! Reloading server...");
+			DMiscUtil.info("Download complete! Reloading server...");
 			Bukkit.getServer().reload();
 		}
 		catch (MalformedURLException ex)
 		{
-			DUtil.warning("Error accessing URL: " + ex);
+			DMiscUtil.warning("Error accessing URL: " + ex);
 		}
 		catch (FileNotFoundException ex)
 		{
-			DUtil.warning("Error accessing URL: " + ex);
+			DMiscUtil.warning("Error accessing URL: " + ex);
 		}
 		catch (IOException ex)
 		{
-			DUtil.warning("Error downloading file: " + ex);
+			DMiscUtil.warning("Error downloading file: " + ex);
 		}
 	}
 	

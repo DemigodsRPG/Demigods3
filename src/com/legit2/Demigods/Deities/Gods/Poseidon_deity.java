@@ -20,7 +20,7 @@ import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class Poseidon_deity implements Listener
 {	
@@ -59,7 +59,7 @@ public class Poseidon_deity implements Listener
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(player, DEITYNAME))
+		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -92,7 +92,7 @@ public class Poseidon_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.DROWNING)
@@ -110,7 +110,7 @@ public class Poseidon_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
@@ -157,7 +157,7 @@ public class Poseidon_deity implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		Player player = event.getPlayer();
-		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 		
 		// PHELPS SWIMMING
 		if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
@@ -177,7 +177,7 @@ public class Poseidon_deity implements Listener
 	@ReflectCommand.Command(name = "reel", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void reelCommand(Player player, String arg1)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, REEL_NAME))
 		{
@@ -198,9 +198,9 @@ public class Poseidon_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
-		LivingEntity target = DUtil.autoTarget(player);
+		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation()))
+		if(!DMiscUtil.canLocationPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -214,10 +214,10 @@ public class Poseidon_deity implements Listener
 		
 		if(target instanceof Player)
 		{
-			if(DUtil.areAllied(player, (Player) target)) return;
+			if(DMiscUtil.areAllied(player, (Player) target)) return;
 		}
 			
-		if(target.equals(target)) if (DUtil.canTarget(target, target.getLocation()))
+		if(target.equals(target)) if (DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			if (target.getLocation().getBlock().getType() == Material.AIR)
 			{
@@ -226,7 +226,7 @@ public class Poseidon_deity implements Listener
 			}
 		}
 
-		DUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
+		DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
 		
 		REEL_TIME = System.currentTimeMillis();
 	}
@@ -238,7 +238,7 @@ public class Poseidon_deity implements Listener
 	@ReflectCommand.Command(name = "drown", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void drownCommand(Player player, String arg1)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -268,9 +268,9 @@ public class Poseidon_deity implements Listener
 		int devotion = DCharUtil.getDevotion(charID);
 		int radius = (int) Math.ceil(1.6955424 * Math.pow(devotion, 0.129349));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
-		LivingEntity target = DUtil.autoTarget(player);
+		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation()))
+		if(!DMiscUtil.canLocationPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -284,10 +284,10 @@ public class Poseidon_deity implements Listener
 		
 		if(target instanceof Player)
 		{
-			if(DUtil.areAllied(player, (Player) target)) return;
+			if(DMiscUtil.areAllied(player, (Player) target)) return;
 		}
 		
-		if(DUtil.canTarget(target, target.getLocation()))
+		if(DMiscUtil.canTarget(target, target.getLocation()))
 		{
 			final ArrayList<Block> toReset = new ArrayList<Block>();
 			for(int x =- radius; x <= radius; x++)
@@ -310,7 +310,7 @@ public class Poseidon_deity implements Listener
 				}
 			}
 			
-			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()
@@ -327,7 +327,7 @@ public class Poseidon_deity implements Listener
 	// Don't touch these, they're required to work.
 	public String loadDeity()
 	{
-		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		DMiscUtil.plugin.getServer().getPluginManager().registerEvents(this, DMiscUtil.plugin);
 		REEL_TIME = System.currentTimeMillis();
 		DROWN_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";

@@ -13,7 +13,7 @@ import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DemigodsDatabase
 {
@@ -182,10 +182,10 @@ public class DemigodsDatabase
 			savePlugin();
 			long stopTimer = System.currentTimeMillis();
 			double totalTime = (double) (stopTimer - startTimer);
-			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
-			else DUtil.info("Demigods plugin data saved.");
+			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
+			else DMiscUtil.info("Demigods plugin data saved.");
 					
-			for(Player player : DUtil.getOnlinePlayers())
+			for(Player player : DMiscUtil.getOnlinePlayers())
 			{
 				if(savePlayer(player)) playerCount++;
 			}
@@ -195,8 +195,8 @@ public class DemigodsDatabase
 			totalTime = (double) (stopTimer - startTimer);
 
 			// Send save success message
-			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
-			else DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
+			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players in " + totalTime/1000 + " seconds.");
+			else DMiscUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
 			return true;
 		}
 		else if(DConfig.getSettingBoolean("database.sqlite.use"))
@@ -319,7 +319,7 @@ public class DemigodsDatabase
 	{
 		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
-			DUtil.info("Loading Demigods data...");
+			DMiscUtil.info("Loading Demigods data...");
 
 			// Define variables
 			int playerCount = 0;
@@ -406,7 +406,7 @@ public class DemigodsDatabase
 			catch(SQLException e)
 			{
 				// There was an error with the SQL.
-				DUtil.severe("Error while loading Demigods data. (ERR: 1001)");
+				DMiscUtil.severe("Error while loading Demigods data. (ERR: 1001)");
 				e.printStackTrace();
 			}
 			
@@ -415,8 +415,8 @@ public class DemigodsDatabase
 			double totalTime = (double) (stopStopwatch - startStopwatch);
 			
 			// Send data load success message
-			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
-			else DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
+			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
+			else DMiscUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
 		}
 		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{

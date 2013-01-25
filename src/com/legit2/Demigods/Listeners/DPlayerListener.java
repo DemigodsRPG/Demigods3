@@ -18,7 +18,7 @@ import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DPlayerListener implements Listener
 {
@@ -68,7 +68,7 @@ public class DPlayerListener implements Listener
 		
 		if(DConfig.getSettingBoolean("motd"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + DUtil.getPlugin().getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type "+ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 		
@@ -121,11 +121,11 @@ public class DPlayerListener implements Listener
 		Location from = event.getFrom();
 			
 		// No Spawn Line-Jumping
-		if(!DUtil.canLocationPVP(to) && DUtil.canLocationPVP(from))
+		if(!DMiscUtil.canLocationPVP(to) && DMiscUtil.canLocationPVP(from))
 		{
 			DDataUtil.savePlayerData(player, "temp_was_PVP", true);
 			
-			DUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DUtil.getPlugin(), new Runnable()
+			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 			{
 				@Override
 				public void run()
@@ -137,6 +137,6 @@ public class DPlayerListener implements Listener
 		}
 		
 		// Let players know where they can PVP
-		if(!DUtil.canLocationPVP(from) && DUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+		if(!DMiscUtil.canLocationPVP(from) && DMiscUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 	}
 }

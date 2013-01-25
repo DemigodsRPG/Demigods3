@@ -28,7 +28,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class DUtil
+public class DMiscUtil
 {
 	public static Demigods plugin;
 	
@@ -38,7 +38,7 @@ public class DUtil
 	private static String plugin_name = "Demigods";
 	private static Logger log = Logger.getLogger("Minecraft");
 	
-	public DUtil(Demigods instance)
+	public DMiscUtil(Demigods instance)
 	{
 		plugin = instance;
 	}

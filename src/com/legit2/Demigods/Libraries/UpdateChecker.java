@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class UpdateChecker
 {
@@ -30,7 +30,7 @@ public class UpdateChecker
 		}
 		catch (Exception e)
 		{
-			DUtil.severe("Could not connect to BukkitDev.");
+			DMiscUtil.severe("Could not connect to BukkitDev.");
 		}
 	}
 
@@ -51,7 +51,7 @@ public class UpdateChecker
 			}
 			catch (Exception e)
 			{
-				DUtil.warning("Failed to find download page.");
+				DMiscUtil.warning("Failed to find download page.");
 			}
 			input.close();
 
@@ -61,7 +61,7 @@ public class UpdateChecker
 			}
 			catch (Exception e)
 			{
-				DUtil.warning("Failed to open connection with download page.");
+				DMiscUtil.warning("Failed to open connection with download page.");
 			}
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -80,7 +80,7 @@ public class UpdateChecker
 			input.close();
 
 			
-			PluginDescriptionFile pdf = DUtil.getPlugin().getDescription();	  	
+			PluginDescriptionFile pdf = DMiscUtil.getPlugin().getDescription();	  	
 			String currentVersion = pdf.getVersion();
 			if (!currentVersion.equals(this.version))
 			{
@@ -89,7 +89,7 @@ public class UpdateChecker
 		}
 		catch (Exception e)
 		{
-			DUtil.warning("Failed to read download page.");
+			DMiscUtil.warning("Failed to read download page.");
 		}
 
 		return false;

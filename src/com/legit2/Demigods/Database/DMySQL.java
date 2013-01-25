@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import com.legit2.Demigods.DConfig;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 import lib.PatPeter.SQLibrary.MySQL;
 
@@ -32,12 +32,12 @@ public class DMySQL
 	 */
 	public static void initializeMySQL()
 	{
-		DUtil.info("Initializing MySQL...");
+		DMiscUtil.info("Initializing MySQL...");
 				
 		if(checkConnection())
 		{
 			// Success! Tell the world!
-			DUtil.info("MySQL Connection Successful!");
+			DMiscUtil.info("MySQL Connection Successful!");
 			
 			// Create Plugin Data Table
 			createTable(
@@ -103,7 +103,7 @@ public class DMySQL
 		else
 		{
 			// Connection failed... :(
-			DUtil.severe("MySQL Connection Failed!");
+			DMiscUtil.severe("MySQL Connection Failed!");
 		}
 	}
 
@@ -112,9 +112,9 @@ public class DMySQL
 	 */
 	public static void uninitializeMySQL()
 	{
-		DUtil.info("Disabling MySQL...");
+		DMiscUtil.info("Disabling MySQL...");
 		mysql.close();
-		DUtil.info("MySQL disabled!");
+		DMiscUtil.info("MySQL disabled!");
 	}
 	
 	/*
@@ -137,7 +137,7 @@ public class DMySQL
 		}
 		catch (Exception e)
 		{
-			DUtil.severe(e.getMessage());
+			DMiscUtil.severe(e.getMessage());
 		}
 		
 		if(mysql.checkConnection()) return true;
@@ -153,7 +153,7 @@ public class DMySQL
 		if(!mysql.isTable(table))
 		{
 			// Log operation to console
-			DUtil.info("Creating table \"" + table + "\"");
+			DMiscUtil.info("Creating table \"" + table + "\"");
 			
 			// Create the table
 			String query = "CREATE TABLE " + table + " (" + options + ");";
@@ -163,12 +163,12 @@ public class DMySQL
 			}
 			catch(SQLException e) 
 			{
-				DUtil.severe("There was a problem with creating table: " + table);
+				DMiscUtil.severe("There was a problem with creating table: " + table);
 				e.printStackTrace();
 			}
 			
 			// Table creation successful
-			DUtil.info("Table \"" + table + "\" created!");
+			DMiscUtil.info("Table \"" + table + "\" created!");
 		}
 		else
 		{
@@ -221,7 +221,7 @@ public class DMySQL
 		}
 		catch(SQLException e)
 		{
-			DUtil.severe("There was an error when checking for existing MySQL data:");
+			DMiscUtil.severe("There was an error when checking for existing MySQL data:");
 			e.printStackTrace();
 		}
 		return true;
@@ -247,7 +247,7 @@ public class DMySQL
 		}
 		catch(SQLException e)
 		{
-			DUtil.severe("There was an error when checking for existing MySQL data:");
+			DMiscUtil.severe("There was an error when checking for existing MySQL data:");
 			e.printStackTrace();
 		}
 		return true;

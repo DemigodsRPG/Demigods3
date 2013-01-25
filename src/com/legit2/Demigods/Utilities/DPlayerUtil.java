@@ -21,11 +21,11 @@ public class DPlayerUtil
 		// First check to see if the player exists
 		if(!DDataUtil.newPlayer(player))
 		{
-			DUtil.info(player.getName() + " already exists in the database.");
+			DMiscUtil.info(player.getName() + " already exists in the database.");
 			return false;
 		}
 		
-		DUtil.info("Adding new player (" + player.getName() + ") to the database.");
+		DMiscUtil.info("Adding new player (" + player.getName() + ") to the database.");
 		
 		// Define variables
 		int playerID = DObjUtil.generateInt(5);
@@ -135,7 +135,7 @@ public class DPlayerUtil
      */
 	public static void regenerateAllFavor()
 	{
-		Player[] onlinePlayers = DUtil.getOnlinePlayers();
+		Player[] onlinePlayers = DMiscUtil.getOnlinePlayers();
 		
 		for(Player player : onlinePlayers)
 		{

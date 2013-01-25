@@ -33,7 +33,7 @@ import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DDivineBlockListener implements Listener
 {
@@ -164,7 +164,7 @@ public class DDivineBlockListener implements Listener
 			while(i.hasNext())
 			{
 				Block block = i.next();
-				if(!DUtil.canLocationPVP(block.getLocation())) i.remove();
+				if(!DMiscUtil.canLocationPVP(block.getLocation())) i.remove();
 				for(Location center : DDivineBlocks.getAllDivineBlocks())
 				{
 					if(block.getLocation().equals(center)) i.remove();
@@ -195,7 +195,7 @@ public class DDivineBlockListener implements Listener
 			if(DCharUtil.hasDeity(charID, deityName))
 			{
 				// Open the tribute inventory
-				Inventory ii = DUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
+				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
 				player.openInventory(ii);
 				DDataUtil.saveCharData(charID, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
 				event.setCancelled(true);
@@ -210,7 +210,7 @@ public class DDivineBlockListener implements Listener
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
-		for(int charID : DUtil.getImmortalList())
+		for(int charID : DMiscUtil.getImmortalList())
 		{
 			try
 			{

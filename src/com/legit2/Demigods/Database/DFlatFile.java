@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 /*
  * HASHMAP OF PLAYER'S NAMES
@@ -53,11 +53,11 @@ public class DFlatFile
 				oos.close();
 			}
 			
-			DUtil.info("Success! All hash map data saved to FlatFile!");
+			DMiscUtil.info("Success! All hash map data saved to FlatFile!");
 		}
 		catch(Exception e)
 		{
-			DUtil.severe("Something went wrong while saving.");
+			DMiscUtil.severe("Something went wrong while saving.");
 			e.printStackTrace();
 		}
 	}
@@ -69,7 +69,7 @@ public class DFlatFile
 		File f1 = new File(path + "Data/");
 		if(!f1.exists())
 		{
-			DUtil.info("Creating a new data save.");
+			DMiscUtil.info("Creating a new data save.");
 			f1.mkdirs();
 		}
 		File[] list1 = f1.listFiles();
@@ -91,9 +91,9 @@ public class DFlatFile
 					}
 					catch(Exception error)
 					{
-						DUtil.severe("Could not load data " + load);
+						DMiscUtil.severe("Could not load data " + load);
 						error.printStackTrace();
-						DUtil.severe("End stack trace for " + load);
+						DMiscUtil.severe("End stack trace for " + load);
 					}
 				}
 			}
@@ -103,7 +103,7 @@ public class DFlatFile
 		File f2 = new File(path + "Players/");
 		if(!f2.exists())
 		{
-			DUtil.info("Creating a new player save.");
+			DMiscUtil.info("Creating a new player save.");
 			f2.mkdirs();
 		}
 		File[] list2 = f2.listFiles();
@@ -125,9 +125,9 @@ public class DFlatFile
 					}
 					catch(Exception error)
 					{
-						DUtil.severe("Could not load player " + load);
+						DMiscUtil.severe("Could not load player " + load);
 						error.printStackTrace();
-						DUtil.severe("End stack trace for " + load);
+						DMiscUtil.severe("End stack trace for " + load);
 					}
 				}
 			}
@@ -137,7 +137,7 @@ public class DFlatFile
 		File f3 = new File(path + "Characters/");
 		if(!f2.exists())
 		{
-			DUtil.info("Creating a new character save.");
+			DMiscUtil.info("Creating a new character save.");
 			f3.mkdirs();
 		}
 		File[] list3 = f3.listFiles();
@@ -161,9 +161,9 @@ public class DFlatFile
 					}
 					catch(Exception error)
 					{
-						DUtil.severe("Could not load character " + load);
+						DMiscUtil.severe("Could not load character " + load);
 						error.printStackTrace();
-						DUtil.severe("End stack trace for " + load);
+						DMiscUtil.severe("End stack trace for " + load);
 					}
 				}
 			}

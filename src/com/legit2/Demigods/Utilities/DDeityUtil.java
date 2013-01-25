@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DDeityUtil 
 {
@@ -29,10 +29,10 @@ public class DDeityUtil
 		Class noparams[] = {};
 		
 		// Creates a new instance of the deity class
-		Object obj = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).newInstance();
+		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, noparams);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, noparams);
 		
 		return toInvoke.invoke(obj, (Object[])null);
 	}
@@ -43,10 +43,10 @@ public class DDeityUtil
 	public static Object invokeDeityMethodWithString(String deityClass, String method, String paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
 		// Creates a new instance of the deity class
-		Object obj = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).newInstance();
+		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
 		
 		return toInvoke.invoke(obj, paramater);
 	}
@@ -57,10 +57,10 @@ public class DDeityUtil
 	public static Object invokeDeityMethodWithPlayer(String deityClass, String method, Player paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
 		// Creates a new instance of the deity class
-		Object obj = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).newInstance();
+		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class);
 		
 		return toInvoke.invoke(obj, paramater);
 	}

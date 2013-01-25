@@ -45,20 +45,20 @@ public class DCommandExecutor implements CommandExecutor
 	 */
 	public static boolean test1(CommandSender sender)
 	{
-		if(DUtil.hasPermissionOrOP((Player) DPlayerUtil.definePlayer(sender.getName()), "demigods.admin"))
+		if(DMiscUtil.hasPermissionOrOP((Player) DPlayerUtil.definePlayer(sender.getName()), "demigods.admin"))
 		{
-			DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
+			DMiscUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
 			if(DemigodsDatabase.saveAllData())
 			{
-				DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
+				DMiscUtil.serverMsg(ChatColor.GREEN + "Save complete!");
 			}
 			else
 			{
-				DUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
-				DUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
+				DMiscUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
+				DMiscUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
 			}
 		}
-		else DUtil.noPermission((Player) DPlayerUtil.definePlayer(sender.getName()));
+		else DMiscUtil.noPermission((Player) DPlayerUtil.definePlayer(sender.getName()));
 		return true;
 	}
 
@@ -78,9 +78,9 @@ public class DCommandExecutor implements CommandExecutor
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		
 		// Check Permissions
-		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
 		
-		DUtil.taggedMessage(sender, "Information Directory");
+		DMiscUtil.taggedMessage(sender, "Information Directory");
 		for(String alliance : DDeityUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase());
 		sender.sendMessage(ChatColor.GRAY + "/dg claim");
 		sender.sendMessage(ChatColor.GRAY + "/dg shrine");
@@ -88,7 +88,7 @@ public class DCommandExecutor implements CommandExecutor
 		sender.sendMessage(ChatColor.GRAY + "/dg player");
 		sender.sendMessage(ChatColor.GRAY + "/dg pvp");
 		sender.sendMessage(ChatColor.GRAY + "/dg rankings");
-		if(DUtil.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + "/dg admin");
+		if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + "/dg admin");
 		sender.sendMessage(ChatColor.WHITE + "Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
 		return true;
 	}
@@ -106,7 +106,7 @@ public class DCommandExecutor implements CommandExecutor
 		String category = args[0];
 		
 		// Check Permissions
-		if(!DUtil.hasPermissionOrOP(player, "demigods.basic")) return DUtil.noPermission(player);
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
 		
 		for(String alliance : DDeityUtil.getLoadedDeityAlliances())
 		{
@@ -114,7 +114,7 @@ public class DCommandExecutor implements CommandExecutor
 			{
 				if(args.length < 2)
 				{
-					DUtil.taggedMessage(sender, alliance + " Directory");
+					DMiscUtil.taggedMessage(sender, alliance + " Directory");
 				
 					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
 					{
@@ -152,59 +152,59 @@ public class DCommandExecutor implements CommandExecutor
 	
 		if(category.equalsIgnoreCase("save"))
 		{
-			if(DUtil.hasPermissionOrOP(player, "demigods.admin"))
+			if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin"))
 			{
-				DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
+				DMiscUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
 				if(DemigodsDatabase.saveAllData())
 				{
-					DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
+					DMiscUtil.serverMsg(ChatColor.GREEN + "Save complete!");
 				}
 				else
 				{
-					DUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
-					DUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
+					DMiscUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
+					DMiscUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
 				}
 			}
-			else DUtil.noPermission(player);
+			else DMiscUtil.noPermission(player);
 		}
 		else if(category.equalsIgnoreCase("claim"))
 		{
-			DUtil.taggedMessage(sender, "Claiming");
+			DMiscUtil.taggedMessage(sender, "Claiming");
 			sender.sendMessage(ChatColor.GRAY + " This is some info about Claiming.");
 		}
 		else if(category.equalsIgnoreCase("shrine"))
 		{
-			DUtil.taggedMessage(sender, "Shrines");
+			DMiscUtil.taggedMessage(sender, "Shrines");
 			sender.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
 		}
 		else if(category.equalsIgnoreCase("tribute"))
 		{
-			DUtil.taggedMessage(sender, "Tributes");
+			DMiscUtil.taggedMessage(sender, "Tributes");
 			sender.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
 		}
 		else if(category.equalsIgnoreCase("player"))
 		{
-			DUtil.taggedMessage(sender, "Players");
+			DMiscUtil.taggedMessage(sender, "Players");
 			sender.sendMessage(ChatColor.GRAY + " This is some info about Players.");
 		}
 		else if(category.equalsIgnoreCase("pvp"))
 		{
-			DUtil.taggedMessage(sender, "PVP");
+			DMiscUtil.taggedMessage(sender, "PVP");
 			sender.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 		}
 		else if(category.equalsIgnoreCase("stats"))
 		{
-			DUtil.taggedMessage(sender, "Stats");
+			DMiscUtil.taggedMessage(sender, "Stats");
 			sender.sendMessage(ChatColor.GRAY + " These are some stats for Demigods.");
 		}
 		else if(category.equalsIgnoreCase("rankings"))
 		{
-			DUtil.taggedMessage(sender, "Rankings");
+			DMiscUtil.taggedMessage(sender, "Rankings");
 			sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
 		}
 		else if(category.equalsIgnoreCase("admin"))
 		{
-			DUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
+			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
 			sender.sendMessage(ChatColor.GRAY + "/setalliance <player> <alliance>");
 			sender.sendMessage(ChatColor.GRAY + "/givedeity <player> <deity>");
 			sender.sendMessage(ChatColor.GRAY + "/setdevotion <player> <deity> <amount>");
@@ -231,7 +231,7 @@ public class DCommandExecutor implements CommandExecutor
 		}		
 			
 		// Send the user their info via chat
-		DUtil.customTaggedMessage(sender, "Demigods Player Check", null);
+		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", null);
 		
 		/*
 		sender.sendMessage(ChatColor.RESET + "Name: " + ChatColor.AQUA + username + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtil.capitalize(alliance) + "s");

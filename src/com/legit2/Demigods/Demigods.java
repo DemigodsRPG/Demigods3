@@ -24,7 +24,7 @@ import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Listeners.DTagAPIListener;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -42,7 +42,7 @@ public class Demigods extends JavaPlugin
 	public void onEnable()
 	{
 		// Initialize Configuration
-		new DUtil(this);
+		new DMiscUtil(this);
 		
 		loadDependencies();
 		
@@ -61,11 +61,11 @@ public class Demigods extends JavaPlugin
 			//loadTestCode();
 			//////// End Test Code Loader
 			
-			DUtil.info("Enabled!");
+			DMiscUtil.info("Enabled!");
 		}
 		else
 		{
-			DUtil.severe("Demigods cannot enable correctly because at least one required dependency was not found.");
+			DMiscUtil.severe("Demigods cannot enable correctly because at least one required dependency was not found.");
 			getPluginLoader().disablePlugin(getServer().getPluginManager().getPlugin("Demigods"));
 		}		
 	}
@@ -91,7 +91,7 @@ public class Demigods extends JavaPlugin
 			DemigodsDatabase.uninitializeDatabase();
 			DScheduler.stopThreads();
 						
-			DUtil.info("Disabled!");
+			DMiscUtil.info("Disabled!");
 		}		
 	}
 	
@@ -102,12 +102,12 @@ public class Demigods extends JavaPlugin
 	private void loadTestCode()
 	{
 		// Don't remove the header and footer of the test code.
-		DUtil.info("====== Begin Test Code =============================");
+		DMiscUtil.info("====== Begin Test Code =============================");
 		
 		
 		
 		// K, thanks
-		DUtil.info("====== End Test Code ===============================");
+		DMiscUtil.info("====== End Test Code ===============================");
 	}
 	
 	/*
@@ -149,7 +149,7 @@ public class Demigods extends JavaPlugin
 	@SuppressWarnings("unchecked")
 	public void loadDeities()
 	{
-		DUtil.info("Loading deities...");
+		DMiscUtil.info("Loading deities...");
 		ArrayList<String> deityList = new ArrayList<String>();
 		ReflectCommand commandRegistrator = new ReflectCommand(this);
 		
@@ -198,17 +198,17 @@ public class Demigods extends JavaPlugin
 					DDataUtil.savePluginData("temp_deity_claim_items", name, claimItems);
 					 
 					// Display the success message
-					DUtil.info(message);
+					DMiscUtil.info(message);
 				}
 				// Stop the timer
 				long stopTimer = System.currentTimeMillis();
 				double totalTime = (double) (stopTimer - startTimer);
 
-				DUtil.info(deityCount + " deities loaded in " + totalTime/1000 + " seconds.");
+				DMiscUtil.info(deityCount + " deities loaded in " + totalTime/1000 + " seconds.");
 			}
 			catch(Exception e)
 			{
-				DUtil.severe("There was a problem while loading deities!");
+				DMiscUtil.severe("There was a problem while loading deities!");
 				e.printStackTrace();
 			}
 		}
@@ -234,7 +234,7 @@ public class Demigods extends JavaPlugin
 		Plugin pg = getServer().getPluginManager().getPlugin("SQLibrary");
 		if (pg == null)
 		{
-			DUtil.severe("SQLibrary plugin (required) not found!");
+			DMiscUtil.severe("SQLibrary plugin (required) not found!");
 			okayToLoad = false;
 		}
 		
@@ -250,7 +250,7 @@ public class Demigods extends JavaPlugin
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
-			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
+			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
 		}
 	}
 	

@@ -16,7 +16,7 @@ import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class Template implements Listener
 {	
@@ -54,7 +54,7 @@ public class Template implements Listener
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(player, DEITYNAME))
+		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -89,7 +89,7 @@ public class Template implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getEntity();
-			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -107,7 +107,7 @@ public class Template implements Listener
 		Player player = interactEvent.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, TEST_NAME))))
 		{
@@ -140,7 +140,7 @@ public class Template implements Listener
 	@ReflectCommand.Command(name = "testabil", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void testCommand(Player player, String arg1)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -177,7 +177,7 @@ public class Template implements Listener
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -190,7 +190,7 @@ public class Template implements Listener
 		// Perform ultimate if there is enough favor
 		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
-			if(!DUtil.canLocationPVP(player.getLocation()))
+			if(!DMiscUtil.canLocationPVP(player.getLocation()))
 			{
 				testHelper(player);
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
@@ -220,7 +220,7 @@ public class Template implements Listener
 	// Don't touch these, they're required to work.
 	public String loadDeity()
 	{
-		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		DMiscUtil.plugin.getServer().getPluginManager().registerEvents(this, DMiscUtil.plugin);
 		ULTIMATE_TIME = System.currentTimeMillis();
 		TEST_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";

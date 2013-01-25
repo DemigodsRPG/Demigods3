@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.legit2.Demigods.Demigods;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DEntityListener implements Listener
 {
@@ -39,7 +39,7 @@ public class DEntityListener implements Listener
 			
 			if(attacker instanceof Player)
 			{
-				if(!DUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
+				if(!DMiscUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
 				{
 					((Player) attacker).sendMessage(ChatColor.GRAY + "Stop, you!");
 					event.setCancelled(true);

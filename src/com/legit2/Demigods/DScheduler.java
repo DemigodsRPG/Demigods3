@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DemigodsDatabase;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 @SuppressWarnings("unused")
 public class DScheduler
 {
 	// Define commands
-	private static Demigods plugin = DUtil.getPlugin();
+	private static Demigods plugin = DMiscUtil.getPlugin();
 	private static int savePlayers;
 	
 	/*

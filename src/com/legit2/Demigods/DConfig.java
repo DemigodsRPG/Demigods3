@@ -2,11 +2,11 @@ package com.legit2.Demigods;
 
 import org.bukkit.configuration.Configuration;
 
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DConfig
 {
-	static Demigods plugin = DUtil.getPlugin();
+	static Demigods plugin = DMiscUtil.getPlugin();
 	private static Configuration config;
 
 	public static void initializeConfig()

@@ -22,7 +22,7 @@ import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
-import com.legit2.Demigods.Utilities.DUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class Cronus_deity implements Listener
 {	
@@ -68,7 +68,7 @@ public class Cronus_deity implements Listener
 	{		
 		ArrayList<String> toReturn = new ArrayList<String>();
 		
-		if(DUtil.canUseDeitySilent(player, DEITYNAME))
+		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -103,9 +103,9 @@ public class Cronus_deity implements Listener
 			Player player = (Player)damageEvent.getDamager();
 			int charID = DPlayerUtil.getCurrentChar(player);
 			
-			if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
-			if(!DUtil.canLocationPVP(damageEvent.getEntity().getLocation())) return;
+			if(!DMiscUtil.canLocationPVP(damageEvent.getEntity().getLocation())) return;
 
 			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
 			
@@ -114,7 +114,7 @@ public class Cronus_deity implements Listener
 				Player attacked = (Player)damageEvent.getEntity();
 				
 				// Cronus Passive: Stop movement
-				if(!DCharUtil.isImmortal(attacked) || (DCharUtil.isImmortal(attacked) && !DUtil.areAllied(player, attacked))) attacked.setVelocity(new Vector(0,0,0));
+				if(!DCharUtil.isImmortal(attacked) || (DCharUtil.isImmortal(attacked) && !DMiscUtil.areAllied(player, attacked))) attacked.setVelocity(new Vector(0,0,0));
 			}
 			
 			if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
@@ -147,7 +147,7 @@ public class Cronus_deity implements Listener
 		Player player = interactEvent.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
 
-		if(!DUtil.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, SLOW_NAME))))
 		{
@@ -180,7 +180,7 @@ public class Cronus_deity implements Listener
 	@ReflectCommand.Command(name = "cleave", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void cleaveCommand(Player player)
 	{
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
 		{
@@ -208,7 +208,7 @@ public class Cronus_deity implements Listener
 			
 			for (int i = 1; i <= 31; i += 4) attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
 			
-			DUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(charID), 0.35)), DamageCause.ENTITY_ATTACK);
+			DMiscUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(charID), 0.35)), DamageCause.ENTITY_ATTACK);
 			
 			if ((LivingEntity)attacked instanceof Player)
 			{
@@ -228,7 +228,7 @@ public class Cronus_deity implements Listener
 	@ReflectCommand.Command(name = "slow", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void slowCommand(Player player, String arg1)
 	{		
-		if(!DUtil.canUseDeity(player, DEITYNAME)) return;
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(arg1.equalsIgnoreCase("bind"))
 		{		
@@ -259,15 +259,15 @@ public class Cronus_deity implements Listener
 		int duration = (int) Math.ceil(3.635 * Math.pow(devotion, 0.2576)); //seconds
 		int strength = (int) Math.ceil(1.757 * Math.pow(devotion, 0.097));
 		Player target = null; 
-		if(DUtil.autoTarget(player) instanceof Player) target = (Player) DUtil.autoTarget(player);
+		if(DMiscUtil.autoTarget(player) instanceof Player) target = (Player) DMiscUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation()))
+		if(!DMiscUtil.canLocationPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
 		}
 		
-		if(DUtil.areAllied(player, (Player) target) || !DUtil.canTarget(target, target.getLocation()))  return;
+		if(DMiscUtil.areAllied(player, (Player) target) || !DMiscUtil.canTarget(target, target.getLocation()))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
 		{
@@ -306,7 +306,7 @@ public class Cronus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
-			if(!DUtil.canLocationPVP(player.getLocation()))
+			if(!DMiscUtil.canLocationPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 
@@ -338,9 +338,9 @@ public class Cronus_deity implements Listener
 		{
 			if(!(onlinePlayer.getLocation().toVector().isInSphere(player.getLocation().toVector(), 70))) continue;
 			
-			if(!DUtil.canLocationPVP(onlinePlayer.getLocation())) continue;
+			if(!DMiscUtil.canLocationPVP(onlinePlayer.getLocation())) continue;
 			
-			if (DCharUtil.isImmortal(onlinePlayer) && DUtil.areAllied(player, onlinePlayer)) continue;
+			if (DCharUtil.isImmortal(onlinePlayer) && DMiscUtil.areAllied(player, onlinePlayer)) continue;
 
 			onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, slowamount));
 			
@@ -355,7 +355,7 @@ public class Cronus_deity implements Listener
 	// Don't touch these, they're required to work.
 	public String loadDeity()
 	{
-		DUtil.plugin.getServer().getPluginManager().registerEvents(this, DUtil.plugin);
+		DMiscUtil.plugin.getServer().getPluginManager().registerEvents(this, DMiscUtil.plugin);
 		ULTIMATE_TIME = System.currentTimeMillis();
 		CLEAVE_TIME = System.currentTimeMillis();
 		SLOW_TIME = System.currentTimeMillis();
