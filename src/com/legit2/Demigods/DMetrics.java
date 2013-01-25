@@ -1,13 +1,5 @@
 package com.legit2.Demigods;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import com.legit2.Demigods.Libraries.Metrics;
-import com.legit2.Demigods.Libraries.Metrics.Graph;
-import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DUtil;
-
 public class DMetrics
 {
 	static Demigods plugin;
@@ -16,7 +8,10 @@ public class DMetrics
 	{
 		plugin = d;
 	}
-
+	
+	// TODO
+	
+	/*
 	public static void allianceStatsPastWeek()
 	{
 		try
@@ -145,4 +140,5 @@ public class DMetrics
 		    DUtil.severe(e.getMessage());
 		}
 	}
+	*/
 }

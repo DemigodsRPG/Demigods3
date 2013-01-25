@@ -18,7 +18,10 @@ import org.kitteh.tag.TagAPI;
 import com.legit2.Demigods.Database.DemigodsDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DChatCommands;
+import com.legit2.Demigods.Listeners.DDivineBlockListener;
+import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
+import com.legit2.Demigods.Listeners.DTagAPIListener;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
 import com.legit2.Demigods.Utilities.DUtil;
@@ -132,9 +135,9 @@ public class Demigods extends JavaPlugin
 	{		
 		/* Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
-		//getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
+		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
 		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
-		//getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
+		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 }
 	
 	/*
@@ -236,7 +239,7 @@ public class Demigods extends JavaPlugin
 		TAGAPI = getServer().getPluginManager().getPlugin("TagAPI");
 		if (TAGAPI != null)
 		{
-			//getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
+			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
 		}
 		
 		// Check for the WorldGuard plugin (optional)
