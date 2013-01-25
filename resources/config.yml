@@ -36,3 +36,5 @@ database:
         password: ''
         host: localhost
         port: 3306
+    sqlite:
+        use: false

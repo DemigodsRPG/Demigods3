@@ -50,6 +50,8 @@ public class DFlatFile
 				oos.flush();
 				oos.close();
 			}
+			
+			DUtil.info("Success! All hash map data saved to FlatFile!");
 		}
 		catch(Exception e)
 		{
