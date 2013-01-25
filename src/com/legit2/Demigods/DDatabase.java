@@ -22,13 +22,13 @@ public class DDatabase
 	public static void initializeDatabase()
 	{
 		// Check if MySQL is enabled in the configuration and if so, attempts to connect.
-		if(DConfig.getSettingBoolean("mysql"))
+		if(DConfig.getSettingBoolean("database.mysql.use"))
 		{
 			DMySQL.createConnection();
 			DMySQL.initializeMySQL();
 			loadAllData();
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -46,11 +46,11 @@ public class DDatabase
 	{
 		saveAllData();
 		
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{
 			DMySQL.uninitializeMySQL();
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -65,7 +65,7 @@ public class DDatabase
 		Long firstLoginTime = System.currentTimeMillis();
 
 		// Next we add them to the Database if needed
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
 			int playerID = DPlayerUtil.getPlayerID(player);
 			String playerName = player.getName();
@@ -73,7 +73,7 @@ public class DDatabase
 			String addQuery = "INSERT INTO " + DMySQL.player_table + " (player_id, player_name, player_characters, player_kills, player_deaths, player_firstlogin, player_lastlogin) VALUES (" + playerID + ",'" + playerName + "', NULL, 0, 0," + firstLoginTime + "," + firstLoginTime +");";
 			DMySQL.runQuery(addQuery);
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -85,11 +85,11 @@ public class DDatabase
 	public static void removePlayerFromDB(OfflinePlayer player) throws SQLException
 	{
 		// Next we add them to the Database if needed
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
 			// TODO: Remove player from MySQL
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -101,7 +101,7 @@ public class DDatabase
 	public static void addCharToDB(OfflinePlayer player, int charID) throws SQLException
 	{
 		// Next we add them to the Database if needed
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
 			int playerID = DPlayerUtil.getPlayerID(player);
 			boolean charActive = DCharUtil.isActive(charID);
@@ -143,7 +143,7 @@ public class DDatabase
 			
 			DMySQL.runQuery(addQuery);
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -154,11 +154,11 @@ public class DDatabase
 	 */
 	public static ResultSet getPlayerInfo(String username) throws SQLException
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{
 			// TODO: Return player info from MySQL
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -171,7 +171,7 @@ public class DDatabase
 	 */
 	public static void loadAllData()
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
 			DUtil.info("Loading Demigods data...");
 
@@ -272,7 +272,7 @@ public class DDatabase
 			if(DConfig.getSettingBoolean("data_debug")) DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
 			else DUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -283,7 +283,7 @@ public class DDatabase
 	 */
 	public static boolean saveAllData()
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{	
 			// Define variables
 			int playerCount = 0;
@@ -310,7 +310,7 @@ public class DDatabase
 			else DUtil.info("Success! Saved " + playerCount + " of " + DMySQL.getRows(DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + ";")) + " players.");
 			return true;
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -327,7 +327,7 @@ public class DDatabase
 	 */
 	public static boolean savePlayer(OfflinePlayer player)
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{			
 			int playerID = DPlayerUtil.getPlayerID(player);
 
@@ -378,7 +378,7 @@ public class DDatabase
 			}
 			return true;
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -390,7 +390,7 @@ public class DDatabase
 	 */
 	public static boolean savePlugin()
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{			
 			// Clear tables first
 			DMySQL.runQuery("TRUNCATE TABLE " + DMySQL.plugindata_table + ";");
@@ -415,7 +415,7 @@ public class DDatabase
 					
 			return true;
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -427,7 +427,7 @@ public class DDatabase
 	 */
 	public static boolean removePlayer(OfflinePlayer player)
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{			
 			int playerID = DPlayerUtil.getPlayerID(player);
 			
@@ -437,7 +437,7 @@ public class DDatabase
 			
 			return true;
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
@@ -449,14 +449,14 @@ public class DDatabase
 	 */
 	public static boolean removeChar(int charID)
 	{
-		if(DConfig.getSettingBoolean("mysql") && DMySQL.checkConnection())
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
 		{						
 			DMySQL.runQuery("DELETE FROM " + DMySQL.character_table + " WHERE char_id=" + charID + ";");
 			DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
 			
 			return true;
 		}
-		else if(DConfig.getSettingBoolean("sqlite"))
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
 			// TODO: SQLite
 		}
