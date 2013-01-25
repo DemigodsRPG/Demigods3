@@ -133,10 +133,13 @@ public class Demigods extends JavaPlugin
 	 */
 	private void loadListeners()
 	{		
-		/* Player Listener */
+		/* General Player Listener */
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
+		/* General Entity Listener */
 		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
+		/* Chat Commands */
 		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
+		/* Diving Blocks */
 		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 }
 	
