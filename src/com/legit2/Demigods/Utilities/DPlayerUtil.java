@@ -94,7 +94,7 @@ public class DPlayerUtil
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		return DDataUtil.getCharData(getCurrentChar(player), "alliance").toString();
+		return DDataUtil.getCharData(getCurrentChar(player), "char_alliance").toString();
 	}
 	
 	/*
