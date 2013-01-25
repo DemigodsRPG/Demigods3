@@ -308,7 +308,7 @@ public class DMiscUtil
 	/*
 	 *  canTarget() : Checks if PVP is allowed in (Location)location.
 	 */
-    public static boolean canTarget(LivingEntity player, Location location)
+    public static boolean canTarget(Entity player, Location location)
     {      
     	if(!(player instanceof Player)) return true;
     	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return true;
