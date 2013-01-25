@@ -147,7 +147,7 @@ public class DFlatFile
 				String load = element.getName();
 				if (load.endsWith(".demi"))
 				{
-					load = load.substring(0, load.length() - 7);
+					load = load.substring(0, load.length() - 5);
 					
 					Integer intLoad = Integer.parseInt(load);
 					
