@@ -29,25 +29,25 @@ public class DFlatFile
 			(new File(path + "Data/")).mkdirs();
 			(new File(path + "Players/")).mkdirs();
 			(new File(path + "Characters/")).mkdirs();
-			for(String data : DDataUtil.pluginData.keySet()) 
+			for(String data : DDataUtil.getAllPluginData().keySet()) 
 			{
 				if(data.startsWith("temp_")) continue;
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Data/" + data + ".demi"));
-				oos.writeObject(DDataUtil.pluginData.get(data));
+				oos.writeObject(DDataUtil.getAllPluginData().get(data));
 				oos.flush();
 				oos.close();
 			}
-			for(String data : DDataUtil.playerData.keySet()) 
+			for(String data : DDataUtil.getAllPlayers().keySet()) 
 			{
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Players/" + data + ".demi"));
-				oos.writeObject(DDataUtil.pluginData.get(data));
+				oos.writeObject(DDataUtil.getAllPlayers().get(data));
 				oos.flush();
 				oos.close();
 			}
-			for(Integer data : DDataUtil.charData.keySet()) 
+			for(Integer data : DDataUtil.getAllChars().keySet()) 
 			{
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Characters/" + data + ".demi"));
-				oos.writeObject(DDataUtil.pluginData.get(data));
+				oos.writeObject(DDataUtil.getAllChars().get(data));
 				oos.flush();
 				oos.close();
 			}
@@ -85,7 +85,7 @@ public class DFlatFile
 					{
 						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
 						Object result = ois.readObject();
-						DDataUtil.pluginData.put(load, (HashMap<String, Object>) result);
+						DDataUtil.getAllPluginData().put(load, (HashMap<String, Object>) result);
 						ois.close();
 					}
 					catch (Exception error)
@@ -119,7 +119,7 @@ public class DFlatFile
 					{
 						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
 						Object result = ois.readObject();
-						DDataUtil.playerData.put(load, (HashMap<String, Object>) result);
+						DDataUtil.getAllPlayers().put(load, (HashMap<String, Object>) result);
 						ois.close();
 					}
 					catch (Exception error)
@@ -155,7 +155,7 @@ public class DFlatFile
 					{
 						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
 						Object result = ois.readObject();
-						DDataUtil.charData.put(intLoad, (HashMap<String, Object>) result);
+						DDataUtil.getAllChars().put(intLoad, (HashMap<String, Object>) result);
 						ois.close();
 					}
 					catch (Exception error)

@@ -10,9 +10,9 @@ import com.legit2.Demigods.DDatabase;
 public class DDataUtil 
 {
 	// Define HashMaps
-	public static HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
-	public static HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
-	public static HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
+	private static HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
+	private static HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
+	private static HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
 
 	/* ---------------------------------------------------
 	 * Begin Plugin Data Methods
@@ -311,7 +311,7 @@ public class DDataUtil
 	}
 	
 	/*
-	 *  getAllPlayers() : Returns all players in the playerData HashMap.
+	 *  getAllChars() : Returns all players in the playerData HashMap.
 	 */
 	public static HashMap<Integer, HashMap<String, Object>> getAllChars()
 	{
