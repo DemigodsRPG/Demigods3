@@ -1,4 +1,3 @@
-
 package com.legit2.Demigods.Deities.Gods;
 
 import java.util.ArrayList;
@@ -201,7 +200,11 @@ public class Poseidon_deity implements Listener
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation()))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return;
+		}
 		
 		if(target == null)
 		{
@@ -229,7 +232,7 @@ public class Poseidon_deity implements Listener
 	}
 	
 	/*
-	 *  Command: "/lightning"
+	 *  Command: "/drown"
 	 */
 	
 	@ReflectCommand.Command(name = "drown", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
@@ -267,7 +270,11 @@ public class Poseidon_deity implements Listener
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation()))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return;
+		}
 		
 		if(target == null)
 		{

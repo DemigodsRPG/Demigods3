@@ -197,7 +197,11 @@ public class Zeus_deity implements Listener
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
-		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation()))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return;
+		}
 		
 		// Get Targets as an ArrayList
 		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
@@ -268,7 +272,11 @@ public class Zeus_deity implements Listener
 		// Define variables
 		LivingEntity target = DUtil.autoTarget(player);
 		
-		if(!DUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(!DUtil.canLocationPVP(player.getLocation()))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return;
+		}
 		
 		if(target == null)
 		{

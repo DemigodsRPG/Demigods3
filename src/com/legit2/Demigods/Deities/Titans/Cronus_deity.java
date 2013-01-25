@@ -261,6 +261,12 @@ public class Cronus_deity implements Listener
 		Player target = null; 
 		if(DUtil.autoTarget(player) instanceof Player) target = (Player) DUtil.autoTarget(player);
 		
+		if(!DUtil.canLocationPVP(player.getLocation()))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return;
+		}
+		
 		if(DUtil.areAllied(player, (Player) target) || !DUtil.canTarget(target, target.getLocation()))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
