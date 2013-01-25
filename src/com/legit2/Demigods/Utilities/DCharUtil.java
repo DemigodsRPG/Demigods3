@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.DConfig;
-import com.legit2.Demigods.DDatabase;
+import com.legit2.Demigods.Database.DemigodsDatabase;
 
 public class DCharUtil
 {
@@ -73,8 +73,8 @@ public class DCharUtil
 
 			try
 			{
-				DDatabase.addCharToDB(player, charID);
-				DDatabase.savePlayer(player);
+				DemigodsDatabase.addCharToDB(player, charID);
+				DemigodsDatabase.savePlayer(player);
 			}
 			catch(SQLException e)
 			{
@@ -101,7 +101,7 @@ public class DCharUtil
 			String chars = Joiner.on(",").join(charsTemp);
 			DDataUtil.savePlayerData(player, "player_characters", chars);
 
-			DDatabase.savePlayer(player);
+			DemigodsDatabase.savePlayer(player);
 			return true;
 		}
 		return false;

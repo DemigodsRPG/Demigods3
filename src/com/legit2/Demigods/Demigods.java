@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 
+import com.legit2.Demigods.Database.DemigodsDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DChatCommands;
 import com.legit2.Demigods.Listeners.DPlayerListener;
@@ -45,7 +46,7 @@ public class Demigods extends JavaPlugin
 		if(okayToLoad)
 		{
 			DConfig.initializeConfig();
-			DDatabase.initializeDatabase();
+			DemigodsDatabase.initializeDatabase();
 			DScheduler.startThreads();
 			loadCommands();
 			loadDeities();
@@ -84,7 +85,7 @@ public class Demigods extends JavaPlugin
 				}
 			}
 			
-			DDatabase.uninitializeDatabase();
+			DemigodsDatabase.uninitializeDatabase();
 			DScheduler.stopThreads();
 						
 			DUtil.info("Disabled!");

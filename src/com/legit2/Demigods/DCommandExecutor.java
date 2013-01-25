@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.Database.DemigodsDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.*;
 
@@ -47,7 +48,7 @@ public class DCommandExecutor implements CommandExecutor
 		if(DUtil.hasPermissionOrOP((Player) DPlayerUtil.definePlayer(sender.getName()), "demigods.admin"))
 		{
 			DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
-			if(DDatabase.saveAllData())
+			if(DemigodsDatabase.saveAllData())
 			{
 				DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
 			}
@@ -154,7 +155,7 @@ public class DCommandExecutor implements CommandExecutor
 			if(DUtil.hasPermissionOrOP(player, "demigods.admin"))
 			{
 				DUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
-				if(DDatabase.saveAllData())
+				if(DemigodsDatabase.saveAllData())
 				{
 					DUtil.serverMsg(ChatColor.GREEN + "Save complete!");
 				}

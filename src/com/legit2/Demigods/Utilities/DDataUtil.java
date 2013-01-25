@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
 
-import com.legit2.Demigods.DDatabase;
+import com.legit2.Demigods.Database.DemigodsDatabase;
 
 public class DDataUtil 
 {
@@ -186,7 +186,7 @@ public class DDataUtil
 	public static boolean removeChar(int charID)
 	{
 		charData.remove(charID);
-		DDatabase.removeChar(charID);
+		DemigodsDatabase.removeChar(charID);
 		return true;
 	}
 	
@@ -289,7 +289,7 @@ public class DDataUtil
 		String playerName = player.getName();;
 		playerData.remove(playerName);
 		charData.remove(playerName);
-		DDatabase.removePlayer(player);
+		DemigodsDatabase.removePlayer(player);
 		return true;
 	}
 	

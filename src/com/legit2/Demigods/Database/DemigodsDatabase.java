@@ -1,4 +1,4 @@
-package com.legit2.Demigods;
+package com.legit2.Demigods.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,13 +8,14 @@ import java.util.Map.Entry;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
-public class DDatabase
+public class DemigodsDatabase
 {
 	/*
 	 *  initializeDatabase() : Loads the MySQL or SQLite database.

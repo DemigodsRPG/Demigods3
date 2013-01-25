@@ -1,9 +1,10 @@
-package com.legit2.Demigods;
+package com.legit2.Demigods.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Utilities.DUtil;
 
 import lib.PatPeter.SQLibrary.MySQL;

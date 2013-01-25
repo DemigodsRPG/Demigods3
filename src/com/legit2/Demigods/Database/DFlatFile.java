@@ -1,4 +1,4 @@
-package com.legit2.Demigods;
+package com.legit2.Demigods.Database;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
 /*
@@ -149,7 +150,7 @@ public class DFlatFile
 				{
 					load = load.substring(0, load.length() - 5);
 					
-					Integer intLoad = Integer.parseInt(load);
+					Integer intLoad = DObjUtil.toInteger(load);
 					
 					try
 					{

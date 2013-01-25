@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.Database.DemigodsDatabase;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DUtil;
 
@@ -33,7 +34,7 @@ public class DScheduler
 			@Override
 			public void run()
 			{
-				DDatabase.saveAllData();
+				DemigodsDatabase.saveAllData();
 			}
 		}, start_delay, save_frequency);
 		
