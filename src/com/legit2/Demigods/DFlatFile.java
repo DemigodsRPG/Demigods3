@@ -31,6 +31,7 @@ public class DFlatFile
 			(new File(path + "Characters/")).mkdirs();
 			for(String data : DDataUtil.pluginData.keySet()) 
 			{
+				if(data.startsWith("temp_")) continue;
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Data/" + data + ".demi"));
 				oos.writeObject(DDataUtil.pluginData.get(data));
 				oos.flush();
@@ -71,25 +72,28 @@ public class DFlatFile
 			f1.mkdirs();
 		}
 		File[] list1 = f1.listFiles();
-		for (File element : list1)
+		if(list1 != null)
 		{
-			String load = element.getName();
-			if (load.endsWith(".demi"))
+			for (File element : list1)
 			{
-				load = load.substring(0, load.length() - 5);
-				
-				try
+				String load = element.getName();
+				if (load.endsWith(".demi"))
 				{
-					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
-					Object result = ois.readObject();
-					DDataUtil.pluginData.put(load, (HashMap<String, Object>) result);
-					ois.close();
-				}
-				catch (Exception error)
-				{
-					DUtil.severe("Could not load data " + load);
-					error.printStackTrace();
-					DUtil.severe("End stack trace for " + load);
+					load = load.substring(0, load.length() - 5);
+					
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						DDataUtil.pluginData.put(load, (HashMap<String, Object>) result);
+						ois.close();
+					}
+					catch (Exception error)
+					{
+						DUtil.severe("Could not load data " + load);
+						error.printStackTrace();
+						DUtil.severe("End stack trace for " + load);
+					}
 				}
 			}
 		}
@@ -102,25 +106,28 @@ public class DFlatFile
 			f2.mkdirs();
 		}
 		File[] list2 = f2.listFiles();
-		for (File element : list2)
+		if(list2 != null)
 		{
-			String load = element.getName();
-			if (load.endsWith(".demi"))
+			for (File element : list2)
 			{
-				load = load.substring(0, load.length() - 5);
-				
-				try
+				String load = element.getName();
+				if (load.endsWith(".demi"))
 				{
-					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
-					Object result = ois.readObject();
-					DDataUtil.playerData.put(load, (HashMap<String, Object>) result);
-					ois.close();
-				}
-				catch (Exception error)
-				{
-					DUtil.severe("Could not load player " + load);
-					error.printStackTrace();
-					DUtil.severe("End stack trace for " + load);
+					load = load.substring(0, load.length() - 5);
+					
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						DDataUtil.playerData.put(load, (HashMap<String, Object>) result);
+						ois.close();
+					}
+					catch (Exception error)
+					{
+						DUtil.severe("Could not load player " + load);
+						error.printStackTrace();
+						DUtil.severe("End stack trace for " + load);
+					}
 				}
 			}
 		}
@@ -133,27 +140,30 @@ public class DFlatFile
 			f3.mkdirs();
 		}
 		File[] list3 = f3.listFiles();
-		for (File element : list3)
+		if(list3 != null)
 		{
-			String load = element.getName();
-			if (load.endsWith(".demi"))
+			for (File element : list3)
 			{
-				load = load.substring(0, load.length() - 7);
-				
-				Integer intLoad = Integer.parseInt(load);
-				
-				try
+				String load = element.getName();
+				if (load.endsWith(".demi"))
 				{
-					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
-					Object result = ois.readObject();
-					DDataUtil.charData.put(intLoad, (HashMap<String, Object>) result);
-					ois.close();
-				}
-				catch (Exception error)
-				{
-					DUtil.severe("Could not load character " + load);
-					error.printStackTrace();
-					DUtil.severe("End stack trace for " + load);
+					load = load.substring(0, load.length() - 7);
+					
+					Integer intLoad = Integer.parseInt(load);
+					
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						DDataUtil.charData.put(intLoad, (HashMap<String, Object>) result);
+						ois.close();
+					}
+					catch (Exception error)
+					{
+						DUtil.severe("Could not load character " + load);
+						error.printStackTrace();
+						DUtil.severe("End stack trace for " + load);
+					}
 				}
 			}
 		}
