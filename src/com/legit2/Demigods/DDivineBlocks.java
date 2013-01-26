@@ -43,7 +43,7 @@ public class DDivineBlocks
 	 */
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Location> getShrines(int charID) throws Exception
-	{		
+	{
 		if(DDataUtil.hasCharData(charID, "char_shrines")) return (ArrayList<Location>) DDataUtil.getCharData(charID, "char_shrines");
 		else return null;
 	}
@@ -133,7 +133,7 @@ public class DDivineBlocks
 		{
 			for(Location shrine : getAllShrines())
 			{
-				if(!divineBlocks.contains(shrine)) divineBlocks.add(shrine);
+				divineBlocks.add(shrine);
 			}
 		}
 			
@@ -142,7 +142,7 @@ public class DDivineBlocks
 		{
 			for(Location altar : getAllAltars())
 			{
-				if(!divineBlocks.contains(altar)) divineBlocks.add(altar);
+				divineBlocks.add(altar);
 			}
 		}
 		
