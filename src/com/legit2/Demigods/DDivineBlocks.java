@@ -44,12 +44,12 @@ public class DDivineBlocks
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Location> getShrines(int charID) throws Exception
 	{		
-		if(DDataUtil.hasCharData(charID, "shrines")) return (ArrayList<Location>) DDataUtil.getCharData(charID, "shrines");
+		if(DDataUtil.hasCharData(charID, "char_shrines")) return (ArrayList<Location>) DDataUtil.getCharData(charID, "char_shrines");
 		else return null;
 	}
 	
 	/*
-	 *  getShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
+	 *  getAllShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
 	public static ArrayList<Location> getAllShrines() throws Exception
 	{		
@@ -117,6 +117,12 @@ public class DDivineBlocks
 		return null; //TODO
 	}
 	
+	/* ---------------------------------------------------
+	 * Begin Overall DivineBlock Methods
+	 * ---------------------------------------------------
+	 * 
+	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
+	 */
 	public static ArrayList<Location> getAllDivineBlocks() throws Exception
 	{
 		ArrayList<Location> divineBlocks = new ArrayList<Location>();

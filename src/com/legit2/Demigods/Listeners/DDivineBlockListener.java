@@ -108,7 +108,7 @@ public class DDivineBlockListener implements Listener
 			}
 			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 		}
-		catch (Exception er) {}
+		catch (Exception e) {}
 	}
 	
 	/* --------------------------------------------
@@ -165,17 +165,17 @@ public class DDivineBlockListener implements Listener
 			// Clear the tribute case
 			event.getInventory().clear();
 		}
-		catch (Exception er) {}
+		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGH)
 	public static void destroyDivineBlock(BlockBreakEvent event)
 	{
 		try
 		{
-			for(Location center : DDivineBlocks.getAllDivineBlocks())
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				if(event.getBlock().getLocation().equals(center))
+				if(event.getBlock().getLocation().equals(divineBlock))
 				{
 					event.getPlayer().sendMessage(ChatColor.YELLOW + "DivineBlocks cannot be broken by hand.");
 					event.setCancelled(true);
@@ -186,14 +186,14 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockDamage(BlockDamageEvent event)
 	{
 		try
 		{
-			for(Location center : DDivineBlocks.getAllDivineBlocks())
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				if(event.getBlock().getLocation().equals(center))
+				if(event.getBlock().getLocation().equals(divineBlock))
 				{
 					event.setCancelled(true);
 				}
@@ -202,14 +202,14 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockIgnite(BlockIgniteEvent event)
 	{
 		try
 		{
-			for(Location center : DDivineBlocks.getAllDivineBlocks())
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				if(event.getBlock().getLocation().equals(center))
+				if(event.getBlock().getLocation().equals(divineBlock))
 				{
 					event.setCancelled(true);
 				}
@@ -218,14 +218,14 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockBurn(BlockBurnEvent event)
 	{
 		try
 		{
-			for(Location center : DDivineBlocks.getAllDivineBlocks())
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				if(event.getBlock().getLocation().equals(center))
+				if(event.getBlock().getLocation().equals(divineBlock))
 				{
 					event.setCancelled(true);
 				}
@@ -234,7 +234,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		List<Block> blocks = event.getBlocks();
@@ -244,9 +244,9 @@ public class DDivineBlockListener implements Listener
 		{
 			try
 			{
-				for(Location center : DDivineBlocks.getAllDivineBlocks())
+				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
-					if(block.getLocation().equals(center))
+					if(block.getLocation().equals(divineBlock))
 					{
 						event.setCancelled(true);
 						break CHECKBLOCKS;
@@ -257,7 +257,7 @@ public class DDivineBlockListener implements Listener
 		}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		// Define variables
@@ -276,7 +276,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void divineBlockExplode(final EntityExplodeEvent event)
 	{
 		try
@@ -296,7 +296,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception er) {}
 	}
 	
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
