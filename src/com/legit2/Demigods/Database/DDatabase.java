@@ -448,7 +448,6 @@ public class DDatabase
 				ResultSet divineBlocks = DMySQL.runQuery("SELECT * FROM " + DMySQL.divineblocks_table);
 				
 				int blockID = 0;
-				ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
 				
 				while(divineBlocks.next())
 				{
@@ -459,7 +458,8 @@ public class DDatabase
 					int blockOwner = divineBlocks.getInt("block_owner");
 					String blockType = divineBlocks.getString("block_type");
 					String blockDeity = divineBlocks.getString("block_deity");
-					
+					ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
+
 					DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
 					blocks.add(blockLoc);
 					
