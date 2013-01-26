@@ -248,6 +248,7 @@ public class DCommandExecutor implements CommandExecutor
 	/*
 	 *  Command: "viewMaps"
 	 */
+	@SuppressWarnings("unchecked")
 	public static boolean viewMaps(CommandSender sender)
 	{
 		sender.sendMessage("-- Players ------------------");
@@ -299,7 +300,10 @@ public class DCommandExecutor implements CommandExecutor
 			{
 				if(blockDataEntry.getKey().equalsIgnoreCase("block_location"))
 				{
-					sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + ((DivineLocation) blockDataEntry.getValue()).toLocation());
+					for(DivineLocation divineLoc : (ArrayList<DivineLocation>) blockDataEntry.getValue())
+					{
+						sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + divineLoc.toLocation());
+					}
 				}
 				else
 				{
