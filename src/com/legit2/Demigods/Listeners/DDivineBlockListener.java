@@ -21,8 +21,8 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -169,7 +169,7 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void stopDestroyEnderCrystal(EntityDamageEvent event)
+	public static void stopDestroyEnderCrystal(EntityInteractEvent event)
 	{
 		try
 		{
