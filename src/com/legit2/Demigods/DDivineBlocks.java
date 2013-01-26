@@ -89,14 +89,17 @@ public class DDivineBlocks
 	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
+	@SuppressWarnings("unchecked")
 	public static int getShrineOwner(Location location)
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			DivineLocation divineLoc = (DivineLocation) divineBlock.getValue().get("block_location");
-			if(divineLoc.equals(location))
+			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
-				return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
+				if(divineLoc.equals(location))
+				{
+					return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
+				}
 			}
 		}
 		return -1;
@@ -105,14 +108,17 @@ public class DDivineBlocks
 	/*
 	 *  getDeityAtShrine() : Returns the deity of the shrine at (Location)location.
 	 */
+	@SuppressWarnings("unchecked")
 	public static String getShrineDeity(Location location)
 	{
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			DivineLocation divineLoc = (DivineLocation) divineBlock.getValue().get("block_location");
-			if(divineLoc.equals(location))
+			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
-				return divineBlock.getValue().get("block_deity").toString();
+				if(divineLoc.equals(location))
+				{
+					return divineBlock.getValue().get("block_deity").toString();
+				}
 			}
 		}
 		return null;
