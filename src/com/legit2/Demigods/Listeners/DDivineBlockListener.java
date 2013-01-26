@@ -222,27 +222,43 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler (priority = EventPriority.HIGH)
-	public void playerTribute(PlayerInteractEvent event)
+	public void shrineInteract(PlayerInteractEvent event)
 	{
-		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
-		if(event.getPlayer().getItemInHand().getType() != Material.BOOK) return;
-		else event.getPlayer().sendMessage("You right-clicked a block of gold with a book!");
-		
+		// Exit method if it isn't a block of gold or if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+
+		// Define variables
+		Location location = event.getClickedBlock().getLocation();
+		Player player = event.getPlayer();
+		int charID = DPlayerUtil.getCurrentChar(player);
+		String charDeity = DCharUtil.getDeity(charID);
+		
+		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+		{
+			// Temp
+			event.getPlayer().sendMessage("You left-clicked a block of gold with a book!");
+
+			// Define variables
+			Material bookInHand = event.getPlayer().getItemInHand().getType();
+			
+			if(bookInHand.getData().getName().equalsIgnoreCase(charDeity))
+			{
+				// Temp
+				event.getPlayer().sendMessage("Your book is named after your deity! - " + charDeity);
+			}
+		}
+		
 		
 		try
 		{
 			// Check if block is divine
-			String deityName = DDivineBlocks.getDeityAtShrine(event.getClickedBlock().getLocation());
-			
-			if(deityName == null) return;
+			String shrineDeity = DDivineBlocks.getDeityAtShrine(location);
+			if(shrineDeity == null) return;
 			
 			// Check if character has deity
-			Player player = event.getPlayer();
-			int charID = DPlayerUtil.getCurrentChar(player);
 			
-			if(DCharUtil.hasDeity(charID, deityName))
+			if(DCharUtil.hasDeity(charID, shrineDeity))
 			{
 				// Open the tribute inventory
 				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
@@ -251,13 +267,13 @@ public class DDivineBlockListener implements Listener
 				event.setCancelled(true);
 				return;
 			}
-			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + deityName + " in order to tribute here.");
+			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 		}
 		catch (Exception er) {}
 	}
 	
 	@EventHandler (priority = EventPriority.MONITOR)
-	public void tributeSuccess(InventoryCloseEvent event)
+	public void playerTribute(InventoryCloseEvent event)
 	{
 		try
 		{

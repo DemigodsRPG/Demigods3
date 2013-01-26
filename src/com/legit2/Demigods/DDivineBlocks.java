@@ -57,29 +57,28 @@ public class DDivineBlocks
 		return shrines;
 	}
 	
-	public static int getOwnerOfShrine(Location shrine) throws Exception
+	/*
+	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
+	 */
+	public static int getOwnerOfShrine(Location location) throws Exception
 	{
-		int charID = 0;
-		
-		for(int character : DDataUtil.getAllChars().keySet())
+		for(int charID : DDataUtil.getAllChars().keySet())
 		{
-			for(Location knownShrine : getShrines(character))
+			for(Location knownLoc : getShrines(charID))
 			{
-				if(shrine.equals(knownShrine))
-				{
-					charID = character;
-					break;
-				}
+				if(knownLoc.equals(location)) return charID;
 			}
 		}
-		return charID;
+		return -1;
 	}
 	
-	public static String getDeityAtShrine(Location shrine) throws Exception
+	/*
+	 *  getDeityAtShrine() : Returns the deity of the shrine at (Location)location.
+	 */
+	public static String getDeityAtShrine(Location location) throws Exception
 	{
-		int charID = getOwnerOfShrine(shrine);
-		String deity = DCharUtil.getDeity(charID);
-		return deity;
+		int charID = getOwnerOfShrine(location);
+		return DCharUtil.getDeity(charID);
 	}
 	
 	/* ---------------------------------------------------
