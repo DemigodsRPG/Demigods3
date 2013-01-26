@@ -100,7 +100,7 @@ public class DDivineBlockListener implements Listener
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
 
 		// Define variables
-		Location location = event.getRightClicked().getLocation();
+		Location location = event.getRightClicked().getLocation().subtract(0.5, 0, 0.5);
 		Player player = event.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
 				
@@ -108,11 +108,11 @@ public class DDivineBlockListener implements Listener
 		{
 			// Check if block is divine
 			int shrineOwner = DDivineBlocks.getShrineOwner(location);
-			OfflinePlayer charOwner = DCharUtil.getOwner(shrineOwner);
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
+			OfflinePlayer charOwner = DCharUtil.getOwner(shrineOwner);
 			if(shrineDeity == null) return;
 						
-			if(DDivineBlocks.isDivineBlock(location.subtract(0.5, 0, 0.5)))
+			if(DDivineBlocks.isDivineBlock(location))
 			{
 				// Check if character has deity
 				if(DCharUtil.hasDeity(charID, shrineDeity))
@@ -120,7 +120,7 @@ public class DDivineBlockListener implements Listener
 					// Open the tribute inventory
 					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, charOwner.getName() + "'s Shrine to " + shrineDeity);
 					player.openInventory(ii);
-					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getShrineOwner(location));
+					DDataUtil.saveCharData(charID, "temp_tributing", shrineOwner);
 					event.setCancelled(true);
 					return;
 				}
