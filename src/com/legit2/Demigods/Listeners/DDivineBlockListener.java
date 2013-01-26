@@ -168,7 +168,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void destroyDivineBlock(BlockBreakEvent event)
 	{
 		try
@@ -186,7 +186,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockDamage(BlockDamageEvent event)
 	{
 		try
@@ -202,7 +202,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockIgnite(BlockIgniteEvent event)
 	{
 		try
@@ -218,7 +218,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockBurn(BlockBurnEvent event)
 	{
 		try
@@ -234,20 +234,10 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		DMiscUtil.serverMsg("This is working!");
-		
-		try {
-			for(Location shrine : DDivineBlocks.getShrines(73837))
-			{
-				DMiscUtil.serverMsg("Shrine: " + shrine);
-			}
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		List<Block> blocks = event.getBlocks();
 		
@@ -269,7 +259,7 @@ public class DDivineBlockListener implements Listener
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		// Define variables
@@ -288,7 +278,7 @@ public class DDivineBlockListener implements Listener
 		catch (Exception e) {}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void divineBlockExplode(final EntityExplodeEvent event)
 	{
 		try
