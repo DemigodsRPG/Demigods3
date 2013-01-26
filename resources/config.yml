@@ -23,9 +23,9 @@ ascension_cap: 100
 
 ## Character creation default values ##
 default_favor: 500
-default_max_favor: 10000
-default_devotion: 500
-default_ascensions: 5
+default_max_favor: 750
+default_devotion: 200
+default_ascensions: 1
 
 ## Database Settings ##
 database:
