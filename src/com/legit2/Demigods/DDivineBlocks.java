@@ -108,7 +108,7 @@ public class DDivineBlocks
 	{
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			if(divineBlock.getValue().get("block_deity") != null)
+			if(divineBlock.getValue().get("block_location").equals(new DivineLocation(location)))
 			{
 				return divineBlock.getValue().get("block_deity").toString();
 			}
