@@ -239,6 +239,16 @@ public class DDivineBlockListener implements Listener
 	{
 		DMiscUtil.serverMsg("This is working!");
 		
+		try {
+			for(Location shrine : DDivineBlocks.getShrines(73837))
+			{
+				DMiscUtil.serverMsg("Shrine: " + shrine);
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		List<Block> blocks = event.getBlocks();
 		
 		CHECKBLOCKS:
