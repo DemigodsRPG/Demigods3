@@ -237,6 +237,8 @@ public class DDivineBlockListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void stopDivineBlockPistonExtend(BlockPistonExtendEvent event)
 	{
+		DMiscUtil.serverMsg("This is working!");
+		
 		List<Block> blocks = event.getBlocks();
 		
 		CHECKBLOCKS:
