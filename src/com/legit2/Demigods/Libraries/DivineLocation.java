@@ -15,8 +15,8 @@ public class DivineLocation implements Serializable
 	public DivineLocation(Location location)
 	{
 		X = location.getX();
-		Y = location.getX();
-		Z = location.getX();
+		Y = location.getY();
+		Z = location.getZ();
 		WORLD = location.getWorld().getName();
 	}
 	
@@ -42,7 +42,7 @@ public class DivineLocation implements Serializable
 	
 	public Location toLocationNewWorld(World w)
 	{
-		return new Location(w, X,Y,Z);
+		return new Location(w, X, Y, Z);
 	}
 	
 	public Location toLocation()

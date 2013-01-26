@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -169,7 +168,6 @@ public class DDivineBlocks
 		{
 			for(Location shrine : getAllShrines())
 			{
-				DMiscUtil.serverMsg("Weiner Mach 8");
 				divineBlocks.add(shrine);
 			}
 		}
