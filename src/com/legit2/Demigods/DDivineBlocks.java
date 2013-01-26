@@ -97,6 +97,7 @@ public class DDivineBlocks
 			DMiscUtil.serverMsg(divineBlock.getValue().get("block_type").toString());
 			DMiscUtil.serverMsg(divineBlock.getValue().get("block_owner").toString());
 			DMiscUtil.serverMsg(divineBlock.getValue().get("block_location").toString());
+			DMiscUtil.serverMsg((new DivineLocation(location)).toString());
 			
 			
 			if(divineBlock.getValue().get("block_location").equals(new DivineLocation(location)))
