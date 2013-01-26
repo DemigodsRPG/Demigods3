@@ -112,7 +112,8 @@ public class DDivineBlockListener implements Listener
 		try
 		{
 			DMiscUtil.serverMsg("Working 4");
-
+			DMiscUtil.serverMsg(location.toString());
+			
 			// Check if block is divine
 			int shrineOwner = DDivineBlocks.getShrineOwner(location);
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
