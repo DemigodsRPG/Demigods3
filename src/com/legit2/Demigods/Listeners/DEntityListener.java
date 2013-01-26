@@ -29,12 +29,19 @@ public class DEntityListener implements Listener
 	{
 		// Define variables
 		LivingEntity attackedEntity;
+		EntityDamageByEntityEvent damageEvent = null;
 		if(event.getEntityType().equals(EntityType.PLAYER)) // IF IT'S A PLAYER
 		{
 			// Define entity as player and other variables
 			attackedEntity = (LivingEntity) event.getEntity();
 			Player attackedPlayer = (Player) attackedEntity;
-			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
+			
+			if(attackedEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent) 
+			{
+				damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
+			} 
+			else return;
+
 			Entity attacker = damageEvent.getDamager();
 			
 			if(attacker instanceof Player)
@@ -74,7 +81,7 @@ public class DEntityListener implements Listener
 		{
 			// Define villager
 			LivingEntity villager = (LivingEntity) event.getEntity();
-			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
+			damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
 			
 			// Define attacker and name
 			Player attacker = null;
