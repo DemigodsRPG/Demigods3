@@ -1,11 +1,15 @@
 package com.legit2.Demigods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.Location;
 
+import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
 {	
@@ -15,43 +19,48 @@ public class DDivineBlocks
 	 * 
 	 *  createShrine() : Creates a shrine at (Location)location.
 	 */
-	public static void createShrine(int charID, Location location) throws Exception
+	public static void createShrine(int charID, ArrayList<Location> locations)
 	{
-		ArrayList<Location> charShrines = getShrines(charID);
-		if(charShrines != null) charShrines.add(location);
-		else
+		int blockID = DObjUtil.generateInt(5);
+		
+		ArrayList<DivineLocation> shrines = new ArrayList<DivineLocation>();
+		for(Location location : locations)
 		{
-			charShrines = new ArrayList<Location>();
-			charShrines.add(location);
+			DivineLocation shrine = new DivineLocation(location);
+			shrines.add(shrine);
 		}
-		DDataUtil.saveCharData(charID, "char_shrines", charShrines);
+		
+		DDataUtil.saveBlockData(blockID, "block_type", "shrine");
+		DDataUtil.saveBlockData(blockID, "block_owner", charID);
+		DDataUtil.saveBlockData(blockID, "block_location", shrines);
 	}
 	
 	/*
 	 *  removeShrine() : Removes the shrine at (Location)location.
 	 */
-	public static void removeShrine(Location location) throws Exception
+	public static void removeShrine(Location location)
 	{
-		int charID = getOwnerOfShrine(location);
-		ArrayList<Location> charShrines = getShrines(charID);
-		charShrines.remove(location);
-		DDataUtil.saveCharData(charID, "char_shrines", charShrines);
+		int blockID = getID(location);
+		DDataUtil.removeAllBlockData(blockID);
 	}
 	
 	/*
 	 *  getShrines() : Returns an ArrayList<Location> of (int)charID's Shrines.
 	 */
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Location> getShrines(int charID) throws Exception
+	public static ArrayList<Location> getShrines(int charID)
 	{
-		if(DDataUtil.hasCharData(charID, "char_shrines")) return (ArrayList<Location>) DDataUtil.getCharData(charID, "char_shrines");
+		if(DDataUtil.hasCharData(charID, "char_shrines"))
+		{
+			return (ArrayList<Location>) DDataUtil.getCharData(charID, "char_shrines");
+		}
 		else return null;
 	}
 	
 	/*
 	 *  getAllShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
-	public static ArrayList<Location> getAllShrines() throws Exception
+	public static ArrayList<Location> getAllShrines()
 	{		
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		
@@ -72,7 +81,7 @@ public class DDivineBlocks
 	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
-	public static int getOwnerOfShrine(Location location) throws Exception
+	public static int getOwnerOfShrine(Location location)
 	{
 		for(int charID : DDataUtil.getAllChars().keySet())
 		{
@@ -87,7 +96,7 @@ public class DDivineBlocks
 	/*
 	 *  getDeityAtShrine() : Returns the deity of the shrine at (Location)location.
 	 */
-	public static String getDeityAtShrine(Location location) throws Exception
+	public static String getDeityAtShrine(Location location)
 	{
 		int charID = getOwnerOfShrine(location);
 		return DCharUtil.getDeity(charID);
@@ -115,7 +124,7 @@ public class DDivineBlocks
 	/*
 	 *  getAltars() : Returns an ArrayList<Location> the server's Altars.
 	 */
-	public static ArrayList<Location> getAllAltars() throws Exception
+	public static ArrayList<Location> getAllAltars()
 	{		
 		return null; //TODO
 	}
@@ -126,7 +135,7 @@ public class DDivineBlocks
 	 * 
 	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
 	 */
-	public static ArrayList<Location> getAllDivineBlocks() throws Exception
+	public static ArrayList<Location> getAllDivineBlocks()
 	{
 		ArrayList<Location> divineBlocks = new ArrayList<Location>();
 		
@@ -151,4 +160,20 @@ public class DDivineBlocks
 		return divineBlocks;
 	}
 
+	/*
+	 *  getID() : Returns the (int)blockID for the (Location)location.
+	 */
+	public static int getID(Location location)
+	{
+		HashMap<Integer, HashMap<String, Object>> divineBlocks = DDataUtil.getAllBlockData();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : divineBlocks.entrySet())
+		{
+			// Define character-specific variables
+			int blockID = divineBlock.getKey();
+			DivineLocation block = new DivineLocation(location);
+			
+			if(((DivineLocation) divineBlocks.get(blockID).get("block_location")).equals(block)) return blockID;
+		}
+		return -1;
+	}
 }

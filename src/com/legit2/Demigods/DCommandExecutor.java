@@ -8,9 +8,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import com.legit2.Demigods.Database.DemigodsDatabase;
+import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.*;
 
@@ -45,20 +46,9 @@ public class DCommandExecutor implements CommandExecutor
 	 */
 	public static boolean test1(CommandSender sender)
 	{
-		if(DMiscUtil.hasPermissionOrOP((Player) DPlayerUtil.definePlayer(sender.getName()), "demigods.admin"))
-		{
-			DMiscUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
-			if(DemigodsDatabase.saveAllData())
-			{
-				DMiscUtil.serverMsg(ChatColor.GREEN + "Save complete!");
-			}
-			else
-			{
-				DMiscUtil.serverMsg(ChatColor.RED + "There was a problem with saving...");
-				DMiscUtil.serverMsg(ChatColor.RED + "An admin should check the log immediately.");
-			}
-		}
-		else DMiscUtil.noPermission((Player) DPlayerUtil.definePlayer(sender.getName()));
+		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
+		
+		player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.ENDER_CRYSTAL);
 		return true;
 	}
 
@@ -155,7 +145,7 @@ public class DCommandExecutor implements CommandExecutor
 			if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin"))
 			{
 				DMiscUtil.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
-				if(DemigodsDatabase.saveAllData())
+				if(DDatabase.saveAllData())
 				{
 					DMiscUtil.serverMsg(ChatColor.GREEN + "Save complete!");
 				}

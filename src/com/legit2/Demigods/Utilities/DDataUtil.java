@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
 
-import com.legit2.Demigods.Database.DemigodsDatabase;
+import com.legit2.Demigods.Database.DDatabase;
 
 public class DDataUtil 
 {
@@ -13,9 +13,10 @@ public class DDataUtil
 	private static HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
 	private static HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
 	private static HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
+	private static HashMap<Integer, HashMap<String, Object>> blockData = new HashMap<Integer, HashMap<String, Object>>();
 
 	/* ---------------------------------------------------
-	 * Begin Plugin Data Methods
+	 *  Begin Plugin Data Methods
 	 * ---------------------------------------------------
 	 * 
 	 *  savePluginData() : Saves (String)dataID to pluginData HashMap.
@@ -46,15 +47,14 @@ public class DDataUtil
 		
 		if(pluginData.containsKey(dataID))
 		{
-			pluginData.remove(dataID);
+			pluginData.get(dataID).remove(dataKey);
 			return true;
 		}
 		else return false;
 	}
 	
 	/*
-	 *  hasPluginData() : Returns true/false according to if (String)dataKey exists for
-	 *  (String)dataID.
+	 *  hasPluginData() : Returns true/false according to if (String)dataKey exists for (String)dataID.
 	 */
 	public static boolean hasPluginData(String dataID, String dataKey)
 	{
@@ -81,6 +81,99 @@ public class DDataUtil
 			else return null;
 		}
 		else return null;
+	}
+	
+	/*
+	 *  getAllPluginData() : Returns all pluginData.
+	 */
+	public static HashMap<String, HashMap<String, Object>> getAllPluginData()
+	{
+		return pluginData;
+	}
+	
+	/* ---------------------------------------------------
+	 *  Begin Block Data Methods
+	 * ---------------------------------------------------
+	 * 
+	 *  saveBlockData() : Saves (int)blockID to blockData HashMap.
+	 */
+	public static boolean saveBlockData(int blockID, String dataKey, Object dataValue)
+	{
+		dataKey = dataKey.toLowerCase();
+		
+		if(blockData.containsKey(blockID))
+		{
+			blockData.get(blockID).put(dataKey, dataValue);
+			return true;
+		}
+		else
+		{
+			blockData.put(blockID, new HashMap<String, Object>());
+			blockData.get(blockID).put(dataKey, dataValue);
+			return true;
+		}
+	}
+	
+	/*
+	 *  removeBlockData() : Removes (int)blockID from pluginData HashMap.
+	 */
+	public static boolean removeBlockData(int blockID, String dataKey)
+	{
+		dataKey = dataKey.toLowerCase();
+		
+		if(blockData.containsKey(blockID))
+		{
+			blockData.get(blockID).remove(dataKey);
+			return true;
+		}
+		else return false;
+	}
+	
+	/*
+	 *  removeAllBlockData() : Removes (int)blockID from pluginData HashMap.
+	 */
+	public static boolean removeAllBlockData(int blockID)
+	{		
+		blockData.remove(blockID);
+		return true;
+	}
+	
+	/*
+	 *  hasBlockData() : Returns true/false according to if (String)dataKey exists for (int)blockID.
+	 */
+	public static boolean hasBlockData(int blockID, String dataKey)
+	{
+		dataKey = dataKey.toLowerCase();
+		
+		if(blockData.containsKey(blockID))
+		{
+			if(blockData.get(blockID).get(dataKey) != null) return true;
+			else return false;
+		}
+		else return false;
+	}
+	
+	/*
+	 *  getPluginData() : Returns (Object)dataValue for (int)blockID's (String)dataKey.
+	 */
+	public static Object getBlockData(int blockID, String dataKey)
+	{
+		dataKey = dataKey.toLowerCase();
+		
+		if(blockData.containsKey(blockID))
+		{
+			if(blockData.get(blockID) != null) return blockData.get(blockID).get(dataKey);
+			else return null;
+		}
+		else return null;
+	}
+	
+	/*
+	 *  getAllBlockData() : Returns all block data.
+	 */
+	public static HashMap<Integer, HashMap<String, Object>> getAllBlockData()
+	{
+		return blockData;
 	}
 	
 	/* ---------------------------------------------------
@@ -186,7 +279,7 @@ public class DDataUtil
 	public static boolean removeChar(int charID)
 	{
 		charData.remove(charID);
-		DemigodsDatabase.removeChar(charID);
+		DDatabase.removeChar(charID);
 		return true;
 	}
 	
@@ -289,7 +382,7 @@ public class DDataUtil
 		String playerName = player.getName();;
 		playerData.remove(playerName);
 		charData.remove(playerName);
-		DemigodsDatabase.removePlayer(player);
+		DDatabase.removePlayer(player);
 		return true;
 	}
 	
@@ -346,11 +439,4 @@ public class DDataUtil
 		return temp;
 	}
 	
-	/*
-	 *  getAllPluginData() : Returns all pluginData.
-	 */
-	public static HashMap<String, HashMap<String, Object>> getAllPluginData()
-	{
-		return pluginData;
-	}
 }

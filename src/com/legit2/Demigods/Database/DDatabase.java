@@ -15,7 +15,7 @@ import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
-public class DemigodsDatabase
+public class DDatabase
 {
 	/*
 	 *  initializeDatabase() : Loads the MySQL or SQLite database.

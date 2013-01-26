@@ -1,5 +1,6 @@
 package com.legit2.Demigods.Listeners;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,7 +77,9 @@ public class DDivineBlockListener implements Listener
 				try
 				{
 					// Shrine created!
-					DDivineBlocks.createShrine(charID, location);
+					ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
+					DDivineBlocks.createShrine(charID, locations);
+					
 					location.getWorld().strikeLightningEffect(location);
 					player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
 					player.sendMessage(ChatColor.GRAY + "A shrine has been created in honor of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
@@ -239,22 +242,15 @@ public class DDivineBlockListener implements Listener
 	{		
 		List<Block> blocks = event.getBlocks();
 		
-		DMiscUtil.serverMsg("Weiner 1");
 		CHECKBLOCKS:
 		for(Block block : blocks)
 		{
-			DMiscUtil.serverMsg("Weiner 2");
-
 			try
 			{
 				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
-					DMiscUtil.serverMsg("Weiner 3");
-
 					if(block.getLocation().equals(divineBlock))
 					{
-						DMiscUtil.serverMsg("Weiner 4");
-
 						event.setCancelled(true);
 						break CHECKBLOCKS;
 					}

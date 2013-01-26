@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.legit2.Demigods.Database.DemigodsDatabase;
+import com.legit2.Demigods.Database.DDatabase;
 
 public class DPlayerUtil
 {
@@ -40,7 +40,7 @@ public class DPlayerUtil
 		// Add them to the database
 		try
 		{
-			DemigodsDatabase.addPlayerToDB(player);
+			DDatabase.addPlayerToDB(player);
 		}
 		catch(SQLException e)
 		{
