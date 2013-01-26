@@ -24,6 +24,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
@@ -53,12 +54,12 @@ public class DDivineBlockListener implements Listener
 	 *  Handle DivineBlock Interactions
 	 * --------------------------------------------
 	 */
-	@EventHandler (priority = EventPriority.HIGH)
-	public void shrineInteract(PlayerInteractEvent event)
+	@EventHandler(priority = EventPriority.HIGH)
+	public void shrineBlockInteract(PlayerInteractEvent event)
 	{
-		// Exit method if it isn't a block of gold or if the player is mortal
+		// Return if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
@@ -67,7 +68,7 @@ public class DDivineBlockListener implements Listener
 		String charAlliance = DCharUtil.getAlliance(charID);
 		String charDeity = DCharUtil.getDeity(charID);
 		
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+		if(event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
 		{						
 			try
 			{
@@ -87,8 +88,22 @@ public class DDivineBlockListener implements Listener
 				// Creation of shrine failed...
 				e.printStackTrace();
 			}
+
 		}
-		
+	}
+	
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void shrineEntityInteract(PlayerInteractEntityEvent event)
+	{
+		// Return if the player is mortal
+		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+
+		// Define variables
+		Location location = event.getRightClicked().getLocation();
+		Player player = event.getPlayer();
+		int charID = DPlayerUtil.getCurrentChar(player);
+				
 		try
 		{
 			// Check if block is divine
@@ -97,7 +112,7 @@ public class DDivineBlockListener implements Listener
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			if(shrineDeity == null) return;
 						
-			if(DDivineBlocks.isDivineBlock(location) || DDivineBlocks.isDivineBlock(location.subtract(0.5, 0, 0.5)))
+			if(DDivineBlocks.isDivineBlock(location))
 			{
 				// Check if character has deity
 				if(DCharUtil.hasDeity(charID, shrineDeity))
@@ -105,7 +120,7 @@ public class DDivineBlockListener implements Listener
 					// Open the tribute inventory
 					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, charOwner.getName() + "'s Shrine to " + shrineDeity);
 					player.openInventory(ii);
-					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getShrineOwner(event.getClickedBlock().getLocation()));
+					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getShrineOwner(location));
 					event.setCancelled(true);
 					return;
 				}
@@ -119,7 +134,7 @@ public class DDivineBlockListener implements Listener
 	 *  Handle Player Tributing
 	 * --------------------------------------------
 	 */	
-	@EventHandler (priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void playerTribute(InventoryCloseEvent event)
 	{
 		try
@@ -131,34 +146,33 @@ public class DDivineBlockListener implements Listener
 			if(!DCharUtil.isImmortal(player)) return;
 			
 			// If it isn't a tribute chest then break the method
-			if(!event.getInventory().getName().equals("Tributes")) return;
+			if(!event.getInventory().getName().contains("Shrine")) return;
 			
 			// Get the creator of the shrine
-			//int shrineCreator = DDivineBlocks.getOwnerOfShrine((Location) DDataUtil.getCharData(charID, "tributing_temp"));
+			//int shrineCreator = DDivineBlocks.getShrineOwner((Location) DDataUtil.getCharData(charID, "temp_tributing"));
 			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
 			//calculate value of chest
-			int tirbuteValue = 0;
-			int items = 0;
+			int tributeValue = 0, items = 0;
 			for(ItemStack ii : event.getInventory().getContents())
 			{
 				if(ii != null)
 				{
-					tirbuteValue += DTributeValue.getTributeValue(ii);
+					tributeValue += DTributeValue.getTributeValue(ii);
 					items ++;
 				}
 			}
 			
-			tirbuteValue *= FAVORMULTIPLIER;
+			tributeValue *= FAVORMULTIPLIER;
 			
 			// Give devotion
 			int devotionBefore = DCharUtil.getDevotion(charID);
-			DCharUtil.giveDevotion(charID, tirbuteValue);
-			DCharUtil.giveDevotion(charID, tirbuteValue / 7);
+			DCharUtil.giveDevotion(charID, tributeValue);
+			DCharUtil.giveDevotion(charID, tributeValue / 7);
 			
 			// Give favor
 			int favorBefore = DCharUtil.getMaxFavor(charID);
-			//DUtil.setFavorCap(player, DUtil.getFavorCap(username)+value/5); TODO
+			DCharUtil.addMaxFavor(charID, tributeValue / 5);
 			
 			// Devotion lock TODO
 			String charName = DCharUtil.getName(charID);

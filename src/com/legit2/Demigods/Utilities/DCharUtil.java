@@ -294,7 +294,7 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  setFavor() : Sets the (String)username's favor to (int)amount.
+	 *  setFavor() : Sets the (int)charID's favor to (int)amount.
 	 */
 	public static void setFavor(int charID, int amount)
 	{
@@ -302,7 +302,15 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  subtractFavor() : Subtracts (int)amount from the (String)username's favor.
+	 *  setMaxFavor() : Sets the (int)charID's max favor to (int)amount.
+	 */
+	public static void setMaxFavor(int charID, int amount)
+	{
+		DDataUtil.saveCharData(charID, "char_max_favor", amount);
+	}
+	
+	/*
+	 *  subtractFavor() : Subtracts (int)amount from the (int)charID's favor.
 	 */
 	public static void subtractFavor(int charID, int amount)
 	{
@@ -325,6 +333,24 @@ public class DCharUtil
 		else favor = getFavor(charID) + amount;
 		
 		setFavor(charID, favor);
+	}
+	
+	/*
+	 *  addMaxFavor() : Adds (int)amount to the (int)charID's max favor.
+	 */
+	public static void addMaxFavor(int charID, int amount)
+	{
+		// Define variables
+		int maxFavor;
+
+		// Perform favor cap check
+		if((getMaxFavor(charID) + amount) > DConfig.getSettingInt("global_max_favor"))
+		{
+			maxFavor = DConfig.getSettingInt("global_max_favor");
+		}
+		else maxFavor = getMaxFavor(charID) + amount;
+		
+		setMaxFavor(charID, maxFavor);
 	}
 	
 	/*
