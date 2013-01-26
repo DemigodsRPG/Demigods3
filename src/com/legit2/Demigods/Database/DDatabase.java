@@ -444,23 +444,18 @@ public class DDatabase
 				int blockID = 0;
 				ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
 				
-				RESTART:
 				while(divineBlocks.next())
 				{
 					divineBlockCount++;
-					
-					if(divineBlocks.getInt("block_id") == blockID)
-					{
-						DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
-						blocks.add(blockLoc);
-						break RESTART;
-					}
 
 					// Set data to variables
 					blockID = divineBlocks.getInt("block_id");
 					int blockOwner = divineBlocks.getInt("block_owner");
 					String blockType = divineBlocks.getString("block_type");
 					String blockDeity = divineBlocks.getString("block_deity");
+					
+					DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
+					blocks.add(blockLoc);
 					
 					DDataUtil.saveBlockData(blockID, "block_type", blockType);
 					DDataUtil.saveBlockData(blockID, "block_owner", blockOwner);
