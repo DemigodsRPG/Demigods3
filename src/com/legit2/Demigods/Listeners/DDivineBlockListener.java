@@ -112,7 +112,7 @@ public class DDivineBlockListener implements Listener
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			if(shrineDeity == null) return;
 						
-			if(DDivineBlocks.isDivineBlock(location))
+			if(DDivineBlocks.isDivineBlock(location.subtract(0.5, 0, 0.5)))
 			{
 				// Check if character has deity
 				if(DCharUtil.hasDeity(charID, shrineDeity))
