@@ -21,6 +21,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -75,7 +76,7 @@ public class DDivineBlockListener implements Listener
 				DDivineBlocks.createShrine(charID, locations);
 				
 				location.getWorld().getBlockAt(location).setType(Material.BEDROCK);
-				location.getWorld().spawnEntity(location.subtract(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+				location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
 				location.getWorld().strikeLightningEffect(location);
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
@@ -168,7 +169,27 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void destroyDivineBlock(BlockBreakEvent event)
+	public static void stopDestroyEnderCrystal(EntityDamageEvent event)
+	{
+		try
+		{
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			{
+				if(event.getEntity().getLocation().subtract(0.5, 0, 0.5).equals(divineBlock))
+				{
+					event.setCancelled(true);
+					return;
+				}
+			}
+		}
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void stopDestroyDivineBlock(BlockBreakEvent event)
 	{
 		try
 		{
@@ -176,7 +197,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(event.getBlock().getLocation().equals(divineBlock))
 				{
-					event.getPlayer().sendMessage(ChatColor.YELLOW + "DivineBlocks cannot be broken by hand.");
+					event.getPlayer().sendMessage(ChatColor.YELLOW + "Divine blocks cannot be broken by hand.");
 					event.setCancelled(true);
 					return;
 				}
@@ -323,7 +344,7 @@ public class DDivineBlockListener implements Listener
 						{
 							if(divineBlock.distance(event.getTo()) <= RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock) + ChatColor.GRAY + ".");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s Shrine to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock) + ChatColor.GRAY + ".");
 								return;
 							}
 						}
@@ -335,7 +356,7 @@ public class DDivineBlockListener implements Listener
 						{
 							if(divineBlock.distance(event.getTo()) > RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a divineBlock.");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
 								return;
 							}
 						}
