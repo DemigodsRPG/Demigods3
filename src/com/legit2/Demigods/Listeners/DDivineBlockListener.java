@@ -171,6 +171,8 @@ public class DDivineBlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void stopDestroyEnderCrystal(EntityInteractEvent event)
 	{
+		if(event.getEntityType().equals(EntityType.ENDER_CRYSTAL)) event.setCancelled(true);
+
 		try
 		{
 			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
