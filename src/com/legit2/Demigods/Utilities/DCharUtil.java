@@ -139,11 +139,12 @@ public class DCharUtil
 	public static OfflinePlayer getOwner(int charID)
 	{
 		OfflinePlayer charOwner = null;
-		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllChars().entrySet())
+		
+		for(Entry<String, Object> character : DDataUtil.getAllCharData(charID).entrySet())
 		{
-			if(character.getValue().containsKey("char_owner"))
+			if(character.getKey().equalsIgnoreCase("char_owner"))
 			{
-				charOwner = DPlayerUtil.getPlayerFromID((DObjUtil.toInteger(character.getValue().get("char_owner"))));
+				charOwner = DPlayerUtil.getPlayerFromID((DObjUtil.toInteger(character.getValue())));
 			}
 		}
 		return charOwner;
