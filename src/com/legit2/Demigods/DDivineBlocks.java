@@ -47,6 +47,7 @@ public class DDivineBlocks
 	/*
 	 *  getShrines() : Returns an ArrayList<Location> of (int)charID's Shrines.
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<Location> getShrines(int charID)
 	{
 		ArrayList<Location> shrines = new ArrayList<Location>();
@@ -55,7 +56,10 @@ public class DDivineBlocks
 		{			
 			if(divineBlock.getValue().get("block_owner").equals(charID))
 			{
-				shrines.add(((DivineLocation) divineBlock.getValue().get("block_location")).toLocation());
+				for(DivineLocation block : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
+				{
+					shrines.add(block.toLocation());
+				}
 			}
 		}
 		return shrines;
@@ -65,13 +69,17 @@ public class DDivineBlocks
 	/*
 	 *  getAllShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
+	@SuppressWarnings("unchecked")
 	public static ArrayList<Location> getAllShrines()
 	{		
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			shrines.add(((DivineLocation) divineBlock.getValue().get("block_location")).toLocation());
+			for(DivineLocation block : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
+			{
+				shrines.add(block.toLocation());
+			}
 		}
 		
 		return shrines;
