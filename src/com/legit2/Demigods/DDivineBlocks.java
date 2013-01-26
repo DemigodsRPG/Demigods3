@@ -3,7 +3,6 @@ package com.legit2.Demigods;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -16,17 +15,22 @@ public class DDivineBlocks
 	 * 
 	 *  createShrine() : Creates a shrine at (Location)location.
 	 */
-	public static void createShrine(OfflinePlayer player, String deity, Location location)
+	public static void createShrine(int charID, Location location) throws Exception
 	{
-		// TODO
+		ArrayList<Location> charShrines = getShrines(charID);
+		charShrines.add(location);
+		DDataUtil.saveCharData(charID, "char_shrines", charShrines);
 	}
 	
 	/*
 	 *  removeShrine() : Removes the shrine at (Location)location.
 	 */
-	public static void removeShrine(Location location)
+	public static void removeShrine(Location location) throws Exception
 	{
-		// TODO
+		int charID = getOwnerOfShrine(location);
+		ArrayList<Location> charShrines = getShrines(charID);
+		charShrines.remove(location);
+		DDataUtil.saveCharData(charID, "char_shrines", charShrines);
 	}
 	
 	/*
