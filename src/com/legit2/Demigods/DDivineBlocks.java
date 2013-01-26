@@ -164,7 +164,17 @@ public class DDivineBlocks
 	}
 	 
 	/*
-	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
+	 *  isDivineBlock() : Returns a boolean for if the (Location)location is a divine block.
+	 */
+	public static boolean isDivineBlock(Location location)
+	{
+		if(getAllShrines() != null) for(Location shrine : getAllShrines()) if(shrine.equals(location)) return true;
+		if(getAllAltars() != null) for(Location altar : getAllAltars()) if(altar.equals(location)) return true;
+		return false;
+	}
+	
+	/*
+	 *  getAllDivineBlocks() : Returns an ArrayList of all divine block locations.
 	 */
 	public static ArrayList<Location> getAllDivineBlocks()
 	{

@@ -94,19 +94,21 @@ public class DDivineBlockListener implements Listener
 			// Check if block is divine
 			String shrineDeity = DDivineBlocks.getDeityAtShrine(location);
 			if(shrineDeity == null) return;
-			
-			// Check if character has deity
-			
-			if(DCharUtil.hasDeity(charID, shrineDeity))
+						
+			if(DDivineBlocks.isDivineBlock(location))
 			{
-				// Open the tribute inventory
-				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
-				player.openInventory(ii);
-				DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
-				event.setCancelled(true);
-				return;
+				// Check if character has deity
+				if(DCharUtil.hasDeity(charID, shrineDeity))
+				{
+					// Open the tribute inventory
+					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, DCharUtil.getName(charID) + "'s Shrine");
+					player.openInventory(ii);
+					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+					event.setCancelled(true);
+					return;
+				}
+				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 			}
-			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 		}
 		catch(Exception e) {}
 	}

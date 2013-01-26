@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -144,7 +143,7 @@ public class DCharUtil
 		{
 			if(character.getValue().containsKey("char_owner"))
 			{
-				charOwner = Bukkit.getOfflinePlayer(getName(DObjUtil.toInteger(character.getValue().get("char_owner"))));
+				charOwner = DPlayerUtil.getPlayerFromID((DObjUtil.toInteger(character.getValue().get("char_owner"))));
 			}
 		}
 		return charOwner;
