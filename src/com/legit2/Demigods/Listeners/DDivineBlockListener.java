@@ -226,6 +226,9 @@ public class DDivineBlockListener implements Listener
 	{
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+		if(event.getPlayer().getItemInHand().getType() != Material.BOOK) return;
+		else event.getPlayer().sendMessage("You right-clicked a block of gold with a book!");
+		
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
 		
 		try

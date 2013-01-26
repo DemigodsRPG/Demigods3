@@ -350,14 +350,8 @@ public class DemigodsDatabase
 					// Load other player data
 					if(playerResult.getString("datakey") != null)
 					{
-						if(playerResult.getString("datakey").contains("boolean_"))
-						{
-							DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getBoolean("datavalue"));
-						}
-						else
-						{
-							DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getString("datavalue"));
-						}
+						if(playerResult.getString("datakey").contains("boolean_")) DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getBoolean("datavalue"));
+						else DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getString("datavalue"));
 					}
 				
 					String selectCharacter = "SELECT * FROM " + DMySQL.character_table + " LEFT JOIN " + DMySQL.chardata_table + " ON " + DMySQL.character_table + ".char_id = " + DMySQL.chardata_table + ".char_id AND " + DMySQL.character_table + ".player_id=" + playerID + ";";
@@ -391,14 +385,8 @@ public class DemigodsDatabase
 						// Load other character data
 						if(charResult.getString("datakey") != null)
 						{
-							if(charResult.getString("datakey").contains("boolean_"))
-							{
-								DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
-							}
-							else
-							{
-								DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getString("datavalue"));
-							}
+							if(charResult.getString("datakey").contains("boolean_")) DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getBoolean("datavalue"));
+							else DDataUtil.saveCharData(charID, charResult.getString("datakey"), charResult.getString("datavalue"));
 						}
 					}
 				}
