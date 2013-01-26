@@ -18,7 +18,12 @@ public class DDivineBlocks
 	public static void createShrine(int charID, Location location) throws Exception
 	{
 		ArrayList<Location> charShrines = getShrines(charID);
-		charShrines.add(location);
+		if(charShrines != null) charShrines.add(location);
+		else
+		{
+			charShrines = new ArrayList<Location>();
+			charShrines.add(location);
+		}
 		DDataUtil.saveCharData(charID, "char_shrines", charShrines);
 	}
 	
