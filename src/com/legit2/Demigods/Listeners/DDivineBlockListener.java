@@ -255,7 +255,10 @@ public class DDivineBlockListener implements Listener
 					}
 				}
 			}
-			catch (Exception e) {}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
