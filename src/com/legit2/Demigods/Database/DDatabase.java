@@ -191,6 +191,9 @@ public class DDatabase
 			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Demigods plugin data saved in " + totalTime/1000 + " seconds.");
 			else DMiscUtil.info("Demigods plugin data saved.");
 					
+			// Save divine blocks data
+			saveDivineBlocks();
+			
 			for(Player player : DMiscUtil.getOnlinePlayers())
 			{
 				if(savePlayer(player)) playerCount++;
