@@ -144,7 +144,7 @@ public class DCharUtil
 		{
 			if(character.getValue().containsKey("char_owner"))
 			{
-				charOwner = Bukkit.getOfflinePlayer(character.getValue().get("char_owner").toString());
+				charOwner = Bukkit.getOfflinePlayer(getName(DObjUtil.toInteger(character.getValue().get("char_owner"))));
 			}
 		}
 		return charOwner;

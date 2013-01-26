@@ -32,6 +32,7 @@ public class DDivineBlocks
 		
 		DDataUtil.saveBlockData(blockID, "block_type", "shrine");
 		DDataUtil.saveBlockData(blockID, "block_owner", charID);
+		DDataUtil.saveBlockData(blockID, "block_deity", DCharUtil.getDeity(charID));
 		DDataUtil.saveBlockData(blockID, "block_location", shrines);
 	}
 	
@@ -105,8 +106,14 @@ public class DDivineBlocks
 	 */
 	public static String getDeityAtShrine(Location location)
 	{
-		int charID = getOwnerOfShrine(location);
-		return DCharUtil.getDeity(charID);
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{			
+			if(divineBlock.getValue().get("block_deity") != null)
+			{
+				return divineBlock.getValue().get("block_deity").toString();
+			}
+		}
+		return "Error";
 	}
 	
 	/* ---------------------------------------------------
