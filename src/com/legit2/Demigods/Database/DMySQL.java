@@ -15,7 +15,8 @@ public class DMySQL
 	private static MySQL mysql;
 		// Plugin-specific
 		public static String plugindata_table = "dg_plugindata";
-	
+		public static String divineblocks_table = "dg_divineblocks";
+
 		// Player-specific
 		public static String player_table = "dg_players";
 		public static String playerdata_table = "dg_playerdata";
@@ -26,6 +27,7 @@ public class DMySQL
 		// Character-specific
 		public static String character_table = "dg_characters";
 		public static String chardata_table = "dg_chardata";
+		
 
 	/*
 	 *  initializeDatabase() : Sets up the database and creates user table if needed.
@@ -46,6 +48,20 @@ public class DMySQL
 				"data_id VARCHAR(128)," +
 				"datakey VARCHAR(128)," +
 				"datavalue VARCHAR(256)"
+			);
+			
+			// Create Divine Block Data Table
+			createTable(
+				divineblocks_table,
+				"entry_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
+				"block_id INT(11)," +
+				"block_owner VARCHAR(256)," +
+				"block_type VARCHAR(128)," +
+				"block_deity VARCHAR(256)," +
+				"block_x DOUBLE," +
+				"block_y DOUBLE," +
+				"block_z DOUBLE," +
+				"block_world VARCHAR(24)"
 			);
 
 			// Create Player Table
@@ -86,6 +102,7 @@ public class DMySQL
 				"char_lastZ DOUBLE," +
 				"char_lastW VARCHAR(24)," +
 				"char_favor INT(11)," +
+				"char_max_favor INT(11)," +
 				"char_devotion INT(11)," +
 				"char_ascensions INT(11)"
 			);

@@ -38,6 +38,14 @@ public class DObjUtil
 	}
 	
 	/*
+	 *  toLong() : Returns an object as a long.
+	 */
+	public static double toDouble(Object object)
+	{
+		return Double.parseDouble(object.toString());
+	}
+	
+	/*
 	 *  toBoolean() : Returns an object as a boolean.
 	 */
 	public static boolean toBoolean(Object object)

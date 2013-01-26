@@ -2,13 +2,17 @@ package com.legit2.Demigods.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.DConfig;
+import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
@@ -113,6 +117,7 @@ public class DDatabase
 			int charHP = DCharUtil.getHP(charID);
 			float charExp = DCharUtil.getExp(charID);
 			int charFavor = DCharUtil.getFavor(charID);
+			int charMaxFavor = DCharUtil.getMaxFavor(charID);
 			int charDevotion = DCharUtil.getDevotion(charID);
 			int charAscensions = DCharUtil.getAscensions(charID);
 			double charLastX = 0.0;
@@ -122,7 +127,7 @@ public class DDatabase
 			
 			String addQuery = 
 					"INSERT INTO " + DMySQL.character_table +
-					"(char_id,player_id,char_active,char_name,char_deity,char_alliance,char_immortal,char_hp,char_exp,char_favor,char_devotion,char_ascensions,char_lastX,char_lastY,char_lastZ,char_lastW)" + 
+					"(char_id,player_id,char_active,char_name,char_deity,char_alliance,char_immortal,char_hp,char_exp,char_favor,char_max_favor,char_devotion,char_ascensions,char_lastX,char_lastY,char_lastZ,char_lastW)" + 
 					"VALUES (" +
 						charID + "," +
 						playerID + "," +
@@ -134,6 +139,7 @@ public class DDatabase
 						charHP + "," +
 						charExp + "," +
 						charFavor + "," +
+						charMaxFavor + "," +
 						charDevotion + "," +
 						charAscensions + "," +
 						charLastX + "," +
@@ -247,19 +253,20 @@ public class DDatabase
 			{
 				// Define character-specific variables
 				int charID = playerChar.getKey();
-				boolean charImmortal = DObjUtil.toBoolean(playerCharData.get(charID).get("char_immortal"));
-				int charHP = DObjUtil.toInteger(playerCharData.get(charID).get("char_hp"));
-				float charExp = DObjUtil.toFloat(playerCharData.get(charID).get("char_exp"));
-				int charFavor = DObjUtil.toInteger(playerCharData.get(charID).get("char_favor"));
-				int charDevotion = DObjUtil.toInteger(playerCharData.get(charID).get("char_devotion"));
-				int charAscensions = DObjUtil.toInteger(playerCharData.get(charID).get("char_ascensions"));
+				boolean charImmortal = DCharUtil.getImmortal(charID);
+				int charHP = DCharUtil.getHP(charID);
+				float charExp = DCharUtil.getExp(charID);
+				int charFavor = DCharUtil.getFavor(charID);
+				int charMaxFavor = DCharUtil.getMaxFavor(charID);
+				int charDevotion = DCharUtil.getDevotion(charID);
+				int charAscensions = DCharUtil.getAscensions(charID);
 				Double charLastX = (Double) playerCharData.get(charID).get("char_lastx");
 				Double charLastY = (Double) playerCharData.get(charID).get("char_lasty");
 				Double charLastZ = (Double) playerCharData.get(charID).get("char_lastz");
 				String charLastW = (String) playerCharData.get(charID).get("char_lastw");
 				
 				// Update main character table
-				DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET char_immortal=" + charImmortal + ",char_hp=" + charHP + ",char_exp=" + charExp + ",char_favor=" + charFavor + ",char_devotion=" + charDevotion + ",char_ascensions=" + charAscensions + ",char_lastX=" + charLastX + ",char_lastY=" + charLastY + ",char_lastZ=" + charLastZ + ",char_lastW='" + charLastW + "'  WHERE char_id=" + charID + ";");
+				DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET char_immortal=" + charImmortal + ",char_hp=" + charHP + ",char_exp=" + charExp + ",char_favor=" + charFavor + ",char_max_favor=" + charMaxFavor + ",char_devotion=" + charDevotion + ",char_ascensions=" + charAscensions + ",char_lastX=" + charLastX + ",char_lastY=" + charLastY + ",char_lastZ=" + charLastZ + ",char_lastW='" + charLastW + "'  WHERE char_id=" + charID + ";");
 
 				// Save miscellaneous character data
 				HashMap<String, Object> charData = playerChar.getValue();
@@ -313,6 +320,47 @@ public class DDatabase
 	}
 	
 	/*
+	 *  saveBlockData() : Saves all HashMap data for divine blocks to the database.
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean saveDivineBlocks()
+	{
+		if(DConfig.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
+		{			
+			// Clear tables first
+			DMySQL.runQuery("TRUNCATE TABLE " + DMySQL.divineblocks_table + ";");
+			
+			// Save data
+			for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+			{
+				int blockID = divineBlock.getKey();
+				HashMap<String, Object> blockData = divineBlock.getValue();
+				
+				for(DivineLocation blockLoc : (ArrayList<DivineLocation>) blockData.get("block_location"))
+				{
+					int blockOwner = DObjUtil.toInteger(blockData.get("block_owner"));
+					String blockType = (String) blockData.get("block_type");
+					String blockDeity = (String) blockData.get("block_deity");
+					
+					double blockX = blockLoc.getX();
+					double blockY = blockLoc.getY();
+					double blockZ = blockLoc.getZ();
+					String blockWorld = blockLoc.getWorld();
+
+					DMySQL.runQuery("INSERT INTO " + DMySQL.plugindata_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+				}
+			}
+					
+			return true;
+		}
+		else if(DConfig.getSettingBoolean("database.sqlite.use"))
+		{
+			// TODO: SQLite
+		}
+		return false;
+	}
+	
+	/*
 	 *  loadAllData() : Loads all data from database into HashMaps.
 	 */
 	public static void loadAllData()
@@ -324,12 +372,11 @@ public class DDatabase
 			// Define variables
 			int playerCount = 0;
 			int characterCount = 0;
+			int divineBlockCount = 0;
 			long startStopwatch = System.currentTimeMillis();
 
-			// Define SELECT queries
-			String selectPlayer = "SELECT * FROM " + DMySQL.player_table + " LEFT JOIN " + DMySQL.playerdata_table + " ON " + DMySQL.player_table + ".player_id = " + DMySQL.playerdata_table + ".player_id;";
-			ResultSet playerResult = DMySQL.runQuery(selectPlayer);
-			
+			// Load Players
+			ResultSet playerResult = DMySQL.runQuery("SELECT * FROM " + DMySQL.player_table + " LEFT JOIN " + DMySQL.playerdata_table + " ON " + DMySQL.player_table + ".player_id = " + DMySQL.playerdata_table + ".player_id;");
 			try 
 			{
 				while(playerResult.next())
@@ -354,10 +401,7 @@ public class DDatabase
 						else DDataUtil.savePlayerData(player, playerResult.getString("datakey"), playerResult.getString("datavalue"));
 					}
 				
-					String selectCharacter = "SELECT * FROM " + DMySQL.character_table + " LEFT JOIN " + DMySQL.chardata_table + " ON " + DMySQL.character_table + ".char_id = " + DMySQL.chardata_table + ".char_id AND " + DMySQL.character_table + ".player_id=" + playerID + ";";
-					ResultSet charResult = DMySQL.runQuery(selectCharacter);
-
-
+					ResultSet charResult = DMySQL.runQuery("SELECT * FROM " + DMySQL.character_table + " LEFT JOIN " + DMySQL.chardata_table + " ON " + DMySQL.character_table + ".char_id = " + DMySQL.chardata_table + ".char_id AND " + DMySQL.character_table + ".player_id=" + playerID + ";");
 					while(charResult.next())
 					{
 						characterCount++;
@@ -390,6 +434,35 @@ public class DDatabase
 						}
 					}
 				}
+				
+				// Load Divine Blocks
+				ResultSet divineBlocks = DMySQL.runQuery("SELECT * FROM " + DMySQL.divineblocks_table);
+				
+				int blockID = 0;
+				ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
+
+				while(divineBlocks.next())
+				{
+					divineBlockCount++;
+					
+					if(divineBlocks.getInt("block_id") == blockID)
+					{
+						DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
+						blocks.add(blockLoc);
+						break;
+					}
+
+					// Set data to variables
+					blockID = divineBlocks.getInt("block_id");
+					int blockOwner = divineBlocks.getInt("block_owner");
+					String blockType = divineBlocks.getString("block_type");
+					String blockDeity = divineBlocks.getString("block_deity");
+					
+					DDataUtil.saveBlockData(blockID, "block_type", blockType);
+					DDataUtil.saveBlockData(blockID, "block_owner", blockOwner);
+					DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
+				}
+				DDataUtil.saveBlockData(blockID, "block_location", blocks);
 			}
 			catch(SQLException e)
 			{
@@ -403,8 +476,8 @@ public class DDatabase
 			double totalTime = (double) (stopStopwatch - startStopwatch);
 			
 			// Send data load success message
-			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters in " + totalTime/1000 + " seconds.");
-			else DMiscUtil.info("Loaded data for " + playerCount + " players and " + characterCount + " characters.");
+			if(DConfig.getSettingBoolean("data_debug")) DMiscUtil.info("Loaded data for " + playerCount + " players, " + characterCount + " characters, and " + divineBlockCount + " divine blocks in " + totalTime/1000 + " seconds.");
+			else DMiscUtil.info("Loaded data for " + playerCount + " players, " + characterCount + " characters, and " + divineBlockCount + " divine blocks.");
 		}
 		else if(DConfig.getSettingBoolean("database.sqlite.use"))
 		{
