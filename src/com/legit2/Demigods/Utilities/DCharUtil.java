@@ -43,9 +43,9 @@ public class DCharUtil
 			DDataUtil.savePlayerData(player, "current_char", charID);
 			DDataUtil.saveCharData(charID, "char_owner", playerID);
 			DDataUtil.saveCharData(charID, "char_active", true);
-			DDataUtil.saveCharData(charID, "char_name", charName);
+			DDataUtil.saveCharData(charID, "char_name", DObjUtil.capitalize(charName));
 			DDataUtil.saveCharData(charID, "char_alliance", charAlliance);
-			DDataUtil.saveCharData(charID, "char_deity", charDeity);
+			DDataUtil.saveCharData(charID, "char_deity", DObjUtil.capitalize(charDeity));
 			DDataUtil.saveCharData(charID, "char_immortal", true);
 			DDataUtil.saveCharData(charID, "char_hp", charHP);
 			DDataUtil.saveCharData(charID, "char_exp", charExp);
