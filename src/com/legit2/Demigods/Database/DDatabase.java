@@ -443,7 +443,8 @@ public class DDatabase
 				
 				int blockID = 0;
 				ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
-
+				
+				RESTART:
 				while(divineBlocks.next())
 				{
 					divineBlockCount++;
@@ -452,7 +453,7 @@ public class DDatabase
 					{
 						DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
 						blocks.add(blockLoc);
-						break;
+						break RESTART;
 					}
 
 					// Set data to variables
@@ -464,8 +465,8 @@ public class DDatabase
 					DDataUtil.saveBlockData(blockID, "block_type", blockType);
 					DDataUtil.saveBlockData(blockID, "block_owner", blockOwner);
 					DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
+					DDataUtil.saveBlockData(blockID, "block_location", blocks);
 				}
-				DDataUtil.saveBlockData(blockID, "block_location", blocks);
 			}
 			catch(SQLException e)
 			{
