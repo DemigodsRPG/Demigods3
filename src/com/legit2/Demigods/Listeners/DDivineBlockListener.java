@@ -93,16 +93,17 @@ public class DDivineBlockListener implements Listener
 		{
 			// Check if block is divine
 			int shrineOwner = DDivineBlocks.getShrineOwner(location);
+			OfflinePlayer charOwner = DCharUtil.getOwner(shrineOwner);
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			if(shrineDeity == null) return;
 						
-			if(DDivineBlocks.isDivineBlock(location))
+			if(DDivineBlocks.isDivineBlock(location) || DDivineBlocks.isDivineBlock(location.subtract(0.5, 0, 0.5)))
 			{
 				// Check if character has deity
 				if(DCharUtil.hasDeity(charID, shrineDeity))
 				{
 					// Open the tribute inventory
-					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, DCharUtil.getName(shrineOwner) + "'s Shrine");
+					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, charOwner.getName() + "'s Shrine to " + shrineDeity);
 					player.openInventory(ii);
 					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getShrineOwner(event.getClickedBlock().getLocation()));
 					event.setCancelled(true);
