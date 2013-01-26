@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -96,6 +97,9 @@ public class DDivineBlocks
 		{	
 			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
+				DMiscUtil.serverMsg(location.toString());
+				DMiscUtil.serverMsg(divineLoc.toLocation().toString());
+				
 				if(divineLoc.toLocation().equals(location)) return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
 			}
 		}
@@ -112,6 +116,9 @@ public class DDivineBlocks
 		{			
 			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
+				DMiscUtil.serverMsg(location.toString());
+				DMiscUtil.serverMsg(divineLoc.toLocation().toString());
+				
 				if(divineLoc.toLocation().equals(location)) return divineBlock.getValue().get("block_deity").toString();
 			}
 		}
