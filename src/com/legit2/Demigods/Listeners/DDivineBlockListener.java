@@ -168,26 +168,65 @@ public class DDivineBlockListener implements Listener
 		catch(Exception e) {}
 	}
 	
+	/* --------------------------------------------
+	 *  Handle Miscellaneous Divine Block Events
+	 * --------------------------------------------
+	 */	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void divineBlockAlerts(PlayerMoveEvent event)
+	{
+		if(event.getFrom().distance(event.getTo()) < 0.1) return;
+
+		// Define variables
+		for(Location divineBlock : DDivineBlocks.getAllShrines())
+		{
+			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getOwnerOfShrine(divineBlock));
+
+			// Check for world errors
+			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
+			if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
+			
+			/*
+			 * Entering
+			 */
+			if(event.getFrom().distance(divineBlock) > RADIUS)
+			{
+				if(divineBlock.distance(event.getTo()) <= RADIUS)
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock) + ChatColor.GRAY + ".");
+					return;
+				}
+			}
+			
+			/*
+			 * Leaving
+			 */
+			else if(event.getFrom().distance(divineBlock) <= RADIUS)
+			{
+				if(divineBlock.distance(event.getTo()) > RADIUS)
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
+					return;
+				}
+			}
+		}
+	}
+	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void stopDestroyEnderCrystal(EntityDamageEvent event)
 	{
-		if(event.getEntityType().equals(EntityType.ENDER_CRYSTAL)) event.setDamage(0);
-
 		try
 		{
 			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(event.getEntity().getLocation().subtract(0.5, 0, 0.5).equals(divineBlock))
 				{
-					event.setCancelled(true);
-					return;
+					 event.setDamage(0);
+					 return;
 				}
 			}
 		}
-		catch(Exception e) 
-		{
-			e.printStackTrace();
-		}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -319,52 +358,5 @@ public class DDivineBlockListener implements Listener
 			}
 		} 
 		catch (Exception er) {}
-	}
-	
-	@EventHandler(priority = EventPriority.HIGH)
-	public void divineBlockAlerts(PlayerMoveEvent event)
-	{
-		if(event.getFrom().distance(event.getTo()) < 0.1) return;
-		for(int charID : DMiscUtil.getImmortalList())
-		{
-			try
-			{
-				if(DDivineBlocks.getShrines(charID) != null)
-				{
-					// Define variables
-					OfflinePlayer charOwner = DCharUtil.getOwner(charID);
-					for(Location divineBlock : DDivineBlocks.getShrines(charID))
-					{
-						// Check for world errors
-						if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
-						if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
-						
-						/*
-						 * Outside coming in
-						 */
-						if(event.getFrom().distance(divineBlock) > RADIUS)
-						{
-							if(divineBlock.distance(event.getTo()) <= RADIUS)
-							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s Shrine to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock) + ChatColor.GRAY + ".");
-								return;
-							}
-						}
-						
-						/*
-						 * Leaving
-						 */
-						else if(event.getFrom().distance(divineBlock) <= RADIUS)
-						{
-							if(divineBlock.distance(event.getTo()) > RADIUS)
-							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
-								return;
-							}
-						}
-					}
-				}
-			} catch(Exception e){}
-		}
 	}
 }
