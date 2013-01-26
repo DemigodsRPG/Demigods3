@@ -3,6 +3,8 @@ package com.legit2.Demigods.Utilities;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -61,8 +63,12 @@ public class DPlayerUtil
 	/*
 	 *  getPlayerFromID() : Returns the (Player)player for (int)player_id.
 	 */
-	public static Player getPlayerFromID(int player_id)
+	public static OfflinePlayer getPlayerFromID(int playerID)
 	{
+		for(Entry<String, HashMap<String, Object>> player : DDataUtil.getAllPlayers().entrySet())
+		{
+			if(player.getValue().get("player_id").equals(playerID)) return Bukkit.getOfflinePlayer(player.getKey());
+		}
 		return null;
 	}
 	

@@ -113,7 +113,7 @@ public class DDivineBlocks
 				return divineBlock.getValue().get("block_deity").toString();
 			}
 		}
-		return "Error";
+		return null;
 	}
 	
 	/* ---------------------------------------------------
