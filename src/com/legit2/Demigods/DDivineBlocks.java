@@ -89,14 +89,14 @@ public class DDivineBlocks
 	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
+	@SuppressWarnings("unchecked")
 	public static int getShrineOwner(Location location)
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{	
-
-			if(((DivineLocation) divineBlock.getValue().get("block_location")).equals(location))
+			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
-				return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
+				if(divineLoc.equals(new DivineLocation(location))) return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
 			}
 		}
 		return -1;
