@@ -350,7 +350,7 @@ public class DDatabase
 					double blockZ = blockLoc.getZ();
 					String blockWorld = blockLoc.getWorld();
 
-					DMySQL.runQuery("INSERT INTO " + DMySQL.plugindata_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+					DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
 				}
 			}
 					
