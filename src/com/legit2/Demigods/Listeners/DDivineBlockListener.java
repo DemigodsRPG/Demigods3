@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDivineBlocks;
@@ -226,7 +227,7 @@ public class DDivineBlockListener implements Listener
 	{
 		// Exit method if it isn't a block of gold or if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-		if(event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
@@ -234,15 +235,15 @@ public class DDivineBlockListener implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		String charDeity = DCharUtil.getDeity(charID);
 		
-		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK_AND_QUILL)
+		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.WRITTEN_BOOK)
 		{
 			// Temp
 			event.getPlayer().sendMessage("You left-clicked a block of gold with a book!");
 
 			// Define variables
-			Material bookInHand = event.getPlayer().getItemInHand().getType();
+			BookMeta bookInHand = (BookMeta) event.getPlayer().getItemInHand().getItemMeta();
 			
-			if(bookInHand.getData().getName().equalsIgnoreCase(charDeity))
+			if(bookInHand.getTitle().equalsIgnoreCase(charDeity))
 			{
 				// Temp
 				event.getPlayer().sendMessage("Your book is named after your deity! - " + charDeity);
