@@ -108,7 +108,7 @@ public class DDivineBlockListener implements Listener
 			}
 			player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	/* --------------------------------------------
@@ -165,7 +165,7 @@ public class DDivineBlockListener implements Listener
 			// Clear the tribute case
 			event.getInventory().clear();
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -183,7 +183,7 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -199,7 +199,7 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -215,7 +215,7 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -231,14 +231,12 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDivineBlockPistonExtend(BlockPistonExtendEvent event)
-	{
-		DMiscUtil.serverMsg("This is working!");
-		
+	{		
 		List<Block> blocks = event.getBlocks();
 		
 		CHECKBLOCKS:
@@ -255,10 +253,7 @@ public class DDivineBlockListener implements Listener
 					}
 				}
 			}
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
+			catch(Exception e) {}
 		}
 	}
 	
@@ -278,7 +273,7 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 		}
-		catch (Exception e) {}
+		catch(Exception e) {}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
