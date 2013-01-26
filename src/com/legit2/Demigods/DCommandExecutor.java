@@ -341,7 +341,6 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			int charID = DCharUtil.getID(charName);
 			DDataUtil.savePlayerData(player, "current_char", charID);
-			
 			sender.sendMessage(ChatColor.YELLOW + "Your current character has been changed!");
 		}
 		else sender.sendMessage(ChatColor.RED + "There was an error while changing your current character.");
