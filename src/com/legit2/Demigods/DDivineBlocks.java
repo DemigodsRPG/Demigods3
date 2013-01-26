@@ -47,15 +47,15 @@ public class DDivineBlocks
 	/*
 	 *  getShrines() : Returns an ArrayList<Location> of (int)charID's Shrines.
 	 */
-	public static ArrayList<DivineLocation> getShrines(int charID)
+	public static ArrayList<Location> getShrines(int charID)
 	{
-		ArrayList<DivineLocation> shrines = new ArrayList<DivineLocation>();
+		ArrayList<Location> shrines = new ArrayList<Location>();
 		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
 			if(divineBlock.getValue().get("shrine_owner").equals(charID))
 			{
-				shrines.add((DivineLocation) divineBlock.getValue().get("shrine_location"));
+				shrines.add(((DivineLocation) divineBlock.getValue().get("shrine_location")).toLocation());
 			}
 		}
 		return shrines;
@@ -65,13 +65,13 @@ public class DDivineBlocks
 	/*
 	 *  getAllShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
-	public static ArrayList<DivineLocation> getAllShrines()
+	public static ArrayList<Location> getAllShrines()
 	{		
-		ArrayList<DivineLocation> shrines = new ArrayList<DivineLocation>();
+		ArrayList<Location> shrines = new ArrayList<Location>();
 		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			shrines.add((DivineLocation) divineBlock.getValue().get("shrine_location"));
+			shrines.add(((DivineLocation) divineBlock.getValue().get("shrine_location")).toLocation());
 		}
 		
 		return shrines;
@@ -123,7 +123,7 @@ public class DDivineBlocks
 	/*
 	 *  getAltars() : Returns an ArrayList<Location> the server's Altars.
 	 */
-	public static ArrayList<DivineLocation> getAllAltars()
+	public static ArrayList<Location> getAllAltars()
 	{		
 		return null; //TODO
 	}
@@ -151,14 +151,14 @@ public class DDivineBlocks
 	/*
 	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
 	 */
-	public static ArrayList<DivineLocation> getAllDivineBlocks()
+	public static ArrayList<Location> getAllDivineBlocks()
 	{
-		ArrayList<DivineLocation> divineBlocks = new ArrayList<DivineLocation>();
+		ArrayList<Location> divineBlocks = new ArrayList<Location>();
 		
 		// Get all Shrines
 		if(getAllShrines() != null)
 		{
-			for(DivineLocation shrine : getAllShrines())
+			for(Location shrine : getAllShrines())
 			{
 				divineBlocks.add(shrine);
 			}
@@ -167,7 +167,7 @@ public class DDivineBlocks
 		// Get all Altars
 		if(getAllAltars() != null)
 		{
-			for(DivineLocation altar : getAllAltars())
+			for(Location altar : getAllAltars())
 			{
 				divineBlocks.add(altar);
 			}
