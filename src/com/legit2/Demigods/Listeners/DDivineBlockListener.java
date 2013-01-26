@@ -95,24 +95,16 @@ public class DDivineBlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void shrineEntityInteract(PlayerInteractEntityEvent event)
 	{
-		DMiscUtil.serverMsg("Working 1");
-		
 		// Return if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-
-		DMiscUtil.serverMsg("Working 2");
 		
 		// Define variables
-		Location location = event.getRightClicked().getLocation().subtract(0.5, 0, 0.5);
+		Location location = event.getRightClicked().getLocation().subtract(0.5, 1.0, 0.5);
 		Player player = event.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		DMiscUtil.serverMsg("Working 3");
-
 		try
 		{
-			DMiscUtil.serverMsg(location.toString() + " - " + DDivineBlocks.isDivineBlock(location) + " - " + DDivineBlocks.getShrineDeity(location));
-			
 			// Check if block is divine
 			int shrineOwner = DDivineBlocks.getShrineOwner(location);
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
