@@ -186,7 +186,7 @@ public class DCommandExecutor implements CommandExecutor
 		else if(category.equalsIgnoreCase("stats"))
 		{
 			DMiscUtil.taggedMessage(sender, "Stats");
-			sender.sendMessage(ChatColor.GRAY + " These are some stats for Demigods.");
+			sender.sendMessage(ChatColor.GRAY + " Read some global stats made from Demigods.");
 		}
 		else if(category.equalsIgnoreCase("rankings"))
 		{
