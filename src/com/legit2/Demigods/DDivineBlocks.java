@@ -47,32 +47,31 @@ public class DDivineBlocks
 	/*
 	 *  getShrines() : Returns an ArrayList<Location> of (int)charID's Shrines.
 	 */
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Location> getShrines(int charID)
+	public static ArrayList<DivineLocation> getShrines(int charID)
 	{
-		if(DDataUtil.hasCharData(charID, "char_shrines"))
-		{
-			return (ArrayList<Location>) DDataUtil.getCharData(charID, "char_shrines");
+		ArrayList<DivineLocation> shrines = new ArrayList<DivineLocation>();
+		
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{			
+			if(divineBlock.getValue().get("shrine_owner").equals(charID))
+			{
+				shrines.add((DivineLocation) divineBlock.getValue().get("shrine_location"));
+			}
 		}
-		else return null;
+		return shrines;
+
 	}
 	
 	/*
 	 *  getAllShrines() : Returns an ArrayList<Location> of (Player)player's Shrines.
 	 */
-	public static ArrayList<Location> getAllShrines()
+	public static ArrayList<DivineLocation> getAllShrines()
 	{		
-		ArrayList<Location> shrines = new ArrayList<Location>();
+		ArrayList<DivineLocation> shrines = new ArrayList<DivineLocation>();
 		
-		for(int charID : DDataUtil.getAllChars().keySet())
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			if(getShrines(charID) != null)
-			{
-				for(Location shrine : getShrines(charID))
-				{
-					if(!shrines.contains(shrine)) shrines.add(shrine);
-				}
-			}
+			shrines.add((DivineLocation) divineBlock.getValue().get("shrine_location"));
 		}
 		
 		return shrines;
@@ -82,12 +81,12 @@ public class DDivineBlocks
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
 	public static int getOwnerOfShrine(Location location)
-	{
-		for(int charID : DDataUtil.getAllChars().keySet())
-		{
-			for(Location knownLoc : getShrines(charID))
+	{		
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{			
+			if(divineBlock.getValue().get("shrine_location").equals(new DivineLocation(location)))
 			{
-				if(knownLoc.equals(location)) return charID;
+				return DObjUtil.toInteger(divineBlock.getValue().get("shrine_owner"));
 			}
 		}
 		return -1;
@@ -124,7 +123,7 @@ public class DDivineBlocks
 	/*
 	 *  getAltars() : Returns an ArrayList<Location> the server's Altars.
 	 */
-	public static ArrayList<Location> getAllAltars()
+	public static ArrayList<DivineLocation> getAllAltars()
 	{		
 		return null; //TODO
 	}
@@ -132,35 +131,7 @@ public class DDivineBlocks
 	/* ---------------------------------------------------
 	 * Begin Overall DivineBlock Methods
 	 * ---------------------------------------------------
-	 * 
-	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
-	 */
-	public static ArrayList<Location> getAllDivineBlocks()
-	{
-		ArrayList<Location> divineBlocks = new ArrayList<Location>();
-		
-		// Get all Shrines
-		if(getAllShrines() != null)
-		{
-			for(Location shrine : getAllShrines())
-			{
-				divineBlocks.add(shrine);
-			}
-		}
-			
-		// Get all Altars
-		if(getAllAltars() != null)
-		{
-			for(Location altar : getAllAltars())
-			{
-				divineBlocks.add(altar);
-			}
-		}
-		
-		return divineBlocks;
-	}
-
-	/*
+	 *
 	 *  getID() : Returns the (int)blockID for the (Location)location.
 	 */
 	public static int getID(Location location)
@@ -175,5 +146,33 @@ public class DDivineBlocks
 			if(((DivineLocation) divineBlocks.get(blockID).get("block_location")).equals(block)) return blockID;
 		}
 		return -1;
+	}
+	 
+	/*
+	 *  getAllDivineBlocks() : Returns an arraylist of all divine block locations.
+	 */
+	public static ArrayList<DivineLocation> getAllDivineBlocks()
+	{
+		ArrayList<DivineLocation> divineBlocks = new ArrayList<DivineLocation>();
+		
+		// Get all Shrines
+		if(getAllShrines() != null)
+		{
+			for(DivineLocation shrine : getAllShrines())
+			{
+				divineBlocks.add(shrine);
+			}
+		}
+			
+		// Get all Altars
+		if(getAllAltars() != null)
+		{
+			for(DivineLocation altar : getAllAltars())
+			{
+				divineBlocks.add(altar);
+			}
+		}
+		
+		return divineBlocks;
 	}
 }

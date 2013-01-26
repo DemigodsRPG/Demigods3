@@ -32,6 +32,7 @@ import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
+import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -176,7 +177,7 @@ public class DDivineBlockListener implements Listener
 	{
 		try
 		{
-			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(event.getBlock().getLocation().equals(divineBlock))
 				{
@@ -194,7 +195,7 @@ public class DDivineBlockListener implements Listener
 	{
 		try
 		{
-			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(event.getBlock().getLocation().equals(divineBlock))
 				{
@@ -210,7 +211,7 @@ public class DDivineBlockListener implements Listener
 	{
 		try
 		{
-			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(event.getBlock().getLocation().equals(divineBlock))
 				{
@@ -226,7 +227,7 @@ public class DDivineBlockListener implements Listener
 	{
 		try
 		{
-			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(event.getBlock().getLocation().equals(divineBlock))
 				{
@@ -247,7 +248,7 @@ public class DDivineBlockListener implements Listener
 		{
 			try
 			{
-				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+				for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
 					if(block.getLocation().equals(divineBlock))
 					{
@@ -271,7 +272,7 @@ public class DDivineBlockListener implements Listener
 		
 		try
 		{
-			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(block.getLocation().equals((divineBlock)) && event.isSticky())
 				{
@@ -293,9 +294,9 @@ public class DDivineBlockListener implements Listener
 			{
 				Block block = i.next();
 				if(!DMiscUtil.canLocationPVP(block.getLocation())) i.remove();
-				for(Location center : DDivineBlocks.getAllDivineBlocks())
+				for(DivineLocation divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
-					if(block.getLocation().equals(center)) i.remove();
+					if(block.getLocation().equals(divineBlock)) i.remove();
 				}
 			}
 		} 
@@ -314,20 +315,20 @@ public class DDivineBlockListener implements Listener
 				{
 					// Define variables
 					OfflinePlayer charOwner = DCharUtil.getOwner(charID);
-					for(Location center : DDivineBlocks.getShrines(charID))
+					for(DivineLocation divineBlock : DDivineBlocks.getShrines(charID))
 					{
 						// Check for world errors
-						if(!center.getWorld().equals(event.getPlayer().getWorld())) return;
-						if(event.getFrom().getWorld() != center.getWorld()) return;
+						if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
+						if(event.getFrom().getWorld() != divineBlock.toLocation().getWorld()) return;
 						
 						/*
 						 * Outside coming in
 						 */
-						if(event.getFrom().distance(center) > RADIUS)
+						if(event.getFrom().distance(divineBlock.toLocation()) > RADIUS)
 						{
-							if(center.distance(event.getTo()) <= RADIUS)
+							if(divineBlock.toLocation().distance(event.getTo()) <= RADIUS)
 							{
-								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(center) + ChatColor.GRAY + ".");
+								event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s divineBlock to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock.toLocation()) + ChatColor.GRAY + ".");
 								return;
 							}
 						}
@@ -335,9 +336,9 @@ public class DDivineBlockListener implements Listener
 						/*
 						 * Leaving
 						 */
-						else if(event.getFrom().distance(center) <= RADIUS)
+						else if(event.getFrom().distance(divineBlock.toLocation()) <= RADIUS)
 						{
-							if(center.distance(event.getTo()) > RADIUS)
+							if(divineBlock.toLocation().distance(event.getTo()) > RADIUS)
 							{
 								event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a divineBlock.");
 								return;
