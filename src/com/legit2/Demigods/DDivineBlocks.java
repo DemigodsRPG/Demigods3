@@ -116,9 +116,6 @@ public class DDivineBlocks
 		{			
 			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
-				DMiscUtil.serverMsg(location.toString());
-				DMiscUtil.serverMsg(divineLoc.toLocation().toString());
-				
 				if(divineLoc.toLocation().equals(location)) return divineBlock.getValue().get("block_deity").toString();
 			}
 		}
