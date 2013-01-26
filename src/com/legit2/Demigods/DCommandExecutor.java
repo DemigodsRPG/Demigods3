@@ -48,7 +48,7 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		
-		player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.ENDER_CRYSTAL);
+		player.getLocation().getWorld().spawnEntity(player.getLocation().subtract(0.0, 1.0, 0.0), EntityType.ENDER_CRYSTAL);
 		return true;
 	}
 
