@@ -339,19 +339,25 @@ public class DDatabase
 				int blockID = divineBlock.getKey();
 				HashMap<String, Object> blockData = divineBlock.getValue();
 				
+				int blockOwner = DObjUtil.toInteger(blockData.get("block_owner"));
+				String blockType = (String) blockData.get("block_type");
+				String blockDeity = (String) blockData.get("block_deity");
+				double blockX = 0;
+				double blockY = 0;
+				double blockZ = 0;
+				String blockWorld = null;
+				
 				for(DivineLocation blockLoc : (ArrayList<DivineLocation>) blockData.get("block_location"))
 				{
-					int blockOwner = DObjUtil.toInteger(blockData.get("block_owner"));
-					String blockType = (String) blockData.get("block_type");
-					String blockDeity = (String) blockData.get("block_deity");
-					
-					double blockX = blockLoc.getX();
-					double blockY = blockLoc.getY();
-					double blockZ = blockLoc.getZ();
-					String blockWorld = blockLoc.getWorld();
-
-					DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+					blockX = blockLoc.getX();
+					blockY = blockLoc.getY();
+					blockZ = blockLoc.getZ();
+					blockWorld = blockLoc.getWorld();
 				}
+				
+				DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+
+				
 			}
 					
 			return true;
