@@ -184,7 +184,6 @@ public class DDivineBlockListener implements Listener
 		for(Location divineBlock : DDivineBlocks.getAllShrines())
 		{
 			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getShrineOwner(divineBlock));
-			DMiscUtil.serverMsg("Shrine Owner: " + DDivineBlocks.getShrineOwner(divineBlock));
 			
 			// Check for world errors
 			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;

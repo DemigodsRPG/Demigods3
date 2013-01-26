@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -89,17 +90,18 @@ public class DDivineBlocks
 	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
-	@SuppressWarnings("unchecked")
 	public static int getShrineOwner(Location location)
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
-		{			
-			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
+		{	
+			DMiscUtil.serverMsg(divineBlock.getValue().get("block_type").toString());
+			DMiscUtil.serverMsg(divineBlock.getValue().get("block_owner").toString());
+			DMiscUtil.serverMsg(divineBlock.getValue().get("block_location").toString());
+			
+			
+			if(divineBlock.getValue().get("block_location").equals(new DivineLocation(location)))
 			{
-				if(divineLoc.equals(location))
-				{
-					return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
-				}
+				return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
 			}
 		}
 		return -1;
@@ -108,17 +110,13 @@ public class DDivineBlocks
 	/*
 	 *  getDeityAtShrine() : Returns the deity of the shrine at (Location)location.
 	 */
-	@SuppressWarnings("unchecked")
 	public static String getShrineDeity(Location location)
 	{
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
+			if(divineBlock.getValue().get("block_location").equals(new DivineLocation(location)))
 			{
-				if(divineLoc.equals(location))
-				{
-					return divineBlock.getValue().get("block_deity").toString();
-				}
+				return divineBlock.getValue().get("block_deity").toString();
 			}
 		}
 		return null;
