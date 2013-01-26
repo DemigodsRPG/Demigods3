@@ -234,7 +234,7 @@ public class DDivineBlockListener implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		String charDeity = DCharUtil.getDeity(charID);
 		
-		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK_AND_QUILL)
 		{
 			// Temp
 			event.getPlayer().sendMessage("You left-clicked a block of gold with a book!");
@@ -249,7 +249,6 @@ public class DDivineBlockListener implements Listener
 			}
 		}
 		
-		
 		try
 		{
 			// Check if block is divine
@@ -263,7 +262,7 @@ public class DDivineBlockListener implements Listener
 				// Open the tribute inventory
 				Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Tributes");
 				player.openInventory(ii);
-				DDataUtil.saveCharData(charID, "tributing_temp", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+				DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
 				event.setCancelled(true);
 				return;
 			}
@@ -272,6 +271,10 @@ public class DDivineBlockListener implements Listener
 		catch (Exception er) {}
 	}
 	
+	/* --------------------------------------------
+	 *  Handle Player Tributing
+	 * --------------------------------------------
+	 */	
 	@EventHandler (priority = EventPriority.MONITOR)
 	public void playerTribute(InventoryCloseEvent event)
 	{
