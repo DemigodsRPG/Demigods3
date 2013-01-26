@@ -57,10 +57,12 @@ public class DDivineBlocks
 		
 		for(int charID : DDataUtil.getAllChars().keySet())
 		{
-			if(getShrines(charID) == null) break;
-			for(Location shrine : getShrines(charID))
+			if(getShrines(charID) != null)
 			{
-				if(!shrines.contains(shrine)) shrines.add(shrine);
+				for(Location shrine : getShrines(charID))
+				{
+					if(!shrines.contains(shrine)) shrines.add(shrine);
+				}
 			}
 		}
 		
