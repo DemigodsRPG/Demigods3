@@ -79,7 +79,6 @@ public class DDivineBlocks
 		{
 			for(DivineLocation block : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
-				DMiscUtil.serverMsg(block.toLocation().toString());
 				shrines.add(block.toLocation());
 			}
 		}
@@ -170,6 +169,7 @@ public class DDivineBlocks
 		{
 			for(Location shrine : getAllShrines())
 			{
+				DMiscUtil.serverMsg("Weiner Mach 8");
 				divineBlocks.add(shrine);
 			}
 		}
