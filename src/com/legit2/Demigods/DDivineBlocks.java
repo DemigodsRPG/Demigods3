@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -78,6 +79,7 @@ public class DDivineBlocks
 		{
 			for(DivineLocation block : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location"))
 			{
+				DMiscUtil.serverMsg(block.toLocation().toString());
 				shrines.add(block.toLocation());
 			}
 		}
