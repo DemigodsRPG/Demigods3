@@ -227,7 +227,7 @@ public class DDivineBlockListener implements Listener
 	{
 		// Exit method if it isn't a block of gold or if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-		if(event.getAction() != Action.LEFT_CLICK_BLOCK || event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
