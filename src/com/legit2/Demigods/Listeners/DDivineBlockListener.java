@@ -58,7 +58,7 @@ public class DDivineBlockListener implements Listener
 	public void shrineBlockInteract(PlayerInteractEvent event)
 	{
 		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+		if(!DCharUtil.isImmortal(event.getPlayer()));
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
@@ -96,7 +96,7 @@ public class DDivineBlockListener implements Listener
 	public void shrineEntityInteract(PlayerInteractEntityEvent event)
 	{
 		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+		if(!DCharUtil.isImmortal(event.getPlayer())) event.getPlayer().sendMessage(ChatColor.RED + "Mortals can't do that!");
 		
 		// Define variables
 		Location location = event.getRightClicked().getLocation().subtract(0.5, 1.0, 0.5);
