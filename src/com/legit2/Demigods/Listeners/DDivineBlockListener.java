@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +27,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
 
 import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDivineBlocks;
@@ -57,7 +57,7 @@ public class DDivineBlockListener implements Listener
 	{
 		// Exit method if it isn't a block of gold or if the player is mortal
 		if(!DCharUtil.isImmortal(event.getPlayer())) return;
-		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.GOLD_BLOCK) return;
+		if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
@@ -66,29 +66,25 @@ public class DDivineBlockListener implements Listener
 		String charAlliance = DCharUtil.getAlliance(charID);
 		String charDeity = DCharUtil.getDeity(charID);
 		
-		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.WRITTEN_BOOK)
-		{
-			// Define variables
-			ItemStack book = event.getPlayer().getItemInHand();
-			BookMeta bookMeta = (BookMeta) book.getItemMeta();
-						
-			if(bookMeta.getTitle().equalsIgnoreCase(charDeity))
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+		{						
+			try
 			{
-				try
-				{
-					// Shrine created!
-					ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
-					DDivineBlocks.createShrine(charID, locations);
-					
-					location.getWorld().strikeLightningEffect(location);
-					player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-					player.sendMessage(ChatColor.GRAY + "A shrine has been created in honor of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
-				}
-				catch(Exception e)
-				{
-					// Creation of shrine failed...
-					e.printStackTrace();
-				}
+				// Shrine created!
+				ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
+				DDivineBlocks.createShrine(charID, locations);
+				
+				location.getWorld().getBlockAt(location).setType(Material.BEDROCK);
+				location.getWorld().spawnEntity(location.subtract(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+				location.getWorld().strikeLightningEffect(location);
+
+				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
+				player.sendMessage(ChatColor.GRAY + "A shrine has been created in honor of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
+			}
+			catch(Exception e)
+			{
+				// Creation of shrine failed...
+				e.printStackTrace();
 			}
 		}
 		
