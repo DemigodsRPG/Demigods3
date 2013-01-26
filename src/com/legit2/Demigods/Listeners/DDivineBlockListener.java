@@ -143,7 +143,8 @@ public class DDivineBlockListener implements Listener
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player)event.getPlayer();
 			int charID = DPlayerUtil.getCurrentChar(player);
-			
+			String charDeity = DCharUtil.getDeity(charID);
+
 			if(!DCharUtil.isImmortal(player)) return;
 			
 			// If it isn't a tribute chest then break the method
@@ -166,20 +167,19 @@ public class DDivineBlockListener implements Listener
 			
 			tributeValue *= FAVORMULTIPLIER;
 			
-			// Give devotion
+			// Process tributes and send messages
+			int favorBefore = DCharUtil.getMaxFavor(charID);
 			int devotionBefore = DCharUtil.getDevotion(charID);
+			
+			DCharUtil.addMaxFavor(charID, tributeValue / 5);
 			DCharUtil.giveDevotion(charID, tributeValue);
 			DCharUtil.giveDevotion(charID, tributeValue / 7);
 			
-			// Give favor
-			int favorBefore = DCharUtil.getMaxFavor(charID);
-			DCharUtil.addMaxFavor(charID, tributeValue / 5);
-			
-			// Devotion lock TODO
-			String charName = DCharUtil.getName(charID);
-			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.YELLOW + "Your devotion to " + charName + " has increased to " + DCharUtil.getDevotion(charID) + ".");
+			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.YELLOW + "Your devotion to " + charDeity + " has increased to " + DCharUtil.getDevotion(charID) + ".");
 			if(favorBefore < DCharUtil.getMaxFavor(charID)) player.sendMessage(ChatColor.YELLOW + "Your favor cap has increased to " + DCharUtil.getMaxFavor(charID) + ".");
-			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + charName + "'s blessings.");
+			
+			// If they aren't good enough let them know
+			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + charDeity + "'s blessings.");
 			
 			// Clear the tribute case
 			event.getInventory().clear();

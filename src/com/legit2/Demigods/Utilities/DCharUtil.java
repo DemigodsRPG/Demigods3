@@ -34,7 +34,7 @@ public class DCharUtil
 			double charY = player.getLocation().getY();
 			double charZ = player.getLocation().getZ();
 			String charW = player.getLocation().getWorld().getName();
-			int charFavor = DConfig.getSettingInt("default_char_favor");
+			int charFavor = DConfig.getSettingInt("default_favor");
 			int charMaxFavor = DConfig.getSettingInt("default_max_favor");
 			int charDevotion = DConfig.getSettingInt("default_devotion");
 			int charAscensions = DConfig.getSettingInt("default_ascensions");
