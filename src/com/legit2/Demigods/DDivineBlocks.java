@@ -129,15 +129,21 @@ public class DDivineBlocks
 		ArrayList<Location> divineBlocks = new ArrayList<Location>();
 		
 		// Get all Shrines
-		for(Location shrine : getAllShrines())
+		if(getAllShrines() != null)
 		{
-			if(!divineBlocks.contains(shrine)) divineBlocks.add(shrine);
+			for(Location shrine : getAllShrines())
+			{
+				if(!divineBlocks.contains(shrine)) divineBlocks.add(shrine);
+			}
 		}
-		
+			
 		// Get all Altars
-		for(Location altar : getAllAltars())
+		if(getAllAltars() != null)
 		{
-			if(!divineBlocks.contains(altar)) divineBlocks.add(altar);
+			for(Location altar : getAllAltars())
+			{
+				if(!divineBlocks.contains(altar)) divineBlocks.add(altar);
+			}
 		}
 		
 		return divineBlocks;
