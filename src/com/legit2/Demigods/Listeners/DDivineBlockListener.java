@@ -103,7 +103,6 @@ public class DDivineBlockListener implements Listener
 		Location location = event.getRightClicked().getLocation().subtract(0.5, 0, 0.5);
 		Player player = event.getPlayer();
 		int charID = DPlayerUtil.getCurrentChar(player);
-				
 		try
 		{
 			// Check if block is divine
@@ -111,7 +110,9 @@ public class DDivineBlockListener implements Listener
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			OfflinePlayer charOwner = DCharUtil.getOwner(shrineOwner);
 			if(shrineDeity == null) return;
-						
+			
+			DMiscUtil.serverMsg(location + ", " + player.getName() + ", " + charID + ", " + shrineOwner + ", " + shrineDeity + ", " + charOwner.getName());
+			
 			if(DDivineBlocks.isDivineBlock(location))
 			{
 				// Check if character has deity
