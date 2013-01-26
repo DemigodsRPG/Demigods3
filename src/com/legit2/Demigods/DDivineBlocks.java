@@ -53,9 +53,9 @@ public class DDivineBlocks
 		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			if(divineBlock.getValue().get("shrine_owner").equals(charID))
+			if(divineBlock.getValue().get("block_owner").equals(charID))
 			{
-				shrines.add(((DivineLocation) divineBlock.getValue().get("shrine_location")).toLocation());
+				shrines.add(((DivineLocation) divineBlock.getValue().get("block_location")).toLocation());
 			}
 		}
 		return shrines;
@@ -71,7 +71,7 @@ public class DDivineBlocks
 		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			shrines.add(((DivineLocation) divineBlock.getValue().get("shrine_location")).toLocation());
+			shrines.add(((DivineLocation) divineBlock.getValue().get("block_location")).toLocation());
 		}
 		
 		return shrines;
@@ -84,9 +84,9 @@ public class DDivineBlocks
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			if(divineBlock.getValue().get("shrine_location").equals(new DivineLocation(location)))
+			if(divineBlock.getValue().get("block_location").equals(new DivineLocation(location)))
 			{
-				return DObjUtil.toInteger(divineBlock.getValue().get("shrine_owner"));
+				return DObjUtil.toInteger(divineBlock.getValue().get("block_owner"));
 			}
 		}
 		return -1;
