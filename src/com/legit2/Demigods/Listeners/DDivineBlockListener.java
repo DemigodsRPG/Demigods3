@@ -238,15 +238,18 @@ public class DDivineBlockListener implements Listener
 		if(event.getAction() == Action.LEFT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.WRITTEN_BOOK)
 		{
 			// Temp
-			event.getPlayer().sendMessage("You left-clicked a block of gold with a book!");
+			player.sendMessage("You left-clicked a block of gold with a book!");
 
 			// Define variables
-			BookMeta bookInHand = (BookMeta) event.getPlayer().getItemInHand().getItemMeta();
+			ItemStack book = event.getPlayer().getItemInHand();
+			BookMeta bookMeta = (BookMeta) book.getItemMeta();
 			
-			if(bookInHand.getTitle().equalsIgnoreCase(charDeity))
+			event.getPlayer().sendMessage("Title: " + bookMeta.getTitle());
+			
+			if(bookMeta.getTitle().equalsIgnoreCase(charDeity))
 			{
 				// Temp
-				event.getPlayer().sendMessage("Your book is named after your deity! - " + charDeity);
+				player.sendMessage("Your book is named after your deity! - " + charDeity);
 			}
 		}
 		
