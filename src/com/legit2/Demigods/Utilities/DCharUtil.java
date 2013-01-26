@@ -175,7 +175,7 @@ public class DCharUtil
 	{
 		if(charID == -1) return false;
 
-		if(getDeity(charID).equalsIgnoreCase(deity)) return true;
+		if(getDeity(charID) != null && getDeity(charID).equalsIgnoreCase(deity)) return true;
 		else return false;
 	}	
 	

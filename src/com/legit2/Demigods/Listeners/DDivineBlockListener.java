@@ -110,9 +110,7 @@ public class DDivineBlockListener implements Listener
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			OfflinePlayer charOwner = DCharUtil.getOwner(shrineOwner);
 			if(shrineDeity == null) return;
-			
-			DMiscUtil.serverMsg(location + ", " + player.getName() + ", " + charID + ", " + shrineOwner + ", " + shrineDeity + ", " + charOwner.getName());
-			
+						
 			if(DDivineBlocks.isDivineBlock(location))
 			{
 				// Check if character has deity
