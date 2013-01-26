@@ -239,15 +239,22 @@ public class DDivineBlockListener implements Listener
 	{		
 		List<Block> blocks = event.getBlocks();
 		
+		DMiscUtil.serverMsg("Weiner 1");
 		CHECKBLOCKS:
 		for(Block block : blocks)
 		{
+			DMiscUtil.serverMsg("Weiner 2");
+
 			try
 			{
 				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
+					DMiscUtil.serverMsg("Weiner 3");
+
 					if(block.getLocation().equals(divineBlock))
 					{
+						DMiscUtil.serverMsg("Weiner 4");
+
 						event.setCancelled(true);
 						break CHECKBLOCKS;
 					}
