@@ -236,7 +236,7 @@ public class DDivineBlockListener implements Listener
 		{
 			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
-				if(event.getEntity().getLocation().subtract(0.5, 0, 0.5).equals(divineBlock))
+				if(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5).equals(divineBlock))
 				{
 					 event.setDamage(0);
 					 event.setCancelled(true);

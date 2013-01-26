@@ -326,9 +326,9 @@ public class DCharUtil
 		int favor;
 
 		// Perform favor cap check
-		if((getFavor(charID) + amount) > DConfig.getSettingInt("global_max_favor"))
+		if((getFavor(charID) + amount) > getMaxFavor(charID))
 		{
-			favor = DConfig.getSettingInt("global_max_favor");
+			favor = getMaxFavor(charID);
 		}
 		else favor = getFavor(charID) + amount;
 		

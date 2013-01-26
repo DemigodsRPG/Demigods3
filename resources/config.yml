@@ -17,7 +17,7 @@ max_target_range: 100
 pvp_exp_bonus: 1.5
 stat_display_frequency_in_seconds: 0
 start_delay_seconds: 60.0
-favor_regen_seconds: 0.5
+favor_regen_seconds: 10.0
 save_interval_seconds: 300
 ascension_cap: 100
 
