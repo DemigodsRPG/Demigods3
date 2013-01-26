@@ -252,7 +252,9 @@ public class DDivineBlockListener implements Listener
 
 				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 				{
-					DMiscUtil.serverMsg("Weiner 3");
+					DMiscUtil.serverMsg("Weiner 3:");
+					DMiscUtil.serverMsg(block.getLocation().toString());
+					DMiscUtil.serverMsg(divineBlock.toString());
 
 					if(block.getLocation().equals(divineBlock))
 					{
