@@ -89,7 +89,7 @@ public class DDivineBlocks
 	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
-	public static int getOwnerOfShrine(Location location)
+	public static int getShrineOwner(Location location)
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
@@ -104,7 +104,7 @@ public class DDivineBlocks
 	/*
 	 *  getDeityAtShrine() : Returns the deity of the shrine at (Location)location.
 	 */
-	public static String getDeityAtShrine(Location location)
+	public static String getShrineDeity(Location location)
 	{
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			

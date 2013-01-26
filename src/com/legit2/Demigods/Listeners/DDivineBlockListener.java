@@ -92,7 +92,8 @@ public class DDivineBlockListener implements Listener
 		try
 		{
 			// Check if block is divine
-			String shrineDeity = DDivineBlocks.getDeityAtShrine(location);
+			int shrineOwner = DDivineBlocks.getShrineOwner(location);
+			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			if(shrineDeity == null) return;
 						
 			if(DDivineBlocks.isDivineBlock(location))
@@ -101,9 +102,9 @@ public class DDivineBlockListener implements Listener
 				if(DCharUtil.hasDeity(charID, shrineDeity))
 				{
 					// Open the tribute inventory
-					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, DCharUtil.getName(charID) + "'s Shrine");
+					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, DCharUtil.getName(shrineOwner) + "'s Shrine");
 					player.openInventory(ii);
-					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getOwnerOfShrine(event.getClickedBlock().getLocation()));
+					DDataUtil.saveCharData(charID, "temp_tributing", DDivineBlocks.getShrineOwner(event.getClickedBlock().getLocation()));
 					event.setCancelled(true);
 					return;
 				}
@@ -182,7 +183,7 @@ public class DDivineBlockListener implements Listener
 		// Define variables
 		for(Location divineBlock : DDivineBlocks.getAllShrines())
 		{
-			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getOwnerOfShrine(divineBlock));
+			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getShrineOwner(divineBlock));
 
 			// Check for world errors
 			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
@@ -195,7 +196,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(divineBlock.distance(event.getTo()) <= RADIUS)
 				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getDeityAtShrine(divineBlock) + ChatColor.GRAY + ".");
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
 					return;
 				}
 			}
@@ -224,6 +225,7 @@ public class DDivineBlockListener implements Listener
 				if(event.getEntity().getLocation().subtract(0.5, 0, 0.5).equals(divineBlock))
 				{
 					 event.setDamage(0);
+					 event.setCancelled(true);
 					 return;
 				}
 			}
