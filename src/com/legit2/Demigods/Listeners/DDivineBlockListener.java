@@ -41,7 +41,7 @@ import com.legit2.Demigods.Utilities.DMiscUtil;
 public class DDivineBlockListener implements Listener
 {
 	static Demigods plugin;
-	public static double FAVORMULTIPLIER = DConfig.getSettingDouble("globalfavormultiplier");
+	public static double FAVORMULTIPLIER = DConfig.getSettingDouble("global_favor_multiplier");
 	public static int RADIUS = 8;
 	
 	public DDivineBlockListener(Demigods instance)
