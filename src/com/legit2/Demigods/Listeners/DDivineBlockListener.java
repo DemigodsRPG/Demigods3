@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
+import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -77,6 +78,7 @@ public class DDivineBlockListener implements Listener
 				ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
 				DDivineBlocks.createShrine(charID, locations);
 				
+				player.getInventory().remove(Material.BOOK);
 				location.getWorld().getBlockAt(location).setType(Material.BEDROCK);
 				location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
 				location.getWorld().strikeLightningEffect(location);
@@ -109,6 +111,13 @@ public class DDivineBlockListener implements Listener
 				event.getRightClicked().remove();
 				location.getBlock().setType(Material.AIR);
 				DDivineBlocks.removeShrine(location);
+				
+				// Drop the block of gold and book
+				location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_BLOCK, 1));
+				location.getWorld().dropItemNaturally(location, new ItemStack(Material.BOOK, 1));
+				
+				// Save Divine Blocks
+				DDatabase.saveDivineBlocks();
 				player.sendMessage(ChatColor.RED + "Shrine removed!");
 				return;
 			}
