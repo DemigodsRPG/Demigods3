@@ -90,7 +90,7 @@ public class DConfig
 		
 		if(!configFile.exists())
 		{
-			plugin.saveResource(configFolder + File.separator + name + ".yml", false);
+			plugin.saveResource(name + ".yml", false);
 		}
 	}
 	
