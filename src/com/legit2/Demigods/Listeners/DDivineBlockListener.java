@@ -78,7 +78,13 @@ public class DDivineBlockListener implements Listener
 				ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
 				DDivineBlocks.createShrine(charID, locations);
 				
-				player.getInventory().remove(Material.BOOK);
+				if(player.getItemInHand().getAmount() > 1)
+				{
+					ItemStack books = new ItemStack(player.getItemInHand().getType(), player.getInventory().getItemInHand().getAmount() - 1);
+					player.setItemInHand(books);
+				}
+				else player.getInventory().remove(Material.BOOK);
+				
 				location.getWorld().getBlockAt(location).setType(Material.BEDROCK);
 				location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
 				location.getWorld().strikeLightningEffect(location);
