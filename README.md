@@ -27,11 +27,16 @@ Key features of this plugin include:
 
 **Altars:** At an Altar, various special abilites can be performed (such as claiming a deity).
 
-**Souls:** Much like in Zelda (with fairies in a bottle), when a player dies they can be revived by a special item.  In Demigods, Souls can be found by various means.
+**Souls:** When a player dies they can be revived by a special item.  In Demigods, Souls can be found by various means.
 
 **Favor:** Favor is limited to a cap that can be raised by tributing. Favor is spent on Demigods skills, and is regenerated over time.
 
 Still confused?  Check out the official test server at **play.exileclub.net**!
+
+Developers
+==========
+
+Demigods 3.0 is being developed solely by **_Alex** and **HmmmQuestionMark**, owners of _Insignia_, _Clashnia_, _ExileClub_, and _ClashPVP_.
 
 More Documentation
 ==================
