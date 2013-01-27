@@ -61,7 +61,7 @@ public class DCommandExecutor implements CommandExecutor
 	{		
 		if(args.length > 0)
 		{
-			dg_info(sender, args);
+			dg_extended(sender, args);
 			return true;
 		}
 				
@@ -85,16 +85,18 @@ public class DCommandExecutor implements CommandExecutor
 	}
 
 	/*
-	 *  Command: "dg_info"
+	 *  Command: "dg_extended"
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean dg_info(CommandSender sender, String[] args)
+	public static boolean dg_extended(CommandSender sender, String[] args)
 	{
 		// Define Player
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		
 		// Define args
 		String category = args[0];
+		String option = null;
+		if(args[1] != null) option = args[1];
 		
 		// Check Permissions
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
@@ -106,11 +108,7 @@ public class DCommandExecutor implements CommandExecutor
 				if(args.length < 2)
 				{
 					DMiscUtil.taggedMessage(sender, alliance + " Directory");
-				
-					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
-					{
-						sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());
-					}
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());	
 				}
 				else
 				{
@@ -120,10 +118,7 @@ public class DCommandExecutor implements CommandExecutor
 						{
 							try
 							{
-								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithPlayer(DDeityUtil.getDeityClass(deity), "getInfo", player))
-								{
-									sender.sendMessage(toPrint);
-								}
+								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithPlayer(DDeityUtil.getDeityClass(deity), "getInfo", player)) sender.sendMessage(toPrint);
 								return true;
 							}
 							catch (Exception e)
@@ -195,12 +190,22 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		else if(category.equalsIgnoreCase("admin"))
 		{
+			if(option != null)
+			{
+				if(player.getItemInHand().getTypeId() == DConfig.getSettingInt("admin_wand"))
+				{
+					
+				}
+				return true;
+			}
+			
 			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
-			sender.sendMessage(ChatColor.GRAY + "/setalliance <player> <alliance>");
-			sender.sendMessage(ChatColor.GRAY + "/givedeity <player> <deity>");
-			sender.sendMessage(ChatColor.GRAY + "/setdevotion <player> <deity> <amount>");
-			sender.sendMessage(ChatColor.GRAY + "/setfavor <player> <amount>");
-			sender.sendMessage(ChatColor.GRAY + "/setascensions <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			sender.sendMessage(ChatColor.GRAY + " /setalliance <player> <alliance>");
+			sender.sendMessage(ChatColor.GRAY + " /givedeity <player> <deity>");
+			sender.sendMessage(ChatColor.GRAY + " /setdevotion <player> <deity> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /setfavor <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /setascensions <player> <amount>");
 		}
 		
 		return true;

@@ -1,8 +1,5 @@
 package com.legit2.Demigods.Utilities;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -13,8 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -33,8 +28,6 @@ public class DMiscUtil
 	public static Demigods plugin;
 	
 	// Define variables
-	private static FileConfiguration customConfig = null;
-	private static File customConfigFile = null;
 	private static String plugin_name = "Demigods";
 	private static Logger log = Logger.getLogger("Minecraft");
 	
@@ -154,68 +147,6 @@ public class DMiscUtil
 	public static void serverMsg(String msg)
 	{
 		plugin.getServer().broadcastMessage(msg);
-	}
-
-	/*
-	 *  saveCustomConfig() : Saves the custom configuration (String)name to file system.
-	 */
-	public static void saveCustomConfig(String name)
-	{
-		if(customConfig == null || customConfigFile == null) return; 
-		
-		try
-		{
-			getCustomConfig(name).save(customConfigFile);
-		}
-		catch(IOException e)
-		{
-			severe("There was an error when saving file: " + name + ".yml");
-			severe("Error: " + e);
-		}
-	}
-
-	/*
-	 *  saveDefaultCustomConfig() : Saves the defaults for custom configuration (String)name to file system.
-	 */
-	public static void saveDefaultCustomConfig(String name)
-	{
-		customConfigFile = new File(plugin.getDataFolder(), name + ".yml");
-		if(!customConfigFile.exists())
-		{
-			plugin.saveResource(name + ".yml", false);
-		}
-	}
-	
-	/*
-	 *  getCustomConfig() : Grabs the custom configuration file from file system.
-	 */
-	public static FileConfiguration getCustomConfig(String name)
-	{
-		if(customConfig == null)
-		{
-			reloadCustomConfig(name);
-		}
-		return customConfig;
-	}
-	
-	/*
-	 *  reloadCustomConfig() : Reloads the custom configuration (String)name to refresh values.
-	 */
-	public static void reloadCustomConfig(String name)
-	{
-		if(customConfigFile == null)
-		{
-			customConfigFile = new File(plugin.getDataFolder(), name + ".yml");
-		}
-		customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
-
-		// Look for defaults in the jar
-		InputStream defConfigStream = plugin.getResource(name + ".yml");
-		if(defConfigStream != null)
-		{
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			customConfig.setDefaults(defConfig);
-		}
 	}
 	
 	/*

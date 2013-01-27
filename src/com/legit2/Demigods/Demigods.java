@@ -48,6 +48,7 @@ public class Demigods extends JavaPlugin
 		
 		if(okayToLoad)
 		{
+			DConfig.saveDefaultConfig("test");
 			DConfig.initializeConfig();
 			DDatabase.initializeDatabase();
 			DScheduler.startThreads();
