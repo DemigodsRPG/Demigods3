@@ -129,12 +129,13 @@ public class DDivineBlocks
 	{		
 		location.getBlock().setType(Material.ENCHANTMENT_TABLE); // Center of Altar
 		location.subtract(0, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(1, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(0, 1, 1).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(2, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(0, 1, 2).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(1, 1, 1).getBlock().setType(Material.SMOOTH_BRICK);
-		location.subtract(2, 1, 2).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
+
 	}
 	
 	/*
