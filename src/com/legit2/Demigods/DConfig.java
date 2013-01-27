@@ -86,6 +86,8 @@ public class DConfig
 	public static void saveDefaultConfig(String name)
 	{
 		configFile = new File(plugin.getDataFolder() + File.separator + configFolder, name + ".yml");
+		new File(plugin.getDataFolder() + File.separator + configFolder).mkdir();
+		
 		if(!configFile.exists())
 		{
 			plugin.saveResource(configFolder + File.separator + name + ".yml", false);
