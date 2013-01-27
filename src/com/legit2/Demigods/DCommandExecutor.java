@@ -96,8 +96,8 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String category = args[0];
-		String option = null;
-		if(args.length > 1 && args[1] != null) option = args[1];
+		String option1 = null;
+		if(args.length == 2) option1 = args[1];
 		
 		// Check Permissions
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
@@ -191,7 +191,7 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		else if(category.equalsIgnoreCase("admin"))
 		{
-			if(option != null)
+			if(option1 != null)
 			{
 				if(!DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false))
 				{

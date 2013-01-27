@@ -247,7 +247,7 @@ public class DDatabase
 			
 			// Save miscellaneous player data
 			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
-			for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
+			for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_") && !playerData.getKey().contains("temp_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
 			
 				
 			// Save their character-specific data now
