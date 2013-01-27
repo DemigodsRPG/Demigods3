@@ -127,6 +127,12 @@ public class DDivineBlocks
 	 */
 	public static void createAltar(Location location)
 	{		
+		// Split the location so we can build off of it
+		double locX = location.getX();
+		double locY = location.getY();
+		double locZ = location.getZ();
+		double locWorld = location.getWorld();
+		
 		location.getBlock().setType(Material.ENCHANTMENT_TABLE); // Center of Altar
 		location.subtract(0, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
 		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
