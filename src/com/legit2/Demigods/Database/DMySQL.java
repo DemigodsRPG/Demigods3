@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-import com.legit2.Demigods.DConfig;
+import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
 import lib.PatPeter.SQLibrary.MySQL;
@@ -139,11 +139,11 @@ public class DMySQL
 	 */
 	public static boolean createConnection()
 	{
-		String db_name = DConfig.getSettingString("database.mysql.db_name");
-		String username = DConfig.getSettingString("database.mysql.username");
-		String password = DConfig.getSettingString("database.mysql.password");
-		String host = DConfig.getSettingString("database.mysql.host");
-		int port = DConfig.getSettingInt("database.mysql.port");
+		String db_name = DConfigUtil.getSettingString("database.mysql.db_name");
+		String username = DConfigUtil.getSettingString("database.mysql.username");
+		String password = DConfigUtil.getSettingString("database.mysql.password");
+		String host = DConfigUtil.getSettingString("database.mysql.host");
+		int port = DConfigUtil.getSettingInt("database.mysql.port");
 		
 		mysql = new MySQL(Logger.getLogger("Minecraft"), "[Demigods] ", host, port, db_name, username, password);
 		

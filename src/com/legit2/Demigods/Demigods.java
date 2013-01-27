@@ -22,6 +22,7 @@ import com.legit2.Demigods.Listeners.DDivineBlockListener;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
 import com.legit2.Demigods.Listeners.DTagAPIListener;
+import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
@@ -48,8 +49,7 @@ public class Demigods extends JavaPlugin
 		
 		if(okayToLoad)
 		{
-			DConfig.saveDefaultConfig("test");
-			DConfig.initializeConfig();
+			DConfigUtil.initializeConfig();
 			DDatabase.initializeDatabase();
 			DScheduler.startThreads();
 			loadCommands();
@@ -251,7 +251,7 @@ public class Demigods extends JavaPlugin
 		if ((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
-			if (!DConfig.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
+			if (!DConfigUtil.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
 		}
 	}
 	
@@ -261,7 +261,7 @@ public class Demigods extends JavaPlugin
 		// Check for updates, and then update if need be		
 		new DUpdate(this);
 		Boolean shouldUpdate = DUpdate.shouldUpdate();
-		if(shouldUpdate && DConfig.getSettingBoolean("auto_update"))
+		if(shouldUpdate && DConfigUtil.getSettingBoolean("auto_update"))
 		{
 			DUpdate.demigodsUpdate();
 		}

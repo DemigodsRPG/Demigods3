@@ -30,19 +30,20 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DDivineBlockListener implements Listener
 {
 	static Demigods plugin;
-	public static double FAVORMULTIPLIER = DConfig.getSettingDouble("global_favor_multiplier");
+	public static double FAVORMULTIPLIER = DConfigUtil.getSettingDouble("global_favor_multiplier");
 	public static int RADIUS = 8;
 	
 	public DDivineBlockListener(Demigods instance)
@@ -95,12 +96,34 @@ public class DDivineBlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void shrineEntityInteract(PlayerInteractEntityEvent event)
 	{
-		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer())) event.getPlayer().sendMessage(ChatColor.RED + "Mortals can't do that!");
-		
 		// Define variables
 		Location location = event.getRightClicked().getLocation().subtract(0.5, 1.0, 0.5);
 		Player player = event.getPlayer();
+		
+		// First handle admin wand
+		if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin") && DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() == DConfigUtil.getSettingInt("admin_wand_tool"))
+		{
+			if(DDataUtil.hasPlayerData(player, "temp_destroy_shrine") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_shrine")))
+			{
+				// We can destroy the Shrine
+				event.getRightClicked().remove();
+				location.getBlock().setType(Material.AIR);
+				DDivineBlocks.removeShrine(location);
+				player.sendMessage(ChatColor.RED + "Shrine removed!");
+				return;
+			}
+			else
+			{
+				//
+				DDataUtil.savePlayerData(player, "temp_destroy_shrine", System.currentTimeMillis() + 100);
+				player.sendMessage(ChatColor.RED + "If you want to destroy this shrine, please click it again.");
+			}
+		}
+		
+		// Return if the player is mortal
+		if(!DCharUtil.isImmortal(event.getPlayer())) event.getPlayer().sendMessage(ChatColor.RED + "Mortals can't do that!");
+		
+		// More variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		try

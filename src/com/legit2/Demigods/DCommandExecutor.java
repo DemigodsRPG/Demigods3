@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -192,9 +193,15 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			if(option != null)
 			{
-				if(player.getItemInHand().getTypeId() == DConfig.getSettingInt("admin_wand"))
+				if(!DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false))
 				{
-					
+					DDataUtil.savePlayerData(player, "temp_admin_wand", true);
+					player.sendMessage(ChatColor.RED + "You have enabled the admin wand for: " + Material.getMaterial(DConfigUtil.getSettingInt("admin_wand_tool")));
+				}
+				else if(DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true))
+				{
+					DDataUtil.savePlayerData(player, "boolean_admin_wand", false);
+					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 				}
 				return true;
 			}

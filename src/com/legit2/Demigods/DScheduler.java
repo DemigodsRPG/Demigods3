@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
@@ -22,9 +23,9 @@ public class DScheduler
 	public static void startThreads()
 	{
 		// Setup threads for saving, health, and favor
-		int start_delay = (int)(DConfig.getSettingDouble("start_delay_seconds")*20);
-		int favor_frequency = (int)(DConfig.getSettingDouble("favor_regen_seconds")*20);
-		int save_frequency = DConfig.getSettingInt("save_interval_seconds")*20;
+		int start_delay = (int)(DConfigUtil.getSettingDouble("start_delay_seconds")*20);
+		int favor_frequency = (int)(DConfigUtil.getSettingDouble("favor_regen_seconds")*20);
+		int save_frequency = DConfigUtil.getSettingInt("save_interval_seconds")*20;
 		if (favor_frequency < 0) favor_frequency = 600;
 		if (start_delay <= 0) start_delay = 1;
 		if (save_frequency <= 0) save_frequency = 300;

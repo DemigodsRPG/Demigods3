@@ -11,7 +11,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
-import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Database.DDatabase;
 
 public class DCharUtil
@@ -34,10 +33,10 @@ public class DCharUtil
 			double charY = player.getLocation().getY();
 			double charZ = player.getLocation().getZ();
 			String charW = player.getLocation().getWorld().getName();
-			int charFavor = DConfig.getSettingInt("default_favor");
-			int charMaxFavor = DConfig.getSettingInt("default_max_favor");
-			int charDevotion = DConfig.getSettingInt("default_devotion");
-			int charAscensions = DConfig.getSettingInt("default_ascensions");
+			int charFavor = DConfigUtil.getSettingInt("default_favor");
+			int charMaxFavor = DConfigUtil.getSettingInt("default_max_favor");
+			int charDevotion = DConfigUtil.getSettingInt("default_devotion");
+			int charAscensions = DConfigUtil.getSettingInt("default_ascensions");
 			
 			DDataUtil.addChar(charID);
 			DDataUtil.savePlayerData(player, "current_char", charID);
@@ -344,9 +343,9 @@ public class DCharUtil
 		int maxFavor;
 
 		// Perform favor cap check
-		if((getMaxFavor(charID) + amount) > DConfig.getSettingInt("global_max_favor"))
+		if((getMaxFavor(charID) + amount) > DConfigUtil.getSettingInt("global_max_favor"))
 		{
-			maxFavor = DConfig.getSettingInt("global_max_favor");
+			maxFavor = DConfigUtil.getSettingInt("global_max_favor");
 		}
 		else maxFavor = getMaxFavor(charID) + amount;
 		

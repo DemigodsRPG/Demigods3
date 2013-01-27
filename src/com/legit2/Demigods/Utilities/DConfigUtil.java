@@ -1,4 +1,4 @@
-package com.legit2.Demigods;
+package com.legit2.Demigods.Utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +8,9 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Demigods;
 
-public class DConfig
+public class DConfigUtil
 {
 	// Define variables
 	private static FileConfiguration config = null;

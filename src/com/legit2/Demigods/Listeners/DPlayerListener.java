@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.kitteh.tag.TagAPI;
 
-import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
@@ -64,16 +64,16 @@ public class DPlayerListener implements Listener
 			}
 		}
 			
-		// if(!DConfig.getEnabledWorlds().contains(player.getWorld())) return;
+		// if(!DConfigUtil.getEnabledWorlds().contains(player.getWorld())) return;
 		
-		if(DConfig.getSettingBoolean("motd"))
+		if(DConfigUtil.getSettingBoolean("motd"))
 		{
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + DMiscUtil.getPlugin().getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type "+ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 		
 		/*
-		if((!DConfig.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(player, "demigods.admin"))
+		if((!DConfigUtil.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(player, "demigods.admin"))
 		{
 			player.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 			player.sendMessage(ChatColor.RED + "Please update ASAP.");
@@ -116,7 +116,7 @@ public class DPlayerListener implements Listener
 		// Define variables
 		final Player player = (Player) event.getPlayer();
 		//final String username = player.getName();
-		final int pvp_area_delay_time = DConfig.getSettingInt("pvp_area_delay_time");
+		final int pvp_area_delay_time = DConfigUtil.getSettingInt("pvp_area_delay_time");
 		Location to = event.getTo();
 		Location from = event.getFrom();
 			

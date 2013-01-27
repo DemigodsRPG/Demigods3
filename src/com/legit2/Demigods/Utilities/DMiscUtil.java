@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.BlockIterator;
 
-import com.legit2.Demigods.DConfig;
 import com.legit2.Demigods.Demigods;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
@@ -230,7 +229,7 @@ public class DMiscUtil
 	 */
     public static boolean canLocationPVP(Location location)
     {
-        if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
+        if(DConfigUtil.getSettingBoolean("allow_skills_anywhere")) return true;
         
         if(canWorldGuardPVP(location)) return true;
         else return false;
@@ -252,7 +251,7 @@ public class DMiscUtil
     @SuppressWarnings("static-access")
     public static boolean canWorldGuardPVP(Location location)
     {
-	    if(DConfig.getSettingBoolean("allow_skills_anywhere")) return true;
+	    if(DConfigUtil.getSettingBoolean("allow_skills_anywhere")) return true;
 	    if(plugin.WORLDGUARD == null) return true;
 	    
 	    ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);

@@ -21,11 +21,14 @@ favor_regen_seconds: 10.0
 save_interval_seconds: 300
 ascension_cap: 100
 
-## Character creation default values ##
+## Character Creation Settings ##
 default_favor: 500
 default_max_favor: 750
 default_devotion: 200
 default_ascensions: 1
+
+## Administrative Settings ##
+admin_wand_tool: 268
 
 ## Database Settings ##
 database:
