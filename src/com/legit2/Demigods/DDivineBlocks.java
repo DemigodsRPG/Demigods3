@@ -148,6 +148,11 @@ public class DDivineBlocks
 		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
 		location.add(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
 		location.add(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.add(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
 
 	}
 	
