@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DDatabase;
@@ -49,8 +48,7 @@ public class DCommandExecutor implements CommandExecutor
 	public static boolean test1(CommandSender sender)
 	{
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
-		
-		player.getLocation().getWorld().spawnEntity(player.getLocation().subtract(0.0, 1.0, 0.0), EntityType.ENDER_CRYSTAL);
+		DDivineBlocks.createAltar(player.getCompassTarget());
 		return true;
 	}
 

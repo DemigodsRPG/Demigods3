@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -125,8 +126,15 @@ public class DDivineBlocks
 	 *  createAltar() : Creates an altar at (Location)location.
 	 */
 	public static void createAltar(Location location)
-	{
-		// TODO
+	{		
+		location.getBlock().setType(Material.ENCHANTMENT_TABLE); // Center of Altar
+		location.subtract(0, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 1, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(2, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(0, 1, 2).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(1, 1, 1).getBlock().setType(Material.SMOOTH_BRICK);
+		location.subtract(2, 1, 2).getBlock().setType(Material.SMOOTH_BRICK);
 	}
 	
 	/*
