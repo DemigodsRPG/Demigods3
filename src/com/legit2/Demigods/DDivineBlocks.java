@@ -153,6 +153,7 @@ public class DDivineBlocks
 	 *
 	 *  getID() : Returns the (int)blockID for the (Location)location.
 	 */
+	@SuppressWarnings("unchecked")
 	public static int getID(Location location)
 	{
 		HashMap<Integer, HashMap<String, Object>> divineBlocks = DDataUtil.getAllBlockData();
@@ -160,9 +161,10 @@ public class DDivineBlocks
 		{
 			// Define character-specific variables
 			int blockID = divineBlock.getKey();
-			DivineLocation block = new DivineLocation(location);
-			
-			if(((DivineLocation) divineBlocks.get(blockID).get("block_location")).equals(block)) return blockID;
+			for(DivineLocation divineLoc : (ArrayList<DivineLocation>) divineBlock.getValue().get("block_location")) 
+			{
+				if(divineLoc.toLocation().equals(location)) return blockID;
+			}
 		}
 		return -1;
 	}
