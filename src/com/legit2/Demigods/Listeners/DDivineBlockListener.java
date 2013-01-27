@@ -114,7 +114,7 @@ public class DDivineBlockListener implements Listener
 			}
 			else
 			{
-				DDataUtil.savePlayerData(player, "temp_destroy_shrine", System.currentTimeMillis() + 100);
+				DDataUtil.savePlayerData(player, "temp_destroy_shrine", System.currentTimeMillis() + 5000);
 				player.sendMessage(ChatColor.RED + "If you want to destroy this shrine, please click it again.");
 				return;
 			}
