@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -42,6 +43,7 @@ public class DDivineBlocks
 	public static void removeShrine(Location location)
 	{
 		int blockID = getID(location);
+		DMiscUtil.serverMsg("Block ID: " + blockID);
 		DDataUtil.removeAllBlockData(blockID);
 	}
 	

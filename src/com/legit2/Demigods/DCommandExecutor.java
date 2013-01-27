@@ -97,7 +97,7 @@ public class DCommandExecutor implements CommandExecutor
 		// Define args
 		String category = args[0];
 		String option = null;
-		if(args[1] != null) option = args[1];
+		if(args.length > 1 && args[1] != null) option = args[1];
 		
 		// Check Permissions
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
