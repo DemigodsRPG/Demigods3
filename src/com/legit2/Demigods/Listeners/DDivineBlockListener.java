@@ -136,7 +136,11 @@ public class DDivineBlockListener implements Listener
 		}
 		
 		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer())) event.getPlayer().sendMessage(ChatColor.RED + "Mortals can't do that!");
+		if(!DCharUtil.isImmortal(event.getPlayer()))
+		{
+			event.getPlayer().sendMessage(ChatColor.RED + "You must be immortal to use that!");
+			return;
+		}
 		
 		// More variables
 		int charID = DPlayerUtil.getCurrentChar(player);

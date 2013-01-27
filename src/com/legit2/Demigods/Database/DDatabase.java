@@ -430,6 +430,7 @@ public class DDatabase
 						DDataUtil.saveCharData(charID, "char_lastZ", charResult.getDouble("char_lastZ"));
 						DDataUtil.saveCharData(charID, "char_lastW", charResult.getString("char_lastW"));
 						DDataUtil.saveCharData(charID, "char_favor", charResult.getInt("char_favor"));
+						DDataUtil.saveCharData(charID, "char_max_favor", charResult.getInt("char_max_favor"));
 						DDataUtil.saveCharData(charID, "char_devotion", charResult.getInt("char_devotion"));
 						DDataUtil.saveCharData(charID, "char_ascensions", charResult.getInt("char_ascensions"));
 						
