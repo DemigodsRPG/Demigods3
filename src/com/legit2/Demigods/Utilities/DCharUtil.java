@@ -38,6 +38,9 @@ public class DCharUtil
 			int charDevotion = DConfigUtil.getSettingInt("default_devotion");
 			int charAscensions = DConfigUtil.getSettingInt("default_ascensions");
 			
+			player.sendMessage("Default favor: " + DConfigUtil.getSettingInt("default_favor"));
+			player.sendMessage("Default max favor: " + DConfigUtil.getSettingInt("default_favor"));
+			
 			DDataUtil.addChar(charID);
 			DDataUtil.savePlayerData(player, "current_char", charID);
 			DDataUtil.saveCharData(charID, "char_owner", playerID);
