@@ -2,7 +2,6 @@ package com.legit2.Demigods.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -325,7 +324,6 @@ public class DDatabase
 	/*
 	 *  saveBlockData() : Saves all HashMap data for divine blocks to the database.
 	 */
-	@SuppressWarnings("unchecked")
 	public static boolean saveDivineBlocks()
 	{
 		if(DConfigUtil.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
@@ -339,7 +337,7 @@ public class DDatabase
 				int blockID = divineBlock.getKey();
 				HashMap<String, Object> blockData = divineBlock.getValue();
 				
-				int blockOwner = DObjUtil.toInteger(blockData.get("block_owner"));
+				int blockParent = DObjUtil.toInteger(blockData.get("block_parent"));
 				String blockType = (String) blockData.get("block_type");
 				String blockDeity = (String) blockData.get("block_deity");
 				double blockX = 0;
@@ -347,15 +345,14 @@ public class DDatabase
 				double blockZ = 0;
 				String blockWorld = null;
 				
-				for(DivineLocation blockLoc : (ArrayList<DivineLocation>) blockData.get("block_location"))
-				{
-					blockX = blockLoc.getX();
-					blockY = blockLoc.getY();
-					blockZ = blockLoc.getZ();
-					blockWorld = blockLoc.getWorld();
-				}
+				DivineLocation block = (DivineLocation) blockData.get("block_location");
+				blockX = block.getX();
+				blockY = block.getY();
+				blockZ = block.getZ();
+				blockWorld = block.getWorld();
+
 				
-				DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_owner, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockOwner + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+				DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_parent, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockParent + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
 			}
 					
 			return true;
@@ -454,18 +451,16 @@ public class DDatabase
 
 					// Set data to variables
 					blockID = divineBlocks.getInt("block_id");
-					int blockOwner = divineBlocks.getInt("block_owner");
+					int blockParent = divineBlocks.getInt("block_parent");
 					String blockType = divineBlocks.getString("block_type");
 					String blockDeity = divineBlocks.getString("block_deity");
-					ArrayList<DivineLocation> blocks = new ArrayList<DivineLocation>();
 
-					DivineLocation blockLoc = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
-					blocks.add(blockLoc);
+					DivineLocation block = new DivineLocation(new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z")));
 					
 					DDataUtil.saveBlockData(blockID, "block_type", blockType);
-					DDataUtil.saveBlockData(blockID, "block_owner", blockOwner);
+					DDataUtil.saveBlockData(blockID, "block_parent", blockParent);
 					DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
-					DDataUtil.saveBlockData(blockID, "block_location", blocks);
+					DDataUtil.saveBlockData(blockID, "block_location", block);
 				}
 			}
 			catch(SQLException e)

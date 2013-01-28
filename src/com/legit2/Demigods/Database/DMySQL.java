@@ -55,7 +55,7 @@ public class DMySQL
 				divineblocks_table,
 				"entry_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
 				"block_id INT(11)," +
-				"block_owner VARCHAR(256)," +
+				"block_parent INT(11)," +
 				"block_type VARCHAR(128)," +
 				"block_deity VARCHAR(256)," +
 				"block_x DOUBLE," +

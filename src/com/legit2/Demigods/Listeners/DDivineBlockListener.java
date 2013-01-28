@@ -1,6 +1,5 @@
 package com.legit2.Demigods.Listeners;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -75,8 +74,7 @@ public class DDivineBlockListener implements Listener
 			try
 			{
 				// Shrine created!
-				ArrayList<Location> locations = new ArrayList<Location>(); locations.add(location);
-				DDivineBlocks.createShrine(charID, locations);
+				DDivineBlocks.createShrine(charID, location);
 				
 				if(player.getItemInHand().getAmount() > 1)
 				{
@@ -116,7 +114,7 @@ public class DDivineBlockListener implements Listener
 				// We can destroy the Shrine
 				event.getRightClicked().remove();
 				location.getBlock().setType(Material.AIR);
-				DDivineBlocks.removeShrine(location);
+				DDivineBlocks.removeDivineBlock(location);
 				
 				// Drop the block of gold and book
 				location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_BLOCK, 1));
