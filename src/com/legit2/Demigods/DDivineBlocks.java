@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import com.legit2.Demigods.Libraries.DivineLocation;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -131,7 +132,7 @@ public class DDivineBlocks
 		double locX = location.getX();
 		double locY = location.getY();
 		double locZ = location.getZ();
-		String locWorld = location.getWorld();
+		World locWorld = location.getWorld();
 		
 		location.getBlock().setType(Material.ENCHANTMENT_TABLE); // Center of Altar
 		location.subtract(0, 1, 0).getBlock().setType(Material.SMOOTH_BRICK);
@@ -159,7 +160,6 @@ public class DDivineBlocks
 		location.subtract(0, 0, 1).getBlock().setType(Material.SMOOTH_BRICK);
 		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
 		location.subtract(1, 0, 0).getBlock().setType(Material.SMOOTH_BRICK);
-
 	}
 	
 	/*
