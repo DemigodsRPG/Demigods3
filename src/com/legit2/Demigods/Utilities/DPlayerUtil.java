@@ -280,7 +280,7 @@ public class DPlayerUtil
 		ArrayList<OfflinePlayer> toReturn = getAllPlayers();
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			toReturn.remove(player);
+			toReturn.remove((OfflinePlayer) player);
 		}
 		return toReturn;
 	}
