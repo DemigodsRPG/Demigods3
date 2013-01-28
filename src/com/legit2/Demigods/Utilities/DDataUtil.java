@@ -299,6 +299,31 @@ public class DDataUtil
 	}
 	
 	/*
+	 *  saveTimedCharData() : Saves (String)dataKey to (int)charID HashMap for (int)seconds.
+	 */
+	@SuppressWarnings("deprecation")
+	public static boolean saveTimedCharData(final int charID, String dataKey, Object dataValue, int seconds)
+	{
+		int ticksDelayed = seconds * 20;
+		final String dataKeyLowercase = dataKey.toLowerCase();
+		
+		if(charData.containsKey(charID))
+		{
+			charData.get(charID).put(dataKey, dataValue);
+			DMiscUtil.getPlugin().getServer().getScheduler().scheduleAsyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					removeCharData(charID, dataKeyLowercase);
+				}
+			}, ticksDelayed);
+			return true;
+		}
+		else return false;
+	}
+	
+	/*
 	 *  removeCharData() : Removes (String)dataKey from (int)charID's HashMap.
 	 */
 	public static boolean removeCharData(int charID, String dataKey)
