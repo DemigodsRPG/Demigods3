@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -61,14 +60,6 @@ public class DMiscUtil
 		}
 		
 		return immortalList;
-	}
-
-	/*
-	 *  getOnlinePlayers() : Returns a string array of all online players.
-	 */
-	public static Player[] getOnlinePlayers()
-	{
-		return Bukkit.getOnlinePlayers();
 	}
 	
 	/*

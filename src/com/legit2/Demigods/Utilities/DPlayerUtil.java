@@ -141,7 +141,7 @@ public class DPlayerUtil
      */
 	public static void regenerateAllFavor()
 	{
-		Player[] onlinePlayers = DMiscUtil.getOnlinePlayers();
+		ArrayList<Player> onlinePlayers = getOnlinePlayers();
 		
 		for(Player player : onlinePlayers)
 		{
@@ -257,5 +257,44 @@ public class DPlayerUtil
 	public static void addDeath(OfflinePlayer player)
 	{
 		DDataUtil.savePlayerData(player, "deaths", getDeaths(player) + 1);
+	}
+	
+	/*
+	 *  getOnlinePlayers() : Returns a string array of all online players.
+	 */
+	public static ArrayList<Player> getOnlinePlayers()
+	{
+		ArrayList<Player> toReturn = new ArrayList<Player>();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			toReturn.add(player);
+		}
+		return toReturn;
+	}
+	
+	/*
+	 *  getOfflinePlayers() : Returns a string array of all offline players.
+	 */
+	public static ArrayList<OfflinePlayer> getOfflinePlayers()
+	{
+		ArrayList<OfflinePlayer> toReturn = getAllPlayers();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			toReturn.remove(player);
+		}
+		return toReturn;
+	}
+	
+	/*
+	 *  getAllPlayers() : Returns a string array of all offline players.
+	 */
+	public static ArrayList<OfflinePlayer> getAllPlayers()
+	{
+		ArrayList<OfflinePlayer> toReturn = new ArrayList<OfflinePlayer>();
+		for(String playerName : DDataUtil.getAllPlayers().keySet())
+		{
+			toReturn.add(Bukkit.getServer().getOfflinePlayer(playerName));
+		}
+		return toReturn;
 	}
 }

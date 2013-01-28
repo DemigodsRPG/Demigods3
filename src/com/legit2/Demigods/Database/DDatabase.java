@@ -194,7 +194,7 @@ public class DDatabase
 			// Save divine blocks data
 			saveDivineBlocks();
 			
-			for(Player player : DMiscUtil.getOnlinePlayers())
+			for(Player player : DPlayerUtil.getOnlinePlayers())
 			{
 				if(savePlayer(player)) playerCount++;
 			}
