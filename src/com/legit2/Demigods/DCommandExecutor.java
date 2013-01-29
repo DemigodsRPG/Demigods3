@@ -47,6 +47,8 @@ public class DCommandExecutor implements CommandExecutor
 	 */
 	public static boolean test1(CommandSender sender)
 	{
+		DMiscUtil.serverMsg("Test!");
+		
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		DDivineBlocks.createAltar(player.getLocation());
 		return true;
