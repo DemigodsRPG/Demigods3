@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 
 import com.legit2.Demigods.Libraries.DivineLocation;
@@ -26,6 +25,7 @@ public class DDivineBlocks
 		int blockID = DObjUtil.generateInt(5);
 		DivineLocation blockLoc = new DivineLocation(location);
 		DDataUtil.saveBlockData(blockID, "block_type", "shrine");
+		DDataUtil.saveBlockData(blockID, "block_permanent", true);
 		DDataUtil.saveBlockData(blockID, "block_parent", charID);
 		DDataUtil.saveBlockData(blockID, "block_deity", DCharUtil.getDeity(charID));
 		DDataUtil.saveBlockData(blockID, "block_location", blockLoc);
@@ -39,7 +39,7 @@ public class DDivineBlocks
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			if(((String) divineBlock.getValue().get("block_type")).equalsIgnoreCase("shrine"))
+			if((divineBlock.getValue().get("block_type")).toString().equalsIgnoreCase("shrine"))
 			{
 				DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
 				shrines.add(block.toLocation());
@@ -77,56 +77,181 @@ public class DDivineBlocks
 	/* ---------------------------------------------------
 	 * Begin Altar-related Methods
 	 * ---------------------------------------------------
-	 * 
-	 *  createAltar() : Creates an altar at (Location)location.
+	 *
+	 *  createNewAltar() : Creates a new altar at (Location)location.
 	 */
 	public static void createAltar(Location location)
-	{		
+	{
+		int parentID = createDivineParentBlock(location, 116, "all", "altar");
+		location.subtract(0, 2, 0);
+		generateAltar(location, parentID);
+	}
+	
+	/*
+	 *  createAltar() : Creates an altar at (Location)location for (int)parentID.
+	 */
+	public static void generateAltar(Location location, int parentID)
+	{	
 		// Split the location so we can build off of it
+		location.getBlock();
 		double locX = location.getX();
 		double locY = location.getY();
 		double locZ = location.getZ();
 		World locWorld = location.getWorld();
-				
-		// Create enchantment table
-		location.add(0, 1, 0).getBlock().setType(Material.ENCHANTMENT_TABLE);
+		
+		// Create magical table stand
+		createDivineBlock(new Location(locWorld, locX, locY + 1, locZ), parentID, 98);
+		
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 2), parentID, 126, (byte) 1);
+		
+		createDivineBlock(new Location(locWorld, locX, locY + 6, locZ), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 1), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 5, locZ), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 1), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 1), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 5, locZ), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 1), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX, locY + 5, locZ), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX, locY + 5, locZ - 1), parentID, 5, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX, locY + 5, locZ + 1), parentID, 5, (byte) 1);
+		
+		createDivineBlock(new Location(locWorld, locX + 3, locY, locZ + 3), parentID, 44, (byte) 5);
+		createDivineBlock(new Location(locWorld, locX - 3, locY, locZ - 3), parentID, 44, (byte) 5);
+		createDivineBlock(new Location(locWorld, locX + 3, locY, locZ - 3), parentID, 44, (byte) 5);
+		createDivineBlock(new Location(locWorld, locX - 3, locY, locZ + 3), parentID, 44, (byte) 5);
 
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 3, locZ + 2), parentID, 44, (byte) 13);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 3, locZ - 2), parentID, 44, (byte) 13);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 3, locZ - 2), parentID, 44, (byte) 13);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 3, locZ + 2), parentID, 44, (byte) 13);
+				
+		// Left beam
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 4, locZ - 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX, locY + 4, locZ - 2), parentID, 98, (byte) 3);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 4, locZ - 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX, locY + 5, locZ - 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 2), parentID, 126, (byte) 1);
+		// Right beam
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 4, locZ + 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX, locY + 4, locZ + 2), parentID, 98, (byte) 3);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 4, locZ + 2), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX, locY + 5, locZ + 2), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 2), parentID, 126, (byte) 1);
+		// Top beam
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 1), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 4, locZ), parentID, 98, (byte) 3);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 1), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 1), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 5, locZ), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 1), parentID, 126, (byte) 1);
+		// Bottom beam
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 1), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 4, locZ), parentID, 98, (byte) 3);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 1), parentID, 98);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 1), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 5, locZ), parentID, 126, (byte) 1);
+		createDivineBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 1), parentID, 126, (byte) 1);
+
+		
 		// Set locations to use for building
-		Location topLeft = new Location(locWorld, locX + 2, locY, locZ - 2);
-		Location topRight = new Location(locWorld, locX + 2, locY, locZ + 2);
-		Location botLeft = new Location(locWorld, locX - 2, locY, locZ - 2);
-		Location botRight = new Location(locWorld, locX - 2, locY, locZ + 2);
+		Location topLeft = new Location(locWorld, locX + 2, locY + 1, locZ - 2);
+		Location topRight = new Location(locWorld, locX + 2, locY + 1, locZ + 2);
+		Location botLeft = new Location(locWorld, locX - 2, locY + 1, locZ - 2);
+		Location botRight = new Location(locWorld, locX - 2, locY + 1, locZ + 2);
 		
 		// Top left of platform
-		topLeft.getBlock().setTypeId(98);
-		topLeft.subtract(1, 0, 0).getBlock().setTypeId(98);
-		topLeft.add(0, 0, 1).getBlock().setTypeId(98);
-		topLeft.add(1, 0, 0).getBlock().setTypeId(98);
-		
+		createDivineBlock(topLeft, parentID, 44, (byte) 5);
+		createDivineBlock(topLeft.subtract(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(topLeft.add(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(topLeft.add(1, 0, 0), parentID, 44, (byte) 5);
 		// Top right of platform
-		topRight.getBlock().setTypeId(98);
-		topRight.subtract(1, 0, 0).getBlock().setTypeId(98);
-		topRight.subtract(0, 0, 1).getBlock().setTypeId(98);
-		topRight.add(1, 0, 0).getBlock().setTypeId(98);
-
+		createDivineBlock(topRight, parentID, 44, (byte) 5);
+		createDivineBlock(topRight.subtract(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(topRight.subtract(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(topRight.add(1, 0, 0), parentID, 44, (byte) 5);
 		// Bottom left of platform
-		botLeft.getBlock().setTypeId(98);
-		botLeft.add(1, 0, 0).getBlock().setTypeId(98);
-		botLeft.add(0, 0, 1).getBlock().setTypeId(98);
-		botLeft.subtract(1, 0, 0).getBlock().setTypeId(98);
-		
+		createDivineBlock(botLeft, parentID, 44, (byte) 5);
+		createDivineBlock(botLeft.add(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(botLeft.add(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(botLeft.subtract(1, 0, 0), parentID, 44, (byte) 5);
 		// Bottom right of platform
-		botRight.getBlock().setTypeId(98);
-		botRight.subtract(0, 0, 1).getBlock().setTypeId(98);
-		botRight.add(1, 0, 0).getBlock().setTypeId(98);
-		botRight.add(0, 0, 1).getBlock().setTypeId(98);
-
+		createDivineBlock(botRight, parentID, 44, (byte) 5);
+		createDivineBlock(botRight.subtract(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(botRight.add(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(botRight.add(0, 0, 1), parentID, 44, (byte) 5);
+		
 		// Create central structure of platform
-		for(int i = 0; i<3; i++) new Location(locWorld, locX + i, locY, locZ).getBlock().setTypeId(98);
-		for(int i = 0; i<3; i++) new Location(locWorld, locX, locY, locZ + i).getBlock().setTypeId(98);
-		for(int i = 0; i<3; i++) new Location(locWorld, locX, locY, locZ - i).getBlock().setTypeId(98);
-		for(int i = 0; i<3; i++) new Location(locWorld, locX - i, locY, locZ).getBlock().setTypeId(98);
-		for(int i = 0; i<3; i++) new Location(locWorld, locX + i, locY, locZ).getBlock().setTypeId(98);
+		for(int i = 1; i<3; i++) createDivineBlock(new Location(locWorld, locX, locY + 1, locZ + i), parentID, 44, (byte) 5);
+		for(int i = 1; i<3; i++) createDivineBlock(new Location(locWorld, locX, locY + 1, locZ - i), parentID, 44, (byte) 5);
+		for(int i = 1; i<3; i++) createDivineBlock(new Location(locWorld, locX - i, locY + 1, locZ), parentID, 44, (byte) 5);
+		for(int i = 1; i<3; i++) createDivineBlock(new Location(locWorld, locX + i, locY + 1, locZ), parentID, 44, (byte) 5);
+		
+		// Build steps on all sides.
+		Location leftSteps = new Location(locWorld, locX + 2, locY, locZ - 4);
+		Location rightSteps = new Location(locWorld, locX + 2, locY, locZ + 4);
+		Location topSteps = new Location(locWorld, locX + 4, locY, locZ - 2);
+		Location botSteps = new Location(locWorld, locX - 4, locY, locZ - 2);
+	
+		// Create left steps
+		createDivineBlock(leftSteps, parentID, 44, (byte) 5);
+		for(int i = 1; i<5; i++) createDivineBlock(leftSteps.subtract(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(leftSteps.add(0, 0, 1), parentID, 98);
+		for(int i = 1; i<5; i++) createDivineBlock(leftSteps.add(1, 0, 0), parentID, 98);
+		
+		// Create right steps
+		createDivineBlock(rightSteps, parentID, 44, (byte) 5);
+		for(int i = 1; i<5; i++) createDivineBlock(rightSteps.subtract(1, 0, 0), parentID, 44, (byte) 5);
+		createDivineBlock(rightSteps.subtract(0, 0, 1), parentID, 98);
+		for(int i = 1; i<5; i++) createDivineBlock(rightSteps.add(1, 0, 0), parentID, 98);
+		
+		// Create top steps
+		createDivineBlock(topSteps, parentID, 44, (byte) 5);
+		for(int i = 1; i<5; i++) createDivineBlock(topSteps.add(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(topSteps.subtract(1, 0, 0), parentID, 98);
+		for(int i = 1; i<5; i++) createDivineBlock(topSteps.subtract(0, 0, 1), parentID, 98);
+		
+		// Create bottom steps
+		createDivineBlock(botSteps, parentID, 44, (byte) 5);
+		for(int i = 1; i<5; i++) createDivineBlock(botSteps.add(0, 0, 1), parentID, 44, (byte) 5);
+		createDivineBlock(botSteps.add(1, 0, 0), parentID, 98);
+		for(int i = 1; i<5; i++) createDivineBlock(botSteps.subtract(0, 0, 1), parentID, 98);
+		
+		// Create left step towers
+		for(int i = 0; i<3; i++) createDivineBlock(leftSteps.add(0, 1, 0), parentID, 98);
+		createDivineBlock(leftSteps.add(0, 1, 0), parentID, 126, (byte) 1);
+		createDivineBlock(leftSteps.subtract(4, 0, 0), parentID, 98);
+		createDivineBlock(leftSteps, parentID, 126, (byte) 1);
+		for(int i = 0; i<3; i++) createDivineBlock(leftSteps.subtract(0, 1, 0), parentID, 98);
+	
+		// Create right step towers
+		for(int i = 0; i<3; i++) createDivineBlock(rightSteps.add(0, 1, 0), parentID, 98);
+		createDivineBlock(rightSteps.add(0, 1, 0), parentID, 126, (byte) 1);
+		createDivineBlock(rightSteps.subtract(4, 0, 0), parentID, 98);
+		createDivineBlock(rightSteps, parentID, 126, (byte) 1);
+		for(int i = 0; i<3; i++) createDivineBlock(rightSteps.subtract(0, 1, 0), parentID, 98);
+	
+		// Create top step towers
+		for(int i = 0; i<3; i++) createDivineBlock(topSteps.add(0, 1, 0), parentID, 98);
+		createDivineBlock(topSteps.add(0, 1, 0), parentID, 126, (byte) 1);
+		createDivineBlock(topSteps.add(0, 0, 4), parentID, 98);
+		createDivineBlock(topSteps, parentID, 126, (byte) 1);
+		for(int i = 0; i<3; i++) createDivineBlock(topSteps.subtract(0, 1, 0), parentID, 98);
+	
+		// Create bottom step towers
+		for(int i = 0; i<3; i++) createDivineBlock(botSteps.add(0, 1, 0), parentID, 98);
+		createDivineBlock(botSteps.add(0, 1, 0), parentID, 126, (byte) 1);
+		createDivineBlock(botSteps.add(0, 0, 4), parentID, 98);
+		createDivineBlock(botSteps, parentID, 126, (byte) 1);
+		for(int i = 0; i<3; i++) createDivineBlock(botSteps.subtract(0, 1, 0), parentID, 98);
 	}
 	
 	/*
@@ -142,7 +267,16 @@ public class DDivineBlocks
 	 */
 	public static ArrayList<Location> getAllAltars()
 	{		
-		return null; //TODO
+		ArrayList<Location> altars = new ArrayList<Location>();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{
+			if((divineBlock.getValue().get("block_type")).toString().equalsIgnoreCase("altar") && DObjUtil.toBoolean(divineBlock.getValue().get("block_permanent")))
+			{
+				DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
+				altars.add(block.toLocation());
+			}
+		}
+		return altars;
 	}
 	
 	/* ---------------------------------------------------
@@ -184,25 +318,39 @@ public class DDivineBlocks
 	/*
 	 *  createDivineParentBlock() : Creates a divine block at (Location)location with (Material)type.
 	 */
-	public static int createDivineParentBlock(int blockType, String divineType, Location location)
+	public static int createDivineParentBlock(Location location, int blockType, String blockDeity, String divineType)
 	{
 		int blockID = DObjUtil.generateInt(5);
-		createDivineBlock(blockID, divineType, blockType, location);		
+		DDataUtil.saveBlockData(blockID, "block_parent", blockID);
+		DDataUtil.saveBlockData(blockID, "block_permanent", true);
+		DDataUtil.saveBlockData(blockID, "block_type", divineType);
+		DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
+		DDataUtil.saveBlockData(blockID, "block_location", new DivineLocation(location));
+		location.getBlock().setTypeId(blockType);
 		return blockID;
 	}
 	
 	/*
 	 *  createDivineBlock() : Creates a divine block at (Location)location with (Material)type.
 	 */
-	public static void createDivineBlock(int parentID, String parentType, int blockType, Location location)
+	public static int createDivineBlock(Location location, int parentID, int blockType)
 	{
 		int blockID = DObjUtil.generateInt(5);
 		
-		location.getBlock().setTypeId(blockType);
-		
 		DDataUtil.saveBlockData(blockID, "block_parent", parentID);
-		DDataUtil.saveBlockData(blockID, "block_type", parentType);
+		DDataUtil.saveBlockData(blockID, "block_permanent", false);
+		DDataUtil.saveBlockData(blockID, "block_type", getDivineBlockType(parentID));
+		DDataUtil.saveBlockData(blockID, "block_deity", getDivineBlockDeity(parentID));
 		DDataUtil.saveBlockData(blockID, "block_location", new DivineLocation(location));
+		
+		location.getBlock().setTypeId(blockType);
+		return blockID;
+	}
+	public static int createDivineBlock(Location location, int parentID, int blockType, byte byteData)
+	{
+		int blockID = createDivineBlock(location, parentID, blockType);
+		location.getBlock().setData(byteData);
+		return blockID;
 	}
 	
 	/*
@@ -210,6 +358,7 @@ public class DDivineBlocks
 	 */
 	public static void removeDivineBlock(Location location)
 	{
+		// TODO: Make this remove all blocks with X parent ID
 		int blockID = getID(location);
 		DDataUtil.removeAllBlockData(blockID);
 	}
@@ -225,31 +374,41 @@ public class DDivineBlocks
 	}
 	
 	/*
+	 *  getDivineBlockType() : Returns the (String)divineType for (int)parentID.
+	 */
+	public static String getDivineBlockType(int blockID)
+	{
+		if(DDataUtil.hasBlockData(blockID, "block_type"))
+		{
+			return DDataUtil.getBlockData(blockID, "block_type").toString();
+		}
+		return null;
+	}
+	
+	/*
+	 *  getDivineBlockDeity() : Returns the (String)blockDeity for (int)parentID.
+	 */
+	public static String getDivineBlockDeity(int blockID)
+	{
+		if(DDataUtil.hasBlockData(blockID, "block_deity"))
+		{
+			return DDataUtil.getBlockData(blockID, "block_deity").toString();
+		}
+		return null;
+	}
+	
+	/*
 	 *  getAllDivineBlocks() : Returns an ArrayList of all divine block locations.
 	 */
 	public static ArrayList<Location> getAllDivineBlocks()
 	{
-		ArrayList<Location> divineBlocks = new ArrayList<Location>();
-		
-		// Get all Shrines
-		if(getAllShrines() != null)
+		ArrayList<Location> blocks = new ArrayList<Location>();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			for(Location shrine : getAllShrines())
-			{
-				divineBlocks.add(shrine);
-			}
+			DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
+			blocks.add(block.toLocation());
 		}
-			
-		// Get all Altars
-		if(getAllAltars() != null)
-		{
-			for(Location altar : getAllAltars())
-			{
-				divineBlocks.add(altar);
-			}
-		}
-		
-		return divineBlocks;
+		return blocks;
 	}
 	
 	// IT'S A DIVING BLOCK, DAMNIT

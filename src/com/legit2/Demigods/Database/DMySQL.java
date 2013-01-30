@@ -58,6 +58,7 @@ public class DMySQL
 				"block_parent INT(11)," +
 				"block_type VARCHAR(128)," +
 				"block_deity VARCHAR(256)," +
+				"block_permanent BOOLEAN," +
 				"block_x DOUBLE," +
 				"block_y DOUBLE," +
 				"block_z DOUBLE," +

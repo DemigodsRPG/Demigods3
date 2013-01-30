@@ -44,7 +44,8 @@ public class DDivineBlockListener implements Listener
 {
 	static Demigods plugin;
 	public static double FAVORMULTIPLIER = DConfigUtil.getSettingDouble("global_favor_multiplier");
-	public static int RADIUS = 8;
+	public static int SHRINE_RADIUS = 8;
+	public static int ALTAR_RADIUS = 16;
 	
 	public DDivineBlockListener(Demigods instance)
 	{
@@ -229,11 +230,30 @@ public class DDivineBlockListener implements Listener
 	 * --------------------------------------------
 	 */	
 	@EventHandler(priority = EventPriority.HIGH)
+	public void demigodsAdminWand(PlayerInteractEvent event)
+	{
+		if(event.getClickedBlock() == null) return;
+		
+		// Define variables
+		Location location = event.getClickedBlock().getLocation();
+		Player player = event.getPlayer();
+
+		// Return if the player does not qualify for use of the admin wand
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || !DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() == DConfigUtil.getSettingInt("admin_wand_tool")) return;
+		
+		if(event.getClickedBlock().getType().equals(Material.BEDROCK))
+		{
+			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
+			DDivineBlocks.createAltar(location.add(0, 2, 0));
+			player.sendMessage(ChatColor.GREEN + "Altar created!");
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH)
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
 
-		// Define variables
 		for(Location divineBlock : DDivineBlocks.getAllShrines())
 		{
 			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getShrineOwner(divineBlock));
@@ -245,9 +265,9 @@ public class DDivineBlockListener implements Listener
 			/*
 			 * Entering
 			 */
-			if(event.getFrom().distance(divineBlock) > RADIUS)
+			if(event.getFrom().distance(divineBlock) > SHRINE_RADIUS)
 			{
-				if(divineBlock.distance(event.getTo()) <= RADIUS)
+				if(divineBlock.distance(event.getTo()) <= SHRINE_RADIUS)
 				{
 					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
 					return;
@@ -257,11 +277,42 @@ public class DDivineBlockListener implements Listener
 			/*
 			 * Leaving
 			 */
-			else if(event.getFrom().distance(divineBlock) <= RADIUS)
+			else if(event.getFrom().distance(divineBlock) <= SHRINE_RADIUS)
 			{
-				if(divineBlock.distance(event.getTo()) > RADIUS)
+				if(divineBlock.distance(event.getTo()) > SHRINE_RADIUS)
 				{
 					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
+					return;
+				}
+			}
+		}
+		
+		for(Location divineBlock : DDivineBlocks.getAllAltars())
+		{			
+			// Check for world errors
+			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
+			if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
+			
+			/*
+			 * Entering
+			 */
+			if(event.getFrom().distance(divineBlock) > ALTAR_RADIUS)
+			{
+				if(divineBlock.distance(event.getTo()) <= ALTAR_RADIUS)
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an " + ChatColor.YELLOW + "Altar" + ChatColor.GRAY + ".");
+					return;
+				}
+			}
+			
+			/*
+			 * Leaving
+			 */
+			else if(event.getFrom().distance(divineBlock) <= ALTAR_RADIUS)
+			{
+				if(divineBlock.distance(event.getTo()) > ALTAR_RADIUS)
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left the " + ChatColor.YELLOW + "Altar" + ChatColor.GRAY + ".");
 					return;
 				}
 			}
