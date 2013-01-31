@@ -492,6 +492,6 @@ public class DDivineBlockListener implements Listener
 						i++;
 				}
 			}
-		}, 20);
+		}, 1);
 	}
 }
