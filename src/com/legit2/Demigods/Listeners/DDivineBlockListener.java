@@ -250,7 +250,7 @@ public class DDivineBlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 		
-		if(DDivineBlocks.isAltar(location) && DDivineBlocks.isDivineBlock(location))
+		if(DDivineBlocks.isAltarBlock(location) && DDivineBlocks.isDivineBlock(location))
 		{
 			if(DDataUtil.hasPlayerData(player, "temp_destroy_altar") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_shrine")))
 			{

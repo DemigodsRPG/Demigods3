@@ -31,9 +31,13 @@ public class DDivineBlocks
 	/*
 	 *  isShrine() : Returns true/false depending on if the block at (Location)location is an Altar or not.
 	 */
-	public static boolean isShrine(Location location)
+	public static boolean isShrineBlock(Location location)
 	{
-		if(getAllShrines() != null) for(Location altar : getAllShrines()) if(altar.equals(location)) return true;
+		int blockID = getID(location);
+		if(blockID != -1)
+		{
+			if(getDivineBlockType(blockID).equalsIgnoreCase("shrine")) return true;
+		}
 		return false;
 	}
 	
@@ -295,9 +299,13 @@ public class DDivineBlocks
 	/*
 	 *  isAltar() : Returns true/false depending on if the block at (Location)location is an Altar or not.
 	 */
-	public static boolean isAltar(Location location)
+	public static boolean isAltarBlock(Location location)
 	{
-		if(getAllAltars() != null) for(Location altar : getAllAltars()) if(altar.equals(location)) return true;
+		int blockID = getID(location);
+		if(blockID != -1)
+		{
+			if(getDivineBlockType(blockID).equalsIgnoreCase("altar")) return true;
+		}
 		return false;
 	}
 	

@@ -195,7 +195,7 @@ public class DCommandExecutor implements CommandExecutor
 				if(!DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false))
 				{
 					DDataUtil.savePlayerData(player, "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "You have enabled the admin wand for: " + Material.getMaterial(DConfigUtil.getSettingInt("admin_wand_tool")));
+					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(DConfigUtil.getSettingInt("admin_wand_tool")));
 				}
 				else if(DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true))
 				{
