@@ -1,6 +1,5 @@
 package com.legit2.Demigods.Listeners;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -451,20 +450,24 @@ public class DDivineBlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void divineBlockExplode(final EntityExplodeEvent event)
 	{
-		try
+		// Remove divineBlock blocks from explosions		
+		List<Block> blocks = event.blockList();
+		for(Block block : blocks)
 		{
-			// Remove divineBlock blocks from explosions
-			Iterator<Block> i = event.blockList().iterator();
-			while(i.hasNext())
+			if(!DMiscUtil.canLocationPVP(block.getLocation()))
 			{
-				Block block = i.next();
-				if(!DMiscUtil.canLocationPVP(block.getLocation())) i.remove();
-				for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+				event.blockList().iterator().remove();
+				continue;
+			}
+			
+			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
+			{
+				if(block.getLocation().equals(divineBlock))
 				{
-					if(block.getLocation().equals(divineBlock)) i.remove();
+					event.blockList().iterator().remove();
+					break;
 				}
 			}
-		} 
-		catch (Exception er) {}
+		}
 	}
 }
