@@ -199,7 +199,7 @@ public class DCommandExecutor implements CommandExecutor
 				}
 				else if(DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true))
 				{
-					DDataUtil.savePlayerData(player, "boolean_admin_wand", false);
+					DDataUtil.savePlayerData(player, "temp_admin_wand", false);
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 				}
 				return true;
