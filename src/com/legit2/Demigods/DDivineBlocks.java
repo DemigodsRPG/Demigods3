@@ -103,9 +103,9 @@ public class DDivineBlocks
 	 */
 	public static void generateAltar(Location location, int parentID)
 	{	
-		location.getBlock().setTypeId(0);
 		location.subtract(0, 2, 0);
-		
+		location.getBlock().setTypeId(0);
+
 		// Split the location so we can build off of it
 		double locX = location.getX();
 		double locY = location.getY();
