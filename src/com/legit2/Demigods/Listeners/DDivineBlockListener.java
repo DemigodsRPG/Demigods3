@@ -241,7 +241,7 @@ public class DDivineBlockListener implements Listener
 		Player player = event.getPlayer();
 
 		// Return if the player does not qualify for use of the admin wand
-		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || !DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() != DConfigUtil.getSettingInt("admin_wand_tool")) return;
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false) || player.getItemInHand().getTypeId() != DConfigUtil.getSettingInt("admin_wand_tool")) return;
 		
 		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
