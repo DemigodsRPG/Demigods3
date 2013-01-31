@@ -1,5 +1,6 @@
 package com.legit2.Demigods.Listeners;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -448,15 +449,21 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void divineBlockExplode(final EntityExplodeEvent event)
+	public void divineBlockExplode(EntityExplodeEvent event)
 	{
-		// Remove divineBlock blocks from explosions		
+		// Remove divineBlock blocks from explosions
+		final ArrayList<Block> savedBlocks = new ArrayList<Block>();
+		final ArrayList<Material> savedMaterials = new ArrayList<Material>();
+		final ArrayList<Byte> savedBytes = new ArrayList<Byte>();
+		
 		List<Block> blocks = event.blockList();
 		for(Block block : blocks)
 		{
 			if(!DMiscUtil.canLocationPVP(block.getLocation()))
 			{
-				event.blockList().iterator().remove();
+				savedBlocks.add(block);
+				savedMaterials.add(block.getType());
+				savedBytes.add(block.getData());
 				continue;
 			}
 			
@@ -464,10 +471,27 @@ public class DDivineBlockListener implements Listener
 			{
 				if(block.getLocation().equals(divineBlock))
 				{
-					event.blockList().iterator().remove();
+					savedBlocks.add(block);
+					savedMaterials.add(block.getType());
+					savedBytes.add(block.getData());
 					break;
 				}
 			}
 		}
+		
+		// Regen blocks 1 second after explosion event
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				int i = 0;
+				for(Block block : savedBlocks)
+				{
+						block.setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
+						i++;
+				}
+			}
+		}, 20);
 	}
 }
