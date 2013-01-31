@@ -387,14 +387,6 @@ public class DCharUtil
 	{
 		DDataUtil.saveCharData(charID, "char_devotion", amount);
 	}
-
-	/*
-	 *  subtractDevotion() : Subtracts (int)amount from the (String)username's (String)deity devotion.
-	 */
-	public static void subtractDevotion(int charID, int amount)
-	{
-		setDevotion(charID, getDevotion(charID) - amount);
-	}
 	
 	/*
 	 *  giveDevotion() : Gives (int)amount devotion to (String)username for (String)deity.
@@ -402,6 +394,14 @@ public class DCharUtil
 	public static void giveDevotion(int charID, int amount)
 	{
 		setDevotion(charID, getDevotion(charID) + amount);
+	}
+
+	/*
+	 *  subtractDevotion() : Subtracts (int)amount from the (String)username's (String)deity devotion.
+	 */
+	public static void subtractDevotion(int charID, int amount)
+	{
+		setDevotion(charID, getDevotion(charID) - amount);
 	}
 	
 	/*

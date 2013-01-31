@@ -133,7 +133,7 @@ public class Cronus_deity implements Listener
 				}
 				else
 				{
-					player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+					player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
 					DCharUtil.disableAbility(player, CLEAVE_NAME);
 				}
 			}
@@ -165,7 +165,7 @@ public class Cronus_deity implements Listener
 			}
 			else
 			{
-				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
 				DCharUtil.disableAbility(player, SLOW_NAME);
 			}
 		}

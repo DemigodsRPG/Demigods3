@@ -107,7 +107,7 @@ public class Themis_deity implements Listener
 			}
 			else
 			{
-				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
 			}
 		}
 	}

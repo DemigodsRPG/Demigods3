@@ -127,7 +127,7 @@ public class Poseidon_deity implements Listener
 			}
 			else
 			{
-				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
 				DCharUtil.disableAbility(player, REEL_NAME);
 			}
 		}
@@ -147,7 +147,7 @@ public class Poseidon_deity implements Listener
 			}
 			else
 			{
-				player.sendMessage(ChatColor.YELLOW + "You do not have enough " + ChatColor.GREEN + "favor" + ChatColor.RESET + ".");
+				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
 				DCharUtil.disableAbility(player, DROWN_NAME);
 			}
 		}
