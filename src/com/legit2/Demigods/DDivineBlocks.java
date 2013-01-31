@@ -11,7 +11,6 @@ import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -337,8 +336,6 @@ public class DDivineBlocks
 		{
 			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
 			if(block.getParent() == parentID) blocks.add(block.getLocation());
-			
-			DMiscUtil.severe("" + block.getParent());
 		}
 		return blocks;
 	}

@@ -322,7 +322,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(divineBlock.distance(event.getTo()) <= ALTAR_RADIUS)
 				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an " + ChatColor.YELLOW + "Altar" + ChatColor.GRAY + ".");
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an Altar.");
 					return;
 				}
 			}
@@ -334,7 +334,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(divineBlock.distance(event.getTo()) > ALTAR_RADIUS)
 				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left the " + ChatColor.YELLOW + "Altar" + ChatColor.GRAY + ".");
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
 					return;
 				}
 			}
