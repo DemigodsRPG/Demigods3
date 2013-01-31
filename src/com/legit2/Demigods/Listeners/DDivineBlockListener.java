@@ -241,7 +241,7 @@ public class DDivineBlockListener implements Listener
 		Player player = event.getPlayer();
 
 		// Return if the player does not qualify for use of the admin wand
-		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || !DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() == DConfigUtil.getSettingInt("admin_wand_tool")) return;
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || !DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() != DConfigUtil.getSettingInt("admin_wand_tool")) return;
 		
 		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
@@ -252,7 +252,7 @@ public class DDivineBlockListener implements Listener
 		
 		if(DDivineBlocks.isAltarBlock(location) && DDivineBlocks.isDivineBlock(location))
 		{
-			if(DDataUtil.hasPlayerData(player, "temp_destroy_altar") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_shrine")))
+			if(DDataUtil.hasPlayerData(player, "temp_destroy_altar") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_altar")))
 			{
 				// We can destroy the Shrine
 				DDivineBlocks.removeAltar(location);
