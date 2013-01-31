@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -25,6 +26,15 @@ public class DDivineBlocks
 		int blockID = DObjUtil.generateInt(5);
 		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getDeity(charID));
 		DDataUtil.saveBlockData(blockID, "block_object", block);
+	}
+
+	/*
+	 *  isShrine() : Returns true/false depending on if the block at (Location)location is an Altar or not.
+	 */
+	public static boolean isShrine(Location location)
+	{
+		if(getAllShrines() != null) for(Location altar : getAllShrines()) if(altar.equals(location)) return true;
+		return false;
 	}
 	
 	/*
@@ -81,6 +91,7 @@ public class DDivineBlocks
 		int parentID = createDivineParentBlock(location, 116, "all", "altar");
 		location.subtract(0, 2, 0);
 		generateAltar(location, parentID);
+		DDatabase.saveDivineBlocks();
 	}
 	
 	/*
@@ -249,13 +260,19 @@ public class DDivineBlocks
 		createDivineBlock(botSteps, parentID, 126, (byte) 1);
 		for(int i = 0; i<3; i++) createDivineBlock(botSteps.subtract(0, 1, 0), parentID, 98);
 	}
-	
+
 	/*
-	 *  removeAltar() : Removes the altar from (Location)location.
+	 *  removeAltar() : Removes the Altar at (Location)location.
 	 */
 	public static void removeAltar(Location location)
 	{
-		// TODO
+		// TODO: Make this remove all blocks with X parent ID
+		int blockID = getID(location);
+		DDataUtil.removeAllBlockData(blockID);
+		
+		// Remove the actual blocks
+		int parentID = getDivineBlockParent(blockID);
+		removeBlocksWhereParent(parentID);
 	}
 	
 	/*
@@ -273,6 +290,15 @@ public class DDivineBlocks
 			}
 		}
 		return altars;
+	}
+	
+	/*
+	 *  isAltar() : Returns true/false depending on if the block at (Location)location is an Altar or not.
+	 */
+	public static boolean isAltar(Location location)
+	{
+		if(getAllAltars() != null) for(Location altar : getAllAltars()) if(altar.equals(location)) return true;
+		return false;
 	}
 	
 	/* ---------------------------------------------------
@@ -341,13 +367,32 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  removeDivineBlock() : Removes the shrine at (Location)location.
+	 *  removeDivineBlock() : Removes the Divine Block at (Location)location.
 	 */
 	public static void removeDivineBlock(Location location)
 	{
 		// TODO: Make this remove all blocks with X parent ID
 		int blockID = getID(location);
 		DDataUtil.removeAllBlockData(blockID);
+		
+		// Remove the actual block
+		location.getBlock().setTypeId(0);
+	}
+	
+	/*
+	 *  removeBlocksWhereParent() : Removes all Divine Blocks where the parentID equals (int)parentID.
+	 */
+	public static void removeBlocksWhereParent(int parentID)
+	{
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getParent() == parentID)
+			{
+				DDataUtil.removeAllBlockData(block.getID());
+				block.getLocation().getBlock().setTypeId(0);
+			}
+		}
 	}
 	
 	/*
@@ -361,7 +406,7 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  getDivineBlockType() : Returns the (String)divineType for (int)parentID.
+	 *  getDivineBlockType() : Returns the (String)divineType for (int)blockID.
 	 */
 	public static String getDivineBlockType(int blockID)
 	{
@@ -374,17 +419,29 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  getDivineBlockDeity() : Returns the (String)blockDeity for (int)parentID.
+	 *  getDivineBlockDeity() : Returns the (String)blockDeity for (int)blockID.
 	 */
 	public static String getDivineBlockDeity(int blockID)
 	{
-		
 		if(DDataUtil.hasBlockData(blockID, "block_object"))
 		{
 			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
 			return block.getDeity();
 		}
 		return null;
+	}
+	
+	/*
+	 *  getDivineBlockParent() : Returns the (int)parentID for (int)blockID.
+	 */
+	public static int getDivineBlockParent(int blockID)
+	{
+		if(DDataUtil.hasBlockData(blockID, "block_object"))
+		{
+			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
+			return block.getParent();
+		}
+		return -1;
 	}
 	
 	/*

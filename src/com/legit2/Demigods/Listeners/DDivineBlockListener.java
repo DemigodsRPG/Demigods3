@@ -124,13 +124,13 @@ public class DDivineBlockListener implements Listener
 				
 				// Save Divine Blocks
 				DDatabase.saveDivineBlocks();
-				player.sendMessage(ChatColor.RED + "Shrine removed!");
+				player.sendMessage(ChatColor.GREEN + "Shrine removed!");
 				return;
 			}
 			else
 			{
 				DDataUtil.savePlayerData(player, "temp_destroy_shrine", System.currentTimeMillis() + 5000);
-				player.sendMessage(ChatColor.RED + "Right-click this shrine again to remove it.");
+				player.sendMessage(ChatColor.RED + "Right-click this Shrine again to remove it.");
 				return;
 			}
 		}
@@ -236,17 +236,38 @@ public class DDivineBlockListener implements Listener
 		if(event.getClickedBlock() == null) return;
 		
 		// Define variables
-		Location location = event.getClickedBlock().getLocation();
+		Block clickedBlock = event.getClickedBlock();
+		Location location = clickedBlock.getLocation();
 		Player player = event.getPlayer();
 
 		// Return if the player does not qualify for use of the admin wand
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin") || !DDataUtil.hasPlayerData(player, "temp_admin_wand") || !DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() == DConfigUtil.getSettingInt("admin_wand_tool")) return;
 		
-		if(event.getClickedBlock().getType().equals(Material.BEDROCK))
+		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
 			DDivineBlocks.createAltar(location.add(0, 2, 0));
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
+		}
+		
+		if(DDivineBlocks.isAltar(location) && DDivineBlocks.isDivineBlock(location))
+		{
+			if(DDataUtil.hasPlayerData(player, "temp_destroy_altar") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_shrine")))
+			{
+				// We can destroy the Shrine
+				DDivineBlocks.removeAltar(location);
+				
+				// Save Divine Blocks
+				DDatabase.saveDivineBlocks();
+				player.sendMessage(ChatColor.GREEN + "Altar removed!");
+				return;
+			}
+			else
+			{
+				DDataUtil.savePlayerData(player, "temp_destroy_altar", System.currentTimeMillis() + 5000);
+				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+				return;
+			}
 		}
 	}
 	

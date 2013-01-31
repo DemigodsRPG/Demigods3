@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.*;
 
@@ -293,24 +292,6 @@ public class DCommandExecutor implements CommandExecutor
 			for(Entry<String, Object> charDataEntry : charData.entrySet())
 			{
 				sender.sendMessage("  - " + charDataEntry.getKey() + ": " + charDataEntry.getValue());
-			}
-		}
-		
-		sender.sendMessage(" ");
-		sender.sendMessage("-- Divine Blocks ---------------");
-		sender.sendMessage(" ");
-
-		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
-		{
-			int blockID = divineBlock.getKey();
-			HashMap<String, Object> blockData = divineBlock.getValue();
-			
-			sender.sendMessage(blockID + ": ");
-
-			for(Entry<String, Object> blockDataEntry : blockData.entrySet())
-			{
-				DivineBlock block = (DivineBlock) blockDataEntry.getValue();
-				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + block.getLocation());
 			}
 		}
 		return true;
