@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Libraries.DivineLocation;
+import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.*;
 
@@ -309,15 +309,8 @@ public class DCommandExecutor implements CommandExecutor
 
 			for(Entry<String, Object> blockDataEntry : blockData.entrySet())
 			{
-				if(blockDataEntry.getKey().equalsIgnoreCase("block_location"))
-				{
-					DivineLocation divineLoc = (DivineLocation) blockDataEntry.getValue();
-					sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + divineLoc.toLocation());
-				}
-				else
-				{
-					sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
-				}
+				DivineBlock block = (DivineBlock) blockDataEntry.getValue();
+				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + block.getLocation());
 			}
 		}
 		return true;
