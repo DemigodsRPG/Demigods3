@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -449,7 +450,7 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void divineBlockExplode(EntityExplodeEvent event)
+	public void divineBlockExplode(final EntityExplodeEvent event)
 	{
 		// Remove divineBlock blocks from explosions
 		final ArrayList<Block> savedBlocks = new ArrayList<Block>();
@@ -479,17 +480,42 @@ public class DDivineBlockListener implements Listener
 			}
 		}
 		
-		// Regen blocks 1 second after explosion event
 		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				// Regenerate blocks
 				int i = 0;
 				for(Block block : savedBlocks)
 				{
 						block.setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
 						i++;
+				}
+				
+				// Remove all drops from explosion zone
+				CHECKDROPS:
+				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
+				{
+					
+				    Location location = drop.getLocation();
+				    for(Location divineBlock : DDivineBlocks.getAllAltars())
+					{						
+						if(location.distance(divineBlock) <= ALTAR_RADIUS)
+						{
+							drop.remove();
+							continue CHECKDROPS;
+						}
+					}
+				    
+				    for(Location divineBlock : DDivineBlocks.getAllShrines())
+					{						
+						if(location.distance(divineBlock) <= SHRINE_RADIUS)
+						{
+							drop.remove();
+							continue CHECKDROPS;
+						}
+					}
 				}
 			}
 		}, 1);
