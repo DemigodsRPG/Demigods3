@@ -455,7 +455,7 @@ public class DDatabase
 					DivineBlock block = new DivineBlock(location, blockID, parentID, true, blockType, blockDeity);
 					DDataUtil.saveBlockData(blockID, "block_object", block);
 					
-					if(blockType.equalsIgnoreCase("altar")) DDivineBlocks.generateAltar(location.subtract(0, 2, 0), parentID);
+					if(blockType.equalsIgnoreCase("altar")) DDivineBlocks.generateAltar(location, parentID);
 				}
 			}
 			catch(SQLException e)
