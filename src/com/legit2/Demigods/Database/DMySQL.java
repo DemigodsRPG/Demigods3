@@ -1,5 +1,6 @@
 package com.legit2.Demigods.Database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -58,13 +59,14 @@ public class DMySQL
 				"block_parent INT(11)," +
 				"block_type VARCHAR(128)," +
 				"block_deity VARCHAR(256)," +
-				"block_permanent BOOLEAN," +
+				"block_material INT(11)," +
+				"block_bytedata INT(11)," +
 				"block_x DOUBLE," +
 				"block_y DOUBLE," +
 				"block_z DOUBLE," +
 				"block_world VARCHAR(24)"
 			);
-
+			
 			// Create Player Table
 			createTable(
 				player_table,
@@ -211,6 +213,22 @@ public class DMySQL
 		try
 		{
 			return mysql.query(query);
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/*
+	 *  prepareStatement() : Creates a prepared statment from (String)query.
+	 */
+	public static PreparedStatement prepareStatement(String query)
+	{
+		try
+		{
+			return mysql.prepare(query);
 		}
 		catch(SQLException e)
 		{

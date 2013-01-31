@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class DivineBlock implements Serializable
 {
@@ -14,8 +13,10 @@ public class DivineBlock implements Serializable
 	String type, deity, world;
 	double X,Y,Z;
 	boolean perm;
+	int material;
+	byte matbyte;
 	
-	public DivineBlock(int blockID, int parentID, boolean blockPerm, String blockType, String blockDeity, Location location)
+	public DivineBlock(Location location, int blockID, int parentID, boolean blockPerm, String blockType, String blockDeity)
 	{
 		id = blockID;
 		pid = parentID;
@@ -26,6 +27,38 @@ public class DivineBlock implements Serializable
 		Y = location.getY();
 		Z = location.getZ();
 		world = location.getWorld().getName();
+		material = 0;
+		matbyte = 0;
+	}
+	
+	public DivineBlock(Location location, int blockID, int parentID, boolean blockPerm, String blockType, String blockDeity, int materialID)
+	{
+		id = blockID;
+		pid = parentID;
+		perm = blockPerm;
+		type = blockType;
+		deity = blockDeity;
+		X = location.getX();
+		Y = location.getY();
+		Z = location.getZ();
+		world = location.getWorld().getName();
+		material = materialID;
+		matbyte = 0;
+	}
+	
+	public DivineBlock(Location location, int blockID, int parentID, boolean blockPerm, String blockType, String blockDeity, int materialID, byte byteData)
+	{
+		id = blockID;
+		pid = parentID;
+		perm = blockPerm;
+		type = blockType;
+		deity = blockDeity;
+		X = location.getX();
+		Y = location.getY();
+		Z = location.getZ();
+		world = location.getWorld().getName();
+		material = materialID;
+		matbyte = byteData;
 	}
 	
 	public int getID()
@@ -36,6 +69,16 @@ public class DivineBlock implements Serializable
 	public int getParent()
 	{
 		return pid;
+	}
+	
+	public int getMaterial()
+	{
+		return material;
+	}
+	
+	public byte getMaterialByteData()
+	{
+		return matbyte;
 	}
 	
 	public String getType()
@@ -68,14 +111,14 @@ public class DivineBlock implements Serializable
 		return Z;
 	}
 	
-	public Location toLocationNewWorld(World w)
-	{
-		return new Location(w, X, Y, Z);
-	}
-	
-	public Location toLocation()
+	public Location getLocation()
 	{
 		return new Location(Bukkit.getServer().getWorld(world), X, Y, Z);
+	}
+	
+	public boolean isPermanent()
+	{
+		return perm;
 	}
 	
 	public boolean equals(DivineBlock other)

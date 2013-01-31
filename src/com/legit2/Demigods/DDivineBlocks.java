@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import com.legit2.Demigods.Libraries.DivineLocation;
+import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
@@ -23,12 +23,8 @@ public class DDivineBlocks
 	public static void createShrine(int charID, Location location)
 	{
 		int blockID = DObjUtil.generateInt(5);
-		DivineLocation blockLoc = new DivineLocation(location);
-		DDataUtil.saveBlockData(blockID, "block_type", "shrine");
-		DDataUtil.saveBlockData(blockID, "block_permanent", true);
-		DDataUtil.saveBlockData(blockID, "block_parent", charID);
-		DDataUtil.saveBlockData(blockID, "block_deity", DCharUtil.getDeity(charID));
-		DDataUtil.saveBlockData(blockID, "block_location", blockLoc);
+		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getDeity(charID));
+		DDataUtil.saveBlockData(blockID, "block_object", block);
 	}
 	
 	/*
@@ -39,10 +35,10 @@ public class DDivineBlocks
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			if((divineBlock.getValue().get("block_type")).toString().equalsIgnoreCase("shrine"))
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("shrine"))
 			{
-				DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-				shrines.add(block.toLocation());
+				Location blockLoc = ((DivineBlock) divineBlock.getValue().get("block_object")).getLocation();
+				shrines.add(blockLoc);
 			}
 		}
 		return shrines;
@@ -55,8 +51,8 @@ public class DDivineBlocks
 	{		
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{	
-			DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-			if(block.toLocation().equals(location)) return DObjUtil.toInteger(divineBlock.getValue().get("block_parent"));
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getLocation().equals(location)) return block.getParent();
 		}
 		return -1;
 	}
@@ -68,8 +64,8 @@ public class DDivineBlocks
 	{
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{			
-			DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-			if(block.toLocation().equals(location)) return divineBlock.getValue().get("block_deity").toString();
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getLocation().equals(location)) return block.getDeity();
 		}
 		return null;
 	}
@@ -270,10 +266,10 @@ public class DDivineBlocks
 		ArrayList<Location> altars = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			if((divineBlock.getValue().get("block_type")).toString().equalsIgnoreCase("altar") && DObjUtil.toBoolean(divineBlock.getValue().get("block_permanent")))
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("altar") && ((DivineBlock) divineBlock.getValue().get("block_object")).isPermanent())
 			{
-				DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-				altars.add(block.toLocation());
+				Location blockLoc = ((DivineBlock) divineBlock.getValue().get("block_object")).getLocation();
+				altars.add(blockLoc);
 			}
 		}
 		return altars;
@@ -291,9 +287,8 @@ public class DDivineBlocks
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : divineBlocks.entrySet())
 		{
 			// Define character-specific variables
-			int blockID = divineBlock.getKey();
-			DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-			if(block.toLocation().equals(location)) return blockID;
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getLocation().equals(location)) return block.getID();
 		}
 		return -1;
 	}
@@ -306,11 +301,8 @@ public class DDivineBlocks
 		ArrayList<Location> blocks = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			if(divineBlock.getValue().get("block_parent").equals(parentID))
-			{
-				DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-				blocks.add(block.toLocation());
-			}
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getParent() == parentID) blocks.add(block.getLocation());
 		}
 		return blocks;
 	}
@@ -321,11 +313,8 @@ public class DDivineBlocks
 	public static int createDivineParentBlock(Location location, int blockType, String blockDeity, String divineType)
 	{
 		int blockID = DObjUtil.generateInt(5);
-		DDataUtil.saveBlockData(blockID, "block_parent", blockID);
-		DDataUtil.saveBlockData(blockID, "block_permanent", true);
-		DDataUtil.saveBlockData(blockID, "block_type", divineType);
-		DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
-		DDataUtil.saveBlockData(blockID, "block_location", new DivineLocation(location));
+		DivineBlock block = new DivineBlock(location, blockID, blockID, true, divineType, blockDeity, blockType, (byte) 0);
+		DDataUtil.saveBlockData(blockID, "block_object", block);	
 		location.getBlock().setTypeId(blockType);
 		return blockID;
 	}
@@ -336,19 +325,17 @@ public class DDivineBlocks
 	public static int createDivineBlock(Location location, int parentID, int blockType)
 	{
 		int blockID = DObjUtil.generateInt(5);
-		
-		DDataUtil.saveBlockData(blockID, "block_parent", parentID);
-		DDataUtil.saveBlockData(blockID, "block_permanent", false);
-		DDataUtil.saveBlockData(blockID, "block_type", getDivineBlockType(parentID));
-		DDataUtil.saveBlockData(blockID, "block_deity", getDivineBlockDeity(parentID));
-		DDataUtil.saveBlockData(blockID, "block_location", new DivineLocation(location));
-		
+		DivineBlock block = new DivineBlock(location, blockID, blockID, false, getDivineBlockType(parentID), getDivineBlockDeity(parentID), blockType);
+		DDataUtil.saveBlockData(blockID, "block_object", block);	
 		location.getBlock().setTypeId(blockType);
 		return blockID;
 	}
 	public static int createDivineBlock(Location location, int parentID, int blockType, byte byteData)
 	{
-		int blockID = createDivineBlock(location, parentID, blockType);
+		int blockID = DObjUtil.generateInt(5);
+		DivineBlock block = new DivineBlock(location, blockID, blockID, false, getDivineBlockType(parentID), getDivineBlockDeity(parentID), blockType, byteData);
+		DDataUtil.saveBlockData(blockID, "block_object", block);	
+		location.getBlock().setTypeId(blockType);
 		location.getBlock().setData(byteData);
 		return blockID;
 	}
@@ -378,9 +365,10 @@ public class DDivineBlocks
 	 */
 	public static String getDivineBlockType(int blockID)
 	{
-		if(DDataUtil.hasBlockData(blockID, "block_type"))
+		if(DDataUtil.hasBlockData(blockID, "block_object"))
 		{
-			return DDataUtil.getBlockData(blockID, "block_type").toString();
+			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
+			return block.getType();
 		}
 		return null;
 	}
@@ -390,9 +378,11 @@ public class DDivineBlocks
 	 */
 	public static String getDivineBlockDeity(int blockID)
 	{
-		if(DDataUtil.hasBlockData(blockID, "block_deity"))
+		
+		if(DDataUtil.hasBlockData(blockID, "block_object"))
 		{
-			return DDataUtil.getBlockData(blockID, "block_deity").toString();
+			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
+			return block.getDeity();
 		}
 		return null;
 	}
@@ -405,8 +395,8 @@ public class DDivineBlocks
 		ArrayList<Location> blocks = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
-			DivineLocation block = (DivineLocation) divineBlock.getValue().get("block_location");
-			blocks.add(block.toLocation());
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			blocks.add(block.getLocation());
 		}
 		return blocks;
 	}
