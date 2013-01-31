@@ -11,7 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.DDivineBlocks;
-import com.legit2.Demigods.Libraries.DivineLocation;
+import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -336,26 +336,19 @@ public class DDatabase
 			for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 			{
 				int blockID = divineBlock.getKey();
-				HashMap<String, Object> blockData = divineBlock.getValue();
+				DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
 				
-				if(!DObjUtil.toBoolean(blockData.get("block_permanent"))) continue;
+				if(!block.isPermanent()) continue;
 				
-				int blockParent = DObjUtil.toInteger(blockData.get("block_parent"));				
-				String blockType = (String) blockData.get("block_type");
-				String blockDeity = (String) blockData.get("block_deity");
-				boolean blockPerm = DObjUtil.toBoolean(blockData.get("block_permanent"));
-				double blockX = 0;
-				double blockY = 0;
-				double blockZ = 0;
-				String blockWorld = null;
-				
-				DivineLocation block = (DivineLocation) blockData.get("block_location");
-				blockX = block.getX();
-				blockY = block.getY();
-				blockZ = block.getZ();
-				blockWorld = block.getWorld();
+				int blockParent = block.getParent();			
+				String blockType = block.getType();
+				String blockDeity = block.getDeity();
+				double blockX = block.getX();
+				double blockY = block.getY();
+				double blockZ = block.getZ();
+				String blockWorld = block.getWorld();
 
-				DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_parent, block_type, block_deity, block_permanent, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockParent + ",'" + blockType + "','" + blockDeity + "'," + blockPerm + "," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
+				DMySQL.runQuery("INSERT INTO " + DMySQL.divineblocks_table + " (block_id, block_parent, block_type, block_deity, block_x, block_y, block_z, block_world) VALUES(" + blockID + "," + blockParent + ",'" + blockType + "','" + blockDeity + "'," + blockX + "," + blockY + "," + blockZ + ",'" + blockWorld + "');");
 			}
 					
 			return true;
@@ -457,16 +450,10 @@ public class DDatabase
 					int parentID = divineBlocks.getInt("block_parent");
 					String blockType = divineBlocks.getString("block_type");
 					String blockDeity = divineBlocks.getString("block_deity");
-					boolean blockPerm = divineBlocks.getBoolean("block_permanent");
 					Location location = new Location(Bukkit.getWorld(divineBlocks.getString("block_world")), divineBlocks.getDouble("block_x"), divineBlocks.getDouble("block_y"), divineBlocks.getDouble("block_z"));
 
-					DivineLocation block = new DivineLocation(location);
-					
-					DDataUtil.saveBlockData(blockID, "block_type", blockType);
-					DDataUtil.saveBlockData(blockID, "block_permanent", blockPerm);
-					DDataUtil.saveBlockData(blockID, "block_parent", parentID);
-					DDataUtil.saveBlockData(blockID, "block_deity", blockDeity);
-					DDataUtil.saveBlockData(blockID, "block_location", block);
+					DivineBlock block = new DivineBlock(location, blockID, parentID, true, blockType, blockDeity);
+					DDataUtil.saveBlockData(blockID, "block_object", block);
 					
 					if(blockType.equalsIgnoreCase("altar")) DDivineBlocks.generateAltar(location.subtract(0, 2, 0), parentID);
 				}
