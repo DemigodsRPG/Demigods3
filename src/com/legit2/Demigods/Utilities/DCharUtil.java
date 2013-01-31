@@ -176,14 +176,6 @@ public class DCharUtil
 
 		if(getDeity(charID) != null && getDeity(charID).equalsIgnoreCase(deity)) return true;
 		else return false;
-	}	
-	
-	/*
-	 *  getPlayer() : Returns the (int)playerID of the player owning (int)charID.
-	 */
-	public static int getPlayer(int charID)
-	{
-		return -1;
 	}
 	
 	/*
@@ -351,7 +343,7 @@ public class DCharUtil
 		
 		setMaxFavor(charID, maxFavor);
 	}
-	
+
 	/*
 	 *  setAscensions() : Sets the (String)username's ascensions to (int)amount.
 	 */
@@ -361,47 +353,42 @@ public class DCharUtil
 	}
 
 	/*
-	 *  subtractAscensions() : Subtracts (int)amount from the (String)username's ascensions.
+	 *  devotionToNextAscension() : Returns the total devotion needed for the next ascension.
 	 */
-	public static void subtractAscensions(int charID, int amount)
+	@SuppressWarnings("unused")
+	public static int getDevotionGoal(int charID)
 	{
-		if(getAscensions(charID) - amount < 0)
-		{
-			setAscensions(charID, 0);
-		}
-		else setAscensions(charID, getAscensions(charID) - amount);
-	}
-	
-	/*
-	 *  giveAscensions() : Gives (int)amount ascensions to (String)username.
-	 */
-	public static void giveAscensions(int charID, int amount)
-	{
-		DDataUtil.saveCharData(charID, "char_ascensions", getAscensions(charID) + amount);
+		int devotion = getDevotion(charID);
+		int devotionNeeded = 0;
+		
+		return devotionNeeded;
 	}
 
 	/*
-	 *  setDevotion() : Sets the (String)username's devotion to (int)amount for (String)deity.
+	 *  setDevotion() : Sets the (int)charID's devotion to (int)amount and returns their devotion goal.
 	 */
-	public static void setDevotion(int charID, int amount)
+	public static int setDevotion(int charID, int amount)
 	{
 		DDataUtil.saveCharData(charID, "char_devotion", amount);
+		return getDevotionGoal(charID);
 	}
 	
 	/*
-	 *  giveDevotion() : Gives (int)amount devotion to (String)username for (String)deity.
+	 *  giveDevotion() : Gives (int)amount devotion to (int)charID and returns their devotion goal
 	 */
-	public static void giveDevotion(int charID, int amount)
+	public static int giveDevotion(int charID, int amount)
 	{
 		setDevotion(charID, getDevotion(charID) + amount);
+		return getDevotionGoal(charID);
 	}
 
 	/*
-	 *  subtractDevotion() : Subtracts (int)amount from the (String)username's (String)deity devotion.
+	 *  subtractDevotion() : Subtracts (int)amount from the (int)charID's devotion and returns their devotion goal.
 	 */
-	public static void subtractDevotion(int charID, int amount)
+	public static int subtractDevotion(int charID, int amount)
 	{
 		setDevotion(charID, getDevotion(charID) - amount);
+		return getDevotionGoal(charID);
 	}
 	
 	/*
