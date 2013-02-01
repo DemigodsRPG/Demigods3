@@ -17,9 +17,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.BlockIterator;
 
 import com.legit2.Demigods.Demigods;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class DMiscUtil
 {
@@ -216,63 +213,14 @@ public class DMiscUtil
 	}
 	
 	/*
-	 *  canLocationPVP() : Checks if PVP is allowed in (Location)location.
-	 */
-    public static boolean canLocationPVP(Location location)
-    {
-        if(DConfigUtil.getSettingBoolean("allow_skills_anywhere")) return true;
-        
-        if(canWorldGuardPVP(location)) return true;
-        else return false;
-    }
-    
-	/*
 	 *  canTarget() : Checks if PVP is allowed in (Location)location.
 	 */
     public static boolean canTarget(Entity player, Location location)
     {      
     	if(!(player instanceof Player)) return true;
     	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return true;
-    	else return canLocationPVP(location);
+    	else return !DZoneUtil.zoneNoPVP(location);
     }
-	
-    /*
-     *  WORLDGUARD SUPPORT START
-     */
-    @SuppressWarnings("static-access")
-    public static boolean canWorldGuardPVP(Location location)
-    {
-	    if(DConfigUtil.getSettingBoolean("allow_skills_anywhere")) return true;
-	    if(plugin.WORLDGUARD == null) return true;
-	    
-	    ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);
-	    for (ProtectedRegion region : set)
-		{
-	    	if(region.getId().toLowerCase().contains("nopvp")) return false;
-		}
-	    return true;
-    }
-
-    @SuppressWarnings("static-access")
-    public static boolean canWorldGuardBuild(Player player, Location location)
-    {
-        if(plugin.WORLDGUARD == null) return true;
-        
-        return plugin.WORLDGUARD.canBuild(player, location);
-    }
-
-    @SuppressWarnings("static-access")
-    public static boolean canWorldGuardDamage(Location location)
-    {
-        if(plugin.WORLDGUARD == null) return true;
-        
-        ApplicableRegionSet set = plugin.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);
-        return !set.allows(DefaultFlag.INVINCIBILITY);
-    }
-            
-    /*
-     *  WORLDGUARD SUPPORT END
-     */
     
     public static LivingEntity autoTarget(Player player)
     {

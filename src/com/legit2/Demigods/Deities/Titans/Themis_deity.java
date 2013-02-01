@@ -18,6 +18,7 @@ import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Themis_deity implements Listener
 {	
@@ -203,7 +204,7 @@ public class Themis_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
-			if(!DMiscUtil.canLocationPVP(player.getLocation()))
+			if(DZoneUtil.zoneNoPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 

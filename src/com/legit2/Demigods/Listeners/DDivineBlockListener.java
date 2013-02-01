@@ -40,13 +40,12 @@ import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class DDivineBlockListener implements Listener
 {
 	static Demigods plugin;
 	public static double FAVOR_MULTIPLIER = DConfigUtil.getSettingDouble("global_favor_multiplier");
-	public static int SHRINE_RADIUS = 8;
-	public static int ALTAR_RADIUS = 16;
 	
 	public DDivineBlockListener(Demigods instance)
 	{
@@ -292,11 +291,23 @@ public class DDivineBlockListener implements Listener
 	public void divineBlockAlerts(PlayerMoveEvent event)
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
+		
+		Location to = event.getTo();
+		Location from = event.getFrom();
 
+		// Shrine Zone Messages
+		
 		for(Location divineBlock : DDivineBlocks.getAllShrines())
 		{
-			OfflinePlayer charOwner = DCharUtil.getOwner(DDivineBlocks.getShrineOwner(divineBlock));
-			
+			OfflinePlayer charOwner = null;
+			if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
+			else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
+			else
+			{
+				DMiscUtil.severe("Something went horribly wrong when checking a shrine for it's owner.");
+				return;
+			}
+
 			// Check for world errors
 			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
 			if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
@@ -304,57 +315,40 @@ public class DDivineBlockListener implements Listener
 			/*
 			 * Entering
 			 */
-			if(event.getFrom().distance(divineBlock) > SHRINE_RADIUS)
+			if(DZoneUtil.enterZoneShrine(to, from))
 			{
-				if(divineBlock.distance(event.getTo()) <= SHRINE_RADIUS)
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
-					return;
-				}
+				event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
+				return;
 			}
 			
 			/*
 			 * Leaving
 			 */
-			else if(event.getFrom().distance(divineBlock) <= SHRINE_RADIUS)
+			else if(DZoneUtil.exitZoneShrine(to, from))
 			{
-				if(divineBlock.distance(event.getTo()) > SHRINE_RADIUS)
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
-					return;
-				}
+				event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
+				return;
 			}
 		}
 		
-		for(Location divineBlock : DDivineBlocks.getAllAltars())
-		{			
-			// Check for world errors
-			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
-			if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
-			
-			/*
-			 * Entering
-			 */
-			if(event.getFrom().distance(divineBlock) > ALTAR_RADIUS)
-			{
-				if(divineBlock.distance(event.getTo()) <= ALTAR_RADIUS)
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an Altar.");
-					return;
-				}
-			}
-			
-			/*
-			 * Leaving
-			 */
-			else if(event.getFrom().distance(divineBlock) <= ALTAR_RADIUS)
-			{
-				if(divineBlock.distance(event.getTo()) > ALTAR_RADIUS)
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
-					return;
-				}
-			}
+		// Altar Zone Messages
+		
+		/*
+		 * Entering
+		 */
+		if(DZoneUtil.enterZoneAltar(to, from))
+		{
+			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an Altar.");
+			return;
+		}
+		
+		/*
+		 * Leaving
+		 */
+		else if(DZoneUtil.exitZoneAltar(to, from))
+		{
+			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
+			return;
 		}
 	}
 	
@@ -498,7 +492,7 @@ public class DDivineBlockListener implements Listener
 		List<Block> blocks = event.blockList();
 		for(Block block : blocks)
 		{
-			if(!DMiscUtil.canLocationPVP(block.getLocation()))
+			if(DZoneUtil.zoneNoPVP(block.getLocation()))
 			{
 				savedBlocks.add(block);
 				savedMaterials.add(block.getType());
@@ -532,27 +526,19 @@ public class DDivineBlockListener implements Listener
 				}
 				
 				// Remove all drops from explosion zone
-				CHECKDROPS:
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
-					
 				    Location location = drop.getLocation();
-				    for(Location divineBlock : DDivineBlocks.getAllAltars())
-					{						
-						if(location.distance(divineBlock) <= ALTAR_RADIUS)
-						{
-							drop.remove();
-							continue CHECKDROPS;
-						}
+				    if(DZoneUtil.zoneAltar(location))
+					{
+						drop.remove();
+						continue;
 					}
-				    
-				    for(Location divineBlock : DDivineBlocks.getAllShrines())
-					{						
-						if(location.distance(divineBlock) <= SHRINE_RADIUS)
-						{
-							drop.remove();
-							continue CHECKDROPS;
-						}
+					
+					if(DZoneUtil.zoneShrine(location))
+					{
+						drop.remove();
+						continue;
 					}
 				}
 			}

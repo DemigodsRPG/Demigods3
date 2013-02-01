@@ -19,6 +19,7 @@ import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class DPlayerListener implements Listener
 {
@@ -115,13 +116,12 @@ public class DPlayerListener implements Listener
 	{
 		// Define variables
 		final Player player = (Player) event.getPlayer();
-		//final String username = player.getName();
 		final int pvp_area_delay_time = DConfigUtil.getSettingInt("pvp_area_delay_time");
 		Location to = event.getTo();
 		Location from = event.getFrom();
 			
 		// No Spawn Line-Jumping
-		if(!DMiscUtil.canLocationPVP(to) && DMiscUtil.canLocationPVP(from))
+		if(DZoneUtil.enterZoneNoPVP(to, from))
 		{
 			DDataUtil.savePlayerData(player, "temp_was_PVP", true);
 			
@@ -137,6 +137,6 @@ public class DPlayerListener implements Listener
 		}
 		
 		// Let players know where they can PVP
-		if(!DMiscUtil.canLocationPVP(from) && DMiscUtil.canLocationPVP(to)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+		if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
 	}
 }

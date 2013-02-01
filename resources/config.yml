@@ -4,6 +4,7 @@ data_debug: false
 broadcast_new_deities: true
 friendly_fire: false
 allow_skills_anywhere: false
+use_dynamic_pvp_zones: true
 balance_teams: true
 pvp_area_delay_time: 10
 inactive_worlds:

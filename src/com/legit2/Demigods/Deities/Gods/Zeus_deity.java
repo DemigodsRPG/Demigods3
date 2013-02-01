@@ -20,6 +20,7 @@ import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Zeus_deity implements Listener
 {	
@@ -197,7 +198,7 @@ public class Zeus_deity implements Listener
 		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		
-		if(!DMiscUtil.canLocationPVP(player.getLocation()))
+		if(DZoneUtil.zoneNoPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -272,7 +273,7 @@ public class Zeus_deity implements Listener
 		// Define variables
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DMiscUtil.canLocationPVP(player.getLocation()))
+		if(DZoneUtil.zoneNoPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -315,7 +316,7 @@ public class Zeus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
-			if(!DMiscUtil.canLocationPVP(player.getLocation()))
+			if(DZoneUtil.zoneNoPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 
@@ -340,7 +341,7 @@ public class Zeus_deity implements Listener
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		Vector playerLocation = player.getLocation().toVector();
 		
-		if(!DMiscUtil.canLocationPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+		if(DZoneUtil.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		for(Entity anEntity : player.getWorld().getEntities()) if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
 

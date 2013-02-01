@@ -3,7 +3,6 @@ package com.legit2.Demigods;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,15 +25,16 @@ import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.massivecraft.factions.P;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods extends JavaPlugin
 {
 	// Soft dependencies
-	public static WorldGuardPlugin WORLDGUARD = null;
+	public WorldGuardPlugin WORLDGUARD = null;
+	public P FACTIONS = null;
 	public Plugin TAGAPI = null;
-	public static HashMap<String, String> deityClasses = new HashMap<String, String>();
 	
 	// Did dependencies load correctly?
 	boolean okayToLoad = true;
@@ -233,7 +233,7 @@ public class Demigods extends JavaPlugin
 	{
 		// Check for the SQLibrary plugin (needed)
 		Plugin pg = getServer().getPluginManager().getPlugin("SQLibrary");
-		if (pg == null)
+		if(pg == null)
 		{
 			DMiscUtil.severe("SQLibrary plugin (required) not found!");
 			okayToLoad = false;
@@ -241,17 +241,36 @@ public class Demigods extends JavaPlugin
 		
 		// Check for the TagAPI plugin (optional)
 		TAGAPI = getServer().getPluginManager().getPlugin("TagAPI");
-		if (TAGAPI != null)
+		if(TAGAPI != null)
 		{
 			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
 		}
 		
 		// Check for the WorldGuard plugin (optional)
 		pg = getServer().getPluginManager().getPlugin("WorldGuard");
-		if ((pg != null) && (pg instanceof WorldGuardPlugin))
+		if((pg != null) && (pg instanceof WorldGuardPlugin))
 		{
 			WORLDGUARD = (WorldGuardPlugin)pg;
-			if (!DConfigUtil.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
+			if(DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones") && !DConfigUtil.getSettingBoolean("allow_skills_everywhere"))
+			{
+				DMiscUtil.warning("WorldGuard no-PVP Flags are not compatible with dynamic pvp zones.");
+				DMiscUtil.warning("Instead of using flags, please name all no-PVP zones 'REGION_nopvp'.");
+				DMiscUtil.warning("Players will be invincible in no-PVP zones.");
+			}
+			if(!DConfigUtil.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("WorldGuard detected. Certain skills are disabled in no-PvP zones.");
+		}
+		
+		// Check for the Factions plugin (optional)
+		pg = getServer().getPluginManager().getPlugin("Factions");
+		if((pg != null) && (pg instanceof P))
+		{
+			FACTIONS = (P)pg;
+			if(DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones") && !DConfigUtil.getSettingBoolean("allow_skills_everywhere"))
+			{
+				DMiscUtil.warning("Factions is not compatible with dynamic pvp zones!");
+				DMiscUtil.warning("Please either change the settings of Demigods, or remove Factions!");
+			}
+			else if(!DConfigUtil.getSettingBoolean("allow_skills_everywhere")) DMiscUtil.info("Factions detected. Certain skills are disabled in safe zones zones.");
 		}
 	}
 	

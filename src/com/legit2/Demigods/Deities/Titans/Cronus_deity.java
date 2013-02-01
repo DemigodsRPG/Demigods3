@@ -23,6 +23,7 @@ import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Cronus_deity implements Listener
 {	
@@ -105,7 +106,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
-			if(!DMiscUtil.canLocationPVP(damageEvent.getEntity().getLocation())) return;
+			if(DZoneUtil.zoneNoPVP(damageEvent.getEntity().getLocation())) return;
 
 			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
 			
@@ -261,7 +262,7 @@ public class Cronus_deity implements Listener
 		Player target = null; 
 		if(DMiscUtil.autoTarget(player) instanceof Player) target = (Player) DMiscUtil.autoTarget(player);
 		
-		if(!DMiscUtil.canLocationPVP(player.getLocation()))
+		if(DZoneUtil.zoneNoPVP(player.getLocation()))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return;
@@ -306,7 +307,7 @@ public class Cronus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
 		{
-			if(!DMiscUtil.canLocationPVP(player.getLocation()))
+			if(DZoneUtil.zoneNoPVP(player.getLocation()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return; 
@@ -338,7 +339,7 @@ public class Cronus_deity implements Listener
 		{
 			if(!(onlinePlayer.getLocation().toVector().isInSphere(player.getLocation().toVector(), 70))) continue;
 			
-			if(!DMiscUtil.canLocationPVP(onlinePlayer.getLocation())) continue;
+			if(DZoneUtil.zoneNoPVP(onlinePlayer.getLocation())) continue;
 			
 			if (DCharUtil.isImmortal(onlinePlayer) && DMiscUtil.areAllied(player, onlinePlayer)) continue;
 
