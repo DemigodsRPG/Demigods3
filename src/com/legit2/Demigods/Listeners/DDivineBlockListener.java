@@ -297,33 +297,36 @@ public class DDivineBlockListener implements Listener
 
 		// Shrine Zone Messages
 		
-		for(Location divineBlock : DDivineBlocks.getAllShrines())
+		if(DDivineBlocks.getAllShrines() != null)
 		{
-			OfflinePlayer charOwner = null;
-			if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
-			else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
-			else return;
-
-			// Check for world errors
-			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
-			if(event.getFrom().getWorld() != divineBlock.getWorld()) return;
-			
-			/*
-			 * Entering
-			 */
-			if(DZoneUtil.enterZoneShrine(to, from))
+			for(Location divineBlock : DDivineBlocks.getAllShrines())
 			{
-				event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
-				return;
-			}
-			
-			/*
-			 * Leaving
-			 */
-			else if(DZoneUtil.exitZoneShrine(to, from))
-			{
-				event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
-				return;
+				OfflinePlayer charOwner = null;
+				if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
+				else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
+				else continue;
+	
+				// Check for world errors
+				if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) continue;
+				if(event.getFrom().getWorld() != divineBlock.getWorld()) continue;
+				
+				/*
+				 * Entering
+				 */
+				if(DZoneUtil.enterZoneShrine(to, from))
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
+					return;
+				}
+				
+				/*
+				 * Leaving
+				 */
+				else if(DZoneUtil.exitZoneShrine(to, from))
+				{
+					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
+					return;
+				}
 			}
 		}
 		
