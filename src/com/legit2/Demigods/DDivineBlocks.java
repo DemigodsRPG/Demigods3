@@ -49,6 +49,7 @@ public class DDivineBlocks
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
+			if(divineBlock.getValue().get("block_object") == null) continue;
 			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("shrine"))
 			{
 				Location blockLoc = ((DivineBlock) divineBlock.getValue().get("block_object")).getLocation();
