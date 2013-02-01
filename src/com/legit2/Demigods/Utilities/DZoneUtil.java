@@ -28,7 +28,7 @@ public class DZoneUtil
 		if(DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones"))
 		{
 			// Currently only supports WorldGuard for dynamic PVP zones
-			if(DMiscUtil.getPlugin().WORLDGUARD != null) return canWorldGuardDynamicPVP(location);
+			if(DMiscUtil.getPlugin().WORLDGUARD != null) return !canWorldGuardDynamicPVP(location);
 			else return false;
 		}
 		else
