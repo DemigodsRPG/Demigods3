@@ -135,11 +135,18 @@ public class DCharUtil
 	/*
 	 *  getCharOwner() : Returns the (OfflinePlayer)player who owns (int)charID.
 	 */
-	@SuppressWarnings("unchecked")
 	public static OfflinePlayer getOwner(int charID)
-	{		
-		HashMap<String, Object> character = (HashMap<String, Object>) DDataUtil.getAllCharData(charID).entrySet();
-		return DPlayerUtil.getPlayerFromID((DObjUtil.toInteger(character.get("char_owner"))));
+	{
+		OfflinePlayer charOwner = null;
+		
+		for(Entry<String, Object> character : DDataUtil.getAllCharData(charID).entrySet())
+		{
+			if(character.getKey().equalsIgnoreCase("char_owner"))
+			{
+				charOwner = DPlayerUtil.getPlayerFromID((DObjUtil.toInteger(character.getValue())));
+			}
+		}
+		return charOwner;
 	}
 	
 	/*
