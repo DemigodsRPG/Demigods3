@@ -30,6 +30,7 @@ public class DFlatFile
 			(new File(path + "Data/")).mkdirs();
 			(new File(path + "Players/")).mkdirs();
 			(new File(path + "Characters/")).mkdirs();
+			(new File(path + "DivineBlocks/")).mkdirs();
 			for(String data : DDataUtil.getAllPluginData().keySet()) 
 			{
 				if(data.startsWith("temp_")) continue;
@@ -48,6 +49,14 @@ public class DFlatFile
 			for(Integer data : DDataUtil.getAllChars().keySet()) 
 			{
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/Characters/" + data + ".demi"));
+				oos.writeObject(DDataUtil.getAllChars().get(data));
+				oos.flush();
+				oos.close();
+			}
+			
+			for(Integer data : DDataUtil.getAllBlockData().keySet()) 
+			{
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "/DivineBlocks/" + data + ".demi"));
 				oos.writeObject(DDataUtil.getAllChars().get(data));
 				oos.flush();
 				oos.close();
@@ -135,7 +144,7 @@ public class DFlatFile
 		
 		// Characters
 		File f3 = new File(path + "Characters/");
-		if(!f2.exists())
+		if(!f3.exists())
 		{
 			DMiscUtil.info("Creating a new character save.");
 			f3.mkdirs();
@@ -162,6 +171,42 @@ public class DFlatFile
 					catch(Exception error)
 					{
 						DMiscUtil.severe("Could not load character " + load);
+						error.printStackTrace();
+						DMiscUtil.severe("End stack trace for " + load);
+					}
+				}
+			}
+		}
+		
+		// DivineBlocks
+		File f4 = new File(path + "DivineBlocks/");
+		if(!f4.exists())
+		{
+			DMiscUtil.info("Creating a new block save.");
+			f4.mkdirs();
+		}
+		File[] list4 = f4.listFiles();
+		if(list4 != null)
+		{
+			for(File element : list4)
+			{
+				String load = element.getName();
+				if(load.endsWith(".demi"))
+				{
+					load = load.substring(0, load.length() - 5);
+					
+					Integer intLoad = DObjUtil.toInteger(load);
+					
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						DDataUtil.getAllBlockData().put(intLoad, (HashMap<String, Object>) result);
+						ois.close();
+					}
+					catch(Exception error)
+					{
+						DMiscUtil.severe("Could not load divine block " + load);
 						error.printStackTrace();
 						DMiscUtil.severe("End stack trace for " + load);
 					}
