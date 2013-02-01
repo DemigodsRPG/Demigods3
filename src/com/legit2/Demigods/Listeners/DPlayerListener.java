@@ -36,7 +36,12 @@ public class DPlayerListener implements Listener
 		try 
 		{
 			Player player = event.getPlayer();		
-			DPlayerUtil.createNewPlayer(player);
+			if(Bukkit.getServer().hasWhitelist())
+			{
+				if(player.isWhitelisted()) DPlayerUtil.createNewPlayer(player);
+				return;
+			}
+			else DPlayerUtil.createNewPlayer(player);
 		}
 		catch(Exception e)
 		{
