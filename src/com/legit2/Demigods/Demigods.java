@@ -44,12 +44,12 @@ public class Demigods extends JavaPlugin
 	{
 		// Initialize Configuration
 		new DMiscUtil(this);
+		DConfigUtil.initializeConfig();
 		
 		loadDependencies();
 		
 		if(okayToLoad)
 		{
-			DConfigUtil.initializeConfig();
 			DDatabase.initializeDatabase();
 			DScheduler.startThreads();
 			loadCommands();
