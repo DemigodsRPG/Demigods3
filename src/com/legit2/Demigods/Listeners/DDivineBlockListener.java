@@ -194,7 +194,7 @@ public class DDivineBlockListener implements Listener
 			if(!event.getInventory().getName().contains("Shrine")) return;
 			
 			// Get the creator of the shrine
-			int shrineOwner = (int) DDataUtil.getCharData(charID, "temp_tributing");
+			int shrineOwner = DObjUtil.toInteger(DDataUtil.getCharData(charID, "temp_tributing"));
 			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
 			//calculate value of chest
