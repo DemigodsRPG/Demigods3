@@ -302,11 +302,7 @@ public class DDivineBlockListener implements Listener
 			OfflinePlayer charOwner = null;
 			if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
 			else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
-			else
-			{
-				DMiscUtil.severe("Something went horribly wrong when checking a shrine for it's owner.");
-				return;
-			}
+			else return;
 
 			// Check for world errors
 			if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) return;
