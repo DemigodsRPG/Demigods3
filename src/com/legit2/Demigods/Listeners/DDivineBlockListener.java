@@ -44,7 +44,7 @@ import com.legit2.Demigods.Utilities.DMiscUtil;
 public class DDivineBlockListener implements Listener
 {
 	static Demigods plugin;
-	public static double FAVORMULTIPLIER = DConfigUtil.getSettingDouble("global_favor_multiplier");
+	public static double FAVOR_MULTIPLIER = DConfigUtil.getSettingDouble("global_favor_multiplier");
 	public static int SHRINE_RADIUS = 8;
 	public static int ALTAR_RADIUS = 16;
 	
@@ -90,7 +90,7 @@ public class DDivineBlockListener implements Listener
 				location.getWorld().strikeLightningEffect(location);
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-				player.sendMessage(ChatColor.GRAY + "A shrine has been created in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
+				player.sendMessage(ChatColor.GRAY + "You have created a shrine has been created in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
 			}
 			catch(Exception e)
 			{
@@ -167,7 +167,11 @@ public class DDivineBlockListener implements Listener
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
 			}
 		}
-		catch(Exception e) {}
+		catch(Exception e)
+		{
+			// Print error for debugging
+			e.printStackTrace();
+		}
 	}
 	
 	/* --------------------------------------------
@@ -190,7 +194,7 @@ public class DDivineBlockListener implements Listener
 			if(!event.getInventory().getName().contains("Shrine")) return;
 			
 			// Get the creator of the shrine
-			//int shrineCreator = DDivineBlocks.getShrineOwner((Location) DDataUtil.getCharData(charID, "temp_tributing"));
+			int shrineOwner = (int) DDataUtil.getCharData(charID, "temp_tributing");
 			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
 			//calculate value of chest
@@ -204,26 +208,39 @@ public class DDivineBlockListener implements Listener
 				}
 			}
 			
-			tributeValue *= FAVORMULTIPLIER;
+			tributeValue *= FAVOR_MULTIPLIER;
 			
 			// Process tributes and send messages
 			int favorBefore = DCharUtil.getMaxFavor(charID);
 			int devotionBefore = DCharUtil.getDevotion(charID);
 			
+			// Update the character's favor and devotion
 			DCharUtil.addMaxFavor(charID, tributeValue / 5);
 			DCharUtil.giveDevotion(charID, tributeValue);
-			DCharUtil.giveDevotion(charID, tributeValue / 7);
 			
-			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.YELLOW + "Your devotion to " + charDeity + " has increased to " + DCharUtil.getDevotion(charID) + ".");
-			if(favorBefore < DCharUtil.getMaxFavor(charID)) player.sendMessage(ChatColor.YELLOW + "Your favor cap has increased to " + DCharUtil.getMaxFavor(charID) + ".");
+			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  DCharUtil.getDevotion(charID) + ChatColor.GRAY + ".");
+			if(favorBefore < DCharUtil.getMaxFavor(charID)) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ".");
 			
 			// If they aren't good enough let them know
-			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.YELLOW + "Your tributes were insufficient for " + charDeity + "'s blessings.");
+			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + charDeity + "'s blessings.");
+			
+			// Update the shrine owner's devotion and let them know
+			Player shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner).getPlayer();
+			if(!DCharUtil.getOwner(charID).equals(shrineOwnerPlayer))
+			{
+				DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
+				shrineOwnerPlayer.sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
+				shrineOwnerPlayer.sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+			}
 			
 			// Clear the tribute case
 			event.getInventory().clear();
 		}
-		catch(Exception e) {}
+		catch(Exception e)
+		{
+			// Print error for debugging
+			e.printStackTrace();
+		}
 	}
 	
 	/* --------------------------------------------

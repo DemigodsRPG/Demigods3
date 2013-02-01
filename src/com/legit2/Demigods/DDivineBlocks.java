@@ -59,6 +59,20 @@ public class DDivineBlocks
 	}
 	
 	/*
+	 *  getCharShrines() : Returns an ArrayList<Location> of charID's shrines.
+	 */
+	public static ArrayList<Location> getCharShrines(int charID)
+	{		
+		ArrayList<Location> shrines = new ArrayList<Location>();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{	
+			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
+			if(block.getParent() == charID) shrines.add(block.getLocation());
+		}
+		return shrines;
+	}
+	
+	/*
 	 *  getOwnerOfShrine() : Returns the owner of the shrine at (Location)location.
 	 */
 	public static int getShrineOwner(Location location)
