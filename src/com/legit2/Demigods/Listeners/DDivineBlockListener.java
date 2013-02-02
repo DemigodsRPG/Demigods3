@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,9 +84,7 @@ public class DDivineBlockListener implements Listener
 				}
 				else player.getInventory().remove(Material.BOOK);
 				
-				location.getWorld().getBlockAt(location).setType(Material.BEDROCK);
-				location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
-				location.getWorld().strikeLightningEffect(location);
+				
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
 				player.sendMessage(ChatColor.GRAY + "You have created a shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
