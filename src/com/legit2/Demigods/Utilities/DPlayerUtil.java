@@ -214,7 +214,7 @@ public class DPlayerUtil
 	 */
 	public static int getKills(OfflinePlayer player)
 	{
-		if(DDataUtil.getPlayerData(player, "kills") != null) return Integer.parseInt(DDataUtil.getPlayerData(player, "kills").toString());
+		if(DDataUtil.getPlayerData(player, "player_kills") != null) return Integer.parseInt(DDataUtil.getPlayerData(player, "player_kills").toString());
 		return -1;
 	}
 	
@@ -223,7 +223,7 @@ public class DPlayerUtil
 	 */
 	public static void setKills(OfflinePlayer player, int amount)
 	{
-		DDataUtil.savePlayerData(player, "kills", amount);
+		DDataUtil.savePlayerData(player, "player_kills", amount);
 	}
 	
 	/*
@@ -231,7 +231,7 @@ public class DPlayerUtil
 	 */
 	public static void addKill(OfflinePlayer player)
 	{
-		DDataUtil.savePlayerData(player, "kills", getKills(player) + 1);
+		DDataUtil.savePlayerData(player, "player_kills", getKills(player) + 1);
 	}
 	
 	/*
@@ -239,7 +239,7 @@ public class DPlayerUtil
 	 */
 	public static int getDeaths(OfflinePlayer player)
 	{
-		if(DDataUtil.getPlayerData(player, "deaths") != null) return Integer.parseInt(DDataUtil.getPlayerData(player, "deaths").toString());
+		if(DDataUtil.getPlayerData(player, "player_deaths") != null) return Integer.parseInt(DDataUtil.getPlayerData(player, "player_deaths").toString());
 		return -1;
 	}
 	
@@ -248,7 +248,7 @@ public class DPlayerUtil
 	 */
 	public static void setDeaths(OfflinePlayer player, int amount)
 	{
-		DDataUtil.savePlayerData(player, "deaths", amount);
+		DDataUtil.savePlayerData(player, "player_deaths", amount);
 	}
 	
 	/*
@@ -256,7 +256,7 @@ public class DPlayerUtil
 	 */
 	public static void addDeath(OfflinePlayer player)
 	{
-		DDataUtil.savePlayerData(player, "deaths", getDeaths(player) + 1);
+		DDataUtil.savePlayerData(player, "player_deaths", getDeaths(player) + 1);
 	}
 	
 	/*
