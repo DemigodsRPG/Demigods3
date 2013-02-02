@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.DivineBlock;
@@ -26,6 +28,24 @@ public class DDivineBlocks
 		int blockID = DObjUtil.generateInt(5);
 		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getDeity(charID));
 		DDataUtil.saveBlockData(blockID, "block_object", block);
+	}
+	
+	/*
+	 *  removeShrine() : Removes the shrine at (Location)location.
+	 */
+	public static void removeShrine(Location location)
+	{
+		location.getBlock().setType(Material.AIR);
+		removeDivineBlock(location);
+		Location locToMatch = location.add(0.5, 1.0, 0.5);
+		
+		for(Entity entity : location.getWorld().getEntities())
+		{			
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
 	}
 
 	/*
@@ -63,12 +83,16 @@ public class DDivineBlocks
 	 *  getCharShrines() : Returns an ArrayList<Location> of charID's shrines.
 	 */
 	public static ArrayList<Location> getCharShrines(int charID)
-	{		
+	{
 		ArrayList<Location> shrines = new ArrayList<Location>();
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{	
-			DivineBlock block = (DivineBlock) divineBlock.getValue().get("block_object");
-			if(block.getParent() == charID) shrines.add(block.getLocation());
+			if(divineBlock.getValue().get("block_object") == null) continue;
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getParent() == charID)
+			{
+				Location blockLoc = ((DivineBlock) divineBlock.getValue().get("block_object")).getLocation();
+				shrines.add(blockLoc);
+			}
 		}
 		return shrines;
 	}
@@ -282,15 +306,7 @@ public class DDivineBlocks
 	 */
 	public static void removeAltar(Location location)
 	{
-		int blockID = getID(location);
-		
-		// Remove the actual blocks
-		int parentID = getDivineBlockParent(blockID);
-		removeBlocksWhereParent(parentID);
-		
-		// Save the data LAST
-		DDataUtil.removeAllBlockData(blockID);
-		DDatabase.saveDivineBlocks();
+		removeDivineBlock(location);
 	}
 	
 	/*
@@ -393,12 +409,21 @@ public class DDivineBlocks
 	 */
 	public static void removeDivineBlock(Location location)
 	{
-		// TODO: Make this remove all blocks with X parent ID
-		int blockID = getID(location);
-		DDataUtil.removeAllBlockData(blockID);
+		int parentID = getDivineBlockParent(getID(location));
+		DDataUtil.removeAllBlockData(parentID);
 		
-		// Remove the actual block
+		// Remove child blocks
+		for(Location blockLoc : getDivineBlocks(parentID))
+		{
+			int blockID = getID(blockLoc);
+			DDataUtil.removeAllBlockData(blockID);
+			blockLoc.getBlock().setTypeId(0);
+		}
+		
+		// Remove the parent
 		location.getBlock().setTypeId(0);
+		
+		DDatabase.saveDivineBlocks();
 	}
 	
 	/*
