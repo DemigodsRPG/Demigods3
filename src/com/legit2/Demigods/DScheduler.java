@@ -54,6 +54,6 @@ public class DScheduler
 	 */
 	public static void stopThreads()
 	{
-		plugin.getServer().getScheduler().cancelAllTasks();
+		plugin.getServer().getScheduler().cancelTasks(plugin);
 	}
 }
