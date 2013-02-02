@@ -146,7 +146,7 @@ public class DPlayerUtil
 		for(Player player : onlinePlayers)
 		{
 			int charID = DPlayerUtil.getCurrentChar(player);
-			int regenRate = DCharUtil.getAscensions(charID);
+			int regenRate = (int) Math.ceil(DConfigUtil.getSettingDouble("global_favor_multiplier") * DCharUtil.getAscensions(charID));
 			if (regenRate < 1) regenRate = 1;
 			DCharUtil.giveFavor(charID, regenRate);
 		}
