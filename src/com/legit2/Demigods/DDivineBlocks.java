@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.DivineBlock;
@@ -27,7 +28,11 @@ public class DDivineBlocks
 	{
 		int blockID = DObjUtil.generateInt(5);
 		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getDeity(charID));
+		location.getBlock().setType(Material.BEDROCK);
+		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+		location.getWorld().strikeLightningEffect(location);
 		DDataUtil.saveBlockData(blockID, "block_object", block);
+		DDatabase.saveDivineBlocks();
 	}
 	
 	/*
