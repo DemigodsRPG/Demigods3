@@ -13,7 +13,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
+import com.legit2.Demigods.Utilities.DObjUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 
 public class DEntityListener implements Listener
 {
@@ -30,7 +33,7 @@ public class DEntityListener implements Listener
 		// Define variables
 		LivingEntity attackedEntity;
 		EntityDamageByEntityEvent damageEvent = null;
-		if(event.getEntityType().equals(EntityType.PLAYER)) // IF IT'S A PLAYER
+		if(event.getEntityType().equals(EntityType.PLAYER)) // If it's a player
 		{
 			// Define entity as player and other variables
 			attackedEntity = (LivingEntity) event.getEntity();
@@ -102,7 +105,23 @@ public class DEntityListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void entityDeath(EntityDeathEvent event)
 	{
-		// TODO
+		if(event.getEntityType().equals(EntityType.PLAYER))
+		{
+			// Define variables
+			Player player = (Player) event.getEntity();
+			int charID = DPlayerUtil.getCurrentChar(player);
+			String deity = DObjUtil.capitalize(DCharUtil.getDeity(charID));
+			int devotion = DCharUtil.getDevotion(charID);
+			int devotionRemoved = (int) Math.ceil(devotion * .19);
+			
+			// Set their devotion and add a death
+			DCharUtil.subtractDevotion(charID, devotionRemoved);
+			DPlayerUtil.addDeath(player);
+			
+			// Let 'em know
+			player.sendMessage(ChatColor.RED + "You have failed " + deity + "!");
+			player.sendMessage(ChatColor.RED + "You have been stripped of " + devotionRemoved + " devotion!");
+		}
 	}
 
 }
