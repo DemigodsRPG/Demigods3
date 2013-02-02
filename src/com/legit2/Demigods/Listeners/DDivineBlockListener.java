@@ -518,7 +518,7 @@ public class DDivineBlockListener implements Listener
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
 				    Location location = drop.getLocation();
-				    if(DZoneUtil.zoneAltar(location))
+				    if(DZoneUtil.zoneAltar(location) != null)
 					{
 						drop.remove();
 						continue;

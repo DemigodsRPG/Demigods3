@@ -324,7 +324,7 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  getAltars() : Returns an ArrayList<Location> the server's Altars.
+	 *  getAllAltars() : Returns an ArrayList<Location> the server's Altars.
 	 */
 	public static ArrayList<Location> getAllAltars()
 	{		
@@ -336,6 +336,20 @@ public class DDivineBlocks
 				Location blockLoc = ((DivineBlock) divineBlock.getValue().get("block_object")).getLocation();
 				altars.add(blockLoc);
 			}
+		}
+		return altars;
+	}
+	
+	/*
+	 *  getAllAltarBlocks() : Returns an ArrayList<DivineBlock> of (Player)player's Shrines.
+	 */
+	public static ArrayList<DivineBlock> getAllAltarBlocks()
+	{		
+		ArrayList<DivineBlock> altars = new ArrayList<DivineBlock>();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{
+			if(divineBlock.getValue().get("block_object") == null) continue;
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("atlar")) altars.add((DivineBlock) divineBlock.getValue().get("block_object"));
 		}
 		return altars;
 	}
@@ -464,6 +478,19 @@ public class DDivineBlocks
 			if(block.getLocation().equals(location)) return true;
 		}
 		return false;
+	}
+	
+	/*
+	 *  getDivineBlock() : Returns the (String)divineType for (int)blockID.
+	 */
+	public static DivineBlock getDivineBlock(int blockID)
+	{
+		if(DDataUtil.hasBlockData(blockID, "block_object"))
+		{
+			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
+			return block;
+		}
+		return null;
 	}
 	
 	/*

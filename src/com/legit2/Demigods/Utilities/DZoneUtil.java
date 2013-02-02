@@ -30,7 +30,7 @@ public class DZoneUtil
 		{
 			// Currently only supports WorldGuard for dynamic PVP zones
 			if(DMiscUtil.getPlugin().WORLDGUARD != null) return !canWorldGuardDynamicPVPAndNotAltar(location);
-			else return zoneAltar(location);
+			else return zoneAltar(location) != null;
 		}
 		else
 		{
@@ -74,9 +74,9 @@ public class DZoneUtil
 	 */
     public static boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
     {
-    	if(!zoneAltar(location) && canWorldGuardDynamicPVP(location)) return true;
+    	if(!(zoneAltar(location) != null) && canWorldGuardDynamicPVP(location)) return true;
     	else if(!canWorldGuardDynamicPVP(location)) return false;
-    	else if(zoneAltar(location)) return false;
+    	else if(zoneAltar(location) != null) return false;
     	else return true;
     }
     
@@ -218,13 +218,13 @@ public class DZoneUtil
 	/* 
 	 *  zoneAltar() : Returns true if (Location)location is within an Altar's zone.
 	 */
-    public static boolean zoneAltar(Location location)
+    public static DivineBlock zoneAltar(Location location)
     {
-    	for(Location divineBlock : DDivineBlocks.getAllAltars())
+    	for(DivineBlock divineBlock : DDivineBlocks.getAllAltarBlocks())
 		{	
-    		 if(location.distance(divineBlock) <= ALTAR_RADIUS) return true;
+    		 if(location.distance(divineBlock.getLocation()) <= ALTAR_RADIUS) return DDivineBlocks.getDivineBlock((divineBlock.getParent()));
 		}
-    	return false;
+    	return null;
     }
     
 	/* 
@@ -232,7 +232,7 @@ public class DZoneUtil
 	 */
 	public static boolean enterZoneAltar(Location to, Location from)
 	{
-		if(!DZoneUtil.zoneAltar(from) && DZoneUtil.zoneAltar(to)) return true;
+		if(!(DZoneUtil.zoneAltar(from) != null) && DZoneUtil.zoneAltar(to) != null) return true;
 		else return false;
 	}
 	
