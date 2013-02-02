@@ -89,7 +89,7 @@ public class DDivineBlockListener implements Listener
 				location.getWorld().strikeLightningEffect(location);
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-				player.sendMessage(ChatColor.GRAY + "You have created a shrine has been created in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
+				player.sendMessage(ChatColor.GRAY + "You have created a shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
 			}
 			catch(Exception e)
 			{
@@ -113,9 +113,7 @@ public class DDivineBlockListener implements Listener
 			if(DDataUtil.hasPlayerData(player, "temp_destroy_shrine") && System.currentTimeMillis() < DObjUtil.toLong(DDataUtil.getPlayerData(player, "temp_destroy_shrine")))
 			{
 				// We can destroy the Shrine
-				event.getRightClicked().remove();
-				location.getBlock().setType(Material.AIR);
-				DDivineBlocks.removeDivineBlock(location);
+				DDivineBlocks.removeShrine(location);
 				
 				// Drop the block of gold and book
 				location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_BLOCK, 1));
@@ -217,19 +215,24 @@ public class DDivineBlockListener implements Listener
 			DCharUtil.addMaxFavor(charID, tributeValue / 5);
 			DCharUtil.giveDevotion(charID, tributeValue);
 			
-			if(devotionBefore < DCharUtil.getDevotion(charID)) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  DCharUtil.getDevotion(charID) + ChatColor.GRAY + ".");
-			if(favorBefore < DCharUtil.getMaxFavor(charID)) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ".");
+			if(DCharUtil.getDevotion(charID) > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  DCharUtil.getDevotion(charID) + ChatColor.GRAY + ".");
+			if(DCharUtil.getMaxFavor(charID) > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ".");
 			
 			// If they aren't good enough let them know
-			if((favorBefore == DCharUtil.getMaxFavor(charID)) && (devotionBefore == DCharUtil.getDevotion(charID)) && (items > 0)) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + charDeity + "'s blessings.");
-			
-			// Update the shrine owner's devotion and let them know
-			Player shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner).getPlayer();
-			if(!DCharUtil.getOwner(charID).equals(shrineOwnerPlayer))
+			if(favorBefore != DCharUtil.getMaxFavor(charID) && devotionBefore != DCharUtil.getDevotion(charID) && items > 0)
 			{
-				DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
-				shrineOwnerPlayer.sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-				shrineOwnerPlayer.sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+				// Update the shrine owner's devotion and let them know
+				Player shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner).getPlayer();
+				if(!DCharUtil.getOwner(charID).equals(shrineOwnerPlayer))
+				{
+					DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
+					shrineOwnerPlayer.sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
+					shrineOwnerPlayer.sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+				}
+			}
+			else
+			{
+				if(items > 0) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + charDeity + "'s blessings.");
 			}
 			
 			// Clear the tribute case
@@ -296,12 +299,12 @@ public class DDivineBlockListener implements Listener
 		Location from = event.getFrom();
 
 		// Shrine Zone Messages
-		
 		if(DDivineBlocks.getAllShrines() != null)
 		{
 			for(Location divineBlock : DDivineBlocks.getAllShrines())
 			{
 				OfflinePlayer charOwner = null;
+								
 				if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
 				else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
 				else continue;

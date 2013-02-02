@@ -3,13 +3,20 @@ package com.legit2.Demigods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
@@ -45,6 +52,29 @@ public class DCommandExecutor implements CommandExecutor
 	 *  Command: "test1"
 	 */
 	public static boolean test1(CommandSender sender)
+	{
+		Player player = (Player) sender;
+		
+		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+		FireworkMeta fireworkmeta = firework.getFireworkMeta();
+		
+        Random r = new Random();
+        int rt = r.nextInt(4) + 1;
+        Type type = Type.BALL;
+        if (rt == 1) type = Type.BALL;
+        if (rt == 2) type = Type.BALL_LARGE;
+        if (rt == 3) type = Type.BURST;
+        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
+        fireworkmeta.addEffect(effect);
+        fireworkmeta.setPower(2);
+       
+        //Then apply this to our rocket
+        firework.setFireworkMeta(fireworkmeta);      
+		
+		return true;
+	}
+	
+	public static boolean viewBlocks(CommandSender sender)
 	{
 		for(Entry<Integer, HashMap<String, Object>> block : DDataUtil.getAllBlockData().entrySet())
 		{
@@ -230,36 +260,37 @@ public class DCommandExecutor implements CommandExecutor
 	 */
 	public static boolean check(CommandSender sender)
 	{
-		// Define Player and Username
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
-		//String username = player.getName();
-		
+
 		if(!DCharUtil.isImmortal(player))
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
 		}		
 			
+		// Define variables
+		int kills = DPlayerUtil.getKills(player);
+		int deaths = DPlayerUtil.getDeaths(player);
+		int charID = DPlayerUtil.getCurrentChar(player);
+		String charName = DCharUtil.getName(charID);
+		String deity = DCharUtil.getDeity(charID);
+		String alliance = DCharUtil.getAlliance(charID);
+		int favor = DCharUtil.getFavor(charID);
+		int maxFavor = DCharUtil.getMaxFavor(charID);
+		int devotion = DCharUtil.getDevotion(charID);
+		int ascensions = DCharUtil.getAscensions(charID);
+		int devotionGoal = DCharUtil.getDevotionGoal(charID);	
+		
 		// Send the user their info via chat
 		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", null);
+
+		sender.sendMessage(ChatColor.GRAY + "Character: " + ChatColor.AQUA + charName + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtil.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + "Deity: " + ChatColor.WHITE + ChatColor.ITALIC + deity);
+		sender.sendMessage(ChatColor.GRAY + "Favor: " + ChatColor.GREEN + favor + ChatColor.GRAY + " (of " + ChatColor.YELLOW + maxFavor + ChatColor.GRAY + ")");
+		sender.sendMessage(ChatColor.GRAY + "Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(ChatColor.GRAY + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
 		
-		/*
-		sender.sendMessage(ChatColor.RESET + "Name: " + ChatColor.AQUA + username + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtil.capitalize(alliance) + "s");
-		sender.sendMessage("Favor: " + ChatColor.GREEN + favor);
-		sender.sendMessage("Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(" ");
-		
-		sender.sendMessage("Deities: ");
-		
-			// List each deity separately
-			for(Object deity : deity_list)
-			{
-				sender.sendMessage("  " + deity);
-			}
-			
-		sender.sendMessage(" ");
-		sender.sendMessage("Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
-		*/
+		sender.sendMessage(ChatColor.GRAY + "Kills: " + ChatColor.GREEN + kills + ChatColor.GRAY + " / Deaths: " + ChatColor.RED + deaths);
 		
 		return true;
 	}
@@ -365,7 +396,7 @@ public class DCommandExecutor implements CommandExecutor
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
 			int charID = DCharUtil.getID(charName);
-			DDataUtil.removeChar(charID);
+			DCharUtil.removeChar(charID);
 			
 			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}

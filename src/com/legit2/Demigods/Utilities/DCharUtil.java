@@ -6,11 +6,19 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.google.common.base.Joiner;
+import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Database.DDatabase;
 
 public class DCharUtil
@@ -89,17 +97,31 @@ public class DCharUtil
 	/*
 	 *  removeChar() : Removes the character with (int)id. Returns true on success, false on fail.
 	 */
-	public static boolean removeChar(OfflinePlayer player, int charID)
+	public static boolean removeChar(int charID)
 	{
+		// Define variables
+		Player player = getOwner(charID).getPlayer();
+		ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
+		String chars;
+		
 		if(DDataUtil.removeChar(charID))
 		{
+			for(Location location : DDivineBlocks.getCharShrines(charID))
+			{
+				DDivineBlocks.removeShrine(location);
+			}
+			
 			// Remove from player_characters
-			ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
-			charsTemp.remove(charID);
-			String chars = Joiner.on(",").join(charsTemp);
+			charsTemp.remove("" + charID);
+			if(!charsTemp.isEmpty())
+			{
+				chars = Joiner.on(",").join(charsTemp);
+			}
+			else chars = null;
+			
 			DDataUtil.savePlayerData(player, "player_characters", chars);
-
 			DDatabase.savePlayer(player);
+			
 			return true;
 		}
 		return false;
@@ -389,11 +411,43 @@ public class DCharUtil
 	}
 	
 	/*
+	 *  getDevotionGoal() : Returns the (int)devotion needed for (int)charID's next ascension.
+	 */
+	public static int getDevotionGoal(int charID)
+	{
+		return (int) Math.ceil(500 * Math.pow(getAscensions(charID) + 1, 2.02));
+	}
+	
+	/*
 	 *  giveDevotion() : Gives (int)amount devotion to (String)username for (String)deity.
 	 */
 	public static void giveDevotion(int charID, int amount)
 	{
+		int devotionBefore = getDevotion(charID);
+		int devotionGoal = getDevotionGoal(charID);
 		setDevotion(charID, getDevotion(charID) + amount);
+		int devotionAfter = getDevotion(charID);
+		
+		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
+		{
+			Player player = DCharUtil.getOwner(charID).getPlayer();
+			
+			// Player leveled up!
+			giveAscensions(charID, 1);
+			setDevotion(charID, devotionAfter - devotionGoal);
+			
+			// Spawn a pretty firework!
+			Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+			FireworkMeta fireworkmeta = firework.getFireworkMeta();
+	        Type type = Type.BALL;       
+	        FireworkEffect effect = FireworkEffect.builder().flicker(true).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
+	        fireworkmeta.addEffect(effect);
+	        fireworkmeta.setPower(1);
+	        firework.setFireworkMeta(fireworkmeta);      
+			
+			// Let 'em know!
+			player.sendMessage(ChatColor.GREEN + "You leveled up!" + ChatColor.GRAY + " (Devotion until next Ascension: " + ChatColor.YELLOW + (getDevotionGoal(charID) - getDevotion(charID)) + ChatColor.GRAY + ")");
+		}
 	}
 
 	/*

@@ -77,7 +77,7 @@ public class DEntityListener implements Listener
 				*/
 			}
 		}
-		else if(event.getEntityType().equals(EntityType.VILLAGER)) // IF IT'S A VILLAGER
+		else if(event.getEntityType().equals(EntityType.VILLAGER)) // If it's a villager
 		{
 			// Define villager
 			LivingEntity villager = (LivingEntity) event.getEntity();
@@ -85,13 +85,17 @@ public class DEntityListener implements Listener
 			
 			// Define attacker and name
 			Player attacker = null;
-			if(damageEvent.getDamager() != null) attacker = (Player) damageEvent.getDamager();
-
-			if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
+			if(damageEvent.getDamager() != null 
+					&& damageEvent.getDamager().getType().equals(EntityType.PLAYER))
 			{
-				//villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
-				if(attacker != null) attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+				attacker = (Player) damageEvent.getDamager();
+				if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
+				{
+					//villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
+					if(attacker != null) attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+				}
 			}
+			else return;
 		}
 	}
 	
