@@ -109,7 +109,6 @@ public class Poseidon_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
@@ -120,17 +119,7 @@ public class Poseidon_deity implements Listener
 			// Set the ability's delay
 			REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= REEL_COST)
-			{
-				reel(player);
-				DCharUtil.subtractFavor(charID, REEL_COST);
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-				DCharUtil.disableAbility(player, REEL_NAME);
-			}
+			reel(player);
 		}
 		
 		if(DCharUtil.isEnabledAbility(player, DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, DROWN_NAME))))
@@ -140,17 +129,7 @@ public class Poseidon_deity implements Listener
 			// Set the ability's delay
 			DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= DROWN_COST)
-			{
-				drown(player);
-				DCharUtil.subtractFavor(charID, DROWN_COST);
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-				DCharUtil.disableAbility(player, DROWN_NAME);
-			}
+			drown(player);
 		}
 	}
 	
@@ -194,9 +173,17 @@ public class Poseidon_deity implements Listener
 
 	// The actual ability command
 	public static void reel(Player player)
-	{
+	{		
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
+		
+		// Check to see if player has enough favor to perform ability
+		if(DCharUtil.getFavor(charID) < REEL_COST)
+		{
+			player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
+			return;
+		}
+		DCharUtil.subtractFavor(charID, REEL_COST);
 		
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
 		LivingEntity target = DMiscUtil.autoTarget(player);
@@ -270,6 +257,14 @@ public class Poseidon_deity implements Listener
 		int radius = (int) Math.ceil(1.6955424 * Math.pow(devotion, 0.129349));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DMiscUtil.autoTarget(player);
+		
+		// Check to see if player has enough favor to perform ability
+		if(DCharUtil.getFavor(charID) < DROWN_COST)
+		{
+			player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
+			return;
+		}
+		DCharUtil.subtractFavor(charID, DROWN_COST);
 		
 		if(DZoneUtil.zoneNoPVP(player.getLocation()))
 		{
