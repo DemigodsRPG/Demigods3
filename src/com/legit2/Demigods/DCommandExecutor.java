@@ -280,17 +280,23 @@ public class DCommandExecutor implements CommandExecutor
 		int devotion = DCharUtil.getDevotion(charID);
 		int ascensions = DCharUtil.getAscensions(charID);
 		int devotionGoal = DCharUtil.getDevotionGoal(charID);	
+		ChatColor deityColor = (ChatColor) DDataUtil.getPluginData("temp_deity_colors", deity);
+		ChatColor favorColor = ChatColor.RESET;
+		
+		// Set favor color dynamically
+		if(favor < Math.ceil(0.33 * maxFavor)) favorColor = ChatColor.RED;
+		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) favorColor = ChatColor.YELLOW;
+		if(favor > Math.ceil(0.66 * maxFavor)) favorColor = ChatColor.GREEN;
 		
 		// Send the user their info via chat
 		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", null);
 
-		sender.sendMessage(ChatColor.GRAY + "Character: " + ChatColor.AQUA + charName + ChatColor.RESET + " of the " + ChatColor.ITALIC + DObjUtil.capitalize(alliance) + "s");
-		sender.sendMessage(ChatColor.GRAY + "Deity: " + ChatColor.WHITE + ChatColor.ITALIC + deity);
-		sender.sendMessage(ChatColor.GRAY + "Favor: " + ChatColor.GREEN + favor + ChatColor.GRAY + " (of " + ChatColor.YELLOW + maxFavor + ChatColor.GRAY + ")");
-		sender.sendMessage(ChatColor.GRAY + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
-		
-		sender.sendMessage(ChatColor.GRAY + "Kills: " + ChatColor.GREEN + kills + ChatColor.GRAY + " / Deaths: " + ChatColor.RED + deaths);
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DObjUtil.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
 		
 		return true;
 	}
