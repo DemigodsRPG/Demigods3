@@ -80,6 +80,20 @@ public class DDivineBlocks
 	}
 	
 	/*
+	 *  getAllShrineBlocks() : Returns an ArrayList<DivineBlock> of (Player)player's Shrines.
+	 */
+	public static ArrayList<DivineBlock> getAllShrineBlocks()
+	{		
+		ArrayList<DivineBlock> shrines = new ArrayList<DivineBlock>();
+		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
+		{
+			if(divineBlock.getValue().get("block_object") == null) continue;
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("shrine")) shrines.add((DivineBlock) divineBlock.getValue().get("block_object"));
+		}
+		return shrines;
+	}
+	
+	/*
 	 *  getCharShrines() : Returns an ArrayList<Location> of charID's shrines.
 	 */
 	public static ArrayList<Location> getCharShrines(int charID)

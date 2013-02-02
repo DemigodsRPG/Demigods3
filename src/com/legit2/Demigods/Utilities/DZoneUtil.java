@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.DDivineBlocks;
+import com.legit2.Demigods.Libraries.DivineBlock;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
@@ -174,15 +175,15 @@ public class DZoneUtil
 	 *  DivineBlock Zones
 	 * --------------------------------------------
 	 * 
-	 *  zoneShrine() : Returns true if (Location)location is within a Shrine's zone.
+	 *  zoneShrine() : Returns a DivineBlock if (Location)location is within a Shrine's zone.
 	 */
-    public static boolean zoneShrine(Location location)
+    public static DivineBlock zoneShrine(Location location)
     {
-    	for(Location divineBlock : DDivineBlocks.getAllShrines())
+    	for(DivineBlock divineBlock : DDivineBlocks.getAllShrineBlocks())
 		{	
-    		 if(location.distance(divineBlock) <= SHRINE_RADIUS) return true;
+    		 if(location.distance(divineBlock.getLocation()) <= SHRINE_RADIUS) return divineBlock;
 		}
-    	return false;
+    	return null;
     }
     
 	/* 
@@ -202,7 +203,7 @@ public class DZoneUtil
 	 */
 	public static boolean enterZoneShrine(Location to, Location from)
 	{
-		if(!DZoneUtil.zoneShrine(from) && DZoneUtil.zoneShrine(to)) return true;
+		if(!(DZoneUtil.zoneShrine(from) != null) && DZoneUtil.zoneShrine(to) != null) return true;
 		else return false;
 	}
 	

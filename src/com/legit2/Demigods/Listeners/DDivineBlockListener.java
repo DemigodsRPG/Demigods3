@@ -34,6 +34,7 @@ import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -296,42 +297,9 @@ public class DDivineBlockListener implements Listener
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
 		
 		Location to = event.getTo();
-		Location from = event.getFrom();
-
-		// Shrine Zone Messages
-		if(DDivineBlocks.getAllShrines() != null)
-		{
-			for(Location divineBlock : DDivineBlocks.getAllShrines())
-			{
-				OfflinePlayer charOwner = null;
-								
-				if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
-				else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
-				else continue;
-	
-				// Check for world errors
-				if(!divineBlock.getWorld().equals(event.getPlayer().getWorld())) continue;
-				if(event.getFrom().getWorld() != divineBlock.getWorld()) continue;
-				
-				/*
-				 * Entering
-				 */
-				if(DZoneUtil.enterZoneShrine(to, from))
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock) + ChatColor.GRAY + ".");
-					return;
-				}
-				
-				/*
-				 * Leaving
-				 */
-				else if(DZoneUtil.exitZoneShrine(to, from))
-				{
-					event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
-					return;
-				}
-			}
-		}
+		Location from = event.getFrom();	
+		DivineBlock divineBlock = null;
+		OfflinePlayer charOwner = null;
 		
 		// Altar Zone Messages
 		
@@ -350,6 +318,31 @@ public class DDivineBlockListener implements Listener
 		else if(DZoneUtil.exitZoneAltar(to, from))
 		{
 			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
+			return;
+		}
+		
+		// Shrine Zone Messages
+		
+		if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
+		else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
+		else return;
+		
+		/*
+		 * Entering
+		 */
+		if(DZoneUtil.enterZoneShrine(to, from))
+		{
+			divineBlock = DZoneUtil.zoneShrine(to);
+			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock.getLocation()) + ChatColor.GRAY + ".");
+			return;
+		}
+		
+		/*
+		 * Leaving
+		 */
+		else if(DZoneUtil.exitZoneShrine(to, from))
+		{
+			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
 			return;
 		}
 	}
@@ -537,7 +530,7 @@ public class DDivineBlockListener implements Listener
 						continue;
 					}
 					
-					if(DZoneUtil.zoneShrine(location))
+					if(DZoneUtil.zoneShrine(location) != null)
 					{
 						drop.remove();
 						continue;
