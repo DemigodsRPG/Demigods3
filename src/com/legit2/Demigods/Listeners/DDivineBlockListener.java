@@ -86,7 +86,7 @@ public class DDivineBlockListener implements Listener
 				
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-				player.sendMessage(ChatColor.GRAY + "You have created a shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
+				player.sendMessage(ChatColor.GRAY + "You have created a Shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
 			}
 			catch(Exception e)
 			{
@@ -95,33 +95,7 @@ public class DDivineBlockListener implements Listener
 			}
 		}
 		
-		try
-		{
-			// Check if block is divine
-			int shrineOwner = DDivineBlocks.getShrineOwner(location);
-			String shrineDeity = DDivineBlocks.getShrineDeity(location);
-			if(shrineDeity == null) return;
-						
-			if(DDivineBlocks.isDivineBlock(location))
-			{
-				// Check if character has deity
-				if(DCharUtil.hasDeity(charID, shrineDeity))
-				{
-					// Open the tribute inventory
-					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
-					player.openInventory(ii);
-					DDataUtil.saveCharData(charID, "temp_tributing", shrineOwner);
-					event.setCancelled(true);
-					return;
-				}
-				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
-			}
-		}
-		catch(Exception e)
-		{
-			// Print error for debugging
-			e.printStackTrace();
-		}
+		useShrine(player, location);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
@@ -163,9 +137,12 @@ public class DDivineBlockListener implements Listener
 			return;
 		}
 		
-		// More variables
+		useShrine(player, location);
+	}
+	
+	public void useShrine(Player player, Location location)
+	{
 		int charID = DPlayerUtil.getCurrentChar(player);
-		
 		try
 		{
 			// Check if block is divine
@@ -182,7 +159,6 @@ public class DDivineBlockListener implements Listener
 					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 					player.openInventory(ii);
 					DDataUtil.saveCharData(charID, "temp_tributing", shrineOwner);
-					event.setCancelled(true);
 					return;
 				}
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
