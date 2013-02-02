@@ -489,9 +489,9 @@ public class DDivineBlocks
 		if(DDataUtil.hasBlockData(blockID, "block_object"))
 		{
 			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
+			DMiscUtil.severe("Weiner.");
 			return block;
 		}
-		DMiscUtil.severe("Weiner.");
 		return null;
 	}
 	
