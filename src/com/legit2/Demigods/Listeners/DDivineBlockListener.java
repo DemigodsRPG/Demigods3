@@ -297,49 +297,43 @@ public class DDivineBlockListener implements Listener
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
 		
 		Location to = event.getTo();
-		Location from = event.getFrom();	
+		Location from = event.getFrom();
+		
 		DivineBlock divineBlock = null;
 		OfflinePlayer charOwner = null;
 		
-		// Altar Zone Messages
-		
 		/*
-		 * Entering
+		 *  Altar Zone Messages
 		 */
+		
+		// Entering Altar
 		if(DZoneUtil.enterZoneAltar(to, from))
 		{
 			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an Altar.");
 			return;
 		}
 		
-		/*
-		 * Leaving
-		 */
+		// Leaving Altar
 		else if(DZoneUtil.exitZoneAltar(to, from))
 		{
 			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
 			return;
 		}
 		
-		// Shrine Zone Messages
-		
-		if(DZoneUtil.zoneShrineOwner(to) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
-		else if(DZoneUtil.zoneShrineOwner(from) != -1) charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(from));
-		else return;
-		
 		/*
-		 * Entering
+		 *  Shrine Zone Messages
 		 */
-		if(DZoneUtil.enterZoneShrine(to, from))
+		
+		// Entering Shrine
+		if(DZoneUtil.enterZoneShrine(to, from) && DZoneUtil.zoneShrineOwner(to) != -1)
 		{
 			divineBlock = DZoneUtil.zoneShrine(to);
+			charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
 			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock.getLocation()) + ChatColor.GRAY + ".");
 			return;
 		}
 		
-		/*
-		 * Leaving
-		 */
+		// Leaving Shrine
 		else if(DZoneUtil.exitZoneShrine(to, from))
 		{
 			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
