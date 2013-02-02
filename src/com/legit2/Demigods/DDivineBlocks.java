@@ -349,7 +349,7 @@ public class DDivineBlocks
 		for(Entry<Integer, HashMap<String, Object>> divineBlock : DDataUtil.getAllBlockData().entrySet())
 		{
 			if(divineBlock.getValue().get("block_object") == null) continue;
-			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("atlar")) altars.add((DivineBlock) divineBlock.getValue().get("block_object"));
+			if(((DivineBlock) divineBlock.getValue().get("block_object")).getType().equalsIgnoreCase("altar")) altars.add((DivineBlock) divineBlock.getValue().get("block_object"));
 		}
 		return altars;
 	}
