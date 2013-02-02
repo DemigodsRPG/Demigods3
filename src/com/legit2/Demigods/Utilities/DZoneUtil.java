@@ -220,11 +220,16 @@ public class DZoneUtil
 	 */
     public static DivineBlock zoneAltar(Location location)
     {
+    	DMiscUtil.serverMsg("Weiner checks:");
+    	int weiner = 0;
     	for(DivineBlock divineBlock : DDivineBlocks.getAllAltarBlocks())
 		{	
+    		weiner++;
+    		DMiscUtil.serverMsg("Weiner " + weiner);
     		DivineBlock parentBlock = DDivineBlocks.getDivineBlock((divineBlock.getParent()));
     		if(location.distance(parentBlock.getLocation()) <= ALTAR_RADIUS) return parentBlock;
 		}
+    	DMiscUtil.serverMsg("Weiner " + weiner);
     	return null;
     }
     

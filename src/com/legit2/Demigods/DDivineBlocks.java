@@ -13,7 +13,6 @@ import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 
 public class DDivineBlocks
@@ -489,7 +488,6 @@ public class DDivineBlocks
 		if(DDataUtil.hasBlockData(blockID, "block_object"))
 		{
 			DivineBlock block = (DivineBlock) DDataUtil.getBlockData(blockID, "block_object");
-			DMiscUtil.severe("Weiner.");
 			return block;
 		}
 		return null;
