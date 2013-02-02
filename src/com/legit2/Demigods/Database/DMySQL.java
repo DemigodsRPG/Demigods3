@@ -14,22 +14,22 @@ public class DMySQL
 {
 	// Define variables
 	private static MySQL mysql;
-		// Plugin-specific
-		public static String plugindata_table = "dg_plugindata";
-		public static String divineblocks_table = "dg_divineblocks";
+	
+	// Plugin-specific
+	public static String plugindata_table = "dg_plugindata";
+	public static String divineblocks_table = "dg_divineblocks";
 
-		// Player-specific
-		public static String player_table = "dg_players";
-		public static String playerdata_table = "dg_playerdata";
+	// Player-specific
+	public static String player_table = "dg_players";
+	public static String playerdata_table = "dg_playerdata";
+	
+	// Deity-specific
+	public static String deitydata_table = "dg_deitydata";
+	
+	// Character-specific
+	public static String character_table = "dg_characters";
+	public static String chardata_table = "dg_chardata";
 		
-		// Deity-specific
-		public static String deitydata_table = "dg_deitydata";
-		
-		// Character-specific
-		public static String character_table = "dg_characters";
-		public static String chardata_table = "dg_chardata";
-		
-
 	/*
 	 *  initializeDatabase() : Sets up the database and creates user table if needed.
 	 */

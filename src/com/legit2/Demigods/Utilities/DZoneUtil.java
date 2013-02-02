@@ -28,8 +28,8 @@ public class DZoneUtil
 		if(DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones"))
 		{
 			// Currently only supports WorldGuard for dynamic PVP zones
-			if(DMiscUtil.getPlugin().WORLDGUARD != null) return !canWorldGuardDynamicPVP(location);
-			else return false;
+			if(DMiscUtil.getPlugin().WORLDGUARD != null) return !canWorldGuardDynamicPVPAndNotAltar(location);
+			else return zoneAltar(location);
 		}
 		else
 		{
@@ -68,6 +68,17 @@ public class DZoneUtil
     	else return true;
     }
 	
+    /*
+	 *  canWorldGuardDynamicPVPAndNotAltar() : Returns true if PVP is allowed at (Location)location, and it's not an Altar.
+	 */
+    public static boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
+    {
+    	if(!zoneAltar(location) && canWorldGuardDynamicPVP(location)) return true;
+    	else if(!canWorldGuardDynamicPVP(location)) return false;
+    	else if(zoneAltar(location)) return false;
+    	else return true;
+    }
+    
     /*
 	 *  canWorldGuardDynamicPVP() : Returns true if PVP is allowed at (Location)location.
 	 */
