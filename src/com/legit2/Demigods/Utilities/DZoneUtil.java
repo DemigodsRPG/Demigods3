@@ -222,7 +222,8 @@ public class DZoneUtil
     {
     	for(DivineBlock divineBlock : DDivineBlocks.getAllAltarBlocks())
 		{	
-    		 if(location.distance(divineBlock.getLocation()) <= ALTAR_RADIUS) return DDivineBlocks.getDivineBlock((divineBlock.getParent()));
+    		DivineBlock parentBlock = DDivineBlocks.getDivineBlock((divineBlock.getParent()));
+    		if(location.distance(parentBlock.getLocation()) <= ALTAR_RADIUS) return parentBlock;
 		}
     	return null;
     }
