@@ -89,7 +89,7 @@ public class DDivineBlockListener implements Listener
 				location.getWorld().strikeLightningEffect(location);
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-				player.sendMessage(ChatColor.GRAY + "You have created a shrine has been created in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
+				player.sendMessage(ChatColor.GRAY + "You have created a shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
 			}
 			catch(Exception e)
 			{
