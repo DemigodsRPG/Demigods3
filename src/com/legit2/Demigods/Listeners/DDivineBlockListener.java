@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
@@ -477,7 +478,6 @@ public class DDivineBlockListener implements Listener
 		{
 			for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
 		}
-		player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + "_Alex" + ChatColor.GRAY + " (Boss)");	
 		player.sendMessage(" ");
 
 		DDataUtil.savePlayerData(player, "temp_createchar", "choose_deity");
@@ -618,6 +618,21 @@ public class DDivineBlockListener implements Listener
 				DMiscUtil.togglePlayerStuck(player, false);
 				DPlayerUtil.togglePraying(player, false);
 				
+				// Give them their Shrine Instructional Booklet(C)
+				ItemStack shrineBook = new ItemStack(Material.WRITTEN_BOOK, 1);
+
+				//String shrineBookName = "The Book of " + chosenDeity;
+				ArrayList<String> shrineBookLore = new ArrayList<String>();
+				shrineBookLore.add("Use this to create a Shrine.");
+				
+				ItemMeta shrineBookMeta = shrineBook.getItemMeta();
+				shrineBookMeta.setLore(shrineBookLore);
+				shrineBook.setItemMeta(shrineBookMeta);
+				
+				//BookMeta bookMeta = shrineBook;
+
+				player.getInventory().addItem(shrineBook);
+				
 				// Remove old data now
 				DDataUtil.removePlayerData(player, "temp_createchar_finalstep");
 				DDataUtil.removePlayerData(player, "temp_createchar_name");
@@ -735,7 +750,7 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void stopDestroyEnderCrystal(EntityDamageEvent event)
+	public void stopDestroyEnderCrystal(EntityDamageEvent event)
 	{
 		try
 		{
@@ -753,7 +768,7 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void stopDestroyDivineBlock(BlockBreakEvent event)
+	public void stopDestroyDivineBlock(BlockBreakEvent event)
 	{
 		try
 		{

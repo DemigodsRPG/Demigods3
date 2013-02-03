@@ -65,7 +65,6 @@ public class DSouls
 		// Determine soul information based on entity type
 		switch(entity.getType())
 		{
-			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
 			case PLAYER: // Soul dropped by PLAYER
 				if(DCharUtil.isImmortal(((Player) entity)))
 				{
@@ -75,6 +74,7 @@ public class DSouls
 				{
 					return mortalSoul;
 				}
+			case VILLAGER: return mortalSoul; // Soul dropped by VILLAGER
 				
 			/*
 			 *  TODO: Add soul drops for other entities based on a random chance of dropped.
