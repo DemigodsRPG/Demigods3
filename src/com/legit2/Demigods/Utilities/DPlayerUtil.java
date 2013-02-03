@@ -137,6 +137,24 @@ public class DPlayerUtil
 	}
 	
 	/*
+	 *  togglePraying() : Toggles prayer status for player.
+	 */
+	public static void togglePraying(OfflinePlayer player, boolean option)
+	{
+		if(!option)	DDataUtil.removePlayerData(player, "temp_praying");
+		else DDataUtil.savePlayerData(player, "temp_praying", option);
+	}
+	
+	/*
+	 *  isPraying() : Returns a boolean for if the player is currently praying.
+	 */
+	public static boolean isPraying(OfflinePlayer player)
+	{
+		if(DDataUtil.getPlayerData(player, "temp_praying") == null) return false;
+		else return DObjUtil.toBoolean(DDataUtil.getPlayerData(player, "temp_praying"));
+	}
+	
+	/*
      *  regenerateAllFavor() : Regenerates favor for every player based on their stats.
      */
 	public static void regenerateAllFavor()

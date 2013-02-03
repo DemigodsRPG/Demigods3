@@ -259,20 +259,20 @@ public class DMiscUtil
     }
     
     /*
-	 *  playerStuckToggle() : Toggles holding a player's feet in place.
+	 *  togglePlayerStuck() : Toggles holding a player's feet in place.
 	 */
-    public static void playerStuckToggle(OfflinePlayer player)
+    public static void togglePlayerStuck(OfflinePlayer player, boolean option)
     {
-    	if(DDataUtil.hasPlayerData(player, "temp_player_chat")) DDataUtil.removePlayerData(player, "temp_player_chat");
-    	else DDataUtil.savePlayerData(player, "temp_player_chat", true);
+    	if(DDataUtil.hasPlayerData(player, "temp_player_hold") && !option) DDataUtil.removePlayerData(player, "temp_player_hold");
+    	else DDataUtil.savePlayerData(player, "temp_player_hold", true);
     }
     
     /*
-	 *  playerChatToggle() : Toggles chat for a player.
+	 *  togglePlayerChat() : Toggles chat for a player.
 	 */
-    public static void playerChatToggle(OfflinePlayer player)
+    public static void togglePlayerChat(OfflinePlayer player, boolean option)
     {
-    	if(DDataUtil.hasPlayerData(player, "temp_no_chat")) DDataUtil.removePlayerData(player, "temp_no_chat");
+    	if(DDataUtil.hasPlayerData(player, "temp_no_chat") && option) DDataUtil.removePlayerData(player, "temp_no_chat");
     	else DDataUtil.savePlayerData(player, "temp_no_chat", true);
     }
 }

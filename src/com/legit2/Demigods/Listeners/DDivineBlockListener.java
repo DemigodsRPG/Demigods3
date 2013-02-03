@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -37,6 +39,7 @@ import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DDeityUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
@@ -83,8 +86,6 @@ public class DDivineBlockListener implements Listener
 					player.setItemInHand(books);
 				}
 				else player.getInventory().remove(Material.BOOK);
-				
-				
 
 				player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
 				player.sendMessage(ChatColor.GRAY + "You have created a Shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
@@ -151,7 +152,7 @@ public class DDivineBlockListener implements Listener
 			String shrineDeity = DDivineBlocks.getShrineDeity(location);
 			if(shrineDeity == null) return;
 						
-			if(DDivineBlocks.isDivineBlock(location))
+			if(DDivineBlocks.isShrineBlock(location))
 			{
 				// Check if character has deity
 				if(DCharUtil.hasDeity(charID, shrineDeity))
@@ -169,30 +170,6 @@ public class DDivineBlockListener implements Listener
 		{
 			// Print error for debugging
 			e.printStackTrace();
-		}
-	}
-	
-	/* --------------------------------------------
-	 *  Handle Altar Interactions
-	 * --------------------------------------------
-	 */
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void altarInteract(PlayerInteractEvent event)
-	{
-		// Define variables
-		Player player = event.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
-		
-		// First we check if the player is in an Altar and return if not
-		if(DDataUtil.hasCharData(charID, "temp_in_altar") && DDataUtil.getCharData(charID, "temp_in_altar").equals(true))
-		{
-			// Player is in an altar, let's do this
-			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
-			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE))
-			{
-				
-			}
 		}
 	}
 	
@@ -219,14 +196,14 @@ public class DDivineBlockListener implements Listener
 			int shrineOwner = DObjUtil.toInteger(DDataUtil.getCharData(charID, "temp_tributing"));
 			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
-			//calculate value of chest
+			// Calculate value of chest
 			int tributeValue = 0, items = 0;
 			for(ItemStack ii : event.getInventory().getContents())
 			{
 				if(ii != null)
 				{
 					tributeValue += DTributeValue.getTributeValue(ii);
-					items ++;
+					items++;
 				}
 			}
 			
@@ -261,6 +238,360 @@ public class DDivineBlockListener implements Listener
 			}
 			
 			// Clear the tribute case
+			event.getInventory().clear();
+		}
+		catch(Exception e)
+		{
+			// Print error for debugging
+			e.printStackTrace();
+		}
+	}
+	
+	/* --------------------------------------------
+	 *  Handle Altar Interactions
+	 * --------------------------------------------
+	 */
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void altarInteract(PlayerInteractEvent event)
+	{
+		// Define variables
+		Player player = event.getPlayer();
+		Location location = player.getLocation();
+
+		// First we check if the player is in an Altar and return if not
+		if(DZoneUtil.zoneAltar(location) != null)
+		{
+			// Player is in an altar, let's do this
+			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !DPlayerUtil.isPraying(player))
+			{
+				DMiscUtil.togglePlayerChat(player, false);
+				DMiscUtil.togglePlayerStuck(player, true);
+				DPlayerUtil.togglePraying(player, true);
+				
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.AQUA + "-- Now Praying ----------------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " To begin, please choose an option by entering it in the chat:");
+				player.sendMessage(" ");
+				
+				if(DDataUtil.hasPlayerData(player, "temp_createchar_finalstep") && DDataUtil.getPlayerData(player, "temp_createchar_finalstep").equals(true))
+				{
+					player.sendMessage(ChatColor.GRAY + "   [1a.] " + ChatColor.GREEN + "Confirm New Character");	
+				}
+				else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
+				
+				player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
+				player.sendMessage(ChatColor.GRAY + " You return to the main menu at anytime by typing \"menu\".");
+				player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
+				player.sendMessage(" ");
+
+				event.setCancelled(true);
+				return;
+			}
+			else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && DPlayerUtil.isPraying(player))
+			{
+				DMiscUtil.togglePlayerChat(player, true);
+				DMiscUtil.togglePlayerStuck(player, false);
+				DPlayerUtil.togglePraying(player, false);
+				
+				// Clear whatever is being worked on in this Pray session
+				DDataUtil.removePlayerData(player, "temp_createchar");
+				
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " Your movement and chat has been re-enabled.");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.AQUA + "-- No Longer Praying ----------------------------------");
+				player.sendMessage(" ");
+
+				event.setCancelled(true);
+				return;
+			}
+		}
+		return;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void altarChatEvent(AsyncPlayerChatEvent event)
+	{
+		// Define variables
+		Player player = event.getPlayer();
+		Location location = player.getLocation();
+		
+		// First we check if the player is in an Altar and currently praying, if not we'll return
+		if(DZoneUtil.zoneAltar(location) != null && DPlayerUtil.isPraying(player))
+		{
+			// Cancel their chat
+			event.setCancelled(true);
+			
+			// Define variables
+			String message = event.getMessage();
+			String chosenName = (String) DDataUtil.getPlayerData(player, "temp_createchar_name");
+			String chosenDeity = (String) DDataUtil.getPlayerData(player, "temp_createchar_deity");
+			
+			// Return to main menu
+			if(message.equalsIgnoreCase("menu"))
+			{
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.AQUA + "-- Now Praying ----------------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " To begin, please choose an option by entering it in the chat:");
+				player.sendMessage(" ");
+				
+				if(DDataUtil.hasPlayerData(player, "temp_createchar_finalstep") && DDataUtil.getPlayerData(player, "temp_createchar_finalstep").equals(true))
+				{
+					player.sendMessage(ChatColor.GRAY + "   [1a.] " + ChatColor.GREEN + "Confirm New Character");	
+				}
+				else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
+				
+				player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
+				player.sendMessage(ChatColor.GRAY + " You return to the main menu at anytime by typing \"menu\".");
+				player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
+				player.sendMessage(" ");
+				
+				// Remove now useless data
+				DDataUtil.removePlayerData(player, "temp_createchar");
+				return;	
+			}
+			
+			// Next check for temporary data to determine what they are doing
+			if(DDataUtil.hasPlayerData(player, "temp_createchar"))
+			{
+				// Step 1 of character creation
+				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_name"))
+				{
+					chosenName = message.replace(" ", "");
+					player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(" ");
+					DDataUtil.savePlayerData(player, "temp_createchar_name", chosenName);
+					DDataUtil.savePlayerData(player, "temp_createchar", "confirm_name");
+					return;
+				}
+				
+				// Step 2 of character creation
+				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_name"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					{
+						// They accepted the name, let's continue
+						player.sendMessage(ChatColor.AQUA + " Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
+						for(String alliance : DDeityUtil.getLoadedDeityAlliances())
+						{
+							for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
+						}
+						player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + "_Alex" + ChatColor.GRAY + " (Boss)");	
+						player.sendMessage(" ");
+
+						DDataUtil.savePlayerData(player, "temp_createchar", "choose_deity");
+						return;
+					}
+					else
+					{
+						// They didn't accept the name, let them re-choose
+						DDataUtil.savePlayerData(player, "temp_createchar", "choose_name");
+						player.sendMessage(ChatColor.AQUA + " Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+						player.sendMessage(" ");
+						return;
+					}
+				}
+				
+				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_deity"))
+				{
+					// Check their chosen Deity
+					for(String alliance : DDeityUtil.getLoadedDeityAlliances())
+					{
+						for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
+						{
+							if(message.equalsIgnoreCase(deity))
+							{
+								// Their chosen deity matches an existing deity, ask for confirmation
+								chosenDeity = message.replace(" ", "");
+								player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + DObjUtil.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+								player.sendMessage(" ");
+								DDataUtil.savePlayerData(player, "temp_createchar_deity", chosenDeity);
+								DDataUtil.savePlayerData(player, "temp_createchar", "confirm_deity");
+								return;
+							}
+						}
+					}
+					if(message.equalsIgnoreCase("_Alex"))
+					{
+						player.sendMessage(ChatColor.AQUA + " Well you can't be _Alex... but he is awesome!");
+						player.sendMessage(" ");
+
+						// They can't be _Alex silly! Make them re-choose
+						player.sendMessage(ChatColor.AQUA + " Choose a different Deity: ");
+						for(String alliance : DDeityUtil.getLoadedDeityAlliances())
+						{
+							for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
+						}
+						player.sendMessage(" ");
+						DDataUtil.savePlayerData(player, "temp_createchar", "choose_deity");
+						return;
+					}
+				}
+				
+				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_deity"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					{
+						// They accepted the Deity choice, now ask them to input their items so they can be accepted
+						player.sendMessage(ChatColor.AQUA + " Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ", you must");
+						player.sendMessage(ChatColor.AQUA + " first sacrifice the following items:");
+						player.sendMessage(" ");
+						for(Material item : (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity))
+						{
+							player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
+						}
+						player.sendMessage(" ");
+						player.sendMessage(ChatColor.GRAY + " After you obtain these items, return to an Altar and select");
+						player.sendMessage(ChatColor.GRAY + " the option to confirm your new character.");
+						player.sendMessage(" ");
+
+						DDataUtil.savePlayerData(player, "temp_createchar_finalstep", true);
+						return;
+					}
+					else
+					{
+						// They didn't accept the name, let them re-choose
+						player.sendMessage(ChatColor.AQUA + " Choose a different Deity: ");
+						for(String alliance : DDeityUtil.getLoadedDeityAlliances())
+						{
+							for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
+						}
+						player.sendMessage(" ");
+						DDataUtil.savePlayerData(player, "temp_createchar", "choose_deity");
+						return;
+					}
+				}
+				
+				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_all"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					{
+						Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Place Your Tributes Here");
+						player.openInventory(ii);
+					}
+					else
+					{
+						
+					}
+				}
+			}
+			
+			// Create Character
+			if(message.equals("1") || message.contains("create new character"))
+			{
+				player.sendMessage(ChatColor.GREEN + " Now creating a new character...");
+				player.sendMessage(" ");
+				DDataUtil.savePlayerData(player, "temp_createchar", "choose_name");
+				player.sendMessage(ChatColor.AQUA + " Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+				player.sendMessage(" ");
+				return;
+			}
+			
+			// Finish Create Character
+			if(message.equals("1a") || message.contains("confirm new character") && DDataUtil.hasPlayerData(player, "temp_createchar_finalstep"))
+			{
+				DDataUtil.savePlayerData(player, "temp_createchar_finalstep", true);
+				DDataUtil.savePlayerData(player, "temp_createchar", "confirm_all");
+				
+				player.sendMessage(ChatColor.GREEN + " Now confirming your new character...");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.AQUA + " Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
+				player.sendMessage(" ");
+				for(Material item : (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity))
+				{
+					player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
+				}
+				player.sendMessage(" ");
+				return;
+			}
+						
+			// Remove Character
+			else if(message.equals("2") || message.contains("remove character"))
+			{
+				player.sendMessage(ChatColor.GRAY + "Currently Unavailable. Use /removechar <name>");
+				return;	
+			}
+		}
+		return;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void altarDeityConfirmation(InventoryCloseEvent event)
+	{
+		try
+		{
+			if(!(event.getPlayer() instanceof Player)) return;
+			Player player = (Player) event.getPlayer();
+
+			// If it isn't a confirmation chest then exit
+			if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
+						
+			// Exit if this isn't for character creation
+			if(!DPlayerUtil.isPraying(player) || !DDataUtil.hasPlayerData(player, "temp_createchar_finalstep") || DDataUtil.getPlayerData(player, "temp_createchar_finalstep").equals(false))
+			{
+				player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately.");
+				return;
+			}
+			
+			// Define variables
+			String chosenName = (String) DDataUtil.getPlayerData(player, "temp_createchar_name");
+			String chosenDeity = (String) DDataUtil.getPlayerData(player, "temp_createchar_deity");
+			String deityAlliance = DObjUtil.capitalize(DDeityUtil.getDeityAlliance(chosenDeity));
+			
+			// Check the chest items
+			int items = 0;
+			int neededItems = ((ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity)).size();
+		
+			for(ItemStack ii : event.getInventory().getContents())
+			{
+				if(ii != null)
+				{
+					for(Material item : (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity))
+					{
+						if(ii.getType().equals(item))
+						{
+							items++;
+						}
+					}
+				}
+			}
+			
+			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
+			if(neededItems == items)
+			{
+				// They were accepted, finish everything up!
+				DCharUtil.createChar(player, chosenName, chosenDeity);
+				DDataUtil.removePlayerData(player, "temp_createchar");
+				player.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
+				player.getWorld().strikeLightningEffect(player.getLocation());
+				for (int i=0;i<20;i++) player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+				
+				// Stop their praying, enable movement, enable chat
+				DMiscUtil.togglePlayerChat(player, true);
+				DMiscUtil.togglePlayerStuck(player, false);
+				DPlayerUtil.togglePraying(player, false);
+				
+				// Remove old data now
+				DDataUtil.removePlayerData(player, "temp_createchar_finalstep");
+				DDataUtil.removePlayerData(player, "temp_createchar_name");
+				DDataUtil.removePlayerData(player, "temp_createchar_deity");
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity + "!");
+			}
+			
+			// Clear the confirmation case
 			event.getInventory().clear();
 		}
 		catch(Exception e)
@@ -322,7 +653,6 @@ public class DDivineBlockListener implements Listener
 		
 		// Define variables
 		Player player = event.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		DivineBlock divineBlock = null;
@@ -336,7 +666,6 @@ public class DDivineBlockListener implements Listener
 		if(DZoneUtil.enterZoneAltar(to, from))
 		{
 			player.sendMessage(ChatColor.GRAY + "You have entered an Altar.");
-			DDataUtil.saveCharData(charID, "temp_in_altar", true);
 			return;
 		}
 		
@@ -344,7 +673,6 @@ public class DDivineBlockListener implements Listener
 		else if(DZoneUtil.exitZoneAltar(to, from))
 		{
 			player.sendMessage(ChatColor.GRAY + "You have left an Altar.");
-			DDataUtil.saveCharData(charID, "temp_in_altar", false);
 			return;
 		}
 		
@@ -358,7 +686,6 @@ public class DDivineBlockListener implements Listener
 			divineBlock = DZoneUtil.zoneShrine(to);
 			charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
 			player.sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock.getLocation()) + ChatColor.GRAY + ".");
-			DDataUtil.saveCharData(charID, "temp_in_shrine", true);	
 			return;
 		}
 		
@@ -366,7 +693,6 @@ public class DDivineBlockListener implements Listener
 		else if(DZoneUtil.exitZoneShrine(to, from))
 		{
 			player.sendMessage(ChatColor.GRAY + "You have left a holy area.");
-			DDataUtil.saveCharData(charID, "temp_in_shrine", false);
 			return;
 		}
 	}
