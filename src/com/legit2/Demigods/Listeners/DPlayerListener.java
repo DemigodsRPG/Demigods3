@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Demigods;
@@ -70,7 +72,7 @@ public class DPlayerListener implements Listener
 			}
 		}
 			
-		// if(!DConfigUtil.getEnabledWorlds().contains(player.getWorld())) return;
+		// if(!DConfigUtilUtil.getEnabledWorlds().contains(player.getWorld())) return;
 		
 		if(DConfigUtil.getSettingBoolean("motd"))
 		{
@@ -79,7 +81,7 @@ public class DPlayerListener implements Listener
 		}
 		
 		/*
-		if((!DConfigUtil.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DUtil.hasPermissionOrOP(player, "demigods.admin"))
+		if((!DConfigUtilUtil.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DMiscUtil.hasPermissionOrOP(player, "demigods.admin"))
 		{
 			player.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
 			player.sendMessage(ChatColor.RED + "Please update ASAP.");
@@ -120,15 +122,46 @@ public class DPlayerListener implements Listener
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Define variables
-		final Player player = (Player) event.getPlayer();
-		final int pvp_area_delay_time = DConfigUtil.getSettingInt("pvp_area_delay_time");
+		final Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
-			
+		int delayTime = DConfigUtil.getSettingInt("pvp_area_delay_time");
+		onPlayerLineJump(player, to, from, delayTime);
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerTeleport(PlayerTeleportEvent event)
+	{
+		// Define variables
+		final Player player = event.getPlayer();
+		Location to = event.getTo();
+		Location from = event.getFrom();
+		int delayTime = DConfigUtil.getSettingInt("pvp_area_delay_time");
+		
+		if(event.getCause() == TeleportCause.ENDER_PEARL || DDataUtil.hasPlayerData((Player) player, "temp_teleport_ability"))
+		{
+			onPlayerLineJump(player, to, from, delayTime);
+		}
+		else if(DZoneUtil.enterZoneNoPVP(to, from))
+		{
+			DDataUtil.removePlayerData(player, "temp_was_PVP");
+			player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
+		}
+		else if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+	}
+	
+	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
+	{
+		// NullPointer Check
+		if(to == null || from == null) return;
+		
+		if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return;
+		
 		// No Spawn Line-Jumping
-		if(DZoneUtil.enterZoneNoPVP(to, from))
+		if(DZoneUtil.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
 			DDataUtil.savePlayerData(player, "temp_was_PVP", true);
+			if(DDataUtil.hasPlayerData(player, "temp_teleport_ability")) DDataUtil.removePlayerData(player, "temp_teleport_ability");
 			
 			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
 			{
@@ -136,12 +169,15 @@ public class DPlayerListener implements Listener
 				public void run()
 				{
 					DDataUtil.removePlayerData(player, "temp_was_PVP");
-					player.sendMessage(ChatColor.YELLOW + "You are now safe from all PVP!");
+					if(DZoneUtil.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 				}
-			}, (pvp_area_delay_time * 20));
+			}, (delayTime * 20));
 		}
 		
 		// Let players know where they can PVP
-		if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.YELLOW + "You can now PVP!");
+		if(!DDataUtil.hasPlayerData((Player) player, "temp_was_PVP"))
+		{
+			if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+		}
 	}
 }

@@ -152,8 +152,8 @@ public class Themis_deity implements Listener
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
 		if(target == null) return;
-		if(!DMiscUtil.canTarget(player, player.getLocation())) return;
-		if(!DMiscUtil.canTarget(target, target.getLocation())) return;
+		if(!DMiscUtil.canTarget(player)) return;
+		if(!DMiscUtil.canTarget(target)) return;
 
 		player.teleport(target.getLocation());
 		target.teleport(between);

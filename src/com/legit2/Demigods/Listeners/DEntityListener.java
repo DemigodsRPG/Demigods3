@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,74 +32,47 @@ public class DEntityListener implements Listener
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		// Define variables
-		LivingEntity attackedEntity;
-		EntityDamageByEntityEvent damageEvent = null;
+		LivingEntity entity;
 		if(event.getEntityType().equals(EntityType.PLAYER)) // If it's a player
 		{
 			// Define entity as player and other variables
-			attackedEntity = (LivingEntity) event.getEntity();
-			Player attackedPlayer = (Player) attackedEntity;
+			entity = (LivingEntity) event.getEntity();
 			
-			if(attackedEntity.getLastDamageCause() instanceof EntityDamageByEntityEvent) 
+			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS
+			if(!DMiscUtil.canTarget(entity))
 			{
-				damageEvent = (EntityDamageByEntityEvent) attackedEntity.getLastDamageCause();
-			} 
-			else return;
-
-			Entity attacker = damageEvent.getDamager();
-			
-			if(attacker instanceof Player)
-			{
-				if(!DMiscUtil.canTarget(attackedPlayer, attackedPlayer.getLocation()))
-				{
-					((Player) attacker).sendMessage(ChatColor.GRAY + "Stop, you!");
-					event.setCancelled(true);
-					return;
-				}
-				
-				/*
-				if(damageEvent.getDamage() > attackedPlayer.getHealth())
-				{
-					// For player deaths, we first check their opponent for # of souls and determine soul drops from there...
-					if(DUtil.getNumberOfSouls((attackedPlayer)) == 0) // If they have no souls then we know to drop a new soul on death
-					{
-						attackedEntity.getLocation().getWorld().dropItemNaturally(attackedEntity.getLocation(), DSouls.getSoulFromEntity(attackedEntity));
-					}
-					else // Else we cancel their death and subtract a soul
-					{
-						if(DUtil.getNumberOfSouls(attackedPlayer) > 0)
-						{
-							ItemStack usedSoul = DUtil.useSoul(attackedPlayer);
-						
-							DUtil.serverMsg("TEMP: " + attackedPlayer.getName() + " just lost 1 " + usedSoul.getType().name().toLowerCase() + "!");
-							
-							DUtil.serverMsg("TEMP: Attempting to cancel death...");
-							event.setCancelled(true);
-						}
-					}
-				}
-				*/
+				event.setCancelled(true);
+				return;
 			}
 		}
-		else if(event.getEntityType().equals(EntityType.VILLAGER)) // If it's a villager
-		{
-			// Define villager
-			LivingEntity villager = (LivingEntity) event.getEntity();
-			damageEvent = (EntityDamageByEntityEvent) villager.getLastDamageCause();
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void damageByEntityEvent(EntityDamageByEntityEvent event)
+	{
+		Entity attacked = event.getEntity();
+		Entity attacker = event.getDamager();
+		
+		if(attacker instanceof Player)
+		{	
+			Player attackingPlayer = (Player) attacker;
 			
-			// Define attacker and name
-			Player attacker = null;
-			if(damageEvent.getDamager() != null 
-					&& damageEvent.getDamager().getType().equals(EntityType.PLAYER))
+			// NO PVP
+			if(!DMiscUtil.canTarget(attacked))
 			{
-				attacker = (Player) damageEvent.getDamager();
-				if(damageEvent.getDamager() instanceof Player && damageEvent.getDamage() > villager.getHealth())
-				{
-					//villager.getLocation().getWorld().dropItemNaturally(villager.getLocation(), DSouls.getSoulFromEntity(villager));
-					if(attacker != null) attacker.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
-				}
+				attackingPlayer.sendMessage(ChatColor.GRAY + "No-PVP in this zone.");
+				event.setCancelled(true);
+				return;
 			}
-			else return;
+			
+			if(attacked instanceof Villager) // If it's a villager
+			{
+				// Define villager
+				Villager villager = (Villager) event.getEntity();
+				
+				// Define attacker and name
+				if(attacker instanceof Player && event.getDamage() > villager.getHealth()) attackingPlayer.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+			}
 		}
 	}
 	
