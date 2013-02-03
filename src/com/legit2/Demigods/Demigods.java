@@ -16,7 +16,7 @@ import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
-import com.legit2.Demigods.Listeners.DChatCommands;
+import com.legit2.Demigods.Listeners.DChatListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
@@ -139,7 +139,7 @@ public class Demigods extends JavaPlugin
 		/* General Entity Listener */
 		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
 		/* Chat Commands */
-		getServer().getPluginManager().registerEvents(new DChatCommands(), this);
+		getServer().getPluginManager().registerEvents(new DChatListener(), this);
 		/* Diving Blocks */
 		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 }
