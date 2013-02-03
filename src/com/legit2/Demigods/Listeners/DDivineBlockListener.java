@@ -173,6 +173,30 @@ public class DDivineBlockListener implements Listener
 	}
 	
 	/* --------------------------------------------
+	 *  Handle Altar Interactions
+	 * --------------------------------------------
+	 */
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void altarInteract(PlayerInteractEvent event)
+	{
+		// Define variables
+		Player player = event.getPlayer();
+		int charID = DPlayerUtil.getCurrentChar(player);
+		
+		// First we check if the player is in an Altar and return if not
+		if(DDataUtil.hasCharData(charID, "temp_in_altar") && DDataUtil.getCharData(charID, "temp_in_altar").equals(true))
+		{
+			// Player is in an altar, let's do this
+			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE))
+			{
+				
+			}
+		}
+	}
+	
+	/* --------------------------------------------
 	 *  Handle Player Tributing
 	 * --------------------------------------------
 	 */	
@@ -296,47 +320,53 @@ public class DDivineBlockListener implements Listener
 	{
 		if(event.getFrom().distance(event.getTo()) < 0.1) return;
 		
+		// Define variables
+		Player player = event.getPlayer();
+		int charID = DPlayerUtil.getCurrentChar(player);
 		Location to = event.getTo();
 		Location from = event.getFrom();
-		
 		DivineBlock divineBlock = null;
 		OfflinePlayer charOwner = null;
 		
-		/*
-		 *  Altar Zone Messages
+		/* ------------------------------------
+		 * Altar Zone Messages
+		 * -----------------------------------
+		 * -> Entering Altar
 		 */
-		
-		// Entering Altar
 		if(DZoneUtil.enterZoneAltar(to, from))
 		{
-			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered an Altar.");
+			player.sendMessage(ChatColor.GRAY + "You have entered an Altar.");
+			DDataUtil.saveCharData(charID, "temp_in_altar", true);
 			return;
 		}
 		
 		// Leaving Altar
 		else if(DZoneUtil.exitZoneAltar(to, from))
 		{
-			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left an Altar.");
+			player.sendMessage(ChatColor.GRAY + "You have left an Altar.");
+			DDataUtil.saveCharData(charID, "temp_in_altar", false);
 			return;
 		}
 		
-		/*
-		 *  Shrine Zone Messages
+		/* ------------------------------------
+		 * Shrine Zone Messages
+		 * -----------------------------------
+		 * -> Entering Shrine
 		 */
-		
-		// Entering Shrine
 		if(DZoneUtil.enterZoneShrine(to, from) && DZoneUtil.zoneShrineOwner(to) != -1)
 		{
 			divineBlock = DZoneUtil.zoneShrine(to);
 			charOwner = DCharUtil.getOwner(DZoneUtil.zoneShrineOwner(to));
-			event.getPlayer().sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock.getLocation()) + ChatColor.GRAY + ".");
+			player.sendMessage(ChatColor.GRAY + "You have entered " + charOwner.getName() + "'s shrine to " + ChatColor.YELLOW + DDivineBlocks.getShrineDeity(divineBlock.getLocation()) + ChatColor.GRAY + ".");
+			DDataUtil.saveCharData(charID, "temp_in_shrine", true);	
 			return;
 		}
 		
 		// Leaving Shrine
 		else if(DZoneUtil.exitZoneShrine(to, from))
 		{
-			event.getPlayer().sendMessage(ChatColor.GRAY + "You have left a holy area.");
+			player.sendMessage(ChatColor.GRAY + "You have left a holy area.");
+			DDataUtil.saveCharData(charID, "temp_in_shrine", false);
 			return;
 		}
 	}
