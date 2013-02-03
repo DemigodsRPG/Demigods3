@@ -55,6 +55,9 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		Player player = (Player) sender;
 		
+		DMiscUtil.playerStuckToggle(player);
+		player.sendMessage(ChatColor.RED + "You stuck.");
+		
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();
 		
@@ -69,7 +72,7 @@ public class DCommandExecutor implements CommandExecutor
         fireworkmeta.setPower(2);
        
         //Then apply this to our rocket
-        firework.setFireworkMeta(fireworkmeta);      
+        firework.setFireworkMeta(fireworkmeta);
 		
 		return true;
 	}
