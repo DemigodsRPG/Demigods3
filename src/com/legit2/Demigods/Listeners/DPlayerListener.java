@@ -136,9 +136,12 @@ public class DPlayerListener implements Listener
 			Location hold = from;
 			hold.setYaw(to.getYaw());
 			hold.setPitch(to.getPitch());
-			player.teleport(hold);
-			event.setCancelled(true);
-			DDataUtil.savePlayerData(player, "temp_player_held", true);
+			if(hold != from)
+			{
+				event.setCancelled(true);
+				player.teleport(from);
+				DDataUtil.savePlayerData(player, "temp_player_held", true);
+			}
 		}
 	}
 	
@@ -169,10 +172,7 @@ public class DPlayerListener implements Listener
 		
 		// Player Hold
 		if(DDataUtil.hasPlayerData(player, "temp_player_held")) DDataUtil.removePlayerData(player, "temp_player_held");
-		else if(DDataUtil.hasPlayerData(player, "temp_player_hold"))
-		{
-			event.setCancelled(true);
-		}
+		else if(DDataUtil.hasPlayerData(player, "temp_player_hold")) event.setCancelled(true);
 	}
 	
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
