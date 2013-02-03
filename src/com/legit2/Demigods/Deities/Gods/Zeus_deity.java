@@ -18,9 +18,9 @@ import org.bukkit.util.Vector;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DDeityMiscUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Zeus_deity implements Listener
 {	
@@ -45,6 +45,7 @@ public class Zeus_deity implements Listener
 	private static final int LIGHTNING_DELAY = 1000; // In milliseconds
 
 	// "/storm" Command:
+	@SuppressWarnings("unused")
 	private static String ULTIMATE_NAME = "Storm";
 	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
@@ -68,7 +69,7 @@ public class Zeus_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
@@ -85,7 +86,7 @@ public class Zeus_deity implements Listener
 			// Make Claim Items readable.
 			String claimItems = Joiner.on(", ").join(claimItemNames);
 			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add("Claim Items: " + claimItems);
 			
 			return toReturn;
@@ -115,7 +116,6 @@ public class Zeus_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
@@ -126,16 +126,7 @@ public class Zeus_deity implements Listener
 			// Set the ability's delay
 			SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= SHOVE_COST)
-			{
-				shove(player);
-				DCharUtil.subtractFavor(charID, SHOVE_COST);
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-			}
+			shove(player);
 		}
 		
 		if(DCharUtil.isEnabledAbility(player, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, LIGHTNING_NAME))))
@@ -145,16 +136,7 @@ public class Zeus_deity implements Listener
 			// Set the ability's delay
 			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= LIGHTNING_COST)
-			{
-				lightning(player);
-				DCharUtil.subtractFavor(charID, LIGHTNING_COST);
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-			}
+			lightning(player);
 		}
 	}
 
@@ -195,47 +177,16 @@ public class Zeus_deity implements Listener
 		// Define variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		int devotion = DCharUtil.getDevotion(charID);
-		int targets = (int) Math.ceil(1.561 * Math.pow(devotion, 0.128424));
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
-		
-		if(DZoneUtil.zoneNoPVP(player.getLocation()))
-		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return;
-		}
-		
-		// Get Targets as an ArrayList
-		ArrayList<LivingEntity> hit = new ArrayList<LivingEntity>();
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(target == null)
-		{
-			player.sendMessage(ChatColor.YELLOW + "No target found.");
-			return;
-		}
+		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, SHOVE_COST)) return;
+		DCharUtil.subtractFavor(charID, SHOVE_COST);
 		
-		for (LivingEntity livingEntity : player.getWorld().getLivingEntities())
-		{
-			if(targets == hit.size()) break;
-			
-			if(livingEntity instanceof Player)
-			{
-				if(DMiscUtil.areAllied(player, (Player) livingEntity)) continue;
-			}
-			
-			if((livingEntity.equals(target)) && !hit.contains(livingEntity)) if (DMiscUtil.canTarget(livingEntity)) hit.add(livingEntity);
-		}
-		
-		if (hit.size() > 0)
-		{
-			for (LivingEntity livingEntity : hit)
-			{
-				Vector vector = player.getLocation().toVector();
-				Vector victor = livingEntity.getLocation().toVector().subtract(vector);
-				victor.multiply(multiply);
-				livingEntity.setVelocity(victor);
-			}
-		}
+		Vector vector = player.getLocation().toVector();
+		Vector victor = target.getLocation().toVector().subtract(vector);
+		victor.multiply(multiply);
+		target.setVelocity(victor);
 	}
 	
 	/*
@@ -271,26 +222,13 @@ public class Zeus_deity implements Listener
 	public static void lightning(Player player)
 	{
 		// Define variables
+		int charID = DPlayerUtil.getCurrentChar(player);
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(DZoneUtil.zoneNoPVP(player.getLocation()))
-		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return;
-		}
+		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, LIGHTNING_COST)) return;
+		DCharUtil.subtractFavor(charID, LIGHTNING_COST);
 		
-		if(target == null)
-		{
-			player.sendMessage(ChatColor.YELLOW + "No target found.");
-			return;
-		}
-		
-		if(target instanceof Player)
-		{
-			if(DMiscUtil.areAllied(player, (Player) target)) return;
-		}
-		
-		if(target.equals(target)) if (DMiscUtil.canTarget(target)) strikeLightning(player, target);
+		strikeLightning(player, target);
 	}
 
 	/*
@@ -313,25 +251,24 @@ public class Zeus_deity implements Listener
 			return;
 		}
 
-		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
-		{
-			if(DZoneUtil.zoneNoPVP(player.getLocation()))
-			{
-				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-				return; 
-			}
-			
-			player.sendMessage(ChatColor.YELLOW + "Zeus has struck " + storm(player) + " targets!");
+		if(!DDeityMiscUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
 
-			// Set favor and cooldown
-			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
-			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
-			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+		
+		// Perform ultimate if there is enough favor
+		int count = storm(player);
+		if(count == 0)
+		{
+			player.sendMessage(ChatColor.YELLOW + "Zeus unable to strike any targets.");
+			return;
 		}
-		// Give a message if there is not enough favor
-		else player.sendMessage(ChatColor.YELLOW + ULTIMATE_NAME + " requires " + ULTIMATE_COST + ChatColor.GREEN + " favor" + ChatColor.YELLOW + ".");
+		
+		player.sendMessage(ChatColor.YELLOW + "Zeus has struck " + count + " targets!");
+
+		// Set favor and cooldown
+		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
+		player.setNoDamageTicks(1000);
+		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
+		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 	}
 	
 	// The actual ability command
@@ -340,8 +277,6 @@ public class Zeus_deity implements Listener
 		// Define variables
 		ArrayList<Entity> entityList = new ArrayList<Entity>();
 		Vector playerLocation = player.getLocation().toVector();
-		
-		if(DZoneUtil.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 		
 		for(Entity anEntity : player.getWorld().getEntities()) if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
 
@@ -353,36 +288,34 @@ public class Zeus_deity implements Listener
 				if(entity instanceof Player)
 				{
 					Player otherPlayer = (Player) entity;
-					if (!DMiscUtil.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
+					if(!DMiscUtil.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
 					{
+						if(strikeLightning(player, otherPlayer)) count++;
 						strikeLightning(player, otherPlayer);
 						strikeLightning(player, otherPlayer);
-						strikeLightning(player, otherPlayer);
-						count++;
 					}
 				}
 				else if(entity instanceof LivingEntity)
 				{
 					LivingEntity livingEntity = (LivingEntity) entity;
+					if(strikeLightning(player, livingEntity)) count++;
 					strikeLightning(player, livingEntity);
 					strikeLightning(player, livingEntity);
-					strikeLightning(player, livingEntity);
-					count++;
 				}
 			}
-			catch (Exception notAlive) {} //ignore stuff like minecarts
+			catch (Exception notAlive) {} // Ignore stuff like Minecarts
 		}
 		
 		return count;
 	}
 
-	private static void strikeLightning(Player player, LivingEntity target)
+	private static boolean strikeLightning(Player player, LivingEntity target)
 	{
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		if(!player.getWorld().equals(target.getWorld())) return;
-		if(!DMiscUtil.canTarget(target)) return;
+		if(!player.getWorld().equals(target.getWorld())) return false;
+		if(!DMiscUtil.canTarget(target)) return false;
 		
 		player.getWorld().strikeLightningEffect(target.getLocation());
 		
@@ -390,10 +323,12 @@ public class Zeus_deity implements Listener
 		{
 			if(entity instanceof LivingEntity)
 			{
+				if(!DMiscUtil.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
 				if(livingEntity.getLocation().distance(target.getLocation()) < 1.5) DMiscUtil.customDamage(player, livingEntity, DCharUtil.getAscensions(charID)*2, DamageCause.LIGHTNING);
 			}
 		}
+		return true;
 	}
 	
 	// Don't touch these, they're required to work.
