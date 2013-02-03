@@ -63,6 +63,9 @@ public class Poseidon_deity implements Listener
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
