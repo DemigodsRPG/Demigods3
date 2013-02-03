@@ -213,13 +213,18 @@ public class DMiscUtil
 	}
 	
 	/*
-	 *  canTarget() : Checks if PVP is allowed in (Location)location.
+	 *  canTarget() : Checks if PVP is allowed in (Location)fallback for (Entity)player.
 	 */
-    public static boolean canTarget(Entity player, Location location)
-    {      
+    public static boolean canTarget(Entity player, Location fallback)
+    {     
     	if(!(player instanceof Player)) return true;
-    	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return true;
-    	else return !DZoneUtil.zoneNoPVP(location);
+    	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP") && DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones")) return true;
+    	else return !DZoneUtil.zoneNoPVP(fallback);
+    }
+    public static boolean canTarget(Entity player)
+    {     
+    	Location location = player.getLocation();
+    	return canTarget(player, location);
     }
     
     public static LivingEntity autoTarget(Player player)
@@ -240,10 +245,7 @@ public class DMiscUtil
 	                    {
 	                        for(int y = -acc; y < acc; y++)
 	                        {
-	                            if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item))
-	                            {
-	                                return (LivingEntity) entity;
-	                            }
+	                            if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item)) return (LivingEntity) entity;
 	                        }
 	                    }
 	                }

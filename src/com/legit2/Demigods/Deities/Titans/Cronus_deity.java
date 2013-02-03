@@ -268,7 +268,7 @@ public class Cronus_deity implements Listener
 			return;
 		}
 		
-		if(DMiscUtil.areAllied(player, (Player) target) || !DMiscUtil.canTarget(target, target.getLocation()))  return;
+		if(DMiscUtil.areAllied(player, (Player) target) || !DMiscUtil.canTarget(target))  return;
 		
 		if ((target != null) && (target.getEntityId() != player.getEntityId()))
 		{

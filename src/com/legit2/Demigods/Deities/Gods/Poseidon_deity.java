@@ -196,7 +196,7 @@ public class Poseidon_deity implements Listener
 			if(DMiscUtil.areAllied(player, (Player) target)) return;
 		}
 			
-		if(DMiscUtil.canTarget(target, target.getLocation()))
+		if(DMiscUtil.canTarget(target))
 		{
 			if (target.getLocation().getBlock().getType() == Material.AIR)
 			{
@@ -274,7 +274,7 @@ public class Poseidon_deity implements Listener
 			if(DMiscUtil.areAllied(player, (Player) target)) return;
 		}
 		
-		if(DMiscUtil.canTarget(target, target.getLocation()))
+		if(DMiscUtil.canTarget(target))
 		{
 			// Check to see if player has enough favor to perform ability
 			if(DCharUtil.getFavor(charID) < DROWN_COST)

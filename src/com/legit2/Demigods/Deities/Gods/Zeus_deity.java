@@ -223,7 +223,7 @@ public class Zeus_deity implements Listener
 				if(DMiscUtil.areAllied(player, (Player) livingEntity)) continue;
 			}
 			
-			if((livingEntity.equals(target)) && !hit.contains(livingEntity)) if (DMiscUtil.canTarget(livingEntity, livingEntity.getLocation())) hit.add(livingEntity);
+			if((livingEntity.equals(target)) && !hit.contains(livingEntity)) if (DMiscUtil.canTarget(livingEntity)) hit.add(livingEntity);
 		}
 		
 		if (hit.size() > 0)
@@ -290,7 +290,7 @@ public class Zeus_deity implements Listener
 			if(DMiscUtil.areAllied(player, (Player) target)) return;
 		}
 		
-		if(target.equals(target)) if (DMiscUtil.canTarget(target, target.getLocation())) strikeLightning(player, target);
+		if(target.equals(target)) if (DMiscUtil.canTarget(target)) strikeLightning(player, target);
 	}
 
 	/*
@@ -382,7 +382,7 @@ public class Zeus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		if(!player.getWorld().equals(target.getWorld())) return;
-		if(!DMiscUtil.canTarget(target, target.getLocation())) return;
+		if(!DMiscUtil.canTarget(target)) return;
 		
 		player.getWorld().strikeLightningEffect(target.getLocation());
 		
