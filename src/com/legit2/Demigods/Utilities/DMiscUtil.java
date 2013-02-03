@@ -92,7 +92,7 @@ public class DMiscUtil
 	 */
 	public static void taggedMessage(CommandSender sender, String msg)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "]");
+		sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "]" + msg);
 	}
 	
 	/*
@@ -100,8 +100,7 @@ public class DMiscUtil
 	 */
 	public static void customTaggedMessage(CommandSender sender, String title, String msg)
 	{
-		if(msg != null) sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "] " + ChatColor.RESET + msg);
-		sender.sendMessage(ChatColor.YELLOW + "[" + title + "]");
+		sender.sendMessage(ChatColor.YELLOW + "[" + title + "]" + msg);
 	}
 	
 	/*
@@ -227,6 +226,9 @@ public class DMiscUtil
     	return canTarget(player, location);
     }
     
+    /*
+	 *  autoTarget() : Returns the LivingEntity a (Player)player is targeting.
+	 */
     public static LivingEntity autoTarget(Player player)
     {
     	BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, 100);
@@ -253,5 +255,14 @@ public class DMiscUtil
             }
         }
         return null;
+    }
+    
+    /*
+	 *  playerStuckToggle() : Toggles holding a player's feet in place.
+	 */
+    public static void playerStuckToggle(Player player)
+    {
+    	if(DDataUtil.hasPlayerData(player, "temp_player_hold")) DDataUtil.removePlayerData(player, "temp_player_hold");
+    	else DDataUtil.savePlayerData(player, "temp_player_hold", true);
     }
 }

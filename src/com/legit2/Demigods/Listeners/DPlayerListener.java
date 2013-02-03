@@ -126,7 +126,20 @@ public class DPlayerListener implements Listener
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		int delayTime = DConfigUtil.getSettingInt("pvp_area_delay_time");
+		
+		// No-PVP Zones
 		onPlayerLineJump(player, to, from, delayTime);
+		
+		// Player Hold
+		if(DDataUtil.hasPlayerData(player, "temp_player_hold"))
+		{
+			Location hold = from;
+			hold.setYaw(to.getYaw());
+			hold.setPitch(to.getPitch());
+			player.teleport(hold);
+			event.setCancelled(true);
+			DDataUtil.savePlayerData(player, "temp_player_held", true);
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -138,7 +151,8 @@ public class DPlayerListener implements Listener
 		Location from = event.getFrom();
 		int delayTime = DConfigUtil.getSettingInt("pvp_area_delay_time");
 		
-		if(event.getCause() == TeleportCause.ENDER_PEARL || DDataUtil.hasPlayerData((Player) player, "temp_teleport_ability"))
+		// No-PVP Zones
+		if(event.getCause() == TeleportCause.ENDER_PEARL || DDataUtil.hasPlayerData(player, "temp_teleport_ability"))
 		{
 			onPlayerLineJump(player, to, from, delayTime);
 		}
@@ -147,7 +161,18 @@ public class DPlayerListener implements Listener
 			DDataUtil.removePlayerData(player, "temp_was_PVP");
 			player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 		}
-		else if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+		else if(DZoneUtil.exitZoneNoPVP(to, from))
+		{
+			player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+			return;
+		}
+		
+		// Player Hold
+		if(DDataUtil.hasPlayerData(player, "temp_player_held")) DDataUtil.removePlayerData(player, "temp_player_held");
+		else if(DDataUtil.hasPlayerData(player, "temp_player_hold"))
+		{
+			event.setCancelled(true);
+		}
 	}
 	
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
@@ -155,7 +180,7 @@ public class DPlayerListener implements Listener
 		// NullPointer Check
 		if(to == null || from == null) return;
 		
-		if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return;
+		if(DDataUtil.hasPlayerData(player, "temp_was_PVP")) return;
 		
 		// No Spawn Line-Jumping
 		if(DZoneUtil.enterZoneNoPVP(to, from) && delayTime > 0)
@@ -175,7 +200,7 @@ public class DPlayerListener implements Listener
 		}
 		
 		// Let players know where they can PVP
-		if(!DDataUtil.hasPlayerData((Player) player, "temp_was_PVP"))
+		if(!DDataUtil.hasPlayerData(player, "temp_was_PVP"))
 		{
 			if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 		}
