@@ -181,7 +181,8 @@ public class DZoneUtil
     {
     	for(DivineBlock divineBlock : DDivineBlocks.getAllShrineBlocks())
 		{	
-    		 if(location.distance(divineBlock.getLocation()) <= SHRINE_RADIUS) return divineBlock;
+    		if(location.getWorld() != divineBlock.getLocation().getWorld()) continue;
+    		if(location.distance(divineBlock.getLocation()) <= SHRINE_RADIUS) return divineBlock;
 		}
     	return null;
     }
@@ -193,7 +194,8 @@ public class DZoneUtil
 	{
 		for(Location divineBlock : DDivineBlocks.getAllShrines())
 		{	
-    		 if(location.distance(divineBlock) <= SHRINE_RADIUS) return DDivineBlocks.getShrineOwner(divineBlock);
+			if(location.getWorld() != divineBlock.getWorld()) continue;
+    		if(location.distance(divineBlock) <= SHRINE_RADIUS) return DDivineBlocks.getShrineOwner(divineBlock);
 		}
 		return -1;
 	}
@@ -223,6 +225,7 @@ public class DZoneUtil
     	for(DivineBlock divineBlock : DDivineBlocks.getAllAltarBlocks())
 		{	
     		DivineBlock parentBlock = DDivineBlocks.getDivineBlock((divineBlock.getParent()));
+    		if(location.getWorld() != parentBlock.getLocation().getWorld()) continue;
     		if(location.distance(parentBlock.getLocation()) <= ALTAR_RADIUS) return parentBlock;
 		}
     	return null;
