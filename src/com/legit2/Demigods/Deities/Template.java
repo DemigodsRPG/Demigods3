@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
-import com.legit2.Demigods.Utilities.DDeityMiscUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
@@ -156,7 +156,7 @@ public class Template implements Listener
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, TEST_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, TEST_COST)) return;
 		DCharUtil.subtractFavor(charID, TEST_COST);
 		
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");
@@ -181,7 +181,7 @@ public class Template implements Listener
 			return;
 		}
 
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
 		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
 
 		player.sendMessage(ChatColor.YELLOW + "You just used the ultimate, " + ULTIMATE_NAME + ", for " + DEITYNAME + "!");

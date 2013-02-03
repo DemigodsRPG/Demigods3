@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
-import com.legit2.Demigods.Utilities.DDeityMiscUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
@@ -180,7 +180,7 @@ public class Zeus_deity implements Listener
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, SHOVE_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, SHOVE_COST)) return;
 		DCharUtil.subtractFavor(charID, SHOVE_COST);
 		
 		Vector vector = player.getLocation().toVector();
@@ -225,7 +225,7 @@ public class Zeus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, LIGHTNING_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, LIGHTNING_COST)) return;
 		DCharUtil.subtractFavor(charID, LIGHTNING_COST);
 		
 		strikeLightning(player, target);
@@ -251,7 +251,7 @@ public class Zeus_deity implements Listener
 			return;
 		}
 
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
 
 		
 		// Perform ultimate if there is enough favor

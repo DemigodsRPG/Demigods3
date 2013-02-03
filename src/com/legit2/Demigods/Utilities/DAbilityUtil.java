@@ -1,10 +1,11 @@
 package com.legit2.Demigods.Utilities;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class DDeityMiscUtil
+public class DAbilityUtil
 {
 	/*
 	 *  doAbilityPreProcess() : Returns the a boolean for success or failure.
@@ -25,11 +26,11 @@ public class DDeityMiscUtil
 		}
 		else return true;
 	}
-	public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost)
+	public static boolean doAbilityPreProcess(Player player, Entity target, int cost)
 	{
 		if(doAbilityPreProcess(player, cost))
 		{
-			if(target == null)
+			if(!(target instanceof LivingEntity))
 			{
 				player.sendMessage(ChatColor.YELLOW + "No target found.");
 				return false;

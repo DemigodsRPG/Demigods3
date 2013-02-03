@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
-import com.legit2.Demigods.Utilities.DDeityMiscUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
@@ -182,7 +182,7 @@ public class Poseidon_deity implements Listener
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, REEL_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, REEL_COST)) return;
 		DCharUtil.subtractFavor(charID, REEL_COST);
 		DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
 		
@@ -233,7 +233,7 @@ public class Poseidon_deity implements Listener
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DDeityMiscUtil.doAbilityPreProcess(player, target, DROWN_COST)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, DROWN_COST)) return;
 		DCharUtil.subtractFavor(charID, DROWN_COST);
 		
 		final ArrayList<Block> toReset = new ArrayList<Block>();
