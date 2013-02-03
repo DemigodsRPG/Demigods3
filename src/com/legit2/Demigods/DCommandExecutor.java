@@ -484,7 +484,7 @@ public class DCommandExecutor implements CommandExecutor
 		if(favor > Math.ceil(0.66 * maxFavor)) favorColor = ChatColor.GREEN;
 		
 		// Send the user their info via chat
-		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", null);
+		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", "");
 
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DObjUtil.capitalize(alliance) + "s");
