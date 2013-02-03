@@ -467,6 +467,19 @@ public class DCharUtil
 	}
 	
 	/*
+	 *  getPower() : Returns the charID's power for use in abilities.
+	 */
+	public static int getPower(int charID)
+	{
+		int power = (int) Math.ceil(Math.pow(getAscensions(charID) * 250, 1.2));
+		
+		// TODO: Add power manipulation based on active character effects
+		// if(DDataUtil.hasCharData(charID, "active_effects"));
+		
+		return power;
+	}
+	
+	/*
 	 *  isActive() : Returns a boolean for if the (int)charID is active.
 	 */
 	public static boolean isActive(int charID)
