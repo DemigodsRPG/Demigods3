@@ -14,7 +14,7 @@ public class DAbilityUtil
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
-		if(DMiscUtil.canTarget(player))
+		if(!DMiscUtil.canTarget(player))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
@@ -35,17 +35,17 @@ public class DAbilityUtil
 				player.sendMessage(ChatColor.YELLOW + "No target found.");
 				return false;
 			}
-			else if(target instanceof Player)
-			{
-				if(DMiscUtil.areAllied(player, (Player) target)) return false;
-			}
-			if(!DMiscUtil.canTarget(target))
+			else if(!DMiscUtil.canTarget(target))
 			{
 				player.sendMessage(ChatColor.YELLOW + "Target is in a no-PVP zone.");
 				return false;
 			}
+			else if(target instanceof Player)
+			{
+				if(DMiscUtil.areAllied(player, (Player) target)) return false;
+			}
 			else return true;
 		}
-		else return false;
+		return false;
 	}
 }
