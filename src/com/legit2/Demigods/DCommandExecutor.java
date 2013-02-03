@@ -55,8 +55,8 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		Player player = (Player) sender;
 		
-		DMiscUtil.playerStuckToggle(player);
-		player.sendMessage(ChatColor.RED + "You stuck.");
+		DMiscUtil.playerChatToggle(player);
+		player.sendMessage(ChatColor.RED + "You a deaf mute.");
 		
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();

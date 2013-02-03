@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -260,9 +261,18 @@ public class DMiscUtil
     /*
 	 *  playerStuckToggle() : Toggles holding a player's feet in place.
 	 */
-    public static void playerStuckToggle(Player player)
+    public static void playerStuckToggle(OfflinePlayer player)
     {
-    	if(DDataUtil.hasPlayerData(player, "temp_player_hold")) DDataUtil.removePlayerData(player, "temp_player_hold");
-    	else DDataUtil.savePlayerData(player, "temp_player_hold", true);
+    	if(DDataUtil.hasPlayerData(player, "temp_player_chat")) DDataUtil.removePlayerData(player, "temp_player_chat");
+    	else DDataUtil.savePlayerData(player, "temp_player_chat", true);
+    }
+    
+    /*
+	 *  playerChatToggle() : Toggles chat for a player.
+	 */
+    public static void playerChatToggle(OfflinePlayer player)
+    {
+    	if(DDataUtil.hasPlayerData(player, "temp_no_chat")) DDataUtil.removePlayerData(player, "temp_no_chat");
+    	else DDataUtil.savePlayerData(player, "temp_no_chat", true);
     }
 }
