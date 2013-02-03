@@ -3,21 +3,14 @@ package com.legit2.Demigods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Libraries.ReflectCommand;
@@ -55,21 +48,8 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		Player player = (Player) sender;
 		
-		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
-		FireworkMeta fireworkmeta = firework.getFireworkMeta();
-		
-        Random r = new Random();
-        int rt = r.nextInt(4) + 1;
-        Type type = Type.BALL;
-        if (rt == 1) type = Type.BALL;
-        if (rt == 2) type = Type.BALL_LARGE;
-        if (rt == 3) type = Type.BURST;
-        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
-        fireworkmeta.addEffect(effect);
-        fireworkmeta.setPower(2);
-       
-        //Then apply this to our rocket
-        firework.setFireworkMeta(fireworkmeta);      
+		DMiscUtil.playerStuckToggle(player);
+		player.sendMessage(ChatColor.RED + "You stuck.");
 		
 		return true;
 	}
