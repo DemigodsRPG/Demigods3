@@ -137,10 +137,13 @@ public class DCommandExecutor implements CommandExecutor
 		// Define args
 		String category = args[0];
 		String option1 = null, option2 = null, option3 = null, option4 = null;
-		if(args.length == 2) option1 = args[1];
-		if(args.length == 3) option2 = args[2];
-		if(args.length == 4) option3 = args[3];
-		if(args.length == 5) option4 = args[4];
+		if(args.length >= 2) option1 = args[1];
+		if(args.length >= 3) option2 = args[2];
+		if(args.length >= 4) option3 = args[3];
+		if(args.length >= 5) option4 = args[4];
+		Player toEdit;
+		int charID;
+		int amount;
 
 		// Check Permissions
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
@@ -148,8 +151,6 @@ public class DCommandExecutor implements CommandExecutor
 		if(category.equalsIgnoreCase("admin"))
 		{
 			if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) return DMiscUtil.noPermission(player);
-
-			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
 
 			if(option1 != null)
 			{
@@ -168,81 +169,196 @@ public class DCommandExecutor implements CommandExecutor
 					return true;
 				}
 				else if(option1.equals("set"))
-				{
+				{		
 					if(option2 == null)
 					{
-						sender.sendMessage(ChatColor.RED + "You must select a second option.");
-						sender.sendMessage("/dg set [favor|devotion|ascensions] <player> <amount>");
+						sender.sendMessage(ChatColor.RED + "You need to be more specific.");
+						sender.sendMessage("/dg admin set [favor|devotion|ascensions] <player> <amount>");
 						return true;
 					}
-					else if(option3 == null || option4 == null)
+					else if(option2 == null || option3 == null)
 					{
 						sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
-						sender.sendMessage("/dg set [favor|devotion|ascensions] <player> <amount>");
+						sender.sendMessage("/dg admin set [favor|devotion|ascensions] <player> <amount>");
 						return true;
 					}
-					else if(option2.equalsIgnoreCase("favor"))
+					else
 					{
 						// Define variables
-						Player toEdit = Bukkit.getPlayer(option3);
-						int charID = DPlayerUtil.getCurrentChar(toEdit);
-						int amount = DObjUtil.toInteger(option4);
-						
+						toEdit = Bukkit.getPlayer(option3);
+						charID = DPlayerUtil.getCurrentChar(toEdit);
+						amount = DObjUtil.toInteger(option4);
+					}
+					
+					if(option2.equalsIgnoreCase("favor"))
+					{
 						// Set the favor
 						DCharUtil.setFavor(charID, amount);
 						
 						sender.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
 						toEdit.sendMessage(ChatColor.GREEN + "Your current character's favor has been set to " + amount + ".");
-						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
 					}
 					else if(option2.equalsIgnoreCase("devotion"))
 					{
-						// Define variables
-						Player toEdit = Bukkit.getPlayer(option3);
-						int charID = DPlayerUtil.getCurrentChar(toEdit);
-						int amount = DObjUtil.toInteger(option4);
-						
-						// Set the favor
+						// Set the devotion
 						DCharUtil.setDevotion(charID, amount);
 						
 						sender.sendMessage(ChatColor.GREEN + "Devotion set to " + amount + " for " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
 						toEdit.sendMessage(ChatColor.GREEN + "Your current character's devotion has been set to " + amount + ".");
-						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
 					}
 					else if(option2.equalsIgnoreCase("ascensions"))
 					{
-						// Define variables
-						Player toEdit = Bukkit.getPlayer(option3);
-						int charID = DPlayerUtil.getCurrentChar(toEdit);
-						int amount = DObjUtil.toInteger(option4);
-						
-						// Set the favor
+						// Set the ascensions
 						DCharUtil.setAscensions(charID, amount);
 						
 						sender.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
 						toEdit.sendMessage(ChatColor.GREEN + "Your current character's Ascensions have been set to " + amount + ".");
-						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
 					}
 				}
 				else if(option1.equalsIgnoreCase("add"))
 				{
-					
+					if(option2 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You need to be more specific.");
+						sender.sendMessage("/dg admin add [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else if(option2 == null || option3 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+						sender.sendMessage("/dg admin add [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else
+					{
+						// Define variables
+						toEdit = Bukkit.getPlayer(option3);
+						charID = DPlayerUtil.getCurrentChar(toEdit);
+						amount = DObjUtil.toInteger(option4);
+					}
+						
+					if(option2.equalsIgnoreCase("favor"))
+					{	
+						// Set the favor
+						DCharUtil.setFavor(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " favor.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
+					else if(option2.equalsIgnoreCase("devotion"))
+					{	
+						// Set the devotion
+						DCharUtil.setDevotion(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " devotion.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
+					else if(option2.equalsIgnoreCase("ascensions"))
+					{
+						// Set the ascensions
+						DCharUtil.giveAscensions(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
+
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " Ascensions.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
 				}
-				else if(option1.equalsIgnoreCase("subtract"))
+				else if(option1.equalsIgnoreCase("sub"))
 				{
+					if(option2 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You need to be more specific.");
+						sender.sendMessage("/dg admin sub [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else if(option2 == null || option3 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+						sender.sendMessage("/dg admin sub [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else
+					{
+						// Define variables
+						toEdit = Bukkit.getPlayer(option3);
+						charID = DPlayerUtil.getCurrentChar(toEdit);
+						amount = DObjUtil.toInteger(option4);
+					}
+						
+					if(option2.equalsIgnoreCase("favor"))
+					{	
+						// Set the favor
+						DCharUtil.subtractFavor(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
+						
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " favor removed.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
+					else if(option2.equalsIgnoreCase("devotion"))
+					{	
+						// Set the devotion
+						DCharUtil.subtractDevotion(charID, amount);
+						
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion removed from " + toEdit.getName() + "'s current character.");
+						
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " devotion removed.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
+					else if(option2.equalsIgnoreCase("ascensions"))
+					{
+						// Set the ascensions
+						DCharUtil.subtractAscensions(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
 					
+						// Tell who was edited
+						toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " Ascension(s) removed.");
+						toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+						return true;
+					}
 				}
 				else
 				{
 					sender.sendMessage(ChatColor.RED + "Invalid category selected.");
-					sender.sendMessage("/dg admin [set|add|subtract] [favor|devotion|ascensions] <player> <amount>");
+					sender.sendMessage("/dg admin [set|add|sub] [favor|devotion|ascensions] <player> <amount>");
+					return true;
 				}
 			}
 			
+			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin set [favor|devotion|ascensions] <player> <amount>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin add [favor|devotion|ascensions] <player> <amount>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin subtract [favor|devotion|ascensions] <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [favor|devotion|ascensions] <player> <amount>");
 		}
 		else if(category.equalsIgnoreCase("save"))
 		{
