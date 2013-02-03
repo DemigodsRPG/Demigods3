@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -34,16 +35,15 @@ public class DCommandExecutor implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
-		if (command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
-		else if (command.getName().equalsIgnoreCase("check")) return check(sender);
-		else if (command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
-		else if (command.getName().equalsIgnoreCase("switchchar")) return switchChar(sender,args);
-		else if (command.getName().equalsIgnoreCase("removechar")) return removeChar(sender,args);
-		else if (command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
-		//else if (command.getName().equalsIgnoreCase("removeplayer")) return removePlayer(sender,args);
+		if(command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
+		else if(command.getName().equalsIgnoreCase("check")) return check(sender);
+		else if(command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
+		else if(command.getName().equalsIgnoreCase("switchchar")) return switchChar(sender,args);
+		else if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender,args);
+		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
 		
-		// BETA TESTING ONLY
-		else if (command.getName().equalsIgnoreCase("test1")) return test1(sender);
+		// TESTING ONLY
+		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender);
 
 		return false;
 	}
@@ -133,48 +133,115 @@ public class DCommandExecutor implements CommandExecutor
 		
 		// Define args
 		String category = args[0];
-		String option1 = null;
+		String option1 = null, option2 = null, option3 = null, option4 = null;
 		if(args.length == 2) option1 = args[1];
-		
+		if(args.length == 3) option2 = args[2];
+		if(args.length == 4) option3 = args[3];
+		if(args.length == 5) option4 = args[4];
+
 		// Check Permissions
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
 		
-		for(String alliance : DDeityUtil.getLoadedDeityAlliances())
+		if(category.equalsIgnoreCase("admin"))
 		{
-			if(category.equalsIgnoreCase(alliance))
+			if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) return DMiscUtil.noPermission(player);
+
+			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
+
+			if(option1 != null)
 			{
-				if(args.length < 2)
+				if(option1.equalsIgnoreCase("wand"))
 				{
-					DMiscUtil.taggedMessage(sender, alliance + " Directory");
-					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());	
+					if(!DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false))
+					{
+						DDataUtil.savePlayerData(player, "temp_admin_wand", true);
+						player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(DConfigUtil.getSettingInt("admin_wand_tool")));
+					}
+					else if(DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true))
+					{
+						DDataUtil.savePlayerData(player, "temp_admin_wand", false);
+						player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
+					}
+					return true;
+				}
+				else if(option1.equals("set"))
+				{
+					if(option2 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You must select a second option.");
+						sender.sendMessage("/dg set [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else if(option3 == null || option4 == null)
+					{
+						sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+						sender.sendMessage("/dg set [favor|devotion|ascensions] <player> <amount>");
+						return true;
+					}
+					else if(option2.equalsIgnoreCase("favor"))
+					{
+						// Define variables
+						Player toEdit = Bukkit.getPlayer(option3);
+						int charID = DPlayerUtil.getCurrentChar(toEdit);
+						int amount = DObjUtil.toInteger(option4);
+						
+						// Set the favor
+						DCharUtil.setFavor(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character's favor has been set to " + amount + ".");
+						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+					}
+					else if(option2.equalsIgnoreCase("devotion"))
+					{
+						// Define variables
+						Player toEdit = Bukkit.getPlayer(option3);
+						int charID = DPlayerUtil.getCurrentChar(toEdit);
+						int amount = DObjUtil.toInteger(option4);
+						
+						// Set the favor
+						DCharUtil.setDevotion(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "Devotion set to " + amount + " for " + toEdit.getName() + "'s current character.");
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character's devotion has been set to " + amount + ".");
+						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+					}
+					else if(option2.equalsIgnoreCase("ascensions"))
+					{
+						// Define variables
+						Player toEdit = Bukkit.getPlayer(option3);
+						int charID = DPlayerUtil.getCurrentChar(toEdit);
+						int amount = DObjUtil.toInteger(option4);
+						
+						// Set the favor
+						DCharUtil.setAscensions(charID, amount);
+						
+						sender.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
+						toEdit.sendMessage(ChatColor.GREEN + "Your current character's Ascensions have been set to " + amount + ".");
+						toEdit.sendMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "This was performed by " + sender.getName() + ".");
+					}
+				}
+				else if(option1.equalsIgnoreCase("add"))
+				{
+					
+				}
+				else if(option1.equalsIgnoreCase("subtract"))
+				{
+					
 				}
 				else
 				{
-					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
-					{
-						if(args[1].equalsIgnoreCase(deity))
-						{
-							try
-							{
-								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithPlayer(DDeityUtil.getDeityClass(deity), "getInfo", player)) sender.sendMessage(toPrint);
-								return true;
-							}
-							catch (Exception e)
-							{
-								sender.sendMessage(ChatColor.RED + "Error code: 3001.  Please report this immediatly.");
-								e.printStackTrace(); //DEBUG
-								return true;
-							}
-						}
-					}
-					sender.sendMessage(ChatColor.DARK_RED + "No such deity, please try again.");
-					return false;
+					sender.sendMessage(ChatColor.RED + "Invalid category selected.");
+					sender.sendMessage("/dg admin [set|add|subtract] [favor|devotion|ascensions] <player> <amount>");
 				}
 			}
+			
+			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin set [favor|devotion|ascensions] <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin add [favor|devotion|ascensions] <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin subtract [favor|devotion|ascensions] <player> <amount>");
 		}
-		
-	
-		if(category.equalsIgnoreCase("save"))
+		else if(category.equalsIgnoreCase("save"))
 		{
 			if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin"))
 			{
@@ -226,30 +293,39 @@ public class DCommandExecutor implements CommandExecutor
 			DMiscUtil.taggedMessage(sender, "Rankings");
 			sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
 		}
-		else if(category.equalsIgnoreCase("admin"))
+		
+		for(String alliance : DDeityUtil.getLoadedDeityAlliances())
 		{
-			if(option1 != null)
+			if(category.equalsIgnoreCase(alliance))
 			{
-				if(!DDataUtil.hasPlayerData(player, "temp_admin_wand") || DDataUtil.getPlayerData(player, "temp_admin_wand").equals(false))
+				if(args.length < 2)
 				{
-					DDataUtil.savePlayerData(player, "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(DConfigUtil.getSettingInt("admin_wand_tool")));
+					DMiscUtil.taggedMessage(sender, alliance + " Directory");
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());	
 				}
-				else if(DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true))
+				else
 				{
-					DDataUtil.savePlayerData(player, "temp_admin_wand", false);
-					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
+					{
+						if(args[1].equalsIgnoreCase(deity))
+						{
+							try
+							{
+								for(String toPrint : (ArrayList<String>) DDeityUtil.invokeDeityMethodWithPlayer(DDeityUtil.getDeityClass(deity), "getInfo", player)) sender.sendMessage(toPrint);
+								return true;
+							}
+							catch (Exception e)
+							{
+								sender.sendMessage(ChatColor.RED + "Error code: 3001.  Please report this immediatly.");
+								e.printStackTrace(); //DEBUG
+								return true;
+							}
+						}
+					}
+					sender.sendMessage(ChatColor.DARK_RED + "No such deity, please try again.");
+					return false;
 				}
-				return true;
 			}
-			
-			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
-			sender.sendMessage(ChatColor.GRAY + " /setalliance <player> <alliance>");
-			sender.sendMessage(ChatColor.GRAY + " /givedeity <player> <deity>");
-			sender.sendMessage(ChatColor.GRAY + " /setdevotion <player> <deity> <amount>");
-			sender.sendMessage(ChatColor.GRAY + " /setfavor <player> <amount>");
-			sender.sendMessage(ChatColor.GRAY + " /setascensions <player> <amount>");
 		}
 		
 		return true;
