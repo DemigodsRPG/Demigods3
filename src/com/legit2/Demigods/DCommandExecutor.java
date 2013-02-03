@@ -541,21 +541,7 @@ public class DCommandExecutor implements CommandExecutor
 	 */
 	public static boolean createChar(CommandSender sender, String[] args)
 	{
-		if(args.length != 2) return false;
-		
-		// Define args
-		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
-		String charName = args[0];
-		String charDeity = args[1];
-		
-		if(charName.length() >= 15)
-		{
-			sender.sendMessage(ChatColor.YELLOW + "Too long of a name, please try again.");
-			return false;
-		}
-		
-		if(DCharUtil.createChar(player, charName, charDeity)) sender.sendMessage(ChatColor.YELLOW + "Character " + charName + "(" + charDeity + ") created!");
-		else player.sendMessage(ChatColor.RED + "You already have a character with that name.");
+		sender.sendMessage(ChatColor.GRAY + "No longer functional. Use an Altar!");
 
 		return true;
 	}
