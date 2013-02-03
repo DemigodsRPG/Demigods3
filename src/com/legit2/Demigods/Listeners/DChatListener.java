@@ -7,6 +7,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -17,7 +18,7 @@ import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DChatListener implements Listener
 {
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onChatCommand(AsyncPlayerChatEvent event)
 	{
 		// Define variables
