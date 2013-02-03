@@ -3,6 +3,7 @@ package com.legit2.Demigods.Listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -288,7 +289,7 @@ public class DDivineBlockListener implements Listener
 				player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 				player.sendMessage(" ");
 				player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
-				player.sendMessage(ChatColor.GRAY + " You return to the main menu at anytime by typing \"menu\".");
+				player.sendMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
 				player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
 				player.sendMessage(" ");
 
@@ -354,7 +355,7 @@ public class DDivineBlockListener implements Listener
 				player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 				player.sendMessage(" ");
 				player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
-				player.sendMessage(ChatColor.GRAY + " You return to the main menu at anytime by typing \"menu\".");
+				player.sendMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
 				player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
 				player.sendMessage(" ");
 				
@@ -369,12 +370,27 @@ public class DDivineBlockListener implements Listener
 				// Step 1 of character creation
 				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_name"))
 				{
-					chosenName = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
-					player.sendMessage(" ");
-					DDataUtil.savePlayerData(player, "temp_createchar_name", chosenName);
-					DDataUtil.savePlayerData(player, "temp_createchar", "confirm_name");
-					return;
+					if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || DPlayerUtil.hasCharName(player, message))
+					{
+						// They didn't accept the name, let them re-choose
+						DDataUtil.savePlayerData(player, "temp_createchar", "choose_name");
+						if(message.length() >= 15) player.sendMessage(ChatColor.RED + " That name is too long.");
+						if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + " You can only use Alpha-Numeric characters.");
+						if(DPlayerUtil.hasCharName(player, message)) player.sendMessage(ChatColor.RED + " You already have a character with that name.");
+						player.sendMessage(ChatColor.AQUA + " Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+						player.sendMessage(" ");
+						return;
+					}
+					else
+					{
+						chosenName = message.replace(" ", "");
+						player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+						player.sendMessage(" ");
+						DDataUtil.savePlayerData(player, "temp_createchar_name", chosenName);
+						DDataUtil.savePlayerData(player, "temp_createchar", "confirm_name");
+						return;
+					}
+
 				}
 				
 				// Step 2 of character creation
@@ -429,7 +445,7 @@ public class DDivineBlockListener implements Listener
 						player.sendMessage(" ");
 
 						// They can't be _Alex silly! Make them re-choose
-						player.sendMessage(ChatColor.AQUA + " Choose a different Deity: ");
+						player.sendMessage(ChatColor.AQUA + " Choose a different Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 						for(String alliance : DDeityUtil.getLoadedDeityAlliances())
 						{
 							for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
