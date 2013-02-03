@@ -351,7 +351,7 @@ public class DCommandExecutor implements CommandExecutor
 				}
 			}
 			
-			DMiscUtil.taggedMessage(sender, ChatColor.RED + "Admin Commands");
+			sender.sendMessage(ChatColor.RED + "[Admin Directory]");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin set [favor|devotion|ascensions] <player> <amount>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin add [favor|devotion|ascensions] <player> <amount>");
