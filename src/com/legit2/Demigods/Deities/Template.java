@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Template implements Listener
 {	
@@ -57,7 +57,7 @@ public class Template implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
@@ -74,7 +74,7 @@ public class Template implements Listener
 			// Make Claim Items readable.
 			String claimItems = Joiner.on(", ").join(claimItemNames);
 			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add("Claim Items: " + claimItems);
 			
 			return toReturn;
@@ -106,7 +106,6 @@ public class Template implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
@@ -117,18 +116,7 @@ public class Template implements Listener
 			// Set the ability's delay
 			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= TEST_COST)
-			{
-				testabil(player);
-				DCharUtil.subtractFavor(charID, TEST_COST);
-				return;
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-				DCharUtil.disableAbility(player, TEST_NAME);
-			}
+			testabil(player);
 		}
 	}
 
@@ -166,6 +154,11 @@ public class Template implements Listener
 	// The actual ability command
 	public static void testabil(Player player)
 	{
+		int charID = DPlayerUtil.getCurrentChar(player);
+		
+		if(!DAbilityUtil.doAbilityPreProcess(player, TEST_COST)) return;
+		DCharUtil.subtractFavor(charID, TEST_COST);
+		
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");
 	}
 
@@ -188,26 +181,17 @@ public class Template implements Listener
 			return;
 		}
 
-		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
-		{
-			if(DZoneUtil.zoneNoPVP(player.getLocation()))
-			{
-				testHelper(player);
-				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-				return;
-			}
+		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
 
-			player.sendMessage(ChatColor.YELLOW + "You just used the ultimate for " + DEITYNAME + "!");
+		player.sendMessage(ChatColor.YELLOW + "You just used the ultimate, " + ULTIMATE_NAME + ", for " + DEITYNAME + "!");
+		
+		testHelper(player);
 
-			// Set favor and cooldown
-			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
-			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(charID) / 100)));
-			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
-		}
-		// Give a message if there is not enough favor
-		else player.sendMessage(ChatColor.YELLOW + ULTIMATE_NAME + " requires " + ULTIMATE_COST + ChatColor.GREEN + " favor" + ChatColor.RESET + ".");
+		// Set favor and cooldown
+		player.setNoDamageTicks(1000);
+		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(charID) / 100)));
+		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 	}
 
 	/*

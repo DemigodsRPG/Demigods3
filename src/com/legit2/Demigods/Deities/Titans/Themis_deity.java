@@ -14,11 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Themis_deity implements Listener
 {	
@@ -37,6 +37,7 @@ public class Themis_deity implements Listener
 	private static final int SWAP_DELAY = 2400; // In milliseconds
 
 	// "/congregate" Command:
+	@SuppressWarnings("unused")
 	private static String ULTIMATE_NAME = "Congregate";
 	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 6000; // Cost to run command in "favor"
@@ -60,7 +61,7 @@ public class Themis_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
@@ -77,7 +78,7 @@ public class Themis_deity implements Listener
 			// Make Claim Items readable.
 			String claimItems = Joiner.on(", ").join(claimItemNames);
 			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add("Claim Items: " + claimItems);
 			
 			return toReturn;
@@ -89,7 +90,6 @@ public class Themis_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
@@ -100,16 +100,7 @@ public class Themis_deity implements Listener
 			// Set the ability's delay
 			SWAP_TIME = System.currentTimeMillis() + SWAP_DELAY;
 
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) >= SWAP_COST)
-			{
-				swap(player);
-				DCharUtil.subtractFavor(charID, SWAP_COST);
-			}
-			else
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-			}
+			swap(player);
 		}
 	}
 
@@ -148,12 +139,12 @@ public class Themis_deity implements Listener
 	public static void swap(Player player)
 	{
 		// Define variables
+		int charID = DPlayerUtil.getCurrentChar(player);
 		Location between = player.getLocation();
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(target == null) return;
-		if(!DMiscUtil.canTarget(player)) return;
-		if(!DMiscUtil.canTarget(target)) return;
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, SWAP_COST)) return;
+		DCharUtil.subtractFavor(charID, SWAP_COST);
 
 		player.teleport(target.getLocation());
 		target.teleport(between);
@@ -202,27 +193,18 @@ public class Themis_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(DCharUtil.getFavor(charID) >= ULTIMATE_COST)
-		{
-			if(DZoneUtil.zoneNoPVP(player.getLocation()))
-			{
-				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-				return; 
-			}
-			
-			int n = congregate(player);
-			if(n > 0) player.sendMessage(ChatColor.YELLOW + "Themis has called upon " + n + " players!");
-			else player.sendMessage(ChatColor.YELLOW + "There are no players to congregate.");
-			
+		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		
+		int n = congregate(player);
+		if(n > 0) player.sendMessage(ChatColor.YELLOW + "Themis has called upon " + n + " players!");
+		else player.sendMessage(ChatColor.YELLOW + "There are no players to congregate.");
+		
 
-			// Set favor and cooldown
-			DCharUtil.subtractFavor(charID, ULTIMATE_COST);
-			player.setNoDamageTicks(1000);
-			int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
-			ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
-		}
-		// Give a message if there is not enough favor
-		else player.sendMessage(ChatColor.YELLOW + ULTIMATE_NAME + " requires " + ULTIMATE_COST + ChatColor.GREEN + " favor" + ChatColor.YELLOW + ".");
+		// Set favor and cooldown
+		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
+		player.setNoDamageTicks(1000);
+		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
+		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 	}
 	
 	// The actual ability command
@@ -236,7 +218,7 @@ public class Themis_deity implements Listener
 		int count = 0;	
 		for(Player pl : player.getWorld().getPlayers())
 		{
-			if (DCharUtil.isImmortal(pl))
+			if(DCharUtil.isImmortal(pl))
 			{
 				count++;
 				if(!player.equals(pl) && !DDataUtil.hasCharData(charID, "temp_themis_congregate"))

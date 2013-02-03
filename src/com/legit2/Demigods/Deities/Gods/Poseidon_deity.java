@@ -19,9 +19,9 @@ import org.bukkit.util.Vector;
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Poseidon_deity implements Listener
 {	
@@ -62,7 +62,7 @@ public class Poseidon_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
@@ -79,7 +79,10 @@ public class Poseidon_deity implements Listener
 			// Make Claim Items readable.
 			String claimItems = Joiner.on(", ").join(claimItemNames);
 			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + ChatColor.AQUA + DEITYNAME); //TODO
+			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
+			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add("Claim Items: " + claimItems);
 			
 			return toReturn;
@@ -179,49 +182,22 @@ public class Poseidon_deity implements Listener
 		int damage = (int) Math.ceil(0.37286 * Math.pow(DCharUtil.getDevotion(charID), 0.371238));
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(DZoneUtil.zoneNoPVP(player.getLocation()))
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, REEL_COST)) return;
+		DCharUtil.subtractFavor(charID, REEL_COST);
+		DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
+		
+		if(target.getLocation().getBlock().getType() == Material.AIR)
 		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return;
+			target.getLocation().getBlock().setType(Material.WATER);
+			target.getLocation().getBlock().setData((byte) 0x8);
 		}
 		
-		if(target == null)
-		{
-			player.sendMessage(ChatColor.YELLOW + "No target found.");
-			return;
-		}
-		
-		if(target instanceof Player)
-		{
-			if(DMiscUtil.areAllied(player, (Player) target)) return;
-		}
-			
-		if(DMiscUtil.canTarget(target))
-		{
-			if (target.getLocation().getBlock().getType() == Material.AIR)
-			{
-				target.getLocation().getBlock().setType(Material.WATER);
-				target.getLocation().getBlock().setData((byte) 0x8);
-			}
-			
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) < REEL_COST)
-			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-				return;
-			}
-			DCharUtil.subtractFavor(charID, REEL_COST);
-
-			DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
-			
-			REEL_TIME = System.currentTimeMillis();
-		}
+		REEL_TIME = System.currentTimeMillis();
 	}
 	
 	/*
 	 *  Command: "/drown"
 	 */
-	
 	@ReflectCommand.Command(name = "drown", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
 	public static void drownCommand(Player player, String arg1)
 	{		
@@ -257,66 +233,41 @@ public class Poseidon_deity implements Listener
 		int duration = (int) Math.ceil(2.80488 * Math.pow(devotion, 0.2689)); //seconds
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(DZoneUtil.zoneNoPVP(player.getLocation()))
-		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return;
-		}
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, DROWN_COST)) return;
+		DCharUtil.subtractFavor(charID, DROWN_COST);
 		
-		if(target == null)
+		final ArrayList<Block> toReset = new ArrayList<Block>();
+		for(int x =- radius; x <= radius; x++)
 		{
-			player.sendMessage(ChatColor.YELLOW + "No target found.");
-			return;
-		}
-		
-		if(target instanceof Player)
-		{
-			if(DMiscUtil.areAllied(player, (Player) target)) return;
-		}
-		
-		if(DMiscUtil.canTarget(target))
-		{
-			// Check to see if player has enough favor to perform ability
-			if(DCharUtil.getFavor(charID) < DROWN_COST)
+			for(int y =- radius; y <= radius; y++)
 			{
-				player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
-				return;
-			}
-			DCharUtil.subtractFavor(charID, DROWN_COST);
-			
-			final ArrayList<Block> toReset = new ArrayList<Block>();
-			for(int x =- radius; x <= radius; x++)
-			{
-				for(int y =- radius; y <= radius; y++)
+				for(int z =- radius; z <= radius; z++)
 				{
-					for(int z =- radius; z <= radius; z++)
+					Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + x, target.getLocation().getBlockY() + y, target.getLocation().getBlockZ() + z);
+					if(block.getLocation().distance(target.getLocation()) <= radius)
 					{
-						Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + x, target.getLocation().getBlockY() + y, target.getLocation().getBlockZ() + z);
-						if(block.getLocation().distance(target.getLocation()) <= radius)
+						if(block.getType() == Material.AIR)
 						{
-							if(block.getType() == Material.AIR)
-							{
-								block.setType(Material.WATER);
-								block.setData((byte) (0x8));
-								toReset.add(block);
-							}
+							block.setType(Material.WATER);
+							block.setData((byte) (0x8));
+							toReset.add(block);
 						}
 					}
 				}
 			}
-			
-			DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					for(Block block : toReset)
-					{
-						if((block.getType() == Material.WATER) || (block.getType() == Material.STATIONARY_WATER)) block.setType(Material.AIR);
-					}
-				}
-			}, duration);
 		}
+		
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Block block : toReset)
+				{
+					if((block.getType() == Material.WATER) || (block.getType() == Material.STATIONARY_WATER)) block.setType(Material.AIR);
+				}
+			}
+		}, duration);
 	}
 	
 	// Don't touch these, they're required to work.
