@@ -122,9 +122,6 @@ public class Cronus_deity implements Listener
 			if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
 			{
 				if(!DCharUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
-
-				// Set the ability's delay
-				CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
 				
 				cleave(damageEvent);
 			}
@@ -142,9 +139,6 @@ public class Cronus_deity implements Listener
 		if(DCharUtil.isEnabledAbility(player, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, SLOW_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
-
-			// Set the ability's delay
-			SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
 
 			slow(player);
 		}
@@ -182,6 +176,7 @@ public class Cronus_deity implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, attacked, CLEAVE_COST)) return;
+		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
 		DCharUtil.subtractFavor(charID, CLEAVE_COST);
 			
 		for(int i = 1; i <= 31; i += 4) attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
@@ -239,6 +234,7 @@ public class Cronus_deity implements Listener
 		if(DMiscUtil.autoTarget(player) instanceof Player) target = (Player) DMiscUtil.autoTarget(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, SLOW_COST)) return;
+		SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
 		DCharUtil.subtractFavor(charID, SLOW_COST);
 		
 		if(target.getEntityId() != player.getEntityId())

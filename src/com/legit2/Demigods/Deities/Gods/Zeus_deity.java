@@ -123,18 +123,12 @@ public class Zeus_deity implements Listener
 		{
 			if(!DCharUtil.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
 
-			// Set the ability's delay
-			SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
-
 			shove(player);
 		}
 		
 		if(DCharUtil.isEnabledAbility(player, LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, LIGHTNING_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
-
-			// Set the ability's delay
-			LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
 
 			lightning(player);
 		}
@@ -181,6 +175,7 @@ public class Zeus_deity implements Listener
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, SHOVE_COST)) return;
+		SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
 		DCharUtil.subtractFavor(charID, SHOVE_COST);
 		
 		Vector vector = player.getLocation().toVector();
@@ -226,6 +221,7 @@ public class Zeus_deity implements Listener
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, LIGHTNING_COST)) return;
+		LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
 		DCharUtil.subtractFavor(charID, LIGHTNING_COST);
 		
 		strikeLightning(player, target);

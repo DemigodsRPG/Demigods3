@@ -21,7 +21,7 @@ public class DAbilityUtil
 		}
 		else if(DCharUtil.getFavor(charID) < cost)
 		{
-			player.sendMessage(ChatColor.GRAY + "You do not have enough favor.");
+			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
 			return false;
 		}
 		else return true;

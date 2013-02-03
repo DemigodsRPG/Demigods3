@@ -121,9 +121,6 @@ public class Poseidon_deity implements Listener
 		if(DCharUtil.isEnabledAbility(player, REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
 			if(!DCharUtil.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
-			
-			// Set the ability's delay
-			REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
 
 			reel(player);
 		}
@@ -131,9 +128,6 @@ public class Poseidon_deity implements Listener
 		if(DCharUtil.isEnabledAbility(player, DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, DROWN_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
-
-			// Set the ability's delay
-			DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
 
 			drown(player);
 		}
@@ -187,6 +181,8 @@ public class Poseidon_deity implements Listener
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, REEL_COST)) return;
 		DCharUtil.subtractFavor(charID, REEL_COST);
+		REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
+		
 		DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
 		
 		if(target.getLocation().getBlock().getType() == Material.AIR)
@@ -194,8 +190,6 @@ public class Poseidon_deity implements Listener
 			target.getLocation().getBlock().setType(Material.WATER);
 			target.getLocation().getBlock().setData((byte) 0x8);
 		}
-		
-		REEL_TIME = System.currentTimeMillis();
 	}
 	
 	/*
@@ -238,6 +232,9 @@ public class Poseidon_deity implements Listener
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, DROWN_COST)) return;
 		DCharUtil.subtractFavor(charID, DROWN_COST);
+		
+		// Set the ability's delay
+		DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
 		
 		final ArrayList<Block> toReset = new ArrayList<Block>();
 		for(int x =- radius; x <= radius; x++)

@@ -113,9 +113,6 @@ public class Template implements Listener
 		{
 			if(!DCharUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
-			// Set the ability's delay
-			TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
-
 			testabil(player);
 		}
 	}
@@ -157,6 +154,7 @@ public class Template implements Listener
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, TEST_COST)) return;
+		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 		DCharUtil.subtractFavor(charID, TEST_COST);
 		
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");

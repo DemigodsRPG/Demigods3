@@ -97,9 +97,6 @@ public class Themis_deity implements Listener
 		{
 			if(!DCharUtil.isCooledDown(player, SWAP_NAME, SWAP_TIME, false)) return;
 
-			// Set the ability's delay
-			SWAP_TIME = System.currentTimeMillis() + SWAP_DELAY;
-
 			swap(player);
 		}
 	}
@@ -144,6 +141,7 @@ public class Themis_deity implements Listener
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, SWAP_COST)) return;
+		SWAP_TIME = System.currentTimeMillis() + SWAP_DELAY;
 		DCharUtil.subtractFavor(charID, SWAP_COST);
 
 		player.teleport(target.getLocation());
