@@ -218,7 +218,7 @@ public class DMiscUtil
     public static boolean canTarget(Entity player, Location fallback)
     {     
     	if(!(player instanceof Player)) return true;
-    	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP")) return true;
+    	else if(DDataUtil.hasPlayerData((Player) player, "temp_was_PVP") && DConfigUtil.getSettingBoolean("use_dynamic_pvp_zones")) return true;
     	else return !DZoneUtil.zoneNoPVP(fallback);
     }
     public static boolean canTarget(Entity player)
