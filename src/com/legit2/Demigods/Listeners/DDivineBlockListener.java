@@ -219,9 +219,8 @@ public class DDivineBlockListener implements Listener
 			DCharUtil.giveDevotion(charID, tributeValue);
 			
 			if(DCharUtil.getDevotion(charID) > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  DCharUtil.getDevotion(charID) + ChatColor.GRAY + ".");
-			if(DCharUtil.getMaxFavor(charID) > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ".");
+			if(DCharUtil.getMaxFavor(charID) > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ChatColor.GRAY + ".");
 			
-			// If they aren't good enough let them know
 			if(favorBefore != DCharUtil.getMaxFavor(charID) && devotionBefore != DCharUtil.getDevotion(charID) && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
@@ -238,6 +237,7 @@ public class DDivineBlockListener implements Listener
 			}
 			else
 			{
+				// If they aren't good enough let them know
 				if(items > 0) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + charDeity + "'s blessings.");
 			}
 			

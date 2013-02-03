@@ -61,14 +61,14 @@ public class DMiscUtil
 	}
 	
 	/*
-	 *  areAllied() : Returns true if (String)player is allied with (String)otherPlayer.
+	 *  areAllied() : Returns true if (Player)player1 is allied with (Player)player2.
 	 */
 	public static boolean areAllied(Player player1, Player player2)
 	{
-		String playerAlliance = DPlayerUtil.getCurrentAlliance(player1);
-		String otherPlayerAlliance = DPlayerUtil.getCurrentAlliance(player2);
+		String player1Alliance = DPlayerUtil.getCurrentAlliance(player1);
+		String player2Alliance = DPlayerUtil.getCurrentAlliance(player2);
 		
-		if(playerAlliance.equals(otherPlayerAlliance)) return true;
+		if(player1Alliance.equals(player2Alliance)) return true;
 		else return false;
 	}
 	
