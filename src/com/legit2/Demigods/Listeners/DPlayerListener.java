@@ -138,6 +138,7 @@ public class DPlayerListener implements Listener
 			hold.setPitch(to.getPitch());
 			if(hold != to)
 			{
+				DMiscUtil.serverMsg("Weiner 1");
 				event.setCancelled(true);
 				player.teleport(from);
 				DDataUtil.savePlayerData(player, "temp_player_held", true);
