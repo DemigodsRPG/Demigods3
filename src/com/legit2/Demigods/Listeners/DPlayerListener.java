@@ -133,12 +133,8 @@ public class DPlayerListener implements Listener
 		// Player Hold
 		if(DDataUtil.hasPlayerData(player, "temp_player_hold"))
 		{
-			Location hold = from;
-			hold.setYaw(to.getYaw());
-			hold.setPitch(to.getPitch());
-			if(hold != to)
+			if(from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())
 			{
-				DMiscUtil.serverMsg("Weiner 1");
 				event.setCancelled(true);
 				player.teleport(from);
 				DDataUtil.savePlayerData(player, "temp_player_held", true);
