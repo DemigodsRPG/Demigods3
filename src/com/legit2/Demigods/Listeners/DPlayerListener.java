@@ -136,7 +136,7 @@ public class DPlayerListener implements Listener
 			Location hold = from;
 			hold.setYaw(to.getYaw());
 			hold.setPitch(to.getPitch());
-			if(hold != from)
+			if(hold != to)
 			{
 				event.setCancelled(true);
 				player.teleport(from);
