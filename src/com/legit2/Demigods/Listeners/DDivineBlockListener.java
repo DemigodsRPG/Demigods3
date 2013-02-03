@@ -224,12 +224,15 @@ public class DDivineBlockListener implements Listener
 			if(favorBefore != DCharUtil.getMaxFavor(charID) && devotionBefore != DCharUtil.getDevotion(charID) && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				Player shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner).getPlayer();
+				OfflinePlayer shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner).getPlayer();
 				if(!DCharUtil.getOwner(charID).equals(shrineOwnerPlayer))
 				{
 					DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
-					shrineOwnerPlayer.sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-					shrineOwnerPlayer.sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+					if(shrineOwnerPlayer.isOnline())
+					{
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+					}
 				}
 			}
 			else
