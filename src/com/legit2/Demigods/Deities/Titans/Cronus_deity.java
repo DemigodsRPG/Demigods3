@@ -18,7 +18,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -73,29 +72,50 @@ public class Cronus_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
-			
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/cleave" + ChatColor.WHITE + " - Do damage to your target.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/slow" + ChatColor.WHITE + " - Slow your target.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/timestop" + ChatColor.WHITE + " - Stop time for our enemies while you plan your next attack.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 		else
-		{
-			// Get Claim Item Names from ArrayList
-			ArrayList<String> claimItemNames = new ArrayList<String>();
+		{						
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/cleave" + ChatColor.WHITE + " - Do damage to your target.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/slow" + ChatColor.WHITE + " - Slow your target.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/timestop" + ChatColor.WHITE + " - Stop time for our enemies while you plan your next attack.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
-				claimItemNames.add(item.name());
+				toReturn.add(ChatColor.GRAY + " -> " + item.name());
 			}
-			
-			// Make Claim Items readable.
-			String claimItems = Joiner.on(", ").join(claimItemNames);
-			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add("Claim Items: " + claimItems);
-			
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 	}
+
 
 	// This sets the particular passive ability for the Cronus deity.
 	@EventHandler(priority = EventPriority.MONITOR)
