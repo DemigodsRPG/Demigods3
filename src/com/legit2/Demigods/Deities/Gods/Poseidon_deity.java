@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
@@ -72,27 +71,28 @@ public class Poseidon_deity implements Listener
 			toReturn.add(ChatColor.GRAY + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GREEN + " You are a follower of " + DEITYNAME + "!");
+			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
 			
 			return toReturn;
 		}
 		else
 		{
-			// Get Claim Item Names from ArrayList
-			ArrayList<String> claimItemNames = new ArrayList<String>();
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
-				claimItemNames.add(item.name());
+				toReturn.add(ChatColor.GRAY + " -> " + item.name());
 			}
-			
-			// Make Claim Items readable.
-			String claimItems = Joiner.on(", ").join(claimItemNames);
-			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
-			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
-			toReturn.add(ChatColor.GRAY + "-> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
-			toReturn.add("Claim Items: " + claimItems);
+			toReturn.add(" ");
 			
 			return toReturn;
 		}

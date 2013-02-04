@@ -12,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -61,26 +60,44 @@ public class Themis_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
-			
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 		else
-		{
-			// Get Claim Item Names from ArrayList
-			ArrayList<String> claimItemNames = new ArrayList<String>();
+		{						
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
-				claimItemNames.add(item.name());
+				toReturn.add(ChatColor.GRAY + " -> " + item.name());
 			}
-			
-			// Make Claim Items readable.
-			String claimItems = Joiner.on(", ").join(claimItemNames);
-			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add("Claim Items: " + claimItems);
-			
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 	}

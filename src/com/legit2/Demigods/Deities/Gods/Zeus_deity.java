@@ -15,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.google.common.base.Joiner;
 import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
@@ -69,26 +68,46 @@ public class Zeus_deity implements Listener
 		
 		if(DMiscUtil.canUseDeitySilent(player, DEITYNAME))
 		{
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
-			
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 		else
-		{
-			// Get Claim Item Names from ArrayList
-			ArrayList<String> claimItemNames = new ArrayList<String>();
+		{						
+			toReturn.add(" "); //TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.GRAY + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
-				claimItemNames.add(item.name());
+				toReturn.add(ChatColor.GRAY + " -> " + item.name());
 			}
-			
-			// Make Claim Items readable.
-			String claimItems = Joiner.on(", ").join(claimItemNames);
-			
-			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); //TODO
-			toReturn.add("Claim Items: " + claimItems);
-			
+			toReturn.add(" ");
+
 			return toReturn;
 		}
 	}
