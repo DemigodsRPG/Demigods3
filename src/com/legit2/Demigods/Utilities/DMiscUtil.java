@@ -93,7 +93,9 @@ public class DMiscUtil
 	 */
 	public static void taggedMessage(CommandSender sender, String msg)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "[" + plugin_name + "] " + msg);
+		sender.sendMessage(" ");
+		sender.sendMessage(ChatColor.AQUA + " " + plugin_name + " > " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.RESET + "-----------------------------------------------------");
 	}
 	
 	/*
@@ -101,7 +103,9 @@ public class DMiscUtil
 	 */
 	public static void customTaggedMessage(CommandSender sender, String title, String msg)
 	{
-		sender.sendMessage(ChatColor.YELLOW + "[" + title + "] " + msg);
+		sender.sendMessage(" ");
+		sender.sendMessage(ChatColor.AQUA + " " + plugin_name + " > " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.RESET + "-----------------------------------------------------");
 	}
 	
 	/*

@@ -112,10 +112,11 @@ public class DCommandExecutor implements CommandExecutor
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.basic")) return DMiscUtil.noPermission(player);
 		
 		DMiscUtil.taggedMessage(sender, "Command Directory");
-		for(String alliance : DDeityUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase());
-		sender.sendMessage(ChatColor.GRAY + "/dg info");
-		if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + "/dg admin");
-		sender.sendMessage(ChatColor.WHITE + "Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
+		for(String alliance : DDeityUtil.getLoadedDeityAlliances()) sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
+		sender.sendMessage(ChatColor.GRAY + " /dg info");
+		if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
+		sender.sendMessage(" ");
+		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
 		return true;
 	}
 
@@ -172,18 +173,14 @@ public class DCommandExecutor implements CommandExecutor
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
 				DMiscUtil.taggedMessage(sender, "About the Plugin");
-				sender.sendMessage(ChatColor.GRAY + " Not to be confused with other RPG plugins that focus on skills and classes alone,");
-				sender.sendMessage(ChatColor.YELLOW + " Demigods" + ChatColor.GRAY + " adds culture and conflict that will keep players coming back even after");
-				sender.sendMessage(ChatColor.GRAY + " they've maxed out their levels and found all of the diamonds in a 50km radius.");
+				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.YELLOW + " Demigods" + ChatColor.GRAY + " is unique in its system of rewarding players for both adventuring (tributes)");
-				sender.sendMessage(ChatColor.GRAY + " and conquering (PvP) with a wide array of fun and usefull skills.");
+				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and usefull skills.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GRAY + " Re-enact mythological battles and rise from a Demigod to a full-fledged Olympian");
-				sender.sendMessage(ChatColor.GRAY + " as you form new Alliances with mythical groups and battle to the bitter end.");
+				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a Demigod to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.YELLOW + "_Alex" + ChatColor.GRAY + " and " + ChatColor.YELLOW + "HmmmQuestionMark");
-				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "https://github.com/Clashnia/Minecraft-Demigods");
+				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
+				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.GREEN + "https://github.com/Clashnia/Minecraft-Demigods");
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
@@ -213,7 +210,7 @@ public class DCommandExecutor implements CommandExecutor
 			else if(option1.equalsIgnoreCase("stats"))
 			{
 				DMiscUtil.taggedMessage(sender, "Stats");
-				sender.sendMessage(ChatColor.GRAY + " Read some global stats made from Demigods.");
+				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
 			}
 			else if(option1.equalsIgnoreCase("rankings"))
 			{
@@ -229,13 +226,13 @@ public class DCommandExecutor implements CommandExecutor
 				if(args.length < 2)
 				{
 					DMiscUtil.taggedMessage(sender, alliance + " Directory");
-					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) sender.sendMessage(ChatColor.GRAY + "/dg " + alliance.toLowerCase() + " " + deity.toLowerCase());	
+					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.toLowerCase());	
 				}
 				else
 				{
 					for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance))
 					{
-						if(args[1].equalsIgnoreCase(deity))
+						if(option1.equalsIgnoreCase(deity))
 						{
 							try
 							{
@@ -250,7 +247,7 @@ public class DCommandExecutor implements CommandExecutor
 							}
 						}
 					}
-					sender.sendMessage(ChatColor.DARK_RED + "No such deity, please try again.");
+					sender.sendMessage(ChatColor.DARK_RED + " No such deity, please try again.");
 					return false;
 				}
 			}
@@ -517,7 +514,7 @@ public class DCommandExecutor implements CommandExecutor
 		if(favor > Math.ceil(0.66 * maxFavor)) favorColor = ChatColor.GREEN;
 		
 		// Send the user their info via chat
-		DMiscUtil.customTaggedMessage(sender, "Demigods Player Check", "");
+		DMiscUtil.taggedMessage(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DObjUtil.capitalize(alliance) + "s");
