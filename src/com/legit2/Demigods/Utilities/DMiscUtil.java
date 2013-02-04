@@ -68,7 +68,13 @@ public class DMiscUtil
 		String player1Alliance = DPlayerUtil.getCurrentAlliance(player1);
 		String player2Alliance = DPlayerUtil.getCurrentAlliance(player2);
 		
-		if(player1Alliance.equals(player2Alliance)) return true;
+		// TODO DEBUG MESSAGES
+		player1.sendMessage(player1.getName() + ": " + player1Alliance);
+		player1.sendMessage(player2.getName() + ": " + player2Alliance);
+		player2.sendMessage(player1.getName() + ": " + player1Alliance);
+		player2.sendMessage(player2.getName() + ": " + player2Alliance);
+		
+		if(player1Alliance.equalsIgnoreCase(player2Alliance)) return true;
 		else return false;
 	}
 	
