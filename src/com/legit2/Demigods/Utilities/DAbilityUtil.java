@@ -42,6 +42,7 @@ public class DAbilityUtil
 			}
 			else if(target instanceof Player)
 			{
+				player.sendMessage(ChatColor.YELLOW + "Target is your ally."); // TODO, REMOVE THIS LATER
 				if(DMiscUtil.areAllied(player, (Player) target)) return false;
 			}
 			else return true;
