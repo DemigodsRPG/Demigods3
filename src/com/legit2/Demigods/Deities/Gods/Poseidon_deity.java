@@ -90,7 +90,7 @@ public class Poseidon_deity implements Listener
 			toReturn.add(ChatColor.GRAY + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
-				toReturn.add(ChatColor.GRAY + " -> " + item.name());
+				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
 			}
 			toReturn.add(" ");
 			
