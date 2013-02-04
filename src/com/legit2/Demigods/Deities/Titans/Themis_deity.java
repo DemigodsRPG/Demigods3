@@ -63,13 +63,13 @@ public class Themis_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
@@ -82,16 +82,16 @@ public class Themis_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Claim Items:");
+			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
 				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());

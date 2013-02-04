@@ -64,11 +64,11 @@ public class Poseidon_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
@@ -80,14 +80,14 @@ public class Poseidon_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Claim Items:");
+			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
 				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());

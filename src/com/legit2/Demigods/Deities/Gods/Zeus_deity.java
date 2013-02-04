@@ -71,14 +71,14 @@ public class Zeus_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
@@ -91,17 +91,17 @@ public class Zeus_deity implements Listener
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-			toReturn.add(ChatColor.GRAY + " Active:");
+			toReturn.add(ChatColor.YELLOW + " Active:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Passive:");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Ultimate:");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
 			toReturn.add(" ");
-			toReturn.add(ChatColor.GRAY + " Claim Items:");
+			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
 			{
 				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
