@@ -1,11 +1,13 @@
 package com.legit2.Demigods.Listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Utilities.DDeityUtil;
 
 public class DCommandListener implements Listener
 {
@@ -20,8 +22,16 @@ public class DCommandListener implements Listener
 	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 		String message = event.getMessage();
-		event.getPlayer();
+		String[] args = message.split("\\s+");
+		Player player = event.getPlayer();
 		
-		// DDeityUtil.invokeDeityCommand();
+		try
+		{
+			DDeityUtil.invokeDeityCommand(player, args);
+		}
+		catch(Exception e)
+		{
+			// Not a command
+		}
 	}
 }

@@ -53,17 +53,17 @@ public class DDeityUtil
 	}
 	
 	/*
-	 *  invokeDeityMethodWithArrayListString() : Invokes a static method, with an ArrayList, from inside a deity class.
+	 *  invokeDeityMethodWithStringArray() : Invokes a static method, with an ArrayList, from inside a deity class.
 	 */
-	public static Object invokeDeityMethodWithArrayListString(String deityClass, String method, ArrayList<String> paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public static Object invokeDeityMethodWithStringArray(String deityClass, String method, String[] paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
 		// Creates a new instance of the deity class
 		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, ArrayList.class);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
 		
-		return toInvoke.invoke(obj, paramater);
+		return toInvoke.invoke(obj, (Object[]) paramater);
 	}
 	
 	/*
@@ -83,9 +83,10 @@ public class DDeityUtil
 	/*
 	 *  invokeDeityCommand : Invokes a deity command.
 	 */
-	public static void invokeDeityCommand(String command, Player player, ArrayList<String> args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public static void invokeDeityCommand(Player player, String[] args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		String deity = null;
+		String command = args[0];
 		
 		for(Entry<String, Object> deityCommands : DDataUtil.getAllPluginData().get("temp_deity_commands").entrySet())
 		{	
@@ -99,7 +100,7 @@ public class DDeityUtil
 		
 		String deityClass = getDeityClass(deity);
 
-		invokeDeityMethodWithArrayListString(deityClass, command, args);
+		invokeDeityMethodWithStringArray(deityClass, command + "Command", args);
 	}
 	
 	/*
