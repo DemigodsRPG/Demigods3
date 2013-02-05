@@ -38,11 +38,16 @@ public class DCommandListener implements Listener
 		
 		try
 		{
-			DDeityUtil.invokeDeityCommand(player, args);
+			if(DDeityUtil.invokeDeityCommand(player, args))
+			{
+				event.setCancelled(true);
+				return;
+			}
 		}
 		catch(Exception e)
 		{
 			// Not a command
+			e.printStackTrace();
 		}
 	}
 }
