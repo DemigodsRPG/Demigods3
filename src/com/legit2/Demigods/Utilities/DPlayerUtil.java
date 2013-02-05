@@ -2,8 +2,8 @@ package com.legit2.Demigods.Utilities;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -106,16 +106,13 @@ public class DPlayerUtil
 	/*
 	 *  getChars() : Returns an ArrayList of (Player)player's characters.
 	 */
-	public static ArrayList<String> getChars(OfflinePlayer player)
-	{
-		if(DDataUtil.getPlayerData(player, "player_characters") != null) 
-		{
-			String playerChars = (String) DDataUtil.getPlayerData(player, "player_characters");
-			ArrayList<String> chars = new ArrayList<String>(Arrays.asList(playerChars.split(",")));
-			
-			return chars;
-		}
-		else return null;
+	public static List<Integer> getChars(OfflinePlayer player)
+	{	
+		List<Integer> charArray = new ArrayList<Integer>();
+		HashMap<Integer, HashMap<String, Object>> characters = DDataUtil.getAllPlayerChars(player);
+		if(characters == null) return charArray;
+		for(Integer charID : characters.keySet()) charArray.add(charID);
+		return charArray;
 	}
 	
 	/*
