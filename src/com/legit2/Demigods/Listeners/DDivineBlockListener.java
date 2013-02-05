@@ -891,7 +891,7 @@ public class DDivineBlockListener implements Listener
 		{
 			if(DZoneUtil.zoneNoPVP(block.getLocation()))
 			{
-				savedBlocks.add(block);
+				if(block.getType() != Material.TNT) savedBlocks.add(block);
 				savedMaterials.add(block.getType());
 				savedBytes.add(block.getData());
 				continue;
@@ -901,7 +901,7 @@ public class DDivineBlockListener implements Listener
 			{
 				if(block.getLocation().equals(divineBlock))
 				{
-					savedBlocks.add(block);
+					if(block.getType() != Material.TNT) savedBlocks.add(block);
 					savedMaterials.add(block.getType());
 					savedBytes.add(block.getData());
 					break;
