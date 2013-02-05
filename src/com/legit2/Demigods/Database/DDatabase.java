@@ -243,7 +243,10 @@ public class DDatabase
 		
 			// Define player-specific variables
 			List<Integer> playerCharList = (ArrayList<Integer>) allPlayerData.get("player_characters");
-			String playerChars = Joiner.on(",").join(playerCharList);
+			String playerChars;
+			if(playerCharList != null) playerChars = Joiner.on(",").join(playerCharList);
+			else playerChars = null;
+			
 			int playerKills = DObjUtil.toInteger(allPlayerData.get("player_kills"));
 			int playerDeaths = DObjUtil.toInteger(allPlayerData.get("player_deaths"));
 			Long playerLastLogin = (Long) allPlayerData.get("player_lastlogin");
@@ -390,7 +393,11 @@ public class DDatabase
 					
 					OfflinePlayer player = DPlayerUtil.definePlayer(playerResult.getString("player_name"));
 					int playerID = playerResult.getInt("player_id");
-					List<String> playerCharList = Arrays.asList(playerResult.getString("player_characters").split(","));
+					
+					List<String> playerCharList;
+					String playerChars = playerResult.getString("player_characters");
+					if(playerChars != null) playerCharList = Arrays.asList(playerChars.split(","));
+					else playerCharList = new ArrayList<String>();
 					
 					// Load the main player data
 					DDataUtil.addPlayer(player, playerID);
