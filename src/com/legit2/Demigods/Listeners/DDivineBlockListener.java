@@ -334,10 +334,11 @@ public class DDivineBlockListener implements Listener
 			String message = event.getMessage();
 			
 			// Return to main menu
-			if(message.equalsIgnoreCase("menu"))
+			if(message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
 			{
 				// Remove now useless data
 				DDataUtil.removePlayerData(player, "temp_createchar");
+				DDataUtil.removePlayerData(player, "temp_altar_previous");
 				
 				player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
 				player.sendMessage(" ");
@@ -448,7 +449,7 @@ public class DDivineBlockListener implements Listener
 				viewChars(player);
 				return;	
 			}
-			// else if(DDataUtil.hasPlayerData(player, "temp_altar_previous") && DDataUtil.getPlayerData(player, "temp_altar_previous").equals("view_chars"));
+			else if(DDataUtil.hasPlayerData(player, "temp_altar_previous") && DDataUtil.getPlayerData(player, "temp_altar_previous").equals("view_chars"));
 			
 			// Switch Character
 			else if(message.equals("4") || message.contains("switch character"))
@@ -490,7 +491,7 @@ public class DDivineBlockListener implements Listener
 		
 		for(Integer charID : chars)
 		{
-			String active = "";
+			String color = "";
 			String name = DCharUtil.getName(charID);
 			String deity = DCharUtil.getDeity(charID);
 			int favor = DCharUtil.getFavor(charID);
@@ -499,10 +500,9 @@ public class DDivineBlockListener implements Listener
 			int devotion = DCharUtil.getDevotion(charID);
 			int ascensions = DCharUtil.getAscensions(charID);
 			
-			if(DPlayerUtil.getCurrentChar(player) == charID) active = ChatColor.LIGHT_PURPLE + "";
+			if(DPlayerUtil.getCurrentChar(player) == charID) color = ChatColor.LIGHT_PURPLE + "";
 
-			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + active + name + ChatColor.GRAY + " [" + DDeityUtil.getDeityColor(deity) + deity + ChatColor.GRAY + " / Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Ascensions: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
-		
+			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + DDeityUtil.getDeityColor(deity) + deity + ChatColor.GRAY + " / Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Ascensions: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
 		}
 		
 		player.sendMessage(" ");

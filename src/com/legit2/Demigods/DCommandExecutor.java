@@ -2,6 +2,7 @@ package com.legit2.Demigods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -268,6 +269,7 @@ public class DCommandExecutor implements CommandExecutor
 		{
 			DMiscUtil.taggedMessage(sender, "Admin Directory");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin check <player> <character>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin set [favor|devotion|ascensions] <player> <amount>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin add [favor|devotion|ascensions] <player> <amount>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [favor|devotion|ascensions] <player> <amount>");
@@ -289,17 +291,48 @@ public class DCommandExecutor implements CommandExecutor
 				}
 				return true;
 			}
-			else if(option1.equals("set"))
-			{		
+			else if(option1.equals("check"))
+			{
 				if(option2 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to be more specific.");
-					sender.sendMessage("/dg admin set [favor|devotion|ascensions] <player> <amount>");
+					sender.sendMessage(ChatColor.RED + "You need to specify a player.");
+					sender.sendMessage("/dg admin check <player>");
 					return true;
 				}
-				else if(option2 == null || option3 == null)
+				
+				// Define variables
+				Player toCheck = Bukkit.getPlayer(option2);
+				
+				if(option3 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+					DMiscUtil.taggedMessage(sender, ChatColor.RED + "Player Check: " + toCheck.getName());
+					sender.sendMessage(" Characters:");
+
+					List<Integer> chars = DPlayerUtil.getChars(player);
+					
+					for(Integer checkingCharID : chars)
+					{
+						String name = DCharUtil.getName(checkingCharID);
+						String deity = DCharUtil.getDeity(checkingCharID);
+						//favor = DCharUtil.getFavor(checkingCharID);
+						//int maxFavor = DCharUtil.getMaxFavor(checkingCharID);
+						//ChatColor favorColor = DCharUtil.getFavorColor(checkingCharID);
+						//int devotion = DCharUtil.getDevotion(checkingCharID);
+						//int ascensions = DCharUtil.getAscensions(checkingCharID);
+						
+						player.sendMessage(ChatColor.GRAY + " -> (#: " + checkingCharID + ") Name: " + name + " / Deity: " + deity);
+					}
+				}
+				else
+				{
+					// TODO: Display specific character information when called for.
+				}
+			}
+			else if(option1.equals("set"))
+			{
+				if(option2 == null || option3 == null)
+				{
+					sender.sendMessage(ChatColor.RED + "You need to specify a player and amount.");
 					sender.sendMessage("/dg admin set [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
