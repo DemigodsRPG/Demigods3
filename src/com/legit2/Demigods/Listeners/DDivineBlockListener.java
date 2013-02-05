@@ -75,6 +75,8 @@ public class DDivineBlockListener implements Listener
 		String charAlliance = DCharUtil.getAlliance(charID);
 		String charDeity = DCharUtil.getDeity(charID);
 		
+		removeShrine(player, location);
+		
 		if(event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
 		{						
 			try
@@ -109,6 +111,20 @@ public class DDivineBlockListener implements Listener
 		Location location = event.getRightClicked().getLocation().subtract(0.5, 1.0, 0.5);
 		Player player = event.getPlayer();
 		
+		removeShrine(player, location);
+		
+		// Return if the player is mortal
+		if(!DCharUtil.isImmortal(event.getPlayer()))
+		{
+			event.getPlayer().sendMessage(ChatColor.RED + "You must be immortal to use that!");
+			return;
+		}
+		
+		useShrine(player, location);
+	}
+	
+	private void removeShrine(Player player, Location location)
+	{
 		// First handle admin wand
 		if(DMiscUtil.hasPermissionOrOP(player, "demigods.admin") && DDataUtil.hasPlayerData(player, "temp_admin_wand") && DDataUtil.getPlayerData(player, "temp_admin_wand").equals(true) && player.getItemInHand().getTypeId() == DConfigUtil.getSettingInt("admin_wand_tool"))
 		{
@@ -133,18 +149,9 @@ public class DDivineBlockListener implements Listener
 				return;
 			}
 		}
-		
-		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer()))
-		{
-			event.getPlayer().sendMessage(ChatColor.RED + "You must be immortal to use that!");
-			return;
-		}
-		
-		useShrine(player, location);
 	}
 	
-	public void useShrine(Player player, Location location)
+	private void useShrine(Player player, Location location)
 	{
 		int charID = DPlayerUtil.getCurrentChar(player);
 		try
