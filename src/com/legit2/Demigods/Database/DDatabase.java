@@ -393,7 +393,11 @@ public class DDatabase
 					
 					OfflinePlayer player = DPlayerUtil.definePlayer(playerResult.getString("player_name"));
 					int playerID = playerResult.getInt("player_id");
-					List<String> playerCharList = Arrays.asList(playerResult.getString("player_characters").split(","));
+					
+					List<String> playerCharList;
+					String playerChars = playerResult.getString("player_characters");
+					if(playerChars != null) playerCharList = Arrays.asList(playerChars.split(","));
+					else playerCharList = new ArrayList<String>();
 					
 					// Load the main player data
 					DDataUtil.addPlayer(player, playerID);
