@@ -338,6 +338,10 @@ public class DDivineBlockListener implements Listener
 			{
 				// Remove now useless data
 				DDataUtil.removePlayerData(player, "temp_createchar");
+				
+				player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
+				player.sendMessage(" ");
+
 				altarMenu(player);
 				return;	
 			}
@@ -426,14 +430,33 @@ public class DDivineBlockListener implements Listener
 			// Remove Character
 			else if(message.equals("2") || message.contains("remove character"))
 			{
-				player.sendMessage(ChatColor.GRAY + "Currently Unavailable. Use /removechar <name>");
+				player.sendMessage(ChatColor.RED + " -> Removing Characters -------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + "  Currently Unavailable. Use /removechar <name>");
+				player.sendMessage(" ");
 				return;	
 			}
 			
 			// Remove Character
 			else if(message.equals("3") || message.contains("view characters"))
 			{
+				player.sendMessage(ChatColor.YELLOW + " -> Viewing Characters --------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.LIGHT_PURPLE + "  Light purple " + ChatColor.GRAY + "represents your current character.");
+				player.sendMessage(" ");
+
 				viewChars(player);
+				return;	
+			}
+			// else if(DDataUtil.hasPlayerData(player, "temp_altar_previous") && DDataUtil.getPlayerData(player, "temp_altar_previous").equals("view_chars"));
+			
+			// Switch Character
+			else if(message.equals("4") || message.contains("switch character"))
+			{
+				player.sendMessage(ChatColor.YELLOW + " -> Switch Characters ---------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + "  Currently Unavailable. Use /switchchar <name>");
+				player.sendMessage(" ");
 				return;	
 			}
 		}
@@ -453,20 +476,33 @@ public class DDivineBlockListener implements Listener
 		
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
+		player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.YELLOW + "Switch Characters");
 		player.sendMessage(" ");
 	}
 	
 	// View characters
+	@SuppressWarnings("unused")
 	private void viewChars(Player player)
 	{
+		DDataUtil.savePlayerData(player, "temp_altar_previous", "view_chars");
+
 		List<Integer> chars = DPlayerUtil.getChars(player);
-		
-		player.sendMessage(ChatColor.YELLOW + " -> Viewing Characters ---------------------------------");
-		player.sendMessage(" ");
 		
 		for(Integer charID : chars)
 		{
-			player.sendMessage(ChatColor.GRAY + "  -> " + DCharUtil.getName(DObjUtil.toInteger(charID)) + "");
+			String active = "";
+			String name = DCharUtil.getName(charID);
+			String deity = DCharUtil.getDeity(charID);
+			int favor = DCharUtil.getFavor(charID);
+			int maxFavor = DCharUtil.getMaxFavor(charID);
+			ChatColor favorColor = DCharUtil.getFavorColor(charID);
+			int devotion = DCharUtil.getDevotion(charID);
+			int ascensions = DCharUtil.getAscensions(charID);
+			
+			if(DPlayerUtil.getCurrentChar(player) == charID) active = ChatColor.LIGHT_PURPLE + "";
+
+			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + active + name + ChatColor.GRAY + " [" + DDeityUtil.getDeityColor(deity) + deity + ChatColor.GRAY + " / Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Ascensions: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
+		
 		}
 		
 		player.sendMessage(" ");
@@ -602,7 +638,7 @@ public class DDivineBlockListener implements Listener
 	
 	@SuppressWarnings("unchecked")
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void altarDeityConfirmation(InventoryCloseEvent event)
+	public void createCharacter(InventoryCloseEvent event)
 	{
 		try
 		{
@@ -646,7 +682,7 @@ public class DDivineBlockListener implements Listener
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!
-				DCharUtil.createChar(player, chosenName, chosenDeity);
+				DCharUtil.createChar(player, chosenName, chosenDeity);				
 				DDataUtil.removePlayerData(player, "temp_createchar");
 				player.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
 				player.getWorld().strikeLightningEffect(player.getLocation());

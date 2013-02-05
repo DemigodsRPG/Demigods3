@@ -504,12 +504,7 @@ public class DCommandExecutor implements CommandExecutor
 		int ascensions = DCharUtil.getAscensions(charID);
 		int devotionGoal = DCharUtil.getDevotionGoal(charID);	
 		ChatColor deityColor = (ChatColor) DDataUtil.getPluginData("temp_deity_colors", deity);
-		ChatColor favorColor = ChatColor.RESET;
-		
-		// Set favor color dynamically
-		if(favor < Math.ceil(0.33 * maxFavor)) favorColor = ChatColor.RED;
-		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) favorColor = ChatColor.YELLOW;
-		if(favor > Math.ceil(0.66 * maxFavor)) favorColor = ChatColor.GREEN;
+		ChatColor favorColor = DCharUtil.getFavorColor(charID);
 		
 		// Send the user their info via chat
 		DMiscUtil.taggedMessage(sender, "Player Check");
