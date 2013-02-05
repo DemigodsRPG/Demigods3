@@ -55,15 +55,15 @@ public class DDeityUtil
 	/*
 	 *  invokeDeityMethodWithStringArray() : Invokes a static method, with an ArrayList, from inside a deity class.
 	 */
-	public static Object invokeDeityMethodWithStringArray(String deityClass, String method, String[] paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public static Object invokeDeityMethodWithStringArray(String deityClass, String method, Player player, String[] paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
 		// Creates a new instance of the deity class
 		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String[].class);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class, String[].class);
 		
-		return toInvoke.invoke(obj, paramater);
+		return toInvoke.invoke(obj, player, paramater);
 	}
 	
 	/*
@@ -101,7 +101,7 @@ public class DDeityUtil
 		
 		String deityClass = getDeityClass(deity);
 
-		invokeDeityMethodWithStringArray(deityClass, command + "Command", args);
+		invokeDeityMethodWithStringArray(deityClass, command + "Command", player, args);
 		return true;
 	}
 	
