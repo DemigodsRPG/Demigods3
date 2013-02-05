@@ -242,7 +242,7 @@ public class DDatabase
 			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
 		
 			// Define player-specific variables
-			List<Integer> playerCharList = (ArrayList<Integer>) allPlayerData.get("player_characters");
+			List<Integer> playerCharList = (List<Integer>) allPlayerData.get("player_characters");
 			String playerChars;
 			if(playerCharList != null) playerChars = Joiner.on(",").join(playerCharList);
 			else playerChars = null;
