@@ -169,9 +169,7 @@ public class Themis_deity implements Listener
 	 *  Command: "/assemble"
 	 */
 	public static void assembleCommand(Player player, String[] args)
-	{
-		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".assemble")) return;
-		
+	{	
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DCharUtil.isImmortal(player)) return;

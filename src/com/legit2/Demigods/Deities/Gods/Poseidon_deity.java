@@ -16,13 +16,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
-public class Poseidon implements Listener
+public class Poseidon_deity implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Poseidon";
@@ -160,9 +159,10 @@ public class Poseidon implements Listener
 	 *
 	 *  Command: "/reel"
 	 */
-	@ReflectCommand.Command(name = "reel", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void reelCommand(Player player, String arg1)
+	public static void reelCommand(Player player, String[] args)
 	{		
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, REEL_NAME))
@@ -201,12 +201,13 @@ public class Poseidon implements Listener
 	/*
 	 *  Command: "/drown"
 	 */
-	@ReflectCommand.Command(name = "drown", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void drownCommand(Player player, String arg1)
+	public static void drownCommand(Player player, String[] args)
 	{		
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, DROWN_NAME, player.getItemInHand().getType());
@@ -283,6 +284,16 @@ public class Poseidon implements Listener
 		REEL_TIME = System.currentTimeMillis();
 		DROWN_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
+	}
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+		
+		// List all commands
+		COMMANDS.add("reel");
+		COMMANDS.add("drown");
+		
+		return COMMANDS;
 	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
