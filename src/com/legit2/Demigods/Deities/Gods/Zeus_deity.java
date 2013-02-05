@@ -15,13 +15,12 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
-public class Zeus implements Listener
+public class Zeus_deity implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Zeus";
@@ -159,12 +158,13 @@ public class Zeus implements Listener
 	 *
 	 *  Command: "/shove"
 	 */
-	@ReflectCommand.Command(name = "shove", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void shoveCommand(Player player, String arg1)
+	public static void shoveCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, SHOVE_NAME, player.getItemInHand().getType());
@@ -206,13 +206,13 @@ public class Zeus implements Listener
 	/*
 	 *  Command: "/lightning"
 	 */
-	
-	@ReflectCommand.Command(name = "lightning", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void lightningCommand(Player player, String arg1)
+	public static void lightningCommand(Player player, String[] args)
 	{		
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, LIGHTNING_NAME, player.getItemInHand().getType());
@@ -249,9 +249,10 @@ public class Zeus implements Listener
 	/*
 	 *  Command: "/storm"
 	 */
-	@ReflectCommand.Command(name = "storm", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
-	public static void ultimateCommand(Player player)
+	public static void stormCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
@@ -354,6 +355,17 @@ public class Zeus implements Listener
 		SHOVE_TIME = System.currentTimeMillis();
 		LIGHTNING_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
+	}
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+		
+		// List all commands
+		COMMANDS.add("shove");
+		COMMANDS.add("lightning");
+		COMMANDS.add("storm");
+		
+		return COMMANDS;
 	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
