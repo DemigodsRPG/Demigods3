@@ -65,11 +65,11 @@ public class ReflectCommand
                             if(varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
                         }
                     }
-                    if (commandSender instanceof Player)
+                    if(commandSender instanceof Player)
                     {
                         if(playerCommands.containsKey(commandName))
                         {
-                            for (Method m : playerCommands.get(commandName))
+                            for(Method m : playerCommands.get(commandName))
                             {
                                 if(varargs.length >= m.getParameterTypes().length) returnValue = m.invoke(null, trim(varargs, m.getParameterTypes().length));
                             }
@@ -88,7 +88,7 @@ public class ReflectCommand
                     if(returnValue != null) return (Boolean) returnValue;
                     else return false;
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     e.printStackTrace();
                     return false;
