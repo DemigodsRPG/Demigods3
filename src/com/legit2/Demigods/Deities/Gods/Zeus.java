@@ -21,7 +21,7 @@ import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
-public class Zeus_deity implements Listener
+public class Zeus implements Listener
 {	
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Zeus";
