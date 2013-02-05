@@ -63,7 +63,7 @@ public class DDeityUtil
 		// Load everything else for the Deity (Listener, etc.)
 		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String[].class);
 		
-		return toInvoke.invoke(obj, (Object[]) paramater);
+		return toInvoke.invoke(obj, paramater);
 	}
 	
 	/*
