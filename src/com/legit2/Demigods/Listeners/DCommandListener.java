@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Utilities.DDeityUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 
 public class DCommandListener implements Listener
 {
@@ -23,6 +24,9 @@ public class DCommandListener implements Listener
 	{
 		String message = event.getMessage();
 		message = message.substring(1);
+		
+		DMiscUtil.serverMsg(message); //DEBUG
+		
 		String[] args = message.split("\\s+");
 		Player player = event.getPlayer();
 		
