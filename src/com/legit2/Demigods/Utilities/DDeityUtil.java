@@ -83,16 +83,17 @@ public class DDeityUtil
 	/*
 	 *  invokeDeityCommand : Invokes a deity command.
 	 */
+	@SuppressWarnings("unchecked")
 	public static boolean invokeDeityCommand(Player player, String[] args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		String deity = null;
 		String command = args[0];
 		
-		for(Entry<String, Object> deityCommands : DDataUtil.getAllPluginData().get("temp_deity_commands").entrySet())
+		for(Entry<String, Object> entry : DDataUtil.getAllPluginData().get("temp_deity_commands").entrySet())
 		{	
-			if(command.equals(deityCommands.getValue().toString()))
+			if(((ArrayList<String>) entry.getValue()).contains(command.toLowerCase()))
 			{
-				deity = deityCommands.getKey();
+				deity = entry.getKey();
 				break;
 			}
 		}
