@@ -3,6 +3,7 @@ package com.legit2.Demigods.Utilities;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
@@ -17,7 +18,6 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.google.common.base.Joiner;
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Database.DDatabase;
 
@@ -66,15 +66,8 @@ public class DCharUtil
 			DDataUtil.saveCharData(charID, "char_ascensions", charAscensions);
 			
 			// Add character to player's character list
-			String chars;
-			if(DPlayerUtil.getChars(player) != null && !DPlayerUtil.getChars(player).contains("null"))
-			{
-				ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
-				charsTemp.add("" + charID);
-				chars = Joiner.on(",").join(charsTemp);
-			}
-			else chars = "" + charID;
-			
+			List<Integer> chars = DPlayerUtil.getChars(player);
+			chars.add(charID);
 			DDataUtil.savePlayerData(player, "player_characters", chars);
 
 			try
@@ -101,8 +94,7 @@ public class DCharUtil
 	{
 		// Define variables
 		Player player = getOwner(charID).getPlayer();
-		ArrayList<String> charsTemp = DPlayerUtil.getChars(player);
-		String chars;
+		List<Integer> chars = DPlayerUtil.getChars(player);
 		
 		if(DDataUtil.removeChar(charID))
 		{
@@ -112,12 +104,7 @@ public class DCharUtil
 			}
 			
 			// Remove from player_characters
-			charsTemp.remove("" + charID);
-			if(!charsTemp.isEmpty())
-			{
-				chars = Joiner.on(",").join(charsTemp);
-			}
-			else chars = null;
+			chars.remove(new Integer(charID));
 			
 			DDataUtil.savePlayerData(player, "player_characters", chars);
 			DDatabase.savePlayer(player);

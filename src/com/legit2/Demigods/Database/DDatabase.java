@@ -2,7 +2,10 @@ package com.legit2.Demigods.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -10,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Joiner;
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
@@ -224,6 +228,7 @@ public class DDatabase
 	/*
 	 *  savePlayerData() : Saves all HashMap data for (OfflinePlayer)player to database.
 	 */
+	@SuppressWarnings("unchecked")
 	public static boolean savePlayer(OfflinePlayer player)
 	{
 		if(DConfigUtil.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
@@ -237,7 +242,8 @@ public class DDatabase
 			HashMap<String, Object> allPlayerData = DDataUtil.getAllPlayerData(player);				
 		
 			// Define player-specific variables
-			String playerChars = (String) allPlayerData.get("player_characters");
+			List<Integer> playerCharList = (ArrayList<Integer>) allPlayerData.get("player_characters");
+			String playerChars = Joiner.on(",").join(playerCharList);
 			int playerKills = DObjUtil.toInteger(allPlayerData.get("player_kills"));
 			int playerDeaths = DObjUtil.toInteger(allPlayerData.get("player_deaths"));
 			Long playerLastLogin = (Long) allPlayerData.get("player_lastlogin");
@@ -249,7 +255,6 @@ public class DDatabase
 			DMySQL.runQuery("DELETE FROM " + DMySQL.playerdata_table + " WHERE player_id=" + playerID + ";");
 			for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_") && !playerData.getKey().contains("temp_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
 			
-				
 			// Save their character-specific data now
 			HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
 			for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
@@ -385,11 +390,12 @@ public class DDatabase
 					
 					OfflinePlayer player = DPlayerUtil.definePlayer(playerResult.getString("player_name"));
 					int playerID = playerResult.getInt("player_id");
+					List<String> playerCharList = Arrays.asList(playerResult.getString("player_characters").split(","));
 					
 					// Load the main player data
 					DDataUtil.addPlayer(player, playerID);
 					DDataUtil.savePlayerData(player, "player_id", playerResult.getInt("player_id"));
-					DDataUtil.savePlayerData(player, "player_characters", playerResult.getString("player_characters"));
+					DDataUtil.savePlayerData(player, "player_characters", playerCharList);
 					DDataUtil.savePlayerData(player, "player_kills", playerResult.getInt("player_kills"));
 					DDataUtil.savePlayerData(player, "player_deaths", playerResult.getInt("player_deaths"));
 					DDataUtil.savePlayerData(player, "player_firstlogin", playerResult.getLong("player_firstlogin"));

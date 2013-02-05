@@ -275,6 +275,14 @@ public class DDivineBlockListener implements Listener
 				DMiscUtil.togglePlayerStuck(player, true);
 				DPlayerUtil.togglePraying(player, true);
 				
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.AQUA + "-- Now Praying ----------------------------------------");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
+				player.sendMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
+				player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
+				player.sendMessage(" ");
+				
 				altarMenu(player);
 
 				event.setCancelled(true);
@@ -330,72 +338,76 @@ public class DDivineBlockListener implements Listener
 			// Create Character
 			if(message.equals("1") || message.contains("create new character"))
 			{
-				player.sendMessage(ChatColor.GREEN + " Now creating a new character...");
+				player.sendMessage(ChatColor.YELLOW + " -> Creating Character --------------------------------");
 				player.sendMessage(" ");
 				chooseName(player);
 				return;
 			}
 						
-			/*
-			 *  Character creation sub-steps
-			 */
-			if(DDataUtil.hasPlayerData(player, "temp_createchar"))
-			{
-				// Step 1 of character creation
-				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_name"))
+				/*
+				 *  Character creation sub-steps
+				 */
+				if(DDataUtil.hasPlayerData(player, "temp_createchar"))
 				{
-					confirmName(player, message);
-					return;
-				}
-				
-				// Step 2 of character creation
-				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_name"))
-				{
-					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					// Step 1 of character creation
+					if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_name"))
 					{
-						chooseDeity(player);
+						confirmName(player, message);
 						return;
 					}
-					else
+					
+					// Step 2 of character creation
+					if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_name"))
 					{
-						chooseName(player);
+						if(message.equalsIgnoreCase("y") || message.contains("yes"))
+						{
+							chooseDeity(player);
+							return;
+						}
+						else
+						{
+							chooseName(player);
+							return;
+						}
+					}
+					
+					// Step 3 of character creation
+					if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_deity"))
+					{
+						confirmDeity(player, message);
 						return;
 					}
-				}
-				
-				// Step 3 of character creation
-				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("choose_deity"))
-				{
-					confirmDeity(player, message);
-					return;
-				}
-				
-				// Step 4 of character creation
-				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_deity"))
-				{
-					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					
+					// Step 4 of character creation
+					if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_deity"))
 					{
-						deityConfirmed(player);
-						return;
+						if(message.equalsIgnoreCase("y") || message.contains("yes"))
+						{
+							deityConfirmed(player);
+							return;
+						}
+						else
+						{
+							chooseDeity(player);
+							return;
+						}
 					}
-					else
+	
+					// Step 5 of character creation
+					if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_all"))
 					{
-						chooseDeity(player);
-						return;
+						if(message.equalsIgnoreCase("y") || message.contains("yes"))
+						{
+							Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Place Your Tributes Here");
+							player.openInventory(ii);
+						}
+						else
+						{
+							player.sendMessage(ChatColor.AQUA + "  Once you have the items return here again.");
+							return;
+						}
 					}
 				}
-
-				// Step 5 of character creation
-				if(DDataUtil.getPlayerData(player, "temp_createchar").equals("confirm_all"))
-				{
-					if(message.equalsIgnoreCase("y") || message.contains("yes"))
-					{
-						Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Place Your Tributes Here");
-						player.openInventory(ii);
-					}
-					else /* They need to go get the items, just return */ return;
-				}
-			}
 			
 			// Finish Create Character
 			if(message.equals("1a") || message.contains("confirm new character") && DDataUtil.hasPlayerData(player, "temp_createchar_finalstep"))
@@ -410,6 +422,13 @@ public class DDivineBlockListener implements Listener
 				player.sendMessage(ChatColor.GRAY + "Currently Unavailable. Use /removechar <name>");
 				return;	
 			}
+			
+			// Remove Character
+			else if(message.equals("3") || message.contains("view characters"))
+			{
+				viewChars(player);
+				return;	
+			}
 		}
 		return;
 	}
@@ -417,12 +436,8 @@ public class DDivineBlockListener implements Listener
 	// Method for use within Altars
 	private void altarMenu(Player player)
 	{
+		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.AQUA + "-- Now Praying ----------------------------------------");
-		player.sendMessage(" ");
-		player.sendMessage(ChatColor.GRAY + " To begin, please choose an option by entering it in the chat:");
-		player.sendMessage(" ");
-		
 		if(DDataUtil.hasPlayerData(player, "temp_createchar_finalstep") && DDataUtil.getPlayerData(player, "temp_createchar_finalstep").equals(true))
 		{
 			player.sendMessage(ChatColor.GRAY + "   [1a.] " + ChatColor.GREEN + "Confirm New Character");	
@@ -430,19 +445,36 @@ public class DDivineBlockListener implements Listener
 		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
 		
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
+		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
-		player.sendMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
-		player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
+	}
+	
+	// View characters
+	private void viewChars(Player player)
+	{
+		List<Integer> chars = DPlayerUtil.getChars(player);
+		
+		player.sendMessage(ChatColor.YELLOW + " -> Viewing Characters ---------------------------------");
 		player.sendMessage(" ");
+		
+		for(Integer charID : chars)
+		{
+			player.sendMessage(ChatColor.GRAY + "  -> " + DCharUtil.getName(DObjUtil.toInteger(charID)) + "");
+		}
+		
+		player.sendMessage(" ");
+		player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information.");
+		player.sendMessage(" ");
+		return;
 	}
 	
 	// Choose name
 	private void chooseName(Player player)
 	{
 		DDataUtil.savePlayerData(player, "temp_createchar", "choose_name");
-		player.sendMessage(ChatColor.AQUA + " Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+		player.sendMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 		player.sendMessage(" ");
+		return;
 	}
 	
 	// Name confirmation
@@ -452,10 +484,10 @@ public class DDivineBlockListener implements Listener
 		{
 			// Validate the name
 			DDataUtil.savePlayerData(player, "temp_createchar", "choose_name");
-			if(message.length() >= 15) player.sendMessage(ChatColor.RED + " That name is too long.");
-			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + " You can only use Alpha-Numeric characters.");
-			if(DPlayerUtil.hasCharName(player, message)) player.sendMessage(ChatColor.RED + " You already have a character with that name.");
-			player.sendMessage(ChatColor.AQUA + " Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
+			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
+			if(DPlayerUtil.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
+			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 			player.sendMessage(" ");
 			return;
 		}
@@ -463,7 +495,7 @@ public class DDivineBlockListener implements Listener
 		{
 			DDataUtil.savePlayerData(player, "temp_createchar", "confirm_name");
 			String chosenName = message.replace(" ", "");
-			player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+			player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 			player.sendMessage(" ");
 			DDataUtil.savePlayerData(player, "temp_createchar_name", chosenName);
 			return;
@@ -473,7 +505,7 @@ public class DDivineBlockListener implements Listener
 	// Choose deity
 	private void chooseDeity(Player player)
 	{
-		player.sendMessage(ChatColor.AQUA + " Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
+		player.sendMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 		for(String alliance : DDeityUtil.getLoadedDeityAlliances())
 		{
 			for(String deity : DDeityUtil.getAllDeitiesInAlliance(alliance)) player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DObjUtil.capitalize(deity)  + ChatColor.GRAY + " (" + alliance + ")");	
@@ -495,7 +527,7 @@ public class DDivineBlockListener implements Listener
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + " Are you sure you want to use " + ChatColor.YELLOW + DObjUtil.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DObjUtil.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
 					DDataUtil.savePlayerData(player, "temp_createchar_deity", chosenDeity);
 					DDataUtil.savePlayerData(player, "temp_createchar", "confirm_deity");
@@ -505,7 +537,7 @@ public class DDivineBlockListener implements Listener
 		}
 		if(message.equalsIgnoreCase("_Alex"))
 		{
-			player.sendMessage(ChatColor.AQUA + " Well you can't be _Alex... but he is awesome!");
+			player.sendMessage(ChatColor.AQUA + "  Well you can't be _Alex... but he is awesome!");
 			player.sendMessage(" ");
 
 			// They can't be _Alex silly! Make them re-choose
@@ -522,16 +554,16 @@ public class DDivineBlockListener implements Listener
 		String chosenDeity = (String) DDataUtil.getPlayerData(player, "temp_createchar_deity");
 		
 		// They accepted the Deity choice, now ask them to input their items so they can be accepted
-		player.sendMessage(ChatColor.AQUA + " Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ", you must");
-		player.sendMessage(ChatColor.AQUA + " first sacrifice the following items:");
+		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ", you must");
+		player.sendMessage(ChatColor.AQUA + "  first sacrifice the following items:");
 		player.sendMessage(" ");
 		for(Material item : (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity))
 		{
 			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
 		}
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.GRAY + " After you obtain these items, return to an Altar and select");
-		player.sendMessage(ChatColor.GRAY + " the option to confirm your new character.");
+		player.sendMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar and select");
+		player.sendMessage(ChatColor.GRAY + "  the option to confirm your new character.");
 		player.sendMessage(" ");
 
 		DDataUtil.savePlayerData(player, "temp_createchar_finalstep", true);
@@ -550,9 +582,9 @@ public class DDivineBlockListener implements Listener
 		DDataUtil.savePlayerData(player, "temp_createchar", "confirm_all");
 		
 		// Send them the chat
-		player.sendMessage(ChatColor.GREEN + " Now confirming your new character...");
+		player.sendMessage(ChatColor.GREEN + "  Now confirming your new character...");
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.AQUA + " Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
+		player.sendMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 		player.sendMessage(" ");
 		for(Material item : (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", chosenDeity))
 		{
