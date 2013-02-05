@@ -83,7 +83,7 @@ public class DDeityUtil
 	/*
 	 *  invokeDeityCommand : Invokes a deity command.
 	 */
-	public static void invokeDeityCommand(Player player, String[] args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	public static boolean invokeDeityCommand(Player player, String[] args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		String deity = null;
 		String command = args[0];
@@ -96,11 +96,12 @@ public class DDeityUtil
 				break;
 			}
 		}
-		if(deity == null) return;
+		if(deity == null) return false;
 		
 		String deityClass = getDeityClass(deity);
 
 		invokeDeityMethodWithStringArray(deityClass, command + "Command", args);
+		return true;
 	}
 	
 	/*
