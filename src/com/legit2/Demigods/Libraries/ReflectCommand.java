@@ -16,10 +16,15 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
- 
+
+/**
+ * Licensed under LGPL, we cannot use it.
+ *
+ * @deprecated We'll need to make our own library that does the same thing, sadly.  
+ */
+@Deprecated
 public class ReflectCommand
 {
- 
     private HashMap<String, Set<Method>>
             everyoneCommands = new HashMap<String, Set<Method>>(),
             playerCommands = new HashMap<String, Set<Method>>(),
