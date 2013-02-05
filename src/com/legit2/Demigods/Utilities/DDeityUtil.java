@@ -61,7 +61,7 @@ public class DDeityUtil
 		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
 		
 		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String[].class);
 		
 		return toInvoke.invoke(obj, (Object[]) paramater);
 	}
