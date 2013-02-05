@@ -233,16 +233,15 @@ public class Themis_deity implements Listener
 		int count = 0;	
 		for(Player pl : player.getWorld().getPlayers())
 		{
+			if(pl == player) continue;
 			if(DCharUtil.isImmortal(pl))
 			{
 				count++;
 				if(!player.equals(pl) && !DDataUtil.hasCharData(charID, "temp_themis_congregate"))
 				{
 					pl.sendMessage(ChatColor.GOLD + "Themis has called for an assembly of deities at " + player.getName() + "'s location.");
-					pl.sendMessage(ChatColor.GOLD + "Type " + ChatColor.WHITE+"/assemble" + ChatColor.GOLD + " to be teleported.");
-					pl.sendMessage(ChatColor.GOLD + "You will be immune to damage upon arrival for a short time.");
+					pl.sendMessage(ChatColor.GOLD + "Type " + ChatColor.WHITE + "/assemble" + ChatColor.GOLD + " to be teleported.");
 					pl.sendMessage(ChatColor.GRAY + "You have one minute to answer the invitation.");
-					pl.sendMessage(ChatColor.GRAY + "To see how much time is left to respond, use " + ChatColor.WHITE + "qd" + ChatColor.GRAY + ".");
 					DDataUtil.saveTimedCharData(charID, "temp_themis_congregate", true, 60);
 				}
 			}

@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * Licensed under LGPL, we cannot use it.
+ * Licensed under LGPL, we cannot use it for this plugin.  The library developer has also dropped support.
  *
  * @deprecated We'll need to make our own library that does the same thing, sadly.  
  */
