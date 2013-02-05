@@ -18,7 +18,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -170,9 +169,10 @@ public class Cronus_deity implements Listener
 	 *
 	 *  Command: "/cleave"
 	 */
-	@ReflectCommand.Command(name = "cleave", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void cleaveCommand(Player player)
+	public static void cleaveCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
 		if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
@@ -216,13 +216,13 @@ public class Cronus_deity implements Listener
 	/*
 	 *  Command: "/slow"
 	 */
-	
-	@ReflectCommand.Command(name = "slow", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void slowCommand(Player player, String arg1)
-	{		
+	public static void slowCommand(Player player, String[] args)
+	{	
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, SLOW_NAME, player.getItemInHand().getType());
@@ -268,9 +268,10 @@ public class Cronus_deity implements Listener
 	/*
 	 *  Command: "/timestop"
 	 */
-	@ReflectCommand.Command(name = "timestop", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
-	public static void ultimateCommand(Player player)
+	public static void timestopCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
@@ -331,6 +332,17 @@ public class Cronus_deity implements Listener
 		CLEAVE_TIME = System.currentTimeMillis();
 		SLOW_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
+	}
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+		
+		// List all commands
+		COMMANDS.add("cleave");
+		COMMANDS.add("slow");
+		COMMANDS.add("timestop");
+		
+		return COMMANDS;
 	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }

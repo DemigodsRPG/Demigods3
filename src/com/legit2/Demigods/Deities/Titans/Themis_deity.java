@@ -12,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -124,12 +123,13 @@ public class Themis_deity implements Listener
 	 *
 	 *  Command: "/swap"
 	 */
-	@ReflectCommand.Command(name = "swap", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void swapCommand(Player player, String arg1)
+	public static void swapCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, SWAP_NAME, player.getItemInHand().getType());
@@ -168,9 +168,10 @@ public class Themis_deity implements Listener
 	/*
 	 *  Command: "/assemble"
 	 */
-	@ReflectCommand.Command(name = "assemble", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void assembleCommand(Player player, String arg1)
+	public static void assembleCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".assemble")) return;
+		
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DCharUtil.isImmortal(player)) return;
@@ -190,9 +191,10 @@ public class Themis_deity implements Listener
 	/*
 	 *  Command: "/congregate"
 	 */
-	@ReflectCommand.Command(name = "congregate", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
-	public static void ultimateCommand(Player player)
+	public static void congregateCommand(Player player, String[] args)
 	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 		
@@ -257,6 +259,17 @@ public class Themis_deity implements Listener
 		ULTIMATE_TIME = System.currentTimeMillis();
 		SWAP_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
+	}
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+		
+		// List all commands
+		COMMANDS.add("swap");
+		COMMANDS.add("assemble");
+		COMMANDS.add("congregate");
+		
+		return COMMANDS;
 	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }

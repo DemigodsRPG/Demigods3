@@ -3,6 +3,7 @@ package com.legit2.Demigods.Utilities;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ public class DDeityUtil
 	}
 	
 	/*
-	 *  InvokeDeityMethod() : Invokes a static method (with no paramaters) from inside a deity class.
+	 *  invokeDeityMethod() : Invokes a static method (with no paramaters) from inside a deity class.
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Object invokeDeityMethod(String deityClass, String method) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
@@ -38,7 +39,7 @@ public class DDeityUtil
 	}
 	
 	/*
-	 *  InvokeDeityMethodWithString() : Invokes a static method, with a String, from inside a deity class.
+	 *  invokeDeityMethodWithString() : Invokes a static method, with a String, from inside a deity class.
 	 */
 	public static Object invokeDeityMethodWithString(String deityClass, String method, String paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
@@ -52,7 +53,21 @@ public class DDeityUtil
 	}
 	
 	/*
-	 *  InvokeDeityMethodWithPlayer() : Invokes a static method, with a Player, from inside a deity class.
+	 *  invokeDeityMethodWithStringArray() : Invokes a static method, with an ArrayList, from inside a deity class.
+	 */
+	public static Object invokeDeityMethodWithStringArray(String deityClass, String method, String[] paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{			
+		// Creates a new instance of the deity class
+		Object obj = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).newInstance();
+		
+		// Load everything else for the Deity (Listener, etc.)
+		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, String.class);
+		
+		return toInvoke.invoke(obj, (Object[]) paramater);
+	}
+	
+	/*
+	 *  invokeDeityMethodWithPlayer() : Invokes a static method, with a Player, from inside a deity class.
 	 */
 	public static Object invokeDeityMethodWithPlayer(String deityClass, String method, Player paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{			
@@ -63,6 +78,29 @@ public class DDeityUtil
 		Method toInvoke = Class.forName(deityClass, true, DMiscUtil.getPlugin().getClass().getClassLoader()).getMethod(method, Player.class);
 		
 		return toInvoke.invoke(obj, paramater);
+	}
+	
+	/*
+	 *  invokeDeityCommand : Invokes a deity command.
+	 */
+	public static void invokeDeityCommand(Player player, String[] args) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
+	{
+		String deity = null;
+		String command = args[0];
+		
+		for(Entry<String, Object> deityCommands : DDataUtil.getAllPluginData().get("temp_deity_commands").entrySet())
+		{	
+			if(command.equals(deityCommands.getValue().toString()))
+			{
+				deity = deityCommands.getKey();
+				break;
+			}
+		}
+		if(deity == null) return;
+		
+		String deityClass = getDeityClass(deity);
+
+		invokeDeityMethodWithStringArray(deityClass, command + "Command", args);
 	}
 	
 	/*
@@ -130,4 +168,21 @@ public class DDeityUtil
 		
 		return toReturn;
 	}
+	
+	/*
+	 *  getAllDeityCommands() : Returns a ArrayList<String> of all the loaded deities' commands.
+	 */
+	public static ArrayList<String> getAllDeityCommands()
+	{
+		ArrayList<String> toReturn = new ArrayList<String>();
+		
+		for(Entry<String, Object> deityCommands : DDataUtil.getAllPluginData().get("temp_deity_commands").entrySet())
+		{	
+			toReturn.add(deityCommands.getValue().toString());
+		}
+		
+		return toReturn;
+	}
+	
+
 }

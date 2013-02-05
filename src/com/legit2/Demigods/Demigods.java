@@ -15,8 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Listeners.DChatListener;
+import com.legit2.Demigods.Listeners.DCommandListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
@@ -138,10 +138,12 @@ public class Demigods extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new DPlayerListener(this), this);
 		/* General Entity Listener */
 		getServer().getPluginManager().registerEvents(new DEntityListener(this), this);
-		/* Chat Commands */
-		getServer().getPluginManager().registerEvents(new DChatListener(), this);
+		/* Command Listener */
+		getServer().getPluginManager().registerEvents(new DCommandListener(this), this);
 		/* Diving Blocks */
 		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
+		/* Chat Listener */
+		getServer().getPluginManager().registerEvents(new DChatListener(), this);
 }
 	
 	/*
@@ -152,7 +154,6 @@ public class Demigods extends JavaPlugin
 	{
 		DMiscUtil.info("Loading deities...");
 		ArrayList<String> deityList = new ArrayList<String>();
-		ReflectCommand commandRegistrator = new ReflectCommand(this);
 		
 		// Find all deities
 		CodeSource demigodsSrc = Demigods.class.getProtectionDomain().getCodeSource();
@@ -181,21 +182,20 @@ public class Demigods extends JavaPlugin
 				}
 				
 				for(String deity : deityList)
-				{
-					// Load Deity commands
-					commandRegistrator.register(Class.forName(deity, true, this.getClass().getClassLoader()));
-					 
+				{					 
 					// Load everything else for the Deity (Listener, etc.)
 					String message = (String) DDeityUtil.invokeDeityMethod(deity, "loadDeity");
 					String name = (String) DDeityUtil.invokeDeityMethod(deity, "getName");
 					String alliance = (String) DDeityUtil.invokeDeityMethod(deity, "getAlliance");
 					ChatColor color = (ChatColor) DDeityUtil.invokeDeityMethod(deity, "getColor");
+					ArrayList<String> commands = (ArrayList<String>) DDeityUtil.invokeDeityMethod(deity, "getCommands");
 					ArrayList<Material> claimItems = (ArrayList<Material>) DDeityUtil.invokeDeityMethod(deity, "getClaimItems");
 					
 					// Add to HashMap
 					DDataUtil.savePluginData("temp_deity_classes", name, deity);
 					DDataUtil.savePluginData("temp_deity_alliances", name, alliance);
 					DDataUtil.savePluginData("temp_deity_colors", name, color);
+					DDataUtil.savePluginData("temp_deity_commands", name, commands);
 					DDataUtil.savePluginData("temp_deity_claim_items", name, claimItems);
 					 
 					// Display the success message

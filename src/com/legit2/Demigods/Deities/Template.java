@@ -13,7 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.google.common.base.Joiner;
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -123,12 +122,13 @@ public class Template implements Listener
 	 *
 	 *  Command: "/test"
 	 */
-	@ReflectCommand.Command(name = "testabil", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME)
-	public static void testCommand(Player player, String arg1)
-	{		
+	public static void testCommand(Player player, String[] args)
+	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(arg1.equalsIgnoreCase("bind"))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
 			DCharUtil.setBound(player, TEST_NAME, player.getItemInHand().getType());
@@ -163,9 +163,10 @@ public class Template implements Listener
 	/*
 	 *  Command: "/testult"
 	 */
-	@ReflectCommand.Command(name = "testult", sender = ReflectCommand.Sender.PLAYER, permission = "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")
-	public static void ultimateCommand(Player player)
-	{		
+	public static void testultCommand(Player player, String[] args)
+	{
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		
 		// Set variables
 		int charID = DPlayerUtil.getCurrentChar(player);
 
@@ -208,7 +209,18 @@ public class Template implements Listener
 		TEST_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+		
+		// List all commands
+		COMMANDS.add("test");
+		COMMANDS.add("testult");
+		
+		return COMMANDS;
+	}
 	public static String getName() { return DEITYNAME; }
 	public static String getAlliance() { return DEITYALLIANCE; }
 	public static ChatColor getColor() { return DEITYCOLOR; }
+
 }

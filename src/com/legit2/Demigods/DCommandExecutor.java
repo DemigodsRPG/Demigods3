@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Libraries.ReflectCommand;
 import com.legit2.Demigods.Utilities.*;
 
 public class DCommandExecutor implements CommandExecutor
@@ -96,7 +95,6 @@ public class DCommandExecutor implements CommandExecutor
 	/*
 	 *  Command: "dg"
 	 */
-	@ReflectCommand.Command(name = "dg", sender = ReflectCommand.Sender.PLAYER, permission = "demigods.basic")
 	public static boolean dg(CommandSender sender, String[] args)
 	{		
 		if(args.length > 0)
