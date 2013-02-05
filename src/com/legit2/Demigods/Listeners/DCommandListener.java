@@ -28,6 +28,12 @@ public class DCommandListener implements Listener
 		DMiscUtil.serverMsg(message); //DEBUG
 		
 		String[] args = message.split("\\s+");
+
+		for(String arg : args)
+		{
+			DMiscUtil.serverMsg(arg); //DEBUG
+		}
+		
 		Player player = event.getPlayer();
 		
 		try
