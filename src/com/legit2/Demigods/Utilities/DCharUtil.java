@@ -266,6 +266,23 @@ public class DCharUtil
 	}
 	
 	/*
+	 *  getFavorColor() : Returns the current dynamic color for (int)charID's favor.
+	 */
+	public static ChatColor getFavorColor(int charID)
+	{
+		int favor = getFavor(charID);
+		int maxFavor = getMaxFavor(charID);
+		ChatColor color = ChatColor.RESET;
+		
+		// Set favor color dynamically
+		if(favor < Math.ceil(0.33 * maxFavor)) color = ChatColor.RED;
+		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) color = ChatColor.YELLOW;
+		if(favor > Math.ceil(0.66 * maxFavor)) color = ChatColor.GREEN;
+		
+		return color;
+	}
+	
+	/*
 	 *  getHP() : Returns the (int)hp for (int)charID.
 	 */
 	public static int getHP(int charID)

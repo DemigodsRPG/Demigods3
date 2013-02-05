@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -141,7 +142,16 @@ public class DDeityUtil
 	 */
 	public static String getDeityAlliance(String deity)
 	{
-		String toReturn = (String) DDataUtil.getPluginData("temp_deity_alliances", deity);
+		String toReturn = (String) DDataUtil.getPluginData("temp_deity_alliances", deity.toLowerCase());
+		return toReturn;
+	}
+	
+	/*
+	 *  getDeityColor() : Returns a ChatColor of a loaded (String)deity.
+	 */
+	public static ChatColor getDeityColor(String deity)
+	{
+		ChatColor toReturn = (ChatColor) DDataUtil.getPluginData("temp_deity_colors", deity.toLowerCase());
 		return toReturn;
 	}
 	
@@ -151,7 +161,7 @@ public class DDeityUtil
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Material> getDeityClaimItems(String deity)
 	{
-		ArrayList<Material> toReturn = (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", deity);
+		ArrayList<Material> toReturn = (ArrayList<Material>) DDataUtil.getPluginData("temp_deity_claim_items", deity.toLowerCase());
 		return toReturn;
 	}
 	
@@ -164,7 +174,7 @@ public class DDeityUtil
 		
 		for(String deity : DDataUtil.getAllPluginData().get("temp_deity_alliances").keySet())
 		{
-			if(!(getDeityAlliance(deity)).equalsIgnoreCase(alliance)) continue;
+			if(!(getDeityAlliance(deity)).equalsIgnoreCase(alliance.toLowerCase())) continue;
 			toReturn.add(deity);
 		}
 		
