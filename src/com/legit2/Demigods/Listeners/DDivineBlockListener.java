@@ -889,19 +889,19 @@ public class DDivineBlockListener implements Listener
 		List<Block> blocks = event.blockList();
 		for(Block block : blocks)
 		{
+			if(block.getType() == Material.TNT) continue;
 			if(DZoneUtil.zoneNoPVP(block.getLocation()))
 			{
-				if(block.getType() != Material.TNT) savedBlocks.add(block);
+				savedBlocks.add(block);
 				savedMaterials.add(block.getType());
 				savedBytes.add(block.getData());
 				continue;
 			}
-			
 			for(Location divineBlock : DDivineBlocks.getAllDivineBlocks())
 			{
 				if(block.getLocation().equals(divineBlock))
 				{
-					if(block.getType() != Material.TNT) savedBlocks.add(block);
+					savedBlocks.add(block);
 					savedMaterials.add(block.getType());
 					savedBytes.add(block.getData());
 					break;
