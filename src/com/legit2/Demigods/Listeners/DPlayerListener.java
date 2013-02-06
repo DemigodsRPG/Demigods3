@@ -107,6 +107,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Events.Player.PlayerBetrayPlayerEvent;
+import com.legit2.Demigods.Events.Player.PlayerKillPlayerEvent;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -290,6 +292,26 @@ public class DPlayerListener implements Listener
 		if(!DDataUtil.hasPlayerData(player, "temp_was_PVP"))
 		{
 			if(DZoneUtil.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerKillPlayer(PlayerKillPlayerEvent event)
+	{
+		Player attacker = event.getPlayer();
+		Player killed = event.getKilled();
+		
+		if(event instanceof PlayerBetrayPlayerEvent)
+		{
+			String alliance = ((PlayerBetrayPlayerEvent) event).getAlliance();
+			DMiscUtil.serverMsg(ChatColor.DARK_GRAY + alliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.DARK_GRAY + " has been betrayed by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.DARK_GRAY + ".");
+		}
+		else
+		{
+			String attackerAlliance = DPlayerUtil.getCurrentAlliance(attacker);
+			String killedAlliance = DPlayerUtil.getCurrentAlliance(killed);
+			
+			DMiscUtil.serverMsg(ChatColor.DARK_GRAY + killedAlliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.DARK_GRAY + " has been slain by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.DARK_GRAY + " (" + attackerAlliance.toUpperCase() + ").");
 		}
 	}
 }
