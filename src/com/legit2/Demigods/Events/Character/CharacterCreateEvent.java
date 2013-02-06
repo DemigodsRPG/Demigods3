@@ -88,7 +88,7 @@
 	    derivatives within 48 hours.
  */
 
-package com.legit2.Demigods.Event.Character;
+package com.legit2.Demigods.Events.Character;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
