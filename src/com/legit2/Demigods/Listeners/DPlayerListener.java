@@ -303,7 +303,7 @@ public class DPlayerListener implements Listener
 		String attackerAlliance = DPlayerUtil.getCurrentAlliance(attacker);
 		String killedAlliance = DPlayerUtil.getCurrentAlliance(killed);
 		
-		DMiscUtil.serverMsg(ChatColor.GRAY + killedAlliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.GRAY + " has been slain by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.GRAY + " (" + attackerAlliance.toUpperCase() + ").");
+		DMiscUtil.serverMsg(ChatColor.YELLOW + killed.getName()+ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -313,6 +313,6 @@ public class DPlayerListener implements Listener
 		Player killed = event.getKilled();
 		String alliance = ((PlayerBetrayPlayerEvent) event).getAlliance();
 		
-		DMiscUtil.serverMsg(ChatColor.GRAY + alliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.GRAY + " has been betrayed by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.GRAY + ".");
+		DMiscUtil.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " +  alliance + " alliance.");
 	}
 }
