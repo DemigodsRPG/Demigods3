@@ -101,7 +101,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Event.DivineBlock.ShrineCreateEvent;
+import com.legit2.Demigods.Events.DivineBlock.ShrineCreateEvent;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;

@@ -88,8 +88,9 @@
 	    derivatives within 48 hours.
  */
 
-package com.legit2.Demigods.Event.DivineBlock;
+package com.legit2.Demigods.Events.DivineBlock;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -98,20 +99,32 @@ import com.legit2.Demigods.Libraries.DivineBlock;
 /*
  * Represents an event that is called when a character is created.
  */
-public class AltarCreateEvent extends Event
+public class ShrineCreateEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
+    protected OfflinePlayer owner;
     protected DivineBlock block;
-    protected AltarCreateCause cause;
+    protected String alliance;
+    protected String deity;
 
-    public AltarCreateEvent(final DivineBlock block, final AltarCreateCause cause)
+    public ShrineCreateEvent(final OfflinePlayer owner, final DivineBlock block, final String alliance, final String deity)
     {
+        this.owner = owner;
         this.block = block;
-        this.cause = cause;
+        this.alliance = alliance;
+        this.deity = deity;
     }
     
     /*
-     * getDivineBlock() : Gets the Altar's ID.
+     * getOwner() : Gets the player.
+     */
+    public OfflinePlayer getOwner()
+    {
+        return this.owner;
+    }
+    
+    /*
+     * getDivineBlock() : Gets the Shrine's DivineBlock.
      */
     public DivineBlock getDivineBlock()
     {
@@ -119,11 +132,19 @@ public class AltarCreateEvent extends Event
     }
     
     /*
-     * getCause() : Gets the Altar's creation cause;
+     * getAlliance() : Gets the alliance involved.
      */
-    public AltarCreateCause getCause()
+    public String getAlliance()
     {
-        return this.cause;
+        return this.alliance;
+    }
+    
+    /*
+     * getDeity() : Gets the deity involved.
+     */
+    public String getDeity()
+    {
+        return this.deity;
     }
 
     @Override
@@ -135,11 +156,5 @@ public class AltarCreateEvent extends Event
     public static HandlerList getHandlerList()
     {
         return handlers;
-    }
-    
-    public enum AltarCreateCause
-    {
-    	ADMIN_WAND,
-    	GENERATED;
     }
 }

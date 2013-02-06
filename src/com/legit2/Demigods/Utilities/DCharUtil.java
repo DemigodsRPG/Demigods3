@@ -110,7 +110,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Event.Character.CharacterCreateEvent;
+import com.legit2.Demigods.Events.Character.CharacterCreateEvent;
 
 public class DCharUtil
 {
