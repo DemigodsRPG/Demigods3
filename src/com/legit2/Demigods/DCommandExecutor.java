@@ -632,7 +632,7 @@ public class DCommandExecutor implements CommandExecutor
 		// Send the user their info via chat
 		DMiscUtil.taggedMessage(sender, "Player Check");
 
-		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "DCharacter: " + ChatColor.AQUA + charName);
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DObjUtil.capitalize(alliance) + "s");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
@@ -731,7 +731,7 @@ public class DCommandExecutor implements CommandExecutor
 			int charID = DCharUtil.getID(charName);
 			DCharUtil.removeChar(charID);
 			
-			sender.sendMessage(ChatColor.RED + "DCharacter removed!");
+			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}
 		else sender.sendMessage(ChatColor.RED + "There was an error while removing your character.");
 		

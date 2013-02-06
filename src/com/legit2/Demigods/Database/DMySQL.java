@@ -116,7 +116,7 @@ public class DMySQL
 	// Deity-specific
 	public static String deitydata_table = "dg_deitydata";
 	
-	// DCharacter-specific
+	// Character-specific
 	public static String character_table = "dg_characters";
 	public static String chardata_table = "dg_chardata";
 		
@@ -178,7 +178,7 @@ public class DMySQL
 				"datavalue VARCHAR(256)"
 			);
 			
-			// Create DCharacter Table
+			// Create Character Table
 			createTable(
 				character_table,
 				"char_id INT NOT NULL PRIMARY KEY," +
@@ -200,7 +200,7 @@ public class DMySQL
 				"char_ascensions INT(11)"
 			);
 			
-			// Create DCharacter Data Table
+			// Create Character Data Table
 			createTable(
 				chardata_table,
 				"entry_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT," +
