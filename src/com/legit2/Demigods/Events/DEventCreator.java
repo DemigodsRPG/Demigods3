@@ -35,13 +35,13 @@ public class DEventCreator implements Listener
 					Player attacker = (Player) damager;
 					if(DMiscUtil.areAllied(attacker, player))
 					{
-						DMiscUtil.serverMsg("1");
-						new PlayerBetrayPlayerEvent(attacker, player, DPlayerUtil.getCurrentAlliance(player));
+						PlayerBetrayPlayerEvent betrayEvent = new PlayerBetrayPlayerEvent(attacker, player, DPlayerUtil.getCurrentAlliance(player));
+						DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(betrayEvent);
 					}
 					else
 					{
-						DMiscUtil.serverMsg("1");
-						new PlayerKillPlayerEvent(attacker, player);
+						PlayerKillPlayerEvent killEvent = new PlayerKillPlayerEvent(attacker, player);
+						DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(killEvent);
 					}
 				}
 			}
