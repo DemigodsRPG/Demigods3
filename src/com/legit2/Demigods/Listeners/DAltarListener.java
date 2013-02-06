@@ -234,19 +234,19 @@ public class DAltarListener implements Listener
 				return;	
 			}
 			
-			// Create Character
+			// Create DCharacter
 			if(message.equals("1") || message.contains("create") && message.contains("character"))
 			{
 				clearChat(player);
 				
-				player.sendMessage(ChatColor.YELLOW + " -> Creating Character --------------------------------");
+				player.sendMessage(ChatColor.YELLOW + " -> Creating DCharacter --------------------------------");
 				player.sendMessage(" ");
 				chooseName(player);
 				return;
 			}
 						
 				/*
-				 *  Character creation sub-steps
+				 *  DCharacter creation sub-steps
 				 */
 				if(DDataUtil.hasPlayerData(player, "temp_createchar"))
 				{
@@ -310,7 +310,7 @@ public class DAltarListener implements Listener
 					}
 				}
 			
-			// Finish Create Character
+			// Finish Create DCharacter
 			if(message.equals("1a") || message.contains("confirm") && message.contains("character") && DDataUtil.hasPlayerData(player, "temp_createchar_finalstep"))
 			{
 				clearChat(player);
@@ -319,7 +319,7 @@ public class DAltarListener implements Listener
 				return;
 			}
 						
-			// Remove Character
+			// Remove DCharacter
 			else if(message.equals("2") || message.contains("remove") && message.contains("character"))
 			{
 				clearChat(player);
@@ -331,7 +331,7 @@ public class DAltarListener implements Listener
 				return;	
 			}
 			
-			// Remove Character
+			// Remove DCharacter
 			else if(message.equals("3") || message.contains("view") && message.contains("characters"))
 			{
 				clearChat(player);
@@ -354,7 +354,7 @@ public class DAltarListener implements Listener
 				return;	
 			}
 			
-			// Switch Character
+			// Switch DCharacter
 			else if(message.equals("4") || message.contains("switch") && message.contains("character"))
 			{
 				clearChat(player);
@@ -376,13 +376,13 @@ public class DAltarListener implements Listener
 		player.sendMessage(" ");
 		if(DDataUtil.hasPlayerData(player, "temp_createchar_finalstep") && DDataUtil.getPlayerData(player, "temp_createchar_finalstep").equals(true))
 		{
-			player.sendMessage(ChatColor.GRAY + "   [1a.] " + ChatColor.GREEN + "Confirm New Character");	
+			player.sendMessage(ChatColor.GRAY + "   [1a.] " + ChatColor.GREEN + "Confirm New DCharacter");	
 		}
-		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
+		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New DCharacter");
 		
-		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
+		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove DCharacter");
 		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.GOLD + "View Characters");
-		player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.GOLD + "Switch Character");
+		player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.GOLD + "Switch DCharacter");
 		player.sendMessage(" ");
 	}
 	
@@ -421,7 +421,7 @@ public class DAltarListener implements Listener
 	
 	private void viewChar(Player player, int charID)
 	{
-		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
+		player.sendMessage(ChatColor.YELLOW + " -> Viewing DCharacter ---------------------------------");
 		player.sendMessage(" ");
 
 		String currentCharMsg = ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
@@ -574,7 +574,7 @@ public class DAltarListener implements Listener
 		DDataUtil.savePlayerData(player, "temp_createchar", "confirm_all");
 		
 		// Send them the chat
-		player.sendMessage(ChatColor.GREEN + " -> Confirming Character -------------------------------");
+		player.sendMessage(ChatColor.GREEN + " -> Confirming DCharacter -------------------------------");
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 		player.sendMessage(" ");

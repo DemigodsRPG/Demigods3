@@ -99,6 +99,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -112,10 +113,11 @@ public class DCharacter implements Serializable
 
 	static OfflinePlayer player;
 	static String charName, charDeity, charAlliance;
-	static int playerID, charID, charHP, charFavor, charMaxFavor, charDevotion, charAscensions;
+	static int playerID, charID, charLevel, charHP, charFavor, charMaxFavor, charDevotion, charAscensions;
 	static float charExp;
 	static Location charLoc;
 	static boolean charActive, charImmortal;
+	Inventory charInv;
 	
 	public DCharacter(Player player, int charID, String charName, String charDeity)
 	{
@@ -123,8 +125,8 @@ public class DCharacter implements Serializable
 		DCharacter.player = player;
 		DCharacter.charID = charID;
 		playerID = DPlayerUtil.getPlayerID(player);
-		charName = DObjUtil.capitalize(charName);
-		charDeity = DObjUtil.capitalize(charDeity);
+		charName = DObjUtil.capitalize(charName.toLowerCase());
+		charDeity = DObjUtil.capitalize(charDeity.toLowerCase());
 		charAlliance = DDeityUtil.getDeityAlliance(charDeity);
 		charHP = player.getHealth();
 		charExp = player.getExp();
@@ -187,6 +189,20 @@ public class DCharacter implements Serializable
 		else charMaxFavor = getMaxFavor() + amount;
 		save();
 	}
+	
+	public static ChatColor getFavorColor(int charID)
+	{
+		int favor = getFavor();
+		int maxFavor = getMaxFavor();
+		ChatColor color = ChatColor.RESET;
+		
+		// Set favor color dynamically
+		if(favor < Math.ceil(0.33 * maxFavor)) color = ChatColor.RED;
+		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) color = ChatColor.YELLOW;
+		if(favor > Math.ceil(0.66 * maxFavor)) color = ChatColor.GREEN;
+		
+		return color;
+	}
 
 	/* ----------------------------------------
 	 * Devotion-specific Methods
@@ -244,10 +260,34 @@ public class DCharacter implements Serializable
 	 * Miscellaneous Methods
 	 * ----------------------------------------
 	 */
+	public int getPower()
+	{
+		int power = (int) Math.ceil(Math.pow(getAscensions() * 250, 1.2));
+		
+		// TODO: Add power manipulation based on active character effects
+		// if(DDataUtil.hasCharData(charID, "active_effects"));
+		
+		return power;
+	}
+	
 	public void setHP(int amount)
 	{
 		charHP = amount;
 		save();
+	}
+	
+	public static ChatColor getHPColor(int charID)
+	{
+		int hp = getHP();
+		int maxHP = ((Player) getOwner()).getMaxHealth();
+		ChatColor color = ChatColor.RESET;
+		
+		// Set favor color dynamically
+		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
+		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
+		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
+		
+		return color;
 	}
 	
 	public void setExp(float amount)
@@ -411,7 +451,7 @@ public class DCharacter implements Serializable
 		return charID;
 	}
 	
-	public Player getOwner() 
+	public static Player getOwner() 
 	{
 		return Bukkit.getPlayer(player.getName());
 	}
@@ -450,7 +490,7 @@ public class DCharacter implements Serializable
 		return charLoc; 
 	}
 	
-	public int getHP()
+	public static int getHP()
 	{
 		return charHP;
 	}
@@ -460,12 +500,12 @@ public class DCharacter implements Serializable
 		return charExp;
 	}
 	
-	public int getFavor() 
+	public static int getFavor() 
 	{
 		return charFavor; 
 	}
 	
-	public int getMaxFavor() 
+	public static int getMaxFavor() 
 	{ 
 		return charMaxFavor;	
 	}

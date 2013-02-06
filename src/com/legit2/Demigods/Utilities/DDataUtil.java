@@ -334,7 +334,7 @@ public class DDataUtil
 	}
 	
 	/* ---------------------------------------------------
-	 * Begin Character Data Methods
+	 * Begin DCharacter Data Methods
 	 * ---------------------------------------------------
 	 * 
 	 *  charExists() : Returns true/false depening on if the character exists.
