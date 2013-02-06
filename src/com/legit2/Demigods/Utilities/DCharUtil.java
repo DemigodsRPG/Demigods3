@@ -323,7 +323,7 @@ public class DCharUtil
 	 */
 	public static double getX(int charID)
 	{
-		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lastx");
+		if(DDataUtil.charExistsByID(charID)) return DObjUtil.toDouble(DDataUtil.getCharData(charID, "char_lastx"));
 		else return -1;
 	}
 	
@@ -332,7 +332,7 @@ public class DCharUtil
 	 */
 	public static double getY(int charID)
 	{
-		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lasty");
+		if(DDataUtil.charExistsByID(charID)) return DObjUtil.toDouble(DDataUtil.getCharData(charID, "char_lasty"));
 		else return -1;
 	}
 	
@@ -341,7 +341,7 @@ public class DCharUtil
 	 */
 	public static double getZ(int charID)
 	{
-		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lastx");
+		if(DDataUtil.charExistsByID(charID)) return DObjUtil.toDouble(DDataUtil.getCharData(charID, "char_lastx"));
 		else return -1;
 	}
 	
