@@ -395,10 +395,10 @@ public class DCommandExecutor implements CommandExecutor
 				
 				if(option3 == null)
 				{
-					DMiscUtil.taggedMessage(sender, ChatColor.RED + "Player Check: " + toCheck.getName());
+					DMiscUtil.taggedMessage(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					List<Integer> chars = DPlayerUtil.getChars(player);
+					List<Integer> chars = DPlayerUtil.getChars(toCheck);
 					
 					for(Integer checkingCharID : chars)
 					{
