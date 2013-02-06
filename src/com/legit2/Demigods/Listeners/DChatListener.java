@@ -128,30 +128,33 @@ public class DChatListener implements Listener
 	}
 	
 	private void pl(Player player, AsyncPlayerChatEvent event)
-	{
+	{	
 		HashMap<String, ArrayList<String>> alliances = new HashMap<String, ArrayList<String>>();
 		
 		for(Player onlinePlayer : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
 		{
-			int currentCharID = DPlayerUtil.getCurrentChar(player);
+			String alliance = DPlayerUtil.getCurrentAlliance(player);
 
 			if(DCharUtil.isImmortal(onlinePlayer))
 			{
-				if (!alliances.containsKey(DCharUtil.getAlliance(currentCharID).toUpperCase()))  alliances.put(DCharUtil.getAlliance(currentCharID).toUpperCase(), new ArrayList<String>());
+				if (!alliances.containsKey(alliance.toUpperCase()))  alliances.put(alliance.toUpperCase(), new ArrayList<String>());
 				
-				alliances.get(DCharUtil.getAlliance(currentCharID).toUpperCase()).add(onlinePlayer.getName());
+				alliances.get(alliance.toUpperCase()).add(onlinePlayer.getName());
 			}
 		}
 	
 		for(String alliance : alliances.keySet())
 		{
 			String names = "";
-			for (String name : alliances.get(alliance)) names+=" "+name;
-			player.sendMessage(ChatColor.YELLOW+alliance+": "+ChatColor.WHITE+names);
-			
-			event.getRecipients().clear();
-			event.setCancelled(true);
+			for(String name : alliances.get(alliance))
+			{
+				names += " " + name;
+			}
+			player.sendMessage(ChatColor.YELLOW + alliance + ": " + ChatColor.WHITE + names);
 		}
+		
+		event.getRecipients().clear();
+		event.setCancelled(true);
 	}
 }
 
