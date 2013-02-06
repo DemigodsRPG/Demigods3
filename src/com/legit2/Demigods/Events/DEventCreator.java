@@ -19,19 +19,23 @@ public class DEventCreator implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onEntityDeath(EntityDeathEvent event)
 	{
+		DMiscUtil.serverMsg("1");
 		Entity entity = event.getEntity();
 		if(entity instanceof Player)
 		{
+			DMiscUtil.serverMsg("2");
 			Player player = (Player) entity;
 			EntityDamageEvent damageEvent = player.getLastDamageCause();
 			
 			if(damageEvent instanceof EntityDamageByEntityEvent)
 			{
+				DMiscUtil.serverMsg("3");
 				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
 				Entity damager = damageByEvent.getDamager();
 				
 				if(damager instanceof Player)
 				{
+					DMiscUtil.serverMsg("4");
 					Player attacker = (Player) damager;
 					if(DMiscUtil.areAllied(attacker, player)) new PlayerBetrayPlayerEvent(attacker, player, DPlayerUtil.getCurrentAlliance(player));
 					else new PlayerKillPlayerEvent(attacker, player);
