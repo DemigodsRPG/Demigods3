@@ -123,6 +123,8 @@ import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Event.DivineBlock.AltarCreateEvent;
+import com.legit2.Demigods.Event.DivineBlock.AltarCreateEvent.AltarCreateCause;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
@@ -364,7 +366,11 @@ public class DDivineBlockListener implements Listener
 		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			DDivineBlocks.createAltar(location.add(0, 2, 0));
+			DivineBlock block = DDivineBlocks.createAltar(location.add(0, 2, 0));
+			
+			AltarCreateEvent atlarEvent = new AltarCreateEvent(block, AltarCreateCause.ADMIN_WAND);
+			DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(atlarEvent);
+			
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 		

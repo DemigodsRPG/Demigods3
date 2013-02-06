@@ -101,10 +101,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Event.DivineBlock.ShrineCreateEvent;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 
 public class DDivineBlocks
 {	
@@ -123,6 +126,11 @@ public class DDivineBlocks
 		location.getWorld().strikeLightningEffect(location);
 		DDataUtil.saveBlockData(blockID, "block_object", block);
 		DDatabase.saveDivineBlocks();
+		
+		DCharUtil.getName(charID);
+		
+		ShrineCreateEvent event = new ShrineCreateEvent(DPlayerUtil.getPlayerFromID(charID), block, DCharUtil.getAlliance(charID), DCharUtil.getDeity(charID));
+		DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(event);
 	}
 	
 	/*
@@ -238,17 +246,18 @@ public class DDivineBlocks
 	 *
 	 *  createNewAltar() : Creates a new altar at (Location)location.
 	 */
-	public static void createAltar(Location location)
+	public static DivineBlock createAltar(Location location)
 	{
 		int parentID = createDivineParentBlock(location, 116, "all", "altar");
-		generateAltar(location, parentID);
+		DivineBlock block = generateAltar(location, parentID);
 		DDatabase.saveDivineBlocks();
+		return block;
 	}
 	
 	/*
 	 *  createAltar() : Creates an altar at (Location)location for (int)parentID.
 	 */
-	public static void generateAltar(Location location, int parentID)
+	public static DivineBlock generateAltar(Location location, int parentID)
 	{	
 		location.subtract(0, 2, 0);
 		location.getBlock().setTypeId(0);
@@ -408,6 +417,8 @@ public class DDivineBlocks
 		createDivineBlock(botSteps.add(0, 0, 4), parentID, 98);
 		createDivineBlock(botSteps, parentID, 126, (byte) 1);
 		for(int i = 0; i<3; i++) createDivineBlock(botSteps.subtract(0, 1, 0), parentID, 98);
+		
+		return getDivineBlock(parentID);
 	}
 
 	/*

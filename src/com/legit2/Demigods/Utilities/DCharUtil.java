@@ -110,6 +110,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Event.Character.CharacterCreateEvent;
 
 public class DCharUtil
 {
@@ -171,6 +172,10 @@ public class DCharUtil
 				player.sendMessage(ChatColor.RED + "There was a problem with saving your character.");
 				player.sendMessage(ChatColor.RED + "Please give this error code to an administrator: " + ChatColor.RESET + ChatColor.ITALIC + ChatColor.RED + "2002");
 			}
+			
+			// Call CharacterCreateEvent
+			CharacterCreateEvent event = new CharacterCreateEvent(player, charID, charName, DDeityUtil.getDeityAlliance(charDeity), charDeity);
+			DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(event);
 			
 			return true;
 		}
