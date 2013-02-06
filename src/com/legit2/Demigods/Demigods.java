@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Listeners.DAltarListener;
 import com.legit2.Demigods.Listeners.DChatListener;
 import com.legit2.Demigods.Listeners.DCommandListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
@@ -144,6 +145,8 @@ public class Demigods extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new DDivineBlockListener(this), this);	
 		/* Chat Listener */
 		getServer().getPluginManager().registerEvents(new DChatListener(), this);
+		/* Altar Listener */
+		getServer().getPluginManager().registerEvents(new DAltarListener(this), this);
 }
 	
 	/*

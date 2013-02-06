@@ -123,19 +123,36 @@ public class DCharUtil
 	}
 	
 	/*
-	 *  getWhereDeity() : Returns the (int)charID for (Player)player's (String)deity.
+	 *  getCharByDeity() : Returns the (int)charID for (Player)player's (String)deity.
 	 */
-	public static int getCharWhereDeity(Player player, String deity)
+	public static int getCharByDeity(Player player, String deity)
 	{		
 		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllPlayerChars(player).entrySet())
 		{
 			int charID = character.getKey();
 			HashMap<String, Object> charData = character.getValue();
 			
-			for(Entry<String, Object> charDataEntry : charData.entrySet())
+			if(((String) charData.get("char_deity")).equalsIgnoreCase(deity))
 			{
-				if(charDataEntry.getKey().equalsIgnoreCase("deity") && ((String) charDataEntry.getValue()).equalsIgnoreCase(deity)) return charID;
-				else return -1;
+				return charID;
+			}
+		}
+		return -1;
+	}
+	
+	/*
+	 *  getWhereDeity() : Returns the (int)charID for (Player)player's (String)deity.
+	 */
+	public static int getCharByName(Player player, String name)
+	{		
+		for(Entry<Integer, HashMap<String, Object>> character : DDataUtil.getAllPlayerChars(player).entrySet())
+		{
+			int charID = character.getKey();
+			HashMap<String, Object> charData = character.getValue();
+			
+			if(((String) charData.get("char_name")).equalsIgnoreCase(name))
+			{
+				return charID;
 			}
 		}
 		return -1;
@@ -212,6 +229,33 @@ public class DCharUtil
 	}
 	
 	/*
+	 *  getX() : Returns the (double)locX of the character with (int)charID.
+	 */
+	public static double getX(int charID)
+	{
+		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lastx");
+		else return -1;
+	}
+	
+	/*
+	 *  getY() : Returns the (double)locY of the character with (int)charID.
+	 */
+	public static double getY(int charID)
+	{
+		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lasty");
+		else return -1;
+	}
+	
+	/*
+	 *  getZ() : Returns the (double)locZ of the character with (int)charID.
+	 */
+	public static double getZ(int charID)
+	{
+		if(DDataUtil.charExistsByID(charID)) return (double) DDataUtil.getCharData(charID, "char_lastx");
+		else return -1;
+	}
+	
+	/*
 	 *  getName() : Returns the (String)charName of the character with (int)charID.
 	 */
 	public static String getName(int charID)
@@ -281,7 +325,7 @@ public class DCharUtil
 		
 		return color;
 	}
-	
+
 	/*
 	 *  getHP() : Returns the (int)hp for (int)charID.
 	 */
@@ -289,6 +333,32 @@ public class DCharUtil
 	{
 		if(DDataUtil.hasCharData(charID, "char_hp")) return DObjUtil.toInteger(DDataUtil.getCharData(charID, "char_hp"));
 		else return -1;
+	}
+	
+
+	/*
+	 *  getHP() : Returns the (int)hp for (int)charID.
+	 */
+	public static int getMaxHP(int charID)
+	{
+		return ((Player) getOwner(charID)).getMaxHealth();
+	}
+	
+	/*
+	 *  getHPColor() : Returns the current dynamic color for (int)charID's HP.
+	 */
+	public static ChatColor getHPColor(int charID)
+	{
+		int hp = getHP(charID);
+		int maxHP = ((Player) getOwner(charID)).getMaxHealth();
+		ChatColor color = ChatColor.RESET;
+		
+		// Set favor color dynamically
+		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
+		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
+		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
+		
+		return color;
 	}
 	
 	/*
