@@ -44,7 +44,7 @@ public class DAbilityUtil
 			{
 				if(DMiscUtil.areAllied(player, (Player) target)) return false;
 			}
-			else return true;
+			return true;
 		}
 		return false;
 	}

@@ -22,7 +22,6 @@ import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DZoneUtil;
 
 public class Cronus_deity implements Listener
 {	
@@ -126,7 +125,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
-			if(DZoneUtil.zoneNoPVP(damageEvent.getEntity().getLocation())) return;
+			if(!DMiscUtil.canTarget(damageEvent.getEntity())) return;
 
 			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
 			
@@ -135,7 +134,7 @@ public class Cronus_deity implements Listener
 				Player attacked = (Player)damageEvent.getEntity();
 				
 				// Cronus Passive: Stop movement
-				if(!DCharUtil.isImmortal(attacked) || (DCharUtil.isImmortal(attacked) && !DMiscUtil.areAllied(player, attacked))) attacked.setVelocity(new Vector(0,0,0));
+				if(!DMiscUtil.areAllied(player, attacked)) attacked.setVelocity(new Vector(0,0,0));
 			}
 			
 			if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
