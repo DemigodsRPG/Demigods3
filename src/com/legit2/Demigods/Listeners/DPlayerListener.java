@@ -298,16 +298,19 @@ public class DPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerKillPlayer(PlayerKillPlayerEvent event)
 	{
+		DMiscUtil.serverMsg("2");
 		Player attacker = event.getPlayer();
 		Player killed = event.getKilled();
 		
 		if(event instanceof PlayerBetrayPlayerEvent)
 		{
+			DMiscUtil.serverMsg("3");
 			String alliance = ((PlayerBetrayPlayerEvent) event).getAlliance();
 			DMiscUtil.serverMsg(ChatColor.DARK_GRAY + alliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.DARK_GRAY + " has been betrayed by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.DARK_GRAY + ".");
 		}
 		else
 		{
+			DMiscUtil.serverMsg("3");
 			String attackerAlliance = DPlayerUtil.getCurrentAlliance(attacker);
 			String killedAlliance = DPlayerUtil.getCurrentAlliance(killed);
 			

@@ -137,7 +137,7 @@ public class DChatListener implements Listener
 
 			if(DCharUtil.isImmortal(onlinePlayer))
 			{
-				if (!alliances.containsKey(alliance.toUpperCase()))  alliances.put(alliance.toUpperCase(), new ArrayList<String>());
+				if(!alliances.containsKey(alliance.toUpperCase())) alliances.put(alliance.toUpperCase(), new ArrayList<String>());
 				
 				alliances.get(alliance.toUpperCase()).add(onlinePlayer.getName());
 			}
