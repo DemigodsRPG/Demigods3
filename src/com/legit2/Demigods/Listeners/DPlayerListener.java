@@ -298,23 +298,21 @@ public class DPlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerKillPlayer(PlayerKillPlayerEvent event)
 	{
-		DMiscUtil.serverMsg("2");
 		Player attacker = event.getPlayer();
 		Player killed = event.getKilled();
+		String attackerAlliance = DPlayerUtil.getCurrentAlliance(attacker);
+		String killedAlliance = DPlayerUtil.getCurrentAlliance(killed);
 		
-		if(event instanceof PlayerBetrayPlayerEvent)
-		{
-			DMiscUtil.serverMsg("3");
-			String alliance = ((PlayerBetrayPlayerEvent) event).getAlliance();
-			DMiscUtil.serverMsg(ChatColor.DARK_GRAY + alliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.DARK_GRAY + " has been betrayed by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.DARK_GRAY + ".");
-		}
-		else
-		{
-			DMiscUtil.serverMsg("3");
-			String attackerAlliance = DPlayerUtil.getCurrentAlliance(attacker);
-			String killedAlliance = DPlayerUtil.getCurrentAlliance(killed);
-			
-			DMiscUtil.serverMsg(ChatColor.DARK_GRAY + killedAlliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.DARK_GRAY + " has been slain by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.DARK_GRAY + " (" + attackerAlliance.toUpperCase() + ").");
-		}
+		DMiscUtil.serverMsg(ChatColor.GRAY + killedAlliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.GRAY + " has been slain by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.GRAY + " (" + attackerAlliance.toUpperCase() + ").");
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerBetrayPlayer(PlayerBetrayPlayerEvent event)
+	{
+		Player attacker = event.getPlayer();
+		Player killed = event.getKilled();
+		String alliance = ((PlayerBetrayPlayerEvent) event).getAlliance();
+		
+		DMiscUtil.serverMsg(ChatColor.GRAY + alliance.toUpperCase() + ": " + ChatColor.RED + killed.getName() + ChatColor.GRAY + " has been betrayed by " + ChatColor.DARK_RED + attacker.getName() + ChatColor.GRAY + ".");
 	}
 }
