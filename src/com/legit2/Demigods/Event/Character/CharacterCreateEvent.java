@@ -88,53 +88,81 @@
 	    derivatives within 48 hours.
  */
 
-package com.legit2.Demigods.Events;
+package com.legit2.Demigods.Event.Character;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
-import com.legit2.Demigods.Events.Player.PlayerBetrayPlayerEvent;
-import com.legit2.Demigods.Events.Player.PlayerKillPlayerEvent;
-import com.legit2.Demigods.Utilities.DMiscUtil;
-import com.legit2.Demigods.Utilities.DPlayerUtil;
-
-public class DEventCreator implements Listener
+/*
+ * Represents an event that is called when a character is created.
+ */
+public class CharacterCreateEvent extends Event
 {
-	@EventHandler(priority = EventPriority.MONITOR)
-	public static void onEntityDeath(EntityDeathEvent event)
-	{
-		Entity entity = event.getEntity();
-		if(entity instanceof Player)
-		{
-			Player player = (Player) entity;
-			EntityDamageEvent damageEvent = player.getLastDamageCause();
-			
-			if(damageEvent instanceof EntityDamageByEntityEvent)
-			{
-				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
-				Entity damager = damageByEvent.getDamager();
-				
-				if(damager instanceof Player)
-				{
-					Player attacker = (Player) damager;
-					if(DMiscUtil.areAllied(attacker, player))
-					{
-						PlayerBetrayPlayerEvent betrayEvent = new PlayerBetrayPlayerEvent(attacker, player, DPlayerUtil.getCurrentAlliance(player));
-						DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(betrayEvent);
-					}
-					else
-					{
-						PlayerKillPlayerEvent killEvent = new PlayerKillPlayerEvent(attacker, player);
-						DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(killEvent);
-					}
-				}
-			}
-		}
-	}
+	private static final HandlerList handlers = new HandlerList();
+    protected OfflinePlayer owner;
+    protected int charID;
+    protected String name;
+    protected String alliance;
+    protected String deity;
+
+    public CharacterCreateEvent(final OfflinePlayer owner, final int charID, final String name, final String alliance, final String deity)
+    {
+        this.owner = owner;
+        this.charID = charID;
+        this.name = name;
+        this.alliance = alliance;
+        this.deity = deity;
+    }
+    
+    /*
+     * getOwner() : Gets the player.
+     */
+    public OfflinePlayer getOwner()
+    {
+        return this.owner;
+    }
+    
+    /*
+     * getID() : Gets the character's ID.
+     */
+    public int getID()
+    {
+        return this.charID;
+    }
+    
+    /*
+     * getName() : Gets the name of the character.
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+    
+    /*
+     * getAlliance() : Gets the alliance involved.
+     */
+    public String getAlliance()
+    {
+        return this.alliance;
+    }
+    
+    /*
+     * getDeity() : Gets the deity involved.
+     */
+    public String getDeity()
+    {
+        return this.deity;
+    }
+
+    @Override
+    public HandlerList getHandlers()
+    {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList()
+    {
+        return handlers;
+    }
 }

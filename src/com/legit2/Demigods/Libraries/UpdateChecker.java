@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
+@Deprecated
 public class UpdateChecker
 {
 	private URL filesFeed;
