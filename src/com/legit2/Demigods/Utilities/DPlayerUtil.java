@@ -216,7 +216,9 @@ public class DPlayerUtil
 	 */
 	public static boolean isImmortal(OfflinePlayer player)
 	{
-		return getCurrentChar(player).isImmortal();
+		DCharacter character = getCurrentChar(player);
+		if(character == null || !character.isImmortal()) return false;
+		return true;
 	}
 	
 	/*
