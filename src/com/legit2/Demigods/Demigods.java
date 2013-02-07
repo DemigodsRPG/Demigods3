@@ -143,10 +143,10 @@ public class Demigods extends JavaPlugin
 		
 		if(okayToLoad)
 		{
+			loadDeities();
 			DDatabase.initializeDatabase();
 			DScheduler.startThreads();
 			loadCommands();
-			loadDeities();
 			loadListeners();
 			loadMetrics();
 			//checkUpdate();
@@ -217,7 +217,6 @@ public class Demigods extends JavaPlugin
 		getCommand("dg").setExecutor(ce);
 		getCommand("viewmaps").setExecutor(ce);
 		getCommand("check").setExecutor(ce);
-		getCommand("createchar").setExecutor(ce);
 		getCommand("switchchar").setExecutor(ce);
 		getCommand("removechar").setExecutor(ce);
 		getCommand("test1").setExecutor(ce);
@@ -285,6 +284,7 @@ public class Demigods extends JavaPlugin
 					String message = (String) DDeityUtil.invokeDeityMethod(deity, "loadDeity");
 					String name = (String) DDeityUtil.invokeDeityMethod(deity, "getName");
 					String alliance = (String) DDeityUtil.invokeDeityMethod(deity, "getAlliance");
+					
 					ChatColor color = (ChatColor) DDeityUtil.invokeDeityMethod(deity, "getColor");
 					ArrayList<String> commands = (ArrayList<String>) DDeityUtil.invokeDeityMethod(deity, "getCommands");
 					ArrayList<Material> claimItems = (ArrayList<Material>) DDeityUtil.invokeDeityMethod(deity, "getClaimItems");

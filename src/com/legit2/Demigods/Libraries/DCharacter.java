@@ -95,12 +95,19 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.meta.FireworkMeta;
 
+import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
@@ -111,36 +118,42 @@ public class DCharacter implements Serializable
 {
 	private static final long serialVersionUID = 8201132625259394712L;
 
-	static OfflinePlayer player;
-	static String charName, charDeity, charAlliance;
-	static int playerID, charID, charLevel, charHP, charFavor, charMaxFavor, charDevotion, charAscensions;
-	static float charExp;
-	static Location charLoc;
-	static boolean charActive, charImmortal;
-	Inventory charInv;
+	protected OfflinePlayer player;
+	protected String charName, charDeity, charAlliance;
+	protected int playerID, charID, charLevel, charHealth, charMaxHealth, charFavor, charMaxFavor, charDevotion, charAscensions;
+	protected float charExp;
+	protected Location charLoc;
+	protected boolean charActive, charImmortal;
+	protected Inventory charInv;
 	
-	public DCharacter(Player player, int charID, String charName, String charDeity)
+	public DCharacter(OfflinePlayer player, int charID, String charName, String charDeity)
 	{
-		// Define variables
-		DCharacter.player = player;
-		DCharacter.charID = charID;
-		playerID = DPlayerUtil.getPlayerID(player);
-		charName = DObjUtil.capitalize(charName.toLowerCase());
-		charDeity = DObjUtil.capitalize(charDeity.toLowerCase());
-		charAlliance = DDeityUtil.getDeityAlliance(charDeity);
-		charHP = player.getHealth();
-		charExp = player.getExp();
-		charLoc = player.getLocation();
-		charFavor = DConfigUtil.getSettingInt("default_favor");
-		charMaxFavor = DConfigUtil.getSettingInt("default_max_favor");
-		charDevotion = DConfigUtil.getSettingInt("default_devotion");
-		charAscensions = DConfigUtil.getSettingInt("default_ascensions");
-		charActive = true;
-		charImmortal = true;
+		// Create object using variables given and obtained
+		this.playerID = DPlayerUtil.getPlayerID(player);
+		this.player = player;
+		this.charID = charID;
+		this.charName = DObjUtil.capitalize(charName.toLowerCase());
+		this.charDeity = DObjUtil.capitalize(charDeity.toLowerCase());
+		this.charAlliance = DDeityUtil.getDeityAlliance(charDeity);
+		if(player.isOnline()) this.charHealth = ((Player) player).getHealth();
+		if(player.isOnline()) this.charMaxHealth = ((Player) player).getMaxHealth();
+		if(player.isOnline()) this.charExp = ((Player) player).getExp();
+		if(player.isOnline()) this.charLoc = ((Player) player).getLocation();
+		this.charFavor = DConfigUtil.getSettingInt("default_favor");
+		this.charMaxFavor = DConfigUtil.getSettingInt("default_max_favor");
+		this.charDevotion = DConfigUtil.getSettingInt("default_devotion");
+		this.charAscensions = DConfigUtil.getSettingInt("default_ascensions");
+		this.charActive = true;
+		this.charImmortal = true;
+	
+		// Save the character
+		DDataUtil.addChar(charID);
+		save();
 	}
 	
 	public void save()
 	{
+		DDataUtil.saveCharData(charID, "char_owner", playerID);
 		DDataUtil.saveCharData(charID, "char_object", this);
 	}
 	
@@ -150,50 +163,50 @@ public class DCharacter implements Serializable
 	 */
 	public void setFavor(int amount)
 	{
-		charFavor = amount;
+		this.charFavor = amount;
 		save();
 	}
 	
 	public void giveFavor(int amount)
 	{
-		if((getFavor() + amount) > getMaxFavor())
+		if(this.charFavor + amount > charMaxFavor)
 		{
 			charFavor = getMaxFavor();
 		}
-		else charFavor = getFavor() + amount;
+		else this.charFavor += amount;
 		save();
 	}
 	
 	public void subtractFavor(int amount)
 	{
-		if(getFavor() - amount < 0)
+		if(this.charFavor - amount < 0)
 		{
-			charFavor = 0;
+			this.charFavor = 0;
 		}
-		else charFavor = getFavor() - amount;
+		else this.charFavor -= amount;
 		save();
 	}
 	
 	public void setMaxFavor(int amount)
 	{
-		charMaxFavor = amount;
+		this.charMaxFavor = amount;
 		save();
 	}
 	
 	public void addMaxFavor(int amount)
 	{
-		if((getMaxFavor() + amount) > DConfigUtil.getSettingInt("global_max_favor"))
+		if((this.charMaxFavor + amount) > DConfigUtil.getSettingInt("global_max_favor"))
 		{
-			charMaxFavor = DConfigUtil.getSettingInt("global_max_favor");
+			this.charMaxFavor = DConfigUtil.getSettingInt("global_max_favor");
 		}
-		else charMaxFavor = getMaxFavor() + amount;
+		else this.charMaxFavor += amount;
 		save();
 	}
 	
-	public static ChatColor getFavorColor(int charID)
+	public ChatColor getFavorColor()
 	{
-		int favor = getFavor();
-		int maxFavor = getMaxFavor();
+		int favor = this.charFavor;
+		int maxFavor = this.charMaxFavor;
 		ChatColor color = ChatColor.RESET;
 		
 		// Set favor color dynamically
@@ -208,25 +221,53 @@ public class DCharacter implements Serializable
 	 * Devotion-specific Methods
 	 * ---------------------------------------- 
 	 */
+	public int getDevotionGoal()
+	{
+		return (int) Math.ceil(500 * Math.pow(charAscensions + 1, 2.02));
+	}
+	
 	public void setDevotion(int amount)
 	{
-		charFavor = amount;
+		this.charFavor = amount;
 		save();
 	}
 	
 	public void giveDevotion(int amount)
 	{
-		charDevotion = getDevotion() + amount;
-		save();
+		int devotionBefore = this.charDevotion;
+		int devotionGoal = getDevotionGoal();
+		this.charDevotion += amount;
+		int devotionAfter = this.charDevotion;
+		
+		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
+		{
+			Player player = DCharUtil.getOwner(charID).getPlayer();
+			
+			// Player leveled up!
+			charAscensions += 1;
+			charDevotion = devotionAfter - devotionGoal;
+			
+			// Spawn a pretty firework!
+			Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+			FireworkMeta fireworkmeta = firework.getFireworkMeta();
+	        Type type = Type.BALL;       
+	        FireworkEffect effect = FireworkEffect.builder().flicker(true).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
+	        fireworkmeta.addEffect(effect);
+	        fireworkmeta.setPower(1);
+	        firework.setFireworkMeta(fireworkmeta);      
+			
+			// Let 'em know!
+			player.sendMessage(ChatColor.GREEN + "You leveled up!" + ChatColor.GRAY + " (Devotion until next Ascension: " + ChatColor.YELLOW + (getDevotionGoal() - devotionAfter) + ChatColor.GRAY + ")");
+		}
 	}
 	
 	public void subtractDevotion(int amount)
 	{
-		if(getDevotion() - amount < 0)
+		if(this.charDevotion - amount < 0)
 		{
-			charDevotion = 0;
+			this.charDevotion = 0;
 		}
-		else charDevotion = getDevotion() - amount;
+		else this.charDevotion -= amount;
 		save();
 	}
 	
@@ -236,23 +277,23 @@ public class DCharacter implements Serializable
 	 */
 	public void setAscensions(int amount)
 	{
-		charAscensions = amount;
+		this.charAscensions = amount;
 		save();
 	}
 	
 	public void giveAscensions(int amount)
 	{
-		charAscensions = getAscensions() + amount;
+		this.charAscensions += amount;
 		save();
 	}
 	
 	public void subtractAscensions(int amount)
 	{
-		if(getAscensions() - amount < 0)
+		if(this.charAscensions - amount < 0)
 		{
-			charAscensions = 0;
+			this.charAscensions = 0;
 		}
-		else charAscensions = getAscensions() - amount;
+		else this.charAscensions -= amount;
 		save();
 	}
 	
@@ -270,16 +311,16 @@ public class DCharacter implements Serializable
 		return power;
 	}
 	
-	public void setHP(int amount)
+	public void setHealth(int amount)
 	{
-		charHP = amount;
+		this.charHealth = amount;
 		save();
 	}
 	
-	public static ChatColor getHPColor(int charID)
+	public ChatColor getHealthColor()
 	{
-		int hp = getHP();
-		int maxHP = ((Player) getOwner()).getMaxHealth();
+		int hp = this.charHealth;
+		int maxHP = ((Player) player).getMaxHealth();
 		ChatColor color = ChatColor.RESET;
 		
 		// Set favor color dynamically
@@ -292,66 +333,55 @@ public class DCharacter implements Serializable
 	
 	public void setExp(float amount)
 	{
-		charExp = amount;
+		this.charExp = amount;
 		save();
 	}
 	
 	public void setLocation(Location location)
 	{
-		charLoc = location;
+		this.charLoc = location;
 		save();
 	}
 	
 	public void setAlliance(String alliance)
 	{
-		charAlliance = alliance.toLowerCase();
+		this.charAlliance = alliance.toLowerCase();
 		save();
 	}
 	
 	public boolean hasDeity(String deity)
 	{
-		if(charDeity.toLowerCase().equalsIgnoreCase(deity)) return true;
+		if(this.charDeity.toLowerCase().equalsIgnoreCase(deity)) return true;
 		else return false;
 	}
 	
 	public void toggleActive(boolean option)
 	{
-		charActive = option;
+		this.charActive = option;
 		save();
 	}
 	
 	public void toggleImmortal(boolean option)
 	{
-		charImmortal = option;
+		this.charImmortal = option;
 		save();
 	}
 	
 	public boolean isEnabledAbility(String ability)
 	{
-		if(DDataUtil.hasCharData(charID, "boolean_" + ability.toLowerCase()))
+		if(DDataUtil.hasCharData(this.charID, "boolean_" + ability.toLowerCase()))
 		{
-			return DObjUtil.toBoolean(DDataUtil.getCharData(charID, "boolean_" + ability.toLowerCase()));
+			return DObjUtil.toBoolean(DDataUtil.getCharData(this.charID, "boolean_" + ability.toLowerCase()));
 		}
 		return false;
 	}
 	
 	public void toggleAbility(String ability, boolean option)
 	{
-		DDataUtil.saveCharData(charID,  "boolean_" + ability.toLowerCase(), option);
-		save();
+		DDataUtil.saveCharData(this.charID,  "boolean_" + ability.toLowerCase(), option);
 	}
 	
-	public boolean isCooledDown(String ability, long ability_time, boolean sendMsg)
-	{
-		if(ability_time > System.currentTimeMillis())
-		{
-			if(sendMsg) ((Player) player).sendMessage(ChatColor.RED + ability + " has not cooled down!");
-			return false;
-		}
-		else return true;
-	}
-	
-	public static boolean isBound(Material material)
+	public boolean isBound(Material material)
 	{
 		if(getBindings() != null && getBindings().contains(material)) return true;
 		else return false;
@@ -359,18 +389,18 @@ public class DCharacter implements Serializable
 	
 	public Material getBind(String ability)
 	{
-		if(DDataUtil.getCharData(charID, ability + "_bind") != null)
+		if(DDataUtil.getCharData(this.charID, ability + "_bind") != null)
 		{
-			Material material = (Material) DDataUtil.getCharData(charID, ability + "_bind");
+			Material material = (Material) DDataUtil.getCharData(this.charID, ability + "_bind");
 			return material;
 		}
 		else return null;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Material> getBindings()
-	{		
-		if(DDataUtil.hasCharData(charID, "bindings"))
+	public ArrayList<Material> getBindings()
+	{				
+		if(DDataUtil.hasCharData(this.charID, "bindings"))
 		{
 			return (ArrayList<Material>) DDataUtil.getCharData(charID, "bindings");
 		}
@@ -379,7 +409,7 @@ public class DCharacter implements Serializable
 	
 	public boolean setBound(String ability, Material material)
 	{			
-		if(DDataUtil.getCharData(charID, ability + "_bind") == null)
+		if(DDataUtil.getCharData(this.charID, ability + "_bind") == null)
 		{
 			if(((Player) player).getItemInHand().getType() == Material.AIR)
 			{
@@ -399,22 +429,22 @@ public class DCharacter implements Serializable
 				}
 				else
 				{			
-					if(DDataUtil.hasCharData(charID, "bindings"))
+					if(DDataUtil.hasCharData(this.charID, "bindings"))
 					{
 						ArrayList<Material> bindings = getBindings();
 						if(!bindings.contains(material)) bindings.add(material);
-						DDataUtil.saveCharData(charID, "bindings", bindings);
+						DDataUtil.saveCharData(this.charID, "bindings", bindings);
 					}
 					else
 					{
 						ArrayList<Material> bindings = new ArrayList<Material>();
 						bindings.add(material);
-						DDataUtil.saveCharData(charID, "bindings", bindings);
+						DDataUtil.saveCharData(this.charID, "bindings", bindings);
 					}
 
 					save();
 					
-					DDataUtil.saveCharData(charID, ability + "_bind", material);
+					DDataUtil.saveCharData(this.charID, ability + "_bind", material);
 					((Player) player).sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
 					return true;
 				}
@@ -422,7 +452,7 @@ public class DCharacter implements Serializable
 		}
 		else
 		{
-			removeBind(ability, ((Material) DDataUtil.getCharData(charID, ability + "_bind")));
+			removeBind(ability, ((Material) DDataUtil.getCharData(this.charID, ability + "_bind")));
 			((Player) player).sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
 		}
 		return false;
@@ -432,15 +462,15 @@ public class DCharacter implements Serializable
 	{
 		ArrayList<Material> bindings = null;
 
-		if(DDataUtil.hasCharData(charID, "bindings"))
+		if(DDataUtil.hasCharData(this.charID, "bindings"))
 		{
 			bindings = getBindings();
 			
 			if(bindings != null && bindings.contains(material)) bindings.remove(material);
 		}
 		
-		DDataUtil.saveCharData(charID, "bindings", bindings);
-		DDataUtil.removeCharData(charID, ability + "_bind");
+		DDataUtil.saveCharData(this.charID, "bindings", bindings);
+		DDataUtil.removeCharData(this.charID, ability + "_bind");
 		
 		save();
 		return true;
@@ -448,75 +478,80 @@ public class DCharacter implements Serializable
 
 	public int getID()
 	{
-		return charID;
+		return this.charID;
 	}
 	
-	public static Player getOwner() 
+	public Player getOwner() 
 	{
 		return Bukkit.getPlayer(player.getName());
 	}
 	
 	public int getOwnerID() 
 	{ 
-		return playerID; 
+		return this.playerID; 
 	}
 	
 	public String getName() 
 	{ 
-		return charName; 
+		return this.charName; 
 	}
 	
 	public String getDeity()
 	{ 
-		return charDeity; 
+		return this.charDeity; 
 	}
 	
 	public String getAlliance() 
 	{ 
-		return charAlliance; 
+		return this.charAlliance; 
 	}
 	public boolean isImmortal() 
 	{ 
-		return charImmortal; 
+		return this.charImmortal; 
 	}
 	
 	public boolean isActive() 
 	{	
-		return charActive; 
+		return this.charActive; 
 	}
 	
 	public Location getLastLocation() 
 	{ 
-		return charLoc; 
+		return this.charLoc; 
 	}
 	
-	public static int getHP()
+	public int getHealth()
 	{
-		return charHP;
+		return this.charHealth;
+	}
+	
+	public int getMaxHealth()
+	{
+		return this.charMaxHealth;
 	}
 	
 	public float getExp()
 	{
-		return charExp;
+		return this.charExp;
 	}
 	
-	public static int getFavor() 
+	public int getFavor() 
 	{
-		return charFavor; 
+		return this.charFavor; 
 	}
 	
-	public static int getMaxFavor() 
+	public int getMaxFavor() 
 	{ 
-		return charMaxFavor;	
+		return this.charMaxFavor;	
 	}
 	
 	public int getDevotion() 
 	{ 
-		return charDevotion;	
+		return this.charDevotion;	
 	}
 	
 	public int getAscensions() 
 	{ 
-		return charAscensions;	
+		return this.charAscensions;	
 	}
 }

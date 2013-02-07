@@ -95,6 +95,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.legit2.Demigods.Libraries.DCharacter;
+
 public class DAbilityUtil
 {
 	/*
@@ -102,14 +104,14 @@ public class DAbilityUtil
 	 */
 	public static boolean doAbilityPreProcess(Player player, int cost)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DMiscUtil.canTarget(player))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
 		}
-		else if(DCharUtil.getFavor(charID) < cost)
+		else if(character.getFavor() < cost)
 		{
 			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
 			return false;

@@ -105,6 +105,7 @@ import org.bukkit.Bukkit;
 import com.legit2.Demigods.Libraries.UpdateChecker;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
+@SuppressWarnings("deprecation")
 public class DUpdate
 {
 	static Demigods plugin;

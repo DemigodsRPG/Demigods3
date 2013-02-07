@@ -125,6 +125,7 @@ import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Events.DivineBlock.AltarCreateEvent;
 import com.legit2.Demigods.Events.DivineBlock.AltarCreateEvent.AltarCreateCause;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
@@ -152,15 +153,15 @@ public class DDivineBlockListener implements Listener
 	public void shrineBlockInteract(PlayerInteractEvent event)
 	{
 		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer())) return;
+		if(!DPlayerUtil.isImmortal(event.getPlayer())) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		int charID = DPlayerUtil.getCurrentChar(player);
-		String charAlliance = DCharUtil.getAlliance(charID);
-		String charDeity = DCharUtil.getDeity(charID);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		String charAlliance = character.getAlliance();
+		String charDeity = character.getDeity();
 		
 		removeShrine(player, location);
 		
@@ -169,7 +170,7 @@ public class DDivineBlockListener implements Listener
 			try
 			{
 				// Shrine created!
-				DDivineBlocks.createShrine(charID, location);
+				DDivineBlocks.createShrine(character.getID(), location);
 				
 				if(player.getItemInHand().getAmount() > 1)
 				{
@@ -197,11 +198,12 @@ public class DDivineBlockListener implements Listener
 		// Define variables
 		Location location = event.getRightClicked().getLocation().subtract(0.5, 1.0, 0.5);
 		Player player = event.getPlayer();
-		
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+
 		removeShrine(player, location);
 		
 		// Return if the player is mortal
-		if(!DCharUtil.isImmortal(event.getPlayer()))
+		if(!character.isImmortal())
 		{
 			event.getPlayer().sendMessage(ChatColor.RED + "You must be immortal to use that!");
 			return;
@@ -240,7 +242,7 @@ public class DDivineBlockListener implements Listener
 	
 	private void useShrine(Player player, Location location)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		try
 		{
 			// Check if block is divine
@@ -251,12 +253,12 @@ public class DDivineBlockListener implements Listener
 			if(DDivineBlocks.isShrineBlock(location))
 			{
 				// Check if character has deity
-				if(DCharUtil.hasDeity(charID, shrineDeity))
+				if(character.hasDeity(shrineDeity))
 				{
 					// Open the tribute inventory
 					Inventory ii = DMiscUtil.getPlugin().getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 					player.openInventory(ii);
-					DDataUtil.saveCharData(charID, "temp_tributing", shrineOwner);
+					DDataUtil.saveCharData(character.getID(), "temp_tributing", shrineOwner);
 					return;
 				}
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
@@ -280,16 +282,17 @@ public class DDivineBlockListener implements Listener
 		{
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player)event.getPlayer();
-			int charID = DPlayerUtil.getCurrentChar(player);
-			String charDeity = DCharUtil.getDeity(charID);
+			DCharacter character = DPlayerUtil.getCurrentChar(player);
+			String charDeity = character.getDeity();
+			int charID = character.getID();
 
-			if(!DCharUtil.isImmortal(player)) return;
+			if(!character.isImmortal()) return;
 			
 			// If it isn't a tribute chest then break the method
 			if(!event.getInventory().getName().contains("Shrine")) return;
 			
 			// Get the creator of the shrine
-			int shrineOwner = DObjUtil.toInteger(DDataUtil.getCharData(charID, "temp_tributing"));
+			int shrineOwnerID = DObjUtil.toInteger(DDataUtil.getCharData(character.getID(), "temp_tributing"));
 			DDataUtil.removeCharData(charID, "temp_tributing"); 
 			
 			// Calculate value of chest
@@ -306,27 +309,28 @@ public class DDivineBlockListener implements Listener
 			tributeValue *= FAVOR_MULTIPLIER;
 			
 			// Process tributes and send messages
-			int favorBefore = DCharUtil.getMaxFavor(charID);
-			int devotionBefore = DCharUtil.getDevotion(charID);
+			int favorBefore = character.getMaxFavor();
+			int devotionBefore = character.getDevotion();
 			
 			// Update the character's favor and devotion
-			DCharUtil.addMaxFavor(charID, tributeValue / 5);
-			DCharUtil.giveDevotion(charID, tributeValue);
+			character.addMaxFavor(tributeValue / 5);
+			character.giveDevotion(tributeValue);
 			
-			if(DCharUtil.getDevotion(charID) > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  DCharUtil.getDevotion(charID) + ChatColor.GRAY + ".");
-			if(DCharUtil.getMaxFavor(charID) > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  DCharUtil.getMaxFavor(charID) + ChatColor.GRAY + ".");
+			if(character.getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW +  charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN +  character.getDevotion() + ChatColor.GRAY + ".");
+			if(character.getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN +  character.getMaxFavor() + ChatColor.GRAY + ".");
 			
-			if(favorBefore != DCharUtil.getMaxFavor(charID) && devotionBefore != DCharUtil.getDevotion(charID) && items > 0)
+			if(favorBefore != character.getMaxFavor() && devotionBefore != character.getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				OfflinePlayer shrineOwnerPlayer = DCharUtil.getOwner(shrineOwner);
+				OfflinePlayer shrineOwnerPlayer = DCharUtil.getOwner(shrineOwnerID);
 				if(!DCharUtil.getOwner(charID).equals(shrineOwnerPlayer))
 				{
-					DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
+					// TODO: FIX THIS
+					//DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
 					if(shrineOwnerPlayer.isOnline())
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getDevotion(shrineOwner) + "!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DCharUtil.getChar(shrineOwnerID).getDevotion() + "!");
 					}
 				}
 			}

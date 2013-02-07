@@ -98,7 +98,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Utilities.DPlayerUtil;
 
 public class DSouls
 {
@@ -156,7 +156,7 @@ public class DSouls
 		switch(entity.getType())
 		{
 			case PLAYER: // Soul dropped by PLAYER
-				if(DCharUtil.isImmortal(((Player) entity)))
+				if(DPlayerUtil.getCurrentChar((Player) entity).isImmortal())
 				{
 					return immortalSoul; 
 				}

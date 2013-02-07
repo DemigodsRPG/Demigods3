@@ -101,7 +101,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
@@ -114,8 +114,9 @@ public class DChatListener implements Listener
 		// Define variables
 		Player player = event.getPlayer();
 		Set<Player> viewing = event.getRecipients();
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
-		if(!DCharUtil.isImmortal(player)) return;
+		if(!character.isImmortal()) return;
 		
 		if(event.getMessage().equals("pl")) pl(player,event);
 		
@@ -133,9 +134,10 @@ public class DChatListener implements Listener
 		
 		for(Player onlinePlayer : DMiscUtil.getPlugin().getServer().getOnlinePlayers())
 		{
+			DCharacter character = DPlayerUtil.getCurrentChar(player);
 			String alliance = DPlayerUtil.getCurrentAlliance(player);
 
-			if(DCharUtil.isImmortal(onlinePlayer))
+			if(character.isImmortal())
 			{
 				if(!alliances.containsKey(alliance.toUpperCase())) alliances.put(alliance.toUpperCase(), new ArrayList<String>());
 				

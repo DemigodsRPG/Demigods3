@@ -113,6 +113,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
@@ -348,9 +349,9 @@ public class DAltarListener implements Listener
 
 				// Define variables
 				String charName = message.replace(" info", "").trim();
-				int charID = DCharUtil.getCharByName(player, charName);
+				DCharacter character = DCharUtil.getCharByName(charName);
 				
-				viewChar(player, charID);
+				viewChar(player, character);
 				return;	
 			}
 			
@@ -399,16 +400,17 @@ public class DAltarListener implements Listener
 		
 		for(Integer charID : chars)
 		{
+			DCharacter character = DCharUtil.getChar(charID);
 			String color = "";
-			String name = DCharUtil.getName(charID);
-			String deity = DCharUtil.getDeity(charID);
-			int favor = DCharUtil.getFavor(charID);
-			int maxFavor = DCharUtil.getMaxFavor(charID);
-			ChatColor favorColor = DCharUtil.getFavorColor(charID);
-			int devotion = DCharUtil.getDevotion(charID);
-			int ascensions = DCharUtil.getAscensions(charID);
+			String name = character.getName();
+			String deity = character.getDeity();
+			int favor = character.getFavor();
+			int maxFavor = character.getMaxFavor();
+			ChatColor favorColor = character.getFavorColor();
+			int devotion = character.getDevotion();
+			int ascensions = character.getAscensions();
 			
-			if(DPlayerUtil.getCurrentChar(player) == charID) color = ChatColor.LIGHT_PURPLE + "";
+			if(character.isActive()) color = ChatColor.LIGHT_PURPLE + "";
 
 			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + DDeityUtil.getDeityColor(deity) + deity + ChatColor.GRAY + " / Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Ascensions: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
 		}
@@ -419,38 +421,33 @@ public class DAltarListener implements Listener
 		return;
 	}
 	
-	private void viewChar(Player player, int charID)
-	{
+	private void viewChar(Player player, DCharacter character)
+	{		
 		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
 		player.sendMessage(" ");
 
 		String currentCharMsg = ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
-		String name = DCharUtil.getName(charID);
-		String deity = DCharUtil.getDeity(charID);
+		String name = character.getName();
+		String deity = character.getDeity();
 		ChatColor deityColor = DDeityUtil.getDeityColor(deity);
-		String alliance = DCharUtil.getAlliance(charID);
-		int hp = DCharUtil.getHP(charID);
-		int maxHP = DCharUtil.getMaxHP(charID);
-		ChatColor hpColor = DCharUtil.getHPColor(charID);
-		int exp = Math.round(DCharUtil.getExp(charID));
-		int favor = DCharUtil.getFavor(charID);
-		int maxFavor = DCharUtil.getMaxFavor(charID);
-		ChatColor favorColor = DCharUtil.getFavorColor(charID);
-		int devotion = DCharUtil.getDevotion(charID);
-		int devotionGoal = DCharUtil.getDevotionGoal(charID);
-		int ascensions = DCharUtil.getAscensions(charID);
-		double lastX = Math.floor(DCharUtil.getX(charID));
-		double lastY = Math.floor(DCharUtil.getY(charID));
-		double lastZ = Math.floor(DCharUtil.getZ(charID));
-		String locString = "(" + lastX + ", " + lastY + ", " + lastZ + ")";
+		String alliance = character.getAlliance();
+		int hp = character.getHealth();
+		int maxHP = character.getMaxHealth();
+		ChatColor hpColor = character.getHealthColor();
+		int exp = Math.round(character.getExp());
+		int favor = character.getFavor();
+		int maxFavor = character.getMaxFavor();
+		ChatColor favorColor = character.getFavorColor();
+		int devotion = character.getDevotion();
+		int devotionGoal = character.getDevotionGoal();
+		int ascensions = character.getAscensions();
 		
-		if(DPlayerUtil.getCurrentChar(player) == charID) currentCharMsg = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Active) " + ChatColor.RESET;
+		if(character.isActive()) currentCharMsg = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Active) " + ChatColor.RESET;
 
 		player.sendMessage("    " + currentCharMsg + ChatColor.YELLOW + name + ChatColor.GRAY + " > Allied to " + deityColor + deity + ChatColor.GRAY + " of the " + ChatColor.GOLD + alliance + "s");
 		player.sendMessage(ChatColor.GRAY + "  --------------------------------------------------");
 		player.sendMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + hpColor + hp + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxHP + ChatColor.GRAY + ")");
 		player.sendMessage(ChatColor.GRAY + "    Experience: " + ChatColor.WHITE + exp);
-		player.sendMessage(ChatColor.GRAY + "    Location: " + ChatColor.WHITE + locString);
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + ascensions);
 		player.sendMessage(ChatColor.GRAY + "    Devotion: " + ChatColor.WHITE + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");		

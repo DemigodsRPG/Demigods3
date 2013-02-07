@@ -108,6 +108,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.BlockIterator;
 
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Libraries.DCharacter;
 
 public class DMiscUtil
 {
@@ -281,13 +282,15 @@ public class DMiscUtil
 	 */
 	public static boolean canUseDeity(Player player, String deity)
 	{		
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(DPlayerUtil.getCurrentChar(player), deity))
+		if(!character.hasDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
 		}
-		else if(!DCharUtil.isImmortal(player))
+		else if(!character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
@@ -300,9 +303,11 @@ public class DMiscUtil
 	 */
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{		
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(DPlayerUtil.getCurrentChar(player), deity)) return false;
-		else if(!DCharUtil.isImmortal(player)) return false;
+		if(!character.hasDeity(deity)) return false;
+		else if(!character.isImmortal()) return false;
 		else return true;
 	}
 	

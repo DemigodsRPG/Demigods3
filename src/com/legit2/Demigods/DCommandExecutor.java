@@ -111,6 +111,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.*;
 
 public class DCommandExecutor implements CommandExecutor
@@ -127,7 +128,6 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		if(command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
 		else if(command.getName().equalsIgnoreCase("check")) return check(sender);
-		else if(command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("switchchar")) return switchChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
@@ -145,11 +145,12 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		Player player = (Player) sender;
 		
-		player.sendMessage(ChatColor.RED + "You a deaf mute.");
+		player.sendMessage(ChatColor.AQUA + "Creating character...");
+		if(DCharUtil.createChar(player, "Test", "Zeus")) player.sendMessage(ChatColor.GREEN + "Character created!");
+		else player.sendMessage(ChatColor.RED + "Character creation failed...");
 		
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();
-		
         Random r = new Random();
         int rt = r.nextInt(4) + 1;
         Type type = Type.BALL;
@@ -159,10 +160,34 @@ public class DCommandExecutor implements CommandExecutor
         FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(2);
-       
-        //Then apply this to our rocket
         firework.setFireworkMeta(fireworkmeta);
 		
+        /*
+        for(Integer charID : DPlayerUtil.getChars((Player) sender))
+		{
+			DCharacter character = DCharUtil.getChar(charID);
+			String name = character.getName();
+			String deity = character.getDeity();
+			String alliance = character.getAlliance();
+			int favor = character.getFavor();
+			Location location = character.getLastLocation();
+			
+			sender.sendMessage(charID + ": ");
+			sender.sendMessage("   Name: " + name);
+			sender.sendMessage("   Deity: " + deity);
+			sender.sendMessage("   Alliance: " + alliance);
+			sender.sendMessage("   Favor: " + favor);
+			sender.sendMessage("   Location: " + location.toString());
+			
+			character.setFavor(5000);
+			
+			sender.sendMessage("=====================");
+			
+			sender.sendMessage("   Favor: " + character.getFavor());
+
+		}
+		*/
+        
 		return true;
 	}
 	
@@ -346,11 +371,12 @@ public class DCommandExecutor implements CommandExecutor
 	}
 	
 	// Admin Directory
+	@SuppressWarnings("unused")
 	private static boolean dg_admin(CommandSender sender, String option1, String option2, String option3, String option4)
 	{
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
 		Player toEdit;
-		int charID;
+		DCharacter character;
 		int amount;
 		
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods.admin")) return DMiscUtil.noPermission(player);
@@ -402,15 +428,16 @@ public class DCommandExecutor implements CommandExecutor
 					
 					for(Integer checkingCharID : chars)
 					{
-						String name = DCharUtil.getName(checkingCharID);
-						String deity = DCharUtil.getDeity(checkingCharID);
+						//DCharacter char = DCharUtil.getChar(checkingCharID);
+						//String name = char.getName(checkingCharID);
+						//String deity = char.getDeity(checkingCharID);
 						//favor = DCharUtil.getFavor(checkingCharID);
 						//int maxFavor = DCharUtil.getMaxFavor(checkingCharID);
 						//ChatColor favorColor = DCharUtil.getFavorColor(checkingCharID);
 						//int devotion = DCharUtil.getDevotion(checkingCharID);
 						//int ascensions = DCharUtil.getAscensions(checkingCharID);
 						
-						player.sendMessage(ChatColor.GRAY + " -> (#: " + checkingCharID + ") Name: " + name + " / Deity: " + deity);
+						//player.sendMessage(ChatColor.GRAY + " -> (#: " + checkingCharID + ") Name: " + name + " / Deity: " + deity);
 					}
 				}
 				else
@@ -430,14 +457,14 @@ public class DCommandExecutor implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					charID = DPlayerUtil.getCurrentChar(toEdit);
+					character = DPlayerUtil.getCurrentChar(toEdit);
 					amount = DObjUtil.toInteger(option4);
 				}
 				
 				if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
-					DCharUtil.setFavor(charID, amount);
+					character.setFavor(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -449,7 +476,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					DCharUtil.setDevotion(charID, amount);
+					character.setDevotion(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "Devotion set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -461,7 +488,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					DCharUtil.setAscensions(charID, amount);
+					character.setAscensions(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -489,14 +516,14 @@ public class DCommandExecutor implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					charID = DPlayerUtil.getCurrentChar(toEdit);
+					character = DPlayerUtil.getCurrentChar(toEdit);
 					amount = DObjUtil.toInteger(option4);
 				}
 					
 				if(option2.equalsIgnoreCase("favor"))
 				{	
 					// Set the favor
-					DCharUtil.setFavor(charID, amount);
+					character.setFavor(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
 
@@ -508,7 +535,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{	
 					// Set the devotion
-					DCharUtil.setDevotion(charID, amount);
+					character.setDevotion(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
 
@@ -520,7 +547,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					DCharUtil.giveAscensions(charID, amount);
+					character.giveAscensions(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
 
@@ -548,14 +575,14 @@ public class DCommandExecutor implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					charID = DPlayerUtil.getCurrentChar(toEdit);
+					character = DPlayerUtil.getCurrentChar(toEdit);
 					amount = DObjUtil.toInteger(option4);
 				}
 					
 				if(option2.equalsIgnoreCase("favor"))
 				{	
 					// Set the favor
-					DCharUtil.subtractFavor(charID, amount);
+					character.subtractFavor(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
 					
@@ -567,7 +594,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{	
 					// Set the devotion
-					DCharUtil.subtractDevotion(charID, amount);
+					character.subtractDevotion(amount);
 					
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion removed from " + toEdit.getName() + "'s current character.");
@@ -580,7 +607,7 @@ public class DCommandExecutor implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					DCharUtil.subtractAscensions(charID, amount);
+					character.subtractAscensions(amount);
 					
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
 				
@@ -607,8 +634,9 @@ public class DCommandExecutor implements CommandExecutor
 	public static boolean check(CommandSender sender)
 	{
 		Player player = (Player) DPlayerUtil.definePlayer(sender.getName());
-
-		if(!DCharUtil.isImmortal(player))
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
+		if(!character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
@@ -617,17 +645,16 @@ public class DCommandExecutor implements CommandExecutor
 		// Define variables
 		int kills = DPlayerUtil.getKills(player);
 		int deaths = DPlayerUtil.getDeaths(player);
-		int charID = DPlayerUtil.getCurrentChar(player);
-		String charName = DCharUtil.getName(charID);
-		String deity = DCharUtil.getDeity(charID);
-		String alliance = DCharUtil.getAlliance(charID);
-		int favor = DCharUtil.getFavor(charID);
-		int maxFavor = DCharUtil.getMaxFavor(charID);
-		int devotion = DCharUtil.getDevotion(charID);
-		int ascensions = DCharUtil.getAscensions(charID);
-		int devotionGoal = DCharUtil.getDevotionGoal(charID);	
+		String charName = character.getName();
+		String deity = character.getDeity();
+		String alliance = character.getAlliance();
+		int favor = character.getFavor();
+		int maxFavor = character.getMaxFavor();
+		int devotion = character.getDevotion();
+		int ascensions = character.getAscensions();
+		int devotionGoal = character.getDevotionGoal();	
 		ChatColor deityColor = (ChatColor) DDataUtil.getPluginData("temp_deity_colors", deity);
-		ChatColor favorColor = DCharUtil.getFavorColor(charID);
+		ChatColor favorColor = character.getFavorColor();
 		
 		// Send the user their info via chat
 		DMiscUtil.taggedMessage(sender, "Player Check");
@@ -682,16 +709,6 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		return true;
 	}
-
-	/*
-	 *  Command: "createChar"
-	 */
-	public static boolean createChar(CommandSender sender, String[] args)
-	{
-		sender.sendMessage(ChatColor.GRAY + "No longer functional. Use an Altar!");
-
-		return true;
-	}
 	
 	/*
 	 *  Command: "switchChar"
@@ -706,7 +723,7 @@ public class DCommandExecutor implements CommandExecutor
 		
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
-			int charID = DCharUtil.getID(charName);
+			int charID = DCharUtil.getCharByName(charName).getID();
 			DDataUtil.savePlayerData(player, "current_char", charID);
 			sender.sendMessage(ChatColor.YELLOW + "Your current character has been changed!");
 		}
@@ -728,8 +745,9 @@ public class DCommandExecutor implements CommandExecutor
 		
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
-			int charID = DCharUtil.getID(charName);
-			DCharUtil.removeChar(charID);
+			DCharacter character = DCharUtil.getCharByName(charName);
+			int charID = character.getID();
+			DDataUtil.removeChar(charID);
 			
 			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}
