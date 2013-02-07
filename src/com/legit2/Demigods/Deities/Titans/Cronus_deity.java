@@ -108,6 +108,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -208,10 +209,11 @@ public class Cronus_deity implements Listener
 	// This sets the particular passive ability for the Cronus deity.
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onEntityDamange(EntityDamageByEntityEvent damageEvent)
-	{
+	{	
 		if(damageEvent.getDamager() instanceof Player)
 		{
 			Player player = (Player)damageEvent.getDamager();
+			DCharacter character = DPlayerUtil.getCurrentChar(player);
 			
 			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 			
@@ -227,7 +229,7 @@ public class Cronus_deity implements Listener
 				if(!DMiscUtil.areAllied(player, attacked)) attacked.setVelocity(new Vector(0,0,0));
 			}
 			
-			if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
+			if(character.isEnabledAbility(CLEAVE_NAME))
 			{
 				if(!DCharUtil.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
 				
@@ -241,10 +243,11 @@ public class Cronus_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DCharUtil.isEnabledAbility(player, SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, SLOW_NAME))))
+		if(character.isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SLOW_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
 
@@ -260,18 +263,20 @@ public class Cronus_deity implements Listener
 	 */
 	public static void cleaveCommand(Player player, String[] args)
 	{
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
-		if(DCharUtil.isEnabledAbility(player, CLEAVE_NAME))
+		if(character.isEnabledAbility(CLEAVE_NAME))
 		{
-			DCharUtil.disableAbility(player, CLEAVE_NAME);
+			character.toggleAbility(CLEAVE_NAME, false);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is no longer active.");
 		}
 		else
 		{
-			DCharUtil.enableAbility(player, CLEAVE_NAME);
+			character.toggleAbility(CLEAVE_NAME, false);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
 		}
 	}
@@ -282,15 +287,15 @@ public class Cronus_deity implements Listener
 		// Define variables
 		Player player = (Player)damageEvent.getDamager();
 		Entity attacked = damageEvent.getEntity();
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, attacked, CLEAVE_COST)) return;
 		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
-		DCharUtil.subtractFavor(charID, CLEAVE_COST);
+		character.subtractFavor(CLEAVE_COST);
 			
 		for(int i = 1; i <= 31; i += 4) attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
 		
-		DMiscUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(DCharUtil.getDevotion(charID), 0.35)), DamageCause.ENTITY_ATTACK);
+		DMiscUtil.customDamage(player, (LivingEntity)attacked, (int)Math.ceil(Math.pow(character.getPower(), 0.35)), DamageCause.ENTITY_ATTACK);
 		
 		if((LivingEntity)attacked instanceof Player)
 		{
@@ -307,6 +312,8 @@ public class Cronus_deity implements Listener
 	 */
 	public static void slowCommand(Player player, String[] args)
 	{	
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
@@ -314,18 +321,18 @@ public class Cronus_deity implements Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DCharUtil.setBound(player, SLOW_NAME, player.getItemInHand().getType());
+			character.setBound(SLOW_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DCharUtil.isEnabledAbility(player, SLOW_NAME))
+			if(character.isEnabledAbility(SLOW_NAME))
 			{
-				DCharUtil.disableAbility(player, SLOW_NAME);
+				character.toggleAbility(SLOW_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is no longer active.");
 			}
 			else
 			{
-				DCharUtil.enableAbility(player, SLOW_NAME);
+				character.toggleAbility(SLOW_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is now active.");
 			}
 		}
@@ -335,16 +342,16 @@ public class Cronus_deity implements Listener
 	public static void slow(Player player)
 	{
 		// Define variables
-		int charID = DPlayerUtil.getCurrentChar(player);
-		int devotion = DCharUtil.getDevotion( charID);
-		int duration = (int) Math.ceil(3.635 * Math.pow(devotion, 0.2576)); //seconds
-		int strength = (int) Math.ceil(1.757 * Math.pow(devotion, 0.097));
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		int power = character.getDevotion();
+		int duration = (int) Math.ceil(3.635 * Math.pow(power, 0.2576)); //seconds
+		int strength = (int) Math.ceil(1.757 * Math.pow(power, 0.097));
 		Player target = null; 
 		if(DMiscUtil.autoTarget(player) instanceof Player) target = (Player) DMiscUtil.autoTarget(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, target, SLOW_COST)) return;
 		SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
-		DCharUtil.subtractFavor(charID, SLOW_COST);
+		character.subtractFavor(SLOW_COST);
 		
 		if(target.getEntityId() != player.getEntityId())
 		{
@@ -361,11 +368,11 @@ public class Cronus_deity implements Listener
 	{
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 		
-		// Set variables
-		int charID = DPlayerUtil.getCurrentChar(player);
+		// Define variables
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
 		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(charID, DEITYNAME)) return;
+		if(!character.hasDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -378,13 +385,13 @@ public class Cronus_deity implements Listener
 		// Perform ultimate if there is enough favor
 		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
 		
-		int duration = (int) Math.round(9.9155621 * Math.pow(DCharUtil.getAscensions(charID), 0.459019));
+		int duration = (int) Math.round(9.9155621 * Math.pow(character.getAscensions(), 0.459019));
 		player.sendMessage(ChatColor.YELLOW + "Cronus has stopped time for " + duration + " seconds, for " + timestop(player, duration) + " enemies!");
 
 		// Set favor and cooldown
-		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
+		character.subtractFavor(ULTIMATE_COST);
 		player.setNoDamageTicks(1000);
-		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double) DCharUtil.getAscensions(charID) / 100)));
+		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double) character.getAscensions() / 100)));
 		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 	}
 	
@@ -392,9 +399,9 @@ public class Cronus_deity implements Listener
 	public static int timestop(Player player, int duration)
 	{
 		// Define variables
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
-		int slowamount = (int)Math.round(4.77179 * Math.pow(DCharUtil.getAscensions(charID), 0.17654391));
+		int slowamount = (int)Math.round(4.77179 * Math.pow(character.getAscensions(), 0.17654391));
 		int count = 0;
 		
 		for(Player onlinePlayer : player.getWorld().getPlayers())
@@ -403,7 +410,7 @@ public class Cronus_deity implements Listener
 			
 			if(!DMiscUtil.canTarget(onlinePlayer)) continue;
 			
-			if(DCharUtil.isImmortal(onlinePlayer) && DMiscUtil.areAllied(player, onlinePlayer)) continue;
+			if(DMiscUtil.areAllied(player, onlinePlayer)) continue;
 
 			onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, slowamount));
 			

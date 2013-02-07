@@ -88,57 +88,59 @@
 	    derivatives within 48 hours.
  */
 
-package com.legit2.Demigods.Deities.Titans;
+package com.legit2.Demigods.Deities.Gods;
 
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
-import com.legit2.Demigods.Utilities.DAbilityUtil;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DCharUtil;
-import com.legit2.Demigods.Utilities.DDataUtil;
+import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 
-public class Themis_deity implements Listener
+public class Poseidon_deity implements Listener
 {	
 	// Create required universal deity variables
-	private static final String DEITYNAME = "Themis";
-	private static final String DEITYALLIANCE = "Titan";
-	private static final ChatColor DEITYCOLOR = ChatColor.GRAY;
+	private static final String DEITYNAME = "Poseidon";
+	private static final String DEITYALLIANCE = "God";
+	private static final ChatColor DEITYCOLOR = ChatColor.AQUA;
 
 	/*
 	 *  Set deity-specific ability variable(s).
 	 */
-	// "/swap" Command:
-	private static String SWAP_NAME = "Swap"; // Sets the name of this command
-	private static long SWAP_TIME; // Creates the variable for later use
-	private static final int SWAP_COST = 310; // Cost to run command in "favor"
-	private static final int SWAP_DELAY = 2400; // In milliseconds
+	// "/reel" Command:
+	private static String REEL_NAME = "Reel"; // Sets the name of this command
+	private static long REEL_TIME; // Creates the variable for later use
+	private static final int REEL_COST = 120; // Cost to run command in "favor"
+	private static final int REEL_DELAY = 1100; // In milliseconds
 
-	// "/congregate" Command:
-	@SuppressWarnings("unused")
-	private static String ULTIMATE_NAME = "Congregate";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
-	private static final int ULTIMATE_COST = 6000; // Cost to run command in "favor"
-	private static final int ULTIMATE_COOLDOWN_MAX = 1200; // In seconds
-	private static final int ULTIMATE_COOLDOWN_MIN = 500; // In seconds
-
+	// "/drown" Command:
+	private static String DROWN_NAME = "Drown"; // Sets the name of this command
+	private static long DROWN_TIME; // Creates the variable for later use
+	private static final int DROWN_COST = 240; // Cost to run command in "favor"
+	private static final int DROWN_DELAY = 10000; // In milliseconds
+	
 	public ArrayList<Material> getClaimItems()
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
 		
 		// Add new items in this format: claimItems.add(Material.NAME_OF_MATERIAL);
-		claimItems.add(Material.COMPASS);
-		claimItems.add(Material.PAPER);
+		claimItems.add(Material.WATER_BUCKET);
+		claimItems.add(Material.WATER_LILY);
 		
 		return claimItems;
 	}
@@ -153,32 +155,27 @@ public class Themis_deity implements Listener
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
-			toReturn.add(" ");
-			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
-			toReturn.add(" ");
-
+			
 			return toReturn;
 		}
 		else
-		{						
+		{
 			toReturn.add(" "); //TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/swap" + ChatColor.WHITE + " - Trade places with your enemy.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
-			toReturn.add(" ");
-			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/congregate" + ChatColor.WHITE + " - Bring everyone together for party time!");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
@@ -186,8 +183,26 @@ public class Themis_deity implements Listener
 				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
 			}
 			toReturn.add(" ");
-
+			
 			return toReturn;
+		}
+	}
+
+	// This sets the particular passive ability for the Zeus_deity deity.
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onEntityDamange(EntityDamageEvent damageEvent)
+	{
+		if(damageEvent.getEntity() instanceof Player)
+		{
+			Player player = (Player)damageEvent.getEntity();
+			if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
+
+			// If the player receives falling damage, cancel it
+			if(damageEvent.getCause() == DamageCause.DROWNING)
+			{
+				damageEvent.setCancelled(true);
+				return;
+			}
 		}
 	}
 
@@ -196,14 +211,37 @@ public class Themis_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DCharUtil.isEnabledAbility(player, SWAP_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, SWAP_NAME))))
+		if(character.isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
-			if(!DCharUtil.isCooledDown(player, SWAP_NAME, SWAP_TIME, false)) return;
+			if(!DCharUtil.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
 
-			swap(player);
+			reel(player);
+		}
+		
+		if(character.isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(DROWN_NAME))))
+		{
+			if(!DCharUtil.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
+
+			drown(player);
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerMove(PlayerMoveEvent event)
+	{
+		Player player = event.getPlayer();
+		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
+		
+		// PHELPS SWIMMING
+		if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
+		{
+			Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
+			Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
+			if(player.isSneaking()) player.setVelocity(victor);
 		}
 	}
 
@@ -211,10 +249,56 @@ public class Themis_deity implements Listener
 	 *  Command Handlers
 	 * ------------------
 	 *
-	 *  Command: "/swap"
+	 *  Command: "/reel"
 	 */
-	public static void swapCommand(Player player, String[] args)
-	{
+	public static void reelCommand(Player player, String[] args)
+	{		
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
+		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		
+		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
+
+		if(character.isEnabledAbility(REEL_NAME))
+		{
+			character.toggleAbility(REEL_NAME, false);
+			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is no longer active.");
+		}
+		else
+		{
+			character.toggleAbility(REEL_NAME, true);
+			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is now active.");
+		}
+	}
+
+	// The actual ability command
+	public static void reel(Player player)
+	{		
+		// Set variables
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		int damage = (int) Math.ceil(0.37286 * Math.pow(character.getPower(), 0.371238));
+		LivingEntity target = DMiscUtil.autoTarget(player);
+		
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, REEL_COST)) return;
+		character.subtractFavor(REEL_COST);
+		REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
+		
+		DMiscUtil.customDamage(player, target, damage, DamageCause.CUSTOM);
+		
+		if(target.getLocation().getBlock().getType() == Material.AIR)
+		{
+			target.getLocation().getBlock().setType(Material.WATER);
+			target.getLocation().getBlock().setData((byte) 0x8);
+		}
+	}
+	
+	/*
+	 *  Command: "/drown"
+	 */
+	public static void drownCommand(Player player, String[] args)
+	{		
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
@@ -222,130 +306,79 @@ public class Themis_deity implements Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DCharUtil.setBound(player, SWAP_NAME, player.getItemInHand().getType());
+			character.setBound(DROWN_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DCharUtil.isEnabledAbility(player, SWAP_NAME))
+			if(character.isEnabledAbility(DROWN_NAME)) 
 			{
-				DCharUtil.disableAbility(player, SWAP_NAME);
-				player.sendMessage(ChatColor.YELLOW + SWAP_NAME + " is no longer active.");
+				character.toggleAbility(DROWN_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is no longer active.");
 			}
 			else
 			{
-				DCharUtil.enableAbility(player, SWAP_NAME);
-				player.sendMessage(ChatColor.YELLOW + SWAP_NAME + " is now active.");
+				character.toggleAbility(DROWN_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is now active.");
 			}
 		}
 	}
 
 	// The actual ability command
-	public static void swap(Player player)
+	public static void drown(Player player)
 	{
 		// Define variables
-		int charID = DPlayerUtil.getCurrentChar(player);
-		Location between = player.getLocation();
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		int power = character.getPower();
+		int radius = (int) Math.ceil(1.6955424 * Math.pow(power, 0.129349));
+		int duration = (int) Math.ceil(2.80488 * Math.pow(power, 0.2689)); //seconds
 		LivingEntity target = DMiscUtil.autoTarget(player);
 		
-		if(!DAbilityUtil.doAbilityPreProcess(player, target, SWAP_COST)) return;
-		SWAP_TIME = System.currentTimeMillis() + SWAP_DELAY;
-		DCharUtil.subtractFavor(charID, SWAP_COST);
-
-		player.teleport(target.getLocation());
-		target.teleport(between);
-	}
-	
-	/*
-	 *  Command: "/assemble"
-	 */
-	public static void assembleCommand(Player player, String[] args)
-	{	
-		int charID = DPlayerUtil.getCurrentChar(player);
+		if(!DAbilityUtil.doAbilityPreProcess(player, target, DROWN_COST)) return;
+		character.subtractFavor(DROWN_COST);
 		
-		if(!DCharUtil.isImmortal(player)) return;
-		if(!DDataUtil.hasCharData(charID, "temp_themis_congregate")) return;
-		for(Player pl : player.getWorld().getPlayers())
+		// Set the ability's delay
+		DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
+		
+		final ArrayList<Block> toReset = new ArrayList<Block>();
+		for(int x =- radius; x <= radius; x++)
 		{
-			if(DCharUtil.isImmortal(pl) && DDataUtil.hasCharData(DPlayerUtil.getCurrentChar(pl), "temp_themis_congregate_call"))
+			for(int y =- radius; y <= radius; y++)
 			{
-				DDataUtil.removeCharData(charID, "temp_themis_congregate");
-				player.teleport(pl.getLocation());
-				return;
-			}
-		}
-		player.sendMessage(ChatColor.YELLOW + "Unable to reach the congregation's location.");
-	}
-
-	/*
-	 *  Command: "/congregate"
-	 */
-	public static void congregateCommand(Player player, String[] args)
-	{
-		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
-		
-		// Set variables
-		int charID = DPlayerUtil.getCurrentChar(player);
-		
-		// Check the player for DEITYNAME
-		if(!DCharUtil.hasDeity(charID, DEITYNAME)) return;
-
-		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
-		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000)))/60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME)/1000)-(System.currentTimeMillis()/1000))%60)+" seconds.");
-			return;
-		}
-
-		// Perform ultimate if there is enough favor
-		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
-		
-		int n = congregate(player);
-		if(n > 0) player.sendMessage(ChatColor.YELLOW + "Themis has called upon " + n + " players!");
-		else player.sendMessage(ChatColor.YELLOW + "There are no players to congregate.");
-		
-
-		// Set favor and cooldown
-		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
-		player.setNoDamageTicks(1000);
-		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN)*((double)DCharUtil.getAscensions(charID) / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
-	}
-	
-	// The actual ability command
-	public static int congregate(Player player)
-	{
-		// Define variables
-		int charID = DPlayerUtil.getCurrentChar(player);
-		
-		DDataUtil.saveTimedCharData(charID, "temp_themis_congregate_call", true, 60);
-		
-		int count = 0;	
-		for(Player pl : player.getWorld().getPlayers())
-		{
-			if(pl == player) continue;
-			if(DCharUtil.isImmortal(pl))
-			{
-				count++;
-				if(!player.equals(pl) && !DDataUtil.hasCharData(charID, "temp_themis_congregate"))
+				for(int z =- radius; z <= radius; z++)
 				{
-					pl.sendMessage(ChatColor.GOLD + "Themis has called for an assembly of deities at " + player.getName() + "'s location.");
-					pl.sendMessage(ChatColor.GOLD + "Type " + ChatColor.WHITE + "/assemble" + ChatColor.GOLD + " to be teleported.");
-					pl.sendMessage(ChatColor.GRAY + "You have one minute to answer the invitation.");
-					DDataUtil.saveTimedCharData(charID, "temp_themis_congregate", true, 60);
+					Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + x, target.getLocation().getBlockY() + y, target.getLocation().getBlockZ() + z);
+					if(block.getLocation().distance(target.getLocation()) <= radius)
+					{
+						if(block.getType() == Material.AIR)
+						{
+							block.setType(Material.WATER);
+							block.setData((byte) (0x8));
+							toReset.add(block);
+						}
+					}
 				}
 			}
 		}
 		
-		return count;
+		DMiscUtil.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(DMiscUtil.getPlugin(), new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Block block : toReset)
+				{
+					if((block.getType() == Material.WATER) || (block.getType() == Material.STATIONARY_WATER)) block.setType(Material.AIR);
+				}
+			}
+		}, duration);
 	}
 	
 	// Don't touch these, they're required to work.
 	public String loadDeity()
 	{
 		DMiscUtil.plugin.getServer().getPluginManager().registerEvents(this, DMiscUtil.plugin);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		SWAP_TIME = System.currentTimeMillis();
+		REEL_TIME = System.currentTimeMillis();
+		DROWN_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 	public static ArrayList<String> getCommands()
@@ -353,9 +386,8 @@ public class Themis_deity implements Listener
 		ArrayList<String> COMMANDS = new ArrayList<String>();
 		
 		// List all commands
-		COMMANDS.add("swap");
-		COMMANDS.add("assemble");
-		COMMANDS.add("congregate");
+		COMMANDS.add("reel");
+		COMMANDS.add("drown");
 		
 		return COMMANDS;
 	}

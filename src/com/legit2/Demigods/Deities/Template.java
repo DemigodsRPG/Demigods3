@@ -103,6 +103,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.google.common.base.Joiner;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DAbilityUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -195,10 +196,11 @@ public class Template implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(DCharUtil.isEnabledAbility(player, TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == DCharUtil.getBind(player, TEST_NAME))))
+		if(character.isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(TEST_NAME))))
 		{
 			if(!DCharUtil.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
@@ -214,6 +216,8 @@ public class Template implements Listener
 	 */
 	public static void testCommand(Player player, String[] args)
 	{
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
+		
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 		
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
@@ -221,18 +225,18 @@ public class Template implements Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{		
 			// Bind item
-			DCharUtil.setBound(player, TEST_NAME, player.getItemInHand().getType());
+			character.setBound(TEST_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(DCharUtil.isEnabledAbility(player, TEST_NAME))
+			if(character.isEnabledAbility(TEST_NAME))
 			{
-				DCharUtil.disableAbility(player, TEST_NAME);
+				character.toggleAbility(TEST_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				DCharUtil.enableAbility(player, TEST_NAME);
+				character.toggleAbility(TEST_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}
@@ -241,11 +245,11 @@ public class Template implements Listener
 	// The actual ability command
 	public static void testabil(Player player)
 	{
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
 		if(!DAbilityUtil.doAbilityPreProcess(player, TEST_COST)) return;
 		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
-		DCharUtil.subtractFavor(charID, TEST_COST);
+		character.subtractFavor(TEST_COST);
 		
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");
 	}
@@ -258,7 +262,7 @@ public class Template implements Listener
 		if(!DMiscUtil.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 		
 		// Set variables
-		int charID = DPlayerUtil.getCurrentChar(player);
+		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
 		if(!DMiscUtil.canUseDeity(player, DEITYNAME)) return;
 
@@ -271,7 +275,7 @@ public class Template implements Listener
 		}
 
 		if(!DAbilityUtil.doAbilityPreProcess(player, ULTIMATE_COST)) return;
-		DCharUtil.subtractFavor(charID, ULTIMATE_COST);
+		character.subtractFavor(ULTIMATE_COST);
 
 		player.sendMessage(ChatColor.YELLOW + "You just used the ultimate, " + ULTIMATE_NAME + ", for " + DEITYNAME + "!");
 		
@@ -279,7 +283,7 @@ public class Template implements Listener
 
 		// Set favor and cooldown
 		player.setNoDamageTicks(1000);
-		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) DCharUtil.getAscensions(charID) / 100)));
+		int cooldownMultiplier = (int)(ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
 		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
 	}
 
