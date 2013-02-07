@@ -217,7 +217,6 @@ public class Demigods extends JavaPlugin
 		getCommand("dg").setExecutor(ce);
 		getCommand("viewmaps").setExecutor(ce);
 		getCommand("check").setExecutor(ce);
-		getCommand("createchar").setExecutor(ce);
 		getCommand("switchchar").setExecutor(ce);
 		getCommand("removechar").setExecutor(ce);
 		getCommand("test1").setExecutor(ce);

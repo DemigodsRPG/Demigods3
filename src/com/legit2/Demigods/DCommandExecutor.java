@@ -101,7 +101,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -129,7 +128,6 @@ public class DCommandExecutor implements CommandExecutor
 	{
 		if(command.getName().equalsIgnoreCase("dg")) return dg(sender,args);
 		else if(command.getName().equalsIgnoreCase("check")) return check(sender);
-		else if(command.getName().equalsIgnoreCase("createchar")) return createChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("switchchar")) return switchChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender,args);
 		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
@@ -164,6 +162,7 @@ public class DCommandExecutor implements CommandExecutor
         fireworkmeta.setPower(2);
         firework.setFireworkMeta(fireworkmeta);
 		
+        /*
         for(Integer charID : DPlayerUtil.getChars((Player) sender))
 		{
 			DCharacter character = DCharUtil.getChar(charID);
@@ -187,6 +186,7 @@ public class DCommandExecutor implements CommandExecutor
 			sender.sendMessage("   Favor: " + character.getFavor());
 
 		}
+		*/
         
 		return true;
 	}
@@ -709,16 +709,6 @@ public class DCommandExecutor implements CommandExecutor
 		}
 		return true;
 	}
-
-	/*
-	 *  Command: "createChar"
-	 */
-	public static boolean createChar(CommandSender sender, String[] args)
-	{
-		sender.sendMessage(ChatColor.GRAY + "No longer functional. Use an Altar!");
-
-		return true;
-	}
 	
 	/*
 	 *  Command: "switchChar"
@@ -755,8 +745,9 @@ public class DCommandExecutor implements CommandExecutor
 		
 		if(DPlayerUtil.hasCharName(player, charName))
 		{
-			//int charID = DCharUtil.getID(charName);
-			//DCharUtil.removeChar(charID);
+			DCharacter character = DCharUtil.getCharByName(charName);
+			int charID = character.getID();
+			DDataUtil.removeChar(charID);
 			
 			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}

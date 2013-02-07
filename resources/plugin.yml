@@ -13,9 +13,6 @@ commands:
     check:
         usage: /check
         permission: demigods.basic
-    createchar:
-        usage: /createchar <name> <deity>
-        permission: demigods.basic
     switchchar:
         usage: /switchchar <name>
         permission: demigods.basic
