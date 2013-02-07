@@ -107,7 +107,7 @@ public class DCharUtil
 	/*
 	 *  createChar() : Creates a character for (Player)player if it doesn't currently exist.
 	 */
-	public static boolean createChar(Player player, String charName, String charDeity)
+	public static boolean createChar(OfflinePlayer player, String charName, String charDeity)
 	{
 		if(getCharByName(charName) == null)
 		{

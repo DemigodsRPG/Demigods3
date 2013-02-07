@@ -91,27 +91,25 @@
 package com.legit2.Demigods.Events.Character;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /*
  * Represents an event that is called when a character is created.
  */
-public class CharacterCreateEvent extends Event
+public class CharacterCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
     protected OfflinePlayer owner;
-    protected int charID;
     protected String name;
-    protected String alliance;
     protected String deity;
+    protected boolean cancelled = false;
 
-    public CharacterCreateEvent(final OfflinePlayer owner, final int charID, final String name, final String alliance, final String deity)
+    public CharacterCreateEvent(final OfflinePlayer owner, final String name, final String deity)
     {
         this.owner = owner;
-        this.charID = charID;
         this.name = name;
-        this.alliance = alliance;
         this.deity = deity;
     }
     
@@ -124,27 +122,11 @@ public class CharacterCreateEvent extends Event
     }
     
     /*
-     * getID() : Gets the character's ID.
-     */
-    public int getID()
-    {
-        return this.charID;
-    }
-    
-    /*
      * getName() : Gets the name of the character.
      */
     public String getName()
     {
         return this.name;
-    }
-    
-    /*
-     * getAlliance() : Gets the alliance involved.
-     */
-    public String getAlliance()
-    {
-        return this.alliance;
     }
     
     /*
@@ -165,4 +147,16 @@ public class CharacterCreateEvent extends Event
     {
         return handlers;
     }
+    
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
+	}
 }
