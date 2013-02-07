@@ -372,7 +372,7 @@ public class DDatabase
 				Double charLastX = location.getX();
 				Double charLastY = location.getY();
 				Double charLastZ = location.getZ();
-				String charLastW = location.getWorld().toString();
+				String charLastW = location.getWorld().getName();
 				
 				// Update main character table
 				DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET char_immortal=" + charImmortal + ",char_hp=" + charHP + ",char_exp=" + charExp + ",char_favor=" + charFavor + ",char_max_favor=" + charMaxFavor + ",char_devotion=" + charDevotion + ",char_ascensions=" + charAscensions + ",char_lastX=" + charLastX + ",char_lastY=" + charLastY + ",char_lastZ=" + charLastZ + ",char_lastW='" + charLastW + "'  WHERE char_id=" + charID + ";");
@@ -521,7 +521,7 @@ public class DDatabase
 						int charID = charResult.getInt("char_id");
 						Location location = new Location(Bukkit.getWorld(charResult.getString("char_lastW")),  charResult.getDouble("char_lastX"),  charResult.getDouble("char_lastY"),  charResult.getDouble("char_lastZ"));
 						
-						DCharacter character = new DCharacter(player.getPlayer(), charID, charResult.getString("char_name"), charResult.getString("char_deity"));
+						DCharacter character = new DCharacter(player, charID, charResult.getString("char_name"), charResult.getString("char_deity"));
 						character.setLocation(location);
 						character.toggleActive(charResult.getBoolean("char_active"));
 						character.toggleImmortal(charResult.getBoolean("char_immortal"));
