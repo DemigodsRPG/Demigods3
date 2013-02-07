@@ -238,6 +238,7 @@ public class DPlayerUtil
 		for(int charID : characters)
 		{
 			DCharacter character = DCharUtil.getChar(charID);
+			if(character == null || !character.isImmortal()) continue;
 			if(character.getName().equalsIgnoreCase(charName)) return true;
 		}
 		return false;
@@ -270,9 +271,10 @@ public class DPlayerUtil
 		
 		for(Player player : onlinePlayers)
 		{
-			DCharacter character = DPlayerUtil.getCurrentChar(player);
+			DCharacter character = getCurrentChar(player);
+			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(DConfigUtil.getSettingDouble("global_favor_multiplier") * character.getAscensions());
-			if (regenRate < 1) regenRate = 1;
+			if(regenRate < 1) regenRate = 1;
 			character.giveFavor(regenRate);
 		}
 	}
