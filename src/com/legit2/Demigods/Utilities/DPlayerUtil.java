@@ -191,7 +191,9 @@ public class DPlayerUtil
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		return getCurrentChar(player).getAlliance();
+		DCharacter character = getCurrentChar(player);
+		if(character == null || !character.isImmortal()) return "Mortal";
+		return character.getAlliance();
 	}
 	
 	/*
