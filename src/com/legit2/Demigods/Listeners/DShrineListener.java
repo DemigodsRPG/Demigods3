@@ -88,71 +88,37 @@
 	    derivatives within 48 hours.
  */
 
-package com.legit2.Demigods.Events.DivineBlock;
+package com.legit2.Demigods.Listeners;
 
 import org.bukkit.Location;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
-/*
- * Represents an event that is called when a character is created.
- */
-public class AltarCreateEvent extends Event implements Cancellable
+import com.legit2.Demigods.DDivineBlocks;
+import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Events.DivineBlock.ShrineCreateEvent;
+import com.legit2.Demigods.Libraries.DCharacter;
+
+
+public class DShrineListener implements Listener
 {
-	private static final HandlerList handlers = new HandlerList();
-    protected Location block;
-    protected AltarCreateCause cause;
-    protected boolean cancelled = false;
-
-    public AltarCreateEvent(final Location block, final AltarCreateCause cause)
-    {
-        this.block = block;
-        this.cause = cause;
-    }
-    
-    /*
-     * getLocation() : Gets the Altar's location.
-     */
-    public Location getLocation()
-    {
-        return this.block;
-    }
-    
-    /*
-     * getCause() : Gets the Altar's creation cause;
-     */
-    public AltarCreateCause getCause()
-    {
-        return this.cause;
-    }
-
-    @Override
-    public HandlerList getHandlers()
-    {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList()
-    {
-        return handlers;
-    }
-    
-    public enum AltarCreateCause
-    {
-    	ADMIN_WAND,
-    	GENERATED;
-    }
-
-	@Override
-	public boolean isCancelled()
+	static Demigods plugin;
+	
+	public DShrineListener(Demigods instance)
 	{
-		return this.cancelled;
+		plugin = instance;
 	}
 
-	@Override
-	public void setCancelled(boolean cancelled)
+	/* --------------------------------------------
+	 *  Handle Shrine Custom Events
+	 * --------------------------------------------
+	 */
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onAltarCreation(ShrineCreateEvent event)
 	{
-		this.cancelled = cancelled;
+		Location location = event.getLocation();
+		DCharacter character = event.getOwner();
+		DDivineBlocks.createShrine(character.getID(), location);
 	}
 }

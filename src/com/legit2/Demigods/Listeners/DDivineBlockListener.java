@@ -124,6 +124,7 @@ import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.DTributeValue;
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Events.DivineBlock.AltarCreateEvent;
+import com.legit2.Demigods.Events.DivineBlock.ShrineCreateEvent;
 import com.legit2.Demigods.Events.DivineBlock.AltarCreateEvent.AltarCreateCause;
 import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Libraries.DivineBlock;
@@ -170,7 +171,8 @@ public class DDivineBlockListener implements Listener
 			try
 			{
 				// Shrine created!
-				DDivineBlocks.createShrine(character.getID(), location);
+				ShrineCreateEvent shrineEvent = new ShrineCreateEvent(character, location);
+				DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(shrineEvent);
 				
 				if(player.getItemInHand().getAmount() > 1)
 				{
@@ -369,11 +371,9 @@ public class DDivineBlockListener implements Listener
 		
 		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
-			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			DivineBlock block = DDivineBlocks.createAltar(location.add(0, 2, 0));
-			
-			AltarCreateEvent atlarEvent = new AltarCreateEvent(block, AltarCreateCause.ADMIN_WAND);
-			DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(atlarEvent);
+			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");			
+			AltarCreateEvent altarEvent = new AltarCreateEvent(location.add(0, 2, 0), AltarCreateCause.ADMIN_WAND);
+			DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(altarEvent);
 			
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}

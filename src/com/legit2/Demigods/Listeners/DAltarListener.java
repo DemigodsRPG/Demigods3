@@ -98,7 +98,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -112,7 +111,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.legit2.Demigods.DDivineBlocks;
 import com.legit2.Demigods.Demigods;
+import com.legit2.Demigods.Events.Character.CharacterCreateEvent;
+import com.legit2.Demigods.Events.DivineBlock.AltarCreateEvent;
 import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -129,6 +131,17 @@ public class DAltarListener implements Listener
 	public DAltarListener(Demigods instance)
 	{
 		plugin = instance;
+	}
+	
+	/* --------------------------------------------
+	 *  Handle Altar Custom Events
+	 * --------------------------------------------
+	 */
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onAltarCreation(AltarCreateEvent event)
+	{
+		Location location = event.getLocation();
+		DDivineBlocks.createAltar(location);
 	}
 	
 	/* --------------------------------------------
@@ -628,11 +641,8 @@ public class DAltarListener implements Listener
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!
-				DCharUtil.createChar(player, chosenName, chosenDeity);				
-				DDataUtil.removePlayerData(player, "temp_createchar");
-				player.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
-				player.getWorld().strikeLightningEffect(player.getLocation());
-				for (int i=0;i<20;i++) player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+				CharacterCreateEvent characterEvent = new CharacterCreateEvent(player, chosenName, chosenDeity);
+				DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(characterEvent);
 				
 				// Stop their praying, enable movement, enable chat
 				DMiscUtil.togglePlayerChat(player, true);

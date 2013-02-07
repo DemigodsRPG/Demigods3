@@ -101,13 +101,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.legit2.Demigods.Database.DDatabase;
-import com.legit2.Demigods.Events.DivineBlock.ShrineCreateEvent;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
-import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
-import com.legit2.Demigods.Utilities.DPlayerUtil;
 
 public class DDivineBlocks
 {	
@@ -126,9 +123,6 @@ public class DDivineBlocks
 		location.getWorld().strikeLightningEffect(location);
 		DDataUtil.saveBlockData(blockID, "block_object", block);
 		DDatabase.saveDivineBlocks();
-				
-		ShrineCreateEvent event = new ShrineCreateEvent(DPlayerUtil.getPlayerFromID(charID), block, DCharUtil.getChar(charID).getAlliance(), DCharUtil.getChar(charID).getDeity());
-		DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(event);
 	}
 	
 	/*
@@ -242,7 +236,7 @@ public class DDivineBlocks
 	 * Begin Altar-related Methods
 	 * ---------------------------------------------------
 	 *
-	 *  createNewAltar() : Creates a new altar at (Location)location.
+	 *  createAltar() : Creates a new altar at (Location)location.
 	 */
 	public static DivineBlock createAltar(Location location)
 	{
@@ -253,7 +247,7 @@ public class DDivineBlocks
 	}
 	
 	/*
-	 *  createAltar() : Creates an altar at (Location)location for (int)parentID.
+	 *  generateAltar() : Creates an altar at (Location)location for (int)parentID.
 	 */
 	public static DivineBlock generateAltar(Location location, int parentID)
 	{	

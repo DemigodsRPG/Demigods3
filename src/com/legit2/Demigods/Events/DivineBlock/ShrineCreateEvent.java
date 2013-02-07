@@ -90,61 +90,43 @@
 
 package com.legit2.Demigods.Events.DivineBlock;
 
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Location;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.legit2.Demigods.Libraries.DivineBlock;
+import com.legit2.Demigods.Libraries.DCharacter;
 
 /*
  * Represents an event that is called when a character is created.
  */
-public class ShrineCreateEvent extends Event
+public class ShrineCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-    protected OfflinePlayer owner;
-    protected DivineBlock block;
-    protected String alliance;
-    protected String deity;
+    protected DCharacter owner;
+    protected Location block;
+    protected boolean cancelled = false;
 
-    public ShrineCreateEvent(final OfflinePlayer owner, final DivineBlock block, final String alliance, final String deity)
+    public ShrineCreateEvent(final DCharacter owner, final Location block)
     {
         this.owner = owner;
         this.block = block;
-        this.alliance = alliance;
-        this.deity = deity;
     }
     
     /*
-     * getOwner() : Gets the player.
+     * getOwner() : Gets the character/owner.
      */
-    public OfflinePlayer getOwner()
+    public DCharacter getOwner()
     {
         return this.owner;
     }
     
     /*
-     * getDivineBlock() : Gets the Shrine's DivineBlock.
+     * getLocation() : Gets the Shrine's location.
      */
-    public DivineBlock getDivineBlock()
+    public Location getLocation()
     {
         return this.block;
-    }
-    
-    /*
-     * getAlliance() : Gets the alliance involved.
-     */
-    public String getAlliance()
-    {
-        return this.alliance;
-    }
-    
-    /*
-     * getDeity() : Gets the deity involved.
-     */
-    public String getDeity()
-    {
-        return this.deity;
     }
 
     @Override
@@ -157,4 +139,16 @@ public class ShrineCreateEvent extends Event
     {
         return handlers;
     }
+    
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
+	}
 }
