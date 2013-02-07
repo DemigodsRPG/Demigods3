@@ -108,11 +108,13 @@ import org.kitteh.tag.TagAPI;
 import com.legit2.Demigods.Database.DDatabase;
 import com.legit2.Demigods.Events.DEventCreator;
 import com.legit2.Demigods.Listeners.DAltarListener;
+import com.legit2.Demigods.Listeners.DCharacterListener;
 import com.legit2.Demigods.Listeners.DChatListener;
 import com.legit2.Demigods.Listeners.DCommandListener;
 import com.legit2.Demigods.Listeners.DDivineBlockListener;
 import com.legit2.Demigods.Listeners.DEntityListener;
 import com.legit2.Demigods.Listeners.DPlayerListener;
+import com.legit2.Demigods.Listeners.DShrineListener;
 import com.legit2.Demigods.Listeners.DTagAPIListener;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
@@ -239,6 +241,10 @@ public class Demigods extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new DChatListener(), this);
 		/* Altar Listener */
 		getServer().getPluginManager().registerEvents(new DAltarListener(this), this);
+		/* Shrine Listener */
+		getServer().getPluginManager().registerEvents(new DShrineListener(this), this);
+		/* Character Listener */
+		getServer().getPluginManager().registerEvents(new DCharacterListener(this), this);
 		/* Event Creator */
 		getServer().getPluginManager().registerEvents(new DEventCreator(), this);
 }
