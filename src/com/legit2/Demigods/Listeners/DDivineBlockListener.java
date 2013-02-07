@@ -283,10 +283,10 @@ public class DDivineBlockListener implements Listener
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player)event.getPlayer();
 			DCharacter character = DPlayerUtil.getCurrentChar(player);
+			if(character == null || !character.isImmortal()) return;
+			
 			String charDeity = character.getDeity();
 			int charID = character.getID();
-
-			if(!character.isImmortal()) return;
 			
 			// If it isn't a tribute chest then break the method
 			if(!event.getInventory().getName().contains("Shrine")) return;
