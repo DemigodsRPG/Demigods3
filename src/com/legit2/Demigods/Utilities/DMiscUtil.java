@@ -285,12 +285,12 @@ public class DMiscUtil
 		DCharacter character = DPlayerUtil.getCurrentChar(player);
 		
 		// Check the player for DEITYNAME
-		if(!character.hasDeity(deity))
+		if(character != null && !character.hasDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
 		}
-		else if(!character.isImmortal())
+		else if(character == null || !character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
@@ -305,6 +305,8 @@ public class DMiscUtil
 	{		
 		DCharacter character = DPlayerUtil.getCurrentChar(player);
 
+		if(character == null) return false;
+		
 		// Check the player for DEITYNAME
 		if(!character.hasDeity(deity)) return false;
 		else if(!character.isImmortal()) return false;
