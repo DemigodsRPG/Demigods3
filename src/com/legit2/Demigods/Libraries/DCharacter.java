@@ -95,12 +95,19 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.meta.FireworkMeta;
 
+import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
 import com.legit2.Demigods.Utilities.DDataUtil;
 import com.legit2.Demigods.Utilities.DDeityUtil;
@@ -113,7 +120,7 @@ public class DCharacter implements Serializable
 
 	static OfflinePlayer player;
 	static String charName, charDeity, charAlliance;
-	static int playerID, charID, charLevel, charHP, charFavor, charMaxFavor, charDevotion, charAscensions;
+	static int playerID, charID, charLevel, charHealth, charMaxHealth, charFavor, charMaxFavor, charDevotion, charAscensions;
 	static float charExp;
 	static Location charLoc;
 	static boolean charActive, charImmortal;
@@ -121,14 +128,15 @@ public class DCharacter implements Serializable
 	
 	public DCharacter(Player player, int charID, String charName, String charDeity)
 	{
-		// Define variables
+		// Create object using variables given and obtained
+		playerID = DPlayerUtil.getPlayerID(player);
 		DCharacter.player = player;
 		DCharacter.charID = charID;
-		playerID = DPlayerUtil.getPlayerID(player);
-		charName = DObjUtil.capitalize(charName.toLowerCase());
-		charDeity = DObjUtil.capitalize(charDeity.toLowerCase());
+		DCharacter.charName = DObjUtil.capitalize(charName.toLowerCase());
+		DCharacter.charDeity = DObjUtil.capitalize(charDeity.toLowerCase());
 		charAlliance = DDeityUtil.getDeityAlliance(charDeity);
-		charHP = player.getHealth();
+		charHealth = player.getHealth();
+		charMaxHealth = player.getMaxHealth();
 		charExp = player.getExp();
 		charLoc = player.getLocation();
 		charFavor = DConfigUtil.getSettingInt("default_favor");
@@ -137,10 +145,15 @@ public class DCharacter implements Serializable
 		charAscensions = DConfigUtil.getSettingInt("default_ascensions");
 		charActive = true;
 		charImmortal = true;
+	
+		// Save the character
+		DDataUtil.addChar(charID);
+		save();
 	}
 	
 	public void save()
 	{
+		DDataUtil.saveCharData(charID, "char_owner", playerID);
 		DDataUtil.saveCharData(charID, "char_object", this);
 	}
 	
@@ -156,21 +169,21 @@ public class DCharacter implements Serializable
 	
 	public void giveFavor(int amount)
 	{
-		if((getFavor() + amount) > getMaxFavor())
+		if(charFavor + amount > charMaxFavor)
 		{
 			charFavor = getMaxFavor();
 		}
-		else charFavor = getFavor() + amount;
+		else charFavor += amount;
 		save();
 	}
 	
 	public void subtractFavor(int amount)
 	{
-		if(getFavor() - amount < 0)
+		if(charFavor - amount < 0)
 		{
 			charFavor = 0;
 		}
-		else charFavor = getFavor() - amount;
+		else charFavor -= amount;
 		save();
 	}
 	
@@ -182,18 +195,18 @@ public class DCharacter implements Serializable
 	
 	public void addMaxFavor(int amount)
 	{
-		if((getMaxFavor() + amount) > DConfigUtil.getSettingInt("global_max_favor"))
+		if((charMaxFavor + amount) > DConfigUtil.getSettingInt("global_max_favor"))
 		{
 			charMaxFavor = DConfigUtil.getSettingInt("global_max_favor");
 		}
-		else charMaxFavor = getMaxFavor() + amount;
+		else charMaxFavor += amount;
 		save();
 	}
 	
-	public static ChatColor getFavorColor(int charID)
+	public ChatColor getFavorColor()
 	{
-		int favor = getFavor();
-		int maxFavor = getMaxFavor();
+		int favor = charFavor;
+		int maxFavor = charMaxFavor;
 		ChatColor color = ChatColor.RESET;
 		
 		// Set favor color dynamically
@@ -208,6 +221,11 @@ public class DCharacter implements Serializable
 	 * Devotion-specific Methods
 	 * ---------------------------------------- 
 	 */
+	public int getDevotionGoal()
+	{
+		return (int) Math.ceil(500 * Math.pow(charAscensions + 1, 2.02));
+	}
+	
 	public void setDevotion(int amount)
 	{
 		charFavor = amount;
@@ -216,17 +234,40 @@ public class DCharacter implements Serializable
 	
 	public void giveDevotion(int amount)
 	{
-		charDevotion = getDevotion() + amount;
-		save();
+		int devotionBefore = charDevotion;
+		int devotionGoal = getDevotionGoal();
+		charDevotion += amount;
+		int devotionAfter = charDevotion;
+		
+		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
+		{
+			Player player = DCharUtil.getOwner(charID).getPlayer();
+			
+			// Player leveled up!
+			charAscensions += 1;
+			charDevotion = devotionAfter - devotionGoal;
+			
+			// Spawn a pretty firework!
+			Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+			FireworkMeta fireworkmeta = firework.getFireworkMeta();
+	        Type type = Type.BALL;       
+	        FireworkEffect effect = FireworkEffect.builder().flicker(true).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
+	        fireworkmeta.addEffect(effect);
+	        fireworkmeta.setPower(1);
+	        firework.setFireworkMeta(fireworkmeta);      
+			
+			// Let 'em know!
+			player.sendMessage(ChatColor.GREEN + "You leveled up!" + ChatColor.GRAY + " (Devotion until next Ascension: " + ChatColor.YELLOW + (getDevotionGoal() - devotionAfter) + ChatColor.GRAY + ")");
+		}
 	}
 	
 	public void subtractDevotion(int amount)
 	{
-		if(getDevotion() - amount < 0)
+		if(charDevotion - amount < 0)
 		{
 			charDevotion = 0;
 		}
-		else charDevotion = getDevotion() - amount;
+		else charDevotion -= amount;
 		save();
 	}
 	
@@ -242,17 +283,17 @@ public class DCharacter implements Serializable
 	
 	public void giveAscensions(int amount)
 	{
-		charAscensions = getAscensions() + amount;
+		charAscensions += amount;
 		save();
 	}
 	
 	public void subtractAscensions(int amount)
 	{
-		if(getAscensions() - amount < 0)
+		if(charAscensions - amount < 0)
 		{
 			charAscensions = 0;
 		}
-		else charAscensions = getAscensions() - amount;
+		else charAscensions -= amount;
 		save();
 	}
 	
@@ -270,16 +311,16 @@ public class DCharacter implements Serializable
 		return power;
 	}
 	
-	public void setHP(int amount)
+	public void setHealth(int amount)
 	{
-		charHP = amount;
+		charHealth = amount;
 		save();
 	}
 	
-	public static ChatColor getHPColor(int charID)
+	public ChatColor getHealthColor()
 	{
-		int hp = getHP();
-		int maxHP = ((Player) getOwner()).getMaxHealth();
+		int hp = charHealth;
+		int maxHP = ((Player) player).getMaxHealth();
 		ChatColor color = ChatColor.RESET;
 		
 		// Set favor color dynamically
@@ -338,17 +379,6 @@ public class DCharacter implements Serializable
 	public void toggleAbility(String ability, boolean option)
 	{
 		DDataUtil.saveCharData(charID,  "boolean_" + ability.toLowerCase(), option);
-		save();
-	}
-	
-	public boolean isCooledDown(String ability, long ability_time, boolean sendMsg)
-	{
-		if(ability_time > System.currentTimeMillis())
-		{
-			if(sendMsg) ((Player) player).sendMessage(ChatColor.RED + ability + " has not cooled down!");
-			return false;
-		}
-		else return true;
 	}
 	
 	public static boolean isBound(Material material)
@@ -451,7 +481,7 @@ public class DCharacter implements Serializable
 		return charID;
 	}
 	
-	public static Player getOwner() 
+	public Player getOwner() 
 	{
 		return Bukkit.getPlayer(player.getName());
 	}
@@ -490,9 +520,14 @@ public class DCharacter implements Serializable
 		return charLoc; 
 	}
 	
-	public static int getHP()
+	public int getHealth()
 	{
-		return charHP;
+		return charHealth;
+	}
+	
+	public int getMaxHealth()
+	{
+		return charMaxHealth;
 	}
 	
 	public float getExp()
@@ -500,12 +535,12 @@ public class DCharacter implements Serializable
 		return charExp;
 	}
 	
-	public static int getFavor() 
+	public int getFavor() 
 	{
 		return charFavor; 
 	}
 	
-	public static int getMaxFavor() 
+	public int getMaxFavor() 
 	{ 
 		return charMaxFavor;	
 	}

@@ -102,6 +102,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.legit2.Demigods.Database.DDatabase;
+import com.legit2.Demigods.Libraries.DCharacter;
 
 public class DPlayerUtil
 {
@@ -173,15 +174,15 @@ public class DPlayerUtil
 	/*
 	 *  getCurrentChar() : Returns the current charID for (Player)player.
 	 */
-	public static int getCurrentChar(OfflinePlayer player)
+	public static DCharacter getCurrentChar(OfflinePlayer player)
 	{
 		try
 		{
-			return DObjUtil.toInteger(DDataUtil.getPlayerData(player, "current_char").toString());
+			return (DCharacter) DCharUtil.getChar(DObjUtil.toInteger(DDataUtil.getPlayerData(player, "current_char")));
 		}
 		catch (Exception e)
 		{
-			return -1;
+			return null;
 		}
 	}
 	
@@ -190,7 +191,7 @@ public class DPlayerUtil
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		return DDataUtil.getCharData(getCurrentChar(player), "char_alliance").toString();
+		return getCurrentChar(player).getAlliance();
 	}
 	
 	/*
@@ -200,9 +201,22 @@ public class DPlayerUtil
 	{	
 		List<Integer> charArray = new ArrayList<Integer>();
 		HashMap<Integer, HashMap<String, Object>> characters = DDataUtil.getAllPlayerChars(player);
+		
 		if(characters == null) return charArray;
-		for(Integer charID : characters.keySet()) charArray.add(charID);
+		for(Entry<Integer, HashMap<String, Object>> character : characters.entrySet())
+		{
+			int charID = character.getKey();
+			charArray.add(charID);
+		}
 		return charArray;
+	}
+	
+	/*
+	 *  isImmortal() : Returns the current alliance for (Player)player.
+	 */
+	public static boolean isImmortal(OfflinePlayer player)
+	{
+		return getCurrentChar(player).isImmortal();
 	}
 	
 	/*
@@ -219,7 +233,13 @@ public class DPlayerUtil
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		if(DCharUtil.getID(charName) != -1) return true;
+		List<Integer> characters = DPlayerUtil.getChars(player);
+		
+		for(int charID : characters)
+		{
+			DCharacter character = DCharUtil.getChar(charID);
+			if(character.getName().equalsIgnoreCase(charName)) return true;
+		}
 		return false;
 	}
 	
@@ -250,10 +270,10 @@ public class DPlayerUtil
 		
 		for(Player player : onlinePlayers)
 		{
-			int charID = DPlayerUtil.getCurrentChar(player);
-			int regenRate = (int) Math.ceil(DConfigUtil.getSettingDouble("global_favor_multiplier") * DCharUtil.getAscensions(charID));
+			DCharacter character = DPlayerUtil.getCurrentChar(player);
+			int regenRate = (int) Math.ceil(DConfigUtil.getSettingDouble("global_favor_multiplier") * character.getAscensions());
 			if (regenRate < 1) regenRate = 1;
-			DCharUtil.giveFavor(charID, regenRate);
+			character.giveFavor(regenRate);
 		}
 	}
 	

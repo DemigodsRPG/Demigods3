@@ -105,6 +105,7 @@ import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
 import com.legit2.Demigods.DDivineBlocks;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Libraries.DivineBlock;
 import com.legit2.Demigods.Utilities.DCharUtil;
 import com.legit2.Demigods.Utilities.DConfigUtil;
@@ -197,27 +198,30 @@ public class DDatabase
 	/*
 	 *  addPlayerToDB() : Adds the player to the database.
 	 */
-	public static void addCharToDB(OfflinePlayer player, int charID) throws SQLException
+	public static void addCharToDB(DCharacter character) throws SQLException
 	{
 		// Next we add them to the Database if needed
 		if(DConfigUtil.getSettingBoolean("database.mysql.use") && DMySQL.checkConnection())
-		{	
-			int playerID = DPlayerUtil.getPlayerID(player);
-			boolean charActive = DCharUtil.isActive(charID);
-			String charName = DCharUtil.getName(charID);
-			String charDeity = DCharUtil.getDeity(charID);
-			String charAlliance = DCharUtil.getAlliance(charID);
-			boolean charImmortal = DCharUtil.getImmortal(charID);
-			int charHP = DCharUtil.getHP(charID);
-			float charExp = DCharUtil.getExp(charID);
-			int charFavor = DCharUtil.getFavor(charID);
-			int charMaxFavor = DCharUtil.getMaxFavor(charID);
-			int charDevotion = DCharUtil.getDevotion(charID);
-			int charAscensions = DCharUtil.getAscensions(charID);
-			double charLastX = 0.0;
-			double charLastY = 0.0;
-			double charLastZ = 0.0;
-			String charLastW = "";
+		{				
+			int playerID = character.getOwnerID();
+			int charID = character.getID();
+			boolean charActive = character.isActive();
+			String charName = character.getName();
+			String charDeity = character.getDeity();
+			String charAlliance = character.getAlliance();
+			boolean charImmortal = character.isImmortal();
+			int charHP = character.getHealth();
+			float charExp = character.getExp();
+			int charFavor = character.getFavor();
+			int charMaxFavor = character.getMaxFavor();
+			int charDevotion = character.getDevotion();
+			int charAscensions = character.getAscensions();
+			
+			Location charLoc = character.getLastLocation();
+			double charLastX = charLoc.getX();
+			double charLastY = charLoc.getY();
+			double charLastZ = charLoc.getZ();
+			String charLastW = charLoc.getWorld().getName();
 			
 			String addQuery = 
 					"INSERT INTO " + DMySQL.character_table +
@@ -349,30 +353,34 @@ public class DDatabase
 			for(Entry<String, Object> playerData : allPlayerData.entrySet()) if(!playerData.getKey().contains("player_") && !playerData.getKey().contains("temp_")) DMySQL.runQuery("INSERT INTO " + DMySQL.playerdata_table + " (player_id, datakey, datavalue) VALUES(" + playerID + ",'" + playerData.getKey() + "','" + playerData.getValue() + "');");
 			
 			// Save their character-specific data now
-			HashMap<Integer, HashMap<String, Object>> playerCharData = DDataUtil.getAllPlayerChars(player);
-			for(Entry<Integer, HashMap<String, Object>> playerChar : playerCharData.entrySet())
+			List<Integer> characters = DPlayerUtil.getChars(player);
+			
+			for(int charID : characters)
 			{
+				DCharacter character = DCharUtil.getChar(charID);
+				
 				// Define character-specific variables
-				int charID = playerChar.getKey();
-				boolean charImmortal = DCharUtil.getImmortal(charID);
-				int charHP = DCharUtil.getHP(charID);
-				float charExp = DCharUtil.getExp(charID);
-				int charFavor = DCharUtil.getFavor(charID);
-				int charMaxFavor = DCharUtil.getMaxFavor(charID);
-				int charDevotion = DCharUtil.getDevotion(charID);
-				int charAscensions = DCharUtil.getAscensions(charID);
-				Double charLastX = (Double) playerCharData.get(charID).get("char_lastx");
-				Double charLastY = (Double) playerCharData.get(charID).get("char_lasty");
-				Double charLastZ = (Double) playerCharData.get(charID).get("char_lastz");
-				String charLastW = (String) playerCharData.get(charID).get("char_lastw");
+				boolean charImmortal = character.isImmortal();
+				int charHP = character.getHealth();
+				float charExp = character.getExp();
+				int charFavor = character.getFavor();
+				int charMaxFavor = character.getMaxFavor();
+				int charDevotion = character.getDevotion();
+				int charAscensions = character.getAscensions();
+				
+				Location location = character.getLastLocation();
+				Double charLastX = location.getX();
+				Double charLastY = location.getY();
+				Double charLastZ = location.getZ();
+				String charLastW = location.getWorld().toString();
 				
 				// Update main character table
 				DMySQL.runQuery("UPDATE " + DMySQL.character_table + " SET char_immortal=" + charImmortal + ",char_hp=" + charHP + ",char_exp=" + charExp + ",char_favor=" + charFavor + ",char_max_favor=" + charMaxFavor + ",char_devotion=" + charDevotion + ",char_ascensions=" + charAscensions + ",char_lastX=" + charLastX + ",char_lastY=" + charLastY + ",char_lastZ=" + charLastZ + ",char_lastW='" + charLastW + "'  WHERE char_id=" + charID + ";");
 
 				// Save miscellaneous character data
-				HashMap<String, Object> charData = playerChar.getValue();
+				HashMap<String, Object> characterData = DDataUtil.getAllCharData(charID);
 				DMySQL.runQuery("DELETE FROM " + DMySQL.chardata_table + " WHERE char_id=" + charID + ";");
-				for(Entry<String, Object> character : charData.entrySet()) if(!character.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + character.getKey() + "','" + character.getValue() + "');");
+				for(Entry<String, Object> charData : characterData.entrySet()) if(!charData.getKey().contains("char_")) DMySQL.runQuery("INSERT INTO " + DMySQL.chardata_table + " (char_id, datakey, datavalue) VALUES(" + charID + ",'" + charData.getKey() + "','" + charData.getValue() + "');");
 			}
 			return true;
 		}
@@ -509,26 +517,20 @@ public class DDatabase
 					{
 						characterCount++;
 						
+						// Define variables
 						int charID = charResult.getInt("char_id");
+						Location location = new Location(Bukkit.getWorld(charResult.getString("char_lastW")),  charResult.getDouble("char_lastX"),  charResult.getDouble("char_lastY"),  charResult.getDouble("char_lastZ"));
 						
-						// Load the main character data
-						DDataUtil.addChar(charID);
-						DDataUtil.saveCharData(charID, "char_owner", charResult.getInt("player_id"));
-						DDataUtil.saveCharData(charID, "char_name", charResult.getString("char_name"));
-						DDataUtil.saveCharData(charID, "char_active", charResult.getBoolean("char_active"));
-						DDataUtil.saveCharData(charID, "char_deity", charResult.getString("char_deity"));
-						DDataUtil.saveCharData(charID, "char_alliance", charResult.getString("char_alliance"));
-						DDataUtil.saveCharData(charID, "char_immortal", charResult.getBoolean("char_immortal"));
-						DDataUtil.saveCharData(charID, "char_hp", charResult.getInt("char_hp"));
-						DDataUtil.saveCharData(charID, "char_exp", charResult.getFloat("char_exp"));
-						DDataUtil.saveCharData(charID, "char_lastX", charResult.getDouble("char_lastX"));
-						DDataUtil.saveCharData(charID, "char_lastY", charResult.getDouble("char_lastY"));
-						DDataUtil.saveCharData(charID, "char_lastZ", charResult.getDouble("char_lastZ"));
-						DDataUtil.saveCharData(charID, "char_lastW", charResult.getString("char_lastW"));
-						DDataUtil.saveCharData(charID, "char_favor", charResult.getInt("char_favor"));
-						DDataUtil.saveCharData(charID, "char_max_favor", charResult.getInt("char_max_favor"));
-						DDataUtil.saveCharData(charID, "char_devotion", charResult.getInt("char_devotion"));
-						DDataUtil.saveCharData(charID, "char_ascensions", charResult.getInt("char_ascensions"));
+						DCharacter character = new DCharacter(player.getPlayer(), charID, charResult.getString("char_name"), charResult.getString("char_deity"));
+						character.setLocation(location);
+						character.toggleActive(charResult.getBoolean("char_active"));
+						character.toggleImmortal(charResult.getBoolean("char_immortal"));
+						character.setHealth(charResult.getInt("char_hp"));
+						character.setExp(charResult.getFloat("char_exp"));
+						character.setFavor(charResult.getInt("char_favor"));
+						character.setMaxFavor(charResult.getInt("char_max_favor"));
+						character.setAscensions(charResult.getInt("char_ascensions"));
+						character.setDevotion(charResult.getInt("char_devotion"));
 						
 						// Load other character data
 						if(charResult.getString("datakey") != null)

@@ -120,16 +120,14 @@ public class DDivineBlocks
 	public static void createShrine(int charID, Location location)
 	{
 		int blockID = DObjUtil.generateInt(5);
-		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getDeity(charID));
+		DivineBlock block = new DivineBlock(location, blockID, charID, true, "shrine", DCharUtil.getChar(charID).getDeity());
 		location.getBlock().setType(Material.BEDROCK);
 		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
 		location.getWorld().strikeLightningEffect(location);
 		DDataUtil.saveBlockData(blockID, "block_object", block);
 		DDatabase.saveDivineBlocks();
-		
-		DCharUtil.getName(charID);
-		
-		ShrineCreateEvent event = new ShrineCreateEvent(DPlayerUtil.getPlayerFromID(charID), block, DCharUtil.getAlliance(charID), DCharUtil.getDeity(charID));
+				
+		ShrineCreateEvent event = new ShrineCreateEvent(DPlayerUtil.getPlayerFromID(charID), block, DCharUtil.getChar(charID).getAlliance(), DCharUtil.getChar(charID).getDeity());
 		DMiscUtil.getPlugin().getServer().getPluginManager().callEvent(event);
 	}
 	

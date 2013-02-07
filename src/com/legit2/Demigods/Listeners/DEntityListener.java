@@ -104,7 +104,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.legit2.Demigods.Demigods;
-import com.legit2.Demigods.Utilities.DCharUtil;
+import com.legit2.Demigods.Libraries.DCharacter;
 import com.legit2.Demigods.Utilities.DMiscUtil;
 import com.legit2.Demigods.Utilities.DObjUtil;
 import com.legit2.Demigods.Utilities.DPlayerUtil;
@@ -173,13 +173,13 @@ public class DEntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			int charID = DPlayerUtil.getCurrentChar(player);
-			String deity = DObjUtil.capitalize(DCharUtil.getDeity(charID));
-			int devotion = DCharUtil.getDevotion(charID);
+			DCharacter character = DPlayerUtil.getCurrentChar(player);
+			String deity = DObjUtil.capitalize(character.getDeity());
+			int devotion = character.getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
 			
 			// Set their devotion and add a death
-			DCharUtil.subtractDevotion(charID, devotionRemoved);
+			character.subtractDevotion(devotionRemoved);
 			DPlayerUtil.addDeath(player);
 			
 			// Let 'em know
