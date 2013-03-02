@@ -749,12 +749,22 @@ public class DAltarListener implements Listener
             return;
         }
 
+        // Check for same names
         for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
         {
             if(warp.getName() == name.toUpperCase())
             {
                 player.sendMessage(ChatColor.GRAY + "A warp by that name already exists.");
                 return;
+            }
+        }
+
+        // Check for same altars
+        for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+        {
+            if(API.zone.zoneAltar(warp.unserialize()) == API.zone.zoneAltar(player.getLocation()))
+            {
+               API.data.removeWarpData(API.player.getCurrentChar(player), warp);
             }
         }
 
