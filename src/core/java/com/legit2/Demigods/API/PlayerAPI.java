@@ -101,12 +101,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Libraries.Objects.PlayerCharacter;
-import com.legit2.Demigods.Libraries.Objects.SerialItemStack;
 import com.legit2.Demigods.Libraries.Objects.SerialPlayerInventory;
 
 public class PlayerAPI
@@ -262,20 +260,8 @@ public class PlayerAPI
 		player.getInventory().setBoots(new ItemStack(Material.AIR));
 		if(character.getInventory() != null)
 		{
-			Inventory currInv = player.getInventory();
 			SerialPlayerInventory charInv = character.getInventory();
-
-			player.getInventory().setHelmet(charInv.getHelmet());
-			player.getInventory().setChestplate(charInv.getChestplate());
-			player.getInventory().setLeggings(charInv.getLeggings());
-			player.getInventory().setBoots(charInv.getBoots());
-
-			for(Entry<Integer, SerialItemStack> slot : charInv.getItems().entrySet())
-			{
-				int index = slot.getKey();
-				ItemStack item = slot.getValue().toItemStack();
-				currInv.setItem(index, item);
-			}
+			charInv.setToPlayer(player);
 		}
 
 		// Update health and experience

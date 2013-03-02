@@ -2,6 +2,7 @@ package com.legit2.Demigods.Libraries.Objects;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -20,11 +21,12 @@ public class SerialPlayerInventory implements Serializable
 	private static final long serialVersionUID = -5645654430614861947L;
 
 	String owner;
-	SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack leggings = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack boots = new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack helmet = null;
+	SerialItemStack chestplate = null;
+	SerialItemStack  leggings = null;
+	SerialItemStack boots = null;
 	final HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
+
 	int size;
 
 	SerialPlayerInventory(Inventory inventory)
@@ -38,16 +40,17 @@ public class SerialPlayerInventory implements Serializable
 			{
 				Player player = getOwner().getPlayer();
 				if(player.getInventory().getHelmet() != null) this.helmet = new SerialItemStack(player.getInventory().getHelmet().clone());
-				if(player.getInventory().getChestplate() != null) this.chestplate = new SerialItemStack(player.getInventory().getChestplate().clone());
-				if(player.getInventory().getLeggings() != null) this.leggings = new SerialItemStack(player.getInventory().getLeggings().clone());
-				if(player.getInventory().getBoots() != null) this.boots = new SerialItemStack(player.getInventory().getBoots().clone());
+				if(player.getInventory().getChestplate() != null) this.chestplate =  new SerialItemStack(player.getInventory().getChestplate().clone());
+				if(player.getInventory().getLeggings() != null) this.leggings =  new SerialItemStack(player.getInventory().getLeggings().clone());
+				if(player.getInventory().getBoots() != null) this.boots =  new SerialItemStack(player.getInventory().getBoots().clone());
 			}
 
 			for(int i = 0; i < this.size; i++)
 			{
-				if(inventory.getItem(i) != null)
+				ItemStack item = inventory.getItem(i);
+				if(item != null)
 				{
-					items.put(i, new SerialItemStack(inventory.getItem(i)));
+					items.put(i, new SerialItemStack(item));
 				}
 			}
 		}
@@ -71,6 +74,31 @@ public class SerialPlayerInventory implements Serializable
 	}
 
 	/*
+	 * setToPlayer() : Sets the inventory to a player.
+	 */
+	public void setToPlayer(OfflinePlayer entity)
+	{
+		Player player;
+
+		if(!entity.isOnline()) return;
+		else
+		{
+			player = entity.getPlayer();
+		}
+
+		player.getInventory().setHelmet(this.getHelmet());
+		player.getInventory().setChestplate(this.getChestplate());
+		player.getInventory().setLeggings(this.getLeggings());
+		player.getInventory().setBoots(this.getBoots());
+
+		for(Entry<Integer, ItemStack> slot : this.getItems().entrySet())
+		{
+			player.getInventory().setItem(slot.getKey(), slot.getValue());
+		}
+
+	}
+
+	/*
 	 * getOwner() : Returns the Player who owns this inventory.
 	 */
 	public OfflinePlayer getOwner()
@@ -81,9 +109,18 @@ public class SerialPlayerInventory implements Serializable
 	/*
 	 * getItems() : Returns the items.
 	 */
-	public HashMap<Integer, SerialItemStack> getItems()
+	public HashMap<Integer, ItemStack> getItems()
 	{
-		return this.items;
+		HashMap<Integer, ItemStack> temp = new HashMap<Integer, ItemStack>();
+
+		for(Entry<Integer, SerialItemStack> slot : items.entrySet())
+		{
+			int index = slot.getKey();
+			ItemStack item = slot.getValue().toItemStack();
+			temp.put(index, item);
+		}
+
+		return temp;
 	}
 
 	/*
