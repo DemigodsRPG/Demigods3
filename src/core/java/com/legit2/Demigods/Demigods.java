@@ -145,6 +145,8 @@ public class Demigods extends JavaPlugin
 	public ValueAPI value = null;
 	public ZoneAPI zone = null;
 
+    // DIVING BLOCK
+
 	// Deity ClassPath List
 	public final ArrayList<String> DEITYLIST = new ArrayList<String>();
 
