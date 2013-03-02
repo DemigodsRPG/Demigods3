@@ -151,8 +151,6 @@ public class Demigods extends JavaPlugin
 	// Did dependencies load correctly?
 	final boolean okayToLoad = true;
 
-    // TEST
-
 	@Override
 	public void onEnable()
 	{
