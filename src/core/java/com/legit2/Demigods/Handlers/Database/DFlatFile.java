@@ -232,8 +232,6 @@ public class DFlatFile
 			// Define variables
 			String playerName = player.getName();
 
-			API.misc.info("Saving " + playerName + "...");
-
 			// Create a temporary player data HashMap to save
 			HashMap<String, Object> playerDataMap = new HashMap<String, Object>(API.data.getAllPlayerData(Bukkit.getOfflinePlayer(playerName)));
 
@@ -272,8 +270,6 @@ public class DFlatFile
 
 				charDataMap.clear();
 			}
-
-			API.misc.info("Player saved!");
 		}
 		catch(Exception e)
 		{
