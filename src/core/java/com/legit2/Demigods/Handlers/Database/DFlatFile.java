@@ -162,15 +162,17 @@ public class DFlatFile
 
 		try
 		{
-			API.misc.info("Saving all data...");
+			int startTimer = (int) System.currentTimeMillis();
 
 			saveDemigods();
-			savePlayers();
-			saveBattles();
-			saveQuests();
-			saveBlocks();
+			int playerCount = savePlayers();
+			int battleCount = saveBattles();
+			int questCount = saveQuests();
+			int blockCount = saveBlocks();
 
-			API.misc.info("All data saved successfully!");
+			int stopTimer = (int) System.currentTimeMillis();
+
+			API.misc.info(playerCount + " players, " + battleCount + " battles, " + questCount + " quests, and " + blockCount + " blocks saved in " + Math.floor((stopTimer - startTimer) / 1000) + " seconds.");
 
 			return true;
 		}
@@ -205,14 +207,18 @@ public class DFlatFile
 		}
 	}
 
-	public static void savePlayers()
+	public static int savePlayers()
 	{
 		start();
+
+		int count = 0;
 
 		try
 		{
 			for(Player player : API.player.getOnlinePlayers())
 			{
+				count++;
+
 				savePlayer(player);
 			}
 		}
@@ -221,11 +227,15 @@ public class DFlatFile
 			API.misc.severe("Something went wrong while saving players.");
 			e.printStackTrace();
 		}
+
+		return count;
 	}
 
-	public static void savePlayer(OfflinePlayer player)
+	public static int savePlayer(OfflinePlayer player)
 	{
 		start();
+
+		int charCount = 0;
 
 		try
 		{
@@ -249,6 +259,7 @@ public class DFlatFile
 			// Save their characters
 			for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllPlayerChars(player).entrySet())
 			{
+				charCount++;
 				int charID = character.getKey();
 
 				// Create a temporary character data HashMap to save
@@ -276,16 +287,22 @@ public class DFlatFile
 			API.misc.severe("Something went wrong while saving players.");
 			e.printStackTrace();
 		}
+
+		return charCount;
 	}
 
-	public static void saveBattles()
+	public static int saveBattles()
 	{
 		start();
+
+		int count = 0;
 
 		try
 		{
 			for(Integer battleID : API.data.getAllBattles().keySet())
 			{
+				count++;
+
 				HashMap<String, Object> battle = API.data.getAllBattles().get(battleID);
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BattleDir.getPath() + File.separator + battleID + ".demi"));
 				oos.writeObject(battle);
@@ -298,16 +315,22 @@ public class DFlatFile
 			API.misc.severe("Something went wrong while saving battles.");
 			e.printStackTrace();
 		}
+
+		return count;
 	}
 
-	public static void saveQuests()
+	public static int saveQuests()
 	{
 		start();
+
+		int count = 0;
 
 		try
 		{
 			for(Integer taskID : API.data.getAllTasks().keySet())
 			{
+				count++;
+
 				HashMap<String, Object> task = API.data.getAllTasks().get(taskID);
 				String quest = task.get("task_quest").toString().toLowerCase().replace(" ", "_");
 				File questDir = new File(path + "quests" + File.separator + quest + File.separator);
@@ -323,11 +346,15 @@ public class DFlatFile
 			API.misc.severe("Something went wrong while saving quests.");
 			e.printStackTrace();
 		}
+
+		return count;
 	}
 
-	public static void saveBlocks()
+	public static int saveBlocks()
 	{
 		start();
+
+		int count = 0;
 
 		try
 		{
@@ -335,6 +362,8 @@ public class DFlatFile
 			{
 				for(Entry<Integer, Object> block : API.data.getAllBlockData().get(blockType).entrySet())
 				{
+					count++;
+
 					int blockID = block.getKey();
 
 					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(BlockDir.getPath() + File.separator + blockID + "_" + blockType.toLowerCase() + ".demi"));
@@ -350,6 +379,8 @@ public class DFlatFile
 			API.misc.severe("Something went wrong while saving divine blocks.");
 			e.printStackTrace();
 		}
+
+		return count;
 	}
 
 	/*

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -27,6 +28,15 @@ public class SerialItemStack implements Serializable
 		this.type = item.getTypeId();
 		this.durability = item.getDurability();
 		this.amount = item.getAmount();
+		this.materialData = item.getData();
+
+		if(item.getType().equals(Material.ENCHANTED_BOOK))
+		{
+			for(Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
+			{
+				this.enchantments.put(ench.getKey().getId(), ench.getValue());
+			}
+		}
 
 		if(item.hasItemMeta())
 		{
