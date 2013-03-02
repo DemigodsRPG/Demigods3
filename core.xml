@@ -4,17 +4,6 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
-    <path id="Demigods.classpath">
-        <pathelement location="lib/Bukkit.jar"/>
-    	<pathelement location="lib/TagAPI.jar"/>
-        <pathelement location="lib/WorldEdit.jar"/>
-        <pathelement location="lib/WorldGuard.jar"/>
-    	<pathelement location="lib/Factions.jar"/>
-    </path>
-    <path id="Theogony.classpath">
-        <pathelement location="lib/Bukkit.jar"/>
-        <pathelement location="build/Demigods.jar"/>
-    </path>
     <target name="init">
         <mkdir dir="core/bin"/>
         <mkdir dir="theogony/bin"/>
@@ -46,15 +35,26 @@
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
+        <path id="Demigods.classpath">
+            <pathelement location="lib/Bukkit.jar"/>
+            <pathelement location="lib/TagAPI.jar"/>
+            <pathelement location="lib/WorldEdit.jar"/>
+            <pathelement location="lib/WorldGuard.jar"/>
+            <pathelement location="lib/Factions.jar"/>
+        </path>
         <javac debug="true" debuglevel="${debuglevel}" destdir="core/bin" source="${source}" target="${target}">
             <src path="src/core/java"/>
             <classpath refid="Demigods.classpath"/>
         </javac>
+        <jar jarfile="build/Demigods.jar" basedir="core/bin"/>
+        <path id="Theogony.classpath">
+            <pathelement location="lib/Bukkit.jar"/>
+            <pathelement location="build/Demigods.jar"/>
+        </path>
         <javac debug="true" debuglevel="${debuglevel}" destdir="theogony/bin" source="${source}" target="${target}">
             <src path="src/theogony/java"/>
             <classpath refid="Theogony.classpath"/>
         </javac>
-    	<jar jarfile="build/Demigods.jar" basedir="core/bin"/>
         <jar jarfile="build/Theogony.jar" basedir="theogony/bin"/>
     </target>
 </project>
