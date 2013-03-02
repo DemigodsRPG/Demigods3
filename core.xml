@@ -11,17 +11,34 @@
         <pathelement location="lib/WorldGuard.jar"/>
     	<pathelement location="lib/Factions.jar"/>
     </path>
+    <path id="Theogony.classpath">
+        <pathelement location="lib/Bukkit.jar"/>
+        <pathelement location="build/Demigods.jar"/>
+    </path>
     <target name="init">
         <mkdir dir="core/bin"/>
+        <mkdir dir="theogony/bin"/>
     	<mkdir dir="build"/>
-        <copy includeemptydirs="false" todir="bin">
+        <copy includeemptydirs="false" todir="core/bin">
             <fileset dir="src/core/java">
                 <exclude name="**/*.java"/>
             </fileset>
+            <filterset>
+                <filter token="BUILD" value="${env.BUILD_NUMBER}" />
+            </filterset>
+        </copy>
+        <copy includeemptydirs="false" todir="theogony/bin">
+            <fileset dir="src/theogony/java">
+                <exclude name="**/*.java"/>
+            </fileset>
+            <filterset>
+                <filter token="BUILD" value="${env.BUILD_NUMBER}" />
+            </filterset>
         </copy>
     </target>
     <target name="clean">
         <delete dir="core/bin"/>
+        <delete dir="theogony/bin"/>
     	<delete dir="build"/>
     </target>
     <target depends="clean" name="cleanall"/>
@@ -33,6 +50,11 @@
             <src path="src/core/java"/>
             <classpath refid="Demigods.classpath"/>
         </javac>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="core/bin" source="${source}" target="${target}">
+            <src path="src/core/java"/>
+            <classpath refid="Demigods.classpath"/>
+        </javac>
     	<jar jarfile="build/Demigods.jar" basedir="core/bin"/>
+        <jar jarfile="build/Theogony.jar" basedir="theogony/bin"/>
     </target>
 </project>
