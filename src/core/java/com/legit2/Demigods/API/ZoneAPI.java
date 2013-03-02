@@ -267,7 +267,7 @@ public class ZoneAPI
 
 	/*
 	 * --------------------------------------------
-	 * DivineBlock Zones
+	 * Block Zones
 	 * --------------------------------------------
 	 * 
 	 * zoneShrine() : Returns a DivineBlock if (Location)location is within a Shrine's zone.
