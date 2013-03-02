@@ -162,7 +162,8 @@ public class DFlatFile
 
 		try
 		{
-			int startTimer = (int) System.currentTimeMillis();
+			// Start the timer
+			long startTimer = System.currentTimeMillis();
 
 			saveDemigods();
 			int playerCount = savePlayers();
@@ -170,9 +171,11 @@ public class DFlatFile
 			int questCount = saveQuests();
 			int blockCount = saveBlocks();
 
-			int stopTimer = (int) System.currentTimeMillis();
+			// Stop the timer
+			long stopTimer = System.currentTimeMillis();
+			double totalTime = (double) (stopTimer - startTimer);
 
-			API.misc.info(playerCount + " players, " + battleCount + " battles, " + questCount + " quests, and " + blockCount + " blocks saved in " + Math.floor((stopTimer - startTimer) / 1000) + " seconds.");
+			API.misc.info(playerCount + " players, " + battleCount + " battles, " + questCount + " quests, and " + blockCount + " blocks saved in " + (totalTime / 1000) + " seconds.");
 
 			return true;
 		}
