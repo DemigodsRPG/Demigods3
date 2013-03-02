@@ -306,36 +306,11 @@ public class DBlockListener implements Listener
 		 * -----------------------------------
 		 * -> Entering Altar
 		 */
-		if(API.zone.enterZoneAltar(to, from))
+		if(API.zone.enterZoneAltar(to, from) && !API.warp.hasWarp(API.zone.zoneAltar(to), API.player.getCurrentChar(player)))
 		{
-			player.sendMessage(ChatColor.GRAY + "You have entered an Altar.");
+			player.sendMessage(ChatColor.GRAY + "You have entered an undocumented Altar.");
+            player.sendMessage(ChatColor.GRAY + "You should set a warp at it!");
 			return;
-		}
-
-		// Leaving Altar
-		else if(API.zone.exitZoneAltar(to, from))
-		{
-			player.sendMessage(ChatColor.GRAY + "You have left an Altar.");
-			return;
-		}
-
-		/*
-		 * ------------------------------------
-		 * Shrine Zone Messages
-		 * -----------------------------------
-		 * -> Entering Shrine
-		 */
-		if(API.zone.enterZoneShrine(to, from) && API.zone.zoneShrineOwner(to) != -1)
-		{
-			shrine = API.zone.zoneShrine(to);
-			character = API.character.getChar(API.zone.zoneShrineOwner(to));
-			player.sendMessage(ChatColor.GRAY + "You have entered " + character.getName() + "'s shrine to " + ChatColor.YELLOW + shrine.getDeity() + ChatColor.GRAY + ".");
-		}
-
-		// Leaving Shrine
-		else if(API.zone.exitZoneShrine(to, from))
-		{
-			player.sendMessage(ChatColor.GRAY + "You have left a holy area.");
 		}
 	}
 }
