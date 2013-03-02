@@ -127,6 +127,7 @@ public class DCommandListener implements Listener
 		{
 			if(API.deity.invokeDeityCommand(player, args))
 			{
+                API.misc.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
 			}
 		}
