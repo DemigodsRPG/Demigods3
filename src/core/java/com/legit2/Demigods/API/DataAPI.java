@@ -90,6 +90,7 @@
 
 package com.legit2.Demigods.API;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -305,19 +306,19 @@ public class DataAPI
 	 *
 	 * saveWarpData() : Saves (String)dataKey to (int)playerID HashMap.
 	 */
-    public boolean saveWarpData(PlayerCharacter character, Integer dataKey, SerialLocation dataValue)
+    public boolean saveWarpData(PlayerCharacter character, SerialLocation warp)
     {
         if(hasCharData(character.getID(), "warps"))
         {
-            HashMap<Integer, SerialLocation> warps = (HashMap<Integer, SerialLocation>) getCharData(character.getID(), "warps");
-            warps.put(dataKey, dataValue);
+            ArrayList<SerialLocation> warps = (ArrayList<SerialLocation>) getCharData(character.getID(), "warps");
+            warps.add(warp);
             saveCharData(character.getID(), "warps", warps);
             return true;
         }
         else
         {
-            HashMap<Integer, SerialLocation> warps = new HashMap<Integer, SerialLocation>();
-            warps.put(dataKey, dataValue);
+            ArrayList<SerialLocation> warps = new ArrayList<SerialLocation>();
+            warps.add(warp);
             saveCharData(character.getID(), "warps", warps);
             return true;
         }
@@ -326,12 +327,12 @@ public class DataAPI
     /*
      * removeWarpData() : Removes (String)dataKey from (int)playerID's HashMap.
      */
-    public boolean removeWarpData(PlayerCharacter character, Integer dataKey)
+    public boolean removeWarpData(PlayerCharacter character, SerialLocation warp)
     {
-        if(hasWarpData(character, dataKey))
+        if(hasWarpData(character, warp))
         {
-            HashMap<Integer, SerialLocation> warps = (HashMap<Integer, SerialLocation>) getCharData(character.getID(), "warps");
-            warps.remove(dataKey);
+            ArrayList<SerialLocation> warps = (ArrayList<SerialLocation>) getCharData(character.getID(), "warps");
+            warps.remove(warp);
             saveCharData(character.getID(), "warps", warps);
             return true;
         }
@@ -341,21 +342,9 @@ public class DataAPI
     /*
      * hasWarpData() : Returns true/false according to if (String)dataKey exists for (int)playerID.
      */
-    public boolean hasWarpData(PlayerCharacter character, Integer dataKey)
+    public boolean hasWarpData(PlayerCharacter character, SerialLocation warp)
     {
-        return hasCharData(character.getID(), "warps") && ((HashMap<Integer, SerialLocation>) getCharData(character.getID(), "warps")).containsKey(dataKey);
-    }
-
-    /*
-     * getWarpData() : Returns (Object)dataValue for (int)playerID's (String)dataKey.
-     */
-    public SerialLocation getWarpData(PlayerCharacter character, Integer dataKey)
-    {
-        if(hasWarpData(character, dataKey))
-        {
-            return ((HashMap<Integer, SerialLocation>) getCharData(character.getID(), "warps")).get(dataKey);
-        }
-        else return null;
+        return hasCharData(character.getID(), "warps") && ((ArrayList<SerialLocation>) getCharData(character.getID(), "warps")).contains(warp);
     }
 
 	/*
@@ -703,18 +692,6 @@ public class DataAPI
 	{
 		return battleData;
 	}
-
-    /*
-    * getAllWarps() : Returns all warps.
-    */
-    public HashMap<Integer, SerialLocation> getAllWarps(PlayerCharacter character)
-    {
-        if(hasCharData(character.getID(), "warps"))
-        {
-            return ((HashMap<Integer, SerialLocation>) getCharData(character.getID(), "warps"));
-        }
-        else return null;
-    }
 
 	/*
 	 * getAllTasks() : Returns all battles in the battleData HashMap.

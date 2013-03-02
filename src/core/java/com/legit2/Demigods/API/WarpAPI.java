@@ -5,7 +5,6 @@ import com.legit2.Demigods.Libraries.Objects.PlayerCharacter;
 import com.legit2.Demigods.Libraries.Objects.SerialLocation;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class WarpAPI
 {
@@ -13,12 +12,7 @@ public class WarpAPI
 
     public ArrayList<SerialLocation> getWarps(PlayerCharacter character)
     {
-        ArrayList<SerialLocation> warps = new ArrayList<SerialLocation>();
-        if(character == null || API.data.getAllWarps(character) == null) return null;
-        for(Map.Entry<Integer, SerialLocation> warp : API.data.getAllWarps(character).entrySet())
-        {
-            if(!warps.contains(warp.getValue())) warps.add(warp.getValue());
-        }
-        return warps;
+        if(character == null || API.data.getCharData(character.getID(), "warps") == null) return null;
+        return (ArrayList<SerialLocation>) API.data.getCharData(character.getID(), "warps");
     }
 }
