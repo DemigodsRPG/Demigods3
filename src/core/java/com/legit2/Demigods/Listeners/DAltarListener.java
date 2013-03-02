@@ -752,7 +752,7 @@ public class DAltarListener implements Listener
         // Check for same names
         for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
         {
-            if(warp.getName() == name.toUpperCase())
+            if(warp.getName().equalsIgnoreCase(name))
             {
                 player.sendMessage(ChatColor.GRAY + "A warp by that name already exists.");
                 return;
