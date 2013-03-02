@@ -92,7 +92,9 @@ package com.legit2.Demigods.Listeners;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.legit2.Demigods.Libraries.Objects.SerialLocation;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -297,7 +299,7 @@ public class DAltarListener implements Listener
 			}
 
 			// View Characters
-			else if(message.equals("3") || message.contains("view") || message.contains("view") && message.contains("characters"))
+			else if(message.equals("3") || message.contains("view") && message.contains("characters"))
 			{
 				clearChat(player);
 
@@ -305,8 +307,19 @@ public class DAltarListener implements Listener
 				player.sendMessage(" ");
 
 				viewChars(player);
-
 			}
+            // View Characters
+            else if(message.equals("4") || message.contains("view") && message.contains("warps"))
+            {
+                if(API.player.getCurrentChar(player) == null) return;
+
+                clearChat(player);
+
+                player.sendMessage(ChatColor.YELLOW + " -> Viewing Warps --------------------------------");
+                player.sendMessage(" ");
+
+                viewWarps(player);
+            }
 			else if(message.contains("info"))
 			{
 				clearChat(player);
@@ -328,6 +341,24 @@ public class DAltarListener implements Listener
 
 				switchChar(player, charName);
 			}
+
+            // Warp Character
+            else if(message.contains("name warp"))
+            {
+                // Define variables
+                String name = message.replace("name warp", "").trim();
+
+                nameAltar(player, API.zone.zoneAltar(player.getLocation()).getID(),name);
+            }
+
+            // Warp Character
+            else if(message.contains("warp to"))
+            {
+                // Define variables
+                String warpName = message.replace("warp to ", "").trim();
+
+                warpChar(player, warpName);
+            }
 		}
 	}
 
@@ -348,11 +379,11 @@ public class DAltarListener implements Listener
 		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
+        if(API.player.getCurrentChar(player) != null) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
 		player.sendMessage(" ");
 	}
 
 	// View characters
-	@SuppressWarnings("unused")
 	private void viewChars(Player player)
 	{
 		List<Integer> chars = API.player.getChars(player);
@@ -392,6 +423,48 @@ public class DAltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + "  character.");
 		player.sendMessage(" ");
 	}
+
+    // View characters
+    private void viewWarps(Player player)
+    {
+        if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
+        {
+            player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
+            player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " name warp <warp name>" + ChatColor.GRAY + " to name a warp here.");
+            player.sendMessage(" ");
+            return;
+        }
+
+        player.sendMessage(ChatColor.LIGHT_PURPLE + "  Light purple " + ChatColor.GRAY + "represents the closest warp.");
+        player.sendMessage(" ");
+        boolean hasWarp = false;
+
+        for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+        {
+            Location playerLocation = player.getLocation();
+            String color = "";
+            String name = warp.getName();
+            int X = (int) warp.unserialize().getX();
+            int Y = (int) warp.unserialize().getY();
+            int Z = (int) warp.unserialize().getZ();
+            String world = warp.unserialize().getWorld().getName().toUpperCase();
+
+            if(API.zone.zoneAltar(warp.unserialize()) == API.zone.zoneAltar(player.getLocation()))
+            {
+                color = ChatColor.LIGHT_PURPLE + "";
+                hasWarp = true;
+            }
+
+            player.sendMessage("  " + color + name + ChatColor.GRAY + " [" + "X: " + ChatColor.GREEN +  X + ChatColor.GRAY + " / Y: " + ChatColor.GREEN + Y + ChatColor.GRAY + " / Z: " + ChatColor.GREEN + Z + ChatColor.GRAY + " / World: " + ChatColor.GREEN + world + ChatColor.GRAY + "]");
+        }
+
+        player.sendMessage(" ");
+
+        player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " warp to <warp name> " + ChatColor.GRAY + "to warp.");
+        if(!hasWarp) player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " name warp <warp name>" + ChatColor.GRAY + " to name a warp here.");
+        else  player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " name warp <warp name>" + ChatColor.GRAY + " to rename this warp.");
+        player.sendMessage(" ");
+    }
 
 	private void viewChar(Player player, PlayerCharacter character)
 	{
@@ -460,7 +533,6 @@ public class DAltarListener implements Listener
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
 			API.player.togglePraying(player, false);
 		}
-
 	}
 
 	// Choose name
@@ -666,4 +738,44 @@ public class DAltarListener implements Listener
 		for(int x = 0; x < 120; x++)
 			player.sendMessage(" ");
 	}
+
+    private void nameAltar(Player player, int blockID, String name)
+    {
+        if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
+        {
+            // Save named SerialLocation for warp.
+            API.data.saveWarpData(API.player.getCurrentChar(player), blockID, new SerialLocation(player.getLocation(), name));
+            player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
+            return;
+        }
+
+        for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+        {
+            if(warp.getName() == name.toUpperCase())
+            {
+                player.sendMessage(ChatColor.GRAY + "A warp by that name already exists.");
+                return;
+            }
+        }
+
+        // Save named SerialLocation for warp.
+        API.data.saveWarpData(API.player.getCurrentChar(player), blockID, new SerialLocation(player.getLocation(), name));
+        player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
+    }
+
+    private void warpChar(Player player, String warpName)
+    {
+        for(Map.Entry<Integer, SerialLocation> warp : API.data.getAllWarps(API.player.getCurrentChar(player)).entrySet())
+        {
+            if(warp.getValue().getName().equals(warpName.toUpperCase()))
+            {
+                player.teleport(warp.getValue().unserialize());
+                player.sendMessage(" ");
+                player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + warpName.toUpperCase() + ChatColor.GRAY + " complete.");
+                API.player.togglePraying(player, false);
+                return;
+            }
+        }
+        player.sendMessage(ChatColor.GRAY + "No warp by that name exists, try again.");
+    }
 }

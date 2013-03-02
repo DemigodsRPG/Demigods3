@@ -143,6 +143,7 @@ public class Demigods extends JavaPlugin
 	public QuestAPI quest = null;
 	public UpdateAPI update = null;
 	public ValueAPI value = null;
+    public WarpAPI warp = null;
 	public ZoneAPI zone = null;
 
 	// Deity ClassPath List
@@ -172,6 +173,7 @@ public class Demigods extends JavaPlugin
 		quest = new QuestAPI();
 		update = new UpdateAPI();
 		value = new ValueAPI();
+        warp = new WarpAPI();
 		zone = new ZoneAPI();
 
 		// Initialize Configuration
