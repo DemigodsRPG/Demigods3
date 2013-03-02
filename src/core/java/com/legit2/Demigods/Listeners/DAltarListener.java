@@ -744,7 +744,7 @@ public class DAltarListener implements Listener
         if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
         {
             // Save named SerialLocation for warp.
-            API.data.saveWarpData(API.player.getCurrentChar(player), blockID, new SerialLocation(player.getLocation(), name));
+            API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
             player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
             return;
         }
@@ -759,20 +759,22 @@ public class DAltarListener implements Listener
         }
 
         // Save named SerialLocation for warp.
-        API.data.saveWarpData(API.player.getCurrentChar(player), blockID, new SerialLocation(player.getLocation(), name));
+        API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
         player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
     }
 
     private void warpChar(Player player, String warpName)
     {
-        for(Map.Entry<Integer, SerialLocation> warp : API.data.getAllWarps(API.player.getCurrentChar(player)).entrySet())
+        for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
         {
-            if(warp.getValue().getName().equals(warpName.toUpperCase()))
+            if(warp.getName().equals(warpName.toUpperCase()))
             {
-                player.teleport(warp.getValue().unserialize());
-                player.sendMessage(" ");
-                player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + warpName.toUpperCase() + ChatColor.GRAY + " complete.");
                 API.player.togglePraying(player, false);
+                clearChat(player);
+
+                player.teleport(warp.unserialize());
+
+                player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + warpName.toUpperCase() + ChatColor.GRAY + " complete.");
                 return;
             }
         }
