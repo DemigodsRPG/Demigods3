@@ -16,7 +16,7 @@
         <mkdir dir="core/bin"/>
     	<mkdir dir="build"/>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir="core/java">
+            <fileset dir="src/core/java">
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -31,7 +31,7 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="core/bin" source="${source}" target="${target}">
-            <src path="core/java"/>
+            <src path="src/core/java"/>
             <classpath refid="Demigods.classpath"/>
         </javac>
     	<jar jarfile="build/Demigods.jar" basedir="core/bin"/>

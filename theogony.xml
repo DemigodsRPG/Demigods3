@@ -13,7 +13,7 @@
         <mkdir dir="theogony/bin"/>
     	<mkdir dir="build"/>
         <copy includeemptydirs="false" todir="bin">
-            <fileset dir="theogony/java">
+            <fileset dir="src/theogony/java">
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -28,7 +28,7 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="theogony/bin" source="${source}" target="${target}">
-            <src path="theogony/java"/>
+            <src path="src/theogony/java"/>
             <classpath refid="Theogony.classpath"/>
         </javac>
     	<jar jarfile="build/Theogony.jar" basedir="theogony/bin"/>
