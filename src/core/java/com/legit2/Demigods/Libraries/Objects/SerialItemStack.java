@@ -116,14 +116,12 @@ public class SerialItemStack implements Serializable
 	String displayName = null, author = null, title = null;
 	List<String> lore = null, pages = null;
 	Map<String, Object> bookMeta = null;
-	final MaterialData materialData;
 
 	public SerialItemStack(ItemStack item)
 	{
 		this.type = item.getTypeId();
 		this.durability = item.getDurability();
 		this.amount = item.getAmount();
-		this.materialData = item.getData();
 
 		if(item.hasItemMeta())
 		{
@@ -196,7 +194,6 @@ public class SerialItemStack implements Serializable
 		// Set data for the Item
 		item.setAmount(this.amount);
 		item.setDurability(this.durability);
-		item.setData(materialData);
 
 		return item;
 	}
