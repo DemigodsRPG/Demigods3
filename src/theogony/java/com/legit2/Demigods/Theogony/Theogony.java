@@ -49,8 +49,6 @@ public class Theogony extends DemigodsPlugin
 		if(okayToLoad)
 		{
 			HandlerList.unregisterAll(this);
-
-			INSTANCE.misc.info("Theogony disabled.");
 		}
 	}
 
