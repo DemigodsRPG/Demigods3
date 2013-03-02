@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="Theogony">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="Theogony.classpath">
+        <pathelement location="core/bin"/>
+        <pathelement location="lib/Bukkit.jar"/>
+    	<pathelement location="lib/Demigods.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="theogony/bin"/>
+    	<mkdir dir="build"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/theogony/java">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="theogony/bin"/>
+    	<delete dir="build"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="theogony/bin" source="${source}" target="${target}">
+            <src path="src/theogony/java"/>
+            <classpath refid="Theogony.classpath"/>
+        </javac>
+    	<jar jarfile="build/Theogony.jar" basedir="theogony/bin"/>
+    </target>
+</project>
