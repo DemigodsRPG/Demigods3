@@ -143,16 +143,7 @@ public class DCommandHandler implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		ItemStack axe = new ItemStack(Material.DIAMOND_AXE, 1);
-
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("The axe of the Gods!");
-		ItemMeta axeMeta = axe.getItemMeta();
-		axeMeta.setDisplayName("Penis Chopper");
-		axeMeta.setLore(lore);
-		axe.setItemMeta(axeMeta);
-
-		SerialItemStack item = new SerialItemStack(axe);
+		SerialItemStack item = new SerialItemStack(player.getItemInHand());
 		player.getWorld().dropItem(player.getLocation(), item.toItemStack());
 
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
