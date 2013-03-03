@@ -96,14 +96,11 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.API.*;
 import com.legit2.Demigods.Handlers.DCommandHandler;
@@ -123,7 +120,6 @@ public class Demigods extends JavaPlugin
 	// Soft dependencies
 	public static WorldGuardPlugin WORLDGUARD = null;
 	public static P FACTIONS = null;
-	public static Plugin TAGAPI = null;
 
 	// API
 	public AbilityAPI ability = null;
@@ -211,18 +207,6 @@ public class Demigods extends JavaPlugin
 		if(okayToLoad)
 		{
 			// Uninitialize Plugin
-			if(TAGAPI != null)
-			{
-				for(Player player : Bukkit.getServer().getOnlinePlayers())
-				{
-					for(Player otherPlayer : Bukkit.getServer().getOnlinePlayers())
-					{
-						if(player == otherPlayer) continue;
-						TagAPI.refreshPlayer(player, otherPlayer);
-					}
-				}
-			}
-
 			HandlerList.unregisterAll(this);
 			DScheduler.stopThreads();
 			DFlatFile.save();
@@ -377,13 +361,6 @@ public class Demigods extends JavaPlugin
 		 * okayToLoad = false;
 		 * }
 		 */
-
-		// Check for the TagAPI plugin (optional)
-		TAGAPI = getServer().getPluginManager().getPlugin("TagAPI");
-		if(TAGAPI != null)
-		{
-			getServer().getPluginManager().registerEvents(new DTagAPIListener(), this);
-		}
 
 		// Check for the WorldGuard plugin (optional)
 		Plugin pg = getServer().getPluginManager().getPlugin("WorldGuard");
