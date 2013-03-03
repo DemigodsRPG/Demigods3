@@ -140,7 +140,7 @@ public class DAltarListener implements Listener
 
 			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player))
 			{
-                if(API.config.getSettingBoolean("use_dynamic_pvp_zones") && !API.zone.canTarget(player))
+                if(API.config.getSettingBoolean("use_dynamic_pvp_zones") && API.zone.canTarget(player))
                 {
                     player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
                     player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
