@@ -284,8 +284,6 @@ public class DFlatFile
 
 				charDataMap.clear();
 			}
-
-			API.misc.info("Player saved!");
 		}
 		catch(Exception e)
 		{
