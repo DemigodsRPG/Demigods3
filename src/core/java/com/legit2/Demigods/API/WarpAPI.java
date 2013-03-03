@@ -19,6 +19,7 @@ public class WarpAPI
 
     public boolean hasWarp(Altar altar, PlayerCharacter character)
     {
+        if(getWarps(character) == null) return false;
         for(SerialLocation warp : getWarps(character))
         {
             if(API.zone.zoneAltar(warp.unserialize()) == altar) return true;
