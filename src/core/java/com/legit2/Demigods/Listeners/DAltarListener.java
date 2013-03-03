@@ -294,7 +294,7 @@ public class DAltarListener implements Listener
 			}
 
 			// Remove Character
-			else if(message.equals("2") || message.startsWith("remove") || message.contains("remove") && message.contains("character"))
+			else if(message.equals("2") || message.startsWith("remove"))
 			{
 				clearChat(player);
 

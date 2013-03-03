@@ -122,11 +122,13 @@ public class DCharacterListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCharacterCreation(CharacterCreateEvent event)
 	{
+		if(event.isCancelled()) return;
+
 		OfflinePlayer player = event.getOwner();
 		String chosenName = event.getName();
 		String chosenDeity = event.getDeity();
 
-		int charID = API.character.createChar(player, chosenName, chosenDeity);
+		PlayerCharacter character = API.character.createChar(player, chosenName, chosenDeity);
 
 		// Remove temporary data
 		API.data.removePlayerData(player, "temp_createchar");
@@ -137,23 +139,13 @@ public class DCharacterListener implements Listener
 			online.setDisplayName(API.deity.getDeityColor(chosenDeity) + chosenName + ChatColor.WHITE);
 			online.setPlayerListName(API.deity.getDeityColor(chosenDeity) + chosenName + ChatColor.WHITE);
 
-			// Give them their Shrine Instructional Booklet(C)
-			ItemStack shrineBook = new ItemStack(Material.WRITTEN_BOOK, 1);
-			// String shrineBookName = "The Book of " + chosenDeity;
-			ArrayList<String> shrineBookLore = new ArrayList<String>();
-			shrineBookLore.add("Use this to create a Shrine.");
-			ItemMeta shrineBookMeta = shrineBook.getItemMeta();
-			shrineBookMeta.setLore(shrineBookLore);
-			shrineBook.setItemMeta(shrineBookMeta);
-			// online.getInventory().addItem(shrineBook);
-
 			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
 			online.getWorld().strikeLightningEffect(online.getLocation());
-			for(int i = 0; i < 20; i++)
-				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+
+			for(int i = 0; i < 20; i++) online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 
 			// Switch current character
-			API.player.changeCurrentChar(player, charID);
+			API.player.changeCurrentChar(player, character.getID());
 		}
 	}
 
