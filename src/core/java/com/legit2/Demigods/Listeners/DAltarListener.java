@@ -408,8 +408,11 @@ public class DAltarListener implements Listener
 		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
-        if(API.player.getCurrentChar(player) != null) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
-        if(API.player.getCurrentChar(player) != null && API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
+        if(API.player.getCurrentChar(player) != null)
+        {
+            player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
+            if(API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [5.] " + ChatColor.DARK_PURPLE + "View Invites");
+        }
 		player.sendMessage(" ");
         player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
         player.sendMessage(" ");
