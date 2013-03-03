@@ -363,10 +363,10 @@ public class DAltarListener implements Listener
             }
 
             // Warp Invite
-            else if(message.contains("invite warp"))
+            else if(message.contains("invite"))
             {
                 // Define variables
-                String name = message.replace("invite here", "").trim();
+                String name = message.replace("invite", "").trim();
 
                 inviteWarp(player, name);
             }
@@ -411,6 +411,8 @@ public class DAltarListener implements Listener
         if(API.player.getCurrentChar(player) != null) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
         if(API.player.getCurrentChar(player) != null && API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 		player.sendMessage(" ");
+        player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
+        player.sendMessage(" ");
 	}
 
 	// View characters
