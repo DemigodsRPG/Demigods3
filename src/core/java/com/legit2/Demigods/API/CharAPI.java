@@ -110,7 +110,7 @@ public class CharAPI
 	/*
 	 * createChar() : Creates a character for (Player)player if it doesn't currently exist.
 	 */
-	public int createChar(OfflinePlayer player, String charName, String charDeity)
+	public PlayerCharacter createChar(OfflinePlayer player, String charName, String charDeity)
 	{
 		if(getCharByName(charName) == null)
 		{
@@ -128,9 +128,9 @@ public class CharAPI
 			// TEMP -------------------------------
 			DFlatFile.savePlayer(player);
 
-			return charID;
+			return character;
 		}
-		return -1;
+		return null;
 	}
 
 	/*
