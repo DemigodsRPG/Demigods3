@@ -138,8 +138,15 @@ public class DAltarListener implements Listener
 			// Player is in an altar, let's do this
 			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player) && !API.zone.canTarget(player))
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player))
 			{
+                if(API.config.getSettingBoolean("use_dynamic_pvp_zones") && !API.zone.canTarget(player))
+                {
+                    player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
+                    player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
+                    event.setCancelled(true);
+                    return;
+                }
 				API.player.togglePraying(player, true);
 
 				// First we clear chat
@@ -856,7 +863,7 @@ public class DAltarListener implements Listener
 
         player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
         invited.getOwner().getPlayer().sendMessage(API.deity.getDeityColor(character.getDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
-        invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to your nearest Altar, then follow instructions on how to accept the invite.");
+        invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
     }
 
     private void acceptInvite(Player player, String name)
