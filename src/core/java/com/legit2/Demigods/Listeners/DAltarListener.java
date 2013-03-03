@@ -279,7 +279,7 @@ public class DAltarListener implements Listener
 			}
 
 			// Finish Create Character
-			if(message.equalsIgnoreCase("a") || message.contains("confirm") && message.contains("character") && API.data.hasPlayerData(player, "temp_createchar_finalstep"))
+			if(message.equalsIgnoreCase("a") || message.startsWith("confirm") && message.contains("character") && API.data.hasPlayerData(player, "temp_createchar_finalstep"))
 			{
 				clearChat(player);
 
@@ -287,7 +287,7 @@ public class DAltarListener implements Listener
 			}
 
 			// Remove Character
-			else if(message.equals("2") || message.contains("remove") || message.contains("remove") && message.contains("character"))
+			else if(message.equals("2") || message.startsWith("remove") || message.contains("remove") && message.contains("character"))
 			{
 				clearChat(player);
 
@@ -298,7 +298,7 @@ public class DAltarListener implements Listener
 			}
 
 			// View Characters
-			else if(message.equals("3") || message.contains("view") && message.contains("characters"))
+			else if(message.equals("3") || message.startsWith("view") && message.contains("characters"))
 			{
 				clearChat(player);
 
@@ -308,7 +308,7 @@ public class DAltarListener implements Listener
 				viewChars(player);
 			}
             // View Warps
-            else if(message.equals("4") || message.contains("view") && message.contains("warps"))
+            else if(message.equals("4") || message.startsWith("view") && message.contains("warps"))
             {
                 if(API.player.getCurrentChar(player) == null) return;
 
@@ -320,7 +320,7 @@ public class DAltarListener implements Listener
                 viewWarps(player);
             }
             // View Characters
-            else if(message.equals("5") || message.contains("view") && message.contains("invites"))
+            else if(message.equals("5") || message.startsWith("view") && message.contains("invites"))
             {
                 if(API.player.getCurrentChar(player) == null || !API.warp.hasInvites(API.player.getCurrentChar(player))) return;
 
@@ -331,7 +331,7 @@ public class DAltarListener implements Listener
 
                 viewInvites(player);
             }
-			else if(message.contains("info"))
+			else if(message.startsWith("info"))
 			{
 				clearChat(player);
 
@@ -343,7 +343,7 @@ public class DAltarListener implements Listener
 			}
 
 			// Switch Character
-			else if(message.contains("switch to"))
+			else if(message.startsWith("switch to"))
 			{
 				clearChat(player);
 
@@ -354,7 +354,7 @@ public class DAltarListener implements Listener
 			}
 
             // Warp Name
-            else if(message.contains("name warp"))
+            else if(message.startsWith("name warp"))
             {
                 // Define variables
                 String name = message.replace("name warp", "").trim();
@@ -363,7 +363,7 @@ public class DAltarListener implements Listener
             }
 
             // Warp Invite
-            else if(message.contains("invite"))
+            else if(message.startsWith("invite"))
             {
                 // Define variables
                 String name = message.replace("invite", "").trim();
@@ -372,7 +372,7 @@ public class DAltarListener implements Listener
             }
 
             // Invite Accept
-            else if(message.contains("accept invite"))
+            else if(message.startsWith("accept invite"))
             {
                 // Define variables
                 String name = message.replace("accept invite", "").trim();
@@ -381,7 +381,7 @@ public class DAltarListener implements Listener
             }
 
             // Warp Character
-            else if(message.contains("warp to"))
+            else if(message.startsWith("warp to"))
             {
                 // Define variables
                 String warpName = message.replace("warp to ", "").trim();
@@ -854,7 +854,7 @@ public class DAltarListener implements Listener
         API.player.togglePraying(player, false);
         clearChat(player);
 
-        player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " has been invited.");
+        player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
         invited.getOwner().getPlayer().sendMessage(API.deity.getDeityColor(character.getDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
         invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to your nearest Altar, then follow instructions on how to accept the invite.");
     }
