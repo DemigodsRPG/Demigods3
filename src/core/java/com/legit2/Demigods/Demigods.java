@@ -132,6 +132,7 @@ public class Demigods extends JavaPlugin
 	public DeityAPI deity = null;
 	public InstanceAPI instance = null;
 	public InvAPI inventory = null;
+	public ItemAPI item = null;
 	public MiscAPI misc = null;
 	public ObjAPI object = null;
 	public PlayerAPI player = null;
@@ -162,6 +163,7 @@ public class Demigods extends JavaPlugin
 		data = new DataAPI();
 		deity = new DeityAPI();
 		inventory = new InvAPI();
+		item = new ItemAPI();
 		misc = new MiscAPI();
 		object = new ObjAPI();
 		player = new PlayerAPI();
