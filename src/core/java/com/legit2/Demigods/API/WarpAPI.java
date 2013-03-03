@@ -25,4 +25,66 @@ public class WarpAPI
         }
         return false;
     }
+
+    public boolean hasInvites(PlayerCharacter character)
+    {
+         return getInvites(character) != null;
+    }
+
+    public SerialLocation getInvite(PlayerCharacter inviting, PlayerCharacter invited)
+    {
+        if(hasInvites(invited))
+        {
+            for(SerialLocation invite : getInvites(invited))
+            {
+                if(invite.getName().equalsIgnoreCase(inviting.getName())) return invite;
+            }
+        }
+        return null;
+    }
+    public SerialLocation getInvite(PlayerCharacter character, String name)
+    {
+        if(hasInvites(character))
+        {
+            for(SerialLocation invite : getInvites(character))
+            {
+                if(invite.getName().equalsIgnoreCase(name)) return invite;
+            }
+        }
+        return null;
+    }
+
+    public boolean alreadyInvited(PlayerCharacter inviting, PlayerCharacter invited)
+    {
+        if(getInvite(inviting, invited) != null) return true;
+        return false;
+    }
+
+    public ArrayList<SerialLocation> getInvites(PlayerCharacter character)
+    {
+        return (ArrayList<SerialLocation>) API.data.getCharData(character.getID(), "temp_invites");
+    }
+
+    public void addInvite(PlayerCharacter inviting, PlayerCharacter invited)
+    {
+        ArrayList<SerialLocation> invites;
+        if(hasInvites(invited)) invites = getInvites(invited);
+        else invites = new ArrayList<SerialLocation>();
+        invites.add(new SerialLocation(inviting.getOwner().getPlayer().getLocation(), inviting.getName()));
+        API.data.saveCharData(invited.getID(), "temp_invites", invites);
+    }
+
+    public void removeInvite(PlayerCharacter invited, SerialLocation invite)
+    {
+        ArrayList<SerialLocation> invites;
+        if(hasInvites(invited)) invites = getInvites(invited);
+        else return;
+        invites.remove(invite);
+        API.data.saveCharData(invited.getID(), "temp_invites", invites);
+    }
+
+    public void clearInvites(PlayerCharacter invited)
+    {
+        API.data.removeCharData(invited.getID(), "temp_invites");
+    }
 }
