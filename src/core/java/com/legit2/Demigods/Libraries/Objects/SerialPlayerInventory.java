@@ -21,10 +21,10 @@ public class SerialPlayerInventory implements Serializable
 	private static final long serialVersionUID = -5645654430614861947L;
 
 	String owner;
-	SerialItemStack helmet = null;
-	SerialItemStack chestplate = null;
-	SerialItemStack  leggings = null;
-	SerialItemStack boots = null;
+	SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack  leggings = new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack boots =  new SerialItemStack(new ItemStack(Material.AIR));
 	final HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
 
 	int size;
