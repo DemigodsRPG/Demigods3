@@ -99,7 +99,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.kitteh.tag.TagAPI;
 
 import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Libraries.Objects.PlayerCharacter;
@@ -156,18 +155,6 @@ public class DPlayerListener implements Listener
 			ChatColor color = API.deity.getDeityColor(character.getDeity());
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
-		}
-
-		// TagAPI support
-		if(Demigods.TAGAPI != null)
-		{
-			TagAPI.refreshPlayer(player);
-
-			for(Player onlinePlayer : Bukkit.getServer().getOnlinePlayers())
-			{
-				if(onlinePlayer == player) continue;
-				TagAPI.refreshPlayer(onlinePlayer, player);
-			}
 		}
 
 		if(API.config.getSettingBoolean("motd"))
