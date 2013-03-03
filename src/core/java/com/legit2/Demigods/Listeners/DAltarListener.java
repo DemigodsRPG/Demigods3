@@ -411,7 +411,7 @@ public class DAltarListener implements Listener
         if(API.player.getCurrentChar(player) != null) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
         if(API.player.getCurrentChar(player) != null && API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 		player.sendMessage(" ");
-        player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
+        player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
         player.sendMessage(" ");
 	}
 
@@ -831,10 +831,10 @@ public class DAltarListener implements Listener
             player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
             return;
         }
-        if(character.getAlliance().toLowerCase() != invited.getAlliance().toLowerCase())
+        if(!character.getAlliance().equalsIgnoreCase(invited.getAlliance()))
         {
             player.sendMessage(" ");
-            player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to recieve an invite.");
+            player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");
             return;
         }
 
