@@ -127,7 +127,8 @@ public class SerialPlayerInventory implements Serializable
 	 */
 	public ItemStack getHelmet()
 	{
-		return this.helmet.toItemStack();
+		if(this.helmet != null) return this.helmet.toItemStack();
+		else return null;
 	}
 
 	/*
@@ -135,7 +136,8 @@ public class SerialPlayerInventory implements Serializable
 	 */
 	public ItemStack getChestplate()
 	{
-		return this.chestplate.toItemStack();
+		if(this.chestplate != null) return this.chestplate.toItemStack();
+		else return null;
 	}
 
 	/*
@@ -143,7 +145,8 @@ public class SerialPlayerInventory implements Serializable
 	 */
 	public ItemStack getLeggings()
 	{
-		return this.leggings.toItemStack();
+		if(this.leggings != null) return this.leggings.toItemStack();
+		else return null;
 	}
 
 	/*
@@ -151,6 +154,7 @@ public class SerialPlayerInventory implements Serializable
 	 */
 	public ItemStack getBoots()
 	{
-		return this.boots.toItemStack();
+		if(this.boots != null) return this.boots.toItemStack();
+		else return null;
 	}
 }
