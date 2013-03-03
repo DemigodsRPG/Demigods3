@@ -273,7 +273,6 @@ public class DFlatFile
 				{
 					if(data.getKey().contains("temp_"))
 					{
-						API.misc.serverMsg(data.getKey());
 						charDataMap.remove(data.getKey());
 					}
 				}
