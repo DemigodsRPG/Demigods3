@@ -29,7 +29,7 @@ public class WarpAPI
 
     public boolean hasInvites(PlayerCharacter character)
     {
-         return getInvites(character) != null;
+         return getInvites(character) != null && !getInvites(character).isEmpty();
     }
 
     public SerialLocation getInvite(PlayerCharacter inviting, PlayerCharacter invited)
