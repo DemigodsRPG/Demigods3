@@ -138,7 +138,7 @@ public class DAltarListener implements Listener
 			// Player is in an altar, let's do this
 			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player))
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player) && !API.zone.canTarget(player))
 			{
 				API.player.togglePraying(player, true);
 
