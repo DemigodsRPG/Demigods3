@@ -841,6 +841,8 @@ public class DAltarListener implements Listener
         if(API.warp.alreadyInvited(character, invited)) API.warp.removeInvite(character, API.warp.getInvite(character, invited));
 
         API.warp.addInvite(character, invited);
+
+        player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " has been invited.");
         invited.getOwner().getPlayer().sendMessage(API.deity.getDeityColor(character.getDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
         invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to your nearest Altar, then follow instructions on how to accept the invite.");
     }
