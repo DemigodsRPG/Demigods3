@@ -118,7 +118,7 @@ public class Shrine implements Serializable
 		this.deity = character.getDeity();
 
 		// Generate the Shrine
-		generate(location);
+		generate();
 
 		save();
 	}
@@ -183,9 +183,21 @@ public class Shrine implements Serializable
 		return this.location.unserialize();
 	}
 
-	public void generate(Location location)
+	public void generate()
 	{
-		// Remove the emerald block
+		Location location = this.getLocation();
+
+		// Remove entity to be safe
+		Location locToMatch = this.getLocation().add(0.5, 1.0, 0.5);
+		for(Entity entity : location.getWorld().getEntities())
+		{
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
+
+		// Set bedrock
 		this.block = new ProtectedBlock(location, "shrine", Material.BEDROCK);
 
 		// Spawn the Entity

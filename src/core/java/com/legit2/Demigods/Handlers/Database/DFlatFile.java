@@ -94,6 +94,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import com.legit2.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -626,6 +627,9 @@ public class DFlatFile
 						{
 							int blockID = API.object.toInteger(element.getName().replace("_shrines.demi", ""));
 							API.data.getAllBlockData().get("shrines").put(blockID, block);
+
+							Shrine shrine = (Shrine) block;
+							shrine.generate();
 						}
 
 						ois.close();

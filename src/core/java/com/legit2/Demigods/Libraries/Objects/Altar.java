@@ -172,7 +172,7 @@ public class Altar implements Serializable
 	public void generate()
 	{
 		ArrayList<ProtectedBlock> blocks = new ArrayList<ProtectedBlock>();
-		Location location = this.center.unserialize();
+		Location location = this.getLocation();
 
 		// Remove the emerald block
 		location.getBlock().setTypeId(0);
