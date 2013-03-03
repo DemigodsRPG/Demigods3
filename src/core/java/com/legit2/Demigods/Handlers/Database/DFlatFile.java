@@ -162,6 +162,15 @@ public class DFlatFile
 
 		try
 		{
+			// TODO: Make this work for when we don't load all data.
+		    // Clear files first
+			for(File file : DemigodsDir.listFiles()) file.delete();
+			for(File file : PlayerDir.listFiles()) file.delete();
+			for(File file : CharacterDir.listFiles()) file.delete();
+			for(File file : BlockDir.listFiles()) file.delete();
+			for(File file : QuestDir.listFiles()) file.delete();
+			for(File file : BattleDir.listFiles()) file.delete();
+
 			// Start the timer
 			long startTimer = System.currentTimeMillis();
 

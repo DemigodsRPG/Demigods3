@@ -148,7 +148,6 @@ public class PlayerCharacter implements Serializable
 		this.charExp = 0;
 		this.charLevel = 0;
 		if(player.isOnline()) this.location = new SerialLocation(((Player) player).getLocation());
-		if(player.isOnline() && API.player.getChars(player) == null) this.charInv = new SerialPlayerInventory(((Player) player).getInventory());
 		this.charInv = null;
 		this.charFavor = API.config.getSettingInt("default_favor");
 		this.charMaxFavor = API.config.getSettingInt("default_max_favor");

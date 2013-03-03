@@ -252,12 +252,16 @@ public class PlayerAPI
 		PlayerCharacter character = API.character.getChar(charID);
 		character.toggleActive(true);
 
+		// If it's their first character save their inventory
+		if(API.player.getChars(player).size() <= 1) character.saveInventory();
+
 		// Update inventory
 		player.getInventory().clear();
 		player.getInventory().setBoots(new ItemStack(Material.AIR));
 		player.getInventory().setChestplate(new ItemStack(Material.AIR));
 		player.getInventory().setLeggings(new ItemStack(Material.AIR));
 		player.getInventory().setBoots(new ItemStack(Material.AIR));
+
 		if(character.getInventory() != null)
 		{
 			SerialPlayerInventory charInv = character.getInventory();
