@@ -111,6 +111,7 @@ import com.legit2.Demigods.Demigods;
 import com.legit2.Demigods.Events.Ability.AbilityEvent.AbilityType;
 import com.legit2.Demigods.Handlers.Database.DFlatFile;
 import com.legit2.Demigods.Libraries.Objects.PlayerCharacter;
+import org.bukkit.map.MapView;
 
 public class DCommandHandler implements CommandExecutor
 {
@@ -141,9 +142,6 @@ public class DCommandHandler implements CommandExecutor
 	public static boolean test1(CommandSender sender)
 	{
 		Player player = (Player) sender;
-
-		SerialItemStack item = new SerialItemStack(player.getItemInHand());
-		player.getWorld().dropItem(player.getLocation(), item.toItemStack());
 
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();
