@@ -93,6 +93,7 @@ package com.legit2.Demigods.Handlers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.legit2.Demigods.Libraries.Objects.SerialItemStack;
@@ -101,6 +102,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -142,6 +144,22 @@ public class DCommandHandler implements CommandExecutor
 	public static boolean test1(CommandSender sender)
 	{
 		Player player = (Player) sender;
+
+		// Create lightning weapon
+		List<String> lore = new ArrayList<String>();
+		lore.add("");
+		lore.add(ChatColor.YELLOW + "" + API.player.getCurrentChar(player).getPower(AbilityType.OFFENSE) + "" + ChatColor.GRAY + " Power");
+		lore.add(ChatColor.YELLOW + "28%" + ChatColor.GRAY + " Accuracy");
+		lore.add("");
+		lore.add("_Alex will save you!");
+		lore.add("");
+		lore.add(ChatColor.RED + "This item is a proof of concept.");
+
+		Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		enchants.put(Enchantment.ARROW_INFINITE, 5);
+		ItemStack item = API.item.create(Material.STICK, "_Alex's Stick" + ChatColor.GRAY + " (Poseidon)", lore, enchants);
+
+		player.setItemInHand(item);
 
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();
