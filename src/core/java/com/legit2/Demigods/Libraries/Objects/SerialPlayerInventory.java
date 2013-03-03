@@ -86,16 +86,15 @@ public class SerialPlayerInventory implements Serializable
 			player = entity.getPlayer();
 		}
 
-		player.getInventory().setHelmet(this.getHelmet());
-		player.getInventory().setChestplate(this.getChestplate());
-		player.getInventory().setLeggings(this.getLeggings());
-		player.getInventory().setBoots(this.getBoots());
+		if(this.getHelmet() != null) player.getInventory().setHelmet(this.getHelmet());
+		if(this.getChestplate() != null) player.getInventory().setChestplate(this.getChestplate());
+		if(this.getLeggings() != null) player.getInventory().setLeggings(this.getLeggings());
+		if(this.getBoots() != null) player.getInventory().setBoots(this.getBoots());
 
 		for(Entry<Integer, ItemStack> slot : this.getItems().entrySet())
 		{
 			player.getInventory().setItem(slot.getKey(), slot.getValue());
 		}
-
 	}
 
 	/*
