@@ -92,7 +92,6 @@ package com.legit2.Demigods.Listeners;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.legit2.Demigods.Libraries.Objects.SerialLocation;
 import org.apache.commons.lang.StringUtils;
@@ -308,7 +307,7 @@ public class DAltarListener implements Listener
 
 				viewChars(player);
 			}
-            // View Characters
+            // View Warps
             else if(message.equals("4") || message.contains("view") && message.contains("warps"))
             {
                 if(API.player.getCurrentChar(player) == null) return;
@@ -319,6 +318,18 @@ public class DAltarListener implements Listener
                 player.sendMessage(" ");
 
                 viewWarps(player);
+            }
+            // View Characters
+            else if(message.equals("5") || message.contains("view") && message.contains("invites"))
+            {
+                if(API.player.getCurrentChar(player) == null || !API.warp.hasInvites(API.player.getCurrentChar(player))) return;
+
+                clearChat(player);
+
+                player.sendMessage(ChatColor.YELLOW + " -> Viewing Invites --------------------------------");
+                player.sendMessage(" ");
+
+                viewInvites(player);
             }
 			else if(message.contains("info"))
 			{
@@ -342,13 +353,31 @@ public class DAltarListener implements Listener
 				switchChar(player, charName);
 			}
 
-            // Warp Character
+            // Warp Name
             else if(message.contains("name warp"))
             {
                 // Define variables
                 String name = message.replace("name warp", "").trim();
 
-                nameAltar(player, API.zone.zoneAltar(player.getLocation()).getID(),name);
+                nameAltar(player, name);
+            }
+
+            // Warp Invite
+            else if(message.contains("invite warp"))
+            {
+                // Define variables
+                String name = message.replace("invite here", "").trim();
+
+                inviteWarp(player, name);
+            }
+
+            // Invite Accept
+            else if(message.contains("accept invite"))
+            {
+                // Define variables
+                String name = message.replace("accept invite", "").trim();
+
+                acceptInvite(player, name);
             }
 
             // Warp Character
@@ -380,6 +409,7 @@ public class DAltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
 		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
         if(API.player.getCurrentChar(player) != null) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
+        if(API.player.getCurrentChar(player) != null && API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 		player.sendMessage(" ");
 	}
 
@@ -424,7 +454,7 @@ public class DAltarListener implements Listener
 		player.sendMessage(" ");
 	}
 
-    // View characters
+    // View warps
     private void viewWarps(Player player)
     {
         if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
@@ -466,6 +496,21 @@ public class DAltarListener implements Listener
         player.sendMessage(" ");
     }
 
+    // View warps
+    private void viewInvites(Player player)
+    {
+        for(SerialLocation invite : API.warp.getInvites(API.player.getCurrentChar(player)))
+        {
+            player.sendMessage(ChatColor.GRAY + "  " + invite.getName());
+        }
+
+        player.sendMessage(" ");
+
+        player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " accept invite <invite name> " + ChatColor.GRAY + "to warp.");
+        player.sendMessage(" ");
+    }
+
+    // View character
 	private void viewChar(Player player, PlayerCharacter character)
 	{
 		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
@@ -739,7 +784,7 @@ public class DAltarListener implements Listener
 			player.sendMessage(" ");
 	}
 
-    private void nameAltar(Player player, int blockID, String name)
+    private void nameAltar(Player player, String name)
     {
         if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
         {
@@ -772,6 +817,52 @@ public class DAltarListener implements Listener
         API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
         player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
     }
+
+    private void inviteWarp(Player player, String name)
+    {
+        PlayerCharacter character = API.player.getCurrentChar(player);
+        PlayerCharacter invited = API.character.getCharByName(name);
+
+        if(!invited.getOwner().isOnline() || invited.getOwner() == character.getOwner())
+        {
+            player.sendMessage(" ");
+            player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
+            return;
+        }
+        if(character.getAlliance().toLowerCase() != invited.getAlliance().toLowerCase())
+        {
+            player.sendMessage(" ");
+            player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to recieve an invite.");
+            return;
+        }
+
+        if(API.warp.alreadyInvited(character, invited)) API.warp.removeInvite(character, API.warp.getInvite(character, invited));
+
+        API.warp.addInvite(character, invited);
+        invited.getOwner().getPlayer().sendMessage(API.deity.getDeityColor(character.getDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
+        invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to your nearest Altar, then follow instructions on how to accept the invite.");
+    }
+
+    private void acceptInvite(Player player, String name)
+    {
+        PlayerCharacter character = API.player.getCurrentChar(player);
+        SerialLocation invite = API.warp.getInvite(character, name);
+
+        if(invite != null)
+        {
+            API.player.togglePraying(player, false);
+            clearChat(player);
+
+            player.teleport(invite.unserialize());
+
+            player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + invite.getName().toUpperCase() + ChatColor.GRAY + " complete.");
+
+            API.warp.removeInvite(character, invite);
+            return;
+        }
+        player.sendMessage(ChatColor.GRAY + "No invite by that name exists, try again.");
+    }
+
 
     private void warpChar(Player player, String warpName)
     {
