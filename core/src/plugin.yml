@@ -1,5 +1,5 @@
 name: Demigods
-main: com.legit2.Demigods.Demigods
+main: com.censoredsoftware.Demigods.Demigods
 version: 3.0.@BUILD@
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [TagAPI, WorldEdit, WorldGuard, Factions]
