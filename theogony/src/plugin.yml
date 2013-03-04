@@ -1,0 +1,5 @@
+name: Theogony
+main: com.legit2.Demigods.Theogony.Theogony
+version: 1.0.@BUILD@
+authors: [_Alex, HmmmQuestionMark]
+softdepend: [Demigods]
