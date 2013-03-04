@@ -88,7 +88,7 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods;
+package com.censoredsoftware.Demigods.Handlers.Abstract;
 
 import java.util.ArrayList;
 
