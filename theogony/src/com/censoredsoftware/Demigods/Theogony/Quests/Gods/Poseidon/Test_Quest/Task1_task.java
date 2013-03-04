@@ -103,6 +103,7 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -120,12 +121,18 @@ public class Task1_task extends TaskHandler implements Listener
         if(!API.task.taskExists("Test Quest", 0, character))
         {
             int taskID = API.object.generateInt(5);
+            ArrayList<String> description = new ArrayList<String>();
+            description.add(ChatColor.YELLOW + " This is a test task.");
+            description.add(ChatColor.YELLOW + " Click anywhere to complete this quest!");
 
-            Task task1 = new Task(character, ChatColor.YELLOW + "This is a test task.", "Test Quest", 0, true, true, API.plugin.getPlugin("Theogony"), "com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task", taskID, INVOKEID);
+            Task task1 = new Task(character, description, "Test Quest", 0, true, true, API.plugin.getPlugin("Theogony"), "com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task", taskID, INVOKEID);
             if(character.getOwner().isOnline())
             {
                 API.misc.taggedMessage(character.getOwner().getPlayer(), task1.getQuest());
-                character.getOwner().getPlayer().sendMessage(task1.getDescription());
+                for(String out : task1.getDescription())
+                {
+                    character.getOwner().getPlayer().sendMessage(out);
+                }
             }
 
             onInvoke();
@@ -136,6 +143,16 @@ public class Task1_task extends TaskHandler implements Listener
     public void onInvoke()
     {
         API.getServer().getPluginManager().registerEvents(this, API);
+    }
+
+    @Override
+    public void onComplete(Task task)
+    {
+        Player player = task.getCharacter().getOwner().getPlayer();
+        API.misc.taggedMessage(player, task.getQuest());
+        player.sendMessage(ChatColor.YELLOW + " Quest complete!");
+        task.setActive(false);
+        HandlerList.unregisterAll(this);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -159,6 +176,8 @@ public class Task1_task extends TaskHandler implements Listener
                 fireworkmeta.addEffect(effect);
                 fireworkmeta.setPower(2);
                 firework.setFireworkMeta(fireworkmeta);
+
+                onComplete(task);
             }
         }
     }
