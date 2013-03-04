@@ -1,0 +1,55 @@
+## Global Settings ##
+auto_update: false
+console_debug: true
+friendly_fire: false
+allow_skills_anywhere: false
+use_dynamic_pvp_zones: true
+balance_teams: true
+pvp_area_delay_time: 10
+inactive_worlds:
+#- world_nodemigods
+minimum_blocks_between_altars: 450
+altar_generation_chance: 4.8 #percent
+
+## Statistic Caps, Multipliers, and Related ##
+global_favor_multiplier: 1.0
+global_exp_multiplier: 1.0
+global_max_favor: 20000
+max_target_range: 100
+pvp_exp_bonus: 1.5
+stat_display_frequency_in_seconds: 0
+start_delay_seconds: 60.0
+favor_regen_seconds: 10.0
+save_interval_seconds: 300
+ascension_cap: 100
+
+## Character Creation Settings ##
+default_favor: 500
+default_max_favor: 750
+default_devotion: 200
+default_ascensions: 1
+
+## Administrative Settings ##
+admin_wand_tool: 369
+
+## Battle Settings ##
+blocked_battle_commands:
+- 'spawn'
+- 'home'
+- 'sethome'
+- 'call'
+- 'bring'
+- 'myhome'
+- 'back'
+
+## Database Settings ##
+database:
+    mysql:
+        use: true
+        db_name: minecraft
+        username: root
+        password: ''
+        host: localhost
+        port: 3306
+    sqlite:
+        use: false
