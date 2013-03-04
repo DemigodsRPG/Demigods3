@@ -92,6 +92,7 @@ package com.censoredsoftware.Demigods.Theogony.Gods;
 
 import java.util.ArrayList;
 
+import com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -246,7 +247,11 @@ public class Poseidon_deity implements Listener
 		{
 			Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 			Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
-			if(player.isSneaking()) player.setVelocity(victor);
+			if(player.isSneaking())
+            {
+                new Task1_task().create(API.player.getCurrentChar(player));
+                player.setVelocity(victor);
+            }
 		}
 	}
 

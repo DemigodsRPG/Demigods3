@@ -96,8 +96,11 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -138,6 +141,7 @@ public class Demigods extends JavaPlugin
 	public PlayerAPI player = null;
 	public PluginAPI plugin = null;
 	public QuestAPI quest = null;
+    public TaskAPI task = null;
 	public UpdateAPI update = null;
 	public ValueAPI value = null;
     public WarpAPI warp = null;
@@ -168,6 +172,7 @@ public class Demigods extends JavaPlugin
 		object = new ObjAPI();
 		player = new PlayerAPI();
 		plugin = new PluginAPI();
+        task = new TaskAPI();
 		quest = new QuestAPI();
 		update = new UpdateAPI();
 		value = new ValueAPI();
@@ -190,6 +195,7 @@ public class Demigods extends JavaPlugin
 			DScheduler.startThreads();
 			loadListeners();
 			loadCommands();
+            loadTasks();
 			// checkUpdate();
 
 			misc.getLog().setFilter(new DisconnectReasonFilter());
@@ -406,6 +412,27 @@ public class Demigods extends JavaPlugin
 			}
 		}
 	}
+
+    public void loadTasks()
+    {
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(INSTANCE, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    task.invokeAllTasks();
+                    misc.info("Tasks have finished loading!");
+                }
+                catch (Exception e)
+                {
+                    misc.severe("There was an error while loading tasks.");
+                    e.printStackTrace();
+                }
+            }
+        }, 30);
+    }
 
 	@SuppressWarnings("unused")
 	private void checkUpdate()
