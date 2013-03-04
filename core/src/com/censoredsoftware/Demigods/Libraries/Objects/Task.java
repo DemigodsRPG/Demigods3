@@ -90,6 +90,7 @@
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
@@ -100,17 +101,17 @@ public class Task implements Serializable
 	private static final long serialVersionUID = -2993695235782423170L;
 
 	protected final int character;
-    protected final String description;
+    protected final ArrayList<String> description;
 	protected final String quest;
 	protected final String plugin;
 	protected final String classPath;
     protected final String invokeID;
 	protected final int order;
 	protected final int taskID;
-	protected final boolean active;
+	protected boolean active;
 	protected final boolean required;
 
-	public Task(PlayerCharacter character, String description, String quest, int order, boolean active, boolean required, DemigodsPlugin plugin, String classPath, int taskID, String invokeID)
+	public Task(PlayerCharacter character, ArrayList<String> description, String quest, int order, boolean active, boolean required, DemigodsPlugin plugin, String classPath, int taskID, String invokeID)
 	{
 		this.character = character.getID();
         this.description = description;
@@ -152,6 +153,14 @@ public class Task implements Serializable
         return this.active;
     }
 
+    /*
+     * setActive() : Sets (boolean)active.
+     */
+    public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
 	/*
 	 * getPlugin() : Returns the plugin corresponding to this object.
 	 */
@@ -185,7 +194,6 @@ public class Task implements Serializable
         }
     }
 
-
     /*
      * getOrder() : Get the (int)order.
      */
@@ -205,7 +213,7 @@ public class Task implements Serializable
     /*
      * getDescription() : Get the (String)Description.
      */
-    public String getDescription()
+    public ArrayList<String> getDescription()
     {
         return this.description;
     }
