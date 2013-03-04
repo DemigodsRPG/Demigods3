@@ -27,8 +27,8 @@
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
 	
-	 5. The Demigods Team is defined as Alexander Chauncey and Alex Bennett
-	    of http://www.clashnia.com/.
+	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
+	    of http://www.censoredsoftware.com/.
 	
 	Agreement
 	
