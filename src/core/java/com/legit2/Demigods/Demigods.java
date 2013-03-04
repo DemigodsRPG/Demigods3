@@ -354,16 +354,6 @@ public class Demigods extends JavaPlugin
 	 */
 	public void loadDependencies()
 	{
-		/*
-		 * Check for the SQLibrary plugin (needed)
-		 * Plugin pg = getServer().getPluginManager().getPlugin("SQLibrary");
-		 * if(pg == null)
-		 * {
-		 * DMiscUtil.severe("SQLibrary plugin (required) not found!");
-		 * okayToLoad = false;
-		 * }
-		 */
-
 		// Check for the WorldGuard plugin (optional)
 		Plugin pg = getServer().getPluginManager().getPlugin("WorldGuard");
 		if((pg != null) && (pg instanceof WorldGuardPlugin))

@@ -173,7 +173,7 @@ public class DPlayerListener implements Listener
 		 */
 	}
 
-	/*
+	/* TODO
 	 * @EventHandler(priority = EventPriority.HIGHEST)
 	 * public void onPlayerCraft(CraftItemEvent event)
 	 * {
