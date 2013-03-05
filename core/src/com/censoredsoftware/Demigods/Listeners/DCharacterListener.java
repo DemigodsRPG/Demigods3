@@ -158,8 +158,10 @@ public class DCharacterListener implements Listener
 	{
 		PlayerCharacter attacker = event.getCharacter();
 		PlayerCharacter killed = event.getKilled();
-		String attackerAlliance = attacker.getAlliance();
-		String killedAlliance = killed.getAlliance();
+		String attackerAlliance = "Mortal";
+        if(attacker != null) attackerAlliance = attacker.getAlliance();
+		String killedAlliance = "Mortal";
+        if(killed != null) killedAlliance = killed.getAlliance();
 
 		API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
 	}
