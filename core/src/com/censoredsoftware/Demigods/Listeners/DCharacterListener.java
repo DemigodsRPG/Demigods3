@@ -158,11 +158,16 @@ public class DCharacterListener implements Listener
 	{
 		PlayerCharacter attacker = event.getCharacter();
 		PlayerCharacter killed = event.getKilled();
-		String attackerAlliance = attacker.getAlliance();
-		String killedAlliance = killed.getAlliance();
+		String attackerAlliance = "Mortal";
+        if(attacker != null) attackerAlliance = attacker.getAlliance();
+		String killedAlliance = "Mortal";
+        if(killed != null) killedAlliance = killed.getAlliance();
 
-		API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
-	}
+        if(killed == null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
+        else if(killed == null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+        else if(killed != null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".");
+        else if(killed != null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+    }
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerBetrayPlayer(CharacterBetrayCharacterEvent event)
@@ -171,6 +176,7 @@ public class DCharacterListener implements Listener
 		PlayerCharacter killed = event.getKilled();
 		String alliance = event.getAlliance();
 
-		API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
+		if(alliance != "Mortal") API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
+        else API.misc.serverMsg(ChatColor.GRAY + "A few worthless mortals killed each other.");
 	}
 }

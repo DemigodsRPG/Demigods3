@@ -102,7 +102,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.DemigodsPlugin;
+import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Theogony.Handlers.DMetricsHandler;
 import com.censoredsoftware.Demigods.Theogony.Listeners.DBattleListener;
 
@@ -172,7 +172,7 @@ public class Theogony extends DemigodsPlugin
 			{}
 		}
 		return DEITYLIST;
-	}
+    }
 
 	/*
 	 * loadListeners() : Loads all plugin listeners.

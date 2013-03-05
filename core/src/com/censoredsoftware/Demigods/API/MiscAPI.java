@@ -145,20 +145,10 @@ public class MiscAPI
 	/*
 	 * taggedMessage() : Sends tagged message (String)msg to the (CommandSender)sender.
 	 */
-	public void taggedMessage(CommandSender sender, String msg)
+	public void taggedMessage(CommandSender sender, String title)
 	{
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.AQUA + " " + plugin_name + " > " + ChatColor.RESET + msg);
-		sender.sendMessage(ChatColor.RESET + "-----------------------------------------------------");
-	}
-
-	/*
-	 * taggedMessage() : Sends tagged message (String)msg to the (CommandSender)sender.
-	 */
-	public void customTaggedMessage(CommandSender sender, String title, String msg)
-	{
-		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.AQUA + " " + plugin_name + " > " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.AQUA + " " + plugin_name + " > " + ChatColor.RESET + title);
 		sender.sendMessage(ChatColor.RESET + "-----------------------------------------------------");
 	}
 

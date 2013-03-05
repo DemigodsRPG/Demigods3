@@ -292,12 +292,12 @@ public class DPlayerListener implements Listener
 		String name = event.getPlayer().getName();
 		if(filterCheckGeneric)
 		{
-			String message = ChatColor.YELLOW + name + " has lost connection to the game for a generic reason.";
+			String message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
 			event.setQuitMessage(message);
 		}
 		else if(filterCheckStream)
 		{
-			String message = ChatColor.YELLOW + name + " has lost connection to the game.";
+			String message = ChatColor.YELLOW + name + " has lost connection.";
 			event.setQuitMessage(message);
 		}
 		else if(filterCheckOverflow)
