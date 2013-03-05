@@ -143,6 +143,8 @@ public class DCommandHandler implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
+        if(API.player.getCurrentChar(player) == null) return true;
+
 		// Create lightning weapon
 		List<String> lore = new ArrayList<String>();
 		lore.add("");
