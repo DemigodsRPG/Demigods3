@@ -283,6 +283,7 @@ public class DEntityListener implements Listener
 			// Define variables
 			Player player = (Player) event.getEntity();
 			PlayerCharacter character = API.player.getCurrentChar(player);
+            if(character == null) return;
 			String deity = API.object.capitalize(character.getDeity());
 			int devotion = character.getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
