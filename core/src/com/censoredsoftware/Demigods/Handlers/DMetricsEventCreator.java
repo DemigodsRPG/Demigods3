@@ -117,9 +117,14 @@ public class DMetricsEventCreator implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacter playerChar = API.player.getCurrentChar(player);
-			if(playerChar.getKillstreak() > 3) API.misc.serverMsg(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
-			playerChar.setKillstreak(0);
+            PlayerCharacter playerChar = null;
+            if(API.player.getCurrentChar(player) != null) playerChar = API.player.getCurrentChar(player);
+
+            if(playerChar != null)
+            {
+                if(playerChar.getKillstreak() > 3) API.misc.serverMsg(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
+                playerChar.setKillstreak(0);
+            }
 
 			EntityDamageEvent damageEvent = player.getLastDamageCause();
 
@@ -131,25 +136,29 @@ public class DMetricsEventCreator implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = API.player.getCurrentChar(attacker);
+					PlayerCharacter attackChar = null;
+                    if(API.player.getCurrentChar(attacker) != null) attackChar = API.player.getCurrentChar(attacker);
 					if(API.player.areAllied(attacker, player))
 					{
-						API.misc.callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, playerChar.getAlliance()));
+						API.misc.callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, API.player.getCurrentAlliance(player)));
 					}
 					else
 					{
 						API.misc.callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 					}
 
-					// Killstreak
-					int killstreak = attackChar.getKillstreak();
-					attackChar.setKillstreak(killstreak + 1);
-					if(attackChar.getKillstreak() > 2)
-					{
-						API.misc.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
-					}
+                    if(attackChar != null)
+                    {
+                        // Killstreak
+                        int killstreak = attackChar.getKillstreak();
+                        attackChar.setKillstreak(killstreak + 1);
+                        if(attackChar.getKillstreak() > 2)
+                        {
+                            API.misc.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
+                        }
 
-					// TODO Dominating
+                        // TODO Dominating
+                    }
 				}
 			}
 		}
