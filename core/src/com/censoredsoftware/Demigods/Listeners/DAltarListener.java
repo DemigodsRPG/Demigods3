@@ -454,7 +454,7 @@ public class DAltarListener implements Listener
 
 			if(character.isActive()) color = ChatColor.LIGHT_PURPLE + "";
 
-			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + API.deity.getDeityColor(deity) + deity + ChatColor.GRAY + " / Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Ascensions: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
+			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + API.deity.getDeityColor(deity) + deity + ChatColor.GRAY + " / Fav: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
 		}
 
 		player.sendMessage(" ");

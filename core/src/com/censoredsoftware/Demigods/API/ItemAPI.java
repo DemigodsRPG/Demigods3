@@ -93,6 +93,7 @@ package com.censoredsoftware.Demigods.API;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
@@ -118,5 +119,23 @@ public class ItemAPI
 		if(enchantments != null) item.addUnsafeEnchantments(enchantments);
 
 		return item;
+	}
+
+	/*
+	 * createBook() : Creates a book with the given variables.
+	 */
+	public ItemStack createBook(String title, String author, List<String> pages, List<String> lore)
+	{
+		ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+		BookMeta meta = (BookMeta) book.getItemMeta();
+
+		meta.setTitle(title);
+		meta.setAuthor(author);
+		meta.setPages(pages);
+		if(lore != null) meta.setLore(lore);
+
+		book.setItemMeta(meta);
+
+		return book;
 	}
 }
