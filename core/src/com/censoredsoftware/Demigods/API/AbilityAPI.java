@@ -90,8 +90,10 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.Random;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -103,10 +105,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import java.util.Random;
 
 public class AbilityAPI
 {

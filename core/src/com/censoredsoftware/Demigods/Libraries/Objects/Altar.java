@@ -90,14 +90,13 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Altar implements Serializable
 {

@@ -89,11 +89,11 @@
  */
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Task implements Serializable
 {
@@ -101,11 +101,11 @@ public class Task implements Serializable
 	private static final long serialVersionUID = -2993695235782423170L;
 
 	protected final int character;
-    protected final ArrayList<String> description;
+	protected final ArrayList<String> description;
 	protected final String quest;
 	protected final String plugin;
 	protected final String classPath;
-    protected final String invokeID;
+	protected final String invokeID;
 	protected final int order;
 	protected final int taskID;
 	protected boolean active;
@@ -114,7 +114,7 @@ public class Task implements Serializable
 	public Task(PlayerCharacter character, ArrayList<String> description, String quest, int order, boolean active, boolean required, DemigodsPlugin plugin, String classPath, int taskID, String invokeID)
 	{
 		this.character = character.getID();
-        this.description = description;
+		this.description = description;
 		this.quest = quest;
 		this.order = order;
 		this.active = active;
@@ -122,7 +122,7 @@ public class Task implements Serializable
 		this.plugin = plugin.getName();
 		this.classPath = classPath;
 		this.taskID = taskID;
-        this.invokeID = invokeID;
+		this.invokeID = invokeID;
 
 		API.data.addTask(taskID);
 		API.data.saveTaskData(taskID, "task_quest", this.quest);
@@ -145,21 +145,21 @@ public class Task implements Serializable
 		return getPlugin() != null;
 	}
 
-    /*
-     * isActive() : Checks to see if the Task is active.
-     */
-    public boolean isActive()
-    {
-        return this.active;
-    }
+	/*
+	 * isActive() : Checks to see if the Task is active.
+	 */
+	public boolean isActive()
+	{
+		return this.active;
+	}
 
-    /*
-     * setActive() : Sets (boolean)active.
-     */
-    public void setActive(boolean active)
-    {
-        this.active = active;
-    }
+	/*
+	 * setActive() : Sets (boolean)active.
+	 */
+	public void setActive(boolean active)
+	{
+		this.active = active;
+	}
 
 	/*
 	 * getPlugin() : Returns the plugin corresponding to this object.
@@ -177,30 +177,30 @@ public class Task implements Serializable
 		return this.taskID;
 	}
 
-    /*
-     * initialize() : Starts the task.
-     */
-    public void initialize()
-    {
-        try
-        {
-            API.task.invokeTask(API.plugin.getPlugin(this.plugin), this.classPath);
-            API.data.saveTaskData(getID(), "task_active", true);
-        }
-        catch(Exception ignored)
-        {
-            API.data.removeTask(getID());
-            return;
-        }
-    }
+	/*
+	 * initialize() : Starts the task.
+	 */
+	public void initialize()
+	{
+		try
+		{
+			API.task.invokeTask(API.plugin.getPlugin(this.plugin), this.classPath);
+			API.data.saveTaskData(getID(), "task_active", true);
+		}
+		catch(Exception ignored)
+		{
+			API.data.removeTask(getID());
+			return;
+		}
+	}
 
-    /*
-     * getOrder() : Get the (int)order.
-     */
-    public int getOrder()
-    {
-        return this.order;
-    }
+	/*
+	 * getOrder() : Get the (int)order.
+	 */
+	public int getOrder()
+	{
+		return this.order;
+	}
 
 	/*
 	 * getQuest() : Get the (String)Quest.
@@ -210,35 +210,35 @@ public class Task implements Serializable
 		return this.quest;
 	}
 
-    /*
-     * getDescription() : Get the (String)Description.
-     */
-    public ArrayList<String> getDescription()
-    {
-        return this.description;
-    }
+	/*
+	 * getDescription() : Get the (String)Description.
+	 */
+	public ArrayList<String> getDescription()
+	{
+		return this.description;
+	}
 
-    /*
-     * getClassPath() : Get the (String)classPath.
-     */
-    public String getClassPath()
-    {
-        return this.classPath;
-    }
+	/*
+	 * getClassPath() : Get the (String)classPath.
+	 */
+	public String getClassPath()
+	{
+		return this.classPath;
+	}
 
-    /*
-     * getCharacter() : Get the (PlayerCharacter)character.
-     */
-    public PlayerCharacter getCharacter()
-    {
-        return API.character.getChar(this.character);
-    }
+	/*
+	 * getCharacter() : Get the (PlayerCharacter)character.
+	 */
+	public PlayerCharacter getCharacter()
+	{
+		return API.character.getChar(this.character);
+	}
 
-    /*
-     * getInvokeID() : Get the (String)invokeID.
-     */
-    public String getInvokeID()
-    {
-        return this.invokeID;
-    }
+	/*
+	 * getInvokeID() : Get the (String)invokeID.
+	 */
+	public String getInvokeID()
+	{
+		return this.invokeID;
+	}
 }

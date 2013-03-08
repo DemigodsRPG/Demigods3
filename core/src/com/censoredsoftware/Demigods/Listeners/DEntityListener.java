@@ -90,8 +90,13 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
+import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
+import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -101,13 +106,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import java.util.ArrayList;
 
 public class DEntityListener implements Listener
 {
@@ -283,7 +282,7 @@ public class DEntityListener implements Listener
 			// Define variables
 			Player player = (Player) event.getEntity();
 			PlayerCharacter character = API.player.getCurrentChar(player);
-            if(character == null) return;
+			if(character == null) return;
 			String deity = API.object.capitalize(character.getDeity());
 			int devotion = character.getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);

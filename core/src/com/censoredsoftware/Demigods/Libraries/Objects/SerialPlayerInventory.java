@@ -90,10 +90,7 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -102,7 +99,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class SerialPlayerInventory implements Serializable
 {
@@ -112,8 +111,8 @@ public class SerialPlayerInventory implements Serializable
 	String owner;
 	SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
 	SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack  leggings = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack boots =  new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack leggings = new SerialItemStack(new ItemStack(Material.AIR));
+	SerialItemStack boots = new SerialItemStack(new ItemStack(Material.AIR));
 	final HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
 
 	int size;
@@ -129,9 +128,9 @@ public class SerialPlayerInventory implements Serializable
 			{
 				Player player = getOwner().getPlayer();
 				if(player.getInventory().getHelmet() != null) this.helmet = new SerialItemStack(player.getInventory().getHelmet().clone());
-				if(player.getInventory().getChestplate() != null) this.chestplate =  new SerialItemStack(player.getInventory().getChestplate().clone());
-				if(player.getInventory().getLeggings() != null) this.leggings =  new SerialItemStack(player.getInventory().getLeggings().clone());
-				if(player.getInventory().getBoots() != null) this.boots =  new SerialItemStack(player.getInventory().getBoots().clone());
+				if(player.getInventory().getChestplate() != null) this.chestplate = new SerialItemStack(player.getInventory().getChestplate().clone());
+				if(player.getInventory().getLeggings() != null) this.leggings = new SerialItemStack(player.getInventory().getLeggings().clone());
+				if(player.getInventory().getBoots() != null) this.boots = new SerialItemStack(player.getInventory().getBoots().clone());
 			}
 
 			for(int i = 0; i < this.size; i++)

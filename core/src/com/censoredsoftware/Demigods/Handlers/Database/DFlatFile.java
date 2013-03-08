@@ -90,16 +90,15 @@
 
 package com.censoredsoftware.Demigods.Handlers.Database;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class DFlatFile
 {
@@ -162,13 +161,19 @@ public class DFlatFile
 		try
 		{
 			// TODO: Make this work for when we don't load all data.
-		    // Clear files first
-			for(File file : DemigodsDir.listFiles()) file.delete();
-			for(File file : PlayerDir.listFiles()) file.delete();
-			for(File file : CharacterDir.listFiles()) file.delete();
-			for(File file : BlockDir.listFiles()) file.delete();
-			for(File file : QuestDir.listFiles()) file.delete();
-			for(File file : BattleDir.listFiles()) file.delete();
+			// Clear files first
+			for(File file : DemigodsDir.listFiles())
+				file.delete();
+			for(File file : PlayerDir.listFiles())
+				file.delete();
+			for(File file : CharacterDir.listFiles())
+				file.delete();
+			for(File file : BlockDir.listFiles())
+				file.delete();
+			for(File file : QuestDir.listFiles())
+				file.delete();
+			for(File file : BattleDir.listFiles())
+				file.delete();
 
 			// Start the timer
 			long startTimer = System.currentTimeMillis();
@@ -252,7 +257,6 @@ public class DFlatFile
 		{
 			// Define variables
 			String playerName = player.getName();
-
 
 			// Create a temporary player data HashMap to save
 			HashMap<String, Object> playerDataMap = new HashMap<String, Object>(API.data.getAllPlayerData(Bukkit.getOfflinePlayer(playerName)));

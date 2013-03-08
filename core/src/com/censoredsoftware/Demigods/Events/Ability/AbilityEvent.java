@@ -90,11 +90,10 @@
 
 package com.censoredsoftware.Demigods.Events.Ability;
 
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 /*
  * Represents an event that is called when an ability is executed.

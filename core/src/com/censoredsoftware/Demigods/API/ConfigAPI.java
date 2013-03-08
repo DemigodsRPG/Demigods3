@@ -90,16 +90,15 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class ConfigAPI
 {

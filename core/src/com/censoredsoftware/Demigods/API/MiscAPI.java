@@ -90,8 +90,8 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.logging.Logger;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
@@ -100,8 +100,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import java.util.logging.Logger;
 
 public class MiscAPI
 {

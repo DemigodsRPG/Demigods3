@@ -90,10 +90,10 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
+import com.censoredsoftware.Demigods.Listeners.DPlayerListener;
+
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
-
-import com.censoredsoftware.Demigods.Listeners.DPlayerListener;
 
 public class DisconnectReasonFilter implements Filter
 {

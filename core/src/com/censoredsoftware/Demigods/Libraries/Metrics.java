@@ -27,6 +27,13 @@
  */
 package com.censoredsoftware.Demigods.Libraries;
 
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
+
 import java.io.*;
 import java.net.Proxy;
 import java.net.URL;
@@ -34,13 +41,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
-
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>

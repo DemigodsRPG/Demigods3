@@ -90,8 +90,10 @@
 
 package com.censoredsoftware.Demigods.Theogony.Gods;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -106,10 +108,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
 
 public class Zeus_deity implements Listener
 {

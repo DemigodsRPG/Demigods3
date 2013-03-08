@@ -90,21 +90,8 @@
 
 package com.censoredsoftware.Demigods;
 
-import java.net.URL;
-import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Handlers.DCommandHandler;
 import com.censoredsoftware.Demigods.Handlers.DMetricsEventCreator;
 import com.censoredsoftware.Demigods.Handlers.DScheduler;
@@ -113,6 +100,18 @@ import com.censoredsoftware.Demigods.Libraries.Objects.DisconnectReasonFilter;
 import com.censoredsoftware.Demigods.Listeners.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class Demigods extends JavaPlugin
 {
@@ -135,16 +134,16 @@ public class Demigods extends JavaPlugin
 	public InstanceAPI instance = null;
 	public InvAPI inventory = null;
 	public ItemAPI item = null;
-    public MetricsAPI metrics = null;
+	public MetricsAPI metrics = null;
 	public MiscAPI misc = null;
 	public ObjAPI object = null;
 	public PlayerAPI player = null;
 	public PluginAPI plugin = null;
 	public QuestAPI quest = null;
-    public TaskAPI task = null;
+	public TaskAPI task = null;
 	public UpdateAPI update = null;
 	public ValueAPI value = null;
-    public WarpAPI warp = null;
+	public WarpAPI warp = null;
 	public ZoneAPI zone = null;
 
 	// Deity ClassPath List
@@ -168,16 +167,16 @@ public class Demigods extends JavaPlugin
 		deity = new DeityAPI();
 		inventory = new InvAPI();
 		item = new ItemAPI();
-        metrics = new MetricsAPI();
+		metrics = new MetricsAPI();
 		misc = new MiscAPI();
 		object = new ObjAPI();
 		player = new PlayerAPI();
 		plugin = new PluginAPI();
-        task = new TaskAPI();
+		task = new TaskAPI();
 		quest = new QuestAPI();
 		update = new UpdateAPI();
 		value = new ValueAPI();
-        warp = new WarpAPI();
+		warp = new WarpAPI();
 		zone = new ZoneAPI();
 
 		// Initialize Configuration
@@ -196,7 +195,7 @@ public class Demigods extends JavaPlugin
 			DScheduler.startThreads();
 			loadListeners();
 			loadCommands();
-            loadTasks();
+			loadTasks();
 			// checkUpdate();
 
 			misc.getLog().setFilter(new DisconnectReasonFilter());
@@ -414,26 +413,26 @@ public class Demigods extends JavaPlugin
 		}
 	}
 
-    public void loadTasks()
-    {
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(INSTANCE, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    task.invokeAllTasks();
-                    misc.info("Tasks have finished loading!");
-                }
-                catch (Exception e)
-                {
-                    misc.severe("There was an error while loading tasks.");
-                    e.printStackTrace();
-                }
-            }
-        }, 30);
-    }
+	public void loadTasks()
+	{
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(INSTANCE, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					task.invokeAllTasks();
+					misc.info("Tasks have finished loading!");
+				}
+				catch(Exception e)
+				{
+					misc.severe("There was an error while loading tasks.");
+					e.printStackTrace();
+				}
+			}
+		}, 30);
+	}
 
 	@SuppressWarnings("unused")
 	private void checkUpdate()
