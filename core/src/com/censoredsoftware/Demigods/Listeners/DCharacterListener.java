@@ -90,6 +90,12 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.ExperienceOrb;
@@ -97,13 +103,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DCharacterListener implements Listener
 {
@@ -137,7 +136,8 @@ public class DCharacterListener implements Listener
 			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
 			online.getWorld().strikeLightningEffect(online.getLocation());
 
-			for(int i = 0; i < 20; i++) online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+			for(int i = 0; i < 20; i++)
+				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 
 			// Switch current character
 			API.player.changeCurrentChar(player, character.getID());
@@ -159,15 +159,15 @@ public class DCharacterListener implements Listener
 		PlayerCharacter attacker = event.getCharacter();
 		PlayerCharacter killed = event.getKilled();
 		String attackerAlliance = "Mortal";
-        if(attacker != null) attackerAlliance = attacker.getAlliance();
+		if(attacker != null) attackerAlliance = attacker.getAlliance();
 		String killedAlliance = "Mortal";
-        if(killed != null) killedAlliance = killed.getAlliance();
+		if(killed != null) killedAlliance = killed.getAlliance();
 
-        if(killed == null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
-        else if(killed == null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
-        else if(killed != null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".");
-        else if(killed != null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
-    }
+		if(killed == null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
+		else if(killed == null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+		else if(killed != null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".");
+		else if(killed != null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerBetrayPlayer(CharacterBetrayCharacterEvent event)
@@ -177,6 +177,6 @@ public class DCharacterListener implements Listener
 		String alliance = event.getAlliance();
 
 		if(alliance != "Mortal") API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
-        else API.misc.serverMsg(ChatColor.GRAY + "A few worthless mortals killed each other.");
+		else API.misc.serverMsg(ChatColor.GRAY + "A few worthless mortals killed each other.");
 	}
 }

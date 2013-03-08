@@ -90,11 +90,10 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.Random;
-
+import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 import org.bukkit.Location;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import java.util.Random;
 
 public class ObjAPI
 {

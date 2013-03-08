@@ -90,9 +90,9 @@
 
 package com.censoredsoftware.Demigods.Handlers.Abstract;
 
-import java.util.ArrayList;
-
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 public abstract class DemigodsPlugin extends JavaPlugin
 {

@@ -90,9 +90,8 @@
 
 package com.censoredsoftware.Demigods.Events.Character;
 
-import org.bukkit.event.HandlerList;
-
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import org.bukkit.event.HandlerList;
 
 /*
  * Represents an event that is called when a player is killed by another player.

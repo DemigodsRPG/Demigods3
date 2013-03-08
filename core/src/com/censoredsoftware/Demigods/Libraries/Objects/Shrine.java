@@ -90,14 +90,13 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.Serializable;
 
 public class Shrine implements Serializable
 {

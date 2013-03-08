@@ -90,175 +90,175 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-
 import java.util.HashMap;
+
+import com.censoredsoftware.Demigods.Demigods;
 
 public class MetricsAPI
 {
-    private static final Demigods API = Demigods.INSTANCE;
+	private static final Demigods API = Demigods.INSTANCE;
 
-    // Define HashMaps
-    private final HashMap<String, HashMap<Object, Object>> publicMetrics = new HashMap<String, HashMap<Object, Object>>();
-    private final HashMap<String, HashMap<Object, Object>> privateMetrics = new HashMap<String, HashMap<Object, Object>>();
+	// Define HashMaps
+	private final HashMap<String, HashMap<Object, Object>> publicMetrics = new HashMap<String, HashMap<Object, Object>>();
+	private final HashMap<String, HashMap<Object, Object>> privateMetrics = new HashMap<String, HashMap<Object, Object>>();
 
-    /*
+	/*
 	 * ---------------------------------------------------
 	 * Begin Public Metrics Methods
 	 * ---------------------------------------------------
-	 *
+	 * 
 	 * savePublic() : Saves (String)dataID to publicMetrics HashMap.
 	 */
-    public boolean savePublic(String dataID, Object dataKey, Object dataValue)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
+	public boolean savePublic(String dataID, Object dataKey, Object dataValue)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
-        if(publicMetrics.containsKey(dataID))
-        {
-            publicMetrics.get(dataID).put(dataKey, dataValue);
-            return true;
-        }
-        else
-        {
-            publicMetrics.put(dataID, new HashMap<Object, Object>());
-            publicMetrics.get(dataID).put(dataKey, dataValue);
-            return true;
-        }
-    }
+		if(publicMetrics.containsKey(dataID))
+		{
+			publicMetrics.get(dataID).put(dataKey, dataValue);
+			return true;
+		}
+		else
+		{
+			publicMetrics.put(dataID, new HashMap<Object, Object>());
+			publicMetrics.get(dataID).put(dataKey, dataValue);
+			return true;
+		}
+	}
 
-    /*
-     * removePublic() : Removes (String)dataID from publicMetrics HashMap.
-     */
-    public boolean removePublic(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
+	/*
+	 * removePublic() : Removes (String)dataID from publicMetrics HashMap.
+	 */
+	public boolean removePublic(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
-        if(publicMetrics.containsKey(dataID))
-        {
-            publicMetrics.get(dataID).remove(dataKey);
-            return true;
-        }
-        else return false;
-    }
+		if(publicMetrics.containsKey(dataID))
+		{
+			publicMetrics.get(dataID).remove(dataKey);
+			return true;
+		}
+		else return false;
+	}
 
-    /*
-     * hasPublic() : Returns true/false according to if (Object)dataKey exists for (String)dataID.
-     */
-    public boolean hasPublic(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
+	/*
+	 * hasPublic() : Returns true/false according to if (Object)dataKey exists for (String)dataID.
+	 */
+	public boolean hasPublic(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
-        return publicMetrics.containsKey(dataID) && publicMetrics.get(dataID).get(dataKey) != null;
-    }
+		return publicMetrics.containsKey(dataID) && publicMetrics.get(dataID).get(dataKey) != null;
+	}
 
-    /*
-     * getPublic() : Returns (Object)dataValue for (String)dataID's (Object)dataKey.
-     */
-    public Object getPublic(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
+	/*
+	 * getPublic() : Returns (Object)dataValue for (String)dataID's (Object)dataKey.
+	 */
+	public Object getPublic(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
-        if(publicMetrics.containsKey(dataID))
-        {
-            if(publicMetrics.get(dataID) != null) return publicMetrics.get(dataID).get(dataKey);
-            else return null;
-        }
-        else return null;
-    }
+		if(publicMetrics.containsKey(dataID))
+		{
+			if(publicMetrics.get(dataID) != null) return publicMetrics.get(dataID).get(dataKey);
+			else return null;
+		}
+		else return null;
+	}
 
-    /*
-     * getPublicFor() : Returns the nested HashMap for (String)dataID.
-     */
-    public HashMap<Object, Object> getPublicFor(String dataID)
-    {
-        return publicMetrics.get(dataID);
-    }
+	/*
+	 * getPublicFor() : Returns the nested HashMap for (String)dataID.
+	 */
+	public HashMap<Object, Object> getPublicFor(String dataID)
+	{
+		return publicMetrics.get(dataID);
+	}
 
-    /*
-     * getAllPublic() : Returns all publicMetrics.
-     */
-    public HashMap<String, HashMap<Object, Object>> getAllPublic()
-    {
-        return publicMetrics;
-    }
+	/*
+	 * getAllPublic() : Returns all publicMetrics.
+	 */
+	public HashMap<String, HashMap<Object, Object>> getAllPublic()
+	{
+		return publicMetrics;
+	}
 
-    /*
+	/*
 	 * ---------------------------------------------------
 	 * Begin Public Metrics Methods
 	 * ---------------------------------------------------
-	 *
+	 * 
 	 * savePrivate() : Saves (String)dataID to privateMetrics HashMap.
 	 */
-    public boolean savePrivate(String dataID, Object dataKey, Object dataValue)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+	public boolean savePrivate(String dataID, Object dataKey, Object dataValue)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
 
-        if(privateMetrics.containsKey(dataID))
-        {
-            privateMetrics.get(dataID).put(dataKey, dataValue);
-            return true;
-        }
-        else
-        {
-            privateMetrics.put(dataID, new HashMap<Object, Object>());
-            privateMetrics.get(dataID).put(dataKey, dataValue);
-            return true;
-        }
-    }
+		if(privateMetrics.containsKey(dataID))
+		{
+			privateMetrics.get(dataID).put(dataKey, dataValue);
+			return true;
+		}
+		else
+		{
+			privateMetrics.put(dataID, new HashMap<Object, Object>());
+			privateMetrics.get(dataID).put(dataKey, dataValue);
+			return true;
+		}
+	}
 
-    /*
-     * removePrivate() : Removes (String)dataID from privateMetrics HashMap.
-     */
-    public boolean removePrivate(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+	/*
+	 * removePrivate() : Removes (String)dataID from privateMetrics HashMap.
+	 */
+	public boolean removePrivate(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
 
-        if(privateMetrics.containsKey(dataID))
-        {
-            privateMetrics.get(dataID).remove(dataKey);
-            return true;
-        }
-        else return false;
-    }
+		if(privateMetrics.containsKey(dataID))
+		{
+			privateMetrics.get(dataID).remove(dataKey);
+			return true;
+		}
+		else return false;
+	}
 
-    /*
-     * hasPrivate() : Returns true/false according to if (Object)dataKey exists for (String)dataID.
-     */
-    public boolean hasPrivate(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+	/*
+	 * hasPrivate() : Returns true/false according to if (Object)dataKey exists for (String)dataID.
+	 */
+	public boolean hasPrivate(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
 
-        return privateMetrics.containsKey(dataID) && privateMetrics.get(dataID).get(dataKey) != null;
-    }
+		return privateMetrics.containsKey(dataID) && privateMetrics.get(dataID).get(dataKey) != null;
+	}
 
-    /*
-     * getPrivate() : Returns (Object)dataValue for (String)dataID's (Object)dataKey.
-     */
-    public Object getPrivate(String dataID, Object dataKey)
-    {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+	/*
+	 * getPrivate() : Returns (Object)dataValue for (String)dataID's (Object)dataKey.
+	 */
+	public Object getPrivate(String dataID, Object dataKey)
+	{
+		if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
 
-        if(privateMetrics.containsKey(dataID))
-        {
-            if(privateMetrics.get(dataID) != null) return privateMetrics.get(dataID).get(dataKey);
-            else return null;
-        }
-        else return null;
-    }
+		if(privateMetrics.containsKey(dataID))
+		{
+			if(privateMetrics.get(dataID) != null) return privateMetrics.get(dataID).get(dataKey);
+			else return null;
+		}
+		else return null;
+	}
 
-    /*
-     * getPrivateFor() : Returns the nested HashMap for (String)dataID.
-     */
-    public HashMap<Object, Object> getPrivateFor(String dataID)
-    {
-        return privateMetrics.get(dataID);
-    }
+	/*
+	 * getPrivateFor() : Returns the nested HashMap for (String)dataID.
+	 */
+	public HashMap<Object, Object> getPrivateFor(String dataID)
+	{
+		return privateMetrics.get(dataID);
+	}
 
-    /*
-     * getAllPrivate() : Returns all privateMetrics.
-     */
-    public HashMap<String, HashMap<Object, Object>> getAllPrivate()
-    {
-        return privateMetrics;
-    }
+	/*
+	 * getAllPrivate() : Returns all privateMetrics.
+	 */
+	public HashMap<String, HashMap<Object, Object>> getAllPrivate()
+	{
+		return privateMetrics;
+	}
 }

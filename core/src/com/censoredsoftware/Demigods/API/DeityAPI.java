@@ -90,16 +90,15 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Map.Entry;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Map.Entry;
 
 public class DeityAPI
 {

@@ -95,9 +95,12 @@ import com.censoredsoftware.Demigods.Libraries.Objects.Task;
 
 public abstract class TaskHandler
 {
-    public void create(PlayerCharacter character) {}
+	public void create(PlayerCharacter character)
+	{}
 
-    public void onInvoke() {}
+	public void onInvoke()
+	{}
 
-    public void onComplete(Task task) {}
+	public void onComplete(Task task)
+	{}
 }

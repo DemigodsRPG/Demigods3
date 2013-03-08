@@ -90,10 +90,10 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+
+import java.io.Serializable;
 
 public class SerialLocation implements Serializable
 {
@@ -101,7 +101,7 @@ public class SerialLocation implements Serializable
 	protected final double X, Y, Z;
 	protected final float pitch, yaw;
 	protected final String world;
-    protected String name;
+	protected String name;
 
 	public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw)
 	{
@@ -112,18 +112,19 @@ public class SerialLocation implements Serializable
 		this.pitch = pitch;
 		this.yaw = yaw;
 	}
-    public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
-    {
-        this.world = world;
-        this.X = X;
-        this.Y = Y;
-        this.Z = Z;
-        this.pitch = pitch;
-        this.yaw = yaw;
-        this.name = name.toUpperCase();
-    }
 
-    public SerialLocation(Location location)
+	public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
+	{
+		this.world = world;
+		this.X = X;
+		this.Y = Y;
+		this.Z = Z;
+		this.pitch = pitch;
+		this.yaw = yaw;
+		this.name = name.toUpperCase();
+	}
+
+	public SerialLocation(Location location)
 	{
 		this.world = location.getWorld().getName();
 		this.X = location.getX();
@@ -132,31 +133,32 @@ public class SerialLocation implements Serializable
 		this.pitch = location.getPitch();
 		this.yaw = location.getYaw();
 	}
-    public SerialLocation(Location location, String name)
-    {
-        this.world = location.getWorld().getName();
-        this.X = location.getX();
-        this.Y = location.getY();
-        this.Z = location.getZ();
-        this.pitch = location.getPitch();
-        this.yaw = location.getYaw();
-        this.name = name.toUpperCase();
-    }
 
-    public boolean hasName()
-    {
-        return name != null;
-    }
+	public SerialLocation(Location location, String name)
+	{
+		this.world = location.getWorld().getName();
+		this.X = location.getX();
+		this.Y = location.getY();
+		this.Z = location.getZ();
+		this.pitch = location.getPitch();
+		this.yaw = location.getYaw();
+		this.name = name.toUpperCase();
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public boolean hasName()
+	{
+		return name != null;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name.toUpperCase();
-    }
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name.toUpperCase();
+	}
 
 	public Location unserialize()
 	{

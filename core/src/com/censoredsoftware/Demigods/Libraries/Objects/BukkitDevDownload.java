@@ -5,19 +5,17 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Demigods.Demigods;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class BukkitDevDownload
 {

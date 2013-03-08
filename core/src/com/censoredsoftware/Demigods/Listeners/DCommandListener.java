@@ -90,14 +90,13 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import com.censoredsoftware.Demigods.Demigods;
 
 public class DCommandListener implements Listener
 {
@@ -127,7 +126,7 @@ public class DCommandListener implements Listener
 		{
 			if(API.deity.invokeDeityCommand(player, args))
 			{
-                API.misc.info(event.getPlayer().getName() + " used the command: /" + message);
+				API.misc.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
 			}
 		}
