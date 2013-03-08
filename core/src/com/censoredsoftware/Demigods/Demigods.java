@@ -100,7 +100,6 @@ import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -136,6 +135,7 @@ public class Demigods extends JavaPlugin
 	public InstanceAPI instance = null;
 	public InvAPI inventory = null;
 	public ItemAPI item = null;
+    public MetricsAPI metrics = null;
 	public MiscAPI misc = null;
 	public ObjAPI object = null;
 	public PlayerAPI player = null;
@@ -168,6 +168,7 @@ public class Demigods extends JavaPlugin
 		deity = new DeityAPI();
 		inventory = new InvAPI();
 		item = new ItemAPI();
+        metrics = new MetricsAPI();
 		misc = new MiscAPI();
 		object = new ObjAPI();
 		player = new PlayerAPI();
