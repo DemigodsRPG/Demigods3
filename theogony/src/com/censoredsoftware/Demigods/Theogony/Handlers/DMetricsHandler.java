@@ -92,6 +92,7 @@ package com.censoredsoftware.Demigods.Theogony.Handlers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -112,131 +113,63 @@ public class DMetricsHandler
 		instance = plugin;
 	}
 
-	public static void allianceStatsPastWeek()
+	public static void report()
 	{
 		try
 		{
 			Metrics metrics = new Metrics(instance);
 
-			// New Graph
-			Graph graph = metrics.createGraph("Alliances for the Past Week");
+            for(String metric : API.metrics.getAllPublic().keySet())
+            {
+                // New Graph
+                Graph graph = metrics.createGraph(metric);
 
-			// Alliance List
-			ArrayList<String> allianceList = new ArrayList<String>();
-			for(String player : API.data.getAllPlayers().keySet())
-			{
-				String alliance;
-				OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(player);
-				if(API.data.getPlayerData(offlinePlayer, "alliance") != null && API.data.getPlayerData(offlinePlayer, "alliance") != "null")
-				{
-					alliance = API.data.getPlayerData(offlinePlayer, "alliance").toString();
-					if(allianceList.contains(alliance)) continue;
-					allianceList.add(alliance);
-				}
-				else
-				{
-					alliance = "mortal";
-					if(allianceList.contains(alliance)) continue;
-					allianceList.add(alliance);
-				}
-			}
+                for(Map.Entry entry : API.metrics.getPublicFor(metric).entrySet())
+                {
+                    Object key = entry.getKey();
+                    Object value = entry.getValue();
 
-			for(final String ALLIANCE : allianceList)
-			{
-				// Better looking name for the graph.
-				String graphName = ALLIANCE.substring(0, 1).toUpperCase() + ALLIANCE.substring(1) + "s";
+                    String plotter = key.toString();
 
-				graph.addPlotter(new Metrics.Plotter(graphName)
-				{
-					@Override
-					public int getValue()
-					{
-						int numAlliance;
-						ArrayList<String> allianceMembers = new ArrayList<String>();
-
-						if(API.character.getImmortalList() == null) numAlliance = 0;
-						else
-						{
-							for(PlayerCharacter character : API.character.getImmortalList())
-							{
-								if(character.getAlliance().equalsIgnoreCase(ALLIANCE))
-								{
-									OfflinePlayer player = API.character.getOwner(character.getID());
-									if(API.data.hasPlayerData(player, "player_lastlogin"))
-									{
-										if((Long.decode(API.data.getPlayerData(player, "player_lastlogin").toString())) < System.currentTimeMillis() - 604800000) continue;
-									}
-									allianceMembers.add(character.getName());
-								}
-							}
-							numAlliance = allianceMembers.size();
-						}
-						return numAlliance;
-					}
-				});
-			}
-
-			metrics.start();
-		}
-		catch(IOException e)
-		{
-			API.misc.severe(e.getMessage());
-		}
-	}
-
-	public static void allianceStatsAllTime()
-	{
-		try
-		{
-			Metrics metrics = new Metrics(instance);
-
-			// New Graph
-			Graph graph = metrics.createGraph("Alliances for All Time");
-
-			// Alliance List
-			ArrayList<String> allianceList = new ArrayList<String>();
-			for(String player : API.data.getAllPlayers().keySet())
-			{
-				String alliance;
-				OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(player);
-
-				if(API.data.getPlayerData(offlinePlayer, "alliance") != null)
-				{
-					alliance = API.data.getPlayerData(offlinePlayer, "alliance").toString();
-					if(allianceList.contains(alliance)) continue;
-					allianceList.add(alliance);
-				}
-			}
-
-			for(final String ALLIANCE : allianceList)
-			{
-				// Better looking name for the graph.
-				String graphName = ALLIANCE.substring(0, 1).toUpperCase() + ALLIANCE.substring(1) + "s";
-
-				graph.addPlotter(new Metrics.Plotter(graphName)
-				{
-					@Override
-					public int getValue()
-					{
-						int numAlliance;
-						ArrayList<String> allianceMembers = new ArrayList<String>();
-
-						if(API.character.getImmortalList() == null) numAlliance = 0;
-						else
-						{
-							for(PlayerCharacter character : API.character.getImmortalList())
-							{
-								if(character.getAlliance().equalsIgnoreCase(ALLIANCE))
-								{
-									allianceMembers.add(character.getName());
-								}
-							}
-							numAlliance = allianceMembers.size();
-						}
-						return numAlliance;
-					}
-				});
-			}
+                    if(value instanceof ArrayList)
+                    {
+                        final ArrayList<Object> valueList = (ArrayList<Object>) value;
+                        graph.addPlotter(new Metrics.Plotter(plotter)
+                        {
+                            @Override
+                            public int getValue()
+                            {
+                                return valueList.size();
+                            }
+                        });
+                    }
+                    else if(value instanceof Boolean)
+                    {
+                        final boolean booleanValue = API.object.toBoolean(value);
+                        graph.addPlotter(new Metrics.Plotter(plotter)
+                        {
+                            @Override
+                            public int getValue()
+                            {
+                                if(booleanValue) return 1;
+                                else return 0;
+                            }
+                        });
+                    }
+                    else if(value instanceof Integer || value instanceof Double || value instanceof Long)
+                    {
+                        final int intValue = API.object.toInteger(value);
+                        graph.addPlotter(new Metrics.Plotter(plotter)
+                        {
+                            @Override
+                            public int getValue()
+                            {
+                                return intValue;
+                            }
+                        });
+                    }
+                }
+            }
 
 			metrics.start();
 		}

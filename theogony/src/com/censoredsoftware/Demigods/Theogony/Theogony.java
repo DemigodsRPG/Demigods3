@@ -189,8 +189,7 @@ public class Theogony extends DemigodsPlugin
 	private void loadMetrics()
 	{
 		new DMetricsHandler(this);
-		DMetricsHandler.allianceStatsPastWeek();
-		DMetricsHandler.allianceStatsAllTime();
+		DMetricsHandler.report();
 	}
 
 	/*
