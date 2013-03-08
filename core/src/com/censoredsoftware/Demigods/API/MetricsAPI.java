@@ -111,7 +111,7 @@ public class MetricsAPI
 	 */
     public boolean savePublic(String dataID, Object dataKey, Object dataValue)
     {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
         if(publicMetrics.containsKey(dataID))
         {
@@ -131,7 +131,7 @@ public class MetricsAPI
      */
     public boolean removePublic(String dataID, Object dataKey)
     {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
         if(publicMetrics.containsKey(dataID))
         {
@@ -146,7 +146,7 @@ public class MetricsAPI
      */
     public boolean hasPublic(String dataID, Object dataKey)
     {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
         return publicMetrics.containsKey(dataID) && publicMetrics.get(dataID).get(dataKey) != null;
     }
@@ -156,7 +156,7 @@ public class MetricsAPI
      */
     public Object getPublic(String dataID, Object dataKey)
     {
-        if(dataKey instanceof String) dataKey = ((String) dataKey).toLowerCase();
+        if(dataKey instanceof String) dataKey = ((String) dataKey).toUpperCase();
 
         if(publicMetrics.containsKey(dataID))
         {
