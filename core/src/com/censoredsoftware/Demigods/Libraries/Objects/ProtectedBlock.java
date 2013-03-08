@@ -90,12 +90,11 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import java.io.Serializable;
-
+import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.Serializable;
 
 public class ProtectedBlock implements Serializable
 {

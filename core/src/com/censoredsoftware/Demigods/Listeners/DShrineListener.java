@@ -90,6 +90,12 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
+import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -104,13 +110,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 
 public class DShrineListener implements Listener
 {

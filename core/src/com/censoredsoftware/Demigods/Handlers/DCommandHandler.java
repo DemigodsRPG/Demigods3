@@ -90,12 +90,10 @@
 
 package com.censoredsoftware.Demigods.Handlers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
@@ -108,10 +106,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class DCommandHandler implements CommandExecutor
 {
@@ -143,7 +142,7 @@ public class DCommandHandler implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-        if(API.player.getCurrentChar(player) == null) return true;
+		if(API.player.getCurrentChar(player) == null) return true;
 
 		// Create lightning weapon
 		List<String> lore = new ArrayList<String>();

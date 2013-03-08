@@ -90,9 +90,11 @@
 
 package com.censoredsoftware.Demigods.Theogony.Gods;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -109,10 +111,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
 
 public class Poseidon_deity implements Listener
 {
@@ -248,10 +247,10 @@ public class Poseidon_deity implements Listener
 			Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 			Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 			if(player.isSneaking())
-            {
-                new Task1_task().create(API.player.getCurrentChar(player));
-                player.setVelocity(victor);
-            }
+			{
+				new Task1_task().create(API.player.getCurrentChar(player));
+				player.setVelocity(victor);
+			}
 		}
 	}
 

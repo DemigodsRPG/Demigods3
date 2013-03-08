@@ -90,17 +90,16 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import org.bukkit.Location;
-
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import org.bukkit.Location;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 @SuppressWarnings("ALL")
 public class BattleAPI

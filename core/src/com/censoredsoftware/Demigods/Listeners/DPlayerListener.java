@@ -90,6 +90,8 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -99,9 +101,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DPlayerListener implements Listener
 {
@@ -173,7 +172,9 @@ public class DPlayerListener implements Listener
 		 */
 	}
 
-	/* TODO
+	/*
+	 * TODO
+	 * 
 	 * @EventHandler(priority = EventPriority.HIGHEST)
 	 * public void onPlayerCraft(CraftItemEvent event)
 	 * {

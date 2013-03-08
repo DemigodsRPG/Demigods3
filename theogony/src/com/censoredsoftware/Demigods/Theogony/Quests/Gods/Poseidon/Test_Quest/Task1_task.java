@@ -90,11 +90,8 @@
 
 package com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.TaskHandler;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Task;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -108,77 +105,81 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Handlers.Abstract.TaskHandler;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Libraries.Objects.Task;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Task1_task extends TaskHandler implements Listener
 {
-    private static final Demigods API = Theogony.INSTANCE;
-    private static final String INVOKEID = "Gods.Poseidon.Test_Quest.Task1";
+	private static final Demigods API = Theogony.INSTANCE;
+	private static final String INVOKEID = "Gods.Poseidon.Test_Quest.Task1";
 
-    @Override
-    public void create(PlayerCharacter character)
-    {
-        if(!API.task.taskExists("Test Quest", 0, character))
-        {
-            int taskID = API.object.generateInt(5);
-            ArrayList<String> description = new ArrayList<String>();
-            description.add(ChatColor.YELLOW + " This is a test task.");
-            description.add(ChatColor.YELLOW + " Click anywhere to complete this quest!");
+	@Override
+	public void create(PlayerCharacter character)
+	{
+		if(!API.task.taskExists("Test Quest", 0, character))
+		{
+			int taskID = API.object.generateInt(5);
+			ArrayList<String> description = new ArrayList<String>();
+			description.add(ChatColor.YELLOW + " This is a test task.");
+			description.add(ChatColor.YELLOW + " Click anywhere to complete this quest!");
 
-            Task task1 = new Task(character, description, "Test Quest", 0, true, true, API.plugin.getPlugin("Theogony"), "com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task", taskID, INVOKEID);
-            if(character.getOwner().isOnline())
-            {
-                API.misc.taggedMessage(character.getOwner().getPlayer(), task1.getQuest());
-                for(String out : task1.getDescription())
-                {
-                    character.getOwner().getPlayer().sendMessage(out);
-                }
-            }
+			Task task1 = new Task(character, description, "Test Quest", 0, true, true, API.plugin.getPlugin("Theogony"), "com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task", taskID, INVOKEID);
+			if(character.getOwner().isOnline())
+			{
+				API.misc.taggedMessage(character.getOwner().getPlayer(), task1.getQuest());
+				for(String out : task1.getDescription())
+				{
+					character.getOwner().getPlayer().sendMessage(out);
+				}
+			}
 
-            onInvoke();
-        }
-    }
+			onInvoke();
+		}
+	}
 
-    @Override
-    public void onInvoke()
-    {
-        API.getServer().getPluginManager().registerEvents(this, API);
-    }
+	@Override
+	public void onInvoke()
+	{
+		API.getServer().getPluginManager().registerEvents(this, API);
+	}
 
-    @Override
-    public void onComplete(Task task)
-    {
-        Player player = task.getCharacter().getOwner().getPlayer();
-        API.misc.taggedMessage(player, task.getQuest());
-        player.sendMessage(ChatColor.YELLOW + " Quest complete!");
-        task.setActive(false);
-        HandlerList.unregisterAll(this);
-    }
+	@Override
+	public void onComplete(Task task)
+	{
+		Player player = task.getCharacter().getOwner().getPlayer();
+		API.misc.taggedMessage(player, task.getQuest());
+		player.sendMessage(ChatColor.YELLOW + " Quest complete!");
+		task.setActive(false);
+		HandlerList.unregisterAll(this);
+	}
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteract(PlayerInteractEvent event)
-    {
-        Player player = event.getPlayer();
-        PlayerCharacter character = API.player.getCurrentChar(player);
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerInteract(PlayerInteractEvent event)
+	{
+		Player player = event.getPlayer();
+		PlayerCharacter character = API.player.getCurrentChar(player);
 
-        ArrayList<Task> tasks = API.task.getTasks(character);
+		ArrayList<Task> tasks = API.task.getTasks(character);
 
-        if(tasks.isEmpty()) return;
+		if(tasks.isEmpty()) return;
 
-        for(Task task : tasks)
-        {
-            if(task.getInvokeID().equals(INVOKEID))
-            {
-                Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
-                FireworkMeta fireworkmeta = firework.getFireworkMeta();
-                FireworkEffect.Type type = FireworkEffect.Type.BALL_LARGE;
-                FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
-                fireworkmeta.addEffect(effect);
-                fireworkmeta.setPower(2);
-                firework.setFireworkMeta(fireworkmeta);
+		for(Task task : tasks)
+		{
+			if(task.getInvokeID().equals(INVOKEID))
+			{
+				Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+				FireworkMeta fireworkmeta = firework.getFireworkMeta();
+				FireworkEffect.Type type = FireworkEffect.Type.BALL_LARGE;
+				FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.AQUA).withFade(Color.FUCHSIA).with(type).trail(true).build();
+				fireworkmeta.addEffect(effect);
+				fireworkmeta.setPower(2);
+				firework.setFireworkMeta(fireworkmeta);
 
-                onComplete(task);
-            }
-        }
-    }
+				onComplete(task);
+			}
+		}
+	}
 }

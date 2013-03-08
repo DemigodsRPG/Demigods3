@@ -90,6 +90,11 @@
 
 package com.censoredsoftware.Demigods.Handlers;
 
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -99,12 +104,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DMetricsEventCreator implements Listener
 {
@@ -117,14 +116,14 @@ public class DMetricsEventCreator implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-            PlayerCharacter playerChar = null;
-            if(API.player.getCurrentChar(player) != null) playerChar = API.player.getCurrentChar(player);
+			PlayerCharacter playerChar = null;
+			if(API.player.getCurrentChar(player) != null) playerChar = API.player.getCurrentChar(player);
 
-            if(playerChar != null)
-            {
-                if(playerChar.getKillstreak() > 3) API.misc.serverMsg(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
-                playerChar.setKillstreak(0);
-            }
+			if(playerChar != null)
+			{
+				if(playerChar.getKillstreak() > 3) API.misc.serverMsg(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
+				playerChar.setKillstreak(0);
+			}
 
 			EntityDamageEvent damageEvent = player.getLastDamageCause();
 
@@ -137,7 +136,7 @@ public class DMetricsEventCreator implements Listener
 				{
 					Player attacker = (Player) damager;
 					PlayerCharacter attackChar = null;
-                    if(API.player.getCurrentChar(attacker) != null) attackChar = API.player.getCurrentChar(attacker);
+					if(API.player.getCurrentChar(attacker) != null) attackChar = API.player.getCurrentChar(attacker);
 					if(API.player.areAllied(attacker, player))
 					{
 						API.misc.callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, API.player.getCurrentAlliance(player)));
@@ -147,18 +146,18 @@ public class DMetricsEventCreator implements Listener
 						API.misc.callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 					}
 
-                    if(attackChar != null)
-                    {
-                        // Killstreak
-                        int killstreak = attackChar.getKillstreak();
-                        attackChar.setKillstreak(killstreak + 1);
-                        if(attackChar.getKillstreak() > 2)
-                        {
-                            API.misc.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
-                        }
+					if(attackChar != null)
+					{
+						// Killstreak
+						int killstreak = attackChar.getKillstreak();
+						attackChar.setKillstreak(killstreak + 1);
+						if(attackChar.getKillstreak() > 2)
+						{
+							API.misc.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
+						}
 
-                        // TODO Dominating
-                    }
+						// TODO Dominating
+					}
 				}
 			}
 		}

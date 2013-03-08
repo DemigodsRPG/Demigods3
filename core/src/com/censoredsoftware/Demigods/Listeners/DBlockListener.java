@@ -90,9 +90,15 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -108,15 +114,8 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBlockListener implements Listener
 {
@@ -309,7 +308,7 @@ public class DBlockListener implements Listener
 		if(API.zone.enterZoneAltar(to, from) && !API.warp.hasWarp(API.zone.zoneAltar(to), API.player.getCurrentChar(player)))
 		{
 			player.sendMessage(ChatColor.GRAY + "You have entered an undocumented Altar.");
-            player.sendMessage(ChatColor.GRAY + "You should set a warp at it!");
+			player.sendMessage(ChatColor.GRAY + "You should set a warp at it!");
 			return;
 		}
 	}
