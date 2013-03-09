@@ -95,7 +95,6 @@ import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Theogony.Theogony;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -103,11 +102,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -253,7 +248,7 @@ public class Prometheus_deity implements Listener
 		}
 		else
 		{
-			character.toggleAbility(FIREBALL_NAME, false);
+			character.toggleAbility(FIREBALL_NAME, true);
 			player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is now active.");
 		}
 	}
