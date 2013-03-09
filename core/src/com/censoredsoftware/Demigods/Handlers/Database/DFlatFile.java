@@ -104,7 +104,7 @@ public class DFlatFile
 {
 	private static final Demigods API = Demigods.INSTANCE;
 	static final String path = "plugins/Demigods/data/";
-	static File DemigodsDir, PlayerDir, CharacterDir, BattleDir, QuestDir, BlockDir;
+	static File DemigodsDir, PlayerDir, CharacterDir, BattleDir, QuestDir, BlockDir, MetricsDir, PublicMetricsDir, PrivateMetricsDir;
 
 	public static void start()
 	{
@@ -149,6 +149,17 @@ public class DFlatFile
 			BlockDir.mkdirs();
 			API.misc.info("New Divine Block data save created.");
 		}
+
+        MetricsDir = new File(path + "metrics/");
+        PublicMetricsDir = new File(path + "metrics/public");
+        PrivateMetricsDir = new File(path + "metrics/private");
+        if(!MetricsDir.exists())
+        {
+            MetricsDir.mkdirs();
+            API.misc.info("New Metrics data save created.");
+        }
+        if(!PublicMetricsDir.exists()) PublicMetricsDir.mkdirs();
+        if(!PrivateMetricsDir.exists()) PrivateMetricsDir.mkdirs();
 	}
 
 	/*
@@ -174,6 +185,8 @@ public class DFlatFile
 				file.delete();
 			for(File file : BattleDir.listFiles())
 				file.delete();
+            for(File file : MetricsDir.listFiles())
+                file.delete();
 
 			// Start the timer
 			long startTimer = System.currentTimeMillis();
@@ -183,12 +196,13 @@ public class DFlatFile
 			int battleCount = saveBattles();
 			int questCount = saveQuests();
 			int blockCount = saveBlocks();
+            int metricCount = saveMetrics();
 
 			// Stop the timer
 			long stopTimer = System.currentTimeMillis();
 			double totalTime = (double) (stopTimer - startTimer);
 
-			API.misc.info(playerCount + " players, " + battleCount + " battles, " + questCount + " quests, and " + blockCount + " blocks saved in " + (totalTime / 1000) + " seconds.");
+			API.misc.info(playerCount + " players, " + battleCount + " battles, " + questCount + " quests, " + metricCount + " metrics, and " + blockCount + " blocks saved in " + (totalTime / 1000) + " seconds.");
 
 			return true;
 		}
@@ -398,6 +412,47 @@ public class DFlatFile
 		return count;
 	}
 
+    public static int saveMetrics()
+    {
+        start();
+
+        int count = 0;
+
+        try
+        {
+            for(String metric : API.metrics.getAllPublic().keySet())
+            {
+                count++;
+
+                HashMap<Object, Object> data = API.metrics.getPublicFor(metric);
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "public" + File.separator + metric + ".demi"));
+                oos.writeObject(data);
+                oos.flush();
+                oos.close();
+            }
+
+            for(String metric : API.metrics.getAllPrivate().keySet())
+            {
+                if(metric.startsWith("temp_")) continue;
+
+                count++;
+
+                HashMap<Object, Object> data = API.metrics.getPrivateFor(metric);
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "private" + File.separator + metric + ".demi"));
+                oos.writeObject(data);
+                oos.flush();
+                oos.close();
+            }
+        }
+        catch(Exception e)
+        {
+            API.misc.severe("Something went wrong while saving Metrics.");
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
 	/*
 	 * load() : Loads all Flat File data to HashMaps.
 	 */
@@ -413,6 +468,7 @@ public class DFlatFile
 		loadBattles(true);
 		loadQuests(true);
 		loadBlocks(true);
+        loadMetrics(true);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -646,4 +702,68 @@ public class DFlatFile
 			}
 		}
 	}
+
+    @SuppressWarnings("unchecked")
+    public static void loadMetrics(boolean msgBool)
+    {
+        start();
+
+        File[] publicFileList = PublicMetricsDir.listFiles();
+        File[] privateFileList = PrivateMetricsDir.listFiles();
+
+        if(publicFileList != null)
+        {
+            for(File element : publicFileList)
+            {
+                String load = element.getName();
+                if(load.endsWith(".demi"))
+                {
+                    load = load.substring(0, load.length() - 5);
+
+                    String stringLoad = load.toString();
+
+                    try
+                    {
+                        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+                        Object result = ois.readObject();
+                        API.metrics.getAllPublic().put(stringLoad, (HashMap<Object, Object>) result);
+                        ois.close();
+                    }
+                    catch(Exception error)
+                    {
+                        API.misc.severe("Could not load metric: " + load);
+                        error.printStackTrace();
+                        API.misc.severe("End stack trace for " + load);
+                    }
+                }
+            }
+        }
+        if(privateFileList != null)
+        {
+            for(File element : privateFileList)
+            {
+                String load = element.getName();
+                if(load.endsWith(".demi"))
+                {
+                    load = load.substring(0, load.length() - 5);
+
+                    String stringLoad = load.toString();
+
+                    try
+                    {
+                        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+                        Object result = ois.readObject();
+                        API.metrics.getAllPrivate().put(stringLoad, (HashMap<Object, Object>) result);
+                        ois.close();
+                    }
+                    catch(Exception error)
+                    {
+                        API.misc.severe("Could not load metric: " + load);
+                        error.printStackTrace();
+                        API.misc.severe("End stack trace for " + load);
+                    }
+                }
+            }
+        }
+    }
 }
