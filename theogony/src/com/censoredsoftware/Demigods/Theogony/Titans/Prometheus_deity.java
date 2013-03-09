@@ -119,7 +119,7 @@ public class Prometheus_deity implements Listener
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Prometheus";
 	private static final String DEITYALLIANCE = "Titan";
-	private static final ChatColor DEITYCOLOR = ChatColor.DARK_PURPLE;
+	private static final ChatColor DEITYCOLOR = ChatColor.GOLD;
 
 	/*
 	 * Set deity-specific ability variable(s).
