@@ -362,7 +362,7 @@ public class Cronus_deity implements Listener
 		if(target.getEntityId() != player.getEntityId())
 		{
 			target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, strength));
-			player.sendMessage(ChatColor.YELLOW + target.getName() + " has been slowed.");
+			player.sendMessage(ChatColor.YELLOW + API.player.getCurrentChar(target).getName() + " has been slowed.");
 			target.sendMessage(ChatColor.RED + "You have been slowed for " + duration + " seconds.");
 		}
 	}
