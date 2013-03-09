@@ -88,69 +88,65 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Listeners;
+package com.censoredsoftware.Demigods.Events.Ability;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
-import java.util.ArrayList;
-
-public class DAbilityListener implements Listener
+/*
+ * Represents an event that is called when an ability is executed.
+ */
+public class AbilityTargetEvent extends Event implements Cancellable
 {
-	public static Demigods API = Demigods.INSTANCE;
+	private static final HandlerList handlers = new HandlerList();
+	protected final PlayerCharacter character;
+    protected final LivingEntity target;
+	protected boolean cancelled = false;
 
-	@EventHandler(priority = EventPriority.LOWEST)
-	public static void onAbility(AbilityEvent event)
+	public AbilityTargetEvent(final PlayerCharacter character, final LivingEntity target)
 	{
-		// Get variables
-		PlayerCharacter character = event.getCharacter();
-		AbilityType type = event.getType();
-		int cost = event.getCost();
-		int power = character.getPower(type);
-
-		// Does this ability type gain power from being used?
-		switch(type)
-		{
-			case OFFENSE:
-				break; // Yes
-			case DEFENSE:
-				break; // Yes
-			case STEALTH:
-				return; // No
-			case SUPPORT:
-				return; // No
-			case PASSIVE:
-				return; // No
-		}
-
-		int increase = cost / power;
-		if(increase < 1) increase = 1;
-
-		// Set the new power.
-		character.setPower(type, power + increase); // TODO
+		this.character = character;
+		this.target = target;
 	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public static void onAbilityTarget(AbilityTargetEvent event)
+	/*
+	 * getCharacter() : Gets the character involved.
+	 */
+	public PlayerCharacter getCharacter()
+	{
+		return this.character;
+	}
+    /*
+     * getTarget() : Gets the target involved.
+     */
+    public LivingEntity getTarget()
     {
-        if(!(event.getTarget() instanceof Player)) return;
-
-        PlayerCharacter hitChar = API.player.getCurrentChar((Player) event.getTarget());
-        PlayerCharacter hittingChar = event.getCharacter();
-
-        API.battle.battleProcess(hitChar, hittingChar);
+        return this.target;
     }
+
+	@Override
+	public HandlerList getHandlers()
+	{
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList()
+	{
+		return handlers;
+	}
+
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
+	}
 }
