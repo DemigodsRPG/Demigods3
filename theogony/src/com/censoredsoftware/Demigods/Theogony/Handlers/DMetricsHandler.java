@@ -125,7 +125,7 @@ public class DMetricsHandler
 					Object key = entry.getKey();
 					Object value = entry.getValue();
 
-					String plotter = key.toString();
+					String plotter = key.toString().toUpperCase();
 
 					if(value instanceof ArrayList)
 					{
