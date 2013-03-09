@@ -91,11 +91,15 @@
 package com.censoredsoftware.Demigods.API;
 
 import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
+import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
+import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,4 +245,117 @@ public class BattleAPI
 			}
 		}
 	}
+
+    public void battleProcess(PlayerCharacter hitChar, PlayerCharacter hittingChar)
+    {
+        Battle battle = null;
+        Battle otherBattle = null;
+        Player hit = hitChar.getOwner().getPlayer();
+        Player hitting = hittingChar.getOwner().getPlayer();
+
+        if(isInAnyActiveBattle(hitChar))
+        {
+            battle = getActiveBattle(hitChar);
+            if(isInAnyActiveBattle(hittingChar) && getActiveBattle(hittingChar) != battle) otherBattle = getActiveBattle(hittingChar);
+        }
+        else if(isInAnyActiveBattle(hittingChar))
+        {
+            battle = getActiveBattle(hittingChar);
+            if(isInAnyActiveBattle(hitChar) && getActiveBattle(hitChar) != battle) otherBattle = getActiveBattle(hitChar);
+        }
+        else if(isNearAnyActiveBattle(hit.getLocation()))
+        {
+            battle = getActiveBattle(hit.getLocation());
+            if(isNearAnyActiveBattle(hitting.getLocation()) && getActiveBattle(hitting.getLocation()) != battle) otherBattle = getActiveBattle(hitting.getLocation());
+        }
+        else if(isNearAnyActiveBattle(hitting.getLocation()))
+        {
+            battle = getActiveBattle(hitting.getLocation());
+            if(isNearAnyActiveBattle(hit.getLocation()) && getActiveBattle(hit.getLocation()) != battle) otherBattle = getActiveBattle(hit.getLocation());
+        }
+
+        if(battle == null)
+        {
+            Long startTime = System.currentTimeMillis();
+            int battleID = API.object.generateInt(5);
+            BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
+            API.misc.callEvent(battleEvent);
+            if(!battleEvent.isCancelled()) battle = new Battle(hittingChar, hitChar, startTime, battleID);
+        }
+        else
+        {
+            if(otherBattle == null)
+            {
+                int battleID = battle.getID();
+                BattleParticipateEvent battleEvent = new BattleParticipateEvent(battleID, hitChar, hittingChar);
+                API.misc.callEvent(battleEvent);
+                if(!battleEvent.isCancelled())
+                {
+                    battle.addCharacter(hitChar);
+                    battle.addCharacter(hittingChar);
+                    API.data.saveTimedData(battleID, "battle_active", true, 10);
+                }
+            }
+            else
+            {
+                // Set other battles to inactive
+                battle.setActive(false);
+                otherBattle.setActive(false);
+
+                BattleCombineEvent battleEvent = null;
+                int battleID = API.object.generateInt(5);
+                Battle combinedBattle = null;
+                if(battle.getStartTime() < otherBattle.getStartTime())
+                {
+                    battleEvent = new BattleCombineEvent(battleID, battle, otherBattle, System.currentTimeMillis());
+                    API.misc.callEvent(battleEvent);
+                    if(!battleEvent.isCancelled())
+                    {
+                        combinedBattle = new Battle(API.character.getChar(battle.getWhoStarted()), hitChar, battle.getStartTime(), battleID);
+                        combinedBattle.addCharacter(hittingChar);
+                    }
+                    else return;
+                }
+                else
+                {
+                    battleEvent = new BattleCombineEvent(battleID, otherBattle, battle, System.currentTimeMillis());
+                    API.misc.callEvent(battleEvent);
+                    if(!battleEvent.isCancelled())
+                    {
+                        combinedBattle = new Battle(API.character.getChar(otherBattle.getWhoStarted()), hitChar, otherBattle.getStartTime(), battleID);
+                        combinedBattle.addCharacter(hittingChar);
+                    }
+                    else return;
+                }
+
+                // Add all involved locations and characters from both other events
+                ArrayList<Integer> charIDs = new ArrayList<Integer>();
+                ArrayList<SerialLocation> locations = new ArrayList<SerialLocation>();
+
+                // Battle
+                for(int charID : battle.getCharIDs())
+                {
+                    if(!charIDs.contains(charID)) charIDs.add(charID);
+                }
+                for(SerialLocation location : battle.getLocations())
+                {
+                    if(!locations.contains(location)) locations.add(location);
+                }
+
+                // Other Battle
+                for(int charID : otherBattle.getCharIDs())
+                {
+                    if(!charIDs.contains(charID)) charIDs.add(charID);
+                }
+                for(SerialLocation location : otherBattle.getLocations())
+                {
+                    if(!locations.contains(location)) locations.add(location);
+                }
+
+                // Overwrite data in the new combined battle
+                combinedBattle.overwriteCharIDs(charIDs);
+                combinedBattle.overwriteLocations(locations);
+            }
+        }
+    }
 }
