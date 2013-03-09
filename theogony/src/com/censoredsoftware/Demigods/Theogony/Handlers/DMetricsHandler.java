@@ -173,6 +173,26 @@ public class DMetricsHandler
                 }
             });
 
+            // Total Number of Shrines
+            metrics.addCustomData(new Metrics.Plotter("Total Shrines")
+            {
+                @Override
+                public int getValue()
+                {
+                    return API.block.getAllShrines().size();
+                }
+            });
+
+            // Total Number of Altars
+            metrics.addCustomData(new Metrics.Plotter("Total Altars")
+            {
+                @Override
+                public int getValue()
+                {
+                    return API.block.getAllAltars().size();
+                }
+            });
+
             // All other Metrics
 			for(String metric : API.metrics.getAllPublic().keySet())
 			{
