@@ -92,7 +92,6 @@ package com.censoredsoftware.Demigods.Handlers.Database;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -559,16 +558,7 @@ public class DFlatFile
 					{
 						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
 						Object result = ois.readObject();
-
-                        for(Entry entry : ((HashMap<String, Object>) result).entrySet()) // TODO Only temp solution to stop random errors.
-                        {
-                            if(!(entry.getValue() instanceof PlayerCharacter)) continue;
-
-                            PlayerCharacter character = (PlayerCharacter) entry.getValue();
-
-                            API.misc.serverMsg(character.getName().toUpperCase() + ": " + character.getDeity().toLowerCase()); // TODO DEBUG
-                            if(API.deity.getAllDeities().contains(character.getDeity().toLowerCase())) API.data.getAllChars().put(intLoad, (HashMap<String, Object>) result);
-                        }
+                        API.data.getAllChars().put(intLoad, (HashMap<String, Object>) result);
 						ois.close();
 					}
 					catch(Exception error)
