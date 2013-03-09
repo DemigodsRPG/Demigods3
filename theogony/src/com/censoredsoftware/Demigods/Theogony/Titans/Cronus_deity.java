@@ -290,9 +290,10 @@ public class Cronus_deity implements Listener
 		// Define variables
 		Player player = (Player) damageEvent.getDamager();
 		Entity attacked = damageEvent.getEntity();
+        if(!(attacked instanceof LivingEntity)) return;
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
-		if(!API.ability.doAbilityPreProcess(player, attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
+		if(!API.ability.doAbilityPreProcess(player, (LivingEntity) attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
 		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
 		character.subtractFavor(CLEAVE_COST);
 
