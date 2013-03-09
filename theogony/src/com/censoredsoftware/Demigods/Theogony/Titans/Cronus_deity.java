@@ -279,7 +279,7 @@ public class Cronus_deity implements Listener
 		}
 		else
 		{
-			character.toggleAbility(CLEAVE_NAME, false);
+			character.toggleAbility(CLEAVE_NAME, true);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
 		}
 	}
