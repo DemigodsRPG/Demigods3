@@ -248,7 +248,6 @@ public class Poseidon_deity implements Listener
 			Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 			if(player.isSneaking())
 			{
-				new Task1_task().create(API.player.getCurrentChar(player));
 				player.setVelocity(victor);
 			}
 		}
