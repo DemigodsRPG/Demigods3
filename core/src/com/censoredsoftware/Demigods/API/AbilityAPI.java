@@ -93,6 +93,7 @@ package com.censoredsoftware.Demigods.API;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -122,7 +123,7 @@ public class AbilityAPI
 		return doAbilityPreProcess(player, cost) && event(name, character, cost, type);
 	}
 
-	public boolean doAbilityPreProcess(Player player, Entity target, String name, int cost, AbilityType type)
+	public boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityType type)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
@@ -142,6 +143,7 @@ public class AbilityAPI
 			{
 				if(API.player.areAllied(player, (Player) target)) return false;
 			}
+            API.misc.callEvent(new AbilityTargetEvent(character, target));
 			return true;
 		}
 		return false;
