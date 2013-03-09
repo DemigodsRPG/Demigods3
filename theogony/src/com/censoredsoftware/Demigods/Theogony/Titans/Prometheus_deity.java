@@ -258,8 +258,7 @@ public class Prometheus_deity implements Listener
 	{
         // Define variables
         PlayerCharacter character = API.player.getCurrentChar(player);
-        Player target = null;
-        if(API.ability.autoTarget(player) instanceof Player) target = (Player) API.ability.autoTarget(player);
+        LivingEntity target = API.ability.autoTarget(player);
 
         if(!API.ability.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
         FIREBALL_TIME = System.currentTimeMillis() + FIREBALL_DELAY;
@@ -332,8 +331,7 @@ public class Prometheus_deity implements Listener
         int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
         if(diameter > 12) diameter = 12;
 
-		Player target = null;
-		if(API.ability.autoTarget(player) instanceof Player) target = (Player) API.ability.autoTarget(player);
+		LivingEntity target = API.ability.autoTarget(player);
 
 		if(!API.ability.doAbilityPreProcess(player, target, "blaze", BLAZE_COST, AbilityType.OFFENSE)) return;
 		BLAZE_TIME = System.currentTimeMillis() + BLAZE_DELAY;
