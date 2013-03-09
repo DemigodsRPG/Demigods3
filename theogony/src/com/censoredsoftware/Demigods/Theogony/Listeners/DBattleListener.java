@@ -103,6 +103,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import java.util.ArrayList;
 
@@ -145,6 +146,18 @@ public class DBattleListener implements Listener
 			charNames.add(API.character.getChar(charID).getName());
 		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle involved: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
 
+        if(API.metrics.hasPublic("recent battles", "battles"))
+        {
+            ArrayList<Battle> battles = (ArrayList<Battle>) API.metrics.getPublic("recent battles", "battles");
+            battles.add(battle);
+            API.metrics.savePublic("recent battles", "battles", battles);
+        }
+        else
+        {
+            ArrayList<Battle> battles = new ArrayList<Battle>();
+            battles.add(battle);
+            API.metrics.savePublic("recent battles", "battles", battles);
+        }
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
