@@ -112,6 +112,19 @@ public class DeityAPI
 		return API.data.getPluginData("temp_deity_classes", deity).toString();
 	}
 
+    /*
+     * getAllDeities() : Returns a list off all the loaded Deities.
+     */
+    public ArrayList<String> getAllDeities()
+    {
+        ArrayList<String> deities = new ArrayList<String>();
+        for(String deity : API.data.getAllPluginData().get("temp_deity_classes").keySet())
+        {
+            if(!deities.contains(deity)) deities.add(deity);
+        }
+        return deities;
+    }
+
 	/*
 	 * getClassLoader() : Returns the ClassLoader for the deity.
 	 */
@@ -294,5 +307,4 @@ public class DeityAPI
 
 		return toReturn;
 	}
-
 }

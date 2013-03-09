@@ -115,6 +115,65 @@ public class DMetricsHandler
 		{
 			Metrics metrics = new Metrics(instance);
 
+            // Number of Currently Active Battles
+            metrics.addCustomData(new Metrics.Plotter("Ongoing Battles")
+            {
+                @Override
+                public int getValue()
+                {
+                    return API.battle.getAllActiveBattles().size();
+                }
+            });
+
+            // Total Number of Battles
+            metrics.addCustomData(new Metrics.Plotter("Total Battles")
+            {
+                @Override
+                public int getValue()
+                {
+                    return API.data.getAllBattles().size();
+                }
+            });
+
+            // Characters Per Alliance
+            Graph alliances = metrics.createGraph("Characters per Alliance");
+            for(final String alliance : API.deity.getLoadedDeityAlliances())
+            {
+                alliances.addPlotter(new Metrics.Plotter(alliance)
+                {
+                    @Override
+                    public int getValue()
+                    {
+                        return API.character.getAllianceList(alliance).size();
+                    }
+                });
+            }
+
+            // Characters Per Deity
+            Graph deities = metrics.createGraph("Characters per Deity");
+            for(final String deity : API.deity.getAllDeities())
+            {
+                alliances.addPlotter(new Metrics.Plotter(deity)
+                {
+                    @Override
+                    public int getValue()
+                    {
+                        return API.character.getDeityList(deity).size();
+                    }
+                });
+            }
+
+            // Total Number of Characters
+            metrics.addCustomData(new Metrics.Plotter("Total Characters")
+            {
+                @Override
+                public int getValue()
+                {
+                    return API.data.getAllChars().size();
+                }
+            });
+
+            // All other Metrics
 			for(String metric : API.metrics.getAllPublic().keySet())
 			{
 				// New Graph
