@@ -190,6 +190,44 @@ public class CharAPI
 		else return true;
 	}
 
+    /*
+     * getDeityList() : Gets list of characters in aligned to a Deity.
+     */
+    public ArrayList<PlayerCharacter> getDeityList(String deity)
+    {
+        // Define variables
+        ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
+        for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
+        {
+            int charID = character.getKey();
+            HashMap<String, Object> data = character.getValue();
+            PlayerCharacter dataChar = getChar(charID);
+
+            if(dataChar.getDeity().equalsIgnoreCase(deity)) deityList.add(dataChar);
+        }
+
+        return deityList;
+    }
+
+    /*
+     * getAllianceList() : Gets list of characters in an alliance.
+     */
+    public ArrayList<PlayerCharacter> getAllianceList(String alliance)
+    {
+        // Define variables
+        ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
+        for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
+        {
+            int charID = character.getKey();
+            HashMap<String, Object> data = character.getValue();
+            PlayerCharacter dataChar = getChar(charID);
+
+            if(dataChar.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(dataChar);
+        }
+
+        return allianceList;
+    }
+
 	/*
 	 * getImmortalList() : Gets list of currently immortal players.
 	 */
