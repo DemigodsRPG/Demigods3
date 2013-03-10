@@ -284,27 +284,8 @@ public class DAltarListener implements Listener
 				}
 			}
 
-			// Finish Create Character
-			if(message.equalsIgnoreCase("a") || message.startsWith("confirm") && message.contains("character") && API.data.hasPlayerData(player, "temp_createchar_finalstep"))
-			{
-				clearChat(player);
-
-				finalConfirmDeity(player);
-			}
-
-			// Remove Character
-			else if(message.equals("2") || message.startsWith("remove"))
-			{
-				clearChat(player);
-
-				player.sendMessage(ChatColor.RED + " -> Removing Characters -------------------------------");
-				player.sendMessage(" ");
-				player.sendMessage(ChatColor.GRAY + "  Currently Unavailable. Use /removechar <name>");
-				player.sendMessage(" ");
-			}
-
 			// View Characters
-			else if(message.equals("3") || message.startsWith("view") && message.contains("characters"))
+			else if(message.equals("2") || message.startsWith("view") && message.contains("characters"))
 			{
 				clearChat(player);
 
@@ -314,7 +295,7 @@ public class DAltarListener implements Listener
 				viewChars(player);
 			}
 			// View Warps
-			else if(message.equals("4") || message.startsWith("view") && message.contains("warps"))
+			else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 			{
 				if(API.player.getCurrentChar(player) == null) return;
 
@@ -326,7 +307,7 @@ public class DAltarListener implements Listener
 				viewWarps(player);
 			}
 			// View Characters
-			else if(message.equals("5") || message.startsWith("view") && message.contains("invites"))
+			else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 			{
 				if(API.player.getCurrentChar(player) == null || !API.warp.hasInvites(API.player.getCurrentChar(player))) return;
 
@@ -407,20 +388,26 @@ public class DAltarListener implements Listener
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
+
+		// If they are in the process of creating a character we'll just skip them to the confirm screen
 		if(API.data.hasPlayerData(player, "temp_createchar_finalstep") && API.data.getPlayerData(player, "temp_createchar_finalstep").equals(true))
 		{
-			player.sendMessage(ChatColor.GRAY + "   [A.] " + ChatColor.GREEN + "Confirm New Character");
+			clearChat(player);
+			finalConfirmDeity(player);
+			return;
 		}
 		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
-		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.RED + "Remove Character");
-		player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.YELLOW + "View Characters");
+
+		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
+
 		if(API.player.getCurrentChar(player) != null)
 		{
-			player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.BLUE + "View Warps");
-			if(API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [5.] " + ChatColor.DARK_PURPLE + "View Invites");
+			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
+			if(API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 			player.sendMessage(" ");
 			player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
 		}
+
 		player.sendMessage(" ");
 	}
 

@@ -171,46 +171,6 @@ public class DCommandHandler implements CommandExecutor
 	}
 
 	/*
-	 * Command: "viewblocks"
-	 */
-	public static boolean viewBlocks(CommandSender sender)
-	{
-		for(Entry<String, HashMap<Integer, Object>> block : API.data.getAllBlockData().entrySet())
-		{
-			String blockID = block.getKey();
-			HashMap<Integer, Object> blockData = block.getValue();
-
-			sender.sendMessage(blockID + ": ");
-
-			for(Entry<Integer, Object> blockDataEntry : blockData.entrySet())
-			{
-				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
-			}
-		}
-		return true;
-	}
-
-	/*
-	 * Command: "viewtasks"
-	 */
-	public static boolean viewTasks(CommandSender sender)
-	{
-		for(Entry<Integer, HashMap<String, Object>> task : API.data.getAllTasks().entrySet())
-		{
-			int taskID = task.getKey();
-			HashMap<String, Object> taskData = task.getValue();
-
-			sender.sendMessage(taskID + ": ");
-
-			for(Entry<String, Object> blockDataEntry : taskData.entrySet())
-			{
-				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
-			}
-		}
-		return true;
-	}
-
-	/*
 	 * Command: "dg"
 	 */
 	public static boolean dg(CommandSender sender, String[] args)
@@ -303,7 +263,8 @@ public class DCommandHandler implements CommandExecutor
 				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a Demigod to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
-				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.GREEN + "https://github.com/Clashnia/Minecraft-Demigods");
+				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
+				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/Clashnia/Minecraft-Demigods");
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
@@ -397,10 +358,11 @@ public class DCommandHandler implements CommandExecutor
 			API.misc.taggedMessage(sender, "Admin Directory");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin check <player> <character>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin set [favor|devotion|ascensions] <player> <amount>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin add [favor|devotion|ascensions] <player> <amount>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [favor|devotion|ascensions] <player> <amount>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin remove [player|character] <name>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
 		}
 
 		if(option1 != null)
@@ -437,7 +399,7 @@ public class DCommandHandler implements CommandExecutor
 				if(option2 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You need to specify a player.");
-					sender.sendMessage("/dg admin check <player>");
+					sender.sendMessage("/dg admin check <p>");
 					return true;
 				}
 
@@ -462,12 +424,35 @@ public class DCommandHandler implements CommandExecutor
 					// TODO: Display specific character information when called for.
 				}
 			}
+			else if(option1.equalsIgnoreCase("remove"))
+			{
+				if(option2 == null || option3 == null)
+				{
+					sender.sendMessage(ChatColor.RED + "You need to be more specific with what you want to remove.");
+					return true;
+				}
+				else
+				{
+					if(option2.equalsIgnoreCase("player"))
+					{
+						// TODO: Full player data removal
+					}
+					else if(option2.equalsIgnoreCase("character"))
+					{
+						int charID = API.character.getCharByName(option3).getID();
+
+						// Remove the data
+						API.data.removeChar(charID);
+
+						sender.sendMessage(ChatColor.RED + "Character \"" + API.character.getChar(charID).getName() + "\" removed.");
+					}
+				}
+			}
 			else if(option1.equalsIgnoreCase("set"))
 			{
 				if(option2 == null || option3 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You need to specify a player and amount.");
-					sender.sendMessage("/dg admin set [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
 				else
@@ -478,7 +463,19 @@ public class DCommandHandler implements CommandExecutor
 					amount = API.object.toInteger(option4);
 				}
 
-				if(option2.equalsIgnoreCase("favor"))
+				if(option2.equalsIgnoreCase("maxfavor"))
+				{
+					// Set the favor
+					character.setMaxFavor(amount);
+
+					sender.sendMessage(ChatColor.GREEN + "Max favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
+
+					// Tell who was edited
+					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been set to " + amount + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					return true;
+				}
+				else if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
 					character.setFavor(amount);
@@ -520,13 +517,11 @@ public class DCommandHandler implements CommandExecutor
 				if(option2 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You need to be more specific.");
-					sender.sendMessage("/dg admin add [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
 				else if(option3 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
-					sender.sendMessage("/dg admin add [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
 				else
@@ -537,10 +532,22 @@ public class DCommandHandler implements CommandExecutor
 					amount = API.object.toInteger(option4);
 				}
 
-				if(option2.equalsIgnoreCase("favor"))
+				if(option2.equalsIgnoreCase("maxfavor"))
 				{
 					// Set the favor
-					character.setFavor(amount);
+					character.setMaxFavor(character.getMaxFavor() + amount);
+
+					sender.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
+
+					// Tell who was edited
+					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been increased by " + amount + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					return true;
+				}
+				else if(option2.equalsIgnoreCase("favor"))
+				{
+					// Set the favor
+					character.giveFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
 
@@ -552,7 +559,7 @@ public class DCommandHandler implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					character.setDevotion(amount);
+					character.giveDevotion(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
 
@@ -579,13 +586,11 @@ public class DCommandHandler implements CommandExecutor
 				if(option2 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You need to be more specific.");
-					sender.sendMessage("/dg admin sub [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
 				else if(option3 == null)
 				{
 					sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
-					sender.sendMessage("/dg admin sub [favor|devotion|ascensions] <player> <amount>");
 					return true;
 				}
 				else
@@ -596,6 +601,18 @@ public class DCommandHandler implements CommandExecutor
 					amount = API.object.toInteger(option4);
 				}
 
+				if(option2.equalsIgnoreCase("maxfavor"))
+				{
+					// Set the favor
+					character.subtractFavor(amount);
+
+					sender.sendMessage(ChatColor.GREEN + "" + amount + " removed from " + toEdit.getName() + "'s current character's max favor.");
+
+					// Tell who was edited
+					toEdit.sendMessage(ChatColor.RED + "Your current character's max favor has been reduced by " + amount + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					return true;
+				}
 				if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
@@ -636,7 +653,7 @@ public class DCommandHandler implements CommandExecutor
 			else
 			{
 				sender.sendMessage(ChatColor.RED + "Invalid category selected.");
-				sender.sendMessage("/dg admin [set|add|sub] [favor|devotion|ascensions] <player> <amount>");
+				sender.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|devotion|ascensions] <p> <amt>");
 				return true;
 			}
 		}
@@ -769,6 +786,46 @@ public class DCommandHandler implements CommandExecutor
 			for(Entry<String, Object> charDataEntry : charData.entrySet())
 			{
 				sender.sendMessage("  - " + charDataEntry.getKey() + ": " + charDataEntry.getValue());
+			}
+		}
+		return true;
+	}
+
+	/*
+	 * Command: "viewBlocks"
+	 */
+	public static boolean viewBlocks(CommandSender sender)
+	{
+		for(Entry<String, HashMap<Integer, Object>> block : API.data.getAllBlockData().entrySet())
+		{
+			String blockID = block.getKey();
+			HashMap<Integer, Object> blockData = block.getValue();
+
+			sender.sendMessage(blockID + ": ");
+
+			for(Entry<Integer, Object> blockDataEntry : blockData.entrySet())
+			{
+				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
+			}
+		}
+		return true;
+	}
+
+	/*
+	 * Command: "viewTasks"
+	 */
+	public static boolean viewTasks(CommandSender sender)
+	{
+		for(Entry<Integer, HashMap<String, Object>> task : API.data.getAllTasks().entrySet())
+		{
+			int taskID = task.getKey();
+			HashMap<String, Object> taskData = task.getValue();
+
+			sender.sendMessage(taskID + ": ");
+
+			for(Entry<String, Object> blockDataEntry : taskData.entrySet())
+			{
+				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
 			}
 		}
 		return true;
