@@ -158,7 +158,15 @@ public class DAltarListener implements Listener
 				}
 
 				player.sendMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
+
 				altarMenu(player);
+
+				// If they are in the process of creating a character we'll just skip them to the confirm screen
+				if(API.data.hasPlayerData(player, "temp_createchar_finalstep") && API.data.getPlayerData(player, "temp_createchar_finalstep").equals(true))
+				{
+					clearChat(player);
+					finalConfirmDeity(player);
+				}
 
 				event.setCancelled(true);
 			}
@@ -193,7 +201,7 @@ public class DAltarListener implements Listener
 			String message = event.getMessage();
 
 			// Return to main menu
-			if(message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
+			if(message.equalsIgnoreCase("x") || message.startsWith("abort") || message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
 			{
 				// Remove now useless data
 				API.data.removePlayerData(player, "temp_createchar");
@@ -278,7 +286,10 @@ public class DAltarListener implements Listener
 					}
 					else
 					{
-						player.sendMessage(ChatColor.AQUA + "  Once you have the items return here again.");
+						clearChat(player);
+						player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
+						player.sendMessage(" ");
+						altarMenu(player);
 						return;
 					}
 				}
@@ -389,12 +400,9 @@ public class DAltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
 
-		// If they are in the process of creating a character we'll just skip them to the confirm screen
-		if(API.data.hasPlayerData(player, "temp_createchar_finalstep") && API.data.getPlayerData(player, "temp_createchar_finalstep").equals(true))
+		if(API.data.hasPlayerData(player, "temp_createchar"))
 		{
-			clearChat(player);
-			finalConfirmDeity(player);
-			return;
+			player.sendMessage(ChatColor.GRAY + "   [X.] " + ChatColor.RED + "Abort Character Creation");
 		}
 		else player.sendMessage(ChatColor.GRAY + "   [1.] " + ChatColor.GREEN + "Create New Character");
 
@@ -669,8 +677,8 @@ public class DAltarListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
 		}
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar and select");
-		player.sendMessage(ChatColor.GRAY + "  the option to confirm your new character.");
+		player.sendMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
+		player.sendMessage(ChatColor.GRAY + "  confirm your new character.");
 		player.sendMessage(" ");
 
 		API.data.savePlayerData(player, "temp_createchar_finalstep", true);
