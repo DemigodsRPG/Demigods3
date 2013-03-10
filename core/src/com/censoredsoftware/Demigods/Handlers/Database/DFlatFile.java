@@ -564,7 +564,6 @@ public class DFlatFile
 
                             PlayerCharacter character = (PlayerCharacter) entry.getValue();
 
-                            API.misc.serverMsg(character.getName().toUpperCase() + ": " + character.getDeity().toLowerCase()); // TODO DEBUG
                             if(API.deity.getAllDeities().contains(character.getDeity().toLowerCase())) API.data.getAllChars().put(intLoad, (HashMap<String, Object>) result);
                         }
 						ois.close();
