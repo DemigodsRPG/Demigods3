@@ -669,8 +669,8 @@ public class DAltarListener implements Listener
 		String chosenDeity = (String) API.data.getPlayerData(player, "temp_createchar_deity");
 
 		// They accepted the Deity choice, now ask them to input their items so they can be accepted
-		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ", you must");
-		player.sendMessage(ChatColor.AQUA + "  first sacrifice the following items:");
+		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + API.object.capitalize(chosenDeity) + ChatColor.AQUA + ",");
+		player.sendMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 		player.sendMessage(" ");
 		for(Material item : (ArrayList<Material>) API.data.getPluginData("temp_deity_claim_items", chosenDeity))
 		{
