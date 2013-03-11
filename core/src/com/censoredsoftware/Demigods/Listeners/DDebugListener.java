@@ -95,6 +95,7 @@ import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
+import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
@@ -107,6 +108,15 @@ import org.bukkit.event.Listener;
 public class DDebugListener implements Listener
 {
 	public static final Demigods API = Demigods.INSTANCE;
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onChestSpawn(ChestSpawnEvent event)
+	{
+		Location location = event.getLocation();
+
+		// Send debug
+		API.admin.sendDebug(ChatColor.RED + "Chest generated at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onAltarCreation(AltarCreateEvent event)

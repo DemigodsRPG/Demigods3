@@ -93,16 +93,22 @@ package com.censoredsoftware.Demigods.Listeners;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
+import com.censoredsoftware.Demigods.Libraries.SpecialItems;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 public class DChunkListener implements Listener
@@ -112,15 +118,44 @@ public class DChunkListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(ChunkLoadEvent event)
 	{
+		// Define variables
+		Random rand;
+		rand = new Random(); int chestChance = rand.nextInt((int) Math.ceil(1 / (API.config.getSettingDouble("chest_generation_chance") / 100)) + 1);
+		rand = new Random(); int altarChance = rand.nextInt((int) Math.ceil(1 / (API.config.getSettingDouble("altar_generation_chance") / 100)) + 1);
+		double locX = event.getChunk().getX();
+		double locZ = event.getChunk().getZ();
+		double locY = event.getWorld().getHighestBlockYAt((int) locX, (int) locZ);
+		Location location;
+
+		// TODO: Make this better. It's mainly a proof of concept for now.
+		// Let's randomly create chests
+		if(chestChance == 1)
+		{
+			location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
+
+			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
+			API.getServer().getPluginManager().callEvent(chestSpawnEvent);
+			if(chestSpawnEvent.isCancelled()) return;
+
+			// Define variables
+			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+
+			for(Map.Entry<Double, ItemStack> item : SpecialItems.getBooks().entrySet())
+			{
+				rand = new Random();
+				int chance = rand.nextInt((int) Math.ceil(1 / (item.getKey() / 100)) + 1);
+				if(chance == 1) items.add(item.getValue());
+			}
+
+			// Generate the chest
+			location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
+			API.item.createChest(location, items);
+		}
+
 		// If it's a new chunk then we'll generate structures
 		if(event.isNewChunk())
 		{
-			// Define variables
-			Random rand = new Random();
-			int max = (int) Math.ceil(1 / (API.config.getSettingDouble("altar_generation_chance") / 100));
-			int chance = rand.nextInt(max + 1);
-
-			/*
+			/* TODO
 			 * // Change chance based on biome
 			 * Biome biome = event.getWorld().getBiome(event.getChunk().getX(), event.getChunk().getZ());
 			 * switch(biome)
@@ -131,18 +166,15 @@ public class DChunkListener implements Listener
 			 */
 
 			// Choose an arbitrary value and check the chance against it
-			if(chance == 1)
+			if(altarChance == 1)
 			{
 				// They match, let's generate something
-				int locX = event.getChunk().getX();
-				int locZ = event.getChunk().getZ();
-				int locY = event.getWorld().getHighestBlockYAt(locX, locZ);
-
-				Location location = event.getChunk().getBlock(locX, locY, locZ).getLocation();
-				Location locTemp = event.getChunk().getBlock(locX, locY, locZ).getLocation();
+				Location locTemp = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
 
 				if(API.block.canGenerateSolid(locTemp))
 				{
+					location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
+
 					// If another Altar doesn't exist nearby then make one
 					if(!API.block.altarNearby(location, API.config.getSettingInt("minimum_blocks_between_altars")))
 					{
