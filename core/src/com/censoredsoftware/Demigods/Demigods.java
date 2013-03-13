@@ -90,6 +90,19 @@
 
 package com.censoredsoftware.Demigods;
 
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Handlers.DCommandHandler;
@@ -100,18 +113,6 @@ import com.censoredsoftware.Demigods.Libraries.Objects.DisconnectReasonFilter;
 import com.censoredsoftware.Demigods.Listeners.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.net.URL;
-import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class Demigods extends JavaPlugin
 {

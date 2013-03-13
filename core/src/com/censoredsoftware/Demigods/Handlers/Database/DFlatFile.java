@@ -90,16 +90,17 @@
 
 package com.censoredsoftware.Demigods.Handlers.Database;
 
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class DFlatFile
 {
@@ -151,16 +152,16 @@ public class DFlatFile
 			API.misc.info("New Divine Block data save created.");
 		}
 
-        MetricsDir = new File(path + "metrics/");
-        PublicMetricsDir = new File(path + "metrics/public");
-        PrivateMetricsDir = new File(path + "metrics/private");
-        if(!MetricsDir.exists())
-        {
-            MetricsDir.mkdirs();
-            API.misc.info("New Metrics data save created.");
-        }
-        if(!PublicMetricsDir.exists()) PublicMetricsDir.mkdirs();
-        if(!PrivateMetricsDir.exists()) PrivateMetricsDir.mkdirs();
+		MetricsDir = new File(path + "metrics/");
+		PublicMetricsDir = new File(path + "metrics/public");
+		PrivateMetricsDir = new File(path + "metrics/private");
+		if(!MetricsDir.exists())
+		{
+			MetricsDir.mkdirs();
+			API.misc.info("New Metrics data save created.");
+		}
+		if(!PublicMetricsDir.exists()) PublicMetricsDir.mkdirs();
+		if(!PrivateMetricsDir.exists()) PrivateMetricsDir.mkdirs();
 	}
 
 	/*
@@ -184,8 +185,8 @@ public class DFlatFile
 				file.delete();
 			for(File file : BattleDir.listFiles())
 				file.delete();
-            for(File file : MetricsDir.listFiles())
-                file.delete();
+			for(File file : MetricsDir.listFiles())
+				file.delete();
 
 			// Start the timer
 			long startTimer = System.currentTimeMillis();
@@ -195,7 +196,7 @@ public class DFlatFile
 			int battleCount = saveBattles();
 			int questCount = saveQuests();
 			int blockCount = saveBlocks();
-            int metricCount = saveMetrics();
+			int metricCount = saveMetrics();
 
 			// Stop the timer
 			long stopTimer = System.currentTimeMillis();
@@ -411,46 +412,46 @@ public class DFlatFile
 		return count;
 	}
 
-    public static int saveMetrics()
-    {
-        start();
+	public static int saveMetrics()
+	{
+		start();
 
-        int count = 0;
+		int count = 0;
 
-        try
-        {
-            for(String metric : API.metrics.getAllPublic().keySet())
-            {
-                count++;
+		try
+		{
+			for(String metric : API.metrics.getAllPublic().keySet())
+			{
+				count++;
 
-                HashMap<Object, Object> data = API.metrics.getPublicFor(metric);
-                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "public" + File.separator + metric + ".demi"));
-                oos.writeObject(data);
-                oos.flush();
-                oos.close();
-            }
+				HashMap<Object, Object> data = API.metrics.getPublicFor(metric);
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "public" + File.separator + metric + ".demi"));
+				oos.writeObject(data);
+				oos.flush();
+				oos.close();
+			}
 
-            for(String metric : API.metrics.getAllPrivate().keySet())
-            {
-                if(metric.startsWith("temp_")) continue;
+			for(String metric : API.metrics.getAllPrivate().keySet())
+			{
+				if(metric.startsWith("temp_")) continue;
 
-                count++;
+				count++;
 
-                HashMap<Object, Object> data = API.metrics.getPrivateFor(metric);
-                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "private" + File.separator + metric + ".demi"));
-                oos.writeObject(data);
-                oos.flush();
-                oos.close();
-            }
-        }
-        catch(Exception e)
-        {
-            API.misc.severe("Something went wrong while saving Metrics.");
-            e.printStackTrace();
-        }
+				HashMap<Object, Object> data = API.metrics.getPrivateFor(metric);
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(MetricsDir.getPath() + File.separator + "private" + File.separator + metric + ".demi"));
+				oos.writeObject(data);
+				oos.flush();
+				oos.close();
+			}
+		}
+		catch(Exception e)
+		{
+			API.misc.severe("Something went wrong while saving Metrics.");
+			e.printStackTrace();
+		}
 
-        return count;
-    }
+		return count;
+	}
 
 	/*
 	 * load() : Loads all Flat File data to HashMaps.
@@ -467,7 +468,7 @@ public class DFlatFile
 		loadBattles(true);
 		loadQuests(true);
 		loadBlocks(true);
-        loadMetrics(true);
+		loadMetrics(true);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -558,14 +559,14 @@ public class DFlatFile
 						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
 						Object result = ois.readObject();
 
-                        for(Entry entry : ((HashMap<String, Object>) result).entrySet()) // TODO Only temp solution to stop random errors.
-                        {
-                            if(!(entry.getValue() instanceof PlayerCharacter)) continue;
+						for(Entry entry : ((HashMap<String, Object>) result).entrySet()) // TODO Only temp solution to stop random errors.
+						{
+							if(!(entry.getValue() instanceof PlayerCharacter)) continue;
 
-                            PlayerCharacter character = (PlayerCharacter) entry.getValue();
+							PlayerCharacter character = (PlayerCharacter) entry.getValue();
 
-                            if(API.deity.getAllDeities().contains(character.getDeity().toLowerCase())) API.data.getAllChars().put(intLoad, (HashMap<String, Object>) result);
-                        }
+							if(API.deity.getAllDeities().contains(character.getDeity().toLowerCase())) API.data.getAllChars().put(intLoad, (HashMap<String, Object>) result);
+						}
 						ois.close();
 					}
 					catch(Exception error)
@@ -710,67 +711,67 @@ public class DFlatFile
 		}
 	}
 
-    @SuppressWarnings("unchecked")
-    public static void loadMetrics(boolean msgBool)
-    {
-        start();
+	@SuppressWarnings("unchecked")
+	public static void loadMetrics(boolean msgBool)
+	{
+		start();
 
-        File[] publicFileList = PublicMetricsDir.listFiles();
-        File[] privateFileList = PrivateMetricsDir.listFiles();
+		File[] publicFileList = PublicMetricsDir.listFiles();
+		File[] privateFileList = PrivateMetricsDir.listFiles();
 
-        if(publicFileList != null)
-        {
-            for(File element : publicFileList)
-            {
-                String load = element.getName();
-                if(load.endsWith(".demi"))
-                {
-                    load = load.substring(0, load.length() - 5);
+		if(publicFileList != null)
+		{
+			for(File element : publicFileList)
+			{
+				String load = element.getName();
+				if(load.endsWith(".demi"))
+				{
+					load = load.substring(0, load.length() - 5);
 
-                    String stringLoad = load.toString();
+					String stringLoad = load.toString();
 
-                    try
-                    {
-                        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
-                        Object result = ois.readObject();
-                        API.metrics.getAllPublic().put(stringLoad, (HashMap<Object, Object>) result);
-                        ois.close();
-                    }
-                    catch(Exception error)
-                    {
-                        API.misc.severe("Could not load metric: " + load);
-                        error.printStackTrace();
-                        API.misc.severe("End stack trace for " + load);
-                    }
-                }
-            }
-        }
-        if(privateFileList != null)
-        {
-            for(File element : privateFileList)
-            {
-                String load = element.getName();
-                if(load.endsWith(".demi"))
-                {
-                    load = load.substring(0, load.length() - 5);
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						API.metrics.getAllPublic().put(stringLoad, (HashMap<Object, Object>) result);
+						ois.close();
+					}
+					catch(Exception error)
+					{
+						API.misc.severe("Could not load metric: " + load);
+						error.printStackTrace();
+						API.misc.severe("End stack trace for " + load);
+					}
+				}
+			}
+		}
+		if(privateFileList != null)
+		{
+			for(File element : privateFileList)
+			{
+				String load = element.getName();
+				if(load.endsWith(".demi"))
+				{
+					load = load.substring(0, load.length() - 5);
 
-                    String stringLoad = load.toString();
+					String stringLoad = load.toString();
 
-                    try
-                    {
-                        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
-                        Object result = ois.readObject();
-                        API.metrics.getAllPrivate().put(stringLoad, (HashMap<Object, Object>) result);
-                        ois.close();
-                    }
-                    catch(Exception error)
-                    {
-                        API.misc.severe("Could not load metric: " + load);
-                        error.printStackTrace();
-                        API.misc.severe("End stack trace for " + load);
-                    }
-                }
-            }
-        }
-    }
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new FileInputStream(element));
+						Object result = ois.readObject();
+						API.metrics.getAllPrivate().put(stringLoad, (HashMap<Object, Object>) result);
+						ois.close();
+					}
+					catch(Exception error)
+					{
+						API.misc.severe("Could not load metric: " + load);
+						error.printStackTrace();
+						API.misc.severe("End stack trace for " + load);
+					}
+				}
+			}
+		}
+	}
 }

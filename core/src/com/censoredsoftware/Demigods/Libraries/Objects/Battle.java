@@ -90,12 +90,13 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import com.censoredsoftware.Demigods.Demigods;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
 
 public class Battle implements Serializable
 {

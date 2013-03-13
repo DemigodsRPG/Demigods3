@@ -90,15 +90,16 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map.Entry;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import com.censoredsoftware.Demigods.Demigods;
 
 public class DeityAPI
 {
@@ -112,18 +113,18 @@ public class DeityAPI
 		return API.data.getPluginData("temp_deity_classes", deity).toString();
 	}
 
-    /*
-     * getAllDeities() : Returns a list off all the loaded Deities.
-     */
-    public ArrayList<String> getAllDeities()
-    {
-        ArrayList<String> deities = new ArrayList<String>();
-        for(String deity : API.data.getAllPluginData().get("temp_deity_classes").keySet())
-        {
-            if(!deities.contains(deity)) deities.add(deity);
-        }
-        return deities;
-    }
+	/*
+	 * getAllDeities() : Returns a list off all the loaded Deities.
+	 */
+	public ArrayList<String> getAllDeities()
+	{
+		ArrayList<String> deities = new ArrayList<String>();
+		for(String deity : API.data.getAllPluginData().get("temp_deity_classes").keySet())
+		{
+			if(!deities.contains(deity)) deities.add(deity);
+		}
+		return deities;
+	}
 
 	/*
 	 * getClassLoader() : Returns the ClassLoader for the deity.

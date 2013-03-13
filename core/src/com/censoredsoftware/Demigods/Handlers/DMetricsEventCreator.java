@@ -90,11 +90,6 @@
 
 package com.censoredsoftware.Demigods.Handlers;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -104,6 +99,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DMetricsEventCreator implements Listener
 {

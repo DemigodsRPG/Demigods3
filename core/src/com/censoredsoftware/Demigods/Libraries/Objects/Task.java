@@ -89,11 +89,11 @@
  */
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 
 public class Task implements Serializable
 {

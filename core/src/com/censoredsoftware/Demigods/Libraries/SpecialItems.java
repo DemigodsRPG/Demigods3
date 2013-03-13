@@ -1,12 +1,13 @@
 package com.censoredsoftware.Demigods.Libraries;
 
-import com.censoredsoftware.Demigods.Demigods;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+
+import com.censoredsoftware.Demigods.Demigods;
 
 public class SpecialItems
 {
@@ -14,7 +15,7 @@ public class SpecialItems
 
 	/*
 	 * Returns all weapons that can spawn/drop/etc from Demigods
-	 *
+	 * 
 	 * Map format is as follows: Map<Rarity, Item> / Rarity: % / Item: ItemStack
 	 */
 	public static Map<Double, ItemStack> getBooks()
