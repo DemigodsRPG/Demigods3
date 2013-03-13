@@ -118,7 +118,9 @@ public class AbilityAPI
 	public static final int TARGETOFFSET = 5;
 
 	/**
-	 * Returns true if the ability for <code>player</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed all pre-process tests.
+	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
+	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has
+	 * passed all pre-process tests.
 	 * 
 	 * @param player the player doing the ability
 	 * @param name the name of the ability
@@ -134,7 +136,9 @@ public class AbilityAPI
 	}
 
 	/**
-	 * Returns true if the ability for <code>player</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, that is targeting the LivingEntity <code>target</code>, has passed all pre-process tests.
+	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
+	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, that
+	 * is targeting the LivingEntity <code>target</code>, has passed all pre-process tests.
 	 * 
 	 * @param player the Player doing the ability
 	 * @param target the LivingEntity being targeted
@@ -318,7 +322,9 @@ public class AbilityAPI
 	}
 
 	/**
-	 * Returns true if the ability event for <code>character</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed all pre-process tests.
+	 * Returns true if the ability event for <code>character</code>, called <code>name</code>,
+	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed
+	 * all pre-process tests.
 	 * 
 	 * @param character the character triggering the ability event
 	 * @param name the name of the ability
