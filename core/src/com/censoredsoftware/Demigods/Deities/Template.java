@@ -90,9 +90,8 @@
 
 package com.censoredsoftware.Demigods.Deities;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.google.common.base.Joiner;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -104,7 +103,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.google.common.base.Joiner;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class Template implements Listener

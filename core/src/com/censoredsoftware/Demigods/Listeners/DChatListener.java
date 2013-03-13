@@ -90,8 +90,10 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -99,9 +101,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DChatListener implements Listener
 {

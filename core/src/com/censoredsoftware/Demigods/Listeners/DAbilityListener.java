@@ -94,19 +94,11 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
-import java.util.ArrayList;
 
 public class DAbilityListener implements Listener
 {
@@ -143,14 +135,14 @@ public class DAbilityListener implements Listener
 		character.setPower(type, power + increase); // TODO
 	}
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public static void onAbilityTarget(AbilityTargetEvent event)
-    {
-        if(!(event.getTarget() instanceof Player)) return;
+	@EventHandler(priority = EventPriority.LOWEST)
+	public static void onAbilityTarget(AbilityTargetEvent event)
+	{
+		if(!(event.getTarget() instanceof Player)) return;
 
-        PlayerCharacter hitChar = API.player.getCurrentChar((Player) event.getTarget());
-        PlayerCharacter hittingChar = event.getCharacter();
+		PlayerCharacter hitChar = API.player.getCurrentChar((Player) event.getTarget());
+		PlayerCharacter hittingChar = event.getCharacter();
 
-        API.battle.battleProcess(hitChar, hittingChar);
-    }
+		API.battle.battleProcess(hitChar, hittingChar);
+	}
 }

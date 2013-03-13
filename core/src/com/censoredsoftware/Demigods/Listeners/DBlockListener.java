@@ -90,15 +90,9 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -114,8 +108,15 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 
 public class DBlockListener implements Listener
 {

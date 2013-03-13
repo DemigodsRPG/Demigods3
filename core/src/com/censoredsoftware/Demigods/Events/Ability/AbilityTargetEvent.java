@@ -90,11 +90,12 @@
 
 package com.censoredsoftware.Demigods.Events.Ability;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 /*
  * Represents an event that is called when an ability is executed.
@@ -103,7 +104,7 @@ public class AbilityTargetEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	protected final PlayerCharacter character;
-    protected final LivingEntity target;
+	protected final LivingEntity target;
 	protected boolean cancelled = false;
 
 	public AbilityTargetEvent(final PlayerCharacter character, final LivingEntity target)
@@ -119,13 +120,14 @@ public class AbilityTargetEvent extends Event implements Cancellable
 	{
 		return this.character;
 	}
-    /*
-     * getTarget() : Gets the target involved.
-     */
-    public LivingEntity getTarget()
-    {
-        return this.target;
-    }
+
+	/*
+	 * getTarget() : Gets the target involved.
+	 */
+	public LivingEntity getTarget()
+	{
+		return this.target;
+	}
 
 	@Override
 	public HandlerList getHandlers()
