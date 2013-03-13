@@ -10,7 +10,7 @@ inactive_worlds:
 #- world_nodemigods
 minimum_blocks_between_altars: 450
 altar_generation_chance: 4.8 #percent
-chest_generation_chance: 0.53 #percent
+chest_generation_chance: 0.32 #percent
 
 ## Statistic Caps, Multipliers, and Related ##
 global_favor_multiplier: 1.0

@@ -94,9 +94,14 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
+import java.util.Random;
 
 public class BlockAPI
 {
@@ -215,15 +220,52 @@ public class BlockAPI
 		return null;
 	}
 
-	/*
-	 * canGenerateSolid() : Checks the (Location)location to validate if it's solid and safe to generate at.
+	/**
+	 * Checks the <code>reference</code> location to validate if the area is safe
+	 * for automated generation.
+	 *
+	 * @param reference the location to be checked
+	 * @param area		how big of an area (in blocks) to validate
+	 * @return          boolean based on if the location is safe to generate at
 	 */
-	public boolean canGenerateSolid(Location location)
+	public boolean canGenerateSolid(Location reference, int area)
 	{
+		Location location = reference.clone();
 		location.subtract(0, 1, 0);
-		location.add(3, 0, 3);
+		location.add((area / 3), 0, (area / 2));
 
-		return location.getBlock().getType().isSolid() && location.subtract(1, 0, 1).getBlock().getType().isSolid() && location.subtract(1, 0, 1).getBlock().getType().isSolid() && location.subtract(1, 0, 1).getBlock().getType().isSolid() && location.subtract(1, 0, 1).getBlock().getType().isSolid() && location.subtract(1, 0, 1).getBlock().getType().isSolid() && !location.add(1, 1, 1).getBlock().getType().isSolid() && !location.getBlock().isLiquid() && !location.add(1, 1, 1).getBlock().getType().isSolid() && !location.getBlock().isLiquid() && !location.add(1, 1, 1).getBlock().getType().isSolid() && !location.getBlock().isLiquid() && !location.add(1, 1, 1).getBlock().getType().isSolid() && !location.getBlock().isLiquid() && !location.add(1, 1, 1).getBlock().getType().isSolid() && !location.getBlock().isLiquid();
+		// Check ground
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.subtract(1, 0, 0);
+		}
+
+		// Check ground adjacent
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.subtract(0, 0, 1);
+		}
+
+		// Check ground adjacent again
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.add(1, 0, 0);
+		}
+
+		location.add(0, 1, 0);
+
+		// Check air diagonally
+		for(int i = 0; i < area + 1; i++)
+		{
+			if(!location.getBlock().getType().isTransparent()) return false;
+			location.add(0, 1, 1);
+			location.subtract(1, 0, 0);
+		}
+
+		return true;
 	}
 
 	/*

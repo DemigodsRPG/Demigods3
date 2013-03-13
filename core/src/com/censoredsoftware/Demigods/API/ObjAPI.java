@@ -90,6 +90,7 @@
 
 package com.censoredsoftware.Demigods.API;
 
+import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 import org.bukkit.Location;
 
@@ -183,7 +184,7 @@ public class ObjAPI
 	/*
 	 * generateInt : Generates a random integer with a length of (int)length.
 	 */
-	public Integer generateInt(int length)
+	public int generateInt(int length)
 	{
 		// Set allowed characters - Create new string to fill - Generate the string - Return string
 		char[] chars = "0123456789".toCharArray();
@@ -196,5 +197,31 @@ public class ObjAPI
 		}
 		int output = toInteger(sb.toString());
 		return output;
+	}
+
+	/**
+	 * Returns an integer between <code>min</code> and <code>max</code>.
+	 *
+	 * @param	min	the minimum value of the returned integer.
+	 * @param	max	the maximum value of the returned integer.
+	 * @return		the generated integer.
+	 */
+	public int generateIntRange(int min, int max)
+	{
+		return new Random().nextInt(max - min + 1) + min;
+	}
+
+	/**
+	 * Returns a random boolean based on the <code>percent</code> passed in.
+	 *
+	 * @param	 percent	the percentage as a value from 1 - 100 (not 0 - 1).
+	 * @return				the randomly generated boolean.
+	 */
+	public boolean randomPercentBool(double percent)
+	{
+		Random rand = new Random();
+		int chance = rand.nextInt((int) Math.ceil(1 / (percent / 100))) + 1;
+		if(chance == 1) return true;
+		return false;
 	}
 }

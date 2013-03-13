@@ -98,7 +98,6 @@ import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.SpecialItems;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -109,7 +108,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 public class DChunkListener implements Listener
 {
@@ -119,20 +117,11 @@ public class DChunkListener implements Listener
 	public void onChunkLoad(ChunkLoadEvent event)
 	{
 		// Define variables
-		Random rand;
-		rand = new Random(); int chestChance = rand.nextInt((int) Math.ceil(1 / (API.config.getSettingDouble("chest_generation_chance") / 100)) + 1);
-		rand = new Random(); int altarChance = rand.nextInt((int) Math.ceil(1 / (API.config.getSettingDouble("altar_generation_chance") / 100)) + 1);
-		double locX = event.getChunk().getX();
-		double locZ = event.getChunk().getZ();
-		double locY = event.getWorld().getHighestBlockYAt((int) locX, (int) locZ);
-		Location location;
+		Location location = API.misc.randomChunkLocation(event.getChunk());
 
-		// TODO: Make this better. It's mainly a proof of concept for now.
 		// Let's randomly create chests
-		if(chestChance == 1)
+		if(API.object.randomPercentBool(API.config.getSettingDouble("chest_generation_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
 		{
-			location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
-
 			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
 			API.getServer().getPluginManager().callEvent(chestSpawnEvent);
 			if(chestSpawnEvent.isCancelled()) return;
@@ -142,39 +131,21 @@ public class DChunkListener implements Listener
 
 			for(Map.Entry<Double, ItemStack> item : SpecialItems.getBooks().entrySet())
 			{
-				rand = new Random();
-				int chance = rand.nextInt((int) Math.ceil(1 / (item.getKey() / 100)) + 1);
-				if(chance == 1) items.add(item.getValue());
+				if(API.object.randomPercentBool(item.getKey())) items.add(item.getValue());
 			}
 
 			// Generate the chest
-			location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
 			API.item.createChest(location, items);
 		}
 
 		// If it's a new chunk then we'll generate structures
 		if(event.isNewChunk())
 		{
-			/* TODO
-			 * // Change chance based on biome
-			 * Biome biome = event.getWorld().getBiome(event.getChunk().getX(), event.getChunk().getZ());
-			 * switch(biome)
-			 * {
-			 * case JUNGLE: max = (int) (max / 2);
-			 * default: break;
-			 * }
-			 */
-
 			// Choose an arbitrary value and check the chance against it
-			if(altarChance == 1)
+			if(API.object.randomPercentBool(API.config.getSettingDouble("altar_generation_chance")))
 			{
-				// They match, let's generate something
-				Location locTemp = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
-
-				if(API.block.canGenerateSolid(locTemp))
+				if(API.block.canGenerateSolid(location, 6))
 				{
-					location = event.getChunk().getBlock((int) locX, (int) locY, (int) locZ).getLocation();
-
 					// If another Altar doesn't exist nearby then make one
 					if(!API.block.altarNearby(location, API.config.getSettingInt("minimum_blocks_between_altars")))
 					{

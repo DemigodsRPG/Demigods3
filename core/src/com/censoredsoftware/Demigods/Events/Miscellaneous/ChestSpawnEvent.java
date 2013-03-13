@@ -104,9 +104,9 @@ public class ChestSpawnEvent extends Event implements Cancellable
 	protected final Location location;
 	protected boolean cancelled = false;
 
-	public ChestSpawnEvent(final Location loc)
+	public ChestSpawnEvent(final Location location)
 	{
-		this.location = loc;
+		this.location = location;
 	}
 
 	/*

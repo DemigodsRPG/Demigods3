@@ -93,6 +93,8 @@ package com.censoredsoftware.Demigods.API;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -100,6 +102,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class MiscAPI
@@ -258,5 +261,45 @@ public class MiscAPI
 
 		// Check the player for DEITYNAME
 		return character.hasDeity(deity) && character.isImmortal();
+	}
+
+	/**
+	 * Generates a random location with the center being <code>reference</code>.
+	 * Must be at least <code>min</code> blocks from the center and no more than
+	 * <code>max</code> blocks away.
+	 *
+	 * @param 	reference	the location used as the center for reference.
+	 * @param	min			the minimum number of blocks away.
+	 * @param 	max			the maximum number of blocks away.
+	 * @return  			the random location generated.
+	 */
+	public Location randomLocation(Location reference, int min, int max)
+	{
+		Location location = reference.clone();
+
+		double randX = API.object.generateIntRange(min, max);
+		double randZ = API.object.generateIntRange(min, max);
+		location.add(randX, 0, randZ);
+		double highestY = location.clone().getWorld().getHighestBlockYAt(location);
+		location.setY(highestY);
+
+		API.misc.serverMsg("Y: " + highestY);
+
+		return location;
+	}
+
+	/**
+	 * Returns a random location within the <code>chunk</code> passed in.
+	 *
+	 * @param	chunk	the chunk that we will obtain the location from.
+	 * @return			the random location generated.
+	 */
+	public Location randomChunkLocation(Chunk chunk)
+	{
+		Location reference = chunk.getBlock(API.object.generateIntRange(1, 16), 64, API.object.generateIntRange(1, 16)).getLocation();
+		double locX = reference.getX();
+		double locY = chunk.getWorld().getHighestBlockYAt(reference);
+		double locZ = reference.getZ();
+		return new Location(chunk.getWorld(), locX, locY, locZ);
 	}
 }

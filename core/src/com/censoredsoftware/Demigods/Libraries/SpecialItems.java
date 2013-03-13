@@ -26,13 +26,13 @@ public class SpecialItems
 		pages.clear();
 		pages.add("Whoa... you found my book! Please be careful with it. It can be pretty powerful!");
 		pages.add("Shh!");
-		items.put(95.0, API.item.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", pages, null));
+		items.put(25.0, API.item.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", pages, null));
 
-		// _Alex's Secret Book Part 2
+		// A Terrible Joke Book
 		pages.clear();
 		pages.add("I want to die peacefully in my sleep, like my grandfather... Not screaming and yelling like the passengers in his car.");
 		pages.add("hehehhe");
-		items.put(50.0, API.item.createBook(ChatColor.GREEN + "Joke Book #1", "A Terrible Comedian", pages, null));
+		items.put(100.0, API.item.createBook(ChatColor.GREEN + "Joke Book #1", "A Terrible Comedian", pages, null));
 
 		return items;
 	}

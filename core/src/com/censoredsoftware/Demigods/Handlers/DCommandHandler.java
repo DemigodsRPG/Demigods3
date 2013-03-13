@@ -144,6 +144,8 @@ public class DCommandHandler implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
+		player.sendMessage("Can generate? " + API.block.canGenerateSolid(player.getLocation(), 10));
+
 		Firework firework = (Firework) player.getLocation().getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
 		FireworkMeta fireworkmeta = firework.getFireworkMeta();
 		Type type = Type.BALL_LARGE;
