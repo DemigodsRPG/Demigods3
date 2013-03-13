@@ -106,8 +106,14 @@ import java.util.Random;
 
 public class ItemAPI
 {
-	/*
-	 * create() : Creates a new item with the given variables.
+	/**
+	 * Creates a new item with the given variables.
+	 *
+	 * @param  material      the material that the new item will be.
+	 * @param  name          the name of the new item.
+	 * @param  lore          the lore attached to the new item.
+	 * @param  enchantments  the enchantments attached to the new item.
+	 * @return               the ItemStack of the newly created item.
 	 */
 	public ItemStack create(Material material, String name, List<String> lore, Map<Enchantment, Integer> enchantments)
 	{
@@ -126,8 +132,14 @@ public class ItemAPI
 		return item;
 	}
 
-	/*
-	 * createBook() : Creates a book with the given variables.
+	/**
+	 * Creates a book with the given variables.
+	 *
+	 * @param  title  the title of the new book.
+	 * @param  author the author of the new book.
+	 * @param  pages  the pages of the new book.
+	 * @param  lore   the lore of the new book.
+	 * @return        the ItemStack of the newly created book.
 	 */
 	public ItemStack createBook(String title, String author, List<String> pages, List<String> lore)
 	{
@@ -144,8 +156,11 @@ public class ItemAPI
 		return book;
 	}
 
-	/*
-	 * createChest() : Creates a chest with the specified location and filled with items.
+	/**
+	 * Creates a chest at <code>location</code> filled with <code>items</code>.
+	 *
+	 * @param location the location at which to create the chest.
+	 * @param items    the ArrayList of items to fill the chest with.
 	 */
 	public void createChest(Location location, ArrayList<ItemStack> items)
 	{
