@@ -109,13 +109,22 @@ import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
+/**
+ * API for Deity Ability related methods, used within or in relation to ability methods themselves.
+ */
 public class AbilityAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 	public static final int TARGETOFFSET = 5;
 
-	/*
-	 * doAbilityPreProcess() : Returns the a boolean for success or failure.
+	/**
+	 * Returns true if the ability for <code>player</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed all pre-process tests.
+	 * 
+	 * @param player the player doing the ability
+	 * @param name the name of the ability
+	 * @param cost the cost (in favor) of the ability
+	 * @param type the AbilityType of the ability
+	 * @return true/false depending on if all pre-process tests have passed
 	 */
 	public boolean doAbilityPreProcess(Player player, String name, int cost, AbilityType type)
 	{
@@ -124,6 +133,16 @@ public class AbilityAPI
 		return doAbilityPreProcess(player, cost) && event(name, character, cost, type);
 	}
 
+	/**
+	 * Returns true if the ability for <code>player</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, that is targeting the LivingEntity <code>target</code>, has passed all pre-process tests.
+	 * 
+	 * @param player the Player doing the ability
+	 * @param target the LivingEntity being targeted
+	 * @param name the name of the ability
+	 * @param cost the cost (in favor) of the ability
+	 * @param type the AbilityType of the ability
+	 * @return true/false depending on if all pre-process tests have passed
+	 */
 	public boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityType type)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
@@ -150,6 +169,13 @@ public class AbilityAPI
 		return false;
 	}
 
+	/**
+	 * Returns true if the ability for <code>player</code> with cost <code>cost</code> has passed all pre-process tests.
+	 * 
+	 * @param player the player doing the ability
+	 * @param cost the cost (in favor) of the ability
+	 * @return true/false depending on if all pre-process tests have passed
+	 */
 	public boolean doAbilityPreProcess(Player player, int cost)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
@@ -167,8 +193,11 @@ public class AbilityAPI
 		else return true;
 	}
 
-	/*
-	 * isClick() : Returns true if the event is caused by a click.
+	/**
+	 * Returns true if the event <code>event</code> is caused by a click.
+	 * 
+	 * @param event the interact event
+	 * @return true/false depending on if the event is caused by a click or not
 	 */
 	public boolean isClick(PlayerInteractEvent event)
 	{
@@ -176,8 +205,11 @@ public class AbilityAPI
 		return action != Action.PHYSICAL;
 	}
 
-	/*
-	 * autoTarget() : Returns the LivingEntity a (Player)player is targeting.
+	/**
+	 * Returns the LivingEntity that <code>player</code> is targeting.
+	 * 
+	 * @param player the interact event
+	 * @return the targeted LivingEntity
 	 */
 	public LivingEntity autoTarget(Player player)
 	{
@@ -207,22 +239,30 @@ public class AbilityAPI
 		return null;
 	}
 
-	/*
-	 * targeting() : Returns true if targeting worked and the player didn't miss.
+	/**
+	 * Returns true if the <code>player</code> ability hits <code>target</code>.
+	 * 
+	 * @param player the player using the ability
+	 * @param target the targeted LivingEntity
+	 * @return true/false depending on if the ability hits or misses
 	 */
 	public boolean targeting(Player player, LivingEntity target)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
-		Location toHit = targetLocation(character, target.getLocation());
+		Location toHit = aimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
 		return false;
 	}
 
-	/*
-	 * targetLocation() : Returns the location a character is attacking, based on their level.
+	/**
+	 * Returns the Location that <code>character</code> will hit when targeting <code>target</code>.
+	 * 
+	 * @param character the character aiming
+	 * @param target the target location
+	 * @return the location actually aimed at
 	 */
-	public Location targetLocation(PlayerCharacter character, Location target)
+	public Location aimLocation(PlayerCharacter character, Location target)
 	{
 		int ascensions = character.getAscensions();
 
@@ -264,8 +304,12 @@ public class AbilityAPI
 		return new Location(world, X, Y, Z);
 	}
 
-	/*
-	 * isHit() : Returns true if an ability hits it's target.
+	/**
+	 * Returns true if <code>target</code> is withing hitting distance of <code>hit</code>.
+	 * 
+	 * @param target the targeted LivingEntity
+	 * @param hit the location being hit
+	 * @return true/false depending on if <code>target</code> is hit
 	 */
 	public boolean isHit(LivingEntity target, Location hit)
 	{
@@ -273,12 +317,18 @@ public class AbilityAPI
 		return hit.distance(shouldHit) <= 2;
 	}
 
-	/*
-	 * event() : Calls the ability event, returns true if the event isn't cancelled.
+	/**
+	 * Returns true if the ability event for <code>character</code>, called <code>name</code>, with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed all pre-process tests.
+	 * 
+	 * @param character the character triggering the ability event
+	 * @param name the name of the ability
+	 * @param cost the cost (in favor) of the ability
+	 * @param type the AbilityType of the ability
+	 * @return true/false if the event isn't cancelled or not
 	 */
-	public boolean event(String name, PlayerCharacter character, int COST, AbilityType type)
+	public boolean event(String name, PlayerCharacter character, int cost, AbilityType type)
 	{
-		AbilityEvent event = new AbilityEvent(name, character, COST, type);
+		AbilityEvent event = new AbilityEvent(name, character, cost, type);
 		API.misc.callEvent(event);
 		return !event.isCancelled();
 	}
