@@ -1,14 +1,14 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.Task;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskAPI
 {

@@ -90,12 +90,9 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.SpecialItems;
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -106,8 +103,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Map;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
+import com.censoredsoftware.Demigods.Libraries.SpecialItems;
 
 public class DChunkListener implements Listener
 {

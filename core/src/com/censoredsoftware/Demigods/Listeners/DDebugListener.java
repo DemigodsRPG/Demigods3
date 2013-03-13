@@ -90,6 +90,12 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
@@ -99,11 +105,6 @@ import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 
 public class DDebugListener implements Listener
 {

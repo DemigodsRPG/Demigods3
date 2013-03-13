@@ -90,12 +90,12 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
-
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+
+import java.util.ArrayList;
 
 public class WarpAPI
 {

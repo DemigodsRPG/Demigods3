@@ -90,17 +90,18 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class CharAPI
 {
@@ -190,43 +191,43 @@ public class CharAPI
 		else return true;
 	}
 
-    /*
-     * getDeityList() : Gets list of characters in aligned to a Deity.
-     */
-    public ArrayList<PlayerCharacter> getDeityList(String deity)
-    {
-        // Define variables
-        ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
-        for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
-        {
-            int charID = character.getKey();
-            HashMap<String, Object> data = character.getValue();
-            PlayerCharacter dataChar = getChar(charID);
+	/*
+	 * getDeityList() : Gets list of characters in aligned to a Deity.
+	 */
+	public ArrayList<PlayerCharacter> getDeityList(String deity)
+	{
+		// Define variables
+		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
+		for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
+		{
+			int charID = character.getKey();
+			HashMap<String, Object> data = character.getValue();
+			PlayerCharacter dataChar = getChar(charID);
 
-            if(dataChar.getDeity().equalsIgnoreCase(deity)) deityList.add(dataChar);
-        }
+			if(dataChar.getDeity().equalsIgnoreCase(deity)) deityList.add(dataChar);
+		}
 
-        return deityList;
-    }
+		return deityList;
+	}
 
-    /*
-     * getAllianceList() : Gets list of characters in an alliance.
-     */
-    public ArrayList<PlayerCharacter> getAllianceList(String alliance)
-    {
-        // Define variables
-        ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
-        for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
-        {
-            int charID = character.getKey();
-            HashMap<String, Object> data = character.getValue();
-            PlayerCharacter dataChar = getChar(charID);
+	/*
+	 * getAllianceList() : Gets list of characters in an alliance.
+	 */
+	public ArrayList<PlayerCharacter> getAllianceList(String alliance)
+	{
+		// Define variables
+		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
+		for(Entry<Integer, HashMap<String, Object>> character : API.data.getAllChars().entrySet())
+		{
+			int charID = character.getKey();
+			HashMap<String, Object> data = character.getValue();
+			PlayerCharacter dataChar = getChar(charID);
 
-            if(dataChar.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(dataChar);
-        }
+			if(dataChar.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(dataChar);
+		}
 
-        return allianceList;
-    }
+		return allianceList;
+	}
 
 	/*
 	 * getImmortalList() : Gets list of currently immortal players.

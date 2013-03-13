@@ -90,14 +90,15 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.BukkitDevDownload;
-import org.bukkit.Bukkit;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.bukkit.Bukkit;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.BukkitDevDownload;
 
 public class UpdateAPI
 {

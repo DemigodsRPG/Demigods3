@@ -90,10 +90,10 @@
 
 package com.censoredsoftware.Demigods.Libraries.Objects;
 
+import java.io.Serializable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-
-import java.io.Serializable;
 
 public class SerialLocation implements Serializable
 {

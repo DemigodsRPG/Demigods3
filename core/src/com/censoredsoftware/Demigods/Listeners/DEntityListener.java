@@ -91,12 +91,7 @@
 package com.censoredsoftware.Demigods.Listeners;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -105,8 +100,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-
-import java.util.ArrayList;
 
 public class DEntityListener implements Listener
 {
@@ -161,11 +154,11 @@ public class DEntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-                PlayerCharacter hitChar = API.player.getCurrentChar(hit);
-                PlayerCharacter hittingChar = API.player.getCurrentChar(hitting);
+				PlayerCharacter hitChar = API.player.getCurrentChar(hit);
+				PlayerCharacter hittingChar = API.player.getCurrentChar(hitting);
 
-                API.battle.battleProcess(hitChar, hittingChar);
-            }
+				API.battle.battleProcess(hitChar, hittingChar);
+			}
 		}
 	}
 

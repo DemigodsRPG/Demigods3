@@ -90,9 +90,10 @@
 
 package com.censoredsoftware.Demigods.API;
 
+import org.bukkit.plugin.Plugin;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
-import org.bukkit.plugin.Plugin;
 
 public class PluginAPI
 {

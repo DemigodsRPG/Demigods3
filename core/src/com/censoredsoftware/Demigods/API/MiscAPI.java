@@ -102,7 +102,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import java.util.Random;
 import java.util.logging.Logger;
 
 public class MiscAPI
@@ -265,13 +264,15 @@ public class MiscAPI
 
 	/**
 	 * Generates a random location with the center being <code>reference</code>.
-	 * Must be at least <code>min</code> blocks from the center and no more than
-	 * <code>max</code> blocks away.
-	 *
-	 * @param 	reference	the location used as the center for reference.
-	 * @param	min			the minimum number of blocks away.
-	 * @param 	max			the maximum number of blocks away.
-	 * @return  			the random location generated.
+	 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
+	 * 
+	 * @param reference
+	 *            the location used as the center for reference.
+	 * @param min
+	 *            the minimum number of blocks away.
+	 * @param max
+	 *            the maximum number of blocks away.
+	 * @return the random location generated.
 	 */
 	public Location randomLocation(Location reference, int min, int max)
 	{
@@ -290,9 +291,10 @@ public class MiscAPI
 
 	/**
 	 * Returns a random location within the <code>chunk</code> passed in.
-	 *
-	 * @param	chunk	the chunk that we will obtain the location from.
-	 * @return			the random location generated.
+	 * 
+	 * @param chunk
+	 *            the chunk that we will obtain the location from.
+	 * @return the random location generated.
 	 */
 	public Location randomChunkLocation(Chunk chunk)
 	{

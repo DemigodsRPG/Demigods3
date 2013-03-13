@@ -90,12 +90,6 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.ExperienceOrb;
@@ -103,6 +97,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class DCharacterListener implements Listener
 {

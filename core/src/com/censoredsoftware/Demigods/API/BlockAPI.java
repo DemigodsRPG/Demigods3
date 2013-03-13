@@ -94,14 +94,9 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Chest;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
-import java.util.Random;
 
 public class BlockAPI
 {
@@ -223,10 +218,12 @@ public class BlockAPI
 	/**
 	 * Checks the <code>reference</code> location to validate if the area is safe
 	 * for automated generation.
-	 *
-	 * @param reference the location to be checked
-	 * @param area		how big of an area (in blocks) to validate
-	 * @return          boolean based on if the location is safe to generate at
+	 * 
+	 * @param reference
+	 *            the location to be checked
+	 * @param area
+	 *            how big of an area (in blocks) to validate
+	 * @return boolean based on if the location is safe to generate at
 	 */
 	public boolean canGenerateSolid(Location reference, int area)
 	{

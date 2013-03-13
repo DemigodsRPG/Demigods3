@@ -90,10 +90,11 @@
 
 package com.censoredsoftware.Demigods.Events.Battle;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class BattleParticipateEvent extends Event implements Cancellable
 {

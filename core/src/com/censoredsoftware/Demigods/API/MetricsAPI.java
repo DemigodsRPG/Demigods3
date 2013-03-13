@@ -90,9 +90,9 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import java.util.HashMap;
-
 import com.censoredsoftware.Demigods.Demigods;
+
+import java.util.HashMap;
 
 public class MetricsAPI
 {

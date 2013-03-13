@@ -90,10 +90,11 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import com.censoredsoftware.Demigods.Demigods;
 
 public class AdminAPI
 {
