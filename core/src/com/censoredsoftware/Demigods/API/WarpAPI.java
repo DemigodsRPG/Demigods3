@@ -90,23 +90,36 @@
 
 package com.censoredsoftware.Demigods.API;
 
+import java.util.ArrayList;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 
-import java.util.ArrayList;
-
 public class WarpAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
+	/**
+	 * Returns an ArrayList of all warps for <code>character</code>.
+	 * 
+	 * @param character the character whose warps to gather
+	 * @return an ArrayList of the <code>character</code> warps.
+	 */
 	public ArrayList<SerialLocation> getWarps(PlayerCharacter character)
 	{
 		if(character == null || API.data.getCharData(character.getID(), "warps") == null) return null;
 		return (ArrayList<SerialLocation>) API.data.getCharData(character.getID(), "warps");
 	}
 
+	/**
+	 * Checks to see if <code>character</code> has a warp for <code>altar</code>.
+	 * 
+	 * @param altar the altar to be checked.
+	 * @param character the character to be checked.
+	 * @return true/false depending on if the <code>character</code> has the warp.
+	 */
 	public boolean hasWarp(Altar altar, PlayerCharacter character)
 	{
 		if(getWarps(character) == null) return false;
@@ -117,11 +130,25 @@ public class WarpAPI
 		return false;
 	}
 
+	/**
+	 * Returns true if <code>character</code> has invites in their que.
+	 * 
+	 * @param character the character to check.
+	 * @return true/false depending on the presence of invites.
+	 */
 	public boolean hasInvites(PlayerCharacter character)
 	{
 		return getInvites(character) != null && !getInvites(character).isEmpty();
 	}
 
+	/**
+	 * Gets the invite from <code>inviting</code> to <code>invited</code> and
+	 * returns a <code>SerialLocation</code>.
+	 * 
+	 * @param inviting the character who sent the invite.
+	 * @param invited the character who received the invite.
+	 * @return the <code>SerialLocation</code> of the invite.
+	 */
 	public SerialLocation getInvite(PlayerCharacter inviting, PlayerCharacter invited)
 	{
 		if(hasInvites(invited))
@@ -134,6 +161,13 @@ public class WarpAPI
 		return null;
 	}
 
+	/**
+	 * Returns the invite for the <code>character</code> with the name <code>name</code>.
+	 * 
+	 * @param character the character to check.
+	 * @param name the name of the invite to get.
+	 * @return the <code>SerialLocation</code> of the invite.
+	 */
 	public SerialLocation getInvite(PlayerCharacter character, String name)
 	{
 		if(hasInvites(character))
@@ -146,26 +180,51 @@ public class WarpAPI
 		return null;
 	}
 
+	/**
+	 * Returns true if <code>invited</code> has already been given an invite from <code>inviting</code>.
+	 * 
+	 * @param inviting the character the invite is from.
+	 * @param invited the character the invite is to.
+	 * @return boolean for if the character has been invited or not.
+	 */
 	public boolean alreadyInvited(PlayerCharacter inviting, PlayerCharacter invited)
 	{
 		if(getInvite(inviting, invited) != null) return true;
 		return false;
 	}
 
+	/**
+	 * Returns an ArrayList of all invite locations for <code>character</code>.
+	 * 
+	 * @param character the character whose invites to grab.
+	 * @return an ArrayList of invite locations.
+	 */
 	public ArrayList<SerialLocation> getInvites(PlayerCharacter character)
 	{
 		return (ArrayList<SerialLocation>) API.data.getCharData(character.getID(), "temp_invites");
 	}
 
-	public void addInvite(PlayerCharacter inviting, PlayerCharacter invited)
+	/**
+	 * Sends an invite to <code>to</code> from <code>from</code>.
+	 * 
+	 * @param from the character whom the invite is from.
+	 * @param to the character whom the invite is to.
+	 */
+	public void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
 		ArrayList<SerialLocation> invites;
-		if(hasInvites(invited)) invites = getInvites(invited);
+		if(hasInvites(to)) invites = getInvites(to);
 		else invites = new ArrayList<SerialLocation>();
-		invites.add(new SerialLocation(inviting.getOwner().getPlayer().getLocation(), inviting.getName()));
-		API.data.saveCharData(invited.getID(), "temp_invites", invites);
+		invites.add(new SerialLocation(from.getOwner().getPlayer().getLocation(), from.getName()));
+		API.data.saveCharData(to.getID(), "temp_invites", invites);
 	}
 
+	/**
+	 * Removes <code>invite</code> from <code>invited</code>.
+	 * 
+	 * @param invited the character to remove the invite from.
+	 * @param invite the invite to remove.
+	 */
 	public void removeInvite(PlayerCharacter invited, SerialLocation invite)
 	{
 		ArrayList<SerialLocation> invites;
@@ -175,8 +234,13 @@ public class WarpAPI
 		API.data.saveCharData(invited.getID(), "temp_invites", invites);
 	}
 
-	public void clearInvites(PlayerCharacter invited)
+	/**
+	 * Clears all invited for <code>character</code>.
+	 * 
+	 * @param character the character whose invites to remove.
+	 */
+	public void clearInvites(PlayerCharacter character)
 	{
-		API.data.removeCharData(invited.getID(), "temp_invites");
+		API.data.removeCharData(character.getID(), "temp_invites");
 	}
 }

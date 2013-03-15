@@ -107,15 +107,14 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 public class ZoneAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
-	public final int SHRINE_RADIUS = 8;
-	public final int ALTAR_RADIUS = 16;
+	public final int SHRINE_RADIUS = API.config.getSettingInt("shrine_zone_radius");
+	public final int ALTAR_RADIUS = API.config.getSettingInt("altar_zone_radius");
 
-	/*
-	 * --------------------------------------------
-	 * No PVP Zones
-	 * --------------------------------------------
+	/**
+	 * Returns true if <code>location</code> is within a no-PVP zone.
 	 * 
-	 * zoneNoPVP() : Returns true if (Location)location is within a no PVP zone.
+	 * @param location the location to check.
+	 * @return true/false depending on if it's a no-PVP zone or not.
 	 */
 	public boolean zoneNoPVP(Location location)
 	{
@@ -134,40 +133,58 @@ public class ZoneAPI
 		}
 	}
 
-	/*
-	 * enterZoneNoPVP() : Returns true if entering a no PVP zone.
+	/**
+	 * Returns true if <code>to</code> is outside of a no-PVP zone.
+	 * 
+	 * @param to the location moving towards.
+	 * @param from the location leaving from.
+	 * @return true/false if leaving a no-PVP zone.
 	 */
 	public boolean enterZoneNoPVP(Location to, Location from)
 	{
 		return !zoneNoPVP(from) && zoneNoPVP(to);
 	}
 
-	/*
-	 * exitZoneNoPVP() : Returns true if exiting a no PVP zone.
+	/**
+	 * Returns true if <code>to</code> is outside of a no-PVP zone.
+	 * 
+	 * @param to the location moving towards.
+	 * @param from the location leaving from.
+	 * @return true/false if leaving a no-PVP zone.
 	 */
 	public boolean exitZoneNoPVP(Location to, Location from)
 	{
 		return enterZoneNoPVP(from, to);
 	}
 
-	/*
-	 * canWorldGuardAndFactionsPVP() : Returns true if PVP is allowed at (Location)location.
+	/**
+	 * Returns true if PVP is allowed at the given <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if PVP is allowed or not.
 	 */
 	public boolean canWorldGuardAndFactionsPVP(Location location)
 	{
 		return canFactionsPVP(location) && canWorldGuardFlagPVP(location) || canFactionsPVP(location) && canWorldGuardFlagPVP(location);
 	}
 
-	/*
-	 * canWorldGuardDynamicPVPAndNotAltar() : Returns true if PVP is allowed at (Location)location, and it's not an Altar.
+	/**
+	 * Returns true if PVP is allowed at the given <code>location</code> and it's
+	 * not an Altar.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if PVP is allowed or not.
 	 */
 	public boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
 	{
 		return (zoneAltar(location) == null) && canWorldGuardDynamicPVP(location) || canWorldGuardDynamicPVP(location) && zoneAltar(location) == null;
 	}
 
-	/*
-	 * canWorldGuardDynamicPVP() : Returns true if PVP is allowed at (Location)location.
+	/**
+	 * Returns true if Dynamic PVP is allowed at the given <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if PVP is allowed or not.
 	 */
 	public boolean canWorldGuardDynamicPVP(Location location)
 	{
@@ -179,8 +196,11 @@ public class ZoneAPI
 		return true;
 	}
 
-	/*
-	 * canWorldGuardFlagPVP() : Returns true if PVP is allowed at (Location)location.
+	/**
+	 * Returns true if PVP is allowed at the given <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if PVP is allowed or not.
 	 */
 	public boolean canWorldGuardFlagPVP(Location location)
 	{
@@ -188,8 +208,11 @@ public class ZoneAPI
 		return !set.allows(DefaultFlag.PVP);
 	}
 
-	/*
-	 * canFactionsPVP() : Returns true if PVP is allowed at (Location)location.
+	/**
+	 * Returns true if PVP is allowed at the given <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if PVP is allowed or not.
 	 */
 	public boolean canFactionsPVP(Location location)
 	{
@@ -197,12 +220,16 @@ public class ZoneAPI
 		return !(faction.isPeaceful() || faction.isSafeZone());
 	}
 
-	/*
-	 * canTarget() : Checks if PVP is allowed in (Location)fallback for (Entity)player.
+	/**
+	 * Returns true if targeting is allowed for <code>player</code> in <code>location</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param location the location to check.
+	 * @return true/false depending on if targeting is allowed.
 	 */
-	public boolean canTarget(Entity player, Location fallback)
+	public boolean canTarget(Entity player, Location location)
 	{
-		return !(player instanceof Player) || API.data.hasPlayerData((Player) player, "temp_was_PVP") && API.config.getSettingBoolean("use_dynamic_pvp_zones") || !zoneNoPVP(fallback);
+		return !(player instanceof Player) || API.data.hasPlayerData((Player) player, "temp_was_PVP") && API.config.getSettingBoolean("use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
 	public boolean canTarget(Entity player)
@@ -211,12 +238,13 @@ public class ZoneAPI
 		return canTarget(player, location);
 	}
 
-	/*
-	 * --------------------------------------------
-	 * No Build Zones
-	 * --------------------------------------------
+	/**
+	 * Returns true if <code>location</code> is within a no-build zone
+	 * for <code>player</code>.
 	 * 
-	 * zoneNoBuild() : Returns true if (Location)location is within a no Build zone for (Player)player.
+	 * @param player the player to check.
+	 * @param location the location to check.
+	 * @return true/false depending on the position of the <code>player</code>.
 	 */
 	public boolean zoneNoBuild(Player player, Location location)
 	{
@@ -225,52 +253,73 @@ public class ZoneAPI
 		else return Demigods.FACTIONS != null && !canFactionsBuild(player, location);
 	}
 
-	/*
-	 * enterZoneNoBuild() : Returns true if entering a no Build zone.
+	/**
+	 * Returns true if the <code>player</code> is entering a no-build zone.
+	 * 
+	 * @param player the player to check.
+	 * @param to the location being entered.
+	 * @param from the location being left.
+	 * @return true/false depending on if the player is entering a no build zone.
 	 */
 	public boolean enterZoneNoBuild(Player player, Location to, Location from)
 	{
 		return !zoneNoBuild(player, from) && zoneNoBuild(player, to);
 	}
 
-	/*
-	 * exitZoneNoBuilt() : Returns true if exiting a no Build zone.
+	/**
+	 * Returns true if the <code>player</code> is exiting a no-build zone.
+	 * 
+	 * @param player the player to check.
+	 * @param to the location being entered.
+	 * @param from the location being left.
+	 * @return true/false depending on if the player is exiting a no build zone.
 	 */
 	public boolean exitZoneNoBuild(Player player, Location to, Location from)
 	{
 		return enterZoneNoBuild(player, from, to);
 	}
 
-	/*
-	 * canWorldGuardAndFactionsBuild() : Returns true if (Player)player is allowed to build at (Location)location.
+	/**
+	 * Returns true if the <code>player</code> can build at <code>location</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param location the location to check.
+	 * @return true/false depending on if the <code>player</code> can build.
 	 */
 	public boolean canWorldGuardAndFactionsBuild(Player player, Location location)
 	{
 		return canFactionsBuild(player, location) && canWorldGuardBuild(player, location) || canFactionsBuild(player, location) && canWorldGuardBuild(player, location);
 	}
 
-	/*
-	 * canWorldGuardBuild() : Returns true if (Player)player can build at (Location)location.
+	/**
+	 * Returns true if the <code>player</code> can build at <code>location</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param location the location to check.
+	 * @return true/false depending on if the <code>player</code> can build.
 	 */
 	public boolean canWorldGuardBuild(Player player, Location location)
 	{
 		return Demigods.WORLDGUARD.canBuild(player, location);
 	}
 
-	/*
-	 * canFactionsBuild() : Returns true if (Player)player can build at (Location)location.
+	/**
+	 * Returns true if the <code>player</code> can build at <code>location</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param location the location to check.
+	 * @return true/false depending on if the <code>player</code> can build.
 	 */
 	public boolean canFactionsBuild(Player player, Location location)
 	{
 		return Demigods.FACTIONS.isPlayerAllowedToBuildHere(player, location);
 	}
 
-	/*
-	 * --------------------------------------------
-	 * Block Zones
-	 * --------------------------------------------
+	/**
+	 * Returns the shrine at <code>location</code>.
 	 * 
-	 * zoneShrine() : Returns a Shrine if (Location)location is within a Shrine's zone.
+	 * @param location the location to check.
+	 * @return the Shrine object.
 	 */
 	public Shrine zoneShrine(Location location)
 	{
@@ -284,8 +333,11 @@ public class ZoneAPI
 		return null;
 	}
 
-	/*
-	 * zoneShrineOwner() : Returns the owner of a Shrine from (Location)location.
+	/**
+	 * Returns the character ID of the Shrine owner at <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return the character ID of the owner.
 	 */
 	public int zoneShrineOwner(Location location)
 	{
@@ -298,24 +350,35 @@ public class ZoneAPI
 		return -1;
 	}
 
-	/*
-	 * enterZoneShrine() : Returns true if entering a Shrine zone.
+	/**
+	 * Returns true if <code>from</code> is entering Altar <code>to</code>.
+	 * 
+	 * @param to location coming from.
+	 * @param from location heading to.
+	 * @return true/false depending on the direction of movement.
 	 */
 	public boolean enterZoneShrine(Location to, Location from)
 	{
 		return (zoneShrine(from) == null) && zoneShrine(to) != null;
 	}
 
-	/*
-	 * exitZoneShrine() : Returns true if exiting a Shrine zone.
+	/**
+	 * Returns true if <code>to</code> is leaving Shrine <code>from</code>.
+	 * 
+	 * @param to location coming from.
+	 * @param from location heading to.
+	 * @return true/false depending on the direction of movement.
 	 */
 	public boolean exitZoneShrine(Location to, Location from)
 	{
 		return enterZoneShrine(from, to);
 	}
 
-	/*
-	 * zoneAltar() : Returns true if (Location)location is within an Altar's zone.
+	/**
+	 * Returns true if <code>location</code> is within an Altar zone.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on the position of <code>location</code>.
 	 */
 	public Altar zoneAltar(Location location)
 	{
@@ -329,16 +392,24 @@ public class ZoneAPI
 		return null;
 	}
 
-	/*
-	 * enterZoneAltar() : Returns true if entering an Altar zone.
+	/**
+	 * Returns true if <code>from</code> is entering Altar <code>to</code>.
+	 * 
+	 * @param to location coming from.
+	 * @param from location heading to.
+	 * @return true/false depending on the direction of movement.
 	 */
 	public boolean enterZoneAltar(Location to, Location from)
 	{
 		return (zoneAltar(from) == null) && zoneAltar(to) != null;
 	}
 
-	/*
-	 * exitZoneAltar() : Returns true if exiting an Altar zone.
+	/**
+	 * Returns true if <code>to</code> is leaving Altar <code>from</code>.
+	 * 
+	 * @param to location coming from.
+	 * @param from location heading to.
+	 * @return true/false depending on the direction of movement.
 	 */
 	public boolean exitZoneAltar(Location to, Location from)
 	{
