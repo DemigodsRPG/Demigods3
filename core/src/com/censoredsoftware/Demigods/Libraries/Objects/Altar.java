@@ -104,10 +104,10 @@ public class Altar implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 1020598192563856384L;
 
-	protected final int id;
-	protected boolean active;
-	protected final SerialLocation center;
-	protected ArrayList<ProtectedBlock> blocks;
+	private int id;
+	private boolean active;
+	private SerialLocation center;
+	private ArrayList<ProtectedBlock> blocks;
 
 	public Altar(Location location)
 	{

@@ -98,10 +98,10 @@ import org.bukkit.Location;
 public class SerialLocation implements Serializable
 {
 	private static final long serialVersionUID = 1869297397495176134L;
-	protected final double X, Y, Z;
-	protected final float pitch, yaw;
-	protected final String world;
-	protected String name;
+	private double X, Y, Z;
+	private float pitch, yaw;
+	private final String world;
+	private String name;
 
 	public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw)
 	{
@@ -155,7 +155,7 @@ public class SerialLocation implements Serializable
 		return name;
 	}
 
-	public void setName(String name)
+	public synchronized void setName(String name)
 	{
 		this.name = name.toUpperCase();
 	}

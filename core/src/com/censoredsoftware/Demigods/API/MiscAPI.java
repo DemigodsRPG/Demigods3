@@ -90,8 +90,8 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -102,19 +102,20 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import java.util.logging.Logger;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
 public class MiscAPI
 {
 	// Define variables
 	private static final Demigods API = Demigods.INSTANCE;
-	private final String plugin_name = "Demigods";
-	private final Logger log = Logger.getLogger("Minecraft");
+	private static final String plugin_name = "Demigods";
+	private static final Logger log = Logger.getLogger("Minecraft");
 
 	/*
 	 * getLog() : Returns an instance of the Logger.
 	 */
-	public Logger getLog()
+	public static Logger getLog()
 	{
 		return log;
 	}
@@ -267,11 +268,11 @@ public class MiscAPI
 	 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
 	 * 
 	 * @param reference
-	 *            the location used as the center for reference.
+	 *        the location used as the center for reference.
 	 * @param min
-	 *            the minimum number of blocks away.
+	 *        the minimum number of blocks away.
 	 * @param max
-	 *            the maximum number of blocks away.
+	 *        the maximum number of blocks away.
 	 * @return the random location generated.
 	 */
 	public Location randomLocation(Location reference, int min, int max)
@@ -293,7 +294,7 @@ public class MiscAPI
 	 * Returns a random location within the <code>chunk</code> passed in.
 	 * 
 	 * @param chunk
-	 *            the chunk that we will obtain the location from.
+	 *        the chunk that we will obtain the location from.
 	 * @return the random location generated.
 	 */
 	public Location randomChunkLocation(Chunk chunk)

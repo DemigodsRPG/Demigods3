@@ -35,6 +35,18 @@ public class SpecialItems
 		pages.add("hehehhe");
 		items.put(100.0, API.item.createBook(ChatColor.GREEN + "Joke Book #1", "A Terrible Comedian", pages, null));
 
+		// Hidden Allure
+		pages.clear();
+		pages.add("The thirst for power has no end... It is more responsible for suffering than most evils in this world.");
+		pages.add("Those with power are responsible for the end of time. The end is near and it will assure my omnipotence.");
+		pages.add("I will be watching you.");
+		for(int i = 0; i < 25; i++)
+		{
+			pages.add("...");
+		}
+
+		items.put(75.0, API.item.createBook(ChatColor.BLACK + "Allure of Fate", "The Watcher", pages, null));
+
 		return items;
 	}
 }

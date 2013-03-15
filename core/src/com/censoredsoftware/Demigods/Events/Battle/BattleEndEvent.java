@@ -97,9 +97,9 @@ import org.bukkit.event.HandlerList;
 public class BattleEndEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final int battleID;
-	protected final Long endTime;
-	protected boolean cancelled = false;
+	private int battleID;
+	private Long endTime;
+	private boolean cancelled = false;
 
 	public BattleEndEvent(final int battleID, final Long endTime)
 	{
@@ -141,7 +141,7 @@ public class BattleEndEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

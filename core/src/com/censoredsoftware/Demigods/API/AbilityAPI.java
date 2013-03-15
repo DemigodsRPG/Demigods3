@@ -115,7 +115,7 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class AbilityAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
-	public static final int TARGETOFFSET = 5;
+	private static final int TARGETOFFSET = 5;
 
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
@@ -171,30 +171,6 @@ public class AbilityAPI
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Returns true if the ability for <code>player</code> with cost <code>cost</code> has passed all pre-process tests.
-	 * 
-	 * @param player the player doing the ability
-	 * @param cost the cost (in favor) of the ability
-	 * @return true/false depending on if all pre-process tests have passed
-	 */
-	public boolean doAbilityPreProcess(Player player, int cost)
-	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
-
-		if(!API.zone.canTarget(player))
-		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return false;
-		}
-		else if(character.getFavor() < cost)
-		{
-			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
-			return false;
-		}
-		else return true;
 	}
 
 	/**
@@ -260,11 +236,30 @@ public class AbilityAPI
 	}
 
 	/**
-	 * Returns the Location that <code>character</code> will hit when targeting <code>target</code>.
+	 * Returns true if the ability event for <code>character</code>, called <code>name</code>,
+	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed
+	 * all pre-process tests.
 	 * 
-	 * @param character the character aiming
-	 * @param target the target location
-	 * @return the location actually aimed at
+	 * @param character the character triggering the ability event
+	 * @param name the name of the ability
+	 * @param cost the cost (in favor) of the ability
+	 * @param type the AbilityType of the ability
+	 * @return true/false if the event isn't cancelled or not
+	 */
+	public boolean event(String name, PlayerCharacter character, int cost, AbilityType type)
+	{
+		AbilityEvent event = new AbilityEvent(name, character, cost, type);
+		API.misc.callEvent(event);
+		return !event.isCancelled();
+	}
+
+	/**
+	 * Returns the location that <code>character</code> is actually aiming
+	 * at when targeting <code>target</code>.
+	 * 
+	 * @param character the character triggering the ability event
+	 * @param target the location the character is targeting at
+	 * @return the aimed at location
 	 */
 	public Location aimLocation(PlayerCharacter character, Location target)
 	{
@@ -309,11 +304,11 @@ public class AbilityAPI
 	}
 
 	/**
-	 * Returns true if <code>target</code> is withing hitting distance of <code>hit</code>.
+	 * Returns true if <code>target</code> is hit at <code>hit</code>.
 	 * 
-	 * @param target the targeted LivingEntity
-	 * @param hit the location being hit
-	 * @return true/false depending on if <code>target</code> is hit
+	 * @param target the LivingEntity being targeted
+	 * @param hit the location actually hit
+	 * @return true/false if <code>target</code> is hit
 	 */
 	public boolean isHit(LivingEntity target, Location hit)
 	{
@@ -321,21 +316,20 @@ public class AbilityAPI
 		return hit.distance(shouldHit) <= 2;
 	}
 
-	/**
-	 * Returns true if the ability event for <code>character</code>, called <code>name</code>,
-	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed
-	 * all pre-process tests.
-	 * 
-	 * @param character the character triggering the ability event
-	 * @param name the name of the ability
-	 * @param cost the cost (in favor) of the ability
-	 * @param type the AbilityType of the ability
-	 * @return true/false if the event isn't cancelled or not
-	 */
-	public boolean event(String name, PlayerCharacter character, int cost, AbilityType type)
+	private boolean doAbilityPreProcess(Player player, int cost)
 	{
-		AbilityEvent event = new AbilityEvent(name, character, cost, type);
-		API.misc.callEvent(event);
-		return !event.isCancelled();
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.zone.canTarget(player))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return false;
+		}
+		else if(character.getFavor() < cost)
+		{
+			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
+			return false;
+		}
+		else return true;
 	}
 }

@@ -101,8 +101,8 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class CharacterKillCharacterEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final PlayerCharacter attacker;
-	protected final PlayerCharacter killedChar;
+	private PlayerCharacter attacker;
+	private PlayerCharacter killedChar;
 
 	public CharacterKillCharacterEvent(final PlayerCharacter attacker, final PlayerCharacter killedChar)
 	{

@@ -108,30 +108,30 @@ public class PlayerCharacter implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 8201132625259394712L;
 
-	protected final String playerName;
-	protected final String charName;
-	protected final String charDeity;
-	protected String charAlliance;
-	protected final int playerID;
-	protected final int charID;
-	protected int charLevel;
-	protected int charKillstreak;
-	protected int charFoodLevel;
-	protected int charHealth;
-	protected final int charMaxHealth;
-	protected int charFavor;
-	protected int charMaxFavor;
-	protected int charDevotion;
-	protected int charAscensions;
-	protected int powerOffense;
-	protected int powerDefense;
-	protected int powerStealth;
-	protected int powerSupport;
-	protected int powerPassive;
-	protected float charExp;
-	protected SerialPlayerInventory charInv = null;
-	protected SerialLocation location;
-	protected boolean charActive, charImmortal;
+	private String playerName;
+	private String charName;
+	private String charDeity;
+	private String charAlliance;
+	private int playerID;
+	private int charID;
+	private int charLevel;
+	private int charKillstreak;
+	private int charFoodLevel;
+	private int charHealth;
+	private int charMaxHealth;
+	private int charFavor;
+	private int charMaxFavor;
+	private int charDevotion;
+	private int charAscensions;
+	private int powerOffense;
+	private int powerDefense;
+	private int powerStealth;
+	private int powerSupport;
+	private int powerPassive;
+	private float charExp;
+	private SerialPlayerInventory charInv = null;
+	private SerialLocation location;
+	private boolean charActive, charImmortal;
 
 	public PlayerCharacter(OfflinePlayer player, int charID, String charName, String charDeity)
 	{
@@ -177,13 +177,13 @@ public class PlayerCharacter implements Serializable
 	 * Favor-specific Methods
 	 * ----------------------------------------
 	 */
-	public void setFavor(int amount)
+	public synchronized void setFavor(int amount)
 	{
 		this.charFavor = amount;
 		save();
 	}
 
-	public void giveFavor(int amount)
+	public synchronized void giveFavor(int amount)
 	{
 		if(this.charFavor + amount > charMaxFavor)
 		{
@@ -193,7 +193,7 @@ public class PlayerCharacter implements Serializable
 		save();
 	}
 
-	public void subtractFavor(int amount)
+	public synchronized void subtractFavor(int amount)
 	{
 		if(this.charFavor - amount < 0)
 		{
@@ -203,13 +203,13 @@ public class PlayerCharacter implements Serializable
 		save();
 	}
 
-	public void setMaxFavor(int amount)
+	public synchronized void setMaxFavor(int amount)
 	{
 		this.charMaxFavor = amount;
 		save();
 	}
 
-	public void addMaxFavor(int amount)
+	public synchronized void addMaxFavor(int amount)
 	{
 		if((this.charMaxFavor + amount) > API.config.getSettingInt("global_max_favor"))
 		{
@@ -243,13 +243,13 @@ public class PlayerCharacter implements Serializable
 		return (int) Math.ceil(500 * Math.pow(charAscensions + 1, 2.02));
 	}
 
-	public void setDevotion(int amount)
+	public synchronized void setDevotion(int amount)
 	{
 		this.charFavor = amount;
 		save();
 	}
 
-	public void giveDevotion(int amount)
+	public synchronized void giveDevotion(int amount)
 	{
 		int devotionBefore = this.charDevotion;
 		int devotionGoal = getDevotionGoal();
@@ -278,7 +278,7 @@ public class PlayerCharacter implements Serializable
 		}
 	}
 
-	public void subtractDevotion(int amount)
+	public synchronized void subtractDevotion(int amount)
 	{
 		if(this.charDevotion - amount < 0)
 		{
@@ -293,19 +293,19 @@ public class PlayerCharacter implements Serializable
 	 * Ascension-specific Methods
 	 * ----------------------------------------
 	 */
-	public void setAscensions(int amount)
+	public synchronized void setAscensions(int amount)
 	{
 		this.charAscensions = amount;
 		save();
 	}
 
-	public void giveAscensions(int amount)
+	public synchronized void giveAscensions(int amount)
 	{
 		this.charAscensions += amount;
 		save();
 	}
 
-	public void subtractAscensions(int amount)
+	public synchronized void subtractAscensions(int amount)
 	{
 		if(this.charAscensions - amount < 0)
 		{
@@ -325,7 +325,7 @@ public class PlayerCharacter implements Serializable
 		return this.charKillstreak;
 	}
 
-	public void setKillstreak(int killstreak)
+	public synchronized void setKillstreak(int killstreak)
 	{
 		this.charKillstreak = killstreak;
 		save();
@@ -355,7 +355,7 @@ public class PlayerCharacter implements Serializable
 		return powerK;
 	}
 
-	public void setPower(AbilityType type, int POWER)
+	public synchronized void setPower(AbilityType type, int POWER)
 	{
 		if(POWER < 1) POWER = 1;
 		switch(type)
@@ -393,13 +393,13 @@ public class PlayerCharacter implements Serializable
 		return color;
 	}
 
-	public void setHealth(int amount)
+	public synchronized void setHealth(int amount)
 	{
 		this.charHealth = amount;
 		save();
 	}
 
-	public void saveInventory()
+	public synchronized void saveInventory()
 	{
 		this.charInv = new SerialPlayerInventory(getOwner().getPlayer().getInventory());
 		save();
@@ -411,31 +411,31 @@ public class PlayerCharacter implements Serializable
 		else return null;
 	}
 
-	public void setFoodLevel(int amount)
+	public synchronized void setFoodLevel(int amount)
 	{
 		this.charFoodLevel = amount;
 		save();
 	}
 
-	public void setExp(float amount)
+	public synchronized void setExp(float amount)
 	{
 		this.charExp = amount;
 		save();
 	}
 
-	public void setLevel(int amount)
+	public synchronized void setLevel(int amount)
 	{
 		this.charLevel = amount;
 		save();
 	}
 
-	public void setLocation(Location location)
+	public synchronized void setLocation(Location location)
 	{
 		this.location = new SerialLocation(location);
 		save();
 	}
 
-	public void setAlliance(String alliance)
+	public synchronized void setAlliance(String alliance)
 	{
 		this.charAlliance = alliance.toLowerCase();
 		save();
@@ -446,13 +446,13 @@ public class PlayerCharacter implements Serializable
 		return this.charDeity.toLowerCase().equalsIgnoreCase(deity);
 	}
 
-	public void toggleActive(boolean option)
+	public synchronized void toggleActive(boolean option)
 	{
 		this.charActive = option;
 		save();
 	}
 
-	public void toggleImmortal(boolean option)
+	public synchronized void toggleImmortal(boolean option)
 	{
 		this.charImmortal = option;
 		save();
@@ -463,7 +463,7 @@ public class PlayerCharacter implements Serializable
 		return API.data.hasCharData(this.charID, "boolean_" + ability.toLowerCase()) && API.object.toBoolean(API.data.getCharData(this.charID, "boolean_" + ability.toLowerCase()));
 	}
 
-	public void toggleAbility(String ability, boolean option)
+	public synchronized void toggleAbility(String ability, boolean option)
 	{
 		API.data.saveCharData(this.charID, "boolean_" + ability.toLowerCase(), option);
 	}
@@ -492,7 +492,7 @@ public class PlayerCharacter implements Serializable
 		else return new ArrayList<Material>();
 	}
 
-	public boolean setBound(String ability, Material material)
+	public synchronized boolean setBound(String ability, Material material)
 	{
 		Player player = (Player) Bukkit.getOfflinePlayer(this.playerName);
 		if(API.data.getCharData(this.charID, ability + "_bind") == null)
@@ -544,7 +544,7 @@ public class PlayerCharacter implements Serializable
 		return false;
 	}
 
-	public boolean removeBind(String ability, Material material)
+	public synchronized boolean removeBind(String ability, Material material)
 	{
 		ArrayList<Material> bindings = null;
 

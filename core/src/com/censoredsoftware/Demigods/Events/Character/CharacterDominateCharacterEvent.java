@@ -101,8 +101,8 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class CharacterDominateCharacterEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final PlayerCharacter character;
-	protected final PlayerCharacter dominated;
+	private PlayerCharacter character;
+	private PlayerCharacter dominated;
 
 	public CharacterDominateCharacterEvent(final PlayerCharacter character, final PlayerCharacter dominated)
 	{

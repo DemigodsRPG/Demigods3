@@ -100,16 +100,10 @@ public class Task implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = -2993695235782423170L;
 
-	protected final int character;
-	protected final ArrayList<String> description;
-	protected final String quest;
-	protected final String plugin;
-	protected final String classPath;
-	protected final String invokeID;
-	protected final int order;
-	protected final int taskID;
-	protected boolean active;
-	protected final boolean required;
+	private int character, order, taskID;
+	private ArrayList<String> description;
+	private String quest, plugin, classPath, invokeID;
+	private boolean active, required;
 
 	public Task(PlayerCharacter character, ArrayList<String> description, String quest, int order, boolean active, boolean required, DemigodsPlugin plugin, String classPath, int taskID, String invokeID)
 	{
@@ -156,7 +150,7 @@ public class Task implements Serializable
 	/*
 	 * setActive() : Sets (boolean)active.
 	 */
-	public void setActive(boolean active)
+	public synchronized void setActive(boolean active)
 	{
 		this.active = active;
 	}

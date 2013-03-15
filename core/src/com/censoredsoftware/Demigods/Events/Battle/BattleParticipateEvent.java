@@ -99,10 +99,10 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class BattleParticipateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected int battleID;
-	protected final PlayerCharacter defending;
-	protected final PlayerCharacter attacking;
-	protected boolean cancelled = false;
+	private int battleID;
+	private PlayerCharacter defending;
+	private PlayerCharacter attacking;
+	private boolean cancelled = false;
 
 	public BattleParticipateEvent(final int battleID, final PlayerCharacter defending, final PlayerCharacter attacking)
 	{

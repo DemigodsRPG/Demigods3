@@ -105,8 +105,8 @@ import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
 public class DFlatFile
 {
 	private static final Demigods API = Demigods.INSTANCE;
-	static final String path = "plugins/Demigods/data/";
-	static File DemigodsDir, PlayerDir, CharacterDir, BattleDir, QuestDir, BlockDir, MetricsDir, PublicMetricsDir, PrivateMetricsDir;
+	private static final String path = "plugins/Demigods/data/";
+	private static File DemigodsDir, PlayerDir, CharacterDir, BattleDir, QuestDir, BlockDir, MetricsDir, PublicMetricsDir, PrivateMetricsDir;
 
 	public static void start()
 	{
@@ -167,7 +167,7 @@ public class DFlatFile
 	/*
 	 * save : Saves itself, but must be loaded elsewhere (main plugin).
 	 */
-	public static boolean save()
+	public synchronized static boolean save()
 	{
 		start();
 
@@ -215,7 +215,7 @@ public class DFlatFile
 		}
 	}
 
-	public static void saveDemigods()
+	public synchronized static void saveDemigods()
 	{
 		start();
 
@@ -237,7 +237,7 @@ public class DFlatFile
 		}
 	}
 
-	public static int savePlayers()
+	public synchronized static int savePlayers()
 	{
 		start();
 
@@ -261,7 +261,7 @@ public class DFlatFile
 		return count;
 	}
 
-	public static int savePlayer(OfflinePlayer player)
+	public synchronized static int savePlayer(OfflinePlayer player)
 	{
 		start();
 
@@ -320,7 +320,7 @@ public class DFlatFile
 		return charCount;
 	}
 
-	public static int saveBattles()
+	public synchronized static int saveBattles()
 	{
 		start();
 
@@ -348,7 +348,7 @@ public class DFlatFile
 		return count;
 	}
 
-	public static int saveQuests()
+	public synchronized static int saveQuests()
 	{
 		start();
 
@@ -379,7 +379,7 @@ public class DFlatFile
 		return count;
 	}
 
-	public static int saveBlocks()
+	public synchronized static int saveBlocks()
 	{
 		start();
 
@@ -412,7 +412,7 @@ public class DFlatFile
 		return count;
 	}
 
-	public static int saveMetrics()
+	public synchronized static int saveMetrics()
 	{
 		start();
 
@@ -456,7 +456,7 @@ public class DFlatFile
 	/*
 	 * load() : Loads all Flat File data to HashMaps.
 	 */
-	public static void load()
+	public synchronized static void load()
 	{
 		start();
 
@@ -472,7 +472,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadDemigods(boolean msgBool)
+	public synchronized static void loadDemigods(boolean msgBool)
 	{
 		start();
 
@@ -505,7 +505,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadPlayers(boolean msgBool)
+	public synchronized static void loadPlayers(boolean msgBool)
 	{
 		start();
 
@@ -538,7 +538,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadCharacters(boolean msgBool)
+	public synchronized static void loadCharacters(boolean msgBool)
 	{
 		start();
 
@@ -581,7 +581,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadBattles(boolean msgBool)
+	public synchronized static void loadBattles(boolean msgBool)
 	{
 		start();
 
@@ -616,7 +616,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadQuests(boolean msgBool)
+	public synchronized static void loadQuests(boolean msgBool)
 	{
 		start();
 
@@ -658,7 +658,7 @@ public class DFlatFile
 		}
 	}
 
-	public static void loadBlocks(boolean msgBool)
+	public synchronized static void loadBlocks(boolean msgBool)
 	{
 		API.data.getAllBlockData().put("altars", new HashMap<Integer, Object>());
 		API.data.getAllBlockData().put("shrines", new HashMap<Integer, Object>());
@@ -712,7 +712,7 @@ public class DFlatFile
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void loadMetrics(boolean msgBool)
+	public synchronized static void loadMetrics(boolean msgBool)
 	{
 		start();
 
