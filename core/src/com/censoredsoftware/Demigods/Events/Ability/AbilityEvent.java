@@ -102,12 +102,12 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class AbilityEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final String name;
-	protected final PlayerCharacter character;
-	protected final String deity;
-	protected final int cost;
-	protected final AbilityType type;
-	protected boolean cancelled = false;
+	private String name;
+	private PlayerCharacter character;
+	private String deity;
+	private int cost;
+	private AbilityType type;
+	private boolean cancelled = false;
 
 	public AbilityEvent(final String name, final PlayerCharacter character, final int cost, final AbilityType type)
 	{
@@ -176,7 +176,7 @@ public class AbilityEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

@@ -103,9 +103,9 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class ShrineCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final PlayerCharacter owner;
-	protected final Location block;
-	protected boolean cancelled = false;
+	private PlayerCharacter owner;
+	private Location block;
+	private boolean cancelled = false;
 
 	public ShrineCreateEvent(final PlayerCharacter owner, final Location block)
 	{
@@ -147,7 +147,7 @@ public class ShrineCreateEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

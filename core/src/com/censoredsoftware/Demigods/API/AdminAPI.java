@@ -127,7 +127,7 @@ public class AdminAPI
 	/*
 	 * consoleDebugEnabled() : Returns true if console debug is enabled in the config.
 	 */
-	public boolean consoleDebugEnabled()
+	public static boolean consoleDebugEnabled()
 	{
 		return API.config.getSettingBoolean("console_debug");
 	}

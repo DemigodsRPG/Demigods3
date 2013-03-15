@@ -99,11 +99,11 @@ import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
 public class BattleCombineEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final int battleID;
-	protected final Battle first;
-	protected final Battle second;
-	protected final Long combineTime;
-	protected boolean cancelled = false;
+	private int battleID;
+	private Battle first;
+	private Battle second;
+	private Long combineTime;
+	private boolean cancelled = false;
 
 	public BattleCombineEvent(int battleID, final Battle first, final Battle second, Long combineTime)
 	{
@@ -163,7 +163,7 @@ public class BattleCombineEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

@@ -106,7 +106,7 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Miscellaneous.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.SpecialItems;
 

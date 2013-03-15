@@ -39,7 +39,7 @@ public class BukkitDevDownload
 		}
 	}
 
-	public boolean updateNeeded()
+	public synchronized boolean updateNeeded()
 	{
 		try
 		{

@@ -157,36 +157,17 @@ public class ZoneAPI
 		return enterZoneNoPVP(from, to);
 	}
 
-	/**
-	 * Returns true if PVP is allowed at the given <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on if PVP is allowed or not.
-	 */
-	public boolean canWorldGuardAndFactionsPVP(Location location)
+	private boolean canWorldGuardAndFactionsPVP(Location location)
 	{
 		return canFactionsPVP(location) && canWorldGuardFlagPVP(location) || canFactionsPVP(location) && canWorldGuardFlagPVP(location);
 	}
 
-	/**
-	 * Returns true if PVP is allowed at the given <code>location</code> and it's
-	 * not an Altar.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on if PVP is allowed or not.
-	 */
-	public boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
+	private boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
 	{
 		return (zoneAltar(location) == null) && canWorldGuardDynamicPVP(location) || canWorldGuardDynamicPVP(location) && zoneAltar(location) == null;
 	}
 
-	/**
-	 * Returns true if Dynamic PVP is allowed at the given <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on if PVP is allowed or not.
-	 */
-	public boolean canWorldGuardDynamicPVP(Location location)
+	private boolean canWorldGuardDynamicPVP(Location location)
 	{
 		ApplicableRegionSet set = Demigods.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);
 		for(ProtectedRegion region : set)
@@ -196,25 +177,13 @@ public class ZoneAPI
 		return true;
 	}
 
-	/**
-	 * Returns true if PVP is allowed at the given <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on if PVP is allowed or not.
-	 */
-	public boolean canWorldGuardFlagPVP(Location location)
+	private boolean canWorldGuardFlagPVP(Location location)
 	{
 		ApplicableRegionSet set = Demigods.WORLDGUARD.getRegionManager(location.getWorld()).getApplicableRegions(location);
 		return !set.allows(DefaultFlag.PVP);
 	}
 
-	/**
-	 * Returns true if PVP is allowed at the given <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on if PVP is allowed or not.
-	 */
-	public boolean canFactionsPVP(Location location)
+	private boolean canFactionsPVP(Location location)
 	{
 		Faction faction = Board.getFactionAt(new FLocation(location.getBlock()));
 		return !(faction.isPeaceful() || faction.isSafeZone());
@@ -232,6 +201,12 @@ public class ZoneAPI
 		return !(player instanceof Player) || API.data.hasPlayerData((Player) player, "temp_was_PVP") && API.config.getSettingBoolean("use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
+	/**
+	 * Returns true if targeting is allowed for <code>player</code>.
+	 * 
+	 * @param player the player to check.
+	 * @return true/false depending on if targeting is allowed.
+	 */
 	public boolean canTarget(Entity player)
 	{
 		Location location = player.getLocation();
@@ -279,40 +254,19 @@ public class ZoneAPI
 		return enterZoneNoBuild(player, from, to);
 	}
 
-	/**
-	 * Returns true if the <code>player</code> can build at <code>location</code>.
-	 * 
-	 * @param player the player to check.
-	 * @param location the location to check.
-	 * @return true/false depending on if the <code>player</code> can build.
-	 */
-	public boolean canWorldGuardAndFactionsBuild(Player player, Location location)
+	private boolean canWorldGuardAndFactionsBuild(Player player, Location location)
 	{
 		return canFactionsBuild(player, location) && canWorldGuardBuild(player, location) || canFactionsBuild(player, location) && canWorldGuardBuild(player, location);
 	}
 
-	/**
-	 * Returns true if the <code>player</code> can build at <code>location</code>.
-	 * 
-	 * @param player the player to check.
-	 * @param location the location to check.
-	 * @return true/false depending on if the <code>player</code> can build.
-	 */
-	public boolean canWorldGuardBuild(Player player, Location location)
+	private boolean canWorldGuardBuild(Player player, Location location)
 	{
-		return Demigods.WORLDGUARD.canBuild(player, location);
+		return API.WORLDGUARD.canBuild(player, location);
 	}
 
-	/**
-	 * Returns true if the <code>player</code> can build at <code>location</code>.
-	 * 
-	 * @param player the player to check.
-	 * @param location the location to check.
-	 * @return true/false depending on if the <code>player</code> can build.
-	 */
-	public boolean canFactionsBuild(Player player, Location location)
+	private boolean canFactionsBuild(Player player, Location location)
 	{
-		return Demigods.FACTIONS.isPlayerAllowedToBuildHere(player, location);
+		return API.FACTIONS.isPlayerAllowedToBuildHere(player, location);
 	}
 
 	/**

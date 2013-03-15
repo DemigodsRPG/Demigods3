@@ -108,7 +108,7 @@ public class DeityAPI
 	/*
 	 * getDeityClass() : Returns the string of the (String)deity's classpath.
 	 */
-	public String getDeityClass(String deity)
+	public static String getDeityClass(String deity)
 	{
 		return API.data.getPluginData("temp_deity_classes", deity).toString();
 	}
@@ -116,7 +116,7 @@ public class DeityAPI
 	/*
 	 * getAllDeities() : Returns a list off all the loaded Deities.
 	 */
-	public ArrayList<String> getAllDeities()
+	public static ArrayList<String> getAllDeities()
 	{
 		ArrayList<String> deities = new ArrayList<String>();
 		for(String deity : API.data.getAllPluginData().get("temp_deity_classes").keySet())
@@ -129,7 +129,7 @@ public class DeityAPI
 	/*
 	 * getClassLoader() : Returns the ClassLoader for the deity.
 	 */
-	public ClassLoader getClassLoader(String deityPath)
+	public static ClassLoader getClassLoader(String deityPath)
 	{
 		if(API.data.getPluginData("temp_deity_classloader", deityPath) != null) return (ClassLoader) API.data.getPluginData("temp_deity_classloader", deityPath);
 		else return Demigods.class.getClassLoader();
@@ -225,7 +225,7 @@ public class DeityAPI
 	/*
 	 * getLoadedDeityNames() : Returns a ArrayList<String> of all the loaded deities' names.
 	 */
-	public ArrayList<String> getLoadedDeityNames()
+	public static ArrayList<String> getLoadedDeityNames()
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 
@@ -240,7 +240,7 @@ public class DeityAPI
 	/*
 	 * getLoadedDeityAlliances() : Returns a ArrayList<String> of all the loaded deities' alliances.
 	 */
-	public ArrayList<String> getLoadedDeityAlliances()
+	public static ArrayList<String> getLoadedDeityAlliances()
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 
@@ -256,7 +256,7 @@ public class DeityAPI
 	/*
 	 * getDeityAlliance() : Returns a String of a loaded (String)deity's alliance.
 	 */
-	public String getDeityAlliance(String deity)
+	public static String getDeityAlliance(String deity)
 	{
 		return (String) API.data.getPluginData("temp_deity_alliances", deity.toLowerCase());
 	}
@@ -297,7 +297,7 @@ public class DeityAPI
 	/*
 	 * getAllDeityCommands() : Returns a ArrayList<String> of all the loaded deities' commands.
 	 */
-	public ArrayList<String> getAllDeityCommands()
+	public static ArrayList<String> getAllDeityCommands()
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 

@@ -98,13 +98,13 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class BattleStartEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final int battleID;
-	protected final PlayerCharacter defending;
-	protected final PlayerCharacter attacking;
-	protected final Long startTime;
-	protected boolean cancelled = false;
+	private int battleID;
+	private PlayerCharacter defending;
+	private PlayerCharacter attacking;
+	private Long startTime;
+	private boolean cancelled = false;
 
-	public BattleStartEvent(int battleID, final PlayerCharacter defending, final PlayerCharacter attacking, Long startTime)
+	public BattleStartEvent(final int battleID, final PlayerCharacter defending, final PlayerCharacter attacking, final Long startTime)
 	{
 		this.battleID = battleID;
 		this.defending = defending;
@@ -162,7 +162,7 @@ public class BattleStartEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

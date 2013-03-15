@@ -100,8 +100,8 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class CharacterBetrayCharacterEvent extends CharacterKillCharacterEvent
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected PlayerCharacter killedChar;
-	protected final String alliance;
+	private PlayerCharacter killedChar;
+	private String alliance;
 
 	public CharacterBetrayCharacterEvent(final PlayerCharacter attacker, final PlayerCharacter killedChar, final String alliance)
 	{

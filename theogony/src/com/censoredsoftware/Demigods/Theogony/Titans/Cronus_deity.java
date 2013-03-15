@@ -90,10 +90,8 @@
 
 package com.censoredsoftware.Demigods.Theogony.Titans;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -110,7 +108,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Cronus_deity implements Listener
 {
@@ -290,7 +291,7 @@ public class Cronus_deity implements Listener
 		// Define variables
 		Player player = (Player) damageEvent.getDamager();
 		Entity attacked = damageEvent.getEntity();
-        if(!(attacked instanceof LivingEntity)) return;
+		if(!(attacked instanceof LivingEntity)) return;
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
 		if(!API.ability.doAbilityPreProcess(player, (LivingEntity) attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
@@ -390,7 +391,7 @@ public class Cronus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(!API.ability.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		if(!API.ability.doAbilityPreProcess(player, "timestop", ULTIMATE_COST, AbilityType.SUPPORT)) return;
 
 		int duration = (int) Math.round(9.9155621 * Math.pow(character.getAscensions(), 0.459019));
 		player.sendMessage(ChatColor.YELLOW + "Cronus has stopped time for " + duration + " seconds, for " + timestop(player, duration) + " enemies!");

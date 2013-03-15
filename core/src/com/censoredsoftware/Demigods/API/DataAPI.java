@@ -105,13 +105,13 @@ public class DataAPI
 	private static final Demigods API = Demigods.INSTANCE;
 
 	// Define HashMaps
-	private final HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
-	private final HashMap<Object, HashMap<String, HashMap<String, Object>>> timedData = new HashMap<Object, HashMap<String, HashMap<String, Object>>>();
-	private final HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
-	private final HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
-	private final HashMap<Integer, HashMap<String, Object>> battleData = new HashMap<Integer, HashMap<String, Object>>();
-	private final HashMap<Integer, HashMap<String, Object>> taskData = new HashMap<Integer, HashMap<String, Object>>();
-	private final HashMap<String, HashMap<Integer, Object>> blockData = new HashMap<String, HashMap<Integer, Object>>();
+	private static final HashMap<String, HashMap<String, Object>> pluginData = new HashMap<String, HashMap<String, Object>>();
+	private static final HashMap<Object, HashMap<String, HashMap<String, Object>>> timedData = new HashMap<Object, HashMap<String, HashMap<String, Object>>>();
+	private static final HashMap<String, HashMap<String, Object>> playerData = new HashMap<String, HashMap<String, Object>>();
+	private static final HashMap<Integer, HashMap<String, Object>> charData = new HashMap<Integer, HashMap<String, Object>>();
+	private static final HashMap<Integer, HashMap<String, Object>> battleData = new HashMap<Integer, HashMap<String, Object>>();
+	private static final HashMap<Integer, HashMap<String, Object>> taskData = new HashMap<Integer, HashMap<String, Object>>();
+	private static final HashMap<String, HashMap<Integer, Object>> blockData = new HashMap<String, HashMap<Integer, Object>>();
 
 	/*
 	 * ---------------------------------------------------
@@ -180,7 +180,7 @@ public class DataAPI
 	/*
 	 * getAllPluginData() : Returns all pluginData.
 	 */
-	public HashMap<String, HashMap<String, Object>> getAllPluginData()
+	public static HashMap<String, HashMap<String, Object>> getAllPluginData()
 	{
 		return pluginData;
 	}
@@ -208,7 +208,7 @@ public class DataAPI
 	}
 
 	/*
-	 * hasPluginData() : Returns true/false according to if (String)dataKey exists for (String)dataID.
+	 * hasBlockData() : Returns true/false according to if (String)dataKey exists for (String)dataID.
 	 */
 	public boolean hasBlockData(String blockType)
 	{
@@ -231,7 +231,7 @@ public class DataAPI
 	/*
 	 * getAllBlockData() : Returns all block data.
 	 */
-	public HashMap<String, HashMap<Integer, Object>> getAllBlockData()
+	public static HashMap<String, HashMap<Integer, Object>> getAllBlockData()
 	{
 		return blockData;
 	}
@@ -654,16 +654,13 @@ public class DataAPI
 		playerData.remove(playerName);
 		charData.remove(playerName);
 
-		// TEMP -------------------------------
-		// DDatabase.removePlayer(player);
-
 		return true;
 	}
 
 	/*
 	 * getAllPlayers() : Returns all players in the playerData HashMap.
 	 */
-	public HashMap<String, HashMap<String, Object>> getAllPlayers()
+	public static HashMap<String, HashMap<String, Object>> getAllPlayers()
 	{
 		return playerData;
 	}
@@ -671,7 +668,7 @@ public class DataAPI
 	/*
 	 * getAllPlayerData() : Returns all playerData for (Player)player.
 	 */
-	public HashMap<String, Object> getAllPlayerData(OfflinePlayer player)
+	public static HashMap<String, Object> getAllPlayerData(OfflinePlayer player)
 	{
 		String playerName = player.getName();
 		return playerData.get(playerName);
@@ -680,7 +677,7 @@ public class DataAPI
 	/*
 	 * getAllChars() : Returns all players in the charData HashMap.
 	 */
-	public HashMap<Integer, HashMap<String, Object>> getAllChars()
+	public static HashMap<Integer, HashMap<String, Object>> getAllChars()
 	{
 		return charData;
 	}
@@ -688,7 +685,7 @@ public class DataAPI
 	/*
 	 * getAllBattles() : Returns all battles in the battleData HashMap.
 	 */
-	public HashMap<Integer, HashMap<String, Object>> getAllBattles()
+	public static HashMap<Integer, HashMap<String, Object>> getAllBattles()
 	{
 		return battleData;
 	}
@@ -696,7 +693,7 @@ public class DataAPI
 	/*
 	 * getAllTasks() : Returns all battles in the battleData HashMap.
 	 */
-	public HashMap<Integer, HashMap<String, Object>> getAllTasks()
+	public static HashMap<Integer, HashMap<String, Object>> getAllTasks()
 	{
 		return taskData;
 	}
@@ -704,7 +701,7 @@ public class DataAPI
 	/*
 	 * getAllCharData() : Returns all charData for (int)charID.
 	 */
-	public HashMap<String, Object> getAllCharData(int charID)
+	public static HashMap<String, Object> getAllCharData(int charID)
 	{
 		return charData.get(charID);
 	}

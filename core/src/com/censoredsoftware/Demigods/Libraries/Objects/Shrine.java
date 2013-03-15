@@ -104,11 +104,11 @@ public class Shrine implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 1020598192563856384L;
 
-	protected final int id;
-	protected final PlayerCharacter owner;
-	protected final String deity;
-	protected ProtectedBlock block;
-	protected final SerialLocation location;
+	private int id;
+	private PlayerCharacter owner;
+	private String deity;
+	private ProtectedBlock block;
+	private SerialLocation location;
 
 	public Shrine(PlayerCharacter character, Location location)
 	{
@@ -134,7 +134,7 @@ public class Shrine implements Serializable
 	/*
 	 * remove() : Removes the Shrine.
 	 */
-	public void remove()
+	public synchronized void remove()
 	{
 		API.data.removeBlockData("shrines", this.id);
 
@@ -183,7 +183,7 @@ public class Shrine implements Serializable
 		return this.location.unserialize();
 	}
 
-	public void generate()
+	public synchronized void generate()
 	{
 		Location location = this.getLocation();
 
