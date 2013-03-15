@@ -101,9 +101,9 @@ import org.bukkit.event.HandlerList;
 public class AltarRemoveEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final Location block;
-	protected final AltarRemoveCause cause;
-	protected boolean cancelled = false;
+	private Location block;
+	private AltarRemoveCause cause;
+	private boolean cancelled = false;
 
 	public AltarRemoveEvent(final Location block, final AltarRemoveCause cause)
 	{
@@ -150,7 +150,7 @@ public class AltarRemoveEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

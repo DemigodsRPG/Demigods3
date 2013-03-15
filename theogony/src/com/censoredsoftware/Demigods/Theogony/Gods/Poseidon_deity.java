@@ -90,11 +90,8 @@
 
 package com.censoredsoftware.Demigods.Theogony.Gods;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Quests.Gods.Poseidon.Test_Quest.Task1_task;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -111,7 +108,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Poseidon_deity implements Listener
 {
@@ -344,7 +344,7 @@ public class Poseidon_deity implements Listener
 		int duration = (int) Math.ceil(2.80488 * Math.pow(power, 0.2689)); // seconds
 		LivingEntity target = API.ability.autoTarget(player);
 		if(target == null) return; // Null check
-		Location toHit = API.ability.targetLocation(character, target.getLocation());
+		Location toHit = API.ability.aimLocation(character, target.getLocation());
 
 		if(!API.ability.doAbilityPreProcess(player, target, "drown", DROWN_COST, AbilityType.OFFENSE)) return;
 		character.subtractFavor(DROWN_COST);

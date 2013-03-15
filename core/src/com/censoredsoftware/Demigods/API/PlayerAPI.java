@@ -346,7 +346,7 @@ public class PlayerAPI
 	/*
 	 * regenerateAllFavor() : Regenerates favor for every player based on their stats.
 	 */
-	public void regenerateAllFavor()
+	public synchronized void regenerateAllFavor()
 	{
 		ArrayList<Player> onlinePlayers = getOnlinePlayers();
 
@@ -359,63 +359,6 @@ public class PlayerAPI
 			character.giveFavor(regenRate);
 		}
 	}
-
-	/*
-	 * getNumberOfSouls() : Returns the number of souls (Player)player has in their inventory.
-	 * 
-	 * public int getNumberOfSouls(OfflinePlayer player)
-	 * {
-	 * // Define inventory contents & other variables
-	 * ItemStack[] inventory = player.getInventory().getContents();
-	 * ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
-	 * int numberOfSouls = 0;
-	 * 
-	 * for(ItemStack soul : allSouls)
-	 * {
-	 * for(ItemStack inventoryItem : inventory)
-	 * {
-	 * if(inventoryItem != null && inventoryItem.isSimilar(soul))
-	 * {
-	 * // Find amount of souls and subtract 1 upon use
-	 * int amount = inventoryItem.getAmount();
-	 * 
-	 * numberOfSouls = numberOfSouls + amount;
-	 * }
-	 * }
-	 * }
-	 * return numberOfSouls;
-	 * }
-	 * 
-	 * 
-	 * /*
-	 * useSoul() : Uses first soul found in (Player)player's inventory.
-	 * 
-	 * public ItemStack useSoul(OfflinePlayer player)
-	 * {
-	 * if(getNumberOfSouls(player) == 0) return null;
-	 * // Define inventory contents
-	 * ItemStack[] inventory = player.getInventory().getContents();
-	 * ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
-	 * 
-	 * for(ItemStack soul : allSouls)
-	 * {
-	 * for(ItemStack inventoryItem : inventory)
-	 * {
-	 * if(inventoryItem != null && inventoryItem.isSimilar(soul))
-	 * {
-	 * // Find amount of souls and subtract 1 upon use
-	 * int amount = inventoryItem.getAmount();
-	 * player.getInventory().removeItem(inventoryItem);
-	 * inventoryItem.setAmount(amount - 1);
-	 * player.getInventory().addItem(inventoryItem);
-	 * 
-	 * return inventoryItem;
-	 * }
-	 * }
-	 * }
-	 * return null;
-	 * }
-	 */
 
 	/*
 	 * getKills() : Returns (int)kills for (Player)player.
@@ -470,7 +413,7 @@ public class PlayerAPI
 	/*
 	 * getOnlineAdmins() : Returns a ArrayList of all online admins.
 	 */
-	public ArrayList<Player> getOnlineAdmins()
+	public static ArrayList<Player> getOnlineAdmins()
 	{
 		ArrayList<Player> toReturn = new ArrayList<Player>();
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -483,7 +426,7 @@ public class PlayerAPI
 	/*
 	 * getOnlinePlayers() : Returns a ArrayList of all online players.
 	 */
-	public ArrayList<Player> getOnlinePlayers()
+	public static ArrayList<Player> getOnlinePlayers()
 	{
 		ArrayList<Player> toReturn = new ArrayList<Player>();
 		Collections.addAll(toReturn, Bukkit.getOnlinePlayers());
@@ -493,7 +436,7 @@ public class PlayerAPI
 	/*
 	 * getOfflinePlayers() : Returns a ArrayList of all offline players.
 	 */
-	public ArrayList<OfflinePlayer> getOfflinePlayers()
+	public static ArrayList<OfflinePlayer> getOfflinePlayers()
 	{
 		ArrayList<OfflinePlayer> toReturn = getAllPlayers();
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -506,7 +449,7 @@ public class PlayerAPI
 	/*
 	 * getAllPlayers() : Returns a ArrayList of all offline players.
 	 */
-	public ArrayList<OfflinePlayer> getAllPlayers()
+	public static ArrayList<OfflinePlayer> getAllPlayers()
 	{
 		ArrayList<OfflinePlayer> toReturn = new ArrayList<OfflinePlayer>();
 		for(String playerName : API.data.getAllPlayers().keySet())

@@ -110,7 +110,7 @@ import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 public class BattleAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
-	final int BATTLEDISTANCE = 16; // TODO
+	private static final int BATTLEDISTANCE = 16; // TODO
 
 	/*
 	 * getBattle() : Returns the Battle object for (int)battleID.
@@ -230,7 +230,7 @@ public class BattleAPI
 		return false;
 	}
 
-	public void checkForInactiveBattles()
+	public synchronized void checkForInactiveBattles()
 	{
 		for(Battle battle : getAllActiveBattles())
 		{

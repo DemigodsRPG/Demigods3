@@ -107,9 +107,9 @@ public class ConfigAPI
 	private FileConfiguration config = null;
 	private File configFile = null;
 	private final String configFolder = "Configs";
-	private final Demigods API = Demigods.INSTANCE;
+	private final static Demigods API = Demigods.INSTANCE;
 
-	public void initializeConfig()
+	public synchronized static void initializeConfig()
 	{
 		Configuration mainConfig = API.getConfig().getRoot();
 		mainConfig.options().copyDefaults(true);
@@ -163,7 +163,7 @@ public class ConfigAPI
 	/*
 	 * saveConfig() : Saves the custom configuration (String)name to file system.
 	 */
-	public void saveConfig(String name)
+	public synchronized void saveConfig(String name)
 	{
 		if(config == null || configFile == null) return;
 
@@ -181,7 +181,7 @@ public class ConfigAPI
 	/*
 	 * saveDefaultConfig() : Saves the defaults for custom configuration (String)name to file system.
 	 */
-	public void saveDefaultConfig(String name)
+	public synchronized void saveDefaultConfig(String name)
 	{
 		configFile = new File(API.getDataFolder() + File.separator + configFolder, name + ".yml");
 		new File(API.getDataFolder() + File.separator + configFolder).mkdir();
@@ -207,7 +207,7 @@ public class ConfigAPI
 	/*
 	 * reloadConfig() : Reloads the custom configuration (String)name to refresh values.
 	 */
-	public void reloadConfig(String name)
+	public synchronized void reloadConfig(String name)
 	{
 		if(configFile == null)
 		{

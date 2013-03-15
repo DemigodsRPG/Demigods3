@@ -90,10 +90,8 @@
 
 package com.censoredsoftware.Demigods.Theogony.Gods;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -108,7 +106,10 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Zeus_deity implements Listener
 {
@@ -369,7 +370,7 @@ public class Zeus_deity implements Listener
 			return;
 		}
 
-		if(!API.ability.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		if(!API.ability.doAbilityPreProcess(player, "storm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
 
 		// Perform ultimate if there is enough favor
 		int count = storm(player);
@@ -435,7 +436,7 @@ public class Zeus_deity implements Listener
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!API.zone.canTarget(target)) return false;
-		Location toHit = API.ability.targetLocation(character, target.getLocation());
+		Location toHit = API.ability.aimLocation(character, target.getLocation());
 
 		player.getWorld().strikeLightningEffect(toHit);
 

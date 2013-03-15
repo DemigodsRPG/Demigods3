@@ -103,10 +103,9 @@ import com.censoredsoftware.Demigods.Libraries.Objects.BukkitDevDownload;
 public class UpdateAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
+	private static final BukkitDevDownload bukkitDev = new BukkitDevDownload("http://dev.bukkit.org/server-mods/demigods/files.rss");
 
-	public final BukkitDevDownload bukkitDev = new BukkitDevDownload("http://dev.bukkit.org/server-mods/demigods/files.rss");
-
-	public boolean shouldUpdate()
+	public static boolean shouldUpdate()
 	{
 		if(bukkitDev.updateNeeded())
 		{
@@ -116,7 +115,7 @@ public class UpdateAPI
 		return false;
 	}
 
-	public void demigodsUpdate()
+	public static void demigodsUpdate()
 	{
 		try
 		{
@@ -185,7 +184,7 @@ public class UpdateAPI
 		}
 	}
 
-	private String getDownloadLink()
+	private static String getDownloadLink()
 	{
 		return bukkitDev.getJarLink();
 	}

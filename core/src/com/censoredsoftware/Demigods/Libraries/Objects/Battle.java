@@ -103,14 +103,14 @@ public class Battle implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 4216924382953412112L;
 
-	final int battleID;
-	final int whoStarted;
-	final SerialLocation startLocation;
-	ArrayList<Integer> involvedCharIDs;
-	ArrayList<SerialLocation> involvedLocations;
-	final Long startTime;
-	Long endTime;
-	boolean isActive = true;
+	private int battleID;
+	private int whoStarted;
+	private SerialLocation startLocation;
+	private ArrayList<Integer> involvedCharIDs;
+	private ArrayList<SerialLocation> involvedLocations;
+	private Long startTime;
+	private Long endTime;
+	private boolean isActive = true;
 
 	public Battle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime, final int battleID)
 	{
@@ -221,7 +221,7 @@ public class Battle implements Serializable
 		return this.isActive;
 	}
 
-	public void setActive(boolean active)
+	public synchronized void setActive(boolean active)
 	{
 		this.isActive = active;
 	}

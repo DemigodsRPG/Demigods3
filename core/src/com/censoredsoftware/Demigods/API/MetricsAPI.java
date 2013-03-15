@@ -90,17 +90,17 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-
 import java.util.HashMap;
+
+import com.censoredsoftware.Demigods.Demigods;
 
 public class MetricsAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
 	// Define HashMaps
-	private final HashMap<String, HashMap<Object, Object>> publicMetrics = new HashMap<String, HashMap<Object, Object>>();
-	private final HashMap<String, HashMap<Object, Object>> privateMetrics = new HashMap<String, HashMap<Object, Object>>();
+	private static final HashMap<String, HashMap<Object, Object>> publicMetrics = new HashMap<String, HashMap<Object, Object>>();
+	private static final HashMap<String, HashMap<Object, Object>> privateMetrics = new HashMap<String, HashMap<Object, Object>>();
 
 	/*
 	 * ---------------------------------------------------
@@ -169,7 +169,7 @@ public class MetricsAPI
 	/*
 	 * getPublicFor() : Returns the nested HashMap for (String)dataID.
 	 */
-	public HashMap<Object, Object> getPublicFor(String dataID)
+	public static HashMap<Object, Object> getPublicFor(String dataID)
 	{
 		return publicMetrics.get(dataID);
 	}
@@ -177,7 +177,7 @@ public class MetricsAPI
 	/*
 	 * getAllPublic() : Returns all publicMetrics.
 	 */
-	public HashMap<String, HashMap<Object, Object>> getAllPublic()
+	public static HashMap<String, HashMap<Object, Object>> getAllPublic()
 	{
 		return publicMetrics;
 	}

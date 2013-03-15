@@ -101,10 +101,10 @@ import org.bukkit.event.HandlerList;
 public class CharacterCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final OfflinePlayer owner;
-	protected final String name;
-	protected final String deity;
-	protected boolean cancelled = false;
+	private OfflinePlayer owner;
+	private String name;
+	private String deity;
+	private boolean cancelled = false;
 
 	public CharacterCreateEvent(final OfflinePlayer owner, final String name, final String deity)
 	{
@@ -155,7 +155,7 @@ public class CharacterCreateEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

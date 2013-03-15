@@ -103,10 +103,10 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class CharacterSwitchEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final OfflinePlayer player;
-	protected final PlayerCharacter toCharacter;
-	protected final PlayerCharacter fromCharacter;
-	protected boolean cancelled = false;
+	private OfflinePlayer player;
+	private PlayerCharacter toCharacter;
+	private PlayerCharacter fromCharacter;
+	private boolean cancelled = false;
 
 	public CharacterSwitchEvent(final OfflinePlayer player, final PlayerCharacter fromCharacter, final PlayerCharacter toCharacter)
 	{
@@ -157,7 +157,7 @@ public class CharacterSwitchEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public void setCancelled(boolean cancelled)
+	public synchronized void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

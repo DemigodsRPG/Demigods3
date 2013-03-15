@@ -104,6 +104,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.google.common.base.Joiner;
 
@@ -248,7 +249,7 @@ public class Template implements Listener
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
-		if(!API.ability.doAbilityPreProcess(player, TEST_COST)) return;
+		if(!API.ability.doAbilityPreProcess(player, "testabil", TEST_COST, AbilityEvent.AbilityType.PASSIVE)) return;
 		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 		character.subtractFavor(TEST_COST);
 
@@ -275,7 +276,7 @@ public class Template implements Listener
 			return;
 		}
 
-		if(!API.ability.doAbilityPreProcess(player, ULTIMATE_COST)) return;
+		if(!API.ability.doAbilityPreProcess(player, "testult", ULTIMATE_COST, AbilityEvent.AbilityType.PASSIVE)) return;
 		character.subtractFavor(ULTIMATE_COST);
 
 		player.sendMessage(ChatColor.YELLOW + "You just used the ultimate, " + ULTIMATE_NAME + ", for " + DEITYNAME + "!");

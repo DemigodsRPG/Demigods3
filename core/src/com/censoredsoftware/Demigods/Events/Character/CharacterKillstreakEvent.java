@@ -101,9 +101,9 @@ import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 public class CharacterKillstreakEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	protected final PlayerCharacter character;
-	protected final PlayerCharacter lastKilled;
-	protected final int kills;
+	private PlayerCharacter character;
+	private PlayerCharacter lastKilled;
+	private int kills;
 
 	public CharacterKillstreakEvent(final PlayerCharacter character, final PlayerCharacter lastKilled, final int kills)
 	{

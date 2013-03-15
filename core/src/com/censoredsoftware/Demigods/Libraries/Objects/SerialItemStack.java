@@ -106,13 +106,13 @@ public class SerialItemStack implements Serializable
 {
 	private static final long serialVersionUID = -5645654430614861947L;
 
-	final int type;
-	final int amount;
-	final short durability;
-	final HashMap<Integer, Integer> enchantments = new HashMap<Integer, Integer>();
-	String displayName = null, author = null, title = null;
-	List<String> lore = null, pages = null;
-	Map<String, Object> bookMeta = null;
+	private int type;
+	private int amount;
+	private short durability;
+	private HashMap<Integer, Integer> enchantments = new HashMap<Integer, Integer>();
+	private String displayName = null, author = null, title = null;
+	private List<String> lore = null, pages = null;
+	private Map<String, Object> bookMeta = null;
 
 	public SerialItemStack(ItemStack item)
 	{

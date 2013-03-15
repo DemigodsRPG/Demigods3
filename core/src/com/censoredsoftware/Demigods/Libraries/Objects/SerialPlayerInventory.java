@@ -109,16 +109,16 @@ public class SerialPlayerInventory implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = -5645654430614861947L;
 
-	String owner;
-	SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack leggings = new SerialItemStack(new ItemStack(Material.AIR));
-	SerialItemStack boots = new SerialItemStack(new ItemStack(Material.AIR));
-	final HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
+	private String owner;
+	private SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack leggings = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack boots = new SerialItemStack(new ItemStack(Material.AIR));
+	private HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
 
 	int size;
 
-	SerialPlayerInventory(Inventory inventory)
+	public SerialPlayerInventory(Inventory inventory)
 	{
 		if(inventory != null)
 		{
@@ -165,7 +165,7 @@ public class SerialPlayerInventory implements Serializable
 	/*
 	 * setToPlayer() : Sets the inventory to a player.
 	 */
-	public void setToPlayer(OfflinePlayer entity)
+	public synchronized void setToPlayer(OfflinePlayer entity)
 	{
 		Player player;
 
