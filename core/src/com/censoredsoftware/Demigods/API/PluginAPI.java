@@ -95,6 +95,9 @@ import org.bukkit.plugin.Plugin;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 
+/**
+ * API for universal Demigods methods.
+ */
 public class PluginAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;

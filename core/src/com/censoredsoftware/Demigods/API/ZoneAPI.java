@@ -104,6 +104,9 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
+/**
+ * API for all Zone and area-specific methods.
+ */
 public class ZoneAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;

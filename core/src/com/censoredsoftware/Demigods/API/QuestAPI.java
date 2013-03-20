@@ -90,6 +90,9 @@
 
 package com.censoredsoftware.Demigods.API;
 
+/**
+ * API for all Quest-related methods.
+ */
 public class QuestAPI
 {
 	// TODO

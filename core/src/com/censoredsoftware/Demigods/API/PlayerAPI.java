@@ -107,13 +107,19 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialPlayerInventory;
 
+/**
+ * API for all player-related methods.
+ */
 public class PlayerAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
-	/*
-	 * createPlayer() : Adds (Player)player to the database.
-	 */
+    /**
+     * Adds the <code>player</code> to the database/filesystem.
+     *
+     * @param player the new player to add.
+     * @return boolean based on the success or failure of adding the player.
+     */
 	public boolean createNewPlayer(Player player)
 	{
 		API.misc.info("Saving new player: " + player.getName());
@@ -133,17 +139,23 @@ public class PlayerAPI
 		return true;
 	}
 
-	/*
-	 * getPlayerID() : Returns the ID of (Player)player.
-	 */
+    /**
+     * Returns the ID of <code>player</code>.
+     *
+     * @param player the player the check.
+     * @return int
+     */
 	public int getPlayerID(OfflinePlayer player)
 	{
 		return API.object.toInteger(API.data.getPlayerData(player, "player_id"));
 	}
 
-	/*
-	 * getPlayerFromID() : Returns the (Player)player for (int)player_id.
-	 */
+    /**
+     * Returns the player with the ID of <code>playerID</code>.
+     *
+     * @param playerID the ID to get the player from.
+     * @return OfflinePlayer
+     */
 	public OfflinePlayer getPlayerFromID(int playerID)
 	{
 		for(Entry<String, HashMap<String, Object>> player : API.data.getAllPlayers().entrySet())
@@ -153,17 +165,22 @@ public class PlayerAPI
 		return null;
 	}
 
-	/*
-	 * definePlayer() : Defines a Player from sender.
-	 */
+    /**
+     * Defines and returns a player based on the string <list>name</list>.
+     *
+     * @param name the name to define a player from.
+     * @return OfflinePlayer
+     */
 	public OfflinePlayer definePlayer(String name)
 	{
 		return Bukkit.getOfflinePlayer(name);
 	}
 
-	/*
-	 * getCurrentChar() : Returns the current charID for (Player)player.
-	 */
+    /**
+     * Returns the current character of the <code>player</code>.
+     * @param player the player to check.
+     * @return PlayerCharacter
+     */
 	public PlayerCharacter getCurrentChar(OfflinePlayer player)
 	{
 		try
@@ -176,9 +193,12 @@ public class PlayerAPI
 		}
 	}
 
-	/*
-	 * getCurrentAlliance() : Returns the current alliance for (Player)player.
-	 */
+    /**
+     * Returns the current alliance for <code>player</code>.
+     *
+     * @param player the player to check.
+     * @return String
+     */
 	public String getCurrentAlliance(OfflinePlayer player)
 	{
 		PlayerCharacter character = getCurrentChar(player);
@@ -186,9 +206,14 @@ public class PlayerAPI
 		return character.getAlliance();
 	}
 
-	/*
-	 * areAllied() : Returns true if (Player)player1 is allied with (Player)player2.
-	 */
+    /**
+     * Returns true if <code>player1</code> is allied with <code>player2</code> based
+     * on their current alliances.
+     *
+     * @param player1 the first player to check.
+     * @param player2 the second player to check.
+     * @return boolean
+     */
 	public boolean areAllied(Player player1, Player player2)
 	{
 		String player1Alliance = getCurrentAlliance(player1);
@@ -197,9 +222,11 @@ public class PlayerAPI
 		return player1Alliance.equalsIgnoreCase(player2Alliance);
 	}
 
-	/*
-	 * getChars() : Returns an ArrayList of (Player)player's characters.
-	 */
+    /**
+     * Returns a List of all of <code>player</code>'s characters.
+     * @param player the player to check.
+     * @return List the list of all character IDs.
+     */
 	public List<Integer> getChars(OfflinePlayer player)
 	{
 		List<Integer> charArray = new ArrayList<Integer>();
@@ -214,9 +241,13 @@ public class PlayerAPI
 		return charArray;
 	}
 
-	/*
-	 * changeCurrentChar() : Changes the (Player)player's current character to the one passed in.
-	 */
+    /**
+     * Changes the <code>offlinePlayer</code>'s current character to <code>charID</code>.
+     *
+     * @param offlinePlayer the player whose character to change.
+     * @param charID the character ID to switch to.
+     * @return boolean based on if the change was successful or not.
+     */
 	public boolean changeCurrentChar(OfflinePlayer offlinePlayer, int charID)
 	{
 		// Define variables
@@ -283,26 +314,36 @@ public class PlayerAPI
 		return true;
 	}
 
-	/*
-	 * isImmortal() : Returns the current alliance for (Player)player.
-	 */
+    /**
+     * Returns true if the <code>player</code> is currently immortal.
+     * @param player the player to check.
+     * @return boolean
+     */
 	public boolean isImmortal(OfflinePlayer player)
 	{
 		PlayerCharacter character = getCurrentChar(player);
 		return !(character == null || !character.isImmortal());
 	}
 
-	/*
-	 * hasCharID() : Checks to see if (OfflinePlayer)player has (int)charID.
-	 */
+    /**
+     * Returns true if <code>player</code> has a character with the id <code>charID</code>.
+     *
+     * @param player the player to check.
+     * @param charID the charID to check with.
+     * @return boolean
+     */
 	public boolean hasCharID(OfflinePlayer player, int charID)
 	{
 		return getChars(player) != null && getChars(player).contains(charID);
 	}
 
-	/*
-	 * hasCharName() : Checks to see if (OfflinePlayer)player has (String)charName.
-	 */
+    /**
+     * Returns true if <code>player</code> has a character with the name <code>charName</code>.
+     *
+     * @param player the player to check.
+     * @param charName the charName to check with.
+     * @return boolean
+     */
 	public boolean hasCharName(OfflinePlayer player, String charName)
 	{
 		List<Integer> characters = getChars(player);
@@ -316,36 +357,20 @@ public class PlayerAPI
 		return false;
 	}
 
-	/*
-	 * togglePraying() : Toggles prayer status for player.
-	 */
-	public void togglePraying(OfflinePlayer player, boolean option)
-	{
-		if(option)
-		{
-			togglePlayerChat(player, false);
-			togglePlayerMovement(player, false);
-			API.data.savePlayerData(player, "temp_praying", option);
-		}
-		else
-		{
-			togglePlayerChat(player, true);
-			togglePlayerMovement(player, true);
-			API.data.removePlayerData(player, "temp_praying");
-		}
-	}
-
-	/*
-	 * isPraying() : Returns a boolean for if the player is currently praying.
-	 */
+    /**
+     * Returns true if the <code>player</code> is currently praying.
+     *
+     * @param player the player to check.
+     * @return boolean
+     */
 	public boolean isPraying(OfflinePlayer player)
 	{
 		return API.data.getPlayerData(player, "temp_praying") != null && API.object.toBoolean(API.data.getPlayerData(player, "temp_praying"));
 	}
 
-	/*
-	 * regenerateAllFavor() : Regenerates favor for every player based on their stats.
-	 */
+    /**
+     * Regenerates favor for all currently online players.
+     */
 	public synchronized void regenerateAllFavor()
 	{
 		ArrayList<Player> onlinePlayers = getOnlinePlayers();
@@ -360,59 +385,76 @@ public class PlayerAPI
 		}
 	}
 
-	/*
-	 * getKills() : Returns (int)kills for (Player)player.
-	 */
+    /**
+     * Returns the number of total kills for <code>player</code>.
+     *
+     * @param player the player to check.
+     * @return int
+     */
 	public int getKills(OfflinePlayer player)
 	{
 		if(API.data.getPlayerData(player, "player_kills") != null) return Integer.parseInt(API.data.getPlayerData(player, "player_kills").toString());
 		return -1;
 	}
 
-	/*
-	 * setKills() : Sets the (Player)player's kills to (int)amount.
-	 */
+    /**
+     * Sets the amount of kills for <code>player</code> to <code>amount</code>.
+     *
+     * @param player the player to manipulate.
+     * @param amount the amount of kills to set to.
+     */
 	public void setKills(OfflinePlayer player, int amount)
 	{
 		API.data.savePlayerData(player, "player_kills", amount);
 	}
 
-	/*
-	 * addKill() : Gives (Player)player 1 kill.
-	 */
+    /**
+     * Adds 1 kill to <code>player</code>.
+     *
+     * @param player the player to manipulate.
+     */
 	public void addKill(OfflinePlayer player)
 	{
 		API.data.savePlayerData(player, "player_kills", getKills(player) + 1);
 	}
 
-	/*
-	 * getDeaths() : Returns (int)deaths for (Player)player.
-	 */
+    /**
+     * Returns the number of deaths for <code>player</code>.
+     *
+     * @param player the player to check.
+     * @return int
+     */
 	public int getDeaths(OfflinePlayer player)
 	{
 		if(API.data.getPlayerData(player, "player_deaths") != null) return Integer.parseInt(API.data.getPlayerData(player, "player_deaths").toString());
 		return -1;
 	}
 
-	/*
-	 * setDeaths() : Sets the (Player)player's deaths to (int)amount.
-	 */
+    /**
+     * Sets the number of deaths for <code>player</code> to <code>amount</code>.
+     *
+     * @param player the player to manipulate.
+     * @param amount the amount of deaths to set.
+     */
 	public void setDeaths(OfflinePlayer player, int amount)
 	{
 		API.data.savePlayerData(player, "player_deaths", amount);
 	}
 
-	/*
-	 * addDeath() : Gives (Player)player 1 death.
-	 */
+    /**
+     * Adds a death to <code>player</code>.
+     * @param player the player to manipulate.
+     */
 	public void addDeath(OfflinePlayer player)
 	{
 		API.data.savePlayerData(player, "player_deaths", getDeaths(player) + 1);
 	}
 
-	/*
-	 * getOnlineAdmins() : Returns a ArrayList of all online admins.
-	 */
+    /**
+     * Returns an ArrayList of all online admins.
+     *
+     * @return ArrayList
+     */
 	public static ArrayList<Player> getOnlineAdmins()
 	{
 		ArrayList<Player> toReturn = new ArrayList<Player>();
@@ -423,9 +465,11 @@ public class PlayerAPI
 		return toReturn;
 	}
 
-	/*
-	 * getOnlinePlayers() : Returns a ArrayList of all online players.
-	 */
+    /**
+     * Returns an ArrayList of all online players.
+     *
+     * @return ArrayList
+     */
 	public static ArrayList<Player> getOnlinePlayers()
 	{
 		ArrayList<Player> toReturn = new ArrayList<Player>();
@@ -433,9 +477,11 @@ public class PlayerAPI
 		return toReturn;
 	}
 
-	/*
-	 * getOfflinePlayers() : Returns a ArrayList of all offline players.
-	 */
+    /**
+     * Returns an ArrayList of all offline players.
+     *
+     * @return ArrayList
+     */
 	public static ArrayList<OfflinePlayer> getOfflinePlayers()
 	{
 		ArrayList<OfflinePlayer> toReturn = getAllPlayers();
@@ -446,9 +492,11 @@ public class PlayerAPI
 		return toReturn;
 	}
 
-	/*
-	 * getAllPlayers() : Returns a ArrayList of all offline players.
-	 */
+    /**
+     * Returns an ArrayList of all players, offline and online.
+     *
+     * @return ArrayList
+     */
 	public static ArrayList<OfflinePlayer> getAllPlayers()
 	{
 		ArrayList<OfflinePlayer> toReturn = new ArrayList<OfflinePlayer>();
@@ -459,18 +507,46 @@ public class PlayerAPI
 		return toReturn;
 	}
 
-	/*
-	 * togglePlayerMovement() : Toggles holding a player's feet in place.
-	 */
+    /**
+     * Changes prayer status for <code>player</code> to <code>option</code>.
+     *
+     * @param player the player the manipulate.
+     * @param option the boolean to set to.
+     */
+    public void togglePraying(OfflinePlayer player, boolean option)
+    {
+        if(option)
+        {
+            togglePlayerChat(player, false);
+            togglePlayerMovement(player, false);
+            API.data.savePlayerData(player, "temp_praying", option);
+        }
+        else
+        {
+            togglePlayerChat(player, true);
+            togglePlayerMovement(player, true);
+            API.data.removePlayerData(player, "temp_praying");
+        }
+    }
+
+    /**
+     * Enables or disables player movement for <code>player</code> based on <code>option</code>.
+     *
+     * @param player the player to manipulate.
+     * @param option the boolean to set to.
+     */
 	public void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
 		if(API.data.hasPlayerData(player, "temp_player_hold") && option) API.data.removePlayerData(player, "temp_player_hold");
 		else API.data.savePlayerData(player, "temp_player_hold", true);
 	}
 
-	/*
-	 * togglePlayerChat() : Toggles chat for a player.
-	 */
+    /**
+     * Enables or disables player chat for <code>player</code> based on <code>option</code>.
+     *
+     * @param player the player to manipulate.
+     * @param option the boolean to set to.
+     */
 	public void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
 		if(API.data.hasPlayerData(player, "temp_no_chat") && option) API.data.removePlayerData(player, "temp_no_chat");

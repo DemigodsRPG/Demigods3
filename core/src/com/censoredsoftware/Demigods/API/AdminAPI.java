@@ -96,45 +96,61 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Demigods;
 
+/**
+ * API for all administrative methods which are used where administrative actions are required.
+ */
 public class AdminAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
-	/*
-	 * wandEnabled() : Returns true if the (OfflinePlayer)player's Demigods debugging is enabled.
-	 */
+    /**
+     * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
+     *
+     * @param player the player to check.
+     * @return boolean
+     */
 	public boolean wandEnabled(OfflinePlayer player)
 	{
 		return API.misc.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && API.data.hasPlayerData(player, "temp_admin_wand") && API.data.getPlayerData(player, "temp_admin_wand").equals(true);
 	}
 
-	/*
-	 * useWand() : Returns true if the (OfflinePlayer)player's admin wand is enabled and wielded.
-	 */
+    /**
+     * Returns true if the <code>player</code>'s admin wand is enabled and in their hand.
+     *
+     * @param player the player to check.
+     * @return boolean
+     */
 	public boolean useWand(OfflinePlayer player)
 	{
 		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == API.config.getSettingInt("admin_wand_tool");
 	}
 
-	/*
-	 * debugEnabled() : Returns true if the (OfflinePlayer)player's Demigods debugging is enabled.
-	 */
+    /**
+     * Returns true if <code>player</code>'s Demigods debugging is enabled.
+     *
+     * @param player the player to check.
+     * @return boolean
+     */
 	public boolean playerDebugEnabled(OfflinePlayer player)
 	{
 		return API.misc.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && API.data.hasPlayerData(player, "temp_admin_debug") && API.data.getPlayerData(player, "temp_admin_debug").equals(true);
 	}
 
-	/*
-	 * consoleDebugEnabled() : Returns true if console debug is enabled in the config.
-	 */
+    /**
+     * Returns true if console debugging is enabled in the config.
+     *
+     * @return boolean
+     */
 	public static boolean consoleDebugEnabled()
 	{
 		return API.config.getSettingBoolean("console_debug");
 	}
 
-	/*
-	 * sendDebug() : Sends a debug message to all applicable recipients.
-	 */
+    /**
+     * Sends the <code>message</code> to all applicable recipients.
+     *
+     * @param message the message to send.
+     */
 	public void sendDebug(String message)
 	{
 		// Log to console

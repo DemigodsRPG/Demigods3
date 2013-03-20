@@ -105,6 +105,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 
+/**
+ * API for all miscellaneous methods.
+ */
 public class MiscAPI
 {
 	// Define variables

@@ -97,6 +97,9 @@ import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
 import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
 
+/**
+ * API for all warp-related methods.
+ */
 public class WarpAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;

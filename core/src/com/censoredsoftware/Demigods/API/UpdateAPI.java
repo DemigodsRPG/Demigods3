@@ -100,6 +100,9 @@ import org.bukkit.Bukkit;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Objects.BukkitDevDownload;
 
+/**
+ * API for all update-related methods.
+ */
 public class UpdateAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
