@@ -90,10 +90,8 @@
 
 package com.censoredsoftware.Demigods.Theogony.Titans;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -105,7 +103,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Prometheus_deity implements Listener
 {
@@ -180,15 +181,15 @@ public class Prometheus_deity implements Listener
 			toReturn.add(" "); // TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
-            toReturn.add(ChatColor.YELLOW + " Active:");
-            toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
-            toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
-            toReturn.add(" ");
-            toReturn.add(ChatColor.YELLOW + " Passive:");
-            toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
-            toReturn.add(" ");
-            toReturn.add(ChatColor.YELLOW + " Ultimate:");
-            toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Prometheus rains fire on nearby enemies.");
+			toReturn.add(ChatColor.YELLOW + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Prometheus rains fire on nearby enemies.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
@@ -212,12 +213,12 @@ public class Prometheus_deity implements Listener
 
 		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
 
-        if(character.isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(FIREBALL_NAME))))
-        {
-            if(!API.character.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
+		if(character.isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(FIREBALL_NAME))))
+		{
+			if(!API.character.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
 
-            fireball(player);
-        }
+			fireball(player);
+		}
 		else if(character.isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(BLAZE_NAME))))
 		{
 			if(!API.character.isCooledDown(player, BLAZE_NAME, BLAZE_TIME, false)) return;
@@ -241,55 +242,63 @@ public class Prometheus_deity implements Listener
 
 		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(FIREBALL_NAME))
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
-			character.toggleAbility(FIREBALL_NAME, false);
-			player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is no longer active.");
+			// Bind item
+			character.setBound(FIREBALL_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			character.toggleAbility(FIREBALL_NAME, true);
-			player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is now active.");
+			if(character.isEnabledAbility(FIREBALL_NAME))
+			{
+				character.toggleAbility(FIREBALL_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is no longer active.");
+			}
+			else
+			{
+				character.toggleAbility(FIREBALL_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is now active.");
+			}
 		}
 	}
 
 	// The actual ability command
 	public static void fireball(Player player)
 	{
-        // Define variables
-        PlayerCharacter character = API.player.getCurrentChar(player);
-        LivingEntity target = API.ability.autoTarget(player);
+		// Define variables
+		PlayerCharacter character = API.player.getCurrentChar(player);
+		LivingEntity target = API.ability.autoTarget(player);
 
-        if(!API.ability.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
-        FIREBALL_TIME = System.currentTimeMillis() + FIREBALL_DELAY;
-        character.subtractFavor(FIREBALL_COST);
+		if(!API.ability.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
+		FIREBALL_TIME = System.currentTimeMillis() + FIREBALL_DELAY;
+		character.subtractFavor(FIREBALL_COST);
 
-        if(!API.ability.targeting(player, target)) return;
+		if(!API.ability.targeting(player, target)) return;
 
-        if(target.getEntityId() != player.getEntityId())
-        {
-            shootFireball(player.getEyeLocation(), target.getLocation(), player);
-        }
+		if(target.getEntityId() != player.getEntityId())
+		{
+			shootFireball(player.getEyeLocation(), target.getLocation(), player);
+		}
 	}
 
-    public static void shootFireball(Location from, Location to, Player player)
-    {
-        player.getWorld().spawnEntity(from, EntityType.FIREBALL);
-        for(Entity entity: player.getNearbyEntities(2,2,2))
-        {
-            if(!(entity instanceof Fireball)) continue;
+	public static void shootFireball(Location from, Location to, Player player)
+	{
+		player.getWorld().spawnEntity(from, EntityType.FIREBALL);
+		for(Entity entity : player.getNearbyEntities(2, 2, 2))
+		{
+			if(!(entity instanceof Fireball)) continue;
 
-            Fireball fireball = (Fireball) entity;
-            to.setX(to.getX()+.5);
-            to.setY(to.getY()+.5);
-            to.setZ(to.getZ()+.5);
-            Vector path = to.toVector().subtract(from.toVector());
-            Vector victor = from.toVector().add(from.getDirection().multiply(2));
-            fireball.teleport(new Location( player.getWorld(), victor.getX(),victor.getY(),victor.getZ()));
-            fireball.setDirection(path);
-            fireball.setShooter(player);
-        }
-    }
+			Fireball fireball = (Fireball) entity;
+			to.setX(to.getX() + .5);
+			to.setY(to.getY() + .5);
+			to.setZ(to.getZ() + .5);
+			Vector path = to.toVector().subtract(from.toVector());
+			Vector victor = from.toVector().add(from.getDirection().multiply(2));
+			fireball.teleport(new Location(player.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
+			fireball.setDirection(path);
+			fireball.setShooter(player);
+		}
+	}
 
 	/*
 	 * Command: "/blaze"
@@ -328,8 +337,8 @@ public class Prometheus_deity implements Listener
 		// Define variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
 		int power = character.getPower(AbilityType.OFFENSE);
-        int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
-        if(diameter > 12) diameter = 12;
+		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
+		if(diameter > 12) diameter = 12;
 
 		LivingEntity target = API.ability.autoTarget(player);
 
@@ -341,17 +350,17 @@ public class Prometheus_deity implements Listener
 
 		if(target.getEntityId() != player.getEntityId())
 		{
-            for(int X = -diameter / 2; X <= diameter / 2; X++)
-            {
-                for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
-                {
-                    for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
-                    {
-                        Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + X, target.getLocation().getBlockY() + Y, target.getLocation().getBlockZ() + Z);
-                        if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !API.zone.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
-                    }
-                }
-            }
+			for(int X = -diameter / 2; X <= diameter / 2; X++)
+			{
+				for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
+				{
+					for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
+					{
+						Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + X, target.getLocation().getBlockY() + Y, target.getLocation().getBlockZ() + Z);
+						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !API.zone.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
+					}
+				}
+			}
 		}
 	}
 
@@ -377,9 +386,9 @@ public class Prometheus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-        if(!API.ability.doAbilityPreProcess(player, "firestorm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
+		if(!API.ability.doAbilityPreProcess(player, "firestorm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
 
-        firestorm(player);
+		firestorm(player);
 		player.sendMessage(ChatColor.YELLOW + "Prometheus has reigned fire down on your enemies.");
 
 		// Set favor and cooldown
@@ -394,33 +403,33 @@ public class Prometheus_deity implements Listener
 	{
 		// Define variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
-        int power = character.getPower(AbilityType.OFFENSE);
-        int total = 20 * (int) Math.round(2 * Math.pow(power, 0.15));
-        Vector playerLocation = player.getLocation().toVector();
-        final ArrayList<LivingEntity> entityList = new ArrayList<LivingEntity>();
-        for(Entity entity : player.getNearbyEntities(50, 50, 50))
-        {
-            if(!(entity instanceof LivingEntity)) continue;
-            if(entity instanceof Player) if(API.player.getCurrentChar((Player) entity) != null) if(API.player.areAllied(player, (Player) entity)) continue;
-            if(!API.zone.canTarget(entity)) continue;
-            entityList.add((LivingEntity) entity);
-        }
-        for(int i = 0; i <= total; i += 20)
-        {
-            API.getServer().getScheduler().scheduleSyncDelayedTask(API, new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    for(LivingEntity entity : entityList)
-                    {
-                        Location up = new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, 256, entity.getLocation().getZ() + Math.random() * 5);
-                        up.setPitch(90);
-                        shootFireball(up, new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, entity.getLocation().getY(), entity.getLocation().getZ() + Math.random() * 5), player);
-                    }
-                }
-            }, i);
-        }
+		int power = character.getPower(AbilityType.OFFENSE);
+		int total = 20 * (int) Math.round(2 * Math.pow(power, 0.15));
+		Vector playerLocation = player.getLocation().toVector();
+		final ArrayList<LivingEntity> entityList = new ArrayList<LivingEntity>();
+		for(Entity entity : player.getNearbyEntities(50, 50, 50))
+		{
+			if(!(entity instanceof LivingEntity)) continue;
+			if(entity instanceof Player) if(API.player.getCurrentChar((Player) entity) != null) if(API.player.areAllied(player, (Player) entity)) continue;
+			if(!API.zone.canTarget(entity)) continue;
+			entityList.add((LivingEntity) entity);
+		}
+		for(int i = 0; i <= total; i += 20)
+		{
+			API.getServer().getScheduler().scheduleSyncDelayedTask(API, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					for(LivingEntity entity : entityList)
+					{
+						Location up = new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, 256, entity.getLocation().getZ() + Math.random() * 5);
+						up.setPitch(90);
+						shootFireball(up, new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, entity.getLocation().getY(), entity.getLocation().getZ() + Math.random() * 5), player);
+					}
+				}
+			}, i);
+		}
 	}
 
 	// Don't touch these, they're required to work.
