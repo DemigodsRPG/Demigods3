@@ -158,29 +158,12 @@ public class Demigods extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		// Define the instance
 		instance = new InstanceAPI(this);
 		INSTANCE = instance.getInstance();
-		ability = new AbilityAPI();
-		admin = new AdminAPI();
-		battle = new BattleAPI();
-		block = new BlockAPI();
-		character = new CharAPI();
-		config = new ConfigAPI();
-		data = new DataAPI();
-		deity = new DeityAPI();
-		inventory = new InvAPI();
-		item = new ItemAPI();
-		metrics = new MetricsAPI();
-		misc = new MiscAPI();
-		object = new ObjAPI();
-		player = new PlayerAPI();
-		plugin = new PluginAPI();
-		task = new TaskAPI();
-		quest = new QuestAPI();
-		update = new UpdateAPI();
-		value = new ValueAPI();
-		warp = new WarpAPI();
-		zone = new ZoneAPI();
+
+		// Initialize API
+		initializeAPI();
 
 		// Initialize Configuration
 		config.initializeConfig();
@@ -217,7 +200,7 @@ public class Demigods extends JavaPlugin
 	{
 		if(okayToLoad)
 		{
-			// Uninitialize Plugin
+			// Disable Plugin
 			HandlerList.unregisterAll(this);
 			DScheduler.stopThreads();
 			DFlatFile.save();
@@ -237,6 +220,34 @@ public class Demigods extends JavaPlugin
 
 		// K, thanks
 		misc.info("====== End Test Code ===============================");
+	}
+
+	/*
+	 * initializeAPI() : Creates a new instance of each API, for easy access.
+	 */
+	private void initializeAPI()
+	{
+		ability = new AbilityAPI();
+		admin = new AdminAPI();
+		battle = new BattleAPI();
+		block = new BlockAPI();
+		character = new CharAPI();
+		config = new ConfigAPI();
+		data = new DataAPI();
+		deity = new DeityAPI();
+		inventory = new InvAPI();
+		item = new ItemAPI();
+		metrics = new MetricsAPI();
+		misc = new MiscAPI();
+		object = new ObjAPI();
+		player = new PlayerAPI();
+		plugin = new PluginAPI();
+		task = new TaskAPI();
+		quest = new QuestAPI();
+		update = new UpdateAPI();
+		value = new ValueAPI();
+		warp = new WarpAPI();
+		zone = new ZoneAPI();
 	}
 
 	/*
