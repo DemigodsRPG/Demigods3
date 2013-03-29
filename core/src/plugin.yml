@@ -2,7 +2,7 @@ name: Demigods
 main: com.censoredsoftware.Demigods.Demigods
 version: 3.0.@BUILD@
 authors: [_Alex, HmmmQuestionMark]
-softdepend: [TagAPI, WorldEdit, WorldGuard, Factions]
+softdepend: [WorldEdit, WorldGuard, Factions, Residence]
 commands:
     dg:
         usage: /dg [category] [subcategory]
