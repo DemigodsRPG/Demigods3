@@ -103,6 +103,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Handlers.DCommandHandler;
@@ -122,6 +123,7 @@ public class Demigods extends JavaPlugin
 	// Soft dependencies
 	public static WorldGuardPlugin WORLDGUARD = null;
 	public static P FACTIONS = null;
+	public static Residence RESIDENCE = null;
 
 	// API
 	public AbilityAPI ability = null;
@@ -387,6 +389,10 @@ public class Demigods extends JavaPlugin
 			}
 			else if(!config.getSettingBoolean("allow_skills_everywhere")) misc.info("Factions detected. Certain skills are disabled in safe zones zones.");
 		}
+
+		// Check for the Residence plugin (optional)
+		pg = getServer().getPluginManager().getPlugin("Residence");
+		if((pg != null) && (pg instanceof Residence)) RESIDENCE = (Residence) pg;
 	}
 
 	/*
