@@ -40,6 +40,7 @@
             <pathelement location="lib/WorldEdit.jar"/>
             <pathelement location="lib/WorldGuard.jar"/>
             <pathelement location="lib/Factions.jar"/>
+            <pathelement location="lib/Residence.jar"/>
         </path>
         <javac debug="true" debuglevel="${debuglevel}" destdir="core/bin" source="${source}" target="${target}">
             <src path="core/src"/>
