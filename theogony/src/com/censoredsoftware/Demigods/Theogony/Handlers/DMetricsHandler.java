@@ -90,14 +90,14 @@
 
 package com.censoredsoftware.Demigods.Theogony.Handlers;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Metrics;
 import com.censoredsoftware.Demigods.Libraries.Metrics.Graph;
 import com.censoredsoftware.Demigods.Theogony.Theogony;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 public class DMetricsHandler
 {
@@ -115,85 +115,85 @@ public class DMetricsHandler
 		{
 			Metrics metrics = new Metrics(instance);
 
-            // Number of Currently Active Battles
-            metrics.addCustomData(new Metrics.Plotter("Ongoing Battles")
-            {
-                @Override
-                public int getValue()
-                {
-                    return API.battle.getAllActiveBattles().size();
-                }
-            });
+			// Number of Currently Active Battles
+			metrics.addCustomData(new Metrics.Plotter("Ongoing Battles")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.battle.getAllActiveBattles().size();
+				}
+			});
 
-            // Total Number of Battles
-            metrics.addCustomData(new Metrics.Plotter("Total Battles")
-            {
-                @Override
-                public int getValue()
-                {
-                    return API.data.getAllBattles().size();
-                }
-            });
+			// Total Number of Battles
+			metrics.addCustomData(new Metrics.Plotter("Total Battles")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.data.getAllBattles().size();
+				}
+			});
 
-            // Characters Per Alliance
-            Graph alliances = metrics.createGraph("Characters per Alliance");
-            for(final String alliance : API.deity.getLoadedDeityAlliances())
-            {
-                alliances.addPlotter(new Metrics.Plotter(alliance)
-                {
-                    @Override
-                    public int getValue()
-                    {
-                        return API.character.getAllianceList(alliance).size();
-                    }
-                });
-            }
+			// Characters Per Alliance
+			Graph alliances = metrics.createGraph("Characters per Alliance");
+			for(final String alliance : API.deity.getLoadedDeityAlliances())
+			{
+				alliances.addPlotter(new Metrics.Plotter(alliance)
+				{
+					@Override
+					public int getValue()
+					{
+						return API.character.getAllianceList(alliance).size();
+					}
+				});
+			}
 
-            // Characters Per Deity
-            Graph deities = metrics.createGraph("Characters per Deity");
-            for(final String deity : API.deity.getAllDeities())
-            {
-                alliances.addPlotter(new Metrics.Plotter(deity)
-                {
-                    @Override
-                    public int getValue()
-                    {
-                        return API.character.getDeityList(deity).size();
-                    }
-                });
-            }
+			// Characters Per Deity
+			Graph deities = metrics.createGraph("Characters per Deity");
+			for(final String deity : API.deity.getAllDeities())
+			{
+				alliances.addPlotter(new Metrics.Plotter(deity)
+				{
+					@Override
+					public int getValue()
+					{
+						return API.character.getDeityList(deity).size();
+					}
+				});
+			}
 
-            // Total Number of Characters
-            metrics.addCustomData(new Metrics.Plotter("Total Characters")
-            {
-                @Override
-                public int getValue()
-                {
-                    return API.data.getAllChars().size();
-                }
-            });
+			// Total Number of Characters
+			metrics.addCustomData(new Metrics.Plotter("Total Characters")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.data.getAllChars().size();
+				}
+			});
 
-            // Total Number of Shrines
-            metrics.addCustomData(new Metrics.Plotter("Total Shrines")
-            {
-                @Override
-                public int getValue()
-                {
-                    return API.block.getAllShrines().size();
-                }
-            });
+			// Total Number of Shrines
+			metrics.addCustomData(new Metrics.Plotter("Total Shrines")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.block.getAllShrines().size();
+				}
+			});
 
-            // Total Number of Altars
-            metrics.addCustomData(new Metrics.Plotter("Total Altars")
-            {
-                @Override
-                public int getValue()
-                {
-                    return API.block.getAllAltars().size();
-                }
-            });
+			// Total Number of Altars
+			metrics.addCustomData(new Metrics.Plotter("Total Altars")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.block.getAllAltars().size();
+				}
+			});
 
-            // All other Metrics
+			// All other Metrics
 			for(String metric : API.metrics.getAllPublic().keySet())
 			{
 				// New Graph
