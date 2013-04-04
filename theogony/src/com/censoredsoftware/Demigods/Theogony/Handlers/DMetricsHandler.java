@@ -113,8 +113,9 @@ public class DMetricsHandler
 		{
 			Metrics metrics = new Metrics(instance);
 
-			// Number of Currently Active Battles
-			metrics.addCustomData(new Metrics.Plotter("Ongoing Battles")
+			// Battles Graph
+			Graph battles = metrics.createGraph("Battles");
+			battles.addPlotter(new Metrics.Plotter("Active")
 			{
 				@Override
 				public int getValue()
@@ -122,9 +123,7 @@ public class DMetricsHandler
 					return API.battle.getAllActiveBattles().size();
 				}
 			});
-
-			// Total Number of Battles
-			metrics.addCustomData(new Metrics.Plotter("Total Battles")
+			battles.addPlotter(new Metrics.Plotter("Total")
 			{
 				@Override
 				public int getValue()
@@ -133,7 +132,18 @@ public class DMetricsHandler
 				}
 			});
 
-			// Characters Per Alliance
+			// Characters Graph
+			Graph characters = metrics.createGraph("Characters");
+			characters.addPlotter(new Metrics.Plotter("Total")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.data.getAllChars().size();
+				}
+			});
+
+			// Characters Per Alliance Graph
 			Graph alliances = metrics.createGraph("Characters per Alliance");
 			for(final String alliance : API.deity.getLoadedDeityAlliances())
 			{
@@ -147,7 +157,7 @@ public class DMetricsHandler
 				});
 			}
 
-			// Characters Per Deity
+			// Characters Per Deity Graph
 			Graph deities = metrics.createGraph("Characters per Deity");
 			for(final String deity : API.deity.getAllDeities())
 			{
@@ -161,18 +171,9 @@ public class DMetricsHandler
 				});
 			}
 
-			// Total Number of Characters
-			metrics.addCustomData(new Metrics.Plotter("Total Characters")
-			{
-				@Override
-				public int getValue()
-				{
-					return API.data.getAllChars().size();
-				}
-			});
-
-			// Total Number of Shrines
-			metrics.addCustomData(new Metrics.Plotter("Total Shrines")
+			// Shrines Graph
+			Graph shrines = metrics.createGraph("Shrines");
+			shrines.addPlotter(new Metrics.Plotter("Total")
 			{
 				@Override
 				public int getValue()
@@ -181,8 +182,9 @@ public class DMetricsHandler
 				}
 			});
 
-			// Total Number of Altars
-			metrics.addCustomData(new Metrics.Plotter("Total Altars")
+			// Altars Graph
+			Graph altars = metrics.createGraph("Altars");
+			shrines.addPlotter(new Metrics.Plotter("Total")
 			{
 				@Override
 				public int getValue()
