@@ -91,8 +91,6 @@
 package com.censoredsoftware.Demigods.Theogony.Handlers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Libraries.Metrics;
@@ -153,7 +151,7 @@ public class DMetricsHandler
 			Graph deities = metrics.createGraph("Characters per Deity");
 			for(final String deity : API.deity.getAllDeities())
 			{
-				alliances.addPlotter(new Metrics.Plotter(deity)
+				deities.addPlotter(new Metrics.Plotter(deity)
 				{
 					@Override
 					public int getValue()
@@ -192,59 +190,6 @@ public class DMetricsHandler
 					return API.block.getAllAltars().size();
 				}
 			});
-
-			// All other Metrics
-			for(String metric : API.metrics.getAllPublic().keySet())
-			{
-				// New Graph
-				Graph graph = metrics.createGraph(metric);
-
-				for(Map.Entry entry : API.metrics.getPublicFor(metric).entrySet())
-				{
-					Object key = entry.getKey();
-					Object value = entry.getValue();
-
-					String plotter = key.toString().toUpperCase();
-
-					if(value instanceof ArrayList)
-					{
-						final ArrayList<Object> valueList = (ArrayList<Object>) value;
-						graph.addPlotter(new Metrics.Plotter(plotter)
-						{
-							@Override
-							public int getValue()
-							{
-								return valueList.size();
-							}
-						});
-					}
-					else if(value instanceof Boolean)
-					{
-						final boolean booleanValue = API.object.toBoolean(value);
-						graph.addPlotter(new Metrics.Plotter(plotter)
-						{
-							@Override
-							public int getValue()
-							{
-								if(booleanValue) return 1;
-								else return 0;
-							}
-						});
-					}
-					else if(value instanceof Integer || value instanceof Double || value instanceof Long)
-					{
-						final int intValue = API.object.toInteger(value);
-						graph.addPlotter(new Metrics.Plotter(plotter)
-						{
-							@Override
-							public int getValue()
-							{
-								return intValue;
-							}
-						});
-					}
-				}
-			}
 
 			metrics.start();
 		}
