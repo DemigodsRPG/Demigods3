@@ -184,7 +184,7 @@ public class DMetricsHandler
 
 			// Altars Graph
 			Graph altars = metrics.createGraph("Altars");
-			shrines.addPlotter(new Metrics.Plotter("Total")
+			altars.addPlotter(new Metrics.Plotter("Total")
 			{
 				@Override
 				public int getValue()
