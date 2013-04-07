@@ -90,22 +90,22 @@
 
 package com.censoredsoftware.Demigods.Theogony.Listeners;
 
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Battle;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Theogony.Theogony;
 import com.google.common.base.Joiner;
-import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
-
-import java.util.ArrayList;
 
 public class DBattleListener implements Listener
 {

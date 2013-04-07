@@ -88,110 +88,162 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Objects;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
-public class SerialItemStack implements Serializable
+import com.censoredsoftware.Demigods.Demigods;
+
+public class SerialPlayerInventory implements Serializable
 {
+	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = -5645654430614861947L;
 
-	private int type;
-	private int amount;
-	private short durability;
-	private HashMap<Integer, Integer> enchantments = new HashMap<Integer, Integer>();
-	private String displayName = null, author = null, title = null;
-	private List<String> lore = null, pages = null;
-	private Map<String, Object> bookMeta = null;
+	private String owner;
+	private SerialItemStack helmet = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack chestplate = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack leggings = new SerialItemStack(new ItemStack(Material.AIR));
+	private SerialItemStack boots = new SerialItemStack(new ItemStack(Material.AIR));
+	private HashMap<Integer, SerialItemStack> items = new HashMap<Integer, SerialItemStack>();
 
-	public SerialItemStack(ItemStack item)
+	int size;
+
+	public SerialPlayerInventory(Inventory inventory)
 	{
-		this.type = item.getTypeId();
-		this.durability = item.getDurability();
-		this.amount = item.getAmount();
-
-		if(item.hasItemMeta())
+		if(inventory != null)
 		{
-			if(item.getType().equals(Material.WRITTEN_BOOK))
+			this.owner = ((OfflinePlayer) inventory.getHolder()).getName();
+			this.size = inventory.getSize();
+
+			if(getOwner().isOnline())
 			{
-				BookMeta bookMeta = (BookMeta) item.getItemMeta();
-
-				this.bookMeta = bookMeta.serialize();
-
-				if(bookMeta.hasAuthor()) this.author = bookMeta.getAuthor();
-				if(bookMeta.hasPages()) this.pages = bookMeta.getPages();
-				if(bookMeta.hasLore()) this.lore = bookMeta.getLore();
-				if(bookMeta.hasTitle()) this.title = bookMeta.getTitle();
-				if(bookMeta.hasDisplayName()) this.displayName = bookMeta.getDisplayName();
-
-				if(bookMeta.hasEnchants())
-				{
-					for(Entry<Enchantment, Integer> ench : bookMeta.getEnchants().entrySet())
-					{
-						this.enchantments.put(ench.getKey().getId(), ench.getValue());
-					}
-				}
+				Player player = getOwner().getPlayer();
+				if(player.getInventory().getHelmet() != null) this.helmet = new SerialItemStack(player.getInventory().getHelmet().clone());
+				if(player.getInventory().getChestplate() != null) this.chestplate = new SerialItemStack(player.getInventory().getChestplate().clone());
+				if(player.getInventory().getLeggings() != null) this.leggings = new SerialItemStack(player.getInventory().getLeggings().clone());
+				if(player.getInventory().getBoots() != null) this.boots = new SerialItemStack(player.getInventory().getBoots().clone());
 			}
 
-			if(item.getItemMeta().hasEnchants())
+			for(int i = 0; i < this.size; i++)
 			{
-				for(Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
+				ItemStack item = inventory.getItem(i);
+				if(item != null)
 				{
-					this.enchantments.put(ench.getKey().getId(), ench.getValue());
+					items.put(i, new SerialItemStack(item));
 				}
 			}
-			if(item.getItemMeta().hasDisplayName()) this.displayName = item.getItemMeta().getDisplayName();
-			if(item.getItemMeta().hasLore()) this.lore = item.getItemMeta().getLore();
 		}
 	}
 
 	/*
-	 * toItemStack() : Converts the SerialItemStack to a usuable ItemStack.
+	 * toInventory() : Converts back into a standard inventory.
 	 */
-	public ItemStack toItemStack()
+	public Inventory toInventory()
 	{
-		ItemStack item = new ItemStack(this.type, this.amount);
+		Inventory inv = API.getServer().createInventory((InventoryHolder) getOwner(), this.size);
 
-		if(item.getType().equals(Material.WRITTEN_BOOK))
+		for(Entry<Integer, SerialItemStack> slot : items.entrySet())
 		{
-			BookMeta meta = (BookMeta) item.getItemMeta();
-			if(this.title != null) meta.setTitle(this.title);
-			if(this.author != null) meta.setAuthor(this.author);
-			if(this.pages != null) meta.setPages(this.pages);
-			if(this.lore != null) meta.setLore(this.lore);
-			if(this.displayName != null) meta.setDisplayName(this.displayName);
-			item.setItemMeta(meta);
+			int index = slot.getKey();
+			ItemStack item = slot.getValue().toItemStack();
+			inv.setItem(index, item);
 		}
+
+		return inv;
+	}
+
+	/*
+	 * setToPlayer() : Sets the inventory to a player.
+	 */
+	public synchronized void setToPlayer(OfflinePlayer entity)
+	{
+		Player player;
+
+		if(!entity.isOnline()) return;
 		else
 		{
-			ItemMeta meta = item.getItemMeta();
-			if(this.displayName != null) meta.setDisplayName(this.displayName);
-			if(this.lore != null) meta.setLore(this.lore);
-			item.setItemMeta(meta);
+			player = entity.getPlayer();
 		}
 
-		if(this.enchantments != null)
+		if(this.getHelmet() != null) player.getInventory().setHelmet(this.getHelmet());
+		if(this.getChestplate() != null) player.getInventory().setChestplate(this.getChestplate());
+		if(this.getLeggings() != null) player.getInventory().setLeggings(this.getLeggings());
+		if(this.getBoots() != null) player.getInventory().setBoots(this.getBoots());
+
+		for(Entry<Integer, ItemStack> slot : this.getItems().entrySet())
 		{
-			for(Entry<Integer, Integer> ench : this.enchantments.entrySet())
-			{
-				item.addEnchantment(Enchantment.getById(ench.getKey()), ench.getValue());
-			}
+			player.getInventory().setItem(slot.getKey(), slot.getValue());
+		}
+	}
+
+	/*
+	 * getOwner() : Returns the Player who owns this inventory.
+	 */
+	public OfflinePlayer getOwner()
+	{
+		return Bukkit.getOfflinePlayer(this.owner);
+	}
+
+	/*
+	 * getItems() : Returns the items.
+	 */
+	public HashMap<Integer, ItemStack> getItems()
+	{
+		HashMap<Integer, ItemStack> temp = new HashMap<Integer, ItemStack>();
+
+		for(Entry<Integer, SerialItemStack> slot : items.entrySet())
+		{
+			int index = slot.getKey();
+			ItemStack item = slot.getValue().toItemStack();
+			temp.put(index, item);
 		}
 
-		// Set data for the Item
-		item.setAmount(this.amount);
-		item.setDurability(this.durability);
+		return temp;
+	}
 
-		return item;
+	/*
+	 * getHelmet() : Returns the helmet.
+	 */
+	public ItemStack getHelmet()
+	{
+		if(this.helmet != null) return this.helmet.toItemStack();
+		else return null;
+	}
+
+	/*
+	 * getChestplate() : Returns the chestplate.
+	 */
+	public ItemStack getChestplate()
+	{
+		if(this.chestplate != null) return this.chestplate.toItemStack();
+		else return null;
+	}
+
+	/*
+	 * getLeggings() : Returns the leggings.
+	 */
+	public ItemStack getLeggings()
+	{
+		if(this.leggings != null) return this.leggings.toItemStack();
+		else return null;
+	}
+
+	/*
+	 * getBoots() : Returns the boots.
+	 */
+	public ItemStack getBoots()
+	{
+		if(this.boots != null) return this.boots.toItemStack();
+		else return null;
 	}
 }

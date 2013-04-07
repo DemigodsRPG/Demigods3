@@ -103,7 +103,7 @@ import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEv
 import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DCharacterListener implements Listener
 {

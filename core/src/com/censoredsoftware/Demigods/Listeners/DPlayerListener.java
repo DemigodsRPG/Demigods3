@@ -101,7 +101,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DPlayerListener implements Listener
 {
@@ -163,14 +163,15 @@ public class DPlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 
-		/*
-		 * if((!DConfigUtilUtil.getSettingBoolean("auto_update")) && (DUpdate.shouldUpdate()) && DMiscUtil.hasPermissionOrOP(player, "demigods.admin"))
-		 * {
-		 * player.sendMessage(ChatColor.RED + "There is a new, stable release for API.");
-		 * player.sendMessage(ChatColor.RED + "Please update ASAP.");
-		 * player.sendMessage(ChatColor.RED + "Latest: " + ChatColor.GREEN + "dev.bukkit.org/server-mods/demigods");
-		 * }
-		 */
+		if(API.config.getSettingBoolean("update.notify") && API.misc.hasPermissionOrOP(player, "demigods.admin"))
+		{
+			if(API.update.check())
+			{
+				player.sendMessage(ChatColor.RED + "There is a new, stable release for Demigods.");
+				if(API.config.getSettingBoolean("update.auto")) player.sendMessage("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.");
+				else player.sendMessage("Please update ASAP by using " + ChatColor.YELLOW + "/dg update");
+			}
+		}
 	}
 
 	/*

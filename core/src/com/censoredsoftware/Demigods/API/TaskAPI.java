@@ -1,35 +1,22 @@
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Task;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * API for all Task-related methods.
- */
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Task;
+
 public class TaskAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
-    /**
-     * Invokes the task located at <code>classPath</code>.
-     *
-     * @param plugin an instance of the DemigodsPlugins.
-     * @param classPath the path of the task.
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     */
+	/*
+	 * invokeTask() : Invokes a task.
+	 */
 	public void invokeTask(DemigodsPlugin plugin, String classPath) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		// No parameters for the invoked method
@@ -42,18 +29,6 @@ public class TaskAPI
 		Class.forName(classPath, true, API.plugin.getClassLoader(plugin)).getMethod("onInvoke", noparams).invoke(obj, (Object[]) null);
 	}
 
-    /**
-     * Invokes the <code>task</code> by object.
-     *
-     * @param task the task object to invoke.
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws ClassNotFoundException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     */
 	public void invokeTask(Task task) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		invokeTask(task.getPlugin(), task.getClassPath());

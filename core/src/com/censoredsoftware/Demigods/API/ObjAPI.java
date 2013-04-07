@@ -90,76 +90,57 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
-import org.bukkit.Location;
-
 import java.util.Random;
 
-/**
- * API for basic object manipulation.
- */
+import org.bukkit.Location;
+
+import com.censoredsoftware.Demigods.Objects.SerialLocation;
+
 public class ObjAPI
 {
-    /**
-     * Capitalizes and returns <code>input</code>.
-     * @param input the string to capitalize.
-     * @return String
-     */
+	/*
+	 * capitalize() : Capitalizes (String)string and returns it.
+	 */
 	public String capitalize(String input)
 	{
 		return input.substring(0, 1).toUpperCase() + input.substring(1);
 	}
 
-    /**
-     * Converts <code>object</code> to a float.
-     *
-     * @param object the object to convert.
-     * @return float
-     */
+	/*
+	 * toFloat() : Returns an object as a float.
+	 */
 	public float toFloat(Object object)
 	{
 		return Float.parseFloat(object.toString());
 	}
 
-    /**
-     * Converts <code>object</code> to an integer.
-     *
-     * @param object the object to convert.
-     * @return int
-     */
+	/*
+	 * toInteger() : Returns an object as an integer.
+	 */
 	public int toInteger(Object object)
 	{
 		return Integer.parseInt(object.toString());
 	}
 
-    /**
-     * Converts <code>object</code> to a long.
-     *
-     * @param object the object to convert.
-     * @return long
-     */
+	/*
+	 * toLong() : Returns an object as a long.
+	 */
 	public long toLong(Object object)
 	{
 		return Long.parseLong(object.toString());
 	}
 
-    /**
-     * Converts <code>object</code> to a double.
-     *
-     * @param object the object to convert.
-     * @return double
-     */
+	/*
+	 * toLong() : Returns an object as a long.
+	 */
 	public double toDouble(Object object)
 	{
 		return Double.parseDouble(object.toString());
 	}
 
-    /**
-     * Converts <code>object</code> to a boolean.
-     *
-     * @param object the object to convert.
-     * @return boolean
-     */
+	/*
+	 * toBoolean() : Returns an object as a boolean.
+	 */
 	public boolean toBoolean(Object object)
 	{
 		if(object instanceof Boolean)
@@ -174,23 +155,17 @@ public class ObjAPI
 		return Boolean.parseBoolean(object.toString());
 	}
 
-    /**
-     * Converts <code>location</code> from a Location to a SerialLocation.
-     *
-     * @param location the location to convert.
-     * @return SerialLocation
-     */
+	/*
+	 * toSerializableLocation() : Returns an object as a SerialLocation.
+	 */
 	public SerialLocation toSerializableLocation(Location location)
 	{
 		return new SerialLocation(location);
 	}
 
-    /**
-     * Generates a random string with a length of <code>length</code>.
-     *
-     * @param length the length of the generated string.
-     * @return String
-     */
+	/*
+	 * generateString : Generates a random string of characters with a length of (int)length.
+	 */
 	public String generateString(int length)
 	{
 		// Set allowed characters - Create new string to fill - Generate the string - Return string
@@ -206,12 +181,9 @@ public class ObjAPI
 		return output;
 	}
 
-    /**
-     * Generates a random integer with a length of <code>length</code>.
-     *
-     * @param length the length of the generated integer.
-     * @return int
-     */
+	/*
+	 * generateInt : Generates a random integer with a length of (int)length.
+	 */
 	public int generateInt(int length)
 	{
 		// Set allowed characters - Create new string to fill - Generate the string - Return string
@@ -230,9 +202,11 @@ public class ObjAPI
 	/**
 	 * Returns an integer between <code>min</code> and <code>max</code>.
 	 * 
-	 * @param min the minimum value of the returned integer.
-	 * @param max the maximum value of the returned integer.
-	 * @return int
+	 * @param min
+	 *        the minimum value of the returned integer.
+	 * @param max
+	 *        the maximum value of the returned integer.
+	 * @return the generated integer.
 	 */
 	public int generateIntRange(int min, int max)
 	{
@@ -242,8 +216,9 @@ public class ObjAPI
 	/**
 	 * Returns a random boolean based on the <code>percent</code> passed in.
 	 * 
-	 * @param percent the percentage as a value from 1 - 100 (not 0 - 1).
-	 * @return boolean
+	 * @param percent
+	 *        the percentage as a value from 1 - 100 (not 0 - 1).
+	 * @return the randomly generated boolean.
 	 */
 	public boolean randomPercentBool(double percent)
 	{

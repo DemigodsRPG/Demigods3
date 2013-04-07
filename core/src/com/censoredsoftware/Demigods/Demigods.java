@@ -110,8 +110,8 @@ import com.censoredsoftware.Demigods.Handlers.DCommandHandler;
 import com.censoredsoftware.Demigods.Handlers.DMetricsEventCreator;
 import com.censoredsoftware.Demigods.Handlers.DScheduler;
 import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.DisconnectReasonFilter;
 import com.censoredsoftware.Demigods.Listeners.*;
+import com.censoredsoftware.Demigods.Objects.DisconnectReasonFilter;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -132,7 +132,7 @@ public class Demigods extends JavaPlugin
 	public BlockAPI block = null;
 	public CharAPI character = null;
 	public ConfigAPI config = null;
-	public DataAPI data = null;
+	public MapAPI data = null;
 	public DeityAPI deity = null;
 	public InstanceAPI instance = null;
 	public InvAPI inventory = null;
@@ -182,7 +182,8 @@ public class Demigods extends JavaPlugin
 			loadListeners();
 			loadCommands();
 			loadTasks();
-			// checkUpdate();
+
+			checkUpdate();
 
 			misc.getLog().setFilter(new DisconnectReasonFilter());
 
@@ -233,7 +234,7 @@ public class Demigods extends JavaPlugin
 		block = new BlockAPI();
 		character = new CharAPI();
 		config = new ConfigAPI();
-		data = new DataAPI();
+		data = new MapAPI();
 		deity = new DeityAPI();
 		inventory = new InvAPI();
 		item = new ItemAPI();
@@ -452,10 +453,25 @@ public class Demigods extends JavaPlugin
 		}, 30);
 	}
 
-	@SuppressWarnings("unused")
 	private void checkUpdate()
 	{
+		// Define variables
+		boolean auto = config.getSettingBoolean("update.auto");
+		boolean notify = config.getSettingBoolean("update.notify");
+
 		// Check for updates, and then update if need be
-		if(update.shouldUpdate() && config.getSettingBoolean("auto_update")) update.demigodsUpdate();
+		if(auto || notify)
+		{
+			if(update.check())
+			{
+				if(auto) update.execute();
+				if(notify)
+				{
+					Bukkit.broadcast(ChatColor.RED + "There is a newer stable release for Infractions.", "demigods.admin");
+					if(auto) Bukkit.broadcast("Please " + ChatColor.YELLOW + "reload the server " + ChatColor.WHITE + "ASAP to finish an auto-update.", "demigods.admin");
+					else Bukkit.broadcast("Please update ASAP by using " + ChatColor.YELLOW + "/dg update", "demigods.admin");
+				}
+			}
+		}
 	}
 }

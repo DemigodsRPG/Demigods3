@@ -120,7 +120,7 @@ public class DMetricsHandler
 				@Override
 				public int getValue()
 				{
-					return API.battle.getAllActiveBattles().size();
+					return API.battle.getAllActive().size();
 				}
 			});
 			battles.addPlotter(new Metrics.Plotter("Total")
@@ -134,6 +134,14 @@ public class DMetricsHandler
 
 			// Characters Graph
 			Graph characters = metrics.createGraph("Characters");
+			characters.addPlotter(new Metrics.Plotter("Active")
+			{
+				@Override
+				public int getValue()
+				{
+					return API.character.getAllActive().size();
+				}
+			});
 			characters.addPlotter(new Metrics.Plotter("Total")
 			{
 				@Override
@@ -147,7 +155,15 @@ public class DMetricsHandler
 			Graph alliances = metrics.createGraph("Characters per Alliance");
 			for(final String alliance : API.deity.getLoadedDeityAlliances())
 			{
-				alliances.addPlotter(new Metrics.Plotter(alliance)
+				alliances.addPlotter(new Metrics.Plotter(alliance + " Active")
+				{
+					@Override
+					public int getValue()
+					{
+						return API.character.getActiveAllianceList(alliance).size();
+					}
+				});
+				alliances.addPlotter(new Metrics.Plotter(alliance + " Total")
 				{
 					@Override
 					public int getValue()
@@ -161,7 +177,15 @@ public class DMetricsHandler
 			Graph deities = metrics.createGraph("Characters per Deity");
 			for(final String deity : API.deity.getAllDeities())
 			{
-				deities.addPlotter(new Metrics.Plotter(deity)
+				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Active")
+				{
+					@Override
+					public int getValue()
+					{
+						return API.character.getActiveDeityList(deity).size();
+					}
+				});
+				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Total")
 				{
 					@Override
 					public int getValue()

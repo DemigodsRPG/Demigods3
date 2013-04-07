@@ -93,7 +93,7 @@ package com.censoredsoftware.Demigods.Events.Character;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 /*
  * Represents an event that is called when a character is on a killstreak.

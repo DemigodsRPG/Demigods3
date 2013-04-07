@@ -1,5 +1,4 @@
 ## Global Settings ##
-auto_update: false
 console_debug: true
 friendly_fire: false
 allow_skills_anywhere: false
@@ -13,6 +12,11 @@ altar_generation_chance: 4.8 #percent
 chest_generation_chance: 0.32 #percent
 shrine_zone_radius: 8
 altar_zone_radius: 16
+
+## Update Settings ##
+update:
+    auto: false
+    notify: true
 
 ## Statistic Caps, Multipliers, and Related ##
 global_favor_multiplier: 1.0

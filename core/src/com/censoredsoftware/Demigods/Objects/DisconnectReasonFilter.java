@@ -88,119 +88,54 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Objects;
 
-import java.io.Serializable;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import com.censoredsoftware.Demigods.Listeners.DPlayerListener;
 
-import com.censoredsoftware.Demigods.Demigods;
-
-public class Shrine implements Serializable
+public class DisconnectReasonFilter implements Filter
 {
-	private static final Demigods API = Demigods.INSTANCE;
-	private static final long serialVersionUID = 1020598192563856384L;
+	public DisconnectReasonFilter()
+	{}
 
-	private int id;
-	private PlayerCharacter owner;
-	private String deity;
-	private ProtectedBlock block;
-	private SerialLocation location;
-
-	public Shrine(PlayerCharacter character, Location location)
+	public boolean isLoggable(LogRecord arg0)
 	{
-		this.id = API.object.generateInt(5);
-		this.location = new SerialLocation(location);
-		this.owner = character;
-		this.deity = character.getDeity();
-
-		// Generate the Shrine
-		generate();
-
-		save();
-	}
-
-	/*
-	 * save() : Saves the Shrine to a HashMap.
-	 */
-	private void save()
-	{
-		API.data.saveBlockData("shrines", this.id, this);
-	}
-
-	/*
-	 * remove() : Removes the Shrine.
-	 */
-	public synchronized void remove()
-	{
-		API.data.removeBlockData("shrines", this.id);
-
-		Location location = this.location.unserialize();
-		location.getBlock().setType(Material.AIR);
-
-		Location locToMatch = location.add(0.5, 1.0, 0.5);
-		for(Entity entity : location.getWorld().getEntities())
+		if(arg0.getMessage().toLowerCase().contains("disconnect"))
 		{
-			if(entity.getLocation().equals(locToMatch))
+			DPlayerListener.filterCheckGeneric = false;
+			DPlayerListener.filterCheckStream = false;
+			DPlayerListener.filterCheckOverflow = false;
+			DPlayerListener.filterCheckTimeout = false;
+
+			if(arg0.getMessage().toLowerCase().contains("genericreason"))
 			{
-				entity.remove();
+				DPlayerListener.filterCheckGeneric = true;
+				return true;
 			}
-		}
-	}
-
-	/*
-	 * getID() : Returns the ID for the Shrine.
-	 */
-	public int getID()
-	{
-		return this.id;
-	}
-
-	/*
-	 * getOwner() : Returns the owner ID for the Shrine.
-	 */
-	public PlayerCharacter getOwner()
-	{
-		return this.owner;
-	}
-
-	/*
-	 * getDeity() : Returns the deity for the Shrine.
-	 */
-	public String getDeity()
-	{
-		return this.deity;
-	}
-
-	/*
-	 * getLocation() : Returns the location of this Shrine.
-	 */
-	public Location getLocation()
-	{
-		return this.location.unserialize();
-	}
-
-	public synchronized void generate()
-	{
-		Location location = this.getLocation();
-
-		// Remove entity to be safe
-		Location locToMatch = this.getLocation().add(0.5, 1.0, 0.5);
-		for(Entity entity : location.getWorld().getEntities())
-		{
-			if(entity.getLocation().equals(locToMatch))
+			if(arg0.getMessage().toLowerCase().contains("endofstream"))
 			{
-				entity.remove();
+				DPlayerListener.filterCheckStream = true;
+				return true;
 			}
+			if(arg0.getMessage().toLowerCase().contains("overflow"))
+			{
+				DPlayerListener.filterCheckOverflow = true;
+				return true;
+			}
+			if(arg0.getMessage().toLowerCase().contains("timeout"))
+			{
+				DPlayerListener.filterCheckTimeout = true;
+				return true;
+			}
+			if(arg0.getMessage().toLowerCase().contains("quitting"))
+			{
+				DPlayerListener.filterCheckQuitting = true;
+				return true;
+			}
+			return true;
 		}
-
-		// Set bedrock
-		this.block = new ProtectedBlock(location, "shrine", Material.BEDROCK);
-
-		// Spawn the Entity
-		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+		return true;
 	}
 }

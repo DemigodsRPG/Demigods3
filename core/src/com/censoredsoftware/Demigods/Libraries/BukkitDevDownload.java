@@ -3,7 +3,7 @@
  * https://github.com/betterphp/UpdateChecker/blob/master/uk/co/jacekk/bukkit/updatechecker/UpdateChecker.java
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Libraries;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

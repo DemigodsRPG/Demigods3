@@ -102,7 +102,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DChatListener implements Listener
 {

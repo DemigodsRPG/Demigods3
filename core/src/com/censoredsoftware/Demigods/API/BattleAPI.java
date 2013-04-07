@@ -102,9 +102,9 @@ import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Battle;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import com.censoredsoftware.Demigods.Objects.Battle;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
 @SuppressWarnings("ALL")
 public class BattleAPI
@@ -126,7 +126,7 @@ public class BattleAPI
 	/*
 	 * getAllBattles() : Returns an ArrayList of all Battles.
 	 */
-	public ArrayList<Battle> getAllBattles()
+	public ArrayList<Battle> getAll()
 	{
 		ArrayList<Battle> battles = new ArrayList<Battle>();
 		for(Entry<Integer, HashMap<String, Object>> allBattles : API.data.getAllBattles().entrySet())
@@ -140,7 +140,7 @@ public class BattleAPI
 	/*
 	 * getAllActiveBattles() : Returns an ArrayList of all active Battles.
 	 */
-	public ArrayList<Battle> getAllActiveBattles()
+	public ArrayList<Battle> getAllActive()
 	{
 		ArrayList<Battle> battles = new ArrayList<Battle>();
 		for(Entry<Integer, HashMap<String, Object>> allBattles : API.data.getAllBattles().entrySet())
@@ -156,7 +156,7 @@ public class BattleAPI
 	 */
 	public Battle getActiveBattle(Location location)
 	{
-		for(Battle battle : getAllActiveBattles())
+		for(Battle battle : getAllActive())
 		{
 			if(isNearBattle(battle, location)) return battle;
 		}
@@ -165,7 +165,7 @@ public class BattleAPI
 
 	public Battle getActiveBattle(PlayerCharacter character)
 	{
-		for(Battle battle : getAllActiveBattles())
+		for(Battle battle : getAllActive())
 		{
 			if(isInBattle(battle, character)) return battle;
 		}
@@ -201,7 +201,7 @@ public class BattleAPI
 	 */
 	public boolean isNearAnyActiveBattle(Location location)
 	{
-		for(Battle battle : getAllActiveBattles())
+		for(Battle battle : getAllActive())
 		{
 			if(isNearBattle(battle, location)) return true;
 		}
@@ -213,7 +213,7 @@ public class BattleAPI
 	 */
 	public boolean isInAnyActiveBattle(PlayerCharacter character)
 	{
-		for(Battle battle : getAllActiveBattles())
+		for(Battle battle : getAllActive())
 		{
 			if(isInBattle(battle, character)) return true;
 		}
@@ -232,7 +232,7 @@ public class BattleAPI
 
 	public synchronized void checkForInactiveBattles()
 	{
-		for(Battle battle : getAllActiveBattles())
+		for(Battle battle : getAllActive())
 		{
 			int battleID = battle.getID();
 			if(!API.data.hasTimedData(battleID, "battle_active"))

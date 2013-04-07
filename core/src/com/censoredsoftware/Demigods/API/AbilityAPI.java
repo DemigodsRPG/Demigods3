@@ -107,7 +107,7 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 /**
  * API for Deity Ability related methods, used within or in relation to ability methods themselves.

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Libraries;
+package com.censoredsoftware.Demigods.Handlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Demigods;
 
-public class SpecialItems
+public class SpecialItemsHandler
 {
 	public static final Demigods API = Demigods.INSTANCE;
 
