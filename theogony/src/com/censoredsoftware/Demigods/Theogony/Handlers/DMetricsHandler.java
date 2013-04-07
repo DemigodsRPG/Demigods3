@@ -155,7 +155,7 @@ public class DMetricsHandler
 			Graph alliances = metrics.createGraph("Characters per Alliance");
 			for(final String alliance : API.deity.getLoadedDeityAlliances())
 			{
-				alliances.addPlotter(new Metrics.Plotter(alliance + " Active")
+				alliances.addPlotter(new Metrics.Plotter(alliance + "~=~" + "Active")
 				{
 					@Override
 					public int getValue()
@@ -163,7 +163,7 @@ public class DMetricsHandler
 						return API.character.getActiveAllianceList(alliance).size();
 					}
 				});
-				alliances.addPlotter(new Metrics.Plotter(alliance + " Inactive")
+				alliances.addPlotter(new Metrics.Plotter(alliance + "~=~" + "Inactive")
 				{
 					@Override
 					public int getValue()
@@ -177,7 +177,7 @@ public class DMetricsHandler
 			Graph deities = metrics.createGraph("Characters per Deity");
 			for(final String deity : API.deity.getAllDeities())
 			{
-				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Active")
+				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(0)).toUpperCase() + deity.substring(1) + "~=~" + "Active")
 				{
 					@Override
 					public int getValue()
@@ -185,7 +185,7 @@ public class DMetricsHandler
 						return API.character.getActiveDeityList(deity).size();
 					}
 				});
-				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Inactive")
+				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(0)).toUpperCase() + deity.substring(1) + "~=~" + "Inactive")
 				{
 					@Override
 					public int getValue()
