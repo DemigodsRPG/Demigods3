@@ -101,7 +101,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class CharAPI
 {
@@ -162,6 +162,24 @@ public class CharAPI
 	}
 
 	/*
+	 * getAllActive() : Returns all players in the charData HashMap that are active.
+	 */
+	public static List<PlayerCharacter> getAllActive()
+	{
+		List<PlayerCharacter> active = new ArrayList<PlayerCharacter>();
+		for(Entry<Integer, HashMap<String, Object>> entry : API.data.getAllChars().entrySet())
+		{
+			for(Entry<String, Object> entry_ : entry.getValue().entrySet())
+			{
+				if(!(entry_.getValue() instanceof PlayerCharacter)) continue;
+				PlayerCharacter character = (PlayerCharacter) entry_.getValue();
+				if(character.isActive()) active.add(character);
+			}
+		}
+		return active;
+	}
+
+	/*
 	 * getOwner() : Returns the (OfflinePlayer)player who owns (int)charID.
 	 */
 	public OfflinePlayer getOwner(int charID)
@@ -211,6 +229,21 @@ public class CharAPI
 	}
 
 	/*
+	 * getActiveDeityList() : Gets list of active characters in aligned to a Deity.
+	 */
+	public ArrayList<PlayerCharacter> getActiveDeityList(String deity)
+	{
+		// Define variables
+		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllActive())
+		{
+			if(character.getDeity().equalsIgnoreCase(deity)) deityList.add(character);
+		}
+
+		return deityList;
+	}
+
+	/*
 	 * getAllianceList() : Gets list of characters in an alliance.
 	 */
 	public ArrayList<PlayerCharacter> getAllianceList(String alliance)
@@ -224,6 +257,21 @@ public class CharAPI
 			PlayerCharacter dataChar = getChar(charID);
 
 			if(dataChar.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(dataChar);
+		}
+
+		return allianceList;
+	}
+
+	/*
+	 * getActiveAllianceList() : Gets list of active characters in an alliance.
+	 */
+	public ArrayList<PlayerCharacter> getActiveAllianceList(String alliance)
+	{
+		// Define variables
+		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllActive())
+		{
+			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
 
 		return allianceList;

@@ -28,13 +28,6 @@
 
 package com.censoredsoftware.Demigods.Libraries;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.io.*;
 import java.net.Proxy;
 import java.net.URL;
@@ -42,6 +35,13 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>
@@ -152,7 +152,7 @@ public class Metrics
 	 * website. Plotters can be added to the graph object returned.
 	 * 
 	 * @param name
-	 *            The name of the graph
+	 *        The name of the graph
 	 * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
 	 */
 	public Graph createGraph(final String name)
@@ -176,7 +176,7 @@ public class Metrics
 	 * Add a Graph object to BukkitMetrics that represents data for the plugin that should be sent to the backend
 	 * 
 	 * @param graph
-	 *            The name of the graph
+	 *        The name of the graph
 	 */
 	public void addGraph(final Graph graph)
 	{
@@ -192,7 +192,7 @@ public class Metrics
 	 * Adds a custom data plotter to the default graph
 	 * 
 	 * @param plotter
-	 *            The plotter to use to plot custom data
+	 *        The plotter to use to plot custom data
 	 */
 	public void addCustomData(final Plotter plotter)
 	{
@@ -401,7 +401,7 @@ public class Metrics
 		// Construct the post data
 		final StringBuilder data = new StringBuilder();
 
-		// The plugin's description file containg all of the plugin data such as name, version, author, etc
+		// The plugin's description file containing all of the plugin data such as name, version, author, etc
 		data.append(encode("guid")).append('=').append(encode(guid));
 		encodeDataPair(data, "version", pluginVersion);
 		encodeDataPair(data, "server", serverVersion);
@@ -549,11 +549,11 @@ public class Metrics
 	 * </code>
 	 * 
 	 * @param buffer
-	 *            the stringbuilder to append the data pair onto
+	 *        the stringbuilder to append the data pair onto
 	 * @param key
-	 *            the key value
+	 *        the key value
 	 * @param value
-	 *            the value
+	 *        the value
 	 */
 	private static void encodeDataPair(final StringBuilder buffer, final String key, final String value) throws UnsupportedEncodingException
 	{
@@ -564,7 +564,7 @@ public class Metrics
 	 * Encode text as UTF-8
 	 * 
 	 * @param text
-	 *            the text to encode
+	 *        the text to encode
 	 * @return the encoded text, as UTF-8
 	 */
 	private static String encode(final String text) throws UnsupportedEncodingException
@@ -607,7 +607,7 @@ public class Metrics
 		 * Add a plotter to the graph, which will be used to plot entries
 		 * 
 		 * @param plotter
-		 *            the plotter to add to the graph
+		 *        the plotter to add to the graph
 		 */
 		public void addPlotter(final Plotter plotter)
 		{
@@ -618,7 +618,7 @@ public class Metrics
 		 * Remove a plotter from the graph
 		 * 
 		 * @param plotter
-		 *            the plotter to remove from the graph
+		 *        the plotter to remove from the graph
 		 */
 		public void removePlotter(final Plotter plotter)
 		{
@@ -683,7 +683,7 @@ public class Metrics
 		 * Construct a plotter with a specific plot name
 		 * 
 		 * @param name
-		 *            the name of the plotter to use, which will show up on the website
+		 *        the name of the plotter to use, which will show up on the website
 		 */
 		public Plotter(final String name)
 		{

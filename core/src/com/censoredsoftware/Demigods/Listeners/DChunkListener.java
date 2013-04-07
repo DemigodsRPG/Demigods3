@@ -107,8 +107,8 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.SpecialItems;
+import com.censoredsoftware.Demigods.Handlers.SpecialItemsHandler;
+import com.censoredsoftware.Demigods.Objects.Altar;
 
 public class DChunkListener implements Listener
 {
@@ -130,7 +130,7 @@ public class DChunkListener implements Listener
 			// Define variables
 			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 
-			for(Map.Entry<Double, ItemStack> item : SpecialItems.getBooks().entrySet())
+			for(Map.Entry<Double, ItemStack> item : SpecialItemsHandler.getBooks().entrySet())
 			{
 				if(API.object.randomPercentBool(item.getKey())) items.add(item.getValue());
 			}

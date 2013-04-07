@@ -88,7 +88,7 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;

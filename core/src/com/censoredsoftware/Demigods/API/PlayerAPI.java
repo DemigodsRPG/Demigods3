@@ -104,8 +104,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialPlayerInventory;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.SerialPlayerInventory;
 
 public class PlayerAPI
 {

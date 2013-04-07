@@ -104,7 +104,7 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DMetricsEventCreator implements Listener
 {

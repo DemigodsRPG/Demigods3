@@ -112,8 +112,8 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Events.Character.CharacterSwitchEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
 public class DAltarListener implements Listener
 {

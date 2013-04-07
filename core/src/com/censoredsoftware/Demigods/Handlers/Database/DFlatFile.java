@@ -98,9 +98,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import com.censoredsoftware.Demigods.Objects.Altar;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Shrine;
 
 public class DFlatFile
 {

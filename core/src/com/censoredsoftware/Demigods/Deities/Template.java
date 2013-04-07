@@ -105,7 +105,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 import com.google.common.base.Joiner;
 
 @SuppressWarnings("FieldCanBeLocal")

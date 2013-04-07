@@ -90,10 +90,11 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import java.util.Random;
+
 import org.bukkit.Location;
 
-import java.util.Random;
+import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
 public class ObjAPI
 {
@@ -202,9 +203,9 @@ public class ObjAPI
 	 * Returns an integer between <code>min</code> and <code>max</code>.
 	 * 
 	 * @param min
-	 *            the minimum value of the returned integer.
+	 *        the minimum value of the returned integer.
 	 * @param max
-	 *            the maximum value of the returned integer.
+	 *        the maximum value of the returned integer.
 	 * @return the generated integer.
 	 */
 	public int generateIntRange(int min, int max)
@@ -216,7 +217,7 @@ public class ObjAPI
 	 * Returns a random boolean based on the <code>percent</code> passed in.
 	 * 
 	 * @param percent
-	 *            the percentage as a value from 1 - 100 (not 0 - 1).
+	 *        the percentage as a value from 1 - 100 (not 0 - 1).
 	 * @return the randomly generated boolean.
 	 */
 	public boolean randomPercentBool(double percent)

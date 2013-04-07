@@ -109,8 +109,8 @@ import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Shrine;
 
 public class DShrineListener implements Listener
 {

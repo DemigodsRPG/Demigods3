@@ -88,54 +88,85 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Objects;
 
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
+import java.io.Serializable;
 
-import com.censoredsoftware.Demigods.Listeners.DPlayerListener;
+import org.bukkit.Location;
+import org.bukkit.Material;
 
-public class DisconnectReasonFilter implements Filter
+import com.censoredsoftware.Demigods.Demigods;
+
+public class ProtectedBlock implements Serializable
 {
-	public DisconnectReasonFilter()
-	{}
+	private static final Demigods API = Demigods.INSTANCE;
+	private static final long serialVersionUID = -7530311440427926327L;
 
-	public boolean isLoggable(LogRecord arg0)
+	protected final int id;
+	protected final int material;
+	protected int previousMat;
+	protected final String type;
+	protected final SerialLocation location;
+	protected final byte matByte;
+
+	ProtectedBlock(Location location, String type, Material material)
 	{
-		if(arg0.getMessage().toLowerCase().contains("disconnect"))
-		{
-			DPlayerListener.filterCheckGeneric = false;
-			DPlayerListener.filterCheckStream = false;
-			DPlayerListener.filterCheckOverflow = false;
-			DPlayerListener.filterCheckTimeout = false;
+		this.id = API.object.generateInt(5);
+		this.type = type;
+		this.location = new SerialLocation(location);
+		this.previousMat = location.getBlock().getTypeId();
+		this.material = material.getId();
+		this.matByte = (byte) 0;
 
-			if(arg0.getMessage().toLowerCase().contains("genericreason"))
-			{
-				DPlayerListener.filterCheckGeneric = true;
-				return true;
-			}
-			if(arg0.getMessage().toLowerCase().contains("endofstream"))
-			{
-				DPlayerListener.filterCheckStream = true;
-				return true;
-			}
-			if(arg0.getMessage().toLowerCase().contains("overflow"))
-			{
-				DPlayerListener.filterCheckOverflow = true;
-				return true;
-			}
-			if(arg0.getMessage().toLowerCase().contains("timeout"))
-			{
-				DPlayerListener.filterCheckTimeout = true;
-				return true;
-			}
-			if(arg0.getMessage().toLowerCase().contains("quitting"))
-			{
-				DPlayerListener.filterCheckQuitting = true;
-				return true;
-			}
-			return true;
-		}
-		return true;
+		// Create the actual block
+		location.getBlock().setType(material);
+	}
+
+	ProtectedBlock(Location location, String type, Material material, byte matByte)
+	{
+		this.id = API.object.generateInt(5);
+		this.type = type;
+		this.location = new SerialLocation(location);
+		this.material = material.getId();
+		this.matByte = matByte;
+
+		// Create the actual block
+		location.getBlock().setType(material);
+		location.getBlock().setData(matByte, true);
+
+	}
+
+	/*
+	 * remove() : Removes the block.
+	 */
+	public void remove()
+	{
+		location.unserialize().getBlock().setTypeId(this.previousMat);
+	}
+
+	/*
+	 * getID() : Returns the ID of the block.
+	 */
+	public int getID()
+	{
+		return this.id;
+	}
+
+	/*
+	 * getMaterial() : Returns the material of the block.
+	 */
+	public Material getMaterial()
+	{
+		return Material.getMaterial(id);
+	}
+
+	public byte getMaterialByte()
+	{
+		return matByte;
+	}
+
+	public Location getLocation()
+	{
+		return location.unserialize();
 	}
 }

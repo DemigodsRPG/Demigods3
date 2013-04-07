@@ -90,10 +90,11 @@
 
 package com.censoredsoftware.Demigods.Handlers;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
@@ -104,10 +105,10 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DCommandHandler implements CommandExecutor
 {
@@ -246,6 +247,35 @@ public class DCommandHandler implements CommandExecutor
 				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
 				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
 				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/Clashnia/Minecraft-Demigods");
+			}
+			else if(option1.equalsIgnoreCase("update"))
+			{
+				if(!API.misc.hasPermissionOrOP(player, "demigods.admin")) return API.misc.noPermission(player);
+
+				if(API.data.getConfirmed(sender, "update"))
+				{
+					API.data.confirm(sender, "update", false);
+					if(API.update.check())
+					{
+						API.misc.taggedMessage(sender, "Beginning download...");
+						if(API.update.execute()) API.misc.taggedMessage(sender, "Download complete. " + ChatColor.YELLOW + "Please reload the server!");
+						else API.misc.taggedMessage(sender, "Download failed. " + ChatColor.WHITE + "Please try again later.");
+					}
+					else
+					{
+						API.misc.taggedMessage(sender, "You are already running the latest version.");
+					}
+					return true;
+				}
+				else
+				{
+					API.misc.taggedMessage(sender, "Currently, version " + ChatColor.YELLOW + API.getDescription().getVersion() + ChatColor.WHITE + " is installed.");
+					API.misc.taggedMessage(sender, "The latest version up for download is " + ChatColor.YELLOW + API.update.getLatestVersion() + ChatColor.WHITE + ".");
+					API.misc.taggedMessage(sender, "If you would still like to update, please use ");
+					API.misc.taggedMessage(sender, ChatColor.YELLOW + "/dg update " + ChatColor.WHITE + "again.");
+					API.data.confirm(sender, "update", true);
+					return true;
+				}
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{

@@ -88,141 +88,119 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Libraries.Objects;
+package com.censoredsoftware.Demigods.Objects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.censoredsoftware.Demigods.Demigods;
 
-public class Battle implements Serializable
+public class Shrine implements Serializable
 {
 	private static final Demigods API = Demigods.INSTANCE;
-	private static final long serialVersionUID = 4216924382953412112L;
+	private static final long serialVersionUID = 1020598192563856384L;
 
-	private int battleID;
-	private int whoStarted;
-	private SerialLocation startLocation;
-	private ArrayList<Integer> involvedCharIDs;
-	private ArrayList<SerialLocation> involvedLocations;
-	private Long startTime;
-	private Long endTime;
-	private boolean isActive = true;
+	private int id;
+	private PlayerCharacter owner;
+	private String deity;
+	private ProtectedBlock block;
+	private SerialLocation location;
 
-	public Battle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime, final int battleID)
+	public Shrine(PlayerCharacter character, Location location)
 	{
-		// Define variables
-		Player started = (Player) attacking.getOwner();
-		Location startedLocation = started.getLocation();
+		this.id = API.object.generateInt(5);
+		this.location = new SerialLocation(location);
+		this.owner = character;
+		this.deity = character.getDeity();
 
-		this.battleID = battleID;
-		this.whoStarted = attacking.getID();
-		this.startLocation = new SerialLocation(startedLocation);
-		this.startTime = startTime;
+		// Generate the Shrine
+		generate();
 
-		addCharacter(attacking);
-		addCharacter(defending);
-
-		// Save the battle
-		API.data.addBattle(battleID);
-		API.data.saveTimedData(battleID, "battle_active", true, 10);
 		save();
 	}
 
-	public void save()
+	/*
+	 * save() : Saves the Shrine to a HashMap.
+	 */
+	private void save()
 	{
-		API.data.saveBattleData(battleID, "battle_object", this);
+		API.data.saveBlockData("shrines", this.id, this);
 	}
 
+	/*
+	 * remove() : Removes the Shrine.
+	 */
+	public synchronized void remove()
+	{
+		API.data.removeBlockData("shrines", this.id);
+
+		Location location = this.location.unserialize();
+		location.getBlock().setType(Material.AIR);
+
+		Location locToMatch = location.add(0.5, 1.0, 0.5);
+		for(Entity entity : location.getWorld().getEntities())
+		{
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
+	}
+
+	/*
+	 * getID() : Returns the ID for the Shrine.
+	 */
 	public int getID()
 	{
-		return this.battleID;
+		return this.id;
 	}
 
-	public void addCharacter(PlayerCharacter character)
+	/*
+	 * getOwner() : Returns the owner ID for the Shrine.
+	 */
+	public PlayerCharacter getOwner()
 	{
-		addCharID(character.getID());
-		if(character.getOwner().isOnline()) addLocation(character.getOwner().getPlayer().getLocation());
+		return this.owner;
 	}
 
-	public void removeCharacter(PlayerCharacter character)
+	/*
+	 * getDeity() : Returns the deity for the Shrine.
+	 */
+	public String getDeity()
 	{
-		removeCharID(character.getID());
+		return this.deity;
 	}
 
-	public ArrayList<Integer> getCharIDs()
+	/*
+	 * getLocation() : Returns the location of this Shrine.
+	 */
+	public Location getLocation()
 	{
-		return this.involvedCharIDs;
+		return this.location.unserialize();
 	}
 
-	public void overwriteCharIDs(ArrayList<Integer> involvedCharIDs)
+	public synchronized void generate()
 	{
-		this.involvedCharIDs = involvedCharIDs;
-		save();
-	}
+		Location location = this.getLocation();
 
-	public void addCharID(int charID)
-	{
-		if(this.involvedCharIDs == null) this.involvedCharIDs = new ArrayList<Integer>();
-		if(!this.involvedCharIDs.contains(charID)) this.involvedCharIDs.add(charID);
-		save();
-	}
+		// Remove entity to be safe
+		Location locToMatch = this.getLocation().add(0.5, 1.0, 0.5);
+		for(Entity entity : location.getWorld().getEntities())
+		{
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
 
-	public void removeCharID(int charID)
-	{
-		if(this.involvedCharIDs.contains(charID)) this.involvedCharIDs.remove(charID);
-		save();
-	}
+		// Set bedrock
+		this.block = new ProtectedBlock(location, "shrine", Material.BEDROCK);
 
-	public ArrayList<SerialLocation> getLocations()
-	{
-		return this.involvedLocations;
-	}
-
-	public void overwriteLocations(ArrayList<SerialLocation> involvedLocations)
-	{
-		this.involvedLocations = involvedLocations;
-		save();
-	}
-
-	public void addLocation(Location location)
-	{
-		if(this.involvedLocations == null) this.involvedLocations = new ArrayList<SerialLocation>();
-		if(!this.involvedLocations.contains(new SerialLocation(location))) this.involvedLocations.add(API.object.toSerializableLocation(location));
-		save();
-	}
-
-	public void removeLocation(Location location)
-	{
-		if(this.involvedLocations.contains(new SerialLocation(location))) this.involvedLocations.remove(new SerialLocation(location));
-		save();
-	}
-
-	public int getWhoStarted()
-	{
-		return this.whoStarted;
-	}
-
-	public Long getStartTime()
-	{
-		return this.startTime;
-	}
-
-	public Long getEndTime()
-	{
-		return this.endTime;
-	}
-
-	public boolean isActive()
-	{
-		return this.isActive;
-	}
-
-	public synchronized void setActive(boolean active)
-	{
-		this.isActive = active;
+		// Spawn the Entity
+		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
 	}
 }

@@ -90,8 +90,8 @@
 
 package com.censoredsoftware.Demigods.Handlers.Abstract;
 
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Task;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Task;
 
 public abstract class TaskHandler
 {

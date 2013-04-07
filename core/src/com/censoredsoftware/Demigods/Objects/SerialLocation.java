@@ -87,152 +87,81 @@
 	    destroy all copies of this Plugin, the Software, and any
 	    derivatives within 48 hours.
  */
-package com.censoredsoftware.Demigods.Libraries.Objects;
+
+package com.censoredsoftware.Demigods.Objects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
-public class Task implements Serializable
+public class SerialLocation implements Serializable
 {
-	private static final Demigods API = Demigods.INSTANCE;
-	private static final long serialVersionUID = -2993695235782423170L;
+	private static final long serialVersionUID = 1869297397495176134L;
+	private double X, Y, Z;
+	private float pitch, yaw;
+	private final String world;
+	private String name;
 
-	private int character, order, taskID;
-	private ArrayList<String> description;
-	private String quest, plugin, classPath, invokeID;
-	private boolean active, required;
-
-	public Task(PlayerCharacter character, ArrayList<String> description, String quest, int order, boolean active, boolean required, DemigodsPlugin plugin, String classPath, int taskID, String invokeID)
+	public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw)
 	{
-		this.character = character.getID();
-		this.description = description;
-		this.quest = quest;
-		this.order = order;
-		this.active = active;
-		this.required = required;
-		this.plugin = plugin.getName();
-		this.classPath = classPath;
-		this.taskID = taskID;
-		this.invokeID = invokeID;
-
-		API.data.addTask(taskID);
-		API.data.saveTaskData(taskID, "task_quest", this.quest);
-		save();
+		this.world = world;
+		this.X = X;
+		this.Y = Y;
+		this.Z = Z;
+		this.pitch = pitch;
+		this.yaw = yaw;
 	}
 
-	/*
-	 * save() : Save the object.
-	 */
-	public void save()
+	public SerialLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
 	{
-		API.data.saveTaskData(taskID, "task_object", this);
+		this.world = world;
+		this.X = X;
+		this.Y = Y;
+		this.Z = Z;
+		this.pitch = pitch;
+		this.yaw = yaw;
+		this.name = name.toUpperCase();
 	}
 
-	/*
-	 * isInstalled() : Checks to see if the correct ClassLoader is installed.
-	 */
-	public boolean isInstalled()
+	public SerialLocation(Location location)
 	{
-		return getPlugin() != null;
+		this.world = location.getWorld().getName();
+		this.X = location.getX();
+		this.Y = location.getY();
+		this.Z = location.getZ();
+		this.pitch = location.getPitch();
+		this.yaw = location.getYaw();
 	}
 
-	/*
-	 * isActive() : Checks to see if the Task is active.
-	 */
-	public boolean isActive()
+	public SerialLocation(Location location, String name)
 	{
-		return this.active;
+		this.world = location.getWorld().getName();
+		this.X = location.getX();
+		this.Y = location.getY();
+		this.Z = location.getZ();
+		this.pitch = location.getPitch();
+		this.yaw = location.getYaw();
+		this.name = name.toUpperCase();
 	}
 
-	/*
-	 * setActive() : Sets (boolean)active.
-	 */
-	public synchronized void setActive(boolean active)
+	public boolean hasName()
 	{
-		this.active = active;
+		return name != null;
 	}
 
-	/*
-	 * getPlugin() : Returns the plugin corresponding to this object.
-	 */
-	public DemigodsPlugin getPlugin()
+	public String getName()
 	{
-		return API.plugin.getPlugin(this.plugin);
+		return name;
 	}
 
-	/*
-	 * getID() : Get the save (int)ID of the Task object.
-	 */
-	public int getID()
+	public synchronized void setName(String name)
 	{
-		return this.taskID;
+		this.name = name.toUpperCase();
 	}
 
-	/*
-	 * initialize() : Starts the task.
-	 */
-	public void initialize()
+	public Location unserialize()
 	{
-		try
-		{
-			API.task.invokeTask(API.plugin.getPlugin(this.plugin), this.classPath);
-			API.data.saveTaskData(getID(), "task_active", true);
-		}
-		catch(Exception ignored)
-		{
-			API.data.removeTask(getID());
-			return;
-		}
-	}
-
-	/*
-	 * getOrder() : Get the (int)order.
-	 */
-	public int getOrder()
-	{
-		return this.order;
-	}
-
-	/*
-	 * getQuest() : Get the (String)Quest.
-	 */
-	public String getQuest()
-	{
-		return this.quest;
-	}
-
-	/*
-	 * getDescription() : Get the (String)Description.
-	 */
-	public ArrayList<String> getDescription()
-	{
-		return this.description;
-	}
-
-	/*
-	 * getClassPath() : Get the (String)classPath.
-	 */
-	public String getClassPath()
-	{
-		return this.classPath;
-	}
-
-	/*
-	 * getCharacter() : Get the (PlayerCharacter)character.
-	 */
-	public PlayerCharacter getCharacter()
-	{
-		return API.character.getChar(this.character);
-	}
-
-	/*
-	 * getInvokeID() : Get the (String)invokeID.
-	 */
-	public String getInvokeID()
-	{
-		return this.invokeID;
+		return new Location(Bukkit.getServer().getWorld(this.world), this.X, this.Y, this.Z, this.yaw, this.pitch);
 	}
 }

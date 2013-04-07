@@ -104,7 +104,7 @@ import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCa
 import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DDebugListener implements Listener
 {

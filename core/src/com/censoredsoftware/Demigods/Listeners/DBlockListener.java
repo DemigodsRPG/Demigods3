@@ -114,9 +114,9 @@ import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCa
 import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
 import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
 import com.censoredsoftware.Demigods.Handlers.Database.DFlatFile;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
+import com.censoredsoftware.Demigods.Objects.Altar;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Shrine;
 
 public class DBlockListener implements Listener
 {

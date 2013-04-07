@@ -90,13 +90,14 @@
 
 package com.censoredsoftware.Demigods.API;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.Altar;
-import com.censoredsoftware.Demigods.Libraries.Objects.Shrine;
-import org.bukkit.Location;
-
 import java.util.ArrayList;
 import java.util.Map.Entry;
+
+import org.bukkit.Location;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Objects.Altar;
+import com.censoredsoftware.Demigods.Objects.Shrine;
 
 public class BlockAPI
 {
@@ -104,7 +105,7 @@ public class BlockAPI
 
 	/**
 	 * Returns all protected blocks as an ArrayList.
-	 *
+	 * 
 	 * @return the ArrayList of locations.
 	 */
 	public ArrayList<Location> getAllBlocks()
@@ -121,7 +122,7 @@ public class BlockAPI
 
 	/**
 	 * Returns all Altars as an ArrayList.
-	 *
+	 * 
 	 * @return the ArrayList of Altars.
 	 */
 	public ArrayList<Altar> getAllAltars()
@@ -140,7 +141,7 @@ public class BlockAPI
 
 	/**
 	 * Returns all Shrines as an ArrayList.
-	 *
+	 * 
 	 * @return the ArrayList of Shrines.
 	 */
 	public ArrayList<Shrine> getAllShrines()
@@ -159,9 +160,9 @@ public class BlockAPI
 
 	/**
 	 * Returns true if the block at the passed in <code>location</code> is protected.
-	 *
+	 * 
 	 * @param location the location to check.
-	 * @return         true/false depending on if the block is protected or not.
+	 * @return true/false depending on if the block is protected or not.
 	 */
 	public boolean isProtected(Location location)
 	{
@@ -170,9 +171,9 @@ public class BlockAPI
 
 	/**
 	 * Returns true if the block at the passed in <code>location</code> is an Altar.
-	 *
+	 * 
 	 * @param location the location to check.
-	 * @return         true/false depending on if the block is an Altar or not.
+	 * @return true/false depending on if the block is an Altar or not.
 	 */
 	public boolean isAltar(Location location)
 	{
@@ -187,9 +188,9 @@ public class BlockAPI
 
 	/**
 	 * Returns true if the block at the passed in <code>location</code> is a Shrine.
-	 *
+	 * 
 	 * @param location the location to check.
-	 * @return         true/false depending on if the block is an Shrine or not.
+	 * @return true/false depending on if the block is an Shrine or not.
 	 */
 	public boolean isShrine(Location location)
 	{
@@ -204,9 +205,9 @@ public class BlockAPI
 
 	/**
 	 * Returns the Altar at the <code>location</code>.
-	 *
+	 * 
 	 * @param location the location to check.
-	 * @return         the Altar at <code>location</code>.
+	 * @return the Altar at <code>location</code>.
 	 */
 	public Altar getAltar(Location location)
 	{
@@ -221,9 +222,9 @@ public class BlockAPI
 
 	/**
 	 * Returns the Shrine at the <code>location</code>.
-	 *
+	 * 
 	 * @param location the location to check.
-	 * @return         the Shrine at <code>location</code>.
+	 * @return the Shrine at <code>location</code>.
 	 */
 	public Shrine getShrine(Location location)
 	{
@@ -240,9 +241,9 @@ public class BlockAPI
 	 * Checks the <code>reference</code> location to validate if the area is safe
 	 * for automated generation.
 	 * 
-	 * @param  reference the location to be checked
-	 * @param  area      how big of an area (in blocks) to validate
-	 * @return           based on if the location is safe to generate at
+	 * @param reference the location to be checked
+	 * @param area how big of an area (in blocks) to validate
+	 * @return based on if the location is safe to generate at
 	 */
 	public boolean canGenerateSolid(Location reference, int area)
 	{
@@ -285,11 +286,10 @@ public class BlockAPI
 	}
 
 	/**
-	 * Returns true/false depending on if there is an Altar within <code>blocks</code>
-	 * of <code>location</code>.
-	 *
-	 * @param  location the location used as the center to check from.
-	 * @param  blocks   the radius of blocks to check with.
+	 * Returns true/false depending on if there is an Altar within <code>blocks</code> of <code>location</code>.
+	 * 
+	 * @param location the location used as the center to check from.
+	 * @param blocks the radius of blocks to check with.
 	 * @return
 	 */
 	public boolean altarNearby(Location location, int blocks)

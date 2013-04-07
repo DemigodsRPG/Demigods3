@@ -90,15 +90,16 @@
 
 package com.censoredsoftware.Demigods.Listeners;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 
 public class DAbilityListener implements Listener
 {

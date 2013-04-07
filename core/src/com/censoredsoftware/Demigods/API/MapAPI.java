@@ -95,12 +95,13 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Libraries.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Libraries.Objects.SerialLocation;
+import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
-public class DataAPI
+public class MapAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
@@ -778,5 +779,37 @@ public class DataAPI
 	public boolean hasTimedData(Object dataParent, String dataKey)
 	{
 		return timedData.containsKey(dataParent) && timedData.get(dataParent).containsKey(dataKey);
+	}
+
+	/**
+	 * Returns a Boolean of the confirm data for <code>command</code> belonging to <code>sender</code>.
+	 * 
+	 * @param sender the sender owning the data
+	 * @param command the command being confirmed
+	 * @return Boolean
+	 */
+	public boolean getConfirmed(CommandSender sender, String command)
+	{
+		String name = sender.getName();
+		if(!playerData.containsKey(name) || !playerData.get(name).containsKey(command)) return false;
+		return System.currentTimeMillis() <= (Long) playerData.get(name).get(command);
+	}
+
+	public void confirm(CommandSender sender, String command, boolean confirm)
+	{
+		String name = sender.getName();
+		if(!confirm)
+		{
+			if(playerData.containsKey(name)) playerData.get(name).remove(command);
+			return;
+		}
+		else if(!playerData.containsKey(name))
+		{
+			HashMap<String, Object> save = new HashMap<String, Object>();
+			save.put(command, System.currentTimeMillis() + (API.config.getSettingInt("confirm_time") * 1000));
+			playerData.put(name, save);
+			return;
+		}
+		else playerData.get(name).put(command, System.currentTimeMillis() + (API.config.getSettingInt("confirm_time") * 1000));
 	}
 }
