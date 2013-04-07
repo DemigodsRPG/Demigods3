@@ -123,12 +123,12 @@ public class DMetricsHandler
 					return API.battle.getAllActive().size();
 				}
 			});
-			battles.addPlotter(new Metrics.Plotter("Total")
+			battles.addPlotter(new Metrics.Plotter("Inactive")
 			{
 				@Override
 				public int getValue()
 				{
-					return API.data.getAllBattles().size();
+					return API.data.getAllBattles().size() - API.battle.getAllActive().size();
 				}
 			});
 
@@ -142,12 +142,12 @@ public class DMetricsHandler
 					return API.character.getAllActive().size();
 				}
 			});
-			characters.addPlotter(new Metrics.Plotter("Total")
+			characters.addPlotter(new Metrics.Plotter("Inactive")
 			{
 				@Override
 				public int getValue()
 				{
-					return API.data.getAllChars().size();
+					return API.data.getAllChars().size() - API.character.getAllActive().size();
 				}
 			});
 
@@ -163,12 +163,12 @@ public class DMetricsHandler
 						return API.character.getActiveAllianceList(alliance).size();
 					}
 				});
-				alliances.addPlotter(new Metrics.Plotter(alliance + " Total")
+				alliances.addPlotter(new Metrics.Plotter(alliance + " Inactive")
 				{
 					@Override
 					public int getValue()
 					{
-						return API.character.getAllianceList(alliance).size();
+						return API.character.getAllianceList(alliance).size() - API.character.getActiveAllianceList(alliance).size();
 					}
 				});
 			}
@@ -185,12 +185,12 @@ public class DMetricsHandler
 						return API.character.getActiveDeityList(deity).size();
 					}
 				});
-				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Total")
+				deities.addPlotter(new Metrics.Plotter(String.valueOf(deity.charAt(1)).toUpperCase() + deity.substring(1) + " Inactive")
 				{
 					@Override
 					public int getValue()
 					{
-						return API.character.getDeityList(deity).size();
+						return API.character.getDeityList(deity).size() - API.character.getActiveDeityList(deity).size();
 					}
 				});
 			}
