@@ -108,26 +108,8 @@ public class PlayerCharacter implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 8201132625259394712L;
 
-	private String playerName;
-	private String charName;
-	private String charDeity;
-	private String charAlliance;
-	private int playerID;
-	private int charID;
-	private int charLevel;
-	private int charKillstreak;
-	private int charFoodLevel;
-	private int charHealth;
-	private int charMaxHealth;
-	private int charFavor;
-	private int charMaxFavor;
-	private int charDevotion;
-	private int charAscensions;
-	private int powerOffense;
-	private int powerDefense;
-	private int powerStealth;
-	private int powerSupport;
-	private int powerPassive;
+	private String playerName, charName, charDeity, charAlliance;
+	private int playerID, charID, charLevel, charKillstreak, charFoodLevel, charHealth, charMaxHealth, charFavor, charMaxFavor, charDevotion, charAscensions, powerOffense, powerDefense, powerStealth, powerSupport, powerPassive;
 	private float charExp;
 	private SerialPlayerInventory charInv = null;
 	private SerialLocation location;
@@ -139,7 +121,7 @@ public class PlayerCharacter implements Serializable
 		this.playerID = API.player.getPlayerID(player);
 		this.playerName = player.getName();
 		this.charID = charID;
-		this.charName = API.object.capitalize(charName.toLowerCase());
+		this.charName = charName;
 		this.charDeity = API.object.capitalize(charDeity.toLowerCase());
 		this.charAlliance = API.deity.getDeityAlliance(charDeity);
 		this.charFoodLevel = 20;

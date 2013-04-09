@@ -39,6 +39,10 @@ default_ascensions: 1
 ## Administrative Settings ##
 admin_wand_tool: 369
 
+## Character Settings ##
+character:
+    max_caps_in_name: 3
+
 ## Battle Settings ##
 blocked_battle_commands:
 - 'spawn'

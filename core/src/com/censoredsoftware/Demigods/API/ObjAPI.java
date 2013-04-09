@@ -94,10 +94,13 @@ import java.util.Random;
 
 import org.bukkit.Location;
 
+import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
 public class ObjAPI
 {
+	private static final Demigods API = Demigods.INSTANCE;
+
 	/*
 	 * capitalize() : Capitalizes (String)string and returns it.
 	 */
@@ -225,6 +228,33 @@ public class ObjAPI
 		Random rand = new Random();
 		int chance = rand.nextInt((int) Math.ceil(1 / (percent / 100))) + 1;
 		if(chance == 1) return true;
+		return false;
+	}
+
+	/**
+	 * Returns true if the <code>string</code> contains more than <code>max</code> capital letters.
+	 * 
+	 * @param string the string to check.
+	 * @param max the maximum number of capital letters allowed.
+	 * @return boolean
+	 */
+	public boolean hasCapitalLetters(String string, int max)
+	{
+		// Define variables
+		String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		int count = 0;
+		char[] characters = string.toCharArray();
+
+		for(char character : characters)
+		{
+			if(allCaps.contains("" + character))
+			{
+				count++;
+			}
+
+			if(count >= max) return true;
+		}
+
 		return false;
 	}
 }
