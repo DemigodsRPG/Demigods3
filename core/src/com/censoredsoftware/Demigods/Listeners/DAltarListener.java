@@ -598,14 +598,15 @@ public class DAltarListener implements Listener
 	// Name confirmation
 	private void confirmName(Player player, String message)
 	{
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || API.player.hasCharName(player, message))
+		int maxCaps = API.config.getSettingInt("character.max_caps_in_name");
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || API.player.hasCharName(player, message) || API.object.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
 			API.data.savePlayerData(player, "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
 			if(API.player.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
-			if(API.object.hasCapitalLetters(message, API.config.getSettingInt("character.max_caps_in_name"))) player.sendMessage(ChatColor.RED + "  That name contains more than the max (" + API.config.getSettingInt("character.max_caps_in_name") + ") allowed capital letters.");
+			if(API.object.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  That name contains more than the max (" + maxCaps + ") allowed capital letters.");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 			player.sendMessage(" ");
 		}
