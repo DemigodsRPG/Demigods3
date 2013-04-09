@@ -252,7 +252,7 @@ public class ObjAPI
 				count++;
 			}
 
-			if(count >= max) return true;
+			if(count > max) return true;
 		}
 
 		return false;
