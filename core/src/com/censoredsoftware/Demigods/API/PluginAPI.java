@@ -102,8 +102,11 @@ public class PluginAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
-	/*
-	 * getPlugin() : Returns the DemigodsPlugin for the (String)pluginName.
+	/**
+	 * Returns the DemigodsPlugin for <code>pluginName</code>.
+	 * 
+	 * @param pluginName the plugin name to look for.
+	 * @return DemigodsPlugin
 	 */
 	public DemigodsPlugin getPlugin(String pluginName)
 	{
@@ -115,8 +118,11 @@ public class PluginAPI
 		else return null;
 	}
 
-	/*
-	 * getClassLoader() : Returns the ClassLoader for the (DemigodsPlugin)plugin.
+	/**
+	 * Returns the class loader for the <code>plugin</code>.
+	 * 
+	 * @param plugin the plugin whose class loader to return.
+	 * @return ClassLoader
 	 */
 	public ClassLoader getClassLoader(DemigodsPlugin plugin)
 	{

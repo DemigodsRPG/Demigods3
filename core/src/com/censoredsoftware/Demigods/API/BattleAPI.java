@@ -107,13 +107,19 @@ import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
 import com.censoredsoftware.Demigods.Objects.SerialLocation;
 
 @SuppressWarnings("ALL")
+/**
+ * Handles all battle-related methods.
+ */
 public class BattleAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final int BATTLEDISTANCE = 16; // TODO
 
-	/*
-	 * getBattle() : Returns the Battle object for (int)battleID.
+	/**
+	 * Returns the Battle object with the id <code>battleID</code>.
+	 * 
+	 * @param battleID the id to look for.
+	 * @return Battle
 	 */
 	public Battle getBattle(int battleID)
 	{
@@ -123,8 +129,10 @@ public class BattleAPI
 		else return null;
 	}
 
-	/*
-	 * getAllBattles() : Returns an ArrayList of all Battles.
+	/**
+	 * Returns an ArrayList of all Battles.
+	 * 
+	 * @return ArrayList
 	 */
 	public ArrayList<Battle> getAll()
 	{
@@ -137,8 +145,10 @@ public class BattleAPI
 		return battles;
 	}
 
-	/*
-	 * getAllActiveBattles() : Returns an ArrayList of all active Battles.
+	/**
+	 * Returns an ArrayList of all active Battles.
+	 * 
+	 * @return ArrayList
 	 */
 	public ArrayList<Battle> getAllActive()
 	{
@@ -151,8 +161,11 @@ public class BattleAPI
 		return battles;
 	}
 
-	/*
-	 * getActiveBattle() : Returns an ArrayList of all active Battles.
+	/**
+	 * Returns an ArrayList of all active battles near <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return Battle
 	 */
 	public Battle getActiveBattle(Location location)
 	{
@@ -163,6 +176,12 @@ public class BattleAPI
 		return null;
 	}
 
+	/**
+	 * Returns the current active Battle for <code>character</code>.
+	 * 
+	 * @param character the character whose active battle to return.
+	 * @return Battle
+	 */
 	public Battle getActiveBattle(PlayerCharacter character)
 	{
 		for(Battle battle : getAllActive())
@@ -172,8 +191,12 @@ public class BattleAPI
 		return null;
 	}
 
-	/*
-	 * isNearBattle() : Returns true if (Location)location is near (Battle)battle.
+	/**
+	 * Returns true if <code>location</code> is near <code>battle</code>.
+	 * 
+	 * @param battle the battle to compare.
+	 * @param location the location to compare.
+	 * @return boolean
 	 */
 	public boolean isNearBattle(Battle battle, Location location)
 	{
@@ -184,8 +207,12 @@ public class BattleAPI
 		return false;
 	}
 
-	/*
-	 * isInBattle() : Returns true if (PlayerCharacter)character is involved in (Battle)battle.
+	/**
+	 * Returns true if <code>character</code> is involved in the given <code>battle</code>.
+	 * 
+	 * @param battle the battle to check for.
+	 * @param character the character to check.
+	 * @return boolean
 	 */
 	public boolean isInBattle(Battle battle, PlayerCharacter character)
 	{
@@ -196,8 +223,11 @@ public class BattleAPI
 		return false;
 	}
 
-	/*
-	 * isNearAnyActiveBattle() : Returns true if (Location)location is near any active Battle.
+	/**
+	 * Returns true if the <code>location</code> is near any active battle.
+	 * 
+	 * @param location the location to check.
+	 * @return boolean
 	 */
 	public boolean isNearAnyActiveBattle(Location location)
 	{
@@ -208,8 +238,11 @@ public class BattleAPI
 		return false;
 	}
 
-	/*
-	 * isInAnyActiveBattle() : Returns true if (PlayerCharacter)character is involved in any active Battle.
+	/**
+	 * Returns true if the <code>character</code> is involved in an active battle.
+	 * 
+	 * @param character the character to check.
+	 * @return boolean
 	 */
 	public boolean isInAnyActiveBattle(PlayerCharacter character)
 	{
@@ -220,8 +253,11 @@ public class BattleAPI
 		return false;
 	}
 
-	/*
-	 * isBlockedCommand() : Returns true if (String)command is blocked during battle.
+	/**
+	 * Returns true if the <code>command</code> is blocked during battles.
+	 * 
+	 * @param command the command to check.
+	 * @return boolean
 	 */
 	public boolean isBlockedCommand(String command)
 	{
@@ -230,6 +266,9 @@ public class BattleAPI
 		return false;
 	}
 
+	/**
+	 * Checks all battles and sets them to inactive where need-be.
+	 */
 	public synchronized void checkForInactiveBattles()
 	{
 		for(Battle battle : getAllActive())
@@ -247,6 +286,12 @@ public class BattleAPI
 		}
 	}
 
+	/**
+	 * Processes the given characters into a battle.
+	 * 
+	 * @param hitChar the character being hit.
+	 * @param hittingChar the character doing to hitting.
+	 */
 	public void battleProcess(PlayerCharacter hitChar, PlayerCharacter hittingChar)
 	{
 		Battle battle = null;
