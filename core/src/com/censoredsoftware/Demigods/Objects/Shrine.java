@@ -92,6 +92,7 @@ package com.censoredsoftware.Demigods.Objects;
 
 import java.io.Serializable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -104,17 +105,16 @@ public class Shrine implements Serializable
 	private static final Demigods API = Demigods.INSTANCE;
 	private static final long serialVersionUID = 1020598192563856384L;
 
-	private int id;
-	private PlayerCharacter owner;
+	private int id, owner;
 	private String deity;
 	private ProtectedBlock block;
 	private SerialLocation location;
 
-	public Shrine(PlayerCharacter character, Location location)
+	public Shrine(int id, PlayerCharacter character, Location location)
 	{
-		this.id = API.object.generateInt(5);
+		this.id = id;
 		this.location = new SerialLocation(location);
-		this.owner = character;
+		this.owner = character.getID();
 		this.deity = character.getDeity();
 
 		// Generate the Shrine
@@ -164,7 +164,7 @@ public class Shrine implements Serializable
 	 */
 	public PlayerCharacter getOwner()
 	{
-		return this.owner;
+		return API.character.getChar(this.owner);
 	}
 
 	/*
@@ -183,6 +183,9 @@ public class Shrine implements Serializable
 		return this.location.unserialize();
 	}
 
+	/**
+	 * Generates the physical Shrine structure.
+	 */
 	public synchronized void generate()
 	{
 		Location location = this.getLocation();
@@ -202,5 +205,52 @@ public class Shrine implements Serializable
 
 		// Spawn the Entity
 		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		return !(object == null || !(object instanceof Shrine)) && this.id == parse(object).getID();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Shrine{id=" + this.id + ",owner=" + this.owner + ",location=" + location.unserialize().getWorld().getName() + "," + location.unserialize().getX() + "," + location.unserialize().getY() + "," + location.unserialize().getZ() + "}";
+	}
+
+	/**
+	 * Parses the save object into a new Shrine object and returns it.
+	 * 
+	 * @param object the save to parse.
+	 * @return Shrine
+	 */
+	public static Shrine parse(Object object)
+	{
+		if(object instanceof Shrine) return (Shrine) object;
+		else if(object instanceof String)
+		{
+			// Cast the object into a string
+			String string = (String) object;
+
+			// Validate that it's a Shrine save
+			if(!string.startsWith("Shrine{id=")) return null;
+
+			// Begin splitting the string into the different variables to parse with
+			string = string.substring(9).replace("}", "");
+			String[] data = string.split(",");
+
+			// Parse the location
+			String[] locs = data[2].substring(9).split(",");
+			Location location = new Location(Bukkit.getWorld(locs[0]), API.object.toInteger(locs[1]), API.object.toInteger(locs[2]), API.object.toInteger(locs[3]));
+
+			// Build the object
+			Shrine shrine = new Shrine(API.object.toInteger(data[0]), API.character.getChar(API.object.toInteger(data[1])), location);
+
+			// Return the new Shrine
+			return shrine;
+		}
+
+		return null;
 	}
 }

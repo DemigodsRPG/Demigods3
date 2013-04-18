@@ -106,9 +106,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.TaskHandler;
 import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
-import com.censoredsoftware.Demigods.Objects.Task;
 import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Task1_task extends TaskHandler implements Listener

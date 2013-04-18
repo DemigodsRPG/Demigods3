@@ -93,6 +93,7 @@ package com.censoredsoftware.Demigods.Objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -109,27 +110,19 @@ public class Altar implements Serializable
 	private SerialLocation center;
 	private ArrayList<ProtectedBlock> blocks;
 
-	public Altar(Location location)
+	public Altar(int id, Location location)
 	{
-		this.id = API.object.generateInt(5);
+		// Set the variables
+		this.id = id;
 		this.center = new SerialLocation(location);
+		this.active = true;
 
 		// Generate the Altar
 		generate();
-
-		save();
 	}
 
-	/*
-	 * save() : Saves the Altar to a HashMap.
-	 */
-	private void save()
-	{
-		API.data.saveBlockData("altars", this.id, this);
-	}
-
-	/*
-	 * remove() : Removes the Altar.
+	/**
+	 * Removes the Altar completely.
 	 */
 	public void remove()
 	{
@@ -141,24 +134,51 @@ public class Altar implements Serializable
 		}
 	}
 
-	/*
-	 * getID() : Returns the ID for the Altar.
+	/**
+	 * Returns the id for the Altar.
+	 * 
+	 * @return Integer
 	 */
 	public int getID()
 	{
 		return this.id;
 	}
 
-	/*
-	 * getLocation() : Returns the location of the center of this Altar.
+	/**
+	 * Returns the location of the Altar.
+	 * 
+	 * @return Location
 	 */
 	public Location getLocation()
 	{
 		return this.center.unserialize();
 	}
 
-	/*
-	 * locationMatches() : Returns true if the location matches a block in the Altar.
+	/**
+	 * Returns true if the Altar is marked as active.
+	 * 
+	 * @return boolean
+	 */
+	public boolean isActive()
+	{
+		return this.active;
+	}
+
+	/**
+	 * Sets the active status of this Altar to <code>option</code>.
+	 * 
+	 * @param option the option to set.
+	 */
+	public void setActive(boolean option)
+	{
+		this.active = option;
+	}
+
+	/**
+	 * Returns true if the <code>location</code> matches a location within the Altar.
+	 * 
+	 * @param location the location to check.
+	 * @return boolean
 	 */
 	public boolean locationMatches(Location location)
 	{
@@ -169,6 +189,9 @@ public class Altar implements Serializable
 		return false;
 	}
 
+	/**
+	 * Generates a full Altar structure.
+	 */
 	public void generate()
 	{
 		ArrayList<ProtectedBlock> blocks = new ArrayList<ProtectedBlock>();
@@ -362,5 +385,53 @@ public class Altar implements Serializable
 			blocks.add(new ProtectedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 
 		this.blocks = blocks;
+	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		return !(object == null || !(object instanceof Altar)) && this.id == parse(object).getID();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Altar{id=" + this.id + ",active=" + this.active + ",center=" + center.unserialize().getWorld().getName() + "," + center.unserialize().getX() + "," + center.unserialize().getY() + "," + center.unserialize().getZ() + "}";
+	}
+
+	/**
+	 * Parses the save object into a new Altar object and returns it.
+	 * 
+	 * @param object the save to parse.
+	 * @return Altar
+	 */
+	public static Altar parse(Object object)
+	{
+		if(object instanceof Altar) return (Altar) object;
+		else if(object instanceof String)
+		{
+			// Cast the object into a string
+			String string = (String) object;
+
+			// Validate that it's an Altar save
+			if(!string.startsWith("Altar{id=")) return null;
+
+			// Begin splitting the string into the different variables to parse with
+			string = string.substring(9).replace("}", "");
+			String[] data = string.split(",");
+
+			// Parse the location
+			String[] locs = data[2].substring(7).split(",");
+			Location location = new Location(Bukkit.getWorld(locs[0]), API.object.toInteger(locs[1]), API.object.toInteger(locs[2]), API.object.toInteger(locs[3]));
+
+			// Build the object
+			Altar altar = new Altar(API.object.toInteger(data[0]), location);
+			altar.setActive(API.object.toBoolean(data[1].substring(7)));
+
+			// Return the new Altar
+			return altar;
+		}
+
+		return null;
 	}
 }

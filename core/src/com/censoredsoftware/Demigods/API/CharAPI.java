@@ -107,8 +107,13 @@ public class CharAPI
 {
 	private static final Demigods API = Demigods.INSTANCE;
 
-	/*
-	 * createChar() : Creates a character for (Player)player if it doesn't currently exist.
+	/**
+	 * Creates a new PlayerCharacter for <code>player</code> with the name <code>charName</code> and the deity <code>charDeity</code> and return it.
+	 * 
+	 * @param player the player to create the character for.
+	 * @param charName the name to use for the character.
+	 * @param charDeity the deity to use for the character.
+	 * @return PlayerCharacter
 	 */
 	public PlayerCharacter createChar(OfflinePlayer player, String charName, String charDeity)
 	{
@@ -125,7 +130,6 @@ public class CharAPI
 			API.data.savePlayerData(player, "player_characters", chars);
 
 			// Save data
-			// TEMP -------------------------------
 			DFlatFile.savePlayer(player);
 
 			return character;

@@ -434,23 +434,7 @@ public class Demigods extends JavaPlugin
 
 	public void loadTasks()
 	{
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(INSTANCE, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					task.invokeAllTasks();
-					misc.info("Tasks have finished loading!");
-				}
-				catch(Exception e)
-				{
-					misc.severe("There was an error while loading tasks.");
-					e.printStackTrace();
-				}
-			}
-		}, 30);
+		// TODO
 	}
 
 	private void checkUpdate()
