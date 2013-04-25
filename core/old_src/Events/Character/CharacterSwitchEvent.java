@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,77 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Events.Character;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
-public class DMetricsHandler
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+
+/*
+ * Represents an event that is called when a player switched characters.
+ */
+public class CharacterSwitchEvent extends Event implements Cancellable
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	private static final HandlerList handlers = new HandlerList();
+	private OfflinePlayer player;
+	private PlayerCharacter toCharacter;
+	private PlayerCharacter fromCharacter;
+	private boolean cancelled = false;
 
-	public DMetricsHandler(Theogony plugin)
+	public CharacterSwitchEvent(final OfflinePlayer player, final PlayerCharacter fromCharacter, final PlayerCharacter toCharacter)
 	{
-		instance = plugin;
+		this.player = player;
+		this.toCharacter = toCharacter;
+		this.fromCharacter = fromCharacter;
 	}
 
-	public static void report()
+	/*
+	 * getOwner() : Gets the player.
+	 */
+	public OfflinePlayer getOwner()
 	{
+		return this.player;
+	}
 
+	/*
+	 * getCharacterTo() : Gets the character being switched to.
+	 */
+	public PlayerCharacter getCharacterTo()
+	{
+		return this.toCharacter;
+	}
+
+	/*
+	 * getCharacterTo() : Gets the character being switched to.
+	 */
+	public PlayerCharacter getCharacterFrom()
+	{
+		return this.fromCharacter;
+	}
+
+	@Override
+	public HandlerList getHandlers()
+	{
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList()
+	{
+		return handlers;
+	}
+
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public synchronized void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
 	}
 }

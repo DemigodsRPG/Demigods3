@@ -108,7 +108,7 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Objects.PlayerCharacter;
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 import com.censoredsoftware.Demigods.Theogony.Theogony;
 
 public class Zeus_deity implements Listener

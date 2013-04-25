@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,62 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Listeners;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Events.Ability.AbilityTargetEvent;
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 
-public class DMetricsHandler
+public class DAbilityListener implements Listener
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	public static Demigods API = Demigods.INSTANCE;
 
-	public DMetricsHandler(Theogony plugin)
+	@EventHandler(priority = EventPriority.LOWEST)
+	public static void onAbility(AbilityEvent event)
 	{
-		instance = plugin;
+		// Get variables
+		PlayerCharacter character = event.getCharacter();
+		AbilityType type = event.getType();
+		int cost = event.getCost();
+		int power = character.getPower(type);
+
+		// Does this ability type gain power from being used?
+		switch(type)
+		{
+			case OFFENSE:
+				break; // Yes
+			case DEFENSE:
+				break; // Yes
+			case STEALTH:
+				return; // No
+			case SUPPORT:
+				return; // No
+			case PASSIVE:
+				return; // No
+		}
+
+		int increase = cost / power;
+		if(increase < 1) increase = 1;
+
+		// Set the new power.
+		character.setPower(type, power + increase); // TODO
 	}
 
-	public static void report()
+	@EventHandler(priority = EventPriority.LOWEST)
+	public static void onAbilityTarget(AbilityTargetEvent event)
 	{
+		if(!(event.getTarget() instanceof Player)) return;
 
+		PlayerCharacter hitChar = API.player.getCurrentChar((Player) event.getTarget());
+		PlayerCharacter hittingChar = event.getCharacter();
+
+		API.battle.battleProcess(hitChar, hittingChar);
 	}
 }

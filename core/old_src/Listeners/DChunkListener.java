@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,90 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Listeners;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.ItemStack;
+
+import com.censoredsoftware.Demigods.Definitions.SpecialItems;
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Objects.Altar;
 
-public class DMetricsHandler
+public class DChunkListener implements Listener
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	public static final Demigods API = Demigods.INSTANCE;
 
-	public DMetricsHandler(Theogony plugin)
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onChunkLoad(ChunkLoadEvent event)
 	{
-		instance = plugin;
-	}
+		// Define variables
+		Location location = API.misc.randomChunkLocation(event.getChunk());
 
-	public static void report()
-	{
+		// Let's randomly create chests
+		if(API.object.randomPercentBool(API.config.getSettingDouble("chest_generation_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
+		{
+			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
+			API.getServer().getPluginManager().callEvent(chestSpawnEvent);
+			if(chestSpawnEvent.isCancelled()) return;
 
+			// Define variables
+			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+
+			for(Map.Entry<Double, ItemStack> item : SpecialItems.getBooks().entrySet())
+			{
+				if(API.object.randomPercentBool(item.getKey())) items.add(item.getValue());
+			}
+
+			// Generate the chest
+			API.item.createChest(location, items);
+		}
+
+		// If it's a new chunk then we'll generate structures
+		if(event.isNewChunk())
+		{
+			// Choose an arbitrary value and check the chance against it
+			if(API.object.randomPercentBool(API.config.getSettingDouble("altar_generation_chance")))
+			{
+				if(API.block.canGenerateSolid(location, 6))
+				{
+					// If another Altar doesn't exist nearby then make one
+					if(!API.block.altarNearby(location, API.config.getSettingInt("minimum_blocks_between_altars")))
+					{
+						AltarCreateEvent altarCreateEvent = new AltarCreateEvent(location, AltarCreateCause.GENERATED);
+						API.getServer().getPluginManager().callEvent(altarCreateEvent);
+						if(altarCreateEvent.isCancelled()) return;
+
+						new Altar(location);
+
+						location.getWorld().strikeLightningEffect(location);
+						location.getWorld().strikeLightningEffect(location);
+
+						for(Entity entity : event.getWorld().getEntities())
+						{
+							if(entity instanceof Player)
+							{
+								if(entity.getLocation().distance(location) < 400)
+								{
+									((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "An Altar has spawned near you...");
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

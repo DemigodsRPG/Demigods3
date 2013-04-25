@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,142 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Objects;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 
-public class DMetricsHandler
+public class Battle implements Serializable
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	private static final Demigods API = Demigods.INSTANCE;
+	private static final long serialVersionUID = 4216924382953412112L;
 
-	public DMetricsHandler(Theogony plugin)
+	private int battleID;
+	private int whoStarted;
+	private SerialLocation startLocation;
+	private ArrayList<Integer> involvedCharIDs;
+	private ArrayList<SerialLocation> involvedLocations;
+	private Long startTime;
+	private Long endTime;
+	private boolean isActive = true;
+
+	public Battle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime, final int battleID)
 	{
-		instance = plugin;
+		// Define variables
+		Player started = (Player) attacking.getOwner();
+		Location startedLocation = started.getLocation();
+
+		this.battleID = battleID;
+		this.whoStarted = attacking.getID();
+		this.startLocation = new SerialLocation(startedLocation);
+		this.startTime = startTime;
+
+		addCharacter(attacking);
+		addCharacter(defending);
+
+		// Save the battle
+		API.data.addBattle(battleID);
+		API.data.saveTimedData(battleID, "battle_active", true, 10);
+		save();
 	}
 
-	public static void report()
+	public void save()
 	{
+		API.data.saveBattleData(battleID, "battle_object", this);
+	}
 
+	public int getID()
+	{
+		return this.battleID;
+	}
+
+	public void addCharacter(PlayerCharacter character)
+	{
+		addCharID(character.getID());
+		if(character.getOwner().isOnline()) addLocation(character.getOwner().getPlayer().getLocation());
+	}
+
+	public void removeCharacter(PlayerCharacter character)
+	{
+		removeCharID(character.getID());
+	}
+
+	public ArrayList<Integer> getCharIDs()
+	{
+		return this.involvedCharIDs;
+	}
+
+	public void overwriteCharIDs(ArrayList<Integer> involvedCharIDs)
+	{
+		this.involvedCharIDs = involvedCharIDs;
+		save();
+	}
+
+	public void addCharID(int charID)
+	{
+		if(this.involvedCharIDs == null) this.involvedCharIDs = new ArrayList<Integer>();
+		if(!this.involvedCharIDs.contains(charID)) this.involvedCharIDs.add(charID);
+		save();
+	}
+
+	public void removeCharID(int charID)
+	{
+		if(this.involvedCharIDs.contains(charID)) this.involvedCharIDs.remove(charID);
+		save();
+	}
+
+	public ArrayList<SerialLocation> getLocations()
+	{
+		return this.involvedLocations;
+	}
+
+	public void overwriteLocations(ArrayList<SerialLocation> involvedLocations)
+	{
+		this.involvedLocations = involvedLocations;
+		save();
+	}
+
+	public void addLocation(Location location)
+	{
+		if(this.involvedLocations == null) this.involvedLocations = new ArrayList<SerialLocation>();
+		if(!this.involvedLocations.contains(new SerialLocation(location))) this.involvedLocations.add(API.object.toSerializableLocation(location));
+		save();
+	}
+
+	public void removeLocation(Location location)
+	{
+		if(this.involvedLocations.contains(new SerialLocation(location))) this.involvedLocations.remove(new SerialLocation(location));
+		save();
+	}
+
+	public int getWhoStarted()
+	{
+		return this.whoStarted;
+	}
+
+	public Long getStartTime()
+	{
+		return this.startTime;
+	}
+
+	public Long getEndTime()
+	{
+		return this.endTime;
+	}
+
+	public boolean isActive()
+	{
+		return this.isActive;
+	}
+
+	public synchronized void setActive(boolean active)
+	{
+		this.isActive = active;
 	}
 }

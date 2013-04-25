@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,170 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Objects;
+
+import java.io.Serializable;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 
-public class DMetricsHandler
+public class Shrine implements Serializable
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	private static final Demigods API = Demigods.INSTANCE;
+	private static final long serialVersionUID = 1020598192563856384L;
 
-	public DMetricsHandler(Theogony plugin)
+	private int id, owner;
+	private String deity;
+	private ProtectedBlock block;
+	private SerialLocation location;
+
+	public Shrine(int id, PlayerCharacter character, Location location)
 	{
-		instance = plugin;
+		this.id = id;
+		this.location = new SerialLocation(location);
+		this.owner = character.getID();
+		this.deity = character.getDeity();
+
+		// Generate the Shrine
+		generate();
+
+		save();
 	}
 
-	public static void report()
+	/*
+	 * save() : Saves the Shrine to a HashMap.
+	 */
+	private void save()
 	{
+		API.data.saveBlockData("shrines", this.id, this);
+	}
 
+	/*
+	 * remove() : Removes the Shrine.
+	 */
+	public synchronized void remove()
+	{
+		API.data.removeBlockData("shrines", this.id);
+
+		Location location = this.location.unserialize();
+		location.getBlock().setType(Material.AIR);
+
+		Location locToMatch = location.add(0.5, 1.0, 0.5);
+		for(Entity entity : location.getWorld().getEntities())
+		{
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
+	}
+
+	/*
+	 * getID() : Returns the ID for the Shrine.
+	 */
+	public int getID()
+	{
+		return this.id;
+	}
+
+	/*
+	 * getOwner() : Returns the owner ID for the Shrine.
+	 */
+	public PlayerCharacter getOwner()
+	{
+		return API.character.getChar(this.owner);
+	}
+
+	/*
+	 * getDeity() : Returns the deity for the Shrine.
+	 */
+	public String getDeity()
+	{
+		return this.deity;
+	}
+
+	/*
+	 * getLocation() : Returns the location of this Shrine.
+	 */
+	public Location getLocation()
+	{
+		return this.location.unserialize();
+	}
+
+	/**
+	 * Generates the physical Shrine structure.
+	 */
+	public synchronized void generate()
+	{
+		Location location = this.getLocation();
+
+		// Remove entity to be safe
+		Location locToMatch = this.getLocation().add(0.5, 1.0, 0.5);
+		for(Entity entity : location.getWorld().getEntities())
+		{
+			if(entity.getLocation().equals(locToMatch))
+			{
+				entity.remove();
+			}
+		}
+
+		// Set bedrock
+		this.block = new ProtectedBlock(location, "shrine", Material.BEDROCK);
+
+		// Spawn the Entity
+		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+	}
+
+	@Override
+	public boolean equals(Object object)
+	{
+		return !(object == null || !(object instanceof Shrine)) && this.id == parse(object).getID();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Shrine{id=" + this.id + ",owner=" + this.owner + ",location=" + location.unserialize().getWorld().getName() + "," + location.unserialize().getX() + "," + location.unserialize().getY() + "," + location.unserialize().getZ() + "}";
+	}
+
+	/**
+	 * Parses the save object into a new Shrine object and returns it.
+	 * 
+	 * @param object the save to parse.
+	 * @return Shrine
+	 */
+	public static Shrine parse(Object object)
+	{
+		if(object instanceof Shrine) return (Shrine) object;
+		else if(object instanceof String)
+		{
+			// Cast the object into a string
+			String string = (String) object;
+
+			// Validate that it's a Shrine save
+			if(!string.startsWith("Shrine{id=")) return null;
+
+			// Begin splitting the string into the different variables to parse with
+			string = string.substring(9).replace("}", "");
+			String[] data = string.split(",");
+
+			// Parse the location
+			String[] locs = data[2].substring(9).split(",");
+			Location location = new Location(Bukkit.getWorld(locs[0]), API.object.toInteger(locs[1]), API.object.toInteger(locs[2]), API.object.toInteger(locs[3]));
+
+			// Build the object
+			Shrine shrine = new Shrine(API.object.toInteger(data[0]), API.character.getChar(API.object.toInteger(data[1])), location);
+
+			// Return the new Shrine
+			return shrine;
+		}
+
+		return null;
 	}
 }

@@ -9,24 +9,24 @@
 	In no event shall the authors be liable to any party for any direct,
 	indirect, incidental, special, exemplary, or consequential damages arising
 	in any way out of the use or misuse of this plugin.
-
+	
 	Definitions
-
+	
 	 1. This Plugin is defined as all of the files within any archive
 	    file or any group of files released in conjunction by the Demigods Team,
 	    the Demigods Team, or a derived or modified work based on such files.
-
+	
 	 2. A Modification, or a Mod, is defined as this Plugin or a derivative of
 	    it with one or more Modification applied to it, or as any program that
 	    depends on this Plugin.
-
+	
 	 3. Distribution is defined as allowing one or more other people to in
 	    any way download or receive a copy of this Plugin, a Modified
 	    Plugin, or a derivative of this Plugin.
-
+	
 	 4. The Software is defined as an installed copy of this Plugin, a
 	    Modified Plugin, or a derivative of this Plugin.
-
+	
 	 5. The Demigods Team is defined as Alex Bennett and Alexander Chauncey
 	    of http://www.censoredsoftware.com/.
 	
@@ -88,23 +88,52 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Handlers;
+package com.censoredsoftware.Demigods.Events.Character;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
+import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
-public class DMetricsHandler
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+
+/*
+ * Represents an event that is called when a character is dominating another character.
+ */
+public class CharacterDominateCharacterEvent extends Event
 {
-	private static final Demigods API = Theogony.INSTANCE;
-	private static Theogony instance;
+	private static final HandlerList handlers = new HandlerList();
+	private PlayerCharacter character;
+	private PlayerCharacter dominated;
 
-	public DMetricsHandler(Theogony plugin)
+	public CharacterDominateCharacterEvent(final PlayerCharacter character, final PlayerCharacter dominated)
 	{
-		instance = plugin;
+		this.character = character;
+		this.dominated = dominated;
 	}
 
-	public static void report()
+	/*
+	 * getCharacter() : Gets the character.
+	 */
+	public PlayerCharacter getCharacter()
 	{
+		return this.character;
+	}
 
+	/*
+	 * getDominated() : Gets the character that was dominated by the character.
+	 */
+	public PlayerCharacter getDominated()
+	{
+		return this.dominated;
+	}
+
+	@Override
+	public HandlerList getHandlers()
+	{
+		return handlers;
+	}
+
+	public static HandlerList getHandlerList()
+	{
+		return handlers;
 	}
 }

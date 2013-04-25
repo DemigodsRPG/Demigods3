@@ -90,20 +90,21 @@
 
 package com.censoredsoftware.Demigods.Theogony;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Handlers.Abstract.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Theogony.Handlers.DMetricsHandler;
-import com.censoredsoftware.Demigods.Theogony.Listeners.DBattleListener;
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+
+import com.censoredsoftware.Demigods.Definitions.Abstract.DemigodsPlugin;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.Theogony.Handlers.DMetricsHandler;
+import com.censoredsoftware.Demigods.Theogony.Listeners.DBattleListener;
 
 public class Theogony extends DemigodsPlugin
 {

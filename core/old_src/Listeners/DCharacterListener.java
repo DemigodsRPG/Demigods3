@@ -88,77 +88,96 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Listeners;
-
-import java.util.ArrayList;
+package com.censoredsoftware.Demigods.Listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.Objects.Battle;
+import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
-import com.google.common.base.Joiner;
 
-public class DBattleListener implements Listener
+public class DCharacterListener implements Listener
 {
-	private static final Demigods API = Theogony.INSTANCE;
+	public static final Demigods API = Demigods.INSTANCE;
 
 	/*
 	 * --------------------------------------------
-	 * Handle Battle Custom Events
+	 * Handle Character Custom Events
 	 * --------------------------------------------
 	 */
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onBattleStart(BattleStartEvent event)
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCharacterCreation(CharacterCreateEvent event)
 	{
-		PlayerCharacter attacker = event.getAttacking();
-		PlayerCharacter defending = event.getDefending();
-		String attackerAlliance = attacker.getAlliance();
-		String defendingAlliance = defending.getAlliance();
+		if(event.isCancelled()) return;
 
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "A battle has begun between the " + ChatColor.GREEN + attackerAlliance + "s" + ChatColor.YELLOW + " and the " + ChatColor.GREEN + defendingAlliance + "s" + ChatColor.YELLOW + ".");
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.GREEN + attacker.getName() + ChatColor.YELLOW + " took the first hit against " + ChatColor.GREEN + defending.getName() + ChatColor.YELLOW + ".");
+		OfflinePlayer player = event.getOwner();
+		String chosenName = event.getName();
+		String chosenDeity = event.getDeity();
+
+		PlayerCharacter character = API.character.createChar(player, chosenName, chosenDeity);
+
+		// Remove temporary data
+		API.data.removePlayerData(player, "temp_createchar");
+
+		if(player.isOnline())
+		{
+			Player online = player.getPlayer();
+			online.setDisplayName(API.deity.getDeityColor(chosenDeity) + chosenName + ChatColor.WHITE);
+			online.setPlayerListName(API.deity.getDeityColor(chosenDeity) + chosenName + ChatColor.WHITE);
+
+			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
+			online.getWorld().strikeLightningEffect(online.getLocation());
+
+			for(int i = 0; i < 20; i++)
+				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+
+			// Switch current character
+			API.player.changeCurrentChar(player, character.getID());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCharacterKillstreak(CharacterKillstreakEvent event)
+	{
+		PlayerCharacter character = event.getCharacter();
+		int killstreak = event.getKills();
+
+		API.misc.serverMsg(ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " is on a killstreak of " + ChatColor.RED + killstreak + ChatColor.GRAY + " kills.");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onBattleParticipate(BattleParticipateEvent event)
+	public void onPlayerKillPlayer(CharacterKillCharacterEvent event)
 	{
-		// TODO
+		PlayerCharacter attacker = event.getCharacter();
+		PlayerCharacter killed = event.getKilled();
+		String attackerAlliance = "Mortal";
+		if(attacker != null) attackerAlliance = attacker.getAlliance();
+		String killedAlliance = "Mortal";
+		if(killed != null) killedAlliance = killed.getAlliance();
+
+		if(killed == null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
+		else if(killed == null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+		else if(killed != null && attacker == null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".");
+		else if(killed != null && attacker != null) API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onBattleEnd(BattleEndEvent event)
+	public void onPlayerBetrayPlayer(CharacterBetrayCharacterEvent event)
 	{
-		int battleID = event.getID();
-		Battle battle = API.battle.getBattle(battleID);
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + API.character.getChar(battle.getWhoStarted()).getName() + ChatColor.YELLOW + " has ended.");
-		ArrayList<Integer> charIDs = battle.getCharIDs();
-		ArrayList<String> charNames = new ArrayList<String>();
-		for(int charID : charIDs)
-			charNames.add(API.character.getChar(charID).getName());
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle involved: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
-	}
+		PlayerCharacter attacker = event.getCharacter();
+		PlayerCharacter killed = event.getKilled();
+		String alliance = event.getAlliance();
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onBattleCombine(BattleCombineEvent event)
-	{
-		int battleID = event.getBattleID();
-		Battle combined = API.battle.getBattle(battleID);
-		Battle first = event.getFirst();
-		ArrayList<Integer> charIDs = combined.getCharIDs();
-		ArrayList<String> charNames = new ArrayList<String>();
-		for(int charID : charIDs)
-			charNames.add(API.character.getChar(charID).getName());
-
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + API.character.getChar(first.getWhoStarted()).getName() + ChatColor.YELLOW + " has merged with another battle!");
-		API.misc.serverMsg(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle now involves the following: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
+		if(alliance != "Mortal") API.misc.serverMsg(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
+		else API.misc.serverMsg(ChatColor.GRAY + "A few worthless mortals killed each other.");
 	}
 }
