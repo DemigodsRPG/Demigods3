@@ -1,9 +1,11 @@
 package com.censoredsoftware.Demigods;
 
+import java.util.Random;
+
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
 import com.censoredsoftware.Modules.DataPersistence.ObjectDataModule;
-import com.censoredsoftware.Modules.DataPersistence.PlayerDataModule;
 import com.censoredsoftware.Modules.DataPersistence.StringDataModule;
+import com.censoredsoftware.Modules.DataPersistence.TieredPlayerDataModule;
 
 // TODO A lot of this file will become obsolete as I decentralize the data.
 
@@ -23,10 +25,15 @@ public class DemigodsData
 	public static StringDataModule deityCommands;
 	public static StringDataModule deityClaimItems;
 
+	// Player Data
+	public static TieredPlayerDataModule playerData;
+	public static TieredPlayerDataModule tempPlayerData;
+
+	// Character Data
+	public static IntegerDataModule characterData;
+
 	// TODO These.
-	static PlayerDataModule playerData;
 	static ObjectDataModule timedData;
-	static IntegerDataModule characterData;
 	static IntegerDataModule battleData;
 	static StringDataModule blockData;
 
@@ -37,8 +44,8 @@ public class DemigodsData
 		pluginDataPersistent(instance);
 		pluginDataNonPersistent(instance);
 		playerData(instance);
-		timedData(instance);
 		characterData(instance);
+		timedData(instance);
 		battleData(instance);
 		blockData(instance);
 	}
@@ -61,7 +68,8 @@ public class DemigodsData
 
 	static void playerData(DemigodsPlugin instance)
 	{
-		playerData = new PlayerDataModule(instance, "player_data");
+		playerData = new TieredPlayerDataModule(instance, "player_data");
+		tempPlayerData = new TieredPlayerDataModule(instance, "temp_player_data");
 	}
 
 	static void timedData(DemigodsPlugin instance)
@@ -82,5 +90,35 @@ public class DemigodsData
 	static void blockData(DemigodsPlugin instance)
 	{
 		blockData = new StringDataModule(instance, "block_data");
+	}
+
+	// Internal Utility Methods
+
+	public static String generateString(int length)
+	{
+		// Set allowed characters - Create new string to fill - Generate the string - Return string
+		char[] chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for(int i = 0; i < length; i++)
+		{
+			char c = chars[random.nextInt(chars.length)];
+			sb.append(c);
+		}
+		return sb.toString();
+	}
+
+	public static int generateInt(int length)
+	{
+		// Set allowed characters - Create new string to fill - Generate the string - Return string
+		char[] chars = "0123456789".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for(int i = 0; i < length; i++)
+		{
+			char c = chars[random.nextInt(chars.length)];
+			sb.append(c);
+		}
+		return Integer.parseInt(sb.toString());
 	}
 }

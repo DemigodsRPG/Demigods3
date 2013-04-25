@@ -17,6 +17,7 @@ public class PlayerCharacter
 	private EnumDataModule playerCharacterData;
 	private PlayerCharacterInventory playerCharacterInventory;
 	private SpecialLocation specialLocation;
+	private PlayerCharacterClass playerCharacterClass;
 
 	public PlayerCharacter(Plugin instance, OfflinePlayer player, int charID, String charName)
 	{
@@ -140,6 +141,21 @@ public class PlayerCharacter
 	public float getExp()
 	{
 		return playerCharacterData.getDataFloat(PlayerCharacterData.CHAR_EXP);
+	}
+
+	public boolean hasCharacterClass()
+	{
+		return this.playerCharacterClass != null;
+	}
+
+	public PlayerCharacterClass getCharacterClass()
+	{
+		return this.playerCharacterClass;
+	}
+
+	public void setCharacterClass(PlayerCharacterClass characterClass)
+	{
+		this.playerCharacterClass = characterClass;
 	}
 
 	/**
