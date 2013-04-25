@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 public class TieredPlayerDataModule extends DataModule implements Listener
 {
 	// Define HashMaps
-	private Map<String, HashMap<String, Object>> tieredObjectData = new HashMap<String, HashMap<String, Object>>();
+	private Map<String, HashMap<String, Object>> tieredObjectData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -32,6 +32,7 @@ public class TieredPlayerDataModule extends DataModule implements Listener
 	 */
 	public TieredPlayerDataModule(Plugin instance, String dataName)
 	{
+		this.tieredObjectData = new HashMap<String, HashMap<String, Object>>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -46,13 +47,17 @@ public class TieredPlayerDataModule extends DataModule implements Listener
 	}
 
 	/**
-	 * Create a new instance of the library for the Plugin <code>instance</code>.
-	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * Create a new instance of the library.
 	 */
-	public TieredPlayerDataModule(Plugin instance)
+	public TieredPlayerDataModule()
 	{
-		this.plugin = instance;
+		this.tieredObjectData = new HashMap<String, HashMap<String, Object>>();
+
+		// Create saves for all online players
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			createSave(player);
+		}
 	}
 
 	/**

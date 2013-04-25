@@ -8,7 +8,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
@@ -18,10 +17,10 @@ public class SpecialItemStack
 	private EnumDataModule specialItemStackData;
 	private IntegerDataModule enchantmentsData;
 
-	public SpecialItemStack(Plugin instance, ItemStack item, String name)
+	public SpecialItemStack(ItemStack item, String name)
 	{
-		specialItemStackData = new EnumDataModule(instance);
-		enchantmentsData = new IntegerDataModule(instance);
+		specialItemStackData = new EnumDataModule();
+		enchantmentsData = new IntegerDataModule();
 
 		if(name != null) specialItemStackData.saveData(SpecialItemStackData.NAME, name);
 

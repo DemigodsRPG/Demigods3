@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 public class IntegerDataModule extends DataModule implements Listener
 {
 	// Define HashMaps
-	private Map<Integer, Object> integerData = new HashMap<Integer, Object>();
+	private Map<Integer, Object> integerData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -29,6 +29,7 @@ public class IntegerDataModule extends DataModule implements Listener
 	 */
 	public IntegerDataModule(Plugin instance, String dataName)
 	{
+		this.integerData = new HashMap<Integer, Object>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -37,13 +38,11 @@ public class IntegerDataModule extends DataModule implements Listener
 	}
 
 	/**
-	 * Create a new instance of the library for the Plugin <code>instance</code>.
-	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * Create a new instance of the library.
 	 */
-	public IntegerDataModule(Plugin instance)
+	public IntegerDataModule()
 	{
-		this.plugin = instance;
+		this.integerData = new HashMap<Integer, Object>();
 	}
 
 	/**

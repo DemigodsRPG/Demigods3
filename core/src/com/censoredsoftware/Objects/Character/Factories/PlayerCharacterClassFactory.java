@@ -1,7 +1,5 @@
 package com.censoredsoftware.Objects.Character.Factories;
 
-import org.bukkit.plugin.Plugin;
-
 import com.censoredsoftware.Objects.Character.PlayerCharacter;
 import com.censoredsoftware.Objects.Character.PlayerCharacterClass;
 
@@ -10,17 +8,15 @@ import com.censoredsoftware.Objects.Character.PlayerCharacterClass;
  */
 public class PlayerCharacterClassFactory
 {
-	private Plugin plugin;
 	private int globalMaxFavor;
 
 	/**
 	 * Constructor for the factory.
 	 * 
-	 * @param instance The plugin using this factory.
+	 * @param globalMaxFavor The max favor setting.
 	 */
-	public PlayerCharacterClassFactory(Plugin instance, int globalMaxFavor)
+	public PlayerCharacterClassFactory(int globalMaxFavor)
 	{
-		this.plugin = instance;
 		this.globalMaxFavor = globalMaxFavor;
 	}
 
@@ -44,6 +40,6 @@ public class PlayerCharacterClassFactory
 	 */
 	public PlayerCharacterClass create(PlayerCharacter character, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean active)
 	{
-		return new PlayerCharacterClass(plugin, globalMaxFavor, character, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, active);
+		return new PlayerCharacterClass(globalMaxFavor, character, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, active);
 	}
 }

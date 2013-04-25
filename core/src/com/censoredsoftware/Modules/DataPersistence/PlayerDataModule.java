@@ -19,7 +19,7 @@ import org.bukkit.plugin.Plugin;
 public class PlayerDataModule extends DataModule implements Listener
 {
 	// Define HashMaps
-	private Map<String, Object> playerData = new HashMap<String, Object>();
+	private Map<String, Object> playerData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -32,6 +32,7 @@ public class PlayerDataModule extends DataModule implements Listener
 	 */
 	public PlayerDataModule(Plugin instance, String dataName)
 	{
+		this.playerData = new HashMap<String, Object>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -46,13 +47,11 @@ public class PlayerDataModule extends DataModule implements Listener
 	}
 
 	/**
-	 * Create a new instance of the library for the Plugin <code>instance</code>.
-	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * Create a new instance of the library.
 	 */
-	public PlayerDataModule(Plugin instance)
+	public PlayerDataModule()
 	{
-		this.plugin = instance;
+		this.playerData = new HashMap<String, Object>();
 
 		// Create saves for all online players
 		for(Player player : Bukkit.getOnlinePlayers())

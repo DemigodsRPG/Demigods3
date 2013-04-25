@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 public class TieredObjectDataModule extends DataModule implements Listener
 {
 	// Define HashMaps
-	private Map<Object, HashMap<Object, Object>> tieredObjectData = new HashMap<Object, HashMap<Object, Object>>();
+	private Map<Object, HashMap<Object, Object>> tieredObjectData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -29,6 +29,7 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 */
 	public TieredObjectDataModule(Plugin instance, String dataName)
 	{
+		this.tieredObjectData = new HashMap<Object, HashMap<Object, Object>>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -37,13 +38,11 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	}
 
 	/**
-	 * Create a new instance of the library for the Plugin <code>instance</code>.
-	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * Create a new instance of the library.
 	 */
-	public TieredObjectDataModule(Plugin instance)
+	public TieredObjectDataModule()
 	{
-		this.plugin = instance;
+		this.tieredObjectData = new HashMap<Object, HashMap<Object, Object>>();
 	}
 
 	/**

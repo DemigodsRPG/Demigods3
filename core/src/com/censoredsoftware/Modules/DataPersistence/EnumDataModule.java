@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 public class EnumDataModule extends DataModule implements Listener
 {
 	// Define HashMaps
-	private Map<Enum, Object> enumData = new HashMap<Enum, Object>();
+	private Map<Enum, Object> enumData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -29,6 +29,7 @@ public class EnumDataModule extends DataModule implements Listener
 	 */
 	public EnumDataModule(Plugin instance, String dataName)
 	{
+		this.enumData = new HashMap<Enum, Object>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -37,13 +38,11 @@ public class EnumDataModule extends DataModule implements Listener
 	}
 
 	/**
-	 * Create a new instance of the library for the Plugin <code>instance</code>.
-	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * Create a new instance of the library.
 	 */
-	public EnumDataModule(Plugin instance)
+	public EnumDataModule()
 	{
-		this.plugin = instance;
+		this.enumData = new HashMap<Enum, Object>();
 	}
 
 	/**

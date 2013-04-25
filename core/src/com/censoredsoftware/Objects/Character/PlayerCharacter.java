@@ -1,14 +1,10 @@
 package com.censoredsoftware.Objects.Character;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.DemigodsFactory;
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 import com.censoredsoftware.Objects.Special.SpecialLocation;
 
@@ -19,9 +15,9 @@ public class PlayerCharacter
 	private SpecialLocation specialLocation;
 	private PlayerCharacterClass playerCharacterClass;
 
-	public PlayerCharacter(Plugin instance, OfflinePlayer player, int charID, String charName)
+	public PlayerCharacter(OfflinePlayer player, int charID, String charName)
 	{
-		playerCharacterData = new EnumDataModule(instance, "character" + File.separator + charName);
+		playerCharacterData = new EnumDataModule();
 
 		playerCharacterData.saveData(PlayerCharacterData.PLAYER_NAME, player.getName());
 		playerCharacterData.saveData(PlayerCharacterData.CHAR_NAME, charName);
@@ -34,7 +30,7 @@ public class PlayerCharacter
 		this.playerCharacterInventory = null;
 		try
 		{
-			this.specialLocation = DemigodsFactory.specialLocationFactory.create(player.getPlayer().getLocation());
+			this.specialLocation = new SpecialLocation(player.getPlayer().getLocation(), null);
 		}
 		catch(Exception ignored)
 		{}
@@ -61,7 +57,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.playerCharacterInventory = DemigodsFactory.playerCharacterInventoryFactory.create(getOwner().getPlayer().getInventory());
+		this.playerCharacterInventory = new PlayerCharacterInventory(getOwner().getPlayer().getInventory());
 	}
 
 	public PlayerCharacterInventory getInventory()
@@ -90,7 +86,7 @@ public class PlayerCharacter
 
 	public synchronized void setLocation(Location location)
 	{
-		this.specialLocation = DemigodsFactory.specialLocationFactory.create(location);
+		this.specialLocation = new SpecialLocation(location, null);
 	}
 
 	public synchronized void toggleActive(boolean option)
@@ -156,6 +152,11 @@ public class PlayerCharacter
 	public void setCharacterClass(PlayerCharacterClass characterClass)
 	{
 		this.playerCharacterClass = characterClass;
+	}
+
+	public EnumDataModule grabPlayerCharacterData()
+	{
+		return this.playerCharacterData;
 	}
 
 	/**

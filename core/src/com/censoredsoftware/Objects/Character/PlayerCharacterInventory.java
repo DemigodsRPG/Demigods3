@@ -12,25 +12,23 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.DemigodsFactory;
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
 import com.censoredsoftware.Objects.Special.SpecialItemStack;
 
 public class PlayerCharacterInventory
 {
-	private String owner, name;
-	private SpecialItemStack helmet = DemigodsFactory.specialItemStackFactory.create(new ItemStack(Material.AIR));
-	private SpecialItemStack chestplate = DemigodsFactory.specialItemStackFactory.create(new ItemStack(Material.AIR));
-	private SpecialItemStack leggings = DemigodsFactory.specialItemStackFactory.create(new ItemStack(Material.AIR));
-	private SpecialItemStack boots = DemigodsFactory.specialItemStackFactory.create(new ItemStack(Material.AIR));
+	private String owner;
+	private SpecialItemStack helmet = new SpecialItemStack(new ItemStack(Material.AIR), null);
+	private SpecialItemStack chestplate = new SpecialItemStack(new ItemStack(Material.AIR), null);
+	private SpecialItemStack leggings = new SpecialItemStack(new ItemStack(Material.AIR), null);
+	private SpecialItemStack boots = new SpecialItemStack(new ItemStack(Material.AIR), null);
 	private IntegerDataModule items;
 
 	int size;
 
-	public PlayerCharacterInventory(Plugin instance, Inventory inventory, String name)
+	public PlayerCharacterInventory(Inventory inventory)
 	{
-		items = new IntegerDataModule(instance);
-		if(name != null) this.name = name;
+		items = new IntegerDataModule();
 
 		if(inventory != null)
 		{
@@ -40,10 +38,10 @@ public class PlayerCharacterInventory
 			if(getOwner().isOnline())
 			{
 				Player player = getOwner().getPlayer();
-				if(player.getInventory().getHelmet() != null) this.helmet = DemigodsFactory.specialItemStackFactory.create(player.getInventory().getHelmet().clone());
-				if(player.getInventory().getChestplate() != null) this.chestplate = DemigodsFactory.specialItemStackFactory.create(player.getInventory().getChestplate().clone());
-				if(player.getInventory().getLeggings() != null) this.leggings = DemigodsFactory.specialItemStackFactory.create(player.getInventory().getLeggings().clone());
-				if(player.getInventory().getBoots() != null) this.boots = DemigodsFactory.specialItemStackFactory.create(player.getInventory().getBoots().clone());
+				if(player.getInventory().getHelmet() != null) this.helmet = new SpecialItemStack(player.getInventory().getHelmet().clone(), null);
+				if(player.getInventory().getChestplate() != null) this.chestplate = new SpecialItemStack(player.getInventory().getChestplate().clone(), null);
+				if(player.getInventory().getLeggings() != null) this.leggings = new SpecialItemStack(player.getInventory().getLeggings().clone(), null);
+				if(player.getInventory().getBoots() != null) this.boots = new SpecialItemStack(player.getInventory().getBoots().clone(), null);
 			}
 
 			for(int i = 0; i < this.size; i++)
@@ -51,7 +49,7 @@ public class PlayerCharacterInventory
 				ItemStack item = inventory.getItem(i);
 				if(item != null)
 				{
-					items.saveData(i, DemigodsFactory.specialItemStackFactory.create(item));
+					items.saveData(i, new SpecialItemStack(item, null));
 				}
 			}
 		}
@@ -165,20 +163,5 @@ public class PlayerCharacterInventory
 	{
 		if(this.boots != null) return this.boots.toItemStack();
 		else return null;
-	}
-
-	public boolean hasName()
-	{
-		return this.name != null;
-	}
-
-	public String getName()
-	{
-		return this.name;
-	}
-
-	public synchronized void setName(String name)
-	{
-		this.name = name;
 	}
 }

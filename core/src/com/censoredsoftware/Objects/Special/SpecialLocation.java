@@ -2,7 +2,6 @@ package com.censoredsoftware.Objects.Special;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 
@@ -10,9 +9,9 @@ public class SpecialLocation
 {
 	private EnumDataModule specialLocationData;
 
-	public SpecialLocation(Plugin instance, String world, double X, double Y, double Z, float pitch, float yaw, String name)
+	public SpecialLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
 	{
-		specialLocationData = new EnumDataModule(instance);
+		specialLocationData = new EnumDataModule();
 		specialLocationData.saveData(SpecialLocationData.WORLD, world);
 		specialLocationData.saveData(SpecialLocationData.X, X);
 		specialLocationData.saveData(SpecialLocationData.Y, Y);
@@ -22,9 +21,9 @@ public class SpecialLocation
 		if(name != null) specialLocationData.saveData(SpecialLocationData.NAME, name);
 	}
 
-	public SpecialLocation(Plugin instance, Location location, String name)
+	public SpecialLocation(Location location, String name)
 	{
-		specialLocationData = new EnumDataModule(instance);
+		specialLocationData = new EnumDataModule();
 		specialLocationData.saveData(SpecialLocationData.WORLD, location.getWorld().getName());
 		specialLocationData.saveData(SpecialLocationData.X, location.getX());
 		specialLocationData.saveData(SpecialLocationData.Y, location.getY());

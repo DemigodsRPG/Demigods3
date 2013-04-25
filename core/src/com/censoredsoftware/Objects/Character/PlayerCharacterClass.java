@@ -1,11 +1,9 @@
 package com.censoredsoftware.Objects.Character;
 
-import java.io.File;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
@@ -18,12 +16,12 @@ public class PlayerCharacterClass
 	private IntegerDataModule bindingCharacterData;
 	private int globalMaxFavor;
 
-	public PlayerCharacterClass(Plugin instance, int globalMaxFavor, PlayerCharacter character, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean active)
+	public PlayerCharacterClass(int globalMaxFavor, PlayerCharacter character, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean active)
 	{
-		playerCharacterData = new EnumDataModule(instance, "character" + File.separator + character.getName() + File.separator + className);
-		abilityCharacterData = new StringDataModule(instance, "character" + File.separator + character.getName() + File.separator + className + ".abilities");
-		bindingCharacterData = new IntegerDataModule(instance, "character" + File.separator + character.getName() + File.separator + className + ".bindings");
 		this.globalMaxFavor = globalMaxFavor;
+		this.playerCharacterData = new EnumDataModule();
+		this.abilityCharacterData = new StringDataModule();
+		this.bindingCharacterData = new IntegerDataModule();
 
 		playerCharacterData.saveData(PlayerCharacterClassData.CHAR_NAME, character.getName());
 		playerCharacterData.saveData(PlayerCharacterClassData.CLASS_NAME, className);
