@@ -11,6 +11,10 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
 
+// TODO Not sure if this file will remain an API or not.  It's probably too powerful to be considered an API.
+// TODO If need be, parts of it will be moved into the CommandListener as a subclass (for invoking deity commands).
+// TODO Other parts of it can be moved to the Demigods.java file as a subclass.
+
 public class DeityAPI
 {
 	/*

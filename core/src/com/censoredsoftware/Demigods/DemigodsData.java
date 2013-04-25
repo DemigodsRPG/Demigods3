@@ -5,6 +5,8 @@ import com.censoredsoftware.Modules.DataPersistence.ObjectDataModule;
 import com.censoredsoftware.Modules.DataPersistence.PlayerDataModule;
 import com.censoredsoftware.Modules.DataPersistence.StringDataModule;
 
+// TODO A lot of this file will become obsolete as I decentralize the data.
+
 public class DemigodsData
 {
 	// private static final HashMap<Object, HashMap<String, HashMap<String, Object>>> timedData = new HashMap<Object, HashMap<String, HashMap<String, Object>>>();
@@ -13,7 +15,7 @@ public class DemigodsData
 	// private static final HashMap<Integer, HashMap<String, Object>> battleData = new HashMap<Integer, HashMap<String, Object>>();
 	// private static final HashMap<String, HashMap<Integer, Object>> blockData = new HashMap<String, HashMap<Integer, Object>>();
 
-	// Non-Persistent Plugin SpecialLocationData
+	// Non-Persistent Public StringDataModules
 	public static StringDataModule deityPaths;
 	public static StringDataModule deityLoaders;
 	public static StringDataModule deityTeams;
