@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 /**
  * Abstract class for all data based modules to extend.
  */
-abstract class DataModule implements Listener
+public abstract class DataModule implements Listener
 {
 	private Map map = new HashMap();
 	private String dataName = "example";
@@ -36,4 +36,5 @@ abstract class DataModule implements Listener
 		// Override the data inside of this module with the loaded data if the data name is the same
 		if(this.dataName.equals(event.getDataName())) overrideMap(event.getData());
 	}
+
 }

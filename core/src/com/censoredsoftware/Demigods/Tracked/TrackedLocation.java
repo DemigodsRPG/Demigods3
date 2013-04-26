@@ -1,15 +1,15 @@
-package com.censoredsoftware.Objects.Special;
+package com.censoredsoftware.Demigods.Tracked;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 
-public class SpecialLocation
+public class TrackedLocation
 {
 	private EnumDataModule specialLocationData;
 
-	public SpecialLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
+	public TrackedLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
 	{
 		specialLocationData = new EnumDataModule();
 		specialLocationData.saveData(SpecialLocationData.WORLD, world);
@@ -21,7 +21,7 @@ public class SpecialLocation
 		if(name != null) specialLocationData.saveData(SpecialLocationData.NAME, name);
 	}
 
-	public SpecialLocation(Location location, String name)
+	public TrackedLocation(Location location, String name)
 	{
 		specialLocationData = new EnumDataModule();
 		specialLocationData.saveData(SpecialLocationData.WORLD, location.getWorld().getName());

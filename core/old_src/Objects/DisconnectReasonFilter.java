@@ -3,7 +3,7 @@ package com.censoredsoftware.Demigods.Objects;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-import com.censoredsoftware.Demigods.Listeners.DPlayerListener;
+import com.censoredsoftware.Demigods.Listener.DPlayerListener;
 
 public class DisconnectReasonFilter implements Filter
 {

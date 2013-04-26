@@ -88,7 +88,7 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Listeners;
+package com.censoredsoftware.Demigods.Listener;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

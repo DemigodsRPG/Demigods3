@@ -20,8 +20,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Modules.*;
-import com.censoredsoftware.Objects.Character.PlayerCharacter;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 

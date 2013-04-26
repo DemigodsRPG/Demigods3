@@ -1,4 +1,4 @@
-package com.censoredsoftware.Objects.Special;
+package com.censoredsoftware.Demigods.Tracked;
 
 import java.util.List;
 import java.util.Map.Entry;
@@ -12,12 +12,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
 
-public class SpecialItemStack
+public class TrackedItemStack
 {
 	private EnumDataModule specialItemStackData;
 	private IntegerDataModule enchantmentsData;
 
-	public SpecialItemStack(ItemStack item, String name)
+	public TrackedItemStack(ItemStack item, String name)
 	{
 		specialItemStackData = new EnumDataModule();
 		enchantmentsData = new IntegerDataModule();
@@ -75,7 +75,7 @@ public class SpecialItemStack
 	}
 
 	/*
-	 * toItemStack() : Converts the SpecialItemStack to a usable ItemStack.
+	 * toItemStack() : Converts the TrackedItemStack to a usable ItemStack.
 	 */
 	public ItemStack toItemStack()
 	{
@@ -170,7 +170,7 @@ public class SpecialItemStack
 		PAGES,
 
 		/**
-		 * String: Internal name of the SpecialItemStack.
+		 * String: Internal name of the TrackedItemStack.
 		 */
 		NAME
 	}

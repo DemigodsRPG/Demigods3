@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules.DataPersistence;
+package com.censoredsoftware.Demigods.PlayerCharacter;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Module to handle all saving related methods.
  */
-public class YAMLPersistenceModule
+public class PlayerCharacterYAML
 {
 	private Plugin plugin;
 	private String path, pluginName;
@@ -31,7 +31,7 @@ public class YAMLPersistenceModule
 	 * @param instance The instance of the Plugin creating the PlayerCharacterYAML.
 	 * @param dataName The name of data set, and the name of the file.
 	 */
-	public YAMLPersistenceModule(boolean load, Plugin instance, String path, String dataName)
+	public PlayerCharacterYAML(boolean load, Plugin instance, String path, String dataName)
 	{
 		this.plugin = instance;
 		if(path != null) this.path = path;
@@ -93,10 +93,10 @@ public class YAMLPersistenceModule
 	 * 
 	 * @return True if successful.
 	 */
-	public boolean save(DataModule dataModule)
+	public boolean save(PlayerCharacter character)
 	{
 		// Grab the latest map for saving
-		this.map = dataModule.grabMap();
+		this.map = character.grabMap();
 
 		try
 		{
@@ -155,14 +155,14 @@ public class YAMLPersistenceModule
 		}
 
 		// Call the LoadYAMLEvent if need be
-		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadYAMLEvent(pluginName, path, dataName, map));
+		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new PlayerCharacterLoadYAMLEvent(pluginName, path, dataName, map));
 	}
 }
 
 /**
  * An event that is triggered when data is loaded from a YAML file.
  */
-class LoadYAMLEvent extends Event implements Cancellable
+class PlayerCharacterLoadYAMLEvent extends Event implements Cancellable
 {
 	private String pluginName, path, dataName;
 	private Map map;
@@ -176,7 +176,7 @@ class LoadYAMLEvent extends Event implements Cancellable
 	 * @param dataName Name of the data set being loaded.
 	 * @param map The data that was loaded.
 	 */
-	LoadYAMLEvent(String pluginName, String path, String dataName, Map map)
+	PlayerCharacterLoadYAMLEvent(String pluginName, String path, String dataName, Map map)
 	{
 		this.pluginName = pluginName;
 		this.path = path;

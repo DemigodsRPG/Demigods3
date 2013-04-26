@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Listeners;
+package com.censoredsoftware.Demigods.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -699,7 +699,7 @@ public class AltarListener implements Listener
 	{
 		if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
 		{
-			// Save named SpecialLocation for warp.
+			// Save named TrackedLocation for warp.
 			API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
@@ -724,7 +724,7 @@ public class AltarListener implements Listener
 			}
 		}
 
-		// Save named SpecialLocation for warp.
+		// Save named TrackedLocation for warp.
 		API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}

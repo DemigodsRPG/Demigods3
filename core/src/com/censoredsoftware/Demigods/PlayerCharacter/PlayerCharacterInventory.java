@@ -1,4 +1,4 @@
-package com.censoredsoftware.Objects.Character;
+package com.censoredsoftware.Demigods.PlayerCharacter;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -12,20 +12,22 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.Tracked.TrackedItemStack;
 import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
-import com.censoredsoftware.Objects.Special.SpecialItemStack;
+
+// TODO Figure out how this file is going to save.
 
 public class PlayerCharacterInventory
 {
 	private String owner;
 	private int size;
-	private SpecialItemStack helmet = new SpecialItemStack(new ItemStack(Material.AIR), null);
-	private SpecialItemStack chestPlate = new SpecialItemStack(new ItemStack(Material.AIR), null);
-	private SpecialItemStack leggings = new SpecialItemStack(new ItemStack(Material.AIR), null);
-	private SpecialItemStack boots = new SpecialItemStack(new ItemStack(Material.AIR), null);
+	private TrackedItemStack helmet = new TrackedItemStack(new ItemStack(Material.AIR), null);
+	private TrackedItemStack chestPlate = new TrackedItemStack(new ItemStack(Material.AIR), null);
+	private TrackedItemStack leggings = new TrackedItemStack(new ItemStack(Material.AIR), null);
+	private TrackedItemStack boots = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private IntegerDataModule items;
 
-	public PlayerCharacterInventory(String owner, int size, SpecialItemStack helmet, SpecialItemStack chestPlate, SpecialItemStack leggings, SpecialItemStack boots, IntegerDataModule items)
+	public PlayerCharacterInventory(String owner, int size, TrackedItemStack helmet, TrackedItemStack chestPlate, TrackedItemStack leggings, TrackedItemStack boots, IntegerDataModule items)
 	{
 		this.owner = owner;
 		this.size = size;
@@ -48,10 +50,10 @@ public class PlayerCharacterInventory
 			if(getOwner().isOnline())
 			{
 				Player player = getOwner().getPlayer();
-				if(player.getInventory().getHelmet() != null) this.helmet = new SpecialItemStack(player.getInventory().getHelmet().clone(), null);
-				if(player.getInventory().getChestplate() != null) this.chestPlate = new SpecialItemStack(player.getInventory().getChestplate().clone(), null);
-				if(player.getInventory().getLeggings() != null) this.leggings = new SpecialItemStack(player.getInventory().getLeggings().clone(), null);
-				if(player.getInventory().getBoots() != null) this.boots = new SpecialItemStack(player.getInventory().getBoots().clone(), null);
+				if(player.getInventory().getHelmet() != null) this.helmet = new TrackedItemStack(player.getInventory().getHelmet().clone(), null);
+				if(player.getInventory().getChestplate() != null) this.chestPlate = new TrackedItemStack(player.getInventory().getChestplate().clone(), null);
+				if(player.getInventory().getLeggings() != null) this.leggings = new TrackedItemStack(player.getInventory().getLeggings().clone(), null);
+				if(player.getInventory().getBoots() != null) this.boots = new TrackedItemStack(player.getInventory().getBoots().clone(), null);
 			}
 
 			for(int i = 0; i < this.size; i++)
@@ -59,7 +61,7 @@ public class PlayerCharacterInventory
 				ItemStack item = inventory.getItem(i);
 				if(item != null)
 				{
-					items.saveData(i, new SpecialItemStack(item, null));
+					items.saveData(i, new TrackedItemStack(item, null));
 				}
 			}
 		}
@@ -76,7 +78,7 @@ public class PlayerCharacterInventory
 		{
 			try
 			{
-				ItemStack item = ((SpecialItemStack) items.getDataObject(slot)).toItemStack();
+				ItemStack item = ((TrackedItemStack) items.getDataObject(slot)).toItemStack();
 				inv.setItem(slot, item);
 			}
 			catch(Exception ignored)
@@ -129,7 +131,7 @@ public class PlayerCharacterInventory
 		{
 			try
 			{
-				ItemStack item = ((SpecialItemStack) items.getDataObject(slot)).toItemStack();
+				ItemStack item = ((TrackedItemStack) items.getDataObject(slot)).toItemStack();
 				temp.put(slot, item);
 			}
 			catch(Exception ignored)
@@ -142,7 +144,7 @@ public class PlayerCharacterInventory
 	/*
 	 * getHelmet() : Returns the helmet.
 	 */
-	public SpecialItemStack getHelmet()
+	public TrackedItemStack getHelmet()
 	{
 		if(this.helmet != null) return this.helmet;
 		else return null;
@@ -151,7 +153,7 @@ public class PlayerCharacterInventory
 	/*
 	 * getChestPlate() : Returns the chestPlate.
 	 */
-	public SpecialItemStack getChestPlate()
+	public TrackedItemStack getChestPlate()
 	{
 		if(this.chestPlate != null) return this.chestPlate;
 		else return null;
@@ -160,7 +162,7 @@ public class PlayerCharacterInventory
 	/*
 	 * getLeggings() : Returns the leggings.
 	 */
-	public SpecialItemStack getLeggings()
+	public TrackedItemStack getLeggings()
 	{
 		if(this.leggings != null) return this.leggings;
 		else return null;
@@ -169,7 +171,7 @@ public class PlayerCharacterInventory
 	/*
 	 * getBoots() : Returns the boots.
 	 */
-	public SpecialItemStack getBoots()
+	public TrackedItemStack getBoots()
 	{
 		if(this.boots != null) return this.boots;
 		else return null;

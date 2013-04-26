@@ -4,8 +4,10 @@ import java.io.File;
 
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Modules.DataPersistence.YAMLPersistenceModule;
-import com.censoredsoftware.Objects.Character.PlayerCharacter;
+
+// TODO This whole file is overly complicated and will be entirely redone.
 
 public class DemigodsSave
 {
@@ -47,7 +49,7 @@ public class DemigodsSave
 			YAMLPersistenceModule bindYAML = new YAMLPersistenceModule(false, plugin, "character" + File.separator, charIDString + "_bind");
 
 			// Save the Data
-			mainYAML.save(character.grabPlayerCharacterData());
+			mainYAML.save(character.grabMap());
 			invYAML.save(character.getInventory().grabItems());
 			invHelmetYAML.save(character.getInventory().getHelmet().grabSpecialItemStackData());
 			invHelmetEnchYAML.save(character.getInventory().getHelmet().grabEnchantmentsData());
