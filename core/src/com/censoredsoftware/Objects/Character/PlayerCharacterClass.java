@@ -280,6 +280,21 @@ public class PlayerCharacterClass
 		return playerCharacterData.getDataInt(PlayerCharacterClassData.ASCENSIONS);
 	}
 
+	public EnumDataModule grabPlayerCharacterClassData()
+	{
+		return this.playerCharacterData;
+	}
+
+	public StringDataModule grabPlayerCharacterAbilityData()
+	{
+		return this.abilityCharacterData;
+	}
+
+	public IntegerDataModule grabPlayerCharacterBindingData()
+	{
+		return this.bindingCharacterData;
+	}
+
 	// TODO Levels (Offense, Defense, Stealth, Support, Passive).
 
 	/**

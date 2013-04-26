@@ -53,6 +53,11 @@ public class SpecialLocation
 		return new Location(Bukkit.getServer().getWorld(specialLocationData.getDataString(SpecialLocationData.WORLD)), specialLocationData.getDataDouble(SpecialLocationData.X), specialLocationData.getDataDouble(SpecialLocationData.Y), specialLocationData.getDataDouble(SpecialLocationData.Z), specialLocationData.getDataFloat(SpecialLocationData.YAW), specialLocationData.getDataFloat(SpecialLocationData.PITCH));
 	}
 
+	public EnumDataModule grabSpecialLocationData()
+	{
+		return this.specialLocationData;
+	}
+
 	/**
 	 * Enum defining the data being held in this object.
 	 */

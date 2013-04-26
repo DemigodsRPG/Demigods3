@@ -18,13 +18,23 @@ import com.censoredsoftware.Objects.Special.SpecialItemStack;
 public class PlayerCharacterInventory
 {
 	private String owner;
+	private int size;
 	private SpecialItemStack helmet = new SpecialItemStack(new ItemStack(Material.AIR), null);
-	private SpecialItemStack chestplate = new SpecialItemStack(new ItemStack(Material.AIR), null);
+	private SpecialItemStack chestPlate = new SpecialItemStack(new ItemStack(Material.AIR), null);
 	private SpecialItemStack leggings = new SpecialItemStack(new ItemStack(Material.AIR), null);
 	private SpecialItemStack boots = new SpecialItemStack(new ItemStack(Material.AIR), null);
 	private IntegerDataModule items;
 
-	int size;
+	public PlayerCharacterInventory(String owner, int size, SpecialItemStack helmet, SpecialItemStack chestPlate, SpecialItemStack leggings, SpecialItemStack boots, IntegerDataModule items)
+	{
+		this.owner = owner;
+		this.size = size;
+		this.helmet = helmet;
+		this.chestPlate = chestPlate;
+		this.leggings = leggings;
+		this.boots = boots;
+		this.items = items;
+	}
 
 	public PlayerCharacterInventory(Inventory inventory)
 	{
@@ -39,7 +49,7 @@ public class PlayerCharacterInventory
 			{
 				Player player = getOwner().getPlayer();
 				if(player.getInventory().getHelmet() != null) this.helmet = new SpecialItemStack(player.getInventory().getHelmet().clone(), null);
-				if(player.getInventory().getChestplate() != null) this.chestplate = new SpecialItemStack(player.getInventory().getChestplate().clone(), null);
+				if(player.getInventory().getChestplate() != null) this.chestPlate = new SpecialItemStack(player.getInventory().getChestplate().clone(), null);
 				if(player.getInventory().getLeggings() != null) this.leggings = new SpecialItemStack(player.getInventory().getLeggings().clone(), null);
 				if(player.getInventory().getBoots() != null) this.boots = new SpecialItemStack(player.getInventory().getBoots().clone(), null);
 			}
@@ -89,10 +99,10 @@ public class PlayerCharacterInventory
 			player = entity.getPlayer();
 		}
 
-		if(this.getHelmet() != null) player.getInventory().setHelmet(this.getHelmet());
-		if(this.getChestplate() != null) player.getInventory().setChestplate(this.getChestplate());
-		if(this.getLeggings() != null) player.getInventory().setLeggings(this.getLeggings());
-		if(this.getBoots() != null) player.getInventory().setBoots(this.getBoots());
+		if(this.getHelmet() != null) player.getInventory().setHelmet(this.getHelmet().toItemStack());
+		if(this.getChestPlate() != null) player.getInventory().setChestplate(this.getChestPlate().toItemStack());
+		if(this.getLeggings() != null) player.getInventory().setLeggings(this.getLeggings().toItemStack());
+		if(this.getBoots() != null) player.getInventory().setBoots(this.getBoots().toItemStack());
 
 		for(Entry<Integer, ItemStack> slot : this.getItems().entrySet())
 		{
@@ -132,36 +142,41 @@ public class PlayerCharacterInventory
 	/*
 	 * getHelmet() : Returns the helmet.
 	 */
-	public ItemStack getHelmet()
+	public SpecialItemStack getHelmet()
 	{
-		if(this.helmet != null) return this.helmet.toItemStack();
+		if(this.helmet != null) return this.helmet;
 		else return null;
 	}
 
 	/*
-	 * getChestplate() : Returns the chestplate.
+	 * getChestPlate() : Returns the chestPlate.
 	 */
-	public ItemStack getChestplate()
+	public SpecialItemStack getChestPlate()
 	{
-		if(this.chestplate != null) return this.chestplate.toItemStack();
+		if(this.chestPlate != null) return this.chestPlate;
 		else return null;
 	}
 
 	/*
 	 * getLeggings() : Returns the leggings.
 	 */
-	public ItemStack getLeggings()
+	public SpecialItemStack getLeggings()
 	{
-		if(this.leggings != null) return this.leggings.toItemStack();
+		if(this.leggings != null) return this.leggings;
 		else return null;
 	}
 
 	/*
 	 * getBoots() : Returns the boots.
 	 */
-	public ItemStack getBoots()
+	public SpecialItemStack getBoots()
 	{
-		if(this.boots != null) return this.boots.toItemStack();
+		if(this.boots != null) return this.boots;
 		else return null;
+	}
+
+	public IntegerDataModule grabItems()
+	{
+		return this.items;
 	}
 }

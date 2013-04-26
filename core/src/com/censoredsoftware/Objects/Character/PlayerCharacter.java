@@ -114,9 +114,9 @@ public class PlayerCharacter
 		return playerCharacterData.getDataBool(PlayerCharacterData.CHAR_ACTIVE);
 	}
 
-	public Location getLocation()
+	public SpecialLocation getLocation()
 	{
-		return this.specialLocation.toLocation();
+		return this.specialLocation;
 	}
 
 	public int getHealth()
@@ -157,6 +157,11 @@ public class PlayerCharacter
 	public EnumDataModule grabPlayerCharacterData()
 	{
 		return this.playerCharacterData;
+	}
+
+	public void overridePlayerCharacterData(EnumDataModule data)
+	{
+		this.playerCharacterData = data;
 	}
 
 	/**

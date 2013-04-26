@@ -59,7 +59,7 @@ public class LatestTweetModule implements Listener
 			this.notify = notify;
 
 			this.messagesData = new PlayerDataModule(plugin, "official_messages");
-			this.messagesYAML = new YAMLPersistenceModule(plugin, "official_messages");
+			this.messagesYAML = new YAMLPersistenceModule(true, plugin, null, "official_messages");
 
 			initilize(start_delay, save_interval);
 		}

@@ -18,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 public class YAMLPersistenceModule
 {
 	private Plugin plugin;
-	private String pluginName;
+	private String path, pluginName;
 	final private String dataName;
 	private Map map;
 	final private File yamlFile, backupFile;
@@ -31,38 +31,40 @@ public class YAMLPersistenceModule
 	 * @param instance The instance of the Plugin creating the YAMLPersistenceModule.
 	 * @param dataName The name of data set, and the name of the file.
 	 */
-	public YAMLPersistenceModule(Plugin instance, String dataName)
+	public YAMLPersistenceModule(boolean load, Plugin instance, String path, String dataName)
 	{
 		this.plugin = instance;
+		if(path != null) this.path = path;
+		else this.path = "";
 		this.pluginName = this.plugin.getName();
 		this.dataName = dataName;
 
-		folderStructure();
+		folderStructure(this.path);
 
-		this.yamlFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + dataName + ".yml");
-		this.backupFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup" + File.separator + dataName + ".yml");
+		this.yamlFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + path + dataName + ".yml");
+		this.backupFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup" + File.separator + path + dataName + ".yml");
 
-		initialize();
+		initialize(load);
 	}
 
 	/**
 	 * Make sure the folder structure is in place.
 	 */
-	private void folderStructure()
+	private void folderStructure(String path)
 	{
 		// Define the folders
-		File dataFolder = new File(plugin.getDataFolder() + File.separator + "data");
-		File backupFolder = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup");
+		File dataFolder = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + path);
+		File backupFolder = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup" + File.separator + path);
 
 		// If they don't exist, create them now
-		if(!dataFolder.exists()) dataFolder.mkdir();
-		if(!backupFolder.exists()) backupFolder.mkdir();
+		if(!dataFolder.exists()) dataFolder.mkdirs();
+		if(!backupFolder.exists()) backupFolder.mkdirs();
 	}
 
 	/**
 	 * Initialize the YAMLPersistenceModule.
 	 */
-	private void initialize()
+	private void initialize(boolean load)
 	{
 		if(!this.yamlFile.exists())
 		{
@@ -82,7 +84,7 @@ public class YAMLPersistenceModule
 		else
 		{
 			this.persistance = YamlConfiguration.loadConfiguration(yamlFile);
-			load();
+			if(load) load();
 		}
 	}
 
@@ -153,7 +155,7 @@ public class YAMLPersistenceModule
 		}
 
 		// Call the LoadYAMLEvent if need be
-		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadYAMLEvent(pluginName, dataName, map));
+		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadYAMLEvent(pluginName, path, dataName, map));
 	}
 }
 
@@ -162,7 +164,7 @@ public class YAMLPersistenceModule
  */
 class LoadYAMLEvent extends Event implements Cancellable
 {
-	private String pluginName, dataName;
+	private String pluginName, path, dataName;
 	private Map map;
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
@@ -174,9 +176,10 @@ class LoadYAMLEvent extends Event implements Cancellable
 	 * @param dataName Name of the data set being loaded.
 	 * @param map The data that was loaded.
 	 */
-	LoadYAMLEvent(String pluginName, String dataName, Map map)
+	LoadYAMLEvent(String pluginName, String path, String dataName, Map map)
 	{
 		this.pluginName = pluginName;
+		this.path = path;
 		this.dataName = dataName;
 		this.map = map;
 	}
@@ -189,6 +192,16 @@ class LoadYAMLEvent extends Event implements Cancellable
 	String getPluginName()
 	{
 		return this.pluginName;
+	}
+
+	/**
+	 * Returns the path of the loaded file.
+	 * 
+	 * @return The path.
+	 */
+	String getPath()
+	{
+		return this.path;
 	}
 
 	/**

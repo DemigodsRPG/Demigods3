@@ -114,6 +114,16 @@ public class SpecialItemStack
 		return item;
 	}
 
+	public EnumDataModule grabSpecialItemStackData()
+	{
+		return this.specialItemStackData;
+	}
+
+	public IntegerDataModule grabEnchantmentsData()
+	{
+		return this.enchantmentsData;
+	}
+
 	/**
 	 * Enum defining the data being held in this object.
 	 */
