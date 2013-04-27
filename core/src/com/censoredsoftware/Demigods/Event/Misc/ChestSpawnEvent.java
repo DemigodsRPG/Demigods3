@@ -88,61 +88,33 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Battle;
+package com.censoredsoftware.Demigods.Event.Misc;
 
+import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Objects.Battle;
-
-public class BattleCombineEvent extends Event implements Cancellable
+/*
+ * Represents an event that is called when an Altar is created.
+ */
+public class ChestSpawnEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private int battleID;
-	private Battle first;
-	private Battle second;
-	private Long combineTime;
+	private Location location;
 	private boolean cancelled = false;
 
-	public BattleCombineEvent(int battleID, final Battle first, final Battle second, Long combineTime)
+	public ChestSpawnEvent(final Location location)
 	{
-		this.battleID = battleID;
-		this.first = first;
-		this.second = second;
-		this.combineTime = combineTime;
+		this.location = location;
 	}
 
 	/*
-	 * getBattleID() : Gets the battle created.
+	 * getLocation() : Gets the Altar's location.
 	 */
-	public int getBattleID()
+	public Location getLocation()
 	{
-		return this.battleID;
-	}
-
-	/*
-	 * getFirst() : Gets the first battle involved (based on time).
-	 */
-	public Battle getFirst()
-	{
-		return this.first;
-	}
-
-	/*
-	 * getSecond() : Gets the second battle involved (based on time).
-	 */
-	public Battle getSecond()
-	{
-		return this.second;
-	}
-
-	/*
-	 * getCombineTime() : Gets the time that the battles combined.
-	 */
-	public Long getCombineTime()
-	{
-		return this.combineTime;
+		return this.location;
 	}
 
 	@Override

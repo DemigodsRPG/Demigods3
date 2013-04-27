@@ -234,9 +234,9 @@ public class TieredPlayerDataModule extends DataModule implements Listener
 	 * @param tier The tier being checked.
 	 * @return The list of keys.
 	 */
-	public List<Object> listKeys(OfflinePlayer tier)
+	public List<String> listKeys(OfflinePlayer tier)
 	{
-		List<Object> keys = new ArrayList<Object>();
+		List<String> keys = new ArrayList<String>();
 		for(String key : tieredObjectData.get(tier.getName()).keySet())
 		{
 			keys.add(key);

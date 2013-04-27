@@ -88,42 +88,43 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Character;
+package com.censoredsoftware.Demigods.Event.Altar;
 
+import org.bukkit.Location;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-
 /*
- * Represents an event that is called when a player is killed by another player.
+ * Represents an event that is called when an Altar is created.
  */
-public class CharacterKillCharacterEvent extends Event
+public class AltarCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacter attacker;
-	private PlayerCharacter killedChar;
+	private Location block;
+	private AltarCreateCause cause;
+	private boolean cancelled = false;
 
-	public CharacterKillCharacterEvent(final PlayerCharacter attacker, final PlayerCharacter killedChar)
+	public AltarCreateEvent(final Location block, final AltarCreateCause cause)
 	{
-		this.attacker = attacker;
-		this.killedChar = killedChar;
+		this.block = block;
+		this.cause = cause;
 	}
 
 	/*
-	 * getCharacter() : Gets the character.
+	 * getLocation() : Gets the Altar's location.
 	 */
-	public PlayerCharacter getCharacter()
+	public Location getLocation()
 	{
-		return this.attacker;
+		return this.block;
 	}
 
 	/*
-	 * getKilled() : Gets the player that was killed by the player.
+	 * getCause() : Gets the Altar's creation cause;
 	 */
-	public PlayerCharacter getKilled()
+	public AltarCreateCause getCause()
 	{
-		return this.killedChar;
+		return this.cause;
 	}
 
 	@Override
@@ -135,5 +136,22 @@ public class CharacterKillCharacterEvent extends Event
 	public static HandlerList getHandlerList()
 	{
 		return handlers;
+	}
+
+	public enum AltarCreateCause
+	{
+		ADMIN_WAND, GENERATED
+	}
+
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public synchronized void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
 	}
 }

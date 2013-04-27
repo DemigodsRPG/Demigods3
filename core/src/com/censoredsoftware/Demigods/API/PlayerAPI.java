@@ -105,7 +105,7 @@ public class PlayerAPI
 	 * @param charID the character ID to switch to.
 	 * @return boolean based on if the change was successful or not.
 	 */
-	public boolean changeCurrentChar(OfflinePlayer offlinePlayer, int charID) // TODO Most of this should be in a listener, not here in the API.
+	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, int charID) // TODO Most of this should be in a listener, not here in the API.
 	{
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
@@ -178,7 +178,7 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return boolean
 	 */
-	public boolean isImmortal(OfflinePlayer player)
+	public static boolean isImmortal(OfflinePlayer player)
 	{
 		PlayerCharacterClass character = getCurrentChar(player);
 		return character != null && character.isClassActive();
@@ -191,7 +191,7 @@ public class PlayerAPI
 	 * @param charID the charID to check with.
 	 * @return boolean
 	 */
-	public boolean hasCharID(OfflinePlayer player, int charID)
+	public static boolean hasCharID(OfflinePlayer player, int charID)
 	{
 		return getChars(player) != null && getChars(player).contains(charID);
 	}
@@ -203,7 +203,7 @@ public class PlayerAPI
 	 * @param charName the charName to check with.
 	 * @return boolean
 	 */
-	public boolean hasCharName(OfflinePlayer player, String charName)
+	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
 		List<PlayerCharacterClass> characters = getChars(player);
 
@@ -221,7 +221,7 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return boolean
 	 */
-	public boolean isPraying(OfflinePlayer player)
+	public static boolean isPraying(OfflinePlayer player)
 	{
 		return DemigodsData.tempPlayerData.getDataBool(player, "temp_praying");
 	}
@@ -229,7 +229,7 @@ public class PlayerAPI
 	/**
 	 * Regenerates favor for all currently online players.
 	 */
-	public synchronized void regenerateAllFavor() // TODO Does this really belong here?
+	public static void regenerateAllFavor() // TODO Does this really belong here?
 	{
 		ArrayList<Player> onlinePlayers = getOnlinePlayers();
 		for(Player player : onlinePlayers)
@@ -248,7 +248,7 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return int
 	 */
-	public int getKills(OfflinePlayer player)
+	public static int getKills(OfflinePlayer player)
 	{
 		return DemigodsData.playerData.getDataInt(player, "player_kills");
 	}
@@ -259,7 +259,7 @@ public class PlayerAPI
 	 * @param player the player to manipulate.
 	 * @param amount the amount of kills to set to.
 	 */
-	public void setKills(OfflinePlayer player, int amount)
+	public static void setKills(OfflinePlayer player, int amount)
 	{
 		DemigodsData.playerData.saveData(player, "player_kills", amount);
 	}
@@ -269,7 +269,7 @@ public class PlayerAPI
 	 * 
 	 * @param player the player to manipulate.
 	 */
-	public void addKill(OfflinePlayer player)
+	public static void addKill(OfflinePlayer player)
 	{
 		DemigodsData.playerData.saveData(player, "player_kills", getKills(player) + 1);
 	}
@@ -280,7 +280,7 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return int
 	 */
-	public int getDeaths(OfflinePlayer player)
+	public static int getDeaths(OfflinePlayer player)
 	{
 		return DemigodsData.playerData.getDataInt(player, "player_deaths");
 	}
@@ -291,7 +291,7 @@ public class PlayerAPI
 	 * @param player the player to manipulate.
 	 * @param amount the amount of deaths to set.
 	 */
-	public void setDeaths(OfflinePlayer player, int amount)
+	public static void setDeaths(OfflinePlayer player, int amount)
 	{
 		DemigodsData.playerData.saveData(player, "player_deaths", amount);
 	}
@@ -301,7 +301,7 @@ public class PlayerAPI
 	 * 
 	 * @param player the player to manipulate.
 	 */
-	public void addDeath(OfflinePlayer player)
+	public static void addDeath(OfflinePlayer player)
 	{
 		DemigodsData.playerData.saveData(player, "player_deaths", getDeaths(player) + 1);
 	}
@@ -369,7 +369,7 @@ public class PlayerAPI
 	 * @param player the player the manipulate.
 	 * @param option the boolean to set to.
 	 */
-	public void togglePraying(OfflinePlayer player, boolean option)
+	public static void togglePraying(OfflinePlayer player, boolean option)
 	{
 		if(option)
 		{
@@ -391,7 +391,7 @@ public class PlayerAPI
 	 * @param player the player to manipulate.
 	 * @param option the boolean to set to.
 	 */
-	public void togglePlayerMovement(OfflinePlayer player, boolean option)
+	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
 		if(DemigodsData.tempPlayerData.containsKey(player, "temp_player_hold") && option) DemigodsData.tempPlayerData.removeData(player, "temp_player_hold");
 		else DemigodsData.tempPlayerData.saveData(player, "temp_player_hold", true);
@@ -403,7 +403,7 @@ public class PlayerAPI
 	 * @param player the player to manipulate.
 	 * @param option the boolean to set to.
 	 */
-	public void togglePlayerChat(OfflinePlayer player, boolean option)
+	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
 		if(DemigodsData.tempPlayerData.containsKey(player, "temp_no_chat") && option) DemigodsData.tempPlayerData.removeData(player, "temp_no_chat");
 		else DemigodsData.tempPlayerData.saveData(player, "temp_no_chat", true);

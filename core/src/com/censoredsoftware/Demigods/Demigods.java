@@ -3,24 +3,35 @@ package com.censoredsoftware.Demigods;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
+import com.censoredsoftware.Demigods.API.AdminAPI;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -37,9 +48,9 @@ public class Demigods
 	protected static LatestTweetModule notice;
 
 	// Protected Dependency Plugins
-	protected static WorldGuardPlugin worldguard;
-	protected static P factions;
-	protected static Residence residence;
+	public static WorldGuardPlugin worldguard;
+	public static P factions;
+	public static Residence residence;
 
 	// On-load Deity ClassPath List
 	public static ArrayList<String> deityPathList = new ArrayList<String>();
@@ -201,65 +212,63 @@ class Scheduler
 	}
 }
 
-/**
- * class EventFactory implements Listener
- * {
- * 
- * @EventHandler(priority = EventPriority.MONITOR)
- *                        public static void onEntityDeath(EntityDeathEvent event)
- *                        {
- *                        Entity entity = event.getEntity();
- *                        if(entity instanceof Player)
- *                        {
- *                        Player player = (Player) entity;
- *                        PlayerCharacter playerChar = null;
- *                        if(API.player.getCurrentChar(player) != null) playerChar = API.player.getCurrentChar(player);
- * 
- *                        if(playerChar != null)
- *                        {
- *                        if(playerChar.getKillstreak() > 3) API.misc.serverMsg(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
- *                        playerChar.setKillstreak(0);
- *                        }
- * 
- *                        EntityDamageEvent damageEvent = player.getLastDamageCause();
- * 
- *                        if(damageEvent instanceof EntityDamageByEntityEvent)
- *                        {
- *                        EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
- *                        Entity damager = damageByEvent.getDamager();
- * 
- *                        if(damager instanceof Player)
- *                        {
- *                        Player attacker = (Player) damager;
- *                        PlayerCharacter attackChar = null;
- *                        if(API.player.getCurrentChar(attacker) != null) attackChar = API.player.getCurrentChar(attacker);
- *                        if(API.player.areAllied(attacker, player))
- *                        {
- *                        API.misc.callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, API.player.getCurrentAlliance(player)));
- *                        }
- *                        else
- *                        {
- *                        API.misc.callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
- *                        }
- * 
- *                        if(attackChar != null)
- *                        {
- *                        // Killstreak
- *                        int killstreak = attackChar.getKillstreak();
- *                        attackChar.setKillstreak(killstreak + 1);
- *                        if(attackChar.getKillstreak() > 2)
- *                        {
- *                        API.misc.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
- *                        }
- * 
- *                        // TODO Dominating
- *                        }
- *                        }
- *                        }
- *                        }
- *                        }
- *                        }
- */
+class EventFactory implements Listener
+{
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onEntityDeath(EntityDeathEvent event)
+	{
+		Entity entity = event.getEntity();
+		if(entity instanceof Player)
+		{
+			Player player = (Player) entity;
+			PlayerCharacterClass playerChar = null;
+			if(PlayerAPI.getCurrentChar(player) != null) playerChar = PlayerAPI.getCurrentChar(player);
+
+			// if(playerChar != null)
+			// {
+			// if(playerChar.getKillstreak() > 3) Demigods.message.broadcast(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
+			// playerChar.setKillstreak(0);
+			// }
+
+			EntityDamageEvent damageEvent = player.getLastDamageCause();
+
+			if(damageEvent instanceof EntityDamageByEntityEvent)
+			{
+				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
+				Entity damager = damageByEvent.getDamager();
+
+				if(damager instanceof Player)
+				{
+					Player attacker = (Player) damager;
+					PlayerCharacterClass attackChar = null;
+					if(PlayerAPI.getCurrentChar(attacker) != null) attackChar = PlayerAPI.getCurrentChar(attacker);
+					if(PlayerAPI.areAllied(attacker, player))
+					{
+						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerAPI.getCurrentAlliance(player)));
+					}
+					else
+					{
+						Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
+					}
+
+					if(attackChar != null)
+					{
+						// Killstreak
+						// int killstreak = attackChar.getKillstreak();
+						// attackChar.setKillstreak(killstreak + 1);
+						// if(attackChar.getKillstreak() > 2)
+						// {
+						// Demigods.message.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
+						// }
+
+						// TODO Dominating
+					}
+				}
+			}
+		}
+	}
+}
 
 class Commands implements CommandExecutor
 {
@@ -275,7 +284,6 @@ class Commands implements CommandExecutor
 
 		// Debugging
 		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
-		else if(command.getName().equalsIgnoreCase("viewblocks")) return viewBlocks(sender);
 
 		return false;
 	}
@@ -292,17 +300,19 @@ class Commands implements CommandExecutor
 		}
 
 		// Define Player
-		Player player = (Player) API.player.definePlayer(sender.getName());
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		// Check Permissions
-		if(!API.misc.hasPermissionOrOP(player, "demigods.basic")) return API.misc.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.basic")) return Demigods.message.noPermission(player);
 
-		API.misc.taggedMessage(sender, "Documentation");
-		for(String alliance : API.deity.getLoadedDeityAlliances())
+		Demigods.message.tagged(sender, "Documentation");
+		for(String alliance : DeityAPI.getLoadedDeityAlliances())
+		{
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
+		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
 		sender.sendMessage(ChatColor.GRAY + " /dg commands");
-		if(API.misc.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
+		if(Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
 		return true;
@@ -315,7 +325,7 @@ class Commands implements CommandExecutor
 	private static boolean dg_extended(CommandSender sender, String[] args)
 	{
 		// Define Player
-		Player player = (Player) API.player.definePlayer(sender.getName());
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		// Define args
 		String category = args[0];
@@ -326,34 +336,34 @@ class Commands implements CommandExecutor
 		if(args.length >= 5) option4 = args[4];
 
 		// Check Permissions
-		if(!API.misc.hasPermissionOrOP(player, "demigods.basic")) return API.misc.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.basic")) return Demigods.message.noPermission(player);
 
 		if(category.equalsIgnoreCase("admin"))
 		{
 			dg_admin(sender, option1, option2, option3, option4);
 		}
-		else if(category.equalsIgnoreCase("save"))
-		{
-			if(!API.misc.hasPermissionOrOP(player, "demigods.admin")) return API.misc.noPermission(player);
-
-			API.misc.serverMsg(ChatColor.RED + "Manually forcing Demigods save...");
-			if(DFlatFile.save()) API.misc.serverMsg(ChatColor.GREEN + "Save complete!");
-			else
-			{
-				API.misc.serverMsg(ChatColor.RED + "There was a problem with saving...");
-				API.misc.serverMsg(ChatColor.RED + "Check the log immediately.");
-			}
-		}
+		// else if(category.equalsIgnoreCase("save"))
+		// {
+		// if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
+		//
+		// Demigods.message.broadcast(ChatColor.RED + "Manually forcing Demigods save...");
+		// if(DFlatFile.save()) Demigods.message.broadcast(ChatColor.GREEN + "Save complete!");
+		// else
+		// {
+		// Demigods.message.broadcast(ChatColor.RED + "There was a problem with saving...");
+		// Demigods.message.broadcast(ChatColor.RED + "Check the log immediately.");
+		// }
+		// }
 		else if(category.equalsIgnoreCase("commands"))
 		{
-			API.misc.taggedMessage(sender, "Command Directory");
+			Demigods.message.tagged(sender, "Command Directory");
 			sender.sendMessage(ChatColor.GRAY + " There's nothing here...");
 		}
 		else if(category.equalsIgnoreCase("info"))
 		{
 			if(option1 == null)
 			{
-				API.misc.taggedMessage(sender, "Information Directory");
+				Demigods.message.tagged(sender, "Information Directory");
 				sender.sendMessage(ChatColor.GRAY + " /dg info characters");
 				sender.sendMessage(ChatColor.GRAY + " /dg info shrines");
 				sender.sendMessage(ChatColor.GRAY + " /dg info tributes");
@@ -365,7 +375,7 @@ class Commands implements CommandExecutor
 			}
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
-				API.misc.taggedMessage(sender, "About the Plugin");
+				Demigods.message.tagged(sender, "About the Plugin");
 				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and usefull skills.");
@@ -376,92 +386,63 @@ class Commands implements CommandExecutor
 				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
 				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/Clashnia/Minecraft-Demigods");
 			}
-			else if(option1.equalsIgnoreCase("update"))
-			{
-				if(!API.misc.hasPermissionOrOP(player, "demigods.admin")) return API.misc.noPermission(player);
-
-				if(API.data.getConfirmed(sender, "update"))
-				{
-					API.data.confirm(sender, "update", false);
-					if(API.update.check())
-					{
-						API.misc.taggedMessage(sender, "Beginning download...");
-						if(API.update.execute()) API.misc.taggedMessage(sender, "Download complete. " + ChatColor.YELLOW + "Please reload the server!");
-						else API.misc.taggedMessage(sender, "Download failed. " + ChatColor.WHITE + "Please try again later.");
-					}
-					else
-					{
-						API.misc.taggedMessage(sender, "You are already running the latest version.");
-					}
-					return true;
-				}
-				else
-				{
-					API.misc.taggedMessage(sender, "Currently, version " + ChatColor.YELLOW + API.getDescription().getVersion() + ChatColor.WHITE + " is installed.");
-					API.misc.taggedMessage(sender, "The latest version up for download is " + ChatColor.YELLOW + API.update.getLatestVersion() + ChatColor.WHITE + ".");
-					API.misc.taggedMessage(sender, "If you would still like to update, please use ");
-					API.misc.taggedMessage(sender, ChatColor.YELLOW + "/dg update " + ChatColor.WHITE + "again.");
-					API.data.confirm(sender, "update", true);
-					return true;
-				}
-			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
-				API.misc.taggedMessage(sender, "Characters");
+				Demigods.message.tagged(sender, "Characters");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
 			}
 			else if(option1.equalsIgnoreCase("shrine"))
 			{
-				API.misc.taggedMessage(sender, "Shrines");
+				Demigods.message.tagged(sender, "Shrines");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
 			}
 			else if(option1.equalsIgnoreCase("tribute"))
 			{
-				API.misc.taggedMessage(sender, "Tributes");
+				Demigods.message.tagged(sender, "Tributes");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
 			}
 			else if(option1.equalsIgnoreCase("player"))
 			{
-				API.misc.taggedMessage(sender, "Players");
+				Demigods.message.tagged(sender, "Players");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Players.");
 			}
 			else if(option1.equalsIgnoreCase("pvp"))
 			{
-				API.misc.taggedMessage(sender, "PVP");
+				Demigods.message.tagged(sender, "PVP");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 			}
 			else if(option1.equalsIgnoreCase("stats"))
 			{
-				API.misc.taggedMessage(sender, "Stats");
+				Demigods.message.tagged(sender, "Stats");
 				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
 			}
 			else if(option1.equalsIgnoreCase("rankings"))
 			{
-				API.misc.taggedMessage(sender, "Rankings");
+				Demigods.message.tagged(sender, "Rankings");
 				sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
 			}
 		}
 
-		for(String alliance : API.deity.getLoadedDeityAlliances())
+		for(String alliance : DeityAPI.getLoadedDeityAlliances())
 		{
 			if(category.equalsIgnoreCase(alliance))
 			{
 				if(args.length < 2)
 				{
-					API.misc.taggedMessage(sender, alliance + " Directory");
-					for(String deity : API.deity.getAllDeitiesInAlliance(alliance))
+					Demigods.message.tagged(sender, alliance + " Directory");
+					for(String deity : DeityAPI.getAllDeitiesInAlliance(alliance))
 						sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.toLowerCase());
 				}
 				else
 				{
-					for(String deity : API.deity.getAllDeitiesInAlliance(alliance))
+					for(String deity : DeityAPI.getAllDeitiesInAlliance(alliance))
 					{
 						assert option1 != null;
 						if(option1.equalsIgnoreCase(deity))
 						{
 							try
 							{
-								for(String toPrint : (ArrayList<String>) API.deity.invokeDeityMethodWithPlayer(API.deity.getDeityClass(deity), API.deity.getClassLoader(deity), "getInfo", player))
+								for(String toPrint : (ArrayList<String>) DeityAPI.invokeDeityMethodWithPlayer(DeityAPI.getDeityPath(deity), DeityAPI.getClassLoader(deity), "getInfo", player))
 									sender.sendMessage(toPrint);
 								return true;
 							}
@@ -485,16 +466,16 @@ class Commands implements CommandExecutor
 	// Admin Directory
 	private static boolean dg_admin(CommandSender sender, String option1, String option2, String option3, String option4)
 	{
-		Player player = (Player) API.player.definePlayer(sender.getName());
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		Player toEdit;
-		PlayerCharacter character;
+		PlayerCharacterClass character;
 		int amount;
 
-		if(!API.misc.hasPermissionOrOP(player, "demigods.admin")) return API.misc.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
 
 		if(option1 == null)
 		{
-			API.misc.taggedMessage(sender, "Admin Directory");
+			Demigods.message.tagged(sender, "Admin Directory");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
@@ -508,28 +489,28 @@ class Commands implements CommandExecutor
 		{
 			if(option1.equalsIgnoreCase("wand"))
 			{
-				if(!API.admin.wandEnabled(player))
+				if(!AdminAPI.wandEnabled(player))
 				{
-					API.data.savePlayerData(player, "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(API.config.getSettingInt("admin_wand_tool")));
+					DemigodsData.tempPlayerData.saveData(player, "temp_admin_wand", true);
+					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin_wand_tool")));
 				}
-				else if(API.admin.wandEnabled(player))
+				else if(AdminAPI.wandEnabled(player))
 				{
-					API.data.removePlayerData(player, "temp_admin_wand");
+					DemigodsData.tempPlayerData.removeData(player, "temp_admin_wand");
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 				}
 				return true;
 			}
 			else if(option1.equalsIgnoreCase("debug"))
 			{
-				if(!API.data.hasPlayerData(player, "temp_admin_debug") || API.data.getPlayerData(player, "temp_admin_debug").equals(false))
+				if(!DemigodsData.tempPlayerData.containsKey(player, "temp_admin_debug") || !DemigodsData.tempPlayerData.getDataBool(player, "temp_admin_debug"))
 				{
-					API.data.savePlayerData(player, "temp_admin_debug", true);
+					DemigodsData.tempPlayerData.saveData(player, "temp_admin_debug", true);
 					player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 				}
-				else if(API.data.hasPlayerData(player, "temp_admin_debug") && API.data.getPlayerData(player, "temp_admin_debug").equals(true))
+				else if(DemigodsData.tempPlayerData.containsKey(player, "temp_admin_debug") && DemigodsData.tempPlayerData.getDataBool(player, "temp_admin_debug"))
 				{
-					API.data.removePlayerData(player, "temp_admin_debug");
+					DemigodsData.tempPlayerData.removeData(player, "temp_admin_debug");
 					player.sendMessage(ChatColor.RED + "You have disabled debugging.");
 				}
 			}
@@ -547,15 +528,14 @@ class Commands implements CommandExecutor
 
 				if(option3 == null)
 				{
-					API.misc.taggedMessage(sender, ChatColor.RED + toCheck.getName() + " Player Check");
+					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					List<Integer> chars = API.player.getChars(toCheck);
+					List<PlayerCharacterClass> chars = PlayerAPI.getChars(toCheck);
 
-					for(Integer checkingCharID : chars)
+					for(PlayerCharacterClass checkingChar : chars)
 					{
-						PlayerCharacter checkingChar = API.character.getChar(checkingCharID);
-						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingCharID + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
+						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getID() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getClassName());
 					}
 				}
 				else
@@ -578,12 +558,12 @@ class Commands implements CommandExecutor
 					}
 					else if(option2.equalsIgnoreCase("character"))
 					{
-						int charID = API.character.getCharByName(option3).getID();
+						int charID = CharacterAPI.getCharByName(option3).getID();
 
 						// Remove the data
-						API.data.removeChar(charID);
+						DemigodsData.characterData.removeData(charID);
 
-						sender.sendMessage(ChatColor.RED + "Character \"" + API.character.getChar(charID).getName() + "\" removed.");
+						sender.sendMessage(ChatColor.RED + "Character \"" + CharacterAPI.getChar(charID).getName() + "\" removed.");
 					}
 				}
 			}
@@ -598,8 +578,8 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = API.player.getCurrentChar(toEdit);
-					amount = API.object.toInteger(option4);
+					character = PlayerAPI.getCurrentChar(toEdit);
+					amount = Integer.parseInt(option4);
 				}
 
 				if(option2.equalsIgnoreCase("maxfavor"))
@@ -667,8 +647,8 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = API.player.getCurrentChar(toEdit);
-					amount = API.object.toInteger(option4);
+					character = PlayerAPI.getCurrentChar(toEdit);
+					amount = Integer.parseInt(option4);
 				}
 
 				if(option2.equalsIgnoreCase("maxfavor"))
@@ -736,8 +716,8 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = API.player.getCurrentChar(toEdit);
-					amount = API.object.toInteger(option4);
+					character = PlayerAPI.getCurrentChar(toEdit);
+					amount = Integer.parseInt(option4);
 				}
 
 				if(option2.equalsIgnoreCase("maxfavor"))
@@ -805,58 +785,58 @@ class Commands implements CommandExecutor
 	 */
 	private static boolean check(CommandSender sender, String[] args)
 	{
-		Player player = (Player) API.player.definePlayer(sender.getName());
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(character == null || !character.isImmortal())
+		if(character == null || !character.isClassActive())
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
 		}
 
 		// Define variables
-		int kills = API.player.getKills(player);
-		int deaths = API.player.getDeaths(player);
-		int killstreak = character.getKillstreak();
+		int kills = PlayerAPI.getKills(player);
+		int deaths = PlayerAPI.getDeaths(player);
+		// int killstreak = character.getKillstreak();
 		String charName = character.getName();
-		String deity = character.getDeity();
-		String alliance = character.getAlliance();
+		String deity = character.getClassName();
+		String alliance = character.getTeam();
 		int favor = character.getFavor();
 		int maxFavor = character.getMaxFavor();
 		int devotion = character.getDevotion();
 		int ascensions = character.getAscensions();
 		int devotionGoal = character.getDevotionGoal();
-		int powerOffense = character.getPower(AbilityEvent.AbilityType.OFFENSE);
-		int powerDefense = character.getPower(AbilityEvent.AbilityType.DEFENSE);
-		int powerStealth = character.getPower(AbilityEvent.AbilityType.STEALTH);
-		int powerSupport = character.getPower(AbilityEvent.AbilityType.SUPPORT);
-		int powerPassive = character.getPower(AbilityEvent.AbilityType.PASSIVE);
-		ChatColor deityColor = (ChatColor) API.data.getPluginData("temp_deity_colors", deity);
+		// int powerOffense = character.getPower(AbilityEvent.AbilityType.OFFENSE);
+		// int powerDefense = character.getPower(AbilityEvent.AbilityType.DEFENSE);
+		// int powerStealth = character.getPower(AbilityEvent.AbilityType.STEALTH);
+		// int powerSupport = character.getPower(AbilityEvent.AbilityType.SUPPORT);
+		// int powerPassive = character.getPower(AbilityEvent.AbilityType.PASSIVE);
+		ChatColor deityColor = (ChatColor) DemigodsData.deityColors.getDataObject(deity);
 		ChatColor favorColor = character.getFavorColor();
 
-		if(args.length == 1 && (args[0].equalsIgnoreCase("level") || args[0].equalsIgnoreCase("levels")))
-		{
-			// Send the user their info via chat
-			API.misc.taggedMessage(sender, "Levels Check");
-
-			sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Offense: " + ChatColor.GREEN + powerOffense);
-			sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Defense: " + ChatColor.GREEN + powerDefense);
-			sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Stealth: " + ChatColor.GREEN + powerStealth);
-			sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Support: " + ChatColor.GREEN + powerSupport);
-			sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Passive: " + ChatColor.GREEN + powerPassive);
-
-			return true;
-		}
+		// if(args.length == 1 && (args[0].equalsIgnoreCase("level") || args[0].equalsIgnoreCase("levels")))
+		// {
+		// // Send the user their info via chat
+		// Demigods.message.tagged(sender, "Levels Check");
+		//
+		// sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Offense: " + ChatColor.GREEN + powerOffense);
+		// sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Defense: " + ChatColor.GREEN + powerDefense);
+		// sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Stealth: " + ChatColor.GREEN + powerStealth);
+		// sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Support: " + ChatColor.GREEN + powerSupport);
+		// sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Passive: " + ChatColor.GREEN + powerPassive);
+		//
+		// return true;
+		// }
 
 		// Send the user their info via chat
-		API.misc.taggedMessage(sender, "Player Check");
+		Demigods.message.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
-		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + API.object.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DemigodsData.capitalize(alliance) + "s");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
-		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE + " / Killstreak: " + ChatColor.RED + killstreak);
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE); // + " / Killstreak: " + ChatColor.RED + killstreak);
 
 		return true;
 	}
@@ -866,7 +846,7 @@ class Commands implements CommandExecutor
 	 */
 	private static boolean owner(CommandSender sender, String[] args)
 	{
-		Player player = (Player) API.player.definePlayer(sender.getName());
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		if(args.length < 1)
 		{
@@ -875,7 +855,7 @@ class Commands implements CommandExecutor
 			return true;
 		}
 
-		PlayerCharacter charToCheck = API.character.getCharByName(args[0]);
+		PlayerCharacterClass charToCheck = CharacterAPI.getCharByName(args[0]);
 
 		if(charToCheck.getName() == null)
 		{
@@ -884,7 +864,7 @@ class Commands implements CommandExecutor
 		}
 		else
 		{
-			player.sendMessage(API.deity.getDeityColor(charToCheck.getDeity()) + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOwner().getName() + ".");
+			player.sendMessage(DeityAPI.getDeityColor(charToCheck.getClassName()) + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOwner().getName() + ".");
 			return true;
 		}
 	}
@@ -897,17 +877,12 @@ class Commands implements CommandExecutor
 		sender.sendMessage("-- Players ------------------");
 		sender.sendMessage(" ");
 
-		for(Map.Entry<String, HashMap<String, Object>> player : API.data.getAllPlayers().entrySet())
+		for(OfflinePlayer player : DemigodsData.playerData.listTiers())
 		{
-
-			String playerName = player.getKey();
-			HashMap<String, Object> playerData = player.getValue();
-
-			sender.sendMessage(playerName + ": ");
-
-			for(Map.Entry<String, Object> playerDataEntry : playerData.entrySet())
+			sender.sendMessage(player.getName() + ": ");
+			for(String key : DemigodsData.playerData.listKeys(player))
 			{
-				sender.sendMessage("  - " + playerDataEntry.getKey() + ": " + playerDataEntry.getValue());
+				sender.sendMessage("  - " + key.toString() + ": " + DemigodsData.playerData.getDataObject(player, key).toString());
 			}
 		}
 
@@ -915,37 +890,9 @@ class Commands implements CommandExecutor
 		sender.sendMessage("-- Characters ---------------");
 		sender.sendMessage(" ");
 
-		for(Map.Entry<Integer, HashMap<String, Object>> character : API.data.getAllPlayerChars((Player) sender).entrySet())
+		for(PlayerCharacterClass character : CharacterAPI.getAllChars())
 		{
-			int charID = character.getKey();
-			HashMap<String, Object> charData = character.getValue();
-
-			sender.sendMessage(charID + ": ");
-
-			for(Map.Entry<String, Object> charDataEntry : charData.entrySet())
-			{
-				sender.sendMessage("  - " + charDataEntry.getKey() + ": " + charDataEntry.getValue());
-			}
-		}
-		return true;
-	}
-
-	/*
-	 * Command: "viewBlocks"
-	 */
-	private static boolean viewBlocks(CommandSender sender)
-	{
-		for(Map.Entry<String, HashMap<Integer, Object>> block : API.data.getAllBlockData().entrySet())
-		{
-			String blockID = block.getKey();
-			HashMap<Integer, Object> blockData = block.getValue();
-
-			sender.sendMessage(blockID + ": ");
-
-			for(Map.Entry<Integer, Object> blockDataEntry : blockData.entrySet())
-			{
-				sender.sendMessage("  - " + blockDataEntry.getKey() + ": " + blockDataEntry.getValue());
-			}
+			sender.sendMessage(character.getName() + "."); // TODO Warp data and such.
 		}
 		return true;
 	}
@@ -958,14 +905,14 @@ class Commands implements CommandExecutor
 		if(args.length != 1) return false;
 
 		// Define args
-		Player player = (Player) API.player.definePlayer(sender.getName());
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		String charName = args[0];
 
-		if(API.player.hasCharName(player, charName))
+		if(PlayerAPI.hasCharName(player, charName))
 		{
-			PlayerCharacter character = API.character.getCharByName(charName);
+			PlayerCharacterClass character = CharacterAPI.getCharByName(charName);
 			int charID = character.getID();
-			API.data.removeChar(charID);
+			DemigodsData.characterData.removeData(charID);
 
 			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,6 +19,14 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Event.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterSwitchEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
 public class AltarListener implements Listener
 {
@@ -35,21 +44,21 @@ public class AltarListener implements Listener
 		Player player = event.getPlayer();
 
 		// First we check if the player is in an Altar and return if not
-		if(API.block.isAltar(event.getClickedBlock().getLocation()))
+		if(BlockAPI.isAltar(event.getClickedBlock().getLocation()))
 		{
 			// Player is in an altar, let's do this
 			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !API.player.isPraying(player))
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !PlayerAPI.isPraying(player))
 			{
-				if(API.config.getSettingBoolean("use_dynamic_pvp_zones") && API.zone.canTarget(player))
+				if(Demigods.config.getSettingBoolean("use_dynamic_pvp_zones") && ZoneAPI.canTarget(player))
 				{
 					player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
 					player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
 					event.setCancelled(true);
 					return;
 				}
-				API.player.togglePraying(player, true);
+				PlayerAPI.togglePraying(player, true);
 
 				// First we clear chat
 				clearChat(player);
@@ -65,7 +74,7 @@ public class AltarListener implements Listener
 				altarMenu(player);
 
 				// If they are in the process of creating a character we'll just skip them to the confirm screen
-				if(API.data.hasPlayerData(player, "temp_createchar_finalstep") && API.data.getPlayerData(player, "temp_createchar_finalstep").equals(true))
+				if(DemigodsData.tempPlayerData.containsKey(player, "temp_createchar_finalstep") && DemigodsData.tempPlayerData.getDataBool(player, "temp_createchar_finalstep"))
 				{
 					clearChat(player);
 					finalConfirmDeity(player);
@@ -73,12 +82,12 @@ public class AltarListener implements Listener
 
 				event.setCancelled(true);
 			}
-			else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && API.player.isPraying(player))
+			else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && PlayerAPI.isPraying(player))
 			{
-				API.player.togglePraying(player, false);
+				PlayerAPI.togglePraying(player, false);
 
 				// Clear whatever is being worked on in this Pray session
-				API.data.removePlayerData(player, "temp_createchar");
+				DemigodsData.tempPlayerData.removeData(player, "temp_createchar");
 
 				player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 				player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
@@ -95,7 +104,7 @@ public class AltarListener implements Listener
 		Location location = player.getLocation();
 
 		// First we check if the player is in an Altar and currently praying, if not we'll return
-		if(API.zone.zoneAltar(location) != null && API.player.isPraying(player))
+		if(ZoneAPI.zoneAltar(location) != null && PlayerAPI.isPraying(player))
 		{
 			// Cancel their chat
 			event.setCancelled(true);
@@ -107,7 +116,7 @@ public class AltarListener implements Listener
 			if(message.equalsIgnoreCase("x") || message.startsWith("abort") || message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
 			{
 				// Remove now useless data
-				API.data.removePlayerData(player, "temp_createchar");
+				DemigodsData.tempPlayerData.removeData(player, "temp_createchar");
 
 				clearChat(player);
 
@@ -133,17 +142,17 @@ public class AltarListener implements Listener
 			/*
 			 * Character creation sub-steps
 			 */
-			if(API.data.hasPlayerData(player, "temp_createchar"))
+			if(DemigodsData.tempPlayerData.containsKey(player, "temp_createchar"))
 			{
 				// Step 1 of character creation
-				if(API.data.getPlayerData(player, "temp_createchar").equals("choose_name"))
+				if(DemigodsData.tempPlayerData.getDataString(player, "temp_createchar").equals("choose_name"))
 				{
 					confirmName(player, message);
 					return;
 				}
 
 				// Step 2 of character creation
-				if(API.data.getPlayerData(player, "temp_createchar").equals("confirm_name"))
+				if(DemigodsData.tempPlayerData.getDataString(player, "temp_createchar").equals("confirm_name"))
 				{
 					if(message.equalsIgnoreCase("y") || message.contains("yes"))
 					{
@@ -158,14 +167,14 @@ public class AltarListener implements Listener
 				}
 
 				// Step 3 of character creation
-				if(API.data.getPlayerData(player, "temp_createchar").equals("choose_deity"))
+				if(DemigodsData.tempPlayerData.getDataString(player, "temp_createchar").equals("choose_deity"))
 				{
 					confirmDeity(player, message);
 					return;
 				}
 
 				// Step 4 of character creation
-				if(API.data.getPlayerData(player, "temp_createchar").equals("confirm_deity"))
+				if(DemigodsData.tempPlayerData.getDataString(player, "temp_createchar").equals("confirm_deity"))
 				{
 					if(message.equalsIgnoreCase("y") || message.contains("yes"))
 					{
@@ -180,11 +189,11 @@ public class AltarListener implements Listener
 				}
 
 				// Step 5 of character creation
-				if(API.data.getPlayerData(player, "temp_createchar").equals("confirm_all"))
+				if(DemigodsData.tempPlayerData.getDataString(player, "temp_createchar").equals("confirm_all"))
 				{
 					if(message.equalsIgnoreCase("y") || message.contains("yes"))
 					{
-						Inventory ii = API.getServer().createInventory(player, 27, "Place Your Tributes Here");
+						Inventory ii = Bukkit.getServer().createInventory(player, 27, "Place Your Tributes Here");
 						player.openInventory(ii);
 					}
 					else
@@ -211,7 +220,7 @@ public class AltarListener implements Listener
 			// View Warps
 			else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 			{
-				if(API.player.getCurrentChar(player) == null) return;
+				if(PlayerAPI.getCurrentChar(player) == null) return;
 
 				clearChat(player);
 
@@ -223,7 +232,7 @@ public class AltarListener implements Listener
 			// View Characters
 			else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 			{
-				if(API.player.getCurrentChar(player) == null || !API.warp.hasInvites(API.player.getCurrentChar(player))) return;
+				if(PlayerAPI.getCurrentChar(player) == null || !WarpAPI.hasInvites(PlayerAPI.getCurrentChar(player))) return;
 
 				clearChat(player);
 
@@ -238,7 +247,7 @@ public class AltarListener implements Listener
 
 				// Define variables
 				String charName = message.replace(" info", "").trim();
-				PlayerCharacter character = API.character.getCharByName(charName);
+				PlayerCharacterClass character = CharacterAPI.getCharByName(charName);
 
 				viewChar(player, character);
 			}
@@ -303,7 +312,7 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
 
-		if(API.data.hasPlayerData(player, "temp_createchar"))
+		if(DemigodsData.tempPlayerData.containsKey(player, "temp_createchar"))
 		{
 			player.sendMessage(ChatColor.GRAY + "   [X.] " + ChatColor.RED + "Abort Character Creation");
 		}
@@ -311,10 +320,10 @@ public class AltarListener implements Listener
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		if(API.player.getCurrentChar(player) != null)
+		if(PlayerAPI.getCurrentChar(player) != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
-			if(API.warp.hasInvites(API.player.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
+			if(WarpAPI.hasInvites(PlayerAPI.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 			player.sendMessage(" ");
 			player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
 		}
@@ -325,7 +334,7 @@ public class AltarListener implements Listener
 	// View characters
 	private void viewChars(Player player)
 	{
-		List<Integer> chars = API.player.getChars(player);
+		List<PlayerCharacterClass> chars = PlayerAPI.getChars(player);
 		if(chars.isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no characters. Why not go make one?");
@@ -337,21 +346,19 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "  Light purple " + ChatColor.GRAY + "represents your current character.");
 		player.sendMessage(" ");
 
-		for(Integer charID : chars)
+		for(PlayerCharacterClass character : chars)
 		{
-			PlayerCharacter character = API.character.getChar(charID);
 			String color = "";
 			String name = character.getName();
-			String deity = character.getDeity();
+			String deity = character.getClassName();
 			int favor = character.getFavor();
 			int maxFavor = character.getMaxFavor();
 			ChatColor favorColor = character.getFavorColor();
-			int devotion = character.getDevotion();
 			int ascensions = character.getAscensions();
 
 			if(character.isActive()) color = ChatColor.LIGHT_PURPLE + "";
 
-			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + API.deity.getDeityColor(deity) + deity + ChatColor.GRAY + " / Fav: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
+			player.sendMessage(ChatColor.GRAY + "  " + ChatColor.GRAY + color + name + ChatColor.GRAY + " [" + DeityAPI.getDeityColor(deity) + deity + ChatColor.GRAY + " / Fav: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + ascensions + ChatColor.GRAY + "]");
 		}
 
 		player.sendMessage(" ");
@@ -366,7 +373,7 @@ public class AltarListener implements Listener
 	// View warps
 	private void viewWarps(Player player)
 	{
-		if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
+		if(WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)) == null || WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)).isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
 			player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " name warp <warp name>" + ChatColor.GRAY + " to name a warp here.");
@@ -378,17 +385,17 @@ public class AltarListener implements Listener
 		player.sendMessage(" ");
 		boolean hasWarp = false;
 
-		for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+		for(TrackedLocation warp : WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)))
 		{
 			Location playerLocation = player.getLocation();
 			String color = "";
 			String name = warp.getName();
-			int X = (int) warp.unserialize().getX();
-			int Y = (int) warp.unserialize().getY();
-			int Z = (int) warp.unserialize().getZ();
-			String world = warp.unserialize().getWorld().getName().toUpperCase();
+			int X = (int) warp.toLocation().getX();
+			int Y = (int) warp.toLocation().getY();
+			int Z = (int) warp.toLocation().getZ();
+			String world = warp.toLocation().getWorld().getName().toUpperCase();
 
-			if(API.zone.zoneAltar(warp.unserialize()) == API.zone.zoneAltar(player.getLocation()))
+			if(ZoneAPI.zoneAltar(warp.toLocation()) == ZoneAPI.zoneAltar(player.getLocation()))
 			{
 				color = ChatColor.LIGHT_PURPLE + "";
 				hasWarp = true;
@@ -408,7 +415,7 @@ public class AltarListener implements Listener
 	// View warps
 	private void viewInvites(Player player)
 	{
-		for(SerialLocation invite : API.warp.getInvites(API.player.getCurrentChar(player)))
+		for(TrackedLocation invite : WarpAPI.getInvites(PlayerAPI.getCurrentChar(player)))
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getName());
 		}
@@ -420,18 +427,17 @@ public class AltarListener implements Listener
 	}
 
 	// View character
-	private void viewChar(Player player, PlayerCharacter character)
+	private void viewChar(Player player, PlayerCharacterClass character)
 	{
 		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
 		player.sendMessage(" ");
 
 		String currentCharMsg = ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 		String name = character.getName();
-		String deity = character.getDeity();
-		ChatColor deityColor = API.deity.getDeityColor(deity);
-		String alliance = character.getAlliance();
+		String deity = character.getClassName();
+		ChatColor deityColor = DeityAPI.getDeityColor(deity);
+		String alliance = character.getTeam();
 		int hp = character.getHealth();
-		int maxHP = character.getMaxHealth();
 		ChatColor hpColor = character.getHealthColor();
 		int exp = Math.round(character.getExp());
 		int favor = character.getFavor();
@@ -445,7 +451,7 @@ public class AltarListener implements Listener
 
 		player.sendMessage("    " + currentCharMsg + ChatColor.YELLOW + name + ChatColor.GRAY + " > Allied to " + deityColor + deity + ChatColor.GRAY + " of the " + ChatColor.GOLD + alliance + "s");
 		player.sendMessage(ChatColor.GRAY + "  --------------------------------------------------");
-		player.sendMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + hpColor + hp + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxHP + ChatColor.GRAY + ")");
+		player.sendMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + hpColor + hp + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")");
 		player.sendMessage(ChatColor.GRAY + "    Experience: " + ChatColor.WHITE + exp);
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + ascensions);
@@ -457,26 +463,26 @@ public class AltarListener implements Listener
 
 	private void switchChar(Player player, String charName)
 	{
-		PlayerCharacter newChar = API.character.getCharByName(charName);
+		PlayerCharacterClass newChar = CharacterAPI.getCharByName(charName);
 
 		if(newChar != null)
 		{
-			CharacterSwitchEvent event = new CharacterSwitchEvent(player, API.player.getCurrentChar(player), newChar);
-			API.misc.callEvent(event);
+			CharacterSwitchEvent event = new CharacterSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
+			Bukkit.getServer().getPluginManager().callEvent(event);
 
 			if(!event.isCancelled())
 			{
-				API.player.changeCurrentChar(player, newChar.getID());
+				PlayerAPI.changeCurrentChar(player, newChar.getID());
 
-				player.setDisplayName(API.deity.getDeityColor(newChar.getDeity()) + newChar.getName() + ChatColor.WHITE);
-				player.setPlayerListName(API.deity.getDeityColor(newChar.getDeity()) + newChar.getName() + ChatColor.WHITE);
+				player.setDisplayName(DeityAPI.getDeityColor(newChar.getClassName()) + newChar.getName() + ChatColor.WHITE);
+				player.setPlayerListName(DeityAPI.getDeityColor(newChar.getClassName()) + newChar.getName() + ChatColor.WHITE);
 
 				// Save their previous character and chat number for later monitoring
-				API.data.savePlayerData(player, "previous_char", event.getCharacterFrom().getID());
-				API.data.savePlayerData(player, "temp_chat_number", 0);
+				DemigodsData.playerData.saveData(player, "previous_char", event.getCharacterFrom().getID());
+				DemigodsData.playerData.saveData(player, "temp_chat_number", 0);
 
 				// Disable prayer
-				API.player.togglePraying(player, false);
+				PlayerAPI.togglePraying(player, false);
 				player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 				player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 			}
@@ -485,14 +491,14 @@ public class AltarListener implements Listener
 		{
 			player.sendMessage(ChatColor.RED + "Your current character couldn't be changed...");
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
-			API.player.togglePraying(player, false);
+			PlayerAPI.togglePraying(player, false);
 		}
 	}
 
 	// Choose name
 	private void chooseName(Player player)
 	{
-		API.data.savePlayerData(player, "temp_createchar", "choose_name");
+		DemigodsData.playerData.saveData(player, "temp_createchar", "choose_name");
 		player.sendMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 		player.sendMessage(" ");
 	}
@@ -500,25 +506,25 @@ public class AltarListener implements Listener
 	// Name confirmation
 	private void confirmName(Player player, String message)
 	{
-		int maxCaps = API.config.getSettingInt("character.max_caps_in_name");
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || API.player.hasCharName(player, message) || API.object.hasCapitalLetters(message, maxCaps))
+		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || PlayerAPI.hasCharName(player, message) || DemigodsData.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
-			API.data.savePlayerData(player, "temp_createchar", "choose_name");
+			DemigodsData.playerData.saveData(player, "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
-			if(API.player.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
+			if(PlayerAPI.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
-			if(API.object.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
+			if(DemigodsData.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 			player.sendMessage(" ");
 		}
 		else
 		{
-			API.data.savePlayerData(player, "temp_createchar", "confirm_name");
+			DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_name");
 			String chosenName = message.replace(" ", "");
 			player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 			player.sendMessage(" ");
-			API.data.savePlayerData(player, "temp_createchar_name", chosenName);
+			DemigodsData.playerData.saveData(player, "temp_createchar_name", chosenName);
 		}
 	}
 
@@ -526,32 +532,32 @@ public class AltarListener implements Listener
 	private void chooseDeity(Player player)
 	{
 		player.sendMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
-		for(String alliance : API.deity.getLoadedDeityAlliances())
+		for(String alliance : DeityAPI.getLoadedDeityAlliances())
 		{
-			for(String deity : API.deity.getAllDeitiesInAlliance(alliance))
-				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + API.object.capitalize(deity) + ChatColor.GRAY + " (" + alliance + ")");
+			for(String deity : DeityAPI.getAllDeitiesInAlliance(alliance))
+				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DemigodsData.capitalize(deity) + ChatColor.GRAY + " (" + alliance + ")");
 		}
 		player.sendMessage(" ");
 
-		API.data.savePlayerData(player, "temp_createchar", "choose_deity");
+		DemigodsData.playerData.saveData(player, "temp_createchar", "choose_deity");
 	}
 
 	// Deity confirmation
 	private void confirmDeity(Player player, String message)
 	{
 		// Check their chosen Deity
-		for(String alliance : API.deity.getLoadedDeityAlliances())
+		for(String alliance : DeityAPI.getLoadedDeityAlliances())
 		{
-			for(String deity : API.deity.getAllDeitiesInAlliance(alliance))
+			for(String deity : DeityAPI.getAllDeitiesInAlliance(alliance))
 			{
 				if(message.equalsIgnoreCase(deity))
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + API.object.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					API.data.savePlayerData(player, "temp_createchar_deity", chosenDeity);
-					API.data.savePlayerData(player, "temp_createchar", "confirm_deity");
+					DemigodsData.playerData.saveData(player, "temp_createchar_deity", chosenDeity);
+					DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_deity");
 					return;
 				}
 			}
@@ -571,13 +577,13 @@ public class AltarListener implements Listener
 	private void deityConfirmed(Player player)
 	{
 		// Define variables
-		String chosenDeity = (String) API.data.getPlayerData(player, "temp_createchar_deity");
+		String chosenDeity = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_deity");
 
 		// They accepted the Deity choice, now ask them to input their items so they can be accepted
-		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + API.object.capitalize(chosenDeity) + ChatColor.AQUA + ",");
+		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 		player.sendMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 		player.sendMessage(" ");
-		for(Material item : (ArrayList<Material>) API.data.getPluginData("temp_deity_claim_items", chosenDeity))
+		for(Material item : (ArrayList<Material>) DemigodsData.deityClaimItems.getDataObject(chosenDeity))
 		{
 			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
 		}
@@ -586,7 +592,7 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + "  confirm your new character.");
 		player.sendMessage(" ");
 
-		API.data.savePlayerData(player, "temp_createchar_finalstep", true);
+		DemigodsData.playerData.saveData(player, "temp_createchar_finalstep", true);
 	}
 
 	// Final confirmation of deity
@@ -594,18 +600,18 @@ public class AltarListener implements Listener
 	private void finalConfirmDeity(Player player)
 	{
 		// Define variables
-		String chosenDeity = (String) API.data.getPlayerData(player, "temp_createchar_deity");
+		String chosenDeity = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_deity");
 
 		// Save data
-		API.data.savePlayerData(player, "temp_createchar_finalstep", true);
-		API.data.savePlayerData(player, "temp_createchar", "confirm_all");
+		DemigodsData.playerData.saveData(player, "temp_createchar_finalstep", true);
+		DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_all");
 
 		// Send them the chat
 		player.sendMessage(ChatColor.GREEN + " -> Confirming Character -------------------------------");
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 		player.sendMessage(" ");
-		for(Material item : (ArrayList<Material>) API.data.getPluginData("temp_deity_claim_items", chosenDeity))
+		for(Material item : (ArrayList<Material>) DemigodsData.deityClaimItems.getDataObject(chosenDeity))
 		{
 			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
 		}
@@ -625,26 +631,26 @@ public class AltarListener implements Listener
 			if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 			// Exit if this isn't for character creation
-			if(!API.player.isPraying(player) || !API.data.hasPlayerData(player, "temp_createchar_finalstep") || API.data.getPlayerData(player, "temp_createchar_finalstep").equals(false))
+			if(!PlayerAPI.isPraying(player) || !DemigodsData.tempPlayerData.containsKey(player, "temp_createchar_finalstep") || !DemigodsData.tempPlayerData.getDataBool(player, "temp_createchar_finalstep"))
 			{
-				player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately.");
+				player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately."); // TODO It should be more clear that this is a Demigods related error.
 				return;
 			}
 
 			// Define variables
-			String chosenName = (String) API.data.getPlayerData(player, "temp_createchar_name");
-			String chosenDeity = (String) API.data.getPlayerData(player, "temp_createchar_deity");
-			String deityAlliance = API.object.capitalize(API.deity.getDeityAlliance(chosenDeity));
+			String chosenName = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_name");
+			String chosenDeity = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_deity");
+			String deityAlliance = DemigodsData.capitalize(DeityAPI.getDeityAlliance(chosenDeity));
 
 			// Check the chest items
 			int items = 0;
-			int neededItems = ((ArrayList<Material>) API.data.getPluginData("temp_deity_claim_items", chosenDeity)).size();
+			int neededItems = ((ArrayList<Material>) DemigodsData.deityClaimItems.getDataObject(chosenDeity)).size();
 
 			for(ItemStack ii : event.getInventory().getContents())
 			{
 				if(ii != null)
 				{
-					for(Material item : (ArrayList<Material>) API.data.getPluginData("temp_deity_claim_items", chosenDeity))
+					for(Material item : (ArrayList<Material>) DemigodsData.deityClaimItems.getDataObject(chosenDeity))
 					{
 						if(ii.getType().equals(item))
 						{
@@ -659,15 +665,15 @@ public class AltarListener implements Listener
 			{
 				// They were accepted, finish everything up!
 				CharacterCreateEvent characterEvent = new CharacterCreateEvent(player, chosenName, chosenDeity);
-				API.getServer().getPluginManager().callEvent(characterEvent);
+				Bukkit.getServer().getPluginManager().callEvent(characterEvent);
 
 				// Stop their praying, enable movement, enable chat
-				API.player.togglePraying(player, false);
+				PlayerAPI.togglePraying(player, false);
 
 				// Remove old data now
-				API.data.removePlayerData(player, "temp_createchar_finalstep");
-				API.data.removePlayerData(player, "temp_createchar_name");
-				API.data.removePlayerData(player, "temp_createchar_deity");
+				DemigodsData.tempPlayerData.removeData(player, "temp_createchar_finalstep");
+				DemigodsData.tempPlayerData.removeData(player, "temp_createchar_name");
+				DemigodsData.tempPlayerData.removeData(player, "temp_createchar_deity");
 			}
 			else
 			{
@@ -697,16 +703,16 @@ public class AltarListener implements Listener
 
 	private void nameAltar(Player player, String name)
 	{
-		if(API.warp.getWarps(API.player.getCurrentChar(player)) == null || API.warp.getWarps(API.player.getCurrentChar(player)).isEmpty())
+		if(WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)) == null || WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)).isEmpty())
 		{
 			// Save named TrackedLocation for warp.
-			API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
+			DemigodsData.warpData.saveData(PlayerAPI.getCurrentChar(player).getID(), new TrackedLocation(player.getLocation(), name));
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
 
 		// Check for same names
-		for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+		for(TrackedLocation warp : WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)))
 		{
 			if(warp.getName().equalsIgnoreCase(name))
 			{
@@ -716,23 +722,23 @@ public class AltarListener implements Listener
 		}
 
 		// Check for same altars
-		for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+		for(TrackedLocation warp : WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)))
 		{
-			if(API.zone.zoneAltar(warp.unserialize()) == API.zone.zoneAltar(player.getLocation()))
+			if(ZoneAPI.zoneAltar(warp.toLocation()) == ZoneAPI.zoneAltar(player.getLocation()))
 			{
-				API.data.removeWarpData(API.player.getCurrentChar(player), warp);
+				DemigodsData.warpData.removeData(PlayerAPI.getCurrentChar(player).getID());
 			}
 		}
 
 		// Save named TrackedLocation for warp.
-		API.data.saveWarpData(API.player.getCurrentChar(player), new SerialLocation(player.getLocation(), name));
+		DemigodsData.warpData.saveData(PlayerAPI.getCurrentChar(player).getID(), new TrackedLocation(player.getLocation(), name));
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
 	private void inviteWarp(Player player, String name)
 	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
-		PlayerCharacter invited = API.character.getCharByName(name);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacterClass invited = CharacterAPI.getCharByName(name);
 
 		if(character == null) return;
 		else if(invited == null)
@@ -744,42 +750,42 @@ public class AltarListener implements Listener
 		else if(!invited.getOwner().isOnline() || invited.getOwner() == character.getOwner())
 		{
 			player.sendMessage(" ");
-			player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
+			player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
 			return;
 		}
-		else if(!character.getAlliance().equalsIgnoreCase(invited.getAlliance()))
+		else if(!character.getTeam().equalsIgnoreCase(invited.getTeam()))
 		{
 			player.sendMessage(" ");
-			player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");
+			player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");
 			return;
 		}
 
-		if(API.warp.alreadyInvited(character, invited)) API.warp.removeInvite(character, API.warp.getInvite(character, invited));
+		if(WarpAPI.alreadyInvited(character, invited)) WarpAPI.removeInvite(character, WarpAPI.getInvite(character, invited));
 
-		API.warp.addInvite(character, invited);
-		API.player.togglePraying(player, false);
+		WarpAPI.addInvite(character, invited);
+		PlayerAPI.togglePraying(player, false);
 		clearChat(player);
 
-		player.sendMessage(API.deity.getDeityColor(invited.getDeity()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
-		invited.getOwner().getPlayer().sendMessage(API.deity.getDeityColor(character.getDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
+		player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
+		invited.getOwner().getPlayer().sendMessage(DeityAPI.getDeityColor(character.getClassName()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
 		invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
 	}
 
 	private void acceptInvite(Player player, String name)
 	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
-		SerialLocation invite = API.warp.getInvite(character, name);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		TrackedLocation invite = WarpAPI.getInvite(character, name);
 
 		if(invite != null)
 		{
-			API.player.togglePraying(player, false);
+			PlayerAPI.togglePraying(player, false);
 			clearChat(player);
 
-			player.teleport(invite.unserialize());
+			player.teleport(invite.toLocation());
 
 			player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + invite.getName().toUpperCase() + ChatColor.GRAY + " complete.");
 
-			API.warp.removeInvite(character, invite);
+			WarpAPI.removeInvite(character, invite);
 			return;
 		}
 		player.sendMessage(ChatColor.GRAY + "No invite by that name exists, try again.");
@@ -787,14 +793,14 @@ public class AltarListener implements Listener
 
 	private void warpChar(Player player, String warpName)
 	{
-		for(SerialLocation warp : API.warp.getWarps(API.player.getCurrentChar(player)))
+		for(TrackedLocation warp : WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)))
 		{
 			if(warp.getName().equals(warpName.toUpperCase()))
 			{
-				API.player.togglePraying(player, false);
+				PlayerAPI.togglePraying(player, false);
 				clearChat(player);
 
-				player.teleport(warp.unserialize());
+				player.teleport(warp.toLocation());
 
 				player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + warpName.toUpperCase() + ChatColor.GRAY + " complete.");
 				return;

@@ -99,10 +99,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterCreateEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Events.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterKillstreakEvent;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 
 public class DCharacterListener implements Listener

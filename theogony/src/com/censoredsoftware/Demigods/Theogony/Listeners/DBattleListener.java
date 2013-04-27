@@ -98,10 +98,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleEndEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Events.Battle.BattleStartEvent;
+import com.censoredsoftware.Demigods.Event.Battle.BattleCombineEvent;
+import com.censoredsoftware.Demigods.Event.Battle.BattleEndEvent;
+import com.censoredsoftware.Demigods.Event.Battle.BattleParticipateEvent;
+import com.censoredsoftware.Demigods.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Objects.Battle;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 import com.censoredsoftware.Demigods.Theogony.Theogony;

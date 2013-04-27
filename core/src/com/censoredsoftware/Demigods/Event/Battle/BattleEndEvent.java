@@ -88,55 +88,39 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Character;
+package com.censoredsoftware.Demigods.Event.Battle;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-
-/*
- * Represents an event that is called when a player switched characters.
- */
-public class CharacterSwitchEvent extends Event implements Cancellable
+public class BattleEndEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private OfflinePlayer player;
-	private PlayerCharacter toCharacter;
-	private PlayerCharacter fromCharacter;
+	private int battleID;
+	private Long endTime;
 	private boolean cancelled = false;
 
-	public CharacterSwitchEvent(final OfflinePlayer player, final PlayerCharacter fromCharacter, final PlayerCharacter toCharacter)
+	public BattleEndEvent(final int battleID, final Long endTime)
 	{
-		this.player = player;
-		this.toCharacter = toCharacter;
-		this.fromCharacter = fromCharacter;
+		this.battleID = battleID;
+		this.endTime = endTime;
 	}
 
 	/*
-	 * getOwner() : Gets the player.
+	 * getID() : Gets the battleID.
 	 */
-	public OfflinePlayer getOwner()
+	public int getID()
 	{
-		return this.player;
+		return this.battleID;
 	}
 
 	/*
-	 * getCharacterTo() : Gets the character being switched to.
+	 * getEndTime() : Gets the end time.
 	 */
-	public PlayerCharacter getCharacterTo()
+	public Long getEndTime()
 	{
-		return this.toCharacter;
-	}
-
-	/*
-	 * getCharacterTo() : Gets the character being switched to.
-	 */
-	public PlayerCharacter getCharacterFrom()
-	{
-		return this.fromCharacter;
+		return this.endTime;
 	}
 
 	@Override

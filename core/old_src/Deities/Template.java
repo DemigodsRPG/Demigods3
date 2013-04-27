@@ -104,7 +104,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 import com.google.common.base.Joiner;
 

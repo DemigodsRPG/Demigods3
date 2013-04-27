@@ -97,13 +97,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
-import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent.AltarRemoveCause;
+import com.censoredsoftware.Demigods.Event.Misc.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Event.Shrine.ShrineCreateEvent;
+import com.censoredsoftware.Demigods.Event.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 
 public class DDebugListener implements Listener

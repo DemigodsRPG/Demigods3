@@ -88,43 +88,50 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Altar;
+package com.censoredsoftware.Demigods.Event.Battle;
 
-import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-/*
- * Represents an event that is called when an Altar is created.
- */
-public class AltarRemoveEvent extends Event implements Cancellable
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+
+public class BattleParticipateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private Location block;
-	private AltarRemoveCause cause;
+	private int battleID;
+	private PlayerCharacter defending;
+	private PlayerCharacter attacking;
 	private boolean cancelled = false;
 
-	public AltarRemoveEvent(final Location block, final AltarRemoveCause cause)
+	public BattleParticipateEvent(final int battleID, final PlayerCharacter defending, final PlayerCharacter attacking)
 	{
-		this.block = block;
-		this.cause = cause;
+		this.defending = defending;
+		this.attacking = attacking;
 	}
 
 	/*
-	 * getLocation() : Gets the Altar's location.
+	 * getDefending() : Gets the character defending.
 	 */
-	public Location getLocation()
+	public PlayerCharacter getDefending()
 	{
-		return this.block;
+		return this.defending;
 	}
 
 	/*
-	 * getCause() : Gets the Altar's creation cause;
+	 * getAttacking() : Gets the that started the battle.
 	 */
-	public AltarRemoveCause getCause()
+	public PlayerCharacter getAttacking()
 	{
-		return this.cause;
+		return this.attacking;
+	}
+
+	/*
+	 * getBattleID() : Gets the battleID.
+	 */
+	public int getBattleID()
+	{
+		return this.battleID;
 	}
 
 	@Override
@@ -138,11 +145,6 @@ public class AltarRemoveEvent extends Event implements Cancellable
 		return handlers;
 	}
 
-	public enum AltarRemoveCause
-	{
-		ADMIN_WAND,
-	}
-
 	@Override
 	public boolean isCancelled()
 	{
@@ -150,7 +152,7 @@ public class AltarRemoveEvent extends Event implements Cancellable
 	}
 
 	@Override
-	public synchronized void setCancelled(boolean cancelled)
+	public void setCancelled(boolean cancelled)
 	{
 		this.cancelled = cancelled;
 	}

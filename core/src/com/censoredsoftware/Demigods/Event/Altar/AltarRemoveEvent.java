@@ -88,33 +88,43 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Character;
+package com.censoredsoftware.Demigods.Event.Altar;
 
+import org.bukkit.Location;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-
 /*
- * Represents an event that is called when a player is killed by another player.
+ * Represents an event that is called when an Altar is created.
  */
-public class CharacterBetrayCharacterEvent extends CharacterKillCharacterEvent
+public class AltarRemoveEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacter killedChar;
-	private String alliance;
+	private Location block;
+	private AltarRemoveCause cause;
+	private boolean cancelled = false;
 
-	public CharacterBetrayCharacterEvent(final PlayerCharacter attacker, final PlayerCharacter killedChar, final String alliance)
+	public AltarRemoveEvent(final Location block, final AltarRemoveCause cause)
 	{
-		super(attacker, killedChar);
-		this.alliance = alliance;
+		this.block = block;
+		this.cause = cause;
 	}
 
 	/*
-	 * getAlliance() : Gets the alliance involved.
+	 * getLocation() : Gets the Altar's location.
 	 */
-	public String getAlliance()
+	public Location getLocation()
 	{
-		return this.alliance;
+		return this.block;
+	}
+
+	/*
+	 * getCause() : Gets the Altar's creation cause;
+	 */
+	public AltarRemoveCause getCause()
+	{
+		return this.cause;
 	}
 
 	@Override
@@ -126,5 +136,22 @@ public class CharacterBetrayCharacterEvent extends CharacterKillCharacterEvent
 	public static HandlerList getHandlerList()
 	{
 		return handlers;
+	}
+
+	public enum AltarRemoveCause
+	{
+		ADMIN_WAND,
+	}
+
+	@Override
+	public boolean isCancelled()
+	{
+		return this.cancelled;
+	}
+
+	@Override
+	public synchronized void setCancelled(boolean cancelled)
+	{
+		this.cancelled = cancelled;
 	}
 }

@@ -110,10 +110,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.censoredsoftware.Demigods.Definitions.Database.DFlatFile;
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarRemoveEvent.AltarRemoveCause;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent.AltarRemoveCause;
 import com.censoredsoftware.Demigods.Objects.Altar;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 import com.censoredsoftware.Demigods.Objects.Shrine;

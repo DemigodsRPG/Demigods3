@@ -88,52 +88,42 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Events.Character;
+package com.censoredsoftware.Demigods.Event.Character;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 /*
- * Represents an event that is called when a character is on a killstreak.
+ * Represents an event that is called when a character is dominating another character.
  */
-public class CharacterKillstreakEvent extends Event
+public class CharacterDominateCharacterEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacter character;
-	private PlayerCharacter lastKilled;
-	private int kills;
+	private PlayerCharacterClass character;
+	private PlayerCharacterClass dominated;
 
-	public CharacterKillstreakEvent(final PlayerCharacter character, final PlayerCharacter lastKilled, final int kills)
+	public CharacterDominateCharacterEvent(final PlayerCharacterClass character, final PlayerCharacterClass dominated)
 	{
 		this.character = character;
-		this.lastKilled = lastKilled;
-		this.kills = kills;
+		this.dominated = dominated;
 	}
 
 	/*
 	 * getCharacter() : Gets the character.
 	 */
-	public PlayerCharacter getCharacter()
+	public PlayerCharacterClass getCharacter()
 	{
 		return this.character;
 	}
 
 	/*
-	 * getLastKilled() : Gets the character that was last killed by the character.
+	 * getDominated() : Gets the character that was dominated by the character.
 	 */
-	public PlayerCharacter getLastKilled()
+	public PlayerCharacterClass getDominated()
 	{
-		return this.lastKilled;
-	}
-
-	/*
-	 * getKills() : Gets number of kills in this killstreak.
-	 */
-	public int getKills()
-	{
-		return this.kills;
+		return this.dominated;
 	}
 
 	@Override

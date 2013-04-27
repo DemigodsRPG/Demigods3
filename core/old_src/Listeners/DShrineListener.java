@@ -107,8 +107,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Definitions.Database.DFlatFile;
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineCreateEvent;
-import com.censoredsoftware.Demigods.Events.Shrine.ShrineRemoveEvent;
+import com.censoredsoftware.Demigods.Event.Shrine.ShrineCreateEvent;
+import com.censoredsoftware.Demigods.Event.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
 import com.censoredsoftware.Demigods.Objects.Shrine;
 

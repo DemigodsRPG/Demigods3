@@ -105,9 +105,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Definitions.SpecialItems;
 import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent;
-import com.censoredsoftware.Demigods.Events.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Events.Misc.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Event.Misc.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Objects.Altar;
 
 public class DChunkListener implements Listener
