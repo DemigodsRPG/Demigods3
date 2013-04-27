@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
@@ -101,5 +103,23 @@ public class ConfigModule
 	{
 		if(plugin.getConfig().isDouble(id)) return plugin.getConfig().getDouble(id);
 		else return -1;
+	}
+
+	/**
+	 * Retrieve the List<String> setting for String <code>id</code>.
+	 * 
+	 * @param id The String key for the setting.
+	 * @return List<String> setting.
+	 */
+	public List<String> getSettingArrayListString(String id)
+	{
+		List<String> strings = new ArrayList<String>();
+		if(plugin.getConfig().isList(id))
+		{
+			for(String s : plugin.getConfig().getStringList(id))
+				strings.add(s);
+			return strings;
+		}
+		else return null;
 	}
 }

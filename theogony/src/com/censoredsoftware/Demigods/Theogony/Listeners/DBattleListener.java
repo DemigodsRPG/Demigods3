@@ -113,7 +113,7 @@ public class DBattleListener implements Listener
 
 	/*
 	 * --------------------------------------------
-	 * Handle Battle Custom Events
+	 * Handle TrackedBattle Custom Events
 	 * --------------------------------------------
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)

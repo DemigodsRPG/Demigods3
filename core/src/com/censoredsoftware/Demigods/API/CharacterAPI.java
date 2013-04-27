@@ -75,19 +75,14 @@ public class CharacterAPI
 		return active;
 	}
 
-	/*
-	 * getOwner() : Returns the (OfflinePlayer)player who owns (int)charID.
-	 */
-	public OfflinePlayer getOwner(int charID)
+	public static OfflinePlayer getOwner(int charID)
 	{
 		return getChar(charID).getOwner();
 	}
 
 	// TODO Move this.
-	/*
-	 * isCooledDown() : Checks if the passed in ability has cooled down or not.
-	 */
-	public boolean isCooledDown(Player player, String ability, long ability_time, boolean sendMsg)
+
+	public static boolean isCooledDown(Player player, String ability, long ability_time, boolean sendMsg)
 	{
 		if(ability_time > System.currentTimeMillis())
 		{
@@ -102,7 +97,7 @@ public class CharacterAPI
 	/*
 	 * getDeityList() : Gets list of characters in aligned to a Deity.
 	 */
-	public ArrayList<PlayerCharacterClass> getDeityList(String deity)
+	public static ArrayList<PlayerCharacterClass> getDeityList(String deity)
 	{
 		// Define variables
 		ArrayList<PlayerCharacterClass> deityList = new ArrayList<PlayerCharacterClass>();
@@ -116,7 +111,7 @@ public class CharacterAPI
 	/*
 	 * getActiveDeityList() : Gets list of active characters in aligned to a Deity.
 	 */
-	public ArrayList<PlayerCharacterClass> getActiveDeityList(String deity)
+	public static ArrayList<PlayerCharacterClass> getActiveDeityList(String deity)
 	{
 		// Define variables
 		ArrayList<PlayerCharacterClass> deityList = new ArrayList<PlayerCharacterClass>();
@@ -130,7 +125,7 @@ public class CharacterAPI
 	/*
 	 * getAllianceList() : Gets list of characters in an alliance.
 	 */
-	public ArrayList<PlayerCharacterClass> getAllianceList(String alliance)
+	public static ArrayList<PlayerCharacterClass> getAllianceList(String alliance)
 	{
 		// Define variables
 		ArrayList<PlayerCharacterClass> allianceList = new ArrayList<PlayerCharacterClass>();
@@ -144,7 +139,7 @@ public class CharacterAPI
 	/*
 	 * getActiveAllianceList() : Gets list of active characters in an alliance.
 	 */
-	public ArrayList<PlayerCharacterClass> getActiveAllianceList(String alliance)
+	public static ArrayList<PlayerCharacterClass> getActiveAllianceList(String alliance)
 	{
 		// Define variables
 		ArrayList<PlayerCharacterClass> allianceList = new ArrayList<PlayerCharacterClass>();
@@ -158,7 +153,7 @@ public class CharacterAPI
 	/*
 	 * getImmortalList() : Gets list of currently immortal players.
 	 */
-	public ArrayList<PlayerCharacterClass> getImmortalList()
+	public static ArrayList<PlayerCharacterClass> getImmortalList()
 	{
 		// Define variables
 		ArrayList<PlayerCharacterClass> immortalList = new ArrayList<PlayerCharacterClass>();

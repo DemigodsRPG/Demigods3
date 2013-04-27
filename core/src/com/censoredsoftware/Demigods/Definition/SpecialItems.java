@@ -7,6 +7,8 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.Demigods.API.ItemAPI;
+
 public class SpecialItems
 {
 	/*
@@ -23,13 +25,13 @@ public class SpecialItems
 		pages.clear();
 		pages.add("Whoa... you found my book! Please be careful with it. It can be pretty powerful!");
 		pages.add("Shh!");
-		items.put(25.0, API.item.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", pages, null));
+		items.put(25.0, ItemAPI.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", pages, null));
 
 		// A Terrible Joke Book
 		pages.clear();
 		pages.add("I want to die peacefully in my sleep, like my grandfather... Not screaming and yelling like the passengers in his car.");
 		pages.add("hehehhe");
-		items.put(100.0, API.item.createBook(ChatColor.GREEN + "Joke Book #1", "A Terrible Comedian", pages, null));
+		items.put(100.0, ItemAPI.createBook(ChatColor.GREEN + "Joke Book #1", "A Terrible Comedian", pages, null));
 
 		// Hidden Allure
 		pages.clear();
@@ -41,7 +43,7 @@ public class SpecialItems
 			pages.add("...");
 		}
 
-		items.put(75.0, API.item.createBook(ChatColor.BLACK + "Allure of Fate", "The Watcher", pages, null));
+		items.put(75.0, ItemAPI.createBook(ChatColor.BLACK + "Allure of Fate", "The Watcher", pages, null));
 
 		return items;
 	}

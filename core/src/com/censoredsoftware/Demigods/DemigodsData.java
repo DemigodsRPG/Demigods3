@@ -7,8 +7,6 @@ import com.censoredsoftware.Modules.DataPersistence.ObjectDataModule;
 import com.censoredsoftware.Modules.DataPersistence.StringDataModule;
 import com.censoredsoftware.Modules.DataPersistence.TieredPlayerDataModule;
 
-// TODO A lot of this file will become obsolete as I decentralize the data.
-
 public class DemigodsData
 {
 	// Non-Persistent Public StringDataModules
@@ -32,11 +30,10 @@ public class DemigodsData
 	public static IntegerDataModule altarData;
 	public static IntegerDataModule shrineData;
 
-	// TODO These.
-	static ObjectDataModule timedData;
-	static IntegerDataModule battleData;
+	// Battle Data
+	public static IntegerDataModule battleData;
 
-	// TODO These.
+	static ObjectDataModule timedData; // TODO Timed data...
 
 	DemigodsData(DemigodsPlugin instance)
 	{
@@ -122,6 +119,11 @@ public class DemigodsData
 			sb.append(c);
 		}
 		return Integer.parseInt(sb.toString());
+	}
+
+	public static int generateIntRange(int min, int max)
+	{
+		return new Random().nextInt(max - min + 1) + min;
 	}
 
 	public static String capitalize(String input)

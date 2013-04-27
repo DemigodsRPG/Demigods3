@@ -1,21 +1,20 @@
 package com.censoredsoftware.Demigods.Deity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 public interface Deity
 {
-	public ArrayList<Material> getClaimItems();
+	public List<Material> getClaimItems();
 
-	public ArrayList<String> getInfo(Player player);
+	public List<String> getInfo(Player player);
 
-	public String loadDeity(Plugin plugin);
+	public String loadDeity();
 
-	public ArrayList<String> getCommands();
+	public List<String> getCommands();
 
 	public String getName();
 

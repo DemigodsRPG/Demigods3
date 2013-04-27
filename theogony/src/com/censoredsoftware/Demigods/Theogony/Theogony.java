@@ -179,7 +179,7 @@ public class Theogony extends DemigodsExpansion
 	 */
 	private void loadListeners()
 	{
-		/* Battle Listener */
+		/* TrackedBattle Listener */
 		getServer().getPluginManager().registerEvents(new DBattleListener(), this);
 	}
 

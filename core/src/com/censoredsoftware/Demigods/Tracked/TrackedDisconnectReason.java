@@ -1,47 +1,47 @@
-package com.censoredsoftware.Demigods.Objects;
+package com.censoredsoftware.Demigods.Tracked;
 
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-import com.censoredsoftware.Demigods.Listener.DPlayerListener;
+import com.censoredsoftware.Demigods.Listener.PlayerListener;
 
-public class DisconnectReasonFilter implements Filter
+public class TrackedDisconnectReason implements Filter
 {
-	public DisconnectReasonFilter()
+	public TrackedDisconnectReason()
 	{}
 
 	public boolean isLoggable(LogRecord arg0)
 	{
 		if(arg0.getMessage().toLowerCase().contains("disconnect"))
 		{
-			DPlayerListener.filterCheckGeneric = false;
-			DPlayerListener.filterCheckStream = false;
-			DPlayerListener.filterCheckOverflow = false;
-			DPlayerListener.filterCheckTimeout = false;
+			PlayerListener.filterCheckGeneric = false;
+			PlayerListener.filterCheckStream = false;
+			PlayerListener.filterCheckOverflow = false;
+			PlayerListener.filterCheckTimeout = false;
 
 			if(arg0.getMessage().toLowerCase().contains("genericreason"))
 			{
-				DPlayerListener.filterCheckGeneric = true;
+				PlayerListener.filterCheckGeneric = true;
 				return true;
 			}
 			if(arg0.getMessage().toLowerCase().contains("endofstream"))
 			{
-				DPlayerListener.filterCheckStream = true;
+				PlayerListener.filterCheckStream = true;
 				return true;
 			}
 			if(arg0.getMessage().toLowerCase().contains("overflow"))
 			{
-				DPlayerListener.filterCheckOverflow = true;
+				PlayerListener.filterCheckOverflow = true;
 				return true;
 			}
 			if(arg0.getMessage().toLowerCase().contains("timeout"))
 			{
-				DPlayerListener.filterCheckTimeout = true;
+				PlayerListener.filterCheckTimeout = true;
 				return true;
 			}
 			if(arg0.getMessage().toLowerCase().contains("quitting"))
 			{
-				DPlayerListener.filterCheckQuitting = true;
+				PlayerListener.filterCheckQuitting = true;
 				return true;
 			}
 			return true;

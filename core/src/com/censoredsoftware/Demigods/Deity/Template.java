@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods.Deity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,8 +13,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.API.AbilityAPI;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.MiscAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.google.common.base.Joiner;
@@ -42,9 +47,9 @@ public class Template implements Deity, Listener
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
 	@Override
-	public ArrayList<Material> getClaimItems()
+	public List<Material> getClaimItems()
 	{
-		ArrayList<Material> claimItems = new ArrayList<Material>();
+		List<Material> claimItems = new ArrayList<Material>();
 
 		claimItems.add(Material.BEDROCK);
 
@@ -52,11 +57,11 @@ public class Template implements Deity, Listener
 	}
 
 	@Override
-	public ArrayList<String> getInfo(Player player)
+	public List<String> getInfo(Player player)
 	{
-		ArrayList<String> toReturn = new ArrayList<String>();
+		List<String> toReturn = new ArrayList<String>();
 
-		if(API.misc.canUseDeitySilent(player, DEITYNAME))
+		if(MiscAPI.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(ChatColor.YELLOW + "[Demigods] " + DEITYCOLOR + DEITYNAME); // TODO
 			toReturn.add(ChatColor.GREEN + "You are a follower of " + DEITYNAME + "!");
@@ -91,7 +96,7 @@ public class Template implements Deity, Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player) damageEvent.getEntity();
-			if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+			if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -106,13 +111,13 @@ public class Template implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		PlayerCharacterClass character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(character.isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(TEST_NAME))))
 		{
-			if(!API.character.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
+			if(!CharacterAPI.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
 			testabil(player);
 		}
@@ -127,11 +132,11 @@ public class Template implements Deity, Listener
 	 */
 	public static void testCommand(Player player, String[] args)
 	{
-		PlayerCharacterClass character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
-		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
@@ -156,9 +161,9 @@ public class Template implements Deity, Listener
 	// The actual ability command
 	public static void testabil(Player player)
 	{
-		PlayerCharacterClass character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.ability.doAbilityPreProcess(player, "testabil", TEST_COST, AbilityEvent.AbilityType.PASSIVE)) return;
+		if(!AbilityAPI.doAbilityPreProcess(player, "testabil", TEST_COST, AbilityEvent.AbilityType.PASSIVE)) return;
 		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
 		character.subtractFavor(TEST_COST);
 
@@ -170,12 +175,12 @@ public class Template implements Deity, Listener
 	 */
 	public static void testultCommand(Player player, String[] args)
 	{
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Set variables
-		PlayerCharacterClass character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -185,7 +190,7 @@ public class Template implements Deity, Listener
 			return;
 		}
 
-		if(!API.ability.doAbilityPreProcess(player, "testult", ULTIMATE_COST, AbilityEvent.AbilityType.PASSIVE)) return;
+		if(!AbilityAPI.doAbilityPreProcess(player, "testult", ULTIMATE_COST, AbilityEvent.AbilityType.PASSIVE)) return;
 		character.subtractFavor(ULTIMATE_COST);
 
 		player.sendMessage(ChatColor.YELLOW + "You just used the ultimate, " + ULTIMATE_NAME + ", for " + DEITYNAME + "!");
@@ -207,18 +212,18 @@ public class Template implements Deity, Listener
 	}
 
 	@Override
-	public String loadDeity(Plugin plugin)
+	public String loadDeity()
 	{
-		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
 		ULTIMATE_TIME = System.currentTimeMillis();
 		TEST_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 
 	@Override
-	public ArrayList<String> getCommands()
+	public List<String> getCommands()
 	{
-		ArrayList<String> COMMANDS = new ArrayList<String>();
+		List<String> COMMANDS = new ArrayList<String>();
 
 		// List all commands
 		COMMANDS.add("test");

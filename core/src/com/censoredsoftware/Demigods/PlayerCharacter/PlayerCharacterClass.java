@@ -379,7 +379,10 @@ public class PlayerCharacterClass extends PlayerCharacter
 		return Integer.parseInt(getData("ASCENSIONS").toString());
 	}
 
-	// TODO Levels (Offense, Defense, Stealth, Support, Passive).
+	public int getPower(Enum ignored) // TODO Levels (Offense, Defense, Stealth, Support, Passive).
+	{
+		return 10;
+	}
 
 	/**
 	 * Grab the Map in it's entirely.

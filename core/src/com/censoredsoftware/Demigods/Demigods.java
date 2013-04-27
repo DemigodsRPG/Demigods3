@@ -43,20 +43,26 @@ public class Demigods
 	public static MessageModule message;
 	public static PermissionModule permission;
 
-	// Protected Modules
-	protected static BukkitUpdateModule update;
-	protected static LatestTweetModule notice;
+	// Public Static Access DemigodsPlugin
+	public static DemigodsPlugin demigods;
 
-	// Protected Dependency Plugins
+	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
 	public static P factions;
 	public static Residence residence;
+
+	// Protected Modules
+	protected static BukkitUpdateModule update;
+	protected static LatestTweetModule notice;
 
 	// On-load Deity ClassPath List
 	public static ArrayList<String> deityPathList = new ArrayList<String>();
 
 	Demigods(DemigodsPlugin instance)
 	{
+		// Allow Static Access
+		demigods = instance;
+
 		// Create All Object Factories
 		new DemigodsFactory(instance);
 
@@ -76,7 +82,7 @@ public class Demigods
 	//
 	// Scheduler.startThreads(instance);
 	//
-	// misc.getLog().setFilter(new DisconnectReasonFilter());
+	// misc.getLog().setFilter(new TrackedDisconnectReason());
 	// }
 
 	// @Override
@@ -133,7 +139,7 @@ public class Demigods
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadDeities(DemigodsPlugin instance) // TODO Replace this.
+	public void loadDeities() // TODO Replace this.
 	{
 		message.info("Loading deities...");
 
@@ -166,7 +172,7 @@ public class Demigods
 					ClassLoader loader = DeityAPI.getClassLoader(deityPath);
 
 					// Load everything else for the Deity (Listener, etc.)
-					String loadMessage = (String) DeityAPI.invokeDeityMethodWithPlugin(deityPath, loader, "loadDeity", instance);
+					String loadMessage = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "loadDeity");
 					String name = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "getName");
 					String alliance = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "getAlliance");
 

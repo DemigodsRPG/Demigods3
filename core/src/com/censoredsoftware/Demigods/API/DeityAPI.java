@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
@@ -51,17 +50,6 @@ public class DeityAPI
 		Method toInvoke = Class.forName(deityClass, true, loader).getMethod(method, noparams);
 
 		return toInvoke.invoke(obj, (Object[]) null);
-	}
-
-	public static Object invokeDeityMethodWithPlugin(String deityClass, ClassLoader loader, String method, Plugin paramater) throws NoSuchMethodException, SecurityException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
-	{
-		// Creates a new instance of the deity class
-		Object obj = Class.forName(deityClass, true, loader).newInstance();
-
-		// Load everything else for the Deity (Listener, etc.)
-		Method toInvoke = Class.forName(deityClass, true, loader).getMethod(method, Plugin.class);
-
-		return toInvoke.invoke(obj, paramater);
 	}
 
 	/*
