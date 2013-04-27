@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Tracked;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -13,6 +14,8 @@ public class TrackedBlock
 
 	public TrackedBlock(Location location, String type, Material material)
 	{
+		blockData = new HashMap<String, Object>();
+
 		saveData("BLOCK_ID", generateInt(5));
 		saveData("BLOCK_TYPE", type);
 		saveData("BLOCK_MATERIAL", material.getId());
@@ -26,6 +29,8 @@ public class TrackedBlock
 
 	public TrackedBlock(Location location, String type, Material material, byte matByte)
 	{
+		blockData = new HashMap<String, Object>();
+
 		saveData("BLOCK_ID", generateInt(5));
 		saveData("BLOCK_TYPE", type);
 		saveData("BLOCK_MATERIAL", material.getId());

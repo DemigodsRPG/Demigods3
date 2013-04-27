@@ -28,7 +28,7 @@ public class AdminAPI
 	 */
 	public static boolean useWand(OfflinePlayer player)
 	{
-		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Demigods.config.getSettingInt("admin_wand_tool");
+		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Demigods.config.getSettingInt("admin.wand_tool");
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class AdminAPI
 	 */
 	public static boolean consoleDebugEnabled()
 	{
-		return Demigods.config.getSettingBoolean("console_debug");
+		return Demigods.config.getSettingBoolean("misc.console_debug");
 	}
 
 	/**

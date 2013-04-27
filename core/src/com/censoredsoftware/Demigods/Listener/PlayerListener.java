@@ -48,7 +48,7 @@ public class PlayerListener implements Listener
 			player.setPlayerListName(color + name + ChatColor.WHITE);
 		}
 
-		if(Demigods.config.getSettingBoolean("motd"))
+		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
 		{
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.demigods.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
@@ -116,7 +116,7 @@ public class PlayerListener implements Listener
 		final Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
-		int delayTime = Demigods.config.getSettingInt("pvp_area_delay_time");
+		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DemigodsData.tempPlayerData.containsKey(player, "temp_teleport_ability"))

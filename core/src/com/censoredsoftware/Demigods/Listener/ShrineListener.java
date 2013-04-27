@@ -21,7 +21,7 @@ import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class ShrineListener implements Listener
 {
-	public static double FAVOR_MULTIPLIER = Demigods.config.getSettingDouble("global_favor_multiplier");
+	public static double FAVOR_MULTIPLIER = Demigods.config.getSettingDouble("multipliers.favor");
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void shrineBlockInteract(PlayerInteractEvent event)

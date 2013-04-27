@@ -51,7 +51,7 @@ public class AltarListener implements Listener
 
 			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !PlayerAPI.isPraying(player))
 			{
-				if(Demigods.config.getSettingBoolean("use_dynamic_pvp_zones") && ZoneAPI.canTarget(player))
+				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneAPI.canTarget(player))
 				{
 					player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
 					player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
@@ -103,7 +103,7 @@ public class AltarListener implements Listener
 		Player player = event.getPlayer();
 		Location location = player.getLocation();
 
-		// First we check if the player is in an Altar and currently praying, if not we'll return
+		// First we check if the player is in/time an Altar and currently praying, if not we'll return
 		if(ZoneAPI.zoneAltar(location) != null && PlayerAPI.isPraying(player))
 		{
 			// Cancel their chat

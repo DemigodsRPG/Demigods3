@@ -160,7 +160,7 @@ public class BattleAPI
 	 */
 	public static boolean isBlockedCommand(String command)
 	{
-		for(String blocked : Demigods.config.getSettingArrayListString("blocked_battle_commands"))
+		for(String blocked : Demigods.config.getSettingArrayListString("battles.blocked_commands"))
 		{
 			if(command.equalsIgnoreCase(blocked)) return true;
 		}

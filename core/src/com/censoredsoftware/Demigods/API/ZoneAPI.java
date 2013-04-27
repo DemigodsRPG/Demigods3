@@ -17,8 +17,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class ZoneAPI
 {
-	public static int SHRINE_RADIUS = Demigods.config.getSettingInt("shrine_zone_radius");
-	public static int ALTAR_RADIUS = Demigods.config.getSettingInt("altar_zone_radius");
+	public static int SHRINE_RADIUS = Demigods.config.getSettingInt("zones.shrine_radius");
+	public static int ALTAR_RADIUS = Demigods.config.getSettingInt("zones.altar_radius");
 
 	/**
 	 * Returns true if <code>location</code> is within a no-PVP zone.
@@ -28,8 +28,8 @@ public class ZoneAPI
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		if(Demigods.config.getSettingBoolean("allow_skills_anywhere")) return false;
-		if(Demigods.config.getSettingBoolean("use_dynamic_pvp_zones"))
+		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
 			// Currently only supports WorldGuard for dynamic PVP zones
 			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotAltar(location);
@@ -108,7 +108,7 @@ public class ZoneAPI
 	 */
 	public static boolean canTarget(Entity player, Location location)
 	{
-		return !(player instanceof Player) || DemigodsData.playerData.containsKey((Player) player, "temp_was_PVP") && Demigods.config.getSettingBoolean("use_dynamic_pvp_zones") || !zoneNoPVP(location);
+		return !(player instanceof Player) || DemigodsData.playerData.containsKey((Player) player, "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
 	/**

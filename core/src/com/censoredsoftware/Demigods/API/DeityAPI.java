@@ -8,8 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 
 // TODO Not sure if this file will remain an API or not.  It's probably too powerful to be considered an API.
 // TODO If need be, parts of it will be moved into the CommandListener as a subclass (for invoking deity commands).
@@ -30,8 +30,8 @@ public class DeityAPI
 	 */
 	public static ClassLoader getClassLoader(String deityPath)
 	{
-		if(DemigodsData.deityLoaders.getDataObject(deityPath) != null) return (ClassLoader) DemigodsData.deityLoaders.getDataObject(deityPath);
-		else return Demigods.class.getClassLoader();
+		if(DemigodsData.deityLoaders.containsKey(deityPath)) return (ClassLoader) DemigodsData.deityLoaders.getDataObject(deityPath);
+		else return DemigodsPlugin.class.getClassLoader();
 	}
 
 	/*

@@ -236,7 +236,7 @@ public class PlayerAPI
 		{
 			PlayerCharacterClass character = getCurrentChar(player);
 			if(character == null || !character.isClassActive()) continue;
-			int regenRate = (int) Math.ceil(Demigods.config.getSettingDouble("global_favor_multiplier") * character.getAscensions());
+			int regenRate = (int) Math.ceil(Demigods.config.getSettingDouble("multipliers.favor") * character.getAscensions());
 			if(regenRate < 1) regenRate = 1;
 			character.giveFavor(regenRate);
 		}

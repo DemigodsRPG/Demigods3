@@ -27,6 +27,8 @@ public class Altar
 
 		// Generate the Altar
 		generate();
+
+		DemigodsData.altarData.saveData(this.id, this); // TODO This needs a better home, maybe as part of a factory.
 	}
 
 	/**

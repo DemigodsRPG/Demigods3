@@ -36,7 +36,7 @@ public class DemigodsData
 
 	static ObjectDataModule timedData; // TODO Timed data...
 
-	DemigodsData(DemigodsPlugin instance)
+	protected DemigodsData(DemigodsPlugin instance)
 	{
 		pluginDataPersistent(instance);
 		pluginDataNonPersistent(instance);
@@ -136,7 +136,7 @@ public class DemigodsData
 	public static boolean randomPercentBool(double percent)
 	{
 		Random rand = new Random();
-		int chance = rand.nextInt((int) Math.ceil(1 / (percent / 100))) + 1;
+		int chance = rand.nextInt(Math.abs((int) Math.ceil(1 / (percent / 100))) + 1);
 		if(chance == 1) return true;
 		return false;
 	}

@@ -66,13 +66,16 @@ public class Demigods
 		// Allow Static Access
 		demigods = instance;
 
-		// Create All Object Factories
-		new DemigodsFactory(instance);
-
 		// Public Modules
 		config = new ConfigModule(instance, true);
 		message = new MessageModule(instance, config.getSettingBoolean("tag_messages"));
 		permission = new PermissionModule();
+
+		// Initialize Data
+		new DemigodsData(instance);
+
+		// Create All Object Factories
+		new DemigodsFactory(instance);
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)
@@ -212,7 +215,7 @@ public class Demigods
 	protected static void unload(DemigodsPlugin instance)
 	{
 		HandlerList.unregisterAll(instance);
-		Scheduler.stopThreads(instance);
+		// Scheduler.stopThreads(instance);
 	}
 }
 
@@ -509,7 +512,7 @@ class Commands implements CommandExecutor
 				if(!AdminAPI.wandEnabled(player))
 				{
 					DemigodsData.tempPlayerData.saveData(player, "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin_wand_tool")));
+					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin.wand_tool")));
 				}
 				else if(AdminAPI.wandEnabled(player))
 				{

@@ -34,7 +34,7 @@ public class ChunkListener implements Listener
 		Location location = MiscAPI.randomChunkLocation(event.getChunk());
 
 		// Let's randomly create chests
-		if(DemigodsData.randomPercentBool(Demigods.config.getSettingDouble("chest_generation_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
+		if(DemigodsData.randomPercentBool(Demigods.config.getSettingDouble("generation.chest_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
 		{
 			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
 			Bukkit.getServer().getPluginManager().callEvent(chestSpawnEvent);
@@ -56,12 +56,12 @@ public class ChunkListener implements Listener
 		if(event.isNewChunk())
 		{
 			// Choose an arbitrary value and check the chance against it
-			if(DemigodsData.randomPercentBool(Demigods.config.getSettingDouble("altar_generation_chance")))
+			if(DemigodsData.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
 			{
 				if(BlockAPI.canGenerateSolid(location, 6))
 				{
 					// If another Altar doesn't exist nearby then make one
-					if(!BlockAPI.altarNearby(location, Demigods.config.getSettingInt("minimum_blocks_between_altars")))
+					if(!BlockAPI.altarNearby(location, Demigods.config.getSettingInt("generation.min_blocks_between_altars")))
 					{
 						AltarCreateEvent altarCreateEvent = new AltarCreateEvent(location, AltarCreateCause.GENERATED);
 						Bukkit.getServer().getPluginManager().callEvent(altarCreateEvent);
