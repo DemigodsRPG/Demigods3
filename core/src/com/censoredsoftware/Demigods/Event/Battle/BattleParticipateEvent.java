@@ -4,17 +4,17 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class BattleParticipateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	private int battleID;
-	private Demigod defending;
-	private Demigod attacking;
+	private PlayerCharacter defending;
+	private PlayerCharacter attacking;
 	private boolean cancelled = false;
 
-	public BattleParticipateEvent(final int battleID, final Demigod defending, final Demigod attacking)
+	public BattleParticipateEvent(final int battleID, final PlayerCharacter defending, final PlayerCharacter attacking)
 	{
 		this.defending = defending;
 		this.attacking = attacking;
@@ -23,7 +23,7 @@ public class BattleParticipateEvent extends Event implements Cancellable
 	/*
 	 * getDefending() : Gets the character defending.
 	 */
-	public Demigod getDefending()
+	public PlayerCharacter getDefending()
 	{
 		return this.defending;
 	}
@@ -31,7 +31,7 @@ public class BattleParticipateEvent extends Event implements Cancellable
 	/*
 	 * getAttacking() : Gets the that started the battle.
 	 */
-	public Demigod getAttacking()
+	public PlayerCharacter getAttacking()
 	{
 		return this.attacking;
 	}

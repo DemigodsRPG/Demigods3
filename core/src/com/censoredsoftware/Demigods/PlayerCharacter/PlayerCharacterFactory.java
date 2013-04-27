@@ -1,11 +1,13 @@
-package com.censoredsoftware.Demigods.Demigod;
+package com.censoredsoftware.Demigods.PlayerCharacter;
+
+import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 
 /**
  * Factory for creating Demigod objects.
  */
-public class DemigodFactory
+public class PlayerCharacterFactory
 {
 	private int globalMaxFavor;
 
@@ -14,13 +16,13 @@ public class DemigodFactory
 	 * 
 	 * @param globalMaxFavor The max favor setting.
 	 */
-	public DemigodFactory(int globalMaxFavor)
+	public PlayerCharacterFactory(int globalMaxFavor)
 	{
 		this.globalMaxFavor = globalMaxFavor;
 	}
 
 	/**
-	 * Create a Demigod from scratch.
+	 * Create a PlayerCharacter from scratch.
 	 * 
 	 * @param player The player holding this class.
 	 * @param charID The ID of the character.
@@ -40,8 +42,13 @@ public class DemigodFactory
 	 * @param classActive True if the class is active.
 	 * @return The Demigod object.
 	 */
-	public Demigod create(OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
+	public PlayerCharacter create(OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
 	{
-		return new Demigod(globalMaxFavor, player, charID, charName, charActive, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, classActive);
+		return new PlayerCharacter(globalMaxFavor, player, charID, charName, charActive, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, classActive);
+	}
+
+	public PlayerCharacter create(Map map)
+	{
+		return new PlayerCharacter(globalMaxFavor, map);
 	}
 }

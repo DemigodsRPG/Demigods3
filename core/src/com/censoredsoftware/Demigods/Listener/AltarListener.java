@@ -21,11 +21,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.*;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodCreateEvent;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodSwitchEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterSwitchEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
 public class AltarListener implements Listener
@@ -247,7 +247,7 @@ public class AltarListener implements Listener
 
 				// Define variables
 				String charName = message.replace(" info", "").trim();
-				Demigod character = DemigodAPI.getCharByName(charName);
+				PlayerCharacter character = CharacterAPI.getCharByName(charName);
 
 				viewChar(player, character);
 			}
@@ -334,7 +334,7 @@ public class AltarListener implements Listener
 	// View characters
 	private void viewChars(Player player)
 	{
-		List<Demigod> chars = PlayerAPI.getChars(player);
+		List<PlayerCharacter> chars = PlayerAPI.getChars(player);
 		if(chars.isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no characters. Why not go make one?");
@@ -346,7 +346,7 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "  Light purple " + ChatColor.GRAY + "represents your current character.");
 		player.sendMessage(" ");
 
-		for(Demigod character : chars)
+		for(PlayerCharacter character : chars)
 		{
 			String color = "";
 			String name = character.getName();
@@ -426,7 +426,7 @@ public class AltarListener implements Listener
 	}
 
 	// View character
-	private void viewChar(Player player, Demigod character)
+	private void viewChar(Player player, PlayerCharacter character)
 	{
 		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
 		player.sendMessage(" ");
@@ -462,11 +462,11 @@ public class AltarListener implements Listener
 
 	private void switchChar(Player player, String charName)
 	{
-		Demigod newChar = DemigodAPI.getCharByName(charName);
+		PlayerCharacter newChar = CharacterAPI.getCharByName(charName);
 
 		if(newChar != null)
 		{
-			DemigodSwitchEvent event = new DemigodSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
+			CharacterSwitchEvent event = new CharacterSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 
 			if(!event.isCancelled())
@@ -663,7 +663,7 @@ public class AltarListener implements Listener
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!
-				DemigodCreateEvent characterEvent = new DemigodCreateEvent(player, chosenName, chosenDeity);
+				CharacterCreateEvent characterEvent = new CharacterCreateEvent(player, chosenName, chosenDeity);
 				Bukkit.getServer().getPluginManager().callEvent(characterEvent);
 
 				// Stop their praying, enable movement, enable chat
@@ -736,8 +736,8 @@ public class AltarListener implements Listener
 
 	private void inviteWarp(Player player, String name)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
-		Demigod invited = DemigodAPI.getCharByName(name);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter invited = CharacterAPI.getCharByName(name);
 
 		if(character == null) return;
 		else if(invited == null)
@@ -772,7 +772,7 @@ public class AltarListener implements Listener
 
 	private void acceptInvite(Player player, String name)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		TrackedLocation invite = WarpAPI.getInvite(character, name);
 
 		if(invite != null)

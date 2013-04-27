@@ -7,21 +7,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.DemigodsFactory;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
-public class DemigodAPI
+public class CharacterAPI
 {
 	/**
-	 * Creates a new Demigod for <code>player</code> with the name <code>charName</code> and the deity <code>charDeity</code> and return it.
+	 * Creates a new PlayerCharacter for <code>player</code> with the name <code>charName</code> and the deity <code>charDeity</code> and return it.
 	 * 
 	 * @param player the player to create the character for.
 	 * @param charName the name to use for the character.
 	 * @param charDeity the deity to use for the character.
 	 * @return Demigod
 	 */
-	public static Demigod create(OfflinePlayer player, String charName, String charDeity)
+	public static PlayerCharacter create(OfflinePlayer player, String charName, String charDeity)
 	{
 		if(getCharByName(charName) == null)
 		{
@@ -29,7 +29,7 @@ public class DemigodAPI
 			int charID = DemigodsData.generateInt(5);
 
 			// Create the Character and it's CharacterClass.
-			Demigod character = DemigodsFactory.playerCharacterClassFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeityAlliance(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+			PlayerCharacter character = DemigodsFactory.playerCharacterClassFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeityAlliance(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 
 			// Add character to the Character Data
 			DemigodsData.characterData.saveData(charID, character);
@@ -39,36 +39,36 @@ public class DemigodAPI
 		return null;
 	}
 
-	public static List<Demigod> getAllChars()
+	public static List<PlayerCharacter> getAllChars()
 	{
-		List<Demigod> characters = new ArrayList<Demigod>();
+		List<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
 		for(int charID : DemigodsData.characterData.listKeys())
 		{
-			Demigod character = (Demigod) DemigodsData.characterData.getDataObject(charID);
+			PlayerCharacter character = (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
 			characters.add(character);
 		}
 		return characters;
 	}
 
-	public static Demigod getChar(int charID)
+	public static PlayerCharacter getChar(int charID)
 	{
-		if(DemigodsData.characterData.containsKey(charID)) return (Demigod) DemigodsData.characterData.getDataObject(charID);
+		if(DemigodsData.characterData.containsKey(charID)) return (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
 		else return null;
 	}
 
-	public static Demigod getCharByName(String charName)
+	public static PlayerCharacter getCharByName(String charName)
 	{
-		for(Demigod character : getAllChars())
+		for(PlayerCharacter character : getAllChars())
 		{
 			if(character.getName().equalsIgnoreCase(charName)) return character;
 		}
 		return null;
 	}
 
-	public static List<Demigod> getAllActive()
+	public static List<PlayerCharacter> getAllActive()
 	{
-		List<Demigod> active = new ArrayList<Demigod>();
-		for(Demigod character : getAllChars())
+		List<PlayerCharacter> active = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllChars())
 		{
 			if(character.isActive()) active.add(character);
 		}
@@ -97,11 +97,11 @@ public class DemigodAPI
 	/*
 	 * getDeityList() : Gets list of characters in aligned to a Deity.
 	 */
-	public static ArrayList<Demigod> getDeityList(String deity)
+	public static ArrayList<PlayerCharacter> getDeityList(String deity)
 	{
 		// Define variables
-		ArrayList<Demigod> deityList = new ArrayList<Demigod>();
-		for(Demigod character : getAllChars())
+		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllChars())
 		{
 			if(character.isDeity().equalsIgnoreCase(deity)) deityList.add(character);
 		}
@@ -111,11 +111,11 @@ public class DemigodAPI
 	/*
 	 * getActiveDeityList() : Gets list of active characters in aligned to a Deity.
 	 */
-	public static ArrayList<Demigod> getActiveDeityList(String deity)
+	public static ArrayList<PlayerCharacter> getActiveDeityList(String deity)
 	{
 		// Define variables
-		ArrayList<Demigod> deityList = new ArrayList<Demigod>();
-		for(Demigod character : getAllActive())
+		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllActive())
 		{
 			if(character.isDeity().equalsIgnoreCase(deity)) deityList.add(character);
 		}
@@ -125,11 +125,11 @@ public class DemigodAPI
 	/*
 	 * getAllianceList() : Gets list of characters in an alliance.
 	 */
-	public static ArrayList<Demigod> getAllianceList(String alliance)
+	public static ArrayList<PlayerCharacter> getAllianceList(String alliance)
 	{
 		// Define variables
-		ArrayList<Demigod> allianceList = new ArrayList<Demigod>();
-		for(Demigod character : getAllChars())
+		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllChars())
 		{
 			if(character.getTeam().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
@@ -139,11 +139,11 @@ public class DemigodAPI
 	/*
 	 * getActiveAllianceList() : Gets list of active characters in an alliance.
 	 */
-	public static ArrayList<Demigod> getActiveAllianceList(String alliance)
+	public static ArrayList<PlayerCharacter> getActiveAllianceList(String alliance)
 	{
 		// Define variables
-		ArrayList<Demigod> allianceList = new ArrayList<Demigod>();
-		for(Demigod character : getAllActive())
+		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllActive())
 		{
 			if(character.getTeam().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
@@ -153,11 +153,11 @@ public class DemigodAPI
 	/*
 	 * getImmortalList() : Gets list of currently immortal players.
 	 */
-	public static ArrayList<Demigod> getImmortalList()
+	public static ArrayList<PlayerCharacter> getImmortalList()
 	{
 		// Define variables
-		ArrayList<Demigod> immortalList = new ArrayList<Demigod>();
-		for(Demigod character : getAllChars())
+		ArrayList<PlayerCharacter> immortalList = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : getAllChars())
 		{
 			if(character.isImmortal()) immortalList.add(character);
 		}

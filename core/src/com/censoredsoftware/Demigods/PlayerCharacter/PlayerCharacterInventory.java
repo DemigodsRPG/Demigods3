@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules.PlayerCharacter;
+package com.censoredsoftware.Demigods.PlayerCharacter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.API.DemigodAPI;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Tracked.TrackedItemStack;
 import com.censoredsoftware.Modules.Data.DataStubModule;
@@ -120,7 +120,7 @@ public class PlayerCharacterInventory implements DataStubModule
 	 */
 	public OfflinePlayer getOwner()
 	{
-		return DemigodAPI.getChar(charID).getOwner();
+		return CharacterAPI.getChar(charID).getOwner();
 	}
 
 	/*

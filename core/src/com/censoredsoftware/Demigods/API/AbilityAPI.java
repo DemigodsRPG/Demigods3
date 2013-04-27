@@ -14,9 +14,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityTargetEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class AbilityAPI
 {
@@ -35,7 +35,7 @@ public class AbilityAPI
 	 */
 	public static boolean doAbilityPreProcess(Player player, String name, int cost, AbilityEvent.AbilityType type)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		return doAbilityPreProcess(player, cost) && event(name, character, cost, type);
 	}
@@ -54,7 +54,7 @@ public class AbilityAPI
 	 */
 	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityEvent.AbilityType type)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(doAbilityPreProcess(player, cost) && event(name, character, cost, type))
 		{
@@ -133,7 +133,7 @@ public class AbilityAPI
 	 */
 	public static boolean targeting(Player player, LivingEntity target)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		Location toHit = aimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -151,7 +151,7 @@ public class AbilityAPI
 	 * @param type the AbilityType of the ability
 	 * @return true/false if the event isn't cancelled or not
 	 */
-	public static boolean event(String name, Demigod character, int cost, AbilityEvent.AbilityType type)
+	public static boolean event(String name, PlayerCharacter character, int cost, AbilityEvent.AbilityType type)
 	{
 		AbilityEvent event = new AbilityEvent(name, character, cost, type);
 		Bukkit.getServer().getPluginManager().callEvent(event);
@@ -166,7 +166,7 @@ public class AbilityAPI
 	 * @param target the location the character is targeting at
 	 * @return the aimed at location
 	 */
-	public static Location aimLocation(Demigod character, Location target)
+	public static Location aimLocation(PlayerCharacter character, Location target)
 	{
 		int ascensions = character.getAscensions();
 
@@ -223,7 +223,7 @@ public class AbilityAPI
 
 	private static boolean doAbilityPreProcess(Player player, int cost)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!ZoneAPI.canTarget(player))
 		{

@@ -6,9 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.censoredsoftware.Demigods.API.DemigodAPI;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
@@ -19,7 +19,7 @@ public class Shrine
 	private TrackedBlock block;
 	private TrackedLocation location;
 
-	public Shrine(int id, Demigod character, Location location)
+	public Shrine(int id, PlayerCharacter character, Location location)
 	{
 		this.id = id;
 		this.location = new TrackedLocation(location, null);
@@ -71,9 +71,9 @@ public class Shrine
 	/*
 	 * getOwner() : Returns the owner ID for the Shrine.
 	 */
-	public Demigod getOwner()
+	public PlayerCharacter getOwner()
 	{
-		return DemigodAPI.getChar(this.owner);
+		return CharacterAPI.getChar(this.owner);
 	}
 
 	/*
@@ -154,7 +154,7 @@ public class Shrine
 			Location location = new Location(Bukkit.getWorld(locs[0]), Integer.parseInt(locs[1]), Integer.parseInt(locs[2]), Integer.parseInt(locs[3]));
 
 			// Build the object
-			Shrine shrine = new Shrine(Integer.parseInt(data[0]), DemigodAPI.getChar(Integer.parseInt(data[1])), location);
+			Shrine shrine = new Shrine(Integer.parseInt(data[0]), CharacterAPI.getChar(Integer.parseInt(data[1])), location);
 
 			// Return the new Shrine
 			return shrine;

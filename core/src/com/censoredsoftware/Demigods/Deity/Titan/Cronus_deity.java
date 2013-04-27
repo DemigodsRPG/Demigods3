@@ -22,9 +22,9 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Deity.Deity;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class Cronus_deity implements Deity, Listener
 {
@@ -127,7 +127,7 @@ public class Cronus_deity implements Deity, Listener
 		if(damageEvent.getDamager() instanceof Player)
 		{
 			Player player = (Player) damageEvent.getDamager();
-			Demigod character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 			if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
@@ -145,7 +145,7 @@ public class Cronus_deity implements Deity, Listener
 
 			if(character.isEnabledAbility(CLEAVE_NAME))
 			{
-				if(!DemigodAPI.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
+				if(!CharacterAPI.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
 
 				cleave(damageEvent);
 			}
@@ -157,7 +157,7 @@ public class Cronus_deity implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -165,7 +165,7 @@ public class Cronus_deity implements Deity, Listener
 
 		if(character.isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SLOW_NAME))))
 		{
-			if(!DemigodAPI.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
 
 			slow(player);
 		}
@@ -180,7 +180,7 @@ public class Cronus_deity implements Deity, Listener
 	 */
 	public static void cleaveCommand(Player player, String[] args)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -205,7 +205,7 @@ public class Cronus_deity implements Deity, Listener
 		Player player = (Player) damageEvent.getDamager();
 		Entity attacked = damageEvent.getEntity();
 		if(!(attacked instanceof LivingEntity)) return;
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, (LivingEntity) attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
 		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
@@ -231,7 +231,7 @@ public class Cronus_deity implements Deity, Listener
 	 */
 	public static void slowCommand(Player player, String[] args)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -261,7 +261,7 @@ public class Cronus_deity implements Deity, Listener
 	public static void slow(Player player)
 	{
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		int power = character.getDevotion();
 		int duration = (int) Math.ceil(3.635 * Math.pow(power, 0.2576)); // seconds
 		int strength = (int) Math.ceil(1.757 * Math.pow(power, 0.097));
@@ -290,10 +290,10 @@ public class Cronus_deity implements Deity, Listener
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
-		if(!character.isClass(DEITYNAME)) return;
+		if(!character.isDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -320,7 +320,7 @@ public class Cronus_deity implements Deity, Listener
 	public static int timestop(Player player, int duration)
 	{
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		int slowamount = (int) Math.round(4.77179 * Math.pow(character.getAscensions(), 0.17654391));
 		int count = 0;

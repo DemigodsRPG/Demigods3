@@ -2,12 +2,17 @@ package com.censoredsoftware.Demigods;
 
 import java.util.Random;
 
-import com.censoredsoftware.Demigods.API.DemigodAPI;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+
+import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Modules.Data.IntegerDataModule;
 import com.censoredsoftware.Modules.Data.ObjectDataModule;
 import com.censoredsoftware.Modules.Data.StringDataModule;
 import com.censoredsoftware.Modules.Data.TieredPlayerDataModule;
+import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;
 import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
 
 public class DemigodsData
@@ -44,6 +49,8 @@ public class DemigodsData
 
 	protected DemigodsData(DemigodsPlugin instance)
 	{
+		instance.getServer().getPluginManager().registerEvents(new DataListener(), instance);
+
 		pluginDataPersistent(instance);
 		pluginDataNonPersistent(instance);
 		playerData(instance);
@@ -116,7 +123,7 @@ public class DemigodsData
 		if(yaml)
 		{
 			playerYAML.save(playerData);
-			for(Demigod character : DemigodAPI.getAllChars())
+			for(PlayerCharacter character : CharacterAPI.getAllChars())
 			{
 				characterYAML.save(character);
 			}
@@ -208,6 +215,20 @@ public class DemigodsData
 		catch(Exception e)
 		{
 			return false;
+		}
+	}
+}
+
+class DataListener implements Listener
+{
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCharacterLoad(LoadStubYAMLEvent event)
+	{
+		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+
+		if(event.getPath().equals("core") && event.getDataName().equals("character_data"))
+		{
+			DemigodsFactory.playerCharacterClassFactory.create(event.getData());
 		}
 	}
 }

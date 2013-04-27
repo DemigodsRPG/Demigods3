@@ -1,15 +1,15 @@
 package com.censoredsoftware.Demigods;
 
-import com.censoredsoftware.Demigods.Demigod.DemigodFactory;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterFactory;
 
 public class DemigodsFactory
 {
 	// Character
-	public static DemigodFactory playerCharacterClassFactory;
+	public static PlayerCharacterFactory playerCharacterClassFactory;
 
 	DemigodsFactory(DemigodsPlugin instance)
 	{
 		// Character
-		playerCharacterClassFactory = new DemigodFactory(Demigods.config.getSettingInt("caps.favor"));
+		playerCharacterClassFactory = new PlayerCharacterFactory(Demigods.config.getSettingInt("caps.favor"));
 	}
 }

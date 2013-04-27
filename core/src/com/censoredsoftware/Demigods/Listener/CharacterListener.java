@@ -8,37 +8,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.API.DemigodAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodBetrayDemigodEvent;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodCreateEvent;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodKillDemigodEvent;
-import com.censoredsoftware.Demigods.Event.Demigod.DemigodKillstreakEvent;
-import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;
-import com.censoredsoftware.Modules.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterCreateEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Event.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class CharacterListener implements Listener
 {
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCharacterLoad(LoadStubYAMLEvent event)
-	{
-		Demigods.message.broadcast("TEST");
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
-
-		if(event.getPath().equals("core") && event.getDataName().equals("character_data"))
-		{
-			int charID = event.getID();
-			new PlayerCharacter(event.getData());
-			Demigods.message.broadcast("Loaded: " + DemigodAPI.getChar(charID).getName());
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCharacterCreation(DemigodCreateEvent event)
+	public void onCharacterCreation(CharacterCreateEvent event)
 	{
 		if(event.isCancelled()) return;
 
@@ -46,7 +30,7 @@ public class CharacterListener implements Listener
 		String chosenName = event.getName();
 		String chosenDeity = event.getDeity();
 
-		Demigod character = DemigodAPI.create(player, chosenName, chosenDeity);
+		PlayerCharacter character = CharacterAPI.create(player, chosenName, chosenDeity);
 
 		// Remove temporary data
 		DemigodsData.tempPlayerData.removeData(player, "temp_createchar");
@@ -69,19 +53,19 @@ public class CharacterListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCharacterKillstreak(DemigodKillstreakEvent event)
+	public void onCharacterKillstreak(CharacterKillstreakEvent event)
 	{
-		Demigod character = event.getCharacter();
+		PlayerCharacter character = event.getCharacter();
 		int killstreak = event.getKills();
 
 		Demigods.message.broadcast(ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " is on a killstreak of " + ChatColor.RED + killstreak + ChatColor.GRAY + " kills.");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerKillPlayer(DemigodKillDemigodEvent event)
+	public void onPlayerKillPlayer(CharacterKillCharacterEvent event)
 	{
-		Demigod attacker = event.getCharacter();
-		Demigod killed = event.getKilled();
+		PlayerCharacter attacker = event.getCharacter();
+		PlayerCharacter killed = event.getKilled();
 		String attackerAlliance = "Mortal";
 		if(attacker != null) attackerAlliance = attacker.getTeam();
 		String killedAlliance = "Mortal";
@@ -94,10 +78,10 @@ public class CharacterListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerBetrayPlayer(DemigodBetrayDemigodEvent event)
+	public void onPlayerBetrayPlayer(CharacterBetrayCharacterEvent event)
 	{
-		Demigod attacker = event.getCharacter();
-		Demigod killed = event.getKilled();
+		PlayerCharacter attacker = event.getCharacter();
+		PlayerCharacter killed = event.getKilled();
 		String alliance = event.getAlliance();
 
 		if(alliance != "Mortal") Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");

@@ -1,35 +1,49 @@
-package com.censoredsoftware.Demigods.Demigod;
+package com.censoredsoftware.Demigods.PlayerCharacter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 
-import com.censoredsoftware.Modules.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
+import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class Demigod extends PlayerCharacter
+public class PlayerCharacter implements DataStubModule
 {
-	private int globalMaxFavor;
+	// Define HashMaps
+	private Map<String, Object> characterData;
 	private Map<String, Object> abilityData;
 	private Map<Integer, Object> bindingData;
 
-	public Demigod(int globalMaxFavor, OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
-	{
-		// Create PlayerCharacter
-		super(player, charID, charName, charActive);
+	private PlayerCharacterInventory playerCharacterInventory;
+	private TrackedLocation specialLocation;
+	private int globalMaxFavor;
 
-		// Define HashMaps
+	public PlayerCharacter(int globalMaxFavor, Map map)
+	{
+		this.globalMaxFavor = globalMaxFavor;
+		setMap(map);
+		save(this);
+	}
+
+	public PlayerCharacter(int globalMaxFavor, OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
+	{
+		this.globalMaxFavor = globalMaxFavor;
+		characterData = new HashMap<String, Object>();
 		abilityData = new HashMap<String, Object>();
 		bindingData = new HashMap<Integer, Object>();
 
-		// Define Important Caps
-		this.globalMaxFavor = globalMaxFavor;
-
-		// Save Class Data
+		saveData("PLAYER_NAME", player.getName());
+		saveData("CHAR_NAME", charName);
+		saveData("CHAR_ID", charID);
+		saveData("CHAR_LEVEL", 0);
+		saveData("CHAR_FOOD_LEVEL", 20);
+		saveData("CHAR_HEALTH", 20);
+		saveData("CHAR_EXP", 0);
+		saveData("CHAR_ACTIVE", charActive);
 		saveData("CLASS_NAME", className);
 		saveData("TEAM_NAME", teamName);
 		saveData("FAVOR", favor);
@@ -42,8 +56,162 @@ public class Demigod extends PlayerCharacter
 		saveData("SUPPORT", support);
 		saveData("PASSIVE", passive);
 		saveData("CLASS_ACTIVE", classActive);
+		this.playerCharacterInventory = null;
+		try
+		{
+			this.specialLocation = new TrackedLocation(player.getPlayer().getLocation(), null);
+		}
+		catch(Exception ignored)
+		{}
 
 		save(this);
+	}
+
+	public static void save(PlayerCharacter character) // TODO This belongs somewhere else.
+	{
+		DemigodsData.characterData.saveData(character.getID(), character);
+	}
+
+	/**
+	 * Checks if the characterData Map contains <code>key</code>.
+	 * 
+	 * @param key The key in the save.
+	 * @return True if characterData contains the key.
+	 */
+	boolean containsKey(String key)
+	{
+		return characterData.get(key) != null && characterData.containsKey(key);
+	}
+
+	/**
+	 * Retrieve the Object data from int <code>key</code>.
+	 * 
+	 * @param key The key in the save.
+	 * @return Object data.
+	 */
+	public Object getData(String key)
+	{
+		if(containsKey(key)) return characterData.get(key);
+		return null; // Should never happen, always check with containsKey before getting the data.
+	}
+
+	/**
+	 * Save the Object <code>data</code> for int <code>key</code>.
+	 * 
+	 * @param key The key in the save.
+	 * @param data The Object being saved.
+	 */
+	public void saveData(String key, Object data)
+	{
+		characterData.put(key, data);
+	}
+
+	/**
+	 * Remove the data from int <code>key</code>.
+	 * 
+	 * @param key The key in the save.
+	 */
+	public void removeData(String key)
+	{
+		if(!containsKey(key)) return;
+		characterData.remove(key);
+	}
+
+	public ChatColor getHealthColor()
+	{
+		int hp = getHealth();
+		int maxHP = Bukkit.getPlayer(getOwner().getName()).getMaxHealth();
+		ChatColor color = ChatColor.RESET;
+
+		// Set favor color dynamically
+		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
+		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
+		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
+
+		return color;
+	}
+
+	public void setHealth(int amount)
+	{
+		saveData("CHAR_HEALTH", amount);
+	}
+
+	public void saveInventory()
+	{
+		this.playerCharacterInventory = new PlayerCharacterInventory(getOwner().getPlayer().getInventory());
+	}
+
+	public PlayerCharacterInventory getInventory()
+	{
+		if(this.playerCharacterInventory != null) return this.playerCharacterInventory;
+		else return null;
+	}
+
+	public void setFoodLevel(int amount)
+	{
+		saveData("CHAR_FOOD_LEVEL", amount);
+
+	}
+
+	public void setExp(float amount)
+	{
+		saveData("CHAR_EXP", amount);
+
+	}
+
+	public void setLevel(int amount)
+	{
+		saveData("CHAR_LEVEL", amount);
+	}
+
+	public void setLocation(Location location)
+	{
+		this.specialLocation = new TrackedLocation(location, null);
+	}
+
+	public void toggleActive(boolean option)
+	{
+		saveData("CHAR_ACTIVE", option);
+	}
+
+	public OfflinePlayer getOwner()
+	{
+		return Bukkit.getOfflinePlayer(getData("PLAYER_NAME").toString());
+	}
+
+	public String getName()
+	{
+		return getData("CHAR_NAME").toString();
+	}
+
+	public boolean isActive()
+	{
+		return Boolean.parseBoolean(getData("CHAR_ACTIVE").toString());
+	}
+
+	public TrackedLocation getLocation()
+	{
+		return this.specialLocation;
+	}
+
+	public int getHealth()
+	{
+		return Integer.parseInt(getData("CHAR_HEALTH").toString());
+	}
+
+	public int getFoodLevel()
+	{
+		return Integer.parseInt(getData("CHAR_FOOD_LEVEL").toString());
+	}
+
+	public int getLevel()
+	{
+		return Integer.parseInt(getData("CHAR_LEVEL").toString());
+	}
+
+	public float getExp()
+	{
+		return Float.parseFloat(getData("CHAR_EXP").toString());
 	}
 
 	/**
@@ -235,12 +403,12 @@ public class Demigod extends PlayerCharacter
 		saveData("TEAM_NAME", alliance);
 	}
 
-	public boolean isClass(String className)
+	public boolean isDeity(String className)
 	{
 		return isDeity().equalsIgnoreCase(className);
 	}
 
-	public void toggleActive(boolean option)
+	public void toggleImmortal(boolean option)
 	{
 		saveData("CLASS_ACTIVE", option);
 	}
@@ -422,5 +590,23 @@ public class Demigod extends PlayerCharacter
 		}
 		catch(Exception ignored)
 		{}
+	}
+
+	@Override
+	public int getID()
+	{
+		return Integer.parseInt(getData("CHAR_ID").toString());
+	}
+
+	@Override
+	public Map<String, Object> getMap()
+	{
+		return this.characterData;
+	}
+
+	@Override
+	public void setMap(Map map)
+	{
+		this.characterData = map;
 	}
 }

@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class MiscAPI
 {
@@ -31,10 +31,10 @@ public class MiscAPI
 
 	public static boolean canUseDeity(Player player, String deity)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
-		if(character != null && !character.isClass(deity))
+		if(character != null && !character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
@@ -49,12 +49,12 @@ public class MiscAPI
 
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(character == null) return false;
 
 		// Check the player for DEITYNAME
-		return character.isClass(deity) && character.isImmortal();
+		return character.isDeity(deity) && character.isImmortal();
 	}
 
 	/**

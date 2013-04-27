@@ -15,12 +15,12 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.API.AbilityAPI;
-import com.censoredsoftware.Demigods.API.DemigodAPI;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.MiscAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.google.common.base.Joiner;
 
 public class Template implements Deity, Listener
@@ -111,13 +111,13 @@ public class Template implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(character.isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(TEST_NAME))))
 		{
-			if(!DemigodAPI.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
+			if(!CharacterAPI.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
 			testabil(player);
 		}
@@ -132,7 +132,7 @@ public class Template implements Deity, Listener
 	 */
 	public static void testCommand(Player player, String[] args)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -161,7 +161,7 @@ public class Template implements Deity, Listener
 	// The actual ability command
 	public static void testabil(Player player)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, "testabil", TEST_COST, AbilityEvent.AbilityType.PASSIVE)) return;
 		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
@@ -178,7 +178,7 @@ public class Template implements Deity, Listener
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Set variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 

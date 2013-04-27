@@ -4,7 +4,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 /*
  * Represents an event that is called when an ability is executed.
@@ -13,13 +13,13 @@ public class AbilityEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	private String name;
-	private Demigod character;
+	private PlayerCharacter character;
 	private String deity;
 	private int cost;
 	private AbilityType type;
 	private boolean cancelled = false;
 
-	public AbilityEvent(final String name, final Demigod character, final int cost, final AbilityType type)
+	public AbilityEvent(final String name, final PlayerCharacter character, final int cost, final AbilityType type)
 	{
 		this.name = name;
 		this.character = character;
@@ -39,7 +39,7 @@ public class AbilityEvent extends Event implements Cancellable
 	/*
 	 * getCharacter() : Gets the character involved.
 	 */
-	public Demigod getCharacter()
+	public PlayerCharacter getCharacter()
 	{
 		return this.character;
 	}

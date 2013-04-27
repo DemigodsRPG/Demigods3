@@ -11,10 +11,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Modules.PlayerCharacter.PlayerCharacterInventory;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterInventory;
 
 public class PlayerAPI
 {
@@ -41,11 +41,11 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return Demigod
 	 */
-	public static Demigod getCurrentChar(OfflinePlayer player)
+	public static PlayerCharacter getCurrentChar(OfflinePlayer player)
 	{
 		try
 		{
-			return DemigodAPI.getChar(DemigodsData.playerData.getDataInt(player, "current_char"));
+			return CharacterAPI.getChar(DemigodsData.playerData.getDataInt(player, "current_char"));
 		}
 		catch(Exception e)
 		{
@@ -61,7 +61,7 @@ public class PlayerAPI
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		Demigod character = getCurrentChar(player);
+		PlayerCharacter character = getCurrentChar(player);
 		if(character == null || !character.isImmortal()) return "Mortal";
 		return character.getTeam();
 	}
@@ -88,10 +88,10 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return List the list of all character IDs.
 	 */
-	public static List<Demigod> getChars(OfflinePlayer player)
+	public static List<PlayerCharacter> getChars(OfflinePlayer player)
 	{
-		List<Demigod> characters = new ArrayList<Demigod>();
-		for(Demigod character : DemigodAPI.getAllChars())
+		List<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
+		for(PlayerCharacter character : CharacterAPI.getAllChars())
 		{
 			if(character.getOwner() == player) characters.add(character);
 		}
@@ -110,7 +110,7 @@ public class PlayerAPI
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!getChars(offlinePlayer).contains(DemigodAPI.getChar(charID)))
+		if(!getChars(offlinePlayer).contains(CharacterAPI.getChar(charID)))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
@@ -120,7 +120,7 @@ public class PlayerAPI
 		togglePraying(player, false);
 
 		// Update the current character (if it exists)
-		Demigod currentChar = getCurrentChar(player);
+		PlayerCharacter currentChar = getCurrentChar(player);
 		if(currentChar != null)
 		{
 			// Save info
@@ -138,7 +138,7 @@ public class PlayerAPI
 
 		// Everything is good, let's switch
 		DemigodsData.playerData.saveData(player, "current_char", charID);
-		Demigod character = DemigodAPI.getChar(charID);
+		PlayerCharacter character = CharacterAPI.getChar(charID);
 		character.toggleActive(true);
 
 		// If it's their first character save their inventory
@@ -180,7 +180,7 @@ public class PlayerAPI
 	 */
 	public static boolean isImmortal(OfflinePlayer player)
 	{
-		Demigod character = getCurrentChar(player);
+		PlayerCharacter character = getCurrentChar(player);
 		return character != null && character.isImmortal();
 	}
 
@@ -205,9 +205,9 @@ public class PlayerAPI
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		List<Demigod> characters = getChars(player);
+		List<PlayerCharacter> characters = getChars(player);
 
-		for(Demigod character : characters)
+		for(PlayerCharacter character : characters)
 		{
 			if(character == null) continue;
 			if(character.getName().equalsIgnoreCase(charName)) return true;
@@ -234,7 +234,7 @@ public class PlayerAPI
 		ArrayList<Player> onlinePlayers = getOnlinePlayers();
 		for(Player player : onlinePlayers)
 		{
-			Demigod character = getCurrentChar(player);
+			PlayerCharacter character = getCurrentChar(player);
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(Demigods.config.getSettingDouble("multipliers.favor") * character.getAscensions());
 			if(regenRate < 1) regenRate = 1;

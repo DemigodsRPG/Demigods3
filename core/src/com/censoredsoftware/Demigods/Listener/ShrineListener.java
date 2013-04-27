@@ -14,10 +14,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Block.Shrine;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Event.Shrine.ShrineCreateEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class ShrineListener implements Listener
 {
@@ -33,7 +33,7 @@ public class ShrineListener implements Listener
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		String charAlliance = character.getTeam();
 		String charDeity = character.isDeity();
 
@@ -112,7 +112,7 @@ public class ShrineListener implements Listener
 		}
 
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		// Return if the player is mortal
 		if(character == null || !character.isImmortal())
@@ -133,7 +133,7 @@ public class ShrineListener implements Listener
 			if(BlockAPI.isShrine(location))
 			{
 				// Check if character has deity
-				if(character.isClass(shrineDeity))
+				if(character.isDeity(shrineDeity))
 				{
 					// Open the tribute inventory
 					Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
@@ -158,7 +158,7 @@ public class ShrineListener implements Listener
 		{
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player) event.getPlayer();
-			Demigod character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 			if(character == null || !character.isImmortal()) return;
 
 			String charDeity = character.isDeity();
@@ -198,15 +198,15 @@ public class ShrineListener implements Listener
 			if(favorBefore != character.getMaxFavor() && devotionBefore != character.getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				OfflinePlayer shrineOwnerPlayer = DemigodAPI.getOwner(shrineOwnerID);
-				if(!DemigodAPI.getOwner(charID).equals(shrineOwnerPlayer))
+				OfflinePlayer shrineOwnerPlayer = CharacterAPI.getOwner(shrineOwnerID);
+				if(!CharacterAPI.getOwner(charID).equals(shrineOwnerPlayer))
 				{
 					// TODO: FIX THIS
 					// DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
 					if(shrineOwnerPlayer.isOnline())
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + DemigodAPI.getChar(shrineOwnerID).getDevotion() + "!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + CharacterAPI.getChar(shrineOwnerID).getDevotion() + "!");
 					}
 				}
 			}

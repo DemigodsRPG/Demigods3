@@ -20,9 +20,9 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Deity.Deity;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class Zeus_deity implements Deity, Listener
 {
@@ -140,7 +140,7 @@ public class Zeus_deity implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -148,14 +148,14 @@ public class Zeus_deity implements Deity, Listener
 
 		if(character.isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SHOVE_NAME))))
 		{
-			if(!DemigodAPI.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
 
 			shove(player);
 		}
 
 		if(character.isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(LIGHTNING_NAME))))
 		{
-			if(!DemigodAPI.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
 
 			lightning(player);
 		}
@@ -170,7 +170,7 @@ public class Zeus_deity implements Deity, Listener
 	 */
 	public static void shoveCommand(Player player, String[] args)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -200,7 +200,7 @@ public class Zeus_deity implements Deity, Listener
 	public static void shove(Player player)
 	{
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		int devotion = character.getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = AbilityAPI.autoTarget(player);
@@ -222,7 +222,7 @@ public class Zeus_deity implements Deity, Listener
 	 */
 	public static void lightningCommand(Player player, String[] args)
 	{
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -252,7 +252,7 @@ public class Zeus_deity implements Deity, Listener
 	public static void lightning(Player player)
 	{
 		// Define variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
@@ -270,10 +270,10 @@ public class Zeus_deity implements Deity, Listener
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Set variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
-		if(!character.isClass(DEITYNAME)) return;
+		if(!character.isDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -345,7 +345,7 @@ public class Zeus_deity implements Deity, Listener
 	private static boolean strikeLightning(Player player, LivingEntity target)
 	{
 		// Set variables
-		Demigod character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!ZoneAPI.canTarget(target)) return false;

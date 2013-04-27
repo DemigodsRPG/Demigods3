@@ -223,8 +223,9 @@ public class YAMLPersistenceModule
 			// Call the LoadStubYAMLEvent if need be
 			if(!map.isEmpty() && error == 0)
 			{
-				Demigods.message.broadcast("Event called: " + tier);
-				plugin.getServer().getPluginManager().callEvent(new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
+				LoadStubYAMLEvent event = new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map);
+				plugin.getServer().getPluginManager().callEvent(event);
+				Demigods.message.broadcast("Event called: " + event.getID());
 			}
 		}
 	}

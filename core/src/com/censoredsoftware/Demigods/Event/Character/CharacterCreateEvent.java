@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Event.Demigod;
+package com.censoredsoftware.Demigods.Event.Character;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
@@ -8,7 +8,7 @@ import org.bukkit.event.HandlerList;
 /*
  * Represents an event that is called when a character is created.
  */
-public class DemigodCreateEvent extends Event implements Cancellable
+public class CharacterCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	private OfflinePlayer owner;
@@ -16,7 +16,7 @@ public class DemigodCreateEvent extends Event implements Cancellable
 	private String deity;
 	private boolean cancelled = false;
 
-	public DemigodCreateEvent(final OfflinePlayer owner, final String name, final String deity)
+	public CharacterCreateEvent(final OfflinePlayer owner, final String name, final String deity)
 	{
 		this.owner = owner;
 		this.name = name;

@@ -1,24 +1,24 @@
-package com.censoredsoftware.Demigods.Event.Demigod;
+package com.censoredsoftware.Demigods.Event.Character;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 /*
  * Represents an event that is called when a player switched characters.
  */
-public class DemigodSwitchEvent extends Event implements Cancellable
+public class CharacterSwitchEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	private OfflinePlayer player;
-	private Demigod toCharacter;
-	private Demigod fromCharacter;
+	private PlayerCharacter toCharacter;
+	private PlayerCharacter fromCharacter;
 	private boolean cancelled = false;
 
-	public DemigodSwitchEvent(final OfflinePlayer player, final Demigod fromCharacter, final Demigod toCharacter)
+	public CharacterSwitchEvent(final OfflinePlayer player, final PlayerCharacter fromCharacter, final PlayerCharacter toCharacter)
 	{
 		this.player = player;
 		this.toCharacter = toCharacter;
@@ -36,7 +36,7 @@ public class DemigodSwitchEvent extends Event implements Cancellable
 	/*
 	 * getCharacterTo() : Gets the character being switched to.
 	 */
-	public Demigod getCharacterTo()
+	public PlayerCharacter getCharacterTo()
 	{
 		return this.toCharacter;
 	}
@@ -44,7 +44,7 @@ public class DemigodSwitchEvent extends Event implements Cancellable
 	/*
 	 * getCharacterTo() : Gets the character being switched to.
 	 */
-	public Demigod getCharacterFrom()
+	public PlayerCharacter getCharacterFrom()
 	{
 		return this.fromCharacter;
 	}

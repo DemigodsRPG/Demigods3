@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.API.AdminAPI;
-import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent;
@@ -15,6 +14,7 @@ import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent.AltarRemoveCau
 import com.censoredsoftware.Demigods.Event.Misc.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Event.Shrine.ShrineRemoveEvent;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class DebugListener implements Listener
 {
@@ -51,7 +51,7 @@ public class DebugListener implements Listener
 	public void onShrineCreation(ShrineCreateEvent event)
 	{
 		Location location = event.getLocation();
-		Demigod owner = event.getOwner();
+		PlayerCharacter owner = event.getOwner();
 
 		// Send debug
 		AdminAPI.sendDebug(ChatColor.RED + "Shrine created by " + owner.getName() + " (" + owner.isDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
@@ -61,7 +61,7 @@ public class DebugListener implements Listener
 	public void onShrineRemove(ShrineRemoveEvent event)
 	{
 		Location location = event.getLocation();
-		Demigod owner = event.getOwner();
+		PlayerCharacter owner = event.getOwner();
 
 		// Send debug
 		AdminAPI.sendDebug(ChatColor.RED + "Shrine at (" + owner.isDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
