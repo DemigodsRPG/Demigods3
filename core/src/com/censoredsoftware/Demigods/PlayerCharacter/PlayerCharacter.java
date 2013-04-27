@@ -36,6 +36,7 @@ public class PlayerCharacter implements DataStubModule
 		abilityData = new HashMap<String, Object>();
 		bindingData = new HashMap<Integer, Object>();
 
+		// Vanilla Data
 		saveData("PLAYER_NAME", player.getName());
 		saveData("CHAR_NAME", charName);
 		saveData("CHAR_ID", charID);
@@ -44,6 +45,8 @@ public class PlayerCharacter implements DataStubModule
 		saveData("CHAR_HEALTH", 20);
 		saveData("CHAR_EXP", 0);
 		saveData("CHAR_ACTIVE", charActive);
+
+		// Demigods Data
 		saveData("CLASS_NAME", className);
 		saveData("TEAM_NAME", teamName);
 		saveData("FAVOR", favor);
@@ -56,6 +59,7 @@ public class PlayerCharacter implements DataStubModule
 		saveData("SUPPORT", support);
 		saveData("PASSIVE", passive);
 		saveData("CLASS_ACTIVE", classActive);
+
 		this.playerCharacterInventory = null;
 		try
 		{

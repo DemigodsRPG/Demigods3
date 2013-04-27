@@ -257,6 +257,6 @@ public class TieredObjectDataModule implements DataModule, Listener
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same
-		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
+		if(this.plugin.getName().equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
 	}
 }

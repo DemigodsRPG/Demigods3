@@ -162,8 +162,15 @@ public class PlayerAPI
 		player.setFoodLevel(character.getFoodLevel());
 		player.setExp(character.getExp());
 
-		// Teleport them
-		player.teleport(character.getLocation().toLocation());
+		try
+		{
+			// Teleport them
+			player.teleport(character.getLocation().toLocation());
+		}
+		catch(Exception e)
+		{
+			Demigods.message.severe("Something went wrong when trying to teleport to a character location..."); // TODO Better error message.
+		}
 
 		// Enable movement and chat to be safe
 		togglePlayerChat(player, true);

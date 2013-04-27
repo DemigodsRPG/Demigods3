@@ -71,11 +71,11 @@ public class Demigods
 		message = new MessageModule(instance, config.getSettingBoolean("tag_messages"));
 		permission = new PermissionModule();
 
-		// Initialize Data
-		new DemigodsData(instance);
-
 		// Create All Object Factories
 		new DemigodsFactory(instance);
+
+		// Initialize Data
+		new DemigodsData(instance);
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)

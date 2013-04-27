@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataModule;
 import com.censoredsoftware.Modules.Data.DataStubModule;
@@ -180,6 +180,16 @@ public class YAMLPersistenceModule
 			try
 			{
 				Object data = this.persistance.get(dataName + "." + key);
+				if(data instanceof ConfigurationSection)
+				{
+					Map map_ = new HashMap();
+					for(String key_ : ((ConfigurationSection) data).getKeys(false))
+					{
+						Object data_ = this.persistance.get(dataName + "." + key + "." + key_);
+						map_.put(key_, data_);
+					}
+					data = map_;
+				}
 				map.put(key, data);
 			}
 			catch(Exception e)
@@ -221,12 +231,7 @@ public class YAMLPersistenceModule
 			}
 
 			// Call the LoadStubYAMLEvent if need be
-			if(!map.isEmpty() && error == 0)
-			{
-				LoadStubYAMLEvent event = new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map);
-				plugin.getServer().getPluginManager().callEvent(event);
-				Demigods.message.broadcast("Event called: " + event.getID());
-			}
+			if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
 		}
 	}
 }

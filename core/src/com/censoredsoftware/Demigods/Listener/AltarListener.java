@@ -477,7 +477,7 @@ public class AltarListener implements Listener
 				player.setPlayerListName(DeityAPI.getDeityColor(newChar.isDeity()) + newChar.getName() + ChatColor.WHITE);
 
 				// Save their previous character and chat number for later monitoring
-				DemigodsData.playerData.saveData(player, "previous_char", event.getCharacterFrom().getID());
+				if(event.getCharacterFrom() != null) DemigodsData.playerData.saveData(player, "previous_char", event.getCharacterFrom().getID());
 				DemigodsData.tempPlayerData.saveData(player, "temp_chat_number", 0);
 
 				// Disable prayer

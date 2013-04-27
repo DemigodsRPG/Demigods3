@@ -5,11 +5,11 @@ import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterFactory;
 public class DemigodsFactory
 {
 	// Character
-	public static PlayerCharacterFactory playerCharacterClassFactory;
+	public static PlayerCharacterFactory playerCharacterFactory;
 
 	DemigodsFactory(DemigodsPlugin instance)
 	{
 		// Character
-		playerCharacterClassFactory = new PlayerCharacterFactory(Demigods.config.getSettingInt("caps.favor"));
+		playerCharacterFactory = new PlayerCharacterFactory(Demigods.config.getSettingInt("caps.favor"));
 	}
 }

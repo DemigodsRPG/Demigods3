@@ -228,7 +228,7 @@ class DataListener implements Listener
 
 		if(event.getPath().equals("core") && event.getDataName().equals("character_data"))
 		{
-			DemigodsFactory.playerCharacterClassFactory.create(event.getData());
+			DemigodsFactory.playerCharacterFactory.create(event.getData());
 		}
 	}
 }

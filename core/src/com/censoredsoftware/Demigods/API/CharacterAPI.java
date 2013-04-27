@@ -29,7 +29,7 @@ public class CharacterAPI
 			int charID = DemigodsData.generateInt(5);
 
 			// Create the Character and it's CharacterClass.
-			PlayerCharacter character = DemigodsFactory.playerCharacterClassFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeityAlliance(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+			PlayerCharacter character = DemigodsFactory.playerCharacterFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeityAlliance(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 
 			// Add character to the Character Data
 			DemigodsData.characterData.saveData(charID, character);
