@@ -110,7 +110,7 @@ public class PlayerAPI
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!getChars(offlinePlayer).contains(charID))
+		if(!getChars(offlinePlayer).contains(CharacterAPI.getChar(charID)))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
@@ -133,10 +133,10 @@ public class PlayerAPI
 
 			// Set them to inactive
 			currentChar.toggleActive(false);
+			DemigodsData.playerData.saveData(player, "previous_char", currentChar.getID());
 		}
 
 		// Everything is good, let's switch
-		DemigodsData.playerData.saveData(player, "previous_char", currentChar.getID());
 		DemigodsData.playerData.saveData(player, "current_char", charID);
 		PlayerCharacterClass character = CharacterAPI.getChar(charID);
 		character.toggleActive(true);

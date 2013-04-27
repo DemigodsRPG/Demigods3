@@ -387,7 +387,6 @@ public class AltarListener implements Listener
 
 		for(TrackedLocation warp : WarpAPI.getWarps(PlayerAPI.getCurrentChar(player)))
 		{
-			Location playerLocation = player.getLocation();
 			String color = "";
 			String name = warp.getName();
 			int X = (int) warp.toLocation().getX();
@@ -479,7 +478,7 @@ public class AltarListener implements Listener
 
 				// Save their previous character and chat number for later monitoring
 				DemigodsData.playerData.saveData(player, "previous_char", event.getCharacterFrom().getID());
-				DemigodsData.playerData.saveData(player, "temp_chat_number", 0);
+				DemigodsData.tempPlayerData.saveData(player, "temp_chat_number", 0);
 
 				// Disable prayer
 				PlayerAPI.togglePraying(player, false);
@@ -498,7 +497,7 @@ public class AltarListener implements Listener
 	// Choose name
 	private void chooseName(Player player)
 	{
-		DemigodsData.playerData.saveData(player, "temp_createchar", "choose_name");
+		DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "choose_name");
 		player.sendMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 		player.sendMessage(" ");
 	}
@@ -510,7 +509,7 @@ public class AltarListener implements Listener
 		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || PlayerAPI.hasCharName(player, message) || DemigodsData.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
-			DemigodsData.playerData.saveData(player, "temp_createchar", "choose_name");
+			DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
 			if(PlayerAPI.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
@@ -520,11 +519,11 @@ public class AltarListener implements Listener
 		}
 		else
 		{
-			DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_name");
+			DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "confirm_name");
 			String chosenName = message.replace(" ", "");
 			player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 			player.sendMessage(" ");
-			DemigodsData.playerData.saveData(player, "temp_createchar_name", chosenName);
+			DemigodsData.tempPlayerData.saveData(player, "temp_createchar_name", chosenName);
 		}
 	}
 
@@ -539,7 +538,7 @@ public class AltarListener implements Listener
 		}
 		player.sendMessage(" ");
 
-		DemigodsData.playerData.saveData(player, "temp_createchar", "choose_deity");
+		DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "choose_deity");
 	}
 
 	// Deity confirmation
@@ -556,8 +555,8 @@ public class AltarListener implements Listener
 					String chosenDeity = message.replace(" ", "");
 					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DemigodsData.playerData.saveData(player, "temp_createchar_deity", chosenDeity);
-					DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_deity");
+					DemigodsData.tempPlayerData.saveData(player, "temp_createchar_deity", chosenDeity);
+					DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "confirm_deity");
 					return;
 				}
 			}
@@ -592,7 +591,7 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.GRAY + "  confirm your new character.");
 		player.sendMessage(" ");
 
-		DemigodsData.playerData.saveData(player, "temp_createchar_finalstep", true);
+		DemigodsData.tempPlayerData.saveData(player, "temp_createchar_finalstep", true);
 	}
 
 	// Final confirmation of deity
@@ -603,8 +602,8 @@ public class AltarListener implements Listener
 		String chosenDeity = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_deity");
 
 		// Save data
-		DemigodsData.playerData.saveData(player, "temp_createchar_finalstep", true);
-		DemigodsData.playerData.saveData(player, "temp_createchar", "confirm_all");
+		DemigodsData.tempPlayerData.saveData(player, "temp_createchar_finalstep", true);
+		DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "confirm_all");
 
 		// Send them the chat
 		player.sendMessage(ChatColor.GREEN + " -> Confirming Character -------------------------------");

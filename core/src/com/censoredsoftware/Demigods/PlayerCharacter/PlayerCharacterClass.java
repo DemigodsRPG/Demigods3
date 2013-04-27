@@ -40,6 +40,8 @@ public class PlayerCharacterClass extends PlayerCharacter
 		saveData("SUPPORT", support);
 		saveData("PASSIVE", passive);
 		saveData("CLASS_ACTIVE", classActive);
+
+		save(this);
 	}
 
 	/**

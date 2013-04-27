@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 
+import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
 public class PlayerCharacter
@@ -37,6 +38,13 @@ public class PlayerCharacter
 		}
 		catch(Exception ignored)
 		{}
+
+		save(this);
+	}
+
+	static void save(PlayerCharacter character) // TODO This belongs somewhere else.
+	{
+		DemigodsData.characterData.saveData(character.getID(), character);
 	}
 
 	/**
