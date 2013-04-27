@@ -12,20 +12,25 @@ in any way out of the use or misuse of this package.
 Definitions
 
  1. This Package is defined as all of the files within any archive
-    file or any group of files released in conjunction by the Demigods Team,
-    the Demigods Team, or a derived or modified work based on such files.
+    file or any group of files released in conjunction by Censored Software,
+    Censored Software, or a derived or modified work based on such files.
 
  2. A Modification, or a Mod, is defined as this Package or a derivative of
     it with one or more Modification applied to it.
 
  3. Distribution is defined as allowing one or more other people to in
-    any way download or receive a copy of this Package, a Modified
-    Package, or a derivative of this Package.
+    any way download or receive a copy of this Package, a Modified Package,
+    a derivative of this Package, or a program that depends on this Package.
 
- 4. The Software is defined as an installed copy of this Package, a
+ 4. Publication is defined as a form of Distribution meant to easily allow
+    many people to in any way download or receive a copy of this Package, a
+    Modified Package, a derivative of this Package, or a program that depends
+    on this Package.
+
+ 5. The Software is defined as an installed copy of this Package, a
     Modified Package, or a derivative of this Package.
 
- 5. Censored Software is defined as Alex Bennett and Alexander Chauncey
+ 6. Censored Software is defined as Alex Bennett and Alexander Chauncey
     of http://www.censoredsoftware.com/.
 
 Agreement
@@ -70,17 +75,20 @@ Agreement
     c. Any Distribution of a Modified Package or derivative requires
        express written consent from the Censored Software.
 
- 3. You may make programs which depend on this Package, provided that you
-    do not distribute any Modified Package without express written consent.
-    The following restrictions apply to programs that depend on this Package:
+ 3. You may make programs which depend on this Package. The following
+    restrictions apply to programs that depend on this Package:
 
     a. When a program that depends on this Package is released, a
        non-exclusive royalty-free right is granted to the Censored Software
        to distribute the dependant program.
 
-    b. Any Distribution of a program that depends on this Package must be
+    b. Permission is hereby also granted to distribute programs which
+       depend on this Plugin, provided that you do not distribute any
+       Modified Plugin without express written consent.
+
+    c. Any Publication of a program that depends on this Package must be
        let known to Censored Software, with confirmation from Censored Software
-       that such Distribution is known.
+       that such Publication is known.
 
  4. Censored Software reserves the right to change the terms of this
     Agreement at any time, although those changes are not retroactive
