@@ -1,9 +1,9 @@
-package com.censoredsoftware.Demigods.PlayerCharacter;
+package com.censoredsoftware.Modules.PlayerCharacter;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -12,14 +12,17 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.API.DemigodAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Tracked.TrackedItemStack;
-import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
+import com.censoredsoftware.Modules.Data.DataStubModule;
+import com.censoredsoftware.Modules.Data.IntegerDataModule;
 
 // TODO Figure out how this file is going to save.
 
-public class PlayerCharacterInventory
+public class PlayerCharacterInventory implements DataStubModule
 {
-	private String owner;
+	private int charID;
 	private int size;
 	private TrackedItemStack helmet = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private TrackedItemStack chestPlate = new TrackedItemStack(new ItemStack(Material.AIR), null);
@@ -27,9 +30,9 @@ public class PlayerCharacterInventory
 	private TrackedItemStack boots = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private IntegerDataModule items;
 
-	public PlayerCharacterInventory(String owner, int size, TrackedItemStack helmet, TrackedItemStack chestPlate, TrackedItemStack leggings, TrackedItemStack boots, IntegerDataModule items)
+	public PlayerCharacterInventory(int charID, int size, TrackedItemStack helmet, TrackedItemStack chestPlate, TrackedItemStack leggings, TrackedItemStack boots, IntegerDataModule items)
 	{
-		this.owner = owner;
+		this.charID = charID;
 		this.size = size;
 		this.helmet = helmet;
 		this.chestPlate = chestPlate;
@@ -44,7 +47,7 @@ public class PlayerCharacterInventory
 
 		if(inventory != null)
 		{
-			this.owner = ((OfflinePlayer) inventory.getHolder()).getName();
+			this.charID = (PlayerAPI.getCurrentChar((OfflinePlayer) inventory.getHolder())).getID();
 			this.size = inventory.getSize();
 
 			if(getOwner().isOnline())
@@ -117,7 +120,7 @@ public class PlayerCharacterInventory
 	 */
 	public OfflinePlayer getOwner()
 	{
-		return Bukkit.getOfflinePlayer(this.owner);
+		return DemigodAPI.getChar(charID).getOwner();
 	}
 
 	/*
@@ -177,8 +180,21 @@ public class PlayerCharacterInventory
 		else return null;
 	}
 
-	public IntegerDataModule grabItems()
+	@Override
+	public int getID()
 	{
-		return this.items;
+		return charID;
+	}
+
+	@Override
+	public Map getMap() // TODO Make this into an actual DataStubModule instead of it holding a generic data module.
+	{
+		return items.getMap();
+	}
+
+	@Override
+	public void setMap(Map map) // TODO Make this into an actual DataStubModule instead of it holding a generic data module.
+	{
+		items.setMap(map);
 	}
 }

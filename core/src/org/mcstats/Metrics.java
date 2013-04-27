@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package com.censoredsoftware.Demigods.Library;
+package org.mcstats;
 
 import java.io.*;
 import java.net.Proxy;

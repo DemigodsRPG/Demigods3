@@ -1,20 +1,20 @@
-package com.censoredsoftware.Demigods.Event.Character;
+package com.censoredsoftware.Demigods.Event.Demigod;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 
 /*
  * Represents an event that is called when a player is killed by another player.
  */
-public class CharacterKillCharacterEvent extends Event
+public class DemigodKillDemigodEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacterClass attacker;
-	private PlayerCharacterClass killedChar;
+	private Demigod attacker;
+	private Demigod killedChar;
 
-	public CharacterKillCharacterEvent(final PlayerCharacterClass attacker, final PlayerCharacterClass killedChar)
+	public DemigodKillDemigodEvent(final Demigod attacker, final Demigod killedChar)
 	{
 		this.attacker = attacker;
 		this.killedChar = killedChar;
@@ -23,7 +23,7 @@ public class CharacterKillCharacterEvent extends Event
 	/*
 	 * getCharacter() : Gets the character.
 	 */
-	public PlayerCharacterClass getCharacter()
+	public Demigod getCharacter()
 	{
 		return this.attacker;
 	}
@@ -31,7 +31,7 @@ public class CharacterKillCharacterEvent extends Event
 	/*
 	 * getKilled() : Gets the player that was killed by the player.
 	 */
-	public PlayerCharacterClass getKilled()
+	public Demigod getKilled()
 	{
 		return this.killedChar;
 	}

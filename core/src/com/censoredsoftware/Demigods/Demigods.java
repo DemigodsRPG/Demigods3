@@ -27,13 +27,13 @@ import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.API.AdminAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.API.DemigodAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
-import com.censoredsoftware.Demigods.Event.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Demigods.Event.Demigod.DemigodBetrayDemigodEvent;
+import com.censoredsoftware.Demigods.Event.Demigod.DemigodKillDemigodEvent;
 import com.censoredsoftware.Demigods.Listener.*;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.censoredsoftware.Demigods.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
@@ -215,7 +215,7 @@ public class Demigods
 	protected static void unload(DemigodsPlugin instance)
 	{
 		HandlerList.unregisterAll(instance);
-		// Scheduler.stopThreads(instance);
+		Scheduler.stopThreads(instance);
 	}
 }
 
@@ -223,7 +223,14 @@ class Scheduler
 {
 	static void startThreads(DemigodsPlugin instance)
 	{
-		// TODO This.
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				DemigodsData.save(true);
+			}
+		}, 30, 60);
 	}
 
 	static void stopThreads(DemigodsPlugin instance)
@@ -242,7 +249,7 @@ class EventFactory implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacterClass playerChar = null;
+			Demigod playerChar = null;
 			if(PlayerAPI.getCurrentChar(player) != null) playerChar = PlayerAPI.getCurrentChar(player);
 
 			// if(playerChar != null)
@@ -261,15 +268,15 @@ class EventFactory implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacterClass attackChar = null;
+					Demigod attackChar = null;
 					if(PlayerAPI.getCurrentChar(attacker) != null) attackChar = PlayerAPI.getCurrentChar(attacker);
 					if(PlayerAPI.areAllied(attacker, player))
 					{
-						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerAPI.getCurrentAlliance(player)));
+						Bukkit.getServer().getPluginManager().callEvent(new DemigodBetrayDemigodEvent(attackChar, playerChar, PlayerAPI.getCurrentAlliance(player)));
 					}
 					else
 					{
-						Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
+						Bukkit.getServer().getPluginManager().callEvent(new DemigodKillDemigodEvent(attackChar, playerChar));
 					}
 
 					if(attackChar != null)
@@ -279,7 +286,7 @@ class EventFactory implements Listener
 						// attackChar.setKillstreak(killstreak + 1);
 						// if(attackChar.getKillstreak() > 2)
 						// {
-						// Demigods.message.callEvent(new CharacterKillstreakEvent(attackChar, playerChar, killstreak + 1));
+						// Demigods.message.callEvent(new DemigodKillstreakEvent(attackChar, playerChar, killstreak + 1));
 						// }
 
 						// TODO Dominating
@@ -488,7 +495,7 @@ class Commands implements CommandExecutor
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		Player toEdit;
-		PlayerCharacterClass character;
+		Demigod character;
 		int amount;
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
@@ -551,11 +558,11 @@ class Commands implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					List<PlayerCharacterClass> chars = PlayerAPI.getChars(toCheck);
+					List<Demigod> chars = PlayerAPI.getChars(toCheck);
 
-					for(PlayerCharacterClass checkingChar : chars)
+					for(Demigod checkingChar : chars)
 					{
-						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getID() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getClassName());
+						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getID() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.isDeity());
 					}
 				}
 				else
@@ -578,12 +585,12 @@ class Commands implements CommandExecutor
 					}
 					else if(option2.equalsIgnoreCase("character"))
 					{
-						int charID = CharacterAPI.getCharByName(option3).getID();
+						int charID = DemigodAPI.getCharByName(option3).getID();
 
 						// Remove the data
 						DemigodsData.characterData.removeData(charID);
 
-						sender.sendMessage(ChatColor.RED + "Character \"" + CharacterAPI.getChar(charID).getName() + "\" removed.");
+						sender.sendMessage(ChatColor.RED + "Character \"" + DemigodAPI.getChar(charID).getName() + "\" removed.");
 					}
 				}
 			}
@@ -806,9 +813,9 @@ class Commands implements CommandExecutor
 	private static boolean check(CommandSender sender, String[] args)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
-		if(character == null || !character.isClassActive())
+		if(character == null || !character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You cannot use that command, mortal.");
 			return true;
@@ -819,7 +826,7 @@ class Commands implements CommandExecutor
 		int deaths = PlayerAPI.getDeaths(player);
 		// int killstreak = character.getKillstreak();
 		String charName = character.getName();
-		String deity = character.getClassName();
+		String deity = character.isDeity();
 		String alliance = character.getTeam();
 		int favor = character.getFavor();
 		int maxFavor = character.getMaxFavor();
@@ -875,7 +882,7 @@ class Commands implements CommandExecutor
 			return true;
 		}
 
-		PlayerCharacterClass charToCheck = CharacterAPI.getCharByName(args[0]);
+		Demigod charToCheck = DemigodAPI.getCharByName(args[0]);
 
 		if(charToCheck.getName() == null)
 		{
@@ -884,7 +891,7 @@ class Commands implements CommandExecutor
 		}
 		else
 		{
-			player.sendMessage(DeityAPI.getDeityColor(charToCheck.getClassName()) + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOwner().getName() + ".");
+			player.sendMessage(DeityAPI.getDeityColor(charToCheck.isDeity()) + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOwner().getName() + ".");
 			return true;
 		}
 	}
@@ -910,7 +917,7 @@ class Commands implements CommandExecutor
 		sender.sendMessage("-- Characters ---------------");
 		sender.sendMessage(" ");
 
-		for(PlayerCharacterClass character : CharacterAPI.getAllChars())
+		for(Demigod character : DemigodAPI.getAllChars())
 		{
 			sender.sendMessage(character.getName() + "."); // TODO Warp data and such.
 		}
@@ -930,7 +937,7 @@ class Commands implements CommandExecutor
 
 		if(PlayerAPI.hasCharName(player, charName))
 		{
-			PlayerCharacterClass character = CharacterAPI.getCharByName(charName);
+			Demigod character = DemigodAPI.getCharByName(charName);
 			int charID = character.getID();
 			DemigodsData.characterData.removeData(charID);
 

@@ -6,12 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Event.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Event.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.censoredsoftware.Demigods.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
@@ -81,7 +81,7 @@ public class BattleAPI
 	 * @param character the character whose active battle to return.
 	 * @return TrackedBattle
 	 */
-	public static TrackedBattle getActiveBattle(PlayerCharacterClass character)
+	public static TrackedBattle getActiveBattle(Demigod character)
 	{
 		for(TrackedBattle battle : getAllActive())
 		{
@@ -113,7 +113,7 @@ public class BattleAPI
 	 * @param character the character to check.
 	 * @return boolean
 	 */
-	public static boolean isInBattle(TrackedBattle battle, PlayerCharacterClass character)
+	public static boolean isInBattle(TrackedBattle battle, Demigod character)
 	{
 		for(int charID : battle.getCharIDs())
 		{
@@ -143,7 +143,7 @@ public class BattleAPI
 	 * @param character the character to check.
 	 * @return boolean
 	 */
-	public static boolean isInAnyActiveBattle(PlayerCharacterClass character)
+	public static boolean isInAnyActiveBattle(Demigod character)
 	{
 		for(TrackedBattle battle : getAllActive())
 		{
@@ -193,7 +193,7 @@ public class BattleAPI
 	 * @param hitChar the character being hit.
 	 * @param hittingChar the character doing to hitting.
 	 */
-	public static void battleProcess(PlayerCharacterClass hitChar, PlayerCharacterClass hittingChar)
+	public static void battleProcess(Demigod hitChar, Demigod hittingChar)
 	{
 		TrackedBattle battle = null;
 		TrackedBattle otherBattle = null;
@@ -258,7 +258,7 @@ public class BattleAPI
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(CharacterAPI.getChar(battle.getWhoStarted()), hitChar, battle.getStartTime(), battleID);
+						combinedBattle = new TrackedBattle(DemigodAPI.getChar(battle.getWhoStarted()), hitChar, battle.getStartTime(), battleID);
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
@@ -269,7 +269,7 @@ public class BattleAPI
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(CharacterAPI.getChar(otherBattle.getWhoStarted()), hitChar, otherBattle.getStartTime(), battleID);
+						combinedBattle = new TrackedBattle(DemigodAPI.getChar(otherBattle.getWhoStarted()), hitChar, otherBattle.getStartTime(), battleID);
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;

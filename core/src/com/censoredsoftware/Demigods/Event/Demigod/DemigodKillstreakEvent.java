@@ -1,21 +1,21 @@
-package com.censoredsoftware.Demigods.Event.Character;
+package com.censoredsoftware.Demigods.Event.Demigod;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 
 /*
  * Represents an event that is called when a character is on a killstreak.
  */
-public class CharacterKillstreakEvent extends Event
+public class DemigodKillstreakEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacterClass character;
-	private PlayerCharacterClass lastKilled;
+	private Demigod character;
+	private Demigod lastKilled;
 	private int kills;
 
-	public CharacterKillstreakEvent(final PlayerCharacterClass character, final PlayerCharacterClass lastKilled, final int kills)
+	public DemigodKillstreakEvent(final Demigod character, final Demigod lastKilled, final int kills)
 	{
 		this.character = character;
 		this.lastKilled = lastKilled;
@@ -25,7 +25,7 @@ public class CharacterKillstreakEvent extends Event
 	/*
 	 * getCharacter() : Gets the character.
 	 */
-	public PlayerCharacterClass getCharacter()
+	public Demigod getCharacter()
 	{
 		return this.character;
 	}
@@ -33,7 +33,7 @@ public class CharacterKillstreakEvent extends Event
 	/*
 	 * getLastKilled() : Gets the character that was last killed by the character.
 	 */
-	public PlayerCharacterClass getLastKilled()
+	public Demigod getLastKilled()
 	{
 		return this.lastKilled;
 	}

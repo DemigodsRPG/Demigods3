@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules.DataPersistence;
+package com.censoredsoftware.Modules.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +10,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+
 /**
- * Module to handle data based on a group of Strings, holding Objects as data.
+ * Module to handle data based on a group of Objects, holding Objects as data.
  */
-public class StringDataModule extends DataModule implements Listener
+public class ObjectDataModule implements DataModule, Listener
 {
 	// Define HashMaps
-	private Map<String, Object> stringData;
+	private Map<Object, Object> objectData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -27,9 +29,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param instance The current instance of the plugin running this module.
 	 * @param dataName The name of the data set being held in this module.
 	 */
-	public StringDataModule(Plugin instance, String dataName)
+	public ObjectDataModule(Plugin instance, String dataName)
 	{
-		this.stringData = new HashMap<String, Object>();
+		this.objectData = new HashMap<Object, Object>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -40,9 +42,9 @@ public class StringDataModule extends DataModule implements Listener
 	/**
 	 * Create a new instance of the library.
 	 */
-	public StringDataModule()
+	public ObjectDataModule()
 	{
-		this.stringData = new HashMap<String, Object>();
+		this.objectData = new HashMap<Object, Object>();
 	}
 
 	/**
@@ -50,20 +52,20 @@ public class StringDataModule extends DataModule implements Listener
 	 * 
 	 * @param key The key to save.
 	 */
-	public void createSave(String key)
+	public void createSave(Object key)
 	{
-		if(!containsKey(key)) stringData.put(key, new HashMap<String, Object>());
+		if(!containsKey(key)) objectData.put(key, new HashMap<String, Object>());
 	}
 
 	/**
-	 * Checks if the stringData Map contains <code>key</code>.
+	 * Checks if the objectData Map contains <code>key</code>.
 	 * 
 	 * @param key The key in the save.
-	 * @return True if stringData contains the key.
+	 * @return True if objectData contains the key.
 	 */
-	public boolean containsKey(String key)
+	public boolean containsKey(Object key)
 	{
-		return stringData.get(key) != null && stringData.containsKey(key);
+		return objectData.get(key) != null && objectData.containsKey(key);
 	}
 
 	/**
@@ -72,9 +74,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Integer data.
 	 */
-	public int getDataInt(String key)
+	public int getDataInt(Object key)
 	{
-		if(containsKey(key)) return Integer.parseInt(stringData.get(key).toString());
+		if(containsKey(key)) return Integer.parseInt(objectData.get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -84,9 +86,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return String data.
 	 */
-	public String getDataString(String key)
+	public String getDataString(Object key)
 	{
-		if(containsKey(key)) return stringData.get(key).toString();
+		if(containsKey(key)) return objectData.get(key).toString();
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -96,9 +98,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Boolean data.
 	 */
-	public boolean getDataBool(String key)
+	public boolean getDataBool(Object key)
 	{
-		if(containsKey(key)) return Boolean.parseBoolean(stringData.get(key).toString());
+		if(containsKey(key)) return Boolean.parseBoolean(objectData.get(key).toString());
 		return false; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -108,9 +110,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Double data.
 	 */
-	public double getDataDouble(String key)
+	public double getDataDouble(Object key)
 	{
-		if(containsKey(key)) return Double.parseDouble(stringData.get(key).toString());
+		if(containsKey(key)) return Double.parseDouble(objectData.get(key).toString());
 		return -1.0; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -120,9 +122,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Float data.
 	 */
-	public float getDataFloat(String key)
+	public float getDataFloat(Object key)
 	{
-		if(containsKey(key)) return Float.parseFloat(stringData.get(key).toString());
+		if(containsKey(key)) return Float.parseFloat(objectData.get(key).toString());
 		return 0F; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -132,9 +134,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Long data.
 	 */
-	public long getDataLong(String key)
+	public long getDataLong(Object key)
 	{
-		if(containsKey(key)) return Long.parseLong(stringData.get(key).toString());
+		if(containsKey(key)) return Long.parseLong(objectData.get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -144,9 +146,9 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
-	public Object getDataObject(String key)
+	public Object getDataObject(Object key)
 	{
-		if(containsKey(key)) return stringData.get(key);
+		if(containsKey(key)) return objectData.get(key);
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -156,10 +158,10 @@ public class StringDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
-	public void saveData(String key, Object data)
+	public void saveData(Object key, Object data)
 	{
 		if(!containsKey(key)) createSave(key);
-		stringData.put(key, data);
+		objectData.put(key, data);
 	}
 
 	/**
@@ -167,10 +169,10 @@ public class StringDataModule extends DataModule implements Listener
 	 * 
 	 * @param key The key in the save.
 	 */
-	public void removeData(String key)
+	public void removeData(Object key)
 	{
 		if(!containsKey(key)) return;
-		stringData.remove(key);
+		objectData.remove(key);
 	}
 
 	/**
@@ -178,10 +180,10 @@ public class StringDataModule extends DataModule implements Listener
 	 * 
 	 * @return The list of keys.
 	 */
-	public List<String> listKeys()
+	public List<Object> listKeys()
 	{
-		List<String> keys = new ArrayList<String>();
-		for(Map.Entry<String, Object> entry : stringData.entrySet())
+		List<Object> keys = new ArrayList<Object>();
+		for(Map.Entry<Object, Object> entry : objectData.entrySet())
 		{
 			keys.add(entry.getKey());
 		}
@@ -192,17 +194,17 @@ public class StringDataModule extends DataModule implements Listener
 	 * Grab the Map in it's entirely. Can only be accessed from other Modules (to prevent unsafe use).
 	 */
 	@Override
-	Map<String, Object> grabMap()
+	public Map<Object, Object> getMap()
 	{
-		return this.stringData;
+		return this.objectData;
 	}
 
 	@Override
-	protected void overrideMap(Map map)
+	public void setMap(Map map)
 	{
 		try
 		{
-			this.stringData = map;
+			this.objectData = map;
 		}
 		catch(Exception ignored)
 		{}
@@ -210,10 +212,10 @@ public class StringDataModule extends DataModule implements Listener
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onLoadYAML(LoadYAMLEvent event)
+	public void onLoadYAML(LoadYAMLEvent event)
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same
-		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) overrideMap(event.getData());
+		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
 	}
 }

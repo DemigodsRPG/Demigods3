@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 // TODO Convert this.
 
@@ -21,7 +21,7 @@ public class TrackedBattle
 	private Long endTime;
 	private boolean isActive = true;
 
-	public TrackedBattle(PlayerCharacterClass attacking, PlayerCharacterClass defending, final Long startTime, final int battleID)
+	public TrackedBattle(Demigod attacking, Demigod defending, final Long startTime, final int battleID)
 	{
 		// Define variables
 		Player started = (Player) attacking.getOwner();
@@ -49,13 +49,13 @@ public class TrackedBattle
 		return this.battleID;
 	}
 
-	public void addCharacter(PlayerCharacterClass character)
+	public void addCharacter(Demigod character)
 	{
 		addCharID(character.getID());
 		if(character.getOwner().isOnline()) addLocation(character.getOwner().getPlayer().getLocation());
 	}
 
-	public void removeCharacter(PlayerCharacterClass character)
+	public void removeCharacter(Demigod character)
 	{
 		removeCharID(character.getID());
 	}

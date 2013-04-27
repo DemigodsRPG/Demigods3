@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.PlayerCharacter;
+package com.censoredsoftware.Modules.Persistence;
 
 import java.io.File;
 import java.util.HashMap;
@@ -7,15 +7,19 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+
+import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Modules.Data.DataModule;
+import com.censoredsoftware.Modules.Data.DataStubModule;
+import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;
+import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
 
 /**
  * Module to handle all saving related methods.
  */
-public class PlayerCharacterYAML
+public class YAMLPersistenceModule
 {
 	private Plugin plugin;
 	private String path, pluginName;
@@ -31,18 +35,17 @@ public class PlayerCharacterYAML
 	 * @param instance The instance of the Plugin creating the PlayerCharacterYAML.
 	 * @param dataName The name of data set, and the name of the file.
 	 */
-	public PlayerCharacterYAML(boolean load, Plugin instance, String path, String dataName)
+	public YAMLPersistenceModule(boolean load, Plugin instance, String path, String dataName)
 	{
 		this.plugin = instance;
-		if(path != null) this.path = path;
-		else this.path = "";
+		this.path = path;
 		this.pluginName = this.plugin.getName();
 		this.dataName = dataName;
 
 		folderStructure(this.path);
 
-		this.yamlFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + path + dataName + ".yml");
-		this.backupFile = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup" + File.separator + path + dataName + ".yml");
+		this.yamlFile = new File(plugin.getDataFolder() + File.separator + path + File.separator + dataName + ".yml");
+		this.backupFile = new File(plugin.getDataFolder() + path + File.separator + "backup" + File.separator + dataName + ".yml");
 
 		initialize(load);
 	}
@@ -53,8 +56,8 @@ public class PlayerCharacterYAML
 	private void folderStructure(String path)
 	{
 		// Define the folders
-		File dataFolder = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + path);
-		File backupFolder = new File(plugin.getDataFolder() + File.separator + "data" + File.separator + "backup" + File.separator + path);
+		File dataFolder = new File(plugin.getDataFolder() + File.separator + path);
+		File backupFolder = new File(plugin.getDataFolder() + File.separator + "backup" + File.separator + path);
 
 		// If they don't exist, create them now
 		if(!dataFolder.exists()) dataFolder.mkdirs();
@@ -93,14 +96,42 @@ public class PlayerCharacterYAML
 	 * 
 	 * @return True if successful.
 	 */
-	public boolean save(PlayerCharacter character)
+	public boolean save(DataModule dataModule)
 	{
 		// Grab the latest map for saving
-		this.map = character.grabMap();
+		this.map = dataModule.getMap();
 
 		try
 		{
 			this.persistance.createSection(dataName, this.map);
+			if(this.backupFile.exists()) this.backupFile.delete();
+			this.yamlFile.renameTo(this.backupFile);
+			this.yamlFile.createNewFile();
+			this.persistance.save(this.yamlFile);
+			return true;
+		}
+		catch(Exception e)
+		{
+			log.severe("[" + pluginName + "] Unable to save file: " + dataName + ".yml");
+			log.severe("[" + pluginName + "] Error: " + e);
+			log.severe("[" + pluginName + "] Please check your write permissions and try again.");
+		}
+		return false;
+	}
+
+	/**
+	 * Save the data that this module handles.
+	 * 
+	 * @return True if successful.
+	 */
+	public boolean save(DataStubModule stub)
+	{
+		// Grab the latest map for saving
+		this.map = stub.getMap();
+
+		try
+		{
+			this.persistance.createSection(String.valueOf(stub.getID()), this.map);
 			if(this.backupFile.exists()) this.backupFile.delete();
 			this.yamlFile.renameTo(this.backupFile);
 			this.yamlFile.createNewFile();
@@ -132,7 +163,12 @@ public class PlayerCharacterYAML
 	public void load()
 	{
 		// Prevent NullPointerException Error
-		if(this.persistance == null || this.persistance.getConfigurationSection(dataName) == null) return;
+		if(this.persistance == null) return;
+
+		loadStubs();
+
+		// Prevent NullPointerException Error
+		if(this.persistance.getConfigurationSection(dataName) == null) return;
 
 		// Define variables
 		Map map = new HashMap();
@@ -155,95 +191,41 @@ public class PlayerCharacterYAML
 		}
 
 		// Call the LoadYAMLEvent if need be
-		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new PlayerCharacterLoadYAMLEvent(pluginName, path, dataName, map));
-	}
-}
-
-/**
- * An event that is triggered when data is loaded from a YAML file.
- */
-class PlayerCharacterLoadYAMLEvent extends Event implements Cancellable
-{
-	private String pluginName, path, dataName;
-	private Map map;
-	private static final HandlerList handlers = new HandlerList();
-	private boolean cancelled = false;
-
-	/**
-	 * Constructor for the LoadYAMLEvent.
-	 * 
-	 * @param pluginName Name of the plugin the data belongs to.
-	 * @param dataName Name of the data set being loaded.
-	 * @param map The data that was loaded.
-	 */
-	PlayerCharacterLoadYAMLEvent(String pluginName, String path, String dataName, Map map)
-	{
-		this.pluginName = pluginName;
-		this.path = path;
-		this.dataName = dataName;
-		this.map = map;
+		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadYAMLEvent(pluginName, path, dataName, map));
 	}
 
-	/**
-	 * Returns the plugin name of the loaded file.
-	 * 
-	 * @return The plugin name.
-	 */
-	String getPluginName()
+	private void loadStubs()
 	{
-		return this.pluginName;
-	}
+		for(String tier : this.persistance.getKeys(false))
+		{
+			if(!DemigodsData.isInt(tier) || tier.equals(dataName)) continue;
 
-	/**
-	 * Returns the path of the loaded file.
-	 * 
-	 * @return The path.
-	 */
-	String getPath()
-	{
-		return this.path;
-	}
+			// Define variables
+			Map map = new HashMap();
+			int error = 0;
 
-	/**
-	 * Returns the data name of the loaded file.
-	 * 
-	 * @return The data name.
-	 */
-	String getDataName()
-	{
-		return this.dataName;
-	}
+			// Loop through the data in the file
+			for(String key : this.persistance.getConfigurationSection(tier).getKeys(false))
+			{
+				try
+				{
+					Object data = this.persistance.get(tier + "." + key);
+					map.put(key, data);
+				}
+				catch(Exception e)
+				{
+					error++;
+					log.severe("[" + pluginName + "] Unable to load from file: " + dataName + ".yml");
+					log.severe("[" + pluginName + "] Error: " + e);
+				}
+			}
 
-	/**
-	 * Returns the data that was loaded.
-	 * 
-	 * @return The map data.
-	 */
-	Map getData()
-	{
-		return this.map;
-	}
-
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
-
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
-
-	@Override
-	public boolean isCancelled()
-	{
-		return this.cancelled;
-	}
-
-	@Override
-	public synchronized void setCancelled(boolean cancelled)
-	{
-		this.cancelled = cancelled;
+			// Call the LoadStubYAMLEvent if need be
+			if(!map.isEmpty() && error == 0)
+			{
+				Demigods.message.broadcast("Event called: " + tier);
+				plugin.getServer().getPluginManager().callEvent(new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
+			}
+		}
 	}
 }

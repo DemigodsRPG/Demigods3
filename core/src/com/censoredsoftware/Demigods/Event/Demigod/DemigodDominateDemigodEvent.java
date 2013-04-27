@@ -88,23 +88,23 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Event.Character;
+package com.censoredsoftware.Demigods.Event.Demigod;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 
 /*
  * Represents an event that is called when a character is dominating another character.
  */
-public class CharacterDominateCharacterEvent extends Event
+public class DemigodDominateDemigodEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacterClass character;
-	private PlayerCharacterClass dominated;
+	private Demigod character;
+	private Demigod dominated;
 
-	public CharacterDominateCharacterEvent(final PlayerCharacterClass character, final PlayerCharacterClass dominated)
+	public DemigodDominateDemigodEvent(final Demigod character, final Demigod dominated)
 	{
 		this.character = character;
 		this.dominated = dominated;
@@ -113,7 +113,7 @@ public class CharacterDominateCharacterEvent extends Event
 	/*
 	 * getCharacter() : Gets the character.
 	 */
-	public PlayerCharacterClass getCharacter()
+	public Demigod getCharacter()
 	{
 		return this.character;
 	}
@@ -121,7 +121,7 @@ public class CharacterDominateCharacterEvent extends Event
 	/*
 	 * getDominated() : Gets the character that was dominated by the character.
 	 */
-	public PlayerCharacterClass getDominated()
+	public Demigod getDominated()
 	{
 		return this.dominated;
 	}

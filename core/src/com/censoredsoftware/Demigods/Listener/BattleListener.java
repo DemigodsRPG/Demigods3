@@ -8,13 +8,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.API.BattleAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.DemigodAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Event.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.censoredsoftware.Demigods.Tracked.TrackedBattle;
 import com.google.common.base.Joiner;
 
@@ -23,8 +23,8 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onBattleStart(BattleStartEvent event)
 	{
-		PlayerCharacterClass attacker = event.getAttacking();
-		PlayerCharacterClass defending = event.getDefending();
+		Demigod attacker = event.getAttacking();
+		Demigod defending = event.getDefending();
 		String attackerAlliance = attacker.getTeam();
 		String defendingAlliance = defending.getTeam();
 
@@ -43,11 +43,11 @@ public class BattleListener implements Listener
 	{
 		int battleID = event.getID();
 		TrackedBattle battle = BattleAPI.getBattle(battleID);
-		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + CharacterAPI.getChar(battle.getWhoStarted()).getName() + ChatColor.YELLOW + " has ended.");
+		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + DemigodAPI.getChar(battle.getWhoStarted()).getName() + ChatColor.YELLOW + " has ended.");
 		ArrayList<Integer> charIDs = battle.getCharIDs();
 		ArrayList<String> charNames = new ArrayList<String>();
 		for(int charID : charIDs)
-			charNames.add(CharacterAPI.getChar(charID).getName());
+			charNames.add(DemigodAPI.getChar(charID).getName());
 		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle involved: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
 	}
 
@@ -60,8 +60,8 @@ public class BattleListener implements Listener
 		ArrayList<Integer> charIDs = combined.getCharIDs();
 		ArrayList<String> charNames = new ArrayList<String>();
 		for(int charID : charIDs)
-			charNames.add(CharacterAPI.getChar(charID).getName());
-		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + CharacterAPI.getChar(first.getWhoStarted()).getName() + ChatColor.YELLOW + " has merged with another battle!");
+			charNames.add(DemigodAPI.getChar(charID).getName());
+		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + DemigodAPI.getChar(first.getWhoStarted()).getName() + ChatColor.YELLOW + " has merged with another battle!");
 		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle now involves the following: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
 	}
 }

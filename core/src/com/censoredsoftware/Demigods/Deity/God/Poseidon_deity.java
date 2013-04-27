@@ -20,13 +20,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.API.AbilityAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.DemigodAPI;
 import com.censoredsoftware.Demigods.API.MiscAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Deity.Deity;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class Poseidon_deity implements Deity, Listener
 {
@@ -129,7 +129,7 @@ public class Poseidon_deity implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -137,14 +137,14 @@ public class Poseidon_deity implements Deity, Listener
 
 		if(character.isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
-			if(!CharacterAPI.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
+			if(!DemigodAPI.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
 
 			reel(player);
 		}
 
 		if(character.isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(DROWN_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
+			if(!DemigodAPI.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
 
 			drown(player);
 		}
@@ -177,7 +177,7 @@ public class Poseidon_deity implements Deity, Listener
 	 */
 	public static void reelCommand(Player player, String[] args)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -199,7 +199,7 @@ public class Poseidon_deity implements Deity, Listener
 	public static void reel(Player player)
 	{
 		// Set variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		int damage = (int) Math.ceil(0.37286 * Math.pow(character.getPower(AbilityType.OFFENSE), 0.371238));
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
@@ -223,7 +223,7 @@ public class Poseidon_deity implements Deity, Listener
 	 */
 	public static void drownCommand(Player player, String[] args)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -253,7 +253,7 @@ public class Poseidon_deity implements Deity, Listener
 	public static void drown(Player player)
 	{
 		// Define variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		int power = character.getPower(AbilityType.OFFENSE);
 		int radius = (int) Math.ceil(1.6955424 * Math.pow(power, 0.129349));
 		int duration = (int) Math.ceil(2.80488 * Math.pow(power, 0.2689)); // seconds

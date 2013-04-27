@@ -12,11 +12,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.API.DemigodAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class ChatListener implements Listener
 {
@@ -49,13 +49,13 @@ public class ChatListener implements Listener
 		if(DemigodsData.tempPlayerData.containsKey(player, "temp_chat_number"))
 		{
 			// Define variables
-			PlayerCharacterClass prevChar = CharacterAPI.getChar(DemigodsData.playerData.getDataInt(player, "previous_char"));
+			Demigod prevChar = DemigodAPI.getChar(DemigodsData.playerData.getDataInt(player, "previous_char"));
 
 			DemigodsData.tempPlayerData.saveData(player, "temp_chat_number", DemigodsData.tempPlayerData.getDataInt(player, "temp_chat_number") + 1);
 
 			if(DemigodsData.tempPlayerData.getDataInt(player, "temp_chat_number") <= 2)
 			{
-				event.setMessage(ChatColor.GRAY + "(Previously " + DeityAPI.getDeityColor(prevChar.getClassName()) + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
+				event.setMessage(ChatColor.GRAY + "(Previously " + DeityAPI.getDeityColor(prevChar.isDeity()) + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
 			}
 			else DemigodsData.tempPlayerData.removeData(player, "temp_chat_number");
 		}

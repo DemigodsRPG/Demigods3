@@ -1,11 +1,11 @@
-package com.censoredsoftware.Demigods.PlayerCharacter;
+package com.censoredsoftware.Demigods.Demigod;
 
 import org.bukkit.OfflinePlayer;
 
 /**
- * Factory for creating PlayerCharacterClass objects.
+ * Factory for creating Demigod objects.
  */
-public class PlayerCharacterClassFactory
+public class DemigodFactory
 {
 	private int globalMaxFavor;
 
@@ -14,13 +14,13 @@ public class PlayerCharacterClassFactory
 	 * 
 	 * @param globalMaxFavor The max favor setting.
 	 */
-	public PlayerCharacterClassFactory(int globalMaxFavor)
+	public DemigodFactory(int globalMaxFavor)
 	{
 		this.globalMaxFavor = globalMaxFavor;
 	}
 
 	/**
-	 * Create a PlayerCharacterClass from scratch.
+	 * Create a Demigod from scratch.
 	 * 
 	 * @param player The player holding this class.
 	 * @param charID The ID of the character.
@@ -38,10 +38,10 @@ public class PlayerCharacterClassFactory
 	 * @param support The support level.
 	 * @param passive The passive level.
 	 * @param classActive True if the class is active.
-	 * @return The PlayerCharacterClass object.
+	 * @return The Demigod object.
 	 */
-	public PlayerCharacterClass create(OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
+	public Demigod create(OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
 	{
-		return new PlayerCharacterClass(globalMaxFavor, player, charID, charName, charActive, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, classActive);
+		return new Demigod(globalMaxFavor, player, charID, charName, charActive, className, teamName, favor, maxFavor, devotion, ascensions, offense, defense, stealth, support, passive, classActive);
 	}
 }

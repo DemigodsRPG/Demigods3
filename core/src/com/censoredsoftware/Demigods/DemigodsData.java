@@ -2,10 +2,13 @@ package com.censoredsoftware.Demigods;
 
 import java.util.Random;
 
-import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
-import com.censoredsoftware.Modules.DataPersistence.ObjectDataModule;
-import com.censoredsoftware.Modules.DataPersistence.StringDataModule;
-import com.censoredsoftware.Modules.DataPersistence.TieredPlayerDataModule;
+import com.censoredsoftware.Demigods.API.DemigodAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
+import com.censoredsoftware.Modules.Data.IntegerDataModule;
+import com.censoredsoftware.Modules.Data.ObjectDataModule;
+import com.censoredsoftware.Modules.Data.StringDataModule;
+import com.censoredsoftware.Modules.Data.TieredPlayerDataModule;
+import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
 
 public class DemigodsData
 {
@@ -19,16 +22,19 @@ public class DemigodsData
 
 	// Player Data
 	public static TieredPlayerDataModule playerData;
+	public static YAMLPersistenceModule playerYAML;
 	public static TieredPlayerDataModule tempPlayerData;
 
 	// Character Data
 	public static IntegerDataModule characterData;
+	public static YAMLPersistenceModule characterYAML;
 	public static IntegerDataModule warpData;
 	public static IntegerDataModule inviteData;
 	public static IntegerDataModule tempTributeData;
 
 	// Block Data
 	public static IntegerDataModule altarData;
+	public static YAMLPersistenceModule altarYAML;
 	public static IntegerDataModule shrineData;
 
 	// Battle Data
@@ -45,6 +51,8 @@ public class DemigodsData
 		timedData(instance);
 		battleData(instance);
 		blockData(instance);
+
+		load(instance, true);
 	}
 
 	static void pluginDataPersistent(DemigodsPlugin instance)
@@ -55,23 +63,23 @@ public class DemigodsData
 	static void pluginDataNonPersistent(DemigodsPlugin instance)
 	{
 		// Deity Related
-		deityPaths = new StringDataModule(instance, "deity_paths");
-		deityLoaders = new StringDataModule(instance, "deity_loaders");
-		deityTeams = new StringDataModule(instance, "deity_teams");
-		deityColors = new StringDataModule(instance, "deity_colors");
-		deityCommands = new StringDataModule(instance, "deity_commands");
-		deityClaimItems = new StringDataModule(instance, "deity_claim_items");
+		deityPaths = new StringDataModule();
+		deityLoaders = new StringDataModule();
+		deityTeams = new StringDataModule();
+		deityColors = new StringDataModule();
+		deityCommands = new StringDataModule();
+		deityClaimItems = new StringDataModule();
 	}
 
 	static void timedData(DemigodsPlugin instance)
 	{
-		timedData = new ObjectDataModule(instance, "timed_data");
+		timedData = new ObjectDataModule(); // TODO Make a timed data module.
 	}
 
 	static void playerData(DemigodsPlugin instance)
 	{
 		playerData = new TieredPlayerDataModule(instance, "player_data");
-		tempPlayerData = new TieredPlayerDataModule(instance, "temp_player_data");
+		tempPlayerData = new TieredPlayerDataModule();
 	}
 
 	static void characterData(DemigodsPlugin instance)
@@ -79,7 +87,7 @@ public class DemigodsData
 		characterData = new IntegerDataModule(instance, "character_data");
 		warpData = new IntegerDataModule(instance, "warp_data");
 		inviteData = new IntegerDataModule(instance, "invite_data");
-		tempTributeData = new IntegerDataModule(instance, "temp_tribute_data");
+		tempTributeData = new IntegerDataModule();
 	}
 
 	static void blockData(DemigodsPlugin instance)
@@ -91,6 +99,31 @@ public class DemigodsData
 	static void battleData(DemigodsPlugin instance)
 	{
 		battleData = new IntegerDataModule(instance, "battle_data");
+	}
+
+	static void load(DemigodsPlugin instance, boolean yaml)
+	{
+		if(yaml)
+		{
+			playerYAML = new YAMLPersistenceModule(true, instance, "core", "player_data");
+			characterYAML = new YAMLPersistenceModule(true, instance, "core", "character_data");
+			altarYAML = new YAMLPersistenceModule(true, instance, "core", "altar_data");
+		}
+	}
+
+	static void save(boolean yaml)
+	{
+		if(yaml)
+		{
+			playerYAML.save(playerData);
+			for(Demigod character : DemigodAPI.getAllChars())
+			{
+				characterYAML.save(character);
+			}
+			altarYAML.save(altarData);
+
+			Demigods.message.info("Core Data saved to YAML storage.");
+		}
 	}
 
 	// TODO Find a place for these:
@@ -157,5 +190,24 @@ public class DemigodsData
 			if(count > max) return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Check to see if an input string is an integer.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is an integer.
+	 */
+	public static boolean isInt(String string)
+	{
+		try
+		{
+			Integer.parseInt(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 }

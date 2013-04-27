@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.PlayerCharacter;
+package com.censoredsoftware.Demigods.Demigod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +9,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 
-public class PlayerCharacterClass extends PlayerCharacter
+import com.censoredsoftware.Modules.PlayerCharacter.PlayerCharacter;
+
+public class Demigod extends PlayerCharacter
 {
 	private int globalMaxFavor;
 	private Map<String, Object> abilityData;
 	private Map<Integer, Object> bindingData;
 
-	public PlayerCharacterClass(int globalMaxFavor, OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
+	public Demigod(int globalMaxFavor, OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
 	{
 		// Create PlayerCharacter
 		super(player, charID, charName, charActive);
@@ -235,7 +237,7 @@ public class PlayerCharacterClass extends PlayerCharacter
 
 	public boolean isClass(String className)
 	{
-		return getClassName().equalsIgnoreCase(className);
+		return isDeity().equalsIgnoreCase(className);
 	}
 
 	public void toggleActive(boolean option)
@@ -346,7 +348,7 @@ public class PlayerCharacterClass extends PlayerCharacter
 		if(getBind(ability) != null) removeBind(getBind(ability));
 	}
 
-	public String getClassName()
+	public String isDeity()
 	{
 		return getData("CLASS_NAME").toString();
 	}
@@ -356,7 +358,7 @@ public class PlayerCharacterClass extends PlayerCharacter
 		return getData("TEAM_NAME").toString();
 	}
 
-	public boolean isClassActive()
+	public boolean isImmortal()
 	{
 		return Boolean.parseBoolean(getData("CLASS_ACTIVE").toString());
 	}
@@ -389,12 +391,12 @@ public class PlayerCharacterClass extends PlayerCharacter
 	/**
 	 * Grab the Map in it's entirely.
 	 */
-	protected Map<String, Object> grabAbilityMap()
+	protected Map<String, Object> getAbilityMap()
 	{
 		return this.abilityData;
 	}
 
-	protected void overrideAbilityMap(Map map)
+	protected void setAbilityMap(Map map)
 	{
 		try
 		{
@@ -407,12 +409,12 @@ public class PlayerCharacterClass extends PlayerCharacter
 	/**
 	 * Grab the Map in it's entirely.
 	 */
-	protected Map<Integer, Object> grabBindingMap()
+	protected Map<Integer, Object> getBindingMap()
 	{
 		return this.bindingData;
 	}
 
-	protected void overrideBindingMap(Map map)
+	protected void setBindingMap(Map map)
 	{
 		try
 		{

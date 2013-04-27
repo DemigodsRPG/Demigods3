@@ -9,35 +9,35 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.censoredsoftware.Modules.DataPersistence.EnumDataModule;
-import com.censoredsoftware.Modules.DataPersistence.IntegerDataModule;
+import com.censoredsoftware.Modules.Data.IntegerDataModule;
+import com.censoredsoftware.Modules.Data.StringDataModule;
 
 public class TrackedItemStack
 {
-	private EnumDataModule specialItemStackData;
+	private StringDataModule specialItemStackData;
 	private IntegerDataModule enchantmentsData;
 
 	public TrackedItemStack(ItemStack item, String name)
 	{
-		specialItemStackData = new EnumDataModule();
+		specialItemStackData = new StringDataModule();
 		enchantmentsData = new IntegerDataModule();
 
-		if(name != null) specialItemStackData.saveData(SpecialItemStackData.NAME, name);
+		if(name != null) specialItemStackData.saveData("NAME", name);
 
-		specialItemStackData.saveData(SpecialItemStackData.TYPE, item.getTypeId());
-		specialItemStackData.saveData(SpecialItemStackData.DURABILITY, item.getDurability());
-		specialItemStackData.saveData(SpecialItemStackData.AMOUNT, item.getAmount());
+		specialItemStackData.saveData("TYPE", item.getTypeId());
+		specialItemStackData.saveData("DURABILITY", item.getDurability());
+		specialItemStackData.saveData("AMOUNT", item.getAmount());
 
 		if(item.hasItemMeta())
 		{
 			if(item.getType().equals(Material.WRITTEN_BOOK))
 			{
 				BookMeta bookMeta = (BookMeta) item.getItemMeta();
-				if(bookMeta.hasAuthor()) specialItemStackData.saveData(SpecialItemStackData.AUTHOR, bookMeta.getAuthor());
-				if(bookMeta.hasPages()) specialItemStackData.saveData(SpecialItemStackData.PAGES, bookMeta.getPages());
-				if(bookMeta.hasLore()) specialItemStackData.saveData(SpecialItemStackData.LORE, bookMeta.getLore());
-				if(bookMeta.hasTitle()) specialItemStackData.saveData(SpecialItemStackData.TITLE, bookMeta.getTitle());
-				if(bookMeta.hasDisplayName()) specialItemStackData.saveData(SpecialItemStackData.DISPLAY_NAME, bookMeta.getDisplayName());
+				if(bookMeta.hasAuthor()) specialItemStackData.saveData("AUTHOR", bookMeta.getAuthor());
+				if(bookMeta.hasPages()) specialItemStackData.saveData("PAGES", bookMeta.getPages());
+				if(bookMeta.hasLore()) specialItemStackData.saveData("LORE", bookMeta.getLore());
+				if(bookMeta.hasTitle()) specialItemStackData.saveData("TITLE", bookMeta.getTitle());
+				if(bookMeta.hasDisplayName()) specialItemStackData.saveData("DISPLAY_NAME", bookMeta.getDisplayName());
 				if(bookMeta.hasEnchants())
 				{
 					for(Entry<Enchantment, Integer> ench : bookMeta.getEnchants().entrySet())
@@ -54,24 +54,24 @@ public class TrackedItemStack
 					enchantmentsData.saveData(ench.getKey().getId(), ench.getValue());
 				}
 			}
-			if(item.getItemMeta().hasDisplayName()) specialItemStackData.saveData(SpecialItemStackData.DISPLAY_NAME, item.getItemMeta().getDisplayName());
-			if(item.getItemMeta().hasLore()) specialItemStackData.saveData(SpecialItemStackData.LORE, item.getItemMeta().getLore());
+			if(item.getItemMeta().hasDisplayName()) specialItemStackData.saveData("DISPLAY_NAME", item.getItemMeta().getDisplayName());
+			if(item.getItemMeta().hasLore()) specialItemStackData.saveData("LORE", item.getItemMeta().getLore());
 		}
 	}
 
 	public boolean hasName()
 	{
-		return specialItemStackData.containsKey(SpecialItemStackData.NAME);
+		return specialItemStackData.containsKey("NAME");
 	}
 
 	public String getName()
 	{
-		return specialItemStackData.getDataString(SpecialItemStackData.NAME);
+		return specialItemStackData.getDataString("NAME");
 	}
 
 	public void setName(String name)
 	{
-		specialItemStackData.saveData(SpecialItemStackData.NAME, name);
+		specialItemStackData.saveData("NAME", name);
 	}
 
 	/*
@@ -79,23 +79,23 @@ public class TrackedItemStack
 	 */
 	public ItemStack toItemStack()
 	{
-		ItemStack item = new ItemStack(specialItemStackData.getDataInt(SpecialItemStackData.TYPE), specialItemStackData.getDataInt(SpecialItemStackData.AMOUNT));
+		ItemStack item = new ItemStack(specialItemStackData.getDataInt("TYPE"), specialItemStackData.getDataInt("AMOUNT"));
 
 		if(item.getType().equals(Material.WRITTEN_BOOK))
 		{
 			BookMeta meta = (BookMeta) item.getItemMeta();
-			if(specialItemStackData.containsKey(SpecialItemStackData.TITLE)) meta.setTitle(specialItemStackData.getDataString(SpecialItemStackData.TITLE));
-			if(specialItemStackData.containsKey(SpecialItemStackData.AUTHOR)) meta.setAuthor(specialItemStackData.getDataString(SpecialItemStackData.AUTHOR));
-			if(specialItemStackData.containsKey(SpecialItemStackData.PAGES)) meta.setPages((List<String>) specialItemStackData.getDataObject(SpecialItemStackData.PAGES));
-			if(specialItemStackData.containsKey(SpecialItemStackData.LORE)) meta.setLore((List<String>) specialItemStackData.getDataObject(SpecialItemStackData.LORE));
-			if(specialItemStackData.containsKey(SpecialItemStackData.DISPLAY_NAME)) meta.setDisplayName(specialItemStackData.getDataString(SpecialItemStackData.DISPLAY_NAME));
+			if(specialItemStackData.containsKey("TITLE")) meta.setTitle(specialItemStackData.getDataString("TITLE"));
+			if(specialItemStackData.containsKey("AUTHOR")) meta.setAuthor(specialItemStackData.getDataString("AUTHOR"));
+			if(specialItemStackData.containsKey("PAGES")) meta.setPages((List<String>) specialItemStackData.getDataObject("PAGES"));
+			if(specialItemStackData.containsKey("LORE")) meta.setLore((List<String>) specialItemStackData.getDataObject("LORE"));
+			if(specialItemStackData.containsKey("DISPLAY_NAME")) meta.setDisplayName(specialItemStackData.getDataString("DISPLAY_NAME"));
 			item.setItemMeta(meta);
 		}
 		else
 		{
 			ItemMeta meta = item.getItemMeta();
-			if(specialItemStackData.containsKey(SpecialItemStackData.DISPLAY_NAME)) meta.setDisplayName(specialItemStackData.getDataString(SpecialItemStackData.DISPLAY_NAME));
-			if(specialItemStackData.containsKey(SpecialItemStackData.LORE)) meta.setLore((List<String>) specialItemStackData.getDataObject(SpecialItemStackData.LORE));
+			if(specialItemStackData.containsKey("DISPLAY_NAME")) meta.setDisplayName(specialItemStackData.getDataString("DISPLAY_NAME"));
+			if(specialItemStackData.containsKey("LORE")) meta.setLore((List<String>) specialItemStackData.getDataObject("LORE"));
 			item.setItemMeta(meta);
 		}
 
@@ -108,13 +108,13 @@ public class TrackedItemStack
 		}
 
 		// Set data for the Item
-		item.setAmount(specialItemStackData.getDataInt(SpecialItemStackData.AMOUNT));
-		item.setDurability(specialItemStackData.getDataShort(SpecialItemStackData.DURABILITY));
+		item.setAmount(specialItemStackData.getDataInt("AMOUNT"));
+		item.setDurability(specialItemStackData.getDataShort("DURABILITY"));
 
 		return item;
 	}
 
-	public EnumDataModule grabSpecialItemStackData()
+	public StringDataModule grabSpecialItemStackData()
 	{
 		return this.specialItemStackData;
 	}
@@ -122,56 +122,5 @@ public class TrackedItemStack
 	public IntegerDataModule grabEnchantmentsData()
 	{
 		return this.enchantmentsData;
-	}
-
-	/**
-	 * Enum defining the data being held in this object.
-	 */
-	public static enum SpecialItemStackData
-	{
-		/**
-		 * Integer: Material type ID.
-		 */
-		TYPE,
-
-		/**
-		 * Integer: Amount of item.
-		 */
-		AMOUNT,
-
-		/**
-		 * Short: Durability of item.
-		 */
-		DURABILITY,
-
-		/**
-		 * String: Display name of item/book.
-		 */
-		DISPLAY_NAME,
-
-		/**
-		 * String: Author of book.
-		 */
-		AUTHOR,
-
-		/**
-		 * String: Title of book.
-		 */
-		TITLE,
-
-		/**
-		 * List<String>: Lore of item.
-		 */
-		LORE,
-
-		/**
-		 * List<String>: Pages of book.
-		 */
-		PAGES,
-
-		/**
-		 * String: Internal name of the TrackedItemStack.
-		 */
-		NAME
 	}
 }

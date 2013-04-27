@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules.DataPersistence;
+package com.censoredsoftware.Modules.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +10,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+
 /**
- * Module to handle data based on a group of Integers, holding Objects as data.
+ * Module to handle data based on a group of Strings, holding Objects as data.
  */
-public class IntegerDataModule extends DataModule implements Listener
+public class StringDataModule implements DataModule, Listener
 {
 	// Define HashMaps
-	private Map<Integer, Object> integerData;
+	private Map<String, Object> stringData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -27,9 +29,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param instance The current instance of the plugin running this module.
 	 * @param dataName The name of the data set being held in this module.
 	 */
-	public IntegerDataModule(Plugin instance, String dataName)
+	public StringDataModule(Plugin instance, String dataName)
 	{
-		this.integerData = new HashMap<Integer, Object>();
+		this.stringData = new HashMap<String, Object>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
@@ -40,9 +42,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	/**
 	 * Create a new instance of the library.
 	 */
-	public IntegerDataModule()
+	public StringDataModule()
 	{
-		this.integerData = new HashMap<Integer, Object>();
+		this.stringData = new HashMap<String, Object>();
 	}
 
 	/**
@@ -50,20 +52,20 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * 
 	 * @param key The key to save.
 	 */
-	public void createSave(int key)
+	public void createSave(String key)
 	{
-		if(!containsKey(key)) integerData.put(key, new HashMap<String, Object>());
+		if(!containsKey(key)) stringData.put(key, new HashMap<String, Object>());
 	}
 
 	/**
-	 * Checks if the integerData Map contains <code>key</code>.
+	 * Checks if the stringData Map contains <code>key</code>.
 	 * 
 	 * @param key The key in the save.
-	 * @return True if integerData contains the key.
+	 * @return True if stringData contains the key.
 	 */
-	public boolean containsKey(int key)
+	public boolean containsKey(String key)
 	{
-		return integerData.get(key) != null && integerData.containsKey(key);
+		return stringData.get(key) != null && stringData.containsKey(key);
 	}
 
 	/**
@@ -72,9 +74,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Integer data.
 	 */
-	public int getDataInt(int key)
+	public int getDataInt(String key)
 	{
-		if(containsKey(key)) return Integer.parseInt(integerData.get(key).toString());
+		if(containsKey(key)) return Integer.parseInt(stringData.get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -84,9 +86,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return String data.
 	 */
-	public String getDataString(int key)
+	public String getDataString(String key)
 	{
-		if(containsKey(key)) return integerData.get(key).toString();
+		if(containsKey(key)) return stringData.get(key).toString();
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -96,9 +98,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Boolean data.
 	 */
-	public boolean getDataBool(int key)
+	public boolean getDataBool(String key)
 	{
-		if(containsKey(key)) return Boolean.parseBoolean(integerData.get(key).toString());
+		if(containsKey(key)) return Boolean.parseBoolean(stringData.get(key).toString());
 		return false; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -108,10 +110,22 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Double data.
 	 */
-	public double getDataDouble(int key)
+	public double getDataDouble(String key)
 	{
-		if(containsKey(key)) return Double.parseDouble(integerData.get(key).toString());
+		if(containsKey(key)) return Double.parseDouble(stringData.get(key).toString());
 		return -1.0; // Should never happen, always check with containsKey before getting the data.
+	}
+
+	/**
+	 * Retrieve the Float data from int <code>key</code>.
+	 * 
+	 * @param key The key in the save.
+	 * @return Float data.
+	 */
+	public float getDataFloat(String key)
+	{
+		if(containsKey(key)) return Float.parseFloat(stringData.get(key).toString());
+		return 0F; // Should never happen, always check with containsKey before getting the data.
 	}
 
 	/**
@@ -120,22 +134,22 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Long data.
 	 */
-	public long getDataLong(int key)
+	public long getDataLong(String key)
 	{
-		if(containsKey(key)) return Long.parseLong(integerData.get(key).toString());
+		if(containsKey(key)) return Long.parseLong(stringData.get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
 	/**
-	 * Retrieve the Float data from int <code>key</code>.
+	 * Retrieve the Short data from int <code>key</code>.
 	 * 
-	 * @param key The tier in the save.
-	 * @return Float data.
+	 * @param key The key in the save.
+	 * @return Short data.
 	 */
-	public float getDataFloat(int key)
+	public short getDataShort(String key)
 	{
-		if(containsKey(key)) return Float.parseFloat(integerData.get(key).toString());
-		return 0F; // Should never happen, always check with containsKey before getting the data.
+		if(containsKey(key)) return Short.parseShort(stringData.get(key).toString());
+		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
 	/**
@@ -144,9 +158,9 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
-	public Object getDataObject(int key)
+	public Object getDataObject(String key)
 	{
-		if(containsKey(key)) return integerData.get(key);
+		if(containsKey(key)) return stringData.get(key);
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -156,10 +170,10 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
-	public void saveData(int key, Object data)
+	public void saveData(String key, Object data)
 	{
 		if(!containsKey(key)) createSave(key);
-		integerData.put(key, data);
+		stringData.put(key, data);
 	}
 
 	/**
@@ -167,10 +181,10 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * 
 	 * @param key The key in the save.
 	 */
-	public void removeData(int key)
+	public void removeData(String key)
 	{
 		if(!containsKey(key)) return;
-		integerData.remove(key);
+		stringData.remove(key);
 	}
 
 	/**
@@ -178,10 +192,10 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * 
 	 * @return The list of keys.
 	 */
-	public List<Integer> listKeys()
+	public List<String> listKeys()
 	{
-		List<Integer> keys = new ArrayList<Integer>();
-		for(Map.Entry<Integer, Object> entry : integerData.entrySet())
+		List<String> keys = new ArrayList<String>();
+		for(Map.Entry<String, Object> entry : stringData.entrySet())
 		{
 			keys.add(entry.getKey());
 		}
@@ -192,17 +206,17 @@ public class IntegerDataModule extends DataModule implements Listener
 	 * Grab the Map in it's entirely. Can only be accessed from other Modules (to prevent unsafe use).
 	 */
 	@Override
-	Map<Integer, Object> grabMap()
+	public Map<String, Object> getMap()
 	{
-		return this.integerData;
+		return this.stringData;
 	}
 
 	@Override
-	protected void overrideMap(Map map)
+	public void setMap(Map map)
 	{
 		try
 		{
-			this.integerData = map;
+			this.stringData = map;
 		}
 		catch(Exception ignored)
 		{}
@@ -210,10 +224,10 @@ public class IntegerDataModule extends DataModule implements Listener
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onLoadYAML(LoadYAMLEvent event)
+	public void onLoadYAML(LoadYAMLEvent event)
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same
-		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) overrideMap(event.getData());
+		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
 	}
 }

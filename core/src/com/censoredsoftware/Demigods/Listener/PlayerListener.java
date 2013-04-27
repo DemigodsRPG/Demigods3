@@ -17,9 +17,9 @@ import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class PlayerListener implements Listener
 {
@@ -34,7 +34,7 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		// Set their lastlogintime
 		DemigodsData.playerData.saveData(player, "player_lastlogin", System.currentTimeMillis());
@@ -43,7 +43,7 @@ public class PlayerListener implements Listener
 		if(character != null)
 		{
 			String name = character.getName();
-			ChatColor color = DeityAPI.getDeityColor(character.getClassName());
+			ChatColor color = DeityAPI.getDeityColor(character.isDeity());
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
 		}

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules.DataPersistence;
+package com.censoredsoftware.Modules.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +13,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+
 /**
  * Module to handle data based on a group of OfflinePlayers, holding Objects as data.
  */
-public class PlayerDataModule extends DataModule implements Listener
+public class PlayerDataModule implements DataModule, Listener
 {
 	// Define HashMaps
 	private Map<String, Object> playerData;
@@ -207,13 +209,13 @@ public class PlayerDataModule extends DataModule implements Listener
 	 * Grab the Map in it's entirely. Can only be accessed from other Modules (to prevent unsafe use).
 	 */
 	@Override
-	Map<String, Object> grabMap()
+	public Map<String, Object> getMap()
 	{
 		return this.playerData;
 	}
 
 	@Override
-	protected void overrideMap(Map map)
+	public void setMap(Map map)
 	{
 		try
 		{
@@ -225,10 +227,10 @@ public class PlayerDataModule extends DataModule implements Listener
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onLoadYAML(LoadYAMLEvent event)
+	public void onLoadYAML(LoadYAMLEvent event)
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same
-		if(this.plugin.getName().equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) overrideMap(event.getData());
+		if(this.plugin.getName().equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
 	}
 }

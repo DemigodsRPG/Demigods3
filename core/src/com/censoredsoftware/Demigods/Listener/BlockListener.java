@@ -22,11 +22,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Block.Altar;
 import com.censoredsoftware.Demigods.Block.Shrine;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class BlockListener implements Listener
 {
@@ -206,7 +206,7 @@ public class BlockListener implements Listener
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		Shrine shrine = null;
-		PlayerCharacterClass character = null;
+		Demigod character = null;
 
 		/*
 		 * ------------------------------------

@@ -7,10 +7,10 @@ import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class AbilityListener implements Listener
 {
@@ -18,7 +18,7 @@ public class AbilityListener implements Listener
 	public static void onAbility(AbilityEvent event)
 	{
 		// Get variables
-		PlayerCharacterClass character = event.getCharacter();
+		Demigod character = event.getCharacter();
 		AbilityType type = event.getType();
 		int cost = event.getCost();
 		int power = character.getPower(type);
@@ -50,8 +50,8 @@ public class AbilityListener implements Listener
 	{
 		if(!(event.getTarget() instanceof Player)) return;
 
-		PlayerCharacterClass hitChar = PlayerAPI.getCurrentChar((Player) event.getTarget());
-		PlayerCharacterClass hittingChar = event.getCharacter();
+		Demigod hitChar = PlayerAPI.getCurrentChar((Player) event.getTarget());
+		Demigod hittingChar = event.getCharacter();
 
 		BattleAPI.battleProcess(hitChar, hittingChar);
 	}

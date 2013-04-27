@@ -21,11 +21,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.Event.Character.CharacterCreateEvent;
-import com.censoredsoftware.Demigods.Event.Character.CharacterSwitchEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Event.Demigod.DemigodCreateEvent;
+import com.censoredsoftware.Demigods.Event.Demigod.DemigodSwitchEvent;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
 public class AltarListener implements Listener
@@ -247,7 +247,7 @@ public class AltarListener implements Listener
 
 				// Define variables
 				String charName = message.replace(" info", "").trim();
-				PlayerCharacterClass character = CharacterAPI.getCharByName(charName);
+				Demigod character = DemigodAPI.getCharByName(charName);
 
 				viewChar(player, character);
 			}
@@ -334,7 +334,7 @@ public class AltarListener implements Listener
 	// View characters
 	private void viewChars(Player player)
 	{
-		List<PlayerCharacterClass> chars = PlayerAPI.getChars(player);
+		List<Demigod> chars = PlayerAPI.getChars(player);
 		if(chars.isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no characters. Why not go make one?");
@@ -346,11 +346,11 @@ public class AltarListener implements Listener
 		player.sendMessage(ChatColor.LIGHT_PURPLE + "  Light purple " + ChatColor.GRAY + "represents your current character.");
 		player.sendMessage(" ");
 
-		for(PlayerCharacterClass character : chars)
+		for(Demigod character : chars)
 		{
 			String color = "";
 			String name = character.getName();
-			String deity = character.getClassName();
+			String deity = character.isDeity();
 			int favor = character.getFavor();
 			int maxFavor = character.getMaxFavor();
 			ChatColor favorColor = character.getFavorColor();
@@ -426,14 +426,14 @@ public class AltarListener implements Listener
 	}
 
 	// View character
-	private void viewChar(Player player, PlayerCharacterClass character)
+	private void viewChar(Player player, Demigod character)
 	{
 		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
 		player.sendMessage(" ");
 
 		String currentCharMsg = ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 		String name = character.getName();
-		String deity = character.getClassName();
+		String deity = character.isDeity();
 		ChatColor deityColor = DeityAPI.getDeityColor(deity);
 		String alliance = character.getTeam();
 		int hp = character.getHealth();
@@ -462,19 +462,19 @@ public class AltarListener implements Listener
 
 	private void switchChar(Player player, String charName)
 	{
-		PlayerCharacterClass newChar = CharacterAPI.getCharByName(charName);
+		Demigod newChar = DemigodAPI.getCharByName(charName);
 
 		if(newChar != null)
 		{
-			CharacterSwitchEvent event = new CharacterSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
+			DemigodSwitchEvent event = new DemigodSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 
 			if(!event.isCancelled())
 			{
 				PlayerAPI.changeCurrentChar(player, newChar.getID());
 
-				player.setDisplayName(DeityAPI.getDeityColor(newChar.getClassName()) + newChar.getName() + ChatColor.WHITE);
-				player.setPlayerListName(DeityAPI.getDeityColor(newChar.getClassName()) + newChar.getName() + ChatColor.WHITE);
+				player.setDisplayName(DeityAPI.getDeityColor(newChar.isDeity()) + newChar.getName() + ChatColor.WHITE);
+				player.setPlayerListName(DeityAPI.getDeityColor(newChar.isDeity()) + newChar.getName() + ChatColor.WHITE);
 
 				// Save their previous character and chat number for later monitoring
 				DemigodsData.playerData.saveData(player, "previous_char", event.getCharacterFrom().getID());
@@ -663,7 +663,7 @@ public class AltarListener implements Listener
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!
-				CharacterCreateEvent characterEvent = new CharacterCreateEvent(player, chosenName, chosenDeity);
+				DemigodCreateEvent characterEvent = new DemigodCreateEvent(player, chosenName, chosenDeity);
 				Bukkit.getServer().getPluginManager().callEvent(characterEvent);
 
 				// Stop their praying, enable movement, enable chat
@@ -736,8 +736,8 @@ public class AltarListener implements Listener
 
 	private void inviteWarp(Player player, String name)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
-		PlayerCharacterClass invited = CharacterAPI.getCharByName(name);
+		Demigod character = PlayerAPI.getCurrentChar(player);
+		Demigod invited = DemigodAPI.getCharByName(name);
 
 		if(character == null) return;
 		else if(invited == null)
@@ -749,13 +749,13 @@ public class AltarListener implements Listener
 		else if(!invited.getOwner().isOnline() || invited.getOwner() == character.getOwner())
 		{
 			player.sendMessage(" ");
-			player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
+			player.sendMessage(DeityAPI.getDeityColor(invited.isDeity()) + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
 			return;
 		}
 		else if(!character.getTeam().equalsIgnoreCase(invited.getTeam()))
 		{
 			player.sendMessage(" ");
-			player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");
+			player.sendMessage(DeityAPI.getDeityColor(invited.isDeity()) + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");
 			return;
 		}
 
@@ -765,14 +765,14 @@ public class AltarListener implements Listener
 		PlayerAPI.togglePraying(player, false);
 		clearChat(player);
 
-		player.sendMessage(DeityAPI.getDeityColor(invited.getClassName()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
-		invited.getOwner().getPlayer().sendMessage(DeityAPI.getDeityColor(character.getClassName()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
+		player.sendMessage(DeityAPI.getDeityColor(invited.isDeity()) + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
+		invited.getOwner().getPlayer().sendMessage(DeityAPI.getDeityColor(character.isDeity()) + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
 		invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
 	}
 
 	private void acceptInvite(Player player, String name)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		TrackedLocation invite = WarpAPI.getInvite(character, name);
 
 		if(invite != null)

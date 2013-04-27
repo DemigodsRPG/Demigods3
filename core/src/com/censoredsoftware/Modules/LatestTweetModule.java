@@ -22,8 +22,8 @@ import org.bukkit.plugin.Plugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Modules.DataPersistence.PlayerDataModule;
-import com.censoredsoftware.Modules.DataPersistence.YAMLPersistenceModule;
+import com.censoredsoftware.Modules.Data.PlayerDataModule;
+import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
 
 /**
  * Module to handle the latest messages from a Twitter feed.

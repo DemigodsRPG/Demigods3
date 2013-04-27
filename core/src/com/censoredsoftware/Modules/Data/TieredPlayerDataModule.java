@@ -1,22 +1,27 @@
-package com.censoredsoftware.Modules.DataPersistence;
+package com.censoredsoftware.Modules.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+
 /**
- * Module to handle tiered data based on a group of Objects, holding Objects as data.
+ * Module to handle tiered data based on a group of OfflinePlayers, holding Objects as data.
  */
-public class TieredObjectDataModule extends DataModule implements Listener
+public class TieredPlayerDataModule implements DataModule, Listener
 {
 	// Define HashMaps
-	private Map<Object, HashMap<Object, Object>> tieredObjectData;
+	private Map<String, HashMap<String, Object>> tieredObjectData;
 
 	private Plugin plugin;
 	private String dataName;
@@ -27,22 +32,34 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param instance The current instance of the plugin running this module.
 	 * @param dataName The name of the data set being held in this module.
 	 */
-	public TieredObjectDataModule(Plugin instance, String dataName)
+	public TieredPlayerDataModule(Plugin instance, String dataName)
 	{
-		this.tieredObjectData = new HashMap<Object, HashMap<Object, Object>>();
+		this.tieredObjectData = new HashMap<String, HashMap<String, Object>>();
 		this.plugin = instance;
 		this.dataName = dataName;
 
 		// Start the load listeners
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+		// Create saves for all online players
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			createSave(player);
+		}
 	}
 
 	/**
 	 * Create a new instance of the library.
 	 */
-	public TieredObjectDataModule()
+	public TieredPlayerDataModule()
 	{
-		this.tieredObjectData = new HashMap<Object, HashMap<Object, Object>>();
+		this.tieredObjectData = new HashMap<String, HashMap<String, Object>>();
+
+		// Create saves for all online players
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			createSave(player);
+		}
 	}
 
 	/**
@@ -50,9 +67,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * 
 	 * @param tier The tier to save.
 	 */
-	public void createSave(Object tier)
+	public void createSave(OfflinePlayer tier)
 	{
-		if(!containsTier(tier)) tieredObjectData.put(tier, new HashMap<Object, Object>());
+		if(!containsTier(tier)) tieredObjectData.put(tier.getName(), new HashMap<String, Object>());
 	}
 
 	/**
@@ -61,9 +78,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier to save.
 	 * @param key The key to save.
 	 */
-	public void createSave(Object tier, Object key)
+	public void createSave(OfflinePlayer tier, String key)
 	{
-		if(!containsKey(tier, key)) tieredObjectData.get(tier).put(key, new HashMap<String, Object>());
+		if(!containsKey(tier, key)) tieredObjectData.get(tier.getName()).put(key, new HashMap<String, Object>());
 	}
 
 	/**
@@ -72,9 +89,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return True if tieredObjectData contains the tier.
 	 */
-	public boolean containsTier(Object tier)
+	public boolean containsTier(OfflinePlayer tier)
 	{
-		return tieredObjectData.get(tier) != null && tieredObjectData.containsKey(tier);
+		return tieredObjectData.get(tier.getName()) != null && tieredObjectData.containsKey(tier.getName());
 	}
 
 	/**
@@ -84,9 +101,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return True if tieredObjectData contains the tier.
 	 */
-	public boolean containsKey(Object tier, Object key)
+	public boolean containsKey(OfflinePlayer tier, String key)
 	{
-		return containsTier(tier) && tieredObjectData.get(tier) != null && tieredObjectData.get(tier).containsKey(key);
+		return containsTier(tier) && tieredObjectData.get(tier.getName()).get(key) != null && tieredObjectData.get(tier.getName()).containsKey(key);
 	}
 
 	/**
@@ -95,9 +112,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return Integer data.
 	 */
-	public int getDataInt(Object tier, Object key)
+	public int getDataInt(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return Integer.parseInt(tieredObjectData.get(tier).get(key).toString());
+		if(containsKey(tier, key)) return Integer.parseInt(tieredObjectData.get(tier.getName()).get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -107,9 +124,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return String data.
 	 */
-	public String getDataString(Object tier, Object key)
+	public String getDataString(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return tieredObjectData.get(tier).get(key).toString();
+		if(containsKey(tier, key)) return tieredObjectData.get(tier.getName()).get(key).toString();
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -119,9 +136,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return Boolean data.
 	 */
-	public boolean getDataBool(Object tier, Object key)
+	public boolean getDataBool(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return Boolean.parseBoolean(tieredObjectData.get(tier).get(key).toString());
+		if(containsKey(tier, key)) return Boolean.parseBoolean(tieredObjectData.get(tier.getName()).get(key).toString());
 		return false; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -131,9 +148,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return Double data.
 	 */
-	public double getDataDouble(Object tier, Object key)
+	public double getDataDouble(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return Double.parseDouble(tieredObjectData.get(tier).get(key).toString());
+		if(containsKey(tier, key)) return Double.parseDouble(tieredObjectData.get(tier.getName()).get(key).toString());
 		return -1.0; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -144,9 +161,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param key The key in the save.
 	 * @return Float data.
 	 */
-	public float getDataFloat(Object tier, Object key)
+	public float getDataFloat(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return Float.parseFloat(tieredObjectData.get(tier).get(key).toString());
+		if(containsKey(tier, key)) return Float.parseFloat(tieredObjectData.get(tier.getName()).get(key).toString());
 		return 0F; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -156,9 +173,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return Long data.
 	 */
-	public long getDataLong(Object tier, Object key)
+	public long getDataLong(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return Long.parseLong(tieredObjectData.get(tier).get(key).toString());
+		if(containsKey(tier, key)) return Long.parseLong(tieredObjectData.get(tier.getName()).get(key).toString());
 		return -1; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -168,9 +185,9 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @return Object data.
 	 */
-	public Object getDataObject(Object tier, Object key)
+	public Object getDataObject(OfflinePlayer tier, String key)
 	{
-		if(containsKey(tier, key)) return tieredObjectData.get(tier).get(key);
+		if(containsKey(tier, key)) return tieredObjectData.get(tier.getName()).get(key);
 		return null; // Should never happen, always check with containsKey before getting the data.
 	}
 
@@ -180,11 +197,11 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier in the save.
 	 * @param data The Object being saved.
 	 */
-	public void saveData(Object tier, Object key, Object data)
+	public void saveData(OfflinePlayer tier, String key, Object data)
 	{
 		if(!containsTier(tier)) createSave(tier);
 		else if(!containsKey(tier, key)) createSave(tier, key);
-		tieredObjectData.get(tier).put(key, data);
+		tieredObjectData.get(tier.getName()).put(key, data);
 	}
 
 	/**
@@ -192,10 +209,10 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * 
 	 * @param tier The tier in the save.
 	 */
-	public void removeData(Object tier, Object key)
+	public void removeData(OfflinePlayer tier, String key)
 	{
 		if(!containsKey(tier, key)) return;
-		tieredObjectData.get(tier).remove(key);
+		tieredObjectData.get(tier.getName()).remove(key);
 	}
 
 	/**
@@ -203,12 +220,12 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * 
 	 * @return The list of keys.
 	 */
-	public List<Object> listTiers()
+	public List<OfflinePlayer> listTiers()
 	{
-		List<Object> tiers = new ArrayList<Object>();
-		for(Object tier : tieredObjectData.keySet())
+		List<OfflinePlayer> tiers = new ArrayList<OfflinePlayer>();
+		for(String tier : tieredObjectData.keySet())
 		{
-			tiers.add(tier);
+			tiers.add(Bukkit.getOfflinePlayer(tier));
 		}
 		return tiers;
 	}
@@ -219,10 +236,10 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * @param tier The tier being checked.
 	 * @return The list of keys.
 	 */
-	public List<Object> listKeys(Object tier)
+	public List<String> listKeys(OfflinePlayer tier)
 	{
-		List<Object> keys = new ArrayList<Object>();
-		for(Object key : tieredObjectData.get(tier).keySet())
+		List<String> keys = new ArrayList<String>();
+		for(String key : tieredObjectData.get(tier.getName()).keySet())
 		{
 			keys.add(key);
 		}
@@ -233,13 +250,13 @@ public class TieredObjectDataModule extends DataModule implements Listener
 	 * Grab the Map in it's entirely. Can only be accessed from other Modules (to prevent unsafe use).
 	 */
 	@Override
-	Map<Object, HashMap<Object, Object>> grabMap()
+	public Map<String, HashMap<String, Object>> getMap()
 	{
 		return this.tieredObjectData;
 	}
 
 	@Override
-	protected void overrideMap(Map map)
+	public void setMap(Map map)
 	{
 		try
 		{
@@ -251,10 +268,10 @@ public class TieredObjectDataModule extends DataModule implements Listener
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onLoadYAML(LoadYAMLEvent event)
+	public void onLoadYAML(LoadYAMLEvent event)
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same
-		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) overrideMap(event.getData());
+		if(this.plugin.equals(event.getPluginName()) && this.dataName.equals(event.getDataName())) setMap(event.getData());
 	}
 }

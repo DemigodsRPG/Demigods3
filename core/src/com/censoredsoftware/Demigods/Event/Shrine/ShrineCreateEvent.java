@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 
 /*
  * Represents an event that is called when a Shrine is created.
@@ -13,11 +13,11 @@ import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 public class ShrineCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private PlayerCharacterClass owner;
+	private Demigod owner;
 	private Location block;
 	private boolean cancelled = false;
 
-	public ShrineCreateEvent(final PlayerCharacterClass owner, final Location block)
+	public ShrineCreateEvent(final Demigod owner, final Location block)
 	{
 		this.owner = owner;
 		this.block = block;
@@ -26,7 +26,7 @@ public class ShrineCreateEvent extends Event implements Cancellable
 	/*
 	 * getOwner() : Gets the character/owner.
 	 */
-	public PlayerCharacterClass getOwner()
+	public Demigod getOwner()
 	{
 		return this.owner;
 	}

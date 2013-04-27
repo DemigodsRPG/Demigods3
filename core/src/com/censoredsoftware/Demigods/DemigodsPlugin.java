@@ -21,6 +21,8 @@ public class DemigodsPlugin extends JavaPlugin
 		Demigods.loadListeners(this);
 		Demigods.loadCommands(this);
 
+		Scheduler.startThreads(this);
+
 		Demigods.message.info("Successfully enabled.");
 	}
 

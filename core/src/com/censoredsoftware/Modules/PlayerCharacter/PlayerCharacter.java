@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.PlayerCharacter;
+package com.censoredsoftware.Modules.PlayerCharacter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,14 +10,21 @@ import org.bukkit.OfflinePlayer;
 
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
+import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class PlayerCharacter
+public class PlayerCharacter implements DataStubModule
 {
 	// Define HashMaps
 	private Map<String, Object> characterData;
 
 	private PlayerCharacterInventory playerCharacterInventory;
 	private TrackedLocation specialLocation;
+
+	public PlayerCharacter(Map map)
+	{
+		setMap(map);
+		save(this);
+	}
 
 	public PlayerCharacter(OfflinePlayer player, int charID, String charName, boolean charActive)
 	{
@@ -42,7 +49,7 @@ public class PlayerCharacter
 		save(this);
 	}
 
-	static void save(PlayerCharacter character) // TODO This belongs somewhere else.
+	public static void save(PlayerCharacter character) // TODO This belongs somewhere else.
 	{
 		DemigodsData.characterData.saveData(character.getID(), character);
 	}
@@ -64,7 +71,7 @@ public class PlayerCharacter
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
-	Object getData(String key)
+	public Object getData(String key)
 	{
 		if(containsKey(key)) return characterData.get(key);
 		return null; // Should never happen, always check with containsKey before getting the data.
@@ -76,7 +83,7 @@ public class PlayerCharacter
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
-	void saveData(String key, Object data)
+	public void saveData(String key, Object data)
 	{
 		characterData.put(key, data);
 	}
@@ -86,7 +93,7 @@ public class PlayerCharacter
 	 * 
 	 * @param key The key in the save.
 	 */
-	void removeData(String key)
+	public void removeData(String key)
 	{
 		if(!containsKey(key)) return;
 		characterData.remove(key);
@@ -149,11 +156,6 @@ public class PlayerCharacter
 		saveData("CHAR_ACTIVE", option);
 	}
 
-	public int getID()
-	{
-		return Integer.parseInt(getData("CHAR_ID").toString());
-	}
-
 	public OfflinePlayer getOwner()
 	{
 		return Bukkit.getOfflinePlayer(getData("PLAYER_NAME").toString());
@@ -194,21 +196,21 @@ public class PlayerCharacter
 		return Float.parseFloat(getData("CHAR_EXP").toString());
 	}
 
-	/**
-	 * Grab the Map in it's entirely.
-	 */
-	protected Map<String, Object> grabMap()
+	@Override
+	public int getID()
+	{
+		return Integer.parseInt(getData("CHAR_ID").toString());
+	}
+
+	@Override
+	public Map<String, Object> getMap()
 	{
 		return this.characterData;
 	}
 
-	protected void overrideMap(Map map)
+	@Override
+	public void setMap(Map map)
 	{
-		try
-		{
-			this.characterData = map;
-		}
-		catch(Exception ignored)
-		{}
+		this.characterData = map;
 	}
 }

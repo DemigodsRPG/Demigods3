@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Modules.DataPersistence.PlayerDataModule;
+import com.censoredsoftware.Modules.Data.PlayerDataModule;
 
 /**
  * Module to handle all update methods from BukkitDev.

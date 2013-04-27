@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class MiscAPI
 {
@@ -31,7 +31,7 @@ public class MiscAPI
 
 	public static boolean canUseDeity(Player player, String deity)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
 		if(character != null && !character.isClass(deity))
@@ -39,7 +39,7 @@ public class MiscAPI
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
 		}
-		else if(character == null || !character.isClassActive())
+		else if(character == null || !character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
@@ -49,12 +49,12 @@ public class MiscAPI
 
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(character == null) return false;
 
 		// Check the player for DEITYNAME
-		return character.isClass(deity) && character.isClassActive();
+		return character.isClass(deity) && character.isImmortal();
 	}
 
 	/**

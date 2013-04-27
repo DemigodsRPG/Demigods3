@@ -12,8 +12,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class EntityListener implements Listener
 {
@@ -66,8 +66,8 @@ public class EntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-				PlayerCharacterClass hitChar = PlayerAPI.getCurrentChar(hit);
-				PlayerCharacterClass hittingChar = PlayerAPI.getCurrentChar(hitting);
+				Demigod hitChar = PlayerAPI.getCurrentChar(hit);
+				Demigod hittingChar = PlayerAPI.getCurrentChar(hitting);
 
 				BattleAPI.battleProcess(hitChar, hittingChar);
 			}
@@ -81,9 +81,9 @@ public class EntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+			Demigod character = PlayerAPI.getCurrentChar(player);
 			if(character == null) return;
-			String deity = DemigodsData.capitalize(character.getClassName());
+			String deity = DemigodsData.capitalize(character.isDeity());
 			int devotion = character.getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
 

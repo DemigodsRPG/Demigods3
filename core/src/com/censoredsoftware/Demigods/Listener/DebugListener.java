@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.API.AdminAPI;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent;
@@ -14,7 +15,6 @@ import com.censoredsoftware.Demigods.Event.Altar.AltarRemoveEvent.AltarRemoveCau
 import com.censoredsoftware.Demigods.Event.Misc.ChestSpawnEvent;
 import com.censoredsoftware.Demigods.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Event.Shrine.ShrineRemoveEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class DebugListener implements Listener
 {
@@ -51,19 +51,19 @@ public class DebugListener implements Listener
 	public void onShrineCreation(ShrineCreateEvent event)
 	{
 		Location location = event.getLocation();
-		PlayerCharacterClass owner = event.getOwner();
+		Demigod owner = event.getOwner();
 
 		// Send debug
-		AdminAPI.sendDebug(ChatColor.RED + "Shrine created by " + owner.getName() + " (" + owner.getClassName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+		AdminAPI.sendDebug(ChatColor.RED + "Shrine created by " + owner.getName() + " (" + owner.isDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onShrineRemove(ShrineRemoveEvent event)
 	{
 		Location location = event.getLocation();
-		PlayerCharacterClass owner = event.getOwner();
+		Demigod owner = event.getOwner();
 
 		// Send debug
-		AdminAPI.sendDebug(ChatColor.RED + "Shrine at (" + owner.getClassName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+		AdminAPI.sendDebug(ChatColor.RED + "Shrine at (" + owner.isDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 	}
 }

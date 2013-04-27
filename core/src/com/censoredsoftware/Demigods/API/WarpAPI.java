@@ -3,8 +3,8 @@ package com.censoredsoftware.Demigods.API;
 import java.util.ArrayList;
 
 import com.censoredsoftware.Demigods.Block.Altar;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
 public class WarpAPI
@@ -15,7 +15,7 @@ public class WarpAPI
 	 * @param character the character whose warps to gather
 	 * @return an ArrayList of the <code>character</code> warps.
 	 */
-	public static ArrayList<TrackedLocation> getWarps(PlayerCharacterClass character)
+	public static ArrayList<TrackedLocation> getWarps(Demigod character)
 	{
 		if(character == null || !DemigodsData.warpData.containsKey(character.getID())) return null;
 		return (ArrayList<TrackedLocation>) DemigodsData.warpData.getDataObject(character.getID());
@@ -28,7 +28,7 @@ public class WarpAPI
 	 * @param character the character to be checked.
 	 * @return true/false depending on if the <code>character</code> has the warp.
 	 */
-	public static boolean hasWarp(Altar altar, PlayerCharacterClass character)
+	public static boolean hasWarp(Altar altar, Demigod character)
 	{
 		if(getWarps(character) == null) return false;
 		for(TrackedLocation warp : getWarps(character))
@@ -44,7 +44,7 @@ public class WarpAPI
 	 * @param character the character to check.
 	 * @return true/false depending on the presence of invites.
 	 */
-	public static boolean hasInvites(PlayerCharacterClass character)
+	public static boolean hasInvites(Demigod character)
 	{
 		return getInvites(character) != null && !getInvites(character).isEmpty();
 	}
@@ -57,7 +57,7 @@ public class WarpAPI
 	 * @param invited the character who received the invite.
 	 * @return the <code>TrackedLocation</code> of the invite.
 	 */
-	public static TrackedLocation getInvite(PlayerCharacterClass inviting, PlayerCharacterClass invited)
+	public static TrackedLocation getInvite(Demigod inviting, Demigod invited)
 	{
 		if(hasInvites(invited))
 		{
@@ -76,7 +76,7 @@ public class WarpAPI
 	 * @param name the name of the invite to get.
 	 * @return the <code>TrackedLocation</code> of the invite.
 	 */
-	public static TrackedLocation getInvite(PlayerCharacterClass character, String name)
+	public static TrackedLocation getInvite(Demigod character, String name)
 	{
 		if(hasInvites(character))
 		{
@@ -95,7 +95,7 @@ public class WarpAPI
 	 * @param invited the character the invite is to.
 	 * @return boolean for if the character has been invited or not.
 	 */
-	public static boolean alreadyInvited(PlayerCharacterClass inviting, PlayerCharacterClass invited)
+	public static boolean alreadyInvited(Demigod inviting, Demigod invited)
 	{
 		if(getInvite(inviting, invited) != null) return true;
 		return false;
@@ -107,7 +107,7 @@ public class WarpAPI
 	 * @param character the character whose invites to grab.
 	 * @return an ArrayList of invite locations.
 	 */
-	public static ArrayList<TrackedLocation> getInvites(PlayerCharacterClass character)
+	public static ArrayList<TrackedLocation> getInvites(Demigod character)
 	{
 		return (ArrayList<TrackedLocation>) DemigodsData.inviteData.getDataObject(character.getID());
 	}
@@ -118,7 +118,7 @@ public class WarpAPI
 	 * @param from the character whom the invite is from.
 	 * @param to the character whom the invite is to.
 	 */
-	public static void addInvite(PlayerCharacterClass from, PlayerCharacterClass to)
+	public static void addInvite(Demigod from, Demigod to)
 	{
 		ArrayList<TrackedLocation> invites;
 		if(hasInvites(to)) invites = getInvites(to);
@@ -133,7 +133,7 @@ public class WarpAPI
 	 * @param invited the character to remove the invite from.
 	 * @param invite the invite to remove.
 	 */
-	public static void removeInvite(PlayerCharacterClass invited, TrackedLocation invite)
+	public static void removeInvite(Demigod invited, TrackedLocation invite)
 	{
 		ArrayList<TrackedLocation> invites;
 		if(hasInvites(invited)) invites = getInvites(invited);
@@ -147,7 +147,7 @@ public class WarpAPI
 	 * 
 	 * @param character the character whose invites to remove.
 	 */
-	public static void clearInvites(PlayerCharacterClass character)
+	public static void clearInvites(Demigod character)
 	{
 		DemigodsData.inviteData.removeData(character.getID());
 	}

@@ -17,9 +17,9 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Deity.Deity;
+import com.censoredsoftware.Demigods.Demigod.Demigod;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
 public class Prometheus_deity implements Deity, Listener
 {
@@ -119,7 +119,7 @@ public class Prometheus_deity implements Deity, Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -127,13 +127,13 @@ public class Prometheus_deity implements Deity, Listener
 
 		if(character.isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(FIREBALL_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
+			if(!DemigodAPI.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
 
 			fireball(player);
 		}
 		else if(character.isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(BLAZE_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, BLAZE_NAME, BLAZE_TIME, false)) return;
+			if(!DemigodAPI.isCooledDown(player, BLAZE_NAME, BLAZE_TIME, false)) return;
 
 			blaze(player);
 		}
@@ -148,7 +148,7 @@ public class Prometheus_deity implements Deity, Listener
 	 */
 	public static void fireballCommand(Player player, String[] args)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -178,7 +178,7 @@ public class Prometheus_deity implements Deity, Listener
 	public static void fireball(Player player)
 	{
 		// Define variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
@@ -217,7 +217,7 @@ public class Prometheus_deity implements Deity, Listener
 	 */
 	public static void blazeCommand(Player player, String[] args)
 	{
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
@@ -247,7 +247,7 @@ public class Prometheus_deity implements Deity, Listener
 	public static void blaze(Player player)
 	{
 		// Define variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		int power = character.getPower(AbilityType.OFFENSE);
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
@@ -284,7 +284,7 @@ public class Prometheus_deity implements Deity, Listener
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Define variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
 		if(!character.isClass(DEITYNAME)) return;
@@ -314,7 +314,7 @@ public class Prometheus_deity implements Deity, Listener
 	public static void firestorm(final Player player)
 	{
 		// Define variables
-		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		Demigod character = PlayerAPI.getCurrentChar(player);
 		int power = character.getPower(AbilityType.OFFENSE);
 		int total = 20 * (int) Math.round(2 * Math.pow(power, 0.15));
 		Vector playerLocation = player.getLocation().toVector();
