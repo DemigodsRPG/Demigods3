@@ -10,9 +10,6 @@ commands:
     viewmaps:
         usage: /viewmaps
         permission: demigods.basic
-    viewblocks:
-        usage: /viewblocks
-        permission: demigods.basic
     check:
         usage: /check
         permission: demigods.basic

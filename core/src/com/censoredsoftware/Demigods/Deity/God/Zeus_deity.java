@@ -1,7 +1,9 @@
 package com.censoredsoftware.Demigods.Deity.God;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,10 +18,13 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
+import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Deity.Deity;
+import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
 
-public class Zeus_deity implements Listener
+public class Zeus_deity implements Deity, Listener
 {
 	// Create required universal deity variables
 	private static final String DEITYNAME = "Zeus";
@@ -49,7 +54,8 @@ public class Zeus_deity implements Listener
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
-	public ArrayList<Material> getClaimItems()
+	@Override
+	public List<Material> getClaimItems()
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
 
@@ -61,11 +67,12 @@ public class Zeus_deity implements Listener
 		return claimItems;
 	}
 
+	@Override
 	public ArrayList<String> getInfo(Player player)
 	{
 		ArrayList<String> toReturn = new ArrayList<String>();
 
-		if(API.misc.canUseDeitySilent(player, DEITYNAME))
+		if(MiscAPI.canUseDeitySilent(player, DEITYNAME))
 		{
 			toReturn.add(" "); // TODO
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
@@ -118,7 +125,7 @@ public class Zeus_deity implements Listener
 		if(damageEvent.getEntity() instanceof Player)
 		{
 			Player player = (Player) damageEvent.getEntity();
-			if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+			if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
 			if(damageEvent.getCause() == DamageCause.FALL)
@@ -133,22 +140,22 @@ public class Zeus_deity implements Listener
 	{
 		// Set variables
 		Player player = interactEvent.getPlayer();
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.ability.isClick(interactEvent)) return;
+		if(!AbilityAPI.isClick(interactEvent)) return;
 
-		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
 		if(character.isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SHOVE_NAME))))
 		{
-			if(!API.character.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
 
 			shove(player);
 		}
 
 		if(character.isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(LIGHTNING_NAME))))
 		{
-			if(!API.character.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
 
 			lightning(player);
 		}
@@ -163,11 +170,11 @@ public class Zeus_deity implements Listener
 	 */
 	public static void shoveCommand(Player player, String[] args)
 	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
-		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
@@ -193,16 +200,16 @@ public class Zeus_deity implements Listener
 	public static void shove(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 		int devotion = character.getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
-		LivingEntity target = API.ability.autoTarget(player);
+		LivingEntity target = AbilityAPI.autoTarget(player);
 
-		if(!API.ability.doAbilityPreProcess(player, target, "shove", SHOVE_COST, AbilityType.PASSIVE)) return;
+		if(!AbilityAPI.doAbilityPreProcess(player, target, "shove", SHOVE_COST, AbilityType.PASSIVE)) return;
 		SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
 		character.subtractFavor(SHOVE_COST);
 
-		if(!API.ability.targeting(player, target)) return;
+		if(!AbilityAPI.targeting(player, target)) return;
 
 		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
@@ -215,11 +222,11 @@ public class Zeus_deity implements Listener
 	 */
 	public static void lightningCommand(Player player, String[] args)
 	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
 
-		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
@@ -245,10 +252,10 @@ public class Zeus_deity implements Listener
 	public static void lightning(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
-		LivingEntity target = API.ability.autoTarget(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
+		LivingEntity target = AbilityAPI.autoTarget(player);
 
-		if(!API.ability.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
+		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
 		LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
 		character.subtractFavor(LIGHTNING_COST);
 
@@ -260,13 +267,13 @@ public class Zeus_deity implements Listener
 	 */
 	public static void stormCommand(Player player, String[] args)
 	{
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
 		// Set variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
 		// Check the player for DEITYNAME
-		if(!character.hasDeity(DEITYNAME)) return;
+		if(!character.isClass(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
 		if(System.currentTimeMillis() < ULTIMATE_TIME)
@@ -276,7 +283,7 @@ public class Zeus_deity implements Listener
 			return;
 		}
 
-		if(!API.ability.doAbilityPreProcess(player, "storm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
+		if(!AbilityAPI.doAbilityPreProcess(player, "storm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
 
 		// Perform ultimate if there is enough favor
 		int count = storm(player);
@@ -313,7 +320,7 @@ public class Zeus_deity implements Listener
 				if(entity instanceof Player)
 				{
 					Player otherPlayer = (Player) entity;
-					if(!API.player.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
+					if(!PlayerAPI.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
 					{
 						if(strikeLightning(player, otherPlayer)) count++;
 						strikeLightning(player, otherPlayer);
@@ -338,11 +345,11 @@ public class Zeus_deity implements Listener
 	private static boolean strikeLightning(Player player, LivingEntity target)
 	{
 		// Set variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
+		PlayerCharacterClass character = PlayerAPI.getCurrentChar(player);
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
-		if(!API.zone.canTarget(target)) return false;
-		Location toHit = API.ability.aimLocation(character, target.getLocation());
+		if(!ZoneAPI.canTarget(target)) return false;
+		Location toHit = AbilityAPI.aimLocation(character, target.getLocation());
 
 		player.getWorld().strikeLightningEffect(toHit);
 
@@ -350,13 +357,13 @@ public class Zeus_deity implements Listener
 		{
 			if(entity instanceof LivingEntity)
 			{
-				if(!API.zone.canTarget(entity)) continue;
+				if(!ZoneAPI.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 1.5) API.misc.customDamage(player, livingEntity, character.getAscensions() * 2, DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getAscensions() * 2, DamageCause.LIGHTNING);
 			}
 		}
 
-		if(!API.ability.isHit(target, toHit))
+		if(!AbilityAPI.isHit(target, toHit))
 		{
 			player.sendMessage(ChatColor.RED + "Missed...");
 		}
@@ -364,17 +371,18 @@ public class Zeus_deity implements Listener
 		return true;
 	}
 
-	// Don't touch these, they're required to work.
+	@Override
 	public String loadDeity()
 	{
-		API.getServer().getPluginManager().registerEvents(this, API);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
 		ULTIMATE_TIME = System.currentTimeMillis();
 		SHOVE_TIME = System.currentTimeMillis();
 		LIGHTNING_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 
-	public static ArrayList<String> getCommands()
+	@Override
+	public List<String> getCommands()
 	{
 		ArrayList<String> COMMANDS = new ArrayList<String>();
 
@@ -386,17 +394,20 @@ public class Zeus_deity implements Listener
 		return COMMANDS;
 	}
 
-	public static String getName()
+	@Override
+	public String getName()
 	{
 		return DEITYNAME;
 	}
 
-	public static String getAlliance()
+	@Override
+	public String getAlliance()
 	{
 		return DEITYALLIANCE;
 	}
 
-	public static ChatColor getColor()
+	@Override
+	public ChatColor getColor()
 	{
 		return DEITYCOLOR;
 	}

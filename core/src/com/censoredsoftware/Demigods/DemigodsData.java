@@ -25,6 +25,7 @@ public class DemigodsData
 	public static IntegerDataModule characterData;
 	public static IntegerDataModule warpData;
 	public static IntegerDataModule inviteData;
+	public static IntegerDataModule tempTributeData;
 
 	// Block Data
 	public static IntegerDataModule altarData;
@@ -78,6 +79,7 @@ public class DemigodsData
 		characterData = new IntegerDataModule(instance, "character_data");
 		warpData = new IntegerDataModule(instance, "warp_data");
 		inviteData = new IntegerDataModule(instance, "invite_data");
+		tempTributeData = new IntegerDataModule(instance, "temp_tribute_data");
 	}
 
 	static void blockData(DemigodsPlugin instance)

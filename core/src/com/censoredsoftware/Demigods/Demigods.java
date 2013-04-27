@@ -18,6 +18,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -31,7 +32,9 @@ import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Listener.*;
 import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterClass;
+import com.censoredsoftware.Demigods.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -56,9 +59,9 @@ public class Demigods
 	protected static LatestTweetModule notice;
 
 	// On-load Deity ClassPath List
-	public static ArrayList<String> deityPathList = new ArrayList<String>();
+	protected static List<String> deityPathList = new ArrayList<String>();
 
-	Demigods(DemigodsPlugin instance)
+	protected Demigods(DemigodsPlugin instance)
 	{
 		// Allow Static Access
 		demigods = instance;
@@ -72,34 +75,24 @@ public class Demigods
 		permission = new PermissionModule();
 	}
 
-	// @Override
-	// public void onEnable() // TODO Replace this.
-	// {
-	// loadDeities();
-	//
-	// // SpecialLocationData loading
-	// DFlatFile.load();
-	//
-	// Scheduler.startThreads(instance);
-	//
-	// misc.getLog().setFilter(new TrackedDisconnectReason());
-	// }
-
-	// @Override
-	// public void onDisable() // TODO Replace this.
-	// {
-	// // Disable Plugin
-	// HandlerList.unregisterAll(instance);
-	// Scheduler.stopThreads(instance);
-	// DFlatFile.save();
-	// }
-
-	static void loadListeners(DemigodsPlugin instance)
+	protected static void loadListeners(DemigodsPlugin instance)
 	{
-
+		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new AltarListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new DebugListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new ShrineListener(), instance);
+		Demigods.message.getLog().setFilter(new TrackedDisconnectReason());
 	}
 
-	static void loadCommands(DemigodsPlugin instance)
+	protected static void loadCommands(DemigodsPlugin instance)
 	{
 		// Define Main CommandExecutor
 		Commands ce = new Commands();
@@ -109,12 +102,25 @@ public class Demigods
 		instance.getCommand("check").setExecutor(ce);
 		instance.getCommand("owner").setExecutor(ce);
 		instance.getCommand("removechar").setExecutor(ce);
-		instance.getCommand("test1").setExecutor(ce);
 		instance.getCommand("viewmaps").setExecutor(ce);
-		instance.getCommand("viewblocks").setExecutor(ce);
 	}
 
-	public void loadExpansions(DemigodsPlugin instance)
+	protected static void loadDepends(DemigodsPlugin instance)
+	{
+		// WorldGuard
+		Plugin depend = instance.getServer().getPluginManager().getPlugin("WorldGuard");
+		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
+
+		// Factions
+		depend = instance.getServer().getPluginManager().getPlugin("Factions");
+		if(depend instanceof P) factions = (P) depend;
+
+		// Residence
+		depend = instance.getServer().getPluginManager().getPlugin("Residence");
+		if(depend instanceof Residence) residence = (Residence) depend;
+	}
+
+	protected static void loadExpansions(DemigodsPlugin instance)
 	{
 		// Check for expansions
 		for(Plugin plugin : instance.getServer().getPluginManager().getPlugins())
@@ -138,8 +144,7 @@ public class Demigods
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void loadDeities() // TODO Replace this.
+	protected static void loadDeities() // TODO Replace this.
 	{
 		message.info("Loading deities...");
 
@@ -203,13 +208,19 @@ public class Demigods
 			}
 		}
 	}
+
+	protected static void unload(DemigodsPlugin instance)
+	{
+		HandlerList.unregisterAll(instance);
+		Scheduler.stopThreads(instance);
+	}
 }
 
 class Scheduler
 {
 	static void startThreads(DemigodsPlugin instance)
 	{
-
+		// TODO This.
 	}
 
 	static void stopThreads(DemigodsPlugin instance)

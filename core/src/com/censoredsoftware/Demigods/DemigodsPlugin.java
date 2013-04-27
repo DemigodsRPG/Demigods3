@@ -13,13 +13,14 @@ public class DemigodsPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		new Demigods(this);
+
 		Demigods.loadDepends(this);
-		Demigods.loadSettings(this);
-		Demigods.loadModules(this);
-		Demigods.loadData(this);
-		Demigods.loadCommands(this);
+		Demigods.loadExpansions(this);
+		Demigods.loadDeities();
 		Demigods.loadListeners(this);
-		Demigods.loadMetrics(this);
+		Demigods.loadCommands(this);
+
 		Demigods.message.info("Successfully enabled.");
 	}
 

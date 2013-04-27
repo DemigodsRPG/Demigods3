@@ -19,6 +19,16 @@ public class MessageModule
 	private Logger log;
 
 	/**
+	 * Grab the Logger.
+	 * 
+	 * @return Logger.
+	 */
+	public Logger getLog()
+	{
+		return log;
+	}
+
+	/**
 	 * Constructor for the MessageModule.
 	 * 
 	 * @param instance The current instance of the Plugin running this module.

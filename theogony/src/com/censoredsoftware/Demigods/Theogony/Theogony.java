@@ -103,8 +103,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsExpansion;
+import com.censoredsoftware.Demigods.Listener.BattleListener;
 import com.censoredsoftware.Demigods.Theogony.Handlers.DMetricsHandler;
-import com.censoredsoftware.Demigods.Theogony.Listeners.DBattleListener;
 
 public class Theogony extends DemigodsExpansion
 {
@@ -180,7 +180,7 @@ public class Theogony extends DemigodsExpansion
 	private void loadListeners()
 	{
 		/* TrackedBattle Listener */
-		getServer().getPluginManager().registerEvents(new DBattleListener(), this);
+		getServer().getPluginManager().registerEvents(new BattleListener(), this);
 	}
 
 	/*
