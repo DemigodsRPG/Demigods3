@@ -88,14 +88,15 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Gods;
+package com.censoredsoftware.Demigods.Deity.God;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -104,52 +105,41 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
 
-public class Zeus_deity implements Listener
+public class Poseidon_deity implements Listener
 {
-	private static final Demigods API = Theogony.INSTANCE;
-
 	// Create required universal deity variables
-	private static final String DEITYNAME = "Zeus";
+	private static final String DEITYNAME = "Poseidon";
 	private static final String DEITYALLIANCE = "God";
-	private static final ChatColor DEITYCOLOR = ChatColor.YELLOW;
+	private static final ChatColor DEITYCOLOR = ChatColor.AQUA;
 
 	/*
 	 * Set deity-specific ability variable(s).
 	 */
-	// "/shove" Command:
-	private static final String SHOVE_NAME = "Shove"; // Sets the name of this command
-	private static long SHOVE_TIME; // Creates the variable for later use
-	private static final int SHOVE_COST = 170; // Cost to run command in "favor"
-	private static final int SHOVE_DELAY = 1500; // In milliseconds
+	// "/reel" Command:
+	private static final String REEL_NAME = "Reel"; // Sets the name of this command
+	private static long REEL_TIME; // Creates the variable for later use
+	private static final int REEL_COST = 120; // Cost to run command in "favor"
+	private static final int REEL_DELAY = 1100; // In milliseconds
 
-	// "/lightning" Command:
-	private static final String LIGHTNING_NAME = "Lightning"; // Sets the name of this command
-	private static long LIGHTNING_TIME; // Creates the variable for later use
-	private static final int LIGHTNING_COST = 140; // Cost to run command in "favor"
-	private static final int LIGHTNING_DELAY = 1000; // In milliseconds
-
-	// "/storm" Command:
-	@SuppressWarnings("unused")
-	private static String ULTIMATE_NAME = "Storm";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
-	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
-	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
-	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
+	// "/drown" Command:
+	private static final String DROWN_NAME = "Drown"; // Sets the name of this command
+	private static long DROWN_TIME; // Creates the variable for later use
+	private static final int DROWN_COST = 240; // Cost to run command in "favor"
+	private static final int DROWN_DELAY = 10000; // In milliseconds
 
 	public ArrayList<Material> getClaimItems()
 	{
 		ArrayList<Material> claimItems = new ArrayList<Material>();
 
 		// Add new items in this format: claimItems.add(Material.NAME_OF_MATERIAL);
-		// claimItems.add(Material.IRON_INGOT);
-		// claimItems.add(Material.FEATHER);
+		// claimItems.add(Material.WATER_BUCKET);
+		// claimItems.add(Material.WATER_LILY);
 		claimItems.add(Material.DIRT);
 
 		return claimItems;
@@ -165,17 +155,13 @@ public class Zeus_deity implements Listener
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
-			toReturn.add(" ");
-			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
-			toReturn.add(" ");
 
 			return toReturn;
 		}
@@ -185,14 +171,11 @@ public class Zeus_deity implements Listener
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/drown" + ChatColor.WHITE + " - Drown your enemies in sufficating water.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
-			toReturn.add(" ");
-			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
@@ -215,7 +198,7 @@ public class Zeus_deity implements Listener
 			if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
 
 			// If the player receives falling damage, cancel it
-			if(damageEvent.getCause() == DamageCause.FALL)
+			if(damageEvent.getCause() == DamageCause.DROWNING)
 			{
 				damageEvent.setCancelled(true);
 			}
@@ -233,18 +216,36 @@ public class Zeus_deity implements Listener
 
 		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SHOVE_NAME))))
+		if(character.isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
-			if(!API.character.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
+			if(!API.character.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
 
-			shove(player);
+			reel(player);
 		}
 
-		if(character.isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(LIGHTNING_NAME))))
+		if(character.isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(DROWN_NAME))))
 		{
-			if(!API.character.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
+			if(!API.character.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
 
-			lightning(player);
+			drown(player);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerMove(PlayerMoveEvent event)
+	{
+		Player player = event.getPlayer();
+		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+
+		// PHELPS SWIMMING
+		if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
+		{
+			Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
+			Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
+			if(player.isSneaking())
+			{
+				player.setVelocity(victor);
+			}
 		}
 	}
 
@@ -253,9 +254,9 @@ public class Zeus_deity implements Listener
 	 * Command Handlers
 	 * ------------------
 	 * 
-	 * Command: "/shove"
+	 * Command: "/reel"
 	 */
-	public static void shoveCommand(Player player, String[] args)
+	public static void reelCommand(Player player, String[] args)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
@@ -263,51 +264,45 @@ public class Zeus_deity implements Listener
 
 		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
 
-		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
+		if(character.isEnabledAbility(REEL_NAME))
 		{
-			// Bind item
-			character.setBound(SHOVE_NAME, player.getItemInHand().getType());
+			character.toggleAbility(REEL_NAME, false);
+			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is no longer active.");
 		}
 		else
 		{
-			if(character.isEnabledAbility(SHOVE_NAME))
-			{
-				character.toggleAbility(SHOVE_NAME, false);
-				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is no longer active.");
-			}
-			else
-			{
-				character.toggleAbility(SHOVE_NAME, true);
-				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is now active.");
-			}
+			character.toggleAbility(REEL_NAME, true);
+			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is now active.");
 		}
 	}
 
 	// The actual ability command
-	public static void shove(Player player)
+	public static void reel(Player player)
 	{
-		// Define variables
+		// Set variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
-		int devotion = character.getDevotion();
-		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
+		int damage = (int) Math.ceil(0.37286 * Math.pow(character.getPower(AbilityType.OFFENSE), 0.371238));
 		LivingEntity target = API.ability.autoTarget(player);
 
-		if(!API.ability.doAbilityPreProcess(player, target, "shove", SHOVE_COST, AbilityType.PASSIVE)) return;
-		SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
-		character.subtractFavor(SHOVE_COST);
+		if(!API.ability.doAbilityPreProcess(player, target, "reel", REEL_COST, AbilityType.OFFENSE)) return;
+		character.subtractFavor(REEL_COST);
+		REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
 
 		if(!API.ability.targeting(player, target)) return;
 
-		Vector vector = player.getLocation().toVector();
-		Vector victor = target.getLocation().toVector().subtract(vector);
-		victor.multiply(multiply);
-		target.setVelocity(victor);
+		API.misc.customDamage(player, target, damage, DamageCause.CUSTOM);
+
+		if(target.getLocation().getBlock().getType() == Material.AIR)
+		{
+			target.getLocation().getBlock().setType(Material.WATER);
+			target.getLocation().getBlock().setData((byte) 0x8);
+		}
 	}
 
 	/*
-	 * Command: "/lightning"
+	 * Command: "/drown"
 	 */
-	public static void lightningCommand(Player player, String[] args)
+	public static void drownCommand(Player player, String[] args)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
@@ -318,135 +313,59 @@ public class Zeus_deity implements Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(LIGHTNING_NAME, player.getItemInHand().getType());
+			character.setBound(DROWN_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(LIGHTNING_NAME))
+			if(character.isEnabledAbility(DROWN_NAME))
 			{
-				character.toggleAbility(LIGHTNING_NAME, false);
-				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is no longer active.");
+				character.toggleAbility(DROWN_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(LIGHTNING_NAME, true);
-				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is now active.");
+				character.toggleAbility(DROWN_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is now active.");
 			}
 		}
 	}
 
 	// The actual ability command
-	public static void lightning(Player player)
+	public static void drown(Player player)
 	{
 		// Define variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
+		int power = character.getPower(AbilityType.OFFENSE);
+		int radius = (int) Math.ceil(1.6955424 * Math.pow(power, 0.129349));
+		int duration = (int) Math.ceil(2.80488 * Math.pow(power, 0.2689)); // seconds
 		LivingEntity target = API.ability.autoTarget(player);
-
-		if(!API.ability.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
-		LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
-		character.subtractFavor(LIGHTNING_COST);
-
-		strikeLightning(player, target);
-	}
-
-	/*
-	 * Command: "/storm"
-	 */
-	public static void stormCommand(Player player, String[] args)
-	{
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
-
-		// Set variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
-
-		// Check the player for DEITYNAME
-		if(!character.hasDeity(DEITYNAME)) return;
-
-		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
-		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
-			return;
-		}
-
-		if(!API.ability.doAbilityPreProcess(player, "storm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
-
-		// Perform ultimate if there is enough favor
-		int count = storm(player);
-		if(count == 0)
-		{
-			player.sendMessage(ChatColor.YELLOW + "Zeus unable to strike any targets.");
-			return;
-		}
-
-		player.sendMessage(ChatColor.YELLOW + "Zeus has struck " + count + " targets!");
-
-		// Set favor and cooldown
-		character.subtractFavor(ULTIMATE_COST);
-		player.setNoDamageTicks(1000);
-		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
-	}
-
-	// The actual ability command
-	public static int storm(Player player)
-	{
-		// Define variables
-		ArrayList<Entity> entityList = new ArrayList<Entity>();
-		Vector playerLocation = player.getLocation().toVector();
-
-		for(Entity anEntity : player.getWorld().getEntities())
-			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
-
-		int count = 0;
-		for(Entity entity : entityList)
-		{
-			try
-			{
-				if(entity instanceof Player)
-				{
-					Player otherPlayer = (Player) entity;
-					if(!API.player.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
-					{
-						if(strikeLightning(player, otherPlayer)) count++;
-						strikeLightning(player, otherPlayer);
-						strikeLightning(player, otherPlayer);
-					}
-				}
-				else if(entity instanceof LivingEntity)
-				{
-					LivingEntity livingEntity = (LivingEntity) entity;
-					if(strikeLightning(player, livingEntity)) count++;
-					strikeLightning(player, livingEntity);
-					strikeLightning(player, livingEntity);
-				}
-			}
-			catch(Exception ignored)
-			{}
-		}
-
-		return count;
-	}
-
-	private static boolean strikeLightning(Player player, LivingEntity target)
-	{
-		// Set variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
-
-		if(!player.getWorld().equals(target.getWorld())) return false;
-		if(!API.zone.canTarget(target)) return false;
+		if(target == null) return; // Null check
 		Location toHit = API.ability.aimLocation(character, target.getLocation());
 
-		player.getWorld().strikeLightningEffect(toHit);
+		if(!API.ability.doAbilityPreProcess(player, target, "drown", DROWN_COST, AbilityType.OFFENSE)) return;
+		character.subtractFavor(DROWN_COST);
 
-		for(Entity entity : toHit.getBlock().getChunk().getEntities())
+		// Set the ability's delay
+		DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
+
+		final ArrayList<Block> toReset = new ArrayList<Block>();
+		for(int x = -radius; x <= radius; x++)
 		{
-			if(entity instanceof LivingEntity)
+			for(int y = -radius; y <= radius; y++)
 			{
-				if(!API.zone.canTarget(entity)) continue;
-				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 1.5) API.misc.customDamage(player, livingEntity, character.getAscensions() * 2, DamageCause.LIGHTNING);
+				for(int z = -radius; z <= radius; z++)
+				{
+					Block block = toHit.getWorld().getBlockAt(toHit.getBlockX() + x, toHit.getBlockY() + y, toHit.getBlockZ() + z);
+					if(block.getLocation().distance(toHit) <= radius)
+					{
+						if(block.getType() == Material.AIR)
+						{
+							block.setType(Material.WATER);
+							block.setData((byte) (0x8));
+							toReset.add(block);
+						}
+					}
+				}
 			}
 		}
 
@@ -455,16 +374,25 @@ public class Zeus_deity implements Listener
 			player.sendMessage(ChatColor.RED + "Missed...");
 		}
 
-		return true;
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(API, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Block block : toReset)
+				{
+					if((block.getType() == Material.WATER) || (block.getType() == Material.STATIONARY_WATER)) block.setType(Material.AIR);
+				}
+			}
+		}, duration);
 	}
 
 	// Don't touch these, they're required to work.
 	public String loadDeity()
 	{
 		API.getServer().getPluginManager().registerEvents(this, API);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		SHOVE_TIME = System.currentTimeMillis();
-		LIGHTNING_TIME = System.currentTimeMillis();
+		REEL_TIME = System.currentTimeMillis();
+		DROWN_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 
@@ -473,9 +401,8 @@ public class Zeus_deity implements Listener
 		ArrayList<String> COMMANDS = new ArrayList<String>();
 
 		// List all commands
-		COMMANDS.add("shove");
-		COMMANDS.add("lightning");
-		COMMANDS.add("storm");
+		COMMANDS.add("reel");
+		COMMANDS.add("drown");
 
 		return COMMANDS;
 	}

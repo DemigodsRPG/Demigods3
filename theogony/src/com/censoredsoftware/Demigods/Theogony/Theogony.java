@@ -101,12 +101,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.Definitions.Abstract.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Demigods;
+import com.censoredsoftware.Demigods.DemigodsExpansion;
 import com.censoredsoftware.Demigods.Theogony.Handlers.DMetricsHandler;
 import com.censoredsoftware.Demigods.Theogony.Listeners.DBattleListener;
 
-public class Theogony extends DemigodsPlugin
+public class Theogony extends DemigodsExpansion
 {
 	// Depends
 	public static Demigods INSTANCE = null;

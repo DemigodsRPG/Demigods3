@@ -88,54 +88,56 @@
 	    derivatives within 48 hours.
  */
 
-package com.censoredsoftware.Demigods.Theogony.Titans;
+package com.censoredsoftware.Demigods.Deity.Titan;
 
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
 import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
-import com.censoredsoftware.Demigods.Theogony.Theogony;
 
-public class Prometheus_deity implements Listener
+public class Cronus_deity implements Listener
 {
-	private static final Demigods API = Theogony.INSTANCE;
-
 	// Create required universal deity variables
-	private static final String DEITYNAME = "Prometheus";
+	private static final String DEITYNAME = "Cronus";
 	private static final String DEITYALLIANCE = "Titan";
-	private static final ChatColor DEITYCOLOR = ChatColor.GOLD;
+	private static final ChatColor DEITYCOLOR = ChatColor.DARK_PURPLE;
 
 	/*
 	 * Set deity-specific ability variable(s).
 	 */
-	// "/fireball" Command:
-	private static final String FIREBALL_NAME = "Fireball"; // Sets the name of this command
-	private static long FIREBALL_TIME; // Creates the variable for later use
-	private static final int FIREBALL_COST = 100; // Cost to run command in "favor"
-	private static final int FIREBALL_DELAY = 5; // In milliseconds
+	// "/cleave" Command:
+	private static final String CLEAVE_NAME = "Cleave"; // Sets the name of this command
+	private static long CLEAVE_TIME; // Creates the variable for later use
+	private static final int CLEAVE_COST = 100; // Cost to run command in "favor"
+	private static final int CLEAVE_DELAY = 1000; // In milliseconds
 
-	// "/blaze" Command:
-	private static final String BLAZE_NAME = "Blaze"; // Sets the name of this command
-	private static long BLAZE_TIME; // Creates the variable for later use
-	private static final int BLAZE_COST = 400; // Cost to run command in "favor"
-	private static final int BLAZE_DELAY = 15; // In milliseconds
+	// "/slow" Command:
+	private static final String SLOW_NAME = "Slow"; // Sets the name of this command
+	private static long SLOW_TIME; // Creates the variable for later use
+	private static final int SLOW_COST = 180; // Cost to run command in "favor"
+	private static final int SLOW_DELAY = 1000; // In milliseconds
 
-	// "/firestorm" Command:
+	// "/timestop" Command:
 	@SuppressWarnings("unused")
-	private static String ULTIMATE_NAME = "Firestorm";
+	private static String ULTIMATE_NAME = "Timestop";
 	private static long ULTIMATE_TIME; // Creates the variable for later use
-	private static final int ULTIMATE_COST = 5500; // Cost to run command in "favor"
+	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
 
@@ -144,8 +146,8 @@ public class Prometheus_deity implements Listener
 		ArrayList<Material> claimItems = new ArrayList<Material>();
 
 		// Add new items in this format: claimItems.add(Material.NAME_OF_MATERIAL);
-		// claimItems.add(Material.CLAY_BALL);
-		// claimItems.add(Material.MAGMA_CREAM);
+		// claimItems.add(Material.SOUL_SAND);
+		// claimItems.add(Material.WATCH);
 		claimItems.add(Material.DIRT);
 
 		return claimItems;
@@ -161,14 +163,14 @@ public class Prometheus_deity implements Listener
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/cleave" + ChatColor.WHITE + " - Do damage to your target.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/slow" + ChatColor.WHITE + " - Slow your target.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Prometheus rains fire on nearby enemies.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/timestop" + ChatColor.WHITE + " - Stop time for your enemies while you plan your next attack.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
 			toReturn.add(" ");
@@ -181,14 +183,14 @@ public class Prometheus_deity implements Listener
 			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
 			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
 			toReturn.add(ChatColor.YELLOW + " Active:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/cleave" + ChatColor.WHITE + " - Do damage to your target.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/slow" + ChatColor.WHITE + " - Slow your target.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Passive:");
 			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "None.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Ultimate:");
-			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Prometheus rains fire on nearby enemies.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/timestop" + ChatColor.WHITE + " - Stop time for our enemies while you plan your next attack.");
 			toReturn.add(" ");
 			toReturn.add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : getClaimItems())
@@ -198,6 +200,38 @@ public class Prometheus_deity implements Listener
 			toReturn.add(" ");
 
 			return toReturn;
+		}
+	}
+
+	// This sets the particular passive ability for the Cronus deity.
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onEntityDamange(EntityDamageByEntityEvent damageEvent)
+	{
+		if(damageEvent.getDamager() instanceof Player)
+		{
+			Player player = (Player) damageEvent.getDamager();
+			PlayerCharacter character = API.player.getCurrentChar(player);
+
+			if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+
+			if(!API.zone.canTarget(damageEvent.getEntity())) return;
+
+			if(!player.getItemInHand().getType().name().contains("_HOE")) return;
+
+			if(damageEvent.getEntity() instanceof Player)
+			{
+				Player attacked = (Player) damageEvent.getEntity();
+
+				// Cronus Passive: Stop movement
+				if(!API.player.areAllied(player, attacked)) attacked.setVelocity(new Vector(0, 0, 0));
+			}
+
+			if(character.isEnabledAbility(CLEAVE_NAME))
+			{
+				if(!API.character.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
+
+				cleave(damageEvent);
+			}
 		}
 	}
 
@@ -212,17 +246,11 @@ public class Prometheus_deity implements Listener
 
 		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(FIREBALL_NAME))))
+		if(character.isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SLOW_NAME))))
 		{
-			if(!API.character.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
+			if(!API.character.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
 
-			fireball(player);
-		}
-		else if(character.isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(BLAZE_NAME))))
-		{
-			if(!API.character.isCooledDown(player, BLAZE_NAME, BLAZE_TIME, false)) return;
-
-			blaze(player);
+			slow(player);
 		}
 	}
 
@@ -231,9 +259,60 @@ public class Prometheus_deity implements Listener
 	 * Command Handlers
 	 * ------------------
 	 * 
-	 * Command: "/fireball"
+	 * Command: "/cleave"
 	 */
-	public static void fireballCommand(Player player, String[] args)
+	public static void cleaveCommand(Player player, String[] args)
+	{
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+
+		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+
+		if(character.isEnabledAbility(CLEAVE_NAME))
+		{
+			character.toggleAbility(CLEAVE_NAME, false);
+			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is no longer active.");
+		}
+		else
+		{
+			character.toggleAbility(CLEAVE_NAME, true);
+			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
+		}
+	}
+
+	// The actual ability command
+	public static void cleave(EntityDamageByEntityEvent damageEvent)
+	{
+		// Define variables
+		Player player = (Player) damageEvent.getDamager();
+		Entity attacked = damageEvent.getEntity();
+		if(!(attacked instanceof LivingEntity)) return;
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.ability.doAbilityPreProcess(player, (LivingEntity) attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
+		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
+		character.subtractFavor(CLEAVE_COST);
+
+		for(int i = 1; i <= 31; i += 4)
+			attacked.getWorld().playEffect(attacked.getLocation(), Effect.SMOKE, i);
+
+		API.misc.customDamage(player, (LivingEntity) attacked, (int) Math.ceil(Math.pow(character.getPower(AbilityType.OFFENSE), 0.35)), DamageCause.ENTITY_ATTACK);
+
+		if((LivingEntity) attacked instanceof Player)
+		{
+			Player attackedPlayer = (Player) attacked;
+
+			attackedPlayer.setFoodLevel(attackedPlayer.getFoodLevel() - (damageEvent.getDamage() / 2));
+
+			if(attackedPlayer.getFoodLevel() < 0) attackedPlayer.setFoodLevel(0);
+		}
+	}
+
+	/*
+	 * Command: "/slow"
+	 */
+	public static void slowCommand(Player player, String[] args)
 	{
 		PlayerCharacter character = API.player.getCurrentChar(player);
 
@@ -244,129 +323,52 @@ public class Prometheus_deity implements Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(FIREBALL_NAME, player.getItemInHand().getType());
+			character.setBound(SLOW_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(FIREBALL_NAME))
+			if(character.isEnabledAbility(SLOW_NAME))
 			{
-				character.toggleAbility(FIREBALL_NAME, false);
-				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is no longer active.");
+				character.toggleAbility(SLOW_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(FIREBALL_NAME, true);
-				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is now active.");
+				character.toggleAbility(SLOW_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is now active.");
 			}
 		}
 	}
 
 	// The actual ability command
-	public static void fireball(Player player)
+	public static void slow(Player player)
 	{
 		// Define variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
-		LivingEntity target = API.ability.autoTarget(player);
+		int power = character.getDevotion();
+		int duration = (int) Math.ceil(3.635 * Math.pow(power, 0.2576)); // seconds
+		int strength = (int) Math.ceil(1.757 * Math.pow(power, 0.097));
+		Player target = null;
+		if(API.ability.autoTarget(player) instanceof Player) target = (Player) API.ability.autoTarget(player);
 
-		if(!API.ability.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
-		FIREBALL_TIME = System.currentTimeMillis() + FIREBALL_DELAY;
-		character.subtractFavor(FIREBALL_COST);
+		if(!API.ability.doAbilityPreProcess(player, target, "slow", SLOW_COST, AbilityType.SUPPORT)) return;
+		SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
+		character.subtractFavor(SLOW_COST);
 
 		if(!API.ability.targeting(player, target)) return;
 
 		if(target.getEntityId() != player.getEntityId())
 		{
-			shootFireball(player.getEyeLocation(), target.getLocation(), player);
-		}
-	}
-
-	public static void shootFireball(Location from, Location to, Player player)
-	{
-		player.getWorld().spawnEntity(from, EntityType.FIREBALL);
-		for(Entity entity : player.getNearbyEntities(2, 2, 2))
-		{
-			if(!(entity instanceof Fireball)) continue;
-
-			Fireball fireball = (Fireball) entity;
-			to.setX(to.getX() + .5);
-			to.setY(to.getY() + .5);
-			to.setZ(to.getZ() + .5);
-			Vector path = to.toVector().subtract(from.toVector());
-			Vector victor = from.toVector().add(from.getDirection().multiply(2));
-			fireball.teleport(new Location(player.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
-			fireball.setDirection(path);
-			fireball.setShooter(player);
+			target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, strength));
+			player.sendMessage(ChatColor.YELLOW + API.player.getCurrentChar(target).getName() + " has been slowed.");
+			target.sendMessage(ChatColor.RED + "You have been slowed for " + duration + " seconds.");
 		}
 	}
 
 	/*
-	 * Command: "/blaze"
+	 * Command: "/timestop"
 	 */
-	public static void blazeCommand(Player player, String[] args)
-	{
-		PlayerCharacter character = API.player.getCurrentChar(player);
-
-		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
-
-		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
-
-		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
-		{
-			// Bind item
-			character.setBound(BLAZE_NAME, player.getItemInHand().getType());
-		}
-		else
-		{
-			if(character.isEnabledAbility(BLAZE_NAME))
-			{
-				character.toggleAbility(BLAZE_NAME, false);
-				player.sendMessage(ChatColor.YELLOW + BLAZE_NAME + " is no longer active.");
-			}
-			else
-			{
-				character.toggleAbility(BLAZE_NAME, true);
-				player.sendMessage(ChatColor.YELLOW + BLAZE_NAME + " is now active.");
-			}
-		}
-	}
-
-	// The actual ability command
-	public static void blaze(Player player)
-	{
-		// Define variables
-		PlayerCharacter character = API.player.getCurrentChar(player);
-		int power = character.getPower(AbilityType.OFFENSE);
-		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
-		if(diameter > 12) diameter = 12;
-
-		LivingEntity target = API.ability.autoTarget(player);
-
-		if(!API.ability.doAbilityPreProcess(player, target, "blaze", BLAZE_COST, AbilityType.OFFENSE)) return;
-		BLAZE_TIME = System.currentTimeMillis() + BLAZE_DELAY;
-		character.subtractFavor(BLAZE_COST);
-
-		if(!API.ability.targeting(player, target)) return;
-
-		if(target.getEntityId() != player.getEntityId())
-		{
-			for(int X = -diameter / 2; X <= diameter / 2; X++)
-			{
-				for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
-				{
-					for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
-					{
-						Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + X, target.getLocation().getBlockY() + Y, target.getLocation().getBlockZ() + Z);
-						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !API.zone.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
-					}
-				}
-			}
-		}
-	}
-
-	/*
-	 * Command: "/firestorm"
-	 */
-	public static void firestormCommand(Player player, String[] args)
+	public static void timestopCommand(Player player, String[] args)
 	{
 		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
 
@@ -385,10 +387,10 @@ public class Prometheus_deity implements Listener
 		}
 
 		// Perform ultimate if there is enough favor
-		if(!API.ability.doAbilityPreProcess(player, "firestorm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
+		if(!API.ability.doAbilityPreProcess(player, "timestop", ULTIMATE_COST, AbilityType.SUPPORT)) return;
 
-		firestorm(player);
-		player.sendMessage(ChatColor.YELLOW + "Prometheus has reigned fire down on your enemies.");
+		int duration = (int) Math.round(9.9155621 * Math.pow(character.getAscensions(), 0.459019));
+		player.sendMessage(ChatColor.YELLOW + "Cronus has stopped time for " + duration + " seconds, for " + timestop(player, duration) + " enemies!");
 
 		// Set favor and cooldown
 		character.subtractFavor(ULTIMATE_COST);
@@ -398,37 +400,28 @@ public class Prometheus_deity implements Listener
 	}
 
 	// The actual ability command
-	public static void firestorm(final Player player)
+	public static int timestop(Player player, int duration)
 	{
 		// Define variables
 		PlayerCharacter character = API.player.getCurrentChar(player);
-		int power = character.getPower(AbilityType.OFFENSE);
-		int total = 20 * (int) Math.round(2 * Math.pow(power, 0.15));
-		Vector playerLocation = player.getLocation().toVector();
-		final ArrayList<LivingEntity> entityList = new ArrayList<LivingEntity>();
-		for(Entity entity : player.getNearbyEntities(50, 50, 50))
+
+		int slowamount = (int) Math.round(4.77179 * Math.pow(character.getAscensions(), 0.17654391));
+		int count = 0;
+
+		for(Player onlinePlayer : player.getWorld().getPlayers())
 		{
-			if(!(entity instanceof LivingEntity)) continue;
-			if(entity instanceof Player) if(API.player.getCurrentChar((Player) entity) != null) if(API.player.areAllied(player, (Player) entity)) continue;
-			if(!API.zone.canTarget(entity)) continue;
-			entityList.add((LivingEntity) entity);
+			if(!(onlinePlayer.getLocation().toVector().isInSphere(player.getLocation().toVector(), 70))) continue;
+
+			if(!API.zone.canTarget(onlinePlayer)) continue;
+
+			if(API.player.areAllied(player, onlinePlayer)) continue;
+
+			onlinePlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, slowamount));
+
+			count++;
 		}
-		for(int i = 0; i <= total; i += 20)
-		{
-			API.getServer().getScheduler().scheduleSyncDelayedTask(API, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					for(LivingEntity entity : entityList)
-					{
-						Location up = new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, 256, entity.getLocation().getZ() + Math.random() * 5);
-						up.setPitch(90);
-						shootFireball(up, new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, entity.getLocation().getY(), entity.getLocation().getZ() + Math.random() * 5), player);
-					}
-				}
-			}, i);
-		}
+
+		return count;
 	}
 
 	// Don't touch these, they're required to work.
@@ -436,8 +429,8 @@ public class Prometheus_deity implements Listener
 	{
 		API.getServer().getPluginManager().registerEvents(this, API);
 		ULTIMATE_TIME = System.currentTimeMillis();
-		FIREBALL_TIME = System.currentTimeMillis();
-		BLAZE_TIME = System.currentTimeMillis();
+		CLEAVE_TIME = System.currentTimeMillis();
+		SLOW_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 
@@ -446,9 +439,9 @@ public class Prometheus_deity implements Listener
 		ArrayList<String> COMMANDS = new ArrayList<String>();
 
 		// List all commands
-		COMMANDS.add("fireball");
-		COMMANDS.add("blaze");
-		COMMANDS.add("firestorm");
+		COMMANDS.add("cleave");
+		COMMANDS.add("slow");
+		COMMANDS.add("timestop");
 
 		return COMMANDS;
 	}

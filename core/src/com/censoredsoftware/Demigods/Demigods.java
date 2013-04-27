@@ -133,7 +133,7 @@ public class Demigods
 	}
 
 	@SuppressWarnings("unchecked")
-	public void loadDeities() // TODO Replace this.
+	public void loadDeities(DemigodsPlugin instance) // TODO Replace this.
 	{
 		message.info("Loading deities...");
 
@@ -166,7 +166,7 @@ public class Demigods
 					ClassLoader loader = DeityAPI.getClassLoader(deityPath);
 
 					// Load everything else for the Deity (Listener, etc.)
-					String loadMessage = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "loadDeity");
+					String loadMessage = (String) DeityAPI.invokeDeityMethodWithPlugin(deityPath, loader, "loadDeity", instance);
 					String name = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "getName");
 					String alliance = (String) DeityAPI.invokeDeityMethod(deityPath, loader, "getAlliance");
 

@@ -1,0 +1,403 @@
+package com.censoredsoftware.Demigods.Deity.God;
+
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
+
+import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Objects.Character.PlayerCharacter;
+
+public class Zeus_deity implements Listener
+{
+	// Create required universal deity variables
+	private static final String DEITYNAME = "Zeus";
+	private static final String DEITYALLIANCE = "God";
+	private static final ChatColor DEITYCOLOR = ChatColor.YELLOW;
+
+	/*
+	 * Set deity-specific ability variable(s).
+	 */
+	// "/shove" Command:
+	private static final String SHOVE_NAME = "Shove"; // Sets the name of this command
+	private static long SHOVE_TIME; // Creates the variable for later use
+	private static final int SHOVE_COST = 170; // Cost to run command in "favor"
+	private static final int SHOVE_DELAY = 1500; // In milliseconds
+
+	// "/lightning" Command:
+	private static final String LIGHTNING_NAME = "Lightning"; // Sets the name of this command
+	private static long LIGHTNING_TIME; // Creates the variable for later use
+	private static final int LIGHTNING_COST = 140; // Cost to run command in "favor"
+	private static final int LIGHTNING_DELAY = 1000; // In milliseconds
+
+	// "/storm" Command:
+	@SuppressWarnings("unused")
+	private static String ULTIMATE_NAME = "Storm";
+	private static long ULTIMATE_TIME; // Creates the variable for later use
+	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
+	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
+	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
+
+	public ArrayList<Material> getClaimItems()
+	{
+		ArrayList<Material> claimItems = new ArrayList<Material>();
+
+		// Add new items in this format: claimItems.add(Material.NAME_OF_MATERIAL);
+		// claimItems.add(Material.IRON_INGOT);
+		// claimItems.add(Material.FEATHER);
+		claimItems.add(Material.DIRT);
+
+		return claimItems;
+	}
+
+	public ArrayList<String> getInfo(Player player)
+	{
+		ArrayList<String> toReturn = new ArrayList<String>();
+
+		if(API.misc.canUseDeitySilent(player, DEITYNAME))
+		{
+			toReturn.add(" "); // TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.YELLOW + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " You are a follower of " + DEITYNAME + "!");
+			toReturn.add(" ");
+
+			return toReturn;
+		}
+		else
+		{
+			toReturn.add(" "); // TODO
+			toReturn.add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + DEITYCOLOR + DEITYNAME);
+			toReturn.add(ChatColor.RESET + "-----------------------------------------------------");
+			toReturn.add(ChatColor.YELLOW + " Active:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Passive:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Ultimate:");
+			toReturn.add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			toReturn.add(" ");
+			toReturn.add(ChatColor.YELLOW + " Claim Items:");
+			for(Material item : getClaimItems())
+			{
+				toReturn.add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+			}
+			toReturn.add(" ");
+
+			return toReturn;
+		}
+	}
+
+	// This sets the particular passive ability for the Zeus_deity deity.
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void onEntityDamange(EntityDamageEvent damageEvent)
+	{
+		if(damageEvent.getEntity() instanceof Player)
+		{
+			Player player = (Player) damageEvent.getEntity();
+			if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+
+			// If the player receives falling damage, cancel it
+			if(damageEvent.getCause() == DamageCause.FALL)
+			{
+				damageEvent.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static void onPlayerInteract(PlayerInteractEvent interactEvent)
+	{
+		// Set variables
+		Player player = interactEvent.getPlayer();
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.ability.isClick(interactEvent)) return;
+
+		if(!API.misc.canUseDeitySilent(player, DEITYNAME)) return;
+
+		if(character.isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SHOVE_NAME))))
+		{
+			if(!API.character.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
+
+			shove(player);
+		}
+
+		if(character.isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(LIGHTNING_NAME))))
+		{
+			if(!API.character.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
+
+			lightning(player);
+		}
+	}
+
+	/*
+	 * ------------------
+	 * Command Handlers
+	 * ------------------
+	 * 
+	 * Command: "/shove"
+	 */
+	public static void shoveCommand(Player player, String[] args)
+	{
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+
+		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
+		{
+			// Bind item
+			character.setBound(SHOVE_NAME, player.getItemInHand().getType());
+		}
+		else
+		{
+			if(character.isEnabledAbility(SHOVE_NAME))
+			{
+				character.toggleAbility(SHOVE_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is no longer active.");
+			}
+			else
+			{
+				character.toggleAbility(SHOVE_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is now active.");
+			}
+		}
+	}
+
+	// The actual ability command
+	public static void shove(Player player)
+	{
+		// Define variables
+		PlayerCharacter character = API.player.getCurrentChar(player);
+		int devotion = character.getDevotion();
+		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
+		LivingEntity target = API.ability.autoTarget(player);
+
+		if(!API.ability.doAbilityPreProcess(player, target, "shove", SHOVE_COST, AbilityType.PASSIVE)) return;
+		SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
+		character.subtractFavor(SHOVE_COST);
+
+		if(!API.ability.targeting(player, target)) return;
+
+		Vector vector = player.getLocation().toVector();
+		Vector victor = target.getLocation().toVector().subtract(vector);
+		victor.multiply(multiply);
+		target.setVelocity(victor);
+	}
+
+	/*
+	 * Command: "/lightning"
+	 */
+	public static void lightningCommand(Player player, String[] args)
+	{
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME)) return;
+
+		if(!API.misc.canUseDeity(player, DEITYNAME)) return;
+
+		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
+		{
+			// Bind item
+			character.setBound(LIGHTNING_NAME, player.getItemInHand().getType());
+		}
+		else
+		{
+			if(character.isEnabledAbility(LIGHTNING_NAME))
+			{
+				character.toggleAbility(LIGHTNING_NAME, false);
+				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is no longer active.");
+			}
+			else
+			{
+				character.toggleAbility(LIGHTNING_NAME, true);
+				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is now active.");
+			}
+		}
+	}
+
+	// The actual ability command
+	public static void lightning(Player player)
+	{
+		// Define variables
+		PlayerCharacter character = API.player.getCurrentChar(player);
+		LivingEntity target = API.ability.autoTarget(player);
+
+		if(!API.ability.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
+		LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
+		character.subtractFavor(LIGHTNING_COST);
+
+		strikeLightning(player, target);
+	}
+
+	/*
+	 * Command: "/storm"
+	 */
+	public static void stormCommand(Player player, String[] args)
+	{
+		if(!API.misc.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "." + DEITYNAME + ".ultimate")) return;
+
+		// Set variables
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		// Check the player for DEITYNAME
+		if(!character.hasDeity(DEITYNAME)) return;
+
+		// Check if the ultimate has cooled down or not
+		if(System.currentTimeMillis() < ULTIMATE_TIME)
+		{
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+			return;
+		}
+
+		if(!API.ability.doAbilityPreProcess(player, "storm", ULTIMATE_COST, AbilityType.OFFENSE)) return;
+
+		// Perform ultimate if there is enough favor
+		int count = storm(player);
+		if(count == 0)
+		{
+			player.sendMessage(ChatColor.YELLOW + "Zeus unable to strike any targets.");
+			return;
+		}
+
+		player.sendMessage(ChatColor.YELLOW + "Zeus has struck " + count + " targets!");
+
+		// Set favor and cooldown
+		character.subtractFavor(ULTIMATE_COST);
+		player.setNoDamageTicks(1000);
+		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
+		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+	}
+
+	// The actual ability command
+	public static int storm(Player player)
+	{
+		// Define variables
+		ArrayList<Entity> entityList = new ArrayList<Entity>();
+		Vector playerLocation = player.getLocation().toVector();
+
+		for(Entity anEntity : player.getWorld().getEntities())
+			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
+
+		int count = 0;
+		for(Entity entity : entityList)
+		{
+			try
+			{
+				if(entity instanceof Player)
+				{
+					Player otherPlayer = (Player) entity;
+					if(!API.player.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
+					{
+						if(strikeLightning(player, otherPlayer)) count++;
+						strikeLightning(player, otherPlayer);
+						strikeLightning(player, otherPlayer);
+					}
+				}
+				else if(entity instanceof LivingEntity)
+				{
+					LivingEntity livingEntity = (LivingEntity) entity;
+					if(strikeLightning(player, livingEntity)) count++;
+					strikeLightning(player, livingEntity);
+					strikeLightning(player, livingEntity);
+				}
+			}
+			catch(Exception ignored)
+			{}
+		}
+
+		return count;
+	}
+
+	private static boolean strikeLightning(Player player, LivingEntity target)
+	{
+		// Set variables
+		PlayerCharacter character = API.player.getCurrentChar(player);
+
+		if(!player.getWorld().equals(target.getWorld())) return false;
+		if(!API.zone.canTarget(target)) return false;
+		Location toHit = API.ability.aimLocation(character, target.getLocation());
+
+		player.getWorld().strikeLightningEffect(toHit);
+
+		for(Entity entity : toHit.getBlock().getChunk().getEntities())
+		{
+			if(entity instanceof LivingEntity)
+			{
+				if(!API.zone.canTarget(entity)) continue;
+				LivingEntity livingEntity = (LivingEntity) entity;
+				if(livingEntity.getLocation().distance(toHit) < 1.5) API.misc.customDamage(player, livingEntity, character.getAscensions() * 2, DamageCause.LIGHTNING);
+			}
+		}
+
+		if(!API.ability.isHit(target, toHit))
+		{
+			player.sendMessage(ChatColor.RED + "Missed...");
+		}
+
+		return true;
+	}
+
+	// Don't touch these, they're required to work.
+	public String loadDeity()
+	{
+		API.getServer().getPluginManager().registerEvents(this, API);
+		ULTIMATE_TIME = System.currentTimeMillis();
+		SHOVE_TIME = System.currentTimeMillis();
+		LIGHTNING_TIME = System.currentTimeMillis();
+		return DEITYNAME + " loaded.";
+	}
+
+	public static ArrayList<String> getCommands()
+	{
+		ArrayList<String> COMMANDS = new ArrayList<String>();
+
+		// List all commands
+		COMMANDS.add("shove");
+		COMMANDS.add("lightning");
+		COMMANDS.add("storm");
+
+		return COMMANDS;
+	}
+
+	public static String getName()
+	{
+		return DEITYNAME;
+	}
+
+	public static String getAlliance()
+	{
+		return DEITYALLIANCE;
+	}
+
+	public static ChatColor getColor()
+	{
+		return DEITYCOLOR;
+	}
+}

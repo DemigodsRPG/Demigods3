@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Definitions;
+package com.censoredsoftware.Demigods.Definition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
