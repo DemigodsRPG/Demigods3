@@ -1,14 +1,37 @@
 package com.censoredsoftware.Demigods.API;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.censoredsoftware.Demigods.Block.Altar;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
-public class WarpAPI
+public class LocationAPI
 {
+	/**
+	 * Grab the TrackedLocation from the data with id <code>id</code>.
+	 * 
+	 * @param id The ID of the block.
+	 * @return TrackedLocation.
+	 */
+	public static TrackedLocation getLocation(int id)
+	{
+		return (TrackedLocation) DemigodsData.locationData.getDataObject(id);
+	}
+
+	public static List<TrackedLocation> getAllLocations()
+	{
+		List<TrackedLocation> locations = new ArrayList<TrackedLocation>();
+		for(int charID : DemigodsData.locationData.listKeys())
+		{
+			TrackedLocation location = (TrackedLocation) DemigodsData.locationData.getDataObject(charID);
+			locations.add(location);
+		}
+		return locations;
+	}
+
 	/**
 	 * Returns an ArrayList of all warps for <code>character</code>.
 	 * 
@@ -123,7 +146,7 @@ public class WarpAPI
 		ArrayList<TrackedLocation> invites;
 		if(hasInvites(to)) invites = getInvites(to);
 		else invites = new ArrayList<TrackedLocation>();
-		invites.add(new TrackedLocation(from.getOwner().getPlayer().getLocation(), from.getName()));
+		invites.add(new TrackedLocation(DemigodsData.generateInt(5), from.getOwner().getPlayer().getLocation(), from.getName()));
 		DemigodsData.inviteData.saveData(to.getID(), invites);
 	}
 

@@ -2,45 +2,62 @@ package com.censoredsoftware.Demigods.Tracked;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-public class TrackedBlock
+import com.censoredsoftware.Demigods.API.LocationAPI;
+import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Modules.Data.DataStubModule;
+
+public class TrackedBlock implements DataStubModule
 {
 	private Map<String, Object> blockData;
-	private TrackedLocation location;
 
-	public TrackedBlock(Location location, String type, Material material)
+	public TrackedBlock(Map map)
+	{
+		setMap(map);
+		save(this);
+	}
+
+	public TrackedBlock(int id, Location location, String type, Material material)
 	{
 		blockData = new HashMap<String, Object>();
 
-		saveData("BLOCK_ID", generateInt(5));
+		saveData("BLOCK_ID", id);
 		saveData("BLOCK_TYPE", type);
 		saveData("BLOCK_MATERIAL", material.getId());
 		saveData("BLOCK_PREVIOUS_MATERIAL", location.getBlock().getTypeId());
 		saveData("BLOCK_MATERIAL_BYTE", (byte) 0);
-		this.location = new TrackedLocation(location, null);
+		saveData("BLOCK_LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
 
 		// Create the actual block
 		location.getBlock().setType(material);
+
+		save(this);
 	}
 
-	public TrackedBlock(Location location, String type, Material material, byte matByte)
+	public TrackedBlock(int id, Location location, String type, Material material, byte matByte)
 	{
 		blockData = new HashMap<String, Object>();
 
-		saveData("BLOCK_ID", generateInt(5));
+		saveData("BLOCK_ID", id);
 		saveData("BLOCK_TYPE", type);
 		saveData("BLOCK_MATERIAL", material.getId());
 		saveData("BLOCK_PREVIOUS_MATERIAL", location.getBlock().getTypeId());
 		saveData("BLOCK_MATERIAL_BYTE", matByte);
-		this.location = new TrackedLocation(location, null);
+		saveData("BLOCK_LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
 
 		// Create the actual block
 		location.getBlock().setType(material);
 		location.getBlock().setData(matByte, true);
+
+		save(this);
+	}
+
+	public static void save(TrackedBlock block) // TODO This belongs somewhere else.
+	{
+		DemigodsData.trackedBlockData.saveData(block.getID(), block);
 	}
 
 	/**
@@ -49,7 +66,8 @@ public class TrackedBlock
 	 * @param key The key in the save.
 	 * @return True if blockData contains the key.
 	 */
-	boolean containsKey(String key)
+	@Override
+	public boolean containsKey(String key)
 	{
 		return blockData.get(key) != null && blockData.containsKey(key);
 	}
@@ -60,7 +78,8 @@ public class TrackedBlock
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
-	Object getData(String key)
+	@Override
+	public Object getData(String key)
 	{
 		if(containsKey(key)) return blockData.get(key);
 		return null; // Should never happen, always check with containsKey before getting the data.
@@ -72,7 +91,8 @@ public class TrackedBlock
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
-	void saveData(String key, Object data)
+	@Override
+	public void saveData(String key, Object data)
 	{
 		blockData.put(key, data);
 	}
@@ -82,7 +102,8 @@ public class TrackedBlock
 	 * 
 	 * @param key The key in the save.
 	 */
-	void removeData(String key)
+	@Override
+	public void removeData(String key)
 	{
 		if(!containsKey(key)) return;
 		blockData.remove(key);
@@ -93,15 +114,28 @@ public class TrackedBlock
 	 */
 	public void remove()
 	{
-		location.toLocation().getBlock().setTypeId(Integer.parseInt(getData("BLOCK_PREVIOUS_MATERIAL").toString()));
+		getLocation().getBlock().setTypeId(Integer.parseInt(getData("BLOCK_PREVIOUS_MATERIAL").toString()));
 	}
 
 	/*
 	 * getID() : Returns the ID of the block.
 	 */
+	@Override
 	public int getID()
 	{
 		return Integer.parseInt(getData("BLOCK_ID").toString());
+	}
+
+	@Override
+	public Map getMap()
+	{
+		return blockData;
+	}
+
+	@Override
+	public void setMap(Map map)
+	{
+		blockData = map;
 	}
 
 	/*
@@ -119,20 +153,6 @@ public class TrackedBlock
 
 	public Location getLocation()
 	{
-		return location.toLocation();
-	}
-
-	private static int generateInt(int length)
-	{
-		// Set allowed characters - Create new string to fill - Generate the string - Return string
-		char[] chars = "0123456789".toCharArray();
-		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
-		for(int i = 0; i < length; i++)
-		{
-			char c = chars[random.nextInt(chars.length)];
-			sb.append(c);
-		}
-		return Integer.parseInt(sb.toString());
+		return LocationAPI.getLocation((Integer.parseInt(getData("BLOCK_LOCATION").toString()))).toLocation();
 	}
 }

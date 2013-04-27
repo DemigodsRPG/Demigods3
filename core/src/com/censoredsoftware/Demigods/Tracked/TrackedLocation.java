@@ -1,60 +1,118 @@
 package com.censoredsoftware.Demigods.Tracked;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import com.censoredsoftware.Modules.Data.StringDataModule;
+import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class TrackedLocation
+public class TrackedLocation implements DataStubModule
 {
-	private StringDataModule specialLocationData;
+	private Map<String, Object> locationData;
 
-	public TrackedLocation(String world, double X, double Y, double Z, float pitch, float yaw, String name)
+	public TrackedLocation(Map map)
 	{
-		specialLocationData = new StringDataModule();
-		specialLocationData.saveData("WORLD", world);
-		specialLocationData.saveData("X", X);
-		specialLocationData.saveData("Y", Y);
-		specialLocationData.saveData("Z", Z);
-		specialLocationData.saveData("PITCH", pitch);
-		specialLocationData.saveData("YAW", yaw);
-		if(name != null) specialLocationData.saveData("NAME", name);
+		setMap(map);
+		save(this);
 	}
 
-	public TrackedLocation(Location location, String name)
+	public TrackedLocation(int id, String world, double X, double Y, double Z, float pitch, float yaw, String name)
 	{
-		specialLocationData = new StringDataModule();
-		specialLocationData.saveData("WORLD", location.getWorld().getName());
-		specialLocationData.saveData("X", location.getX());
-		specialLocationData.saveData("Y", location.getY());
-		specialLocationData.saveData("Z", location.getZ());
-		specialLocationData.saveData("PITCH", location.getPitch());
-		specialLocationData.saveData("YAW", location.getYaw());
-		if(name != null) specialLocationData.saveData("NAME", name);
+		locationData = new HashMap<String, Object>();
+		saveData("LOC_ID", id);
+		saveData("WORLD", world);
+		saveData("X", X);
+		saveData("Y", Y);
+		saveData("Z", Z);
+		saveData("PITCH", pitch);
+		saveData("YAW", yaw);
+		if(name != null) saveData("NAME", name);
+
+		save(this);
+	}
+
+	public TrackedLocation(int id, Location location, String name)
+	{
+		locationData = new HashMap<String, Object>();
+		saveData("LOC_ID", id);
+		saveData("WORLD", location.getWorld().getName());
+		saveData("X", location.getX());
+		saveData("Y", location.getY());
+		saveData("Z", location.getZ());
+		saveData("PITCH", location.getPitch());
+		saveData("YAW", location.getYaw());
+		if(name != null) saveData("NAME", name);
+
+		save(this);
+	}
+
+	public static void save(TrackedLocation location) // TODO This belongs somewhere else.
+	{
+		DemigodsData.locationData.saveData(location.getID(), location);
 	}
 
 	public boolean hasName()
 	{
-		return specialLocationData.containsKey("NAME");
+		return locationData.containsKey("NAME");
 	}
 
 	public String getName()
 	{
-		return specialLocationData.getDataString("NAME");
+		return getData("NAME").toString();
 	}
 
 	public synchronized void setName(String name)
 	{
-		specialLocationData.saveData("NAME", name);
+		saveData("NAME", name);
 	}
 
 	public Location toLocation() throws NullPointerException
 	{
-		return new Location(Bukkit.getServer().getWorld(specialLocationData.getDataString("WORLD")), specialLocationData.getDataDouble("X"), specialLocationData.getDataDouble("Y"), specialLocationData.getDataDouble("Z"), specialLocationData.getDataFloat("YAW"), specialLocationData.getDataFloat("PITCH"));
+		return new Location(Bukkit.getServer().getWorld(getData("WORLD").toString()), Double.parseDouble(getData("X").toString()), Double.parseDouble(getData("Y").toString()), Double.parseDouble(getData("Z").toString()), Float.parseFloat(getData("YAW").toString()), Float.parseFloat(getData("PITCH").toString()));
 	}
 
-	public StringDataModule grabSpecialLocationData()
+	@Override
+	public boolean containsKey(String key)
 	{
-		return this.specialLocationData;
+		return locationData.get(key) != null && locationData.containsKey(key);
+	}
+
+	@Override
+	public Object getData(String key)
+	{
+		return locationData.get(key);
+	}
+
+	@Override
+	public void saveData(String key, Object data)
+	{
+		locationData.put(key, data);
+	}
+
+	@Override
+	public void removeData(String key)
+	{
+		locationData.remove(key);
+	}
+
+	@Override
+	public int getID()
+	{
+		return Integer.parseInt(getData("LOC_ID").toString());
+	}
+
+	@Override
+	public Map getMap()
+	{
+		return locationData;
+	}
+
+	@Override
+	public void setMap(Map map)
+	{
+		locationData = map;
 	}
 }

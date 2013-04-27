@@ -2,12 +2,17 @@ package com.censoredsoftware.Demigods;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.API.LocationAPI;
+import com.censoredsoftware.Demigods.Block.Altar;
+import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
+import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 import com.censoredsoftware.Modules.Data.IntegerDataModule;
 import com.censoredsoftware.Modules.Data.ObjectDataModule;
 import com.censoredsoftware.Modules.Data.StringDataModule;
@@ -25,6 +30,10 @@ public class DemigodsData
 	public static StringDataModule deityCommands;
 	public static StringDataModule deityClaimItems;
 
+	// Persistent Plugin Data
+	public static IntegerDataModule locationData;
+	public static YAMLPersistenceModule locationYAML;
+
 	// Player Data
 	public static TieredPlayerDataModule playerData;
 	public static YAMLPersistenceModule playerYAML;
@@ -38,6 +47,8 @@ public class DemigodsData
 	public static IntegerDataModule tempTributeData;
 
 	// Block Data
+	public static IntegerDataModule trackedBlockData;
+	public static YAMLPersistenceModule trackedBlockYAML;
 	public static IntegerDataModule altarData;
 	public static YAMLPersistenceModule altarYAML;
 	public static IntegerDataModule shrineData;
@@ -64,7 +75,7 @@ public class DemigodsData
 
 	static void pluginDataPersistent(DemigodsPlugin instance)
 	{
-		// TODO
+		locationData = new IntegerDataModule(instance, "location_data");
 	}
 
 	static void pluginDataNonPersistent(DemigodsPlugin instance)
@@ -99,6 +110,7 @@ public class DemigodsData
 
 	static void blockData(DemigodsPlugin instance)
 	{
+		trackedBlockData = new IntegerDataModule(instance, "tracked_block_data");
 		altarData = new IntegerDataModule(instance, "altar_data");
 		shrineData = new IntegerDataModule(instance, "shrine_data");
 	}
@@ -112,7 +124,9 @@ public class DemigodsData
 	{
 		if(yaml)
 		{
+			locationYAML = new YAMLPersistenceModule(true, instance, "core", "location_data");
 			playerYAML = new YAMLPersistenceModule(true, instance, "core", "player_data");
+			trackedBlockYAML = new YAMLPersistenceModule(true, instance, "core", "tracked_block_data");
 			characterYAML = new YAMLPersistenceModule(true, instance, "core", "character_data");
 			altarYAML = new YAMLPersistenceModule(true, instance, "core", "altar_data");
 		}
@@ -122,14 +136,24 @@ public class DemigodsData
 	{
 		if(yaml)
 		{
-			playerYAML.save(playerData);
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.demigods, new Runnable()
 			{
-				characterYAML.save(character);
-			}
-			altarYAML.save(altarData);
+				@Override
+				public void run()
+				{
+					long countdown = System.currentTimeMillis();
 
-			Demigods.message.info("Core Data saved to YAML storage.");
+					locationYAML.save(LocationAPI.getAllLocations());
+					playerYAML.save(playerData);
+					trackedBlockYAML.save(BlockAPI.getBlocks());
+					characterYAML.save(CharacterAPI.getAllChars());
+					altarYAML.save(BlockAPI.getAllAltars());
+
+					double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+
+					Demigods.message.info("Data saved: Took " + seconds + " seconds.");
+				}
+			}, 10);
 		}
 	}
 
@@ -222,6 +246,17 @@ public class DemigodsData
 class DataListener implements Listener
 {
 	@EventHandler(priority = EventPriority.LOWEST)
+	public void onLocationLoad(LoadStubYAMLEvent event)
+	{
+		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+
+		if(event.getPath().equals("core") && event.getDataName().equals("location_data"))
+		{
+			new TrackedLocation(event.getData());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCharacterLoad(LoadStubYAMLEvent event)
 	{
 		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
@@ -229,6 +264,28 @@ class DataListener implements Listener
 		if(event.getPath().equals("core") && event.getDataName().equals("character_data"))
 		{
 			DemigodsFactory.playerCharacterFactory.create(event.getData());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onTrackedBlockLoad(LoadStubYAMLEvent event)
+	{
+		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+
+		if(event.getPath().equals("core") && event.getDataName().equals("tracked_block_data"))
+		{
+			new TrackedBlock(event.getData());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onAltarLoad(LoadStubYAMLEvent event)
+	{
+		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+
+		if(event.getPath().equals("core") && event.getDataName().equals("altar_data"))
+		{
+			new Altar(event.getData());
 		}
 	}
 }

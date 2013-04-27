@@ -2,6 +2,7 @@ package com.censoredsoftware.Modules.Persistence;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -145,6 +146,22 @@ public class YAMLPersistenceModule
 			log.severe("[" + pluginName + "] Please check your write permissions and try again.");
 		}
 		return false;
+	}
+
+	/**
+	 * Save the data that this module handles.
+	 */
+	public boolean save(List stubs)
+	{
+		boolean works = true;
+		for(Object stub : stubs)
+		{
+			if(stub instanceof DataStubModule)
+			{
+				if(!save((DataStubModule) stub)) works = false;
+			}
+		}
+		return works;
 	}
 
 	/**

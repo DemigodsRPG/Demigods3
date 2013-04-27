@@ -63,7 +63,7 @@ public class PlayerCharacter implements DataStubModule
 		this.playerCharacterInventory = null;
 		try
 		{
-			this.specialLocation = new TrackedLocation(player.getPlayer().getLocation(), null);
+			this.specialLocation = new TrackedLocation(DemigodsData.generateInt(5), player.getPlayer().getLocation(), null);
 		}
 		catch(Exception ignored)
 		{}
@@ -82,7 +82,8 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @return True if characterData contains the key.
 	 */
-	boolean containsKey(String key)
+	@Override
+	public boolean containsKey(String key)
 	{
 		return characterData.get(key) != null && characterData.containsKey(key);
 	}
@@ -93,6 +94,7 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
+	@Override
 	public Object getData(String key)
 	{
 		if(containsKey(key)) return characterData.get(key);
@@ -105,6 +107,7 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
+	@Override
 	public void saveData(String key, Object data)
 	{
 		characterData.put(key, data);
@@ -115,6 +118,7 @@ public class PlayerCharacter implements DataStubModule
 	 * 
 	 * @param key The key in the save.
 	 */
+	@Override
 	public void removeData(String key)
 	{
 		if(!containsKey(key)) return;
@@ -170,7 +174,7 @@ public class PlayerCharacter implements DataStubModule
 
 	public void setLocation(Location location)
 	{
-		this.specialLocation = new TrackedLocation(location, null);
+		this.specialLocation = new TrackedLocation(DemigodsData.generateInt(5), location, null);
 	}
 
 	public void toggleActive(boolean option)

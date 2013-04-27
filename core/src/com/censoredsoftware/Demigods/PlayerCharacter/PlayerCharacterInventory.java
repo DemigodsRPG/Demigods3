@@ -181,6 +181,30 @@ public class PlayerCharacterInventory implements DataStubModule
 	}
 
 	@Override
+	public boolean containsKey(String key)
+	{
+		return false; // TODO
+	}
+
+	@Override
+	public Object getData(String key)
+	{
+		return null; // TODO
+	}
+
+	@Override
+	public void saveData(String key, Object data)
+	{
+		// TODO
+	}
+
+	@Override
+	public void removeData(String key)
+	{
+		// TODO
+	}
+
+	@Override
 	public int getID()
 	{
 		return charID;

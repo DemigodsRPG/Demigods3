@@ -214,7 +214,7 @@ public class BlockListener implements Listener
 		 * -----------------------------------
 		 * -> Entering Altar
 		 */
-		if(ZoneAPI.enterZoneAltar(to, from) && !WarpAPI.hasWarp(ZoneAPI.zoneAltar(to), PlayerAPI.getCurrentChar(player))) // TODO This is an annoying message.
+		if(ZoneAPI.enterZoneAltar(to, from) && !LocationAPI.hasWarp(ZoneAPI.zoneAltar(to), PlayerAPI.getCurrentChar(player))) // TODO This is an annoying message.
 		{
 			player.sendMessage(ChatColor.GRAY + "You have entered an undocumented Altar.");
 			player.sendMessage(ChatColor.GRAY + "You should set a warp at it!");

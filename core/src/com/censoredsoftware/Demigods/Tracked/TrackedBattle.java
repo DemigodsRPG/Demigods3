@@ -29,7 +29,7 @@ public class TrackedBattle
 
 		this.battleID = battleID;
 		this.whoStarted = attacking.getID();
-		this.startLocation = new TrackedLocation(startedLocation, null);
+		this.startLocation = new TrackedLocation(DemigodsData.generateInt(5), startedLocation, null);
 		this.startTime = startTime;
 
 		addCharacter(attacking);
@@ -95,16 +95,16 @@ public class TrackedBattle
 		save();
 	}
 
-	public void addLocation(Location location)
+	public void addLocation(Location location) // TODO This won't work anymore because of IDs.
 	{
 		if(this.involvedLocations == null) this.involvedLocations = new ArrayList<TrackedLocation>();
-		if(!this.involvedLocations.contains(new TrackedLocation(location, null))) this.involvedLocations.add(new TrackedLocation(location, null));
+		if(!this.involvedLocations.contains(new TrackedLocation(DemigodsData.generateInt(5), location, null))) this.involvedLocations.add(new TrackedLocation(DemigodsData.generateInt(5), location, null));
 		save();
 	}
 
-	public void removeLocation(Location location)
+	public void removeLocation(Location location) // TODO This won't work anymore because of IDs.
 	{
-		if(this.involvedLocations.contains(new TrackedLocation(location, null))) this.involvedLocations.remove(new TrackedLocation(location, null));
+		if(this.involvedLocations.contains(new TrackedLocation(DemigodsData.generateInt(5), location, null))) this.involvedLocations.remove(new TrackedLocation(DemigodsData.generateInt(5), location, null));
 		save();
 	}
 

@@ -181,7 +181,7 @@ public class BattleAPI
 			// API.misc.callEvent(battleEvent);
 			// if(!battleEvent.isCancelled())
 			// {
-			// battle.setActive(false);
+			// battle.toggleActive(false);
 			// }
 			// }
 		}

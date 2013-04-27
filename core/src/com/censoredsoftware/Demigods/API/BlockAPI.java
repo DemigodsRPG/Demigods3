@@ -1,15 +1,39 @@
 package com.censoredsoftware.Demigods.API;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Block.Altar;
 import com.censoredsoftware.Demigods.Block.Shrine;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
 
 public class BlockAPI
 {
+	/**
+	 * Grab the TrackedBlock from the data with id <code>id</code>.
+	 * 
+	 * @param id The ID of the block.
+	 * @return TrackedBlock.
+	 */
+	public static TrackedBlock getBlock(int id)
+	{
+		return (TrackedBlock) DemigodsData.trackedBlockData.getDataObject(id);
+	}
+
+	public static List<TrackedBlock> getBlocks()
+	{
+		List<TrackedBlock> blocks = new ArrayList<TrackedBlock>();
+		for(int charID : DemigodsData.trackedBlockData.listKeys())
+		{
+			TrackedBlock block = (TrackedBlock) DemigodsData.trackedBlockData.getDataObject(charID);
+			blocks.add(block);
+		}
+		return blocks;
+	}
+
 	/**
 	 * Returns all protected blocks as an ArrayList.
 	 * 

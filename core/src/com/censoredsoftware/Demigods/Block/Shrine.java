@@ -12,17 +12,19 @@ import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 
+// TODO Convert this.
+
 public class Shrine
 {
 	private int id, owner;
 	private String deity;
-	private TrackedBlock block;
+	private int block;
 	private TrackedLocation location;
 
 	public Shrine(int id, PlayerCharacter character, Location location)
 	{
 		this.id = id;
-		this.location = new TrackedLocation(location, null);
+		this.location = new TrackedLocation(DemigodsData.generateInt(5), location, null);
 		this.owner = character.getID();
 		this.deity = character.isDeity();
 
@@ -110,7 +112,7 @@ public class Shrine
 		}
 
 		// Set bedrock
-		this.block = new TrackedBlock(location, "shrine", Material.BEDROCK);
+		this.block = new TrackedBlock(DemigodsData.generateInt(5), location, "shrine", Material.BEDROCK).getID();
 
 		// Spawn the Entity
 		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
