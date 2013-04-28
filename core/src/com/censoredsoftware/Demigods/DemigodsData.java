@@ -165,9 +165,9 @@ public class DemigodsData
 
 					double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
 
-					Demigods.message.info("Data saved: Took " + seconds + " seconds.");
+					Demigods.message.info("All data was saved in " + seconds + " seconds.");
 				}
-			}, 10);
+			}, 0);
 		}
 	}
 
