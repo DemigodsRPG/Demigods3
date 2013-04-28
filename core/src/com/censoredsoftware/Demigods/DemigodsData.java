@@ -178,10 +178,24 @@ public class DemigodsData
 			characterYAML.save(CharacterAPI.getAllChars());
 			for(PlayerCharacter character : CharacterAPI.getAllChars())
 			{
-				new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-				new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+				int charID = character.getID();
+				try
+				{
+					new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
+				}
+				catch(Exception e)
+				{
+					Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
+				}
+				try
+				{
+					new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+				}
+				catch(Exception e)
+				{
+					Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
+				}
 			}
-
 		}
 	}
 

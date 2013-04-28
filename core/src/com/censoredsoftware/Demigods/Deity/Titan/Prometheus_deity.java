@@ -33,20 +33,17 @@ public class Prometheus_deity implements Deity, Listener
 	 */
 	// "/fireball" Command:
 	private static final String FIREBALL_NAME = "Fireball"; // Sets the name of this command
-	private static long FIREBALL_TIME; // Creates the variable for later use
 	private static final int FIREBALL_COST = 100; // Cost to run command in "favor"
 	private static final int FIREBALL_DELAY = 5; // In milliseconds
 
 	// "/blaze" Command:
 	private static final String BLAZE_NAME = "Blaze"; // Sets the name of this command
-	private static long BLAZE_TIME; // Creates the variable for later use
 	private static final int BLAZE_COST = 400; // Cost to run command in "favor"
 	private static final int BLAZE_DELAY = 15; // In milliseconds
 
 	// "/firestorm" Command:
 	@SuppressWarnings("unused")
 	private static String ULTIMATE_NAME = "Firestorm";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 5500; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
@@ -127,13 +124,13 @@ public class Prometheus_deity implements Deity, Listener
 
 		if(character.getAbilities().isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(FIREBALL_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, FIREBALL_NAME, FIREBALL_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, FIREBALL_NAME, false)) return;
 
 			fireball(player);
 		}
 		else if(character.getAbilities().isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(BLAZE_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, BLAZE_NAME, BLAZE_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, BLAZE_NAME, false)) return;
 
 			blaze(player);
 		}
@@ -182,7 +179,7 @@ public class Prometheus_deity implements Deity, Listener
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "fireball", BLAZE_COST, AbilityType.OFFENSE)) return;
-		FIREBALL_TIME = System.currentTimeMillis() + FIREBALL_DELAY;
+		CharacterAPI.setCoolDown(player, FIREBALL_NAME, System.currentTimeMillis() + FIREBALL_DELAY);
 		character.subtractFavor(FIREBALL_COST);
 
 		if(!AbilityAPI.targeting(player, target)) return;
@@ -255,7 +252,7 @@ public class Prometheus_deity implements Deity, Listener
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "blaze", BLAZE_COST, AbilityType.OFFENSE)) return;
-		BLAZE_TIME = System.currentTimeMillis() + BLAZE_DELAY;
+		CharacterAPI.setCoolDown(player, BLAZE_NAME, System.currentTimeMillis() + BLAZE_DELAY);
 		character.subtractFavor(BLAZE_COST);
 
 		if(!AbilityAPI.targeting(player, target)) return;
@@ -290,10 +287,10 @@ public class Prometheus_deity implements Deity, Listener
 		if(!character.isDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
+		if(CharacterAPI.isCooledDown(player, ULTIMATE_NAME, false))
 		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 			return;
 		}
 
@@ -307,7 +304,7 @@ public class Prometheus_deity implements Deity, Listener
 		character.subtractFavor(ULTIMATE_COST);
 		player.setNoDamageTicks(1000);
 		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+		CharacterAPI.setCoolDown(player, ULTIMATE_NAME, System.currentTimeMillis() + cooldownMultiplier * 1000);
 	}
 
 	// The actual ability command
@@ -348,9 +345,6 @@ public class Prometheus_deity implements Deity, Listener
 	public String loadDeity()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		FIREBALL_TIME = System.currentTimeMillis();
-		BLAZE_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 

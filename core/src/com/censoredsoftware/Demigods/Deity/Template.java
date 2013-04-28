@@ -35,13 +35,11 @@ public class Template implements Deity, Listener
 	 */
 	// "/testabil" Command:
 	private static final String TEST_NAME = "Testabil"; // Sets the name of this command
-	private static long TEST_TIME; // Creates the variable for later use
 	private static final int TEST_COST = 170; // Cost to run command in "favor"
 	private static final int TEST_DELAY = 0; // In milliseconds
 
 	// "/testult" Command:
 	private static final String ULTIMATE_NAME = "Testult";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
@@ -117,7 +115,7 @@ public class Template implements Deity, Listener
 
 		if(character.getAbilities().isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(TEST_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
+			if(!CharacterAPI.isCooledDown(player, TEST_NAME, true)) return;
 
 			testabil(player);
 		}
@@ -164,7 +162,7 @@ public class Template implements Deity, Listener
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, "testabil", TEST_COST, AbilityEvent.AbilityType.PASSIVE)) return;
-		TEST_TIME = System.currentTimeMillis() + TEST_DELAY;
+		CharacterAPI.setCoolDown(player, TEST_NAME, System.currentTimeMillis() + TEST_DELAY);
 		character.subtractFavor(TEST_COST);
 
 		player.sendMessage(ChatColor.YELLOW + "You just used the \"" + TEST_NAME.toLowerCase() + "\" ability!");
@@ -183,10 +181,10 @@ public class Template implements Deity, Listener
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
+		if(CharacterAPI.isCooledDown(player, ULTIMATE_NAME, false))
 		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 			return;
 		}
 
@@ -200,7 +198,7 @@ public class Template implements Deity, Listener
 		// Set favor and cooldown
 		player.setNoDamageTicks(1000);
 		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+		CharacterAPI.setCoolDown(player, ULTIMATE_NAME, System.currentTimeMillis() + cooldownMultiplier * 1000);
 	}
 
 	/*
@@ -215,8 +213,6 @@ public class Template implements Deity, Listener
 	public String loadDeity()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		TEST_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 

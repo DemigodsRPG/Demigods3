@@ -38,20 +38,17 @@ public class Cronus_deity implements Deity, Listener
 	 */
 	// "/cleave" Command:
 	private static final String CLEAVE_NAME = "Cleave"; // Sets the name of this command
-	private static long CLEAVE_TIME; // Creates the variable for later use
 	private static final int CLEAVE_COST = 100; // Cost to run command in "favor"
 	private static final int CLEAVE_DELAY = 1000; // In milliseconds
 
 	// "/slow" Command:
 	private static final String SLOW_NAME = "Slow"; // Sets the name of this command
-	private static long SLOW_TIME; // Creates the variable for later use
 	private static final int SLOW_COST = 180; // Cost to run command in "favor"
 	private static final int SLOW_DELAY = 1000; // In milliseconds
 
 	// "/timestop" Command:
 	@SuppressWarnings("unused")
 	private static String ULTIMATE_NAME = "Timestop";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
@@ -145,7 +142,7 @@ public class Cronus_deity implements Deity, Listener
 
 			if(character.getAbilities().isEnabledAbility(CLEAVE_NAME))
 			{
-				if(!CharacterAPI.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
+				if(!CharacterAPI.isCooledDown(player, CLEAVE_NAME, false)) return;
 
 				cleave(damageEvent);
 			}
@@ -165,7 +162,7 @@ public class Cronus_deity implements Deity, Listener
 
 		if(character.getAbilities().isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SLOW_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, SLOW_NAME, false)) return;
 
 			slow(player);
 		}
@@ -208,7 +205,7 @@ public class Cronus_deity implements Deity, Listener
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, (LivingEntity) attacked, "cleave", CLEAVE_COST, AbilityType.OFFENSE)) return;
-		CLEAVE_TIME = System.currentTimeMillis() + CLEAVE_DELAY;
+		CharacterAPI.setCoolDown(player, CLEAVE_NAME, System.currentTimeMillis() + CLEAVE_DELAY);
 		character.subtractFavor(CLEAVE_COST);
 
 		for(int i = 1; i <= 31; i += 4)
@@ -269,7 +266,7 @@ public class Cronus_deity implements Deity, Listener
 		if(AbilityAPI.autoTarget(player) instanceof Player) target = (Player) AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "slow", SLOW_COST, AbilityType.SUPPORT)) return;
-		SLOW_TIME = System.currentTimeMillis() + SLOW_DELAY;
+		CharacterAPI.setCoolDown(player, SLOW_NAME, System.currentTimeMillis() + SLOW_DELAY);
 		character.subtractFavor(SLOW_COST);
 
 		if(!AbilityAPI.targeting(player, target)) return;
@@ -296,10 +293,10 @@ public class Cronus_deity implements Deity, Listener
 		if(!character.isDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
+		if(CharacterAPI.isCooledDown(player, ULTIMATE_NAME, false))
 		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 			return;
 		}
 
@@ -313,7 +310,7 @@ public class Cronus_deity implements Deity, Listener
 		character.subtractFavor(ULTIMATE_COST);
 		player.setNoDamageTicks(1000);
 		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+		CharacterAPI.setCoolDown(player, ULTIMATE_NAME, System.currentTimeMillis() + cooldownMultiplier * 1000);
 	}
 
 	// The actual ability command
@@ -345,9 +342,6 @@ public class Cronus_deity implements Deity, Listener
 	public String loadDeity()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		CLEAVE_TIME = System.currentTimeMillis();
-		SLOW_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 

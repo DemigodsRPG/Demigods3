@@ -36,20 +36,17 @@ public class Zeus_deity implements Deity, Listener
 	 */
 	// "/shove" Command:
 	private static final String SHOVE_NAME = "Shove"; // Sets the name of this command
-	private static long SHOVE_TIME; // Creates the variable for later use
 	private static final int SHOVE_COST = 170; // Cost to run command in "favor"
 	private static final int SHOVE_DELAY = 1500; // In milliseconds
 
 	// "/lightning" Command:
 	private static final String LIGHTNING_NAME = "Lightning"; // Sets the name of this command
-	private static long LIGHTNING_TIME; // Creates the variable for later use
 	private static final int LIGHTNING_COST = 140; // Cost to run command in "favor"
 	private static final int LIGHTNING_DELAY = 1000; // In milliseconds
 
 	// "/storm" Command:
 	@SuppressWarnings("unused")
 	private static String ULTIMATE_NAME = "Storm";
-	private static long ULTIMATE_TIME; // Creates the variable for later use
 	private static final int ULTIMATE_COST = 3700; // Cost to run command in "favor"
 	private static final int ULTIMATE_COOLDOWN_MAX = 600; // In seconds
 	private static final int ULTIMATE_COOLDOWN_MIN = 60; // In seconds
@@ -148,14 +145,14 @@ public class Zeus_deity implements Deity, Listener
 
 		if(character.getAbilities().isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SHOVE_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, false)) return;
 
 			shove(player);
 		}
 
 		if(character.getAbilities().isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(LIGHTNING_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, false)) return;
 
 			lightning(player);
 		}
@@ -206,7 +203,7 @@ public class Zeus_deity implements Deity, Listener
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "shove", SHOVE_COST, AbilityType.PASSIVE)) return;
-		SHOVE_TIME = System.currentTimeMillis() + SHOVE_DELAY;
+		CharacterAPI.setCoolDown(player, SHOVE_NAME, System.currentTimeMillis() + SHOVE_DELAY);
 		character.subtractFavor(SHOVE_COST);
 
 		if(!AbilityAPI.targeting(player, target)) return;
@@ -256,7 +253,7 @@ public class Zeus_deity implements Deity, Listener
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", LIGHTNING_COST, AbilityType.OFFENSE)) return;
-		LIGHTNING_TIME = System.currentTimeMillis() + LIGHTNING_DELAY;
+		CharacterAPI.setCoolDown(player, LIGHTNING_NAME, System.currentTimeMillis() + LIGHTNING_DELAY);
 		character.subtractFavor(LIGHTNING_COST);
 
 		strikeLightning(player, target);
@@ -276,10 +273,10 @@ public class Zeus_deity implements Deity, Listener
 		if(!character.isDeity(DEITYNAME)) return;
 
 		// Check if the ultimate has cooled down or not
-		if(System.currentTimeMillis() < ULTIMATE_TIME)
+		if(CharacterAPI.isCooledDown(player, ULTIMATE_NAME, false))
 		{
-			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
-			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((ULTIMATE_TIME) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
+			player.sendMessage(ChatColor.YELLOW + "You cannot use the " + DEITYNAME + " ultimate again for " + ChatColor.WHITE + (((CharacterAPI.getCoolDown(player, ULTIMATE_NAME) / 1000) - (System.currentTimeMillis() / 1000))) / 60 + " minutes");
+			player.sendMessage(ChatColor.YELLOW + "and " + ChatColor.WHITE + ((((CharacterAPI.getCoolDown(player, ULTIMATE_NAME)) / 1000) - (System.currentTimeMillis() / 1000)) % 60) + " seconds.");
 			return;
 		}
 
@@ -299,7 +296,7 @@ public class Zeus_deity implements Deity, Listener
 		character.subtractFavor(ULTIMATE_COST);
 		player.setNoDamageTicks(1000);
 		int cooldownMultiplier = (int) (ULTIMATE_COOLDOWN_MAX - ((ULTIMATE_COOLDOWN_MAX - ULTIMATE_COOLDOWN_MIN) * ((double) character.getAscensions() / 100)));
-		ULTIMATE_TIME = System.currentTimeMillis() + cooldownMultiplier * 1000;
+		CharacterAPI.setCoolDown(player, ULTIMATE_NAME, System.currentTimeMillis() + cooldownMultiplier * 1000);
 	}
 
 	// The actual ability command
@@ -375,9 +372,6 @@ public class Zeus_deity implements Deity, Listener
 	public String loadDeity()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
-		ULTIMATE_TIME = System.currentTimeMillis();
-		SHOVE_TIME = System.currentTimeMillis();
-		LIGHTNING_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 

@@ -157,12 +157,14 @@ public class PlayerCharacter implements DataStubModule
 
 	public PlayerCharacterAbilities getAbilities()
 	{
-		return (PlayerCharacterAbilities) DemigodsData.characterAbilityData.getDataObject(getID());
+		if(DemigodsData.characterAbilityData.containsKey(getID())) return (PlayerCharacterAbilities) DemigodsData.characterAbilityData.getDataObject(getID());
+		else return new PlayerCharacterAbilities(getID());
 	}
 
 	public PlayerCharacterBindings getBindings()
 	{
-		return (PlayerCharacterBindings) DemigodsData.characterBindingData.getDataObject(getID());
+		if(DemigodsData.characterBindingData.containsKey(getID())) return (PlayerCharacterBindings) DemigodsData.characterBindingData.getDataObject(getID());
+		else return new PlayerCharacterBindings(getID());
 	}
 
 	public void setFoodLevel(int amount)

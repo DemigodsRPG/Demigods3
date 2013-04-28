@@ -80,11 +80,11 @@ public class CharacterAPI
 		return getChar(charID).getOwner();
 	}
 
-	// TODO Move this.
+	// TODO Move these.
 
-	public static boolean isCooledDown(Player player, String ability, long ability_time, boolean sendMsg)
+	public static boolean isCooledDown(Player player, String ability, boolean sendMsg)
 	{
-		if(ability_time > System.currentTimeMillis())
+		if(DemigodsData.tempPlayerData.containsKey(player, ability + "_cooldown") && DemigodsData.tempPlayerData.getDataLong(player, ability + "_cooldown") > System.currentTimeMillis())
 		{
 			if(sendMsg) player.sendMessage(ChatColor.RED + ability + " has not cooled down!");
 			return false;
@@ -92,7 +92,17 @@ public class CharacterAPI
 		else return true;
 	}
 
-	// TODO Move this.
+	public static void setCoolDown(Player player, String ability, long cooldown)
+	{
+		DemigodsData.tempPlayerData.saveData(player, ability + "_cooldown", cooldown);
+	}
+
+	public static long getCoolDown(Player player, String ability)
+	{
+		return DemigodsData.tempPlayerData.getDataLong(player, ability + "_cooldown");
+	}
+
+	// TODO Move these.
 
 	/*
 	 * getDeityList() : Gets list of characters in aligned to a Deity.

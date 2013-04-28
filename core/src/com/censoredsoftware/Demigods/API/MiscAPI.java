@@ -32,14 +32,12 @@ public class MiscAPI
 	public static boolean canUseDeity(Player player, String deity)
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-
-		// Check the player for DEITYNAME
-		if(character != null && !character.isDeity(deity))
+		if(!character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 			return false;
 		}
-		else if(character == null || !character.isImmortal())
+		else if(!character.isImmortal())
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
 			return false;
@@ -50,10 +48,6 @@ public class MiscAPI
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-
-		if(character == null) return false;
-
-		// Check the player for DEITYNAME
 		return character.isDeity(deity) && character.isImmortal();
 	}
 

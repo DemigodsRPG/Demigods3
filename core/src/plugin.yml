@@ -29,3 +29,24 @@ permissions:
     demigods.bypass.pvpareacooldown:
         description: Bypass the wait for leaving/entering PVP zones.
         default: false
+    demigods.god.zeus:
+        description: Allows the player to use Zeus.
+        default: true
+    demigods.god.zeus.ultimate:
+        description: Allows the player to use Zeus's ultimate.
+        default: true
+    demigods.god.poseidon:
+        description: Allows the player to use Poseidon.
+        default: true
+    demigods.titan.cronus:
+        description: Allows the player to use Cronus.
+        default: true
+    demigods.titan.cronus.ultimate:
+        description: Allows the player to use Cronus' ultimate.
+        default: true
+    demigods.titan.prometheus:
+        description: Allows the player to use Prometheus.
+        default: true
+    demigods.titan.prometheus.ultimate:
+        description: Allows the player to use Prometheus' ultimate.
+        default: true

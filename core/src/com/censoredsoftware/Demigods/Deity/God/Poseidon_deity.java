@@ -40,13 +40,11 @@ public class Poseidon_deity implements Deity, Listener
 	 */
 	// "/reel" Command:
 	private static final String REEL_NAME = "Reel"; // Sets the name of this command
-	private static long REEL_TIME; // Creates the variable for later use
 	private static final int REEL_COST = 120; // Cost to run command in "favor"
 	private static final int REEL_DELAY = 1100; // In milliseconds
 
 	// "/drown" Command:
 	private static final String DROWN_NAME = "Drown"; // Sets the name of this command
-	private static long DROWN_TIME; // Creates the variable for later use
 	private static final int DROWN_COST = 240; // Cost to run command in "favor"
 	private static final int DROWN_DELAY = 10000; // In milliseconds
 
@@ -137,14 +135,14 @@ public class Poseidon_deity implements Deity, Listener
 
 		if(character.getAbilities().isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
-			if(!CharacterAPI.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, REEL_NAME, false)) return;
 
 			reel(player);
 		}
 
 		if(character.getAbilities().isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(DROWN_NAME))))
 		{
-			if(!CharacterAPI.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
+			if(!CharacterAPI.isCooledDown(player, DROWN_NAME, false)) return;
 
 			drown(player);
 		}
@@ -205,7 +203,7 @@ public class Poseidon_deity implements Deity, Listener
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "reel", REEL_COST, AbilityType.OFFENSE)) return;
 		character.subtractFavor(REEL_COST);
-		REEL_TIME = System.currentTimeMillis() + REEL_DELAY;
+		CharacterAPI.setCoolDown(player, REEL_NAME, System.currentTimeMillis() + REEL_DELAY);
 
 		if(!AbilityAPI.targeting(player, target)) return;
 
@@ -265,7 +263,7 @@ public class Poseidon_deity implements Deity, Listener
 		character.subtractFavor(DROWN_COST);
 
 		// Set the ability's delay
-		DROWN_TIME = System.currentTimeMillis() + DROWN_DELAY;
+		CharacterAPI.setCoolDown(player, DROWN_NAME, System.currentTimeMillis() + DROWN_DELAY);
 
 		final ArrayList<Block> toReset = new ArrayList<Block>();
 		for(int x = -radius; x <= radius; x++)
@@ -310,8 +308,6 @@ public class Poseidon_deity implements Deity, Listener
 	public String loadDeity()
 	{
 		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
-		REEL_TIME = System.currentTimeMillis();
-		DROWN_TIME = System.currentTimeMillis();
 		return DEITYNAME + " loaded.";
 	}
 

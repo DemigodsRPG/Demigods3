@@ -39,6 +39,8 @@ import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
+// TODO Favor regen, timed data, battles.
+
 public class Demigods
 {
 	// Public Modules

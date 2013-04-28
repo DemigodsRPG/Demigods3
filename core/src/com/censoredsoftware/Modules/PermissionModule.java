@@ -19,7 +19,7 @@ public class PermissionModule
 	public boolean hasPermission(CommandSender sender, String permission)
 	{
 		if(sender instanceof ConsoleCommandSender) return true;
-		return sender.hasPermission(permission);
+		return sender.hasPermission(permission.toLowerCase());
 	}
 
 	/**
