@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataStubModule;
 
@@ -96,62 +99,41 @@ public class PlayerCharacterBindings implements DataStubModule
 		return bindings;
 	}
 
-	public synchronized void setBound(String ability, Material material)
+	public void setBound(String ability, Material material)
 	{
-		saveData(material.getId(), ability);
-
 		// TODO None of the below should be in here, it should be in the place where the player/character can be grabbed.
-
-		/**
-		 * Player player = (Player) Bukkit.getOfflinePlayer(this.playerName);
-		 * if(API.data.getCharData(this.charID, ability + "_bind") == null)
-		 * {
-		 * if(player.getItemInHand().getType() == Material.AIR)
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-		 * }
-		 * else
-		 * {
-		 * if(isBound(material))
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-		 * return false;
-		 * }
-		 * else if(material == Material.AIR)
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-		 * return false;
-		 * }
-		 * else
-		 * {
-		 * if(API.data.hasCharData(this.charID, "bindings"))
-		 * {
-		 * ArrayList<Material> bindings = getBindings();
-		 * if(!bindings.contains(material)) bindings.add(material);
-		 * API.data.saveCharData(this.charID, "bindings", bindings);
-		 * }
-		 * else
-		 * {
-		 * ArrayList<Material> bindings = new ArrayList<Material>();
-		 * bindings.add(material);
-		 * API.data.saveCharData(this.charID, "bindings", bindings);
-		 * }
-		 * 
-		 * 
-		 * 
-		 * API.data.saveCharData(this.charID, ability + "_bind", material);
-		 * player.sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
-		 * return true;
-		 * }
-		 * }
-		 * }
-		 * else
-		 * {
-		 * removeBind(ability, ((Material) API.data.getCharData(this.charID, ability + "_bind")));
-		 * player.sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
-		 * }
-		 * return false;
-		 */
+		Player player = CharacterAPI.getChar(getID()).getOwner().getPlayer();
+		if(!containsKey(ability))
+		{
+			if(player.getItemInHand().getType() == Material.AIR)
+			{
+				player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
+			}
+			else
+			{
+				if(isBound(material))
+				{
+					player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
+					return;
+				}
+				else if(material == Material.AIR)
+				{
+					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
+					return;
+				}
+				else
+				{
+					saveData(material.getId(), ability);
+					player.sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
+					return;
+				}
+			}
+		}
+		else
+		{
+			removeBind(ability);
+			player.sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
+		}
 	}
 
 	public void removeBind(Material material)
