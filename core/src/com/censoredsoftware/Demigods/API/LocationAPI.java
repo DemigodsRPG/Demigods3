@@ -33,18 +33,6 @@ public class LocationAPI
 	}
 
 	/**
-	 * Returns an ArrayList of all warps for <code>character</code>.
-	 * 
-	 * @param character the character whose warps to gather
-	 * @return an ArrayList of the <code>character</code> warps.
-	 */
-	public static ArrayList<TrackedLocation> getWarps(PlayerCharacter character)
-	{
-		if(character == null || !DemigodsData.warpData.containsKey(character.getID())) return null;
-		return (ArrayList<TrackedLocation>) DemigodsData.warpData.getDataObject(character.getID());
-	}
-
-	/**
 	 * Checks to see if <code>character</code> has a warp for <code>altar</code>.
 	 * 
 	 * @param altar the altar to be checked.
@@ -53,8 +41,8 @@ public class LocationAPI
 	 */
 	public static boolean hasWarp(Altar altar, PlayerCharacter character)
 	{
-		if(getWarps(character) == null) return false;
-		for(TrackedLocation warp : getWarps(character))
+		if(character.getWarps() == null) return false;
+		for(TrackedLocation warp : character.getWarps())
 		{
 			if(ZoneAPI.zoneAltar(warp.toLocation()) == altar) return true;
 		}
@@ -69,7 +57,7 @@ public class LocationAPI
 	 */
 	public static boolean hasInvites(PlayerCharacter character)
 	{
-		return getInvites(character) != null && !getInvites(character).isEmpty();
+		return !character.getInvites().isEmpty();
 	}
 
 	/**
@@ -84,7 +72,7 @@ public class LocationAPI
 	{
 		if(hasInvites(invited))
 		{
-			for(TrackedLocation invite : getInvites(invited))
+			for(TrackedLocation invite : invited.getInvites())
 			{
 				if(invite.getName().equalsIgnoreCase(inviting.getName())) return invite;
 			}
@@ -103,7 +91,7 @@ public class LocationAPI
 	{
 		if(hasInvites(character))
 		{
-			for(TrackedLocation invite : getInvites(character))
+			for(TrackedLocation invite : character.getInvites())
 			{
 				if(invite.getName().equalsIgnoreCase(name)) return invite;
 			}
@@ -125,17 +113,6 @@ public class LocationAPI
 	}
 
 	/**
-	 * Returns an ArrayList of all invite locations for <code>character</code>.
-	 * 
-	 * @param character the character whose invites to grab.
-	 * @return an ArrayList of invite locations.
-	 */
-	public static ArrayList<TrackedLocation> getInvites(PlayerCharacter character)
-	{
-		return (ArrayList<TrackedLocation>) DemigodsData.inviteData.getDataObject(character.getID());
-	}
-
-	/**
 	 * Sends an invite to <code>to</code> from <code>from</code>.
 	 * 
 	 * @param from the character whom the invite is from.
@@ -143,11 +120,7 @@ public class LocationAPI
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		ArrayList<TrackedLocation> invites;
-		if(hasInvites(to)) invites = getInvites(to);
-		else invites = new ArrayList<TrackedLocation>();
-		invites.add(new TrackedLocation(DemigodsData.generateInt(5), from.getOwner().getPlayer().getLocation(), from.getName()));
-		DemigodsData.inviteData.saveData(to.getID(), invites);
+		to.addInvite(new TrackedLocation(DemigodsData.generateInt(5), from.getOwner().getPlayer().getLocation(), from.getName()).getID());
 	}
 
 	/**
@@ -158,11 +131,7 @@ public class LocationAPI
 	 */
 	public static void removeInvite(PlayerCharacter invited, TrackedLocation invite)
 	{
-		ArrayList<TrackedLocation> invites;
-		if(hasInvites(invited)) invites = getInvites(invited);
-		else return;
-		invites.remove(invite);
-		DemigodsData.inviteData.saveData(invited.getID(), invites);
+		invited.removeInvite(invite.getID());
 	}
 
 	/**
@@ -172,6 +141,6 @@ public class LocationAPI
 	 */
 	public static void clearInvites(PlayerCharacter character)
 	{
-		DemigodsData.inviteData.removeData(character.getID());
+		character.saveData("INVITES", new ArrayList<Integer>());
 	}
 }

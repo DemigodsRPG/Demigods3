@@ -54,25 +54,21 @@ public class Altar implements DataStubModule
 		}
 	}
 
-	@Override
 	public boolean containsKey(String key)
 	{
 		return altarData.get(key) != null && altarData.containsKey(key);
 	}
 
-	@Override
 	public Object getData(String key)
 	{
 		return altarData.get(key);
 	}
 
-	@Override
 	public void saveData(String key, Object data)
 	{
 		altarData.put(key, data);
 	}
 
-	@Override
 	public void removeData(String key)
 	{
 		altarData.remove(key);

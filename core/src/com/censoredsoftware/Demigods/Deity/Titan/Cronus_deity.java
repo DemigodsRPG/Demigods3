@@ -143,7 +143,7 @@ public class Cronus_deity implements Deity, Listener
 				if(!PlayerAPI.areAllied(player, attacked)) attacked.setVelocity(new Vector(0, 0, 0));
 			}
 
-			if(character.isEnabledAbility(CLEAVE_NAME))
+			if(character.getAbilities().isEnabledAbility(CLEAVE_NAME))
 			{
 				if(!CharacterAPI.isCooledDown(player, CLEAVE_NAME, CLEAVE_TIME, false)) return;
 
@@ -163,7 +163,7 @@ public class Cronus_deity implements Deity, Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SLOW_NAME))))
+		if(character.getAbilities().isEnabledAbility(SLOW_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SLOW_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, SLOW_NAME, SLOW_TIME, false)) return;
 
@@ -186,14 +186,14 @@ public class Cronus_deity implements Deity, Listener
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(CLEAVE_NAME))
+		if(character.getAbilities().isEnabledAbility(CLEAVE_NAME))
 		{
-			character.toggleAbility(CLEAVE_NAME, false);
+			character.getAbilities().toggleAbility(CLEAVE_NAME, false);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is no longer active.");
 		}
 		else
 		{
-			character.toggleAbility(CLEAVE_NAME, true);
+			character.getAbilities().toggleAbility(CLEAVE_NAME, true);
 			player.sendMessage(ChatColor.YELLOW + CLEAVE_NAME + " is now active.");
 		}
 	}
@@ -240,18 +240,18 @@ public class Cronus_deity implements Deity, Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(SLOW_NAME, player.getItemInHand().getType());
+			character.getBindings().setBound(SLOW_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(SLOW_NAME))
+			if(character.getAbilities().isEnabledAbility(SLOW_NAME))
 			{
-				character.toggleAbility(SLOW_NAME, false);
+				character.getAbilities().toggleAbility(SLOW_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(SLOW_NAME, true);
+				character.getAbilities().toggleAbility(SLOW_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + SLOW_NAME + " is now active.");
 			}
 		}

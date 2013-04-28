@@ -115,7 +115,7 @@ public class Template implements Deity, Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(TEST_NAME))))
+		if(character.getAbilities().isEnabledAbility(TEST_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(TEST_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, TEST_NAME, TEST_TIME, true)) return;
 
@@ -141,18 +141,18 @@ public class Template implements Deity, Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(TEST_NAME, player.getItemInHand().getType());
+			character.getBindings().setBound(TEST_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(TEST_NAME))
+			if(character.getAbilities().isEnabledAbility(TEST_NAME))
 			{
-				character.toggleAbility(TEST_NAME, false);
+				character.getAbilities().toggleAbility(TEST_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(TEST_NAME, true);
+				character.getAbilities().toggleAbility(TEST_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + TEST_NAME + " is now active.");
 			}
 		}

@@ -74,25 +74,21 @@ public class TrackedLocation implements DataStubModule
 		return new Location(Bukkit.getServer().getWorld(getData("WORLD").toString()), Double.parseDouble(getData("X").toString()), Double.parseDouble(getData("Y").toString()), Double.parseDouble(getData("Z").toString()), Float.parseFloat(getData("YAW").toString()), Float.parseFloat(getData("PITCH").toString()));
 	}
 
-	@Override
 	public boolean containsKey(String key)
 	{
 		return locationData.get(key) != null && locationData.containsKey(key);
 	}
 
-	@Override
 	public Object getData(String key)
 	{
 		return locationData.get(key);
 	}
 
-	@Override
 	public void saveData(String key, Object data)
 	{
 		locationData.put(key, data);
 	}
 
-	@Override
 	public void removeData(String key)
 	{
 		locationData.remove(key);

@@ -373,7 +373,8 @@ public class AltarListener implements Listener
 	// View warps
 	private void viewWarps(Player player)
 	{
-		if(LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)) == null || LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)).isEmpty())
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		if(character.getWarps().isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
 			player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " name warp <warp name>" + ChatColor.GRAY + " to name a warp here.");
@@ -385,7 +386,7 @@ public class AltarListener implements Listener
 		player.sendMessage(" ");
 		boolean hasWarp = false;
 
-		for(TrackedLocation warp : LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)))
+		for(TrackedLocation warp : character.getWarps())
 		{
 			String color = "";
 			String name = warp.getName();
@@ -414,7 +415,7 @@ public class AltarListener implements Listener
 	// View warps
 	private void viewInvites(Player player)
 	{
-		for(TrackedLocation invite : LocationAPI.getInvites(PlayerAPI.getCurrentChar(player)))
+		for(TrackedLocation invite : PlayerAPI.getCurrentChar(player).getInvites())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getName());
 		}
@@ -700,18 +701,19 @@ public class AltarListener implements Listener
 			player.sendMessage(" ");
 	}
 
-	private void nameAltar(Player player, String name)
+	private void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
-		if(LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)) == null || LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)).isEmpty())
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		if(character.getWarps().isEmpty())
 		{
 			// Save named TrackedLocation for warp.
-			DemigodsData.warpData.saveData(PlayerAPI.getCurrentChar(player).getID(), new TrackedLocation(DemigodsData.generateInt(5), player.getLocation(), name));
+			character.addWarp(new TrackedLocation(DemigodsData.generateInt(5), player.getLocation(), name).getID());
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
 
 		// Check for same names
-		for(TrackedLocation warp : LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)))
+		for(TrackedLocation warp : character.getWarps())
 		{
 			if(warp.getName().equalsIgnoreCase(name))
 			{
@@ -721,16 +723,16 @@ public class AltarListener implements Listener
 		}
 
 		// Check for same altars
-		for(TrackedLocation warp : LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)))
+		for(TrackedLocation warp : character.getWarps())
 		{
 			if(ZoneAPI.zoneAltar(warp.toLocation()) == ZoneAPI.zoneAltar(player.getLocation()))
 			{
-				DemigodsData.warpData.removeData(PlayerAPI.getCurrentChar(player).getID());
+				character.removeWarp(warp.getID());
 			}
 		}
 
 		// Save named TrackedLocation for warp.
-		DemigodsData.warpData.saveData(PlayerAPI.getCurrentChar(player).getID(), new TrackedLocation(DemigodsData.generateInt(5), player.getLocation(), name));
+		character.addWarp(new TrackedLocation(DemigodsData.generateInt(5), player.getLocation(), name).getID());
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
@@ -792,7 +794,7 @@ public class AltarListener implements Listener
 
 	private void warpChar(Player player, String warpName)
 	{
-		for(TrackedLocation warp : LocationAPI.getWarps(PlayerAPI.getCurrentChar(player)))
+		for(TrackedLocation warp : PlayerAPI.getCurrentChar(player).getWarps())
 		{
 			if(warp.getName().equals(warpName.toUpperCase()))
 			{

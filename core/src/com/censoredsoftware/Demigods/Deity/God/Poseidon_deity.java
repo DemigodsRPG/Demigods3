@@ -135,14 +135,14 @@ public class Poseidon_deity implements Deity, Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
+		if(character.getAbilities().isEnabledAbility(REEL_NAME) && (player.getItemInHand().getType() == Material.FISHING_ROD))
 		{
 			if(!CharacterAPI.isCooledDown(player, REEL_NAME, REEL_TIME, false)) return;
 
 			reel(player);
 		}
 
-		if(character.isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(DROWN_NAME))))
+		if(character.getAbilities().isEnabledAbility(DROWN_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(DROWN_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, DROWN_NAME, DROWN_TIME, false)) return;
 
@@ -183,14 +183,14 @@ public class Poseidon_deity implements Deity, Listener
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(REEL_NAME))
+		if(character.getAbilities().isEnabledAbility(REEL_NAME))
 		{
-			character.toggleAbility(REEL_NAME, false);
+			character.getAbilities().toggleAbility(REEL_NAME, false);
 			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is no longer active.");
 		}
 		else
 		{
-			character.toggleAbility(REEL_NAME, true);
+			character.getAbilities().toggleAbility(REEL_NAME, true);
 			player.sendMessage(ChatColor.YELLOW + REEL_NAME + " is now active.");
 		}
 	}
@@ -232,18 +232,18 @@ public class Poseidon_deity implements Deity, Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(DROWN_NAME, player.getItemInHand().getType());
+			character.getBindings().setBound(DROWN_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(DROWN_NAME))
+			if(character.getAbilities().isEnabledAbility(DROWN_NAME))
 			{
-				character.toggleAbility(DROWN_NAME, false);
+				character.getAbilities().toggleAbility(DROWN_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(DROWN_NAME, true);
+				character.getAbilities().toggleAbility(DROWN_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + DROWN_NAME + " is now active.");
 			}
 		}

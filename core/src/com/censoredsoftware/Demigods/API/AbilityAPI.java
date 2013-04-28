@@ -169,6 +169,7 @@ public class AbilityAPI
 	public static Location aimLocation(PlayerCharacter character, Location target)
 	{
 		int ascensions = character.getAscensions();
+		if(ascensions < 1) ascensions = 1;
 
 		int offset = (int) (TARGETOFFSET + character.getOwner().getPlayer().getLocation().distance(target));
 		int adjustedOffset = offset / ascensions;

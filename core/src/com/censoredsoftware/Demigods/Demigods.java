@@ -228,7 +228,7 @@ class Scheduler
 			@Override
 			public void run()
 			{
-				DemigodsData.save(true);
+				DemigodsData.saveAll(true);
 			}
 		}, 30, 60);
 	}
@@ -369,12 +369,12 @@ class Commands implements CommandExecutor
 		{
 			dg_admin(sender, option1, option2, option3, option4);
 		}
-		// else if(category.equalsIgnoreCase("save"))
+		// else if(category.equalsIgnoreCase("saveAll"))
 		// {
 		// if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
 		//
-		// Demigods.message.broadcast(ChatColor.RED + "Manually forcing Demigods save...");
-		// if(DFlatFile.save()) Demigods.message.broadcast(ChatColor.GREEN + "Save complete!");
+		// Demigods.message.broadcast(ChatColor.RED + "Manually forcing Demigods saveAll...");
+		// if(DFlatFile.saveAll()) Demigods.message.broadcast(ChatColor.GREEN + "Save complete!");
 		// else
 		// {
 		// Demigods.message.broadcast(ChatColor.RED + "There was a problem with saving...");
@@ -922,7 +922,7 @@ class Commands implements CommandExecutor
 			sender.sendMessage(character.getName() + "."); // TODO Warp data and such.
 		}
 
-		DemigodsData.save(true); // TODO For testing only.
+		DemigodsData.saveAll(true); // TODO For testing only.
 
 		return true;
 	}

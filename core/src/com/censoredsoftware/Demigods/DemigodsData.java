@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods;
 
+import java.io.File;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,9 @@ import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.LocationAPI;
 import com.censoredsoftware.Demigods.Block.Altar;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterAbilities;
+import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterBindings;
 import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 import com.censoredsoftware.Modules.Data.IntegerDataModule;
@@ -41,9 +45,9 @@ public class DemigodsData
 
 	// Character Data
 	public static IntegerDataModule characterData;
+	public static IntegerDataModule characterAbilityData;
+	public static IntegerDataModule characterBindingData;
 	public static YAMLPersistenceModule characterYAML;
-	public static IntegerDataModule warpData;
-	public static IntegerDataModule inviteData;
 	public static IntegerDataModule tempTributeData;
 
 	// Block Data
@@ -103,8 +107,8 @@ public class DemigodsData
 	static void characterData(DemigodsPlugin instance)
 	{
 		characterData = new IntegerDataModule(instance, "character_data");
-		warpData = new IntegerDataModule(instance, "warp_data");
-		inviteData = new IntegerDataModule(instance, "invite_data");
+		characterAbilityData = new IntegerDataModule();
+		characterBindingData = new IntegerDataModule();
 		tempTributeData = new IntegerDataModule();
 	}
 
@@ -124,15 +128,25 @@ public class DemigodsData
 	{
 		if(yaml)
 		{
+			// Core
 			locationYAML = new YAMLPersistenceModule(true, instance, "core", "location_data");
 			playerYAML = new YAMLPersistenceModule(true, instance, "core", "player_data");
 			trackedBlockYAML = new YAMLPersistenceModule(true, instance, "core", "tracked_block_data");
-			characterYAML = new YAMLPersistenceModule(true, instance, "core", "character_data");
-			altarYAML = new YAMLPersistenceModule(true, instance, "core", "altar_data");
+
+			// Character
+			characterYAML = new YAMLPersistenceModule(true, instance, "character", "character_data");
+			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			{
+				new YAMLPersistenceModule(true, instance, "character" + File.separator + character.getID(), "ability_data");
+				new YAMLPersistenceModule(true, instance, "character" + File.separator + character.getID(), "binding_data");
+			}
+
+			// Block
+			altarYAML = new YAMLPersistenceModule(true, instance, "block", "altar_data");
 		}
 	}
 
-	static void save(boolean yaml)
+	static void saveAll(boolean yaml)
 	{
 		if(yaml)
 		{
@@ -146,7 +160,7 @@ public class DemigodsData
 					locationYAML.save(LocationAPI.getAllLocations());
 					playerYAML.save(playerData);
 					trackedBlockYAML.save(BlockAPI.getBlocks());
-					characterYAML.save(CharacterAPI.getAllChars());
+					saveCharacters(true);
 					altarYAML.save(BlockAPI.getAllAltars());
 
 					double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
@@ -154,6 +168,20 @@ public class DemigodsData
 					Demigods.message.info("Data saved: Took " + seconds + " seconds.");
 				}
 			}, 10);
+		}
+	}
+
+	static void saveCharacters(boolean yaml)
+	{
+		if(yaml)
+		{
+			characterYAML.save(CharacterAPI.getAllChars());
+			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			{
+				new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
+				new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+			}
+
 		}
 	}
 
@@ -257,17 +285,6 @@ class DataListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCharacterLoad(LoadStubYAMLEvent event)
-	{
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
-
-		if(event.getPath().equals("core") && event.getDataName().equals("character_data"))
-		{
-			DemigodsFactory.playerCharacterFactory.create(event.getData());
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
 	public void onTrackedBlockLoad(LoadStubYAMLEvent event)
 	{
 		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
@@ -279,11 +296,30 @@ class DataListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCharacterLoad(LoadStubYAMLEvent event)
+	{
+		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+
+		if(event.getPath().equals("character") && event.getDataName().equals("character_data"))
+		{
+			DemigodsFactory.playerCharacterFactory.create(event.getData());
+		}
+		else if(event.getPath().startsWith("character") && event.getDataName().equals("ability_data"))
+		{
+			new PlayerCharacterAbilities(event.getData());
+		}
+		else if(event.getPath().startsWith("character") && event.getDataName().equals("binding_data"))
+		{
+			new PlayerCharacterBindings(event.getData());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onAltarLoad(LoadStubYAMLEvent event)
 	{
 		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
 
-		if(event.getPath().equals("core") && event.getDataName().equals("altar_data"))
+		if(event.getPath().equals("block") && event.getDataName().equals("altar_data"))
 		{
 			new Altar(event.getData());
 		}

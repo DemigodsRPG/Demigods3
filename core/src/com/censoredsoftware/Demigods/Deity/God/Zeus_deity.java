@@ -146,14 +146,14 @@ public class Zeus_deity implements Deity, Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(SHOVE_NAME))))
+		if(character.getAbilities().isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SHOVE_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, SHOVE_TIME, false)) return;
 
 			shove(player);
 		}
 
-		if(character.isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBind(LIGHTNING_NAME))))
+		if(character.getAbilities().isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(LIGHTNING_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, LIGHTNING_TIME, false)) return;
 
@@ -179,18 +179,18 @@ public class Zeus_deity implements Deity, Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(SHOVE_NAME, player.getItemInHand().getType());
+			character.getBindings().setBound(SHOVE_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(SHOVE_NAME))
+			if(character.getAbilities().isEnabledAbility(SHOVE_NAME))
 			{
-				character.toggleAbility(SHOVE_NAME, false);
+				character.getAbilities().toggleAbility(SHOVE_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(SHOVE_NAME, true);
+				character.getAbilities().toggleAbility(SHOVE_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is now active.");
 			}
 		}
@@ -231,18 +231,18 @@ public class Zeus_deity implements Deity, Listener
 		if(args.length == 2 && args[1].equalsIgnoreCase("bind"))
 		{
 			// Bind item
-			character.setBound(LIGHTNING_NAME, player.getItemInHand().getType());
+			character.getBindings().setBound(LIGHTNING_NAME, player.getItemInHand().getType());
 		}
 		else
 		{
-			if(character.isEnabledAbility(LIGHTNING_NAME))
+			if(character.getAbilities().isEnabledAbility(LIGHTNING_NAME))
 			{
-				character.toggleAbility(LIGHTNING_NAME, false);
+				character.getAbilities().toggleAbility(LIGHTNING_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.toggleAbility(LIGHTNING_NAME, true);
+				character.getAbilities().toggleAbility(LIGHTNING_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is now active.");
 			}
 		}

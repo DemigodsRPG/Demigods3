@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 
+import com.censoredsoftware.Demigods.API.LocationAPI;
 import com.censoredsoftware.Demigods.DemigodsData;
 import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
 import com.censoredsoftware.Modules.Data.DataStubModule;
@@ -15,11 +19,7 @@ public class PlayerCharacter implements DataStubModule
 {
 	// Define HashMaps
 	private Map<String, Object> characterData;
-	private Map<String, Object> abilityData;
-	private Map<Integer, Object> bindingData;
-
-	private PlayerCharacterInventory playerCharacterInventory;
-	private TrackedLocation specialLocation;
+	private PlayerCharacterInventory playerCharacterInventory; // TODO Track these in a different file somehow.
 	private int globalMaxFavor;
 
 	public PlayerCharacter(int globalMaxFavor, Map map)
@@ -33,8 +33,6 @@ public class PlayerCharacter implements DataStubModule
 	{
 		this.globalMaxFavor = globalMaxFavor;
 		characterData = new HashMap<String, Object>();
-		abilityData = new HashMap<String, Object>();
-		bindingData = new HashMap<Integer, Object>();
 
 		// Vanilla Data
 		saveData("PLAYER_NAME", player.getName());
@@ -60,10 +58,16 @@ public class PlayerCharacter implements DataStubModule
 		saveData("PASSIVE", passive);
 		saveData("CLASS_ACTIVE", classActive);
 
+		// Location Data
+		saveData("WARPS", new ArrayList<Integer>());
+		saveData("INVITES", new ArrayList<Integer>());
+
 		this.playerCharacterInventory = null;
+		new PlayerCharacterAbilities(charID);
+		new PlayerCharacterBindings(charID);
 		try
 		{
-			this.specialLocation = new TrackedLocation(DemigodsData.generateInt(5), player.getPlayer().getLocation(), null);
+			saveData("LOCATION", new TrackedLocation(DemigodsData.generateInt(5), player.getPlayer().getLocation(), null).getID());
 		}
 		catch(Exception ignored)
 		{}
@@ -82,7 +86,6 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @return True if characterData contains the key.
 	 */
-	@Override
 	public boolean containsKey(String key)
 	{
 		return characterData.get(key) != null && characterData.containsKey(key);
@@ -94,7 +97,6 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @return Object data.
 	 */
-	@Override
 	public Object getData(String key)
 	{
 		if(containsKey(key)) return characterData.get(key);
@@ -107,7 +109,6 @@ public class PlayerCharacter implements DataStubModule
 	 * @param key The key in the save.
 	 * @param data The Object being saved.
 	 */
-	@Override
 	public void saveData(String key, Object data)
 	{
 		characterData.put(key, data);
@@ -118,7 +119,6 @@ public class PlayerCharacter implements DataStubModule
 	 * 
 	 * @param key The key in the save.
 	 */
-	@Override
 	public void removeData(String key)
 	{
 		if(!containsKey(key)) return;
@@ -155,16 +155,24 @@ public class PlayerCharacter implements DataStubModule
 		else return null;
 	}
 
+	public PlayerCharacterAbilities getAbilities()
+	{
+		return (PlayerCharacterAbilities) DemigodsData.characterAbilityData.getDataObject(getID());
+	}
+
+	public PlayerCharacterBindings getBindings()
+	{
+		return (PlayerCharacterBindings) DemigodsData.characterBindingData.getDataObject(getID());
+	}
+
 	public void setFoodLevel(int amount)
 	{
 		saveData("CHAR_FOOD_LEVEL", amount);
-
 	}
 
 	public void setExp(float amount)
 	{
 		saveData("CHAR_EXP", amount);
-
 	}
 
 	public void setLevel(int amount)
@@ -174,7 +182,7 @@ public class PlayerCharacter implements DataStubModule
 
 	public void setLocation(Location location)
 	{
-		this.specialLocation = new TrackedLocation(DemigodsData.generateInt(5), location, null);
+		saveData("LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
 	}
 
 	public void toggleActive(boolean option)
@@ -199,7 +207,7 @@ public class PlayerCharacter implements DataStubModule
 
 	public TrackedLocation getLocation()
 	{
-		return this.specialLocation;
+		return LocationAPI.getLocation(Integer.parseInt(getData("LOCATION").toString()));
 	}
 
 	public int getHealth()
@@ -212,104 +220,9 @@ public class PlayerCharacter implements DataStubModule
 		return Integer.parseInt(getData("CHAR_FOOD_LEVEL").toString());
 	}
 
-	public int getLevel()
-	{
-		return Integer.parseInt(getData("CHAR_LEVEL").toString());
-	}
-
 	public float getExp()
 	{
 		return Float.parseFloat(getData("CHAR_EXP").toString());
-	}
-
-	/**
-	 * Checks if the abilityData Map contains <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return True if abilityData contains the key.
-	 */
-	boolean containsAbilityKey(String key)
-	{
-		return abilityData.get(key) != null && abilityData.containsKey(key);
-	}
-
-	/**
-	 * Retrieve the Object data from String <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return Object data.
-	 */
-	Object getAbilityData(String key)
-	{
-		if(containsAbilityKey(key)) return abilityData.get(key);
-		return null; // Should never happen, always check with containsKey before getting the data.
-	}
-
-	/**
-	 * Save the Object <code>data</code> for String <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @param data The Object being saved.
-	 */
-	void saveAbilityData(String key, Object data)
-	{
-		abilityData.put(key, data);
-	}
-
-	/**
-	 * Remove the data from String <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 */
-	void removeAbilityData(String key)
-	{
-		if(!containsAbilityKey(key)) return;
-		abilityData.remove(key);
-	}
-
-	/**
-	 * Checks if the bindingData Map contains <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return True if bindingData contains the key.
-	 */
-	boolean containsBindingKey(int key)
-	{
-		return bindingData.get(key) != null && bindingData.containsKey(key);
-	}
-
-	/**
-	 * Retrieve the Object data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return Object data.
-	 */
-	Object getBindingData(int key)
-	{
-		if(containsBindingKey(key)) return bindingData.get(key);
-		return null; // Should never happen, always check with containsKey before getting the data.
-	}
-
-	/**
-	 * Save the Object <code>data</code> for int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @param data The Object being saved.
-	 */
-	void saveBindingData(int key, Object data)
-	{
-		bindingData.put(key, data);
-	}
-
-	/**
-	 * Remove the data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 */
-	void removeBindingData(int key)
-	{
-		if(!containsBindingKey(key)) return;
-		bindingData.remove(key);
 	}
 
 	public void setFavor(int amount)
@@ -421,109 +334,6 @@ public class PlayerCharacter implements DataStubModule
 		saveData("CLASS_ACTIVE", option);
 	}
 
-	public boolean isEnabledAbility(String ability)
-	{
-		return containsAbilityKey(ability) && Boolean.parseBoolean(getAbilityData(ability).toString());
-	}
-
-	public void toggleAbility(String ability, boolean option)
-	{
-		saveAbilityData(ability, option);
-	}
-
-	public boolean isBound(Material material)
-	{
-		return getBindings() != null && getBindings().contains(material);
-	}
-
-	public Material getBind(String ability)
-	{
-		for(int type : getBindings())
-		{
-			if(getBindingData(type).toString().equalsIgnoreCase(ability)) return Material.getMaterial(type);
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Integer> getBindings()
-	{
-		List<Integer> bindings = new ArrayList<Integer>();
-		for(int bind : bindingData.keySet())
-		{
-			bindings.add(bind);
-		}
-		return bindings;
-	}
-
-	public synchronized void setBound(String ability, Material material)
-	{
-		saveBindingData(material.getId(), ability);
-
-		// TODO None of the below should be in here, it should be in the place where the player/character can be grabbed.
-
-		/**
-		 * Player player = (Player) Bukkit.getOfflinePlayer(this.playerName);
-		 * if(API.data.getCharData(this.charID, ability + "_bind") == null)
-		 * {
-		 * if(player.getItemInHand().getType() == Material.AIR)
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-		 * }
-		 * else
-		 * {
-		 * if(isBound(material))
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-		 * return false;
-		 * }
-		 * else if(material == Material.AIR)
-		 * {
-		 * player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-		 * return false;
-		 * }
-		 * else
-		 * {
-		 * if(API.data.hasCharData(this.charID, "bindings"))
-		 * {
-		 * ArrayList<Material> bindings = getBindings();
-		 * if(!bindings.contains(material)) bindings.add(material);
-		 * API.data.saveCharData(this.charID, "bindings", bindings);
-		 * }
-		 * else
-		 * {
-		 * ArrayList<Material> bindings = new ArrayList<Material>();
-		 * bindings.add(material);
-		 * API.data.saveCharData(this.charID, "bindings", bindings);
-		 * }
-		 * 
-		 * 
-		 * 
-		 * API.data.saveCharData(this.charID, ability + "_bind", material);
-		 * player.sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
-		 * return true;
-		 * }
-		 * }
-		 * }
-		 * else
-		 * {
-		 * removeBind(ability, ((Material) API.data.getCharData(this.charID, ability + "_bind")));
-		 * player.sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
-		 * }
-		 * return false;
-		 */
-	}
-
-	public void removeBind(Material material)
-	{
-		if(containsBindingKey(material.getId())) removeBindingData(material.getId());
-	}
-
-	public void removeBind(String ability)
-	{
-		if(getBind(ability) != null) removeBind(getBind(ability));
-	}
-
 	public String isDeity()
 	{
 		return getData("CLASS_NAME").toString();
@@ -564,40 +374,52 @@ public class PlayerCharacter implements DataStubModule
 		return 10;
 	}
 
-	/**
-	 * Grab the Map in it's entirely.
-	 */
-	protected Map<String, Object> getAbilityMap()
+	public void addWarp(int id)
 	{
-		return this.abilityData;
+		List<Integer> warps = (List<Integer>) getData("WARPS");
+		warps.add(id);
+		saveData("WARPS", warps);
 	}
 
-	protected void setAbilityMap(Map map)
+	public void removeWarp(int id)
 	{
-		try
+		List<Integer> warps = (List<Integer>) getData("WARPS");
+		warps.remove(id);
+		saveData("WARPS", warps);
+	}
+
+	public List<TrackedLocation> getWarps()
+	{
+		List<TrackedLocation> warps = new ArrayList<TrackedLocation>();
+		for(Integer warp : (List<Integer>) getData("WARPS"))
 		{
-			this.abilityData = map;
+			warps.add(LocationAPI.getLocation(warp));
 		}
-		catch(Exception ignored)
-		{}
+		return warps;
 	}
 
-	/**
-	 * Grab the Map in it's entirely.
-	 */
-	protected Map<Integer, Object> getBindingMap()
+	public void addInvite(int id)
 	{
-		return this.bindingData;
+		List<Integer> invites = (List<Integer>) getData("WARPS");
+		invites.add(id);
+		saveData("INVITE", invites);
 	}
 
-	protected void setBindingMap(Map map)
+	public void removeInvite(int id)
 	{
-		try
+		List<Integer> invites = (List<Integer>) getData("INVITES");
+		invites.remove(id);
+		saveData("INVITES", invites);
+	}
+
+	public List<TrackedLocation> getInvites()
+	{
+		List<TrackedLocation> invites = new ArrayList<TrackedLocation>();
+		for(Integer invite : (List<Integer>) getData("INVITES"))
 		{
-			this.bindingData = map;
+			invites.add(LocationAPI.getLocation(invite));
 		}
-		catch(Exception ignored)
-		{}
+		return invites;
 	}
 
 	@Override
