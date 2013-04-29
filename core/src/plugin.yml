@@ -1,6 +1,6 @@
 name: Demigods
 main: com.censoredsoftware.Demigods.DemigodsPlugin
-version: 3.0.0.@BUILD@
+version: 3.0.0-SNAPSHOT
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard, Factions, Residence]
 commands:
