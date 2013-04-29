@@ -1,12 +1,17 @@
 package com.censoredsoftware.Demigods.API;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 public class InventoryAPI
 {
@@ -51,7 +56,7 @@ public class InventoryAPI
 		return serialization;
 	}
 
-	public static Inventory toInventory(String string)
+	public Inventory toInventory(String string)
 	{
 		if(string.equals("")) return null;
 		String[] serializedBlocks = string.split(";");
@@ -98,6 +103,100 @@ public class InventoryAPI
 
 		return deserializedInventory;
 	}
-}
 
-// Thanks to Phil2812 (http://forums.bukkit.org/members/phil2812.31541/) for this very handy utility
+	/**
+	 * Converts the <code>item</code> to a string and returns it.
+	 * 
+	 * @param item the item to convert.
+	 * @return String
+	 */
+	public String ItemToString(ItemStack item)
+	{
+		// Define first string and other reference variables
+		String string = "#item@type:" + item.getType().getId() + "@amt:" + item.getAmount() + "@dur:" + item.getDurability();
+		Material material = item.getType();
+
+		// Add book meta or leather meta
+		if(material.equals(Material.WRITTEN_BOOK))
+		{
+			BookMeta bookMeta = (BookMeta) item.getItemMeta();
+			if(bookMeta.hasTitle()) string = string + "@title:" + bookMeta.getTitle();
+			if(bookMeta.hasAuthor()) string = string + "@author:" + bookMeta.getAuthor();
+			if(bookMeta.hasPages()) string = string + "@pages:" + StringUtils.join(bookMeta.getPages(), "&");
+		}
+		else if(material.equals(Material.LEATHER_HELMET) || material.equals(Material.LEATHER_CHESTPLATE) || material.equals(Material.LEATHER_LEGGINGS) || material.equals(Material.LEATHER_BOOTS))
+		{
+			// TODO: Add leather support
+		}
+
+		// Add main meta data
+		if(item.hasItemMeta())
+		{
+			if(item.getItemMeta().hasDisplayName()) string = string + "@name:" + item.getItemMeta().getDisplayName();
+			if(item.getItemMeta().hasLore()) string = string + "@lore:" + StringUtils.join(item.getItemMeta().getLore(), "&");
+		}
+
+		// Handle enchantments
+		if(item.hasItemMeta() && item.getItemMeta().hasEnchants())
+		{
+			String enchantments = "@ench:";
+			for(Map.Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
+			{
+				enchantments = enchantments + ench.getKey().getId() + "|" + ench.getValue() + "&";
+			}
+			string = string + enchantments;
+		}
+
+		// Combine all of the variables and return it
+		return string + ";";
+	}
+
+	/**
+	 * Parses the serialized item <code>string</code> into an actual ItemStack
+	 * and returns it.
+	 * 
+	 * @param string the string to parse.
+	 * @return ItemStack
+	 */
+	public ItemStack parseItem(String string)
+	{
+		// Do initial check to make sure it's an item string
+		if(!string.startsWith("#item")) return null;
+
+		// Define variables
+		Map<String, String> options = new HashMap<String, String>();
+
+		// Split the options and apply them to a Map
+		String[] itemOptions = string.substring(6).replace(";", "").split("@");
+		for(String value : itemOptions)
+		{
+			String[] option = value.split(":");
+			options.put(option[0], option[1]);
+		}
+
+		// Now use the Map to create the object
+		ItemStack item = new ItemStack(Integer.parseInt(options.get("type")));
+		item.setAmount(Integer.parseInt(options.get("amt")));
+		item.setDurability(Short.parseShort(options.get("dur")));
+
+		// Add applicable meta data
+		if(options.containsKey("name")) item.getItemMeta().setDisplayName(options.get("name"));
+		if(options.containsKey("lore")) item.getItemMeta().setLore(new ArrayList(Arrays.asList(options.get("lore").split("&"))));
+		if(options.containsKey("ench"))
+		{
+			String[] enchantments = options.get("ench").substring(0, options.get("ench").length() - 1).split("&");
+
+			for(String enchant : enchantments)
+			{
+				// Split the enchant into its parts
+				String[] details = enchant.split("|");
+
+				// Add the enchantment
+				item.addUnsafeEnchantment(Enchantment.getById(Integer.parseInt(details[0])), Integer.parseInt(details[1]));
+			}
+		}
+
+		// Return the item
+		return item;
+	}
+}
