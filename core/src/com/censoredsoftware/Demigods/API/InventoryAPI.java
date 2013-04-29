@@ -56,7 +56,7 @@ public class InventoryAPI
 		return serialization;
 	}
 
-	public Inventory toInventory(String string)
+	public static Inventory toInventory(String string)
 	{
 		if(string.equals("")) return null;
 		String[] serializedBlocks = string.split(";");
@@ -110,7 +110,7 @@ public class InventoryAPI
 	 * @param item the item to convert.
 	 * @return String
 	 */
-	public String ItemToString(ItemStack item)
+	public static String ItemToString(ItemStack item)
 	{
 		// Define first string and other reference variables
 		String string = "#item@type:" + item.getType().getId() + "@amt:" + item.getAmount() + "@dur:" + item.getDurability();
@@ -158,7 +158,7 @@ public class InventoryAPI
 	 * @param string the string to parse.
 	 * @return ItemStack
 	 */
-	public ItemStack parseItem(String string)
+	public static ItemStack parseItem(String string)
 	{
 		// Do initial check to make sure it's an item string
 		if(!string.startsWith("#item")) return null;
