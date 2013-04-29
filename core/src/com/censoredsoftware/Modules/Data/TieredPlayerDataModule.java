@@ -78,9 +78,9 @@ public class TieredPlayerDataModule implements DataModule, Listener
 	 * @param tier The tier to save.
 	 * @param key The key to save.
 	 */
-	public void createSave(OfflinePlayer tier, String key)
+	public void createSave(OfflinePlayer tier, String key, Object defaultData)
 	{
-		if(!containsKey(tier, key)) tieredObjectData.get(tier.getName()).put(key, new HashMap<String, Object>());
+		if(!containsKey(tier, key)) tieredObjectData.get(tier.getName()).put(key, defaultData);
 	}
 
 	/**
@@ -200,8 +200,8 @@ public class TieredPlayerDataModule implements DataModule, Listener
 	public void saveData(OfflinePlayer tier, String key, Object data)
 	{
 		if(!containsTier(tier)) createSave(tier);
-		else if(!containsKey(tier, key)) createSave(tier, key);
-		tieredObjectData.get(tier.getName()).put(key, data);
+		if(!containsKey(tier, key)) createSave(tier, key, data);
+		else tieredObjectData.get(tier.getName()).put(key, data);
 	}
 
 	/**

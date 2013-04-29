@@ -58,8 +58,8 @@ public class LatestTweetModule implements Listener
 			this.permission = permission;
 			this.notify = notify;
 
-			this.messagesData = new PlayerDataModule(plugin, "official_messages");
-			this.messagesYAML = new YAMLPersistenceModule(true, plugin, null, "official_messages");
+			this.messagesData = new PlayerDataModule(plugin, "official_messages", "No message.");
+			this.messagesYAML = new YAMLPersistenceModule(true, plugin, "core", "official_messages");
 
 			initilize(start_delay, save_interval);
 		}
@@ -154,8 +154,7 @@ public class LatestTweetModule implements Listener
 
 			String lastMessage = messagesData.getDataString(player);
 
-			if(lastMessage != null && lastMessage.equalsIgnoreCase(this.message)) return false;
-			else return true;
+			return !(lastMessage != null && lastMessage.equalsIgnoreCase(this.message));
 		}
 		catch(Exception e)
 		{

@@ -32,7 +32,7 @@ public class PlayerDataModule implements DataModule, Listener
 	 * @param instance The current instance of the plugin running this module.
 	 * @param dataName The name of the data set being held in this module.
 	 */
-	public PlayerDataModule(Plugin instance, String dataName)
+	public PlayerDataModule(Plugin instance, String dataName, Object defaultData)
 	{
 		this.playerData = new HashMap<String, Object>();
 		this.plugin = instance;
@@ -44,7 +44,7 @@ public class PlayerDataModule implements DataModule, Listener
 		// Create saves for all online players
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			createSave(player);
+			createSave(player, defaultData);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class PlayerDataModule implements DataModule, Listener
 		// Create saves for all online players
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			createSave(player);
+			createSave(player, null);
 		}
 	}
 
@@ -67,9 +67,9 @@ public class PlayerDataModule implements DataModule, Listener
 	 * 
 	 * @param player The player to save.
 	 */
-	public void createSave(OfflinePlayer player)
+	public void createSave(OfflinePlayer player, Object defaultData)
 	{
-		if(!containsPlayer(player)) playerData.put(player.getName(), new HashMap<String, Object>());
+		if(!containsPlayer(player)) playerData.put(player.getName(), defaultData);
 	}
 
 	/**
@@ -175,8 +175,8 @@ public class PlayerDataModule implements DataModule, Listener
 	 */
 	public void saveData(OfflinePlayer player, Object data)
 	{
-		if(!containsPlayer(player)) createSave(player);
-		playerData.put(player.getName(), data);
+		if(!containsPlayer(player)) createSave(player, data);
+		else playerData.put(player.getName(), data);
 	}
 
 	/**

@@ -53,7 +53,7 @@ public class BukkitUpdateModule implements Listener
 		{
 			this.plugin = plugin;
 			this.filesFeed = new URL(url);
-			this.confirmData = new PlayerDataModule(this.plugin, "update_confirm");
+			this.confirmData = new PlayerDataModule(this.plugin, "update_confirm", System.currentTimeMillis());
 			this.pluginName = this.plugin.getName();
 			this.command = command;
 			this.permission = permission;
