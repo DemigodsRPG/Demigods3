@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Random;
 
 import org.bukkit.event.EventHandler;
@@ -164,23 +165,38 @@ public class DemigodsData
 		{
 			if(yaml)
 			{
+				DecimalFormat percent = new DecimalFormat("0.##");
+
+				double location = 1.0;
+				double player = 1.0;
+				double block = 1.0;
+				double altar = 1.0;
+				double character;
+				double total = 1.0;
+
+				if(progress)
+				{
+					location = LocationAPI.getAllLocations().size();
+					player = DemigodsData.playerData.listTiers().size();
+					block = BlockAPI.getBlocks().size();
+					altar = BlockAPI.getAllAltars().size();
+					character = CharacterAPI.getAllChars().size();
+					total = location + player + block + altar + character;
+				}
+
 				long countdown = System.currentTimeMillis();
-				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				if(progress) Demigods.message.info("Saving : " + seconds);
+				if(progress) Demigods.message.info("Saving : " + 0.0 + "%");
 				locationYAML.save(LocationAPI.getAllLocations());
-				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				if(progress) Demigods.message.info("Saving : " + seconds);
+				if(progress) Demigods.message.info("Saving : " + percent.format((location / total) * 100) + "%");
 				playerYAML.save(DemigodsData.playerData);
-				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				if(progress) Demigods.message.info("Saving : " + seconds);
+				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player) / total) * 100) + "%");
 				trackedBlockYAML.save(BlockAPI.getBlocks());
-				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				if(progress) Demigods.message.info("Saving : " + seconds);
+				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player + block) / total) * 100) + "%");
 				altarYAML.save(BlockAPI.getAllAltars());
-				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				if(progress) Demigods.message.info("Saving : " + seconds);
+				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player + block + altar) / total) * 100) + "%");
 				saveCharacters(true);
-				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + 100.0 + "%");
+				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
 				Demigods.message.info("All data was saved in " + seconds + " seconds.");
 			}
 		}
