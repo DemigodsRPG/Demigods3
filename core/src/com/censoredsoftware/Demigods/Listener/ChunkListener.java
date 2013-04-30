@@ -45,7 +45,7 @@ public class ChunkListener implements Listener
 			// Books!
 			for(Books book : Books.values())
 			{
-				if(DemigodsData.randomPercentBool(book.getBook().getChance())) items.add(book.getBook().getItem());
+				if(DemigodsData.randomPercentBool(book.getBook().getSpawnChance())) items.add(book.getBook().getItem());
 			}
 
 			// Generate the chest

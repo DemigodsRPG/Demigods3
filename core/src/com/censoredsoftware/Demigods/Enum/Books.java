@@ -10,6 +10,17 @@ import com.censoredsoftware.Demigods.API.ItemAPI;
 public enum Books
 {
 	/**
+	 * Instructions
+	 */
+	FIRST_JOIN(new Book(0.0, ItemAPI.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>()
+	{
+		{
+			add(ChatColor.UNDERLINE + "Welcome, adventurer, to the world of Demigods!");
+			add("Allan Please Add Details");
+		}
+	}, null))),
+
+	/**
 	 * _Alex's Secret Book
 	 */
 	ALEX_SECRET_BOOK(new Book(25.0, ItemAPI.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", new ArrayList<String>()
@@ -44,12 +55,12 @@ public enum Books
 
 	public static class Book
 	{
-		private Double chance;
+		private Double spawnChance;
 		private ItemStack item;
 
-		public Book(Double chance, ItemStack item)
+		public Book(Double spawnChance, ItemStack item)
 		{
-			this.chance = chance;
+			this.spawnChance = spawnChance;
 			this.item = item;
 		}
 
@@ -58,9 +69,9 @@ public enum Books
 			return item;
 		}
 
-		public Double getChance()
+		public Double getSpawnChance()
 		{
-			return chance;
+			return spawnChance;
 		}
 	}
 }

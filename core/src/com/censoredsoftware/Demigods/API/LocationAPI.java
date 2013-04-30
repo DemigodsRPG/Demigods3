@@ -41,6 +41,7 @@ public class LocationAPI
 	 */
 	public static boolean hasWarp(Altar altar, PlayerCharacter character)
 	{
+		if(character == null) return false;
 		if(character.getWarps() == null) return false;
 		for(TrackedLocation warp : character.getWarps())
 		{

@@ -19,6 +19,9 @@ import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Enum.Baetylus;
+import com.censoredsoftware.Demigods.Enum.Books;
+import com.censoredsoftware.Demigods.Enum.Messages;
 import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
 
 public class PlayerListener implements Listener
@@ -47,6 +50,13 @@ public class PlayerListener implements Listener
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
 		}
+		else
+		{
+			// Enum Examples
+			player.getInventory().setItemInHand(Books.FIRST_JOIN.getBook().getItem());
+			player.chat(Messages.NEW.getMessage());
+			player.getInventory().setItem(player.getInventory().firstEmpty(), Baetylus.LARGE_SHARD.getShard().getItem());
+		}
 
 		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
 		{
@@ -54,36 +64,6 @@ public class PlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 	}
-
-	/*
-	 * TODO
-	 * 
-	 * @EventHandler(priority = EventPriority.HIGHEST)
-	 * public void onPlayerCraft(CraftItemEvent event)
-	 * {
-	 * // Define variables
-	 * Player player = (Player) event.getWhoClicked();
-	 * InventoryType invType = event.getInventory().getType();
-	 * ArrayList<ItemStack> allSouls = DSouls.returnAllSouls();
-	 * 
-	 * if(invType.equals(InventoryType.CRAFTING) || invType.equals(InventoryType.WORKBENCH))
-	 * {
-	 * ItemStack[] invItems = event.getInventory().getContents();
-	 * 
-	 * for(ItemStack soul : allSouls)
-	 * {
-	 * for(ItemStack invItem : invItems)
-	 * {
-	 * if(invItem.isSimilar(soul))
-	 * {
-	 * event.setCancelled(true);
-	 * player.sendMessage(ChatColor.RED + "You cannot craft with souls!");
-	 * }
-	 * }
-	 * }
-	 * }
-	 * }
-	 */
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
