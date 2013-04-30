@@ -12,7 +12,7 @@ public enum Books
 	/**
 	 * _Alex's Secret Book
 	 */
-	ALEX_BOOK(new Book(25.0, ItemAPI.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", new ArrayList<String>()
+	ALEX_SECRET_BOOK(new Book(25.0, ItemAPI.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", new ArrayList<String>()
 	{
 		{
 			add("Whoa... you found my book! Please be careful with it. It can be pretty powerful!");
@@ -21,13 +21,12 @@ public enum Books
 	}, null))),
 
 	/**
-	 * HQM's Secret Book
+	 * The Book of Ages
 	 */
-	HQM_BOOK(new Book(25.0, ItemAPI.createBook(ChatColor.GOLD + "HQM's Secret Book", "HmmmQuestionMark", new ArrayList<String>()
+	BOOK_OF_AGES(new Book(75.0, ItemAPI.createBook(ChatColor.MAGIC + "The Book of Ages", "Steve", new ArrayList<String>()
 	{
 		{
-			add("Much better than _Alex's book, rite?");
-			add("ROFL");
+			add(ChatColor.MAGIC + "You cannot comprehend the power contained in this book.");
 		}
 	}, null)));
 
@@ -43,7 +42,7 @@ public enum Books
 		return this.value;
 	}
 
-	public class Book
+	public static class Book
 	{
 		private Double chance;
 		private ItemStack item;
