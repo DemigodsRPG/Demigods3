@@ -83,7 +83,7 @@ public class ShrineListener implements Listener
 	private void useShrine(Player player, Location location)
 	{
 		// First handle admin wand
-		if(AdminAPI.useWand(player) && BlockAPI.isShrine(location)) // TODO Timed data.
+		if(AdminAPI.useWand(player) && BlockAPI.isShrine(location)) // TODO TimedObject data.
 		{
 			// if(API.data.hasTimedData(player, "temp_destroy_shrine"))
 			// {

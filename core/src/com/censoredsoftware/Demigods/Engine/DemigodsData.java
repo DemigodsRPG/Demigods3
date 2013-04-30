@@ -18,8 +18,8 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterBindi
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Modules.Data.IntegerDataModule;
-import com.censoredsoftware.Modules.Data.ObjectDataModule;
 import com.censoredsoftware.Modules.Data.TieredPlayerDataModule;
+import com.censoredsoftware.Modules.Data.TimedDataModule;
 import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;
 import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
 
@@ -50,8 +50,7 @@ public class DemigodsData
 
 	// Battle Data
 	public static IntegerDataModule battleData;
-
-	static ObjectDataModule timedData; // TODO Timed data...
+	public static TimedDataModule timedBattleData;
 
 	protected DemigodsData(DemigodsPlugin instance)
 	{
@@ -60,7 +59,6 @@ public class DemigodsData
 		pluginDataPersistent(instance);
 		playerData(instance);
 		characterData(instance);
-		timedData(instance);
 		battleData(instance);
 		blockData(instance);
 
@@ -70,11 +68,6 @@ public class DemigodsData
 	static void pluginDataPersistent(DemigodsPlugin instance)
 	{
 		locationData = new IntegerDataModule(instance, "location_data");
-	}
-
-	static void timedData(DemigodsPlugin instance)
-	{
-		timedData = new ObjectDataModule(); // TODO Make a timed data module.
 	}
 
 	static void playerData(DemigodsPlugin instance)
@@ -101,6 +94,7 @@ public class DemigodsData
 	static void battleData(DemigodsPlugin instance)
 	{
 		battleData = new IntegerDataModule(instance, "battle_data");
+		timedBattleData = new TimedDataModule(instance);
 	}
 
 	static void load(DemigodsPlugin instance, boolean yaml)
@@ -164,17 +158,17 @@ public class DemigodsData
 				}
 
 				long countdown = System.currentTimeMillis();
-				if(progress) Demigods.message.info("Saving : " + 0.0 + "%");
+				if(progress) Demigods.message.info("Saving: " + 0.0 + "%");
 				locationYAML.save(LocationAPI.getAllLocations());
-				if(progress) Demigods.message.info("Saving : " + percent.format((location / total) * 100) + "%");
+				if(progress) Demigods.message.info("Saving: " + percent.format((location / total) * 100) + "%");
 				playerYAML.save(DemigodsData.playerData);
-				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player) / total) * 100) + "%");
 				trackedBlockYAML.save(BlockAPI.getBlocks());
-				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player + block) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player + block) / total) * 100) + "%");
 				altarYAML.save(BlockAPI.getAllAltars());
-				if(progress) Demigods.message.info("Saving : " + percent.format(((location + player + block + altar) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player + block + altar) / total) * 100) + "%");
 				saveCharacters(true);
-				if(progress) Demigods.message.info("Saving : " + 100.0 + "%");
+				if(progress) Demigods.message.info("Saving: " + 100.0 + "%");
 				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
 				Demigods.message.info("All data was saved in " + seconds + " seconds.");
 			}

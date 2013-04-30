@@ -172,7 +172,7 @@ public class BlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(BlockAPI.isAltar(location)) // TODO Timed data.
+		if(BlockAPI.isAltar(location)) // TODO TimedObject data.
 		{
 			// if(API.data.hasTimedData(player, "temp_destroy_altar"))
 			// {

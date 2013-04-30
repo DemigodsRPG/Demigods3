@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Demo.Deity.God.Zeus;
 
-import static com.censoredsoftware.Demigods.Demo.Deity.God.Zeus.Lightning.strikeLightning;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +61,35 @@ public class Zeus extends Deity
 	public Zeus()
 	{
 		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+	}
+
+	protected static boolean strikeLightning(Player player, LivingEntity target)
+	{
+		// Set variables
+		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+
+		if(!player.getWorld().equals(target.getWorld())) return false;
+		if(!ZoneAPI.canTarget(target)) return false;
+		Location toHit = AbilityAPI.aimLocation(character, target.getLocation());
+
+		player.getWorld().strikeLightningEffect(toHit);
+
+		for(Entity entity : toHit.getBlock().getChunk().getEntities())
+		{
+			if(entity instanceof LivingEntity)
+			{
+				if(!ZoneAPI.canTarget(entity)) continue;
+				LivingEntity livingEntity = (LivingEntity) entity;
+				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getAscensions() * 2, EntityDamageEvent.DamageCause.LIGHTNING);
+			}
+		}
+
+		if(!AbilityAPI.isHit(target, toHit))
+		{
+			player.sendMessage(ChatColor.RED + "Missed...");
+		}
+
+		return true;
 	}
 }
 
@@ -135,7 +162,7 @@ class Lightning extends Ability
 			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
 		}
 	};
-	private static Ability.Type type = Type.OFFENSE;
+	private static Ability.Type type = Ability.Type.OFFENSE;
 
 	protected Lightning()
 	{
@@ -172,36 +199,7 @@ class Lightning extends Ability
 		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
 		character.subtractFavor(cost);
 
-		strikeLightning(player, target);
-	}
-
-	protected static boolean strikeLightning(Player player, LivingEntity target)
-	{
-		// Set variables
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-
-		if(!player.getWorld().equals(target.getWorld())) return false;
-		if(!ZoneAPI.canTarget(target)) return false;
-		Location toHit = AbilityAPI.aimLocation(character, target.getLocation());
-
-		player.getWorld().strikeLightningEffect(toHit);
-
-		for(Entity entity : toHit.getBlock().getChunk().getEntities())
-		{
-			if(entity instanceof LivingEntity)
-			{
-				if(!ZoneAPI.canTarget(entity)) continue;
-				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getAscensions() * 2, EntityDamageEvent.DamageCause.LIGHTNING);
-			}
-		}
-
-		if(!AbilityAPI.isHit(target, toHit))
-		{
-			player.sendMessage(ChatColor.RED + "Missed...");
-		}
-
-		return true;
+		Zeus.strikeLightning(player, target);
 	}
 }
 
@@ -264,17 +262,17 @@ class Storm extends Ability
 					Player otherPlayer = (Player) entity;
 					if(!PlayerAPI.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
 					{
-						if(strikeLightning(player, otherPlayer)) count++;
-						strikeLightning(player, otherPlayer);
-						strikeLightning(player, otherPlayer);
+						if(Zeus.strikeLightning(player, otherPlayer)) count++;
+						Zeus.strikeLightning(player, otherPlayer);
+						Zeus.strikeLightning(player, otherPlayer);
 					}
 				}
 				else if(entity instanceof LivingEntity)
 				{
 					LivingEntity livingEntity = (LivingEntity) entity;
-					if(strikeLightning(player, livingEntity)) count++;
-					strikeLightning(player, livingEntity);
-					strikeLightning(player, livingEntity);
+					if(Zeus.strikeLightning(player, livingEntity)) count++;
+					Zeus.strikeLightning(player, livingEntity);
+					Zeus.strikeLightning(player, livingEntity);
 				}
 			}
 			catch(Exception ignored)

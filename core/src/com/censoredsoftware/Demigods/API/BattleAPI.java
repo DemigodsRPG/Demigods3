@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleCombineEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -170,20 +171,20 @@ public class BattleAPI
 	/**
 	 * Checks all battles and sets them to inactive where need-be.
 	 */
-	public static void checkForInactiveBattles() // TODO Timed data.
+	public static void checkForInactiveBattles()
 	{
 		for(TrackedBattle battle : getAllActive())
 		{
-			// int battleID = battle.getID();
-			// if(!API.data.hasTimedData(battleID, "battle_active"))
-			// {
-			// BattleEndEvent battleEvent = new BattleEndEvent(battleID, System.currentTimeMillis());
-			// API.misc.callEvent(battleEvent);
-			// if(!battleEvent.isCancelled())
-			// {
-			// battle.toggleActive(false);
-			// }
-			// }
+			int battleID = battle.getID();
+			if(!DemigodsData.timedBattleData.contains(battleID))
+			{
+				BattleEndEvent battleEvent = new BattleEndEvent(battleID, System.currentTimeMillis());
+				Bukkit.getServer().getPluginManager().callEvent(battleEvent);
+				if(!battleEvent.isCancelled())
+				{
+					battle.setActive(false);
+				}
+			}
 		}
 	}
 
@@ -227,7 +228,7 @@ public class BattleAPI
 			int battleID = DemigodsData.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-			if(!battleEvent.isCancelled()) battle = new TrackedBattle(hittingChar, hitChar, startTime, battleID);
+			if(!battleEvent.isCancelled()) new TrackedBattle(hittingChar, hitChar, startTime, battleID);
 		}
 		else
 		{
@@ -240,7 +241,7 @@ public class BattleAPI
 				{
 					battle.addCharacter(hitChar);
 					battle.addCharacter(hittingChar);
-					// API.data.saveTimedData(battleID, "battle_active", true, 10); // TODO Timed data.
+					DemigodsData.timedBattleData.add(battleID, System.currentTimeMillis() + 10000);
 				}
 			}
 			else

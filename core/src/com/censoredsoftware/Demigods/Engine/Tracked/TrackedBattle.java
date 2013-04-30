@@ -35,7 +35,7 @@ public class TrackedBattle
 		addCharacter(attacking);
 		addCharacter(defending);
 
-		// API.data.saveTimedData(battleID, "battle_active", true, 10); // TODO Timed data.
+		// API.data.saveTimedData(battleID, "battle_active", true, 10); // TODO TimedObject data.
 		save();
 	}
 

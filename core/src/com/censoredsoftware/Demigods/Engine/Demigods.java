@@ -36,7 +36,7 @@ import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
-// TODO Timed data, battles.
+// TODO TimedObject data, battles.
 
 public class Demigods
 {
