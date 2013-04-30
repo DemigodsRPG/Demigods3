@@ -234,22 +234,6 @@ public class PlayerAPI
 	}
 
 	/**
-	 * Regenerates favor for all currently online players.
-	 */
-	public static void regenerateAllFavor() // TODO Does this really belong here?
-	{
-		ArrayList<Player> onlinePlayers = getOnlinePlayers();
-		for(Player player : onlinePlayers)
-		{
-			PlayerCharacter character = getCurrentChar(player);
-			if(character == null || !character.isImmortal()) continue;
-			int regenRate = (int) Math.ceil(Demigods.config.getSettingDouble("multipliers.favor") * character.getAscensions());
-			if(regenRate < 1) regenRate = 1;
-			character.giveFavor(regenRate);
-		}
-	}
-
-	/**
 	 * Returns the number of total kills for <code>player</code>.
 	 * 
 	 * @param player the player to check.

@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods;
 
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -21,7 +22,7 @@ public class DemigodsPlugin extends JavaPlugin
 		Demigods.loadListeners(this);
 		Demigods.loadCommands(this);
 
-		// Scheduler.startThreads(this); // TODO Turned off for testing.
+		Scheduler.startThreads(this);
 
 		Demigods.message.info("Successfully enabled.");
 	}
@@ -32,7 +33,11 @@ public class DemigodsPlugin extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		Demigods.unload(this);
+		DemigodsData.Save.save(true, true);
+
+		HandlerList.unregisterAll(this);
+		Scheduler.stopThreads(this);
+
 		Demigods.message.info("Successfully disabled.");
 	}
 }

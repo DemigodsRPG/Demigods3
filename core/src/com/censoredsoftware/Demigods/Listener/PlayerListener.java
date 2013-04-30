@@ -49,6 +49,7 @@ public class PlayerListener implements Listener
 			ChatColor color = DeityAPI.getDeityColor(character.isDeity());
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
+			player.chat(Messages.FUCK.getMessage());
 		}
 		else
 		{

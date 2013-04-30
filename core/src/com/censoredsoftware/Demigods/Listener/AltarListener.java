@@ -556,7 +556,7 @@ public class AltarListener implements Listener
 					String chosenDeity = message.replace(" ", "");
 					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DemigodsData.tempPlayerData.saveData(player, "temp_createchar_deity", chosenDeity);
+					DemigodsData.tempPlayerData.saveData(player, "temp_createchar_deity", DemigodsData.capitalize(chosenDeity.toLowerCase()));
 					DemigodsData.tempPlayerData.saveData(player, "temp_createchar", "confirm_deity");
 					return;
 				}
@@ -580,7 +580,7 @@ public class AltarListener implements Listener
 		String chosenDeity = DemigodsData.tempPlayerData.getDataString(player, "temp_createchar_deity");
 
 		// They accepted the Deity choice, now ask them to input their items so they can be accepted
-		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + ",");
+		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ",");
 		player.sendMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 		player.sendMessage(" ");
 		for(Material item : (ArrayList<Material>) DemigodsData.deityClaimItems.getDataObject(chosenDeity))

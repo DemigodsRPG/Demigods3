@@ -18,7 +18,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -213,26 +212,13 @@ public class Demigods
 			}
 		}
 	}
-
-	protected static void unload(DemigodsPlugin instance)
-	{
-		HandlerList.unregisterAll(instance);
-		Scheduler.stopThreads(instance);
-	}
 }
 
 class Scheduler
 {
 	static void startThreads(DemigodsPlugin instance)
 	{
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				DemigodsData.saveAll(true);
-			}
-		}, 30, 60);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Favor(Demigods.config.getSettingDouble("multipliers.favor")), 30, 30);
 	}
 
 	static void stopThreads(DemigodsPlugin instance)
@@ -241,9 +227,31 @@ class Scheduler
 	}
 }
 
+class Favor implements Runnable
+{
+	private double multiplier;
+
+	Favor(double multiplier)
+	{
+		this.multiplier = multiplier;
+	}
+
+	@Override
+	public void run()
+	{
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+			if(character == null || !character.isImmortal()) continue;
+			int regenRate = (int) Math.ceil(multiplier * character.getAscensions());
+			if(regenRate < 1) regenRate = 1;
+			character.giveFavor(regenRate);
+		}
+	}
+}
+
 class EventFactory implements Listener
 {
-
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void onEntityDeath(EntityDeathEvent event)
 	{
@@ -924,8 +932,7 @@ class Commands implements CommandExecutor
 			sender.sendMessage(character.getName() + "."); // TODO Warp data and such.
 		}
 
-		DemigodsData.saveAll(true); // TODO For testing only.
-
+		Bukkit.getScheduler().runTaskAsynchronously(Demigods.demigods, new DemigodsData.Save(true));
 		return true;
 	}
 

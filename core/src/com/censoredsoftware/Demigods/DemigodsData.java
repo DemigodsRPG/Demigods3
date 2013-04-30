@@ -3,7 +3,6 @@ package com.censoredsoftware.Demigods;
 import java.io.File;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -146,54 +145,70 @@ public class DemigodsData
 		}
 	}
 
-	static void saveAll(boolean yaml)
+	public static class Save implements Runnable
 	{
-		if(yaml)
+		private boolean yaml;
+
+		Save(boolean yaml)
 		{
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.demigods, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					long countdown = System.currentTimeMillis();
-
-					locationYAML.save(LocationAPI.getAllLocations());
-					playerYAML.save(playerData);
-					trackedBlockYAML.save(BlockAPI.getBlocks());
-					saveCharacters(true);
-					altarYAML.save(BlockAPI.getAllAltars());
-
-					double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-
-					Demigods.message.info("All data was saved in " + seconds + " seconds.");
-				}
-			}, 0);
+			this.yaml = yaml;
 		}
-	}
 
-	static void saveCharacters(boolean yaml)
-	{
-		if(yaml)
+		@Override
+		public void run()
 		{
-			characterYAML.save(CharacterAPI.getAllChars());
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			save(yaml, false);
+		}
+
+		public static void save(boolean yaml, boolean progress)
+		{
+			if(yaml)
 			{
-				int charID = character.getID();
-				try
+				long countdown = System.currentTimeMillis();
+				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + seconds);
+				locationYAML.save(LocationAPI.getAllLocations());
+				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + seconds);
+				playerYAML.save(DemigodsData.playerData);
+				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + seconds);
+				trackedBlockYAML.save(BlockAPI.getBlocks());
+				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + seconds);
+				altarYAML.save(BlockAPI.getAllAltars());
+				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				if(progress) Demigods.message.info("Saving : " + seconds);
+				saveCharacters(true);
+				seconds = (System.currentTimeMillis() - countdown) / 1000.0;
+				Demigods.message.info("All data was saved in " + seconds + " seconds.");
+			}
+		}
+
+		private static void saveCharacters(boolean yaml)
+		{
+			if(yaml)
+			{
+				characterYAML.save(CharacterAPI.getAllChars());
+				for(PlayerCharacter character : CharacterAPI.getAllChars())
 				{
-					new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-				}
-				catch(Exception e)
-				{
-					Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
-				}
-				try
-				{
-					new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
-				}
-				catch(Exception e)
-				{
-					Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
+					int charID = character.getID();
+					try
+					{
+						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
+					}
+					catch(Exception e)
+					{
+						Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
+					}
+					try
+					{
+						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+					}
+					catch(Exception e)
+					{
+						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
+					}
 				}
 			}
 		}
