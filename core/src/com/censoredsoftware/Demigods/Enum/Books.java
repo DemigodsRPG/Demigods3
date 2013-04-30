@@ -43,7 +43,7 @@ public enum Books
 		return this.value;
 	}
 
-	public static class Book
+	public class Book
 	{
 		private Double chance;
 		private ItemStack item;
