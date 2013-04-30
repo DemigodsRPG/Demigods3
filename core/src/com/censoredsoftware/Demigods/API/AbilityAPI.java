@@ -14,9 +14,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.Demigods.Event.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Event.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class AbilityAPI
 {
@@ -24,16 +25,16 @@ public class AbilityAPI
 
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
-	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has
+	 * with a cost of <code>cost</code>, that is Type <code>type</code>, has
 	 * passed all pre-process tests.
 	 * 
 	 * @param player the player doing the ability
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the AbilityType of the ability
+	 * @param type the Type of the ability
 	 * @return true/false depending on if all pre-process tests have passed
 	 */
-	public static boolean doAbilityPreProcess(Player player, String name, int cost, AbilityEvent.AbilityType type)
+	public static boolean doAbilityPreProcess(Player player, String name, int cost, Ability.Type type)
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
@@ -42,17 +43,17 @@ public class AbilityAPI
 
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
-	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, that
+	 * with a cost of <code>cost</code>, that is Type <code>type</code>, that
 	 * is targeting the LivingEntity <code>target</code>, has passed all pre-process tests.
 	 * 
 	 * @param player the Player doing the ability
 	 * @param target the LivingEntity being targeted
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the AbilityType of the ability
+	 * @param type the Type of the ability
 	 * @return true/false depending on if all pre-process tests have passed
 	 */
-	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityEvent.AbilityType type)
+	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, Ability.Type type)
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
@@ -142,16 +143,16 @@ public class AbilityAPI
 
 	/**
 	 * Returns true if the ability event for <code>character</code>, called <code>name</code>,
-	 * with a cost of <code>cost</code>, that is AbilityType <code>type</code>, has passed
+	 * with a cost of <code>cost</code>, that is Type <code>type</code>, has passed
 	 * all pre-process tests.
 	 * 
 	 * @param character the character triggering the ability event
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the AbilityType of the ability
+	 * @param type the Type of the ability
 	 * @return true/false if the event isn't cancelled or not
 	 */
-	public static boolean event(String name, PlayerCharacter character, int cost, AbilityEvent.AbilityType type)
+	public static boolean event(String name, PlayerCharacter character, int cost, Ability.Type type)
 	{
 		AbilityEvent event = new AbilityEvent(name, character, cost, type);
 		Bukkit.getServer().getPluginManager().callEvent(event);

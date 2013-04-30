@@ -7,9 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.DemigodsFactory;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsFactory;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class CharacterAPI
 {
@@ -29,7 +29,7 @@ public class CharacterAPI
 			int charID = DemigodsData.generateInt(5);
 
 			// Create the Character and it's CharacterClass.
-			PlayerCharacter character = DemigodsFactory.playerCharacterFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeityAlliance(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+			PlayerCharacter character = DemigodsFactory.playerCharacterFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeity(charDeity).getInfo().getAlliance(), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 
 			// Add character to the Character Data
 			DemigodsData.characterData.saveData(charID, character);
@@ -113,7 +113,7 @@ public class CharacterAPI
 		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
 		for(PlayerCharacter character : getAllChars())
 		{
-			if(character.isDeity().equalsIgnoreCase(deity)) deityList.add(character);
+			if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
 		}
 		return deityList;
 	}
@@ -127,7 +127,7 @@ public class CharacterAPI
 		ArrayList<PlayerCharacter> deityList = new ArrayList<PlayerCharacter>();
 		for(PlayerCharacter character : getAllActive())
 		{
-			if(character.isDeity().equalsIgnoreCase(deity)) deityList.add(character);
+			if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
 		}
 		return deityList;
 	}

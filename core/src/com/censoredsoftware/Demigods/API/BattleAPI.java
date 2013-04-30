@@ -6,14 +6,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.Event.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Event.Battle.BattleParticipateEvent;
-import com.censoredsoftware.Demigods.Event.Battle.BattleStartEvent;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Tracked.TrackedBattle;
-import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleCombineEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 
 public class BattleAPI
 {

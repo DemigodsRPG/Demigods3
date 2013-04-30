@@ -3,10 +3,10 @@ package com.censoredsoftware.Demigods.API;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.censoredsoftware.Demigods.Block.Altar;
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Block.Altar;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 
 public class LocationAPI
 {

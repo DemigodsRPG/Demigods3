@@ -11,10 +11,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacterInventory;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterInventory;
 
 public class PlayerAPI
 {

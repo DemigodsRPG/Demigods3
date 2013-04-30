@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.bukkit.Location;
 
-import com.censoredsoftware.Demigods.Block.Altar;
-import com.censoredsoftware.Demigods.Block.Shrine;
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.Tracked.TrackedBlock;
+import com.censoredsoftware.Demigods.Engine.Block.Altar;
+import com.censoredsoftware.Demigods.Engine.Block.Shrine;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 
 public class BlockAPI
 {

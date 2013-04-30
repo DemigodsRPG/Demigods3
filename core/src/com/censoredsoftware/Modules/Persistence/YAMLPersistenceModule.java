@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataModule;
 import com.censoredsoftware.Modules.Data.DataStubModule;
 import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;

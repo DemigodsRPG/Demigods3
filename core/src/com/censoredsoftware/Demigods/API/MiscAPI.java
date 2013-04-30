@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.Demigods.Demigods;
-import com.censoredsoftware.Demigods.DemigodsData;
-import com.censoredsoftware.Demigods.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class MiscAPI
 {
