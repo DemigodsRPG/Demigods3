@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Listener;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,9 +17,9 @@ import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.ItemAPI;
 import com.censoredsoftware.Demigods.API.MiscAPI;
 import com.censoredsoftware.Demigods.Block.Altar;
-import com.censoredsoftware.Demigods.Definition.SpecialItems;
 import com.censoredsoftware.Demigods.Demigods;
 import com.censoredsoftware.Demigods.DemigodsData;
+import com.censoredsoftware.Demigods.Enum.Books;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Event.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Event.Misc.ChestSpawnEvent;
@@ -43,9 +42,10 @@ public class ChunkListener implements Listener
 			// Define variables
 			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 
-			for(Map.Entry<Double, ItemStack> item : SpecialItems.getBooks().entrySet())
+			// Books!
+			for(Books book : Books.values())
 			{
-				if(DemigodsData.randomPercentBool(item.getKey())) items.add(item.getValue());
+				if(DemigodsData.randomPercentBool(book.getBook().getChance())) items.add(book.getBook().getItem());
 			}
 
 			// Generate the chest

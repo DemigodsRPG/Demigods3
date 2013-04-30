@@ -48,6 +48,7 @@ public class MiscAPI
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		if(character == null) return false;
 		return character.isDeity(deity) && character.isImmortal();
 	}
 
