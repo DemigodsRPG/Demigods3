@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Deity.Titan;
+package com.censoredsoftware.Demigods.Demo.Data.Deity.Titan;
 
 import java.util.ArrayList;
 import java.util.List;

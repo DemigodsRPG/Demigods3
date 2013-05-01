@@ -31,12 +31,12 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayChara
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Quest.Quest;
+import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
-// TODO TimedObject data, battles.
 
 public class Demigods
 {
@@ -57,24 +57,44 @@ public class Demigods
 	protected static BukkitUpdateModule update;
 	protected static LatestTweetModule notice;
 
-	// On-load Deity ClassPath List
-	protected static List<String> deityPathList = new ArrayList<String>();
+	// The Game Data
+	protected static ListedDeity[] deities;
+	protected static ListedQuest[] quests;
 
-	protected Demigods(DemigodsPlugin instance)
+	public interface ListedDeity
 	{
-		// Allow Static Access
+		public Deity getDeity();
+	}
+
+	public interface ListedQuest
+	{
+		public Quest getQuest();
+	}
+
+	protected Demigods(DemigodsPlugin instance, ListedDeity[] deities, ListedQuest[] quests)
+	{
+		// Allow static access.
 		demigods = instance;
 
-		// Public Modules
+		// Define the game data.
+		this.deities = deities;
+		this.quests = quests;
+
+		// Setup public modules.
 		config = new ConfigModule(instance, true);
 		message = new MessageModule(instance, config.getSettingBoolean("tag_messages"));
 		permission = new PermissionModule();
 
-		// Create All Object Factories
+		// Initialize object factories.
 		new DemigodsFactory(instance);
 
-		// Initialize Data
+		// Initialize soft data.
 		new DemigodsData(instance);
+
+		// Finish loading the plugin based on the game data.
+		loadDepends(instance);
+		loadListeners(instance);
+		loadCommands(instance);
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)
@@ -95,11 +115,22 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new EventFactory(), instance);
 
 		// Deities
-		for(Deity deity : DeityAPI.getLoadedDeities())
+		for(Deity deity : getLoadedDeities())
 		{
+			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
 			{
 				instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
+			}
+		}
+
+		// Quests
+		for(Quest quest : getLoadedQuests())
+		{
+			if(quest.getTasks() == null) continue;
+			for(Task task : quest.getTasks())
+			{
+				instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
 		}
 
@@ -133,6 +164,32 @@ public class Demigods
 		// Residence
 		depend = instance.getServer().getPluginManager().getPlugin("Residence");
 		if(depend instanceof Residence) residence = (Residence) depend;
+	}
+
+	public static List<Deity> getLoadedDeities()
+	{
+		return new ArrayList<Deity>()
+		{
+			{
+				for(ListedDeity deity : deities)
+				{
+					add(deity.getDeity());
+				}
+			};
+		};
+	}
+
+	public static List<Quest> getLoadedQuests()
+	{
+		return new ArrayList<Quest>()
+		{
+			{
+				for(ListedQuest quest : quests)
+				{
+					add(quest.getQuest());
+				}
+			};
+		};
 	}
 }
 

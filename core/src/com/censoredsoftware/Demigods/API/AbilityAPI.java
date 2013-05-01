@@ -1,5 +1,7 @@
 package com.censoredsoftware.Demigods.API;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -15,6 +17,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -238,5 +242,55 @@ public class AbilityAPI
 			return false;
 		}
 		else return true;
+	}
+
+	public static List<Ability> getLoadedAbilities()
+	{
+		return new ArrayList<Ability>()
+		{
+			{
+				for(Deity deity : Demigods.getLoadedDeities())
+				{
+					addAll(deity.getAbilities());
+				}
+			};
+		};
+	}
+
+	public static boolean invokeAbilityCommand(Player player, String command, boolean bind)
+	{
+		for(Ability ability : getLoadedAbilities())
+		{
+			if(ability.getInfo().getType() == Ability.Type.PASSIVE) continue;
+			if(ability.getInfo().getCommand().equalsIgnoreCase(command))
+			{
+				PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+
+				if(!Demigods.permission.hasPermissionOrOP(player, ability.getInfo().getPermission())) return true;
+
+				if(!MiscAPI.canUseDeity(player, ability.getInfo().getDeity())) return true;
+
+				if(bind)
+				{
+					// Bind item
+					character.getBindings().setBound(ability.getInfo().getName(), player.getItemInHand().getType());
+				}
+				else
+				{
+					if(character.getAbilities().isEnabledAbility(ability.getInfo().getName()))
+					{
+						character.getAbilities().toggleAbility(ability.getInfo().getName(), false);
+						player.sendMessage(ChatColor.YELLOW + ability.getInfo().getName() + " is no longer active.");
+					}
+					else
+					{
+						character.getAbilities().toggleAbility(ability.getInfo().getName(), true);
+						player.sendMessage(ChatColor.YELLOW + ability.getInfo().getName() + " is now active.");
+					}
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 }

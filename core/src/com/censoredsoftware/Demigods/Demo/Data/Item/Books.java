@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Data;
+package com.censoredsoftware.Demigods.Demo.Data.Item;
 
 import java.util.ArrayList;
 
@@ -15,8 +15,8 @@ public enum Books
 	FIRST_JOIN(new Book(0.0, ItemAPI.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>()
 	{
 		{
-			add(ChatColor.UNDERLINE + "Welcome, adventurer, to the world of Demigods!");
-			add("Allan Please Add Details");
+			add("Welcome, adventurer, to the world of Demigods!");
+			add("Allan please add details");
 		}
 	}, null))),
 

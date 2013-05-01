@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.ItemAPI;
 import com.censoredsoftware.Demigods.API.MiscAPI;
-import com.censoredsoftware.Demigods.Demo.Data.Books;
+import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;

@@ -1,9 +1,10 @@
 package com.censoredsoftware.Demigods.Demo;
 
-import com.censoredsoftware.Demigods.Demo.Deity.God.Zeus.Zeus;
+import com.censoredsoftware.Demigods.Demo.Data.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 
-public enum Deities
+public enum Deities implements Demigods.ListedDeity
 {
 	ZEUS(new Zeus());
 
@@ -14,6 +15,7 @@ public enum Deities
 		this.deity = deity;
 	}
 
+	@Override
 	public Deity getDeity()
 	{
 		return deity;

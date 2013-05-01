@@ -29,4 +29,10 @@ public abstract class Deity
 	{
 		DEMO, TIER1, TIER2, TIER3
 	}
+
+	@Override
+	public String toString()
+	{
+		return info.getName();
+	}
 }

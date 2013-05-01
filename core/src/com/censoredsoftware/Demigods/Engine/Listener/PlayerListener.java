@@ -16,9 +16,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
-import com.censoredsoftware.Demigods.Demo.Data.Baetylus;
-import com.censoredsoftware.Demigods.Demo.Data.Books;
-import com.censoredsoftware.Demigods.Demo.Data.Messages;
+import com.censoredsoftware.Demigods.Demo.Data.Item.Baetylus;
+import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -48,13 +47,11 @@ public class PlayerListener implements Listener
 			ChatColor color = character.getDeity().getInfo().getColor();
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
-			player.chat(Messages.FUCK.getMessage());
 		}
 		else
 		{
 			// Enum Examples
 			player.getInventory().setItemInHand(Books.FIRST_JOIN.getBook().getItem());
-			player.chat(Messages.NEW.getMessage());
 			player.getInventory().setItem(player.getInventory().firstEmpty(), Baetylus.LARGE_SHARD.getShard().getItem());
 		}
 

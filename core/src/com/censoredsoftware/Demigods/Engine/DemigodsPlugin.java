@@ -3,26 +3,24 @@ package com.censoredsoftware.Demigods.Engine;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.censoredsoftware.Demigods.Demo.Deities;
+import com.censoredsoftware.Demigods.Demo.Quests;
+
 /**
  * Class for all plugins of Demigods.
  */
 public class DemigodsPlugin extends JavaPlugin
 {
-	public static enum Deities
-	{}
-
 	/**
 	 * The Bukkit enable method.
 	 */
 	@Override
 	public void onEnable()
 	{
-		new Demigods(this);
+		// Load the game engine, passing in the game data.
+		new Demigods(this, Deities.values(), Quests.values());
 
-		Demigods.loadDepends(this);
-		Demigods.loadListeners(this);
-		Demigods.loadCommands(this);
-
+		// Start game threads.
 		Scheduler.startThreads(this);
 
 		Demigods.message.info("Successfully enabled.");
@@ -34,10 +32,12 @@ public class DemigodsPlugin extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
+		// Save all the data.
 		DemigodsData.Save.save(true, true);
 
-		HandlerList.unregisterAll(this);
+		// Cancel all threads and event calls.
 		Scheduler.stopThreads(this);
+		HandlerList.unregisterAll(this);
 
 		Demigods.message.info("Successfully disabled.");
 	}
