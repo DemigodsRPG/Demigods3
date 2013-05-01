@@ -1,6 +1,6 @@
 name: Demigods
 main: com.censoredsoftware.Demigods.Engine.DemigodsPlugin
-version: 3.0.0-SNAPSHOT
+version: 3.0.0-DEMO
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard, Factions, Residence]
 commands:
@@ -49,4 +49,7 @@ permissions:
         default: true
     demigods.titan.prometheus.ultimate:
         description: Allows the player to use Prometheus' ultimate.
+        default: true
+    demigods.tutorial:
+        description: Allows the player to participate in the Tutorial quest.
         default: true
