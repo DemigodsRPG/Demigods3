@@ -67,6 +67,7 @@ public class PlayerCharacter implements DataStubModule
 		this.playerCharacterInventory = null;
 		new PlayerCharacterAbilities(charID);
 		new PlayerCharacterBindings(charID);
+		new PlayerCharacterTasks(charID);
 		try
 		{
 			saveData("LOCATION", new TrackedLocation(DemigodsData.generateInt(5), player.getPlayer().getLocation(), null).getID());
@@ -167,6 +168,12 @@ public class PlayerCharacter implements DataStubModule
 	{
 		if(DemigodsData.characterBindingData.containsKey(getID())) return (PlayerCharacterBindings) DemigodsData.characterBindingData.getDataObject(getID());
 		else return new PlayerCharacterBindings(getID());
+	}
+
+	public PlayerCharacterTasks getTasks()
+	{
+		if(DemigodsData.characterTaskData.containsKey(getID())) return (PlayerCharacterTasks) DemigodsData.characterTaskData.getDataObject(getID());
+		else return new PlayerCharacterTasks(getID());
 	}
 
 	public void setFoodLevel(int amount)

@@ -15,6 +15,7 @@ import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterAbilities;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterBindings;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterTasks;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Modules.Data.IntegerDataModule;
@@ -38,6 +39,7 @@ public class DemigodsData
 	public static IntegerDataModule characterData;
 	public static IntegerDataModule characterAbilityData;
 	public static IntegerDataModule characterBindingData;
+	public static IntegerDataModule characterTaskData;
 	public static YAMLPersistenceModule characterYAML;
 	public static IntegerDataModule tempTributeData;
 
@@ -81,6 +83,7 @@ public class DemigodsData
 		characterData = new IntegerDataModule(instance, "character_data");
 		characterAbilityData = new IntegerDataModule();
 		characterBindingData = new IntegerDataModule();
+		characterTaskData = new IntegerDataModule();
 		tempTributeData = new IntegerDataModule();
 	}
 
@@ -193,6 +196,14 @@ public class DemigodsData
 					try
 					{
 						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+					}
+					catch(Exception e)
+					{
+						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
+					}
+					try
+					{
+						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
 					}
 					catch(Exception e)
 					{
@@ -330,6 +341,10 @@ class DataListener implements Listener
 		else if(event.getPath().startsWith("character") && event.getDataName().equals("binding_data"))
 		{
 			new PlayerCharacterBindings(event.getData());
+		}
+		else if(event.getPath().startsWith("character") && event.getDataName().equals("task_data"))
+		{
+			new PlayerCharacterTasks(event.getData());
 		}
 	}
 
