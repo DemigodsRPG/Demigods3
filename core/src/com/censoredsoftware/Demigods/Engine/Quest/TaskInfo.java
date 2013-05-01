@@ -9,8 +9,9 @@ public class TaskInfo
 	private double award, penalty;
 	private List<String> about, accepted, complete, failed;
 	private Quest.Type type;
+	private Subtype subtype;
 
-	public TaskInfo(String name, String quest, String permission, int order, double award, double penalty, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
+	public TaskInfo(String name, String quest, String permission, int order, double award, double penalty, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type, Subtype subtype)
 	{
 		this.name = name;
 		this.quest = quest;
@@ -23,6 +24,12 @@ public class TaskInfo
 		this.complete = complete;
 		this.failed = failed;
 		this.type = type;
+		this.subtype = subtype;
+	}
+
+	public enum Subtype
+	{
+		TECHNICAL, QUEST;
 	}
 
 	public String getName()
@@ -78,5 +85,10 @@ public class TaskInfo
 	public Quest.Type getType()
 	{
 		return type;
+	}
+
+	public Subtype getSubtype()
+	{
+		return subtype;
 	}
 }

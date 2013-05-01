@@ -21,12 +21,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
-import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
 
 public class BlockListener implements Listener
 {
@@ -37,7 +36,7 @@ public class BlockListener implements Listener
 		if(BlockAPI.isProtected(location))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + "That block is protected by the Deity!");
+			event.getPlayer().sendMessage(ChatColor.YELLOW + "That block is protected by a Deity!");
 		}
 	}
 
@@ -144,11 +143,6 @@ public class BlockListener implements Listener
 		}
 	}
 
-	/*
-	 * --------------------------------------------
-	 * Handle Miscellaneous Divine Block Events
-	 * --------------------------------------------
-	 */
 	@EventHandler(priority = EventPriority.HIGH)
 	public void demigodsAdminWand(PlayerInteractEvent event)
 	{
@@ -172,27 +166,28 @@ public class BlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(BlockAPI.isAltar(location)) // TODO TimedObject data.
+		if(BlockAPI.isAltar(location))
 		{
-			// if(API.data.hasTimedData(player, "temp_destroy_altar"))
-			// {
-			// AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveCause.ADMIN_WAND);
-			// API.getServer().getPluginManager().callEvent(altarRemoveEvent);
-			// if(altarRemoveEvent.isCancelled()) return;
-			//
-			// // We can destroy the Altar
-			// BlockAPI.getAltar(location).remove();
-			// API.data.removeTimedData(player, "temp_destroy_altar");
-			//
-			// // Save Divine Blocks
-			// DFlatFile.saveBlocks();
-			// player.sendMessage(ChatColor.GREEN + "Altar removed!");
-			// }
-			// else
-			// {
-			// API.data.saveTimedData(player, "temp_destroy_altar", true, 5);
-			// player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
-			// }
+			if(DemigodsData.timedAltarData.contains(player))
+			{
+				AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
+				Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
+				if(altarRemoveEvent.isCancelled()) return;
+
+				// We can destroy the Altar
+				BlockAPI.getAltar(location).remove();
+				DemigodsData.timedAltarData.remove(player);
+
+				// Save Protected Blocks
+				DemigodsData.altarYAML.save(DemigodsData.altarData);
+
+				player.sendMessage(ChatColor.GREEN + "Altar removed!");
+			}
+			else
+			{
+				DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
+				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+			}
 		}
 	}
 
@@ -205,19 +200,13 @@ public class BlockListener implements Listener
 		Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
-		Shrine shrine = null;
-		PlayerCharacter character = null;
 
-		/*
-		 * ------------------------------------
-		 * Altar Zone Messages
-		 * -----------------------------------
-		 * -> Entering Altar
+		/**
+		 * Entering Altar
 		 */
 		if(ZoneAPI.enterZoneAltar(to, from) && !LocationAPI.hasWarp(ZoneAPI.zoneAltar(to), PlayerAPI.getCurrentChar(player))) // TODO This is an annoying message.
 		{
-			player.sendMessage(ChatColor.GRAY + "You have entered an undocumented Altar.");
-			player.sendMessage(ChatColor.GRAY + "You should set a warp at it!");
+			player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
 			return;
 		}
 	}

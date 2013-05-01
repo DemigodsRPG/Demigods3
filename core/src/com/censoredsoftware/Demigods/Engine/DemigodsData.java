@@ -48,6 +48,7 @@ public class DemigodsData
 	public static YAMLPersistenceModule trackedBlockYAML;
 	public static IntegerDataModule altarData;
 	public static YAMLPersistenceModule altarYAML;
+	public static TimedDataModule timedAltarData;
 	public static IntegerDataModule shrineData;
 
 	// Battle Data
@@ -91,6 +92,7 @@ public class DemigodsData
 	{
 		trackedBlockData = new IntegerDataModule(instance, "tracked_block_data");
 		altarData = new IntegerDataModule(instance, "altar_data");
+		timedAltarData = new TimedDataModule(instance);
 		shrineData = new IntegerDataModule(instance, "shrine_data");
 	}
 

@@ -23,7 +23,7 @@ public class Tutorial extends Quest
 	private static List<String> about = new ArrayList<String>()
 	{
 		{
-			add("About.");
+			add("About."); // TODO This.
 		}
 	}, accepted = new ArrayList<String>()
 	{
@@ -80,6 +80,6 @@ class TutorialTask extends Task
 
 	public TutorialTask(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
 	{
-		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type), listener);
+		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.QUEST), listener);
 	}
 }
