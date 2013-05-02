@@ -108,7 +108,7 @@ public class ZoneAPI
 	 */
 	public static boolean canTarget(Entity player, Location location)
 	{
-		return !(player instanceof Player) || DemigodsData.playerData.containsKey((Player) player, "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
+		return !(player instanceof Player) || DemigodsData.tempPlayerData.containsKey((Player) player, "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
 	/**

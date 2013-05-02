@@ -12,9 +12,11 @@ import javax.json.*;
 
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataModule;
 import com.censoredsoftware.Modules.Data.DataStubModule;
+import com.censoredsoftware.Modules.Persistence.Event.LoadFileEvent;
+import com.censoredsoftware.Modules.Persistence.Event.LoadFileStubEvent;
 
 public class JsonPersistenceModule implements PersistenceModule
 {
@@ -230,16 +232,99 @@ public class JsonPersistenceModule implements PersistenceModule
 
 		// Define variables
 		Map map = new HashMap();
+		int stubID = -1;
 
 		for(JsonValue value : this.persistance)
 		{
-			Demigods.message.broadcast(value.toString());
+			if(value instanceof JsonObject)
+			{
+				JsonObject keyHolder = (JsonObject) value;
+				for(Map.Entry entry_ : keyHolder.entrySet())
+				{
+					if(DemigodsData.isInt(entry_.getKey().toString())) stubID = Integer.parseInt(entry_.getKey().toString());
+					if(entry_.getValue() instanceof JsonArray)
+					{
+						JsonArray entryHolder = (JsonArray) entry_.getValue();
+						for(JsonValue value_ : entryHolder)
+						{
+							if(value_ instanceof JsonObject)
+							{
+								JsonObject data = (JsonObject) value_;
+								for(Map.Entry data_ : data.entrySet())
+								{
+									if(data_.getValue() instanceof JsonArray)
+									{
+										final JsonArray finalArray = (JsonArray) data_.getValue();
+										map.put(data_.getKey().toString(), new ArrayList<Object>()
+										{
+											{
+												for(JsonValue data__ : finalArray)
+												{
+													JsonValue.ValueType type = data__.getValueType();
+													if(DemigodsData.isInt(data__.toString()))
+													{
+														add(Integer.parseInt(data__.toString()));
+													}
+													else switch(type)
+													{
+														case STRING:
+														{
+															add(data__.toString());
+															break;
+														}
+														case TRUE:
+														{
+															add(true);
+															break;
+														}
+														case FALSE:
+														{
+															add(false);
+															break;
+														}
+														case NUMBER:
+														{
+															add(Long.parseLong(data__.toString()));
+															break;
+														}
+													}
+												}
+											}
+										});
+									}
+									else
+									{
+										Object mapData = null;
+										try
+										{
+											mapData = data.getString(data_.getKey().toString());
+										}
+										catch(Exception ignored)
+										{}
+										try
+										{
+											mapData = data.getInt(data_.getKey().toString());
+										}
+										catch(Exception ignored)
+										{}
+										try
+										{
+											mapData = data.getBoolean(data_.getKey().toString());
+										}
+										catch(Exception ignored)
+										{}
+
+										if(mapData != null) map.put(data_.getKey().toString(), mapData);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
-		// TODO
-
-		// Call the LoadFileEvent if need be
-		// if(!map.isEmpty()) plugin.getServer().getPluginManager().callEvent(new LoadFileEvent(plugin.getName(), path, dataName, map));
-		// if(!map.isEmpty()) plugin.getServer().getPluginManager().callEvent(new LoadFileStubEvent(plugin.getName(), path, dataName, Integer.parseInt(), map));
+		if(stubID != -1 && !map.isEmpty()) plugin.getServer().getPluginManager().callEvent(new LoadFileStubEvent(plugin.getName(), path, dataName, stubID, map));
+		else if(!map.isEmpty()) plugin.getServer().getPluginManager().callEvent(new LoadFileEvent(plugin.getName(), path, dataName, map));
 	}
 }
