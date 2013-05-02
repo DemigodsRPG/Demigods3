@@ -179,7 +179,7 @@ public class BlockListener implements Listener
 				DemigodsData.timedAltarData.remove(player);
 
 				// Save Protected Blocks
-				DemigodsData.altarYAML.save(DemigodsData.altarData);
+				DemigodsData.altarFile.save(DemigodsData.altarData);
 
 				player.sendMessage(ChatColor.GREEN + "Altar removed!");
 			}

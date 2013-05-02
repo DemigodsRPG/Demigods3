@@ -14,13 +14,13 @@ import org.bukkit.plugin.Plugin;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataModule;
 import com.censoredsoftware.Modules.Data.DataStubModule;
-import com.censoredsoftware.Modules.Persistence.Event.LoadStubYAMLEvent;
-import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+import com.censoredsoftware.Modules.Persistence.Event.LoadFileEvent;
+import com.censoredsoftware.Modules.Persistence.Event.LoadFileStubEvent;
 
 /**
  * Module to handle all saving related methods.
  */
-public class YAMLPersistenceModule
+public class YAMLPersistenceModule implements PersistenceModule
 {
 	private Plugin plugin;
 	private String path, pluginName;
@@ -97,6 +97,7 @@ public class YAMLPersistenceModule
 	 * 
 	 * @return True if successful.
 	 */
+	@Override
 	public boolean save(DataModule dataModule)
 	{
 		// Grab the latest map for saving
@@ -125,6 +126,7 @@ public class YAMLPersistenceModule
 	 * 
 	 * @return True if successful.
 	 */
+	@Override
 	public boolean save(DataStubModule stub)
 	{
 		// Grab the latest map for saving
@@ -151,6 +153,7 @@ public class YAMLPersistenceModule
 	/**
 	 * Save the data that this module handles.
 	 */
+	@Override
 	public boolean save(List stubs)
 	{
 		boolean works = true;
@@ -177,6 +180,7 @@ public class YAMLPersistenceModule
 	 * 
 	 * @return The data as a Map.
 	 */
+	@Override
 	public void load()
 	{
 		// Prevent NullPointerException Error
@@ -217,8 +221,8 @@ public class YAMLPersistenceModule
 			}
 		}
 
-		// Call the LoadYAMLEvent if need be
-		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadYAMLEvent(pluginName, path, dataName, map));
+		// Call the LoadFileEvent if need be
+		if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadFileEvent(pluginName, path, dataName, map));
 	}
 
 	private void loadStubs()
@@ -247,8 +251,8 @@ public class YAMLPersistenceModule
 				}
 			}
 
-			// Call the LoadStubYAMLEvent if need be
-			if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadStubYAMLEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
+			// Call the LoadFileStubEvent if need be
+			if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadFileStubEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
 		}
 	}
 }

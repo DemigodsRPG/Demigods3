@@ -13,7 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Modules.Persistence.Event.LoadYAMLEvent;
+import com.censoredsoftware.Modules.Persistence.Event.LoadFileEvent;
 
 /**
  * Module to handle data based on a group of OfflinePlayers, holding Objects as data.
@@ -227,7 +227,7 @@ public class PlayerDataModule implements DataModule, Listener
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onLoadYAML(LoadYAMLEvent event)
+	public void onLoadYAML(LoadFileEvent event)
 	{
 		if(this.dataName == null) return;
 		// Override the data inside of this module with the loaded data if the data name is the same

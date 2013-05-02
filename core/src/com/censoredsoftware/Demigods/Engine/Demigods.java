@@ -6,7 +6,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -901,25 +900,12 @@ class Commands implements CommandExecutor
 	 */
 	private static boolean viewMaps(CommandSender sender)
 	{
-		sender.sendMessage("-- Players ------------------");
-		sender.sendMessage(" ");
-
-		for(OfflinePlayer player : DemigodsData.playerData.listTiers())
-		{
-			sender.sendMessage(player.getName() + ": ");
-			for(String key : DemigodsData.playerData.listKeys(player))
-			{
-				sender.sendMessage("  - " + key.toString() + ": " + DemigodsData.playerData.getDataObject(player, key).toString());
-			}
-		}
-
-		sender.sendMessage(" ");
 		sender.sendMessage("-- Characters ---------------");
 		sender.sendMessage(" ");
 
 		for(PlayerCharacter character : CharacterAPI.getAllChars())
 		{
-			sender.sendMessage(character.getName() + "."); // TODO Warp data and such.
+			sender.sendMessage(character.getName() + "");
 		}
 
 		Bukkit.getScheduler().runTaskAsynchronously(Demigods.demigods, new DemigodsData.Save(true));

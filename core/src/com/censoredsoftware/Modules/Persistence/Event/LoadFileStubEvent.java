@@ -7,27 +7,30 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * An event that is triggered when data is loaded from a YAML file.
+ * An event that is triggered when stub data is loaded from a file.
  */
-public class LoadYAMLEvent extends Event implements Cancellable
+public class LoadFileStubEvent extends Event implements Cancellable
 {
 	private String pluginName, path, dataName;
+	private int id;
 	private Map map;
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
 
 	/**
-	 * Constructor for the LoadYAMLEvent.
+	 * Constructor for the LoadFileStubEvent.
 	 * 
 	 * @param pluginName Name of the plugin the data belongs to.
 	 * @param dataName Name of the data set being loaded.
+	 * @param id The ID of the stub.
 	 * @param map The data that was loaded.
 	 */
-	public LoadYAMLEvent(String pluginName, String path, String dataName, Map map)
+	public LoadFileStubEvent(String pluginName, String path, String dataName, int id, Map map)
 	{
 		this.pluginName = pluginName;
 		this.path = path;
 		this.dataName = dataName;
+		this.id = id;
 		this.map = map;
 	}
 
@@ -59,6 +62,16 @@ public class LoadYAMLEvent extends Event implements Cancellable
 	public String getDataName()
 	{
 		return this.dataName;
+	}
+
+	/**
+	 * Returns the id of the stub.
+	 * 
+	 * @return ID.
+	 */
+	public int getID()
+	{
+		return this.id;
 	}
 
 	/**
