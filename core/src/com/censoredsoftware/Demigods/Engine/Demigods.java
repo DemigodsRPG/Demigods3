@@ -20,11 +20,9 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
-import com.censoredsoftware.Demigods.API.AdminAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
@@ -900,15 +898,33 @@ class Commands implements CommandExecutor
 	 */
 	private static boolean viewMaps(CommandSender sender)
 	{
-		sender.sendMessage("-- Characters ---------------");
-		sender.sendMessage(" ");
-
-		for(PlayerCharacter character : CharacterAPI.getAllChars())
+		try
 		{
-			sender.sendMessage(character.getName() + "");
+			sender.sendMessage("-- Characters ---------------");
+			sender.sendMessage(" ");
+
+			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			{
+				sender.sendMessage(character.getName() + ": " + character.getDeity().getInfo().getName());
+			}
+
+			sender.sendMessage(" ");
+			sender.sendMessage("-- Altars -------------------");
+			sender.sendMessage(" ");
+
+			for(Altar altar : BlockAPI.getAllAltars())
+			{
+				sender.sendMessage(altar.getID() + ": " + altar.isActive());
+			}
+
+			Bukkit.getScheduler().runTaskAsynchronously(Demigods.demigods, new DemigodsData.Save(true));
+		}
+		catch(NullPointerException e)
+		{
+			sender.sendMessage(ChatColor.DARK_RED + "Data is missing.");
+			e.printStackTrace();
 		}
 
-		Bukkit.getScheduler().runTaskAsynchronously(Demigods.demigods, new DemigodsData.Save(true));
 		return true;
 	}
 

@@ -111,7 +111,6 @@ public class DemigodsData
 			// Core
 			locationFile = new YAMLPersistenceModule(true, instance, "core", "location_data");
 			playerFile = new YAMLPersistenceModule(true, instance, "core", "player_data");
-			trackedBlockFile = new YAMLPersistenceModule(true, instance, "core", "tracked_block_data");
 
 			// Character
 			characterFile = new YAMLPersistenceModule(true, instance, "character", "character_data");
@@ -122,6 +121,7 @@ public class DemigodsData
 			}
 
 			// Block
+			trackedBlockFile = new YAMLPersistenceModule(true, instance, "block", "tracked_block_data");
 			altarFile = new YAMLPersistenceModule(true, instance, "block", "altar_data");
 		}
 		if(json)
@@ -129,7 +129,6 @@ public class DemigodsData
 			// Core
 			locationFile = new JsonPersistenceModule(true, instance, "core", "location_data");
 			playerFile = new JsonPersistenceModule(true, instance, "core", "player_data");
-			trackedBlockFile = new JsonPersistenceModule(true, instance, "core", "tracked_block_data");
 
 			// Character
 			characterFile = new JsonPersistenceModule(true, instance, "character", "character_data");
@@ -140,6 +139,7 @@ public class DemigodsData
 			}
 
 			// Block
+			trackedBlockFile = new JsonPersistenceModule(true, instance, "block", "tracked_block_data");
 			altarFile = new JsonPersistenceModule(true, instance, "block", "altar_data");
 		}
 	}
@@ -183,17 +183,16 @@ public class DemigodsData
 				}
 
 				long countdown = System.currentTimeMillis();
-				if(progress) Demigods.message.info("Saving: " + 0.0 + "%");
 				locationFile.save(LocationAPI.getAllLocations());
-				if(progress) Demigods.message.info("Saving: " + percent.format((location / total) * 100) + "%");
+				if(progress) Demigods.message.info("Locations Saved:  " + percent.format((location / total) * 100) + "%");
 				playerFile.save(DemigodsData.playerData);
-				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Players Saved:    " + percent.format(((location + player) / total) * 100) + "%");
 				trackedBlockFile.save(BlockAPI.getBlocks());
-				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player + block) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Blocks Saved:     " + percent.format(((location + player + block) / total) * 100) + "%");
 				altarFile.save(BlockAPI.getAllAltars());
-				if(progress) Demigods.message.info("Saving: " + percent.format(((location + player + block + altar) / total) * 100) + "%");
+				if(progress) Demigods.message.info("Altars Saved:     " + percent.format(((location + player + block + altar) / total) * 100) + "%");
 				saveCharacters(false, true);
-				if(progress) Demigods.message.info("Saving: " + 100.0 + "%");
+				if(progress) Demigods.message.info("Characters Saved: " + 100 + "%");
 				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
 				Demigods.message.info("All data was saved in " + seconds + " seconds.");
 			}
@@ -353,12 +352,88 @@ public class DemigodsData
 			return false;
 		}
 	}
+
+	/**
+	 * Check to see if an input string is a double.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a double.
+	 */
+	public static boolean isDouble(String string)
+	{
+		try
+		{
+			Double.parseDouble(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Check to see if an input string is a long.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a long.
+	 */
+	public static boolean isLong(String string)
+	{
+		try
+		{
+			Long.parseLong(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Check to see if an input string is a float.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a float.
+	 */
+	public static boolean isFloat(String string)
+	{
+		try
+		{
+			Float.parseFloat(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Check to see if an input string is a boolean.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a boolean.
+	 */
+	public static boolean isBoolean(String string)
+	{
+		try
+		{
+			Boolean.parseBoolean(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
 }
 
 class DataListener implements Listener
 {
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onLocationLoad(LoadFileStubEvent event)
+	public void onTrackedLocationLoad(LoadFileStubEvent event)
 	{
 		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
 
@@ -373,7 +448,7 @@ class DataListener implements Listener
 	{
 		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
 
-		if(event.getPath().equals("core") && event.getDataName().equals("tracked_block_data"))
+		if(event.getPath().equals("block") && event.getDataName().equals("tracked_block_data"))
 		{
 			new TrackedBlock(event.getData());
 		}

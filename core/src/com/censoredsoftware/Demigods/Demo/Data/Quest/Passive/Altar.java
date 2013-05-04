@@ -364,7 +364,10 @@ class AltarMenu extends Task
 				// Exit if this isn't for character creation
 				if(!PlayerAPI.isPraying(player) || !DemigodsData.tempPlayerData.containsKey(player, "temp_createchar_finalstep") || !DemigodsData.tempPlayerData.getDataBool(player, "temp_createchar_finalstep"))
 				{
-					player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately."); // TODO It should be more clear that this is a Demigods related error.
+					player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately:"); // TODO It should be more clear that this is a Demigods related error.
+					if(!PlayerAPI.isPraying(player)) player.sendMessage(ChatColor.RED + "    Not praying."); // TODO This event fires twice in newer version of bukkit, ignore the error message for now.
+					else if(!DemigodsData.tempPlayerData.containsKey(player, "temp_createchar_finalstep")) player.sendMessage(ChatColor.RED + "    Missing data.");
+					else player.sendMessage(ChatColor.RED + "    Boolean set to false;");
 					return;
 				}
 
