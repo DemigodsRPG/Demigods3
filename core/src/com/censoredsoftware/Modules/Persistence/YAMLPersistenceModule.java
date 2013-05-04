@@ -26,7 +26,7 @@ public class YAMLPersistenceModule implements PersistenceModule
 	private String path, pluginName;
 	final private String dataName;
 	private Map map;
-	final private File yamlFile, backupFile;
+	final private File yamlFile;
 	private FileConfiguration persistance;
 	private Logger log = Logger.getLogger("Minecraft");
 
@@ -46,7 +46,6 @@ public class YAMLPersistenceModule implements PersistenceModule
 		folderStructure(this.path);
 
 		this.yamlFile = new File(plugin.getDataFolder() + File.separator + path + File.separator + dataName + ".yml");
-		this.backupFile = new File(plugin.getDataFolder() + path + File.separator + "backup" + File.separator + dataName + ".yml");
 
 		initialize(load);
 	}
@@ -58,11 +57,9 @@ public class YAMLPersistenceModule implements PersistenceModule
 	{
 		// Define the folders
 		File dataFolder = new File(plugin.getDataFolder() + File.separator + path);
-		File backupFolder = new File(plugin.getDataFolder() + File.separator + "backup" + File.separator + path);
 
 		// If they don't exist, create them now
 		if(!dataFolder.exists()) dataFolder.mkdirs();
-		if(!backupFolder.exists()) backupFolder.mkdirs();
 	}
 
 	/**
@@ -106,8 +103,7 @@ public class YAMLPersistenceModule implements PersistenceModule
 		try
 		{
 			this.persistance.createSection(dataName, this.map);
-			if(this.backupFile.exists()) this.backupFile.delete();
-			this.yamlFile.renameTo(this.backupFile);
+			this.yamlFile.delete();
 			this.yamlFile.createNewFile();
 			this.persistance.save(this.yamlFile);
 			return true;
@@ -135,8 +131,7 @@ public class YAMLPersistenceModule implements PersistenceModule
 		try
 		{
 			this.persistance.createSection(String.valueOf(stub.getID()), this.map);
-			if(this.backupFile.exists()) this.backupFile.delete();
-			this.yamlFile.renameTo(this.backupFile);
+			this.yamlFile.delete();
 			this.yamlFile.createNewFile();
 			this.persistance.save(this.yamlFile);
 			return true;
@@ -165,14 +160,6 @@ public class YAMLPersistenceModule implements PersistenceModule
 			}
 		}
 		return works;
-	}
-
-	/**
-	 * Revert to the backup file.
-	 */
-	public void revertBackup()
-	{
-		backupFile.renameTo(yamlFile);
 	}
 
 	/**
@@ -254,5 +241,11 @@ public class YAMLPersistenceModule implements PersistenceModule
 			// Call the LoadFileStubEvent if need be
 			if(!map.isEmpty() && error == 0) plugin.getServer().getPluginManager().callEvent(new LoadFileStubEvent(pluginName, path, dataName, Integer.parseInt(tier), map));
 		}
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
 	}
 }

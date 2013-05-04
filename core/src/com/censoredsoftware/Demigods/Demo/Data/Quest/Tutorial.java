@@ -19,7 +19,7 @@ import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 
 public class Tutorial extends Quest
 {
-	private static String name = "Tutorial", permission = "demigods.tutorial";
+	private static String name = "Tutorial", permission = "plugin.tutorial";
 	private static List<String> about = new ArrayList<String>()
 	{
 		{

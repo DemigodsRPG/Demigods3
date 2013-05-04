@@ -168,7 +168,7 @@ public class Zeus_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -220,7 +220,7 @@ public class Zeus_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -263,7 +263,7 @@ public class Zeus_deity extends Deity implements Listener
 	 */
 	public static void stormCommand(Player player, String[] args)
 	{
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME + ".ultimate")) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME + ".ultimate")) return;
 
 		// Set variables
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
@@ -370,7 +370,7 @@ public class Zeus_deity extends Deity implements Listener
 	@Override
 	public String loadDeity()
 	{
-		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.plugin);
 		return DEITYNAME + " loaded.";
 	}
 

@@ -178,7 +178,7 @@ public class Cronus_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -229,7 +229,7 @@ public class Cronus_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -283,7 +283,7 @@ public class Cronus_deity extends Deity implements Listener
 	 */
 	public static void timestopCommand(Player player, String[] args)
 	{
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME + ".ultimate")) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME + ".ultimate")) return;
 
 		// Define variables
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
@@ -340,7 +340,7 @@ public class Cronus_deity extends Deity implements Listener
 	@Override
 	public String loadDeity()
 	{
-		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.plugin);
 		return DEITYNAME + " loaded.";
 	}
 

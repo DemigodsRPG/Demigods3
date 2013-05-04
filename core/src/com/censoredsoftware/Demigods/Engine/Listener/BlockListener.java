@@ -101,7 +101,7 @@ public class BlockListener implements Listener
 			}
 		}
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.demigods, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
 			@Override
 			public void run()

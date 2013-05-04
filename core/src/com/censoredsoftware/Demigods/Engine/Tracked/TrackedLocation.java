@@ -111,4 +111,10 @@ public class TrackedLocation implements DataStubModule
 	{
 		locationData = map;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

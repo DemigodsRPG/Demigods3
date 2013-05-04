@@ -200,68 +200,36 @@ public class DemigodsData
 
 		private static void saveCharacters(boolean yaml, boolean json)
 		{
-			if(yaml)
+			characterFile.save(CharacterAPI.getAllChars());
+			for(PlayerCharacter character : CharacterAPI.getAllChars())
 			{
-				characterFile.save(CharacterAPI.getAllChars());
-				for(PlayerCharacter character : CharacterAPI.getAllChars())
+				int charID = character.getID();
+				try
 				{
-					int charID = character.getID();
-					try
-					{
-						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
-					}
-					try
-					{
-						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
-					}
-					try
-					{
-						new YAMLPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
-					}
+					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
+					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
 				}
-			}
-			if(json)
-			{
-				characterFile.save(CharacterAPI.getAllChars());
-				for(PlayerCharacter character : CharacterAPI.getAllChars())
+				catch(Exception e)
 				{
-					int charID = character.getID();
-					try
-					{
-						new JsonPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
-					}
-					try
-					{
-						new JsonPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
-					}
-					try
-					{
-						new JsonPersistenceModule(false, Demigods.demigods, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
-					}
-					catch(Exception e)
-					{
-						Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
-					}
+					Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
+				}
+				try
+				{
+					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
+				}
+				catch(Exception e)
+				{
+					Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
+				}
+				try
+				{
+					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
+					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
+				}
+				catch(Exception e)
+				{
+					Demigods.message.severe("There was an error while saving tasks for character with id " + charID);
 				}
 			}
 		}
@@ -421,7 +389,7 @@ public class DemigodsData
 		try
 		{
 			Boolean.parseBoolean(string);
-			return true;
+			return string.equalsIgnoreCase("true") || string.equalsIgnoreCase("false");
 		}
 		catch(Exception e)
 		{
@@ -435,29 +403,31 @@ class DataListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onTrackedLocationLoad(LoadFileStubEvent event)
 	{
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
 
 		if(event.getPath().equals("core") && event.getDataName().equals("location_data"))
 		{
 			new TrackedLocation(event.getData());
+			Demigods.message.broadcast("Location created.");
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onTrackedBlockLoad(LoadFileStubEvent event)
 	{
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
 
 		if(event.getPath().equals("block") && event.getDataName().equals("tracked_block_data"))
 		{
 			new TrackedBlock(event.getData());
+			Demigods.message.broadcast("Block created.");
 		}
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCharacterLoad(LoadFileStubEvent event)
 	{
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
 
 		if(event.getPath().equals("character") && event.getDataName().equals("character_data"))
 		{
@@ -480,7 +450,7 @@ class DataListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onAltarLoad(LoadFileStubEvent event)
 	{
-		if(!event.getPluginName().equals(Demigods.demigods.getName())) return;
+		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
 
 		if(event.getPath().equals("block") && event.getDataName().equals("altar_data"))
 		{

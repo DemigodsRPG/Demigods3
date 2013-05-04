@@ -75,4 +75,10 @@ public class PlayerCharacterAbilities implements DataStubModule
 	{
 		saveData(ability, option);
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

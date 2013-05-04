@@ -174,11 +174,7 @@ public class LatestTweetModule implements Listener
 			@Override
 			public void run()
 			{
-				if(!messagesYAML.save(messagesData))
-				{
-					messagesYAML.revertBackup();
-					messagesYAML.load();
-				}
+				messagesYAML.save(messagesData);
 			}
 		}, start_delay, save_interval);
 	}

@@ -17,5 +17,5 @@ public interface DataModule
 	public void setMap(Map map);
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onLoadYAML(LoadFileEvent event);
+	public void onLoadFile(LoadFileEvent event);
 }

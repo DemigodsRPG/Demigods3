@@ -1,6 +1,7 @@
 ## Miscellaneous Settings ##
 misc:
     welcome_message: true
+    tag_messages: true
     console_debug: true
     balance_teams: true
 

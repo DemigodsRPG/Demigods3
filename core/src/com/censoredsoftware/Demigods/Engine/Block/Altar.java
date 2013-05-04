@@ -387,4 +387,10 @@ public class Altar implements DataStubModule
 
 		return null;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

@@ -75,4 +75,10 @@ public class PlayerCharacterTasks implements DataStubModule
 	{
 		saveData(taskName, option);
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

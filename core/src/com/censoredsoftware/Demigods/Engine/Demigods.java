@@ -37,13 +37,13 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
 {
+	// Public Static Access
+	public static DemigodsPlugin plugin;
+
 	// Public Modules
 	public static ConfigModule config;
 	public static MessageModule message;
 	public static PermissionModule permission;
-
-	// Public Static Access DemigodsPlugin
-	public static DemigodsPlugin demigods;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
@@ -71,7 +71,7 @@ public class Demigods
 	protected Demigods(DemigodsPlugin instance, ListedDeity[] deities, ListedQuest[] quests)
 	{
 		// Allow static access.
-		demigods = instance;
+		plugin = instance;
 
 		// Define the game data.
 		this.deities = deities;
@@ -79,7 +79,7 @@ public class Demigods
 
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
-		message = new MessageModule(instance, config.getSettingBoolean("tag_messages"));
+		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 		permission = new PermissionModule();
 
 		// Initialize object factories.
@@ -187,6 +187,12 @@ public class Demigods
 			};
 		};
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }
 
 class Scheduler
@@ -222,6 +228,12 @@ class Favor implements Runnable
 			if(regenRate < 1) regenRate = 1;
 			character.giveFavor(regenRate);
 		}
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
 	}
 }
 
@@ -315,7 +327,7 @@ class Commands implements CommandExecutor
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		// Check Permissions
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.basic")) return Demigods.message.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin.basic")) return Demigods.message.noPermission(player);
 
 		Demigods.message.tagged(sender, "Documentation");
 		for(String alliance : DeityAPI.getLoadedDeityAlliances())
@@ -324,7 +336,7 @@ class Commands implements CommandExecutor
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
 		sender.sendMessage(ChatColor.GRAY + " /dg commands");
-		if(Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
+		if(Demigods.permission.hasPermissionOrOP(player, "plugin.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
 		return true;
@@ -348,7 +360,7 @@ class Commands implements CommandExecutor
 		if(args.length >= 5) option4 = args[4];
 
 		// Check Permissions
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.basic")) return Demigods.message.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin.basic")) return Demigods.message.noPermission(player);
 
 		if(category.equalsIgnoreCase("admin"))
 		{
@@ -356,7 +368,7 @@ class Commands implements CommandExecutor
 		}
 		// else if(category.equalsIgnoreCase("saveAll"))
 		// {
-		// if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
+		// if(!Demigods.permission.hasPermissionOrOP(player, "plugin.admin")) return Demigods.message.noPermission(player);
 		//
 		// Demigods.message.broadcast(ChatColor.RED + "Manually forcing Demigods saveAll...");
 		// if(DFlatFile.saveAll()) Demigods.message.broadcast(ChatColor.GREEN + "Save complete!");
@@ -383,9 +395,9 @@ class Commands implements CommandExecutor
 				sender.sendMessage(ChatColor.GRAY + " /dg info pvp");
 				sender.sendMessage(ChatColor.GRAY + " /dg info stats");
 				sender.sendMessage(ChatColor.GRAY + " /dg info rankings");
-				sender.sendMessage(ChatColor.GRAY + " /dg info demigods");
+				sender.sendMessage(ChatColor.GRAY + " /dg info plugin");
 			}
-			else if(option1.equalsIgnoreCase("demigods"))
+			else if(option1.equalsIgnoreCase("plugin"))
 			{
 				Demigods.message.tagged(sender, "About the Plugin");
 				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
@@ -495,7 +507,7 @@ class Commands implements CommandExecutor
 		PlayerCharacter character;
 		int amount;
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) return Demigods.message.noPermission(player);
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin.admin")) return Demigods.message.noPermission(player);
 
 		if(option1 == null)
 		{
@@ -917,7 +929,7 @@ class Commands implements CommandExecutor
 				sender.sendMessage(altar.getID() + ": " + altar.isActive());
 			}
 
-			Bukkit.getScheduler().runTaskAsynchronously(Demigods.demigods, new DemigodsData.Save(true));
+			Bukkit.getScheduler().runTaskAsynchronously(Demigods.plugin, new DemigodsData.Save(true));
 		}
 		catch(NullPointerException e)
 		{

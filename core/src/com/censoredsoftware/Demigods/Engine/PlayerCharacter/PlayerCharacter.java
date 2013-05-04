@@ -450,4 +450,10 @@ public class PlayerCharacter implements DataStubModule
 	{
 		this.characterData = map;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

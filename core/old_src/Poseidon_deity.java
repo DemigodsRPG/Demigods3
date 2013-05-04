@@ -177,7 +177,7 @@ public class Poseidon_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -223,7 +223,7 @@ public class Poseidon_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -291,7 +291,7 @@ public class Poseidon_deity extends Deity implements Listener
 			player.sendMessage(ChatColor.RED + "Missed...");
 		}
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.demigods, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
 			@Override
 			public void run()
@@ -307,7 +307,7 @@ public class Poseidon_deity extends Deity implements Listener
 	@Override
 	public String loadDeity()
 	{
-		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.demigods);
+		Bukkit.getServer().getPluginManager().registerEvents(this, Demigods.plugin);
 		return DEITYNAME + " loaded.";
 	}
 

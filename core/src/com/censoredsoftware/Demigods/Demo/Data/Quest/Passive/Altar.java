@@ -37,7 +37,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 public class Altar extends Quest
 {
 
-	private static String name = "Altar", permission = "demigods.altar";
+	private static String name = "Altar", permission = "plugin.altar";
 	private static List<String> about = new ArrayList<String>()
 	{
 		{

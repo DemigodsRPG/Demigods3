@@ -12,6 +12,7 @@ import javax.json.*;
 
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Modules.Data.DataModule;
 import com.censoredsoftware.Modules.Data.DataStubModule;
@@ -20,11 +21,10 @@ import com.censoredsoftware.Modules.Persistence.Event.LoadFileStubEvent;
 
 public class JsonPersistenceModule implements PersistenceModule
 {
-	private JsonReader reader;
 	private Plugin plugin;
 	private String path, dataName;
 	private Map map;
-	private File jsonFile, backupFile;
+	private File jsonFile;
 	private JsonArray persistance;
 	private Logger log = Logger.getLogger("Minecraft");
 
@@ -36,8 +36,7 @@ public class JsonPersistenceModule implements PersistenceModule
 
 		folderStructure(this.path);
 
-		this.jsonFile = new File(plugin.getDataFolder() + File.separator + path + File.separator + dataName + ".json");
-		this.backupFile = new File(plugin.getDataFolder() + path + File.separator + "backup" + File.separator + dataName + ".json");
+		this.jsonFile = new File(plugin.getDataFolder() + File.separator + "Data" + File.separator + path + File.separator + dataName + ".json");
 
 		initialize(load);
 	}
@@ -48,12 +47,10 @@ public class JsonPersistenceModule implements PersistenceModule
 	private void folderStructure(String path)
 	{
 		// Define the folders
-		File dataFolder = new File(plugin.getDataFolder() + File.separator + path);
-		File backupFolder = new File(plugin.getDataFolder() + File.separator + "backup" + File.separator + path);
+		File dataFolder = new File(plugin.getDataFolder() + File.separator + "Data" + File.separator + path);
 
 		// If they don't exist, create them now
 		if(!dataFolder.exists()) dataFolder.mkdirs();
-		if(!backupFolder.exists()) backupFolder.mkdirs();
 	}
 
 	/**
@@ -66,28 +63,19 @@ public class JsonPersistenceModule implements PersistenceModule
 			try
 			{
 				this.jsonFile.createNewFile();
-				this.persistance = Json.createBuilderFactory(null).createArrayBuilder().build();
+				this.persistance = Json.createArrayBuilder().build();
 			}
 			catch(Exception e)
 			{
-				log.severe("[" + plugin.getName() + "] Unable to create save file: " + dataName + ".json");
+				log.severe("[" + plugin.getName() + "] Unable to save file: " + dataName + ".json");
 				log.severe("[" + plugin.getName() + "] Error: " + e);
+				e.printStackTrace();
 				log.severe("[" + plugin.getName() + "] Please check your write permissions and try again.");
 			}
 			return;
 		}
 		else
 		{
-			try
-			{
-				this.reader = Json.createReader(jsonFile.toURI().toURL().openStream());
-				this.persistance = reader.readArray();
-			}
-			catch(Exception e)
-			{
-				log.severe("[" + plugin.getName() + "] Unable to create read file: " + dataName + ".json");
-				log.severe("[" + plugin.getName() + "] Error: " + e);
-			}
 			if(load) load();
 		}
 	}
@@ -168,18 +156,24 @@ public class JsonPersistenceModule implements PersistenceModule
 	{
 		try
 		{
-			if(this.backupFile.exists()) this.backupFile.delete();
-			this.jsonFile.renameTo(this.backupFile);
+			if(this.persistance.equals(loadFromFile(this.jsonFile)))
+			{
+				Demigods.message.severe(dataName + " SAME.");
+				return true;
+			}
+			this.jsonFile.delete();
 			this.jsonFile.createNewFile();
 			JsonWriter writer = Json.createWriter(new FileOutputStream(jsonFile));
 			writer.writeArray(this.persistance);
 			writer.close();
+			Demigods.message.severe(dataName + " DIFFERENT.");
 			return true;
 		}
 		catch(Exception e)
 		{
 			log.severe("[" + plugin.getName() + "] Unable to save file: " + dataName + ".json");
 			log.severe("[" + plugin.getName() + "] Error: " + e);
+			e.printStackTrace();
 			log.severe("[" + plugin.getName() + "] Please check your write permissions and try again.");
 		}
 		return false;
@@ -202,12 +196,20 @@ public class JsonPersistenceModule implements PersistenceModule
 		return save();
 	}
 
-	/**
-	 * Revert to the backup file.
-	 */
-	public void revertBackup()
+	private JsonArray loadFromFile(File file)
 	{
-		backupFile.renameTo(jsonFile);
+		JsonArray array = null;
+		try
+		{
+			JsonReader reader = Json.createReader(file.toURI().toURL().openStream());
+			array = reader.readArray();
+		}
+		catch(Exception ignored)
+		{}
+
+		// Prevent NullPointerException Error
+		if(array == null) return Json.createArrayBuilder().build();
+		return array;
 	}
 
 	/**
@@ -218,15 +220,17 @@ public class JsonPersistenceModule implements PersistenceModule
 	@Override
 	public void load()
 	{
+		JsonArray entireFile = loadFromFile(this.jsonFile);
+
 		// Prevent NullPointerException Error
-		if(this.persistance == null) return;
+		if(entireFile == null) return;
 
 		// Define variables
 		Map map = new HashMap();
 		boolean stub = false;
 		int stubID = -1;
 
-		for(JsonValue value : this.persistance)
+		for(JsonValue value : entireFile)
 		{
 			if(value instanceof JsonObject)
 			{
@@ -247,38 +251,31 @@ public class JsonPersistenceModule implements PersistenceModule
 									if(data_.getValue() instanceof JsonArray)
 									{
 										final JsonArray finalArray = (JsonArray) data_.getValue();
-										map.put(data_.getKey().toString(), new ArrayList<Object>()
+										if(DemigodsData.isInt(data_.getKey().toString())) map.put(Integer.parseInt(data_.getKey().toString()), new ArrayList<Object>()
 										{
 											{
 												for(JsonValue data__ : finalArray)
 												{
-													JsonValue.ValueType type = data__.getValueType();
-													switch(type)
-													{
-														case STRING:
-														{
-															add(data__.toString());
-															break;
-														}
-														case TRUE:
-														{
-															add(true);
-															break;
-														}
-														case FALSE:
-														{
-															add(false);
-															break;
-														}
-														case NUMBER:
-														{
-															if(DemigodsData.isInt(data__.toString())) add(Integer.parseInt(data__.toString()));
-															else if(DemigodsData.isLong(data__.toString())) add(Long.parseLong(data__.toString()));
-															else if(DemigodsData.isFloat(data__.toString())) add(Float.parseFloat(data__.toString()));
-															else if(DemigodsData.isDouble(data__.toString())) add(Double.parseDouble(data__.toString()));
-															break;
-														}
-													}
+													if(DemigodsData.isInt(data__.toString())) add(Integer.parseInt(data__.toString()));
+													else if(DemigodsData.isLong(data__.toString())) add(Long.parseLong(data__.toString()));
+													else if(DemigodsData.isFloat(data__.toString())) add(Float.parseFloat(data__.toString()));
+													else if(DemigodsData.isDouble(data__.toString())) add(Double.parseDouble(data__.toString()));
+													else if(DemigodsData.isBoolean(data__.toString())) add(Boolean.parseBoolean(data__.toString()));
+													else add(Integer.parseInt(data__.toString()), data__.toString());
+												}
+											}
+										});
+										else map.put(data_.getKey().toString(), new ArrayList<Object>()
+										{
+											{
+												for(JsonValue data__ : finalArray)
+												{
+													if(DemigodsData.isInt(data__.toString())) add(Integer.parseInt(data__.toString()));
+													else if(DemigodsData.isLong(data__.toString())) add(Long.parseLong(data__.toString()));
+													else if(DemigodsData.isFloat(data__.toString())) add(Float.parseFloat(data__.toString()));
+													else if(DemigodsData.isDouble(data__.toString())) add(Double.parseDouble(data__.toString()));
+													else if(DemigodsData.isBoolean(data__.toString())) add(Boolean.parseBoolean(data__.toString()));
+													else add(Integer.parseInt(data__.toString()), data__.toString());
 												}
 											}
 										});
@@ -314,10 +311,25 @@ public class JsonPersistenceModule implements PersistenceModule
 						plugin.getServer().getPluginManager().callEvent(new LoadFileStubEvent(plugin.getName(), path, dataName, stubID, map));
 						stub = true;
 					}
+
 				}
 			}
 		}
 
-		if(!stub && !map.isEmpty()) plugin.getServer().getPluginManager().callEvent(new LoadFileEvent(plugin.getName(), path, dataName, map));
+		if(!stub && !map.isEmpty())
+		{
+			plugin.getServer().getPluginManager().callEvent(new LoadFileEvent(plugin.getName(), path, dataName, map));
+			Demigods.message.broadcast(dataName + ":");
+			for(Object key : map.keySet())
+			{
+				Demigods.message.broadcast("  ->  " + key.toString() + ": " + map.get(key).toString());
+			}
+		}
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
 	}
 }

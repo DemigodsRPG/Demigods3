@@ -49,7 +49,7 @@ public class PlayerListener implements Listener
 
 		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.demigods.getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 	}
@@ -121,7 +121,7 @@ public class PlayerListener implements Listener
 			DemigodsData.tempPlayerData.saveData(player, "temp_was_PVP", true);
 			if(DemigodsData.tempPlayerData.containsKey(player, "temp_teleport_ability")) DemigodsData.tempPlayerData.removeData(player, "temp_teleport_ability");
 
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.demigods, new Runnable()
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 			{
 				@Override
 				public void run()

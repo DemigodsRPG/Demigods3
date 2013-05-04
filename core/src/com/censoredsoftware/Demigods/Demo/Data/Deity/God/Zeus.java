@@ -95,7 +95,7 @@ public class Zeus extends Deity
 
 class Shove extends Ability
 {
-	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
+	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "plugin.god.zeus";
 	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -154,7 +154,7 @@ class Shove extends Ability
 
 class Lightning extends Ability
 {
-	private static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
+	private static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "plugin.god.zeus";
 	private static int cost = 140, delay = 1000, cooldownMin = 0, cooldownMax = 0;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -205,7 +205,7 @@ class Lightning extends Ability
 
 class Storm extends Ability
 {
-	private static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
+	private static String deity = "Zeus", name = "Storm", command = "storm", permission = "plugin.god.zeus.ultimate";
 	private static int cost = 3700, delay = 1500, cooldownMin = 60, cooldownMax = 600;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -285,7 +285,7 @@ class Storm extends Ability
 
 class NoFall extends Ability
 {
-	private static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "demigods.god.zeus";
+	private static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "plugin.god.zeus";
 	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
 	private static List<String> details = new ArrayList<String>()
 	{

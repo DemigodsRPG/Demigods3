@@ -145,4 +145,10 @@ public class PlayerCharacterBindings implements DataStubModule
 	{
 		if(getBind(ability) != null) removeBind(getBind(ability));
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

@@ -217,4 +217,10 @@ public class PlayerCharacterInventory implements DataStubModule
 	{
 		items.setMap(map);
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }

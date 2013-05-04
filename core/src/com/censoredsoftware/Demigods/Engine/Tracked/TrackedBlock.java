@@ -151,4 +151,10 @@ public class TrackedBlock implements DataStubModule
 	{
 		return LocationAPI.getLocation((Integer.parseInt(getData("BLOCK_LOCATION").toString()))).toLocation();
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
 }
