@@ -39,10 +39,10 @@ public class BukkitUpdateModule implements Listener
 	/**
 	 * Constructor to create a new BukkitUpdateModule.
 	 * 
-	 * @param plugin The plugin instance running the module.
+	 * @param plugin The demigods instance running the module.
 	 * @param url The url to the BukkitDev project RSS feed.
-	 * @param command The full command for updating the plugin.
-	 * @param permission The full permission node for updating the plugin.
+	 * @param command The full command for updating the demigods.
+	 * @param permission The full permission node for updating the demigods.
 	 * @param auto True if automatic updating is allowed.
 	 * @param notify True if notifying is allowed.
 	 * @param confirmTime Time in seconds to confirm the update command before it forgets.
@@ -182,7 +182,7 @@ public class BukkitUpdateModule implements Listener
 	}
 
 	/**
-	 * Check if the latest version of this plugin on BukkitDev is newer than the currently running version.
+	 * Check if the latest version of this demigods on BukkitDev is newer than the currently running version.
 	 * 
 	 * @return True if the version on BukkitDev is newer.
 	 */
@@ -277,7 +277,7 @@ public class BukkitUpdateModule implements Listener
 	}
 
 	/**
-	 * Check to see if the currently running version of this plugin is still supported on BukkitDev.
+	 * Check to see if the currently running version of this demigods is still supported on BukkitDev.
 	 * 
 	 * @return True if the version exists on BukkitDev.
 	 */
@@ -307,9 +307,9 @@ public class BukkitUpdateModule implements Listener
 	}
 
 	/**
-	 * Get the String of the current version found in the plugin.yml.
+	 * Get the String of the current version found in the demigods.yml.
 	 * 
-	 * @return The latest checked version from the plugin.yml.
+	 * @return The latest checked version from the demigods.yml.
 	 */
 	public String getCurrentVersion()
 	{
@@ -329,10 +329,10 @@ public class BukkitUpdateModule implements Listener
 	}
 
 	/**
-	 * Get the if BukkitDev still supports the currently running version of the plugin.
+	 * Get the if BukkitDev still supports the currently running version of the demigods.
 	 * 
 	 * @param check True if it should check again, or rely on the last check made.
-	 * @return True if BukkitDev is still supporting the currently running version of the plugin.
+	 * @return True if BukkitDev is still supporting the currently running version of the demigods.
 	 */
 	public boolean supported(boolean check)
 	{

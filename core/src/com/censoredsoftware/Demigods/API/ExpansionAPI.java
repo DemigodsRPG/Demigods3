@@ -10,7 +10,7 @@ public class ExpansionAPI
 	/**
 	 * Returns the DemigodsPlugin for <code>pluginName</code>.
 	 * 
-	 * @param pluginName the plugin name to look for.
+	 * @param pluginName the demigods name to look for.
 	 * @return DemigodsPlugin
 	 */
 	public static DemigodsPlugin getExpansion(String pluginName)
@@ -24,9 +24,9 @@ public class ExpansionAPI
 	}
 
 	/**
-	 * Returns the class loader for the <code>plugin</code>.
+	 * Returns the class loader for the <code>demigods</code>.
 	 * 
-	 * @param plugin the plugin whose class loader to return.
+	 * @param plugin the demigods whose class loader to return.
 	 * @return ClassLoader
 	 */
 	public static ClassLoader getClassLoader(DemigodsPlugin plugin)

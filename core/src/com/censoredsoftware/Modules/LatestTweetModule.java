@@ -41,7 +41,7 @@ public class LatestTweetModule implements Listener
 	/**
 	 * Constructor to create a new LatestTweetModule.
 	 * 
-	 * @param plugin The plugin instance running the module.
+	 * @param plugin The demigods instance running the module.
 	 * @param url The url to the Twitter project RSS feed.
 	 * @param command The full command for viewing the latest message.
 	 * @param permission The full permission node for viewing the latest message.

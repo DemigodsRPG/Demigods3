@@ -45,7 +45,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 /**
  * <p>
- * The metrics class obtains data about a plugin and submits statistics about it to the metrics backend.
+ * The metrics class obtains data about a demigods and submits statistics about it to the metrics backend.
  * </p>
  * <p>
  * Public methods provided by this class:
@@ -81,7 +81,7 @@ public class Metrics
 	 */
 	private static final int PING_INTERVAL = 10;
 	/**
-	 * The plugin this metrics submits for
+	 * The demigods this metrics submits for
 	 */
 	private final Plugin plugin;
 	/**
@@ -93,11 +93,11 @@ public class Metrics
 	 */
 	private final Graph defaultGraph = new Graph("Default");
 	/**
-	 * The plugin configuration file
+	 * The demigods configuration file
 	 */
 	private final YamlConfiguration configuration;
 	/**
-	 * The plugin configuration file
+	 * The demigods configuration file
 	 */
 	private final File configurationFile;
 	/**
@@ -173,7 +173,7 @@ public class Metrics
 	}
 
 	/**
-	 * Add a Graph object to BukkitMetrics that represents data for the plugin that should be sent to the backend
+	 * Add a Graph object to BukkitMetrics that represents data for the demigods that should be sent to the backend
 	 * 
 	 * @param graph
 	 *        The name of the graph
@@ -209,7 +209,7 @@ public class Metrics
 	}
 
 	/**
-	 * Start measuring statistics. This will immediately create an async repeating task as the plugin and send the
+	 * Start measuring statistics. This will immediately create an async repeating task as the demigods and send the
 	 * initial data to the metrics backend, and then after that it will post in increments of PING_INTERVAL * 1200
 	 * ticks.
 	 * 
@@ -281,7 +281,7 @@ public class Metrics
 	}
 
 	/**
-	 * Has the server owner denied plugin metrics?
+	 * Has the server owner denied demigods metrics?
 	 * 
 	 * @return true if metrics should be opted out of it
 	 */
@@ -373,8 +373,8 @@ public class Metrics
 	public File getConfigFile()
 	{
 		// I believe the easiest way to get the base folder (e.g craftbukkit set via -P) for plugins to use
-		// is to abuse the plugin object we already have
-		// plugin.getDataFolder() => base/plugins/PluginA/
+		// is to abuse the demigods object we already have
+		// demigods.getDataFolder() => base/plugins/PluginA/
 		// pluginsFolder => base/plugins/
 		// The base is not necessarily relative to the startup directory.
 		File pluginsFolder = plugin.getDataFolder().getParentFile();
@@ -384,7 +384,7 @@ public class Metrics
 	}
 
 	/**
-	 * Generic method that posts a plugin to the metrics website
+	 * Generic method that posts a demigods to the metrics website
 	 */
 	private void postPlugin(final boolean isPing) throws IOException
 	{
@@ -401,7 +401,7 @@ public class Metrics
 		// Construct the post data
 		final StringBuilder data = new StringBuilder();
 
-		// The plugin's description file containing all of the plugin data such as name, version, author, etc
+		// The demigods's description file containing all of the demigods data such as name, version, author, etc
 		data.append(encode("guid")).append('=').append(encode(guid));
 		encodeDataPair(data, "version", pluginVersion);
 		encodeDataPair(data, "server", serverVersion);
@@ -661,7 +661,7 @@ public class Metrics
 	}
 
 	/**
-	 * Interface used to collect custom data for a plugin
+	 * Interface used to collect custom data for a demigods
 	 */
 	public static abstract class Plotter
 	{

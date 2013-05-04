@@ -26,7 +26,7 @@ public class StringDataModule implements DataModule, Listener
 	/**
 	 * Create a new instance of the library for the Plugin <code>instance</code>.
 	 * 
-	 * @param instance The current instance of the plugin running this module.
+	 * @param instance The current instance of the demigods running this module.
 	 * @param dataName The name of the data set being held in this module.
 	 */
 	public StringDataModule(Plugin instance, String dataName)

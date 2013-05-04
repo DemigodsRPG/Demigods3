@@ -177,7 +177,7 @@ public class Poseidon_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 
@@ -223,7 +223,7 @@ public class Poseidon_deity extends Deity implements Listener
 	{
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 
-		if(!Demigods.permission.hasPermissionOrOP(player, "plugin." + DEITYALLIANCE + "" + DEITYNAME)) return;
+		if(!Demigods.permission.hasPermissionOrOP(player, "demigods." + DEITYALLIANCE + "" + DEITYNAME)) return;
 
 		if(!MiscAPI.canUseDeity(player, DEITYNAME)) return;
 

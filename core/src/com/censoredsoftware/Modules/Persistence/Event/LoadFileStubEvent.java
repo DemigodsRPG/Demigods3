@@ -20,7 +20,7 @@ public class LoadFileStubEvent extends Event implements Cancellable
 	/**
 	 * Constructor for the LoadFileStubEvent.
 	 * 
-	 * @param pluginName Name of the plugin the data belongs to.
+	 * @param pluginName Name of the demigods the data belongs to.
 	 * @param dataName Name of the data set being loaded.
 	 * @param id The ID of the stub.
 	 * @param map The data that was loaded.
@@ -35,9 +35,9 @@ public class LoadFileStubEvent extends Event implements Cancellable
 	}
 
 	/**
-	 * Returns the plugin name of the loaded file.
+	 * Returns the demigods name of the loaded file.
 	 * 
-	 * @return The plugin name.
+	 * @return The demigods name.
 	 */
 	public String getPluginName()
 	{

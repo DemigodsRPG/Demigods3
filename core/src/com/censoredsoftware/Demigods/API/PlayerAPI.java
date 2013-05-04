@@ -307,7 +307,7 @@ public class PlayerAPI
 		ArrayList<Player> toReturn = new ArrayList<Player>();
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			if(Demigods.permission.hasPermissionOrOP(player, "plugin.admin")) toReturn.add(player);
+			if(Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) toReturn.add(player);
 		}
 		return toReturn;
 	}
