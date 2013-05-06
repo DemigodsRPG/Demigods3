@@ -34,6 +34,7 @@ import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 public class Altar extends Quest
 {
@@ -759,7 +760,7 @@ class AltarMenu extends Task
 		if(character.getWarps().isEmpty())
 		{
 			// Save named TrackedLocation for warp.
-			character.addWarp(new TrackedLocation(player.getLocation()), name);
+			character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -784,7 +785,7 @@ class AltarMenu extends Task
 		}
 
 		// Save named TrackedLocation for warp.
-		character.addWarp(new TrackedLocation(player.getLocation()), name);
+		character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 

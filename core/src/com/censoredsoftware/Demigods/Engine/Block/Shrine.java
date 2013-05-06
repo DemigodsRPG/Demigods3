@@ -10,6 +10,7 @@ import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 // TODO Convert this.
 
@@ -23,7 +24,7 @@ public class Shrine
 	public Shrine(long id, PlayerCharacter character, Location location)
 	{
 		this.id = id;
-		this.location = new TrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 		this.owner = character.getId();
 		this.deity = character.getDeity().getInfo().getName();
 

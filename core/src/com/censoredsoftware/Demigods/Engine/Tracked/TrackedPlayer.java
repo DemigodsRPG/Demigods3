@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -27,17 +28,14 @@ public class TrackedPlayer
 	@Indexed
 	private PlayerCharacter previous;
 
-	public TrackedPlayer(OfflinePlayer player)
+	void setPlayer(String player)
 	{
-		this.player = player.getName();
-		this.lastLoginTime = player.getLastPlayed();
-
-		save();
+		this.player = player;
 	}
 
-	public void save()
+	public static void save(TrackedPlayer meta)
 	{
-		DemigodsData.jOhm.save(this);
+		DemigodsData.jOhm.save(meta);
 	}
 
 	public static TrackedPlayer load(long id) // TODO This belongs somewhere else.
@@ -47,7 +45,13 @@ public class TrackedPlayer
 
 	public static Set<TrackedPlayer> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedPlayer.class);
+		try
+		{
+			return DemigodsData.jOhm.getAll(TrackedPlayer.class);
+		}
+		catch(Exception ignored)
+		{}
+		return new HashSet<TrackedPlayer>();
 	}
 
 	public static TrackedPlayer getMeta(OfflinePlayer player)
@@ -56,7 +60,7 @@ public class TrackedPlayer
 		{
 			if(player.equals(tracked.getPlayer())) return tracked;
 		}
-		return null;
+		return TrackedModelFactory.createTrackedPlayer(player);
 	}
 
 	public OfflinePlayer getPlayer()
@@ -67,6 +71,7 @@ public class TrackedPlayer
 	public void setLastLoginTime(long time)
 	{
 		this.lastLoginTime = time;
+		TrackedPlayer.save(this);
 	}
 
 	public long getLastLoginTime()
@@ -78,6 +83,7 @@ public class TrackedPlayer
 	{
 		this.previous = this.current;
 		this.current = character;
+		TrackedPlayer.save(this);
 	}
 
 	public PlayerCharacter getCurrent()

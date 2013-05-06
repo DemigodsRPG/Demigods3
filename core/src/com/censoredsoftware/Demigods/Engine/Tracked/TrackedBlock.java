@@ -34,9 +34,12 @@ public class TrackedBlock
 	@Attribute
 	private byte previousMaterialByte;
 
+	public TrackedBlock()
+	{}
+
 	public TrackedBlock(Location location, String type, Material material)
 	{
-		this.location = new TrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 		this.type = type;
 		this.material = material.getId();
 		this.materialByte = (byte) 0;
@@ -51,7 +54,7 @@ public class TrackedBlock
 
 	public TrackedBlock(Location location, String type, Material material, byte matByte)
 	{
-		this.location = new TrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 		this.type = type;
 		this.material = material.getId();
 		this.materialByte = matByte;

@@ -16,6 +16,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
 
 @Model
@@ -68,6 +69,9 @@ public class PlayerCharacter
 	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
 	private Map<TrackedLocation, String> invites;
 
+	public PlayerCharacter()
+	{}
+
 	public PlayerCharacter(OfflinePlayer player, String charName, boolean active, Deity deity, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean immortal)
 	{
 		// Vanilla Data
@@ -76,7 +80,7 @@ public class PlayerCharacter
 		this.hunger = 20;
 		this.experience = 0;
 		this.level = 0;
-		if(player.isOnline()) this.location = new TrackedLocation(player.getPlayer().getLocation()); // TODO
+		if(player.isOnline()) this.location = TrackedModelFactory.createTrackedLocation(player.getPlayer().getLocation()); // TODO
 		if(player.isOnline()) this.inventory = new TrackedPlayerInventory(player.getPlayer().getInventory()); // TODO
 
 		// Demigods Data
@@ -92,7 +96,7 @@ public class PlayerCharacter
 		this.immortal = immortal;
 
 		// Meta Data
-		this.meta = new PlayerCharacterMeta();
+		this.meta = new PlayerCharacterMeta(true);
 		this.meta.setLevel("OFFENSE", offense);
 		this.meta.setLevel("DEFENSE", defense);
 		this.meta.setLevel("STEALTH", stealth);
@@ -175,7 +179,7 @@ public class PlayerCharacter
 		if(this.meta != null) return this.meta;
 		else
 		{
-			this.meta = new PlayerCharacterMeta();
+			this.meta = new PlayerCharacterMeta(true);
 			return this.meta;
 		}
 	}
@@ -197,7 +201,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = new TrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public void setActive(boolean option)

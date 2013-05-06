@@ -34,6 +34,9 @@ public class TrackedBattle
 	@Attribute
 	private boolean active;
 
+	public TrackedBattle()
+	{}
+
 	public TrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
 	{
 		// Define variables
@@ -41,7 +44,7 @@ public class TrackedBattle
 		Location startedLocation = started.getLocation();
 
 		this.whoStarted = attacking;
-		this.startLocation = new TrackedLocation(startedLocation);
+		this.startLocation = TrackedModelFactory.createTrackedLocation(startedLocation);
 		this.startTime = startTime;
 
 		addCharacter(attacking);
@@ -92,13 +95,13 @@ public class TrackedBattle
 
 	public void addLocation(Location location)
 	{
-		if(!this.involvedLocations.contains(new TrackedLocation(location))) this.involvedLocations.add(new TrackedLocation(location));
+		if(!this.involvedLocations.contains(TrackedLocation.getTracked(location))) this.involvedLocations.add(TrackedLocation.getTracked(location));
 		save();
 	}
 
 	public void removeLocation(Location location)
 	{
-		if(this.involvedLocations.contains(new TrackedLocation(location))) this.involvedLocations.remove(new TrackedLocation(location));
+		if(this.involvedLocations.contains(TrackedLocation.getTracked(location))) this.involvedLocations.remove(TrackedLocation.getTracked(location));
 		save();
 	}
 

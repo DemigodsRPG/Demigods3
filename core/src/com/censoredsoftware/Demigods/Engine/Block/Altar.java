@@ -13,6 +13,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 @Model
 public class Altar
@@ -29,10 +30,13 @@ public class Altar
 	@Indexed
 	private Set<TrackedBlock> blocks;
 
+	public Altar()
+	{}
+
 	public Altar(Location location)
 	{
 		// Set the base variables
-		this.center = new TrackedLocation(location);
+		this.center = TrackedModelFactory.createTrackedLocation(location);
 		this.active = true;
 
 		// Generate the Altar

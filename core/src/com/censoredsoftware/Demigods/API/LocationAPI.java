@@ -6,6 +6,7 @@ import java.util.Set;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 public class LocationAPI
 {
@@ -114,7 +115,7 @@ public class LocationAPI
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(new TrackedLocation(from.getOwner().getPlayer().getLocation()), from.getName());
+		to.addInvite(TrackedModelFactory.createTrackedLocation(from.getOwner().getPlayer().getLocation()), from.getName());
 	}
 
 	/**

@@ -43,6 +43,9 @@ public class TrackedItemStack
 	@Attribute
 	private ItemType type;
 
+	public TrackedItemStack()
+	{}
+
 	/**
 	 * Splits the object into its saveable pieces.
 	 * 

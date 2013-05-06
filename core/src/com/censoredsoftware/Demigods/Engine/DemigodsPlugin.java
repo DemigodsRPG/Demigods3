@@ -35,9 +35,10 @@ public class DemigodsPlugin extends JavaPlugin
 		// Save all the data.
 		DemigodsData.save();
 
-		// Cancel all threads and event calls.
+		// Cancel all threads, event calls, and concections.
 		Scheduler.stopThreads(this);
 		HandlerList.unregisterAll(this);
+		DemigodsData.disconnect();
 
 		Demigods.message.info("Successfully disabled.");
 	}

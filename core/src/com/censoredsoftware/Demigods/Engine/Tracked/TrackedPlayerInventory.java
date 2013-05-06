@@ -29,6 +29,9 @@ public class TrackedPlayerInventory
 	@Indexed
 	private Map<Integer, TrackedItemStack> items;
 
+	public TrackedPlayerInventory()
+	{}
+
 	/**
 	 * Creates a new TrackedPlayerInventory.
 	 * 

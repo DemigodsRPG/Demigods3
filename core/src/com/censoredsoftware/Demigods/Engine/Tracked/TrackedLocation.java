@@ -31,33 +31,39 @@ public class TrackedLocation
 	@Attribute
 	private float yaw;
 
-	public TrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
+	void setWorld(String world)
 	{
 		this.world = world;
+	}
+
+	void setX(double X)
+	{
 		this.X = X;
+	}
+
+	void setY(double Y)
+	{
 		this.Y = Y;
+	}
+
+	void setZ(double Z)
+	{
 		this.Z = Z;
+	}
+
+	void setYaw(float yaw)
+	{
 		this.yaw = yaw;
+	}
+
+	void setPitch(float pitch)
+	{
 		this.pitch = pitch;
-
-		save();
 	}
 
-	public TrackedLocation(Location location)
+	public static void save(TrackedLocation location)
 	{
-		this.world = location.getWorld().getName();
-		this.X = location.getX();
-		this.Y = location.getY();
-		this.Z = location.getZ();
-		this.yaw = location.getYaw();
-		this.pitch = location.getPitch();
-
-		save();
-	}
-
-	public void save()
-	{
-		DemigodsData.jOhm.save(this);
+		DemigodsData.jOhm.save(location);
 	}
 
 	public static TrackedLocation load(long id) // TODO This belongs somewhere else.
@@ -68,6 +74,15 @@ public class TrackedLocation
 	public static Set<TrackedLocation> loadAll()
 	{
 		return DemigodsData.jOhm.getAll(TrackedLocation.class);
+	}
+
+	public static TrackedLocation getTracked(Location location) // TODO: Determine if this should be the default for getting TrackedLocations, or if it is too intensive on the DB for constant use.
+	{
+		for(TrackedLocation tracked : loadAll())
+		{
+			if(location.equals(tracked)) return tracked;
+		}
+		return TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public Location toLocation() throws NullPointerException

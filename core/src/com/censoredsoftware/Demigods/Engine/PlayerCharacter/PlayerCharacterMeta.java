@@ -31,13 +31,16 @@ public class PlayerCharacterMeta
 	private Map<String, Integer> levelsData;
 
 	public PlayerCharacterMeta()
+	{}
+
+	public PlayerCharacterMeta(boolean save)
 	{
 		abilityData = new HashMap<String, Boolean>();
 		bindingData = new HashMap<Integer, String>();
 		taskData = new HashMap<String, Boolean>();
 		levelsData = new HashMap<String, Integer>();
 
-		save();
+		if(save) save();
 	}
 
 	public void save()

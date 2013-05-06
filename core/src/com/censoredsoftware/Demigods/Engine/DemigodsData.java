@@ -31,6 +31,11 @@ public class DemigodsData
 
 	}
 
+	public static void disconnect()
+	{
+		jedisPool.getResource().disconnect();
+	}
+
 	public static void save()
 	{
 		jedisPool.getResource().bgsave();
