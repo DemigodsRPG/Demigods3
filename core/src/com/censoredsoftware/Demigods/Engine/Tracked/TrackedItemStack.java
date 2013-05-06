@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Tracked;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,6 +12,8 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import redis.clients.johm.*;
+
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 @Model
 public class TrackedItemStack
@@ -43,24 +46,43 @@ public class TrackedItemStack
 	@Attribute
 	private int type;
 
-	/**
-	 * Splits the object into its saveable pieces.
-	 * 
-	 * @param item the item to save.
-	 */
-	public TrackedItemStack(ItemStack item)
+	void setType(ItemType type)
 	{
-		// Save the type first (could be changed later)
-		this.type = ItemType.STANDARD.getId();
+		this.type = type.getId();
+	}
 
-		// Set the main variables
-		this.typeId = item.getTypeId();
-		this.byteId = item.getData().getData();
-		this.amount = item.getAmount();
-		this.durability = item.getDurability();
-		if(item.getItemMeta().hasDisplayName()) this.name = item.getItemMeta().getDisplayName();
-		if(item.getItemMeta().hasLore()) this.lore = item.getItemMeta().getLore();
+	void setTypeId(int typeId)
+	{
+		this.typeId = typeId;
+	}
 
+	void setByteId(byte byteId)
+	{
+		this.byteId = byteId;
+	}
+
+	void setAmount(int amount)
+	{
+		this.amount = amount;
+	}
+
+	void setDurability(short durability)
+	{
+		this.durability = durability;
+	}
+
+	void setName(String name)
+	{
+		this.name = name;
+	}
+
+	void setLore(List<String> lore)
+	{
+		this.lore = lore;
+	}
+
+	void setEnchantments(ItemStack item)
+	{
 		// If it has enchantments then save them
 		if(item.getItemMeta().hasEnchants())
 		{
@@ -72,7 +94,10 @@ public class TrackedItemStack
 				enchantments.put(ench.getKey().getId(), ench.getValue());
 			}
 		}
+	}
 
+	void setBookMeta(ItemStack item)
+	{
 		// If it's a written book then save the book-specific information
 		if(item.getType().equals(Material.WRITTEN_BOOK))
 		{
@@ -87,6 +112,26 @@ public class TrackedItemStack
 			this.author = bookMeta.getAuthor();
 			this.pages = bookMeta.getPages();
 		}
+	}
+
+	public static void save(TrackedItemStack item)
+	{
+		DemigodsData.jOhm.save(item);
+	}
+
+	public static TrackedItemStack load(long id) // TODO This belongs somewhere else.
+	{
+		return DemigodsData.jOhm.get(TrackedItemStack.class, id);
+	}
+
+	public static Set<TrackedItemStack> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(TrackedItemStack.class);
+	}
+
+	public long getId()
+	{
+		return this.id;
 	}
 
 	/**

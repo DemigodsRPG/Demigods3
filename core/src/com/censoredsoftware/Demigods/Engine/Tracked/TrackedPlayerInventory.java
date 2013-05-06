@@ -62,7 +62,7 @@ public class TrackedPlayerInventory
 		int slot = 1;
 		for(ItemStack item : inventory.getContents())
 		{
-			this.items.put(slot, new TrackedItemStack(item));
+			this.items.put(slot, TrackedModelFactory.createTrackedItemStack(item));
 			slot++;
 		}
 		return this;
