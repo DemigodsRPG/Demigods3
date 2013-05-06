@@ -9,12 +9,12 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 public class BattleParticipateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private int battleID;
+	private long battleID;
 	private PlayerCharacter defending;
 	private PlayerCharacter attacking;
 	private boolean cancelled = false;
 
-	public BattleParticipateEvent(final int battleID, final PlayerCharacter defending, final PlayerCharacter attacking)
+	public BattleParticipateEvent(final long battleID, final PlayerCharacter defending, final PlayerCharacter attacking)
 	{
 		this.defending = defending;
 		this.attacking = attacking;
@@ -39,7 +39,7 @@ public class BattleParticipateEvent extends Event implements Cancellable
 	/*
 	 * getBattleID() : Gets the battleID.
 	 */
-	public int getBattleID()
+	public long getBattleId()
 	{
 		return this.battleID;
 	}

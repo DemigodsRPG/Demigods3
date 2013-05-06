@@ -1,6 +1,8 @@
 package com.censoredsoftware.Demigods.API;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,7 +11,6 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleCombineEvent;
-import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -23,12 +24,11 @@ public class BattleAPI
 	/**
 	 * Returns the TrackedBattle object with the id <code>battleID</code>.
 	 * 
-	 * @param battleID the id to look for.
 	 * @return TrackedBattle
 	 */
-	public static TrackedBattle getBattle(int battleID)
+	public static TrackedBattle getBattle(long id)
 	{
-		return (TrackedBattle) DemigodsData.battleData.getDataObject(battleID);
+		return TrackedBattle.load(id);
 	}
 
 	/**
@@ -36,14 +36,9 @@ public class BattleAPI
 	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<TrackedBattle> getAll()
+	public static Set<TrackedBattle> getAll()
 	{
-		ArrayList<TrackedBattle> battles = new ArrayList<TrackedBattle>();
-		for(int key : DemigodsData.battleData.listKeys())
-		{
-			battles.add(getBattle(key));
-		}
-		return battles;
+		return TrackedBattle.loadAll();
 	}
 
 	/**
@@ -51,12 +46,12 @@ public class BattleAPI
 	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<TrackedBattle> getAllActive()
+	public static Set<TrackedBattle> getAllActive()
 	{
-		ArrayList<TrackedBattle> battles = new ArrayList<TrackedBattle>();
-		for(int key : DemigodsData.battleData.listKeys())
+		Set<TrackedBattle> battles = new HashSet<TrackedBattle>();
+		for(TrackedBattle battle : getAll())
 		{
-			if(getBattle(key).isActive()) battles.add(getBattle(key));
+			if(battle.isActive()) battles.add(battle);
 		}
 		return battles;
 	}
@@ -116,9 +111,9 @@ public class BattleAPI
 	 */
 	public static boolean isInBattle(TrackedBattle battle, PlayerCharacter character)
 	{
-		for(int charID : battle.getCharIDs())
+		for(PlayerCharacter involved : battle.getInvolvedCharacters())
 		{
-			if(character.getID() == charID) return true;
+			if(involved.equals(character)) return true;
 		}
 		return false;
 	}
@@ -174,17 +169,17 @@ public class BattleAPI
 	public static void checkForInactiveBattles()
 	{
 		for(TrackedBattle battle : getAllActive())
-		{
-			int battleID = battle.getID();
-			if(!DemigodsData.timedBattleData.contains(battleID))
-			{
-				BattleEndEvent battleEvent = new BattleEndEvent(battleID, System.currentTimeMillis());
-				Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-				if(!battleEvent.isCancelled())
-				{
-					battle.setActive(false);
-				}
-			}
+		{ // TODO TIMED DATA
+		  // int battleID = battle.getID();
+		  // if(!DemigodsData.timedBattleData.contains(battleID))
+		  // {
+		  // BattleEndEvent battleEvent = new BattleEndEvent(battleID, System.currentTimeMillis());
+		  // Bukkit.getServer().getPluginManager().callEvent(battleEvent);
+		  // if(!battleEvent.isCancelled())
+		  // {
+		  // battle.setActive(false);
+		  // }
+		  // }
 		}
 	}
 
@@ -228,20 +223,20 @@ public class BattleAPI
 			int battleID = DemigodsData.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-			if(!battleEvent.isCancelled()) new TrackedBattle(hittingChar, hitChar, startTime, battleID);
+			if(!battleEvent.isCancelled()) new TrackedBattle(hittingChar, hitChar, startTime);
 		}
 		else
 		{
 			if(otherBattle == null)
 			{
-				int battleID = battle.getID();
+				long battleID = battle.getId();
 				BattleParticipateEvent battleEvent = new BattleParticipateEvent(battleID, hitChar, hittingChar);
 				Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 				if(!battleEvent.isCancelled())
 				{
 					battle.addCharacter(hitChar);
 					battle.addCharacter(hittingChar);
-					DemigodsData.timedBattleData.add(battleID, System.currentTimeMillis() + 10000);
+					// TODO Timed data DemigodsData.timedBattleData.add(battleID, System.currentTimeMillis() + 10000);
 				}
 			}
 			else
@@ -251,39 +246,38 @@ public class BattleAPI
 				otherBattle.setActive(false);
 
 				BattleCombineEvent battleEvent = null;
-				int battleID = DemigodsData.generateInt(5);
 				TrackedBattle combinedBattle = null;
 				if(battle.getStartTime() < otherBattle.getStartTime())
 				{
-					battleEvent = new BattleCombineEvent(battleID, battle, otherBattle, System.currentTimeMillis());
+					battleEvent = new BattleCombineEvent(battle, otherBattle, System.currentTimeMillis());
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(CharacterAPI.getChar(battle.getWhoStarted()), hitChar, battle.getStartTime(), battleID);
+						combinedBattle = new TrackedBattle(battle.getWhoStarted(), hitChar, battle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
 				}
 				else
 				{
-					battleEvent = new BattleCombineEvent(battleID, otherBattle, battle, System.currentTimeMillis());
+					battleEvent = new BattleCombineEvent(otherBattle, battle, System.currentTimeMillis());
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(CharacterAPI.getChar(otherBattle.getWhoStarted()), hitChar, otherBattle.getStartTime(), battleID);
+						combinedBattle = new TrackedBattle(otherBattle.getWhoStarted(), hitChar, otherBattle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
 				}
 
 				// Add all involved locations and characters from both other events
-				ArrayList<Integer> charIDs = new ArrayList<Integer>();
+				ArrayList<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
 				ArrayList<TrackedLocation> locations = new ArrayList<TrackedLocation>();
 
 				// TrackedBattle
-				for(int charID : battle.getCharIDs())
+				for(PlayerCharacter character : battle.getInvolvedCharacters())
 				{
-					if(!charIDs.contains(charID)) charIDs.add(charID);
+					if(!characters.contains(character)) characters.add(character);
 				}
 				for(TrackedLocation location : battle.getLocations())
 				{
@@ -291,18 +285,18 @@ public class BattleAPI
 				}
 
 				// Other TrackedBattle
-				for(int charID : otherBattle.getCharIDs())
+				for(PlayerCharacter character : otherBattle.getInvolvedCharacters())
 				{
-					if(!charIDs.contains(charID)) charIDs.add(charID);
+					if(!characters.contains(character)) characters.add(character);
 				}
 				for(TrackedLocation location : otherBattle.getLocations())
 				{
 					if(!locations.contains(location)) locations.add(location);
 				}
 
-				// Overwrite data in the new combined battle
-				combinedBattle.overwriteCharIDs(charIDs);
-				combinedBattle.overwriteLocations(locations);
+				// Overwrite data in the new combined battle // TODO Fix this.
+				// combinedBattle.overwriteCharIDs(charIDs);
+				// combinedBattle.overwriteLocations(locations);
 			}
 		}
 	}

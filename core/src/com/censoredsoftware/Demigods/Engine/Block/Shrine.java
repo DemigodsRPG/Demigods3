@@ -7,7 +7,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -16,16 +15,16 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 
 public class Shrine
 {
-	private int id, owner;
+	private long id, owner;
 	private String deity;
-	private int block;
+	private long block;
 	private TrackedLocation location;
 
-	public Shrine(int id, PlayerCharacter character, Location location)
+	public Shrine(long id, PlayerCharacter character, Location location)
 	{
 		this.id = id;
-		this.location = new TrackedLocation(DemigodsData.generateInt(5), location, null);
-		this.owner = character.getID();
+		this.location = new TrackedLocation(location);
+		this.owner = character.getId();
 		this.deity = character.getDeity().getInfo().getName();
 
 		// Generate the Shrine
@@ -39,7 +38,7 @@ public class Shrine
 	 */
 	private void save() // TODO This won't work with saving to a file, will probably have to convert this over like I did the PlayerCharacter object.
 	{
-		DemigodsData.shrineData.saveData(this.id, this);
+		// TODO
 	}
 
 	/*
@@ -47,7 +46,7 @@ public class Shrine
 	 */
 	public synchronized void remove()
 	{
-		DemigodsData.shrineData.removeData(this.id);
+		// TODO
 
 		Location location = this.location.toLocation();
 		location.getBlock().setType(Material.AIR);
@@ -65,7 +64,7 @@ public class Shrine
 	/*
 	 * getID() : Returns the ID for the Shrine.
 	 */
-	public int getID()
+	public long getID()
 	{
 		return this.id;
 	}
@@ -112,7 +111,7 @@ public class Shrine
 		}
 
 		// Set bedrock
-		this.block = new TrackedBlock(DemigodsData.generateInt(5), location, "shrine", Material.BEDROCK).getID();
+		this.block = new TrackedBlock(location, "shrine", Material.BEDROCK).getId();
 
 		// Spawn the Entity
 		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);

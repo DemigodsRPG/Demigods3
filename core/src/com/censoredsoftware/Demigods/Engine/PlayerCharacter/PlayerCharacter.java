@@ -410,6 +410,11 @@ public class PlayerCharacter
 		this.invites.remove(location);
 	}
 
+	public void clearInvites()
+	{
+		this.invites = new HashMap<TrackedLocation, String>();
+	}
+
 	public Map<TrackedLocation, String> getInvites()
 	{
 		return this.invites;

@@ -1,10 +1,9 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 
@@ -16,20 +15,14 @@ public class LocationAPI
 	 * @param id The ID of the block.
 	 * @return TrackedLocation.
 	 */
-	public static TrackedLocation getLocation(int id)
+	public static TrackedLocation getLocation(long id)
 	{
-		return (TrackedLocation) DemigodsData.locationData.getDataObject(id);
+		return TrackedLocation.load(id);
 	}
 
-	public static List<TrackedLocation> getAllLocations()
+	public static Set<TrackedLocation> getAllLocations()
 	{
-		List<TrackedLocation> locations = new ArrayList<TrackedLocation>();
-		for(int charID : DemigodsData.locationData.listKeys())
-		{
-			TrackedLocation location = (TrackedLocation) DemigodsData.locationData.getDataObject(charID);
-			locations.add(location);
-		}
-		return locations;
+		return TrackedLocation.loadAll();
 	}
 
 	/**
@@ -43,9 +36,9 @@ public class LocationAPI
 	{
 		if(character == null) return false;
 		if(character.getWarps() == null) return false;
-		for(TrackedLocation warp : character.getWarps())
+		for(Map.Entry<TrackedLocation, String> warp : character.getWarps().entrySet())
 		{
-			if(ZoneAPI.zoneAltar(warp.toLocation()) == altar) return true;
+			if(ZoneAPI.zoneAltar(warp.getKey().toLocation()) == altar) return true;
 		}
 		return false;
 	}
@@ -73,9 +66,9 @@ public class LocationAPI
 	{
 		if(hasInvites(invited))
 		{
-			for(TrackedLocation invite : invited.getInvites())
+			for(Map.Entry<TrackedLocation, String> invite : invited.getInvites().entrySet())
 			{
-				if(invite.getName().equalsIgnoreCase(inviting.getName())) return invite;
+				if(invite.getValue().equalsIgnoreCase(inviting.getName())) return invite.getKey();
 			}
 		}
 		return null;
@@ -92,9 +85,9 @@ public class LocationAPI
 	{
 		if(hasInvites(character))
 		{
-			for(TrackedLocation invite : character.getInvites())
+			for(Map.Entry<TrackedLocation, String> invite : character.getInvites().entrySet())
 			{
-				if(invite.getName().equalsIgnoreCase(name)) return invite;
+				if(invite.getValue().equalsIgnoreCase(name)) return invite.getKey();
 			}
 		}
 		return null;
@@ -121,7 +114,7 @@ public class LocationAPI
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(new TrackedLocation(DemigodsData.generateInt(5), from.getOwner().getPlayer().getLocation(), from.getName()).getID());
+		to.addInvite(new TrackedLocation(from.getOwner().getPlayer().getLocation()), from.getName());
 	}
 
 	/**
@@ -132,7 +125,7 @@ public class LocationAPI
 	 */
 	public static void removeInvite(PlayerCharacter invited, TrackedLocation invite)
 	{
-		invited.removeInvite(invite.getID());
+		invited.removeInvite(invite);
 	}
 
 	/**
@@ -142,6 +135,6 @@ public class LocationAPI
 	 */
 	public static void clearInvites(PlayerCharacter character)
 	{
-		character.saveData("INVITES", new ArrayList<Integer>());
+		character.clearInvites();
 	}
 }

@@ -69,12 +69,12 @@ class TutorialTask extends Task
 			if(player.hasPlayedBefore()) return;
 
 			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-			if(character == null || character.getTasks().isFinishedTask(name)) return;
+			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, name);
 			Demigods.message.tagged(player, "Use " + ChatColor.YELLOW + "/dg" + ChatColor.WHITE + " for more information.");
 
-			character.getTasks().finishTask(name, true);
+			character.getMeta().finishTask(name, true);
 		}
 	};
 

@@ -1,7 +1,9 @@
 package com.censoredsoftware.Demigods.API;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -30,21 +32,19 @@ public class CharacterAPI
 		return null;
 	}
 
-	public static List<PlayerCharacter> getAllChars()
+	public static Set<PlayerCharacter> getAllChars()
 	{
-		List<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
-		for(long charID : DemigodsData.characterData.listKeys())
+		Set<PlayerCharacter> characters = new HashSet<PlayerCharacter>();
+		for(PlayerCharacter character : PlayerCharacter.loadAll())
 		{
-			PlayerCharacter character = (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
 			characters.add(character);
 		}
 		return characters;
 	}
 
-	public static PlayerCharacter getChar(long charID)
+	public static PlayerCharacter getChar(long id)
 	{
-		if(DemigodsData.characterData.containsKey(charID)) return (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
-		else return null;
+		return PlayerCharacter.load(id);
 	}
 
 	public static PlayerCharacter getCharByName(String charName)
@@ -75,7 +75,7 @@ public class CharacterAPI
 
 	public static boolean isCooledDown(Player player, String ability, boolean sendMsg)
 	{
-		if(DemigodsData.tempPlayerData.containsKey(player, ability + "_cooldown") && DemigodsData.tempPlayerData.getDataLong(player, ability + "_cooldown") > System.currentTimeMillis())
+		if(DemigodsData.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
 		{
 			if(sendMsg) player.sendMessage(ChatColor.RED + ability + " has not cooled down!");
 			return false;
@@ -85,12 +85,12 @@ public class CharacterAPI
 
 	public static void setCoolDown(Player player, String ability, long cooldown)
 	{
-		DemigodsData.tempPlayerData.saveData(player, ability + "_cooldown", cooldown);
+		DemigodsData.setTemp(player.getName(), ability + "_cooldown", cooldown);
 	}
 
 	public static long getCoolDown(Player player, String ability)
 	{
-		return DemigodsData.tempPlayerData.getDataLong(player, ability + "_cooldown");
+		return Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString());
 	}
 
 	// TODO Move these.

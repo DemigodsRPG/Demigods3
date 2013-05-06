@@ -1,13 +1,12 @@
 package com.censoredsoftware.Demigods.API;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 
 public class BlockAPI
@@ -20,18 +19,12 @@ public class BlockAPI
 	 */
 	public static TrackedBlock getBlock(long id)
 	{
-		return (TrackedBlock) DemigodsData.trackedBlockData.getDataObject(id);
+		return TrackedBlock.load(id);
 	}
 
-	public static List<TrackedBlock> getBlocks()
+	public static Set<TrackedBlock> getBlocks()
 	{
-		List<TrackedBlock> blocks = new ArrayList<TrackedBlock>();
-		for(int charID : DemigodsData.trackedBlockData.listKeys())
-		{
-			TrackedBlock block = (TrackedBlock) DemigodsData.trackedBlockData.getDataObject(charID);
-			blocks.add(block);
-		}
-		return blocks;
+		return TrackedBlock.loadAll();
 	}
 
 	/**
@@ -45,8 +38,8 @@ public class BlockAPI
 
 		for(Altar altar : getAllAltars())
 			locations.add(altar.getLocation());
-		for(Shrine shrine : getAllShrines())
-			locations.add(shrine.getLocation());
+		// for(Shrine shrine : getAllShrines())
+		// locations.add(shrine.getLocation());
 
 		return locations;
 	}
@@ -56,14 +49,9 @@ public class BlockAPI
 	 * 
 	 * @return the ArrayList of Altars.
 	 */
-	public static ArrayList<Altar> getAllAltars()
+	public static Set<Altar> getAllAltars()
 	{
-		ArrayList<Altar> altars = new ArrayList<Altar>();
-		for(int key : DemigodsData.altarData.listKeys())
-		{
-			altars.add((Altar) DemigodsData.altarData.getDataObject(key));
-		}
-		return altars;
+		return Altar.loadAll();
 	}
 
 	/**
@@ -72,13 +60,13 @@ public class BlockAPI
 	 * @return the ArrayList of Shrines.
 	 */
 	public static ArrayList<Shrine> getAllShrines()
-	{
-		ArrayList<Shrine> shrines = new ArrayList<Shrine>();
-		for(int key : DemigodsData.shrineData.listKeys())
-		{
-			shrines.add((Shrine) DemigodsData.shrineData.getDataObject(key));
-		}
-		return shrines;
+	{ // TODO Convert shrines.
+	  // ArrayList<Shrine> shrines = new ArrayList<Shrine>();
+	  // for(int key : DemigodsData.shrineData.listKeys())
+	  // {
+	  // shrines.add((Shrine) DemigodsData.shrineData.getDataObject(key));
+	  // }
+		return new ArrayList<Shrine>();
 	}
 
 	/**

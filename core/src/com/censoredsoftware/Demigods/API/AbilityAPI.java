@@ -273,7 +273,7 @@ public class AbilityAPI
 				if(bind)
 				{
 					// Bind item
-					character.getBindings().setBound(ability.getInfo().getName(), player.getItemInHand().getType());
+					character.getMeta().setBound(ability.getInfo().getName(), player.getItemInHand().getType());
 				}
 				else
 				{

@@ -1,8 +1,6 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,27 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
 
 public class PlayerAPI
 {
-	/**
-	 * Adds the <code>player</code> to the database/filesystem.
-	 * 
-	 * @param player the new player to add.
-	 * @return boolean based on the success or failure of adding the player.
-	 */
-	public static void createNewPlayer(Player player)
-	{
-		Demigods.message.info("Saving new player: " + player.getName());
-
-		// Create their HashMap data
-		DemigodsData.playerData.saveData(player, "player_kills", 0);
-		DemigodsData.playerData.saveData(player, "player_deaths", 0);
-		DemigodsData.playerData.saveData(player, "current_char", null);
-		DemigodsData.playerData.saveData(player, "previous_char", null);
-	}
-
 	/**
 	 * Returns the current character of the <code>player</code>.
 	 * 
@@ -45,7 +27,7 @@ public class PlayerAPI
 	{
 		try
 		{
-			return CharacterAPI.getChar(DemigodsData.playerData.getDataInt(player, "current_char"));
+			return TrackedPlayer.getMeta(player).getCurrent();
 		}
 		catch(Exception e)
 		{
@@ -102,15 +84,14 @@ public class PlayerAPI
 	 * Changes the <code>offlinePlayer</code>'s current character to <code>charID</code>.
 	 * 
 	 * @param offlinePlayer the player whose character to change.
-	 * @param charID the character ID to switch to.
 	 * @return boolean based on if the change was successful or not.
 	 */
-	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, int charID) // TODO Most of this should be in a listener, not here in the API.
+	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, PlayerCharacter character) // TODO Most of this should be in a listener, not here in the API.
 	{
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!getChars(offlinePlayer).contains(CharacterAPI.getChar(charID)))
+		if(!getChars(offlinePlayer).contains(character))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
@@ -133,12 +114,10 @@ public class PlayerAPI
 
 			// Set them to inactive
 			currentChar.setActive(false);
-			DemigodsData.playerData.saveData(player, "previous_char", currentChar.getID());
 		}
 
 		// Everything is good, let's switch
-		DemigodsData.playerData.saveData(player, "current_char", charID);
-		PlayerCharacter character = CharacterAPI.getChar(charID);
+		TrackedPlayer.getMeta(player).setCurrent(character);
 		character.setActive(true);
 
 		// If it's their first character save their inventory
@@ -230,7 +209,7 @@ public class PlayerAPI
 	 */
 	public static boolean isPraying(OfflinePlayer player)
 	{
-		return DemigodsData.tempPlayerData.getDataBool(player, "temp_praying");
+		return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_praying").toString());
 	}
 
 	/**
@@ -241,7 +220,7 @@ public class PlayerAPI
 	 */
 	public static int getKills(OfflinePlayer player)
 	{
-		return DemigodsData.playerData.getDataInt(player, "player_kills");
+		return -1; // TODO DemigodsData.playerData.getDataInt(player, "player_kills");
 	}
 
 	/**
@@ -252,7 +231,7 @@ public class PlayerAPI
 	 */
 	public static void setKills(OfflinePlayer player, int amount)
 	{
-		DemigodsData.playerData.saveData(player, "player_kills", amount);
+		// TODO DemigodsData.playerData.saveData(player, "player_kills", amount);
 	}
 
 	/**
@@ -262,7 +241,7 @@ public class PlayerAPI
 	 */
 	public static void addKill(OfflinePlayer player)
 	{
-		DemigodsData.playerData.saveData(player, "player_kills", getKills(player) + 1);
+		// TODO DemigodsData.playerData.saveData(player, "player_kills", getKills(player) + 1);
 	}
 
 	/**
@@ -273,7 +252,7 @@ public class PlayerAPI
 	 */
 	public static int getDeaths(OfflinePlayer player)
 	{
-		return DemigodsData.playerData.getDataInt(player, "player_deaths");
+		return -1; // TODO DemigodsData.playerData.getDataInt(player, "player_deaths");
 	}
 
 	/**
@@ -284,7 +263,7 @@ public class PlayerAPI
 	 */
 	public static void setDeaths(OfflinePlayer player, int amount)
 	{
-		DemigodsData.playerData.saveData(player, "player_deaths", amount);
+		// TODO DemigodsData.playerData.saveData(player, "player_deaths", amount);
 	}
 
 	/**
@@ -294,7 +273,7 @@ public class PlayerAPI
 	 */
 	public static void addDeath(OfflinePlayer player)
 	{
-		DemigodsData.playerData.saveData(player, "player_deaths", getDeaths(player) + 1);
+		// TODO DemigodsData.playerData.saveData(player, "player_deaths", getDeaths(player) + 1);
 	}
 
 	/**
@@ -317,9 +296,9 @@ public class PlayerAPI
 	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<Player> getOnlinePlayers() // TODO Is this even needed?
+	public static Set<Player> getOnlinePlayers() // TODO Is this even needed?
 	{
-		ArrayList<Player> toReturn = new ArrayList<Player>();
+		Set<Player> toReturn = new HashSet<Player>();
 		Collections.addAll(toReturn, Bukkit.getOnlinePlayers());
 		return toReturn;
 	}
@@ -329,9 +308,9 @@ public class PlayerAPI
 	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<OfflinePlayer> getOfflinePlayers() // TODO Is this even needed?
+	public static Set<OfflinePlayer> getOfflinePlayers() // TODO Is this even needed?
 	{
-		ArrayList<OfflinePlayer> toReturn = getAllPlayers();
+		Set<OfflinePlayer> toReturn = getAllPlayers();
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			toReturn.remove(player);
@@ -344,12 +323,12 @@ public class PlayerAPI
 	 * 
 	 * @return ArrayList
 	 */
-	public static ArrayList<OfflinePlayer> getAllPlayers()
+	public static Set<OfflinePlayer> getAllPlayers()
 	{
-		ArrayList<OfflinePlayer> toReturn = new ArrayList<OfflinePlayer>();
-		for(OfflinePlayer player : DemigodsData.playerData.listTiers())
+		Set<OfflinePlayer> toReturn = new HashSet<OfflinePlayer>();
+		for(TrackedPlayer player : TrackedPlayer.loadAll())
 		{
-			toReturn.add(player);
+			toReturn.add(player.getPlayer());
 		}
 		return toReturn;
 	}
@@ -366,13 +345,13 @@ public class PlayerAPI
 		{
 			togglePlayerChat(player, false);
 			togglePlayerMovement(player, false);
-			DemigodsData.tempPlayerData.saveData(player, "temp_praying", option);
+			DemigodsData.setTemp(player.getName(), "temp_praying", option);
 		}
 		else
 		{
 			togglePlayerChat(player, true);
 			togglePlayerMovement(player, true);
-			DemigodsData.tempPlayerData.removeData(player, "temp_praying");
+			DemigodsData.removeTemp(player.getName(), "temp_praying");
 		}
 	}
 
@@ -384,8 +363,8 @@ public class PlayerAPI
 	 */
 	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.tempPlayerData.containsKey(player, "temp_player_hold") && option) DemigodsData.tempPlayerData.removeData(player, "temp_player_hold");
-		else DemigodsData.tempPlayerData.saveData(player, "temp_player_hold", true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
+		else DemigodsData.setTemp(player.getName(), "temp_player_hold", true);
 	}
 
 	/**
@@ -396,7 +375,7 @@ public class PlayerAPI
 	 */
 	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.tempPlayerData.containsKey(player, "temp_no_chat") && option) DemigodsData.tempPlayerData.removeData(player, "temp_no_chat");
-		else DemigodsData.tempPlayerData.saveData(player, "temp_no_chat", true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
+		else DemigodsData.setTemp(player.getName(), "temp_no_chat", true);
 	}
 }

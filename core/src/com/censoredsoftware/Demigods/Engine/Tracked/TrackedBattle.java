@@ -107,6 +107,11 @@ public class TrackedBattle
 		return this.whoStarted;
 	}
 
+	public Set<PlayerCharacter> getInvolvedCharacters()
+	{
+		return this.involvedCharacters;
+	}
+
 	public Long getStartTime()
 	{
 		return this.startTime;

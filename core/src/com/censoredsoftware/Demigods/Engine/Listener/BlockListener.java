@@ -22,10 +22,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.censoredsoftware.Demigods.API.*;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
-import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
 
 public class BlockListener implements Listener
 {
@@ -162,32 +160,33 @@ public class BlockListener implements Listener
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			new Altar(DemigodsData.generateInt(5), location); // TODO Should this be here?
+			new Altar(location); // TODO Should this be here?
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
 		if(BlockAPI.isAltar(location))
 		{
-			if(DemigodsData.timedAltarData.contains(player))
-			{
-				AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
-				Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
-				if(altarRemoveEvent.isCancelled()) return;
-
-				// We can destroy the Altar
-				BlockAPI.getAltar(location).remove();
-				DemigodsData.timedAltarData.remove(player);
-
-				// Save Protected Blocks
-				DemigodsData.altarFile.save(DemigodsData.altarData);
-
-				player.sendMessage(ChatColor.GREEN + "Altar removed!");
-			}
-			else
-			{
-				DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
-				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
-			}
+			// TODO TIMED DATA
+			// if(DemigodsData.timedAltarData.contains(player))
+			// {
+			// AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
+			// Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
+			// if(altarRemoveEvent.isCancelled()) return;
+			//
+			// // We can destroy the Altar
+			// BlockAPI.getAltar(location).remove();
+			// DemigodsData.timedAltarData.remove(player);
+			//
+			// // Save Protected Blocks
+			// DemigodsData.altarFile.save(DemigodsData.altarData);
+			//
+			// player.sendMessage(ChatColor.GREEN + "Altar removed!");
+			// }
+			// else
+			// {
+			// DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
+			// player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+			// }
 		}
 	}
 

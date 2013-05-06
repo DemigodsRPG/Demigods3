@@ -12,7 +12,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.API.AdminAPI;
+import com.censoredsoftware.Demigods.API.BlockAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.API.ValueAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -128,7 +131,7 @@ public class ShrineListener implements Listener
 			Shrine shrine = BlockAPI.getShrine(location);
 			if(shrine == null) return;
 
-			int shrineOwner = shrine.getOwner().getID();
+			String shrineOwner = shrine.getOwner().getName();
 			String shrineDeity = shrine.getDeity();
 
 			if(BlockAPI.isShrine(location))
@@ -139,7 +142,7 @@ public class ShrineListener implements Listener
 					// Open the tribute inventory
 					Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 					player.openInventory(ii);
-					DemigodsData.tempTributeData.saveData(character.getID(), shrineOwner);
+					DemigodsData.setTemp(player.getName(), character.getName(), shrineOwner);
 					return;
 				}
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
@@ -163,14 +166,13 @@ public class ShrineListener implements Listener
 			if(character == null || !character.isImmortal()) return;
 
 			Deity charDeity = character.getDeity();
-			int charID = character.getID();
 
 			// If it isn't a tribute chest then break the method
 			if(!event.getInventory().getName().contains("Shrine")) return;
 
 			// Get the creator of the shrine
-			int shrineOwnerID = DemigodsData.tempTributeData.getDataInt(character.getID());
-			DemigodsData.tempTributeData.removeData(charID);
+			PlayerCharacter shrineOwner = PlayerCharacter.getCharacterByName(DemigodsData.getValueTemp(player.getName(), character.getName()).toString());
+			DemigodsData.removeTemp(player.getName(), character.getName());
 
 			// Calculate value of chest
 			int tributeValue = 0, items = 0;
@@ -199,15 +201,15 @@ public class ShrineListener implements Listener
 			if(favorBefore != character.getMaxFavor() && devotionBefore != character.getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				OfflinePlayer shrineOwnerPlayer = CharacterAPI.getOwner(shrineOwnerID);
-				if(!CharacterAPI.getOwner(charID).equals(shrineOwnerPlayer))
+				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOwner();
+				if(!character.equals(shrineOwnerPlayer))
 				{
 					// TODO: FIX THIS
 					// DCharUtil.addDevotion(shrineOwner, tributeValue / 7);
 					if(shrineOwnerPlayer.isOnline())
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + CharacterAPI.getChar(shrineOwnerID).getDevotion() + "!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + shrineOwner.getDevotion() + "!");
 					}
 				}
 			}

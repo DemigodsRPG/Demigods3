@@ -96,7 +96,7 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
@@ -526,26 +526,26 @@ class Commands implements CommandExecutor
 			{
 				if(!AdminAPI.wandEnabled(player))
 				{
-					DemigodsData.tempPlayerData.saveData(player, "temp_admin_wand", true);
+					DemigodsData.setTemp(player.getName(), "temp_admin_wand", true);
 					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin.wand_tool")));
 				}
 				else if(AdminAPI.wandEnabled(player))
 				{
-					DemigodsData.tempPlayerData.removeData(player, "temp_admin_wand");
+					DemigodsData.removeTemp(player.getName(), "temp_admin_wand");
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 				}
 				return true;
 			}
 			else if(option1.equalsIgnoreCase("debug"))
 			{
-				if(!DemigodsData.tempPlayerData.containsKey(player, "temp_admin_debug") || !DemigodsData.tempPlayerData.getDataBool(player, "temp_admin_debug"))
+				if(!DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 				{
-					DemigodsData.tempPlayerData.saveData(player, "temp_admin_debug", true);
+					DemigodsData.setTemp(player.getName(), "temp_admin_debug", true);
 					player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 				}
-				else if(DemigodsData.tempPlayerData.containsKey(player, "temp_admin_debug") && DemigodsData.tempPlayerData.getDataBool(player, "temp_admin_debug"))
+				else if(DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 				{
-					DemigodsData.tempPlayerData.removeData(player, "temp_admin_debug");
+					DemigodsData.removeTemp(player.getName(), "temp_admin_debug");
 					player.sendMessage(ChatColor.RED + "You have disabled debugging.");
 				}
 			}
@@ -926,7 +926,7 @@ class Commands implements CommandExecutor
 
 			for(Altar altar : BlockAPI.getAllAltars())
 			{
-				sender.sendMessage(altar.getID() + ": " + altar.isActive());
+				sender.sendMessage(altar.getId() + ": " + altar.isActive());
 			}
 
 			DemigodsData.save();

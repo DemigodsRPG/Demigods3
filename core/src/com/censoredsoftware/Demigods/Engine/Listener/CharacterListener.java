@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
@@ -18,6 +17,7 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillstreakEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CharacterListener implements Listener
 {
@@ -33,7 +33,7 @@ public class CharacterListener implements Listener
 		PlayerCharacter character = CharacterAPI.create(player, chosenName, chosenDeity);
 
 		// Remove temporary data
-		DemigodsData.tempPlayerData.removeData(player, "temp_createchar");
+		DemigodsData.removeTemp(player.getName(), "temp_createchar");
 
 		if(player.isOnline())
 		{
@@ -48,7 +48,7 @@ public class CharacterListener implements Listener
 				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 
 			// Switch current character
-			PlayerAPI.changeCurrentChar(player, character.getID());
+			TrackedPlayer.getMeta(player).setCurrent(character);
 		}
 	}
 

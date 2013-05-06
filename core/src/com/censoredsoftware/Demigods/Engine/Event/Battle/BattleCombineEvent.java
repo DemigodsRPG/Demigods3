@@ -9,26 +9,16 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 public class BattleCombineEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private int battleID;
 	private TrackedBattle first;
 	private TrackedBattle second;
 	private Long combineTime;
 	private boolean cancelled = false;
 
-	public BattleCombineEvent(int battleID, final TrackedBattle first, final TrackedBattle second, Long combineTime)
+	public BattleCombineEvent(final TrackedBattle first, final TrackedBattle second, Long combineTime)
 	{
-		this.battleID = battleID;
 		this.first = first;
 		this.second = second;
 		this.combineTime = combineTime;
-	}
-
-	/*
-	 * getBattleID() : Gets the battle created.
-	 */
-	public int getBattleID()
-	{
-		return this.battleID;
 	}
 
 	/*
