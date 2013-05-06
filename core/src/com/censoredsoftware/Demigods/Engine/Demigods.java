@@ -31,7 +31,9 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
-import com.censoredsoftware.Modules.*;
+import com.censoredsoftware.Modules.ConfigModule;
+import com.censoredsoftware.Modules.MessageModule;
+import com.censoredsoftware.Modules.PermissionModule;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -51,8 +53,8 @@ public class Demigods
 	public static Residence residence;
 
 	// Protected Modules
-	protected static BukkitUpdateModule update;
-	protected static LatestTweetModule notice;
+	// protected static BukkitUpdateModule update;
+	// protected static LatestTweetModule notice;
 
 	// The Game Data
 	protected static ListedDeity[] deities;
@@ -714,7 +716,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					character.giveDevotion(amount);
+					character.addDevotion(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
 
@@ -726,7 +728,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					character.giveAscensions(amount);
+					character.addAscensions(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
 
@@ -836,7 +838,7 @@ class Commands implements CommandExecutor
 		// int killstreak = character.getKillstreak();
 		String charName = character.getName();
 		String deity = character.getDeity().getInfo().getName();
-		String alliance = character.getTeam();
+		String alliance = character.getAlliance();
 		int favor = character.getFavor();
 		int maxFavor = character.getMaxFavor();
 		int devotion = character.getDevotion();

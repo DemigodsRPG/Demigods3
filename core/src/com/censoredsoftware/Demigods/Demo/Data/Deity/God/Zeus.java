@@ -120,7 +120,7 @@ class Shove extends Ability
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
-				if(character.getAbilities().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
+				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
 				{
 					if(!CharacterAPI.isCooledDown(player, name, false)) return;
 
@@ -179,7 +179,7 @@ class Lightning extends Ability
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
-				if(character.getAbilities().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
+				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
 				{
 					if(!CharacterAPI.isCooledDown(player, name, false)) return;
 
@@ -230,7 +230,7 @@ class Storm extends Ability
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
-				if(character.getAbilities().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
+				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(name))))
 				{
 					if(!CharacterAPI.isCooledDown(player, name, false)) return;
 

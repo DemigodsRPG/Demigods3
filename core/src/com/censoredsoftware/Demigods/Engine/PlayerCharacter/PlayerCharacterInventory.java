@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.persistence.Id;
+
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -12,42 +14,31 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import redis.clients.johm.Model;
+
 import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
-import com.censoredsoftware.Modules.Data.DataStubModule;
-import com.censoredsoftware.Modules.Data.IntegerDataModule;
 
 // TODO Figure out how this file is going to save.
 
-public class PlayerCharacterInventory implements DataStubModule
+@Model
+public class PlayerCharacterInventory
 {
-	private int charID;
+	@Id
+	private long id;
 	private int size;
 	private TrackedItemStack helmet = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private TrackedItemStack chestPlate = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private TrackedItemStack leggings = new TrackedItemStack(new ItemStack(Material.AIR), null);
 	private TrackedItemStack boots = new TrackedItemStack(new ItemStack(Material.AIR), null);
-	private IntegerDataModule items;
-
-	public PlayerCharacterInventory(int charID, int size, TrackedItemStack helmet, TrackedItemStack chestPlate, TrackedItemStack leggings, TrackedItemStack boots, IntegerDataModule items)
-	{
-		this.charID = charID;
-		this.size = size;
-		this.helmet = helmet;
-		this.chestPlate = chestPlate;
-		this.leggings = leggings;
-		this.boots = boots;
-		this.items = items;
-	}
+	private HashMap<Integer, TrackedItemStack> items;
 
 	public PlayerCharacterInventory(Inventory inventory)
 	{
-		items = new IntegerDataModule();
+		items = new HashMap<Integer, TrackedItemStack>();
 
 		if(inventory != null)
 		{
-			this.charID = (PlayerAPI.getCurrentChar((OfflinePlayer) inventory.getHolder())).getID();
 			this.size = inventory.getSize();
 
 			if(getOwner().isOnline())
@@ -200,19 +191,16 @@ public class PlayerCharacterInventory implements DataStubModule
 		// TODO
 	}
 
-	@Override
 	public int getID()
 	{
 		return charID;
 	}
 
-	@Override
 	public Map getMap() // TODO Make this into an actual DataStubModule instead of it holding a generic data module.
 	{
 		return items.getMap();
 	}
 
-	@Override
 	public void setMap(Map map) // TODO Make this into an actual DataStubModule instead of it holding a generic data module.
 	{
 		items.setMap(map);

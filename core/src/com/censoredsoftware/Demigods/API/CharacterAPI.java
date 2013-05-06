@@ -8,7 +8,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.DemigodsFactory;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class CharacterAPI
@@ -25,16 +24,8 @@ public class CharacterAPI
 	{
 		if(getCharByName(charName) == null)
 		{
-			// Define variables
-			int charID = DemigodsData.generateInt(5);
-
-			// Create the Character and it's CharacterClass.
-			PlayerCharacter character = DemigodsFactory.playerCharacterFactory.create(player, charID, charName, true, charDeity, DeityAPI.getDeity(charDeity).getInfo().getAlliance(), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
-
-			// Add character to the Character Data
-			DemigodsData.characterData.saveData(charID, character);
-
-			return character;
+			// Create the Character
+			return new PlayerCharacter(player, charName, true, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 		}
 		return null;
 	}
@@ -42,7 +33,7 @@ public class CharacterAPI
 	public static List<PlayerCharacter> getAllChars()
 	{
 		List<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
-		for(int charID : DemigodsData.characterData.listKeys())
+		for(long charID : DemigodsData.characterData.listKeys())
 		{
 			PlayerCharacter character = (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
 			characters.add(character);
@@ -50,7 +41,7 @@ public class CharacterAPI
 		return characters;
 	}
 
-	public static PlayerCharacter getChar(int charID)
+	public static PlayerCharacter getChar(long charID)
 	{
 		if(DemigodsData.characterData.containsKey(charID)) return (PlayerCharacter) DemigodsData.characterData.getDataObject(charID);
 		else return null;
@@ -75,7 +66,7 @@ public class CharacterAPI
 		return active;
 	}
 
-	public static OfflinePlayer getOwner(int charID)
+	public static OfflinePlayer getOwner(long charID)
 	{
 		return getChar(charID).getOwner();
 	}
@@ -141,7 +132,7 @@ public class CharacterAPI
 		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
 		for(PlayerCharacter character : getAllChars())
 		{
-			if(character.getTeam().equalsIgnoreCase(alliance)) allianceList.add(character);
+			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
 		return allianceList;
 	}
@@ -155,7 +146,7 @@ public class CharacterAPI
 		ArrayList<PlayerCharacter> allianceList = new ArrayList<PlayerCharacter>();
 		for(PlayerCharacter character : getAllActive())
 		{
-			if(character.getTeam().equalsIgnoreCase(alliance)) allianceList.add(character);
+			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
 		return allianceList;
 	}

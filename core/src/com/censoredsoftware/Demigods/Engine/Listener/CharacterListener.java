@@ -67,9 +67,9 @@ public class CharacterListener implements Listener
 		PlayerCharacter attacker = event.getCharacter();
 		PlayerCharacter killed = event.getKilled();
 		String attackerAlliance = "Mortal";
-		if(attacker != null) attackerAlliance = attacker.getTeam();
+		if(attacker != null) attackerAlliance = attacker.getAlliance();
 		String killedAlliance = "Mortal";
-		if(killed != null) killedAlliance = killed.getTeam();
+		if(killed != null) killedAlliance = killed.getAlliance();
 
 		if(killed == null && attacker == null) Demigods.message.broadcast(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
 		else if(killed == null && attacker != null) Demigods.message.broadcast(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");

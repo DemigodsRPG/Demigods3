@@ -25,8 +25,8 @@ public class BattleListener implements Listener
 	{
 		PlayerCharacter attacker = event.getAttacking();
 		PlayerCharacter defending = event.getDefending();
-		String attackerAlliance = attacker.getTeam();
-		String defendingAlliance = defending.getTeam();
+		String attackerAlliance = attacker.getAlliance();
+		String defendingAlliance = defending.getAlliance();
 
 		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "A battle has begun between the " + ChatColor.GREEN + attackerAlliance + "s" + ChatColor.YELLOW + " and the " + ChatColor.GREEN + defendingAlliance + "s" + ChatColor.YELLOW + ".");
 		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.GREEN + attacker.getName() + ChatColor.YELLOW + " took the first hit against " + ChatColor.GREEN + defending.getName() + ChatColor.YELLOW + ".");

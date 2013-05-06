@@ -1,8 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -10,122 +8,109 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 
+import redis.clients.johm.*;
+
 import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.API.LocationAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class PlayerCharacter implements DataStubModule
+@Model
+public class PlayerCharacter
 {
-	// Define HashMaps
-	private Map<String, Object> characterData;
-	private PlayerCharacterInventory playerCharacterInventory; // TODO Track these in a different file somehow.
-	private int globalMaxFavor;
+	@Id
+	private Long id;
+	@Attribute
+	private String name;
+	@Attribute
+	@Indexed
+	private String player;
+	@Attribute
+	private int health;
+	@Attribute
+	private int hunger;
+	@Attribute
+	private float experience;
+	@Attribute
+	private int level;
+	@Reference
+	private TrackedLocation location;
+	@Reference
+	private PlayerCharacterInventory inventory;
+	@Attribute
+	@Indexed
+	private String deity;
+	@Attribute
+	@Indexed
+	private String alliance;
+	@Attribute
+	private int favor;
+	@Attribute
+	private int maxFavor;
+	@Attribute
+	private int devotion;
+	@Attribute
+	private int ascensions;
+	@Attribute
+	@Indexed
+	private boolean active;
+	@Attribute
+	@Indexed
+	private boolean immortal;
+	@Reference
+	private PlayerCharacterMeta meta;
+	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
+	private Map<TrackedLocation, String> warps;
+	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
+	private Map<TrackedLocation, String> invites;
 
-	public PlayerCharacter(int globalMaxFavor, Map map)
+	public PlayerCharacter(OfflinePlayer player, String charName, boolean active, Deity deity, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean immortal)
 	{
-		this.globalMaxFavor = globalMaxFavor;
-		setMap(map);
-		save(this);
-	}
-
-	public PlayerCharacter(int globalMaxFavor, OfflinePlayer player, int charID, String charName, boolean charActive, String className, String teamName, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean classActive)
-	{
-		this.globalMaxFavor = globalMaxFavor;
-		characterData = new HashMap<String, Object>();
-
 		// Vanilla Data
-		saveData("PLAYER_NAME", player.getName());
-		saveData("CHAR_NAME", charName);
-		saveData("CHAR_ID", charID);
-		saveData("CHAR_LEVEL", 0);
-		saveData("CHAR_FOOD_LEVEL", 20);
-		saveData("CHAR_HEALTH", 20);
-		saveData("CHAR_EXP", 0);
-		saveData("CHAR_ACTIVE", charActive);
+		this.player = player.getName();
+		this.health = 20;
+		this.hunger = 20;
+		this.experience = 0;
+		this.level = 0;
+		if(player.isOnline()) this.location = new TrackedLocation(player.getPlayer().getLocation()); // TODO
+		if(player.isOnline()) this.inventory = new PlayerCharacterInventory(player.getPlayer().getInventory()); // TODO
 
 		// Demigods Data
-		saveData("CLASS_NAME", className);
-		saveData("TEAM_NAME", teamName);
-		saveData("FAVOR", favor);
-		saveData("MAX_FAVOR", maxFavor);
-		saveData("DEVOTION", devotion);
-		saveData("ASCENSIONS", ascensions);
-		saveData("OFFENSE", offense);
-		saveData("DEFENSE", defense);
-		saveData("STEALTH", stealth);
-		saveData("SUPPORT", support);
-		saveData("PASSIVE", passive);
-		saveData("CLASS_ACTIVE", classActive);
+		this.name = charName;
+		this.active = active;
+		this.deity = deity.getInfo().getName();
+		this.alliance = deity.getInfo().getAlliance();
+		this.favor = favor;
+		this.maxFavor = maxFavor;
+		this.devotion = devotion;
+		this.ascensions = ascensions;
+
+		this.immortal = immortal;
+
+		// Meta Data
+		this.meta = new PlayerCharacterMeta();
+		this.meta.setLevel("OFFENSE", offense);
+		this.meta.setLevel("DEFENSE", defense);
+		this.meta.setLevel("STEALTH", stealth);
+		this.meta.setLevel("SUPPORT", support);
+		this.meta.setLevel("PASSIVE", passive);
 
 		// Location Data
-		saveData("WARPS", new ArrayList<Integer>());
-		saveData("INVITES", new ArrayList<Integer>());
+		this.warps = new HashMap<TrackedLocation, String>();
+		this.invites = new HashMap<TrackedLocation, String>();
 
-		this.playerCharacterInventory = null;
-		new PlayerCharacterAbilities(charID);
-		new PlayerCharacterBindings(charID);
-		new PlayerCharacterTasks(charID);
-		try
-		{
-			saveData("LOCATION", new TrackedLocation(DemigodsData.generateInt(5), player.getPlayer().getLocation(), null).getID());
-		}
-		catch(Exception ignored)
-		{}
-
-		save(this);
+		save();
 	}
 
-	public static void save(PlayerCharacter character) // TODO This belongs somewhere else.
+	public void save()
 	{
-		DemigodsData.characterData.saveData(character.getID(), character);
+		DemigodsData.jOhm.save(this);
 	}
 
-	/**
-	 * Checks if the characterData Map contains <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return True if characterData contains the key.
-	 */
-	public boolean containsKey(String key)
+	public static PlayerCharacter load(long id) // TODO This belongs somewhere else.
 	{
-		return characterData.get(key) != null && characterData.containsKey(key);
-	}
-
-	/**
-	 * Retrieve the Object data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return Object data.
-	 */
-	public Object getData(String key)
-	{
-		if(containsKey(key)) return characterData.get(key);
-		return null; // Should never happen, always check with containsKey before getting the data.
-	}
-
-	/**
-	 * Save the Object <code>data</code> for int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @param data The Object being saved.
-	 */
-	public void saveData(String key, Object data)
-	{
-		characterData.put(key, data);
-	}
-
-	/**
-	 * Remove the data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 */
-	public void removeData(String key)
-	{
-		if(!containsKey(key)) return;
-		characterData.remove(key);
+		return DemigodsData.jOhm.get(PlayerCharacter.class, id);
 	}
 
 	public ChatColor getHealthColor()
@@ -144,125 +129,128 @@ public class PlayerCharacter implements DataStubModule
 
 	public void setHealth(int amount)
 	{
-		saveData("CHAR_HEALTH", amount);
+		this.health = amount;
 	}
 
 	public void saveInventory()
 	{
-		this.playerCharacterInventory = new PlayerCharacterInventory(getOwner().getPlayer().getInventory());
+		this.inventory = new PlayerCharacterInventory(getOwner().getPlayer().getInventory());
 	}
 
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.playerCharacterInventory != null) return this.playerCharacterInventory;
+		if(this.inventory != null) return this.inventory;
+		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
+		{
+			this.inventory = new PlayerCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			return this.inventory;
+		}
 		else return null;
 	}
 
-	public PlayerCharacterAbilities getAbilities()
+	public PlayerCharacterMeta getMeta()
 	{
-		if(DemigodsData.characterAbilityData.containsKey(getID())) return (PlayerCharacterAbilities) DemigodsData.characterAbilityData.getDataObject(getID());
-		else return new PlayerCharacterAbilities(getID());
+		if(this.meta != null) return this.meta;
+		else
+		{
+			this.meta = new PlayerCharacterMeta();
+			return this.meta;
+		}
 	}
 
-	public PlayerCharacterBindings getBindings()
+	public void setHunger(int amount)
 	{
-		if(DemigodsData.characterBindingData.containsKey(getID())) return (PlayerCharacterBindings) DemigodsData.characterBindingData.getDataObject(getID());
-		else return new PlayerCharacterBindings(getID());
+		this.hunger = amount;
 	}
 
-	public PlayerCharacterTasks getTasks()
+	public void setExperience(float amount)
 	{
-		if(DemigodsData.characterTaskData.containsKey(getID())) return (PlayerCharacterTasks) DemigodsData.characterTaskData.getDataObject(getID());
-		else return new PlayerCharacterTasks(getID());
-	}
-
-	public void setFoodLevel(int amount)
-	{
-		saveData("CHAR_FOOD_LEVEL", amount);
-	}
-
-	public void setExp(float amount)
-	{
-		saveData("CHAR_EXP", amount);
+		this.experience = amount;
 	}
 
 	public void setLevel(int amount)
 	{
-		saveData("CHAR_LEVEL", amount);
+		this.level = amount;
 	}
 
 	public void setLocation(Location location)
 	{
-		saveData("LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
+		this.location = new TrackedLocation(location);
 	}
 
-	public void toggleActive(boolean option)
+	public void setActive(boolean option)
 	{
-		saveData("CHAR_ACTIVE", option);
+		this.active = option;
 	}
 
 	public OfflinePlayer getOwner()
 	{
-		return Bukkit.getOfflinePlayer(getData("PLAYER_NAME").toString());
+		return Bukkit.getOfflinePlayer(this.player);
 	}
 
 	public String getName()
 	{
-		return getData("CHAR_NAME").toString();
+		return this.name;
 	}
 
 	public boolean isActive()
 	{
-		return Boolean.parseBoolean(getData("CHAR_ACTIVE").toString());
+		return this.active;
 	}
 
 	public TrackedLocation getLocation()
 	{
-		return LocationAPI.getLocation(Integer.parseInt(getData("LOCATION").toString()));
+		return this.location;
 	}
 
 	public int getHealth()
 	{
-		return Integer.parseInt(getData("CHAR_HEALTH").toString());
+		return this.health;
 	}
 
-	public int getFoodLevel()
+	public int getHunger()
 	{
-		return Integer.parseInt(getData("CHAR_FOOD_LEVEL").toString());
+		return this.hunger;
 	}
 
-	public float getExp()
+	public float getExperience()
 	{
-		return Float.parseFloat(getData("CHAR_EXP").toString());
+		return this.experience;
 	}
 
 	public void setFavor(int amount)
 	{
-		saveData("FAVOR", amount);
+		this.favor = amount;
 	}
 
 	public void giveFavor(int amount)
 	{
-		if(getFavor() + amount > getMaxFavor()) saveData("FAVOR", getMaxFavor());
-		else saveData("FAVOR", getFavor() + amount);
+		if(getFavor() + amount > getMaxFavor()) this.favor = getMaxFavor();
+		else this.favor += amount;
 	}
 
 	public void subtractFavor(int amount)
 	{
-		if(getFavor() - amount < 0) saveData("FAVOR", 0);
-		else saveData("FAVOR", getFavor() - amount);
+		if(getFavor() - amount < 0) this.favor = 0;
+		else this.favor -= amount;
 	}
 
 	public void setMaxFavor(int amount)
 	{
-		if((amount) > this.globalMaxFavor) saveData("MAX_FAVOR", this.globalMaxFavor);
-		else saveData("MAX_FAVOR", amount);
+		if((amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+		else this.maxFavor = amount;
 	}
 
 	public void addMaxFavor(int amount)
 	{
-		if((getMaxFavor() + amount) > this.globalMaxFavor) saveData("MAX_FAVOR", this.globalMaxFavor);
-		else saveData("MAX_FAVOR", getMaxFavor() + amount);
+		if((getMaxFavor() + amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+		else this.maxFavor += amount;
+	}
+
+	public void subtractMaxFavor(int amount)
+	{
+		if((getMaxFavor() - amount) < 0) this.maxFavor = 0;
+		else this.maxFavor -= amount;
 	}
 
 	public ChatColor getFavorColor()
@@ -286,14 +274,14 @@ public class PlayerCharacter implements DataStubModule
 
 	public void setDevotion(int amount)
 	{
-		saveData("DEVOTION", amount);
+		this.devotion = amount;
 	}
 
-	public void giveDevotion(int amount)
+	public void addDevotion(int amount)
 	{
 		int devotionBefore = getDevotion();
 		int devotionGoal = getDevotionGoal();
-		saveData("DEVOTION", devotionBefore + amount);
+		this.devotion = devotionBefore + amount;
 		int devotionAfter = getDevotion();
 
 		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
@@ -303,152 +291,111 @@ public class PlayerCharacter implements DataStubModule
 			// TODO Trigger an event here instead of doing it as part of the object,
 			// TODO that way we can grab a lot more stuff from the listener without having to make everything public.
 
-			saveData("ASCENSIONS", getAscensions() + 1);
-			saveData("DEVOTION", devotionAfter - devotionGoal);
+			this.ascensions = getAscensions() + 1;
+			this.devotion = devotionAfter - devotionGoal;
 		}
 	}
 
 	public void subtractDevotion(int amount)
 	{
-		if(getDevotion() - amount < 0) saveData("DEVOTION", 0);
-		else saveData("DEVOTION", getDevotion() - amount);
+		if(getDevotion() - amount < 0) this.devotion = 0;
+		else this.devotion -= amount;
 	}
 
 	public void setAscensions(int amount)
 	{
-		saveData("ASCENSIONS", amount);
+		this.ascensions = amount;
 	}
 
-	public void giveAscensions(int amount)
+	public void addAscensions(int amount)
 	{
-		saveData("ASCENSIONS", getAscensions() + amount);
+		this.ascensions = getAscensions() + amount;
 	}
 
 	public void subtractAscensions(int amount)
 	{
-		if(getAscensions() - amount < 0) saveData("ASCENSIONS", 0);
-		else saveData("ASCENSIONS", getAscensions() - amount);
+		if(getAscensions() - amount < 0) this.ascensions = 0;
+		else this.ascensions -= amount;
 	}
 
-	public void setTeam(String alliance)
+	public boolean isDeity(String deityName)
 	{
-		saveData("TEAM_NAME", alliance);
+		return getDeity().getInfo().getName().equalsIgnoreCase(deityName);
 	}
 
-	public boolean isDeity(String className)
+	public void setImmortal(boolean option)
 	{
-		return getDeity().getInfo().getName().equalsIgnoreCase(className);
-	}
-
-	public void toggleImmortal(boolean option)
-	{
-		saveData("CLASS_ACTIVE", option);
+		this.immortal = option;
 	}
 
 	public Deity getDeity()
 	{
-		return DeityAPI.getDeity(getData("CLASS_NAME").toString());
+		return DeityAPI.getDeity(this.deity);
 	}
 
-	public String getTeam()
+	public String getAlliance()
 	{
-		return getData("TEAM_NAME").toString();
+		return getDeity().getInfo().getAlliance();
 	}
 
 	public boolean isImmortal()
 	{
-		return Boolean.parseBoolean(getData("CLASS_ACTIVE").toString());
+		return this.immortal;
 	}
 
 	public int getFavor()
 	{
-		return Integer.parseInt(getData("FAVOR").toString());
+		return this.favor;
 	}
 
 	public int getMaxFavor()
 	{
-		return Integer.parseInt(getData("MAX_FAVOR").toString());
+		return this.maxFavor;
 	}
 
 	public int getDevotion()
 	{
-		return Integer.parseInt(getData("DEVOTION").toString());
+		return this.maxFavor;
 	}
 
 	public int getAscensions()
 	{
-		return Integer.parseInt(getData("ASCENSIONS").toString());
+		return this.ascensions;
 	}
 
-	public int getPower(Enum ignored) // TODO Levels (Offense, Defense, Stealth, Support, Passive).
+	public void addWarp(TrackedLocation location, String name)
 	{
-		return 10;
+		this.warps.put(location, name);
 	}
 
-	public void addWarp(int id)
+	public void removeWarp(TrackedLocation location)
 	{
-		List<Integer> warps = (List<Integer>) getData("WARPS");
-		warps.add(id);
-		saveData("WARPS", warps);
+		this.warps.remove(location);
 	}
 
-	public void removeWarp(int id)
+	public Map<TrackedLocation, String> getWarps()
 	{
-		List<Integer> warps = (List<Integer>) getData("WARPS");
-		warps.remove(id);
-		saveData("WARPS", warps);
+		return this.warps;
 	}
 
-	public List<TrackedLocation> getWarps()
+	public void addInvite(TrackedLocation location, String name)
 	{
-		List<TrackedLocation> warps = new ArrayList<TrackedLocation>();
-		for(Integer warp : (List<Integer>) getData("WARPS"))
-		{
-			warps.add(LocationAPI.getLocation(warp));
-		}
-		return warps;
+		this.invites.put(location, name);
 	}
 
-	public void addInvite(int id)
+	public void removeInvite(TrackedLocation location)
 	{
-		List<Integer> invites = (List<Integer>) getData("WARPS");
-		invites.add(id);
-		saveData("INVITE", invites);
+		this.invites.remove(location);
 	}
 
-	public void removeInvite(int id)
+	public Map<TrackedLocation, String> getInvites()
 	{
-		List<Integer> invites = (List<Integer>) getData("INVITES");
-		invites.remove(id);
-		saveData("INVITES", invites);
+		return this.invites;
 	}
 
-	public List<TrackedLocation> getInvites()
+	public long getId()
 	{
-		List<TrackedLocation> invites = new ArrayList<TrackedLocation>();
-		for(Integer invite : (List<Integer>) getData("INVITES"))
-		{
-			invites.add(LocationAPI.getLocation(invite));
-		}
-		return invites;
-	}
-
-	@Override
-	public int getID()
-	{
-		return Integer.parseInt(getData("CHAR_ID").toString());
-	}
-
-	@Override
-	public Map<String, Object> getMap()
-	{
-		return this.characterData;
-	}
-
-	@Override
-	public void setMap(Map map)
-	{
-		this.characterData = map;
+		return id;
 	}
 
 	@Override

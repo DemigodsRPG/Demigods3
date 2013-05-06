@@ -120,13 +120,13 @@ public class Prometheus_deity extends Deity implements Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.getAbilities().isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(FIREBALL_NAME))))
+		if(character.getMeta().isEnabledAbility(FIREBALL_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(FIREBALL_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, FIREBALL_NAME, false)) return;
 
 			fireball(player);
 		}
-		else if(character.getAbilities().isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(BLAZE_NAME))))
+		else if(character.getMeta().isEnabledAbility(BLAZE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(BLAZE_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, BLAZE_NAME, false)) return;
 
@@ -156,14 +156,14 @@ public class Prometheus_deity extends Deity implements Listener
 		}
 		else
 		{
-			if(character.getAbilities().isEnabledAbility(FIREBALL_NAME))
+			if(character.getMeta().isEnabledAbility(FIREBALL_NAME))
 			{
-				character.getAbilities().toggleAbility(FIREBALL_NAME, false);
+				character.getMeta().toggleAbility(FIREBALL_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.getAbilities().toggleAbility(FIREBALL_NAME, true);
+				character.getMeta().toggleAbility(FIREBALL_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + FIREBALL_NAME + " is now active.");
 			}
 		}
@@ -225,14 +225,14 @@ public class Prometheus_deity extends Deity implements Listener
 		}
 		else
 		{
-			if(character.getAbilities().isEnabledAbility(BLAZE_NAME))
+			if(character.getMeta().isEnabledAbility(BLAZE_NAME))
 			{
-				character.getAbilities().toggleAbility(BLAZE_NAME, false);
+				character.getMeta().toggleAbility(BLAZE_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + BLAZE_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.getAbilities().toggleAbility(BLAZE_NAME, true);
+				character.getMeta().toggleAbility(BLAZE_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + BLAZE_NAME + " is now active.");
 			}
 		}

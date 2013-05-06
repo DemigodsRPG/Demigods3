@@ -15,9 +15,8 @@ import com.censoredsoftware.Demigods.API.LocationAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class Altar implements DataStubModule
+public class Altar
 {
 	private Map<String, Object> altarData;
 
@@ -79,19 +78,16 @@ public class Altar implements DataStubModule
 	 * 
 	 * @return Integer
 	 */
-	@Override
 	public int getID()
 	{
 		return Integer.parseInt(getData("ALTAR_ID").toString());
 	}
 
-	@Override
 	public Map getMap()
 	{
 		return altarData;
 	}
 
-	@Override
 	public void setMap(Map map)
 	{
 		altarData = map;

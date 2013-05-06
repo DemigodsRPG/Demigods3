@@ -27,6 +27,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <path id="Demigods.classpath">
             <pathelement location="lib/Bukkit.jar"/>
+            <pathelement location="lib/johm.jar"/>
             <pathelement location="lib/WorldEdit.jar"/>
             <pathelement location="lib/WorldGuard.jar"/>
             <pathelement location="lib/Factions.jar"/>

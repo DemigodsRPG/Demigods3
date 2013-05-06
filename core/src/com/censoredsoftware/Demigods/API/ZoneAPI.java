@@ -203,13 +203,13 @@ public class ZoneAPI
 	 * @param location the location to check.
 	 * @return the character ID of the owner.
 	 */
-	public static int zoneShrineOwner(Location location)
+	public static long zoneShrineOwner(Location location)
 	{
 		if(BlockAPI.getAllShrines() == null) return -1;
 
 		for(Shrine shrine : BlockAPI.getAllShrines())
 		{
-			if(shrine.getLocation().equals(location)) return shrine.getOwner().getID();
+			if(shrine.getLocation().equals(location)) return shrine.getOwner().getId();
 		}
 		return -1;
 	}

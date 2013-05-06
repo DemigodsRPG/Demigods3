@@ -8,9 +8,8 @@ import org.bukkit.Material;
 
 import com.censoredsoftware.Demigods.API.LocationAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class TrackedBlock implements DataStubModule
+public class TrackedBlock
 {
 	private Map<String, Object> blockData;
 
@@ -116,19 +115,16 @@ public class TrackedBlock implements DataStubModule
 	/*
 	 * getID() : Returns the ID of the block.
 	 */
-	@Override
 	public int getID()
 	{
 		return Integer.parseInt(getData("BLOCK_ID").toString());
 	}
 
-	@Override
 	public Map getMap()
 	{
 		return blockData;
 	}
 
-	@Override
 	public void setMap(Map map)
 	{
 		blockData = map;

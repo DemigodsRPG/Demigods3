@@ -63,7 +63,7 @@ public class PlayerAPI
 	{
 		PlayerCharacter character = getCurrentChar(player);
 		if(character == null || !character.isImmortal()) return "Mortal";
-		return character.getTeam();
+		return character.getAlliance();
 	}
 
 	/**
@@ -125,21 +125,21 @@ public class PlayerAPI
 		{
 			// Save info
 			currentChar.setHealth(player.getHealth());
-			currentChar.setFoodLevel(player.getFoodLevel());
+			currentChar.setHunger(player.getFoodLevel());
 			currentChar.setLevel(player.getLevel());
-			currentChar.setExp(player.getExp());
+			currentChar.setExperience(player.getExp());
 			currentChar.setLocation(player.getLocation());
 			currentChar.saveInventory();
 
 			// Set them to inactive
-			currentChar.toggleActive(false);
+			currentChar.setActive(false);
 			DemigodsData.playerData.saveData(player, "previous_char", currentChar.getID());
 		}
 
 		// Everything is good, let's switch
 		DemigodsData.playerData.saveData(player, "current_char", charID);
 		PlayerCharacter character = CharacterAPI.getChar(charID);
-		character.toggleActive(true);
+		character.setActive(true);
 
 		// If it's their first character save their inventory
 		if(getChars(player).size() <= 1) character.saveInventory();
@@ -159,8 +159,8 @@ public class PlayerAPI
 
 		// Update health and experience
 		player.setHealth(character.getHealth());
-		player.setFoodLevel(character.getFoodLevel());
-		player.setExp(character.getExp());
+		player.setFoodLevel(character.getHunger());
+		player.setExp(character.getExperience());
 
 		try
 		{

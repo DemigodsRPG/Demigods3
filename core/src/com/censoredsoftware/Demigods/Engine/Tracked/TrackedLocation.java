@@ -1,115 +1,79 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import redis.clients.johm.Attribute;
+import redis.clients.johm.Id;
+import redis.clients.johm.Indexed;
+import redis.clients.johm.Model;
+
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Modules.Data.DataStubModule;
 
-public class TrackedLocation implements DataStubModule
+@Model
+public class TrackedLocation
 {
-	private Map<String, Object> locationData;
+	@Id
+	private long id;
+	@Attribute
+	@Indexed
+	private String world;
+	@Attribute
+	private double X;
+	@Attribute
+	private double Y;
+	@Attribute
+	private double Z;
+	@Attribute
+	private float pitch;
+	@Attribute
+	private float yaw;
 
-	public TrackedLocation(Map map)
+	public TrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
-		setMap(map);
-		save(this);
+		this.world = world;
+		this.X = X;
+		this.Y = Y;
+		this.Z = Z;
+		this.yaw = yaw;
+		this.pitch = pitch;
+
+		save();
 	}
 
-	public TrackedLocation(int id, String world, double X, double Y, double Z, float pitch, float yaw, String name)
+	public TrackedLocation(Location location)
 	{
-		locationData = new HashMap<String, Object>();
-		saveData("LOC_ID", id);
-		saveData("WORLD", world);
-		saveData("X", X);
-		saveData("Y", Y);
-		saveData("Z", Z);
-		saveData("PITCH", pitch);
-		saveData("YAW", yaw);
-		if(name != null) saveData("NAME", name);
+		this.world = location.getWorld().getName();
+		this.X = location.getX();
+		this.Y = location.getY();
+		this.Z = location.getZ();
+		this.yaw = location.getYaw();
+		this.pitch = location.getPitch();
 
-		save(this);
+		save();
 	}
 
-	public TrackedLocation(int id, Location location, String name)
+	public void save() // TODO This belongs somewhere else.
 	{
-		locationData = new HashMap<String, Object>();
-		saveData("LOC_ID", id);
-		saveData("WORLD", location.getWorld().getName());
-		saveData("X", location.getX());
-		saveData("Y", location.getY());
-		saveData("Z", location.getZ());
-		saveData("PITCH", location.getPitch());
-		saveData("YAW", location.getYaw());
-		if(name != null) saveData("NAME", name);
-
-		save(this);
-	}
-
-	public static void save(TrackedLocation location) // TODO This belongs somewhere else.
-	{
-		DemigodsData.locationData.saveData(location.getID(), location);
-	}
-
-	public boolean hasName()
-	{
-		return locationData.containsKey("NAME");
-	}
-
-	public String getName()
-	{
-		return getData("NAME").toString();
-	}
-
-	public synchronized void setName(String name)
-	{
-		saveData("NAME", name);
+		DemigodsData.jOhm.save(this);
 	}
 
 	public Location toLocation() throws NullPointerException
 	{
-		return new Location(Bukkit.getServer().getWorld(getData("WORLD").toString()), Double.parseDouble(getData("X").toString()), Double.parseDouble(getData("Y").toString()), Double.parseDouble(getData("Z").toString()), Float.parseFloat(getData("YAW").toString()), Float.parseFloat(getData("PITCH").toString()));
+		return new Location(Bukkit.getServer().getWorld(this.world), this.X, this.Y, this.Z, this.yaw, this.pitch);
 	}
 
-	public boolean containsKey(String key)
+	public long getId()
 	{
-		return locationData.get(key) != null && locationData.containsKey(key);
-	}
-
-	public Object getData(String key)
-	{
-		return locationData.get(key);
-	}
-
-	public void saveData(String key, Object data)
-	{
-		locationData.put(key, data);
-	}
-
-	public void removeData(String key)
-	{
-		locationData.remove(key);
+		return this.id;
 	}
 
 	@Override
-	public int getID()
+	public boolean equals(Object object)
 	{
-		return Integer.parseInt(getData("LOC_ID").toString());
-	}
-
-	@Override
-	public Map getMap()
-	{
-		return locationData;
-	}
-
-	@Override
-	public void setMap(Map map)
-	{
-		locationData = map;
+		if(object instanceof Location) return this.toLocation().distance((Location) object) < 1;
+		else if(object instanceof TrackedLocation) return this.toLocation().distance(((TrackedLocation) object).toLocation()) < 1;
+		return false;
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.censoredsoftware.Modules.Data.PlayerDataModule;
-import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
 
 /**
  * Module to handle the latest messages from a Twitter feed.
@@ -32,8 +31,6 @@ public class LatestTweetModule implements Listener
 {
 	private Plugin plugin;
 	private Logger log = Logger.getLogger("Minecraft");
-	private PlayerDataModule messagesData;
-	private YAMLPersistenceModule messagesYAML;
 	private URL twitterFeed;
 	private String pluginName, command, permission, date, link, message;
 	private boolean notify;
@@ -57,9 +54,6 @@ public class LatestTweetModule implements Listener
 			this.command = command;
 			this.permission = permission;
 			this.notify = notify;
-
-			this.messagesData = new PlayerDataModule(plugin, "official_messages", "No message.");
-			this.messagesYAML = new YAMLPersistenceModule(true, plugin, "core", "official_messages");
 
 			initilize(start_delay, save_interval);
 		}

@@ -277,14 +277,14 @@ public class AbilityAPI
 				}
 				else
 				{
-					if(character.getAbilities().isEnabledAbility(ability.getInfo().getName()))
+					if(character.getMeta().isEnabledAbility(ability.getInfo().getName()))
 					{
-						character.getAbilities().toggleAbility(ability.getInfo().getName(), false);
+						character.getMeta().toggleAbility(ability.getInfo().getName(), false);
 						player.sendMessage(ChatColor.YELLOW + ability.getInfo().getName() + " is no longer active.");
 					}
 					else
 					{
-						character.getAbilities().toggleAbility(ability.getInfo().getName(), true);
+						character.getMeta().toggleAbility(ability.getInfo().getName(), true);
 						player.sendMessage(ChatColor.YELLOW + ability.getInfo().getName() + " is now active.");
 					}
 				}

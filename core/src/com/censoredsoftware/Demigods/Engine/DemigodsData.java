@@ -1,238 +1,29 @@
 package com.censoredsoftware.Demigods.Engine;
 
-import java.io.File;
-import java.text.DecimalFormat;
 import java.util.Random;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-
-import com.censoredsoftware.Demigods.API.BlockAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.LocationAPI;
-import com.censoredsoftware.Demigods.Engine.Block.Altar;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterAbilities;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterBindings;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterTasks;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Modules.Data.IntegerDataModule;
-import com.censoredsoftware.Modules.Data.TieredPlayerDataModule;
-import com.censoredsoftware.Modules.Data.TimedDataModule;
-import com.censoredsoftware.Modules.Persistence.Event.LoadFileStubEvent;
-import com.censoredsoftware.Modules.Persistence.JsonPersistenceModule;
-import com.censoredsoftware.Modules.Persistence.PersistenceModule;
-import com.censoredsoftware.Modules.Persistence.YAMLPersistenceModule;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.johm.JOhm;
 
 public class DemigodsData
 {
-	// Persistent Plugin Data
-	public static IntegerDataModule locationData;
-	public static PersistenceModule locationFile;
+	// The Redis DB
+	private static JedisPool jedisPool;
 
-	// Player Data
-	public static TieredPlayerDataModule playerData;
-	public static PersistenceModule playerFile;
-	public static TieredPlayerDataModule tempPlayerData;
-
-	// Character Data
-	public static IntegerDataModule characterData;
-	public static IntegerDataModule characterAbilityData;
-	public static IntegerDataModule characterBindingData;
-	public static IntegerDataModule characterTaskData;
-	public static PersistenceModule characterFile;
-	public static IntegerDataModule tempTributeData;
-
-	// Block Data
-	public static IntegerDataModule trackedBlockData;
-	public static PersistenceModule trackedBlockFile;
-	public static IntegerDataModule altarData;
-	public static PersistenceModule altarFile;
-	public static TimedDataModule timedAltarData;
-	public static IntegerDataModule shrineData;
-
-	// Battle Data
-	public static IntegerDataModule battleData;
-	public static TimedDataModule timedBattleData;
+	// Persistence
+	public static JOhm jOhm;
 
 	protected DemigodsData(DemigodsPlugin instance)
 	{
-		instance.getServer().getPluginManager().registerEvents(new DataListener(), instance);
-
-		pluginDataPersistent(instance);
-		playerData(instance);
-		characterData(instance);
-		battleData(instance);
-		blockData(instance);
-
-		load(instance, false, true);
+		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 9900);
+		jOhm = new JOhm();
+		jOhm.setPool(jedisPool);
 	}
 
-	static void pluginDataPersistent(DemigodsPlugin instance)
+	public static void save()
 	{
-		locationData = new IntegerDataModule(instance, "location_data");
-	}
-
-	static void playerData(DemigodsPlugin instance)
-	{
-		playerData = new TieredPlayerDataModule(instance, "player_data");
-		tempPlayerData = new TieredPlayerDataModule();
-	}
-
-	static void characterData(DemigodsPlugin instance)
-	{
-		characterData = new IntegerDataModule(instance, "character_data");
-		characterAbilityData = new IntegerDataModule();
-		characterBindingData = new IntegerDataModule();
-		characterTaskData = new IntegerDataModule();
-		tempTributeData = new IntegerDataModule();
-	}
-
-	static void blockData(DemigodsPlugin instance)
-	{
-		trackedBlockData = new IntegerDataModule(instance, "tracked_block_data");
-		altarData = new IntegerDataModule(instance, "altar_data");
-		timedAltarData = new TimedDataModule(instance);
-		shrineData = new IntegerDataModule(instance, "shrine_data");
-	}
-
-	static void battleData(DemigodsPlugin instance)
-	{
-		battleData = new IntegerDataModule(instance, "battle_data");
-		timedBattleData = new TimedDataModule(instance);
-	}
-
-	static void load(DemigodsPlugin instance, boolean yaml, boolean json)
-	{
-		if(yaml)
-		{
-			// Core
-			locationFile = new YAMLPersistenceModule(true, instance, "core", "location_data");
-			playerFile = new YAMLPersistenceModule(true, instance, "core", "player_data");
-
-			// Character
-			characterFile = new YAMLPersistenceModule(true, instance, "character", "character_data");
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
-			{
-				new YAMLPersistenceModule(true, instance, "character" + File.separator + character.getID(), "ability_data");
-				new YAMLPersistenceModule(true, instance, "character" + File.separator + character.getID(), "binding_data");
-			}
-
-			// Block
-			trackedBlockFile = new YAMLPersistenceModule(true, instance, "block", "tracked_block_data");
-			altarFile = new YAMLPersistenceModule(true, instance, "block", "altar_data");
-		}
-		if(json)
-		{
-			// Core
-			locationFile = new JsonPersistenceModule(true, instance, "core", "location_data");
-			playerFile = new JsonPersistenceModule(true, instance, "core", "player_data");
-
-			// Character
-			characterFile = new JsonPersistenceModule(true, instance, "character", "character_data");
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
-			{
-				new JsonPersistenceModule(true, instance, "character" + File.separator + character.getID(), "ability_data");
-				new JsonPersistenceModule(true, instance, "character" + File.separator + character.getID(), "binding_data");
-			}
-
-			// Block
-			trackedBlockFile = new JsonPersistenceModule(true, instance, "block", "tracked_block_data");
-			altarFile = new JsonPersistenceModule(true, instance, "block", "altar_data");
-		}
-	}
-
-	public static class Save implements Runnable
-	{
-		private boolean file;
-
-		Save(boolean file)
-		{
-			this.file = file;
-		}
-
-		@Override
-		public void run()
-		{
-			save(file, false);
-		}
-
-		public static void save(boolean file, boolean progress)
-		{
-			if(file)
-			{
-				DecimalFormat percent = new DecimalFormat("0.##");
-
-				double location = 1.0;
-				double player = 1.0;
-				double block = 1.0;
-				double altar = 1.0;
-				double character;
-				double total = 1.0;
-
-				if(progress)
-				{
-					location = LocationAPI.getAllLocations().size();
-					player = DemigodsData.playerData.listTiers().size();
-					block = BlockAPI.getBlocks().size();
-					altar = BlockAPI.getAllAltars().size();
-					character = CharacterAPI.getAllChars().size();
-					total = location + player + block + altar + character;
-				}
-
-				long countdown = System.currentTimeMillis();
-				locationFile.save(LocationAPI.getAllLocations());
-				if(progress) Demigods.message.info("Locations Saved:  " + percent.format((location / total) * 100) + "%");
-				playerFile.save(DemigodsData.playerData);
-				if(progress) Demigods.message.info("Players Saved:    " + percent.format(((location + player) / total) * 100) + "%");
-				trackedBlockFile.save(BlockAPI.getBlocks());
-				if(progress) Demigods.message.info("Blocks Saved:     " + percent.format(((location + player + block) / total) * 100) + "%");
-				altarFile.save(BlockAPI.getAllAltars());
-				if(progress) Demigods.message.info("Altars Saved:     " + percent.format(((location + player + block + altar) / total) * 100) + "%");
-				saveCharacters(false, true);
-				if(progress) Demigods.message.info("Characters Saved: " + 100 + "%");
-				double seconds = (System.currentTimeMillis() - countdown) / 1000.0;
-				Demigods.message.info("All data was saved in " + seconds + " seconds.");
-			}
-		}
-
-		private static void saveCharacters(boolean yaml, boolean json)
-		{
-			characterFile.save(CharacterAPI.getAllChars());
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
-			{
-				int charID = character.getID();
-				try
-				{
-					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "ability_data").save(character.getAbilities());
-				}
-				catch(Exception e)
-				{
-					Demigods.message.severe("There was an error while saving abilities for character with id " + charID);
-				}
-				try
-				{
-					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
-					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "binding_data").save(character.getBindings());
-				}
-				catch(Exception e)
-				{
-					Demigods.message.severe("There was an error while saving bindings for character with id " + charID);
-				}
-				try
-				{
-					if(yaml) new YAMLPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
-					if(json) new JsonPersistenceModule(false, Demigods.plugin, "character" + File.separator + character.getID(), "task_data").save(character.getTasks());
-				}
-				catch(Exception e)
-				{
-					Demigods.message.severe("There was an error while saving tasks for character with id " + charID);
-				}
-			}
-		}
+		jedisPool.getResource().bgsave();
 	}
 
 	// TODO Find a place for these:
@@ -394,67 +185,6 @@ public class DemigodsData
 		catch(Exception e)
 		{
 			return false;
-		}
-	}
-}
-
-class DataListener implements Listener
-{
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onTrackedLocationLoad(LoadFileStubEvent event)
-	{
-		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
-
-		if(event.getPath().equals("core") && event.getDataName().equals("location_data"))
-		{
-			new TrackedLocation(event.getData());
-			Demigods.message.broadcast("Location created.");
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onTrackedBlockLoad(LoadFileStubEvent event)
-	{
-		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
-
-		if(event.getPath().equals("block") && event.getDataName().equals("tracked_block_data"))
-		{
-			new TrackedBlock(event.getData());
-			Demigods.message.broadcast("Block created.");
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onCharacterLoad(LoadFileStubEvent event)
-	{
-		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
-
-		if(event.getPath().equals("character") && event.getDataName().equals("character_data"))
-		{
-			DemigodsFactory.playerCharacterFactory.create(event.getData());
-		}
-		else if(event.getPath().startsWith("character") && event.getDataName().equals("ability_data"))
-		{
-			new PlayerCharacterAbilities(event.getData());
-		}
-		else if(event.getPath().startsWith("character") && event.getDataName().equals("binding_data"))
-		{
-			new PlayerCharacterBindings(event.getData());
-		}
-		else if(event.getPath().startsWith("character") && event.getDataName().equals("task_data"))
-		{
-			new PlayerCharacterTasks(event.getData());
-		}
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onAltarLoad(LoadFileStubEvent event)
-	{
-		if(!event.getPluginName().equals(Demigods.plugin.getName())) return;
-
-		if(event.getPath().equals("block") && event.getDataName().equals("altar_data"))
-		{
-			new Altar(event.getData());
 		}
 	}
 }

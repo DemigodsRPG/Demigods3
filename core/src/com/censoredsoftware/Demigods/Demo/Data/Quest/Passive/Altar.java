@@ -565,10 +565,10 @@ class AltarMenu extends Task
 		String name = character.getName();
 		Deity deity = character.getDeity();
 		ChatColor deityColor = deity.getInfo().getColor();
-		String alliance = character.getTeam();
+		String alliance = character.getAlliance();
 		int hp = character.getHealth();
 		ChatColor hpColor = character.getHealthColor();
-		int exp = Math.round(character.getExp());
+		int exp = Math.round(character.getExperience());
 		int favor = character.getFavor();
 		int maxFavor = character.getMaxFavor();
 		ChatColor favorColor = character.getFavorColor();
@@ -806,7 +806,7 @@ class AltarMenu extends Task
 			player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
 			return;
 		}
-		else if(!character.getTeam().equalsIgnoreCase(invited.getTeam()))
+		else if(!character.getAlliance().equalsIgnoreCase(invited.getAlliance()))
 		{
 			player.sendMessage(" ");
 			player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " must be in your alliance to receive an invite.");

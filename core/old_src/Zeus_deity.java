@@ -142,14 +142,14 @@ public class Zeus_deity extends Deity implements Listener
 
 		if(!MiscAPI.canUseDeitySilent(player, DEITYNAME)) return;
 
-		if(character.getAbilities().isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SHOVE_NAME))))
+		if(character.getMeta().isEnabledAbility(SHOVE_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(SHOVE_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, SHOVE_NAME, false)) return;
 
 			shove(player);
 		}
 
-		if(character.getAbilities().isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(LIGHTNING_NAME))))
+		if(character.getMeta().isEnabledAbility(LIGHTNING_NAME) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getBindings().getBind(LIGHTNING_NAME))))
 		{
 			if(!CharacterAPI.isCooledDown(player, LIGHTNING_NAME, false)) return;
 
@@ -179,14 +179,14 @@ public class Zeus_deity extends Deity implements Listener
 		}
 		else
 		{
-			if(character.getAbilities().isEnabledAbility(SHOVE_NAME))
+			if(character.getMeta().isEnabledAbility(SHOVE_NAME))
 			{
-				character.getAbilities().toggleAbility(SHOVE_NAME, false);
+				character.getMeta().toggleAbility(SHOVE_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.getAbilities().toggleAbility(SHOVE_NAME, true);
+				character.getMeta().toggleAbility(SHOVE_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + SHOVE_NAME + " is now active.");
 			}
 		}
@@ -231,14 +231,14 @@ public class Zeus_deity extends Deity implements Listener
 		}
 		else
 		{
-			if(character.getAbilities().isEnabledAbility(LIGHTNING_NAME))
+			if(character.getMeta().isEnabledAbility(LIGHTNING_NAME))
 			{
-				character.getAbilities().toggleAbility(LIGHTNING_NAME, false);
+				character.getMeta().toggleAbility(LIGHTNING_NAME, false);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is no longer active.");
 			}
 			else
 			{
-				character.getAbilities().toggleAbility(LIGHTNING_NAME, true);
+				character.getMeta().toggleAbility(LIGHTNING_NAME, true);
 				player.sendMessage(ChatColor.YELLOW + LIGHTNING_NAME + " is now active.");
 			}
 		}

@@ -18,7 +18,7 @@ public class BlockAPI
 	 * @param id The ID of the block.
 	 * @return TrackedBlock.
 	 */
-	public static TrackedBlock getBlock(int id)
+	public static TrackedBlock getBlock(long id)
 	{
 		return (TrackedBlock) DemigodsData.trackedBlockData.getDataObject(id);
 	}

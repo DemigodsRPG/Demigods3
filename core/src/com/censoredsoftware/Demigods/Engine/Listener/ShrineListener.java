@@ -35,7 +35,7 @@ public class ShrineListener implements Listener
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-		String charAlliance = character.getTeam();
+		String charAlliance = character.getAlliance();
 		Deity charDeity = character.getDeity();
 
 		if(event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
@@ -191,7 +191,7 @@ public class ShrineListener implements Listener
 
 			// Update the character's favor and devotion
 			character.addMaxFavor(tributeValue / 5);
-			character.giveDevotion(tributeValue);
+			character.addDevotion(tributeValue);
 
 			if(character.getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN + character.getDevotion() + ChatColor.GRAY + ".");
 			if(character.getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMaxFavor() + ChatColor.GRAY + ".");
@@ -203,7 +203,7 @@ public class ShrineListener implements Listener
 				if(!CharacterAPI.getOwner(charID).equals(shrineOwnerPlayer))
 				{
 					// TODO: FIX THIS
-					// DCharUtil.giveDevotion(shrineOwner, tributeValue / 7);
+					// DCharUtil.addDevotion(shrineOwner, tributeValue / 7);
 					if(shrineOwnerPlayer.isOnline())
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
