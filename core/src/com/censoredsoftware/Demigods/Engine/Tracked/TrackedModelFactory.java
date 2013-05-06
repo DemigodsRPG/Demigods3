@@ -1,7 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.PlayerInventory;
 
 public class TrackedModelFactory
 {
@@ -38,5 +41,20 @@ public class TrackedModelFactory
 		trackedPlayer.setLastLoginTime(player.getLastPlayed());
 		TrackedPlayer.save(trackedPlayer);
 		return trackedPlayer;
+	}
+
+	public static TrackedPlayerInventory createTrackedPlayerInventory(PlayerInventory inventory)
+	{
+		TrackedPlayerInventory trackedInventory = new TrackedPlayerInventory();
+		// Save armor
+		trackedInventory.setHelmet(new TrackedItemStack(inventory.getHelmet()));
+		trackedInventory.setChestplate(new TrackedItemStack(inventory.getChestplate()));
+		trackedInventory.setLeggings(new TrackedItemStack(inventory.getLeggings()));
+		trackedInventory.setBoots(new TrackedItemStack(inventory.getBoots()));
+
+		// Define the new items map and the slot counter and save the contents
+		trackedInventory.setItems(new HashMap<Integer, TrackedItemStack>());
+		TrackedPlayerInventory.save(trackedInventory.processInventory(inventory));
+		return trackedInventory;
 	}
 }

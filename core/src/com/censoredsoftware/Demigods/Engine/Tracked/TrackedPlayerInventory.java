@@ -1,13 +1,16 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import redis.clients.johm.*;
+
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 /**
  * Stores a saveable version of a PlayerInventory.
@@ -29,31 +32,60 @@ public class TrackedPlayerInventory
 	@Indexed
 	private Map<Integer, TrackedItemStack> items;
 
-	public TrackedPlayerInventory()
-	{}
-
-	/**
-	 * Creates a new TrackedPlayerInventory.
-	 * 
-	 * @param inventory the PlayerInventory to save.
-	 */
-	public TrackedPlayerInventory(PlayerInventory inventory)
+	void setHelmet(TrackedItemStack helmet)
 	{
-		// Save armor
-		this.helmet = new TrackedItemStack(inventory.getHelmet());
-		this.chestplate = new TrackedItemStack(inventory.getChestplate());
-		this.leggings = new TrackedItemStack(inventory.getLeggings());
-		this.boots = new TrackedItemStack(inventory.getBoots());
+		this.helmet = helmet;
+	}
 
-		// Define the new items map and the slot counter and save the contents
-		this.items = new HashMap<Integer, TrackedItemStack>();
+	void setChestplate(TrackedItemStack chestplate)
+	{
+		this.chestplate = chestplate;
+	}
+
+	void setLeggings(TrackedItemStack leggings)
+	{
+		this.leggings = leggings;
+	}
+
+	void setBoots(TrackedItemStack boots)
+	{
+		this.boots = boots;
+	}
+
+	void setItems(Map<Integer, TrackedItemStack> items)
+	{
+		this.items = items;
+	}
+
+	TrackedPlayerInventory processInventory(Inventory inventory)
+	{
 		int slot = 1;
-
 		for(ItemStack item : inventory.getContents())
 		{
 			this.items.put(slot, new TrackedItemStack(item));
 			slot++;
 		}
+		return this;
+	}
+
+	public static void save(TrackedPlayerInventory inventory)
+	{
+		DemigodsData.jOhm.save(inventory);
+	}
+
+	public static TrackedPlayerInventory load(long id) // TODO This belongs somewhere else.
+	{
+		return DemigodsData.jOhm.get(TrackedPlayerInventory.class, id);
+	}
+
+	public static Set<TrackedPlayerInventory> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(TrackedPlayerInventory.class);
+	}
+
+	public long getId()
+	{
+		return this.id;
 	}
 
 	/**

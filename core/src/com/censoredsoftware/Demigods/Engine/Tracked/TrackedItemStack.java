@@ -41,10 +41,7 @@ public class TrackedItemStack
 	@Indexed
 	private List<String> pages;
 	@Attribute
-	private ItemType type;
-
-	public TrackedItemStack()
-	{}
+	private int type;
 
 	/**
 	 * Splits the object into its saveable pieces.
@@ -54,7 +51,7 @@ public class TrackedItemStack
 	public TrackedItemStack(ItemStack item)
 	{
 		// Save the type first (could be changed later)
-		this.type = ItemType.STANDARD;
+		this.type = ItemType.STANDARD.getId();
 
 		// Set the main variables
 		this.typeId = item.getTypeId();
@@ -80,7 +77,7 @@ public class TrackedItemStack
 		if(item.getType().equals(Material.WRITTEN_BOOK))
 		{
 			// Save the type as book
-			this.type = ItemType.WRITTEN_BOOK;
+			this.type = ItemType.WRITTEN_BOOK.getId();
 
 			// Define the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
@@ -126,7 +123,7 @@ public class TrackedItemStack
 		}
 
 		// If it's a book, apply the information
-		if(type.equals(ItemType.WRITTEN_BOOK))
+		if(type == ItemType.WRITTEN_BOOK.getId())
 		{
 			// Get the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
@@ -147,6 +144,18 @@ public class TrackedItemStack
 	 */
 	public enum ItemType
 	{
-		STANDARD, WRITTEN_BOOK;
+		STANDARD(0), WRITTEN_BOOK(1);
+
+		private int id;
+
+		private ItemType(int id)
+		{
+			this.id = id;
+		}
+
+		public int getId()
+		{
+			return this.id;
+		}
 	}
 }

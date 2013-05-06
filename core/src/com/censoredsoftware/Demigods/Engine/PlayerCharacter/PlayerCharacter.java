@@ -81,7 +81,7 @@ public class PlayerCharacter
 		this.experience = 0;
 		this.level = 0;
 		if(player.isOnline()) this.location = TrackedModelFactory.createTrackedLocation(player.getPlayer().getLocation()); // TODO
-		if(player.isOnline()) this.inventory = new TrackedPlayerInventory(player.getPlayer().getInventory()); // TODO
+		if(player.isOnline()) this.inventory = TrackedModelFactory.createTrackedPlayerInventory(player.getPlayer().getInventory()); // TODO
 
 		// Demigods Data
 		this.name = charName;
@@ -160,7 +160,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = new TrackedPlayerInventory(getOwner().getPlayer().getInventory());
+		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getOwner().getPlayer().getInventory());
 	}
 
 	public TrackedPlayerInventory getInventory()
@@ -168,7 +168,7 @@ public class PlayerCharacter
 		if(this.inventory != null) return this.inventory;
 		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
 		{
-			this.inventory = new TrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
 			return this.inventory;
 		}
 		else return null;
