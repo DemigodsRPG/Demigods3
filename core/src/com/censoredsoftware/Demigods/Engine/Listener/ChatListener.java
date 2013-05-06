@@ -12,10 +12,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class ChatListener implements Listener
 {
@@ -30,10 +30,10 @@ public class ChatListener implements Listener
 		if(message.equals("pl")) pl(player, event);
 
 		// No chat toggle
-		if(DemigodsData.tempPlayerData.containsKey(player, "temp_no_chat")) event.setCancelled(true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat")) event.setCancelled(true);
 		for(Player victim : Bukkit.getOnlinePlayers())
 		{
-			if(DemigodsData.tempPlayerData.containsKey(victim, "temp_no_chat")) viewing.remove(victim);
+			if(DemigodsData.hasKeyTemp(victim.getName(), "temp_no_chat")) viewing.remove(victim);
 		}
 	}
 
@@ -45,18 +45,15 @@ public class ChatListener implements Listener
 		String message = event.getMessage();
 
 		// Handle chat for character switching
-		if(DemigodsData.tempPlayerData.containsKey(player, "temp_chat_number"))
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number"))
 		{
 			// Define variables
-			PlayerCharacter prevChar = CharacterAPI.getChar(DemigodsData.playerData.getDataInt(player, "previous_char"));
+			PlayerCharacter prevChar = TrackedPlayer.getMeta(player).getCurrent();
 
-			DemigodsData.tempPlayerData.saveData(player, "temp_chat_number", DemigodsData.tempPlayerData.getDataInt(player, "temp_chat_number") + 1);
+			DemigodsData.setTemp(player.getName(), "temp_chat_number", Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
 
-			if(DemigodsData.tempPlayerData.getDataInt(player, "temp_chat_number") <= 2)
-			{
-				event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
-			}
-			else DemigodsData.tempPlayerData.removeData(player, "temp_chat_number");
+			if(Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
+			else DemigodsData.removeTemp(player.getName(), "temp_chat_number");
 		}
 	}
 

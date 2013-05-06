@@ -1,5 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -53,9 +55,19 @@ public class TrackedLocation
 		save();
 	}
 
-	public void save() // TODO This belongs somewhere else.
+	public void save()
 	{
 		DemigodsData.jOhm.save(this);
+	}
+
+	public static TrackedLocation load(long id) // TODO This belongs somewhere else.
+	{
+		return DemigodsData.jOhm.get(TrackedLocation.class, id);
+	}
+
+	public static Set<TrackedLocation> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(TrackedLocation.class);
 	}
 
 	public Location toLocation() throws NullPointerException

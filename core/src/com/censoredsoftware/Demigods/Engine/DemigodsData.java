@@ -1,5 +1,7 @@
 package com.censoredsoftware.Demigods.Engine;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import redis.clients.jedis.JedisPool;
@@ -14,16 +16,51 @@ public class DemigodsData
 	// Persistence
 	public static JOhm jOhm;
 
+	// Temp Data
+	private static Map<String, HashMap<String, Object>> tempData;
+
 	protected DemigodsData(DemigodsPlugin instance)
 	{
-		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 9900);
+		// Create Data Instances
+		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);
+		tempData = new HashMap<String, HashMap<String, Object>>();
+
+		// Create Persistence
 		jOhm = new JOhm();
 		jOhm.setPool(jedisPool);
+
 	}
 
 	public static void save()
 	{
 		jedisPool.getResource().bgsave();
+	}
+
+	public static boolean hasKeyTemp(String key, String key_)
+	{
+		return tempData.containsKey(key) && tempData.get(key).containsKey(key_);
+	}
+
+	public static boolean hasValueTemp(String key, Object value)
+	{
+		return tempData.containsKey(key) && tempData.get(key).containsValue(value);
+	}
+
+	public static Object getValueTemp(String key, String key_)
+	{
+		return tempData.get(key).get(key_);
+	}
+
+	public static void setTemp(String key, String key_, Object value)
+	{
+		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
+		tempData.get(key).put(key_, value);
+	}
+
+	public static void removeTemp(String key, String key_)
+	{
+		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
+		if(tempData.get(key).containsKey(key_)) tempData.get(key).remove(key_);
 	}
 
 	// TODO Find a place for these:

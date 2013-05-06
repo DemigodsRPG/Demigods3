@@ -84,9 +84,6 @@ public class Demigods
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 		permission = new PermissionModule();
 
-		// Initialize object factories.
-		new DemigodsFactory(instance);
-
 		// Initialize soft data.
 		new DemigodsData(instance);
 
@@ -573,7 +570,7 @@ class Commands implements CommandExecutor
 
 					for(PlayerCharacter checkingChar : chars)
 					{
-						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getID() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
+						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getId() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
 					}
 				}
 				else
@@ -596,12 +593,13 @@ class Commands implements CommandExecutor
 					}
 					else if(option2.equalsIgnoreCase("character"))
 					{
-						int charID = CharacterAPI.getCharByName(option3).getID();
+						PlayerCharacter removing = PlayerCharacter.getCharacterByName(option3);
+						String removingName = removing.getName();
 
 						// Remove the data
-						DemigodsData.characterData.removeData(charID);
+						removing.delete();
 
-						sender.sendMessage(ChatColor.RED + "Character \"" + CharacterAPI.getChar(charID).getName() + "\" removed.");
+						sender.sendMessage(ChatColor.RED + "Character \"" + removingName + "\" removed.");
 					}
 				}
 			}
@@ -931,7 +929,7 @@ class Commands implements CommandExecutor
 				sender.sendMessage(altar.getID() + ": " + altar.isActive());
 			}
 
-			Bukkit.getScheduler().runTaskAsynchronously(Demigods.plugin, new DemigodsData.Save(true));
+			DemigodsData.save();
 		}
 		catch(NullPointerException e)
 		{
@@ -955,9 +953,8 @@ class Commands implements CommandExecutor
 
 		if(PlayerAPI.hasCharName(player, charName))
 		{
-			PlayerCharacter character = CharacterAPI.getCharByName(charName);
-			int charID = character.getID();
-			DemigodsData.characterData.removeData(charID);
+			PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
+			character.delete();
 
 			sender.sendMessage(ChatColor.RED + "Character removed!");
 		}

@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +23,7 @@ public class PlayerCharacter
 	@Id
 	private Long id;
 	@Attribute
+	@Indexed
 	private String name;
 	@Attribute
 	@Indexed
@@ -108,9 +110,28 @@ public class PlayerCharacter
 		DemigodsData.jOhm.save(this);
 	}
 
+	public void delete()
+	{
+		DemigodsData.jOhm.delete(PlayerCharacter.class, getId());
+	}
+
 	public static PlayerCharacter load(long id) // TODO This belongs somewhere else.
 	{
 		return DemigodsData.jOhm.get(PlayerCharacter.class, id);
+	}
+
+	public static Set<PlayerCharacter> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(PlayerCharacter.class);
+	}
+
+	public static PlayerCharacter getCharacterByName(String name)
+	{
+		for(PlayerCharacter loaded : loadAll())
+		{
+			if(loaded.getName().equalsIgnoreCase(name)) return loaded;
+		}
+		return null;
 	}
 
 	public ChatColor getHealthColor()

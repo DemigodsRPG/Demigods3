@@ -50,6 +50,11 @@ public class PlayerCharacterMeta
 		return DemigodsData.jOhm.get(PlayerCharacterMeta.class, id);
 	}
 
+	public static Set<PlayerCharacterMeta> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(PlayerCharacterMeta.class);
+	}
+
 	public long getId()
 	{
 		return this.id;

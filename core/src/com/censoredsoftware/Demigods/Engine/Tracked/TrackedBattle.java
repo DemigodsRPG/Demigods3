@@ -1,114 +1,108 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import redis.clients.johm.*;
+
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
-// TODO Convert this.
-
+@Model
 public class TrackedBattle
 {
-	private int battleID;
-	private int whoStarted;
+	@Id
+	private long id;
+	@Reference
+	@Indexed
+	private PlayerCharacter whoStarted;
+	@Reference
+	@Indexed
 	private TrackedLocation startLocation;
-	private ArrayList<Integer> involvedCharIDs;
-	private ArrayList<TrackedLocation> involvedLocations;
+	@CollectionSet(of = PlayerCharacter.class)
+	@Indexed
+	private Set<PlayerCharacter> involvedCharacters;
+	@CollectionSet(of = TrackedLocation.class)
+	@Indexed
+	private Set<TrackedLocation> involvedLocations;
+	@Attribute
 	private Long startTime;
+	@Attribute
 	private Long endTime;
-	private boolean isActive = true;
+	@Attribute
+	private boolean active;
 
-	public TrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime, final int battleID)
+	public TrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
 	{
 		// Define variables
 		Player started = (Player) attacking.getOwner();
 		Location startedLocation = started.getLocation();
 
-		this.battleID = battleID;
-		this.whoStarted = attacking.getID();
-		this.startLocation = new TrackedLocation(DemigodsData.generateInt(5), startedLocation, null);
+		this.whoStarted = attacking;
+		this.startLocation = new TrackedLocation(startedLocation);
 		this.startTime = startTime;
 
 		addCharacter(attacking);
 		addCharacter(defending);
 
-		// API.data.saveTimedData(battleID, "battle_active", true, 10); // TODO TimedObject data.
+		this.active = true;
+
 		save();
 	}
 
-	public void save() // TODO This shouldn't be handled here.
+	public void save()
 	{
-		DemigodsData.battleData.saveData(battleID, this);
+		DemigodsData.jOhm.save(this);
 	}
 
-	public int getID()
+	public static TrackedBattle load(long id) // TODO This belongs somewhere else.
 	{
-		return this.battleID;
+		return DemigodsData.jOhm.get(TrackedBattle.class, id);
+	}
+
+	public static Set<TrackedBattle> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(TrackedBattle.class);
+	}
+
+	public long getId()
+	{
+		return this.id;
 	}
 
 	public void addCharacter(PlayerCharacter character)
 	{
-		addCharID(character.getID());
+		this.involvedCharacters.add(character);
 		if(character.getOwner().isOnline()) addLocation(character.getOwner().getPlayer().getLocation());
+		save();
 	}
 
 	public void removeCharacter(PlayerCharacter character)
 	{
-		removeCharID(character.getID());
-	}
-
-	public ArrayList<Integer> getCharIDs()
-	{
-		return this.involvedCharIDs;
-	}
-
-	public void overwriteCharIDs(ArrayList<Integer> involvedCharIDs)
-	{
-		this.involvedCharIDs = involvedCharIDs;
+		if(this.involvedCharacters.contains(character)) this.involvedCharacters.remove(character);
 		save();
 	}
 
-	public void addCharID(int charID)
-	{
-		if(this.involvedCharIDs == null) this.involvedCharIDs = new ArrayList<Integer>();
-		if(!this.involvedCharIDs.contains(charID)) this.involvedCharIDs.add(charID);
-		save();
-	}
-
-	public void removeCharID(int charID)
-	{
-		if(this.involvedCharIDs.contains(charID)) this.involvedCharIDs.remove(charID);
-		save();
-	}
-
-	public ArrayList<TrackedLocation> getLocations()
+	public Set<TrackedLocation> getLocations()
 	{
 		return this.involvedLocations;
 	}
 
-	public void overwriteLocations(ArrayList<TrackedLocation> involvedLocations)
+	public void addLocation(Location location)
 	{
-		this.involvedLocations = involvedLocations;
+		if(!this.involvedLocations.contains(new TrackedLocation(location))) this.involvedLocations.add(new TrackedLocation(location));
 		save();
 	}
 
-	public void addLocation(Location location) // TODO This won't work anymore because of IDs.
+	public void removeLocation(Location location)
 	{
-		if(this.involvedLocations == null) this.involvedLocations = new ArrayList<TrackedLocation>();
-		if(!this.involvedLocations.contains(new TrackedLocation(DemigodsData.generateInt(5), location, null))) this.involvedLocations.add(new TrackedLocation(DemigodsData.generateInt(5), location, null));
+		if(this.involvedLocations.contains(new TrackedLocation(location))) this.involvedLocations.remove(new TrackedLocation(location));
 		save();
 	}
 
-	public void removeLocation(Location location) // TODO This won't work anymore because of IDs.
-	{
-		if(this.involvedLocations.contains(new TrackedLocation(DemigodsData.generateInt(5), location, null))) this.involvedLocations.remove(new TrackedLocation(DemigodsData.generateInt(5), location, null));
-		save();
-	}
-
-	public int getWhoStarted()
+	public PlayerCharacter getWhoStarted()
 	{
 		return this.whoStarted;
 	}
@@ -125,11 +119,11 @@ public class TrackedBattle
 
 	public boolean isActive()
 	{
-		return this.isActive;
+		return this.active;
 	}
 
 	public synchronized void setActive(boolean active)
 	{
-		this.isActive = active;
+		this.active = active;
 	}
 }

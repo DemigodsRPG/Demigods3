@@ -33,7 +33,7 @@ public class DemigodsPlugin extends JavaPlugin
 	public void onDisable()
 	{
 		// Save all the data.
-		DemigodsData.Save.save(true, true);
+		DemigodsData.save();
 
 		// Cancel all threads and event calls.
 		Scheduler.stopThreads(this);

@@ -1,99 +1,83 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Id;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.censoredsoftware.Demigods.API.LocationAPI;
+import redis.clients.johm.Attribute;
+import redis.clients.johm.Indexed;
+import redis.clients.johm.Model;
+import redis.clients.johm.Reference;
+
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
+@Model
 public class TrackedBlock
 {
+	@Id
+	private long id;
+	@Reference
+	@Indexed
+	private TrackedLocation location;
+	@Attribute
+	@Indexed
+	private String type;
+	@Attribute
+	private int material;
+	@Attribute
+	private byte materialByte;
+	@Attribute
+	private int previousMaterial;
+	@Attribute
+	private byte previousMaterialByte;
+
 	public TrackedBlock(Location location, String type, Material material)
 	{
-		blockData = new HashMap<String, Object>();
-
-		saveData("BLOCK_ID", id);
-		saveData("BLOCK_TYPE", type);
-		saveData("BLOCK_MATERIAL", material.getId());
-		saveData("BLOCK_PREVIOUS_MATERIAL", location.getBlock().getTypeId());
-		saveData("BLOCK_MATERIAL_BYTE", (byte) 0);
-		saveData("BLOCK_LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
+		this.location = new TrackedLocation(location);
+		this.type = type;
+		this.material = material.getId();
+		this.materialByte = (byte) 0;
+		this.previousMaterial = location.getBlock().getTypeId();
+		this.previousMaterialByte = location.getBlock().getData();
 
 		// Create the actual block
 		location.getBlock().setType(material);
 
-		save(this);
+		save();
 	}
 
-	public TrackedBlock(int id, Location location, String type, Material material, byte matByte)
+	public TrackedBlock(Location location, String type, Material material, byte matByte)
 	{
-		blockData = new HashMap<String, Object>();
-
-		saveData("BLOCK_ID", id);
-		saveData("BLOCK_TYPE", type);
-		saveData("BLOCK_MATERIAL", material.getId());
-		saveData("BLOCK_PREVIOUS_MATERIAL", location.getBlock().getTypeId());
-		saveData("BLOCK_MATERIAL_BYTE", matByte);
-		saveData("BLOCK_LOCATION", new TrackedLocation(DemigodsData.generateInt(5), location, null).getID());
+		this.location = new TrackedLocation(location);
+		this.type = type;
+		this.material = material.getId();
+		this.materialByte = matByte;
+		this.previousMaterial = location.getBlock().getTypeId();
+		this.previousMaterialByte = location.getBlock().getData();
 
 		// Create the actual block
 		location.getBlock().setType(material);
-		location.getBlock().setData(matByte, true);
+		location.getBlock().setData(matByte);
 
-		save(this);
+		save();
 	}
 
-	public static void save(TrackedBlock block) // TODO This belongs somewhere else.
+	public void save()
 	{
-		DemigodsData.trackedBlockData.saveData(block.getID(), block);
+		DemigodsData.jOhm.save(this);
 	}
 
-	/**
-	 * Checks if the blockData Map contains <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return True if blockData contains the key.
-	 */
-	public boolean containsKey(String key)
+	public static TrackedBlock load(long id) // TODO This belongs somewhere else.
 	{
-		return blockData.get(key) != null && blockData.containsKey(key);
+		return DemigodsData.jOhm.get(TrackedBlock.class, id);
 	}
 
-	/**
-	 * Retrieve the Object data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @return Object data.
-	 */
-	public Object getData(String key)
+	public static Set<TrackedBlock> loadAll()
 	{
-		if(containsKey(key)) return blockData.get(key);
-		return null; // Should never happen, always check with containsKey before getting the data.
-	}
-
-	/**
-	 * Save the Object <code>data</code> for int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 * @param data The Object being saved.
-	 */
-	public void saveData(String key, Object data)
-	{
-		blockData.put(key, data);
-	}
-
-	/**
-	 * Remove the data from int <code>key</code>.
-	 * 
-	 * @param key The key in the save.
-	 */
-	public void removeData(String key)
-	{
-		if(!containsKey(key)) return;
-		blockData.remove(key);
+		return DemigodsData.jOhm.getAll(TrackedBlock.class);
 	}
 
 	/*
@@ -101,25 +85,15 @@ public class TrackedBlock
 	 */
 	public void remove()
 	{
-		getLocation().getBlock().setTypeId(Integer.parseInt(getData("BLOCK_PREVIOUS_MATERIAL").toString()));
+		getLocation().getBlock().setTypeIdAndData(this.previousMaterial, this.previousMaterialByte, true);
 	}
 
 	/*
 	 * getID() : Returns the ID of the block.
 	 */
-	public int getID()
+	public long getId()
 	{
-		return Integer.parseInt(getData("BLOCK_ID").toString());
-	}
-
-	public Map getMap()
-	{
-		return blockData;
-	}
-
-	public void setMap(Map map)
-	{
-		blockData = map;
+		return this.id;
 	}
 
 	/*
@@ -127,17 +101,17 @@ public class TrackedBlock
 	 */
 	public Material getMaterial()
 	{
-		return Material.getMaterial(Integer.parseInt(getData("BLOCK_MATERIAL").toString()));
+		return Material.getMaterial(this.material);
 	}
 
 	public byte getMaterialByte()
 	{
-		return Byte.parseByte(getData("BLOCK_MATERIAL_BYTE").toString());
+		return this.materialByte;
 	}
 
 	public Location getLocation()
 	{
-		return LocationAPI.getLocation((Integer.parseInt(getData("BLOCK_LOCATION").toString()))).toLocation();
+		return this.location.toLocation();
 	}
 
 	@Override
