@@ -11,15 +11,7 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 public class TrackedBlock
 {
-	private Map<String, Object> blockData;
-
-	public TrackedBlock(Map map)
-	{
-		setMap(map);
-		save(this);
-	}
-
-	public TrackedBlock(int id, Location location, String type, Material material)
+	public TrackedBlock(Location location, String type, Material material)
 	{
 		blockData = new HashMap<String, Object>();
 
