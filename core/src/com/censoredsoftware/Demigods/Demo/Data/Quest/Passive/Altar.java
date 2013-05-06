@@ -23,6 +23,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
@@ -38,7 +39,6 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 public class Altar extends Quest
 {
-
 	private static String name = "Altar", permission = "demigods.altar";
 	private static List<String> about = new ArrayList<String>()
 	{
@@ -892,7 +892,7 @@ class AltarGenerate extends Task
 							Bukkit.getServer().getPluginManager().callEvent(altarCreateEvent);
 							if(altarCreateEvent.isCancelled()) return;
 
-							new com.censoredsoftware.Demigods.Engine.Block.Altar(location);
+							BlockFactory.createAltar(location);
 
 							location.getWorld().strikeLightningEffect(location);
 							location.getWorld().strikeLightningEffect(location);

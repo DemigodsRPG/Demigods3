@@ -912,12 +912,16 @@ class Commands implements CommandExecutor
 	{
 		try
 		{
-			sender.sendMessage("-- Characters ---------------");
-			sender.sendMessage(" ");
-
-			for(PlayerCharacter character : CharacterAPI.getAllChars())
+			if(!CharacterAPI.getAllChars().isEmpty())
 			{
-				sender.sendMessage(character.getName() + ": " + character.getDeity().getInfo().getName());
+				sender.sendMessage(" ");
+				sender.sendMessage("-- Characters ---------------");
+				sender.sendMessage(" ");
+
+				for(PlayerCharacter character : CharacterAPI.getAllChars())
+				{
+					sender.sendMessage(character.getName() + ": " + character.getDeity().getInfo().getName());
+				}
 			}
 
 			sender.sendMessage(" ");
@@ -926,10 +930,10 @@ class Commands implements CommandExecutor
 
 			for(Altar altar : BlockAPI.getAllAltars())
 			{
-				sender.sendMessage(altar.getId() + ": " + altar.isActive());
+				sender.sendMessage(altar.getId() + ":");
+				sender.sendMessage(" -> Active: " + altar.isActive());
+				if(sender instanceof Player) sender.sendMessage(" -> Distance: " + altar.getLocation().distance(((Player) sender).getLocation()));
 			}
-
-			DemigodsData.save();
 		}
 		catch(NullPointerException e)
 		{

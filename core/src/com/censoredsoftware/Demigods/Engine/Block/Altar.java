@@ -10,6 +10,7 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -30,24 +31,25 @@ public class Altar
 	@Indexed
 	private Set<TrackedBlock> blocks;
 
-	public Altar()
-	{}
-
-	public Altar(Location location)
+	void setCenter(TrackedLocation center)
 	{
-		// Set the base variables
-		this.center = TrackedModelFactory.createTrackedLocation(location);
-		this.active = true;
-
-		// Generate the Altar
-		generate();
-
-		save();
+		Demigods.message.broadcast("Altar " + getId() + " set to " + center.getId());
+		this.center = center;
 	}
 
-	public void save()
+	/**
+	 * Sets the active status of this Altar to <code>option</code>.
+	 * 
+	 * @param option the option to set.
+	 */
+	public void setActive(boolean option)
 	{
-		DemigodsData.jOhm.save(this);
+		this.active = option;
+	}
+
+	public static void save(Altar altar)
+	{
+		DemigodsData.jOhm.save(altar);
 	}
 
 	public void delete()
@@ -103,16 +105,6 @@ public class Altar
 	}
 
 	/**
-	 * Sets the active status of this Altar to <code>option</code>.
-	 * 
-	 * @param option the option to set.
-	 */
-	public void setActive(boolean option)
-	{
-		this.active = option;
-	}
-
-	/**
 	 * Returns true if the <code>location</code> matches a location within the Altar.
 	 * 
 	 * @param location the location to check.
@@ -130,7 +122,7 @@ public class Altar
 	/**
 	 * Generates a full Altar structure.
 	 */
-	public void generate()
+	void generate()
 	{
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 		Location location = getLocation();
@@ -363,7 +355,7 @@ public class Altar
 			Location location = new Location(Bukkit.getWorld(locs[0]), Integer.parseInt(locs[1]), Integer.parseInt(locs[2]), Integer.parseInt(locs[3]));
 
 			// Build the object
-			Altar altar = new Altar(location);
+			Altar altar = BlockFactory.createAltar(location);
 			altar.setActive(Boolean.parseBoolean(data[1].substring(7)));
 
 			// Return the new Altar

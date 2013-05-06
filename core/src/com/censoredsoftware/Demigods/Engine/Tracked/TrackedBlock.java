@@ -2,15 +2,10 @@ package com.censoredsoftware.Demigods.Engine.Tracked;
 
 import java.util.Set;
 
-import javax.persistence.Id;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import redis.clients.johm.Attribute;
-import redis.clients.johm.Indexed;
-import redis.clients.johm.Model;
-import redis.clients.johm.Reference;
+import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 

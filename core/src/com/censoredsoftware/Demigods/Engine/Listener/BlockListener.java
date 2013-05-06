@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.censoredsoftware.Demigods.API.*;
-import com.censoredsoftware.Demigods.Engine.Block.Altar;
+import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
@@ -160,7 +160,7 @@ public class BlockListener implements Listener
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			new Altar(location); // TODO Should this be here?
+			BlockFactory.createAltar(location); // TODO Should this be here?
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
