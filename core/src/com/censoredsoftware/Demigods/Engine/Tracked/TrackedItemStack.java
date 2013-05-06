@@ -1,7 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -9,118 +10,140 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.censoredsoftware.Modules.Data.IntegerDataModule;
-import com.censoredsoftware.Modules.Data.StringDataModule;
+import redis.clients.johm.*;
 
+@Model
 public class TrackedItemStack
 {
-	private StringDataModule specialItemStackData;
-	private IntegerDataModule enchantmentsData;
+	@Id
+	private long id;
+	@Attribute
+	private int typeId;
+	@Attribute
+	private byte byteId;
+	@Attribute
+	private int amount;
+	@Attribute
+	private short durability;
+	@CollectionMap(key = Integer.class, value = Integer.class)
+	@Indexed
+	private Map<Integer, Integer> enchantments; // Format: Map<ENCHANTMENT_ID, LEVEL>
+	@Attribute
+	private String name;
+	@CollectionList(of = String.class)
+	@Indexed
+	private List<String> lore;
+	@Attribute
+	private String author;
+	@Attribute
+	private String title;
+	@CollectionList(of = String.class)
+	@Indexed
+	private List<String> pages;
+	@Attribute
+	private ItemType type;
 
-	public TrackedItemStack(ItemStack item, String name)
+	/**
+	 * Splits the object into its saveable pieces.
+	 * 
+	 * @param item the item to save.
+	 */
+	public TrackedItemStack(ItemStack item)
 	{
-		specialItemStackData = new StringDataModule();
-		enchantmentsData = new IntegerDataModule();
+		// Save the type first (could be changed later)
+		this.type = ItemType.STANDARD;
 
-		if(name != null) specialItemStackData.saveData("NAME", name);
+		// Set the main variables
+		this.typeId = item.getTypeId();
+		this.byteId = item.getData().getData();
+		this.amount = item.getAmount();
+		this.durability = item.getDurability();
+		if(item.getItemMeta().hasDisplayName()) this.name = item.getItemMeta().getDisplayName();
+		if(item.getItemMeta().hasLore()) this.lore = item.getItemMeta().getLore();
 
-		specialItemStackData.saveData("TYPE", item.getTypeId());
-		specialItemStackData.saveData("DURABILITY", item.getDurability());
-		specialItemStackData.saveData("AMOUNT", item.getAmount());
-
-		if(item.hasItemMeta())
+		// If it has enchantments then save them
+		if(item.getItemMeta().hasEnchants())
 		{
-			if(item.getType().equals(Material.WRITTEN_BOOK))
-			{
-				BookMeta bookMeta = (BookMeta) item.getItemMeta();
-				if(bookMeta.hasAuthor()) specialItemStackData.saveData("AUTHOR", bookMeta.getAuthor());
-				if(bookMeta.hasPages()) specialItemStackData.saveData("PAGES", bookMeta.getPages());
-				if(bookMeta.hasLore()) specialItemStackData.saveData("LORE", bookMeta.getLore());
-				if(bookMeta.hasTitle()) specialItemStackData.saveData("TITLE", bookMeta.getTitle());
-				if(bookMeta.hasDisplayName()) specialItemStackData.saveData("DISPLAY_NAME", bookMeta.getDisplayName());
-				if(bookMeta.hasEnchants())
-				{
-					for(Entry<Enchantment, Integer> ench : bookMeta.getEnchants().entrySet())
-					{
-						enchantmentsData.saveData(ench.getKey().getId(), ench.getValue());
-					}
-				}
-			}
+			// Create the new HashMap
+			enchantments = new HashMap<Integer, Integer>();
 
-			if(item.getItemMeta().hasEnchants())
+			for(Map.Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
 			{
-				for(Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
-				{
-					enchantmentsData.saveData(ench.getKey().getId(), ench.getValue());
-				}
+				enchantments.put(ench.getKey().getId(), ench.getValue());
 			}
-			if(item.getItemMeta().hasDisplayName()) specialItemStackData.saveData("DISPLAY_NAME", item.getItemMeta().getDisplayName());
-			if(item.getItemMeta().hasLore()) specialItemStackData.saveData("LORE", item.getItemMeta().getLore());
+		}
+
+		// If it's a written book then save the book-specific information
+		if(item.getType().equals(Material.WRITTEN_BOOK))
+		{
+			// Save the type as book
+			this.type = ItemType.WRITTEN_BOOK;
+
+			// Define the book meta
+			BookMeta bookMeta = (BookMeta) item.getItemMeta();
+
+			// Save the book meta
+			this.title = bookMeta.getTitle();
+			this.author = bookMeta.getAuthor();
+			this.pages = bookMeta.getPages();
 		}
 	}
 
-	public boolean hasName()
-	{
-		return specialItemStackData.containsKey("NAME");
-	}
-
-	public String getName()
-	{
-		return specialItemStackData.getDataString("NAME");
-	}
-
-	public void setName(String name)
-	{
-		specialItemStackData.saveData("NAME", name);
-	}
-
-	/*
-	 * toItemStack() : Converts the TrackedItemStack to a usable ItemStack.
+	/**
+	 * Returns the TrackedItemStack as an actual, usable ItemStack.
+	 * 
+	 * @return ItemStack
 	 */
 	public ItemStack toItemStack()
 	{
-		ItemStack item = new ItemStack(specialItemStackData.getDataInt("TYPE"), specialItemStackData.getDataInt("AMOUNT"));
+		// Create the first instance of the item
+		ItemStack item = new ItemStack(this.typeId, this.byteId);
 
-		if(item.getType().equals(Material.WRITTEN_BOOK))
-		{
-			BookMeta meta = (BookMeta) item.getItemMeta();
-			if(specialItemStackData.containsKey("TITLE")) meta.setTitle(specialItemStackData.getDataString("TITLE"));
-			if(specialItemStackData.containsKey("AUTHOR")) meta.setAuthor(specialItemStackData.getDataString("AUTHOR"));
-			if(specialItemStackData.containsKey("PAGES")) meta.setPages((List<String>) specialItemStackData.getDataObject("PAGES"));
-			if(specialItemStackData.containsKey("LORE")) meta.setLore((List<String>) specialItemStackData.getDataObject("LORE"));
-			if(specialItemStackData.containsKey("DISPLAY_NAME")) meta.setDisplayName(specialItemStackData.getDataString("DISPLAY_NAME"));
-			item.setItemMeta(meta);
-		}
-		else
-		{
-			ItemMeta meta = item.getItemMeta();
-			if(specialItemStackData.containsKey("DISPLAY_NAME")) meta.setDisplayName(specialItemStackData.getDataString("DISPLAY_NAME"));
-			if(specialItemStackData.containsKey("LORE")) meta.setLore((List<String>) specialItemStackData.getDataObject("LORE"));
-			item.setItemMeta(meta);
-		}
+		// Set main values
+		item.setAmount(this.amount);
+		item.setDurability(this.durability);
 
-		if(enchantmentsData.listKeys() != null)
+		// Define the item meta
+		ItemMeta itemMeta = item.getItemMeta();
+
+		// Set the meta
+		itemMeta.setDisplayName(this.name);
+		itemMeta.setLore(this.lore);
+
+		// Save the meta
+		item.setItemMeta(itemMeta);
+
+		// Apply enchantments if they exist
+		if(!enchantments.isEmpty())
 		{
-			for(Integer key : enchantmentsData.listKeys())
+			for(Map.Entry<Integer, Integer> ench : this.enchantments.entrySet())
 			{
-				item.addEnchantment(Enchantment.getById(key), enchantmentsData.getDataInt(key));
+				item.addUnsafeEnchantment(Enchantment.getById(ench.getKey()), ench.getValue());
 			}
 		}
 
-		// Set data for the Item
-		item.setAmount(specialItemStackData.getDataInt("AMOUNT"));
-		item.setDurability(specialItemStackData.getDataShort("DURABILITY"));
+		// If it's a book, apply the information
+		if(type.equals(ItemType.WRITTEN_BOOK))
+		{
+			// Get the book meta
+			BookMeta bookMeta = (BookMeta) item.getItemMeta();
 
+			bookMeta.setTitle(this.title);
+			bookMeta.setAuthor(this.author);
+			bookMeta.setPages(this.pages);
+
+			item.setItemMeta(bookMeta);
+		}
+
+		// Return that sucka
 		return item;
 	}
 
-	public StringDataModule grabSpecialItemStackData()
+	/**
+	 * The type enum.
+	 */
+	public enum ItemType
 	{
-		return this.specialItemStackData;
-	}
-
-	public IntegerDataModule grabEnchantmentsData()
-	{
-		return this.enchantmentsData;
+		STANDARD, WRITTEN_BOOK;
 	}
 }
