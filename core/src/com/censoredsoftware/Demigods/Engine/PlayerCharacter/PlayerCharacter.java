@@ -16,6 +16,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
 
 @Model
 public class PlayerCharacter
@@ -39,7 +40,7 @@ public class PlayerCharacter
 	@Reference
 	private TrackedLocation location;
 	@Reference
-	private PlayerCharacterInventory inventory;
+	private TrackedPlayerInventory inventory;
 	@Attribute
 	@Indexed
 	private String deity;
@@ -76,7 +77,7 @@ public class PlayerCharacter
 		this.experience = 0;
 		this.level = 0;
 		if(player.isOnline()) this.location = new TrackedLocation(player.getPlayer().getLocation()); // TODO
-		if(player.isOnline()) this.inventory = new PlayerCharacterInventory(player.getPlayer().getInventory()); // TODO
+		if(player.isOnline()) this.inventory = new TrackedPlayerInventory(player.getPlayer().getInventory()); // TODO
 
 		// Demigods Data
 		this.name = charName;
@@ -155,15 +156,15 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = new PlayerCharacterInventory(getOwner().getPlayer().getInventory());
+		this.inventory = new TrackedPlayerInventory(getOwner().getPlayer().getInventory());
 	}
 
-	public PlayerCharacterInventory getInventory()
+	public TrackedPlayerInventory getInventory()
 	{
 		if(this.inventory != null) return this.inventory;
 		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
 		{
-			this.inventory = new PlayerCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			this.inventory = new TrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
 			return this.inventory;
 		}
 		else return null;

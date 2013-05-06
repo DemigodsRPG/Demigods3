@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
+package com.censoredsoftware.Demigods.Engine.Tracked;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,18 +9,14 @@ import org.bukkit.inventory.PlayerInventory;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
-
 /**
- * Stores a saveable inventory for a specific character.
+ * Stores a saveable version of a PlayerInventory.
  */
 @Model
-public class PlayerCharacterInventory
+public class TrackedPlayerInventory
 {
 	@Id
 	private long id;
-	@Attribute
-	private long charId;
 	@Reference
 	private TrackedItemStack helmet;
 	@Reference
@@ -34,19 +30,12 @@ public class PlayerCharacterInventory
 	private Map<Integer, TrackedItemStack> items;
 
 	/**
-	 * Creates a new PlayerCharacterInventory.
+	 * Creates a new TrackedPlayerInventory.
 	 * 
-	 * @param character the character for whom to create the inventory.
+	 * @param inventory the PlayerInventory to save.
 	 */
-	public PlayerCharacterInventory(PlayerCharacter character)
+	public TrackedPlayerInventory(PlayerInventory inventory)
 	{
-		// Ensure that the player is online before continuing
-		if(!character.getOwner().isOnline()) return;
-
-		// Save variables and define the inventory
-		this.charId = character.getId();
-		PlayerInventory inventory = character.getOwner().getPlayer().getInventory();
-
 		// Save armor
 		this.helmet = new TrackedItemStack(inventory.getHelmet());
 		this.chestplate = new TrackedItemStack(inventory.getChestplate());
@@ -69,7 +58,7 @@ public class PlayerCharacterInventory
 	 * 
 	 * @param player the player for whom apply the inventory.
 	 */
-	public void applyTo(Player player)
+	public void setToPlayer(Player player)
 	{
 		// Define the inventory
 		PlayerInventory inventory = player.getInventory();

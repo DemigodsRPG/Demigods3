@@ -19,6 +19,9 @@ commands:
     removechar:
         usage: /removechar <name>
         permission: demigods.basic
+    test1:
+        usage: /test1
+        permission: demigods.admin
 permissions:
     demigods.basic:
         description: The default permission for players.

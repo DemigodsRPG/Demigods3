@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterInventory;
 
 public class PlayerAPI
 {
@@ -153,7 +152,7 @@ public class PlayerAPI
 
 		if(character.getInventory() != null)
 		{
-			PlayerCharacterInventory charInv = character.getInventory();
+			TrackedPlayerInvetory charInv = character.getInventory();
 			charInv.setToPlayer(player);
 		}
 
