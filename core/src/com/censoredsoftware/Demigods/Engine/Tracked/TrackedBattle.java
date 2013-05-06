@@ -3,7 +3,6 @@ package com.censoredsoftware.Demigods.Engine.Tracked;
 import java.util.Set;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
@@ -34,30 +33,44 @@ public class TrackedBattle
 	@Attribute
 	private boolean active;
 
-	public TrackedBattle()
-	{}
-
-	public TrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
+	void setWhoStarted(PlayerCharacter character)
 	{
-		// Define variables
-		Player started = (Player) attacking.getOwner();
-		Location startedLocation = started.getLocation();
-
-		this.whoStarted = attacking;
-		this.startLocation = TrackedModelFactory.createTrackedLocation(startedLocation);
-		this.startTime = startTime;
-
-		addCharacter(attacking);
-		addCharacter(defending);
-
-		this.active = true;
-
-		save();
+		this.whoStarted = character;
 	}
 
-	public void save()
+	void setStartLocation(TrackedLocation location)
 	{
-		DemigodsData.jOhm.save(this);
+		this.startLocation = location;
+	}
+
+	void setInvolvedCharacters(Set<PlayerCharacter> characters)
+	{
+		this.involvedCharacters = characters;
+	}
+
+	void setInvolvedLocations(Set<TrackedLocation> locations)
+	{
+		this.involvedLocations = locations;
+	}
+
+	void setStartTime(long time)
+	{
+		this.startTime = time;
+	}
+
+	public void setEndTime(long time)
+	{
+		this.endTime = time;
+	}
+
+	public void setActive(boolean active)
+	{
+		this.active = active;
+	}
+
+	public static void save(TrackedBattle battle)
+	{
+		DemigodsData.jOhm.save(battle);
 	}
 
 	public static TrackedBattle load(long id) // TODO This belongs somewhere else.
@@ -79,13 +92,13 @@ public class TrackedBattle
 	{
 		this.involvedCharacters.add(character);
 		if(character.getOwner().isOnline()) addLocation(character.getOwner().getPlayer().getLocation());
-		save();
+		save(this);
 	}
 
 	public void removeCharacter(PlayerCharacter character)
 	{
 		if(this.involvedCharacters.contains(character)) this.involvedCharacters.remove(character);
-		save();
+		save(this);
 	}
 
 	public Set<TrackedLocation> getLocations()
@@ -96,13 +109,13 @@ public class TrackedBattle
 	public void addLocation(Location location)
 	{
 		if(!this.involvedLocations.contains(TrackedLocation.getTracked(location))) this.involvedLocations.add(TrackedLocation.getTracked(location));
-		save();
+		save(this);
 	}
 
 	public void removeLocation(Location location)
 	{
 		if(this.involvedLocations.contains(TrackedLocation.getTracked(location))) this.involvedLocations.remove(TrackedLocation.getTracked(location));
-		save();
+		save(this);
 	}
 
 	public PlayerCharacter getWhoStarted()
@@ -128,10 +141,5 @@ public class TrackedBattle
 	public boolean isActive()
 	{
 		return this.active;
-	}
-
-	public synchronized void setActive(boolean active)
-	{
-		this.active = active;
 	}
 }

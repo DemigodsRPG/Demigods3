@@ -3,9 +3,13 @@ package com.censoredsoftware.Demigods.Engine.Tracked;
 import java.util.HashMap;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {
@@ -24,15 +28,7 @@ public class TrackedModelFactory
 
 	public static TrackedLocation createTrackedLocation(Location location)
 	{
-		TrackedLocation trackedLocation = new TrackedLocation();
-		trackedLocation.setWorld(location.getWorld().getName());
-		trackedLocation.setX(location.getX());
-		trackedLocation.setY(location.getY());
-		trackedLocation.setZ(location.getZ());
-		trackedLocation.setYaw(location.getYaw());
-		trackedLocation.setPitch(location.getPitch());
-		TrackedLocation.save(trackedLocation);
-		return trackedLocation;
+		return createTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 	}
 
 	public static TrackedPlayer createTrackedPlayer(OfflinePlayer player)
@@ -47,13 +43,10 @@ public class TrackedModelFactory
 	public static TrackedPlayerInventory createTrackedPlayerInventory(PlayerInventory inventory)
 	{
 		TrackedPlayerInventory trackedInventory = new TrackedPlayerInventory();
-		// Save armor
 		trackedInventory.setHelmet(createTrackedItemStack(inventory.getHelmet()));
 		trackedInventory.setChestplate(createTrackedItemStack(inventory.getChestplate()));
 		trackedInventory.setLeggings(createTrackedItemStack(inventory.getLeggings()));
 		trackedInventory.setBoots(createTrackedItemStack(inventory.getBoots()));
-
-		// Define the new items map and the slot counter and save the contents
 		trackedInventory.setItems(new HashMap<Integer, TrackedItemStack>());
 		TrackedPlayerInventory.save(trackedInventory.processInventory(inventory));
 		return trackedInventory;
@@ -72,5 +65,39 @@ public class TrackedModelFactory
 		trackedItem.setBookMeta(item);
 		TrackedItemStack.save(trackedItem);
 		return trackedItem;
+	}
+
+	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
+	{
+		TrackedBlock trackedBlock = new TrackedBlock();
+		trackedBlock.setLocation(TrackedModelFactory.createTrackedLocation(location));
+		trackedBlock.setType(type);
+		trackedBlock.setMaterial(material);
+		trackedBlock.setMaterialByte(matByte);
+		trackedBlock.setPreviousMaterial(Material.getMaterial(location.getBlock().getTypeId()));
+		trackedBlock.setPreviousMaterialByte(location.getBlock().getData());
+		location.getBlock().setType(material);
+		location.getBlock().setData(matByte);
+		TrackedBlock.save(trackedBlock);
+		return trackedBlock;
+	}
+
+	public static TrackedBlock createTrackedBlock(Location location, String type, Material material)
+	{
+		return createTrackedBlock(location, type, material, (byte) 0);
+	}
+
+	public static TrackedBattle createTrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
+	{
+		TrackedBattle battle = new TrackedBattle();
+		Location startedLocation = ((Player) attacking.getOwner()).getLocation();
+		battle.setWhoStarted(attacking);
+		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
+		battle.setStartTime(startTime);
+		battle.addCharacter(attacking);
+		battle.addCharacter(defending);
+		battle.setActive(true);
+		TrackedBattle.save(battle);
+		return battle;
 	}
 }

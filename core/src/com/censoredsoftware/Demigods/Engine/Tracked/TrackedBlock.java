@@ -34,43 +34,39 @@ public class TrackedBlock
 	@Attribute
 	private byte previousMaterialByte;
 
-	public TrackedBlock()
-	{}
-
-	public TrackedBlock(Location location, String type, Material material)
+	void setLocation(TrackedLocation location)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
-		this.type = type;
-		this.material = material.getId();
-		this.materialByte = (byte) 0;
-		this.previousMaterial = location.getBlock().getTypeId();
-		this.previousMaterialByte = location.getBlock().getData();
-
-		// Create the actual block
-		location.getBlock().setType(material);
-
-		save();
+		this.location = location;
 	}
 
-	public TrackedBlock(Location location, String type, Material material, byte matByte)
+	void setType(String type)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
 		this.type = type;
-		this.material = material.getId();
-		this.materialByte = matByte;
-		this.previousMaterial = location.getBlock().getTypeId();
-		this.previousMaterialByte = location.getBlock().getData();
-
-		// Create the actual block
-		location.getBlock().setType(material);
-		location.getBlock().setData(matByte);
-
-		save();
 	}
 
-	public void save()
+	void setMaterial(Material material)
 	{
-		DemigodsData.jOhm.save(this);
+		this.material = material.getId();
+	}
+
+	void setMaterialByte(byte data)
+	{
+		this.materialByte = data;
+	}
+
+	void setPreviousMaterial(Material material)
+	{
+		this.previousMaterial = material.getId();
+	}
+
+	void setPreviousMaterialByte(byte data)
+	{
+		this.previousMaterialByte = data;
+	}
+
+	public static void save(TrackedBlock block)
+	{
+		DemigodsData.jOhm.save(block);
 	}
 
 	public static TrackedBlock load(long id) // TODO This belongs somewhere else.

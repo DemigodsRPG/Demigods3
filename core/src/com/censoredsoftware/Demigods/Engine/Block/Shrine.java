@@ -8,7 +8,6 @@ import org.bukkit.entity.EntityType;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
@@ -112,7 +111,7 @@ public class Shrine
 		}
 
 		// Set bedrock
-		this.block = new TrackedBlock(location, "shrine", Material.BEDROCK).getId();
+		this.block = TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK).getId();
 
 		// Spawn the Entity
 		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);

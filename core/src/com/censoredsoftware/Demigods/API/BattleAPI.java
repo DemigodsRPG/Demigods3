@@ -16,6 +16,7 @@ import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 public class BattleAPI
 {
@@ -223,7 +224,7 @@ public class BattleAPI
 			int battleID = DemigodsData.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-			if(!battleEvent.isCancelled()) new TrackedBattle(hittingChar, hitChar, startTime);
+			if(!battleEvent.isCancelled()) TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);
 		}
 		else
 		{
@@ -253,7 +254,7 @@ public class BattleAPI
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(battle.getWhoStarted(), hitChar, battle.getStartTime());
+						combinedBattle = TrackedModelFactory.createTrackedBattle(battle.getWhoStarted(), hitChar, battle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
@@ -264,7 +265,7 @@ public class BattleAPI
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = new TrackedBattle(otherBattle.getWhoStarted(), hitChar, otherBattle.getStartTime());
+						combinedBattle = TrackedModelFactory.createTrackedBattle(otherBattle.getWhoStarted(), hitChar, otherBattle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
