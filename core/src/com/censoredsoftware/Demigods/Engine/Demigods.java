@@ -924,6 +924,15 @@ class Commands implements CommandExecutor
 				}
 			}
 
+			if(BlockAPI.getAllBlocks().isEmpty())
+			{
+				sender.sendMessage(" ");
+				sender.sendMessage("-- Blocks -------------------");
+				sender.sendMessage(" ");
+
+				sender.sendMessage("There are no blocks in the database.");
+			}
+
 			sender.sendMessage(" ");
 			sender.sendMessage("-- Altars -------------------");
 			sender.sendMessage(" ");
@@ -933,6 +942,7 @@ class Commands implements CommandExecutor
 				sender.sendMessage(altar.getId() + ":");
 				sender.sendMessage(" -> Active: " + altar.isActive());
 				if(sender instanceof Player) sender.sendMessage(" -> Distance: " + altar.getLocation().distance(((Player) sender).getLocation()));
+				sender.sendMessage(" -> Has Blocks: " + (altar.getBlocks() != null && !altar.getBlocks().isEmpty()));
 			}
 		}
 		catch(NullPointerException e)

@@ -19,7 +19,7 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 public class TrackedPlayerInventory
 {
 	@Id
-	private long id;
+	private Long id;
 	@Reference
 	private TrackedItemStack helmet;
 	@Reference
@@ -83,7 +83,7 @@ public class TrackedPlayerInventory
 		return DemigodsData.jOhm.getAll(TrackedPlayerInventory.class);
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}

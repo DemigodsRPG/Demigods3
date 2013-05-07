@@ -15,7 +15,7 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 public class TrackedPlayer
 {
 	@Id
-	private long id;
+	private Long id;
 	@Attribute
 	@Indexed
 	private String player;
@@ -74,7 +74,7 @@ public class TrackedPlayer
 		TrackedPlayer.save(this);
 	}
 
-	public long getLastLoginTime()
+	public Long getLastLoginTime()
 	{
 		return this.lastLoginTime;
 	}

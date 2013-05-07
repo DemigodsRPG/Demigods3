@@ -16,47 +16,47 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 public class TrackedLocation
 {
 	@Id
-	private long id;
+	private Long id;
 	@Attribute
 	@Indexed
 	private String world;
 	@Attribute
-	private double X;
+	private Double X;
 	@Attribute
-	private double Y;
+	private Double Y;
 	@Attribute
-	private double Z;
+	private Double Z;
 	@Attribute
-	private float pitch;
+	private Float pitch;
 	@Attribute
-	private float yaw;
+	private Float yaw;
 
 	void setWorld(String world)
 	{
 		this.world = world;
 	}
 
-	void setX(double X)
+	void setX(Double X)
 	{
 		this.X = X;
 	}
 
-	void setY(double Y)
+	void setY(Double Y)
 	{
 		this.Y = Y;
 	}
 
-	void setZ(double Z)
+	void setZ(Double Z)
 	{
 		this.Z = Z;
 	}
 
-	void setYaw(float yaw)
+	void setYaw(Float yaw)
 	{
 		this.yaw = yaw;
 	}
 
-	void setPitch(float pitch)
+	void setPitch(Float pitch)
 	{
 		this.pitch = pitch;
 	}
@@ -90,7 +90,7 @@ public class TrackedLocation
 		return new Location(Bukkit.getServer().getWorld(this.world), this.X, this.Y, this.Z, this.yaw, this.pitch);
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}

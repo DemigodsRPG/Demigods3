@@ -19,7 +19,7 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 public class TrackedItemStack
 {
 	@Id
-	private long id;
+	private Long id;
 	@Attribute
 	private int typeId;
 	@Attribute
@@ -129,7 +129,7 @@ public class TrackedItemStack
 		return DemigodsData.jOhm.getAll(TrackedItemStack.class);
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}

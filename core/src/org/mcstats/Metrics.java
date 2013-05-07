@@ -485,7 +485,7 @@ public class Metrics
 		writer.write(data.toString());
 		writer.flush();
 
-		// Now read the response
+		// Now load the response
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		final String response = reader.readLine();
 

@@ -13,7 +13,7 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 public class TrackedBattle
 {
 	@Id
-	private long id;
+	private Long id;
 	@Reference
 	@Indexed
 	private PlayerCharacter whoStarted;
@@ -83,7 +83,7 @@ public class TrackedBattle
 		return DemigodsData.jOhm.getAll(TrackedBattle.class);
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}

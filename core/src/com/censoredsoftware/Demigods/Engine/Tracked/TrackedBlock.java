@@ -8,12 +8,13 @@ import org.bukkit.Material;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.google.common.base.Objects;
 
 @Model
 public class TrackedBlock
 {
 	@Id
-	private long id;
+	private Long id;
 	@Reference
 	@Indexed
 	private TrackedLocation location;
@@ -23,11 +24,11 @@ public class TrackedBlock
 	@Attribute
 	private int material;
 	@Attribute
-	private byte materialByte;
+	private int materialByte;
 	@Attribute
 	private int previousMaterial;
 	@Attribute
-	private byte previousMaterialByte;
+	private int previousMaterialByte;
 
 	void setLocation(TrackedLocation location)
 	{
@@ -46,7 +47,7 @@ public class TrackedBlock
 
 	void setMaterialByte(byte data)
 	{
-		this.materialByte = data;
+		this.materialByte = (int) data;
 	}
 
 	void setPreviousMaterial(Material material)
@@ -56,7 +57,7 @@ public class TrackedBlock
 
 	void setPreviousMaterialByte(byte data)
 	{
-		this.previousMaterialByte = data;
+		this.previousMaterialByte = (int) data;
 	}
 
 	public static void save(TrackedBlock block)
@@ -64,7 +65,7 @@ public class TrackedBlock
 		DemigodsData.jOhm.save(block);
 	}
 
-	public static TrackedBlock load(long id) // TODO This belongs somewhere else.
+	public static TrackedBlock load(Long id)
 	{
 		return DemigodsData.jOhm.get(TrackedBlock.class, id);
 	}
@@ -79,13 +80,14 @@ public class TrackedBlock
 	 */
 	public void remove()
 	{
-		getLocation().getBlock().setTypeIdAndData(this.previousMaterial, this.previousMaterialByte, true);
+		getLocation().getBlock().setTypeIdAndData((byte) this.previousMaterial, (byte) this.previousMaterialByte, true);
+		DemigodsData.jOhm.delete(TrackedBlock.class, getId());
 	}
 
 	/*
 	 * getID() : Returns the ID of the block.
 	 */
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}
@@ -100,12 +102,33 @@ public class TrackedBlock
 
 	public byte getMaterialByte()
 	{
-		return this.materialByte;
+		return (byte) this.materialByte;
 	}
 
 	public Location getLocation()
 	{
 		return this.location.toLocation();
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if(this == obj) return true;
+		if(obj == null || getClass() != obj.getClass()) return false;
+		final TrackedBlock other = (TrackedBlock) obj;
+		return Objects.equal(this.id, other.id) && Objects.equal(this.location, other.location) && Objects.equal(this.type, other.type) && Objects.equal(this.material, other.material) && Objects.equal(this.materialByte, other.materialByte) && Objects.equal(this.previousMaterial, other.previousMaterial) && Objects.equal(this.previousMaterialByte, other.previousMaterialByte);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode(id, location, type, material, materialByte, previousMaterial, previousMaterialByte);
+	}
+
+	@Override
+	public String toString()
+	{
+		return Objects.toStringHelper(this).add("id", id).add("location", location).add("type", type).add("material", material).add("materialByte", materialByte).add("previousMaterial", previousMaterial).add("previousMaterialByte", previousMaterialByte).toString();
 	}
 
 	@Override

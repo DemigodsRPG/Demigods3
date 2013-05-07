@@ -152,7 +152,7 @@ public class LatestTweetModule implements Listener
 		}
 		catch(Exception e)
 		{
-			log.warning("[" + pluginName + "] Failed to read twitter page.");
+			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
 		return false;
 	}

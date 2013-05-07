@@ -270,7 +270,7 @@ public class BukkitUpdateModule implements Listener
 		}
 		catch(Exception e)
 		{
-			log.warning("[" + pluginName + "] Failed to read download page.");
+			log.warning("[" + pluginName + "] Failed to load download page.");
 		}
 
 		return false;
@@ -300,7 +300,7 @@ public class BukkitUpdateModule implements Listener
 		}
 		catch(Exception e)
 		{
-			log.warning("[" + pluginName + "] Failed to read download page.");
+			log.warning("[" + pluginName + "] Failed to load download page.");
 		}
 
 		return false;

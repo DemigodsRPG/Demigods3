@@ -1,6 +1,6 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
+import com.google.common.collect.Lists;
 
 public class BlockAPI
 {
@@ -17,31 +18,14 @@ public class BlockAPI
 	 * @param id The ID of the block.
 	 * @return TrackedBlock.
 	 */
-	public static TrackedBlock getBlock(long id)
+	public static TrackedBlock getBlock(Long id)
 	{
 		return TrackedBlock.load(id);
 	}
 
-	public static Set<TrackedBlock> getBlocks()
+	public static Set<TrackedBlock> getAllBlocks()
 	{
 		return TrackedBlock.loadAll();
-	}
-
-	/**
-	 * Returns all protected blocks as an ArrayList.
-	 * 
-	 * @return the ArrayList of locations.
-	 */
-	public static ArrayList<Location> getAllBlocks()
-	{
-		ArrayList<Location> locations = new ArrayList<Location>();
-
-		for(Altar altar : getAllAltars())
-			locations.add(altar.getLocation());
-		// for(Shrine shrine : getAllShrines())
-		// locations.add(shrine.getLocation());
-
-		return locations;
 	}
 
 	/**
@@ -59,14 +43,14 @@ public class BlockAPI
 	 * 
 	 * @return the ArrayList of Shrines.
 	 */
-	public static ArrayList<Shrine> getAllShrines()
+	public static List<Shrine> getAllShrines()
 	{ // TODO Convert shrines.
 	  // ArrayList<Shrine> shrines = new ArrayList<Shrine>();
 	  // for(int key : DemigodsData.shrineData.listKeys())
 	  // {
 	  // shrines.add((Shrine) DemigodsData.shrineData.getDataObject(key));
 	  // }
-		return new ArrayList<Shrine>();
+		return Lists.newArrayList();
 	}
 
 	/**
@@ -77,7 +61,8 @@ public class BlockAPI
 	 */
 	public static boolean isProtected(Location location)
 	{
-		return !(getAllAltars() == null && getAllShrines() == null) && (isAltar(location) || isShrine(location));
+		// TODO Shrines. return !(getAllAltars() == null && getAllShrines() == null) && (isAltar(location) || isShrine(location));
+		return isAltar(location);
 	}
 
 	/**
@@ -88,9 +73,10 @@ public class BlockAPI
 	 */
 	public static boolean isAltar(Location location)
 	{
-		if(getAllAltars() == null) return false;
+		Set<Altar> altars = getAllAltars();
+		if(altars.isEmpty()) return false;
 
-		for(Altar altar : getAllAltars())
+		for(Altar altar : altars)
 		{
 			if(altar.locationMatches(location)) return true;
 		}

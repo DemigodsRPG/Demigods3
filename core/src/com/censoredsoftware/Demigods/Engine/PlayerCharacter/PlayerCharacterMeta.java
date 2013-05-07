@@ -20,7 +20,7 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 public class PlayerCharacterMeta
 {
 	@Id
-	private long id;
+	private Long id;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
 	@CollectionMap(key = Integer.class, value = String.class)

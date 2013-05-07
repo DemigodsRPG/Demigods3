@@ -69,8 +69,10 @@ public class TrackedModelFactory
 
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
 	{
+		TrackedLocation trackedLocation = TrackedModelFactory.createTrackedLocation(location);
+
 		TrackedBlock trackedBlock = new TrackedBlock();
-		trackedBlock.setLocation(TrackedModelFactory.createTrackedLocation(location));
+		trackedBlock.setLocation(trackedLocation);
 		trackedBlock.setType(type);
 		trackedBlock.setMaterial(material);
 		trackedBlock.setMaterialByte(matByte);
@@ -79,6 +81,7 @@ public class TrackedModelFactory
 		location.getBlock().setType(material);
 		location.getBlock().setData(matByte);
 		TrackedBlock.save(trackedBlock);
+
 		return trackedBlock;
 	}
 
