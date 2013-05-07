@@ -10,7 +10,6 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -20,7 +19,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 public class Altar
 {
 	@Id
-	private long id;
+	private Long id;
 	@Reference
 	@Indexed
 	private TrackedLocation center;
@@ -31,9 +30,14 @@ public class Altar
 	@Indexed
 	private Set<TrackedBlock> blocks;
 
+	public Altar()
+	{
+		// Not very elegant.. but it works and provides higher odds against generating the same number twice while also maintaining the Long data type just in case. Whoa that was a long comment. Actually... whoa THIS is a long comment. Heh.
+		this.id = Long.parseLong(DemigodsData.generateInt(8) + "");
+	}
+
 	void setCenter(TrackedLocation center)
 	{
-		Demigods.message.broadcast("Altar " + getId() + " set to " + center.getId());
 		this.center = center;
 	}
 
@@ -79,7 +83,7 @@ public class Altar
 		delete();
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return this.id;
 	}
