@@ -7,8 +7,8 @@ import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
+import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.google.common.collect.Lists;
 
 public class BlockAPI
@@ -104,7 +104,9 @@ public class BlockAPI
 	{
 		for(Altar altar : getAllAltars())
 		{
-			if(altar.getBlocks().contains(TrackedModelFactory.createUnsavedTrackedLocation(location))) return altar;
+			Location altarLocation = altar.getLocation();
+			if(!altarLocation.getChunk().isLoaded() || !altarLocation.getWorld().equals(location.getWorld()) || altarLocation.distance(location) > 7) continue;
+			if(altar.getBlocks().contains(new ComparableLocation(location))) return altar;
 		}
 		return null;
 	}
@@ -187,7 +189,9 @@ public class BlockAPI
 
 		for(Altar altar : getAllAltars())
 		{
-			if(altar.getLocation().distance(location) <= blocks) return true;
+			Location altarLocation = altar.getLocation();
+			if(!altarLocation.getWorld().equals(location.getWorld())) continue;
+			if(altarLocation.distance(location) <= blocks) return true;
 		}
 		return false;
 	}

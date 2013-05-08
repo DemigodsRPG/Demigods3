@@ -115,9 +115,9 @@ public class TrackedBlock
 	{
 		if(this == obj) return true;
 		if(obj == null) return false;
-		if(obj instanceof TrackedLocation)
+		if(obj instanceof ComparableLocation)
 		{
-			final TrackedLocation other = (TrackedLocation) obj;
+			final ComparableLocation other = (ComparableLocation) obj;
 			return Objects.equal(this.location.world, other.world) && Objects.equal(this.location.X, other.X) && Objects.equal(this.location.Y, other.Y) && Objects.equal(this.location.Z, other.Z) && Objects.equal(this.location.yaw, other.yaw) && Objects.equal(this.location.pitch, other.pitch);
 		}
 		return false;

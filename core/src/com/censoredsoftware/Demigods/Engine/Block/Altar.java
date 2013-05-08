@@ -1,6 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Block;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -26,9 +26,9 @@ public class Altar
 	@Attribute
 	@Indexed
 	private boolean active;
-	@CollectionList(of = TrackedBlock.class)
+	@CollectionSet(of = TrackedBlock.class)
 	@Indexed
-	private List<TrackedBlock> blocks;
+	private Set<TrackedBlock> blocks;
 
 	void setCenter(TrackedLocation center)
 	{
@@ -62,8 +62,7 @@ public class Altar
 
 	public static Set<Altar> loadAll()
 	{
-		Set<Altar> altars = DemigodsData.jOhm.getAll(Altar.class);
-		return altars;
+		return DemigodsData.jOhm.getAll(Altar.class);
 	}
 
 	/**
@@ -103,24 +102,9 @@ public class Altar
 		return active;
 	}
 
-	public List<TrackedBlock> getBlocks()
+	public Set<TrackedBlock> getBlocks()
 	{
 		return this.blocks;
-	}
-
-	/**
-	 * Returns true if the <code>location</code> matches a location within the Altar.
-	 * 
-	 * @param location the location to check.
-	 * @return boolean
-	 */
-	public boolean locationMatches(Location location)
-	{
-		for(TrackedBlock block : this.blocks)
-		{
-			if(block.getLocation().equals(location)) return true;
-		}
-		return false;
 	}
 
 	/**
@@ -137,69 +121,71 @@ public class Altar
 		double locZ = location.getZ();
 		World locWorld = location.getWorld();
 
+		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
+
 		// Create the enchantment table
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 2, locZ), "altar", Material.ENCHANTMENT_TABLE));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 2, locZ), "altar", Material.ENCHANTMENT_TABLE));
 
 		// Create magical table stand
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 6, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 6, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
 
 		// Left beam
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 4, locZ - 2), "altar", Material.getMaterial(98), (byte) 3));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 4, locZ - 2), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Right beam
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 4, locZ + 2), "altar", Material.getMaterial(98), (byte) 3));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 4, locZ + 2), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Top beam
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Bottom beam
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Set locations to use for building
 		Location topLeft = new Location(locWorld, locX + 2, locY + 1, locZ - 2);
@@ -208,38 +194,38 @@ public class Altar
 		Location botRight = new Location(locWorld, locX - 2, locY + 1, locZ + 2);
 
 		// Top left of platform
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topLeft, "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topLeft, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Top right of platform
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topRight, "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topRight.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topRight, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topRight.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Bottom left of platform
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botLeft, "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botLeft, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Bottom right of platform
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botRight, "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botRight.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botRight, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botRight.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Create central structure of platform
 		for(int i = 1; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ + i), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ + i), "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ - i), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ - i), "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Build steps on all sides.
 		Location leftSteps = new Location(locWorld, locX + 2, locY, locZ - 4);
@@ -248,72 +234,74 @@ public class Altar
 		Location botSteps = new Location(locWorld, locX - 4, locY, locZ - 2);
 
 		// Create left steps
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 
 		// Create right steps
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 
 		// Create top steps
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 
 		// Create bottom steps
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 
 		// Create left step towers
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(126), (byte) 1));
+			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 
 		// Create right step towers
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(126), (byte) 1));
+			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 
 		// Create top step towers
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(126), (byte) 1));
+			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 
 		// Create bottom step towers
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
-		altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(126), (byte) 1));
+			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
+		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
-			altar.getBlocks().add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+
+		altar.getBlocks().addAll(blocks);
 	}
 
 	@Override

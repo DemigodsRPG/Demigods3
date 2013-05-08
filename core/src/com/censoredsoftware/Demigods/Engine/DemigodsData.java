@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.johm.JOhm;
@@ -32,17 +33,23 @@ public class DemigodsData
 
 	public static void disconnect()
 	{
-		jedisPool.getResource().disconnect();
+		Jedis jedis = jedisPool.getResource();
+		jedis.disconnect();
+		jedisPool.returnResource(jedis);
 	}
 
 	public static void save()
 	{
-		jedisPool.getResource().bgsave();
+		Jedis jedis = jedisPool.getResource();
+		jedis.bgsave();
+		jedisPool.returnResource(jedis);
 	}
 
 	public static void flushData()
 	{
-		jedisPool.getResource().flushDB();
+		Jedis jedis = jedisPool.getResource();
+		jedis.flushDB();
+		jedisPool.returnResource(jedis);
 	}
 
 	public static boolean hasKeyTemp(String key, String key_)
