@@ -80,6 +80,7 @@ public class BlockAPI
 		{
 			if(altar.locationMatches(location)) return true;
 		}
+
 		return false;
 	}
 

@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +31,17 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
+		DecimalFormat shorten = new DecimalFormat("#.##");
+		long bCheck = System.currentTimeMillis();
+
 		Location location = event.getBlock().getLocation();
 		if(BlockAPI.isProtected(location))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + "That block is protected by a Deity!");
+
+			double check = (System.currentTimeMillis() - bCheck) / 1000.0;
+			Demigods.message.broadcast("It took " + shorten.format(check) + " seconds to execute this test.");
 		}
 	}
 

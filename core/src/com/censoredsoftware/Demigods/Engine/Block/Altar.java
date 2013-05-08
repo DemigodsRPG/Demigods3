@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Block;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -31,7 +29,7 @@ public class Altar
 	private boolean active;
 	@CollectionList(of = TrackedBlock.class)
 	@Indexed
-	private ArrayList<TrackedBlock> blocks;
+	private List<TrackedBlock> blocks;
 
 	void setCenter(TrackedLocation center)
 	{
@@ -69,7 +67,6 @@ public class Altar
 		long bRedis = System.currentTimeMillis();
 		Set<Altar> altars = DemigodsData.jOhm.getAll(Altar.class);
 		double redis = (System.currentTimeMillis() - bRedis) / 1000.0;
-		Demigods.message.broadcast("It took " + shorten.format(redis) + " seconds to grab all the Altars from Redis.");
 
 		return altars;
 	}
@@ -124,20 +121,16 @@ public class Altar
 	 */
 	public boolean locationMatches(Location location)
 	{
-
 		DecimalFormat shorten = new DecimalFormat("#.##");
 		long bCheck = System.currentTimeMillis();
 		for(TrackedBlock block : this.blocks)
 		{
 			if(block.getLocation().equals(location))
 			{
-				double check = (System.currentTimeMillis() - bCheck) / 1000.0;
-				Demigods.message.broadcast("It took " + shorten.format(check) + " seconds to execute this test.");
 				return true;
 			}
 		}
 		double check = (System.currentTimeMillis() - bCheck) / 1000.0;
-		Demigods.message.broadcast("It took " + shorten.format(check) + " seconds to execute this test.");
 		return false;
 	}
 

@@ -13,7 +13,7 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {
-	public static TrackedLocation createTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
+	public static TrackedLocation createSavedTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
 		TrackedLocation trackedLocation = new TrackedLocation();
 		trackedLocation.setWorld(world);
@@ -26,9 +26,26 @@ public class TrackedModelFactory
 		return trackedLocation;
 	}
 
-	public static TrackedLocation createTrackedLocation(Location location)
+	public static TrackedLocation createUnsavedTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
-		return createTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+		TrackedLocation trackedLocation = new TrackedLocation();
+		trackedLocation.setWorld(world);
+		trackedLocation.setX(X);
+		trackedLocation.setY(Y);
+		trackedLocation.setZ(Z);
+		trackedLocation.setYaw(yaw);
+		trackedLocation.setPitch(pitch);
+		return trackedLocation;
+	}
+
+	public static TrackedLocation createSavedTrackedLocation(Location location)
+	{
+		return createSavedTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	}
+
+	public static TrackedLocation createUnsavedTrackedLocation(Location location)
+	{
+		return createUnsavedTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 	}
 
 	public static TrackedPlayer createTrackedPlayer(OfflinePlayer player)
@@ -69,7 +86,7 @@ public class TrackedModelFactory
 
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
 	{
-		TrackedLocation trackedLocation = TrackedModelFactory.createTrackedLocation(location);
+		TrackedLocation trackedLocation = TrackedModelFactory.createUnsavedTrackedLocation(location);
 
 		TrackedBlock trackedBlock = new TrackedBlock();
 		trackedBlock.setLocation(trackedLocation);
@@ -95,7 +112,7 @@ public class TrackedModelFactory
 		TrackedBattle battle = new TrackedBattle();
 		Location startedLocation = ((Player) attacking.getOwner()).getLocation();
 		battle.setWhoStarted(attacking);
-		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
+		battle.setStartLocation(TrackedModelFactory.createUnsavedTrackedLocation(startedLocation));
 		battle.setStartTime(startTime);
 		battle.addCharacter(attacking);
 		battle.addCharacter(defending);

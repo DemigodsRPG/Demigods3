@@ -11,6 +11,7 @@ import redis.clients.johm.Indexed;
 import redis.clients.johm.Model;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.google.common.base.Objects;
 
 @Model
 public class TrackedLocation
@@ -82,7 +83,7 @@ public class TrackedLocation
 		{
 			if(location.equals(tracked)) return tracked;
 		}
-		return TrackedModelFactory.createTrackedLocation(location);
+		return TrackedModelFactory.createUnsavedTrackedLocation(location);
 	}
 
 	public Location toLocation() throws NullPointerException
@@ -96,16 +97,23 @@ public class TrackedLocation
 	}
 
 	@Override
-	public boolean equals(Object object)
-	{
-		if(object instanceof Location) return this.toLocation().distance((Location) object) < 1;
-		else if(object instanceof TrackedLocation) return this.toLocation().distance(((TrackedLocation) object).toLocation()) < 1;
-		return false;
-	}
-
-	@Override
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	@Override
+	public boolean equals(final Object obj)
+	{
+		if(this == obj) return true;
+		if(obj == null || getClass() != obj.getClass()) return false;
+		final Altar other = (Altar) obj;
+		return Objects.equal(this.id, other.id) && Objects.equal(this.center, other.center) && Objects.equal(this.active, other.active) && Objects.equal(this.blocks, other.blocks);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode(center, active, blocks);
 	}
 }

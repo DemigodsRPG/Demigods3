@@ -40,6 +40,11 @@ public class DemigodsData
 		jedisPool.getResource().bgsave();
 	}
 
+	public static void flushData()
+	{
+		jedisPool.getResource().flushDB();
+	}
+
 	public static boolean hasKeyTemp(String key, String key_)
 	{
 		return tempData.containsKey(key) && tempData.get(key).containsKey(key_);
