@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Block;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -63,11 +62,7 @@ public class Altar
 
 	public static Set<Altar> loadAll()
 	{
-		DecimalFormat shorten = new DecimalFormat("#.##");
-		long bRedis = System.currentTimeMillis();
 		Set<Altar> altars = DemigodsData.jOhm.getAll(Altar.class);
-		double redis = (System.currentTimeMillis() - bRedis) / 1000.0;
-
 		return altars;
 	}
 
@@ -121,16 +116,10 @@ public class Altar
 	 */
 	public boolean locationMatches(Location location)
 	{
-		DecimalFormat shorten = new DecimalFormat("#.##");
-		long bCheck = System.currentTimeMillis();
 		for(TrackedBlock block : this.blocks)
 		{
-			if(block.getLocation().equals(location))
-			{
-				return true;
-			}
+			if(block.getLocation().equals(location)) return true;
 		}
-		double check = (System.currentTimeMillis() - bCheck) / 1000.0;
 		return false;
 	}
 

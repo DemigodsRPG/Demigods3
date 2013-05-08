@@ -74,13 +74,7 @@ public class BlockAPI
 	 */
 	public static boolean isAltar(Location location)
 	{
-		Set<Altar> altars = getAllAltars();
-		if(altars.isEmpty()) return false;
-		for(Altar altar : altars)
-		{
-			if(altar.getBlocks().contains(TrackedModelFactory.createUnsavedTrackedLocation(location))) return true;
-		}
-		return false;
+		return getAltar(location) != null;
 	}
 
 	/**

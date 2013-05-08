@@ -17,7 +17,7 @@ public class TrackedBlock
 	private Long id;
 	@Reference
 	@Indexed
-	private TrackedLocation location;
+	TrackedLocation location;
 	@Attribute
 	@Indexed
 	private String type;
@@ -114,9 +114,13 @@ public class TrackedBlock
 	public boolean equals(final Object obj)
 	{
 		if(this == obj) return true;
-		if(obj == null || !(obj instanceof TrackedLocation)) return false;
-		final TrackedLocation other = (TrackedLocation) obj;
-		return Objects.equal(this.location.world, other.world) && Objects.equal(this.location.X, other.X) && Objects.equal(this.location.Y, other.Y) && Objects.equal(this.location.Z, other.Z) && Objects.equal(this.location.yaw, other.yaw) && Objects.equal(this.location.pitch, other.pitch);
+		if(obj == null) return false;
+		if(obj instanceof TrackedLocation)
+		{
+			final TrackedLocation other = (TrackedLocation) obj;
+			return Objects.equal(this.location.world, other.world) && Objects.equal(this.location.X, other.X) && Objects.equal(this.location.Y, other.Y) && Objects.equal(this.location.Z, other.Z) && Objects.equal(this.location.yaw, other.yaw) && Objects.equal(this.location.pitch, other.pitch);
+		}
+		return false;
 	}
 
 	@Override

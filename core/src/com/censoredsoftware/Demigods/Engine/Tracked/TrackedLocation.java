@@ -106,9 +106,18 @@ public class TrackedLocation
 	public boolean equals(final Object obj)
 	{
 		if(this == obj) return true;
-		if(obj == null || !(obj instanceof TrackedLocation)) return false;
-		final TrackedLocation other = (TrackedLocation) obj;
-		return Objects.equal(this.world, other.world) && Objects.equal(this.X, other.X) && Objects.equal(this.Y, other.Y) && Objects.equal(this.Z, other.Z) && Objects.equal(this.yaw, other.yaw) && Objects.equal(this.pitch, other.pitch);
+		if(obj == null) return false;
+		if(obj instanceof TrackedLocation)
+		{
+			final TrackedLocation other = (TrackedLocation) obj;
+			return Objects.equal(this.world, other.world) && Objects.equal(this.X, other.X) && Objects.equal(this.Y, other.Y) && Objects.equal(this.Z, other.Z) && Objects.equal(this.yaw, other.yaw) && Objects.equal(this.pitch, other.pitch);
+		}
+		if(obj instanceof TrackedBlock)
+		{
+			final TrackedBlock other = (TrackedBlock) obj;
+			return Objects.equal(this.world, other.location.world) && Objects.equal(this.X, other.location.X) && Objects.equal(this.Y, other.location.Y) && Objects.equal(this.Z, other.location.Z) && Objects.equal(this.yaw, other.location.yaw) && Objects.equal(this.pitch, other.location.pitch);
+		}
+		return false;
 	}
 
 	@Override
