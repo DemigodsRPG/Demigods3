@@ -209,7 +209,13 @@ public class PlayerAPI
 	 */
 	public static boolean isPraying(OfflinePlayer player)
 	{
-		return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_praying").toString());
+		try
+		{
+			return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_praying").toString());
+		}
+		catch(Exception ignored)
+		{}
+		return false;
 	}
 
 	/**
