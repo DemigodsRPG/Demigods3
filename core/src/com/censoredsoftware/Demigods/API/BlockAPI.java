@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.google.common.collect.Lists;
 
 public class BlockAPI
@@ -75,12 +76,10 @@ public class BlockAPI
 	{
 		Set<Altar> altars = getAllAltars();
 		if(altars.isEmpty()) return false;
-
 		for(Altar altar : altars)
 		{
-			if(altar.locationMatches(location)) return true;
+			if(altar.getBlocks().contains(TrackedModelFactory.createUnsavedTrackedLocation(location))) return true;
 		}
-
 		return false;
 	}
 
@@ -109,11 +108,9 @@ public class BlockAPI
 	 */
 	public static Altar getAltar(Location location)
 	{
-		if(getAllAltars() == null) return null;
-
 		for(Altar altar : getAllAltars())
 		{
-			if(altar.locationMatches(location)) return altar;
+			if(altar.getBlocks().contains(TrackedModelFactory.createUnsavedTrackedLocation(location))) return altar;
 		}
 		return null;
 	}

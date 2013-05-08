@@ -20,17 +20,17 @@ public class TrackedLocation
 	private Long id;
 	@Attribute
 	@Indexed
-	private String world;
+	String world;
 	@Attribute
-	private Double X;
+	Double X;
 	@Attribute
-	private Double Y;
+	Double Y;
 	@Attribute
-	private Double Z;
+	Double Z;
 	@Attribute
-	private Float pitch;
+	Float pitch;
 	@Attribute
-	private Float yaw;
+	Float yaw;
 
 	void setWorld(String world)
 	{
@@ -106,14 +106,14 @@ public class TrackedLocation
 	public boolean equals(final Object obj)
 	{
 		if(this == obj) return true;
-		if(obj == null || getClass() != obj.getClass()) return false;
-		final Altar other = (Altar) obj;
-		return Objects.equal(this.id, other.id) && Objects.equal(this.center, other.center) && Objects.equal(this.active, other.active) && Objects.equal(this.blocks, other.blocks);
+		if(obj == null || !(obj instanceof TrackedLocation)) return false;
+		final TrackedLocation other = (TrackedLocation) obj;
+		return Objects.equal(this.world, other.world) && Objects.equal(this.X, other.X) && Objects.equal(this.Y, other.Y) && Objects.equal(this.Z, other.Z) && Objects.equal(this.yaw, other.yaw) && Objects.equal(this.pitch, other.pitch);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hashCode(center, active, blocks);
+		return Objects.hashCode(world, X, Y, Z, yaw, pitch);
 	}
 }

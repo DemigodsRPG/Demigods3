@@ -114,15 +114,15 @@ public class TrackedBlock
 	public boolean equals(final Object obj)
 	{
 		if(this == obj) return true;
-		if(obj == null || getClass() != obj.getClass()) return false;
-		final TrackedBlock other = (TrackedBlock) obj;
-		return Objects.equal(this.id, other.id) && Objects.equal(this.location, other.location) && Objects.equal(this.type, other.type) && Objects.equal(this.material, other.material) && Objects.equal(this.materialByte, other.materialByte) && Objects.equal(this.previousMaterial, other.previousMaterial) && Objects.equal(this.previousMaterialByte, other.previousMaterialByte);
+		if(obj == null || !(obj instanceof TrackedLocation)) return false;
+		final TrackedLocation other = (TrackedLocation) obj;
+		return Objects.equal(this.location.world, other.world) && Objects.equal(this.location.X, other.X) && Objects.equal(this.location.Y, other.Y) && Objects.equal(this.location.Z, other.Z) && Objects.equal(this.location.yaw, other.yaw) && Objects.equal(this.location.pitch, other.pitch);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hashCode(id, location, type, material, materialByte, previousMaterial, previousMaterialByte);
+		return Objects.hashCode(location.world, location.X, location.Y, location.Z, location.yaw, location.pitch);
 	}
 
 	@Override

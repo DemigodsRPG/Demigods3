@@ -13,7 +13,7 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {
-	public static TrackedLocation createSavedTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
+	public static TrackedLocation createTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
 		TrackedLocation trackedLocation = new TrackedLocation();
 		trackedLocation.setWorld(world);
@@ -38,9 +38,9 @@ public class TrackedModelFactory
 		return trackedLocation;
 	}
 
-	public static TrackedLocation createSavedTrackedLocation(Location location)
+	public static TrackedLocation createTrackedLocation(Location location)
 	{
-		return createSavedTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+		return createTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 	}
 
 	public static TrackedLocation createUnsavedTrackedLocation(Location location)
