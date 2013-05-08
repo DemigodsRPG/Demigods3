@@ -86,7 +86,7 @@ public class TrackedModelFactory
 
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
 	{
-		TrackedLocation trackedLocation = TrackedModelFactory.createUnsavedTrackedLocation(location);
+		TrackedLocation trackedLocation = TrackedModelFactory.createTrackedLocation(location);
 
 		TrackedBlock trackedBlock = new TrackedBlock();
 		trackedBlock.setLocation(trackedLocation);
