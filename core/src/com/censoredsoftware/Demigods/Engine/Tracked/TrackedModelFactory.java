@@ -71,13 +71,17 @@ public class TrackedModelFactory
 
 	public static TrackedItemStack createTrackedItemStack(ItemStack item)
 	{
+		// TODO: A lot of this is really redundant. Needs work. (possibly just make a setItem() method which can be used in situations like this and then leave the current methods for if we manipulate the item.
 		TrackedItemStack trackedItem = new TrackedItemStack();
 		trackedItem.setTypeId(item.getTypeId());
 		trackedItem.setByteId(item.getData().getData());
 		trackedItem.setAmount(item.getAmount());
 		trackedItem.setDurability(item.getDurability());
-		if(item.getItemMeta().hasDisplayName()) trackedItem.setName(item.getItemMeta().getDisplayName());
-		if(item.getItemMeta().hasLore()) trackedItem.setLore(item.getItemMeta().getLore());
+		if(item.hasItemMeta())
+		{
+			if(item.getItemMeta().hasDisplayName()) trackedItem.setName(item.getItemMeta().getDisplayName());
+			if(item.getItemMeta().hasLore()) trackedItem.setLore(item.getItemMeta().getLore());
+		}
 		trackedItem.setEnchantments(item);
 		trackedItem.setBookMeta(item);
 		TrackedItemStack.save(trackedItem);

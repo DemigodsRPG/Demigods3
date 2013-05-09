@@ -69,9 +69,6 @@ public class PlayerCharacter
 	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
 	private Map<TrackedLocation, String> invites;
 
-	public PlayerCharacter()
-	{}
-
 	public PlayerCharacter(OfflinePlayer player, String charName, boolean active, Deity deity, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean immortal)
 	{
 		// Vanilla Data

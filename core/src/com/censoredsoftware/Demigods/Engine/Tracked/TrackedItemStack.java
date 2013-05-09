@@ -84,7 +84,7 @@ public class TrackedItemStack
 	void setEnchantments(ItemStack item)
 	{
 		// If it has enchantments then save them
-		if(item.getItemMeta().hasEnchants())
+		if(item.hasItemMeta() && item.getItemMeta().hasEnchants())
 		{
 			// Create the new HashMap
 			enchantments = new HashMap<Integer, Integer>();
@@ -152,14 +152,14 @@ public class TrackedItemStack
 		ItemMeta itemMeta = item.getItemMeta();
 
 		// Set the meta
-		itemMeta.setDisplayName(this.name);
-		itemMeta.setLore(this.lore);
+		if(this.name != null) itemMeta.setDisplayName(this.name);
+		if(this.lore != null && !this.lore.isEmpty()) itemMeta.setLore(this.lore);
 
 		// Save the meta
 		item.setItemMeta(itemMeta);
 
 		// Apply enchantments if they exist
-		if(!enchantments.isEmpty())
+		if(enchantments != null && !enchantments.isEmpty())
 		{
 			for(Map.Entry<Integer, Integer> ench : this.enchantments.entrySet())
 			{

@@ -31,6 +31,8 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
 import com.censoredsoftware.Modules.PermissionModule;
@@ -144,6 +146,7 @@ public class Demigods
 		instance.getCommand("owner").setExecutor(ce);
 		instance.getCommand("removechar").setExecutor(ce);
 		instance.getCommand("viewmaps").setExecutor(ce);
+		instance.getCommand("test1").setExecutor(ce);
 	}
 
 	protected static void loadDepends(DemigodsPlugin instance)
@@ -304,11 +307,25 @@ class Commands implements CommandExecutor
 
 		// TESTING ONLY
 		else if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
+		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 
 		// Debugging
 		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
 
 		return false;
+	}
+
+	private static boolean test1(CommandSender sender, String[] args)
+	{
+		Player player = (Player) sender;
+
+		// Create a tracked item stack
+		TrackedItemStack item = TrackedModelFactory.createTrackedItemStack(player.getItemInHand());
+
+		// Drop the item at the player's feet
+		player.getWorld().dropItemNaturally(player.getLocation(), item.toItemStack());
+
+		return true;
 	}
 
 	/*

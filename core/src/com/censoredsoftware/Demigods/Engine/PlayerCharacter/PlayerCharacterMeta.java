@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import redis.clients.johm.Attribute;
 import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
@@ -21,6 +22,8 @@ public class PlayerCharacterMeta
 {
 	@Id
 	private Long id;
+	@Attribute
+	private String test;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
 	@CollectionMap(key = Integer.class, value = String.class)
@@ -30,22 +33,20 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Integer.class)
 	private Map<String, Integer> levelsData;
 
-	public PlayerCharacterMeta()
-	{}
-
 	public PlayerCharacterMeta(boolean save)
 	{
-		abilityData = new HashMap<String, Boolean>();
-		bindingData = new HashMap<Integer, String>();
-		taskData = new HashMap<String, Boolean>();
-		levelsData = new HashMap<String, Integer>();
+		this.test = "Test";
+		this.abilityData = new HashMap<String, Boolean>();
+		this.bindingData = new HashMap<Integer, String>();
+		this.taskData = new HashMap<String, Boolean>();
+		this.levelsData = new HashMap<String, Integer>();
 
-		if(save) save();
+		if(save) save(this);
 	}
 
-	public void save()
+	public void save(PlayerCharacterMeta playerCharacterMeta)
 	{
-		DemigodsData.jOhm.save(this);
+		DemigodsData.jOhm.save(playerCharacterMeta);
 	}
 
 	public static PlayerCharacterMeta load(long id) // TODO This belongs somewhere else.
