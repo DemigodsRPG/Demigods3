@@ -484,7 +484,7 @@ class AltarMenu extends Task
 			Deity deity = character.getDeity();
 			int favor = character.getFavor();
 			int maxFavor = character.getMaxFavor();
-			ChatColor favorColor = character.getFavorColor();
+			ChatColor favorColor = character.getMeta().getFavorColor();
 			int ascensions = character.getAscensions();
 
 			if(character.isActive()) color = ChatColor.LIGHT_PURPLE + "";
@@ -573,9 +573,9 @@ class AltarMenu extends Task
 		int exp = Math.round(character.getExperience());
 		int favor = character.getFavor();
 		int maxFavor = character.getMaxFavor();
-		ChatColor favorColor = character.getFavorColor();
+		ChatColor favorColor = character.getMeta().getFavorColor();
 		int devotion = character.getDevotion();
-		int devotionGoal = character.getDevotionGoal();
+		int devotionGoal = character.getMeta().getDevotionGoal();
 		int ascensions = character.getAscensions();
 
 		if(character.isActive()) currentCharMsg = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET;

@@ -176,7 +176,7 @@ public class PlayerCharacterMeta
 		levelsData.put(level.toUpperCase(), amount);
 	}
 
-	public void giveLevel(String level, int amount)
+	public void addLevel(String level, int amount)
 	{
 		setLevel(level.toUpperCase(), getLevel(level.toUpperCase()) + amount);
 	}
@@ -192,9 +192,14 @@ public class PlayerCharacterMeta
 		return this.ascensions;
 	}
 
-	public void giveAscension()
+	public void addAscension()
 	{
 		this.ascensions += 1;
+	}
+
+	public void addAscensions(int amount)
+	{
+		this.ascensions += amount;
 	}
 
 	public void subtractAscensions(int amount)
@@ -202,14 +207,38 @@ public class PlayerCharacterMeta
 		this.ascensions -= amount;
 	}
 
+	public void setAscensions(int amount)
+	{
+		this.ascensions = amount;
+	}
+
+	public int getDevotionGoal()
+	{
+		return (int) Math.ceil(500 * Math.pow(getAscensions() + 1, 2.02));
+	}
+
 	public Integer getDevotion()
 	{
 		return this.devotion;
 	}
 
-	public void giveDevotion(int amount)
+	public void addDevotion(int amount)
 	{
-		this.devotion += amount;
+		int devotionBefore = this.devotion;
+		int devotionGoal = getDevotionGoal();
+		this.devotion = devotionBefore + amount;
+		int devotionAfter = this.devotion;
+
+		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
+		{
+			// Character leveled up!
+
+			// TODO Trigger an event here instead of doing it as part of the object,
+			// TODO that way we can grab a lot more stuff from the listener without having to make everything public.
+
+			this.ascensions = getAscensions() + 1;
+			this.devotion = devotionAfter - devotionGoal;
+		}
 	}
 
 	public void subtractDevotion(int amount)
@@ -217,18 +246,44 @@ public class PlayerCharacterMeta
 		this.devotion -= amount;
 	}
 
+	public void setDevotion(int amount)
+	{
+		this.devotion = amount;
+	}
+
+	public ChatColor getFavorColor()
+	{
+		int favor = getFavor();
+		int maxFavor = getMaxFavor();
+		ChatColor color = ChatColor.RESET;
+
+		// Set favor color dynamically
+		if(favor < Math.ceil(0.33 * maxFavor)) color = ChatColor.RED;
+		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) color = ChatColor.YELLOW;
+		if(favor > Math.ceil(0.66 * maxFavor)) color = ChatColor.GREEN;
+
+		return color;
+	}
+
 	public Integer getFavor()
 	{
 		return this.favor;
 	}
 
-	public void giveFavor(int amount)
+	public void setFavor(int amount)
 	{
+		this.favor = amount;
+	}
+
+	public void addFavor(int amount)
+	{
+		if((getFavor() + amount) > getMaxFavor()) this.favor = getMaxFavor();
 		this.favor += amount;
 	}
 
 	public void subtractFavor(int amount)
 	{
+		if((this.favor - amount) < 0) this.favor = 0;
 		this.favor -= amount;
 	}
 
@@ -237,9 +292,16 @@ public class PlayerCharacterMeta
 		return this.maxFavor;
 	}
 
+	public void addMaxFavor(int amount)
+	{
+		setMaxFavor(getMaxFavor() + amount);
+	}
+
 	public void setMaxFavor(int amount)
 	{
-		this.maxFavor = amount;
+		if(amount < 0) this.maxFavor = 0;
+		if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+		else this.maxFavor = amount;
 	}
 
 	@Override

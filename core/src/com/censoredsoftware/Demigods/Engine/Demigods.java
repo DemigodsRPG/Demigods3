@@ -228,7 +228,7 @@ class Favor implements Runnable
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(multiplier * character.getAscensions());
 			if(regenRate < 1) regenRate = 1;
-			character.giveFavor(regenRate);
+			character.getMeta().addFavor(regenRate);
 		}
 	}
 
@@ -638,7 +638,7 @@ class Commands implements CommandExecutor
 				if(option2.equalsIgnoreCase("maxfavor"))
 				{
 					// Set the favor
-					character.setMaxFavor(amount);
+					character.getMeta().setMaxFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "Max favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -650,7 +650,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
-					character.setFavor(amount);
+					character.getMeta().setFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -662,7 +662,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					character.setDevotion(amount);
+					character.getMeta().setDevotion(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "Devotion set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -674,7 +674,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					character.setAscensions(amount);
+					character.getMeta().setAscensions(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
@@ -707,7 +707,7 @@ class Commands implements CommandExecutor
 				if(option2.equalsIgnoreCase("maxfavor"))
 				{
 					// Set the favor
-					character.setMaxFavor(character.getMaxFavor() + amount);
+					character.getMeta().setMaxFavor(character.getMaxFavor() + amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
 
@@ -719,7 +719,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
-					character.giveFavor(amount);
+					character.getMeta().addFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
 
@@ -731,7 +731,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					character.addDevotion(amount);
+					character.getMeta().addDevotion(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
 
@@ -743,7 +743,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					character.addAscensions(amount);
+					character.getMeta().addAscensions(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
 
@@ -776,7 +776,7 @@ class Commands implements CommandExecutor
 				if(option2.equalsIgnoreCase("maxfavor"))
 				{
 					// Set the favor
-					character.subtractFavor(amount);
+					character.getMeta().subtractFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " removed from " + toEdit.getName() + "'s current character's max favor.");
 
@@ -788,7 +788,7 @@ class Commands implements CommandExecutor
 				if(option2.equalsIgnoreCase("favor"))
 				{
 					// Set the favor
-					character.subtractFavor(amount);
+					character.getMeta().subtractFavor(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
 
@@ -800,7 +800,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("devotion"))
 				{
 					// Set the devotion
-					character.subtractDevotion(amount);
+					character.getMeta().subtractDevotion(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion removed from " + toEdit.getName() + "'s current character.");
 
@@ -812,7 +812,7 @@ class Commands implements CommandExecutor
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
-					character.subtractAscensions(amount);
+					character.getMeta().subtractAscensions(amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
 
@@ -858,14 +858,14 @@ class Commands implements CommandExecutor
 		int maxFavor = character.getMaxFavor();
 		int devotion = character.getDevotion();
 		int ascensions = character.getAscensions();
-		int devotionGoal = character.getDevotionGoal();
+		int devotionGoal = character.getMeta().getDevotionGoal();
 		// int powerOffense = character.getPower(AbilityEvent.Type.OFFENSE);
 		// int powerDefense = character.getPower(AbilityEvent.Type.DEFENSE);
 		// int powerStealth = character.getPower(AbilityEvent.Type.STEALTH);
 		// int powerSupport = character.getPower(AbilityEvent.Type.SUPPORT);
 		// int powerPassive = character.getPower(AbilityEvent.Type.PASSIVE);
 		ChatColor deityColor = character.getDeity().getInfo().getColor();
-		ChatColor favorColor = character.getFavorColor();
+		ChatColor favorColor = character.getMeta().getFavorColor();
 
 		// if(args.length == 1 && (args[0].equalsIgnoreCase("level") || args[0].equalsIgnoreCase("levels")))
 		// {

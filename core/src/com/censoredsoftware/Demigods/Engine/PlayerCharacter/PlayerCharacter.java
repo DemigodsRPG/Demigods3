@@ -13,7 +13,6 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -239,106 +238,6 @@ public class PlayerCharacter
 	public float getExperience()
 	{
 		return this.experience;
-	}
-
-	public void setFavor(int amount)
-	{
-		this.favor = amount;
-	}
-
-	public void giveFavor(int amount)
-	{
-		if(getFavor() + amount > getMaxFavor()) this.favor = getMaxFavor();
-		else this.favor += amount;
-	}
-
-	public void subtractFavor(int amount)
-	{
-		if(getFavor() - amount < 0) this.favor = 0;
-		else this.favor -= amount;
-	}
-
-	public void setMaxFavor(int amount)
-	{
-		if((amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-		else this.maxFavor = amount;
-	}
-
-	public void addMaxFavor(int amount)
-	{
-		if((getMaxFavor() + amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-		else this.maxFavor += amount;
-	}
-
-	public void subtractMaxFavor(int amount)
-	{
-		if((getMaxFavor() - amount) < 0) this.maxFavor = 0;
-		else this.maxFavor -= amount;
-	}
-
-	public ChatColor getFavorColor()
-	{
-		int favor = getFavor();
-		int maxFavor = getMaxFavor();
-		ChatColor color = ChatColor.RESET;
-
-		// Set favor color dynamically
-		if(favor < Math.ceil(0.33 * maxFavor)) color = ChatColor.RED;
-		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) color = ChatColor.YELLOW;
-		if(favor > Math.ceil(0.66 * maxFavor)) color = ChatColor.GREEN;
-
-		return color;
-	}
-
-	public int getDevotionGoal()
-	{
-		return (int) Math.ceil(500 * Math.pow(getAscensions() + 1, 2.02));
-	}
-
-	public void setDevotion(int amount)
-	{
-		this.devotion = amount;
-	}
-
-	public void addDevotion(int amount)
-	{
-		int devotionBefore = getDevotion();
-		int devotionGoal = getDevotionGoal();
-		this.devotion = devotionBefore + amount;
-		int devotionAfter = getDevotion();
-
-		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
-		{
-			// Character leveled up!
-
-			// TODO Trigger an event here instead of doing it as part of the object,
-			// TODO that way we can grab a lot more stuff from the listener without having to make everything public.
-
-			this.ascensions = getAscensions() + 1;
-			this.devotion = devotionAfter - devotionGoal;
-		}
-	}
-
-	public void subtractDevotion(int amount)
-	{
-		if(getDevotion() - amount < 0) this.devotion = 0;
-		else this.devotion -= amount;
-	}
-
-	public void setAscensions(int amount)
-	{
-		this.ascensions = amount;
-	}
-
-	public void addAscensions(int amount)
-	{
-		this.ascensions = getAscensions() + amount;
-	}
-
-	public void subtractAscensions(int amount)
-	{
-		if(getAscensions() - amount < 0) this.ascensions = 0;
-		else this.ascensions -= amount;
 	}
 
 	public boolean isDeity(String deityName)

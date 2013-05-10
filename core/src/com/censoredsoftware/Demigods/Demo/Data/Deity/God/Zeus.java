@@ -141,7 +141,7 @@ class Shove extends Ability
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "shove", cost, type)) return;
 		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
-		character.subtractFavor(cost);
+		character.getMeta().subtractFavor(cost);
 
 		if(!AbilityAPI.targeting(player, target)) return;
 
@@ -197,7 +197,7 @@ class Lightning extends Ability
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", cost, type)) return;
 		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
-		character.subtractFavor(cost);
+		character.getMeta().subtractFavor(cost);
 
 		Zeus.strikeLightning(player, target);
 	}

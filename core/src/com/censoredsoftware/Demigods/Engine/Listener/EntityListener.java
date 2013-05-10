@@ -88,7 +88,7 @@ public class EntityListener implements Listener
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
 
 			// Set their devotion and add a death
-			character.subtractDevotion(devotionRemoved);
+			character.getMeta().subtractDevotion(devotionRemoved);
 			PlayerAPI.addDeath(player);
 
 			// Let 'em know

@@ -192,8 +192,8 @@ public class ShrineListener implements Listener
 			int devotionBefore = character.getDevotion();
 
 			// Update the character's favor and devotion
-			character.addMaxFavor(tributeValue / 5);
-			character.addDevotion(tributeValue);
+			character.getMeta().addMaxFavor(tributeValue / 5);
+			character.getMeta().addDevotion(tributeValue);
 
 			if(character.getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN + character.getDevotion() + ChatColor.GRAY + ".");
 			if(character.getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMaxFavor() + ChatColor.GRAY + ".");
