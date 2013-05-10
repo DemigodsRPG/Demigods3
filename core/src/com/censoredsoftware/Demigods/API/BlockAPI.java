@@ -102,7 +102,8 @@ public class BlockAPI
 	 */
 	public static Altar getAltar(Location location)
 	{
-		for(Altar altar : getAllAltars())
+		final Set<Altar> altars = getAllAltars();
+		for(Altar altar : altars)
 		{
 			Location altarLocation = altar.getLocation();
 			if(!altarLocation.getChunk().isLoaded() || !altarLocation.getWorld().equals(location.getWorld()) || altarLocation.distance(location) > 7) continue;
@@ -185,9 +186,10 @@ public class BlockAPI
 	 */
 	public static boolean altarNearby(Location location, int blocks)
 	{
-		if(getAllAltars() == null) return false;
+		final Set<Altar> altars = getAllAltars();
+		if(altars == null) return false;
 
-		for(Altar altar : getAllAltars())
+		for(Altar altar : altars)
 		{
 			Location altarLocation = altar.getLocation();
 			if(!altarLocation.getWorld().equals(location.getWorld())) continue;

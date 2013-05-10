@@ -119,8 +119,7 @@ public class ZoneAPI
 	 */
 	public static boolean canTarget(Entity player)
 	{
-		Location location = player.getLocation();
-		return canTarget(player, location);
+		return canTarget(player, player.getLocation());
 	}
 
 	/**

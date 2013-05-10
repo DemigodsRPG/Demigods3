@@ -33,16 +33,15 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
+		TrackedPlayer tracked = TrackedPlayer.getTracked(player);
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		// Set their lastlogintime
 		long now = System.currentTimeMillis();
-		TrackedPlayer.getTracked(player).setLastLoginTime(now);
-
-		TrackedPlayer meta = TrackedPlayer.getTracked(player);
+		tracked.setLastLoginTime(now);
 
 		Demigods.message.broadcast("Now: " + now);
-		Demigods.message.broadcast(meta.getPlayer().getName() + ": " + TrackedPlayer.getTracked(player).getLastLoginTime());
+		Demigods.message.broadcast(player.getName() + ": " + tracked.getLastLoginTime());
 
 		// Set Displayname
 		if(character != null)

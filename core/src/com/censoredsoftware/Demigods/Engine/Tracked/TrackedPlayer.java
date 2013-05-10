@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -45,13 +44,7 @@ public class TrackedPlayer
 
 	public static Set<TrackedPlayer> loadAll()
 	{
-		try
-		{
-			return DemigodsData.jOhm.getAll(TrackedPlayer.class);
-		}
-		catch(Exception ignored)
-		{}
-		return new HashSet<TrackedPlayer>();
+		return DemigodsData.jOhm.getAll(TrackedPlayer.class);
 	}
 
 	public static TrackedPlayer getTracked(OfflinePlayer player)

@@ -453,10 +453,11 @@ class AltarMenu extends Task
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		if(TrackedPlayer.getTracked(player).getCurrent() != null)
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		if(character != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
-			if(LocationAPI.hasInvites(TrackedPlayer.getTracked(player).getCurrent())) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
+			if(LocationAPI.hasInvites(character)) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 			player.sendMessage(" ");
 			player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
 		}
@@ -700,6 +701,14 @@ class AltarMenu extends Task
 			player.sendMessage(" ");
 
 			// They can't be _Alex silly! Make them re-choose
+			chooseDeity(player);
+		}
+		if(message.equalsIgnoreCase("HmmmQuestionMark") || message.equalsIgnoreCase("HQM"))
+		{
+			player.sendMessage(ChatColor.AQUA + "  Well you can't be HQM... but he is awesome!");
+			player.sendMessage(" ");
+
+			// They can't be HQM silly! Make them re-choose
 			chooseDeity(player);
 		}
 	}
