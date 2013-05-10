@@ -27,7 +27,7 @@ public class PlayerAPI
 	{
 		try
 		{
-			return TrackedPlayer.getMeta(player).getCurrent();
+			return TrackedPlayer.getTracked(player).getCurrent();
 		}
 		catch(Exception e)
 		{
@@ -117,7 +117,7 @@ public class PlayerAPI
 		}
 
 		// Everything is good, let's switch
-		TrackedPlayer.getMeta(player).setCurrent(character);
+		TrackedPlayer.getTracked(player).setCurrent(character);
 		character.setActive(true);
 
 		// If it's their first character save their inventory

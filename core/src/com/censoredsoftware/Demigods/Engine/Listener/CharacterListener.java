@@ -48,7 +48,7 @@ public class CharacterListener implements Listener
 				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 
 			// Switch current character
-			TrackedPlayer.getMeta(player).setCurrent(character);
+			TrackedPlayer.getTracked(player).setCurrent(character);
 		}
 	}
 

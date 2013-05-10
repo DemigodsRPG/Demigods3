@@ -48,7 +48,7 @@ public class ChatListener implements Listener
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number"))
 		{
 			// Define variables
-			PlayerCharacter prevChar = TrackedPlayer.getMeta(player).getCurrent();
+			PlayerCharacter prevChar = TrackedPlayer.getTracked(player).getCurrent();
 
 			DemigodsData.setTemp(player.getName(), "temp_chat_number", Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
 

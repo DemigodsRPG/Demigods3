@@ -54,11 +54,12 @@ public class TrackedPlayer
 		return new HashSet<TrackedPlayer>();
 	}
 
-	public static TrackedPlayer getMeta(OfflinePlayer player)
+	public static TrackedPlayer getTracked(OfflinePlayer player)
 	{
-		for(TrackedPlayer tracked : loadAll())
+		final Set<TrackedPlayer> tracking = loadAll();
+		for(TrackedPlayer tracked : tracking)
 		{
-			if(player.equals(tracked.getPlayer())) return tracked;
+			if(player.getName().equals(tracked.getPlayer())) return tracked;
 		}
 		return TrackedModelFactory.createTrackedPlayer(player);
 	}
