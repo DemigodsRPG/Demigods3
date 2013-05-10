@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 import org.bukkit.OfflinePlayer;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 
 public class PlayerCharacterFactory
 {
@@ -28,8 +29,19 @@ public class PlayerCharacterFactory
 		character.getMeta().setLevel("STEALTH", stealth);
 		character.getMeta().setLevel("SUPPORT", support);
 		character.getMeta().setLevel("PASSIVE", passive);
-		character.save();
-
+		PlayerCharacter.save(character);
 		return character;
+	}
+
+	public static PlayerCharacterMeta createCharacterMeta()
+	{
+		PlayerCharacterMeta charMeta = new PlayerCharacterMeta();
+		charMeta.setAscensions(Demigods.config.getSettingInt("character.default_ascensions"));
+		charMeta.setDevotion(Demigods.config.getSettingInt("character.default_devotion"));
+		charMeta.setFavor(Demigods.config.getSettingInt("character.default_favor"));
+		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.default_max_favor"));
+		charMeta.initializeMaps();
+		PlayerCharacterMeta.save(charMeta);
+		return charMeta;
 	}
 }

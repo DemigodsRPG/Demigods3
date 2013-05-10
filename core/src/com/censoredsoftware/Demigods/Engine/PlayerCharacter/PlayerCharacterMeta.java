@@ -40,21 +40,7 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Integer.class)
 	private Map<String, Integer> levelsData;
 
-	public PlayerCharacterMeta(boolean save)
-	{
-		this.ascensions = Demigods.config.getSettingInt("character.default_ascensions");
-		this.devotion = Demigods.config.getSettingInt("character.default_devotion");
-		this.favor = Demigods.config.getSettingInt("character.default_favor");
-		this.maxFavor = Demigods.config.getSettingInt("character.default_max_favor");
-		this.abilityData = new HashMap<String, Boolean>();
-		this.bindingData = new HashMap<Integer, String>();
-		this.taskData = new HashMap<String, Boolean>();
-		this.levelsData = new HashMap<String, Integer>();
-
-		if(save) save(this);
-	}
-
-	public void save(PlayerCharacterMeta playerCharacterMeta)
+	public static void save(PlayerCharacterMeta playerCharacterMeta)
 	{
 		DemigodsData.jOhm.save(playerCharacterMeta);
 	}
@@ -67,6 +53,14 @@ public class PlayerCharacterMeta
 	public static Set<PlayerCharacterMeta> loadAll()
 	{
 		return DemigodsData.jOhm.getAll(PlayerCharacterMeta.class);
+	}
+
+	void initializeMaps()
+	{
+		this.abilityData = new HashMap<String, Boolean>();
+		this.bindingData = new HashMap<Integer, String>();
+		this.taskData = new HashMap<String, Boolean>();
+		this.levelsData = new HashMap<String, Integer>();
 	}
 
 	public long getId()

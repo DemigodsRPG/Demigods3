@@ -52,14 +52,14 @@ public class PlayerCharacter
 	private boolean immortal;
 	@Reference
 	private PlayerCharacterMeta meta;
-	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
+	@CollectionMap(key = TrackedLocation.class, value = String.class)
 	private Map<TrackedLocation, String> warps;
-	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
+	@CollectionMap(key = TrackedLocation.class, value = String.class)
 	private Map<TrackedLocation, String> invites;
 
-	public void save()
+	public static void save(PlayerCharacter character)
 	{
-		DemigodsData.jOhm.save(this);
+		DemigodsData.jOhm.save(character);
 	}
 
 	public void delete()
@@ -157,7 +157,7 @@ public class PlayerCharacter
 		if(this.meta != null) return this.meta;
 		else
 		{
-			this.meta = new PlayerCharacterMeta(true);
+			this.meta = PlayerCharacterFactory.createCharacterMeta();
 			return this.meta;
 		}
 	}
