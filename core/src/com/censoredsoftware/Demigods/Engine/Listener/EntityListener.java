@@ -14,6 +14,7 @@ import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class EntityListener implements Listener
 {
@@ -66,8 +67,8 @@ public class EntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-				PlayerCharacter hitChar = PlayerAPI.getCurrentChar(hit);
-				PlayerCharacter hittingChar = PlayerAPI.getCurrentChar(hitting);
+				PlayerCharacter hitChar = TrackedPlayer.getTracked(hit).getCurrent();
+				PlayerCharacter hittingChar = TrackedPlayer.getTracked(hitting).getCurrent();
 
 				BattleAPI.battleProcess(hitChar, hittingChar);
 			}
@@ -81,7 +82,7 @@ public class EntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null) return;
 			String deity = DemigodsData.capitalize(character.getDeity().getInfo().getName());
 			int devotion = character.getMeta().getDevotion();

@@ -22,6 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class AbilityAPI
 {
@@ -40,7 +41,7 @@ public class AbilityAPI
 	 */
 	public static boolean doAbilityPreProcess(Player player, String name, int cost, Ability.Type type)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		return doAbilityPreProcess(player, cost) && event(name, character, cost, type);
 	}
@@ -59,7 +60,7 @@ public class AbilityAPI
 	 */
 	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, Ability.Type type)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		if(doAbilityPreProcess(player, cost) && event(name, character, cost, type))
 		{
@@ -138,7 +139,7 @@ public class AbilityAPI
 	 */
 	public static boolean targeting(Player player, LivingEntity target)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		Location toHit = aimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -229,7 +230,7 @@ public class AbilityAPI
 
 	private static boolean doAbilityPreProcess(Player player, int cost)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		if(!ZoneAPI.canTarget(player))
 		{
@@ -264,7 +265,7 @@ public class AbilityAPI
 			if(ability.getInfo().getType() == Ability.Type.PASSIVE) continue;
 			if(ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
-				PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 				if(!Demigods.permission.hasPermissionOrOP(player, ability.getInfo().getPermission())) return true;
 

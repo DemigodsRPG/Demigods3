@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.Demigods.API.AbilityAPI;
 import com.censoredsoftware.Demigods.API.BattleAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CommandListener implements Listener
 {
@@ -25,7 +25,7 @@ public class CommandListener implements Listener
 
 		Player player = event.getPlayer();
 
-		if(ZoneAPI.canTarget(player) && BattleAPI.isInAnyActiveBattle(PlayerAPI.getCurrentChar(player)))
+		if(ZoneAPI.canTarget(player) && BattleAPI.isInAnyActiveBattle(TrackedPlayer.getTracked(player).getCurrent()))
 		{
 			if(BattleAPI.isBlockedCommand(args[0]))
 			{

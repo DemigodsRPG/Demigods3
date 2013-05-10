@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,6 +34,7 @@ import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
 import com.censoredsoftware.Modules.PermissionModule;
@@ -224,7 +226,7 @@ class Favor implements Runnable
 	{
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 			if(regenRate < 1) regenRate = 1;
@@ -249,7 +251,7 @@ class EventFactory implements Listener
 		{
 			Player player = (Player) entity;
 			PlayerCharacter playerChar = null;
-			if(PlayerAPI.getCurrentChar(player) != null) playerChar = PlayerAPI.getCurrentChar(player);
+			if(TrackedPlayer.getTracked(player).getCurrent() != null) playerChar = TrackedPlayer.getTracked(player).getCurrent();
 
 			// if(playerChar != null)
 			// {
@@ -268,7 +270,7 @@ class EventFactory implements Listener
 				{
 					Player attacker = (Player) damager;
 					PlayerCharacter attackChar = null;
-					if(PlayerAPI.getCurrentChar(attacker) != null) attackChar = PlayerAPI.getCurrentChar(attacker);
+					if(TrackedPlayer.getTracked(attacker).getCurrent() != null) attackChar = TrackedPlayer.getTracked(attacker).getCurrent();
 					if(PlayerAPI.areAllied(attacker, player))
 					{
 						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerAPI.getCurrentAlliance(player)));
@@ -583,7 +585,7 @@ class Commands implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					List<PlayerCharacter> chars = PlayerAPI.getChars(toCheck);
+					final Set<PlayerCharacter> chars = PlayerAPI.getChars(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
@@ -631,7 +633,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerAPI.getCurrentChar(toEdit);
+					character = TrackedPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -700,7 +702,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerAPI.getCurrentChar(toEdit);
+					character = TrackedPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -769,7 +771,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerAPI.getCurrentChar(toEdit);
+					character = TrackedPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -839,7 +841,7 @@ class Commands implements CommandExecutor
 	private static boolean check(CommandSender sender, String[] args)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{

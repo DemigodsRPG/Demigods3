@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Demo.Data.Quest.Passive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -36,6 +37,7 @@ import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class Altar extends Quest
 {
@@ -270,7 +272,7 @@ class AltarMenu extends Task
 				// View Warps
 				else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 				{
-					if(PlayerAPI.getCurrentChar(player) == null) return;
+					if(TrackedPlayer.getTracked(player).getCurrent() == null) return;
 
 					clearChat(player);
 
@@ -282,7 +284,7 @@ class AltarMenu extends Task
 				// View Characters
 				else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 				{
-					if(PlayerAPI.getCurrentChar(player) == null || !LocationAPI.hasInvites(PlayerAPI.getCurrentChar(player))) return;
+					if(TrackedPlayer.getTracked(player).getCurrent() == null || !LocationAPI.hasInvites(TrackedPlayer.getTracked(player).getCurrent())) return;
 
 					clearChat(player);
 
@@ -451,10 +453,10 @@ class AltarMenu extends Task
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		if(PlayerAPI.getCurrentChar(player) != null)
+		if(TrackedPlayer.getTracked(player).getCurrent() != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
-			if(LocationAPI.hasInvites(PlayerAPI.getCurrentChar(player))) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
+			if(LocationAPI.hasInvites(TrackedPlayer.getTracked(player).getCurrent())) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 			player.sendMessage(" ");
 			player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
 		}
@@ -465,7 +467,7 @@ class AltarMenu extends Task
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		List<PlayerCharacter> chars = PlayerAPI.getChars(player);
+		final Set<PlayerCharacter> chars = PlayerAPI.getChars(player);
 		if(chars.isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no characters. Why not go make one?");
@@ -504,7 +506,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewWarps(Player player)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
@@ -546,7 +548,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewInvites(Player player)
 	{
-		for(Map.Entry<TrackedLocation, String> invite : PlayerAPI.getCurrentChar(player).getInvites().entrySet())
+		for(Map.Entry<TrackedLocation, String> invite : TrackedPlayer.getTracked(player).getCurrent().getInvites().entrySet())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getValue());
 		}
@@ -598,7 +600,7 @@ class AltarMenu extends Task
 
 		if(newChar != null)
 		{
-			CharacterSwitchEvent event = new CharacterSwitchEvent(player, PlayerAPI.getCurrentChar(player), newChar);
+			CharacterSwitchEvent event = new CharacterSwitchEvent(player, TrackedPlayer.getTracked(player).getCurrent(), newChar);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 
 			if(!event.isCancelled())
@@ -756,7 +758,7 @@ class AltarMenu extends Task
 
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			// Save named TrackedLocation for warp.
@@ -791,7 +793,7 @@ class AltarMenu extends Task
 
 	protected static void inviteWarp(Player player, String name)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		PlayerCharacter invited = CharacterAPI.getCharByName(name);
 
 		if(character == null) return;
@@ -827,7 +829,7 @@ class AltarMenu extends Task
 
 	protected static void acceptInvite(Player player, String name)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		TrackedLocation invite = LocationAPI.getInvite(character, name);
 
 		if(invite != null)
@@ -847,7 +849,7 @@ class AltarMenu extends Task
 
 	protected static void warpChar(Player player, String warpName)
 	{
-		for(Map.Entry<TrackedLocation, String> warp : PlayerAPI.getCurrentChar(player).getWarps().entrySet())
+		for(Map.Entry<TrackedLocation, String> warp : TrackedPlayer.getTracked(player).getCurrent().getWarps().entrySet())
 		{
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{

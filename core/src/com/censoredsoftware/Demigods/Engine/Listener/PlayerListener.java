@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.API.BattleAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
@@ -34,7 +33,7 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		// Set their lastlogintime
 		long now = System.currentTimeMillis();
@@ -167,7 +166,7 @@ public class PlayerListener implements Listener
 		}
 		else if(filterCheckQuitting)
 		{
-			if(ZoneAPI.canTarget(event.getPlayer()) && BattleAPI.isInAnyActiveBattle(PlayerAPI.getCurrentChar(event.getPlayer())))
+			if(ZoneAPI.canTarget(event.getPlayer()) && BattleAPI.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
 			{
 				String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
 				event.setQuitMessage(message);

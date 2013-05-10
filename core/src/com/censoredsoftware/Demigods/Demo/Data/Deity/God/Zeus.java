@@ -22,6 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class Zeus extends Deity
 {
@@ -66,7 +67,7 @@ public class Zeus extends Deity
 	protected static boolean strikeLightning(Player player, LivingEntity target)
 	{
 		// Set variables
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!ZoneAPI.canTarget(target)) return false;
@@ -114,7 +115,7 @@ class Shove extends Ability
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 				if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -134,7 +135,7 @@ class Shove extends Ability
 	public static void shove(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		int devotion = character.getMeta().getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = AbilityAPI.autoTarget(player);
@@ -173,7 +174,7 @@ class Lightning extends Ability
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 				if(!AbilityAPI.isClick(interactEvent)) return;
 
@@ -192,7 +193,7 @@ class Lightning extends Ability
 	protected static void lightning(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
 		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", cost, type)) return;
@@ -224,7 +225,7 @@ class Storm extends Ability
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 				if(!AbilityAPI.isClick(interactEvent)) return;
 

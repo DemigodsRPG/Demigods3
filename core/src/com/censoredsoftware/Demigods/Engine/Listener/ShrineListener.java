@@ -22,6 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class ShrineListener implements Listener
 {
@@ -37,7 +38,7 @@ public class ShrineListener implements Listener
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		String charAlliance = character.getAlliance();
 		Deity charDeity = character.getDeity();
 
@@ -116,7 +117,7 @@ public class ShrineListener implements Listener
 		}
 
 		// Define variables
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		// Return if the player is mortal
 		if(character == null || !character.isImmortal())
@@ -162,7 +163,7 @@ public class ShrineListener implements Listener
 		{
 			if(!(event.getPlayer() instanceof Player)) return;
 			Player player = (Player) event.getPlayer();
-			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null || !character.isImmortal()) return;
 
 			Deity charDeity = character.getDeity();

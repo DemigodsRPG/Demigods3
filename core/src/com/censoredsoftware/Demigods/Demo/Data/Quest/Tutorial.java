@@ -10,12 +10,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class Tutorial extends Quest
 {
@@ -68,7 +68,7 @@ class TutorialTask extends Task
 			Player player = event.getPlayer();
 			if(player.hasPlayedBefore()) return;
 
-			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, name);

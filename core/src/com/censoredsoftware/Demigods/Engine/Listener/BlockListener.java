@@ -20,11 +20,15 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.API.AdminAPI;
+import com.censoredsoftware.Demigods.API.BlockAPI;
+import com.censoredsoftware.Demigods.API.LocationAPI;
+import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class BlockListener implements Listener
 {
@@ -210,7 +214,7 @@ public class BlockListener implements Listener
 		/**
 		 * Entering Altar
 		 */
-		if(ZoneAPI.enterZoneAltar(to, from) && !LocationAPI.hasWarp(ZoneAPI.zoneAltar(to), PlayerAPI.getCurrentChar(player))) // TODO This is an annoying message.
+		if(ZoneAPI.enterZoneAltar(to, from) && !LocationAPI.hasWarp(ZoneAPI.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
 			player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
 			return;

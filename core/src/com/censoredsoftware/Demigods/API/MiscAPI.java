@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class MiscAPI
 {
@@ -31,7 +32,7 @@ public class MiscAPI
 
 	public static boolean canUseDeity(Player player, String deity)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		if(!character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
@@ -47,7 +48,7 @@ public class MiscAPI
 
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
-		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		if(character == null) return false;
 		return character.isDeity(deity) && character.isImmortal();
 	}

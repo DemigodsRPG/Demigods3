@@ -1,6 +1,9 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,24 +21,6 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
 public class PlayerAPI
 {
 	/**
-	 * Returns the current character of the <code>player</code>.
-	 * 
-	 * @param player the player to check.
-	 * @return Demigod
-	 */
-	public static PlayerCharacter getCurrentChar(OfflinePlayer player)
-	{
-		try
-		{
-			return TrackedPlayer.getTracked(player).getCurrent();
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
-
-	/**
 	 * Returns the current alliance for <code>player</code>.
 	 * 
 	 * @param player the player to check.
@@ -43,7 +28,7 @@ public class PlayerAPI
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		PlayerCharacter character = getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		if(character == null || !character.isImmortal()) return "Mortal";
 		return character.getAlliance();
 	}
@@ -70,14 +55,9 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return List the list of all character IDs.
 	 */
-	public static List<PlayerCharacter> getChars(OfflinePlayer player)
+	public static Set<PlayerCharacter> getChars(OfflinePlayer player)
 	{
-		List<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
-		for(PlayerCharacter character : CharacterAPI.getAllChars())
-		{
-			if(character.getOwner() == player) characters.add(character);
-		}
-		return characters;
+		return CharacterAPI.getAllChars();
 	}
 
 	/**
@@ -101,7 +81,7 @@ public class PlayerAPI
 		togglePraying(player, false);
 
 		// Update the current character (if it exists)
-		PlayerCharacter currentChar = getCurrentChar(player);
+		PlayerCharacter currentChar = TrackedPlayer.getTracked(player).getCurrent();
 		if(currentChar != null)
 		{
 			// Save info
@@ -166,7 +146,7 @@ public class PlayerAPI
 	 */
 	public static boolean isImmortal(OfflinePlayer player)
 	{
-		PlayerCharacter character = getCurrentChar(player);
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		return character != null && character.isImmortal();
 	}
 
@@ -191,7 +171,7 @@ public class PlayerAPI
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		List<PlayerCharacter> characters = getChars(player);
+		final Set<PlayerCharacter> characters = getChars(player);
 
 		for(PlayerCharacter character : characters)
 		{
