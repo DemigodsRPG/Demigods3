@@ -15,6 +15,7 @@ import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 @Model
@@ -23,7 +24,13 @@ public class PlayerCharacterMeta
 	@Id
 	private Long id;
 	@Attribute
-	private String test;
+	private Integer ascensions;
+	@Attribute
+	private Integer devotion;
+	@Attribute
+	private Integer favor;
+	@Attribute
+	private Integer maxFavor;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
 	@CollectionMap(key = Integer.class, value = String.class)
@@ -35,7 +42,10 @@ public class PlayerCharacterMeta
 
 	public PlayerCharacterMeta(boolean save)
 	{
-		this.test = "Test";
+		this.ascensions = Demigods.config.getSettingInt("character.default_ascensions");
+		this.devotion = Demigods.config.getSettingInt("character.default_devotion");
+		this.favor = Demigods.config.getSettingInt("character.default_favor");
+		this.maxFavor = Demigods.config.getSettingInt("character.default_max_favor");
 		this.abilityData = new HashMap<String, Boolean>();
 		this.bindingData = new HashMap<Integer, String>();
 		this.taskData = new HashMap<String, Boolean>();
@@ -175,6 +185,61 @@ public class PlayerCharacterMeta
 	{
 		if(getLevel(level.toUpperCase()) - amount < 0) setLevel(level.toUpperCase(), 0);
 		else setLevel(level.toUpperCase(), getLevel(level.toUpperCase()) - amount);
+	}
+
+	public Integer getAscensions()
+	{
+		return this.ascensions;
+	}
+
+	public void giveAscension()
+	{
+		this.ascensions += 1;
+	}
+
+	public void subtractAscensions(int amount)
+	{
+		this.ascensions -= amount;
+	}
+
+	public Integer getDevotion()
+	{
+		return this.devotion;
+	}
+
+	public void giveDevotion(int amount)
+	{
+		this.devotion += amount;
+	}
+
+	public void subtractDevotion(int amount)
+	{
+		this.devotion -= amount;
+	}
+
+	public Integer getFavor()
+	{
+		return this.favor;
+	}
+
+	public void giveFavor(int amount)
+	{
+		this.favor += amount;
+	}
+
+	public void subtractFavor(int amount)
+	{
+		this.favor -= amount;
+	}
+
+	public Integer getMaxFavor()
+	{
+		return this.maxFavor;
+	}
+
+	public void setMaxFavor(int amount)
+	{
+		this.maxFavor = amount;
 	}
 
 	@Override
