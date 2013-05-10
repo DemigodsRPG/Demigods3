@@ -173,7 +173,7 @@ public class AbilityAPI
 	 */
 	public static Location aimLocation(PlayerCharacter character, Location target)
 	{
-		int ascensions = character.getAscensions();
+		int ascensions = character.getMeta().getAscensions();
 		if(ascensions < 1) ascensions = 1;
 
 		int offset = (int) (TARGETOFFSET + character.getOwner().getPlayer().getLocation().distance(target));
@@ -236,7 +236,7 @@ public class AbilityAPI
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;
 		}
-		else if(character.getFavor() < cost)
+		else if(character.getMeta().getFavor() < cost)
 		{
 			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
 			return false;

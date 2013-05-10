@@ -80,7 +80,7 @@ public class Zeus extends Deity
 			{
 				if(!ZoneAPI.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getAscensions() * 2, EntityDamageEvent.DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getMeta().getAscensions() * 2, EntityDamageEvent.DamageCause.LIGHTNING);
 			}
 		}
 
@@ -135,7 +135,7 @@ class Shove extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = PlayerAPI.getCurrentChar(player);
-		int devotion = character.getDevotion();
+		int devotion = character.getMeta().getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = AbilityAPI.autoTarget(player);
 
@@ -236,7 +236,7 @@ class Storm extends Ability
 
 					storm(player);
 
-					int cooldownMultiplier = (int) (cooldownMax - ((cooldownMax - cooldownMin) * ((double) character.getAscensions() / 100)));
+					int cooldownMultiplier = (int) (cooldownMax - ((cooldownMax - cooldownMin) * ((double) character.getMeta().getAscensions() / 100)));
 					CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}

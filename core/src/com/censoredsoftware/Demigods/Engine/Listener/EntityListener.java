@@ -84,7 +84,7 @@ public class EntityListener implements Listener
 			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 			if(character == null) return;
 			String deity = DemigodsData.capitalize(character.getDeity().getInfo().getName());
-			int devotion = character.getDevotion();
+			int devotion = character.getMeta().getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
 
 			// Set their devotion and add a death

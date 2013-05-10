@@ -188,17 +188,17 @@ public class ShrineListener implements Listener
 			tributeValue *= FAVOR_MULTIPLIER;
 
 			// Process tributes and send messages
-			int favorBefore = character.getMaxFavor();
-			int devotionBefore = character.getDevotion();
+			int favorBefore = character.getMeta().getMaxFavor();
+			int devotionBefore = character.getMeta().getDevotion();
 
 			// Update the character's favor and devotion
 			character.getMeta().addMaxFavor(tributeValue / 5);
 			character.getMeta().addDevotion(tributeValue);
 
-			if(character.getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN + character.getDevotion() + ChatColor.GRAY + ".");
-			if(character.getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMaxFavor() + ChatColor.GRAY + ".");
+			if(character.getMeta().getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + " has increased to " + ChatColor.GREEN + character.getMeta().getDevotion() + ChatColor.GRAY + ".");
+			if(character.getMeta().getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ".");
 
-			if(favorBefore != character.getMaxFavor() && devotionBefore != character.getDevotion() && items > 0)
+			if(favorBefore != character.getMeta().getMaxFavor() && devotionBefore != character.getMeta().getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
 				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOwner();
@@ -209,7 +209,7 @@ public class ShrineListener implements Listener
 					if(shrineOwnerPlayer.isOnline())
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + shrineOwner.getDevotion() + "!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + shrineOwner.getMeta().getDevotion() + "!");
 					}
 				}
 			}

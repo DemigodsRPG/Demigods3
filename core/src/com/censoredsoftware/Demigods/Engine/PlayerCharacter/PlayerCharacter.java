@@ -46,17 +46,6 @@ public class PlayerCharacter
 	private String deity;
 	@Attribute
 	@Indexed
-	private String alliance;
-	@Attribute
-	private int favor;
-	@Attribute
-	private int maxFavor;
-	@Attribute
-	private int devotion;
-	@Attribute
-	private int ascensions;
-	@Attribute
-	@Indexed
 	private boolean active;
 	@Attribute
 	@Indexed
@@ -67,44 +56,6 @@ public class PlayerCharacter
 	private Map<TrackedLocation, String> warps;
 	@CollectionMap(key = TrackedLocation.class, value = Integer.class)
 	private Map<TrackedLocation, String> invites;
-
-	public PlayerCharacter(OfflinePlayer player, String charName, boolean active, Deity deity, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean immortal)
-	{
-		// Vanilla Data
-		this.player = player.getName();
-		this.health = 20;
-		this.hunger = 20;
-		this.experience = 0;
-		this.level = 0;
-		if(player.isOnline()) this.location = TrackedModelFactory.createTrackedLocation(player.getPlayer().getLocation()); // TODO
-		if(player.isOnline()) this.inventory = TrackedModelFactory.createTrackedPlayerInventory(player.getPlayer().getInventory()); // TODO
-
-		// Demigods Data
-		this.name = charName;
-		this.active = active;
-		this.deity = deity.getInfo().getName();
-		this.alliance = deity.getInfo().getAlliance();
-		this.favor = favor;
-		this.maxFavor = maxFavor;
-		this.devotion = devotion;
-		this.ascensions = ascensions;
-
-		this.immortal = immortal;
-
-		// Meta Data
-		this.meta = new PlayerCharacterMeta(true);
-		this.meta.setLevel("OFFENSE", offense);
-		this.meta.setLevel("DEFENSE", defense);
-		this.meta.setLevel("STEALTH", stealth);
-		this.meta.setLevel("SUPPORT", support);
-		this.meta.setLevel("PASSIVE", passive);
-
-		// Location Data
-		this.warps = new HashMap<TrackedLocation, String>();
-		this.invites = new HashMap<TrackedLocation, String>();
-
-		save();
-	}
 
 	public void save()
 	{
@@ -135,28 +86,59 @@ public class PlayerCharacter
 		return null;
 	}
 
-	public ChatColor getHealthColor()
+	void setName(String name)
 	{
-		int hp = getHealth();
-		int maxHP = Bukkit.getPlayer(getOwner().getName()).getMaxHealth();
-		ChatColor color = ChatColor.RESET;
-
-		// Set favor color dynamically
-		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
-		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
-		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
-
-		return color;
+		this.name = name;
 	}
 
-	public void setHealth(int amount)
+	void setDeity(Deity deity)
 	{
-		this.health = amount;
+		this.deity = deity.getInfo().getName();
+	}
+
+	void setPlayer(OfflinePlayer player)
+	{
+		this.player = player.getName();
+	}
+
+	public void setImmortal(boolean option)
+	{
+		this.immortal = option;
+	}
+
+	public void setActive(boolean option)
+	{
+		this.active = option;
 	}
 
 	public void saveInventory()
 	{
 		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getOwner().getPlayer().getInventory());
+	}
+
+	public void setHealth(int health)
+	{
+		this.health = health;
+	}
+
+	public void setHunger(int hunger)
+	{
+		this.hunger = hunger;
+	}
+
+	public void setLevel(int level)
+	{
+		this.level = level;
+	}
+
+	public void setExperience(float exp)
+	{
+		this.experience = exp;
+	}
+
+	public void setLocation(Location location)
+	{
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public TrackedPlayerInventory getInventory()
@@ -178,31 +160,6 @@ public class PlayerCharacter
 			this.meta = new PlayerCharacterMeta(true);
 			return this.meta;
 		}
-	}
-
-	public void setHunger(int amount)
-	{
-		this.hunger = amount;
-	}
-
-	public void setExperience(float amount)
-	{
-		this.experience = amount;
-	}
-
-	public void setLevel(int amount)
-	{
-		this.level = amount;
-	}
-
-	public void setLocation(Location location)
-	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
-	}
-
-	public void setActive(boolean option)
-	{
-		this.active = option;
 	}
 
 	public OfflinePlayer getOwner()
@@ -230,6 +187,25 @@ public class PlayerCharacter
 		return this.health;
 	}
 
+	public int getLevel()
+	{
+		return this.level;
+	}
+
+	public ChatColor getHealthColor()
+	{
+		int hp = getHealth();
+		int maxHP = Bukkit.getPlayer(getOwner().getName()).getMaxHealth();
+		ChatColor color = ChatColor.RESET;
+
+		// Set favor color dynamically
+		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
+		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
+		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
+
+		return color;
+	}
+
 	public int getHunger()
 	{
 		return this.hunger;
@@ -245,11 +221,6 @@ public class PlayerCharacter
 		return getDeity().getInfo().getName().equalsIgnoreCase(deityName);
 	}
 
-	public void setImmortal(boolean option)
-	{
-		this.immortal = option;
-	}
-
 	public Deity getDeity()
 	{
 		return DeityAPI.getDeity(this.deity);
@@ -263,26 +234,6 @@ public class PlayerCharacter
 	public boolean isImmortal()
 	{
 		return this.immortal;
-	}
-
-	public int getFavor()
-	{
-		return this.favor;
-	}
-
-	public int getMaxFavor()
-	{
-		return this.maxFavor;
-	}
-
-	public int getDevotion()
-	{
-		return this.maxFavor;
-	}
-
-	public int getAscensions()
-	{
-		return this.ascensions;
 	}
 
 	public void addWarp(TrackedLocation location, String name)

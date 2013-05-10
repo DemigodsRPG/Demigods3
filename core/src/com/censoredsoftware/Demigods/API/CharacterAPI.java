@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
 
 public class CharacterAPI
 {
@@ -27,7 +28,7 @@ public class CharacterAPI
 		if(getCharByName(charName) == null)
 		{
 			// Create the Character
-			return new PlayerCharacter(player, charName, true, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+			return PlayerCharacterFactory.createCharacter(player, charName, true, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 		}
 		return null;
 	}

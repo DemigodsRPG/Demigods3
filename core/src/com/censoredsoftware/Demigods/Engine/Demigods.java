@@ -226,7 +226,7 @@ class Favor implements Runnable
 		{
 			PlayerCharacter character = PlayerAPI.getCurrentChar(player);
 			if(character == null || !character.isImmortal()) continue;
-			int regenRate = (int) Math.ceil(multiplier * character.getAscensions());
+			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 			if(regenRate < 1) regenRate = 1;
 			character.getMeta().addFavor(regenRate);
 		}
@@ -707,7 +707,7 @@ class Commands implements CommandExecutor
 				if(option2.equalsIgnoreCase("maxfavor"))
 				{
 					// Set the favor
-					character.getMeta().setMaxFavor(character.getMaxFavor() + amount);
+					character.getMeta().setMaxFavor(character.getMeta().getMaxFavor() + amount);
 
 					sender.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
 
@@ -854,10 +854,10 @@ class Commands implements CommandExecutor
 		String charName = character.getName();
 		String deity = character.getDeity().getInfo().getName();
 		String alliance = character.getAlliance();
-		int favor = character.getFavor();
-		int maxFavor = character.getMaxFavor();
-		int devotion = character.getDevotion();
-		int ascensions = character.getAscensions();
+		int favor = character.getMeta().getFavor();
+		int maxFavor = character.getMeta().getMaxFavor();
+		int devotion = character.getMeta().getDevotion();
+		int ascensions = character.getMeta().getAscensions();
 		int devotionGoal = character.getMeta().getDevotionGoal();
 		// int powerOffense = character.getPower(AbilityEvent.Type.OFFENSE);
 		// int powerDefense = character.getPower(AbilityEvent.Type.DEFENSE);
