@@ -21,10 +21,8 @@ public class TrackedPlayer
 	@Attribute
 	private long lastLoginTime;
 	@Reference
-	@Indexed
 	private PlayerCharacter current;
 	@Reference
-	@Indexed
 	private PlayerCharacter previous;
 
 	void setPlayer(String player)

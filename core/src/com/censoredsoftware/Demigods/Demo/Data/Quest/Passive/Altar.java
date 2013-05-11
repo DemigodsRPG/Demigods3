@@ -87,10 +87,10 @@ class AltarMenu extends Task
 	private static double reward = 0.0, penalty = 0.0;
 	private static Listener listener = new Listener()
 	{
-		@EventHandler(priority = EventPriority.HIGHEST)
+		@EventHandler(priority = EventPriority.HIGH)
 		public void altarInteract(PlayerInteractEvent event)
 		{
-			if(event.getClickedBlock() == null) return;
+			if(event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 			// Define variables
 			Player player = event.getPlayer();
@@ -98,9 +98,6 @@ class AltarMenu extends Task
 			// First we check if the player is in an Altar and return if not
 			if(BlockAPI.isAltar(event.getClickedBlock().getLocation()))
 			{
-				// Player is in an altar, let's do this
-				if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
 				if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !PlayerAPI.isPraying(player))
 				{
 					if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneAPI.canTarget(player))
@@ -148,7 +145,7 @@ class AltarMenu extends Task
 			}
 		}
 
-		@EventHandler(priority = EventPriority.HIGHEST)
+		@EventHandler(priority = EventPriority.HIGH)
 		public void altarChatEvent(AsyncPlayerChatEvent event)
 		{
 			// Define variables
@@ -886,7 +883,7 @@ class AltarGenerate extends Task
 		public void onChunkLoad(ChunkLoadEvent event)
 		{
 			// Define variables
-			Location location = MiscAPI.randomChunkLocation(event.getChunk());
+			final Location location = MiscAPI.randomChunkLocation(event.getChunk());
 
 			// If it's a new chunk then we'll generate structures
 			if(event.isNewChunk())
@@ -908,16 +905,25 @@ class AltarGenerate extends Task
 							location.getWorld().strikeLightningEffect(location);
 							location.getWorld().strikeLightningEffect(location);
 
-							for(Entity entity : event.getWorld().getEntities())
+							final List<Entity> entities = event.getWorld().getEntities();
+
+							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 							{
-								if(entity instanceof Player)
+								@Override
+								public void run()
 								{
-									if(entity.getLocation().distance(location) < 400)
+									for(Entity entity : entities)
 									{
-										((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "An Altar has spawned near you...");
+										if(entity instanceof Player)
+										{
+											if(entity.getLocation().distance(location) < 400)
+											{
+												((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "An Altar has spawned near you...");
+											}
+										}
 									}
 								}
-							}
+							}, 1);
 						}
 					}
 				}

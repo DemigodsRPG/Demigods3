@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -9,7 +8,7 @@ import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class BlockAPI
 {
@@ -42,16 +41,16 @@ public class BlockAPI
 	/**
 	 * Returns all Shrines as an ArrayList.
 	 * 
-	 * @return the ArrayList of Shrines.
+	 * @return the HashSet of Shrines.
 	 */
-	public static List<Shrine> getAllShrines()
+	public static Set<Shrine> getAllShrines()
 	{ // TODO Convert shrines.
 	  // ArrayList<Shrine> shrines = new ArrayList<Shrine>();
 	  // for(int key : DemigodsData.shrineData.listKeys())
 	  // {
 	  // shrines.add((Shrine) DemigodsData.shrineData.getDataObject(key));
 	  // }
-		return Lists.newArrayList();
+		return Sets.newHashSet();
 	}
 
 	/**

@@ -110,14 +110,14 @@ class Shove extends Ability
 	{
 		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
-			@EventHandler(priority = EventPriority.HIGHEST)
+			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(!AbilityAPI.isClick(interactEvent)) return;
+
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-
-				if(!AbilityAPI.isClick(interactEvent)) return;
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
@@ -169,14 +169,14 @@ class Lightning extends Ability
 	{
 		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
-			@EventHandler(priority = EventPriority.HIGHEST)
+			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(!AbilityAPI.isClick(interactEvent)) return;
+
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-
-				if(!AbilityAPI.isClick(interactEvent)) return;
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
@@ -223,11 +223,11 @@ class Storm extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(!AbilityAPI.isClick(interactEvent)) return;
+
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-
-				if(!AbilityAPI.isClick(interactEvent)) return;
 
 				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
 
@@ -309,10 +309,7 @@ class NoFall extends Ability
 					if(!MiscAPI.canUseDeitySilent(player, name)) return;
 
 					// If the player receives falling damage, cancel it
-					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL)
-					{
-						damageEvent.setCancelled(true);
-					}
+					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) damageEvent.setCancelled(true);
 				}
 			}
 		});

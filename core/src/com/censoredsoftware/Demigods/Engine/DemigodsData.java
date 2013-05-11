@@ -35,7 +35,8 @@ public class DemigodsData
 	{
 		Jedis jedis = jedisPool.getResource();
 		jedis.disconnect();
-		jedisPool.returnResource(jedis);
+		jedisPool.returnBrokenResource(jedis);
+		jedisPool.destroy();
 	}
 
 	public static void save()

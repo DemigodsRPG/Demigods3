@@ -35,6 +35,7 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
+		Demigods.message.broadcast("Beginning to count time for this test.");
 		DecimalFormat shorten = new DecimalFormat("#.##");
 		long bCheck = System.currentTimeMillis();
 
@@ -94,9 +95,9 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void divineBlockExplode(final EntityExplodeEvent event) // TODO: Clean up and make it generic to Protected Blocks
 	{
-		final ArrayList<Block> savedBlocks = new ArrayList<Block>();
-		final ArrayList<Material> savedMaterials = new ArrayList<Material>();
-		final ArrayList<Byte> savedBytes = new ArrayList<Byte>();
+		final List<Block> savedBlocks = new ArrayList<Block>();
+		final List<Material> savedMaterials = new ArrayList<Material>();
+		final List<Byte> savedBytes = new ArrayList<Byte>();
 
 		List<Block> blocks = event.blockList();
 		for(Block block : blocks)
