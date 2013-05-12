@@ -61,13 +61,13 @@ public class TrackedPlayer
 
 	public static TrackedPlayer getTracked(OfflinePlayer player)
 	{
-		final Set<TrackedPlayer> tracking = loadAll();
-
-		for(TrackedPlayer tracked : tracking)
+		try
 		{
-			if(player.getName().equals(tracked.getPlayer().getName())) return tracked;
+			List<TrackedPlayer> tracking = DemigodsData.jOhm.find(TrackedPlayer.class, "player", player.getName());
+			return tracking.get(0);
 		}
-
+		catch(Exception ignored)
+		{}
 		return TrackedModelFactory.createTrackedPlayer(player);
 	}
 
