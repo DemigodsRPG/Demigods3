@@ -30,26 +30,26 @@ public class PlayerCharacter
 	@Indexed
 	private String player;
 	@Attribute
-	private int health;
+	private Integer health;
 	@Attribute
-	private int hunger;
+	private Integer hunger;
 	@Attribute
-	private float experience;
+	private Float experience;
 	@Attribute
-	private int level;
-	@Reference
-	private TrackedLocation location;
-	@Reference
-	private TrackedPlayerInventory inventory;
+	private Integer level;
+	@Attribute
+	private long location;
+	@Attribute
+	private long inventory;
 	@Attribute
 	@Indexed
 	private String deity;
 	@Attribute
 	@Indexed
-	private boolean active;
+	private Boolean active;
 	@Attribute
 	@Indexed
-	private boolean immortal;
+	private Boolean immortal;
 	@Reference
 	private PlayerCharacterMeta meta;
 	@CollectionMap(key = TrackedLocation.class, value = String.class)
@@ -67,7 +67,7 @@ public class PlayerCharacter
 		DemigodsData.jOhm.delete(PlayerCharacter.class, getId());
 	}
 
-	public static PlayerCharacter load(long id) // TODO This belongs somewhere else.
+	public static PlayerCharacter load(Long id) // TODO This belongs somewhere else.
 	{
 		return DemigodsData.jOhm.get(PlayerCharacter.class, id);
 	}
@@ -113,7 +113,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getOwner().getPlayer().getInventory());
+		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getPlayer().getPlayer().getInventory()).getId();
 	}
 
 	public void setHealth(int health)
@@ -138,16 +138,16 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location).getId();
 	}
 
 	public TrackedPlayerInventory getInventory()
 	{
-		if(this.inventory != null) return this.inventory;
+		if(this.inventory != 0) return TrackedPlayerInventory.load(this.inventory);
 		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
 		{
-			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
-			return this.inventory;
+			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory()).getId();
+			return TrackedPlayerInventory.load(this.inventory);
 		}
 		else return null;
 	}
@@ -162,7 +162,7 @@ public class PlayerCharacter
 		}
 	}
 
-	public OfflinePlayer getOwner()
+	public OfflinePlayer getPlayer()
 	{
 		return Bukkit.getOfflinePlayer(this.player);
 	}
@@ -172,22 +172,22 @@ public class PlayerCharacter
 		return this.name;
 	}
 
-	public boolean isActive()
+	public Boolean isActive()
 	{
 		return this.active;
 	}
 
-	public TrackedLocation getLocation()
+	public Location getLocation()
 	{
-		return this.location;
+		return TrackedLocation.load(this.location).toLocation();
 	}
 
-	public int getHealth()
+	public Integer getHealth()
 	{
 		return this.health;
 	}
 
-	public int getLevel()
+	public Integer getLevel()
 	{
 		return this.level;
 	}
@@ -195,7 +195,7 @@ public class PlayerCharacter
 	public ChatColor getHealthColor()
 	{
 		int hp = getHealth();
-		int maxHP = Bukkit.getPlayer(getOwner().getName()).getMaxHealth();
+		int maxHP = Bukkit.getPlayer(getPlayer().getName()).getMaxHealth();
 		ChatColor color = ChatColor.RESET;
 
 		// Set favor color dynamically
@@ -206,17 +206,17 @@ public class PlayerCharacter
 		return color;
 	}
 
-	public int getHunger()
+	public Integer getHunger()
 	{
 		return this.hunger;
 	}
 
-	public float getExperience()
+	public Float getExperience()
 	{
 		return this.experience;
 	}
 
-	public boolean isDeity(String deityName)
+	public Boolean isDeity(String deityName)
 	{
 		return getDeity().getInfo().getName().equalsIgnoreCase(deityName);
 	}
@@ -231,7 +231,7 @@ public class PlayerCharacter
 		return getDeity().getInfo().getAlliance();
 	}
 
-	public boolean isImmortal()
+	public Boolean isImmortal()
 	{
 		return this.immortal;
 	}
@@ -271,7 +271,7 @@ public class PlayerCharacter
 		return this.invites;
 	}
 
-	public long getId()
+	public Long getId()
 	{
 		return id;
 	}

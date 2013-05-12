@@ -35,7 +35,6 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		Demigods.message.broadcast("Beginning to count time for this test.");
 		DecimalFormat shorten = new DecimalFormat("#.##");
 		long bCheck = System.currentTimeMillis();
 

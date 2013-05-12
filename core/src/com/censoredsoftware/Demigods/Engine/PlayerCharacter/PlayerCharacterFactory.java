@@ -2,17 +2,18 @@ package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
 import org.bukkit.OfflinePlayer;
 
+import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
 public class PlayerCharacterFactory
 {
-	public static PlayerCharacter createCharacter(OfflinePlayer player, String charName, boolean active, Deity deity, int favor, int maxFavor, int devotion, int ascensions, int offense, int defense, int stealth, int support, int passive, boolean immortal)
+	public static PlayerCharacter createCharacter(final OfflinePlayer player, final String charName, final Deity deity, final int favor, final int maxFavor, final int devotion, final int ascensions, final int offense, final int defense, final int stealth, final int support, final int passive, final boolean immortal)
 	{
 		PlayerCharacter character = new PlayerCharacter();
 		character.setPlayer(player);
 		character.setName(charName);
-		character.setActive(active);
 		character.setDeity(deity);
 		character.setImmortal(immortal);
 		character.setHealth(20);
@@ -31,6 +32,16 @@ public class PlayerCharacterFactory
 		character.getMeta().setLevel("PASSIVE", passive);
 		PlayerCharacter.save(character);
 		return character;
+	}
+
+	public static PlayerCharacter createCharacter(OfflinePlayer player, String charName, String charDeity)
+	{
+		if(CharacterAPI.getCharByName(charName) == null)
+		{
+			// Create the Character
+			return createCharacter(player, charName, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+		}
+		return null;
 	}
 
 	public static PlayerCharacterMeta createCharacterMeta()

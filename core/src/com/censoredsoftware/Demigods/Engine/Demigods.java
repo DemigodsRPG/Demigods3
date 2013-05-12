@@ -2,7 +2,6 @@ package com.censoredsoftware.Demigods.Engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,8 +31,6 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
@@ -203,7 +200,8 @@ class Scheduler
 {
 	static void startThreads(DemigodsPlugin instance)
 	{
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Favor(Demigods.config.getSettingDouble("multipliers.favor")), 30, 30);
+		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Favor(Demigods.config.getSettingDouble("multipliers.favor")), rate, rate);
 	}
 
 	static void stopThreads(DemigodsPlugin instance)
@@ -317,15 +315,15 @@ class Commands implements CommandExecutor
 		return false;
 	}
 
-	private static boolean test1(CommandSender sender, String[] args)
+	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		Player player = (Player) sender;
+		final Player player = (Player) sender;
 
-		// Create a tracked item stack
-		TrackedItemStack item = TrackedModelFactory.createTrackedItemStack(player.getItemInHand());
-
-		// Drop the item at the player's feet
-		player.getWorld().dropItemNaturally(player.getLocation(), item.toItemStack());
+		player.sendMessage("Here are all of your characters:");
+		for(PlayerCharacter character : TrackedPlayer.getTracked(player).getCharacters())
+		{
+			player.sendMessage("Character Name: " + character.getName());
+		}
 
 		return true;
 	}
@@ -585,7 +583,7 @@ class Commands implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final Set<PlayerCharacter> chars = PlayerAPI.getChars(toCheck);
+					final List<PlayerCharacter> chars = PlayerAPI.getChars(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
@@ -919,7 +917,7 @@ class Commands implements CommandExecutor
 		}
 		else
 		{
-			player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOwner().getName() + ".");
+			player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getPlayer().getName() + ".");
 			return true;
 		}
 	}

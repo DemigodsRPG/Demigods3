@@ -115,7 +115,7 @@ public class LocationAPI
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(TrackedModelFactory.createTrackedLocation(from.getOwner().getPlayer().getLocation()), from.getName());
+		to.addInvite(TrackedModelFactory.createTrackedLocation(from.getPlayer().getPlayer().getLocation()), from.getName());
 	}
 
 	/**

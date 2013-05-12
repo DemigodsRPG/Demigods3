@@ -1,14 +1,20 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import redis.clients.johm.*;
+import redis.clients.johm.Attribute;
+import redis.clients.johm.Id;
+import redis.clients.johm.Indexed;
+import redis.clients.johm.Model;
 
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.google.common.collect.Sets;
 
 @Model
 public class TrackedPlayer
@@ -20,38 +26,48 @@ public class TrackedPlayer
 	private String player;
 	@Attribute
 	private long lastLoginTime;
-	@Reference
-	private PlayerCharacter current;
-	@Reference
-	private PlayerCharacter previous;
+	@Attribute
+	private long current;
+	@Attribute
+	private long previous;
 
 	void setPlayer(String player)
 	{
 		this.player = player;
+		TrackedPlayer.save(this);
 	}
 
-	public static void save(TrackedPlayer meta)
+	public static void save(TrackedPlayer trackedPlayer)
 	{
-		DemigodsData.jOhm.save(meta);
+		DemigodsData.jOhm.save(trackedPlayer);
 	}
 
-	public static TrackedPlayer load(long id) // TODO This belongs somewhere else.
+	public static TrackedPlayer load(Long id) // TODO This belongs somewhere else.
 	{
 		return DemigodsData.jOhm.get(TrackedPlayer.class, id);
 	}
 
 	public static Set<TrackedPlayer> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedPlayer.class);
+		try
+		{
+			return DemigodsData.jOhm.getAll(TrackedPlayer.class);
+		}
+		catch(Exception e)
+		{
+			return Sets.newHashSet();
+		}
 	}
 
 	public static TrackedPlayer getTracked(OfflinePlayer player)
 	{
 		final Set<TrackedPlayer> tracking = loadAll();
+
 		for(TrackedPlayer tracked : tracking)
 		{
-			if(player.getName().equals(tracked.getPlayer())) return tracked;
+			if(player.getName().equals(tracked.getPlayer().getName())) return tracked;
 		}
+
 		return TrackedModelFactory.createTrackedPlayer(player);
 	}
 
@@ -60,7 +76,7 @@ public class TrackedPlayer
 		return Bukkit.getOfflinePlayer(this.player);
 	}
 
-	public void setLastLoginTime(long time)
+	public void setLastLoginTime(Long time)
 	{
 		this.lastLoginTime = time;
 		TrackedPlayer.save(this);
@@ -73,18 +89,34 @@ public class TrackedPlayer
 
 	public void setCurrent(PlayerCharacter character)
 	{
-		this.previous = this.current;
-		this.current = character;
+		// Update previous character
+		if(this.previous != 0)
+		{
+			PlayerCharacter previousChar = CharacterAPI.getChar(this.previous);
+			previousChar.setActive(false);
+			PlayerCharacter.save(previousChar);
+			this.previous = this.current;
+		}
+
+		// Update current character
+		character.setActive(true);
+		PlayerCharacter.save(character);
+		this.current = character.getId();
 		TrackedPlayer.save(this);
 	}
 
 	public PlayerCharacter getCurrent()
 	{
-		return this.current;
+		return CharacterAPI.getChar(this.current);
 	}
 
 	public PlayerCharacter getPrevious()
 	{
-		return this.previous;
+		return CharacterAPI.getChar(this.previous);
+	}
+
+	public List<PlayerCharacter> getCharacters()
+	{
+		return DemigodsData.jOhm.find(PlayerCharacter.class, "player", this.player);
 	}
 }

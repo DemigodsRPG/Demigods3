@@ -93,7 +93,7 @@ public class ShrineListener implements Listener
 			// {
 			// Shrine shrine = BlockAPI.getShrine(location);
 			//
-			// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getOwner(), location);
+			// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getPlayer(), location);
 			// Bukkit.getServer().getPluginManager().callEvent(shrineRemoveEvent);
 			// if(shrineRemoveEvent.isCancelled()) return;
 			//
@@ -202,7 +202,7 @@ public class ShrineListener implements Listener
 			if(favorBefore != character.getMeta().getMaxFavor() && devotionBefore != character.getMeta().getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOwner();
+				OfflinePlayer shrineOwnerPlayer = shrineOwner.getPlayer();
 				if(!character.equals(shrineOwnerPlayer))
 				{
 					// TODO: FIX THIS

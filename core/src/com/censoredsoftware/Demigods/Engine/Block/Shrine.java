@@ -15,12 +15,13 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 public class Shrine
 {
-	private long id, owner;
+	private Integer id;
+	private Long owner;
 	private String deity;
-	private long block;
+	private Long block;
 	private TrackedLocation location;
 
-	public Shrine(long id, PlayerCharacter character, Location location)
+	public Shrine(Integer id, PlayerCharacter character, Location location)
 	{
 		this.id = id;
 		this.location = TrackedModelFactory.createTrackedLocation(location);
@@ -64,13 +65,13 @@ public class Shrine
 	/*
 	 * getID() : Returns the ID for the Shrine.
 	 */
-	public long getID()
+	public Integer getID()
 	{
 		return this.id;
 	}
 
 	/*
-	 * getOwner() : Returns the owner ID for the Shrine.
+	 * getPlayer() : Returns the owner ID for the Shrine.
 	 */
 	public PlayerCharacter getOwner()
 	{
@@ -155,7 +156,7 @@ public class Shrine
 			Location location = new Location(Bukkit.getWorld(locs[0]), Integer.parseInt(locs[1]), Integer.parseInt(locs[2]), Integer.parseInt(locs[3]));
 
 			// Build the object
-			Shrine shrine = new Shrine(Integer.parseInt(data[0]), CharacterAPI.getChar(Integer.parseInt(data[1])), location);
+			Shrine shrine = new Shrine(Integer.parseInt(data[0]), CharacterAPI.getChar(Long.parseLong(data[1])), location);
 
 			// Return the new Shrine
 			return shrine;

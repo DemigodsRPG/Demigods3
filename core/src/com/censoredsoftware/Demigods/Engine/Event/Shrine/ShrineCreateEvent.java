@@ -24,7 +24,7 @@ public class ShrineCreateEvent extends Event implements Cancellable
 	}
 
 	/*
-	 * getOwner() : Gets the character/owner.
+	 * getPlayer() : Gets the character/owner.
 	 */
 	public PlayerCharacter getOwner()
 	{

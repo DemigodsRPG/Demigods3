@@ -26,26 +26,9 @@ public class TrackedModelFactory
 		return trackedLocation;
 	}
 
-	public static TrackedLocation createUnsavedTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
-	{
-		TrackedLocation trackedLocation = new TrackedLocation();
-		trackedLocation.setWorld(world);
-		trackedLocation.setX(X);
-		trackedLocation.setY(Y);
-		trackedLocation.setZ(Z);
-		trackedLocation.setYaw(yaw);
-		trackedLocation.setPitch(pitch);
-		return trackedLocation;
-	}
-
 	public static TrackedLocation createTrackedLocation(Location location)
 	{
 		return createTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-	}
-
-	public static TrackedLocation createUnsavedTrackedLocation(Location location)
-	{
-		return createUnsavedTrackedLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 	}
 
 	public static TrackedPlayer createTrackedPlayer(OfflinePlayer player)
@@ -65,7 +48,8 @@ public class TrackedModelFactory
 		trackedInventory.setLeggings(createTrackedItemStack(inventory.getLeggings()));
 		trackedInventory.setBoots(createTrackedItemStack(inventory.getBoots()));
 		trackedInventory.setItems(new HashMap<Integer, TrackedItemStack>());
-		TrackedPlayerInventory.save(trackedInventory.processInventory(inventory));
+		trackedInventory.processInventory(inventory);
+		TrackedPlayerInventory.save(trackedInventory);
 		return trackedInventory;
 	}
 
@@ -74,7 +58,7 @@ public class TrackedModelFactory
 		// TODO: A lot of this is really redundant. Needs work. (possibly just make a setItem() method which can be used in situations like this and then leave the current methods for if we manipulate the item.
 		TrackedItemStack trackedItem = new TrackedItemStack();
 		trackedItem.setTypeId(item.getTypeId());
-		trackedItem.setByteId(item.getData().getData());
+		// trackedItem.setByteId(item.getData().getData());
 		trackedItem.setAmount(item.getAmount());
 		trackedItem.setDurability(item.getDurability());
 		if(item.hasItemMeta())
@@ -102,7 +86,6 @@ public class TrackedModelFactory
 		location.getBlock().setType(material);
 		location.getBlock().setData(matByte);
 		TrackedBlock.save(trackedBlock);
-
 		return trackedBlock;
 	}
 
@@ -114,9 +97,9 @@ public class TrackedModelFactory
 	public static TrackedBattle createTrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
 	{
 		TrackedBattle battle = new TrackedBattle();
-		Location startedLocation = ((Player) attacking.getOwner()).getLocation();
+		Location startedLocation = ((Player) attacking.getPlayer()).getLocation();
 		battle.setWhoStarted(attacking);
-		battle.setStartLocation(TrackedModelFactory.createUnsavedTrackedLocation(startedLocation));
+		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
 		battle.setStartTime(startTime);
 		battle.addCharacter(attacking);
 		battle.addCharacter(defending);

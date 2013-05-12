@@ -82,7 +82,7 @@ public class TrackedLocation
 		{
 			if(location.equals(tracked)) return tracked;
 		}
-		return TrackedModelFactory.createUnsavedTrackedLocation(location);
+		return TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public Location toLocation() throws NullPointerException

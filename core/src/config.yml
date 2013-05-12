@@ -17,6 +17,10 @@ generation:
     altar_chance: 4.8 #percent
     chest_chance: 0.32 #percent
 
+## Regeneration ##
+regeneration:
+    favor: 10
+
 ## Zones ##
 zones:
     shrine_radius: 8
@@ -75,4 +79,3 @@ admin:
 ## Data ##
 saving:
     save_freq: 300
-    favor_regen_freq: 10.0

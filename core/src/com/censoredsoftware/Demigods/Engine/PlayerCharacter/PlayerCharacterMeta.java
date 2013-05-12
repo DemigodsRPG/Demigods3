@@ -106,7 +106,7 @@ public class PlayerCharacterMeta
 	public void setBound(String ability, Material material)
 	{
 		// TODO None of the below should be in here, it should be in the place where the player/character can be grabbed.
-		Player player = CharacterAPI.getChar(getId()).getOwner().getPlayer();
+		Player player = CharacterAPI.getChar(getId()).getPlayer().getPlayer();
 		if(!bindingData.containsKey(ability))
 		{
 			if(player.getItemInHand().getType() == Material.AIR)

@@ -194,8 +194,8 @@ public class BattleAPI
 	{
 		TrackedBattle battle = null;
 		TrackedBattle otherBattle = null;
-		Player hit = hitChar.getOwner().getPlayer();
-		Player hitting = hittingChar.getOwner().getPlayer();
+		Player hit = hitChar.getPlayer().getPlayer();
+		Player hitting = hittingChar.getPlayer().getPlayer();
 
 		if(isInAnyActiveBattle(hitChar))
 		{

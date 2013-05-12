@@ -3,7 +3,6 @@ package com.censoredsoftware.Demigods.Demo.Data.Quest.Passive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -465,7 +464,8 @@ class AltarMenu extends Task
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		final Set<PlayerCharacter> chars = PlayerAPI.getChars(player);
+		final List<PlayerCharacter> chars = PlayerAPI.getChars(player);
+
 		if(chars.isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no characters. Why not go make one?");
@@ -809,7 +809,7 @@ class AltarMenu extends Task
 			player.sendMessage(ChatColor.GRAY + "No such character exists, try again.");
 			return;
 		}
-		else if(!invited.getOwner().isOnline() || invited.getOwner() == character.getOwner())
+		else if(!invited.getPlayer().isOnline() || invited.getPlayer() == character.getPlayer())
 		{
 			player.sendMessage(" ");
 			player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
@@ -829,8 +829,8 @@ class AltarMenu extends Task
 		clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
-		invited.getOwner().getPlayer().sendMessage(invited.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
-		invited.getOwner().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
+		invited.getPlayer().getPlayer().sendMessage(invited.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
+		invited.getPlayer().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
 	}
 
 	protected static void acceptInvite(Player player, String name)

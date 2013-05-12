@@ -22,11 +22,11 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class PlayerListener implements Listener
 {
-	public static boolean filterCheckGeneric = false;
-	public static boolean filterCheckStream = false;
-	public static boolean filterCheckOverflow = false;
-	public static boolean filterCheckQuitting = false;
-	public static boolean filterCheckTimeout = false;
+	public static Boolean filterCheckGeneric = false;
+	public static Boolean filterCheckStream = false;
+	public static Boolean filterCheckOverflow = false;
+	public static Boolean filterCheckQuitting = false;
+	public static Boolean filterCheckTimeout = false;
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
@@ -37,11 +37,8 @@ public class PlayerListener implements Listener
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		// Set their lastlogintime
-		long now = System.currentTimeMillis();
+		Long now = System.currentTimeMillis();
 		tracked.setLastLoginTime(now);
-
-		Demigods.message.broadcast("Now: " + now);
-		Demigods.message.broadcast(player.getName() + ": " + tracked.getLastLoginTime());
 
 		// Set Displayname
 		if(character != null)

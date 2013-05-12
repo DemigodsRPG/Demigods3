@@ -1,9 +1,6 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,9 +52,9 @@ public class PlayerAPI
 	 * @param player the player to check.
 	 * @return List the list of all character IDs.
 	 */
-	public static Set<PlayerCharacter> getChars(OfflinePlayer player)
+	public static List<PlayerCharacter> getChars(OfflinePlayer player)
 	{
-		return CharacterAPI.getAllChars();
+		return TrackedPlayer.getTracked(player).getCharacters();
 	}
 
 	/**
@@ -71,7 +68,7 @@ public class PlayerAPI
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!getChars(offlinePlayer).contains(character))
+		if(!character.getPlayer().getName().equals(offlinePlayer.getName()))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
@@ -91,14 +88,11 @@ public class PlayerAPI
 			currentChar.setExperience(player.getExp());
 			currentChar.setLocation(player.getLocation());
 			currentChar.saveInventory();
-
-			// Set them to inactive
-			currentChar.setActive(false);
+			PlayerCharacter.save(currentChar);
 		}
 
 		// Everything is good, let's switch
 		TrackedPlayer.getTracked(player).setCurrent(character);
-		character.setActive(true);
 
 		// If it's their first character save their inventory
 		if(getChars(player).size() <= 1) character.saveInventory();
@@ -124,11 +118,11 @@ public class PlayerAPI
 		try
 		{
 			// Teleport them
-			player.teleport(character.getLocation().toLocation());
+			player.teleport(character.getLocation());
 		}
 		catch(Exception e)
 		{
-			Demigods.message.severe("Something went wrong when trying to teleport to a character location..."); // TODO Better error message.
+			Demigods.message.severe("Something went wrong when trying to teleport to that character's location..."); // TODO Better error message.
 		}
 
 		// Enable movement and chat to be safe
@@ -171,7 +165,7 @@ public class PlayerAPI
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		final Set<PlayerCharacter> characters = getChars(player);
+		final List<PlayerCharacter> characters = getChars(player);
 
 		for(PlayerCharacter character : characters)
 		{

@@ -11,28 +11,9 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
 
 public class CharacterAPI
 {
-	/**
-	 * Creates a new PlayerCharacter for <code>player</code> with the name <code>charName</code> and the deity <code>charDeity</code> and return it.
-	 * 
-	 * @param player the player to create the character for.
-	 * @param charName the name to use for the character.
-	 * @param charDeity the deity to use for the character.
-	 * @return Demigod
-	 */
-	public static PlayerCharacter create(OfflinePlayer player, String charName, String charDeity)
-	{
-		if(getCharByName(charName) == null)
-		{
-			// Create the Character
-			return PlayerCharacterFactory.createCharacter(player, charName, true, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
-		}
-		return null;
-	}
-
 	public static Set<PlayerCharacter> getAllChars()
 	{
 		Set<PlayerCharacter> characters = new HashSet<PlayerCharacter>();
@@ -43,7 +24,7 @@ public class CharacterAPI
 		return characters;
 	}
 
-	public static PlayerCharacter getChar(long id)
+	public static PlayerCharacter getChar(Long id)
 	{
 		return PlayerCharacter.load(id);
 	}
@@ -69,7 +50,7 @@ public class CharacterAPI
 
 	public static OfflinePlayer getOwner(long charID)
 	{
-		return getChar(charID).getOwner();
+		return getChar(charID).getPlayer();
 	}
 
 	// TODO Move these.
