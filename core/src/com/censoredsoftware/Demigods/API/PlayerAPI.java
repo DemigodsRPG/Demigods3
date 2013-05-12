@@ -4,16 +4,13 @@ import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
 
 public class PlayerAPI
 {
@@ -63,8 +60,9 @@ public class PlayerAPI
 	 * @param offlinePlayer the player whose character to change.
 	 * @return boolean based on if the change was successful or not.
 	 */
-	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, PlayerCharacter character) // TODO Most of this should be in a listener, not here in the API.
+	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, PlayerCharacter character)
 	{
+		// TODO: Clean this up. It's kind of split up between multiple files and needs to be more centralized.
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
@@ -98,22 +96,13 @@ public class PlayerAPI
 		if(getChars(player).size() <= 1) character.saveInventory();
 
 		// Update inventory
-		player.getInventory().clear();
-		player.getInventory().setBoots(new ItemStack(Material.AIR));
-		player.getInventory().setChestplate(new ItemStack(Material.AIR));
-		player.getInventory().setLeggings(new ItemStack(Material.AIR));
-		player.getInventory().setBoots(new ItemStack(Material.AIR));
-
-		if(character.getInventory() != null)
-		{
-			TrackedPlayerInventory charInv = character.getInventory();
-			charInv.setToPlayer(player);
-		}
+		if(character.getInventory() != null) character.getInventory().setToPlayer(player);
 
 		// Update health and experience
 		player.setHealth(character.getHealth());
 		player.setFoodLevel(character.getHunger());
 		player.setExp(character.getExperience());
+		player.setLevel(character.getLevel());
 
 		try
 		{
@@ -122,7 +111,7 @@ public class PlayerAPI
 		}
 		catch(Exception e)
 		{
-			Demigods.message.severe("Something went wrong when trying to teleport to that character's location..."); // TODO Better error message.
+			Demigods.message.severe("Something went wrong when trying to teleport to your character's location...");
 		}
 
 		// Enable movement and chat to be safe

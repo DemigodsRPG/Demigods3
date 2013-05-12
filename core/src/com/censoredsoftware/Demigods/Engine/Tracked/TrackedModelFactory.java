@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.HashMap;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -43,22 +41,21 @@ public class TrackedModelFactory
 	public static TrackedPlayerInventory createTrackedPlayerInventory(PlayerInventory inventory)
 	{
 		TrackedPlayerInventory trackedInventory = new TrackedPlayerInventory();
-		trackedInventory.setHelmet(createTrackedItemStack(inventory.getHelmet()));
-		trackedInventory.setChestplate(createTrackedItemStack(inventory.getChestplate()));
-		trackedInventory.setLeggings(createTrackedItemStack(inventory.getLeggings()));
-		trackedInventory.setBoots(createTrackedItemStack(inventory.getBoots()));
-		trackedInventory.setItems(new HashMap<Integer, TrackedItemStack>());
-		trackedInventory.processInventory(inventory);
+		trackedInventory.setSize(inventory.getSize());
+		if(inventory.getHelmet() != null) trackedInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) trackedInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) trackedInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) trackedInventory.setBoots(inventory.getBoots());
+		trackedInventory.setItems(inventory);
 		TrackedPlayerInventory.save(trackedInventory);
 		return trackedInventory;
 	}
 
 	public static TrackedItemStack createTrackedItemStack(ItemStack item)
 	{
-		// TODO: A lot of this is really redundant. Needs work. (possibly just make a setItem() method which can be used in situations like this and then leave the current methods for if we manipulate the item.
 		TrackedItemStack trackedItem = new TrackedItemStack();
 		trackedItem.setTypeId(item.getTypeId());
-		// trackedItem.setByteId(item.getData().getData());
+		trackedItem.setByteId(item.getData().getData());
 		trackedItem.setAmount(item.getAmount());
 		trackedItem.setDurability(item.getDurability());
 		if(item.hasItemMeta())

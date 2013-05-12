@@ -37,10 +37,10 @@ public class PlayerCharacter
 	private Float experience;
 	@Attribute
 	private Integer level;
-	@Attribute
-	private long location;
-	@Attribute
-	private long inventory;
+	@Reference
+	private TrackedLocation location;
+	@Reference
+	private TrackedPlayerInventory inventory;
 	@Attribute
 	@Indexed
 	private String deity;
@@ -113,7 +113,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getPlayer().getPlayer().getInventory()).getId();
+		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getPlayer().getPlayer().getInventory());
 	}
 
 	public void setHealth(int health)
@@ -138,16 +138,17 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location).getId();
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public TrackedPlayerInventory getInventory()
 	{
-		if(this.inventory != 0) return TrackedPlayerInventory.load(this.inventory);
+		if(this.inventory != null) return this.inventory;
+
 		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
 		{
-			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory()).getId();
-			return TrackedPlayerInventory.load(this.inventory);
+			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			return this.inventory;
 		}
 		else return null;
 	}
@@ -179,7 +180,7 @@ public class PlayerCharacter
 
 	public Location getLocation()
 	{
-		return TrackedLocation.load(this.location).toLocation();
+		return this.location.toLocation();
 	}
 
 	public Integer getHealth()

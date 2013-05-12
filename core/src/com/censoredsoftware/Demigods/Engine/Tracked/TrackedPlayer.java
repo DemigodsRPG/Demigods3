@@ -89,12 +89,12 @@ public class TrackedPlayer
 
 	public void setCurrent(PlayerCharacter character)
 	{
-		// Update previous character
-		if(this.previous != 0)
+		// Set current character to previous character
+		if(this.current != 0)
 		{
-			PlayerCharacter previousChar = CharacterAPI.getChar(this.previous);
-			previousChar.setActive(false);
-			PlayerCharacter.save(previousChar);
+			PlayerCharacter currentChar = CharacterAPI.getChar(this.current);
+			currentChar.setActive(false);
+			PlayerCharacter.save(currentChar);
 			this.previous = this.current;
 		}
 
