@@ -12,10 +12,11 @@ import org.bukkit.inventory.PlayerInventory;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 /**
- * Stores a saveable version of a PlayerInventory.
+ * Creates a saved version of a PlayerInventory.
  */
 @Model
 public class TrackedPlayerInventory
@@ -69,7 +70,13 @@ public class TrackedPlayerInventory
 		for(ItemStack item : inventory.getContents())
 		{
 			if(item == null) continue;
-			this.items.put(slot, TrackedModelFactory.createTrackedItemStack(item));
+
+			TrackedItemStack trackedItem = TrackedModelFactory.createTrackedItemStack(item);
+
+			this.items.put(slot, trackedItem);
+
+			Demigods.message.broadcast("ID: " + trackedItem.getId());
+
 			slot++;
 		}
 	}

@@ -92,11 +92,16 @@ public class PlayerAPI
 		// Everything is good, let's switch
 		TrackedPlayer.getTracked(player).setCurrent(character);
 
-		// If it's their first character save their inventory
-		if(getChars(player).size() <= 1) character.saveInventory();
-
-		// Update inventory
-		if(character.getInventory() != null) character.getInventory().setToPlayer(player);
+		if(getChars(player).size() == 1)
+		{
+			// If it's their first character save their inventory
+			character.saveInventory();
+		}
+		else
+		{
+			// Otherwise just update inventory
+			if(character.getInventory() != null) character.getInventory().setToPlayer(player);
+		}
 
 		// Update health and experience
 		player.setHealth(character.getHealth());
