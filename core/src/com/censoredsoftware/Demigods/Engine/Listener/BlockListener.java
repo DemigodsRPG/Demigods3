@@ -28,6 +28,7 @@ import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
+import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class BlockListener implements Listener
@@ -94,7 +95,7 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void divineBlockExplode(final EntityExplodeEvent event) // TODO: Clean up and make it generic to Protected Blocks
 	{
-		final List<Block> savedBlocks = new ArrayList<Block>();
+		final List<Location> savedLocations = new ArrayList<Location>();
 		final List<Material> savedMaterials = new ArrayList<Material>();
 		final List<Byte> savedBytes = new ArrayList<Byte>();
 
@@ -104,7 +105,7 @@ public class BlockListener implements Listener
 			if(block.getType() == Material.TNT) continue;
 			if(BlockAPI.isProtected(block.getLocation()))
 			{
-				savedBlocks.add(block);
+				savedLocations.add(block.getLocation());
 				savedMaterials.add(block.getType());
 				savedBytes.add(block.getData());
 			}
@@ -117,9 +118,9 @@ public class BlockListener implements Listener
 			{
 				// Regenerate blocks
 				int i = 0;
-				for(Block block : savedBlocks)
+				for(Location location : savedLocations)
 				{
-					block.setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
+					location.getBlock().setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
 					i++;
 				}
 
@@ -177,27 +178,25 @@ public class BlockListener implements Listener
 
 		if(BlockAPI.isAltar(location))
 		{
-			// TODO TIMED DATA
-			// if(DemigodsData.timedAltarData.contains(player))
-			// {
-			// AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
-			// Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
-			// if(altarRemoveEvent.isCancelled()) return;
-			//
-			// // We can destroy the Altar
-			// BlockAPI.getAltar(location).remove();
-			// DemigodsData.timedAltarData.remove(player);
-			//
-			// // Save Protected Blocks
-			// DemigodsData.altarFile.save(DemigodsData.altarData);
-			//
-			// player.sendMessage(ChatColor.GREEN + "Altar removed!");
-			// }
-			// else
-			// {
-			// DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
-			// player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
-			// }
+			if(false) // TODO: Timed Data.
+			{
+				AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
+				Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
+				if(altarRemoveEvent.isCancelled()) return;
+
+				// We can destroy the Altar
+				BlockAPI.getAltar(location).remove();
+				// DemigodsData.timedAltarData.remove(player);
+				// Save Protected Blocks
+				// DemigodsData.altarFile.save(DemigodsData.altarData);
+
+				player.sendMessage(ChatColor.GREEN + "Altar removed!");
+			}
+			else
+			{
+				// DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
+				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+			}
 		}
 	}
 
