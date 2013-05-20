@@ -1,0 +1,123 @@
+package com.censoredsoftware.Demigods.Demo.Data.Deity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import com.censoredsoftware.Demigods.API.AbilityAPI;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.MiscAPI;
+import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+
+public class Template extends Deity
+{
+	private static String name = "Template", alliance = "Test";
+	private static ChatColor color = ChatColor.GRAY;
+	private static List<Material> claimItems = new ArrayList<Material>()
+	{
+		{
+			add(Material.DIRT);
+		}
+	};
+	private static List<String> lore = new ArrayList<String>()
+	{
+		{
+			add(" ");
+			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
+			add(ChatColor.RESET + "-----------------------------------------------------");
+			add(ChatColor.YELLOW + " Claim Items:");
+			for(Material item : claimItems)
+			{
+				add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+			}
+			add(ChatColor.YELLOW + " Abilities:");
+		}
+	};
+	private static Type type = Type.DEMO;
+	private static List<Ability> abilities = new ArrayList<Ability>()
+	{
+		{
+			add(new Test());
+		}
+	};
+
+	public Template()
+	{
+		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+	}
+}
+
+class Test extends Ability
+{
+	private static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
+	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Test your target.");
+		}
+	};
+	private static Type type = Type.SUPPORT;
+
+	protected Test()
+	{
+		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGH)
+			public void onPlayerInteract(PlayerInteractEvent interactEvent)
+			{
+				if(!AbilityAPI.isClick(interactEvent)) return;
+
+				// Set variables
+				Player player = interactEvent.getPlayer();
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+
+				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+
+				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
+				{
+					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+
+					test(player);
+				}
+			}
+		});
+	}
+
+	// The actual ability command
+	public static void test(Player player)
+	{
+		// Define variables
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		int devotion = character.getMeta().getDevotion();
+		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
+		LivingEntity target = AbilityAPI.autoTarget(player);
+
+		if(!AbilityAPI.doAbilityPreProcess(player, target, "test", cost, type)) return;
+		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		character.getMeta().subtractFavor(cost);
+
+		if(!AbilityAPI.targeting(player, target)) return;
+
+		if(target instanceof Player)
+		{
+			Player victim = (Player) target;
+			victim.sendMessage("Test!");
+			player.sendMessage("Tested " + victim.getName() + "!");
+			return;
+		}
+	}
+}
