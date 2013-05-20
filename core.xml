@@ -26,8 +26,8 @@
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <path id="Demigods.classpath">
-            <pathelement location="lib/Bukkit.jar"/>
-            <pathelement location="lib/johm.jar"/>
+            <pathelement location="lib/Craftbukkit.jar"/>
+            <pathelement location="lib/inJar/JOhm.jar"/>
             <pathelement location="lib/WorldEdit.jar"/>
             <pathelement location="lib/WorldGuard.jar"/>
             <pathelement location="lib/Factions.jar"/>
