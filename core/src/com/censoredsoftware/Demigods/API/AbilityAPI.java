@@ -292,6 +292,7 @@ public class AbilityAPI
 				return true;
 			}
 		}
+
 		return false;
 	}
 }
