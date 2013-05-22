@@ -162,7 +162,13 @@ public class PlayerCharacterMeta
 
 	public int getLevel(String level)
 	{
-		return levelsData.get(level.toUpperCase());
+		try
+		{
+			return levelsData.get(level.toUpperCase());
+		}
+		catch(Exception ignored)
+		{}
+		return 1;
 	}
 
 	public void setLevel(String level, int amount)
@@ -177,7 +183,7 @@ public class PlayerCharacterMeta
 
 	public void subtractLevel(String level, int amount)
 	{
-		if(getLevel(level.toUpperCase()) - amount < 0) setLevel(level.toUpperCase(), 0);
+		if(getLevel(level.toUpperCase()) - amount < 1) setLevel(level.toUpperCase(), 1);
 		else setLevel(level.toUpperCase(), getLevel(level.toUpperCase()) - amount);
 	}
 
