@@ -175,7 +175,7 @@ public class AbilityAPI
 	public static Location aimLocation(PlayerCharacter character, Location target)
 	{
 		int ascensions = character.getMeta().getAscensions();
-		if(ascensions < 1) ascensions = 1;
+		if(ascensions < 3) ascensions = 3;
 
 		int offset = (int) (TARGETOFFSET + character.getPlayer().getPlayer().getLocation().distance(target));
 		int adjustedOffset = offset / ascensions;
