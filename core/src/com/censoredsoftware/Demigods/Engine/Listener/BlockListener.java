@@ -146,11 +146,16 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDestroyEnderCrystal(EntityDamageEvent event)
 	{
-		if(BlockAPI.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+		try
 		{
-			event.setDamage(0);
-			event.setCancelled(true);
+			if(BlockAPI.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+			{
+				event.setDamage(0);
+				event.setCancelled(true);
+			}
 		}
+		catch(Exception ignored)
+		{}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
