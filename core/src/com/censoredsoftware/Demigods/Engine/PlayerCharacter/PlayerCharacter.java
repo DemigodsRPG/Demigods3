@@ -144,11 +144,6 @@ public class PlayerCharacter
         {
             return this.inventory;
         }
-		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
-		{
-			this.inventory = PlayerCharacterFactory.createCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
-			return this.inventory;
-		}
 		else return null;
 	}
 

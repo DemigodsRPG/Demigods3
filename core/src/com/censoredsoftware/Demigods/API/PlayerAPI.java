@@ -5,7 +5,6 @@ import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -51,67 +50,6 @@ public class PlayerAPI
 	public static List<PlayerCharacter> getChars(OfflinePlayer player)
 	{
 		return TrackedPlayer.getTracked(player).getCharacters();
-	}
-
-	/**
-	 * Changes the <code>offlinePlayer</code>'s current character to <code>charID</code>.
-	 * 
-	 * @param offlinePlayer the player whose character to change.
-	 * @return boolean based on if the change was successful or not.
-	 */
-	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, PlayerCharacter character)
-	{
-		// Define variables
-		Player player = offlinePlayer.getPlayer();
-
-		if(!character.getPlayer().equals(offlinePlayer))
-		{
-			player.sendMessage(ChatColor.RED + "You can't do that.");
-			return false;
-		}
-
-		// Update the current character (if it exists)
-		PlayerCharacter currentChar = TrackedPlayer.getTracked(player).getCurrent();
-		if(currentChar != null)
-		{
-			// Save info
-			currentChar.setHealth(player.getHealth());
-			currentChar.setHunger(player.getFoodLevel());
-			currentChar.setLevel(player.getLevel());
-			currentChar.setExperience(player.getExp());
-			currentChar.setLocation(player.getLocation());
-			currentChar.saveInventory();
-			PlayerCharacter.save(currentChar);
-		}
-
-		// Switch the player's current character
-		TrackedPlayer.getTracked(player).setCurrent(character);
-
-        // Update health and experience
-		player.setHealth(character.getHealth());
-		player.setFoodLevel(character.getHunger());
-		player.setExp(character.getExperience());
-		player.setLevel(character.getLevel());
-
-        // Update their inventory
-        if(character.getInventory() != null) character.getInventory().setToPlayer(player);
-
-        try
-		{
-			// Teleport them
-			player.teleport(character.getLocation());
-		}
-		catch(Exception e)
-		{
-			Demigods.message.severe("Something went wrong when trying to teleport to your character's location.");
-		}
-
-        // Disable prayer, re-enabled movement, etc. just to be safe
-        togglePraying(player, false);
-        togglePlayerChat(player, true);
-        togglePlayerMovement(player, true);
-
-		return true;
 	}
 
 	/**
