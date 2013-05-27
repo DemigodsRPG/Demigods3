@@ -1,13 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {
@@ -36,19 +34,6 @@ public class TrackedModelFactory
 		trackedPlayer.setLastLoginTime(player.getLastPlayed());
 		TrackedPlayer.save(trackedPlayer);
 		return trackedPlayer;
-	}
-
-	public static TrackedPlayerInventory createTrackedPlayerInventory(PlayerInventory inventory)
-	{
-		TrackedPlayerInventory trackedInventory = new TrackedPlayerInventory();
-		trackedInventory.setSize(inventory.getSize());
-		if(inventory.getHelmet() != null) trackedInventory.setHelmet(inventory.getHelmet());
-		if(inventory.getChestplate() != null) trackedInventory.setChestplate(inventory.getChestplate());
-		if(inventory.getLeggings() != null) trackedInventory.setLeggings(inventory.getLeggings());
-		if(inventory.getBoots() != null) trackedInventory.setBoots(inventory.getBoots());
-		trackedInventory.setItems(inventory);
-		TrackedPlayerInventory.save(trackedInventory);
-		return trackedInventory;
 	}
 
 	public static TrackedItemStack createTrackedItemStack(ItemStack item)

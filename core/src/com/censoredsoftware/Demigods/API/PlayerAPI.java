@@ -1,16 +1,15 @@
 package com.censoredsoftware.Demigods.API;
 
-import java.util.*;
-
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import java.util.*;
 
 public class PlayerAPI
 {
@@ -62,18 +61,14 @@ public class PlayerAPI
 	 */
 	public static boolean changeCurrentChar(OfflinePlayer offlinePlayer, PlayerCharacter character)
 	{
-		// TODO: Clean this up. It's kind of split up between multiple files and needs to be more centralized.
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!character.getPlayer().getName().equals(offlinePlayer.getName()))
+		if(!character.getPlayer().equals(offlinePlayer))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
 		}
-
-		// Disable prayer just to be safe
-		togglePraying(player, false);
 
 		// Update the current character (if it exists)
 		PlayerCharacter currentChar = TrackedPlayer.getTracked(player).getCurrent();
@@ -89,39 +84,32 @@ public class PlayerAPI
 			PlayerCharacter.save(currentChar);
 		}
 
-		// Everything is good, let's switch
+		// Switch the player's current character
 		TrackedPlayer.getTracked(player).setCurrent(character);
 
-		if(getChars(player).size() == 1)
-		{
-			// If it's their first character save their inventory
-			character.saveInventory();
-		}
-		else
-		{
-			// Otherwise just update inventory
-			if(character.getInventory() != null) character.getInventory().setToPlayer(player);
-		}
-
-		// Update health and experience
+        // Update health and experience
 		player.setHealth(character.getHealth());
 		player.setFoodLevel(character.getHunger());
 		player.setExp(character.getExperience());
 		player.setLevel(character.getLevel());
 
-		try
+        // Update their inventory
+        if(character.getInventory() != null) character.getInventory().setToPlayer(player);
+
+        try
 		{
 			// Teleport them
 			player.teleport(character.getLocation());
 		}
 		catch(Exception e)
 		{
-			Demigods.message.severe("Something went wrong when trying to teleport to your character's location...");
+			Demigods.message.severe("Something went wrong when trying to teleport to your character's location.");
 		}
 
-		// Enable movement and chat to be safe
-		togglePlayerChat(player, true);
-		togglePlayerMovement(player, true);
+        // Disable prayer, re-enabled movement, etc. just to be safe
+        togglePraying(player, false);
+        togglePlayerChat(player, true);
+        togglePlayerMovement(player, true);
 
 		return true;
 	}

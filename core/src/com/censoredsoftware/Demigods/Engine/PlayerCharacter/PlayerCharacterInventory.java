@@ -1,25 +1,24 @@
-package com.censoredsoftware.Demigods.Engine.Tracked;
+package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Creates a saved version of a PlayerInventory.
  */
 @Model
-public class TrackedPlayerInventory
+public class PlayerCharacterInventory
 {
 	@Id
 	private Long id;
@@ -70,13 +69,8 @@ public class TrackedPlayerInventory
 		for(ItemStack item : inventory.getContents())
 		{
 			if(item == null) continue;
-
 			TrackedItemStack trackedItem = TrackedModelFactory.createTrackedItemStack(item);
-
 			this.items.put(slot, trackedItem);
-
-			Demigods.message.broadcast("ID: " + trackedItem.getId());
-
 			slot++;
 		}
 	}
@@ -86,19 +80,19 @@ public class TrackedPlayerInventory
 		return this.id;
 	}
 
-	public static void save(TrackedPlayerInventory inventory)
+	public static void save(PlayerCharacterInventory inventory)
 	{
 		DemigodsData.jOhm.save(inventory);
 	}
 
-	public static TrackedPlayerInventory load(long id) // TODO This belongs somewhere else.
+	public static PlayerCharacterInventory load(long id) // TODO This belongs somewhere else.
 	{
-		return DemigodsData.jOhm.get(TrackedPlayerInventory.class, id);
+		return DemigodsData.jOhm.get(PlayerCharacterInventory.class, id);
 	}
 
-	public static Set<TrackedPlayerInventory> loadAll()
+	public static Set<PlayerCharacterInventory> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedPlayerInventory.class);
+		return DemigodsData.jOhm.getAll(PlayerCharacterInventory.class);
 	}
 
 	/**
@@ -130,6 +124,6 @@ public class TrackedPlayerInventory
 		}
 
 		// We're done with this instance now, delete it
-		DemigodsData.jOhm.delete(TrackedPlayerInventory.class, this.id);
+		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, this.id);
 	}
 }

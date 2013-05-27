@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-
+import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,10 +12,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.Demigods.API.PlayerAPI;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class ChatListener implements Listener
 {
@@ -43,6 +42,9 @@ public class ChatListener implements Listener
 		// Define variables
 		Player player = event.getPlayer();
 		String message = event.getMessage();
+
+        // Return if the player is praying
+        if(PlayerAPI.isPraying(player)) return;
 
 		// Handle chat for character switching
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number"))

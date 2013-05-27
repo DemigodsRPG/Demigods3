@@ -1,22 +1,19 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-
-import redis.clients.johm.*;
-
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayerInventory;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import redis.clients.johm.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Model
 public class PlayerCharacter
@@ -40,7 +37,7 @@ public class PlayerCharacter
 	@Reference
 	private TrackedLocation location;
 	@Reference
-	private TrackedPlayerInventory inventory;
+	private PlayerCharacterInventory inventory;
 	@Attribute
 	@Indexed
 	private String deity;
@@ -113,7 +110,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = TrackedModelFactory.createTrackedPlayerInventory(getPlayer().getPlayer().getInventory());
+		this.inventory = PlayerCharacterFactory.createCharacterInventory(getPlayer().getPlayer().getInventory());
 	}
 
 	public void setHealth(int health)
@@ -141,13 +138,15 @@ public class PlayerCharacter
 		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
-	public TrackedPlayerInventory getInventory()
+	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory != null) return this.inventory;
-
+		if(this.inventory != null) 
+        {
+            return this.inventory;
+        }
 		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
 		{
-			this.inventory = TrackedModelFactory.createTrackedPlayerInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			this.inventory = PlayerCharacterFactory.createCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
 			return this.inventory;
 		}
 		else return null;

@@ -1,11 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import org.bukkit.OfflinePlayer;
-
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerCharacterFactory
 {
@@ -55,4 +55,20 @@ public class PlayerCharacterFactory
 		PlayerCharacterMeta.save(charMeta);
 		return charMeta;
 	}
+
+
+    public static PlayerCharacterInventory createCharacterInventory(PlayerInventory inventory)
+    {
+        PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+        charInventory.setSize(inventory.getSize());
+        if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
+        if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
+        if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
+        if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
+        charInventory.setItems(inventory);
+        PlayerCharacterInventory.save(charInventory);
+        return charInventory;
+    }
+
 }
+

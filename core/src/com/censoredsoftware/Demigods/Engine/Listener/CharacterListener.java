@@ -1,14 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-
 import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
@@ -17,7 +10,13 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharact
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillstreakEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 public class CharacterListener implements Listener
 {
@@ -48,8 +47,8 @@ public class CharacterListener implements Listener
 				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 
 			// Switch current character
-			TrackedPlayer.getTracked(player).setCurrent(character);
-		}
+            PlayerAPI.changeCurrentChar(player, character);
+        }
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
