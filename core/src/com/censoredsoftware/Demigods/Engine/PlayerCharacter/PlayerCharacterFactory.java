@@ -1,11 +1,14 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerCharacterFactory
 {
@@ -36,12 +39,16 @@ public class PlayerCharacterFactory
 
 	public static PlayerCharacter createCharacter(OfflinePlayer player, String charName, String charDeity)
 	{
-		if(CharacterAPI.getCharByName(charName) == null)
+		try
+		{
+			CharacterAPI.getCharByName(charName);
+		}
+		catch(NullPointerException e)
 		{
 			// Create the Character
 			return createCharacter(player, charName, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 		}
-		return null;
+		throw new NullPointerException("A character by that name already exists.");
 	}
 
 	public static PlayerCharacterMeta createCharacterMeta()
@@ -56,19 +63,28 @@ public class PlayerCharacterFactory
 		return charMeta;
 	}
 
+	public static PlayerCharacterInventory createCharacterInventory(PlayerInventory inventory)
+	{
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setSize(inventory.getSize());
+		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
+		charInventory.setItems(inventory);
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
+	}
 
-    public static PlayerCharacterInventory createCharacterInventory(PlayerInventory inventory)
-    {
-        PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
-        charInventory.setSize(inventory.getSize());
-        if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
-        if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
-        if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
-        if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
-        charInventory.setItems(inventory);
-        PlayerCharacterInventory.save(charInventory);
-        return charInventory;
-    }
-
+	public static PlayerCharacterInventory createEmptyCharacterInventory()
+	{
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setSize(0);
+		charInventory.setHelmet(new ItemStack(Material.AIR));
+		charInventory.setChestplate(new ItemStack(Material.AIR));
+		charInventory.setLeggings(new ItemStack(Material.AIR));
+		charInventory.setBoots(new ItemStack(Material.AIR));
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
+	}
 }
-

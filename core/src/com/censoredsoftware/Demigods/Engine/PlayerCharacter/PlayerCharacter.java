@@ -1,19 +1,22 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import com.censoredsoftware.Demigods.API.DeityAPI;
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+
 import redis.clients.johm.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 @Model
 public class PlayerCharacter
@@ -36,8 +39,8 @@ public class PlayerCharacter
 	private Integer level;
 	@Reference
 	private TrackedLocation location;
-	@Reference
-	private PlayerCharacterInventory inventory;
+	@Attribute
+	private long inventory;
 	@Attribute
 	@Indexed
 	private String deity;
@@ -110,7 +113,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = PlayerCharacterFactory.createCharacterInventory(getPlayer().getPlayer().getInventory());
+		this.inventory = PlayerCharacterFactory.createCharacterInventory(getPlayer().getPlayer().getInventory()).getId();
 	}
 
 	public void setHealth(int health)
@@ -140,11 +143,15 @@ public class PlayerCharacter
 
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory != null) 
-        {
-            return this.inventory;
-        }
-		else return null;
+		try
+		{
+			return DemigodsData.jOhm.get(PlayerCharacterInventory.class, this.inventory);
+		}
+		catch(Exception ignored)
+		{}
+
+		Demigods.message.broadcast("No Inventory.");
+		return PlayerCharacterFactory.createEmptyCharacterInventory();
 	}
 
 	public PlayerCharacterMeta getMeta()

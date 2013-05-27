@@ -1,21 +1,24 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
 import redis.clients.johm.Attribute;
 import redis.clients.johm.Id;
 import redis.clients.johm.Indexed;
 import redis.clients.johm.Model;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.google.common.collect.Sets;
 
 @Model
 public class TrackedPlayer
@@ -88,78 +91,86 @@ public class TrackedPlayer
 		return this.lastLoginTime;
 	}
 
-    public void switchCharacter(PlayerCharacter newChar)
-    {
-        Player player = getPlayer().getPlayer();
+	public void switchCharacter(PlayerCharacter newChar)
+	{
+		Player player = getPlayer().getPlayer();
 
-        player.sendMessage("check 1");
+		player.sendMessage("check 1");
 
-        if(!newChar.getPlayer().equals(getPlayer()))
-        {
-            player.sendMessage(ChatColor.RED + "You can't do that.");
-            return;
-        }
+		if(!newChar.getPlayer().equals(getPlayer()))
+		{
+			player.sendMessage(ChatColor.RED + "You can't do that.");
+			return;
+		}
 
-        player.sendMessage("check 2");
+		player.sendMessage("check 2");
 
-        // Update the current character
-        PlayerCharacter currChar = getCurrent();
-        if(currChar != null)
-        {
-            player.sendMessage("nested check 1");
+		// Update the current character
+		PlayerCharacter currChar = getCurrent();
+		if(currChar != null)
+		{
+			player.sendMessage("nested check 1");
 
-            currChar.setHealth(player.getHealth());
-            currChar.setHunger(player.getFoodLevel());
-            currChar.setLevel(player.getLevel());
-            currChar.setExperience(player.getExp());
-            currChar.setLocation(player.getLocation());
-            currChar.saveInventory();
+			currChar.setHealth(player.getHealth());
+			currChar.setHunger(player.getFoodLevel());
+			currChar.setLevel(player.getLevel());
+			currChar.setExperience(player.getExp());
+			currChar.setLocation(player.getLocation());
+			currChar.saveInventory();
 
-            player.sendMessage("nested check 2");
-        }
+			player.sendMessage("nested check 2");
+		}
 
-        player.sendMessage("check 3");
+		player.sendMessage("check 3");
 
-        // Update their inventory
-        newChar.getInventory().setToPlayer(player);
+		try
+		{
+			// Update their inventory
+			newChar.getInventory().setToPlayer(player);
+		}
+		catch(Exception e)
+		{
+			Demigods.message.broadcast("Could not set inventory.");
+		}
 
-        player.sendMessage("check 4");
+		player.sendMessage("check 4");
 
-        // Update health and experience
-        player.setHealth(newChar.getHealth());
-        player.setFoodLevel(newChar.getHunger());
-        player.setExp(newChar.getExperience());
-        player.setLevel(newChar.getLevel());
+		// Update health and experience
+		player.setHealth(newChar.getHealth());
+		player.setFoodLevel(newChar.getHunger());
+		player.setExp(newChar.getExperience());
+		player.setLevel(newChar.getLevel());
 
-        player.sendMessage("check 5");
+		player.sendMessage("check 5");
 
-        // Teleport them
-        player.teleport(newChar.getLocation());
+		// Teleport them
+		player.teleport(newChar.getLocation());
 
-        player.sendMessage("check 6");
+		player.sendMessage("check 6");
 
-        // Disable prayer, re-enabled movement, etc. just to be safe
-        PlayerAPI.togglePraying(player, false);
-        PlayerAPI.togglePlayerChat(player, true);
-        PlayerAPI.togglePlayerMovement(player, true);
+		// Disable prayer, re-enabled movement, etc. just to be safe
+		PlayerAPI.togglePraying(player, false);
+		PlayerAPI.togglePlayerChat(player, true);
+		PlayerAPI.togglePlayerMovement(player, true);
 
-        player.sendMessage("check 7");
+		player.sendMessage("check 7");
 
-        // Update all active statuses and stuff
-        currChar.setActive(false);
-        this.previous = currChar.getId();
-        newChar.setActive(true);
-        this.current = newChar.getId();
+		// Update all active statuses and stuff
+		if(currChar != null) currChar.setActive(false);
+		if(currChar != null) this.previous = currChar.getId();
+		newChar.setActive(true);
+		this.current = newChar.getId();
 
-        player.sendMessage("check 8");
+		player.sendMessage("check 8");
 
-        // Save instances
-        TrackedPlayer.save(this);
-        PlayerCharacter.save(currChar);
-        PlayerCharacter.save(newChar);
+		// Save instances
+		TrackedPlayer.save(this);
+		if(currChar != null) PlayerCharacter.save(currChar);
+		Demigods.message.broadcast(newChar.getName());
+		PlayerCharacter.save(newChar);
 
-        player.sendMessage("check 9");
-    }
+		player.sendMessage("check 9");
+	}
 
 	public PlayerCharacter getCurrent()
 	{

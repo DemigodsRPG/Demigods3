@@ -1,18 +1,20 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
 import redis.clients.johm.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 /**
  * Creates a saved version of a PlayerInventory.
@@ -31,7 +33,6 @@ public class PlayerCharacterInventory
 	@Reference
 	private TrackedItemStack boots;
 	@CollectionMap(key = Integer.class, value = TrackedItemStack.class)
-	@Indexed
 	private Map<Integer, TrackedItemStack> items;
 	@Attribute
 	private Integer size;
