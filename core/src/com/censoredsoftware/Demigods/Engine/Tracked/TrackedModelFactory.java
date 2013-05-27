@@ -1,11 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {

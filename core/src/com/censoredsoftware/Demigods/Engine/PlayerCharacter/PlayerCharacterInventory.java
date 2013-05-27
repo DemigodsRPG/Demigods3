@@ -10,8 +10,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import redis.clients.johm.*;
+import redis.clients.johm.CollectionMap;
+import redis.clients.johm.Id;
+import redis.clients.johm.Model;
+import redis.clients.johm.Reference;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -34,13 +38,6 @@ public class PlayerCharacterInventory
 	private TrackedItemStack boots;
 	@CollectionMap(key = Integer.class, value = TrackedItemStack.class)
 	private Map<Integer, TrackedItemStack> items;
-	@Attribute
-	private Integer size;
-
-	void setSize(Integer size)
-	{
-		this.size = size;
-	}
 
 	void setHelmet(ItemStack helmet)
 	{
@@ -69,10 +66,10 @@ public class PlayerCharacterInventory
 		int slot = 1;
 		for(ItemStack item : inventory.getContents())
 		{
+			slot++;
 			if(item == null) continue;
 			TrackedItemStack trackedItem = TrackedModelFactory.createTrackedItemStack(item);
 			this.items.put(slot, trackedItem);
-			slot++;
 		}
 	}
 
@@ -108,7 +105,7 @@ public class PlayerCharacterInventory
 
 		// Clear it all first
 		inventory.clear();
-		inventory.setBoots(new ItemStack(Material.AIR));
+		inventory.setHelmet(new ItemStack(Material.AIR));
 		inventory.setChestplate(new ItemStack(Material.AIR));
 		inventory.setLeggings(new ItemStack(Material.AIR));
 		inventory.setBoots(new ItemStack(Material.AIR));
@@ -124,7 +121,9 @@ public class PlayerCharacterInventory
 			inventory.setItem(item.getKey(), item.getValue().toItemStack());
 		}
 
-		// We're done with this instance now, delete it
-		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, this.id);
+		Demigods.message.broadcast("Setting inventory.");
+
+		// Delete
+		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, id);
 	}
 }

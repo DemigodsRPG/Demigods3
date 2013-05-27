@@ -29,7 +29,10 @@ public class EntityListener implements Listener
 			entity = (LivingEntity) event.getEntity();
 
 			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS TODO Do we want to keep it that way?
-			if(!ZoneAPI.canTarget(entity)) event.setCancelled(true);
+			if(!ZoneAPI.canTarget(entity))
+			{
+				event.setCancelled(true);
+			}
 		}
 	}
 

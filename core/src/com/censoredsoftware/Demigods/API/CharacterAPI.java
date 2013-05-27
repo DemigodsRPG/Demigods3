@@ -6,45 +6,13 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CharacterAPI
 {
-	public static void characterCreation(OfflinePlayer player, String chosenName, String chosenDeity)
-	{
-		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
-
-		// Remove temporary data
-		DemigodsData.removeTemp(player.getName(), "temp_createchar");
-
-		Demigods.message.broadcast("Creating character.");
-
-		if(player.isOnline())
-		{
-			Demigods.message.broadcast("Setting character.");
-
-			Player online = player.getPlayer();
-			online.setDisplayName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
-			online.setPlayerListName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
-
-			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
-			online.getWorld().strikeLightningEffect(online.getLocation());
-
-			for(int i = 0; i < 20; i++)
-				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
-
-			// Switch current character
-			TrackedPlayer.getTracked(player).switchCharacter(character);
-		}
-	}
-
 	public static Set<PlayerCharacter> getAllChars()
 	{
 		return PlayerCharacter.loadAll();
@@ -61,7 +29,7 @@ public class CharacterAPI
 		{
 			if(character.getName().equalsIgnoreCase(charName)) return character;
 		}
-		throw new NullPointerException("No character by that name exists.");
+		return null;
 	}
 
 	public static List<PlayerCharacter> getAllActive()

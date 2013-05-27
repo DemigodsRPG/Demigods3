@@ -28,6 +28,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterSwitchEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
@@ -397,7 +398,8 @@ class AltarMenu extends Task
 				if(neededItems == items)
 				{
 					// They were accepted, finish everything up!
-					CharacterAPI.characterCreation(player, chosenName, chosenDeity);
+					CharacterCreateEvent characterEvent = new CharacterCreateEvent(player, chosenName, chosenDeity);
+					Bukkit.getServer().getPluginManager().callEvent(characterEvent);
 
 					// Stop their praying, enable movement, enable chat
 					PlayerAPI.togglePraying(player, false);
@@ -601,7 +603,7 @@ class AltarMenu extends Task
 
 			if(!event.isCancelled())
 			{
-				TrackedPlayer.getTracked(player).switchCharacter(newChar);
+				PlayerAPI.changeCurrentChar(player, newChar);
 
 				player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 				player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);

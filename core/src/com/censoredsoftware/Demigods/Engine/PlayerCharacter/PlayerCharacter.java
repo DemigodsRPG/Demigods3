@@ -40,8 +40,6 @@ public class PlayerCharacter
 	@Reference
 	private TrackedLocation location;
 	@Attribute
-	private long inventory;
-	@Attribute
 	@Indexed
 	private String deity;
 	@Attribute
@@ -52,6 +50,8 @@ public class PlayerCharacter
 	private Boolean immortal;
 	@Reference
 	private PlayerCharacterMeta meta;
+	@Reference
+	private PlayerCharacterInventory inventory;
 	@CollectionMap(key = TrackedLocation.class, value = String.class)
 	private Map<TrackedLocation, String> warps;
 	@CollectionMap(key = TrackedLocation.class, value = String.class)
@@ -113,7 +113,8 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = PlayerCharacterFactory.createCharacterInventory(getPlayer().getPlayer().getInventory()).getId();
+		Demigods.message.broadcast("Saving inventory.");
+		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(getPlayer().getPlayer().getInventory());
 	}
 
 	public void setHealth(int health)
@@ -143,15 +144,18 @@ public class PlayerCharacter
 
 	public PlayerCharacterInventory getInventory()
 	{
-		try
+		if(this.inventory != null)
 		{
-			return DemigodsData.jOhm.get(PlayerCharacterInventory.class, this.inventory);
+			Demigods.message.broadcast("Getting inventory.");
+			return this.inventory;
 		}
-		catch(Exception ignored)
-		{}
-
-		Demigods.message.broadcast("No Inventory.");
-		return PlayerCharacterFactory.createEmptyCharacterInventory();
+		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
+		{
+			this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
+			Demigods.message.broadcast("Could not find inventory.");
+			return this.inventory;
+		}
+		else return null;
 	}
 
 	public PlayerCharacterMeta getMeta()

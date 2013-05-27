@@ -1,18 +1,57 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillstreakEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CharacterListener implements Listener
 {
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onCharacterCreation(CharacterCreateEvent event)
+	{
+		if(event.isCancelled()) return;
+
+		OfflinePlayer player = event.getOwner();
+		String chosenName = event.getName();
+		String chosenDeity = event.getDeity();
+
+		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
+
+		// Remove temporary data
+		DemigodsData.removeTemp(player.getName(), "temp_createchar");
+
+		if(player.isOnline())
+		{
+			Player online = player.getPlayer();
+			online.setDisplayName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+			online.setPlayerListName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+
+			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
+			online.getWorld().strikeLightningEffect(online.getLocation());
+
+			for(int i = 0; i < 20; i++)
+				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+
+			// Switch current character
+			TrackedPlayer.getTracked(player).setCurrent(character);
+		}
+	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCharacterKillstreak(CharacterKillstreakEvent event)
 	{
