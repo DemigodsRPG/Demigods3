@@ -137,7 +137,7 @@ public class PlayerCharacterInventory
 		// Set items
 		for(int i = 0; i < 35; i++)
 		{
-			inventory.setItem(i, this.items[i].toItemStack());
+			if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
 		}
 
 		// Delete
