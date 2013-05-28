@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterInventory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class PlayerAPI
@@ -66,7 +67,7 @@ public class PlayerAPI
 		// Define variables
 		Player player = offlinePlayer.getPlayer();
 
-		if(!character.getPlayer().getName().equals(offlinePlayer.getName()))
+		if(!character.getPlayer().equals(offlinePlayer))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return false;
@@ -100,7 +101,8 @@ public class PlayerAPI
 		else
 		{
 			// Otherwise just update inventory
-			if(character.getInventory() != null) character.getInventory().setToPlayer(player);
+			PlayerCharacterInventory inventory = character.getInventory();
+			if(inventory != null) inventory.setToPlayer(player);
 		}
 
 		// Update health and experience

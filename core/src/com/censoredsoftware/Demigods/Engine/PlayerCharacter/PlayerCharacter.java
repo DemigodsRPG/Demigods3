@@ -113,7 +113,6 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		Demigods.message.broadcast("Saving inventory.");
 		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(getPlayer().getPlayer().getInventory());
 	}
 
@@ -146,16 +145,14 @@ public class PlayerCharacter
 	{
 		if(this.inventory != null)
 		{
-			Demigods.message.broadcast("Getting inventory.");
+			Demigods.message.broadcast("Getting inventory for " + getName() + ".");
 			return this.inventory;
 		}
-		else if(Bukkit.getOfflinePlayer(this.player).isOnline())
+		else
 		{
-			this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(Bukkit.getOfflinePlayer(this.player).getPlayer().getInventory());
-			Demigods.message.broadcast("Could not find inventory.");
-			return this.inventory;
+			Demigods.message.broadcast("Could not find inventory for " + getName() + ".");
+			return PlayerCharacterFactory.createEmptyCharacterInventory();
 		}
-		else return null;
 	}
 
 	public PlayerCharacterMeta getMeta()

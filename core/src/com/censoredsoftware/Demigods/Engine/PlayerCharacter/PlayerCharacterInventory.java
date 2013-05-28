@@ -80,10 +80,18 @@ public class PlayerCharacterInventory
 
 	public static void save(PlayerCharacterInventory inventory)
 	{
-		DemigodsData.jOhm.save(inventory);
+		try
+		{
+			DemigodsData.jOhm.save(inventory);
+			Demigods.message.broadcast("Saving inventory.");
+		}
+		catch(Exception e)
+		{
+			Demigods.message.broadcast("Could not save inventory.");
+		}
 	}
 
-	public static PlayerCharacterInventory load(long id) // TODO This belongs somewhere else.
+	public static PlayerCharacterInventory load(long id)
 	{
 		return DemigodsData.jOhm.get(PlayerCharacterInventory.class, id);
 	}
@@ -121,7 +129,7 @@ public class PlayerCharacterInventory
 			inventory.setItem(item.getKey(), item.getValue().toItemStack());
 		}
 
-		Demigods.message.broadcast("Setting inventory.");
+		Demigods.message.broadcast("Setting inventory to player.");
 
 		// Delete
 		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, id);

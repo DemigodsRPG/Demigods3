@@ -1,6 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
@@ -67,5 +69,16 @@ public class PlayerCharacterFactory
 		trackedInventory.setItems(inventory);
 		PlayerCharacterInventory.save(trackedInventory);
 		return trackedInventory;
+	}
+
+	public static PlayerCharacterInventory createEmptyCharacterInventory()
+	{
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setHelmet(new ItemStack(Material.AIR));
+		charInventory.setChestplate(new ItemStack(Material.AIR));
+		charInventory.setLeggings(new ItemStack(Material.AIR));
+		charInventory.setBoots(new ItemStack(Material.AIR));
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
 	}
 }
