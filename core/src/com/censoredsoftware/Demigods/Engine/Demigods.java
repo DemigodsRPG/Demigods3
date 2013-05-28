@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
@@ -319,10 +320,13 @@ class Commands implements CommandExecutor
 	{
 		final Player player = (Player) sender;
 
-		player.sendMessage("Here are all of your characters:");
-		for(PlayerCharacter character : TrackedPlayer.getTracked(player).getCharacters())
+		int slot = 0;
+		for(ItemStack item : player.getInventory().getContents())
 		{
-			player.sendMessage("Character Name: " + character.getName());
+			slot++;
+			if(item == null) continue;
+
+			Demigods.message.broadcast("Slot: " + slot + " - Item Type: " + item.getType().name());
 		}
 
 		return true;

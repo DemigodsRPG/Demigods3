@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.PlayerCharacter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -10,11 +8,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import redis.clients.johm.CollectionMap;
-import redis.clients.johm.Id;
-import redis.clients.johm.Model;
-import redis.clients.johm.Reference;
+import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
@@ -28,6 +24,9 @@ public class PlayerCharacterInventory
 {
 	@Id
 	private Long id;
+	@Attribute
+	@Indexed
+	private long owner;
 	@Reference
 	private TrackedItemStack helmet;
 	@Reference
@@ -36,8 +35,13 @@ public class PlayerCharacterInventory
 	private TrackedItemStack leggings;
 	@Reference
 	private TrackedItemStack boots;
-	@CollectionMap(key = Integer.class, value = TrackedItemStack.class)
-	private Map<Integer, TrackedItemStack> items;
+	@Array(of = TrackedItemStack.class, length = 36)
+	private TrackedItemStack[] items;
+
+	void setOwner(Long id)
+	{
+		this.owner = id;
+	}
 
 	void setHelmet(ItemStack helmet)
 	{
@@ -61,15 +65,17 @@ public class PlayerCharacterInventory
 
 	void setItems(Inventory inventory)
 	{
-		if(this.items == null) this.items = new HashMap<Integer, TrackedItemStack>();
-
-		int slot = 1;
-		for(ItemStack item : inventory.getContents())
+		if(this.items == null) this.items = new TrackedItemStack[36];
+		for(int i = 0; i < 35; i++)
 		{
-			slot++;
-			if(item == null) continue;
-			TrackedItemStack trackedItem = TrackedModelFactory.createTrackedItemStack(item);
-			this.items.put(slot, trackedItem);
+			if(inventory.getItem(i) == null)
+			{
+				this.items[i] = TrackedModelFactory.createTrackedItemStack(new ItemStack(Material.AIR));
+			}
+			else
+			{
+				this.items[i] = TrackedModelFactory.createTrackedItemStack(inventory.getItem(i));
+			}
 		}
 	}
 
@@ -78,16 +84,20 @@ public class PlayerCharacterInventory
 		return this.id;
 	}
 
+	public PlayerCharacter getOwner()
+	{
+		return CharacterAPI.getChar(this.owner);
+	}
+
 	public static void save(PlayerCharacterInventory inventory)
 	{
 		try
 		{
 			DemigodsData.jOhm.save(inventory);
-			Demigods.message.broadcast("Saving inventory: " + inventory.getId());
 		}
 		catch(Exception e)
 		{
-			Demigods.message.broadcast("Could not save inventory: " + inventory.getId());
+			Demigods.message.severe("Could not save inventory: " + inventory.getId());
 		}
 	}
 
@@ -124,12 +134,11 @@ public class PlayerCharacterInventory
 		if(this.leggings != null) inventory.setLeggings(this.leggings.toItemStack());
 		if(this.boots != null) inventory.setBoots(this.boots.toItemStack());
 
-		for(Map.Entry<Integer, TrackedItemStack> item : this.items.entrySet())
+		// Set items
+		for(int i = 0; i < 35; i++)
 		{
-			inventory.setItem(item.getKey(), item.getValue().toItemStack());
+			inventory.setItem(i, this.items[i].toItemStack());
 		}
-
-		Demigods.message.broadcast("Setting inventory to player: " + getId());
 
 		// Delete
 		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, id);

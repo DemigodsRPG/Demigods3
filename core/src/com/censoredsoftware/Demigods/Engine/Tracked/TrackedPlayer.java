@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import redis.clients.johm.Attribute;
 import redis.clients.johm.Id;
@@ -12,6 +14,7 @@ import redis.clients.johm.Indexed;
 import redis.clients.johm.Model;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.google.common.collect.Sets;
@@ -87,22 +90,56 @@ public class TrackedPlayer
 		return this.lastLoginTime;
 	}
 
-	public void setCurrent(PlayerCharacter character)
+	public void switchCharacter(PlayerCharacter newChar)
 	{
-		// Set current character to previous character
-		if(this.current != 0)
+		Player player = getPlayer().getPlayer();
+
+		if(!newChar.getPlayer().equals(getPlayer()))
 		{
-			PlayerCharacter currentChar = CharacterAPI.getChar(this.current);
-			currentChar.setActive(false);
-			PlayerCharacter.save(currentChar);
-			this.previous = this.current;
+			player.sendMessage(ChatColor.RED + "You can't do that.");
+			return;
 		}
 
-		// Update current character
-		character.setActive(true);
-		PlayerCharacter.save(character);
-		this.current = character.getId();
+		// Update the current character
+		PlayerCharacter currChar = getCurrent();
+		if(currChar != null)
+		{
+			currChar.setHealth(player.getHealth());
+			currChar.setHunger(player.getFoodLevel());
+			currChar.setLevel(player.getLevel());
+			currChar.setExperience(player.getExp());
+			currChar.setLocation(player.getLocation());
+			currChar.saveInventory();
+		}
+
+		// Update their inventory
+		newChar.getInventory().setToPlayer(player);
+
+		// Update health and experience
+		player.setHealth(newChar.getHealth());
+		player.setFoodLevel(newChar.getHunger());
+		player.setExp(newChar.getExperience());
+		player.setLevel(newChar.getLevel());
+
+		// Teleport them
+		player.teleport(newChar.getLocation());
+
+		// Disable prayer, re-enabled movement, etc. just to be safe
+		PlayerAPI.togglePraying(player, false);
+		PlayerAPI.togglePlayerChat(player, true);
+		PlayerAPI.togglePlayerMovement(player, true);
+
+		// Update all active statuses and stuff
+		currChar.setActive(false);
+		this.previous = currChar.getId();
+		newChar.setActive(true);
+		this.current = newChar.getId();
+
+		// Save instances
 		TrackedPlayer.save(this);
+		PlayerCharacter.save(currChar);
+		PlayerCharacter.save(newChar);
+
 	}
 
 	public PlayerCharacter getCurrent()

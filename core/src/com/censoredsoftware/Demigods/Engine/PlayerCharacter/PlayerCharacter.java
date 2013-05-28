@@ -13,7 +13,6 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -113,7 +112,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(getPlayer().getPlayer().getInventory());
+		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(this);
 	}
 
 	public void setHealth(int health)
@@ -145,12 +144,10 @@ public class PlayerCharacter
 	{
 		if(this.inventory != null)
 		{
-			Demigods.message.broadcast("Getting inventory for " + getName() + ".");
 			return this.inventory;
 		}
 		else
 		{
-			Demigods.message.broadcast("Could not find inventory for " + getName() + ".");
 			return PlayerCharacterFactory.createEmptyCharacterInventory();
 		}
 	}

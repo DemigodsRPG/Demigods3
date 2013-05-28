@@ -603,7 +603,7 @@ class AltarMenu extends Task
 
 			if(!event.isCancelled())
 			{
-				PlayerAPI.changeCurrentChar(player, newChar);
+				TrackedPlayer.getTracked(player).switchCharacter(newChar);
 
 				player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 				player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);

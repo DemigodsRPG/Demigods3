@@ -55,6 +55,14 @@ public class TrackedModelFactory
 		return trackedItem;
 	}
 
+	public static TrackedItemStack createTrackedItemStack(ItemStack item, Integer slot)
+	{
+		TrackedItemStack trackedItem = createTrackedItemStack(item);
+		trackedItem.setSlot(slot);
+		TrackedItemStack.save(trackedItem);
+		return trackedItem;
+	}
+
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
 	{
 		TrackedLocation trackedLocation = TrackedModelFactory.createTrackedLocation(location);

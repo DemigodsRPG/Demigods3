@@ -59,16 +59,18 @@ public class PlayerCharacterFactory
 		return charMeta;
 	}
 
-	public static PlayerCharacterInventory createPlayerCharacterInventory(PlayerInventory inventory)
+	public static PlayerCharacterInventory createPlayerCharacterInventory(PlayerCharacter character)
 	{
-		PlayerCharacterInventory trackedInventory = new PlayerCharacterInventory();
-		if(inventory.getHelmet() != null) trackedInventory.setHelmet(inventory.getHelmet());
-		if(inventory.getChestplate() != null) trackedInventory.setChestplate(inventory.getChestplate());
-		if(inventory.getLeggings() != null) trackedInventory.setLeggings(inventory.getLeggings());
-		if(inventory.getBoots() != null) trackedInventory.setBoots(inventory.getBoots());
-		trackedInventory.setItems(inventory);
-		PlayerCharacterInventory.save(trackedInventory);
-		return trackedInventory;
+		PlayerInventory inventory = character.getPlayer().getPlayer().getInventory();
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setOwner(character.getId());
+		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
+		charInventory.setItems(inventory);
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
 	}
 
 	public static PlayerCharacterInventory createEmptyCharacterInventory()
