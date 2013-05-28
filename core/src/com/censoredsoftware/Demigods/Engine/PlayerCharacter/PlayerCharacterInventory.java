@@ -83,11 +83,11 @@ public class PlayerCharacterInventory
 		try
 		{
 			DemigodsData.jOhm.save(inventory);
-			Demigods.message.broadcast("Saving inventory.");
+			Demigods.message.broadcast("Saving inventory: " + inventory.getId());
 		}
 		catch(Exception e)
 		{
-			Demigods.message.broadcast("Could not save inventory.");
+			Demigods.message.broadcast("Could not save inventory: " + inventory.getId());
 		}
 	}
 
@@ -129,7 +129,7 @@ public class PlayerCharacterInventory
 			inventory.setItem(item.getKey(), item.getValue().toItemStack());
 		}
 
-		Demigods.message.broadcast("Setting inventory to player.");
+		Demigods.message.broadcast("Setting inventory to player: " + getId());
 
 		// Delete
 		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, id);
