@@ -45,8 +45,6 @@ public class TrackedItemStack
 	private List<String> pages;
 	@Attribute
 	private int type;
-	@Attribute
-	private int slot;
 
 	void setType(ItemType type)
 	{
@@ -61,11 +59,6 @@ public class TrackedItemStack
 	void setByteId(byte byteId)
 	{
 		this.byteId = byteId;
-	}
-
-	void setSlot(int slot)
-	{
-		this.slot = slot;
 	}
 
 	void setAmount(int amount)
@@ -139,11 +132,6 @@ public class TrackedItemStack
 	public Long getId()
 	{
 		return this.id;
-	}
-
-	public Integer getSlot()
-	{
-		return this.slot;
 	}
 
 	/**
