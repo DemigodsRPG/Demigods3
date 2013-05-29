@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,9 +17,11 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.API.AdminAPI;
 import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.API.ValueAPI;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -77,12 +80,12 @@ class Tribute extends Task
 	private static double reward = 0.0, penalty = 0.0;
 
 	// Define other variables
-	// private static double FAVOR_MULTIPLIER = Demigods.config.getSettingDouble("multipliers.favor");
+	private static double FAVOR_MULTIPLIER = Demigods.config.getSettingDouble("multipliers.favor");
 
 	private static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGHEST)
-		public void shrineBlockInteract(PlayerInteractEvent event)
+		public void onShrineInteract(PlayerInteractEvent event)
 		{
 			// Return if the player is mortal
 			if(!PlayerAPI.isImmortal(event.getPlayer())) return;
@@ -184,6 +187,74 @@ class Tribute extends Task
 					player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrine.getDeity().getInfo().getName() + " in order to tribute here.");
 				}
 			}
+		}
+
+		@EventHandler(priority = EventPriority.MONITOR)
+		public void onPlayerTribute(InventoryCloseEvent event)
+		{
+			// Return if it's not a player
+			if(!(event.getPlayer() instanceof Player)) return;
+
+			// Define player and character
+			Player player = (Player) event.getPlayer();
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+
+			// Make sure they have a character and are immortal
+			if(character == null || !character.isImmortal()) return;
+
+			// If it isn't a tribute chest then break the method
+			if(!event.getInventory().getName().contains("Shrine") || !BlockAPI.isShrine(player.getTargetBlock(null, 10).getLocation())) return;
+
+			// Get the creator of the shrine
+			PlayerCharacter shrineOwner = PlayerCharacter.getCharacterByName(DemigodsData.getValueTemp(player.getName(), character.getName()).toString());
+			DemigodsData.removeTemp(player.getName(), character.getName());
+
+			// Calculate value of chest
+			int tributeValue = 0, items = 0;
+			for(ItemStack ii : event.getInventory().getContents())
+			{
+				if(ii != null)
+				{
+					tributeValue += ValueAPI.getTributeValue(ii);
+					items++;
+				}
+			}
+
+			tributeValue *= FAVOR_MULTIPLIER;
+
+			// Process tributes and send messages
+			int favorBefore = character.getMeta().getMaxFavor();
+			int devotionBefore = character.getMeta().getDevotion();
+
+			// Update the character's favor and devotion
+			character.getMeta().addMaxFavor(tributeValue / 5);
+			character.getMeta().addDevotion(tributeValue);
+
+			if(character.getMeta().getDevotion() > devotionBefore) player.sendMessage(ChatColor.GRAY + "Your devotion to " + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY + " has increased to " + ChatColor.GREEN + character.getMeta().getDevotion() + ChatColor.GRAY + ".");
+			if(character.getMeta().getMaxFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ".");
+
+			if(favorBefore != character.getMeta().getMaxFavor() && devotionBefore != character.getMeta().getDevotion() && items > 0)
+			{
+				// Update the shrine owner's devotion and let them know
+				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
+				if(!character.equals(shrineOwnerPlayer))
+				{
+					// TODO: DCharUtil.addDevotion(shrineOwner, tributeValue / 7);
+					if(shrineOwnerPlayer.isOnline())
+					{
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
+						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your devotion has increased to " + shrineOwner.getMeta().getDevotion() + "!");
+					}
+				}
+			}
+			else
+			{
+				// If they aren't good enough let them know
+				if(items > 0) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + character.getDeity().getInfo().getName() + "'s blessings.");
+			}
+
+			// Clear the tribute case
+			event.getInventory().clear();
 		}
 	};
 
