@@ -78,14 +78,14 @@ public class Demigods
 		// Allow static access.
 		plugin = instance;
 
-		// Define the game data.
-		this.deities = deities;
-		this.quests = quests;
-
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 		permission = new PermissionModule();
+
+		// Define the game data.
+		this.deities = deities;
+		this.quests = quests;
 
 		// Initialize soft data.
 		new DemigodsData(instance);
