@@ -22,13 +22,6 @@
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
-    <target name="unjar_dependencies" depends="clean">
-        <unzip dest="core/bin">
-            <fileset dir="lib/inJar">
-                <include name="JOhm.jar"/>
-            </fileset>
-        </unzip>
-    </target>
     <target name="build-subprojects"/>
     <target depends="init" name="compile">
         <echo message="${ant.project.name}: ${ant.file}"/>
@@ -45,7 +38,12 @@
             <classpath refid="Demigods.classpath"/>
         </javac>
     </target>
-    <target name="build-project" depends="compile, unjar_dependencies">
+    <target name="build-project" depends="compile">
+        <unzip dest="core/bin">
+            <fileset dir="lib/inJar">
+                <include name="JOhm.jar"/>
+            </fileset>
+        </unzip>
         <mkdir dir="build"/>
         <jar basedir="core/bin" destfile="build/Demigods.jar">
         <fileset dir="core/bin">
