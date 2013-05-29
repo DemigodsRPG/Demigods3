@@ -93,6 +93,9 @@ public class Demigods
 		loadDepends(instance);
 		loadListeners(instance);
 		loadCommands(instance);
+
+		// Finally, regenerate structures
+		BlockAPI.regenerateStructures();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)

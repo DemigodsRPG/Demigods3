@@ -62,7 +62,7 @@ public class BlockAPI
 	 * Returns true if the block at the passed in <code>location</code> is an Altar.
 	 * 
 	 * @param location the location to check.
-	 * @return true/false depending on if the block is an Altar or not.
+	 * @return true/false depwending on if the block is an Altar or not.
 	 */
 	public static boolean isAltar(Location location)
 	{
@@ -112,6 +112,18 @@ public class BlockAPI
 			if(shrine.getBlocks().contains(new ComparableLocation(location))) return shrine;
 		}
 		return null;
+	}
+
+	/**
+	 * Regenerates all structures to ensure that they are in perfect condition.
+	 */
+	public static void regenerateStructures()
+	{
+		// TODO
+		for(Altar altar : getAllAltars())
+		{
+			altar.generate();
+		}
 	}
 
 	/**

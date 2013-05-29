@@ -65,6 +65,11 @@ public class TrackedBlock
 		DemigodsData.jOhm.save(block);
 	}
 
+	public static void delete(long id)
+	{
+		DemigodsData.jOhm.delete(TrackedBlock.class, id);
+	}
+
 	public static TrackedBlock load(Long id)
 	{
 		return DemigodsData.jOhm.get(TrackedBlock.class, id);

@@ -9,6 +9,7 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -324,6 +325,16 @@ public class Altar
 		for(int i = 0; i < 3; i++)
 		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
+
+		// Clear old blocks if they exist
+		if(this.blocks != null)
+		{
+			for(TrackedBlock block : this.blocks)
+			{
+				TrackedBlock.delete(block.getId());
+				Demigods.message.info("Block cleared.");
+			}
 		}
 
 		this.blocks = blocks;
