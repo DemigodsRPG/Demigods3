@@ -94,7 +94,7 @@ public class ShrineListener implements Listener
 			// {
 			// Shrine shrine = BlockAPI.getShrine(location);
 			//
-			// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getPlayer(), location);
+			// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getOfflinePlayer(), location);
 			// Bukkit.getServer().getPluginManager().callEvent(shrineRemoveEvent);
 			// if(shrineRemoveEvent.isCancelled()) return;
 			//

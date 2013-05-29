@@ -229,7 +229,7 @@ public class PlayerAPI
 		Set<OfflinePlayer> toReturn = new HashSet<OfflinePlayer>();
 		for(TrackedPlayer player : TrackedPlayer.loadAll())
 		{
-			toReturn.add(player.getPlayer());
+			toReturn.add(player.getOfflinePlayer());
 		}
 		return toReturn;
 	}

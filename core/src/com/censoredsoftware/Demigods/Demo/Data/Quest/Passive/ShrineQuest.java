@@ -148,7 +148,7 @@ class Tribute extends Task
 					// {
 					// Shrine shrine = BlockAPI.getShrine(location);
 					//
-					// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getPlayer(), location);
+					// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getOfflinePlayer(), location);
 					// Bukkit.getServer().getPluginManager().callEvent(shrineRemoveEvent);
 					// if(shrineRemoveEvent.isCancelled()) return;
 					//

@@ -85,6 +85,6 @@ public class CharacterListener implements Listener
 		String alliance = event.getAlliance();
 
 		if(alliance != "Mortal") Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
-		else Demigods.message.broadcast(ChatColor.GRAY + "A few worthless mortals killed each other.");
+		else Demigods.message.broadcast(ChatColor.GRAY + "A mortal was killed by another worthless mortal.");
 	}
 }

@@ -134,10 +134,13 @@ public class PlayerCharacterInventory
 		if(this.leggings != null) inventory.setLeggings(this.leggings.toItemStack());
 		if(this.boots != null) inventory.setBoots(this.boots.toItemStack());
 
-		// Set items
-		for(int i = 0; i < 35; i++)
+		if(this.items != null)
 		{
-			if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
+			// Set items
+			for(int i = 0; i < 35; i++)
+			{
+				if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
+			}
 		}
 
 		// Delete

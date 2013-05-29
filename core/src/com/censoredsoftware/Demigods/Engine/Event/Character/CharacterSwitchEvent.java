@@ -26,7 +26,7 @@ public class CharacterSwitchEvent extends Event implements Cancellable
 	}
 
 	/*
-	 * getPlayer() : Gets the player.
+	 * getOfflinePlayer() : Gets the player.
 	 */
 	public OfflinePlayer getOwner()
 	{

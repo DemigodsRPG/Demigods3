@@ -97,7 +97,7 @@ public class Zeus extends Deity
 class Shove extends Ability
 {
 	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
-	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 170, delay = 15, cooldownMin = 0, cooldownMax = 0;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{

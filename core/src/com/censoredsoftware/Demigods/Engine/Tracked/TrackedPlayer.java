@@ -46,7 +46,7 @@ public class TrackedPlayer
 		DemigodsData.jOhm.save(trackedPlayer);
 	}
 
-	public static TrackedPlayer load(Long id) // TODO This belongs somewhere else.
+	public static TrackedPlayer load(Long id)
 	{
 		return DemigodsData.jOhm.get(TrackedPlayer.class, id);
 	}
@@ -75,7 +75,7 @@ public class TrackedPlayer
 		return TrackedModelFactory.createTrackedPlayer(player);
 	}
 
-	public OfflinePlayer getPlayer()
+	public OfflinePlayer getOfflinePlayer()
 	{
 		return Bukkit.getOfflinePlayer(this.player);
 	}
@@ -93,9 +93,9 @@ public class TrackedPlayer
 
 	public void switchCharacter(PlayerCharacter newChar)
 	{
-		Player player = getPlayer().getPlayer();
+		Player player = getOfflinePlayer().getPlayer();
 
-		if(!newChar.getOfflinePlayer().equals(getPlayer()))
+		if(!newChar.getOfflinePlayer().equals(getOfflinePlayer()))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return;
