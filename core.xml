@@ -46,6 +46,7 @@
         </javac>
     </target>
     <target name="build-project" depends="compile, unjar_dependencies">
+        <mkdir dir="build"/>
         <jar basedir="core/bin" destfile="build/Demigods.jar">
         <fileset dir="core/bin">
             <include name="**/*.class" />
