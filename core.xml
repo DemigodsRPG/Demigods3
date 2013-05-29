@@ -44,7 +44,6 @@
                 <include name="JOhm.jar"/>
             </fileset>
         </unzip>
-        <mkdir dir="build"/>
         <jar basedir="core/bin" destfile="build/Demigods.jar">
         <fileset dir="core/bin">
             <include name="**/*.class" />
