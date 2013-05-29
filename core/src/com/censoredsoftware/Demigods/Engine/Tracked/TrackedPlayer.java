@@ -131,6 +131,15 @@ public class TrackedPlayer
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
 
+		// Disable prayer, re-enabled movement, etc. just to be safe
+		PlayerAPI.togglePraying(player, false);
+		PlayerAPI.togglePlayerChat(player, true);
+		PlayerAPI.togglePlayerMovement(player, true);
+
+		// Set new character to active
+		newChar.setActive(true);
+		this.current = newChar.getId();
+
 		// Teleport them
 		try
 		{
@@ -140,15 +149,6 @@ public class TrackedPlayer
 		{
 			Demigods.message.severe("There was a problem while teleporting a player to their character.");
 		}
-
-		// Disable prayer, re-enabled movement, etc. just to be safe
-		PlayerAPI.togglePraying(player, false);
-		PlayerAPI.togglePlayerChat(player, true);
-		PlayerAPI.togglePlayerMovement(player, true);
-
-		// Set new character to active
-		newChar.setActive(true);
-		this.current = newChar.getId();
 
 		// Save instances
 		TrackedPlayer.save(this);
