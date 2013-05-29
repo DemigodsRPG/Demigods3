@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
@@ -317,15 +317,18 @@ class Commands implements CommandExecutor
 
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		final Player player = (Player) sender;
+		Player player = (Player) sender;
+		Location location = player.getTargetBlock(null, 50).getLocation();
 
-		int slot = 0;
-		for(ItemStack item : player.getInventory().getContents())
+		player.sendMessage("Checking target! " + location.toString());
+
+		if(BlockAPI.isShrine(location))
 		{
-			slot++;
-			if(item == null) continue;
-
-			Demigods.message.broadcast("Slot: " + slot + " - Item Type: " + item.getType().name());
+			player.sendMessage("It's a Shrine!");
+		}
+		else
+		{
+			player.sendMessage("It's not a Shrine... :(");
 		}
 
 		return true;

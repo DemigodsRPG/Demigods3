@@ -3,10 +3,7 @@ package com.censoredsoftware.Demigods.Demo.Data.Quest.Passive;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -84,7 +81,7 @@ class Tribute extends Task
 
 	private static Listener listener = new Listener()
 	{
-		@EventHandler(priority = EventPriority.HIGH)
+		@EventHandler(priority = EventPriority.HIGHEST)
 		public void shrineBlockInteract(PlayerInteractEvent event)
 		{
 			// Return if the player is mortal
@@ -110,7 +107,7 @@ class Tribute extends Task
 					BlockFactory.createShrine(character, location);
 					location.getWorld().strikeLightningEffect(location);
 
-					if(!player.getGameMode().equals(1))
+					if(!player.getGameMode().equals(GameMode.CREATIVE))
 					{
 						if(player.getItemInHand().getAmount() > 1)
 						{

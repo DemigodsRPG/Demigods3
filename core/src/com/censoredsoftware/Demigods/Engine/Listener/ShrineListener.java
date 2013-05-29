@@ -43,7 +43,7 @@ public class ShrineListener implements Listener
 		String charAlliance = character.getAlliance();
 		Deity charDeity = character.getDeity();
 
-		if(event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+		if(!BlockAPI.isShrine(location) && event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
 		{
 			try
 			{
@@ -71,8 +71,10 @@ public class ShrineListener implements Listener
 				e.printStackTrace();
 			}
 		}
-
-		useShrine(player, location);
+		else
+		{
+			useShrine(player, location);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

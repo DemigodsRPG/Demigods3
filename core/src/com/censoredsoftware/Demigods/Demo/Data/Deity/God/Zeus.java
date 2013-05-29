@@ -81,7 +81,7 @@ public class Zeus extends Deity
 			{
 				if(!ZoneAPI.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 1.5) MiscAPI.customDamage(player, livingEntity, character.getMeta().getAscensions() * 2, EntityDamageEvent.DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(toHit) < 2) MiscAPI.customDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
 			}
 		}
 
