@@ -162,7 +162,7 @@ public class PlayerCharacter
 		}
 	}
 
-	public OfflinePlayer getPlayer()
+	public OfflinePlayer getOfflinePlayer()
 	{
 		return Bukkit.getOfflinePlayer(this.player);
 	}
@@ -195,7 +195,7 @@ public class PlayerCharacter
 	public ChatColor getHealthColor()
 	{
 		int hp = getHealth();
-		int maxHP = Bukkit.getPlayer(getPlayer().getName()).getMaxHealth();
+		int maxHP = Bukkit.getPlayer(getOfflinePlayer().getName()).getMaxHealth();
 		ChatColor color = ChatColor.RESET;
 
 		// Set favor color dynamically

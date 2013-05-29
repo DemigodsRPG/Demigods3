@@ -44,7 +44,7 @@ public class CharacterAPI
 
 	public static OfflinePlayer getOwner(long charID)
 	{
-		return getChar(charID).getPlayer();
+		return getChar(charID).getOfflinePlayer();
 	}
 
 	// TODO Move these.
@@ -61,7 +61,7 @@ public class CharacterAPI
 
 	public static void setCoolDown(Player player, String ability, long cooldown)
 	{
-		DemigodsData.setTemp(player.getName(), ability + "_cooldown", cooldown);
+		DemigodsData.saveTemp(player.getName(), ability + "_cooldown", cooldown);
 	}
 
 	public static long getCoolDown(Player player, String ability)

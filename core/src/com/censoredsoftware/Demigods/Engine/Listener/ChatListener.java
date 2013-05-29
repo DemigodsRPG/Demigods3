@@ -53,8 +53,9 @@ public class ChatListener implements Listener
 			// Define variables
 			PlayerCharacter prevChar = TrackedPlayer.getTracked(player).getPrevious();
 
-			DemigodsData.setTemp(player.getName(), "temp_chat_number", Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
+			if(prevChar == null) return;
 
+			DemigodsData.saveTemp(player.getName(), "temp_chat_number", Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
 			if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number") && Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
 			else DemigodsData.removeTemp(player.getName(), "temp_chat_number");
 		}

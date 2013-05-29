@@ -1,20 +1,22 @@
 package com.censoredsoftware.Demigods.Demo;
 
-import com.censoredsoftware.Demigods.Demo.Data.Quest.Passive.Altar;
+import com.censoredsoftware.Demigods.Demo.Data.Quest.Passive.AltarQuest;
+import com.censoredsoftware.Demigods.Demo.Data.Quest.Passive.ShrineQuest;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 
 public enum Quests implements Demigods.ListedQuest
 {
 	/**
-	 * The Passive Altar Quest that is always active for everyone.
+	 * The Passive Altar Quest that is always active for everyone along with
+	 * the Passive Shrine Quest.
 	 */
-	ALTAR(new Altar());
+	Altar(new AltarQuest()), Shrine(new ShrineQuest());
 
 	/**
 	 * The Tutorial Quest.
 	 */
-	// TUTORIAL(new Tutorial());
+	// Tutorial(new Tutorial());
 
 	private Quest deity;
 

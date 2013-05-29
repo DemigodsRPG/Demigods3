@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
@@ -194,8 +194,8 @@ public class BattleAPI
 	{
 		TrackedBattle battle = null;
 		TrackedBattle otherBattle = null;
-		Player hit = hitChar.getPlayer().getPlayer();
-		Player hitting = hittingChar.getPlayer().getPlayer();
+		Player hit = hitChar.getOfflinePlayer().getPlayer();
+		Player hitting = hittingChar.getOfflinePlayer().getPlayer();
 
 		if(isInAnyActiveBattle(hitChar))
 		{
@@ -221,7 +221,7 @@ public class BattleAPI
 		if(battle == null)
 		{
 			Long startTime = System.currentTimeMillis();
-			int battleID = DemigodsData.generateInt(5);
+			int battleID = DemigodsUtil.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 			if(!battleEvent.isCancelled()) TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);

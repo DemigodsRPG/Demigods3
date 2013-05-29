@@ -108,7 +108,6 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new DebugListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new ShrineListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EventFactory(), instance);
 
 		// Deities
@@ -547,7 +546,7 @@ class Commands implements CommandExecutor
 			{
 				if(!AdminAPI.wandEnabled(player))
 				{
-					DemigodsData.setTemp(player.getName(), "temp_admin_wand", true);
+					DemigodsData.saveTemp(player.getName(), "temp_admin_wand", true);
 					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin.wand_tool")));
 				}
 				else if(AdminAPI.wandEnabled(player))
@@ -561,7 +560,7 @@ class Commands implements CommandExecutor
 			{
 				if(!DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 				{
-					DemigodsData.setTemp(player.getName(), "temp_admin_debug", true);
+					DemigodsData.saveTemp(player.getName(), "temp_admin_debug", true);
 					player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 				}
 				else if(DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
@@ -889,7 +888,7 @@ class Commands implements CommandExecutor
 		Demigods.message.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
-		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DemigodsData.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DemigodsUtil.capitalize(alliance) + "s");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
@@ -921,7 +920,7 @@ class Commands implements CommandExecutor
 		}
 		else
 		{
-			player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getPlayer().getName() + ".");
+			player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 			return true;
 		}
 	}

@@ -8,7 +8,6 @@ import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.google.common.collect.Sets;
 
 public class BlockAPI
 {
@@ -44,13 +43,8 @@ public class BlockAPI
 	 * @return the HashSet of Shrines.
 	 */
 	public static Set<Shrine> getAllShrines()
-	{ // TODO Convert shrines.
-	  // ArrayList<Shrine> shrines = new ArrayList<Shrine>();
-	  // for(int key : DemigodsData.shrineData.listKeys())
-	  // {
-	  // shrines.add((Shrine) DemigodsData.shrineData.getDataObject(key));
-	  // }
-		return Sets.newHashSet();
+	{
+		return Shrine.loadAll();
 	}
 
 	/**
@@ -61,8 +55,7 @@ public class BlockAPI
 	 */
 	public static boolean isProtected(Location location)
 	{
-		// TODO Shrines. return !(getAllAltars() == null && getAllShrines() == null) && (isAltar(location) || isShrine(location));
-		return isAltar(location);
+		return isAltar(location) || isShrine(location);
 	}
 
 	/**
@@ -84,13 +77,7 @@ public class BlockAPI
 	 */
 	public static boolean isShrine(Location location)
 	{
-		if(getAllShrines() == null) return false;
-
-		for(Shrine altar : getAllShrines())
-		{
-			if(altar.getLocation().equals(location)) return true;
-		}
-		return false;
+		return getShrine(location) != null;
 	}
 
 	/**
@@ -101,8 +88,7 @@ public class BlockAPI
 	 */
 	public static Altar getAltar(Location location)
 	{
-		final Set<Altar> altars = getAllAltars();
-		for(Altar altar : altars)
+		for(Altar altar : getAllAltars())
 		{
 			Location altarLocation = altar.getLocation();
 			if(!altarLocation.getChunk().isLoaded() || !altarLocation.getWorld().equals(location.getWorld()) || altarLocation.distance(location) > 7) continue;
@@ -119,10 +105,10 @@ public class BlockAPI
 	 */
 	public static Shrine getShrine(Location location)
 	{
-		if(getAllShrines() == null) return null;
-
 		for(Shrine shrine : getAllShrines())
 		{
+			Location shrineLocation = shrine.getLocation();
+			if(!shrineLocation.getChunk().isLoaded() || !shrineLocation.getWorld().equals(location.getWorld())) continue;
 			if(shrine.getLocation().equals(location)) return shrine;
 		}
 		return null;

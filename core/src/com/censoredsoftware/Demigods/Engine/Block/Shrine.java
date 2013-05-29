@@ -1,54 +1,86 @@
 package com.censoredsoftware.Demigods.Engine.Block;
 
-import org.bukkit.Bukkit;
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+
+import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
+import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import com.google.common.base.Objects;
 
-// TODO Convert this.
-
+@Model
 public class Shrine
 {
-	private Integer id;
-	private Long owner;
+	@Id
+	private Long id;
+	@Attribute
+	@Indexed
+	private boolean active;
+	@Attribute
+	@Indexed
+	private long owner;
+	@Attribute
+	@Indexed
 	private String deity;
-	private Long block;
+	@Reference
+	@Indexed
 	private TrackedLocation location;
+	@Reference
+	@Indexed
+	private TrackedBlock block;
 
-	public Shrine(Integer id, PlayerCharacter character, Location location)
+	public static void save(Shrine shrine)
 	{
-		this.id = id;
+		DemigodsData.jOhm.save(shrine);
+	}
+
+	public void delete()
+	{
+		DemigodsData.jOhm.delete(Shrine.class, getId());
+	}
+
+	public static Shrine load(Long id)
+	{
+		return DemigodsData.jOhm.get(Shrine.class, id);
+	}
+
+	public static Set<Shrine> loadAll()
+	{
+		return DemigodsData.jOhm.getAll(Shrine.class);
+	}
+
+	void setLocation(Location location)
+	{
 		this.location = TrackedModelFactory.createTrackedLocation(location);
-		this.owner = character.getId();
-		this.deity = character.getDeity().getInfo().getName();
-
-		// Generate the Shrine
-		generate();
-
-		save();
 	}
 
-	/*
-	 * save() : Saves the Shrine to a HashMap.
-	 */
-	private void save() // TODO This won't work with saving to a file, will probably have to convert this over like I did the PlayerCharacter object.
+	void setOwner(PlayerCharacter character)
 	{
-		// TODO
+		this.owner = character.getId();
 	}
 
-	/*
-	 * remove() : Removes the Shrine.
-	 */
+	void setDeity(Deity deity)
+	{
+		this.deity = deity.getInfo().getName();
+	}
+
+	public void setActive(boolean option)
+	{
+		this.active = option;
+	}
+
 	public synchronized void remove()
 	{
-		// TODO
-
 		Location location = this.location.toLocation();
 		location.getBlock().setType(Material.AIR);
 
@@ -62,41 +94,31 @@ public class Shrine
 		}
 	}
 
-	/*
-	 * getID() : Returns the ID for the Shrine.
-	 */
-	public Integer getID()
+	public Long getId()
 	{
 		return this.id;
 	}
 
-	/*
-	 * getPlayer() : Returns the owner ID for the Shrine.
-	 */
 	public PlayerCharacter getOwner()
 	{
 		return CharacterAPI.getChar(this.owner);
 	}
 
-	/*
-	 * getDeity() : Returns the deity for the Shrine.
-	 */
-	public String getDeity()
+	public Deity getDeity()
 	{
-		return this.deity;
+		return DeityAPI.getDeity(this.deity);
 	}
 
-	/*
-	 * getLocation() : Returns the location of this Shrine.
-	 */
 	public Location getLocation()
 	{
 		return this.location.toLocation();
 	}
 
-	/**
-	 * Generates the physical Shrine structure.
-	 */
+	public boolean isActive()
+	{
+		return this.active;
+	}
+
 	public synchronized void generate()
 	{
 		Location location = this.getLocation();
@@ -111,57 +133,35 @@ public class Shrine
 			}
 		}
 
+		// TODO: If we decide to change what Shrines look like this is where it will be.
 		// Set bedrock
-		this.block = TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK).getId();
-
-		// Spawn the Entity
-		location.getWorld().spawnEntity(location.add(0.5, 0.0, 0.5), EntityType.ENDER_CRYSTAL);
+		this.block = TrackedModelFactory.createTrackedBlock(location, "shrine", Material.GOLD_BLOCK);
 	}
 
 	@Override
-	public boolean equals(Object object)
+	public boolean equals(final Object obj)
 	{
-		return !(object == null || !(object instanceof Shrine)) && this.id == parse(object).getID();
+		if(this == obj) return true;
+		if(obj == null || getClass() != obj.getClass()) return false;
+		final Shrine other = (Shrine) obj;
+		return Objects.equal(this.id, other.id) && Objects.equal(this.location, other.location) && Objects.equal(this.active, other.active) && Objects.equal(this.block, other.block);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode(this.id, this.location, this.active, this.block);
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Shrine{id=" + this.id + ",owner=" + this.owner + ",location=" + location.toLocation().getWorld().getName() + "," + location.toLocation().getX() + "," + location.toLocation().getY() + "," + location.toLocation().getZ() + "}";
+		return Objects.toStringHelper(this).add("id", this.id).add("location", this.location).add("active", this.active).add("blocks", this.block).toString();
 	}
 
-	/**
-	 * Parses the save object into a new Shrine object and returns it.
-	 * 
-	 * @param object the save to parse.
-	 * @return Shrine
-	 */
-	public static Shrine parse(Object object)
+	@Override
+	public Object clone() throws CloneNotSupportedException
 	{
-		if(object instanceof Shrine) return (Shrine) object;
-		else if(object instanceof String)
-		{
-			// Cast the object into a string
-			String string = (String) object;
-
-			// Validate that it's a Shrine save
-			if(!string.startsWith("Shrine{id=")) return null;
-
-			// Begin splitting the string into the different variables to parse with
-			string = string.substring(9).replace("}", "");
-			String[] data = string.split(",");
-
-			// Parse the location
-			String[] locs = data[2].substring(9).split(",");
-			Location location = new Location(Bukkit.getWorld(locs[0]), Integer.parseInt(locs[1]), Integer.parseInt(locs[2]), Integer.parseInt(locs[3]));
-
-			// Build the object
-			Shrine shrine = new Shrine(Integer.parseInt(data[0]), CharacterAPI.getChar(Long.parseLong(data[1])), location);
-
-			// Return the new Shrine
-			return shrine;
-		}
-
-		return null;
+		throw new CloneNotSupportedException();
 	}
 }

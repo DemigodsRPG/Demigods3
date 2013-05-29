@@ -80,7 +80,7 @@ public class TrackedModelFactory
 	public static TrackedBattle createTrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
 	{
 		TrackedBattle battle = new TrackedBattle();
-		Location startedLocation = ((Player) attacking.getPlayer()).getLocation();
+		Location startedLocation = ((Player) attacking.getOfflinePlayer()).getLocation();
 		battle.setWhoStarted(attacking);
 		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
 		battle.setStartTime(startTime);

@@ -246,7 +246,7 @@ public class PlayerAPI
 		{
 			togglePlayerChat(player, false);
 			togglePlayerMovement(player, false);
-			DemigodsData.setTemp(player.getName(), "temp_praying", option);
+			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
 		}
 		else
 		{
@@ -265,7 +265,7 @@ public class PlayerAPI
 	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
-		else DemigodsData.setTemp(player.getName(), "temp_player_hold", true);
+		else DemigodsData.saveTemp(player.getName(), "temp_player_hold", true);
 	}
 
 	/**
@@ -277,6 +277,6 @@ public class PlayerAPI
 	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
-		else DemigodsData.setTemp(player.getName(), "temp_no_chat", true);
+		else DemigodsData.saveTemp(player.getName(), "temp_no_chat", true);
 	}
 }

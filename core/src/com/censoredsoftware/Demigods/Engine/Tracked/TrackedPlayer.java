@@ -15,6 +15,7 @@ import redis.clients.johm.Model;
 
 import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.google.common.collect.Sets;
@@ -94,7 +95,7 @@ public class TrackedPlayer
 	{
 		Player player = getPlayer().getPlayer();
 
-		if(!newChar.getPlayer().equals(getPlayer()))
+		if(!newChar.getOfflinePlayer().equals(getPlayer()))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return;
@@ -104,15 +105,24 @@ public class TrackedPlayer
 		PlayerCharacter currChar = getCurrent();
 		if(currChar != null)
 		{
+			// Set the values
 			currChar.setHealth(player.getHealth());
 			currChar.setHunger(player.getFoodLevel());
 			currChar.setLevel(player.getLevel());
 			currChar.setExperience(player.getExp());
 			currChar.setLocation(player.getLocation());
 			currChar.saveInventory();
+
+			// Set to inactive and update previous
+			currChar.setActive(false);
+			this.previous = currChar.getId();
+
+			// Save it
+			PlayerCharacter.save(currChar);
 		}
 
 		// Update their inventory
+		if(PlayerAPI.getChars(player).size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health and experience
@@ -122,24 +132,27 @@ public class TrackedPlayer
 		player.setLevel(newChar.getLevel());
 
 		// Teleport them
-		player.teleport(newChar.getLocation());
+		try
+		{
+			player.teleport(newChar.getLocation());
+		}
+		catch(Exception e)
+		{
+			Demigods.message.severe("There was a problem while teleporting a player to their character.");
+		}
 
 		// Disable prayer, re-enabled movement, etc. just to be safe
 		PlayerAPI.togglePraying(player, false);
 		PlayerAPI.togglePlayerChat(player, true);
 		PlayerAPI.togglePlayerMovement(player, true);
 
-		// Update all active statuses and stuff
-		currChar.setActive(false);
-		this.previous = currChar.getId();
+		// Set new character to active
 		newChar.setActive(true);
 		this.current = newChar.getId();
 
 		// Save instances
 		TrackedPlayer.save(this);
-		PlayerCharacter.save(currChar);
 		PlayerCharacter.save(newChar);
-
 	}
 
 	public PlayerCharacter getCurrent()

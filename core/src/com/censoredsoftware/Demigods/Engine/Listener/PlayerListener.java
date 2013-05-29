@@ -75,7 +75,7 @@ public class PlayerListener implements Listener
 			{
 				event.setCancelled(true);
 				player.teleport(from);
-				DemigodsData.setTemp(player.getName(), "temp_player_held", true);
+				DemigodsData.saveTemp(player.getName(), "temp_player_held", true);
 			}
 		}
 	}
@@ -120,7 +120,7 @@ public class PlayerListener implements Listener
 		// No Spawn Line-Jumping
 		if(ZoneAPI.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
-			DemigodsData.setTemp(player.getName(), "temp_was_PVP", true);
+			DemigodsData.saveTemp(player.getName(), "temp_was_PVP", true);
 			if(DemigodsData.hasKeyTemp(player.getName(), "temp_teleport_ability")) DemigodsData.removeTemp(player.getName(), "temp_teleport_ability");
 
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()

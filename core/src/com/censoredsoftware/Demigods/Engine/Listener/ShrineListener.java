@@ -16,6 +16,7 @@ import com.censoredsoftware.Demigods.API.AdminAPI;
 import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ValueAPI;
+import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -51,7 +52,7 @@ public class ShrineListener implements Listener
 				Bukkit.getServer().getPluginManager().callEvent(shrineCreateEvent);
 				if(shrineCreateEvent.isCancelled()) return;
 
-				new Shrine(DemigodsData.generateInt(5), character, location);
+				BlockFactory.createShrine(character, location);
 				location.getWorld().strikeLightningEffect(location);
 
 				if(player.getItemInHand().getAmount() > 1)
@@ -133,17 +134,17 @@ public class ShrineListener implements Listener
 			if(shrine == null) return;
 
 			String shrineOwner = shrine.getOwner().getName();
-			String shrineDeity = shrine.getDeity();
+			Deity shrineDeity = shrine.getDeity();
 
 			if(BlockAPI.isShrine(location))
 			{
 				// Check if character has deity
-				if(character.isDeity(shrineDeity))
+				if(character.isDeity(shrineDeity.getInfo().getName()))
 				{
 					// Open the tribute inventory
 					Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 					player.openInventory(ii);
-					DemigodsData.setTemp(player.getName(), character.getName(), shrineOwner);
+					DemigodsData.saveTemp(player.getName(), character.getName(), shrineOwner);
 					return;
 				}
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + shrineDeity + " in order to tribute here.");
@@ -202,7 +203,7 @@ public class ShrineListener implements Listener
 			if(favorBefore != character.getMeta().getMaxFavor() && devotionBefore != character.getMeta().getDevotion() && items > 0)
 			{
 				// Update the shrine owner's devotion and let them know
-				OfflinePlayer shrineOwnerPlayer = shrineOwner.getPlayer();
+				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 				if(!character.equals(shrineOwnerPlayer))
 				{
 					// TODO: FIX THIS

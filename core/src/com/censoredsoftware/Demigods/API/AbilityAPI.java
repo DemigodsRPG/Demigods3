@@ -177,7 +177,7 @@ public class AbilityAPI
 		int ascensions = character.getMeta().getAscensions();
 		if(ascensions < 3) ascensions = 3;
 
-		int offset = (int) (TARGETOFFSET + character.getPlayer().getPlayer().getLocation().distance(target));
+		int offset = (int) (TARGETOFFSET + character.getOfflinePlayer().getPlayer().getLocation().distance(target));
 		int adjustedOffset = offset / ascensions;
 		if(adjustedOffset < 1) adjustedOffset = 1;
 		Random random = new Random();

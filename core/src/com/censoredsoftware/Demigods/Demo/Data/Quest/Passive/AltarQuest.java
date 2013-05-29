@@ -27,6 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterSwitchEvent;
@@ -38,9 +39,11 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
-public class Altar extends Quest
+public class AltarQuest extends Quest
 {
 	private static String name = "Altar", permission = "demigods.altar";
+	private static Type type = Type.PASSIVE;
+
 	private static List<String> about = new ArrayList<String>()
 	{
 		{
@@ -64,7 +67,7 @@ public class Altar extends Quest
 			add("Failed.");
 		}
 	};
-	private static Type type = Type.PASSIVE;
+
 	private static List<Task> tasks = new ArrayList<Task>()
 	{
 		{
@@ -73,7 +76,7 @@ public class Altar extends Quest
 		}
 	};
 
-	public Altar()
+	public AltarQuest()
 	{
 		super(name, permission, about, accepted, complete, failed, type, tasks);
 	}
@@ -84,6 +87,7 @@ class AltarMenu extends Task
 	private static String name = "Altar Menu";
 	private static int order = 0;
 	private static double reward = 0.0, penalty = 0.0;
+
 	private static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
@@ -374,7 +378,7 @@ class AltarMenu extends Task
 				// Define variables
 				String chosenName = DemigodsData.getValueTemp(player.getName(), "temp_createchar_name").toString();
 				String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
-				String deityAlliance = DemigodsData.capitalize(DeityAPI.getDeity(chosenDeity).getInfo().getAlliance());
+				String deityAlliance = DemigodsUtil.capitalize(DeityAPI.getDeity(chosenDeity).getInfo().getAlliance());
 
 				// Check the chest items
 				int items = 0;
@@ -609,7 +613,7 @@ class AltarMenu extends Task
 				player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 
 				// Save their previous character and chat number for later monitoring
-				DemigodsData.setTemp(player.getName(), "temp_chat_number", 0);
+				DemigodsData.saveTemp(player.getName(), "temp_chat_number", 0);
 
 				// Disable prayer
 				PlayerAPI.togglePraying(player, false);
@@ -628,7 +632,7 @@ class AltarMenu extends Task
 	// Choose name
 	protected static void chooseName(Player player)
 	{
-		DemigodsData.setTemp(player.getName(), "temp_createchar", "choose_name");
+		DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_name");
 		player.sendMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 		player.sendMessage(" ");
 	}
@@ -637,24 +641,24 @@ class AltarMenu extends Task
 	protected static void confirmName(Player player, String message)
 	{
 		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || PlayerAPI.hasCharName(player, message) || DemigodsData.hasCapitalLetters(message, maxCaps))
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || PlayerAPI.hasCharName(player, message) || DemigodsUtil.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
-			DemigodsData.setTemp(player.getName(), "temp_createchar", "choose_name");
+			DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
 			if(PlayerAPI.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
-			if(DemigodsData.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
+			if(DemigodsUtil.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 			player.sendMessage(" ");
 		}
 		else
 		{
-			DemigodsData.setTemp(player.getName(), "temp_createchar", "confirm_name");
+			DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_name");
 			String chosenName = message.replace(" ", "");
 			player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 			player.sendMessage(" ");
-			DemigodsData.setTemp(player.getName(), "temp_createchar_name", chosenName);
+			DemigodsData.saveTemp(player.getName(), "temp_createchar_name", chosenName);
 		}
 	}
 
@@ -665,11 +669,11 @@ class AltarMenu extends Task
 		for(String alliance : DeityAPI.getLoadedDeityAlliances())
 		{
 			for(Deity deity : DeityAPI.getAllDeitiesInAlliance(alliance))
-				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DemigodsData.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DemigodsUtil.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 		}
 		player.sendMessage(" ");
 
-		DemigodsData.setTemp(player.getName(), "temp_createchar", "choose_deity");
+		DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_deity");
 	}
 
 	// Deity confirmation
@@ -684,10 +688,10 @@ class AltarMenu extends Task
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsData.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsUtil.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DemigodsData.setTemp(player.getName(), "temp_createchar_deity", DemigodsData.capitalize(chosenDeity.toLowerCase()));
-					DemigodsData.setTemp(player.getName(), "temp_createchar", "confirm_deity");
+					DemigodsData.saveTemp(player.getName(), "temp_createchar_deity", DemigodsUtil.capitalize(chosenDeity.toLowerCase()));
+					DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_deity");
 					return;
 				}
 			}
@@ -730,7 +734,7 @@ class AltarMenu extends Task
 		player.sendMessage(ChatColor.GRAY + "  confirm your new character.");
 		player.sendMessage(" ");
 
-		DemigodsData.setTemp(player.getName(), "temp_createchar_finalstep", true);
+		DemigodsData.saveTemp(player.getName(), "temp_createchar_finalstep", true);
 	}
 
 	// Final confirmation of deity
@@ -741,8 +745,8 @@ class AltarMenu extends Task
 		String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
 
 		// Save data
-		DemigodsData.setTemp(player.getName(), "temp_createchar_finalstep", true);
-		DemigodsData.setTemp(player.getName(), "temp_createchar", "confirm_all");
+		DemigodsData.saveTemp(player.getName(), "temp_createchar_finalstep", true);
+		DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_all");
 
 		// Send them the chat
 		player.sendMessage(ChatColor.GREEN + " -> Confirming Character -------------------------------");
@@ -809,7 +813,7 @@ class AltarMenu extends Task
 			player.sendMessage(ChatColor.GRAY + "No such character exists, try again.");
 			return;
 		}
-		else if(!invited.getPlayer().isOnline() || invited.getPlayer() == character.getPlayer())
+		else if(!invited.getOfflinePlayer().isOnline() || invited.getOfflinePlayer() == character.getOfflinePlayer())
 		{
 			player.sendMessage(" ");
 			player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " must be online to receive an invite.");
@@ -829,8 +833,8 @@ class AltarMenu extends Task
 		clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
-		invited.getPlayer().getPlayer().sendMessage(invited.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
-		invited.getPlayer().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
+		invited.getOfflinePlayer().getPlayer().sendMessage(invited.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
+		invited.getOfflinePlayer().getPlayer().sendMessage(ChatColor.GRAY + "Head to a nearby Altar and " + ChatColor.DARK_PURPLE + "View Invites" + ChatColor.GRAY + ".");
 	}
 
 	protected static void acceptInvite(Player player, String name)
@@ -877,19 +881,20 @@ class AltarGenerate extends Task
 	private static String name = "Altar Generation";
 	private static int order = 0;
 	private static double reward = 0.0, penalty = 0.0;
+
 	private static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(ChunkLoadEvent event)
 		{
 			// Define variables
-			final Location location = MiscAPI.randomChunkLocation(event.getChunk());
+			final Location location = DemigodsUtil.randomChunkLocation(event.getChunk());
 
 			// If it's a new chunk then we'll generate structures
 			if(event.isNewChunk())
 			{
 				// Choose an arbitrary value and check the chance against it
-				if(DemigodsData.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
+				if(DemigodsUtil.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
 				{
 					if(BlockAPI.canGenerateSolid(location, 6))
 					{

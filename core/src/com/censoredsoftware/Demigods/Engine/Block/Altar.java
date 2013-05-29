@@ -20,19 +20,19 @@ public class Altar
 {
 	@Id
 	private Long id;
-	@Reference
-	@Indexed
-	private TrackedLocation center;
 	@Attribute
 	@Indexed
 	private boolean active;
+	@Reference
+	@Indexed
+	private TrackedLocation center;
 	@CollectionSet(of = TrackedBlock.class)
 	@Indexed
 	private Set<TrackedBlock> blocks;
 
-	void setCenter(TrackedLocation center)
+	void setCenter(Location location)
 	{
-		this.center = center;
+		this.center = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	/**
@@ -316,13 +316,13 @@ public class Altar
 	@Override
 	public int hashCode()
 	{
-		return Objects.hashCode(id, center, active, blocks);
+		return Objects.hashCode(this.id, this.center, this.active, this.blocks);
 	}
 
 	@Override
 	public String toString()
 	{
-		return Objects.toStringHelper(this).add("id", id).add("center", center).add("active", active).add("blocks", blocks).toString();
+		return Objects.toStringHelper(this).add("id", this.id).add("center", this.center).add("active", this.active).add("blocks", this.blocks).toString();
 	}
 
 	@Override

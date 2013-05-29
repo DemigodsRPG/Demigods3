@@ -61,7 +61,7 @@ public class PlayerCharacterFactory
 
 	public static PlayerCharacterInventory createPlayerCharacterInventory(PlayerCharacter character)
 	{
-		PlayerInventory inventory = character.getPlayer().getPlayer().getInventory();
+		PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
 		charInventory.setOwner(character.getId());
 		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());

@@ -91,7 +91,7 @@ public class TrackedBattle
 	public void addCharacter(PlayerCharacter character)
 	{
 		this.involvedCharacters.add(character);
-		if(character.getPlayer().isOnline()) addLocation(character.getPlayer().getPlayer().getLocation());
+		if(character.getOfflinePlayer().isOnline()) addLocation(character.getOfflinePlayer().getPlayer().getLocation());
 		save(this);
 	}
 
