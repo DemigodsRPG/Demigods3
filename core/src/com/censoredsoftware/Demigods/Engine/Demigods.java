@@ -321,9 +321,7 @@ class Commands implements CommandExecutor
 		Player player = (Player) sender;
 		Location location = player.getTargetBlock(null, 50).getLocation().add(0, 1, 0);
 
-		location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB).getLocation().toVector().zero();
-		location.getWorld().spawnEntity(location, EntityType.FIREBALL).getLocation().toVector().zero();
-		location.getWorld().spawnEntity(location, EntityType.FIREWORK).getLocation().toVector().zero();
+		location.getWorld().spawnEntity(location, EntityType.ENDER_PEARL).getLocation().toVector().zero();
 
 		return true;
 	}
