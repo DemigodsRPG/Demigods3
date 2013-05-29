@@ -129,10 +129,10 @@ class Tribute extends Task
 					e.printStackTrace();
 				}
 			}
-			else
+			else if(BlockAPI.isShrine(location))
 			{
-				// Return if this isn't a shrine
-				if(!BlockAPI.isShrine(location)) return;
+				// Cancel the interaction
+				event.setCancelled(true);
 
 				// Define the shrine
 				Shrine shrine = BlockAPI.getShrine(location);
@@ -222,15 +222,15 @@ class Tribute extends Task
 			// Process tributes and send messages
 			int favorBefore = character.getMeta().getMaxFavor();
 
-			if(favorBefore != character.getMeta().getMaxFavor() && items > 0)
+			// Update the character's favor
+			character.getMeta().addMaxFavor(tributeValue);
+
+			// Handle messaging and Shrine owner updating
+			if(character.getMeta().getMaxFavor() > favorBefore && items > 0)
 			{
-				// Update the character's favor and message them
-				character.getMeta().addMaxFavor(tributeValue);
-				if(character.getMeta().getMaxFavor() > favorBefore)
-				{
-					player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
-					player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ".");
-				}
+				// Message the tributer
+				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
+				player.sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ".");
 
 				// Update the shrine owner's devotion and let them know
 				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();

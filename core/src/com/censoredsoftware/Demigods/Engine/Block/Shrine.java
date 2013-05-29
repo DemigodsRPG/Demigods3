@@ -1,10 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Block;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 
 import redis.clients.johm.*;
 
@@ -34,10 +34,10 @@ public class Shrine
 	private String deity;
 	@Reference
 	@Indexed
-	private TrackedLocation location;
-	@Reference
+	private TrackedLocation center;
+	@CollectionSet(of = TrackedBlock.class)
 	@Indexed
-	private TrackedBlock block;
+	private Set<TrackedBlock> blocks;
 
 	public static void save(Shrine shrine)
 	{
@@ -59,9 +59,9 @@ public class Shrine
 		return DemigodsData.jOhm.getAll(Shrine.class);
 	}
 
-	void setLocation(Location location)
+	void setCenter(Location location)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
+		this.center = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	void setOwner(PlayerCharacter character)
@@ -81,17 +81,9 @@ public class Shrine
 
 	public synchronized void remove()
 	{
-		Location location = this.location.toLocation();
+		Location location = this.center.toLocation();
 		location.getBlock().setType(Material.AIR);
-
-		Location locToMatch = location.add(0.5, 1.0, 0.5);
-		for(Entity entity : location.getWorld().getEntities())
-		{
-			if(entity.getLocation().equals(locToMatch))
-			{
-				entity.remove();
-			}
-		}
+		this.delete();
 	}
 
 	public Long getId()
@@ -111,7 +103,7 @@ public class Shrine
 
 	public Location getLocation()
 	{
-		return this.location.toLocation();
+		return this.center.toLocation();
 	}
 
 	public boolean isActive()
@@ -119,23 +111,20 @@ public class Shrine
 		return this.active;
 	}
 
+	public Set<TrackedBlock> getBlocks()
+	{
+		return this.blocks;
+	}
+
 	public synchronized void generate()
 	{
-		Location location = this.getLocation();
+		Location location = this.center.toLocation();
+		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
-		// Remove entity to be safe
-		Location locToMatch = this.getLocation().add(0.5, 1.0, 0.5);
-		for(Entity entity : location.getWorld().getEntities())
-		{
-			if(entity.getLocation().equals(locToMatch))
-			{
-				entity.remove();
-			}
-		}
+		// Create the center block
+		blocks.add(TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK));
 
-		// TODO: If we decide to change what Shrines look like this is where it will be.
-		// Set bedrock
-		this.block = TrackedModelFactory.createTrackedBlock(location, "shrine", Material.GOLD_BLOCK);
+		this.blocks = blocks;
 	}
 
 	@Override
@@ -144,19 +133,19 @@ public class Shrine
 		if(this == obj) return true;
 		if(obj == null || getClass() != obj.getClass()) return false;
 		final Shrine other = (Shrine) obj;
-		return Objects.equal(this.id, other.id) && Objects.equal(this.location, other.location) && Objects.equal(this.active, other.active) && Objects.equal(this.block, other.block);
+		return Objects.equal(this.id, other.id) && Objects.equal(this.center, other.center) && Objects.equal(this.active, other.active) && Objects.equal(this.blocks, other.blocks);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hashCode(this.id, this.location, this.active, this.block);
+		return Objects.hashCode(this.id, this.center, this.active, this.blocks);
 	}
 
 	@Override
 	public String toString()
 	{
-		return Objects.toStringHelper(this).add("id", this.id).add("location", this.location).add("active", this.active).add("blocks", this.block).toString();
+		return Objects.toStringHelper(this).add("id", this.id).add("center", this.center).add("active", this.active).add("blocks", this.blocks).toString();
 	}
 
 	@Override

@@ -109,7 +109,7 @@ public class BlockAPI
 		{
 			Location shrineLocation = shrine.getLocation();
 			if(!shrineLocation.getChunk().isLoaded() || !shrineLocation.getWorld().equals(location.getWorld())) continue;
-			if(shrine.getLocation().equals(location)) return shrine;
+			if(shrine.getBlocks().contains(new ComparableLocation(location))) return shrine;
 		}
 		return null;
 	}

@@ -5,13 +5,11 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +30,7 @@ import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Modules.ConfigModule;
@@ -319,9 +318,11 @@ class Commands implements CommandExecutor
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-		Location location = player.getTargetBlock(null, 50).getLocation().add(0, 1, 0);
 
-		location.getWorld().spawnEntity(location, EntityType.LIGHTNING).getLocation().toVector().zero();
+		for(TrackedBlock block : BlockAPI.getAllBlocks())
+		{
+			player.sendMessage("Block found: " + block.getLocation());
+		}
 
 		return true;
 	}

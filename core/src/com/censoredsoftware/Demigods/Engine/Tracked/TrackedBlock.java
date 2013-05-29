@@ -75,26 +75,17 @@ public class TrackedBlock
 		return DemigodsData.jOhm.getAll(TrackedBlock.class);
 	}
 
-	/*
-	 * remove() : Removes the block.
-	 */
 	public void remove()
 	{
 		getLocation().getBlock().setTypeIdAndData((byte) this.previousMaterial, (byte) this.previousMaterialByte, true);
 		DemigodsData.jOhm.delete(TrackedBlock.class, getId());
 	}
 
-	/*
-	 * getID() : Returns the ID of the block.
-	 */
 	public Long getId()
 	{
 		return this.id;
 	}
 
-	/*
-	 * getMaterial() : Returns the material of the block.
-	 */
 	public Material getMaterial()
 	{
 		return Material.getMaterial(this.material);

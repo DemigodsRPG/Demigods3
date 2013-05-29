@@ -35,11 +35,6 @@ public class Altar
 		this.center = TrackedModelFactory.createTrackedLocation(location);
 	}
 
-	/**
-	 * Sets the active status of this Altar to <code>option</code>.
-	 * 
-	 * @param option the option to set.
-	 */
 	public void setActive(boolean option)
 	{
 		this.active = option;
@@ -65,9 +60,6 @@ public class Altar
 		return DemigodsData.jOhm.getAll(Altar.class);
 	}
 
-	/**
-	 * Removes the Altar completely.
-	 */
 	public void remove()
 	{
 		for(TrackedBlock block : this.blocks)
@@ -82,21 +74,11 @@ public class Altar
 		return this.id;
 	}
 
-	/**
-	 * Returns the location of the Altar.
-	 * 
-	 * @return Location
-	 */
 	public Location getLocation()
 	{
 		return this.center.toLocation();
 	}
 
-	/**
-	 * Returns true if the Altar is marked as active.
-	 * 
-	 * @return boolean
-	 */
 	public boolean isActive()
 	{
 		return active;
@@ -110,8 +92,11 @@ public class Altar
 	/**
 	 * Generates a full Altar structure.
 	 */
-	static void generateNewBlocks(Altar altar, Location location)
+	public synchronized void generate()
 	{
+		// Define location
+		Location location = this.center.toLocation();
+
 		// Remove the emerald block
 		location.getBlock().setTypeId(0);
 
@@ -219,13 +204,21 @@ public class Altar
 
 		// Create central structure of platform
 		for(int i = 1; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ + i), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		for(int i = 1; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ - i), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		for(int i = 1; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		for(int i = 1; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+		}
 
 		// Build steps on all sides.
 		Location leftSteps = new Location(locWorld, locX + 2, locY, locZ - 4);
@@ -236,72 +229,104 @@ public class Altar
 		// Create left steps
 		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+		}
 
 		// Create right steps
 		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+		}
 
 		// Create top steps
 		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+		}
 
 		// Create bottom steps
 		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+		}
 
 		// Create left step towers
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
 		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
 		blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(leftSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 
 		// Create right step towers
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
 		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
 		blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(rightSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 
 		// Create top step towers
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
 		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
 		blocks.add(TrackedModelFactory.createTrackedBlock(topSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(topSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 
 		// Create bottom step towers
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
 		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
 		blocks.add(TrackedModelFactory.createTrackedBlock(botSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
+		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+		}
 
-		altar.getBlocks().addAll(blocks);
+		this.blocks = blocks;
 	}
 
 	@Override
