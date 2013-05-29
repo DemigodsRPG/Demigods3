@@ -11,8 +11,8 @@ public class BlockFactory
 		Altar altar = new Altar();
 		altar.setActive(true);
 		altar.setCenter(location);
-		altar.generate();
 		Altar.save(altar);
+		altar.generate();
 		return altar;
 	}
 
@@ -23,8 +23,8 @@ public class BlockFactory
 		shrine.setCenter(location);
 		shrine.setOwner(character);
 		shrine.setDeity(character.getDeity());
-		shrine.generate();
 		Shrine.save(shrine);
+		shrine.generate();
 		return shrine;
 	}
 }

@@ -9,7 +9,6 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -87,7 +86,8 @@ public class Altar
 
 	public Set<TrackedBlock> getBlocks()
 	{
-		return this.blocks;
+		if(this.blocks == null) return new HashSet<TrackedBlock>();
+		else return this.blocks;
 	}
 
 	/**
@@ -107,6 +107,7 @@ public class Altar
 		double locZ = location.getZ();
 		World locWorld = location.getWorld();
 
+		// Create the set of blocks
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
 		// Create the enchantment table
@@ -333,11 +334,11 @@ public class Altar
 			for(TrackedBlock block : this.blocks)
 			{
 				TrackedBlock.delete(block.getId());
-				Demigods.message.info("Block cleared.");
 			}
 		}
 
-		this.blocks = blocks;
+		// Add the blocks to the set
+		getBlocks().addAll(blocks);
 	}
 
 	@Override

@@ -113,18 +113,21 @@ public class Shrine
 
 	public Set<TrackedBlock> getBlocks()
 	{
-		return this.blocks;
+		if(this.blocks == null) return new HashSet<TrackedBlock>();
+		else return this.blocks;
 	}
 
 	public synchronized void generate()
 	{
+		// Define variables
 		Location location = this.center.toLocation();
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
 		// Create the center block
 		blocks.add(TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK));
 
-		this.blocks = blocks;
+		// Add the blocks to the set
+		getBlocks().addAll(blocks);
 	}
 
 	@Override
