@@ -19,6 +19,7 @@ public class MiscAPI
 		{
 			if(source instanceof Player)
 			{
+				target.damage(amount);
 				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
 			}
 			else target.damage(amount);
