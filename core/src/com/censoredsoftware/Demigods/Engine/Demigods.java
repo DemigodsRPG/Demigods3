@@ -321,7 +321,7 @@ class Commands implements CommandExecutor
 		Player player = (Player) sender;
 		Location location = player.getTargetBlock(null, 50).getLocation();
 
-		location.getWorld().spawnEntity(location, EntityType.ENDER_SIGNAL);
+		location.getWorld().spawnEntity(location, EntityType.ENDER_SIGNAL).getLocation().toVector().zero();
 
 		return true;
 	}
