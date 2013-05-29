@@ -22,6 +22,13 @@
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
+    <target name="unjar_dependencies" depends="clean">
+        <unzip dest="core/bin">
+            <fileset dir="lib/inJar">
+                <include name="JOhm.jar" />
+            </fileset>
+        </unzip>
+    </target>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
