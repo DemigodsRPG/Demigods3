@@ -11,6 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -320,16 +321,8 @@ class Commands implements CommandExecutor
 		Player player = (Player) sender;
 		Location location = player.getTargetBlock(null, 50).getLocation();
 
-		player.sendMessage("Checking target! " + location.toString());
-
-		if(BlockAPI.isShrine(location))
-		{
-			player.sendMessage("It's a Shrine!");
-		}
-		else
-		{
-			player.sendMessage("It's not a Shrine... :(");
-		}
+		for(int i = 0; i < 100; i++)
+			location.getWorld().spawn(location, ExperienceOrb.class);
 
 		return true;
 	}
