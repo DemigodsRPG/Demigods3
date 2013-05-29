@@ -322,7 +322,9 @@ class Commands implements CommandExecutor
 		Location location = player.getTargetBlock(null, 50).getLocation();
 
 		for(int i = 0; i < 100; i++)
+		{
 			location.getWorld().spawn(location, ExperienceOrb.class);
+		}
 
 		return true;
 	}
