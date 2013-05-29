@@ -30,7 +30,7 @@
         </unzip>
     </target>
     <target name="build-subprojects"/>
-    <target depends="init, unjar_dependencies" name="build-project">
+    <target depends="init, unjar_dependencies" name="compile">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <path id="Demigods.classpath">
             <pathelement location="lib/Craftbukkit.jar"/>
@@ -44,6 +44,17 @@
             <src path="core/src"/>
             <classpath refid="Demigods.classpath"/>
         </javac>
-        <jar jarfile="build/Demigods.jar" basedir="core/bin"/>
+    </target>
+    <target name="build-project" depends="compile, unjar_dependencies">
+        <jar basedir="core/bin"
+         destfile="build/Demigods.jar">
+        <fileset dir="core/bin">
+            <include name="**/*.class" />
+        </fileset>
+        <fileset dir="core/bin">
+            <include name="plugin.yml" />
+            <include name="config.yml" />
+        </fileset>
+        </jar>
     </target>
 </project>
