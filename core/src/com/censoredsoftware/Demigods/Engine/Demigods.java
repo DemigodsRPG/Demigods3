@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -321,10 +321,7 @@ class Commands implements CommandExecutor
 		Player player = (Player) sender;
 		Location location = player.getTargetBlock(null, 50).getLocation();
 
-		for(int i = 0; i < 100; i++)
-		{
-			location.getWorld().spawn(location, ExperienceOrb.class);
-		}
+		location.getWorld().spawnEntity(location, EntityType.ENDER_SIGNAL);
 
 		return true;
 	}
