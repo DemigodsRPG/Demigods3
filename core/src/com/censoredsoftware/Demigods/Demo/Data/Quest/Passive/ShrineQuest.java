@@ -79,9 +79,6 @@ class Tribute extends Task
 	private static int order = 0;
 	private static double reward = 0.0, penalty = 0.0;
 
-	// Define other variables
-	private static double FAVOR_MULTIPLIER = Demigods.config.getSettingDouble("multipliers.favor");
-
 	private static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGHEST)
@@ -220,7 +217,7 @@ class Tribute extends Task
 				}
 			}
 
-			tributeValue *= FAVOR_MULTIPLIER;
+			tributeValue *= Demigods.config.getSettingDouble("multipliers.favor");
 
 			// Process tributes and send messages
 			int favorBefore = character.getMeta().getMaxFavor();
