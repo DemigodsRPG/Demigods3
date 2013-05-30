@@ -117,17 +117,25 @@ public class Shrine
 		else return this.blocks;
 	}
 
-	public synchronized void generate()
+	public static synchronized void generate(Shrine shrine, Location location)
 	{
-		// Define variables
-		Location location = this.center.toLocation();
+		// Create the set of blocks
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
 		// Create the center block
 		blocks.add(TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK));
 
+		// Clear old blocks if they exist
+		if(shrine.getBlocks() != null)
+		{
+			for(TrackedBlock block : shrine.getBlocks())
+			{
+				TrackedBlock.delete(block.getId());
+			}
+		}
+
 		// Add the blocks to the set
-		getBlocks().addAll(blocks);
+		shrine.getBlocks().addAll(blocks);
 	}
 
 	@Override

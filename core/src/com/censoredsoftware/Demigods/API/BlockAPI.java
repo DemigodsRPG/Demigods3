@@ -119,10 +119,16 @@ public class BlockAPI
 	 */
 	public static void regenerateStructures()
 	{
-		// TODO
+		// Regenerate Altars
 		for(Altar altar : getAllAltars())
 		{
-			altar.generate();
+			Altar.generate(altar, altar.getLocation());
+		}
+
+		// Regenerate Shrines
+		for(Shrine shrine : getAllShrines())
+		{
+			Shrine.generate(shrine, shrine.getLocation());
 		}
 	}
 

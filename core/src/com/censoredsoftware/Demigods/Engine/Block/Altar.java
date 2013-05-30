@@ -93,11 +93,8 @@ public class Altar
 	/**
 	 * Generates a full Altar structure.
 	 */
-	public synchronized void generate()
+	public static synchronized void generate(Altar altar, Location location)
 	{
-		// Define location
-		Location location = this.center.toLocation();
-
 		// Remove the emerald block
 		location.getBlock().setTypeId(0);
 
@@ -329,16 +326,16 @@ public class Altar
 		}
 
 		// Clear old blocks if they exist
-		if(this.blocks != null)
+		if(altar.getBlocks() != null)
 		{
-			for(TrackedBlock block : this.blocks)
+			for(TrackedBlock block : altar.getBlocks())
 			{
 				TrackedBlock.delete(block.getId());
 			}
 		}
 
 		// Add the blocks to the set
-		getBlocks().addAll(blocks);
+		altar.getBlocks().addAll(blocks);
 	}
 
 	@Override
