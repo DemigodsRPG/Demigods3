@@ -145,7 +145,7 @@ public class Shrine
 
 		// Create the ender chest and the block below
 		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 0.5, locZ), "shrine", Material.SMOOTH_BRICK));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
 
 		// Create the rest
 		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));

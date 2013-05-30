@@ -30,7 +30,6 @@ import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Modules.ConfigModule;
@@ -321,11 +320,12 @@ class Commands implements CommandExecutor
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		for(TrackedBlock block : BlockAPI.getAllBlocks())
-		{
-			player.sendMessage("Block found: " + block.getLocation());
-		}
+		player.sendMessage("Current Ascensions: " + character.getMeta().getAscensions());
+		player.sendMessage("Adding Ascension...");
+		character.getMeta().addAscension();
+		player.sendMessage("After Ascensions: " + character.getMeta().getAscensions());
 
 		return true;
 	}

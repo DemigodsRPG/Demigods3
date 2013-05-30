@@ -45,6 +45,11 @@ public class PlayerCharacterMeta
 		DemigodsData.jOhm.save(playerCharacterMeta);
 	}
 
+	private void save()
+	{
+		PlayerCharacterMeta.save(this);
+	}
+
 	public static PlayerCharacterMeta load(long id) // TODO This belongs somewhere else.
 	{
 		return DemigodsData.jOhm.get(PlayerCharacterMeta.class, id);
@@ -195,21 +200,25 @@ public class PlayerCharacterMeta
 	public void addAscension()
 	{
 		this.ascensions += 1;
+		save();
 	}
 
 	public void addAscensions(int amount)
 	{
 		this.ascensions += amount;
+		save();
 	}
 
 	public void subtractAscensions(int amount)
 	{
 		this.ascensions -= amount;
+		save();
 	}
 
 	public void setAscensions(int amount)
 	{
 		this.ascensions = amount;
+		save();
 	}
 
 	public int getDevotionGoal()
@@ -226,7 +235,7 @@ public class PlayerCharacterMeta
 	{
 		int devotionBefore = this.devotion;
 		int devotionGoal = getDevotionGoal();
-		this.devotion = devotionBefore + amount;
+		this.devotion += amount;
 		int devotionAfter = this.devotion;
 
 		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
@@ -236,25 +245,29 @@ public class PlayerCharacterMeta
 			// TODO Trigger an event here instead of doing it as part of the object,
 			// TODO that way we can grab a lot more stuff from the listener without having to make everything public.
 
-			this.ascensions = getAscensions() + 1;
+			this.ascensions += 1;
 			this.devotion = devotionAfter - devotionGoal;
 		}
+
+		save();
 	}
 
 	public void subtractDevotion(int amount)
 	{
 		this.devotion -= amount;
+		save();
 	}
 
 	public void setDevotion(int amount)
 	{
 		this.devotion = amount;
+		save();
 	}
 
 	public ChatColor getFavorColor()
 	{
-		int favor = getFavor();
-		int maxFavor = getMaxFavor();
+		int favor = this.favor;
+		int maxFavor = this.maxFavor;
 		ChatColor color = ChatColor.RESET;
 
 		// Set favor color dynamically
@@ -273,18 +286,21 @@ public class PlayerCharacterMeta
 	public void setFavor(int amount)
 	{
 		this.favor = amount;
+		save();
 	}
 
 	public void addFavor(int amount)
 	{
-		if((getFavor() + amount) > getMaxFavor()) this.favor = getMaxFavor();
+		if((this.favor + amount) > this.maxFavor) this.favor = this.maxFavor;
 		this.favor += amount;
+		save();
 	}
 
 	public void subtractFavor(int amount)
 	{
 		if((this.favor - amount) < 0) this.favor = 0;
 		this.favor -= amount;
+		save();
 	}
 
 	public Integer getMaxFavor()
@@ -294,7 +310,8 @@ public class PlayerCharacterMeta
 
 	public void addMaxFavor(int amount)
 	{
-		setMaxFavor(getMaxFavor() + amount);
+		this.maxFavor += amount;
+		save();
 	}
 
 	public void setMaxFavor(int amount)
@@ -302,6 +319,7 @@ public class PlayerCharacterMeta
 		if(amount < 0) this.maxFavor = 0;
 		if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 		else this.maxFavor = amount;
+		save();
 	}
 
 	@Override

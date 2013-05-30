@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -95,7 +96,7 @@ class Tribute extends Task
 			String charAlliance = character.getAlliance();
 			Deity charDeity = character.getDeity();
 
-			if(event.getClickedBlock().getType().equals(Material.GOLD_BLOCK) && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.BOOK)
+			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && charDeity.getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && validBlockConfiguration(event.getClickedBlock()))
 			{
 				try
 				{
@@ -219,17 +220,21 @@ class Tribute extends Task
 				}
 			}
 
+			// Return if it's empty
+			if(items == 0) return;
+
 			// Handle the multiplier
 			tributeValue *= Demigods.config.getSettingDouble("multipliers.favor");
 
-			// Process tributes and send messages
+			// Get the current favor for comparison
 			int favorBefore = character.getMeta().getMaxFavor();
 
 			// Update the character's favor
+			character.getMeta().addFavor(tributeValue / 3);
 			character.getMeta().addMaxFavor(tributeValue);
 
 			// Handle messaging and Shrine owner updating
-			if(character.getMeta().getMaxFavor() > favorBefore && items > 0)
+			if(character.getMeta().getMaxFavor() > favorBefore)
 			{
 				// Message the tributer
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
@@ -238,13 +243,13 @@ class Tribute extends Task
 				// Update the shrine owner's devotion and let them know
 				OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
-				if(player.getName().equals(shrineOwnerPlayer.getName()))
+				if(!player.getName().equals(shrineOwnerPlayer.getName()))
 				{
 					// Give them some of the blessings
-					character.getMeta().addMaxFavor(tributeValue / 5);
+					shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 					// Message them
-					if(shrineOwnerPlayer.isOnline())
+					if(shrineOwnerPlayer.isOnline() && TrackedPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -272,6 +277,20 @@ class Tribute extends Task
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 		player.openInventory(ii);
 		DemigodsData.saveTemp(player.getName(), character.getName(), shrineOwner);
+	}
+
+	private static boolean validBlockConfiguration(Block block)
+	{
+		if(!block.getType().equals(Material.IRON_BLOCK)) return false;
+		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(1, 0, 1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(1, 0, -1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(-1, 0, 1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(-1, 0, -1).getType().equals(Material.AIR)) return false;
+		return true;
 	}
 
 	public Tribute(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)

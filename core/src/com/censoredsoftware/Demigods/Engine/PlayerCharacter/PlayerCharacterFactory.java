@@ -12,6 +12,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 
 public class PlayerCharacterFactory
 {
+	// TODO: Make a createCharacter method that can set the meta values on creation as it was before. The way it was no longer worked as expected because I fixed the PlayerCharacterMeta issues so favor and everything actually works and I was too lazy to clean this all up so there are a ton of extra variables and all and whoa this is a really long TODO so I'm just going to keep going for a bit. Nice day, isn't it? I wouldn't know. I'm just stuck in here programming like some sort of animal. Damn. That's what I am. An animal. WHAT HAVE YOU DONE TO ME WORLD?
 	public static PlayerCharacter createCharacter(final OfflinePlayer player, final String charName, final Deity deity, final int favor, final int maxFavor, final int devotion, final int ascensions, final int offense, final int defense, final int stealth, final int support, final int passive, final boolean immortal)
 	{
 		PlayerCharacter character = new PlayerCharacter();
@@ -24,15 +25,6 @@ public class PlayerCharacterFactory
 		character.setExperience(0);
 		character.setLevel(0);
 		character.setLocation(player.getPlayer().getLocation());
-		character.getMeta().setFavor(favor);
-		character.getMeta().setMaxFavor(maxFavor);
-		character.getMeta().setDevotion(devotion);
-		character.getMeta().setAscensions(ascensions);
-		character.getMeta().setLevel("OFFENSE", offense);
-		character.getMeta().setLevel("DEFENSE", defense);
-		character.getMeta().setLevel("STEALTH", stealth);
-		character.getMeta().setLevel("SUPPORT", support);
-		character.getMeta().setLevel("PASSIVE", passive);
 		PlayerCharacter.save(character);
 		return character;
 	}
@@ -54,6 +46,11 @@ public class PlayerCharacterFactory
 		charMeta.setDevotion(Demigods.config.getSettingInt("character.default_devotion"));
 		charMeta.setFavor(Demigods.config.getSettingInt("character.default_favor"));
 		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.default_max_favor"));
+		charMeta.setLevel("OFFENSE", Demigods.config.getSettingInt("character.default_offense"));
+		charMeta.setLevel("DEFENSE", Demigods.config.getSettingInt("character.default_defense"));
+		charMeta.setLevel("STEALTH", Demigods.config.getSettingInt("character.default_stealth"));
+		charMeta.setLevel("SUPPORT", Demigods.config.getSettingInt("character.default_support"));
+		charMeta.setLevel("PASSIVE", Demigods.config.getSettingInt("character.default_passive"));
 		charMeta.initializeMaps();
 		PlayerCharacterMeta.save(charMeta);
 		return charMeta;

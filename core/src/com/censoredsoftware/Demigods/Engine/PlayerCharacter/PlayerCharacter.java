@@ -140,26 +140,27 @@ public class PlayerCharacter
 		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
+	public void setMeta(PlayerCharacterMeta meta)
+	{
+		this.meta = meta;
+	}
+
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory != null)
+		if(this.inventory == null)
 		{
-			return this.inventory;
+			this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
 		}
-		else
-		{
-			return PlayerCharacterFactory.createEmptyCharacterInventory();
-		}
+		return this.inventory;
 	}
 
 	public PlayerCharacterMeta getMeta()
 	{
-		if(this.meta != null) return this.meta;
-		else
+		if(this.meta == null)
 		{
 			this.meta = PlayerCharacterFactory.createCharacterMeta();
-			return this.meta;
 		}
+		return this.meta;
 	}
 
 	public OfflinePlayer getOfflinePlayer()

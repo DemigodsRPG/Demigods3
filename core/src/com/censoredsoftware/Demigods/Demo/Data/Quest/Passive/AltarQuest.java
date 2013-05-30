@@ -366,14 +366,7 @@ class AltarMenu extends Task
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 				// Exit if this isn't for character creation
-				if(!PlayerAPI.isPraying(player) || !DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
-				{
-					player.sendMessage(ChatColor.RED + "(ERR: 2003) Please report this to an admin immediately:"); // TODO It should be more clear that this is a Demigods related error.
-					if(!PlayerAPI.isPraying(player)) player.sendMessage(ChatColor.RED + "    Not praying."); // TODO This event fires twice in newer version of bukkit, ignore the error message for now.
-					else if(!DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep")) player.sendMessage(ChatColor.RED + "    Missing data.");
-					else player.sendMessage(ChatColor.RED + "    Boolean set to false;");
-					return;
-				}
+				if(!PlayerAPI.isPraying(player) || !DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
 
 				// Define variables
 				String chosenName = DemigodsData.getValueTemp(player.getName(), "temp_createchar_name").toString();
