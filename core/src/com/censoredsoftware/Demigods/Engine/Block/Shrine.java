@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import redis.clients.johm.*;
 
@@ -122,8 +123,24 @@ public class Shrine
 		// Create the set of blocks
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
-		// Create the center block
-		blocks.add(TrackedModelFactory.createTrackedBlock(location, "shrine", Material.BEDROCK));
+		// Split the location so we can build off of it
+		double locX = location.getX();
+		double locY = location.getY();
+		double locZ = location.getZ();
+		World locWorld = location.getWorld();
+
+		// Create the main block
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.BEDROCK));
+
+		// Create the ender chest and the block below
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
+
+		// Create the rest
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS));
 
 		// Clear old blocks if they exist
 		if(shrine.getBlocks() != null)

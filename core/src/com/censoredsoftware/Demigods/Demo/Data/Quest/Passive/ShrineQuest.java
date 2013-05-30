@@ -168,6 +168,9 @@ class Tribute extends Task
 					// }
 				}
 
+				// Return if they aren't clicking the gold block
+				if(!event.getClickedBlock().getType().equals(Material.GOLD_BLOCK)) return;
+
 				// Return if the player is mortal
 				if(character == null || !character.isImmortal())
 				{
