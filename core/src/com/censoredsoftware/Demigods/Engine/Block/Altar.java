@@ -60,7 +60,7 @@ public class Altar
 		return DemigodsData.jOhm.getAll(Altar.class);
 	}
 
-	public void remove()
+	public synchronized void remove()
 	{
 		for(TrackedBlock block : this.blocks)
 		{
@@ -95,6 +95,15 @@ public class Altar
 	 */
 	public static synchronized void generate(Altar altar, Location location)
 	{
+		// Clear old blocks if they exist
+		if(altar.getBlocks() != null && !altar.getBlocks().isEmpty())
+		{
+			for(TrackedBlock block : altar.getBlocks())
+			{
+				if(block != null) block.remove();
+			}
+		}
+
 		// Remove the emerald block
 		location.getBlock().setTypeId(0);
 
@@ -323,15 +332,6 @@ public class Altar
 		for(int i = 0; i < 3; i++)
 		{
 			blocks.add(TrackedModelFactory.createTrackedBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
-		}
-
-		// Clear old blocks if they exist
-		if(altar.getBlocks() != null)
-		{
-			for(TrackedBlock block : altar.getBlocks())
-			{
-				TrackedBlock.delete(block.getId());
-			}
 		}
 
 		// Add the blocks to the set

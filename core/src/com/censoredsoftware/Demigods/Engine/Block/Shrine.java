@@ -82,9 +82,11 @@ public class Shrine
 
 	public synchronized void remove()
 	{
-		Location location = this.center.toLocation();
-		location.getBlock().setType(Material.AIR);
-		this.delete();
+		for(TrackedBlock block : this.blocks)
+		{
+			block.remove();
+		}
+		delete();
 	}
 
 	public Long getId()
@@ -120,6 +122,15 @@ public class Shrine
 
 	public static synchronized void generate(Shrine shrine, Location location)
 	{
+		// Clear old blocks if they exist
+		if(shrine.getBlocks() != null && !shrine.getBlocks().isEmpty())
+		{
+			for(TrackedBlock block : shrine.getBlocks())
+			{
+				if(block != null) TrackedBlock.delete(block.getId());
+			}
+		}
+
 		// Create the set of blocks
 		Set<TrackedBlock> blocks = new HashSet<TrackedBlock>();
 
@@ -130,26 +141,17 @@ public class Shrine
 		World locWorld = location.getWorld();
 
 		// Create the main block
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.BEDROCK));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.GOLD_BLOCK));
 
 		// Create the ender chest and the block below
 		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 0.5, locZ), "shrine", Material.SMOOTH_BRICK));
 
 		// Create the rest
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS));
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS));
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS));
-		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS));
-
-		// Clear old blocks if they exist
-		if(shrine.getBlocks() != null)
-		{
-			for(TrackedBlock block : shrine.getBlocks())
-			{
-				TrackedBlock.delete(block.getId());
-			}
-		}
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 0));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS, (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS, (byte) 2));
 
 		// Add the blocks to the set
 		shrine.getBlocks().addAll(blocks);
