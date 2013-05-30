@@ -25,6 +25,7 @@ public class PlayerCharacterFactory
 		character.setExperience(0);
 		character.setLevel(0);
 		character.setLocation(player.getPlayer().getLocation());
+		character.setMeta(createCharacterMeta());
 		PlayerCharacter.save(character);
 		return character;
 	}
