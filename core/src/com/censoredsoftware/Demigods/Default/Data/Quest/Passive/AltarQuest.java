@@ -595,6 +595,13 @@ class AltarMenu extends Task
 
 		if(newChar != null)
 		{
+			// Make sure they aren't trying to switch to their current character
+			if(TrackedPlayer.getTracked(player).getCurrent().equals(newChar))
+			{
+				player.sendMessage("You can't switch to your current character.");
+				return;
+			}
+
 			CharacterSwitchEvent event = new CharacterSwitchEvent(player, TrackedPlayer.getTracked(player).getCurrent(), newChar);
 			Bukkit.getServer().getPluginManager().callEvent(event);
 
