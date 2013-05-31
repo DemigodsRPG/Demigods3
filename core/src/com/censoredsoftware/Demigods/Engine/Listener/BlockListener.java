@@ -291,7 +291,7 @@ public class BlockListener implements Listener
 		 */
 		if(ZoneAPI.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneAPI.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
-			player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
+			// player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
 			return;
 		}
 	}
