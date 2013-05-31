@@ -117,12 +117,24 @@ public class TimedData
 		return DemigodsData.jOhm.getAll(TimedData.class);
 	}
 
+	public static TimedData find(String key, String subKey)
+	{
+		if(TimedData.findByKey(key) == null) return null;
+
+		for(TimedData data : TimedData.findByKey(key))
+		{
+			if(data.getSubKey().equals(subKey)) return data;
+		}
+
+		return null;
+	}
+
 	public static List<TimedData> findByKey(String key)
 	{
 		return JOhm.find(TimedData.class, "key", key);
 	}
 
-	public static List<TimedData> findBySubKey(String subKey)
+	public static List<TimedData> findBySubKey(String key, String subKey)
 	{
 		return JOhm.find(TimedData.class, "subKey", subKey);
 	}
@@ -130,6 +142,11 @@ public class TimedData
 	public static List<TimedData> findByExpiration(Long expiration)
 	{
 		return JOhm.find(TimedData.class, "expiration", expiration);
+	}
+
+	public static void remove(String key, String subKey)
+	{
+		if(find(key, subKey) != null) find(key, subKey).delete();
 	}
 
 	@Override

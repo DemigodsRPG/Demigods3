@@ -80,7 +80,10 @@ public class DemigodsData
 
 	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
 	{
-		// TODO: Check to make sure the data doesn't exist already.
+		// Remove the data if it exists already
+		TimedData.remove(key, subKey);
+
+		// Create and save the timed data
 		TimedData timedData = new TimedData();
 		timedData.setKey(key);
 		timedData.setSubKey(subKey);
@@ -91,10 +94,6 @@ public class DemigodsData
 
 	public static Object getTimedValue(String key, String subKey)
 	{
-		for(TimedData data : TimedData.findByKey(key))
-		{
-			if(data.getSubKey().equals(subKey)) return data.getData();
-		}
-		return null;
+		return TimedData.find(key, subKey).getData();
 	}
 }

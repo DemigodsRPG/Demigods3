@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Data.Quest.Passive;
+package com.censoredsoftware.Demigods.Default.Data.Quest.Passive;
 
 import java.util.ArrayList;
 import java.util.List;

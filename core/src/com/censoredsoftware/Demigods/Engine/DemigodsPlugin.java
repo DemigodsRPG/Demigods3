@@ -3,8 +3,8 @@ package com.censoredsoftware.Demigods.Engine;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.censoredsoftware.Demigods.Demo.Deities;
-import com.censoredsoftware.Demigods.Demo.Quests;
+import com.censoredsoftware.Demigods.Default.Deities;
+import com.censoredsoftware.Demigods.Default.Quests;
 
 /**
  * Class for all plugins of Demigods.

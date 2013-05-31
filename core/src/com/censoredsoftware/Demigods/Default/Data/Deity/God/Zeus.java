@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Data.Deity.God;
+package com.censoredsoftware.Demigods.Default.Data.Deity.God;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -206,9 +206,11 @@ class Scheduler
 		// Start favor runnable
 		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), rate, rate);
+		AdminAPI.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start timed data runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
+		AdminAPI.sendDebug("Timed data runnable enabled...");
 	}
 
 	static void stopThreads(DemigodsPlugin instance)

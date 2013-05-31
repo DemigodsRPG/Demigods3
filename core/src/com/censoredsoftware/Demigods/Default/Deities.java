@@ -1,7 +1,7 @@
-package com.censoredsoftware.Demigods.Demo;
+package com.censoredsoftware.Demigods.Default;
 
-import com.censoredsoftware.Demigods.Demo.Data.Deity.God.Zeus;
-import com.censoredsoftware.Demigods.Demo.Data.Deity.Titan.Prometheus;
+import com.censoredsoftware.Demigods.Default.Data.Deity.God.Zeus;
+import com.censoredsoftware.Demigods.Default.Data.Deity.Titan.Prometheus;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 

@@ -19,7 +19,7 @@ generation:
 
 ## Regeneration ##
 regeneration:
-    favor: 10
+    favor: 20
 
 ## Zones ##
 zones:
