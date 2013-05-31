@@ -11,6 +11,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.ItemAPI;
+import com.censoredsoftware.Demigods.Demo.Data.Item.Baetylus;
 import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
@@ -39,6 +40,8 @@ public class ChunkListener implements Listener
 			{
 				if(DemigodsUtil.randomPercentBool(book.getBook().getSpawnChance())) items.add(book.getBook().getItem());
 			}
+
+			items.add(Baetylus.NORMAL_SHARD.getShard().getItem());
 
 			// Generate the chest
 			ItemAPI.createChest(location, items);
