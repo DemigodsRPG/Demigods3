@@ -242,7 +242,7 @@ public class PlayerCharacter
 
 	public void addWarp(TrackedLocation location, String name)
 	{
-		this.warps.put(location, name);
+		this.warps.put(location, name.toUpperCase());
 		save(this);
 	}
 
