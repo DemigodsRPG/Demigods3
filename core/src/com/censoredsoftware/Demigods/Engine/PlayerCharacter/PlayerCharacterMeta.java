@@ -291,15 +291,27 @@ public class PlayerCharacterMeta
 
 	public void addFavor(int amount)
 	{
-		if((this.favor + amount) > this.maxFavor) this.favor = this.maxFavor;
-		this.favor += amount;
+		if((this.favor + amount) > this.maxFavor)
+		{
+			this.favor = this.maxFavor;
+		}
+		else
+		{
+			this.favor += amount;
+		}
 		save();
 	}
 
 	public void subtractFavor(int amount)
 	{
-		if((this.favor - amount) < 0) this.favor = 0;
-		this.favor -= amount;
+		if((this.favor - amount) < 0)
+		{
+			this.favor = 0;
+		}
+		else
+		{
+			this.favor -= amount;
+		}
 		save();
 	}
 
@@ -310,7 +322,14 @@ public class PlayerCharacterMeta
 
 	public void addMaxFavor(int amount)
 	{
-		this.maxFavor += amount;
+		if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor"))
+		{
+			this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+		}
+		else
+		{
+			this.maxFavor += amount;
+		}
 		save();
 	}
 

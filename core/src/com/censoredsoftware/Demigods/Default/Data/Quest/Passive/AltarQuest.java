@@ -596,7 +596,7 @@ class AltarMenu extends Task
 		if(newChar != null)
 		{
 			// Make sure they aren't trying to switch to their current character
-			if(TrackedPlayer.getTracked(player).getCurrent().equals(newChar))
+			if(TrackedPlayer.getTracked(player).getCurrent().getName().equals(newChar.getName()))
 			{
 				player.sendMessage("You can't switch to your current character.");
 				return;
