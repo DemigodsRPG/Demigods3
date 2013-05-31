@@ -56,3 +56,7 @@ permissions:
     demigods.tutorial:
         description: Allows the player to participate in the Tutorial quest.
         default: true
+    demigods.shrine:
+        default: true
+    demigods.altar:
+        default: true
