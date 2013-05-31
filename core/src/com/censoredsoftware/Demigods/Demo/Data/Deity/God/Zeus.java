@@ -313,7 +313,7 @@ class NoFall extends Ability
 				{
 					Demigods.message.broadcast("hai.");
 					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.canUseDeitySilent(player, name)) return;
+					if(!Deity.canUseDeitySilent(player, deity)) return;
 					Demigods.message.broadcast("hai. zeus.");
 
 					// If the player receives falling damage, cancel it
