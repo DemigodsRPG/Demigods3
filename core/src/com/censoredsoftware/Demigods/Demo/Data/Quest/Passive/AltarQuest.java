@@ -598,7 +598,7 @@ class AltarMenu extends Task
 			// Make sure they aren't trying to switch to their current character
 			if(TrackedPlayer.getTracked(player).getCurrent().getName().equals(newChar.getName()))
 			{
-				player.sendMessage("You can't switch to your current character.");
+				player.sendMessage(ChatColor.RED + "You can't switch to your current character.");
 				return;
 			}
 
