@@ -31,6 +31,7 @@ import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
@@ -206,8 +207,12 @@ class Scheduler
 	{
 		// Start favor runnable
 		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), rate, rate);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), 20, rate);
 		AdminAPI.sendDebug("Favor regeneration runnable enabled...");
+
+		// Start battle runnable
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
+		AdminAPI.sendDebug("Battle tracking runnable enabled...");
 
 		// Start timed data runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
@@ -256,11 +261,23 @@ class TimedDataRunnable implements Runnable
 	{
 		for(TimedData data : TimedData.getAll())
 		{
-			if(data.getExpiration() <= System.currentTimeMillis())
-			{
-				data.delete();
-			}
+			if(data.getExpiration() <= System.currentTimeMillis()) data.delete();
 		}
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
+}
+
+class BattleRunnable implements Runnable
+{
+	@Override
+	public void run()
+	{
+		TrackedBattle.checkForInactiveBattles();
 	}
 
 	@Override

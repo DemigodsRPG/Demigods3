@@ -309,10 +309,7 @@ public class TrackedBattle
 			{
 				BattleEndEvent battleEvent = new BattleEndEvent(battleId, System.currentTimeMillis());
 				Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-				if(!battleEvent.isCancelled())
-				{
-					battle.setActive(false);
-				}
+				if(!battleEvent.isCancelled()) battle.setActive(false);
 			}
 		}
 	}
