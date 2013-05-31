@@ -86,6 +86,16 @@ public class CharacterListener implements Listener
 		PlayerCharacter killed = event.getKilled();
 		String alliance = event.getAlliance();
 
+		int devotion = attacker.getMeta().getDevotion();
+		int devotionRemoved = (int) Math.ceil(devotion * .19);
+
+		// Set their devotion and add a death
+		attacker.getMeta().subtractDevotion(devotionRemoved);
+
+		// Let 'em know
+		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have failed " + attacker.getDeity().getInfo().getName() + " by attacking a fellow " + attacker.getAlliance() + "!");
+		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have been stripped of " + devotionRemoved + " devotion!");
+
 		if(alliance != "Mortal") Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
 		else Demigods.message.broadcast(ChatColor.GRAY + "A mortal was killed by another worthless mortal.");
 	}
