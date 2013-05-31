@@ -1,7 +1,9 @@
 package com.censoredsoftware.Demigods.Demo.Data.Deity.Titan;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,9 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.API.AbilityAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.MiscAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
@@ -29,7 +28,7 @@ public class Prometheus extends Deity
 {
 	private static String name = "Prometheus", alliance = "Titan";
 	private static ChatColor color = ChatColor.GOLD;
-	private static List<Material> claimItems = new ArrayList<Material>()
+	private static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
@@ -50,7 +49,7 @@ public class Prometheus extends Deity
 		}
 	};
 	private static Type type = Type.DEMO;
-	private static List<Ability> abilities = new ArrayList<Ability>()
+	private static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new ShootFireball());
@@ -102,17 +101,17 @@ class ShootFireball extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					fireball(player);
 				}
@@ -125,13 +124,13 @@ class ShootFireball extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		LivingEntity target = AbilityAPI.autoTarget(player);
+		LivingEntity target = Ability.autoTarget(player);
 
-		if(!AbilityAPI.doAbilityPreProcess(player, target, "fireball", cost, type)) return;
-		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		if(!Ability.doAbilityPreProcess(player, target, "fireball", cost, type)) return;
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!AbilityAPI.targeting(player, target)) return;
+		if(!Ability.targeting(player, target)) return;
 
 		if(target.getEntityId() != player.getEntityId())
 		{
@@ -159,17 +158,17 @@ class Blaze extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					blaze(player);
 				}
@@ -182,16 +181,16 @@ class Blaze extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		LivingEntity target = AbilityAPI.autoTarget(player);
+		LivingEntity target = Ability.autoTarget(player);
 		int power = character.getMeta().getLevel("OFFENSE");
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 
-		if(!AbilityAPI.doAbilityPreProcess(player, target, name, cost, type)) return;
-		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		if(!Ability.doAbilityPreProcess(player, target, name, cost, type)) return;
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!AbilityAPI.targeting(player, target)) return;
+		if(!Ability.targeting(player, target)) return;
 
 		if(target.getEntityId() != player.getEntityId())
 		{

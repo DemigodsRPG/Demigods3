@@ -13,11 +13,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class PlayerListener implements Listener
@@ -162,7 +162,7 @@ public class PlayerListener implements Listener
 		}
 		else if(filterCheckQuitting)
 		{
-			if(ZoneAPI.canTarget(event.getPlayer()) && BattleAPI.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
+			if(ZoneAPI.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
 			{
 				String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
 				event.setQuitMessage(message);

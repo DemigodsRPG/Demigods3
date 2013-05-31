@@ -1,7 +1,9 @@
 package com.censoredsoftware.Demigods.Demo.Data.Deity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,9 +14,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.Demigods.API.AbilityAPI;
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.MiscAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -26,7 +25,7 @@ public class Template extends Deity
 {
 	private static String name = "Template", alliance = "Blaze";
 	private static ChatColor color = ChatColor.GRAY;
-	private static List<Material> claimItems = new ArrayList<Material>()
+	private static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
@@ -47,7 +46,7 @@ public class Template extends Deity
 		}
 	};
 	private static Type type = Type.DEMO;
-	private static List<Ability> abilities = new ArrayList<Ability>()
+	private static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new Test());
@@ -79,17 +78,17 @@ class Test extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					test(player);
 				}
@@ -104,13 +103,13 @@ class Test extends Ability
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		int devotion = character.getMeta().getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
-		LivingEntity target = AbilityAPI.autoTarget(player);
+		LivingEntity target = Ability.autoTarget(player);
 
-		if(!AbilityAPI.doAbilityPreProcess(player, target, "test", cost, type)) return;
-		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		if(!Ability.doAbilityPreProcess(player, target, "test", cost, type)) return;
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!AbilityAPI.targeting(player, target)) return;
+		if(!Ability.targeting(player, target)) return;
 
 		if(target instanceof Player)
 		{

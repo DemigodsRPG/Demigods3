@@ -9,11 +9,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.censoredsoftware.Demigods.API.BattleAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class EntityListener implements Listener
@@ -70,7 +69,9 @@ public class EntityListener implements Listener
 				PlayerCharacter hitChar = TrackedPlayer.getTracked(hit).getCurrent();
 				PlayerCharacter hittingChar = TrackedPlayer.getTracked(hitting).getCurrent();
 
-				BattleAPI.battleProcess(hitChar, hittingChar);
+				TrackedBattle.battleProcess(hitChar, hittingChar);
+
+				if(event.getDamage() > ((Player) attacked).getHealth()) hittingChar.addKill();
 			}
 		}
 	}
@@ -90,7 +91,7 @@ public class EntityListener implements Listener
 
 			// Set their devotion and add a death
 			character.getMeta().subtractDevotion(devotionRemoved);
-			PlayerAPI.addDeath(player);
+			character.addDeath();
 
 			// Let 'em know
 			player.sendMessage(ChatColor.RED + "You have failed " + deity + "!");

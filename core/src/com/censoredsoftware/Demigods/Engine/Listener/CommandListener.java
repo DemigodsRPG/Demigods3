@@ -7,10 +7,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.Demigods.API.AbilityAPI;
-import com.censoredsoftware.Demigods.API.BattleAPI;
 import com.censoredsoftware.Demigods.API.ZoneAPI;
+import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CommandListener implements Listener
@@ -25,9 +25,9 @@ public class CommandListener implements Listener
 
 		Player player = event.getPlayer();
 
-		if(ZoneAPI.canTarget(player) && BattleAPI.isInAnyActiveBattle(TrackedPlayer.getTracked(player).getCurrent()))
+		if(ZoneAPI.canTarget(player) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(player).getCurrent()))
 		{
-			if(BattleAPI.isBlockedCommand(args[0]))
+			if(TrackedBattle.isBlockedCommand(args[0]))
 			{
 				player.sendMessage(ChatColor.GRAY + "That command is blocked during a battle.");
 				event.setCancelled(true);
@@ -37,7 +37,7 @@ public class CommandListener implements Listener
 
 		try
 		{
-			if(AbilityAPI.invokeAbilityCommand(player, args[0], args.length == 2 && args[1].equalsIgnoreCase("bind")))
+			if(Ability.invokeAbilityCommand(player, args[0], args.length == 2 && args[1].equalsIgnoreCase("bind")))
 			{
 				Demigods.message.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);

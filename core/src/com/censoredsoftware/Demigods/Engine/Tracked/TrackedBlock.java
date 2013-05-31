@@ -7,6 +7,8 @@ import org.bukkit.Material;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Block.Altar;
+import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.google.common.base.Objects;
 
@@ -135,5 +137,50 @@ public class TrackedBlock
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	/**
+	 * Grab the TrackedBlock from the data with id <code>id</code>.
+	 * 
+	 * @param id The ID of the block.
+	 * @return TrackedBlock.
+	 */
+	public static TrackedBlock getBlock(Long id)
+	{
+		return TrackedBlock.load(id);
+	}
+
+	public static Set<TrackedBlock> getAllBlocks()
+	{
+		return TrackedBlock.loadAll();
+	}
+
+	/**
+	 * Returns true if the block at the passed in <code>location</code> is protected.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if the block is protected or not.
+	 */
+	public static boolean isProtected(Location location)
+	{
+		return Altar.isAltar(location) || Shrine.isShrine(location);
+	}
+
+	/**
+	 * Regenerates all structures to ensure that they are in perfect condition.
+	 */
+	public static void regenerateStructures()
+	{
+		// Regenerate Altars
+		for(Altar altar : Altar.getAllAltars())
+		{
+			Altar.generate(altar, altar.getLocation());
+		}
+
+		// Regenerate Shrines
+		for(Shrine shrine : Shrine.getAllShrines())
+		{
+			Shrine.generate(shrine, shrine.getLocation());
+		}
 	}
 }

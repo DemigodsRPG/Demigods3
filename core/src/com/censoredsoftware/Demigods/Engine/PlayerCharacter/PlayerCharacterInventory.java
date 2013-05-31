@@ -10,7 +10,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
@@ -86,7 +85,7 @@ public class PlayerCharacterInventory
 
 	public PlayerCharacter getOwner()
 	{
-		return CharacterAPI.getChar(this.owner);
+		return PlayerCharacter.getChar(this.owner);
 	}
 
 	public static void save(PlayerCharacterInventory inventory)

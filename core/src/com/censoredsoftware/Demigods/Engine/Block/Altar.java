@@ -10,6 +10,7 @@ import org.bukkit.World;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -363,5 +364,112 @@ public class Altar
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	/**
+	 * Returns true/false depending on if there is an Altar within <code>blocks</code> of <code>location</code>.
+	 * 
+	 * @param location the location used as the center to check from.
+	 * @param blocks the radius of blocks to check with.
+	 * @return
+	 */
+	public static boolean altarNearby(Location location, int blocks)
+	{
+		final Set<Altar> altars = getAllAltars();
+		if(altars == null) return false;
+
+		for(Altar altar : altars)
+		{
+			Location altarLocation = altar.getLocation();
+			if(!altarLocation.getWorld().equals(location.getWorld())) continue;
+			if(altarLocation.distance(location) <= blocks) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the Altar at the <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return the Altar at <code>location</code>.
+	 */
+	public static Altar getAltar(Location location)
+	{
+		for(Altar altar : getAllAltars())
+		{
+			Location altarLocation = altar.getLocation();
+			if(!altarLocation.getChunk().isLoaded() || !altarLocation.getWorld().equals(location.getWorld()) || altarLocation.distance(location) > 7) continue;
+			if(altar.getBlocks().contains(new ComparableLocation(location))) return altar;
+		}
+		return null;
+	}
+
+	/**
+	 * Returns true if the block at the passed in <code>location</code> is an Altar.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depwending on if the block is an Altar or not.
+	 */
+	public static boolean isAltar(Location location)
+	{
+		return getAltar(location) != null;
+	}
+
+	/**
+	 * Returns all Altars as an ArrayList.
+	 * 
+	 * @return the ArrayList of Altars.
+	 */
+	public static Set<Altar> getAllAltars()
+	{
+		return Altar.loadAll();
+	}
+
+	/**
+	 * Checks the <code>reference</code> location to validate if the area is safe
+	 * for automated generation.
+	 * 
+	 * @param reference the location to be checked
+	 * @param area how big of an area (in blocks) to validate
+	 * @return based on if the location is safe to generate at
+	 */
+	public static boolean canGenerateSolid(Location reference, int area)
+	{
+		Location location = reference.clone();
+		location.subtract(0, 1, 0);
+		location.add((area / 3), 0, (area / 2));
+
+		// Check ground
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.subtract(1, 0, 0);
+		}
+
+		// Check ground adjacent
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.subtract(0, 0, 1);
+		}
+
+		// Check ground adjacent again
+		for(int i = 0; i < area; i++)
+		{
+			if(!location.getBlock().getType().isSolid()) return false;
+			location.add(1, 0, 0);
+		}
+
+		location.add(0, 1, 0);
+
+		// Check air diagonally
+		for(int i = 0; i < area + 1; i++)
+		{
+			if(!location.getBlock().getType().isTransparent()) return false;
+			location.add(0, 1, 1);
+			location.subtract(1, 0, 0);
+		}
+
+		return true;
 	}
 }

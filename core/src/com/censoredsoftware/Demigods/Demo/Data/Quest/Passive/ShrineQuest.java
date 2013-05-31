@@ -14,8 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.BlockAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ValueAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -82,7 +80,7 @@ class Tribute extends Task
 		public void onShrineInteract(PlayerInteractEvent event)
 		{
 			// Return if the player is mortal
-			if(!PlayerAPI.isImmortal(event.getPlayer())) return;
+			if(!TrackedPlayer.isImmortal(event.getPlayer())) return;
 			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 			// Define variables
@@ -90,13 +88,13 @@ class Tribute extends Task
 			Player player = event.getPlayer();
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-			if(BlockAPI.isShrine(location))
+			if(Shrine.isShrine(location))
 			{
 				// Cancel the interaction
 				event.setCancelled(true);
 
 				// Define the shrine
-				Shrine shrine = BlockAPI.getShrine(location);
+				Shrine shrine = Shrine.getShrine(location);
 
 				// Return if they aren't clicking the gold block
 				if(!event.getClickedBlock().getType().equals(Material.GOLD_BLOCK)) return;
@@ -133,7 +131,7 @@ class Tribute extends Task
 			if(character == null || !character.isImmortal()) return;
 
 			// If it isn't a tribute chest then break the method
-			if(!event.getInventory().getName().contains("Shrine") || !BlockAPI.isShrine(player.getTargetBlock(null, 10).getLocation())) return;
+			if(!event.getInventory().getName().contains("Shrine") || !Shrine.isShrine(player.getTargetBlock(null, 10).getLocation())) return;
 
 			// Get the creator of the shrine
 			PlayerCharacter shrineOwner = PlayerCharacter.getCharacterByName(DemigodsData.getValueTemp(player.getName(), character.getName()).toString());

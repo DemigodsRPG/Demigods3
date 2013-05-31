@@ -12,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
@@ -45,7 +44,7 @@ public class ChatListener implements Listener
 		String message = event.getMessage();
 
 		// Return if the player is praying
-		if(PlayerAPI.isPraying(player)) return;
+		if(TrackedPlayer.isPraying(player)) return;
 
 		// Handle chat for character switching
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number"))
@@ -67,7 +66,7 @@ public class ChatListener implements Listener
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers())
 		{
-			String alliance = PlayerAPI.getCurrentAlliance(player);
+			String alliance = TrackedPlayer.getCurrentAlliance(player);
 
 			if(!alliances.containsKey(alliance.toUpperCase())) alliances.put(alliance.toUpperCase(), new ArrayList<String>());
 			alliances.get(alliance.toUpperCase()).add(onlinePlayer.getName());

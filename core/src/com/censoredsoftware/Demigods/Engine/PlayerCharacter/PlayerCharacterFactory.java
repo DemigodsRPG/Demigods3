@@ -5,8 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
@@ -24,6 +22,8 @@ public class PlayerCharacterFactory
 		character.setHunger(20);
 		character.setExperience(0);
 		character.setLevel(0);
+		character.setKills(0);
+		character.setDeaths(0);
 		character.setLocation(player.getPlayer().getLocation());
 		character.setMeta(createCharacterMeta());
 		PlayerCharacter.save(character);
@@ -32,10 +32,10 @@ public class PlayerCharacterFactory
 
 	public static PlayerCharacter createCharacter(OfflinePlayer player, String charName, String charDeity)
 	{
-		if(CharacterAPI.getCharByName(charName) == null)
+		if(PlayerCharacter.getCharByName(charName) == null)
 		{
 			// Create the Character
-			return createCharacter(player, charName, DeityAPI.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
+			return createCharacter(player, charName, Deity.getDeity(charDeity), 0, 50, 0, 0, 0, 0, 0, 0, 0, true);
 		}
 		return null;
 	}

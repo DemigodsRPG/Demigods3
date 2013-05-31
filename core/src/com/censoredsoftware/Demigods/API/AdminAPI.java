@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class AdminAPI
 {
@@ -63,7 +64,7 @@ public class AdminAPI
 		if(consoleDebugEnabled()) Demigods.message.info("[Debug] " + ChatColor.stripColor(message));
 
 		// Log to online, debugging admins
-		for(Player player : PlayerAPI.getOnlineAdmins())
+		for(Player player : TrackedPlayer.getOnlineAdmins())
 		{
 			if(playerDebugEnabled(player)) player.sendMessage(ChatColor.RED + "[Debug] " + message);
 		}

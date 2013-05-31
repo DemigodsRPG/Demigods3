@@ -11,11 +11,11 @@ import org.bukkit.OfflinePlayer;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import com.google.common.collect.Sets;
 
 @Model
 public class PlayerCharacter
@@ -36,6 +36,10 @@ public class PlayerCharacter
 	private Float experience;
 	@Attribute
 	private Integer level;
+	@Attribute
+	private Integer kills;
+	@Attribute
+	private Integer deaths;
 	@Reference
 	private TrackedLocation location;
 	@Attribute
@@ -103,11 +107,13 @@ public class PlayerCharacter
 	public void setImmortal(boolean option)
 	{
 		this.immortal = option;
+		save(this);
 	}
 
 	public void setActive(boolean option)
 	{
 		this.active = option;
+		save(this);
 	}
 
 	public void saveInventory()
@@ -147,10 +153,7 @@ public class PlayerCharacter
 
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory == null)
-		{
-			this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
-		}
+		if(this.inventory == null) this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
 		return this.inventory;
 	}
 
@@ -224,7 +227,7 @@ public class PlayerCharacter
 
 	public Deity getDeity()
 	{
-		return DeityAPI.getDeity(this.deity);
+		return Deity.getDeity(this.deity);
 	}
 
 	public String getAlliance()
@@ -240,11 +243,13 @@ public class PlayerCharacter
 	public void addWarp(TrackedLocation location, String name)
 	{
 		this.warps.put(location, name);
+		save(this);
 	}
 
 	public void removeWarp(TrackedLocation location)
 	{
 		this.warps.remove(location);
+		save(this);
 	}
 
 	public Map<TrackedLocation, String> getWarps()
@@ -255,21 +260,84 @@ public class PlayerCharacter
 	public void addInvite(TrackedLocation location, String name)
 	{
 		this.invites.put(location, name);
+		save(this);
 	}
 
 	public void removeInvite(TrackedLocation location)
 	{
 		this.invites.remove(location);
+		save(this);
 	}
 
 	public void clearInvites()
 	{
 		this.invites = new HashMap<TrackedLocation, String>();
+		save(this);
 	}
 
 	public Map<TrackedLocation, String> getInvites()
 	{
 		return this.invites;
+	}
+
+	/**
+	 * Returns the number of total kills.
+	 * 
+	 * @return int
+	 */
+	public int getKills()
+	{
+		return this.kills;
+	}
+
+	/**
+	 * Sets the amount of kills to <code>amount</code>.
+	 * 
+	 * @param amount the amount of kills to set to.
+	 */
+	public void setKills(int amount)
+	{
+		this.kills = amount;
+		save(this);
+	}
+
+	/**
+	 * Adds 1 kill.
+	 */
+	public void addKill()
+	{
+		this.kills += 1;
+		save(this);
+	}
+
+	/**
+	 * Returns the number of deaths.
+	 * 
+	 * @return int
+	 */
+	public int getDeaths()
+	{
+		return this.deaths;
+	}
+
+	/**
+	 * Sets the number of deaths to <code>amount</code>.
+	 * 
+	 * @param amount the amount of deaths to set.
+	 */
+	public void setDeaths(int amount)
+	{
+		this.deaths = amount;
+		save(this);
+	}
+
+	/**
+	 * Adds a death.
+	 */
+	public void addDeath()
+	{
+		this.deaths += 1;
+		save(this);
 	}
 
 	public Long getId()
@@ -281,5 +349,142 @@ public class PlayerCharacter
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	public static boolean isCooledDown(PlayerCharacter player, String ability, boolean sendMsg)
+	{
+		if(DemigodsData.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
+		{
+			if(sendMsg) player.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + ability + " has not cooled down!");
+			return false;
+		}
+		else return true;
+	}
+
+	public static void setCoolDown(PlayerCharacter player, String ability, long cooldown)
+	{
+		DemigodsData.saveTemp(player.getName(), ability + "_cooldown", cooldown);
+	}
+
+	public static long getCoolDown(PlayerCharacter player, String ability)
+	{
+		return Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString());
+	}
+
+	public static Set<PlayerCharacter> getAllChars()
+	{
+		return PlayerCharacter.loadAll();
+	}
+
+	public static PlayerCharacter getChar(Long id)
+	{
+		return PlayerCharacter.load(id);
+	}
+
+	public static PlayerCharacter getCharByName(String charName)
+	{
+		for(PlayerCharacter character : getAllChars())
+		{
+			if(character.getName().equalsIgnoreCase(charName)) return character;
+		}
+		return null;
+	}
+
+	public static Set<PlayerCharacter> getAllActive()
+	{
+		Set<PlayerCharacter> active = Sets.newHashSet();
+		for(PlayerCharacter character : getAllChars())
+		{
+			if(character.isActive()) active.add(character);
+		}
+		return active;
+	}
+
+	public static OfflinePlayer getOwner(long charID)
+	{
+		return getChar(charID).getOfflinePlayer();
+	}
+
+	/*
+	 * getDeityList() : Gets list of characters in aligned to a Deity.
+	 */
+	public static Set<PlayerCharacter> getDeityList(String deity)
+	{
+		// Define variables
+		Set<PlayerCharacter> deityList = Sets.newHashSet();
+		for(PlayerCharacter character : getAllChars())
+		{
+			if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
+		}
+		return deityList;
+	}
+
+	/*
+	 * getActiveDeityList() : Gets list of active characters in aligned to a Deity.
+	 */
+	public static Set<PlayerCharacter> getActiveDeityList(String deity)
+	{
+		// Define variables
+		Set<PlayerCharacter> deityList = Sets.newHashSet();
+		for(PlayerCharacter character : getAllActive())
+		{
+			if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
+		}
+		return deityList;
+	}
+
+	/*
+	 * getAllianceList() : Gets list of characters in an alliance.
+	 */
+	public static Set<PlayerCharacter> getAllianceList(String alliance)
+	{
+		// Define variables
+		Set<PlayerCharacter> allianceList = Sets.newHashSet();
+		for(PlayerCharacter character : getAllChars())
+		{
+			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
+		}
+		return allianceList;
+	}
+
+	/*
+	 * getActiveAllianceList() : Gets list of active characters in an alliance.
+	 */
+	public static Set<PlayerCharacter> getActiveAllianceList(String alliance)
+	{
+		// Define variables
+		Set<PlayerCharacter> allianceList = Sets.newHashSet();
+		for(PlayerCharacter character : getAllActive())
+		{
+			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
+		}
+		return allianceList;
+	}
+
+	/*
+	 * getImmortalList() : Gets list of currently immortal players.
+	 */
+	public static Set<PlayerCharacter> getImmortalList()
+	{
+		// Define variables
+		Set<PlayerCharacter> immortalList = Sets.newHashSet();
+		for(PlayerCharacter character : getAllChars())
+		{
+			if(character.isImmortal()) immortalList.add(character);
+		}
+		return immortalList;
+	}
+
+	/**
+	 * Returns true if <code>char1</code> is allied with <code>char2</code> based
+	 * on their current alliances.
+	 * 
+	 * @param char1 the first character to check.
+	 * @param char2 the second character to check.
+	 * @return boolean
+	 */
+	public static boolean areAllied(PlayerCharacter char1, PlayerCharacter char2)
+	{
+		return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
 	}
 }

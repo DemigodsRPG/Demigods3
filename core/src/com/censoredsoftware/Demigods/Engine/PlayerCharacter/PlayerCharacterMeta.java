@@ -14,7 +14,6 @@ import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
@@ -110,8 +109,7 @@ public class PlayerCharacterMeta
 
 	public void setBound(String ability, Material material)
 	{
-		// TODO None of the below should be in here, it should be in the place where the player/character can be grabbed.
-		Player player = CharacterAPI.getChar(getId()).getOfflinePlayer().getPlayer();
+		Player player = PlayerCharacter.getChar(getId()).getOfflinePlayer().getPlayer();
 		if(!bindingData.containsKey(ability))
 		{
 			if(player.getItemInHand().getType() == Material.AIR)

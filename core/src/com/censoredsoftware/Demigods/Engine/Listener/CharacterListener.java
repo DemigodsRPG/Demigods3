@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.Demigods.API.DeityAPI;
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
@@ -38,8 +38,8 @@ public class CharacterListener implements Listener
 		if(player.isOnline())
 		{
 			Player online = player.getPlayer();
-			online.setDisplayName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
-			online.setPlayerListName(DeityAPI.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 
 			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
 			online.getWorld().strikeLightningEffect(online.getLocation());

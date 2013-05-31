@@ -17,7 +17,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.API.AdminAPI;
+import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
@@ -29,6 +30,8 @@ import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class BlockListener implements Listener
@@ -37,7 +40,7 @@ public class BlockListener implements Listener
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(BlockAPI.isProtected(location))
+		if(TrackedBlock.isProtected(location))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + "That block is protected by a Deity!");
@@ -48,14 +51,14 @@ public class BlockListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(BlockAPI.isProtected(location)) event.setCancelled(true);
+		if(TrackedBlock.isProtected(location)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(BlockAPI.isProtected(location)) event.setCancelled(true);
+		if(TrackedBlock.isProtected(location)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -67,7 +70,7 @@ public class BlockListener implements Listener
 		{
 			Location location = block.getLocation();
 
-			if(BlockAPI.isProtected(location))
+			if(TrackedBlock.isProtected(location))
 			{
 				event.setCancelled(true);
 				break;
@@ -80,7 +83,7 @@ public class BlockListener implements Listener
 	{
 		final Block block = event.getBlock().getRelative(event.getDirection(), 2);
 
-		if(BlockAPI.isProtected(block.getLocation()) && event.isSticky())
+		if(TrackedBlock.isProtected(block.getLocation()) && event.isSticky())
 		{
 			event.setCancelled(true);
 		}
@@ -97,7 +100,7 @@ public class BlockListener implements Listener
 		for(Block block : blocks)
 		{
 			if(block.getType() == Material.TNT) continue;
-			if(BlockAPI.isProtected(block.getLocation()))
+			if(TrackedBlock.isProtected(block.getLocation()))
 			{
 				savedLocations.add(block.getLocation());
 				savedMaterials.add(block.getType());
@@ -142,7 +145,7 @@ public class BlockListener implements Listener
 	{
 		try
 		{
-			if(BlockAPI.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+			if(TrackedBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
 			{
 				event.setDamage(0);
 				event.setCancelled(true);
@@ -177,11 +180,11 @@ public class BlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(AdminAPI.useWand(player) && BlockAPI.isAltar(location))
+		if(AdminAPI.useWand(player) && Altar.isAltar(location))
 		{
 			event.setCancelled(true);
 
-			Altar altar = BlockAPI.getAltar(location);
+			Altar altar = Altar.getAltar(location);
 
 			if(DemigodsData.hasTimed(player.getName(), "destroy_altar"))
 			{
@@ -205,7 +208,7 @@ public class BlockListener implements Listener
 		/**
 		 * Handle Shrines
 		 */
-		if(PlayerAPI.isImmortal(player))
+		if(TrackedPlayer.isImmortal(player))
 		{
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
@@ -245,11 +248,11 @@ public class BlockListener implements Listener
 			}
 		}
 
-		if(AdminAPI.useWand(player) && BlockAPI.isShrine(location))
+		if(AdminAPI.useWand(player) && Shrine.isShrine(location))
 		{
 			event.setCancelled(true);
 
-			Shrine shrine = BlockAPI.getShrine(location);
+			Shrine shrine = Shrine.getShrine(location);
 
 			if(DemigodsData.hasTimed(player.getName(), "destroy_shrine"))
 			{
@@ -286,7 +289,7 @@ public class BlockListener implements Listener
 		/**
 		 * Entering Altar
 		 */
-		if(ZoneAPI.enterZoneAltar(to, from) && !LocationAPI.hasWarp(ZoneAPI.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
+		if(ZoneAPI.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneAPI.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
 			player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
 			return;

@@ -186,9 +186,9 @@ public class ZoneAPI
 	 */
 	public static Shrine zoneShrine(Location location)
 	{
-		if(BlockAPI.getAllShrines() == null) return null;
+		if(Shrine.getAllShrines() == null) return null;
 
-		for(Shrine shrine : BlockAPI.getAllShrines())
+		for(Shrine shrine : Shrine.getAllShrines())
 		{
 			if(location.getWorld() != shrine.getLocation().getWorld()) continue;
 			if(location.distance(shrine.getLocation()) <= SHRINE_RADIUS) return shrine;
@@ -204,9 +204,9 @@ public class ZoneAPI
 	 */
 	public static long zoneShrineOwner(Location location)
 	{
-		if(BlockAPI.getAllShrines() == null) return -1;
+		if(Shrine.getAllShrines() == null) return -1;
 
-		for(Shrine shrine : BlockAPI.getAllShrines())
+		for(Shrine shrine : Shrine.getAllShrines())
 		{
 			if(shrine.getLocation().equals(location)) return shrine.getCharacter().getId();
 		}
@@ -245,9 +245,9 @@ public class ZoneAPI
 	 */
 	public static Altar zoneAltar(Location location)
 	{
-		if(BlockAPI.getAllAltars() == null) return null;
+		if(Altar.getAllAltars() == null) return null;
 
-		for(Altar altar : BlockAPI.getAllAltars())
+		for(Altar altar : Altar.getAllAltars())
 		{
 			if(location.getWorld() != altar.getLocation().getWorld()) continue;
 			if(location.distance(altar.getLocation()) <= ALTAR_RADIUS) return altar;

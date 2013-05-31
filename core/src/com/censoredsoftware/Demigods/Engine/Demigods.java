@@ -20,7 +20,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
-import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.API.AdminAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -31,6 +31,7 @@ import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Modules.ConfigModule;
@@ -95,7 +96,7 @@ public class Demigods
 		loadCommands(instance);
 
 		// Finally, regenerate structures
-		BlockAPI.regenerateStructures();
+		TrackedBlock.regenerateStructures();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)
@@ -299,9 +300,9 @@ class EventFactory implements Listener
 					Player attacker = (Player) damager;
 					PlayerCharacter attackChar = null;
 					if(TrackedPlayer.getTracked(attacker).getCurrent() != null) attackChar = TrackedPlayer.getTracked(attacker).getCurrent();
-					if(PlayerAPI.areAllied(attacker, player))
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar))
 					{
-						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerAPI.getCurrentAlliance(player)));
+						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, TrackedPlayer.getCurrentAlliance(player)));
 					}
 					else
 					{
@@ -375,7 +376,7 @@ class Commands implements CommandExecutor
 		if(!Demigods.permission.hasPermissionOrOP(player, "demigods.basic")) return Demigods.message.noPermission(player);
 
 		Demigods.message.tagged(sender, "Documentation");
-		for(String alliance : DeityAPI.getLoadedDeityAlliances())
+		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
 		}
@@ -492,19 +493,19 @@ class Commands implements CommandExecutor
 			}
 		}
 
-		for(String alliance : DeityAPI.getLoadedDeityAlliances())
+		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			if(category.equalsIgnoreCase(alliance))
 			{
 				if(args.length < 2)
 				{
 					Demigods.message.tagged(sender, alliance + " Directory");
-					for(Deity deity : DeityAPI.getAllDeitiesInAlliance(alliance))
+					for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 						sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 				}
 				else
 				{
-					for(final Deity deity : DeityAPI.getAllDeitiesInAlliance(alliance))
+					for(final Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 					{
 						assert option1 != null;
 						if(option1.equalsIgnoreCase(deity.getInfo().getName()))
@@ -612,7 +613,7 @@ class Commands implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final List<PlayerCharacter> chars = PlayerAPI.getChars(toCheck);
+					final List<PlayerCharacter> chars = TrackedPlayer.getChars(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
@@ -877,8 +878,8 @@ class Commands implements CommandExecutor
 		}
 
 		// Define variables
-		int kills = PlayerAPI.getKills(player);
-		int deaths = PlayerAPI.getDeaths(player);
+		int kills = character.getKills();
+		int deaths = character.getDeaths();
 		// int killstreak = character.getKillstreak();
 		String charName = character.getName();
 		String deity = character.getDeity().getInfo().getName();
@@ -937,7 +938,7 @@ class Commands implements CommandExecutor
 			return true;
 		}
 
-		PlayerCharacter charToCheck = CharacterAPI.getCharByName(args[0]);
+		PlayerCharacter charToCheck = PlayerCharacter.getCharByName(args[0]);
 
 		if(charToCheck.getName() == null)
 		{
@@ -958,19 +959,19 @@ class Commands implements CommandExecutor
 	{
 		try
 		{
-			if(!CharacterAPI.getAllChars().isEmpty())
+			if(!PlayerCharacter.getAllChars().isEmpty())
 			{
 				sender.sendMessage(" ");
 				sender.sendMessage("-- Characters ---------------");
 				sender.sendMessage(" ");
 
-				for(PlayerCharacter character : CharacterAPI.getAllChars())
+				for(PlayerCharacter character : PlayerCharacter.getAllChars())
 				{
 					sender.sendMessage(character.getName() + ": " + character.getDeity().getInfo().getName());
 				}
 			}
 
-			if(BlockAPI.getAllBlocks().isEmpty())
+			if(TrackedBlock.getAllBlocks().isEmpty())
 			{
 				sender.sendMessage(" ");
 				sender.sendMessage("-- Blocks -------------------");
@@ -983,7 +984,7 @@ class Commands implements CommandExecutor
 			sender.sendMessage("-- Altars -------------------");
 			sender.sendMessage(" ");
 
-			for(Altar altar : BlockAPI.getAllAltars())
+			for(Altar altar : Altar.getAllAltars())
 			{
 				sender.sendMessage(altar.getId() + ":");
 				sender.sendMessage(" -> Active: " + altar.isActive());
@@ -1011,7 +1012,7 @@ class Commands implements CommandExecutor
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		String charName = args[0];
 
-		if(PlayerAPI.hasCharName(player, charName))
+		if(TrackedPlayer.hasCharName(player, charName))
 		{
 			PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
 			character.delete();

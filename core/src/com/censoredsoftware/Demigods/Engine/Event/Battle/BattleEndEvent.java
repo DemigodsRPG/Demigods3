@@ -7,11 +7,11 @@ import org.bukkit.event.HandlerList;
 public class BattleEndEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
-	private int battleID;
+	private long battleID;
 	private Long endTime;
 	private boolean cancelled = false;
 
-	public BattleEndEvent(final int battleID, final Long endTime)
+	public BattleEndEvent(final long battleID, final Long endTime)
 	{
 		this.battleID = battleID;
 		this.endTime = endTime;
@@ -20,7 +20,7 @@ public class BattleEndEvent extends Event implements Cancellable
 	/*
 	 * getID() : Gets the battleID.
 	 */
-	public int getID()
+	public long getID()
 	{
 		return this.battleID;
 	}

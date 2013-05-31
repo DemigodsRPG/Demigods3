@@ -1,7 +1,9 @@
 package com.censoredsoftware.Demigods.Demo.Data.Deity.God;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,19 +18,20 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.google.common.collect.Sets;
 
 public class Zeus extends Deity
 {
 	private static String name = "Zeus", alliance = "God";
 	private static ChatColor color = ChatColor.YELLOW;
-	private static List<Material> claimItems = new ArrayList<Material>()
+	private static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
@@ -49,7 +52,7 @@ public class Zeus extends Deity
 		}
 	};
 	private static Type type = Type.DEMO;
-	private static List<Ability> abilities = new ArrayList<Ability>()
+	private static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new NoFall());
@@ -71,7 +74,7 @@ public class Zeus extends Deity
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!ZoneAPI.canTarget(target)) return false;
-		Location toHit = AbilityAPI.aimLocation(character, target.getLocation());
+		Location toHit = Ability.aimLocation(character, target.getLocation());
 
 		player.getWorld().strikeLightningEffect(toHit);
 
@@ -81,11 +84,11 @@ public class Zeus extends Deity
 			{
 				if(!ZoneAPI.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
-				if(livingEntity.getLocation().distance(toHit) < 2) MiscAPI.customDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
+				if(livingEntity.getLocation().distance(toHit) < 2) Ability.customDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
 			}
 		}
 
-		if(!AbilityAPI.isHit(target, toHit))
+		if(!Ability.isHit(target, toHit))
 		{
 			player.sendMessage(ChatColor.RED + "Missed...");
 		}
@@ -113,17 +116,17 @@ class Shove extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					shove(player);
 				}
@@ -138,13 +141,13 @@ class Shove extends Ability
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		int devotion = character.getMeta().getDevotion();
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
-		LivingEntity target = AbilityAPI.autoTarget(player);
+		LivingEntity target = Ability.autoTarget(player);
 
-		if(!AbilityAPI.doAbilityPreProcess(player, target, "shove", cost, type)) return;
-		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		if(!Ability.doAbilityPreProcess(player, target, "shove", cost, type)) return;
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!AbilityAPI.targeting(player, target)) return;
+		if(!Ability.targeting(player, target)) return;
 
 		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
@@ -172,17 +175,17 @@ class Lightning extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					lightning(player);
 				}
@@ -194,10 +197,10 @@ class Lightning extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		LivingEntity target = AbilityAPI.autoTarget(player);
+		LivingEntity target = Ability.autoTarget(player);
 
-		if(!AbilityAPI.doAbilityPreProcess(player, target, "lightning", cost, type)) return;
-		CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + delay);
+		if(!Ability.doAbilityPreProcess(player, target, "lightning", cost, type)) return;
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
 		Zeus.strikeLightning(player, target);
@@ -223,22 +226,22 @@ class Storm extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!AbilityAPI.isClick(interactEvent)) return;
+				if(!Ability.isClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-				if(!MiscAPI.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!CharacterAPI.isCooledDown(player, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
 					storm(player);
 
 					int cooldownMultiplier = (int) (cooldownMax - ((cooldownMax - cooldownMin) * ((double) character.getMeta().getAscensions() / 100)));
-					CharacterAPI.setCoolDown(player, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+					PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}
 		});
@@ -247,21 +250,23 @@ class Storm extends Ability
 	public static int storm(Player player)
 	{
 		// Define variables
-		ArrayList<Entity> entityList = new ArrayList<Entity>();
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
 		for(Entity anEntity : player.getWorld().getEntities())
-			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entityList.add(anEntity);
+			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
 
 		int count = 0;
-		for(Entity entity : entityList)
+		for(Entity entity : entitySet)
 		{
 			try
 			{
 				if(entity instanceof Player)
 				{
 					Player otherPlayer = (Player) entity;
-					if(!PlayerAPI.areAllied(player, otherPlayer) && !otherPlayer.equals(player))
+					PlayerCharacter otherChar = TrackedPlayer.getTracked(otherPlayer).getCurrent();
+					if(otherChar != null && !PlayerCharacter.areAllied(character, otherChar) && !otherPlayer.equals(player))
 					{
 						if(Zeus.strikeLightning(player, otherPlayer)) count++;
 						Zeus.strikeLightning(player, otherPlayer);
@@ -306,7 +311,7 @@ class NoFall extends Ability
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
-					if(!MiscAPI.canUseDeitySilent(player, name)) return;
+					if(!Deity.canUseDeitySilent(player, name)) return;
 
 					// If the player receives falling damage, cancel it
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) damageEvent.setCancelled(true);

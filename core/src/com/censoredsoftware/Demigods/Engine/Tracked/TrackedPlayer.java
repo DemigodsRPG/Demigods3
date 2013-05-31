@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,8 +12,6 @@ import redis.clients.johm.Id;
 import redis.clients.johm.Indexed;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -122,7 +119,7 @@ public class TrackedPlayer
 		}
 
 		// Update their inventory
-		if(PlayerAPI.getChars(player).size() == 1) newChar.saveInventory();
+		if(getChars(player).size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health and experience
@@ -132,9 +129,9 @@ public class TrackedPlayer
 		player.setLevel(newChar.getLevel());
 
 		// Disable prayer, re-enabled movement, etc. just to be safe
-		PlayerAPI.togglePraying(player, false);
-		PlayerAPI.togglePlayerChat(player, true);
-		PlayerAPI.togglePlayerMovement(player, true);
+		togglePraying(player, false);
+		togglePlayerChat(player, true);
+		togglePlayerMovement(player, true);
 
 		// Set new character to active
 		newChar.setActive(true);
@@ -157,16 +154,203 @@ public class TrackedPlayer
 
 	public PlayerCharacter getCurrent()
 	{
-		return CharacterAPI.getChar(this.current);
+		return PlayerCharacter.getChar(this.current);
 	}
 
 	public PlayerCharacter getPrevious()
 	{
-		return CharacterAPI.getChar(this.previous);
+		return PlayerCharacter.getChar(this.previous);
 	}
 
 	public List<PlayerCharacter> getCharacters()
 	{
 		return DemigodsData.jOhm.find(PlayerCharacter.class, "player", this.player);
+	}
+
+	/**
+	 * Returns the current alliance for <code>player</code>.
+	 * 
+	 * @param player the player to check.
+	 * @return String
+	 */
+	public static String getCurrentAlliance(OfflinePlayer player)
+	{
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		if(character == null || !character.isImmortal()) return "Mortal";
+		return character.getAlliance();
+	}
+
+	/**
+	 * Returns a List of all of <code>player</code>'s characters.
+	 * 
+	 * @param player the player to check.
+	 * @return List the list of all character IDs.
+	 */
+	public static List<PlayerCharacter> getChars(OfflinePlayer player)
+	{
+		return TrackedPlayer.getTracked(player).getCharacters();
+	}
+
+	/**
+	 * Returns true if the <code>player</code> is currently immortal.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean isImmortal(OfflinePlayer player)
+	{
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		return character != null && character.isImmortal();
+	}
+
+	/**
+	 * Returns true if <code>player</code> has a character with the id <code>charID</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param charID the charID to check with.
+	 * @return boolean
+	 */
+	public static boolean hasCharID(OfflinePlayer player, int charID)
+	{
+		return getChars(player) != null && getChars(player).contains(charID);
+	}
+
+	/**
+	 * Returns true if <code>player</code> has a character with the name <code>charName</code>.
+	 * 
+	 * @param player the player to check.
+	 * @param charName the charName to check with.
+	 * @return boolean
+	 */
+	public static boolean hasCharName(OfflinePlayer player, String charName)
+	{
+		final List<PlayerCharacter> characters = getChars(player);
+
+		for(PlayerCharacter character : characters)
+		{
+			if(character == null) continue;
+			if(character.getName().equalsIgnoreCase(charName)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if the <code>player</code> is currently praying.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean isPraying(OfflinePlayer player)
+	{
+		try
+		{
+			return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_praying").toString());
+		}
+		catch(Exception ignored)
+		{}
+		return false;
+	}
+
+	/**
+	 * Returns an ArrayList of all online admins.
+	 * 
+	 * @return ArrayList
+	 */
+	public static ArrayList<Player> getOnlineAdmins() // TODO Does this belong here?
+	{
+		ArrayList<Player> toReturn = new ArrayList<Player>();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) toReturn.add(player);
+		}
+		return toReturn;
+	}
+
+	/**
+	 * Returns an ArrayList of all online players.
+	 * 
+	 * @return ArrayList
+	 */
+	public static Set<Player> getOnlinePlayers() // TODO Is this even needed?
+	{
+		Set<Player> toReturn = new HashSet<Player>();
+		Collections.addAll(toReturn, Bukkit.getOnlinePlayers());
+		return toReturn;
+	}
+
+	/**
+	 * Returns an ArrayList of all offline players.
+	 * 
+	 * @return ArrayList
+	 */
+	public static Set<OfflinePlayer> getOfflinePlayers() // TODO Is this even needed?
+	{
+		Set<OfflinePlayer> toReturn = getAllPlayers();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			toReturn.remove(player);
+		}
+		return toReturn;
+	}
+
+	/**
+	 * Returns an ArrayList of all players, offline and online.
+	 * 
+	 * @return ArrayList
+	 */
+	public static Set<OfflinePlayer> getAllPlayers()
+	{
+		Set<OfflinePlayer> toReturn = new HashSet<OfflinePlayer>();
+		for(TrackedPlayer player : TrackedPlayer.loadAll())
+		{
+			toReturn.add(player.getOfflinePlayer());
+		}
+		return toReturn;
+	}
+
+	/**
+	 * Changes prayer status for <code>player</code> to <code>option</code>.
+	 * 
+	 * @param player the player the manipulate.
+	 * @param option the boolean to set to.
+	 */
+	public static void togglePraying(OfflinePlayer player, boolean option)
+	{
+		if(option)
+		{
+			togglePlayerChat(player, false);
+			togglePlayerMovement(player, false);
+			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
+		}
+		else
+		{
+			togglePlayerChat(player, true);
+			togglePlayerMovement(player, true);
+			DemigodsData.removeTemp(player.getName(), "temp_praying");
+		}
+	}
+
+	/**
+	 * Enables or disables player movement for <code>player</code> based on <code>option</code>.
+	 * 
+	 * @param player the player to manipulate.
+	 * @param option the boolean to set to.
+	 */
+	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
+	{
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
+		else DemigodsData.saveTemp(player.getName(), "temp_player_hold", true);
+	}
+
+	/**
+	 * Enables or disables player chat for <code>player</code> based on <code>option</code>.
+	 * 
+	 * @param player the player to manipulate.
+	 * @param option the boolean to set to.
+	 */
+	public static void togglePlayerChat(OfflinePlayer player, boolean option)
+	{
+		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
+		else DemigodsData.saveTemp(player.getName(), "temp_no_chat", true);
 	}
 }

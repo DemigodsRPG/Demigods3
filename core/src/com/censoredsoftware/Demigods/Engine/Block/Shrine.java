@@ -10,11 +10,10 @@ import org.bukkit.block.Block;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.API.CharacterAPI;
-import com.censoredsoftware.Demigods.API.DeityAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -97,12 +96,12 @@ public class Shrine
 
 	public PlayerCharacter getCharacter()
 	{
-		return CharacterAPI.getChar(this.owner);
+		return PlayerCharacter.getChar(this.owner);
 	}
 
 	public Deity getDeity()
 	{
-		return DeityAPI.getDeity(this.deity);
+		return Deity.getDeity(this.deity);
 	}
 
 	public Location getLocation()
@@ -197,5 +196,43 @@ public class Shrine
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	/**
+	 * Returns all Shrines as an ArrayList.
+	 * 
+	 * @return the HashSet of Shrines.
+	 */
+	public static Set<Shrine> getAllShrines()
+	{
+		return Shrine.loadAll();
+	}
+
+	/**
+	 * Returns true if the block at the passed in <code>location</code> is a Shrine.
+	 * 
+	 * @param location the location to check.
+	 * @return true/false depending on if the block is an Shrine or not.
+	 */
+	public static boolean isShrine(Location location)
+	{
+		return getShrine(location) != null;
+	}
+
+	/**
+	 * Returns the Shrine at the <code>location</code>.
+	 * 
+	 * @param location the location to check.
+	 * @return the Shrine at <code>location</code>.
+	 */
+	public static Shrine getShrine(Location location)
+	{
+		for(Shrine shrine : getAllShrines())
+		{
+			Location shrineLocation = shrine.getLocation();
+			if(!shrineLocation.getChunk().isLoaded() || !shrineLocation.getWorld().equals(location.getWorld())) continue;
+			if(shrine.getBlocks().contains(new ComparableLocation(location))) return shrine;
+		}
+		return null;
 	}
 }
