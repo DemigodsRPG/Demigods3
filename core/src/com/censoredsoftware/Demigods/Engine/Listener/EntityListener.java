@@ -71,7 +71,7 @@ public class EntityListener implements Listener
 
 				TrackedBattle.battleProcess(hitChar, hittingChar);
 
-				if(event.getDamage() > ((Player) attacked).getHealth()) hittingChar.addKill();
+				if(((Player) attacked).getHealth() - event.getDamage() <= 0) hittingChar.addKill();
 			}
 		}
 	}
