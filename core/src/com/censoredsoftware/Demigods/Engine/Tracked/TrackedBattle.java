@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +17,7 @@ import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.google.common.collect.Sets;
 
 @Model
 public class TrackedBattle
@@ -405,8 +405,8 @@ public class TrackedBattle
 				}
 
 				// Add all involved locations and characters from both other events
-				ArrayList<PlayerCharacter> characters = new ArrayList<PlayerCharacter>();
-				ArrayList<TrackedLocation> locations = new ArrayList<TrackedLocation>();
+				Set<PlayerCharacter> characters = Sets.newHashSet();
+				Set<TrackedLocation> locations = Sets.newHashSet();
 
 				// TrackedBattle
 				for(PlayerCharacter character : battle.getInvolvedCharacters())
@@ -429,8 +429,9 @@ public class TrackedBattle
 				}
 
 				// Overwrite data in the new combined battle // TODO Fix this.
-				// combinedBattle.overwriteCharIDs(charIDs);
-				// combinedBattle.overwriteLocations(locations);
+				combinedBattle.setInvolvedCharacters(characters);
+				combinedBattle.setInvolvedLocations(locations);
+				save(combinedBattle);
 			}
 		}
 	}
