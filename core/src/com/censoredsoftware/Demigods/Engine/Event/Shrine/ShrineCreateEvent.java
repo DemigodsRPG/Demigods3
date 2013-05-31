@@ -14,29 +14,23 @@ public class ShrineCreateEvent extends Event implements Cancellable
 {
 	private static final HandlerList handlers = new HandlerList();
 	private PlayerCharacter owner;
-	private Location block;
+	private Location location;
 	private boolean cancelled = false;
 
-	public ShrineCreateEvent(final PlayerCharacter owner, final Location block)
+	public ShrineCreateEvent(final PlayerCharacter owner, final Location location)
 	{
 		this.owner = owner;
-		this.block = block;
+		this.location = location;
 	}
 
-	/*
-	 * getOfflinePlayer() : Gets the character/owner.
-	 */
-	public PlayerCharacter getOwner()
+	public PlayerCharacter getCharacter()
 	{
 		return this.owner;
 	}
 
-	/*
-	 * getLocation() : Gets the Shrine's location.
-	 */
 	public Location getLocation()
 	{
-		return this.block;
+		return this.location;
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,16 +14,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.AdminAPI;
 import com.censoredsoftware.Demigods.API.BlockAPI;
 import com.censoredsoftware.Demigods.API.PlayerAPI;
 import com.censoredsoftware.Demigods.API.ValueAPI;
-import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
@@ -93,81 +89,14 @@ class Tribute extends Task
 			Location location = event.getClickedBlock().getLocation();
 			Player player = event.getPlayer();
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-			String charAlliance = character.getAlliance();
-			Deity charDeity = character.getDeity();
 
-			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && charDeity.getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && validBlockConfiguration(event.getClickedBlock()))
-			{
-				try
-				{
-					// Shrine created!
-					ShrineCreateEvent shrineCreateEvent = new ShrineCreateEvent(character, location);
-					Bukkit.getServer().getPluginManager().callEvent(shrineCreateEvent);
-					if(shrineCreateEvent.isCancelled()) return;
-
-					BlockFactory.createShrine(character, location);
-					location.getWorld().strikeLightningEffect(location);
-
-					if(!player.getGameMode().equals(GameMode.CREATIVE))
-					{
-						if(player.getItemInHand().getAmount() > 1)
-						{
-							ItemStack books = new ItemStack(player.getItemInHand().getType(), player.getInventory().getItemInHand().getAmount() - 1);
-							player.setItemInHand(books);
-						}
-						else
-						{
-							player.getInventory().remove(Material.BOOK);
-						}
-					}
-
-					player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + charAlliance + "s" + ChatColor.GRAY + " are pleased...");
-					player.sendMessage(ChatColor.GRAY + "You have created a Shrine in the name of " + ChatColor.YELLOW + charDeity + ChatColor.GRAY + "!");
-				}
-				catch(Exception e)
-				{
-					// Creation of shrine failed...
-					e.printStackTrace();
-				}
-			}
-			else if(BlockAPI.isShrine(location))
+			if(BlockAPI.isShrine(location))
 			{
 				// Cancel the interaction
 				event.setCancelled(true);
 
 				// Define the shrine
 				Shrine shrine = BlockAPI.getShrine(location);
-
-				// TODO: This should probably be somewhere else entirely.
-				// Handle admin wand
-				if(AdminAPI.useWand(player)) // TODO TimedObject data.
-				{
-					// if(API.data.hasTimedData(player, "temp_destroy_shrine"))
-					// {
-					// Shrine shrine = BlockAPI.getShrine(location);
-					//
-					// ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getOfflinePlayer(), location);
-					// Bukkit.getServer().getPluginManager().callEvent(shrineRemoveEvent);
-					// if(shrineRemoveEvent.isCancelled()) return;
-					//
-					// // We can destroy the Shrine
-					// BlockAPI.getShrine(location).remove();
-					// DemigodsData.tempPlayerData.removeData(player, "temp_destroy_shrine");
-					//
-					// // Drop the block of gold and book
-					// location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_BLOCK, 1));
-					// location.getWorld().dropItemNaturally(location, new ItemStack(Material.BOOK, 1));
-					//
-					// player.sendMessage(ChatColor.GREEN + "Shrine removed!");
-					// return;
-					// }
-					// else
-					// {
-					// API.data.saveTimedData(player, "temp_destroy_shrine", true, 5);
-					// player.sendMessage(ChatColor.RED + "Right-click this Shrine again to remove it.");
-					// return;
-					// }
-				}
 
 				// Return if they aren't clicking the gold block
 				if(!event.getClickedBlock().getType().equals(Material.GOLD_BLOCK)) return;
@@ -270,27 +199,13 @@ class Tribute extends Task
 	private static void useShrine(PlayerCharacter character, Shrine shrine)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
-		String shrineOwner = shrine.getOwner().getName();
+		String shrineOwner = shrine.getCharacter().getName();
 		Deity shrineDeity = shrine.getDeity();
 
 		// Open the tribute inventory
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 		player.openInventory(ii);
 		DemigodsData.saveTemp(player.getName(), character.getName(), shrineOwner);
-	}
-
-	private static boolean validBlockConfiguration(Block block)
-	{
-		if(!block.getType().equals(Material.IRON_BLOCK)) return false;
-		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(1, 0, 1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(1, 0, -1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(-1, 0, 1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(-1, 0, -1).getType().equals(Material.AIR)) return false;
-		return true;
 	}
 
 	public Tribute(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)

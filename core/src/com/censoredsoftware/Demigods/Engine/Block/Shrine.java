@@ -6,6 +6,7 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 
 import redis.clients.johm.*;
 
@@ -84,7 +85,7 @@ public class Shrine
 	{
 		for(TrackedBlock block : this.blocks)
 		{
-			block.remove();
+			if(block != null) block.remove();
 		}
 		delete();
 	}
@@ -94,7 +95,7 @@ public class Shrine
 		return this.id;
 	}
 
-	public PlayerCharacter getOwner()
+	public PlayerCharacter getCharacter()
 	{
 		return CharacterAPI.getChar(this.owner);
 	}
@@ -118,6 +119,20 @@ public class Shrine
 	{
 		if(this.blocks == null) return new HashSet<TrackedBlock>();
 		else return this.blocks;
+	}
+
+	public static boolean validBlockConfiguration(Block block)
+	{
+		if(!block.getType().equals(Material.IRON_BLOCK)) return false;
+		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(1, 0, 1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(1, 0, -1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(-1, 0, 1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(-1, 0, -1).getType().equals(Material.AIR)) return false;
+		return true;
 	}
 
 	public static synchronized void generate(Shrine shrine, Location location)

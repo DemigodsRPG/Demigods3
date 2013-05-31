@@ -208,7 +208,7 @@ public class ZoneAPI
 
 		for(Shrine shrine : BlockAPI.getAllShrines())
 		{
-			if(shrine.getLocation().equals(location)) return shrine.getOwner().getId();
+			if(shrine.getLocation().equals(location)) return shrine.getCharacter().getId();
 		}
 		return -1;
 	}

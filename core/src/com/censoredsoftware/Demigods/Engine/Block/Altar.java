@@ -64,7 +64,7 @@ public class Altar
 	{
 		for(TrackedBlock block : this.blocks)
 		{
-			block.remove();
+			if(block != null) block.remove();
 		}
 		delete();
 	}

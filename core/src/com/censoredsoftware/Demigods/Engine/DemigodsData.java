@@ -92,6 +92,16 @@ public class DemigodsData
 		TimedData.save(timedData);
 	}
 
+	public static void removeTimed(String key, String subKey)
+	{
+		TimedData.remove(key, subKey);
+	}
+
+	public static boolean hasTimed(String key, String subKey)
+	{
+		return TimedData.find(key, subKey) != null;
+	}
+
 	public static Object getTimedValue(String key, String subKey)
 	{
 		return TimedData.find(key, subKey).getData();

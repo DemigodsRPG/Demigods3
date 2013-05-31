@@ -61,11 +61,11 @@ public class TrackedModelFactory
 
 		TrackedBlock trackedBlock = new TrackedBlock();
 		trackedBlock.setLocation(trackedLocation);
+		trackedBlock.setPreviousMaterial(Material.getMaterial(location.getBlock().getTypeId()));
+		trackedBlock.setPreviousMaterialByte(location.getBlock().getData());
 		trackedBlock.setType(type);
 		trackedBlock.setMaterial(material);
 		trackedBlock.setMaterialByte(matByte);
-		trackedBlock.setPreviousMaterial(Material.getMaterial(location.getBlock().getTypeId()));
-		trackedBlock.setPreviousMaterialByte(location.getBlock().getData());
 		location.getBlock().setType(material);
 		location.getBlock().setData(matByte);
 		TrackedBlock.save(trackedBlock);

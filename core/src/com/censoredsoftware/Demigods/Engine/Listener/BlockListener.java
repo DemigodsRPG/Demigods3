@@ -3,10 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -18,16 +15,20 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.AdminAPI;
-import com.censoredsoftware.Demigods.API.BlockAPI;
-import com.censoredsoftware.Demigods.API.LocationAPI;
-import com.censoredsoftware.Demigods.API.ZoneAPI;
+import com.censoredsoftware.Demigods.API.*;
+import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
+import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineRemoveEvent;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class BlockListener implements Listener
@@ -161,39 +162,113 @@ public class BlockListener implements Listener
 		Location location = clickedBlock.getLocation();
 		Player player = event.getPlayer();
 
-		// Return if the player does not qualify for use of the admin wand
-		if(!AdminAPI.useWand(player)) return;
-
-		if(clickedBlock.getType().equals(Material.EMERALD_BLOCK))
+		/**
+		 * Handle Altars
+		 */
+		if(AdminAPI.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
+			event.setCancelled(true);
+
 			AltarCreateEvent altarEvent = new AltarCreateEvent(location, AltarCreateCause.ADMIN_WAND);
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			BlockFactory.createAltar(location); // TODO Should this be here?
+			BlockFactory.createAltar(location);
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(BlockAPI.isAltar(location))
+		if(AdminAPI.useWand(player) && BlockAPI.isAltar(location))
 		{
-			if(false) // TODO: Timed Data.
+			event.setCancelled(true);
+
+			Altar altar = BlockAPI.getAltar(location);
+
+			if(DemigodsData.hasTimed(player.getName(), "destroy_altar"))
 			{
 				AltarRemoveEvent altarRemoveEvent = new AltarRemoveEvent(location, AltarRemoveEvent.AltarRemoveCause.ADMIN_WAND);
 				Bukkit.getServer().getPluginManager().callEvent(altarRemoveEvent);
 				if(altarRemoveEvent.isCancelled()) return;
 
-				// We can destroy the Altar
-				BlockAPI.getAltar(location).remove();
-				// DemigodsData.timedAltarData.remove(player);
-				// Save Protected Blocks
-				// DemigodsData.altarFile.save(DemigodsData.altarData);
+				// Remove the Altar
+				altar.remove();
+				DemigodsData.removeTimed(player.getName(), "destroy_altar");
 
 				player.sendMessage(ChatColor.GREEN + "Altar removed!");
 			}
 			else
 			{
-				// DemigodsData.timedAltarData.add(player, System.currentTimeMillis() + 5000);
+				DemigodsData.saveTimed(player.getName(), "destroy_altar", true, 5);
 				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+			}
+		}
+
+		/**
+		 * Handle Shrines
+		 */
+		if(PlayerAPI.isImmortal(player))
+		{
+			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+
+			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Shrine.validBlockConfiguration(event.getClickedBlock()))
+			{
+				try
+				{
+					// Shrine created!
+					ShrineCreateEvent shrineCreateEvent = new ShrineCreateEvent(character, location);
+					Bukkit.getServer().getPluginManager().callEvent(shrineCreateEvent);
+					if(shrineCreateEvent.isCancelled()) return;
+
+					BlockFactory.createShrine(character, location);
+					location.getWorld().strikeLightningEffect(location);
+
+					if(!player.getGameMode().equals(GameMode.CREATIVE))
+					{
+						if(player.getItemInHand().getAmount() > 1)
+						{
+							ItemStack books = new ItemStack(player.getItemInHand().getType(), player.getInventory().getItemInHand().getAmount() - 1);
+							player.setItemInHand(books);
+						}
+						else
+						{
+							player.getInventory().remove(Material.BOOK);
+						}
+					}
+
+					player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY + " are pleased...");
+					player.sendMessage(ChatColor.GRAY + "You have created a Shrine in the name of " + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY + "!");
+				}
+				catch(Exception e)
+				{
+					// Creation of shrine failed...
+					e.printStackTrace();
+				}
+			}
+		}
+
+		if(AdminAPI.useWand(player) && BlockAPI.isShrine(location))
+		{
+			event.setCancelled(true);
+
+			Shrine shrine = BlockAPI.getShrine(location);
+
+			if(DemigodsData.hasTimed(player.getName(), "destroy_shrine"))
+			{
+				ShrineRemoveEvent shrineRemoveEvent = new ShrineRemoveEvent(shrine.getCharacter(), location);
+				Bukkit.getServer().getPluginManager().callEvent(shrineRemoveEvent);
+				if(shrineRemoveEvent.isCancelled()) return;
+
+				// Remove the Shrine
+				shrine.remove();
+				DemigodsData.removeTimed(player.getName(), "destroy_shrine");
+
+				player.sendMessage(ChatColor.GREEN + "Shrine removed!");
+				return;
+			}
+			else
+			{
+				DemigodsData.saveTimed(player.getName(), "destroy_shrine", true, 5);
+				player.sendMessage(ChatColor.RED + "Right-click this Shrine again to remove it.");
+				return;
 			}
 		}
 	}

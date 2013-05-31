@@ -82,7 +82,7 @@ public class TrackedBlock
 
 	public void remove()
 	{
-		getLocation().getBlock().setTypeIdAndData((byte) this.previousMaterial, (byte) this.previousMaterialByte, true);
+		getLocation().getBlock().setTypeIdAndData(this.previousMaterial, (byte) this.previousMaterialByte, true);
 		DemigodsData.jOhm.delete(TrackedBlock.class, getId());
 	}
 

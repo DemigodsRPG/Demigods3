@@ -51,7 +51,7 @@ public class DebugListener implements Listener
 	public void onShrineCreation(ShrineCreateEvent event)
 	{
 		Location location = event.getLocation();
-		PlayerCharacter owner = event.getOwner();
+		PlayerCharacter owner = event.getCharacter();
 
 		// Send debug
 		AdminAPI.sendDebug(ChatColor.RED + "Shrine created by " + owner.getName() + " (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
@@ -61,7 +61,7 @@ public class DebugListener implements Listener
 	public void onShrineRemove(ShrineRemoveEvent event)
 	{
 		Location location = event.getLocation();
-		PlayerCharacter owner = event.getOwner();
+		PlayerCharacter owner = event.getCharacter();
 
 		// Send debug
 		AdminAPI.sendDebug(ChatColor.RED + "Shrine at (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");

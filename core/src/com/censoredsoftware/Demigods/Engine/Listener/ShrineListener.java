@@ -135,7 +135,7 @@ public class ShrineListener implements Listener
 			Shrine shrine = BlockAPI.getShrine(location);
 			if(shrine == null) return;
 
-			String shrineOwner = shrine.getOwner().getName();
+			String shrineOwner = shrine.getCharacter().getName();
 			Deity shrineDeity = shrine.getDeity();
 
 			if(BlockAPI.isShrine(location))
