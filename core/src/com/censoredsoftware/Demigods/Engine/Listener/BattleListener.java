@@ -3,18 +3,15 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
-import com.google.common.base.Joiner;
 
 public class BattleListener implements Listener
 {
@@ -41,12 +38,12 @@ public class BattleListener implements Listener
 	{
 		long battleID = event.getID();
 		TrackedBattle battle = TrackedBattle.getBattle(battleID);
-		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + battle.getWhoStarted().getName() + ChatColor.YELLOW + " has ended.");
+		// Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle started by " + ChatColor.GREEN + battle.getWhoStarted().getName() + ChatColor.YELLOW + " has ended.");
 		Set<PlayerCharacter> chars = battle.getInvolvedCharacters();
 		Set<String> charNames = new HashSet<String>();
 		for(PlayerCharacter character : chars)
 			charNames.add(character.getName());
-		Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle involved: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
+		// Demigods.message.broadcast(ChatColor.RED + "BETA: " + ChatColor.YELLOW + "The battle involved: " + ChatColor.AQUA + Joiner.on(", ").join(charNames) + ChatColor.YELLOW + ".");
 	}
 
 	// TODO Fix this.
