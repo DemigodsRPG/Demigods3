@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
@@ -66,13 +67,14 @@ class TutorialTask extends Task
 		private void onPlayerJoin(PlayerJoinEvent event)
 		{
 			Player player = event.getPlayer();
-			if(player.hasPlayedBefore()) return;
 
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, name);
 			Demigods.message.tagged(player, "Use " + ChatColor.YELLOW + "/dg" + ChatColor.WHITE + " for more information.");
+
+			player.getInventory().setItem(player.getInventory().firstEmpty(), Books.FIRST_JOIN.getBook().getItem());
 
 			character.getMeta().finishTask(name, true);
 		}
