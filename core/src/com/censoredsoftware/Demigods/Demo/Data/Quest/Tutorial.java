@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Default.Data.Quest;
+package com.censoredsoftware.Demigods.Demo.Data.Quest;
 
 import java.util.ArrayList;
 import java.util.List;

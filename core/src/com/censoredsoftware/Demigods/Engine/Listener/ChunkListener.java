@@ -11,7 +11,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.API.ItemAPI;
-import com.censoredsoftware.Demigods.Default.Data.Item.Books;
+import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Misc.ChestSpawnEvent;
