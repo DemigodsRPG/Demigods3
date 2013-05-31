@@ -70,8 +70,6 @@ public class EntityListener implements Listener
 				PlayerCharacter hittingChar = TrackedPlayer.getTracked(hitting).getCurrent();
 
 				TrackedBattle.battleProcess(hitChar, hittingChar);
-
-				if(((Player) attacked).getHealth() - event.getDamage() <= 0) hittingChar.addKill();
 			}
 		}
 	}
