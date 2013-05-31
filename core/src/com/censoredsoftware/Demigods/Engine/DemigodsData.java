@@ -8,6 +8,9 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.johm.JOhm;
 
+import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
+import com.google.common.collect.Maps;
+
 public class DemigodsData
 {
 	// The Redis DB
@@ -24,7 +27,7 @@ public class DemigodsData
 	{
 		// Create Data Instances
 		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);
-		tempData = new HashMap<String, HashMap<String, Object>>();
+		tempData = Maps.newHashMap();
 
 		// Create Persistence
 		jOhm = new JOhm();
@@ -53,38 +56,45 @@ public class DemigodsData
 		jedisPool.returnResource(jedis);
 	}
 
-	public static boolean hasKeyTemp(String key, String key_)
+	public static boolean hasKeyTemp(String key, String subKey)
 	{
-		return tempData.containsKey(key) && tempData.get(key).containsKey(key_);
+		return tempData.containsKey(key) && tempData.get(key).containsKey(subKey);
 	}
 
-	public static Object getValueTemp(String key, String key_)
+	public static Object getValueTemp(String key, String subKey)
 	{
-		return tempData.get(key).get(key_);
+		return tempData.get(key).get(subKey);
 	}
 
-	public static void saveTemp(String key, String key_, Object value)
+	public static void saveTemp(String key, String subKey, Object value)
 	{
 		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
-		tempData.get(key).put(key_, value);
+		tempData.get(key).put(subKey, value);
 	}
 
-	public static void removeTemp(String key, String key_)
+	public static void removeTemp(String key, String subKey)
 	{
 		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
-		if(tempData.get(key).containsKey(key_)) tempData.get(key).remove(key_);
+		if(tempData.get(key).containsKey(subKey)) tempData.get(key).remove(subKey);
 	}
 
-	public static void saveTimed(String key, Object value, Integer seconds)
+	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
 	{
-		// Convert to time
-		long time = System.currentTimeMillis() + (seconds * 1000);
-		// TODO
+		// TODO: Check to make sure the data doesn't exist already.
+		TimedData timedData = new TimedData();
+		timedData.setKey(key);
+		timedData.setSubKey(subKey);
+		timedData.setData(data.toString());
+		timedData.setSeconds(seconds);
+		TimedData.save(timedData);
 	}
 
-	public static Object getTimedValue()
+	public static Object getTimedValue(String key, String subKey)
 	{
-		// TODO
+		for(TimedData data : TimedData.findByKey(key))
+		{
+			if(data.getSubKey().equals(subKey)) return data.getData();
+		}
 		return null;
 	}
 }

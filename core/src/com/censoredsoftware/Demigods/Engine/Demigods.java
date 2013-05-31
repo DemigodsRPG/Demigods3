@@ -27,6 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
+import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
@@ -202,8 +203,12 @@ class Scheduler
 {
 	static void startThreads(DemigodsPlugin instance)
 	{
+		// Start favor runnable
 		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Favor(Demigods.config.getSettingDouble("multipliers.favor")), rate, rate);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), rate, rate);
+
+		// Start timed data runnable
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
 	}
 
 	static void stopThreads(DemigodsPlugin instance)
@@ -212,11 +217,11 @@ class Scheduler
 	}
 }
 
-class Favor implements Runnable
+class FavorRunnable implements Runnable
 {
 	private double multiplier;
 
-	Favor(double multiplier)
+	FavorRunnable(double multiplier)
 	{
 		this.multiplier = multiplier;
 	}
@@ -229,8 +234,29 @@ class Favor implements Runnable
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
-			if(regenRate < 1) regenRate = 1;
+			if(regenRate < 5) regenRate = 5;
 			character.getMeta().addFavor(regenRate);
+		}
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		throw new CloneNotSupportedException();
+	}
+}
+
+class TimedDataRunnable implements Runnable
+{
+	@Override
+	public void run()
+	{
+		for(TimedData data : TimedData.getAll())
+		{
+			if(data.getExpiration() <= System.currentTimeMillis())
+			{
+				data.delete();
+			}
 		}
 	}
 
@@ -322,10 +348,9 @@ class Commands implements CommandExecutor
 		Player player = (Player) sender;
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		player.sendMessage("Current Ascensions: " + character.getMeta().getAscensions());
-		player.sendMessage("Adding Ascension...");
-		character.getMeta().addAscension();
-		player.sendMessage("After Ascensions: " + character.getMeta().getAscensions());
+		Demigods.message.broadcast("Saving some timed data...");
+		DemigodsData.saveTimed(player.getName(), "test", 123, 10);
+		Demigods.message.broadcast("Saved Data! (" + DemigodsData.getTimedValue(player.getName(), "test") + ")");
 
 		return true;
 	}
