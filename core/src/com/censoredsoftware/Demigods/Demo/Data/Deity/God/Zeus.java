@@ -23,6 +23,7 @@ import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.google.common.collect.Sets;
@@ -310,11 +311,17 @@ class NoFall extends Ability
 			{
 				if(damageEvent.getEntity() instanceof Player)
 				{
+					Demigods.message.broadcast("hai.");
 					Player player = (Player) damageEvent.getEntity();
 					if(!Deity.canUseDeitySilent(player, name)) return;
+					Demigods.message.broadcast("hai. zeus.");
 
 					// If the player receives falling damage, cancel it
-					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) damageEvent.setCancelled(true);
+					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL)
+					{
+						Demigods.message.broadcast("hai. zeus. fall damage.");
+						damageEvent.setCancelled(true);
+					}
 				}
 			}
 		});
