@@ -21,7 +21,6 @@ public class DemigodsData
 
 	// Temp Data
 	private static Map<String, HashMap<String, Object>> tempData;
-	private static Map<Long, HashMap<String, Object>> timedData;
 
 	protected DemigodsData(DemigodsPlugin instance)
 	{

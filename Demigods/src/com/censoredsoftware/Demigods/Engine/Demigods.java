@@ -372,13 +372,12 @@ class Commands implements CommandExecutor
 
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		Player player = (Player) sender;
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-
-		Demigods.message.broadcast("Saving some timed data...");
-		DemigodsData.saveTimed(player.getName(), "test", 123, 10);
-		Demigods.message.broadcast("Saved Data! (" + DemigodsData.getTimedValue(player.getName(), "test") + ")");
-
+		for(TrackedBattle battle : TrackedBattle.loadAll())
+		{
+			sender.sendMessage("Removing: " + battle.getId());
+			DemigodsData.jOhm.delete(TrackedBattle.class, battle.getId());
+		}
+		sender.sendMessage("All battles removed!");
 		return true;
 	}
 
