@@ -91,7 +91,7 @@ public class Demigods
 		permission = new PermissionModule();
 
 		// Setup protected modules.
-		// update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
+		update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
 
 		// Define the game data.
 		Demigods.deities = new ArrayDeque<Deity>()
@@ -130,7 +130,7 @@ public class Demigods
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance); // TODO: It seems that this still lags fireballs...
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);

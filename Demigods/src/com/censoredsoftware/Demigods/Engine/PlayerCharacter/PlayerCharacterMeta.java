@@ -35,17 +35,17 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Integer.class)
 	private Map<String, Integer> levelsData;
 
-	public static void save(PlayerCharacterMeta playerCharacterMeta)
-	{
-		JOhm.save(playerCharacterMeta);
-	}
-
 	private void save()
 	{
 		PlayerCharacterMeta.save(this);
 	}
 
-	public static PlayerCharacterMeta load(long id) // TODO This belongs somewhere else.
+	public static void save(PlayerCharacterMeta playerCharacterMeta)
+	{
+		JOhm.save(playerCharacterMeta);
+	}
+
+	public static PlayerCharacterMeta load(long id)
 	{
 		return JOhm.get(PlayerCharacterMeta.class, id);
 	}
@@ -139,6 +139,7 @@ public class PlayerCharacterMeta
 	public void removeBind(Material material)
 	{
 		if(bindingData.containsKey(material.getId())) bindingData.remove(material.getId());
+		save();
 	}
 
 	public void removeBind(String ability)
@@ -170,6 +171,7 @@ public class PlayerCharacterMeta
 	public void setLevel(String level, int amount)
 	{
 		levelsData.put(level.toUpperCase(), amount);
+		save();
 	}
 
 	public void addLevel(String level, int amount)

@@ -68,21 +68,15 @@ public class Prometheus extends Deity
 
 	public static void shootFireball(Location from, Location to, Player shooter)
 	{
-		shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
-		for(Entity entity : shooter.getNearbyEntities(2, 2, 2))
-		{
-			if(!(entity instanceof Fireball)) continue;
-
-			Fireball fireball = (Fireball) entity;
-			to.setX(to.getX() + .5);
-			to.setY(to.getY() + .5);
-			to.setZ(to.getZ() + .5);
-			Vector path = to.toVector().subtract(from.toVector());
-			Vector victor = from.toVector().add(from.getDirection().multiply(2));
-			fireball.teleport(new Location(shooter.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
-			fireball.setDirection(path);
-			fireball.setShooter(shooter);
-		}
+		Fireball fireball = (Fireball) shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
+		to.setX(to.getX() + .5);
+		to.setY(to.getY() + .5);
+		to.setZ(to.getZ() + .5);
+		Vector path = to.toVector().subtract(from.toVector());
+		Vector victor = from.toVector().add(from.getDirection().multiply(2));
+		fireball.teleport(new Location(shooter.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
+		fireball.setDirection(path);
+		fireball.setShooter(shooter);
 	}
 }
 
@@ -255,11 +249,12 @@ class Firestorm extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		int devotion = character.getMeta().getDevotion();
-		int total = 20 * (int) Math.round(2 * Math.pow(devotion, 0.15));
+		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 		final Set<LivingEntity> entityList = Sets.newHashSet();
-		for(Entity entity : player.getNearbyEntities(50, 50, 50))
+
+		for(final Entity entity : player.getNearbyEntities(50, 50, 50)) // TODO: Make this dependent on levels.
 		{
+			// Validate them first
 			if(!(entity instanceof LivingEntity)) continue;
 			if(entity instanceof Player)
 			{
@@ -267,11 +262,9 @@ class Firestorm extends Ability
 				if(otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
 			}
 			if(!ZoneUtility.canTarget(entity)) continue;
-			entityList.add((LivingEntity) entity);
-		}
-		for(int i = 0; i <= total; i += 20)
-		{
-			for(final LivingEntity entity : entityList)
+
+			// Now shoot them
+			for(int i = 0; i <= total; i++)
 			{
 				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 				{
@@ -279,12 +272,12 @@ class Firestorm extends Ability
 					public void run()
 					{
 						Location entityLocation = entity.getLocation();
-						Location up = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getWorld().getHighestBlockAt(Location.locToBlock(entityLocation.getX()), Location.locToBlock(entityLocation.getZ())).getLocation().getY() + 10.0, entityLocation.getZ());
-						Prometheus.shootFireball(up, entity.getLocation(), player);
+						Location air = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY() + 10.0, entityLocation.getZ());
+						Location ground = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY(), entityLocation.getZ());
+						Prometheus.shootFireball(air, ground, player);
 					}
-				}, i);
+				}, 20);
 			}
 		}
 	}
-
 }
