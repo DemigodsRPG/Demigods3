@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -65,7 +66,16 @@ public class PlayerCharacter
 		DemigodsData.jOhm.save(character);
 	}
 
-	public void delete()
+	public void remove()
+	{
+		for(Shrine shrine : Shrine.getAllShrines())
+		{
+			if(shrine.getCharacter().equals(this)) shrine.remove();
+		}
+		delete();
+	}
+
+	private void delete()
 	{
 		DemigodsData.jOhm.delete(PlayerCharacter.class, getId());
 	}
