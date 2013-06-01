@@ -5,10 +5,10 @@
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
     <target name="init">
-        <mkdir dir="core/bin"/>
+        <mkdir dir="Demigods/bin"/>
     	<mkdir dir="build"/>
-        <copy includeemptydirs="false" todir="core/bin">
-            <fileset dir="core/src">
+        <copy includeemptydirs="false" todir="Demigods/bin">
+            <fileset dir="Demigods/src">
                 <exclude name="**/*.java"/>
             </fileset>
             <filterset>
@@ -17,7 +17,7 @@
         </copy>
     </target>
     <target name="clean">
-        <delete dir="core/bin"/>
+        <delete dir="Demigods/bin"/>
     	<delete dir="build"/>
     </target>
     <target depends="clean" name="cleanall"/>
@@ -33,22 +33,22 @@
             <pathelement location="lib/Factions.jar"/>
             <pathelement location="lib/Residence.jar"/>
         </path>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="core/bin" source="${source}" target="${target}">
-            <src path="core/src"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="Demigods/bin" source="${source}" target="${target}">
+            <src path="Demigods/src"/>
             <classpath refid="Demigods.classpath"/>
         </javac>
     </target>
     <target name="build-project" depends="compile">
-        <unzip dest="core/bin">
+        <unzip dest="Demigods/bin">
             <fileset dir="lib/inJar">
                 <include name="JOhm.jar"/>
             </fileset>
         </unzip>
-        <jar basedir="core/bin" destfile="build/Demigods.jar">
-        <fileset dir="core/bin">
+        <jar basedir="Demigods/bin" destfile="build/Demigods.jar">
+        <fileset dir="Demigods/bin">
             <include name="**/*.class" />
         </fileset>
-        <fileset dir="core/bin">
+        <fileset dir="Demigods/bin">
             <include name="plugin.yml" />
             <include name="config.yml" />
         </fileset>
