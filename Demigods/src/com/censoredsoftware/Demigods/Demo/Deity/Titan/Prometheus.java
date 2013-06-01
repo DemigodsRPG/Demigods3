@@ -280,8 +280,7 @@ class Firestorm extends Ability
 					for(LivingEntity entity : entityList)
 					{
 						Location up = new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, 256, entity.getLocation().getZ() + Math.random() * 5);
-						up.setPitch(90);
-						Prometheus.shootFireball(up, new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, entity.getLocation().getY(), entity.getLocation().getZ() + Math.random() * 5), player);
+						Prometheus.shootFireball(up, entity.getLocation(), player);
 					}
 				}
 			}, i);
