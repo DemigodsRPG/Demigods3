@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Modules.Data.PlayerDataModule;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 /**
  * Module to handle all update methods from BukkitDev.
@@ -30,7 +30,6 @@ public class BukkitUpdateModule implements Listener
 {
 	private Plugin plugin;
 	private Logger log = Logger.getLogger("Minecraft");
-	private PlayerDataModule confirmData;
 	private URL filesFeed;
 	private String pluginName, command, permission, latestVersion, currentVersion, link, jarLink;
 	private boolean supported, auto, notify;
@@ -53,7 +52,6 @@ public class BukkitUpdateModule implements Listener
 		{
 			this.plugin = plugin;
 			this.filesFeed = new URL(url);
-			this.confirmData = new PlayerDataModule(this.plugin, "update_confirm", System.currentTimeMillis());
 			this.pluginName = this.plugin.getName();
 			this.command = command;
 			this.permission = permission;
@@ -446,7 +444,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private boolean getConfirmed(Player player)
 	{
-		if(confirmData.containsPlayer(player)) return System.currentTimeMillis() <= confirmData.getDataLong(player);
+		if(DemigodsData.hasTimed("update", player.getName())) return true;
 		return false;
 	}
 
@@ -455,7 +453,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private void confirm(Player player, boolean keep)
 	{
-		if(keep) confirmData.saveData(player, System.currentTimeMillis() + this.confirmTime);
-		else if(confirmData.containsPlayer(player)) confirmData.removeData(player);
+		if(keep) DemigodsData.saveTimed("update", player.getName(), true, 10);
+		else if(DemigodsData.hasTimed("update", player.getName())) DemigodsData.removeTimed("update", player.getName());
 	}
 }

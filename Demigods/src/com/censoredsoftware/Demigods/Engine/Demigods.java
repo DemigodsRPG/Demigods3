@@ -36,6 +36,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUlility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Modules.BukkitUpdateModule;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
 import com.censoredsoftware.Modules.PermissionModule;
@@ -58,7 +59,7 @@ public class Demigods
 	public static Residence residence;
 
 	// Protected Modules
-	// protected static BukkitUpdateModule update;
+	protected static BukkitUpdateModule update;
 	// protected static LatestTweetModule notice;
 
 	// The Game Data
