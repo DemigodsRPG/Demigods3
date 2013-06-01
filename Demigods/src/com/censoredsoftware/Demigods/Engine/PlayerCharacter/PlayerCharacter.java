@@ -70,7 +70,7 @@ public class PlayerCharacter
 	{
 		for(Shrine shrine : Shrine.getAllShrines())
 		{
-			if(shrine.getCharacter().equals(this)) shrine.remove();
+			if(shrine.getCharacter().getId().equals(getId())) shrine.remove();
 		}
 		delete();
 	}
@@ -80,7 +80,7 @@ public class PlayerCharacter
 		DemigodsData.jOhm.delete(PlayerCharacter.class, getId());
 	}
 
-	public static PlayerCharacter load(Long id) // TODO This belongs somewhere else.
+	public static PlayerCharacter load(Long id)
 	{
 		return DemigodsData.jOhm.get(PlayerCharacter.class, id);
 	}

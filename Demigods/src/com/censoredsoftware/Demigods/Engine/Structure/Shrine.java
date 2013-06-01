@@ -45,7 +45,7 @@ public class Shrine
 		DemigodsData.jOhm.save(shrine);
 	}
 
-	public void delete()
+	private void delete()
 	{
 		DemigodsData.jOhm.delete(Shrine.class, getId());
 	}
