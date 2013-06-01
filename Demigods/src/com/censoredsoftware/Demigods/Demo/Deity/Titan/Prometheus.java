@@ -25,6 +25,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.google.common.collect.Sets;
 
 public class Prometheus extends Deity
 {
@@ -215,7 +216,8 @@ class Blaze extends Ability
 class Firestorm extends Ability
 {
 	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
-	private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
+	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
+	// private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -254,9 +256,9 @@ class Firestorm extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		int devotion = character.getMeta().getDevotion();
-		int total = 20 * (int) Math.round(2 * Math.pow(devotion, 0.15));
-		final ArrayList<LivingEntity> entityList = new ArrayList<LivingEntity>();
+		// int devotion = character.getMeta().getDevotion();
+		int total = 20 * (int) Math.round(2 * Math.pow(1000, 0.15));
+		final Set<LivingEntity> entityList = Sets.newHashSet();
 		for(Entity entity : player.getNearbyEntities(50, 50, 50))
 		{
 			if(!(entity instanceof LivingEntity)) continue;
