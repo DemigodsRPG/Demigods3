@@ -374,10 +374,10 @@ class Commands implements CommandExecutor
 	{
 		for(TrackedBattle battle : TrackedBattle.loadAll())
 		{
-			sender.sendMessage("Removing: " + battle.getId());
+			Demigods.message.broadcast("Removing: " + battle.getId());
 			DemigodsData.jOhm.delete(TrackedBattle.class, battle.getId());
 		}
-		sender.sendMessage("All battles removed!");
+		Demigods.message.broadcast("All battles removed!");
 		return true;
 	}
 
