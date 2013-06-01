@@ -113,7 +113,7 @@ public class BlockListener implements Listener
 		}, 1);
 
 		if(DemigodsData.hasTimed("explode", "structure")) return;
-		DemigodsData.saveTimed("explode", "structure", true, 1);
+		DemigodsData.saveTimed("explode", "structure", true, 3);
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
@@ -123,7 +123,7 @@ public class BlockListener implements Listener
 				if(ZoneUtility.zoneAltar(location) != null) Altar.generate(ZoneUtility.zoneAltar(location), ZoneUtility.zoneAltar(location).getLocation());
 				if(ZoneUtility.zoneShrine(location) != null) Shrine.generate(ZoneUtility.zoneShrine(location), ZoneUtility.zoneShrine(location).getLocation());
 			}
-		}, 20);
+		}, 30);
 	}
 
 	/*
