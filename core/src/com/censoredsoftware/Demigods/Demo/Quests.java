@@ -1,8 +1,8 @@
 package com.censoredsoftware.Demigods.Demo;
 
-import com.censoredsoftware.Demigods.Demo.Data.Quest.Passive.AltarQuest;
-import com.censoredsoftware.Demigods.Demo.Data.Quest.Passive.ShrineQuest;
-import com.censoredsoftware.Demigods.Demo.Data.Quest.Tutorial;
+import com.censoredsoftware.Demigods.Demo.Quest.Passive.AltarQuest;
+import com.censoredsoftware.Demigods.Demo.Quest.Passive.ShrineQuest;
+import com.censoredsoftware.Demigods.Demo.Quest.Tutorial;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Data.Quest;
+package com.censoredsoftware.Demigods.Demo.Quest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
+import com.censoredsoftware.Demigods.Demo.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
