@@ -22,8 +22,6 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Block.Altar;
-import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
@@ -34,6 +32,8 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
@@ -906,7 +906,7 @@ class AltarGenerate extends Task
 							Bukkit.getServer().getPluginManager().callEvent(altarCreateEvent);
 							if(altarCreateEvent.isCancelled()) return;
 
-							BlockFactory.createAltar(location);
+							StructureFactory.createAltar(location);
 
 							location.getWorld().strikeLightningEffect(location);
 							location.getWorld().strikeLightningEffect(location);

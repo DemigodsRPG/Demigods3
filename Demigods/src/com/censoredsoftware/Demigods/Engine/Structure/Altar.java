@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Block;
+package com.censoredsoftware.Demigods.Engine.Structure;
 
 import java.util.HashSet;
 import java.util.Set;

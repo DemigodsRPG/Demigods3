@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Block;
+package com.censoredsoftware.Demigods.Engine.Structure;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -127,10 +127,10 @@ public class Shrine
 		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
 		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(1, 0, 1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(1, 0, -1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(-1, 0, 1).getType().equals(Material.AIR)) return false;
-		if(!block.getRelative(-1, 0, -1).getType().equals(Material.AIR)) return false;
+		if(!block.getRelative(1, 0, 1).getType().isSolid()) return false;
+		if(!block.getRelative(1, 0, -1).getType().isSolid()) return false;
+		if(!block.getRelative(-1, 0, 1).getType().isSolid()) return false;
+		if(!block.getRelative(-1, 0, -1).getType().isSolid()) return false;
 		return true;
 	}
 

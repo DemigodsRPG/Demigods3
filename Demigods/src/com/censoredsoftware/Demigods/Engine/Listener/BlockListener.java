@@ -17,9 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Block.Altar;
-import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
-import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
@@ -28,6 +25,9 @@ import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
@@ -176,7 +176,7 @@ public class BlockListener implements Listener
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
 			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
-			BlockFactory.createAltar(location);
+			StructureFactory.createAltar(location);
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
@@ -221,7 +221,7 @@ public class BlockListener implements Listener
 					Bukkit.getServer().getPluginManager().callEvent(shrineCreateEvent);
 					if(shrineCreateEvent.isCancelled()) return;
 
-					BlockFactory.createShrine(character, location);
+					StructureFactory.createShrine(character, location);
 					location.getWorld().strikeLightningEffect(location);
 
 					if(!player.getGameMode().equals(GameMode.CREATIVE))

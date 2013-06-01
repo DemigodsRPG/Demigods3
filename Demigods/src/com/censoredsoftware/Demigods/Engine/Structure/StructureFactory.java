@@ -1,10 +1,10 @@
-package com.censoredsoftware.Demigods.Engine.Block;
+package com.censoredsoftware.Demigods.Engine.Structure;
 
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
-public class BlockFactory
+public class StructureFactory
 {
 	public static Altar createAltar(Location location)
 	{
