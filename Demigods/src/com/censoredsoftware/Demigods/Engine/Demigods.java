@@ -118,7 +118,7 @@ public class Demigods
 
 		// Finish loading the demigods based on the game data.
 		loadDepends(instance);
-		loadListeners(instance);
+		// loadListeners(instance);
 		loadCommands(instance);
 
 		// Finally, regenerate structures
