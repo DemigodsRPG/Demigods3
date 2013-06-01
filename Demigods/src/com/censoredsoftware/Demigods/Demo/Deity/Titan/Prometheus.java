@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +20,6 @@ import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -272,21 +270,12 @@ class Firestorm extends Ability
 		}
 		for(int i = 0; i <= total; i += 20)
 		{
-			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+			for(LivingEntity entity : entityList)
 			{
-				@Override
-				public void run()
-				{
-					for(LivingEntity entity : entityList)
-					{
-
-						Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
-						up.setY(up.getY() + 10.0);
-						Prometheus.shootFireball(up, entity.getLocation(), player);
-					}
-				}
-			}, i);
+				Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
+				up.setY(up.getY() + 10.0);
+				Prometheus.shootFireball(up, entity.getLocation(), player);
+			}
 		}
 	}
-
 }
