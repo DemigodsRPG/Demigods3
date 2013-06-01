@@ -278,8 +278,8 @@ class Firestorm extends Ability
 					@Override
 					public void run()
 					{
-						Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
-						up.setY(up.getY() + 10.0);
+						Location entityLocation = entity.getLocation();
+						Location up = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getWorld().getHighestBlockAt(Location.locToBlock(entityLocation.getX()), Location.locToBlock(entityLocation.getZ())).getLocation().getY() + 10.0, entityLocation.getZ());
 						Prometheus.shootFireball(up, entity.getLocation(), player);
 					}
 				}, i);
