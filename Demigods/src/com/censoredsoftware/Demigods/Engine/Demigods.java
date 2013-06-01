@@ -118,7 +118,7 @@ public class Demigods
 
 		// Finish loading the demigods based on the game data.
 		loadDepends(instance);
-		// loadListeners(instance);
+		loadListeners(instance);
 		loadCommands(instance);
 
 		// Finally, regenerate structures
@@ -130,13 +130,13 @@ public class Demigods
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new DebugListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EventFactory(), instance);
 
