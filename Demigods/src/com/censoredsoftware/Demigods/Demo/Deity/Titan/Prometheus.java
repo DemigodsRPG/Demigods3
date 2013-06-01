@@ -65,10 +65,10 @@ public class Prometheus extends Deity
 		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
 	}
 
-	public static void shootFireball(Location from, Location to, Player player)
+	public static void shootFireball(Location from, Location to, Player shooter)
 	{
-		player.getWorld().spawnEntity(from, EntityType.FIREBALL);
-		for(Entity entity : player.getNearbyEntities(2, 2, 2))
+		shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
+		for(Entity entity : shooter.getNearbyEntities(2, 2, 2))
 		{
 			if(!(entity instanceof Fireball)) continue;
 
@@ -78,9 +78,9 @@ public class Prometheus extends Deity
 			to.setZ(to.getZ() + .5);
 			Vector path = to.toVector().subtract(from.toVector());
 			Vector victor = from.toVector().add(from.getDirection().multiply(2));
-			fireball.teleport(new Location(player.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
+			fireball.teleport(new Location(shooter.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
 			fireball.setDirection(path);
-			fireball.setShooter(player);
+			fireball.setShooter(shooter);
 		}
 	}
 }
@@ -260,8 +260,11 @@ class Firestorm extends Ability
 		for(Entity entity : player.getNearbyEntities(50, 50, 50))
 		{
 			if(!(entity instanceof LivingEntity)) continue;
-			PlayerCharacter otherCharacter = TrackedPlayer.getTracked((Player) entity).getCurrent();
-			if(entity instanceof Player && otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
+			if(entity instanceof Player)
+			{
+				PlayerCharacter otherCharacter = TrackedPlayer.getTracked((Player) entity).getCurrent();
+				if(otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
+			}
 			if(!ZoneUtility.canTarget(entity)) continue;
 			entityList.add((LivingEntity) entity);
 		}
