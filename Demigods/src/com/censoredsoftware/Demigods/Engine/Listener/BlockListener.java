@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.*;
@@ -91,54 +90,40 @@ public class BlockListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		if(ZoneUtility.zoneAltar(event.getLocation()) == null && ZoneUtility.zoneShrine(event.getLocation()) == null) return;
-
-		final List<Location> savedLocations = new ArrayList<Location>();
-		final List<Material> savedMaterials = new ArrayList<Material>();
-		final List<Byte> savedBytes = new ArrayList<Byte>();
-
-		List<Block> blocks = event.blockList();
-		for(Block block : blocks)
-		{
-			if(block.getType() == Material.TNT) continue;
-			if(TrackedBlock.isProtected(block.getLocation()))
-			{
-				savedLocations.add(block.getLocation());
-				savedMaterials.add(block.getType());
-				savedBytes.add(block.getData());
-			}
-		}
+		final Location location = event.getLocation();
+		if(ZoneUtility.zoneAltar(location) == null && ZoneUtility.zoneShrine(location) == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				// Regenerate blocks
-				int i = 0;
-				for(Location location : savedLocations)
-				{
-					location.getBlock().setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
-					i++;
-				}
-
 				// Remove all drops from explosion zone
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
-					Location location = drop.getLocation();
-					if(ZoneUtility.zoneAltar(location) != null)
+					Location dropLocation = drop.getLocation();
+					if(ZoneUtility.zoneAltar(dropLocation) != null)
 					{
 						drop.remove();
 						continue;
 					}
-
-					if(ZoneUtility.zoneShrine(location) != null)
-					{
-						drop.remove();
-					}
+					if(ZoneUtility.zoneShrine(dropLocation) != null) drop.remove();
 				}
 			}
 		}, 1);
+
+		if(DemigodsData.hasTimed("explode", "structure")) return;
+		DemigodsData.saveTimed("explode", "structure", true, 3);
+
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if(ZoneUtility.zoneAltar(location) != null) Altar.generate(ZoneUtility.zoneAltar(location), ZoneUtility.zoneAltar(location).getLocation());
+				if(ZoneUtility.zoneShrine(location) != null) Shrine.generate(ZoneUtility.zoneShrine(location), ZoneUtility.zoneShrine(location).getLocation());
+			}
+		}, 60);
 	}
 
 	/*
