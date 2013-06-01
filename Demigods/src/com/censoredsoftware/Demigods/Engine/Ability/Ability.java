@@ -291,7 +291,7 @@ public abstract class Ability
 		for(Ability ability : getLoadedAbilities())
 		{
 			if(ability.getInfo().getType() == Ability.Type.PASSIVE) continue;
-			if(ability.getInfo().getCommand().equalsIgnoreCase(command))
+			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 

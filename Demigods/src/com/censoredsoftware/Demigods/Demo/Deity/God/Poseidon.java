@@ -67,7 +67,7 @@ class Swim extends Ability
 			add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 		}
 	};
-	private static Type type = Type.SUPPORT;
+	private static Type type = Type.PASSIVE;
 
 	protected Swim()
 	{

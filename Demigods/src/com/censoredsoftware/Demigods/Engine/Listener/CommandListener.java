@@ -15,7 +15,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class CommandListener implements Listener
 {
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 		String message = event.getMessage();
