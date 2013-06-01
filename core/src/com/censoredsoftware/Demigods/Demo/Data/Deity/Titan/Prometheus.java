@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
@@ -54,6 +56,7 @@ public class Prometheus extends Deity
 		{
 			add(new ShootFireball());
 			add(new Blaze());
+			add(new Firestorm());
 		}
 	};
 
@@ -207,4 +210,77 @@ class Blaze extends Ability
 			}
 		}
 	}
+}
+
+class Firestorm extends Ability
+{
+	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
+	private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+		}
+	};
+	private static Type type = Type.OFFENSE;
+
+	protected Firestorm()
+	{
+		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGH)
+			public void onPlayerInteract(PlayerInteractEvent interactEvent)
+			{
+				if(!Ability.isClick(interactEvent)) return;
+
+				// Set variables
+				Player player = interactEvent.getPlayer();
+				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+
+				if(!Deity.canUseDeitySilent(player, deity)) return;
+
+				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
+				{
+					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+
+					firestorm(player);
+				}
+			}
+		});
+	}
+
+	// The actual ability command
+	public static void firestorm(final Player player)
+	{
+		// Define variables
+		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		int devotion = character.getMeta().getDevotion();
+		int total = 20 * (int) Math.round(2 * Math.pow(devotion, 0.15));
+		final ArrayList<LivingEntity> entityList = new ArrayList<LivingEntity>();
+		for(Entity entity : player.getNearbyEntities(50, 50, 50))
+		{
+			if(!(entity instanceof LivingEntity)) continue;
+			PlayerCharacter otherCharacter = TrackedPlayer.getTracked((Player) entity).getCurrent();
+			if(entity instanceof Player && otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
+			if(!ZoneAPI.canTarget(entity)) continue;
+			entityList.add((LivingEntity) entity);
+		}
+		for(int i = 0; i <= total; i += 20)
+		{
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					for(LivingEntity entity : entityList)
+					{
+						Location up = new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, 256, entity.getLocation().getZ() + Math.random() * 5);
+						up.setPitch(90);
+						Prometheus.shootFireball(up, new Location(entity.getWorld(), entity.getLocation().getX() + Math.random() * 5, entity.getLocation().getY(), entity.getLocation().getZ() + Math.random() * 5), player);
+					}
+				}
+			}, i);
+		}
+	}
+
 }
