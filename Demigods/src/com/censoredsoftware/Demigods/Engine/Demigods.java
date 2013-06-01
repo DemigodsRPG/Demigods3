@@ -1,6 +1,8 @@
 package com.censoredsoftware.Demigods.Engine;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -63,8 +65,8 @@ public class Demigods
 	// protected static LatestTweetModule notice;
 
 	// The Game Data
-	protected static ListedDeity[] deities;
-	protected static ListedQuest[] quests;
+	protected static Deque<Deity> deities;
+	protected static Deque<Quest> quests;
 
 	public interface ListedDeity
 	{
@@ -76,7 +78,7 @@ public class Demigods
 		public Quest getQuest();
 	}
 
-	protected Demigods(DemigodsPlugin instance, ListedDeity[] deities, ListedQuest[] quests)
+	protected Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedQuest[] quests)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -87,11 +89,27 @@ public class Demigods
 		permission = new PermissionModule();
 
 		// Setup protected modules.
-		update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
+		// update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
 
 		// Define the game data.
-		this.deities = deities;
-		this.quests = quests;
+		this.deities = new ArrayDeque<Deity>()
+		{
+			{
+				for(ListedDeity deity : deities)
+				{
+					add(deity.getDeity());
+				}
+			}
+		};
+		this.quests = new ArrayDeque<Quest>()
+		{
+			{
+				for(ListedQuest quest : quests)
+				{
+					add(quest.getQuest());
+				}
+			}
+		};
 
 		// Initialize soft data.
 		new DemigodsData(instance);
@@ -173,30 +191,14 @@ public class Demigods
 		if(depend instanceof Residence) residence = (Residence) depend;
 	}
 
-	public static List<Deity> getLoadedDeities()
+	public static Deque<Deity> getLoadedDeities()
 	{
-		return new ArrayList<Deity>()
-		{
-			{
-				for(ListedDeity deity : deities)
-				{
-					add(deity.getDeity());
-				}
-			};
-		};
+		return Demigods.deities;
 	}
 
-	public static List<Quest> getLoadedQuests()
+	public static Deque<Quest> getLoadedQuests()
 	{
-		return new ArrayList<Quest>()
-		{
-			{
-				for(ListedQuest quest : quests)
-				{
-					add(quest.getQuest());
-				}
-			};
-		};
+		return Demigods.quests;
 	}
 
 	@Override
