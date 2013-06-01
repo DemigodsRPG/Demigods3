@@ -30,7 +30,7 @@ import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUlility;
+import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class BlockListener implements Listener
@@ -169,7 +169,7 @@ public class BlockListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		if(AdminUlility.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK))
+		if(AdminUtility.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
 			event.setCancelled(true);
 
@@ -181,7 +181,7 @@ public class BlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(AdminUlility.useWand(player) && Altar.isAltar(location))
+		if(AdminUtility.useWand(player) && Altar.isAltar(location))
 		{
 			event.setCancelled(true);
 
@@ -249,7 +249,7 @@ public class BlockListener implements Listener
 			}
 		}
 
-		if(AdminUlility.useWand(player) && Shrine.isShrine(location))
+		if(AdminUtility.useWand(player) && Shrine.isShrine(location))
 		{
 			event.setCancelled(true);
 

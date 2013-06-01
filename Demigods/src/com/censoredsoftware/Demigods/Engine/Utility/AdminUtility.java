@@ -8,7 +8,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
-public class AdminUlility
+public class AdminUtility
 {
 	/**
 	 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
