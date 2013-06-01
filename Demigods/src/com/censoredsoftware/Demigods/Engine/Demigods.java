@@ -21,6 +21,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
+import redis.clients.johm.JOhm;
+
 import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -92,7 +94,7 @@ public class Demigods
 		// update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
 
 		// Define the game data.
-		this.deities = new ArrayDeque<Deity>()
+		Demigods.deities = new ArrayDeque<Deity>()
 		{
 			{
 				for(ListedDeity deity : deities)
@@ -101,7 +103,7 @@ public class Demigods
 				}
 			}
 		};
-		this.quests = new ArrayDeque<Quest>()
+		Demigods.quests = new ArrayDeque<Quest>()
 		{
 			{
 				for(ListedQuest quest : quests)
@@ -375,7 +377,7 @@ class Commands implements CommandExecutor
 		for(TrackedBattle battle : TrackedBattle.loadAll())
 		{
 			Demigods.message.broadcast("Removing: " + battle.getId());
-			DemigodsData.jOhm.delete(TrackedBattle.class, battle.getId());
+			JOhm.delete(TrackedBattle.class, battle.getId());
 		}
 		Demigods.message.broadcast("All battles removed!");
 		return true;

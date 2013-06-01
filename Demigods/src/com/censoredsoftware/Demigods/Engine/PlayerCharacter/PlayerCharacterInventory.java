@@ -11,7 +11,6 @@ import org.bukkit.inventory.PlayerInventory;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
@@ -92,7 +91,7 @@ public class PlayerCharacterInventory
 	{
 		try
 		{
-			DemigodsData.jOhm.save(inventory);
+			JOhm.save(inventory);
 		}
 		catch(Exception e)
 		{
@@ -102,12 +101,12 @@ public class PlayerCharacterInventory
 
 	public static PlayerCharacterInventory load(long id)
 	{
-		return DemigodsData.jOhm.get(PlayerCharacterInventory.class, id);
+		return JOhm.get(PlayerCharacterInventory.class, id);
 	}
 
 	public static Set<PlayerCharacterInventory> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(PlayerCharacterInventory.class);
+		return JOhm.getAll(PlayerCharacterInventory.class);
 	}
 
 	/**
@@ -143,6 +142,6 @@ public class PlayerCharacterInventory
 		}
 
 		// Delete
-		DemigodsData.jOhm.delete(PlayerCharacterInventory.class, id);
+		JOhm.delete(PlayerCharacterInventory.class, id);
 	}
 }

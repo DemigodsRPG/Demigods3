@@ -52,7 +52,7 @@ public abstract class Deity
 				{
 					if(!contains(deity.getInfo().getAlliance())) add(deity.getInfo().getAlliance());
 				}
-			};
+			}
 		};
 	}
 
@@ -65,7 +65,7 @@ public abstract class Deity
 				{
 					if(deity.getInfo().getAlliance().equalsIgnoreCase(alliance)) add(deity);
 				}
-			};
+			}
 		};
 	}
 
@@ -97,7 +97,6 @@ public abstract class Deity
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		if(character == null) return false;
-		return character.isDeity(deity) && character.isImmortal();
+		return character != null && character.isDeity(deity) && character.isImmortal();
 	}
 }

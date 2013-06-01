@@ -25,7 +25,7 @@ public class ConfigModule
 	 */
 	public ConfigModule(Plugin instance, boolean copyDefaults)
 	{
-		this.plugin = instance;
+		plugin = instance;
 		helpFile(plugin);
 		Configuration config = plugin.getConfig();
 		config.options().copyDefaults(copyDefaults);
@@ -52,7 +52,6 @@ public class ConfigModule
 				out.write(buffer, 0, length);
 			out.close();
 			input.close();
-			return;
 		}
 		catch(Exception ignored)
 		{}

@@ -424,7 +424,6 @@ public class BukkitUpdateModule implements Listener
 					player.sendMessage(ChatColor.DARK_AQUA + "[" + pluginName + "] " + ChatColor.RESET + "You are already running the latest version.");
 				}
 				event.setCancelled(true);
-				return;
 			}
 			else
 			{
@@ -434,7 +433,6 @@ public class BukkitUpdateModule implements Listener
 				player.sendMessage(ChatColor.DARK_AQUA + "[" + pluginName + "] " + ChatColor.RESET + ChatColor.YELLOW + this.command + " confirm" + ChatColor.WHITE + " to confirm.");
 				confirm(player, true);
 				event.setCancelled(true);
-				return;
 			}
 		}
 	}
@@ -444,8 +442,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private boolean getConfirmed(Player player)
 	{
-		if(DemigodsData.hasTimed("update", player.getName())) return true;
-		return false;
+		return DemigodsData.hasTimed("update", player.getName());
 	}
 
 	/**

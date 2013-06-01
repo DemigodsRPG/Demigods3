@@ -83,8 +83,7 @@ public class MiscUtility
 		if(percent <= 0.0) return false;
 		Random rand = new Random();
 		int chance = rand.nextInt(Math.abs((int) Math.ceil(1.0 / (percent / 100.0))) + 1);
-		if(chance == 1) return true;
-		return false;
+		return chance == 1;
 	}
 
 	/**

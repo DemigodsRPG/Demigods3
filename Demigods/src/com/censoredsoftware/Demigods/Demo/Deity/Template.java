@@ -102,7 +102,6 @@ class Test extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		int devotion = character.getMeta().getDevotion();
-		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "test", cost, type)) return;
@@ -116,7 +115,6 @@ class Test extends Ability
 			Player victim = (Player) target;
 			victim.sendMessage("Test!");
 			player.sendMessage("Tested " + victim.getName() + "!");
-			return;
 		}
 	}
 }

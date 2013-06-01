@@ -63,7 +63,7 @@ public class PlayerCharacter
 
 	public static void save(PlayerCharacter character)
 	{
-		DemigodsData.jOhm.save(character);
+		JOhm.save(character);
 	}
 
 	public void remove()
@@ -77,17 +77,17 @@ public class PlayerCharacter
 
 	private void delete()
 	{
-		DemigodsData.jOhm.delete(PlayerCharacter.class, getId());
+		JOhm.delete(PlayerCharacter.class, getId());
 	}
 
 	public static PlayerCharacter load(Long id)
 	{
-		return DemigodsData.jOhm.get(PlayerCharacter.class, id);
+		return JOhm.get(PlayerCharacter.class, id);
 	}
 
 	public static Set<PlayerCharacter> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(PlayerCharacter.class);
+		return JOhm.getAll(PlayerCharacter.class);
 	}
 
 	public static PlayerCharacter getCharacterByName(String name)

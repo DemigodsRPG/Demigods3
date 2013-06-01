@@ -6,12 +6,8 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import redis.clients.johm.Attribute;
-import redis.clients.johm.Id;
-import redis.clients.johm.Indexed;
-import redis.clients.johm.Model;
+import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -67,17 +63,17 @@ public class TrackedLocation
 
 	public static void save(TrackedLocation location)
 	{
-		DemigodsData.jOhm.save(location);
+		JOhm.save(location);
 	}
 
 	public static TrackedLocation load(long id) // TODO This belongs somewhere else.
 	{
-		return DemigodsData.jOhm.get(TrackedLocation.class, id);
+		return JOhm.get(TrackedLocation.class, id);
 	}
 
 	public static Set<TrackedLocation> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedLocation.class);
+		return JOhm.getAll(TrackedLocation.class);
 	}
 
 	public static TrackedLocation getTracked(Location location) // TODO: Determine if this should be the default for getting TrackedLocations, or if it is too intensive on the DB for constant use.
@@ -197,8 +193,7 @@ public class TrackedLocation
 	 */
 	public static boolean alreadyInvited(PlayerCharacter inviting, PlayerCharacter invited)
 	{
-		if(getInvite(inviting, invited) != null) return true;
-		return false;
+		return getInvite(inviting, invited) != null;
 	}
 
 	/**

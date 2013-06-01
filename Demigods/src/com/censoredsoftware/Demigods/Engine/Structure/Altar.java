@@ -9,7 +9,6 @@ import org.bukkit.World;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
@@ -43,22 +42,22 @@ public class Altar
 
 	public static void save(Altar altar)
 	{
-		DemigodsData.jOhm.save(altar);
+		JOhm.save(altar);
 	}
 
 	public void delete()
 	{
-		DemigodsData.jOhm.delete(Altar.class, getId());
+		JOhm.delete(Altar.class, getId());
 	}
 
 	public static Altar load(Long id)
 	{
-		return DemigodsData.jOhm.get(Altar.class, id);
+		return JOhm.get(Altar.class, id);
 	}
 
 	public static Set<Altar> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(Altar.class);
+		return JOhm.getAll(Altar.class);
 	}
 
 	public synchronized void remove()
@@ -371,7 +370,8 @@ public class Altar
 	 * 
 	 * @param location the location used as the center to check from.
 	 * @param blocks the radius of blocks to check with.
-	 * @return
+	 * 
+	 * @return true if something
 	 */
 	public static boolean altarNearby(Location location, int blocks)
 	{

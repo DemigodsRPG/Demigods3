@@ -266,13 +266,11 @@ public class BlockListener implements Listener
 				DemigodsData.removeTimed(player.getName(), "destroy_shrine");
 
 				player.sendMessage(ChatColor.GREEN + "Shrine removed!");
-				return;
 			}
 			else
 			{
 				DemigodsData.saveTimed(player.getName(), "destroy_shrine", true, 5);
 				player.sendMessage(ChatColor.RED + "Right-click this Shrine again to remove it.");
-				return;
 			}
 		}
 	}
@@ -293,7 +291,6 @@ public class BlockListener implements Listener
 		if(ZoneUtility.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneUtility.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
 			// player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
-			return;
 		}
 	}
 }

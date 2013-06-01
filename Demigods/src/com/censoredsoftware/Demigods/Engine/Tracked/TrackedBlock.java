@@ -7,7 +7,6 @@ import org.bukkit.Material;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.google.common.base.Objects;
@@ -64,28 +63,28 @@ public class TrackedBlock
 
 	public static void save(TrackedBlock block)
 	{
-		DemigodsData.jOhm.save(block);
+		JOhm.save(block);
 	}
 
 	public static void delete(long id)
 	{
-		DemigodsData.jOhm.delete(TrackedBlock.class, id);
+		JOhm.delete(TrackedBlock.class, id);
 	}
 
 	public static TrackedBlock load(Long id)
 	{
-		return DemigodsData.jOhm.get(TrackedBlock.class, id);
+		return JOhm.get(TrackedBlock.class, id);
 	}
 
 	public static Set<TrackedBlock> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedBlock.class);
+		return JOhm.getAll(TrackedBlock.class);
 	}
 
 	public void remove()
 	{
 		getLocation().getBlock().setTypeIdAndData(this.previousMaterial, (byte) this.previousMaterialByte, true);
-		DemigodsData.jOhm.delete(TrackedBlock.class, getId());
+		JOhm.delete(TrackedBlock.class, getId());
 	}
 
 	public Long getId()

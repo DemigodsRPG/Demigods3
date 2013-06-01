@@ -282,7 +282,7 @@ public abstract class Ability
 				{
 					addAll(deity.getAbilities());
 				}
-			};
+			}
 		};
 	}
 

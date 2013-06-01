@@ -30,7 +30,7 @@ public class DemigodsData
 
 		// Create Persistence
 		jOhm = new JOhm();
-		jOhm.setPool(jedisPool);
+		JOhm.setPool(jedisPool);
 	}
 
 	public static void disconnect()

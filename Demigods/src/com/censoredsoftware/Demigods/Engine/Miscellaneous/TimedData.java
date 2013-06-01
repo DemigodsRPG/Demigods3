@@ -5,7 +5,6 @@ import java.util.Set;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.google.common.base.Objects;
 
 @Model
@@ -99,22 +98,22 @@ public class TimedData
 
 	public static void save(TimedData data)
 	{
-		DemigodsData.jOhm.save(data);
+		JOhm.save(data);
 	}
 
 	public void delete()
 	{
-		DemigodsData.jOhm.delete(TimedData.class, getId());
+		JOhm.delete(TimedData.class, getId());
 	}
 
 	public static TimedData get(Long id)
 	{
-		return DemigodsData.jOhm.get(TimedData.class, id);
+		return JOhm.get(TimedData.class, id);
 	}
 
 	public static Set<TimedData> getAll()
 	{
-		return DemigodsData.jOhm.getAll(TimedData.class);
+		return JOhm.getAll(TimedData.class);
 	}
 
 	public static TimedData find(String key, String subKey)

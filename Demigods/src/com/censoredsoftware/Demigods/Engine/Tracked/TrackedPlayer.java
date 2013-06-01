@@ -7,10 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.Attribute;
-import redis.clients.johm.Id;
-import redis.clients.johm.Indexed;
-import redis.clients.johm.Model;
+import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
@@ -40,19 +37,19 @@ public class TrackedPlayer
 
 	public static void save(TrackedPlayer trackedPlayer)
 	{
-		DemigodsData.jOhm.save(trackedPlayer);
+		JOhm.save(trackedPlayer);
 	}
 
 	public static TrackedPlayer load(Long id)
 	{
-		return DemigodsData.jOhm.get(TrackedPlayer.class, id);
+		return JOhm.get(TrackedPlayer.class, id);
 	}
 
 	public static Set<TrackedPlayer> loadAll()
 	{
 		try
 		{
-			return DemigodsData.jOhm.getAll(TrackedPlayer.class);
+			return JOhm.getAll(TrackedPlayer.class);
 		}
 		catch(Exception e)
 		{
@@ -64,7 +61,7 @@ public class TrackedPlayer
 	{
 		try
 		{
-			List<TrackedPlayer> tracking = DemigodsData.jOhm.find(TrackedPlayer.class, "player", player.getName());
+			List<TrackedPlayer> tracking = JOhm.find(TrackedPlayer.class, "player", player.getName());
 			return tracking.get(0);
 		}
 		catch(Exception ignored)
@@ -164,7 +161,7 @@ public class TrackedPlayer
 
 	public List<PlayerCharacter> getCharacters()
 	{
-		return DemigodsData.jOhm.find(PlayerCharacter.class, "player", this.player);
+		return JOhm.find(PlayerCharacter.class, "player", this.player);
 	}
 
 	/**
@@ -204,15 +201,20 @@ public class TrackedPlayer
 	}
 
 	/**
-	 * Returns true if <code>player</code> has a character with the id <code>charID</code>.
+	 * Returns true if <code>player</code> has a character with the id <code>charId</code>.
 	 * 
 	 * @param player the player to check.
-	 * @param charID the charID to check with.
+	 * @param charId the charID to check with.
 	 * @return boolean
 	 */
-	public static boolean hasCharID(OfflinePlayer player, int charID)
+	public static boolean hasCharID(OfflinePlayer player, long charId)
 	{
-		return getChars(player) != null && getChars(player).contains(charID);
+		if(getChars(player) == null) return false;
+		for(PlayerCharacter character : getChars(player))
+		{
+			if(character.getId().equals(charId)) return true;
+		}
+		return false;
 	}
 
 	/**

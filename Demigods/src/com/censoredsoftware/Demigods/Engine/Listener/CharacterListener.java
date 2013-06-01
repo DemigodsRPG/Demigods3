@@ -96,7 +96,7 @@ public class CharacterListener implements Listener
 		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have failed " + attacker.getDeity().getInfo().getName() + " by attacking a fellow " + attacker.getAlliance() + "!");
 		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have been stripped of " + devotionRemoved + " devotion!");
 
-		if(alliance != "Mortal") Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
+		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
 		else Demigods.message.broadcast(ChatColor.GRAY + "A mortal was killed by another worthless mortal.");
 	}
 }

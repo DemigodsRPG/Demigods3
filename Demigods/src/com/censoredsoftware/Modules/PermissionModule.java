@@ -18,8 +18,7 @@ public class PermissionModule
 	 */
 	public boolean hasPermission(CommandSender sender, String permission)
 	{
-		if(sender instanceof ConsoleCommandSender) return true;
-		return sender.hasPermission(permission.toLowerCase());
+		return sender instanceof ConsoleCommandSender || sender.hasPermission(permission.toLowerCase());
 	}
 
 	/**
@@ -31,8 +30,7 @@ public class PermissionModule
 	 */
 	public boolean hasPermissionOrOP(CommandSender sender, String permission)
 	{
-		if(sender.isOp()) return true;
-		return hasPermission(sender, permission);
+		return sender.isOp() || hasPermission(sender, permission);
 	}
 
 	/**

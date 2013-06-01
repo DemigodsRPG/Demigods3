@@ -11,7 +11,6 @@ import org.bukkit.block.Block;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
@@ -42,22 +41,22 @@ public class Shrine
 
 	public static void save(Shrine shrine)
 	{
-		DemigodsData.jOhm.save(shrine);
+		JOhm.save(shrine);
 	}
 
 	private void delete()
 	{
-		DemigodsData.jOhm.delete(Shrine.class, getId());
+		JOhm.delete(Shrine.class, getId());
 	}
 
 	public static Shrine load(Long id)
 	{
-		return DemigodsData.jOhm.get(Shrine.class, id);
+		return JOhm.get(Shrine.class, id);
 	}
 
 	public static Set<Shrine> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(Shrine.class);
+		return JOhm.getAll(Shrine.class);
 	}
 
 	void setCenter(Location location)
@@ -130,8 +129,7 @@ public class Shrine
 		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 		if(block.getRelative(1, 0, -1).getType().isSolid()) return false;
 		if(block.getRelative(-1, 0, 1).getType().isSolid()) return false;
-		if(block.getRelative(-1, 0, -1).getType().isSolid()) return false;
-		return true;
+		return !block.getRelative(-1, 0, -1).getType().isSolid();
 	}
 
 	public static synchronized void generate(Shrine shrine, Location location)

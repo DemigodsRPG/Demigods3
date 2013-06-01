@@ -29,7 +29,7 @@ public class TaskInfo
 
 	public enum Subtype
 	{
-		TECHNICAL, QUEST;
+		TECHNICAL, QUEST
 	}
 
 	public String getName()

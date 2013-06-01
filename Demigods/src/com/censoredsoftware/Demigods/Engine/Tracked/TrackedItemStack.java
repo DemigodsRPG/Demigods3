@@ -13,8 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-
 @Model
 public class TrackedItemStack
 {
@@ -116,17 +114,17 @@ public class TrackedItemStack
 
 	public static void save(TrackedItemStack item)
 	{
-		DemigodsData.jOhm.save(item);
+		JOhm.save(item);
 	}
 
 	public static TrackedItemStack load(long id) // TODO This belongs somewhere else.
 	{
-		return DemigodsData.jOhm.get(TrackedItemStack.class, id);
+		return JOhm.get(TrackedItemStack.class, id);
 	}
 
 	public static Set<TrackedItemStack> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedItemStack.class);
+		return JOhm.getAll(TrackedItemStack.class);
 	}
 
 	public Long getId()

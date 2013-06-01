@@ -255,7 +255,6 @@ class AltarMenu extends Task
 							player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
 							player.sendMessage(" ");
 							altarMenu(player);
-							return;
 						}
 					}
 				}

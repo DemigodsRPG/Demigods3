@@ -23,7 +23,7 @@ public class Quest
 
 	public enum Type
 	{
-		PASSIVE, DEMO, TUTORIAL;
+		PASSIVE, DEMO, TUTORIAL
 	}
 
 	public String getName()

@@ -9,13 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.Attribute;
-import redis.clients.johm.CollectionMap;
-import redis.clients.johm.Id;
-import redis.clients.johm.Model;
+import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 
 @Model
 public class PlayerCharacterMeta
@@ -41,7 +37,7 @@ public class PlayerCharacterMeta
 
 	public static void save(PlayerCharacterMeta playerCharacterMeta)
 	{
-		DemigodsData.jOhm.save(playerCharacterMeta);
+		JOhm.save(playerCharacterMeta);
 	}
 
 	private void save()
@@ -51,12 +47,12 @@ public class PlayerCharacterMeta
 
 	public static PlayerCharacterMeta load(long id) // TODO This belongs somewhere else.
 	{
-		return DemigodsData.jOhm.get(PlayerCharacterMeta.class, id);
+		return JOhm.get(PlayerCharacterMeta.class, id);
 	}
 
 	public static Set<PlayerCharacterMeta> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(PlayerCharacterMeta.class);
+		return JOhm.getAll(PlayerCharacterMeta.class);
 	}
 
 	void initializeMaps()
@@ -84,7 +80,7 @@ public class PlayerCharacterMeta
 
 	public boolean isBound(Material material)
 	{
-		return getBindings() != null && getBindings().contains(material);
+		return getBindings() != null && getBindings().contains(material.getId());
 	}
 
 	public Material getBind(String ability)
@@ -110,7 +106,7 @@ public class PlayerCharacterMeta
 	public void setBound(String ability, Material material)
 	{
 		Player player = PlayerCharacter.getChar(getId()).getOfflinePlayer().getPlayer();
-		if(!bindingData.containsKey(ability))
+		if(!bindingData.containsValue(ability))
 		{
 			if(player.getItemInHand().getType() == Material.AIR)
 			{
@@ -121,18 +117,15 @@ public class PlayerCharacterMeta
 				if(isBound(material))
 				{
 					player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-					return;
 				}
 				else if(material == Material.AIR)
 				{
 					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-					return;
 				}
 				else
 				{
 					bindingData.put(material.getId(), ability);
 					player.sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
-					return;
 				}
 			}
 		}

@@ -80,17 +80,17 @@ public class TrackedBattle
 
 	public static void save(TrackedBattle battle)
 	{
-		DemigodsData.jOhm.save(battle);
+		JOhm.save(battle);
 	}
 
 	public static TrackedBattle load(long id) // TODO This belongs somewhere else.
 	{
-		return DemigodsData.jOhm.get(TrackedBattle.class, id);
+		return JOhm.get(TrackedBattle.class, id);
 	}
 
 	public static Set<TrackedBattle> loadAll()
 	{
-		return DemigodsData.jOhm.getAll(TrackedBattle.class);
+		return JOhm.getAll(TrackedBattle.class);
 	}
 
 	public Long getId()
@@ -376,8 +376,8 @@ public class TrackedBattle
 				battle.setActive(false);
 				otherBattle.setActive(false);
 
-				BattleCombineEvent battleEvent = null;
-				TrackedBattle combinedBattle = null;
+				BattleCombineEvent battleEvent;
+				TrackedBattle combinedBattle;
 				if(battle.getStartTime() < otherBattle.getStartTime())
 				{
 					battleEvent = new BattleCombineEvent(battle, otherBattle, System.currentTimeMillis());
