@@ -9,11 +9,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
-import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class EntityListener implements Listener
 {
@@ -28,7 +28,7 @@ public class EntityListener implements Listener
 			entity = (LivingEntity) event.getEntity();
 
 			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS TODO Do we want to keep it that way?
-			if(!ZoneAPI.canTarget(entity))
+			if(!ZoneUtility.canTarget(entity))
 			{
 				event.setCancelled(true);
 			}
@@ -46,7 +46,7 @@ public class EntityListener implements Listener
 			Player hitting = (Player) attacker;
 
 			// NO PVP
-			if(!ZoneAPI.canTarget(attacked))
+			if(!ZoneUtility.canTarget(attacked))
 			{
 				hitting.sendMessage(ChatColor.GRAY + "No-PVP in this zone.");
 				event.setCancelled(true);
@@ -83,7 +83,7 @@ public class EntityListener implements Listener
 			Player player = (Player) event.getEntity();
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null) return;
-			String deity = DemigodsUtil.capitalize(character.getDeity().getInfo().getName());
+			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
 			int devotion = character.getMeta().getDevotion();
 			int devotionRemoved = (int) Math.ceil(devotion * .19);
 

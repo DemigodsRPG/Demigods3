@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.API;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemAPI
+public class ItemUtility
 {
 	/**
 	 * Creates a new item with the given variables.

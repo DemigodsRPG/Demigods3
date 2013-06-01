@@ -7,11 +7,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class CommandListener implements Listener
 {
@@ -25,7 +25,7 @@ public class CommandListener implements Listener
 
 		Player player = event.getPlayer();
 
-		if(ZoneAPI.canTarget(player) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(player).getCurrent()))
+		if(ZoneUtility.canTarget(player) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(player).getCurrent()))
 		{
 			if(TrackedBattle.isBlockedCommand(args[0]))
 			{

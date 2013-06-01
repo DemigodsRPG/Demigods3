@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.API;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -15,7 +15,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class ZoneAPI
+public class ZoneUtility
 {
 	public static int SHRINE_RADIUS = Demigods.config.getSettingInt("zones.shrine_radius");
 	public static int ALTAR_RADIUS = Demigods.config.getSettingInt("zones.altar_radius");

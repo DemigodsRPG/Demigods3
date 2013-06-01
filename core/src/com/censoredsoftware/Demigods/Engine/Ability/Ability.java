@@ -19,13 +19,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public abstract class Ability
 {
@@ -96,7 +96,7 @@ public abstract class Ability
 				player.sendMessage(ChatColor.YELLOW + "No target found.");
 				return false;
 			}
-			else if(!ZoneAPI.canTarget(target))
+			else if(!ZoneUtility.canTarget(target))
 			{
 				player.sendMessage(ChatColor.YELLOW + "Target is in a no-PVP zone.");
 				return false;
@@ -260,7 +260,7 @@ public abstract class Ability
 	{
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		if(!ZoneAPI.canTarget(player))
+		if(!ZoneUtility.canTarget(player))
 		{
 			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 			return false;

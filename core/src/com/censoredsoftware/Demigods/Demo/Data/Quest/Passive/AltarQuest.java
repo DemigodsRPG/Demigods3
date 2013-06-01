@@ -22,13 +22,11 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterSwitchEvent;
@@ -39,6 +37,8 @@ import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class AltarQuest extends Quest
 {
@@ -104,7 +104,7 @@ class AltarMenu extends Task
 			{
 				if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !TrackedPlayer.isPraying(player))
 				{
-					if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneAPI.canTarget(player))
+					if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
 					{
 						player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
 						player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
@@ -157,7 +157,7 @@ class AltarMenu extends Task
 			Location location = player.getLocation();
 
 			// First we check if the player is in/time an Altar and currently praying, if not we'll return
-			if(ZoneAPI.zoneAltar(location) != null && TrackedPlayer.isPraying(player))
+			if(ZoneUtility.zoneAltar(location) != null && TrackedPlayer.isPraying(player))
 			{
 				// Cancel their chat
 				event.setCancelled(true);
@@ -372,7 +372,7 @@ class AltarMenu extends Task
 				// Define variables
 				String chosenName = DemigodsData.getValueTemp(player.getName(), "temp_createchar_name").toString();
 				String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
-				String deityAlliance = DemigodsUtil.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
+				String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
 
 				// Check the chest items
 				int items = 0;
@@ -524,7 +524,7 @@ class AltarMenu extends Task
 			int Z = (int) warp.getKey().toLocation().getZ();
 			String world = warp.getKey().toLocation().getWorld().getName().toUpperCase();
 
-			if(ZoneAPI.zoneAltar(warp.getKey().toLocation()) == ZoneAPI.zoneAltar(player.getLocation()))
+			if(ZoneUtility.zoneAltar(warp.getKey().toLocation()) == ZoneUtility.zoneAltar(player.getLocation()))
 			{
 				color = ChatColor.LIGHT_PURPLE + "";
 				hasWarp = true;
@@ -642,14 +642,14 @@ class AltarMenu extends Task
 	protected static void confirmName(Player player, String message)
 	{
 		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || TrackedPlayer.hasCharName(player, message) || DemigodsUtil.hasCapitalLetters(message, maxCaps))
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || TrackedPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
 			DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
 			if(TrackedPlayer.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
-			if(DemigodsUtil.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
+			if(MiscUtility.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 			player.sendMessage(" ");
 		}
@@ -670,7 +670,7 @@ class AltarMenu extends Task
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
-				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + DemigodsUtil.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 		}
 		player.sendMessage(" ");
 
@@ -689,9 +689,9 @@ class AltarMenu extends Task
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + DemigodsUtil.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + MiscUtility.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DemigodsData.saveTemp(player.getName(), "temp_createchar_deity", DemigodsUtil.capitalize(chosenDeity.toLowerCase()));
+					DemigodsData.saveTemp(player.getName(), "temp_createchar_deity", MiscUtility.capitalize(chosenDeity.toLowerCase()));
 					DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_deity");
 					return;
 				}
@@ -791,7 +791,7 @@ class AltarMenu extends Task
 		// Check for same altars
 		for(TrackedLocation warp : character.getWarps().keySet())
 		{
-			if(ZoneAPI.zoneAltar(warp.toLocation()) == ZoneAPI.zoneAltar(player.getLocation()))
+			if(ZoneUtility.zoneAltar(warp.toLocation()) == ZoneUtility.zoneAltar(player.getLocation()))
 			{
 				character.removeWarp(warp);
 			}
@@ -889,13 +889,13 @@ class AltarGenerate extends Task
 		public void onChunkLoad(ChunkLoadEvent event)
 		{
 			// Define variables
-			final Location location = DemigodsUtil.randomChunkLocation(event.getChunk());
+			final Location location = MiscUtility.randomChunkLocation(event.getChunk());
 
 			// If it's a new chunk then we'll generate structures
 			if(event.isNewChunk())
 			{
 				// Choose an arbitrary value and check the chance against it
-				if(DemigodsUtil.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
+				if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
 				{
 					if(Altar.canGenerateSolid(location, 6))
 					{

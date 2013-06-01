@@ -11,12 +11,12 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleCombineEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleEndEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleParticipateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Battle.BattleStartEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -351,7 +351,7 @@ public class TrackedBattle
 		if(battle == null)
 		{
 			Long startTime = System.currentTimeMillis();
-			int battleID = DemigodsUtil.generateInt(5);
+			int battleID = MiscUtility.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 			if(!battleEvent.isCancelled()) TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);

@@ -10,12 +10,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.ItemAPI;
 import com.censoredsoftware.Demigods.Demo.Data.Item.Baetylus;
 import com.censoredsoftware.Demigods.Demo.Data.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsUtil;
 import com.censoredsoftware.Demigods.Engine.Event.Misc.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 
 public class ChunkListener implements Listener
 {
@@ -23,10 +23,10 @@ public class ChunkListener implements Listener
 	public void onChunkLoad(ChunkLoadEvent event)
 	{
 		// Define variables
-		Location location = DemigodsUtil.randomChunkLocation(event.getChunk());
+		Location location = MiscUtility.randomChunkLocation(event.getChunk());
 
 		// Let's randomly create chests
-		if(DemigodsUtil.randomPercentBool(Demigods.config.getSettingDouble("generation.chest_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
+		if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.chest_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
 		{
 			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
 			Bukkit.getServer().getPluginManager().callEvent(chestSpawnEvent);
@@ -38,13 +38,13 @@ public class ChunkListener implements Listener
 			// Books!
 			for(Books book : Books.values())
 			{
-				if(DemigodsUtil.randomPercentBool(book.getBook().getSpawnChance())) items.add(book.getBook().getItem());
+				if(MiscUtility.randomPercentBool(book.getBook().getSpawnChance())) items.add(book.getBook().getItem());
 			}
 
 			items.add(Baetylus.NORMAL_SHARD.getShard().getItem());
 
 			// Generate the chest
-			ItemAPI.createChest(location, items);
+			ItemUtility.createChest(location, items);
 		}
 	}
 }

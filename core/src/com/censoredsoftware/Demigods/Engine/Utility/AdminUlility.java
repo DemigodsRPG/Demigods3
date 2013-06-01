@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.API;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -8,7 +8,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
-public class AdminAPI
+public class AdminUlility
 {
 	/**
 	 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.

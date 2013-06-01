@@ -1,11 +1,11 @@
-package com.censoredsoftware.Demigods.API;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.Engine.DemigodsPlugin;
 
-public class ExpansionAPI
+public class ExpansionUtility
 {
 	/**
 	 * Returns the DemigodsPlugin for <code>pluginName</code>.

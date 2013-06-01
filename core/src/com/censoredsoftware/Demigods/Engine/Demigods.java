@@ -20,7 +20,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
-import com.censoredsoftware.Demigods.API.AdminAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -35,6 +34,8 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.AdminUlility;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
 import com.censoredsoftware.Modules.PermissionModule;
@@ -208,15 +209,15 @@ class Scheduler
 		// Start favor runnable
 		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), 20, rate);
-		AdminAPI.sendDebug("Favor regeneration runnable enabled...");
+		AdminUlility.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start battle runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
-		AdminAPI.sendDebug("Battle tracking runnable enabled...");
+		AdminUlility.sendDebug("Battle tracking runnable enabled...");
 
 		// Start timed data runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
-		AdminAPI.sendDebug("Timed data runnable enabled...");
+		AdminUlility.sendDebug("Timed data runnable enabled...");
 	}
 
 	static void stopThreads(DemigodsPlugin instance)
@@ -588,12 +589,12 @@ class Commands implements CommandExecutor
 		{
 			if(option1.equalsIgnoreCase("wand"))
 			{
-				if(!AdminAPI.wandEnabled(player))
+				if(!AdminUlility.wandEnabled(player))
 				{
 					DemigodsData.saveTemp(player.getName(), "temp_admin_wand", true);
 					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin.wand_tool")));
 				}
-				else if(AdminAPI.wandEnabled(player))
+				else if(AdminUlility.wandEnabled(player))
 				{
 					DemigodsData.removeTemp(player.getName(), "temp_admin_wand");
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
@@ -932,7 +933,7 @@ class Commands implements CommandExecutor
 		Demigods.message.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
-		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + DemigodsUtil.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + MiscUtility.capitalize(alliance) + "s");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " -> " + ChatColor.RESET + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");

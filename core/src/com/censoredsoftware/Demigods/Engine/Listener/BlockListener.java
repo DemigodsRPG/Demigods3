@@ -17,8 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.AdminAPI;
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.Block.BlockFactory;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
@@ -33,6 +31,8 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.AdminUlility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class BlockListener implements Listener
 {
@@ -125,13 +125,13 @@ public class BlockListener implements Listener
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
 					Location location = drop.getLocation();
-					if(ZoneAPI.zoneAltar(location) != null)
+					if(ZoneUtility.zoneAltar(location) != null)
 					{
 						drop.remove();
 						continue;
 					}
 
-					if(ZoneAPI.zoneShrine(location) != null)
+					if(ZoneUtility.zoneShrine(location) != null)
 					{
 						drop.remove();
 					}
@@ -168,7 +168,7 @@ public class BlockListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		if(AdminAPI.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK))
+		if(AdminUlility.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK))
 		{
 			event.setCancelled(true);
 
@@ -180,7 +180,7 @@ public class BlockListener implements Listener
 			player.sendMessage(ChatColor.GREEN + "Altar created!");
 		}
 
-		if(AdminAPI.useWand(player) && Altar.isAltar(location))
+		if(AdminUlility.useWand(player) && Altar.isAltar(location))
 		{
 			event.setCancelled(true);
 
@@ -248,7 +248,7 @@ public class BlockListener implements Listener
 			}
 		}
 
-		if(AdminAPI.useWand(player) && Shrine.isShrine(location))
+		if(AdminUlility.useWand(player) && Shrine.isShrine(location))
 		{
 			event.setCancelled(true);
 
@@ -289,7 +289,7 @@ public class BlockListener implements Listener
 		/**
 		 * Entering Altar
 		 */
-		if(ZoneAPI.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneAPI.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
+		if(ZoneUtility.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneUtility.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
 			// player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
 			return;

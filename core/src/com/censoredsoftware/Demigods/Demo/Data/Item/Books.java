@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.ItemAPI;
+import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
 
 public enum Books
 {
 	/**
 	 * Instructions
 	 */
-	FIRST_JOIN(new Book(0.0, ItemAPI.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>()
+	FIRST_JOIN(new Book(0.0, ItemUtility.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>()
 	{
 		{
 			add("Welcome, adventurer, to the world of Demigods!");
@@ -23,7 +23,7 @@ public enum Books
 	/**
 	 * _Alex's Secret Book
 	 */
-	ALEX_SECRET_BOOK(new Book(25.0, ItemAPI.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", new ArrayList<String>()
+	ALEX_SECRET_BOOK(new Book(25.0, ItemUtility.createBook(ChatColor.GOLD + "_Alex's Secret Book", "_Alex", new ArrayList<String>()
 	{
 		{
 			add("Whoa... you found my book! Please be careful with it. It can be pretty powerful!");
@@ -34,7 +34,7 @@ public enum Books
 	/**
 	 * The Book of Ages
 	 */
-	BOOK_OF_AGES(new Book(75.0, ItemAPI.createBook(ChatColor.MAGIC + "The Book of Ages", "Steve", new ArrayList<String>()
+	BOOK_OF_AGES(new Book(75.0, ItemUtility.createBook(ChatColor.MAGIC + "The Book of Ages", "Steve", new ArrayList<String>()
 	{
 		{
 			add(ChatColor.MAGIC + "You cannot comprehend the power contained in this book.");

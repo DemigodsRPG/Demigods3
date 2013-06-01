@@ -18,13 +18,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Sets;
 
 public class Zeus extends Deity
@@ -73,7 +73,7 @@ public class Zeus extends Deity
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
-		if(!ZoneAPI.canTarget(target)) return false;
+		if(!ZoneUtility.canTarget(target)) return false;
 		Location toHit = Ability.aimLocation(character, target.getLocation());
 
 		player.getWorld().strikeLightningEffect(toHit);
@@ -82,7 +82,7 @@ public class Zeus extends Deity
 		{
 			if(entity instanceof LivingEntity)
 			{
-				if(!ZoneAPI.canTarget(entity)) continue;
+				if(!ZoneUtility.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
 				if(livingEntity.getLocation().distance(toHit) < 2) Ability.customDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
 			}

@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.API.ValueAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Shrine;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -24,6 +23,7 @@ import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ValueUtility;
 
 public class ShrineQuest extends Quest
 {
@@ -142,7 +142,7 @@ class Tribute extends Task
 			{
 				if(item != null)
 				{
-					tributeValue += ValueAPI.getTributeValue(item);
+					tributeValue += ValueUtility.getTributeValue(item);
 					items += item.getAmount();
 				}
 			}

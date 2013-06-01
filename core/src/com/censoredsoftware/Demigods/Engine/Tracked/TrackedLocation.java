@@ -11,10 +11,10 @@ import redis.clients.johm.Id;
 import redis.clients.johm.Indexed;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Block.Altar;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 @Model
 public class TrackedLocation
@@ -133,7 +133,7 @@ public class TrackedLocation
 		if(character == null || character.getWarps() == null) return false;
 		for(Map.Entry<TrackedLocation, String> warp : character.getWarps().entrySet())
 		{
-			if(ZoneAPI.zoneAltar(warp.getKey().toLocation()) == altar) return true;
+			if(ZoneUtility.zoneAltar(warp.getKey().toLocation()) == altar) return true;
 		}
 		return false;
 	}

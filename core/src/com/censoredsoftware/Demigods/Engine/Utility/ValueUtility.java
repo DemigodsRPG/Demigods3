@@ -1,8 +1,8 @@
-package com.censoredsoftware.Demigods.API;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.inventory.ItemStack;
 
-public class ValueAPI
+public class ValueUtility
 {
 	/**
 	 * Returns the value of the passed in <code>item</code>.

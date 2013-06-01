@@ -13,12 +13,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class PlayerListener implements Listener
 {
@@ -94,12 +94,12 @@ public class PlayerListener implements Listener
 		{
 			onPlayerLineJump(player, to, from, delayTime);
 		}
-		else if(ZoneAPI.enterZoneNoPVP(to, from))
+		else if(ZoneUtility.enterZoneNoPVP(to, from))
 		{
 			DemigodsData.removeTemp(player.getName(), "temp_was_PVP");
 			player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 		}
-		else if(ZoneAPI.exitZoneNoPVP(to, from))
+		else if(ZoneUtility.exitZoneNoPVP(to, from))
 		{
 			player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 			return;
@@ -118,7 +118,7 @@ public class PlayerListener implements Listener
 		if(DemigodsData.hasKeyTemp(player.getName(), "temp_was_PVP")) return;
 
 		// No Spawn Line-Jumping
-		if(ZoneAPI.enterZoneNoPVP(to, from) && delayTime > 0)
+		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
 			DemigodsData.saveTemp(player.getName(), "temp_was_PVP", true);
 			if(DemigodsData.hasKeyTemp(player.getName(), "temp_teleport_ability")) DemigodsData.removeTemp(player.getName(), "temp_teleport_ability");
@@ -129,7 +129,7 @@ public class PlayerListener implements Listener
 				public void run()
 				{
 					DemigodsData.removeTemp(player.getName(), "temp_was_PVP");
-					if(ZoneAPI.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
+					if(ZoneUtility.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
 		}
@@ -137,7 +137,7 @@ public class PlayerListener implements Listener
 		// Let players know where they can PVP
 		if(!DemigodsData.hasKeyTemp(player.getName(), "temp_was_PVP"))
 		{
-			if(ZoneAPI.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+			if(ZoneUtility.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 		}
 	}
 
@@ -162,7 +162,7 @@ public class PlayerListener implements Listener
 		}
 		else if(filterCheckQuitting)
 		{
-			if(ZoneAPI.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
+			if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
 			{
 				String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
 				event.setQuitMessage(message);

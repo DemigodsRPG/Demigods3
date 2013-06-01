@@ -17,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.API.ZoneAPI;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -25,6 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class Prometheus extends Deity
 {
@@ -204,7 +204,7 @@ class Blaze extends Ability
 					for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
 					{
 						Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + X, target.getLocation().getBlockY() + Y, target.getLocation().getBlockZ() + Z);
-						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !ZoneAPI.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
+						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !ZoneUtility.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
 					}
 				}
 			}
@@ -262,7 +262,7 @@ class Firestorm extends Ability
 			if(!(entity instanceof LivingEntity)) continue;
 			PlayerCharacter otherCharacter = TrackedPlayer.getTracked((Player) entity).getCurrent();
 			if(entity instanceof Player && otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
-			if(!ZoneAPI.canTarget(entity)) continue;
+			if(!ZoneUtility.canTarget(entity)) continue;
 			entityList.add((LivingEntity) entity);
 		}
 		for(int i = 0; i <= total; i += 20)
