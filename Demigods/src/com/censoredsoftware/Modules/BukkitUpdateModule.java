@@ -453,7 +453,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private void confirm(Player player, boolean keep)
 	{
-		if(keep) DemigodsData.saveTimed("update", player.getName(), true, 10);
+		if(keep) DemigodsData.saveTimed("update", player.getName(), true, confirmTime);
 		else if(DemigodsData.hasTimed("update", player.getName())) DemigodsData.removeTimed("update", player.getName());
 	}
 }

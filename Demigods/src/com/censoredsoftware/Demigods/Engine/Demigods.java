@@ -86,6 +86,9 @@ public class Demigods
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 		permission = new PermissionModule();
 
+		// Setup protected modules.
+		update = new BukkitUpdateModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
+
 		// Define the game data.
 		this.deities = deities;
 		this.quests = quests;
