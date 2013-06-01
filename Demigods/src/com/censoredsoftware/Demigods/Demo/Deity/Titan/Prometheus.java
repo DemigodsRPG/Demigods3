@@ -219,7 +219,7 @@ class Firestorm extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
 		}
 	};
 	private static Type type = Type.OFFENSE;
