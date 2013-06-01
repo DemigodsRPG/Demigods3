@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -140,20 +139,22 @@ public class BlockListener implements Listener
 		}, 1);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void stopDestroyEnderCrystal(EntityDamageEvent event)
-	{
-		try
-		{
-			if(TrackedBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
-			{
-				event.setDamage(0);
-				event.setCancelled(true);
-			}
-		}
-		catch(Exception ignored)
-		{}
-	}
+	/*
+	 * @EventHandler(priority = EventPriority.HIGHEST)
+	 * public void stopDestroyEnderCrystal(EntityDamageEvent event)
+	 * {
+	 * try
+	 * {
+	 * if(TrackedBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+	 * {
+	 * event.setDamage(0);
+	 * event.setCancelled(true);
+	 * }
+	 * }
+	 * catch(Exception ignored)
+	 * {}
+	 * }
+	 */
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void demigodsAdminWand(PlayerInteractEvent event)
