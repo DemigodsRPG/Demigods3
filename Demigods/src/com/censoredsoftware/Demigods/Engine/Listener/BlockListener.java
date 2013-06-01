@@ -1,19 +1,23 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
@@ -85,58 +89,56 @@ public class BlockListener implements Listener
 		}
 	}
 
-	/**
-	 * @EventHandler(priority = EventPriority.HIGHEST)
-	 *                        public void divineBlockExplode(final EntityExplodeEvent event)
-	 *                        {
-	 *                        final List<Location> savedLocations = new ArrayList<Location>();
-	 *                        final List<Material> savedMaterials = new ArrayList<Material>();
-	 *                        final List<Byte> savedBytes = new ArrayList<Byte>();
-	 * 
-	 *                        List<Block> blocks = event.blockList();
-	 *                        for(Block block : blocks)
-	 *                        {
-	 *                        if(block.getType() == Material.TNT) continue;
-	 *                        if(TrackedBlock.isProtected(block.getLocation()))
-	 *                        {
-	 *                        savedLocations.add(block.getLocation());
-	 *                        savedMaterials.add(block.getType());
-	 *                        savedBytes.add(block.getData());
-	 *                        }
-	 *                        }
-	 * 
-	 *                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
-	 *                        {
-	 * @Override
-	 *           public void run()
-	 *           {
-	 *           // Regenerate blocks
-	 *           int i = 0;
-	 *           for(Location location : savedLocations)
-	 *           {
-	 *           location.getBlock().setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
-	 *           i++;
-	 *           }
-	 * 
-	 *           // Remove all drops from explosion zone
-	 *           for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
-	 *           {
-	 *           Location location = drop.getLocation();
-	 *           if(ZoneUtility.zoneAltar(location) != null)
-	 *           {
-	 *           drop.remove();
-	 *           continue;
-	 *           }
-	 * 
-	 *           if(ZoneUtility.zoneShrine(location) != null)
-	 *           {
-	 *           drop.remove();
-	 *           }
-	 *           }
-	 *           }
-	 *           }, 1);
-	 *           }
-	 */
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void divineBlockExplode(final EntityExplodeEvent event)
+	{
+		final List<Location> savedLocations = new ArrayList<Location>();
+		final List<Material> savedMaterials = new ArrayList<Material>();
+		final List<Byte> savedBytes = new ArrayList<Byte>();
+
+		List<Block> blocks = event.blockList();
+		for(Block block : blocks)
+		{
+			if(block.getType() == Material.TNT) continue;
+			if(TrackedBlock.isProtected(block.getLocation()))
+			{
+				savedLocations.add(block.getLocation());
+				savedMaterials.add(block.getType());
+				savedBytes.add(block.getData());
+			}
+		}
+
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				// Regenerate blocks
+				int i = 0;
+				for(Location location : savedLocations)
+				{
+					location.getBlock().setTypeIdAndData(savedMaterials.get(i).getId(), savedBytes.get(i), true);
+					i++;
+				}
+
+				// Remove all drops from explosion zone
+				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
+				{
+					Location location = drop.getLocation();
+					if(ZoneUtility.zoneAltar(location) != null)
+					{
+						drop.remove();
+						continue;
+					}
+
+					if(ZoneUtility.zoneShrine(location) != null)
+					{
+						drop.remove();
+					}
+				}
+			}
+		}, 1);
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void stopDestroyEnderCrystal(EntityDamageEvent event)
