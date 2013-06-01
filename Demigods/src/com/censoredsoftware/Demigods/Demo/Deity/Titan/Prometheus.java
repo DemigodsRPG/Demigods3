@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -214,8 +216,7 @@ class Blaze extends Ability
 class Firestorm extends Ability
 {
 	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
-	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
-	// private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
+	private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -254,8 +255,8 @@ class Firestorm extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		// int devotion = character.getMeta().getDevotion();
-		int total = 20 * (int) Math.round(2 * Math.pow(1000, 0.15));
+		int devotion = character.getMeta().getDevotion();
+		int total = 20 * (int) Math.round(2 * Math.pow(devotion, 0.15));
 		final Set<LivingEntity> entityList = Sets.newHashSet();
 		for(Entity entity : player.getNearbyEntities(50, 50, 50))
 		{
@@ -270,12 +271,20 @@ class Firestorm extends Ability
 		}
 		for(int i = 0; i <= total; i += 20)
 		{
-			for(LivingEntity entity : entityList)
+			for(final LivingEntity entity : entityList)
 			{
-				Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
-				up.setY(up.getY() + 10.0);
-				Prometheus.shootFireball(up, entity.getLocation(), player);
+				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
+						up.setY(up.getY() + 10.0);
+						Prometheus.shootFireball(up, entity.getLocation(), player);
+					}
+				}, i);
 			}
 		}
 	}
+
 }
