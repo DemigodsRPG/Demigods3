@@ -64,7 +64,7 @@ public class Prometheus extends Deity
 
 	public static void shootFireball(Location from, Location to, Player shooter)
 	{
-		Fireball fireball = (Fireball) shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
+		SmallFireball fireball = (SmallFireball) shooter.getWorld().spawnEntity(from, EntityType.SMALL_FIREBALL);
 		to.setX(to.getX() + .5);
 		to.setY(to.getY() + .5);
 		to.setZ(to.getZ() + .5);
