@@ -23,7 +23,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class Template extends Deity
 {
-	private static String name = "Template", alliance = "Blaze";
+	private static String name = "Template", alliance = "Test";
 	private static ChatColor color = ChatColor.GRAY;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -61,7 +61,7 @@ public class Template extends Deity
 
 class Test extends Ability
 {
-	private static String deity = "Template", name = "Blaze", command = "test", permission = "demigods.test.test";
+	private static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
 	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -114,7 +114,7 @@ class Test extends Ability
 		if(target instanceof Player)
 		{
 			Player victim = (Player) target;
-			victim.sendMessage("Blaze!");
+			victim.sendMessage("Test!");
 			player.sendMessage("Tested " + victim.getName() + "!");
 			return;
 		}

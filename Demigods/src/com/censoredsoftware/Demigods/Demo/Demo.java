@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Demo;
 
+import com.censoredsoftware.Demigods.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Demo.Deity.Titan.Prometheus;
 import com.censoredsoftware.Demigods.Demo.Quest.Passive.AltarQuest;
@@ -13,7 +14,11 @@ public class Demo
 {
 	public static enum Deities implements Demigods.ListedDeity
 	{
-		ZEUS(new Zeus()), PROMETHEUS(new Prometheus());
+		// GODS
+		ZEUS(new Zeus()), POSEIDON(new Poseidon()),
+
+		// TITANS
+		PROMETHEUS(new Prometheus());
 
 		private Deity deity;
 
