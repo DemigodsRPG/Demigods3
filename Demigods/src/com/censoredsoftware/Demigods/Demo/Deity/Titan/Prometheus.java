@@ -1,9 +1,6 @@
 package com.censoredsoftware.Demigods.Demo.Deity.Titan;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,7 +22,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
-import com.google.common.collect.Sets;
 
 public class Prometheus extends Deity
 {
@@ -250,7 +246,7 @@ class Firestorm extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
-		final Set<LivingEntity> entityList = Sets.newHashSet();
+		Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();
 
 		for(final Entity entity : player.getNearbyEntities(50, 50, 50)) // TODO: Make this dependent on levels.
 		{
@@ -263,8 +259,13 @@ class Firestorm extends Ability
 			}
 			if(!ZoneUtility.canTarget(entity)) continue;
 
-			// Now shoot them
-			for(int i = 0; i <= total; i++)
+			entities.add((LivingEntity) entity);
+		}
+
+		// Now shoot them
+		for(int i = 0; i <= total; i++)
+		{
+			for(final LivingEntity entity : entities)
 			{
 				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 				{
@@ -272,7 +273,7 @@ class Firestorm extends Ability
 					public void run()
 					{
 						Location entityLocation = entity.getLocation();
-						Location air = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY() + 10.0, entityLocation.getZ());
+						Location air = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getWorld().getHighestBlockAt(entityLocation).getLocation().getY() + 10.0, entityLocation.getZ());
 						Location ground = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY(), entityLocation.getZ());
 						Prometheus.shootFireball(air, ground, player);
 					}
