@@ -279,7 +279,9 @@ class Firestorm extends Ability
 				{
 					for(LivingEntity entity : entityList)
 					{
-						Location up = new Location(entity.getWorld(), entity.getLocation().getX(), 256, entity.getLocation().getZ());
+
+						Location up = entity.getLocation().getWorld().getHighestBlockAt(Location.locToBlock(entity.getLocation().getX()), Location.locToBlock(entity.getLocation().getZ())).getLocation();
+						up.setY(up.getY() + 10.0);
 						Prometheus.shootFireball(up, entity.getLocation(), player);
 					}
 				}
