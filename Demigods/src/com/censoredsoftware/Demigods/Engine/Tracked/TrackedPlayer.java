@@ -322,7 +322,6 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			togglePlayerMovement(player, false);
 			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
 		}
 		else
@@ -331,7 +330,6 @@ public class TrackedPlayer
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 			togglePlayerChat(player, true);
-			togglePlayerMovement(player, true);
 			DemigodsData.removeTemp(player.getName(), "temp_praying");
 		}
 	}
@@ -347,13 +345,11 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			togglePlayerMovement(player, false);
 			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
 		}
 		else
 		{
 			togglePlayerChat(player, true);
-			togglePlayerMovement(player, true);
 			DemigodsData.removeTemp(player.getName(), "temp_praying");
 		}
 	}
