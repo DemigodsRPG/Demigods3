@@ -114,7 +114,7 @@ class AltarMenu extends Task
 					TrackedPlayer.togglePraying(player, true);
 
 					// First we clear chat
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(16, 16, 16))
@@ -129,7 +129,7 @@ class AltarMenu extends Task
 					// If they are in the process of creating a character we'll just skip them to the confirm screen
 					if(DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
 					{
-						clearChat(player);
+						MiscUtility.clearChat(player);
 						finalConfirmDeity(player);
 					}
 
@@ -142,8 +142,6 @@ class AltarMenu extends Task
 					// Clear whatever is being worked on in this Pray session
 					DemigodsData.removeTemp(player.getName(), "temp_createchar");
 
-					player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
-					player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 					event.setCancelled(true);
 				}
 			}
@@ -171,7 +169,7 @@ class AltarMenu extends Task
 					// Remove now useless data
 					DemigodsData.removeTemp(player.getName(), "temp_createchar");
 
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
 					player.sendMessage(" ");
@@ -183,7 +181,7 @@ class AltarMenu extends Task
 				// Create Character
 				if(message.equals("1") || message.contains("create") && message.contains("character"))
 				{
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					player.sendMessage(ChatColor.YELLOW + " -> Creating Character --------------------------------");
 					player.sendMessage(" ");
@@ -251,7 +249,7 @@ class AltarMenu extends Task
 						}
 						else
 						{
-							clearChat(player);
+							MiscUtility.clearChat(player);
 							player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
 							player.sendMessage(" ");
 							altarMenu(player);
@@ -262,7 +260,7 @@ class AltarMenu extends Task
 				// View Characters
 				else if(message.equals("2") || message.startsWith("view") && message.contains("characters"))
 				{
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					player.sendMessage(ChatColor.YELLOW + " -> Viewing Characters --------------------------------");
 					player.sendMessage(" ");
@@ -274,7 +272,7 @@ class AltarMenu extends Task
 				{
 					if(TrackedPlayer.getTracked(player).getCurrent() == null) return;
 
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					player.sendMessage(ChatColor.YELLOW + " -> Viewing Warps --------------------------------");
 					player.sendMessage(" ");
@@ -286,7 +284,7 @@ class AltarMenu extends Task
 				{
 					if(TrackedPlayer.getTracked(player).getCurrent() == null || !TrackedLocation.hasInvites(TrackedPlayer.getTracked(player).getCurrent())) return;
 
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					player.sendMessage(ChatColor.YELLOW + " -> Viewing Invites --------------------------------");
 					player.sendMessage(" ");
@@ -295,7 +293,7 @@ class AltarMenu extends Task
 				}
 				else if(message.startsWith("info"))
 				{
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					// Define variables
 					String charName = message.replace(" info", "").trim();
@@ -307,7 +305,7 @@ class AltarMenu extends Task
 				// Switch Character
 				else if(message.startsWith("switch to"))
 				{
-					clearChat(player);
+					MiscUtility.clearChat(player);
 
 					// Define variables
 					String charName = message.replace("switch to ", "").trim();
@@ -490,7 +488,6 @@ class AltarMenu extends Task
 		}
 
 		player.sendMessage(" ");
-
 		player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information. ");
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " switch to <character name> " + ChatColor.GRAY + "to change your current");
@@ -549,7 +546,6 @@ class AltarMenu extends Task
 		}
 
 		player.sendMessage(" ");
-
 		player.sendMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " accept invite <invite name> " + ChatColor.GRAY + "to warp.");
 		player.sendMessage(" ");
 	}
@@ -617,15 +613,13 @@ class AltarMenu extends Task
 
 				// Disable prayer
 				TrackedPlayer.togglePraying(player, false);
-				player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
-				player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 			}
 		}
 		else
 		{
 			player.sendMessage(ChatColor.RED + "Your current character couldn't be changed...");
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
-			TrackedPlayer.togglePraying(player, false);
+			TrackedPlayer.togglePrayingSilent(player, false);
 		}
 	}
 
@@ -760,12 +754,6 @@ class AltarMenu extends Task
 		player.sendMessage(" ");
 	}
 
-	protected static void clearChat(Player player)
-	{
-		for(int x = 0; x < 120; x++)
-			player.sendMessage(" ");
-	}
-
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
@@ -830,7 +818,7 @@ class AltarMenu extends Task
 
 		TrackedLocation.addInvite(character, invited);
 		TrackedPlayer.togglePraying(player, false);
-		clearChat(player);
+		MiscUtility.clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
 		invited.getOfflinePlayer().getPlayer().sendMessage(invited.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + " has invited you to an Altar!");
@@ -845,7 +833,7 @@ class AltarMenu extends Task
 		if(invite != null)
 		{
 			TrackedPlayer.togglePraying(player, false);
-			clearChat(player);
+			MiscUtility.clearChat(player);
 
 			player.teleport(invite.toLocation());
 
@@ -864,7 +852,7 @@ class AltarMenu extends Task
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{
 				TrackedPlayer.togglePraying(player, false);
-				clearChat(player);
+				MiscUtility.clearChat(player);
 
 				player.teleport(warp.getKey().toLocation());
 

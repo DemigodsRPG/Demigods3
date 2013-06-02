@@ -12,6 +12,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -311,12 +312,37 @@ public class TrackedPlayer
 	}
 
 	/**
-	 * Changes prayer status for <code>player</code> to <code>option</code>.
+	 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
 	 * 
 	 * @param player the player the manipulate.
 	 * @param option the boolean to set to.
 	 */
-	public static void togglePraying(OfflinePlayer player, boolean option)
+	public static void togglePraying(Player player, boolean option)
+	{
+		if(option)
+		{
+			togglePlayerChat(player, false);
+			togglePlayerMovement(player, false);
+			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
+		}
+		else
+		{
+			MiscUtility.clearChat(player);
+			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
+			player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
+			togglePlayerChat(player, true);
+			togglePlayerMovement(player, true);
+			DemigodsData.removeTemp(player.getName(), "temp_praying");
+		}
+	}
+
+	/**
+	 * Changes prayer status for <code>player</code> to <code>option</code> silently.
+	 * 
+	 * @param player the player the manipulate.
+	 * @param option the boolean to set to.
+	 */
+	public static void togglePrayingSilent(Player player, boolean option)
 	{
 		if(option)
 		{

@@ -4,11 +4,23 @@ import java.util.Random;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
 public class MiscUtility
 {
+	/**
+	 * Clears the chat for <code>player</code>.
+	 * 
+	 * @param player the player whose chat to clear.
+	 */
+	public static void clearChat(Player player)
+	{
+		for(int x = 0; x < 120; x++)
+			player.sendMessage(" ");
+	}
+
 	/**
 	 * Generates a random string with a length of <code>length</code>.
 	 * 

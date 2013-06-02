@@ -78,6 +78,12 @@ public class PlayerListener implements Listener
 				DemigodsData.saveTemp(player.getName(), "temp_player_held", true);
 			}
 		}
+
+		// Handle prayer disable
+		if(TrackedPlayer.isPraying(player) && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
+		{
+			TrackedPlayer.togglePraying(player, false);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
