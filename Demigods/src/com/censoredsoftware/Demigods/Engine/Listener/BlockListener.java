@@ -2,7 +2,10 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 
 import java.util.List;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -13,7 +16,6 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
@@ -213,21 +215,8 @@ public class BlockListener implements Listener
 					StructureFactory.createShrine(character, location);
 					location.getWorld().strikeLightningEffect(location);
 
-					if(!player.getGameMode().equals(GameMode.CREATIVE))
-					{
-						if(player.getItemInHand().getAmount() > 1)
-						{
-							ItemStack books = new ItemStack(player.getItemInHand().getType(), player.getInventory().getItemInHand().getAmount() - 1);
-							player.setItemInHand(books);
-						}
-						else
-						{
-							player.getInventory().remove(Material.BOOK);
-						}
-					}
-
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_1).replaceAll("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_2).replaceAll("{deity}", "" + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY));
 				}
 				catch(Exception e)
 				{
