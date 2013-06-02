@@ -5,6 +5,9 @@ misc:
     console_debug: true
     balance_teams: true
 
+## Language Settings ##
+language: 'English'
+
 ## Restrictions ##
 restrictions:
     friendly_fire: false

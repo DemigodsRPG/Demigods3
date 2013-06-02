@@ -39,6 +39,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
+import com.censoredsoftware.Demigods.Language.Translation;
 import com.censoredsoftware.Modules.BukkitUpdateModule;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
@@ -68,6 +69,7 @@ public class Demigods
 	// The Game Data
 	protected static Deque<Deity> deities;
 	protected static Deque<Quest> quests;
+	public static Translation text;
 
 	public interface ListedDeity
 	{
@@ -79,7 +81,7 @@ public class Demigods
 		public Quest getQuest();
 	}
 
-	protected Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedQuest[] quests)
+	protected Demigods(DemigodsPlugin instance, final Translation text, final ListedDeity[] deities, final ListedQuest[] quests)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -111,6 +113,7 @@ public class Demigods
 				}
 			}
 		};
+		Demigods.text = text;
 
 		// Initialize soft data.
 		new DemigodsData(instance);
@@ -378,8 +381,7 @@ class Commands implements CommandExecutor
 
 		// Test different unicode symbols.
 		sender.sendMessage(s + s + s + s + " don't " + s + s + s + s + s + " worry, everything will " + s + s + s + s + s + " be " + s + s + s + s + s + s + s + " fine " + s + s + s + ".");
-		sender.sendMessage(UnicodeUtil.heavyHeart());
-		sender.sendMessage(UnicodeUtil.rightwardArrow());
+		sender.sendMessage(Demigods.text.getText(Translation.Episode.ENGINE, Translation.Text.TEXT));
 		return true;
 	}
 
