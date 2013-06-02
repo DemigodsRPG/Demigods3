@@ -429,9 +429,9 @@ class AltarMenu extends Task
 	protected static void altarMenu(Player player)
 	{
 		player.sendMessage(" ");
-		player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable to move or chat.");
+		player.sendMessage(ChatColor.GRAY + " While using an Altar you are unable chat with players.");
 		player.sendMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
-		player.sendMessage(ChatColor.GRAY + " Right-click the Altar again to stop Praying.");
+		player.sendMessage(ChatColor.GRAY + " Right-click the Altar again or walk away to stop Praying.");
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
