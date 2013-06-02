@@ -364,7 +364,11 @@ public class TrackedBattle
 			int battleID = MiscUtility.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-			if(!battleEvent.isCancelled()) TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);
+			if(!battleEvent.isCancelled())
+			{
+				TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);
+				DemigodsData.saveTimed("battle", String.valueOf(battleID), true, 10);
+			}
 		}
 		else
 		{
