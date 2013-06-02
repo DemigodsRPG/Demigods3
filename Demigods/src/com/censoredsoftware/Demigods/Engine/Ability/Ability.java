@@ -63,14 +63,14 @@ public abstract class Ability
 	 * @param player the player doing the ability
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the Type of the ability
+	 * @param info the AbilityInfo object
 	 * @return true/false depending on if all pre-process tests have passed
 	 */
-	public static boolean doAbilityPreProcess(Player player, String name, int cost, Ability.Type type)
+	public static boolean doAbilityPreProcess(Player player, String name, int cost, AbilityInfo info)
 	{
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		return doAbilityPreProcess(player, cost) && event(name, character, cost, type);
+		return doAbilityPreProcess(player, cost) && event(name, character, cost, info);
 	}
 
 	/**
@@ -82,14 +82,14 @@ public abstract class Ability
 	 * @param target the LivingEntity being targeted
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the Type of the ability
+	 * @param info the AbilityInfo object
 	 * @return true/false depending on if all pre-process tests have passed
 	 */
-	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, Ability.Type type)
+	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityInfo info)
 	{
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		if(doAbilityPreProcess(player, cost) && event(name, character, cost, type))
+		if(doAbilityPreProcess(player, cost) && event(name, character, cost, info))
 		{
 			if(!(target instanceof LivingEntity))
 			{
@@ -106,7 +106,7 @@ public abstract class Ability
 				PlayerCharacter attacked = TrackedPlayer.getTracked(((Player) target)).getCurrent();
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked)) return false;
 			}
-			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target));
+			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
 			return true;
 		}
 		return false;
@@ -182,12 +182,12 @@ public abstract class Ability
 	 * @param character the character triggering the ability event
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
-	 * @param type the Type of the ability
+	 * @param info the AbilityInfo object
 	 * @return true/false if the event isn't cancelled or not
 	 */
-	public static boolean event(String name, PlayerCharacter character, int cost, Ability.Type type)
+	public static boolean event(String name, PlayerCharacter character, int cost, AbilityInfo info)
 	{
-		AbilityEvent event = new AbilityEvent(name, character, cost, type);
+		AbilityEvent event = new AbilityEvent(name, character, cost, info);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		return !event.isCancelled();
 	}

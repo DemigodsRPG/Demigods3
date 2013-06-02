@@ -60,6 +60,7 @@ character:
     default_stealth: 1
     default_support: 1
     default_passive: 1
+    default_ultimate: 1
     default_favor: 500
     default_max_favor: 750
     default_devotion: 200

@@ -5,6 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 /*
@@ -15,28 +16,29 @@ public class AbilityTargetEvent extends Event implements Cancellable
 	private static final HandlerList handlers = new HandlerList();
 	private final PlayerCharacter character;
 	private final LivingEntity target;
+	private final AbilityInfo info;
 	private boolean cancelled = false;
 
-	public AbilityTargetEvent(final PlayerCharacter character, final LivingEntity target)
+	public AbilityTargetEvent(final PlayerCharacter character, final LivingEntity target, AbilityInfo info)
 	{
 		this.character = character;
 		this.target = target;
+		this.info = info;
 	}
 
-	/*
-	 * getCharacter() : Gets the character involved.
-	 */
 	public PlayerCharacter getCharacter()
 	{
 		return this.character;
 	}
 
-	/*
-	 * getTarget() : Gets the target involved.
-	 */
 	public LivingEntity getTarget()
 	{
 		return this.target;
+	}
+
+	public AbilityInfo getInfo()
+	{
+		return this.info;
 	}
 
 	@Override

@@ -52,6 +52,7 @@ public class PlayerCharacterFactory
 		charMeta.setLevel("STEALTH", Demigods.config.getSettingInt("character.default_stealth"));
 		charMeta.setLevel("SUPPORT", Demigods.config.getSettingInt("character.default_support"));
 		charMeta.setLevel("PASSIVE", Demigods.config.getSettingInt("character.default_passive"));
+		charMeta.setLevel("ULTIMATE", Demigods.config.getSettingInt("character.default_ultimate"));
 		charMeta.initializeMaps();
 		PlayerCharacterMeta.save(charMeta);
 		return charMeta;
