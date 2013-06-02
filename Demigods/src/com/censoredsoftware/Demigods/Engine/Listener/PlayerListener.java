@@ -69,13 +69,13 @@ public class PlayerListener implements Listener
 		onPlayerLineJump(player, to, from, delayTime);
 
 		// Player Hold
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold"))
+		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold"))
 		{
 			if(from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())
 			{
 				event.setCancelled(true);
 				player.teleport(from);
-				DemigodsData.saveTemp(player.getName(), "temp_player_held", true);
+				DemigodsData.saveTemp(player.getName(), "player_held", true);
 			}
 		}
 
@@ -96,13 +96,13 @@ public class PlayerListener implements Listener
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
 		// No-PVP Zones
-		if(event.getCause() == TeleportCause.ENDER_PEARL || DemigodsData.hasKeyTemp(player.getName(), "temp_teleport_ability"))
+		if(event.getCause() == TeleportCause.ENDER_PEARL || DemigodsData.hasKeyTemp(player.getName(), "teleport_ability"))
 		{
 			onPlayerLineJump(player, to, from, delayTime);
 		}
 		else if(ZoneUtility.enterZoneNoPVP(to, from))
 		{
-			DemigodsData.removeTemp(player.getName(), "temp_was_PVP");
+			DemigodsData.removeTemp(player.getName(), "was_PVP");
 			player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 		}
 		else if(ZoneUtility.exitZoneNoPVP(to, from))
@@ -112,8 +112,8 @@ public class PlayerListener implements Listener
 		}
 
 		// Player Hold
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_held")) DemigodsData.removeTemp(player.getName(), "temp_player_held");
-		else if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold")) event.setCancelled(true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "player_held")) DemigodsData.removeTemp(player.getName(), "player_held");
+		else if(DemigodsData.hasKeyTemp(player.getName(), "player_hold")) event.setCancelled(true);
 	}
 
 	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
@@ -121,27 +121,27 @@ public class PlayerListener implements Listener
 		// NullPointer Check
 		if(to == null || from == null) return;
 
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_was_PVP")) return;
+		if(DemigodsData.hasKeyTemp(player.getName(), "was_PVP")) return;
 
 		// No Spawn Line-Jumping
 		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
-			DemigodsData.saveTemp(player.getName(), "temp_was_PVP", true);
-			if(DemigodsData.hasKeyTemp(player.getName(), "temp_teleport_ability")) DemigodsData.removeTemp(player.getName(), "temp_teleport_ability");
+			DemigodsData.saveTemp(player.getName(), "was_PVP", true);
+			if(DemigodsData.hasKeyTemp(player.getName(), "teleport_ability")) DemigodsData.removeTemp(player.getName(), "teleport_ability");
 
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					DemigodsData.removeTemp(player.getName(), "temp_was_PVP");
+					DemigodsData.removeTemp(player.getName(), "was_PVP");
 					if(ZoneUtility.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
 		}
 
 		// Let players know where they can PVP
-		if(!DemigodsData.hasKeyTemp(player.getName(), "temp_was_PVP"))
+		if(!DemigodsData.hasKeyTemp(player.getName(), "was_PVP"))
 		{
 			if(ZoneUtility.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 		}
