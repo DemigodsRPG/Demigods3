@@ -129,14 +129,12 @@ public class TrackedPlayer
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
 
-		// Disable prayer, re-enabled movement, etc. just to be safe
-		togglePraying(player, false);
-		togglePlayerChat(player, true);
-		togglePlayerMovement(player, true);
-
 		// Set new character to active
 		newChar.setActive(true);
 		this.current = newChar.getId();
+
+		// Disable prayer, re-enabled movement, etc. just to be safe
+		togglePraying(player, false);
 
 		// Teleport them
 		try
@@ -299,6 +297,7 @@ public class TrackedPlayer
 		{
 			togglePlayerChat(player, false);
 			DemigodsData.saveTemp(player.getName(), "praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
@@ -307,6 +306,7 @@ public class TrackedPlayer
 			player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 			togglePlayerChat(player, true);
 			DemigodsData.removeTemp(player.getName(), "praying");
+			DemigodsData.removeTemp(player.getName(), "praying_location");
 		}
 	}
 
@@ -322,11 +322,13 @@ public class TrackedPlayer
 		{
 			togglePlayerChat(player, false);
 			DemigodsData.saveTemp(player.getName(), "praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
 			togglePlayerChat(player, true);
 			DemigodsData.removeTemp(player.getName(), "praying");
+			DemigodsData.removeTemp(player.getName(), "praying_location");
 		}
 	}
 

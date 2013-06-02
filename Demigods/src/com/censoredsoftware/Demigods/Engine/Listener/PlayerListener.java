@@ -80,7 +80,7 @@ public class PlayerListener implements Listener
 		}
 
 		// Handle prayer disable
-		if(TrackedPlayer.isPraying(player) && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
+		if(TrackedPlayer.isPraying(player) && to.distance((Location) DemigodsData.getValueTemp(player.getName(), "praying_location")) >= 3)
 		{
 			TrackedPlayer.togglePraying(player, false);
 		}
