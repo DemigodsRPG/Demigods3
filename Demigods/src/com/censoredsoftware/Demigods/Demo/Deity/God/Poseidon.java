@@ -18,6 +18,7 @@ import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 
 public class Poseidon extends Deity
 {
@@ -38,7 +39,7 @@ public class Poseidon extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
@@ -64,7 +65,7 @@ class Swim extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 		}
 	};
 	private static Type type = Type.PASSIVE;

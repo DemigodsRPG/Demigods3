@@ -24,6 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Sets;
 
@@ -46,7 +47,7 @@ public class Zeus extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
@@ -104,7 +105,7 @@ class Shove extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
 		}
 	};
 	private static Type type = Type.DEFENSE;
@@ -163,7 +164,7 @@ class Lightning extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
 		}
 	};
 	private static Ability.Type type = Ability.Type.OFFENSE;
@@ -214,7 +215,7 @@ class Storm extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
 		}
 	};
 	private static Type type = Type.ULTIMATE;
@@ -296,7 +297,7 @@ class NoFall extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.WHITE + "Take no damage from falling.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + "Take no damage from falling.");
 		}
 	};
 	private static Ability.Type type = Type.PASSIVE;

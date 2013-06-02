@@ -21,6 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class Prometheus extends Deity
@@ -42,7 +43,7 @@ public class Prometheus extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
@@ -83,7 +84,7 @@ class ShootFireball extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
 		}
 	};
 	private static Type type = Type.OFFENSE;
@@ -140,7 +141,7 @@ class Blaze extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
 		}
 	};
 	private static Type type = Type.OFFENSE;
@@ -210,7 +211,7 @@ class Firestorm extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
 		}
 	};
 	private static Type type = Type.ULTIMATE;

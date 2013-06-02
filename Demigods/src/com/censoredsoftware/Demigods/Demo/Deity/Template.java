@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 
 public class Template extends Deity
 {
@@ -40,7 +41,7 @@ public class Template extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " -> " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
@@ -66,7 +67,7 @@ class Test extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
+			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
 		}
 	};
 	private static Type type = Type.SUPPORT;

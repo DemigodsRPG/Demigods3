@@ -38,6 +38,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class AltarQuest extends Quest
@@ -171,7 +172,7 @@ class AltarMenu extends Task
 
 					MiscUtility.clearChat(player);
 
-					player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
+					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Main Menu ----------------------------------------");
 					player.sendMessage(" ");
 
 					altarMenu(player);
@@ -183,7 +184,7 @@ class AltarMenu extends Task
 				{
 					MiscUtility.clearChat(player);
 
-					player.sendMessage(ChatColor.YELLOW + " -> Creating Character --------------------------------");
+					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Creating Character --------------------------------");
 					player.sendMessage(" ");
 
 					chooseName(player);
@@ -250,7 +251,7 @@ class AltarMenu extends Task
 						else
 						{
 							MiscUtility.clearChat(player);
-							player.sendMessage(ChatColor.YELLOW + " -> Main Menu ----------------------------------------");
+							player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Main Menu ----------------------------------------");
 							player.sendMessage(" ");
 							altarMenu(player);
 						}
@@ -262,7 +263,7 @@ class AltarMenu extends Task
 				{
 					MiscUtility.clearChat(player);
 
-					player.sendMessage(ChatColor.YELLOW + " -> Viewing Characters --------------------------------");
+					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Viewing Characters --------------------------------");
 					player.sendMessage(" ");
 
 					viewChars(player);
@@ -274,7 +275,7 @@ class AltarMenu extends Task
 
 					MiscUtility.clearChat(player);
 
-					player.sendMessage(ChatColor.YELLOW + " -> Viewing Warps --------------------------------");
+					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Viewing Warps --------------------------------");
 					player.sendMessage(" ");
 
 					viewWarps(player);
@@ -286,7 +287,7 @@ class AltarMenu extends Task
 
 					MiscUtility.clearChat(player);
 
-					player.sendMessage(ChatColor.YELLOW + " -> Viewing Invites --------------------------------");
+					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Viewing Invites --------------------------------");
 					player.sendMessage(" ");
 
 					viewInvites(player);
@@ -553,7 +554,7 @@ class AltarMenu extends Task
 	// View character
 	protected static void viewChar(Player player, PlayerCharacter character)
 	{
-		player.sendMessage(ChatColor.YELLOW + " -> Viewing Character ---------------------------------");
+		player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Viewing Character ---------------------------------");
 		player.sendMessage(" ");
 
 		String currentCharMsg = ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
@@ -663,7 +664,7 @@ class AltarMenu extends Task
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
-				player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtil.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 		}
 		player.sendMessage(" ");
 
@@ -721,7 +722,7 @@ class AltarMenu extends Task
 		player.sendMessage(" ");
 		for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
 		{
-			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
+			player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtil.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 		}
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
@@ -743,13 +744,13 @@ class AltarMenu extends Task
 		DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_all");
 
 		// Send them the chat
-		player.sendMessage(ChatColor.GREEN + " -> Confirming Character -------------------------------");
+		player.sendMessage(ChatColor.GREEN + " " + UnicodeUtil.rightwardArrow() + " Confirming Character -------------------------------");
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 		player.sendMessage(" ");
 		for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
 		{
-			player.sendMessage(ChatColor.GRAY + "  -> " + ChatColor.YELLOW + item.name());
+			player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtil.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 		}
 		player.sendMessage(" ");
 	}
