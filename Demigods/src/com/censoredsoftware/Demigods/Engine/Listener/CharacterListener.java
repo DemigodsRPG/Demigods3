@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
@@ -41,7 +42,7 @@ public class CharacterListener implements Listener
 			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 
-			online.sendMessage(ChatColor.GREEN + "You have been accepted into the lineage of " + chosenDeity + "!");
+			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
 			online.getWorld().strikeLightningEffect(online.getLocation());
 
 			for(int i = 0; i < 20; i++)
@@ -58,7 +59,7 @@ public class CharacterListener implements Listener
 		PlayerCharacter character = event.getCharacter();
 		int killstreak = event.getKills();
 
-		Demigods.message.broadcast(ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " is on a killstreak of " + ChatColor.RED + killstreak + ChatColor.GRAY + " kills.");
+		Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.KILLSTREAK).replace("{character}", "" + ChatColor.YELLOW + character.getName() + ChatColor.GRAY).replace("{kills}", "" + ChatColor.RED + killstreak + ChatColor.GRAY));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -73,10 +74,10 @@ public class CharacterListener implements Listener
 
 		attacker.addKill();
 
-		if(killed == null && attacker == null) Demigods.message.broadcast(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + "another mortal" + ChatColor.GRAY + ".");
-		else if(killed == null && attacker != null) Demigods.message.broadcast(ChatColor.YELLOW + "A mortal" + ChatColor.GRAY + " was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
-		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".");
-		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " of the " + killedAlliance + " alliance was slain by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + attackerAlliance + " alliance.");
+		if(killed == null && attacker == null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_1));
+		else if(killed == null && attacker != null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_1).replace("{killed", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
+		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_2).replace("{killed", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
