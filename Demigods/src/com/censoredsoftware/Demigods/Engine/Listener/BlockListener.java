@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarCreateEvent.AltarCreateCause;
 import com.censoredsoftware.Demigods.Engine.Event.Altar.AltarRemoveEvent;
@@ -41,7 +42,7 @@ public class BlockListener implements Listener
 		if(TrackedBlock.isProtected(location))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + "That block is protected by a Deity!");
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(DemigodsText.Text.PROTECTED_BLOCK));
 		}
 	}
 
@@ -163,9 +164,9 @@ public class BlockListener implements Listener
 			AltarCreateEvent altarEvent = new AltarCreateEvent(location, AltarCreateCause.ADMIN_WAND);
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
-			player.sendMessage(ChatColor.GRAY + "Generating new Altar...");
+			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_GENERATE_ALTAR));
 			StructureFactory.createAltar(location);
-			player.sendMessage(ChatColor.GREEN + "Altar created!");
+			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 		}
 
 		if(AdminUtility.useWand(player) && Altar.isAltar(location))
@@ -184,12 +185,12 @@ public class BlockListener implements Listener
 				altar.remove();
 				DemigodsData.removeTimed(player.getName(), "destroy_altar");
 
-				player.sendMessage(ChatColor.GREEN + "Altar removed!");
+				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_REMOVE_ALTAR_COMPLETE));
 			}
 			else
 			{
 				DemigodsData.saveTimed(player.getName(), "destroy_altar", true, 5);
-				player.sendMessage(ChatColor.RED + "Right-click this Altar again to remove it.");
+				player.sendMessage(ChatColor.RED + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_REMOVE_ALTAR));
 			}
 		}
 
@@ -225,8 +226,8 @@ public class BlockListener implements Listener
 						}
 					}
 
-					player.sendMessage(ChatColor.GRAY + "The " + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY + " are pleased...");
-					player.sendMessage(ChatColor.GRAY + "You have created a Shrine in the name of " + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY + "!");
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_1).replaceAll("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_2).replaceAll("{deity}", "" + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY));
 				}
 				catch(Exception e)
 				{
@@ -252,12 +253,12 @@ public class BlockListener implements Listener
 				shrine.remove();
 				DemigodsData.removeTimed(player.getName(), "destroy_shrine");
 
-				player.sendMessage(ChatColor.GREEN + "Shrine removed!");
+				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
 			}
 			else
 			{
 				DemigodsData.saveTimed(player.getName(), "destroy_shrine", true, 5);
-				player.sendMessage(ChatColor.RED + "Right-click this Shrine again to remove it.");
+				player.sendMessage(ChatColor.RED + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_REMOVE_SHRINE));
 			}
 		}
 	}
@@ -277,7 +278,7 @@ public class BlockListener implements Listener
 		 */
 		if(ZoneUtility.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneUtility.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
-			// player.sendMessage(ChatColor.GRAY + "You've never set a warp at this Altar.");
+			// player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.NO_WARP_ALTAR));
 		}
 	}
 }

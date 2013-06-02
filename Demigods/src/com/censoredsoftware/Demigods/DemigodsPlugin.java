@@ -1,10 +1,12 @@
-package com.censoredsoftware.Demigods.Engine;
+package com.censoredsoftware.Demigods;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.censoredsoftware.Demigods.Demo.Demo;
-import com.censoredsoftware.Demigods.Language.English;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsScheduler;
 
 /**
  * Class for all plugins of Demigods.
@@ -18,10 +20,10 @@ public class DemigodsPlugin extends JavaPlugin
 	public void onEnable()
 	{
 		// Load the game engine, passing in the game data.
-		new Demigods(this, new English(), Demo.Deities.values(), Demo.Quests.values());
+		new Demigods(this, Demo.Deities.values(), Demo.Quests.values());
 
 		// Start game threads.
-		Scheduler.startThreads(this);
+		DemigodsScheduler.startThreads(this);
 
 		Demigods.message.info("Successfully enabled.");
 	}
@@ -36,7 +38,7 @@ public class DemigodsPlugin extends JavaPlugin
 		DemigodsData.save();
 
 		// Cancel all threads, event calls, and concections.
-		Scheduler.stopThreads(this);
+		DemigodsScheduler.stopThreads(this);
 		HandlerList.unregisterAll(this);
 		DemigodsData.disconnect();
 

@@ -6,8 +6,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-
 public class MiscUtility
 {
 	/**
@@ -237,7 +235,7 @@ public class MiscUtility
 		double highestY = location.clone().getWorld().getHighestBlockYAt(location);
 		location.setY(highestY);
 
-		Demigods.message.broadcast("Y: " + highestY); // TODO Why is this broadcasting?
+		// Demigods.message.broadcast("Y: " + highestY); // TODO Why is this broadcasting?
 
 		return location;
 	}

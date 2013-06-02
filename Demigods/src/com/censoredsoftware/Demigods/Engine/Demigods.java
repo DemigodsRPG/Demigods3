@@ -22,24 +22,23 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
-import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
-import com.censoredsoftware.Demigods.Language.Translation;
 import com.censoredsoftware.Modules.BukkitUpdateModule;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
@@ -69,6 +68,8 @@ public class Demigods
 	// The Game Data
 	protected static Deque<Deity> deities;
 	protected static Deque<Quest> quests;
+
+	// The Engline Default Text
 	public static Translation text;
 
 	public interface ListedDeity
@@ -81,7 +82,7 @@ public class Demigods
 		public Quest getQuest();
 	}
 
-	protected Demigods(DemigodsPlugin instance, final Translation text, final ListedDeity[] deities, final ListedQuest[] quests)
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedQuest[] quests)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -113,7 +114,8 @@ public class Demigods
 				}
 			}
 		};
-		Demigods.text = text;
+
+		Demigods.text = getTranslation();
 
 		// Initialize soft data.
 		new DemigodsData(instance);
@@ -125,6 +127,17 @@ public class Demigods
 
 		// Finally, regenerate structures
 		TrackedBlock.regenerateStructures();
+	}
+
+	/**
+	 * Get the translation involved.
+	 * 
+	 * @return The translation.
+	 */
+	public Translation getTranslation()
+	{
+		// Default to English
+		return new DemigodsText.English();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)
@@ -203,92 +216,6 @@ public class Demigods
 	public static Deque<Quest> getLoadedQuests()
 	{
 		return Demigods.quests;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		throw new CloneNotSupportedException();
-	}
-}
-
-class Scheduler
-{
-	static void startThreads(DemigodsPlugin instance)
-	{
-		// Start favor runnable
-		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), 20, rate);
-		AdminUtility.sendDebug("Favor regeneration runnable enabled...");
-
-		// Start battle runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
-		AdminUtility.sendDebug("Battle tracking runnable enabled...");
-
-		// Start timed data runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
-		AdminUtility.sendDebug("Timed data runnable enabled...");
-	}
-
-	static void stopThreads(DemigodsPlugin instance)
-	{
-		instance.getServer().getScheduler().cancelTasks(instance);
-	}
-}
-
-class FavorRunnable implements Runnable
-{
-	private double multiplier;
-
-	FavorRunnable(double multiplier)
-	{
-		this.multiplier = multiplier;
-	}
-
-	@Override
-	public void run()
-	{
-		for(Player player : Bukkit.getOnlinePlayers())
-		{
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-			if(character == null || !character.isImmortal()) continue;
-			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
-			if(regenRate < 5) regenRate = 5;
-			character.getMeta().addFavor(regenRate);
-		}
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		throw new CloneNotSupportedException();
-	}
-}
-
-class TimedDataRunnable implements Runnable
-{
-	@Override
-	public void run()
-	{
-		for(TimedData data : TimedData.getAll())
-		{
-			if(data.getExpiration() <= System.currentTimeMillis()) data.delete();
-		}
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		throw new CloneNotSupportedException();
-	}
-}
-
-class BattleRunnable implements Runnable
-{
-	@Override
-	public void run()
-	{
-		TrackedBattle.checkForInactiveBattles();
 	}
 
 	@Override
@@ -381,7 +308,7 @@ class Commands implements CommandExecutor
 
 		// Test different unicode symbols.
 		sender.sendMessage(s + s + s + s + " don't " + s + s + s + s + s + " worry, everything will " + s + s + s + s + s + " be " + s + s + s + s + s + s + s + " fine " + s + s + s + ".");
-		sender.sendMessage(Demigods.text.getText(Translation.Episode.ENGINE, Translation.Text.TEXT));
+		sender.sendMessage("");
 		return true;
 	}
 

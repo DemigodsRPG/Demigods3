@@ -1,5 +1,5 @@
 name: Demigods
-main: com.censoredsoftware.Demigods.Engine.DemigodsPlugin
+main: com.censoredsoftware.Demigods.DemigodsPlugin
 version: 3.0.0.@BUILD@-DEMO
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard, Factions, Residence]

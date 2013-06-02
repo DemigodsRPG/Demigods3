@@ -3,7 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsPlugin;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 
 public class ExpansionUtility
 {

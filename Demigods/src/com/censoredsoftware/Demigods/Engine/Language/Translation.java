@@ -1,6 +1,4 @@
-package com.censoredsoftware.Demigods.Language;
-
-import java.util.Set;
+package com.censoredsoftware.Demigods.Engine.Language;
 
 public interface Translation
 {
@@ -19,27 +17,10 @@ public interface Translation
 	public String translator();
 
 	/**
-	 * The set of Episodes supported by this text.
-	 * 
-	 * @return Set of Episodes.
-	 */
-	public Set<Episode> episodes();
-
-	/**
 	 * Get a specific line of <code>text</code>.
 	 * 
 	 * @param text The line we want.
 	 * @return The String value of the Text.
 	 */
-	public String getText(Episode episode, Text text);
-
-	public static enum Episode
-	{
-		ENGINE, DEMO;
-	}
-
-	public static enum Text
-	{
-		TEXT;
-	}
+	public String getText(Enum text);
 }
