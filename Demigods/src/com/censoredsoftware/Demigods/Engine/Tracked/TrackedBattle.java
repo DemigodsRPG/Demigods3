@@ -98,6 +98,12 @@ public class TrackedBattle
 		return this.Id;
 	}
 
+	public void initilize()
+	{
+		this.involvedCharacters = Sets.newHashSet();
+		this.involvedLocations = Sets.newHashSet();
+	}
+
 	public void addCharacter(PlayerCharacter character)
 	{
 		this.involvedCharacters.add(character);

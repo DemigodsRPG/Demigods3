@@ -84,6 +84,7 @@ public class TrackedModelFactory
 		battle.setWhoStarted(attacking);
 		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
 		battle.setStartTime(startTime);
+		battle.initilize();
 		battle.addCharacter(attacking);
 		battle.addCharacter(defending);
 		battle.setActive(true);
