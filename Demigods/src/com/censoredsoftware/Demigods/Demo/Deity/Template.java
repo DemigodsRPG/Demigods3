@@ -80,7 +80,7 @@ class Test extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!Ability.isClick(interactEvent)) return;
+				if(!Ability.isLeftClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();

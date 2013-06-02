@@ -113,15 +113,15 @@ public abstract class Ability
 	}
 
 	/**
-	 * Returns true if the event <code>event</code> is caused by a click.
+	 * Returns true if the event <code>event</code> is caused by a left click.
 	 * 
 	 * @param event the interact event
-	 * @return true/false depending on if the event is caused by a click or not
+	 * @return true/false depending on if the event is caused by a left click or not
 	 */
-	public static boolean isClick(PlayerInteractEvent event)
+	public static boolean isLeftClick(PlayerInteractEvent event)
 	{
 		Action action = event.getAction();
-		return action != Action.PHYSICAL;
+		return action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
 	}
 
 	/**
