@@ -56,11 +56,13 @@ public class TrackedBattle
 	void setInvolvedCharacters(Set<PlayerCharacter> characters)
 	{
 		this.involvedCharacters = characters;
+		save(this);
 	}
 
 	void setInvolvedLocations(Set<TrackedLocation> locations)
 	{
 		this.involvedLocations = locations;
+		save(this);
 	}
 
 	void setStartTime(long time)
@@ -71,11 +73,13 @@ public class TrackedBattle
 	public void setEndTime(long time)
 	{
 		this.endTime = time;
+		save(this);
 	}
 
 	public void setActive(boolean active)
 	{
 		this.active = active;
+		save(this);
 	}
 
 	public static void save(TrackedBattle battle)
