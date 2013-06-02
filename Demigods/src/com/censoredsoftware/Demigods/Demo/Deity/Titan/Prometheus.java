@@ -178,7 +178,7 @@ class Blaze extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
-		int power = character.getMeta().getLevel("OFFENSE");
+		int power = character.getMeta().getLevel(type);
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 

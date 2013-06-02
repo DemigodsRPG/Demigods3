@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
@@ -47,12 +48,6 @@ public class PlayerCharacterFactory
 		charMeta.setDevotion(Demigods.config.getSettingInt("character.default_devotion"));
 		charMeta.setFavor(Demigods.config.getSettingInt("character.default_favor"));
 		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.default_max_favor"));
-		charMeta.setLevel("OFFENSE", Demigods.config.getSettingInt("character.default_offense"));
-		charMeta.setLevel("DEFENSE", Demigods.config.getSettingInt("character.default_defense"));
-		charMeta.setLevel("STEALTH", Demigods.config.getSettingInt("character.default_stealth"));
-		charMeta.setLevel("SUPPORT", Demigods.config.getSettingInt("character.default_support"));
-		charMeta.setLevel("PASSIVE", Demigods.config.getSettingInt("character.default_passive"));
-		charMeta.setLevel("ULTIMATE", Demigods.config.getSettingInt("character.default_ultimate"));
 		charMeta.initializeMaps();
 		PlayerCharacterMeta.save(charMeta);
 		return charMeta;
@@ -81,5 +76,15 @@ public class PlayerCharacterFactory
 		charInventory.setBoots(new ItemStack(Material.AIR));
 		PlayerCharacterInventory.save(charInventory);
 		return charInventory;
+	}
+
+	public static PlayerCharacterSpecialty createSpecialty(Ability.Type type)
+	{
+		PlayerCharacterSpecialty specialty = new PlayerCharacterSpecialty();
+		specialty.setType(type);
+		specialty.setExp(0);
+		specialty.setLevel(1);
+		// TODO
+		return specialty;
 	}
 }
