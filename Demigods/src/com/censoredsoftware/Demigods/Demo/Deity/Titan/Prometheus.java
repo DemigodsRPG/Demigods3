@@ -64,7 +64,7 @@ public class Prometheus extends Deity
 
 	public static void shootFireball(Location from, Location to, Player shooter)
 	{
-		SmallFireball fireball = (SmallFireball) shooter.getWorld().spawnEntity(from, EntityType.SMALL_FIREBALL);
+		Fireball fireball = (Fireball) shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
 		to.setX(to.getX() + .5);
 		to.setY(to.getY() + .5);
 		to.setZ(to.getZ() + .5);
@@ -213,7 +213,7 @@ class Firestorm extends Ability
 			add(ChatColor.GRAY + " -> " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
 		}
 	};
-	private static Type type = Type.OFFENSE;
+	private static Type type = Type.ULTIMATE;
 
 	protected Firestorm()
 	{
@@ -245,6 +245,9 @@ class Firestorm extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+
+		if(!Ability.doAbilityPreProcess(player, name, cost, type)) return;
+
 		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 		Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();
 
@@ -277,7 +280,7 @@ class Firestorm extends Ability
 						Location ground = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY(), entityLocation.getZ());
 						Prometheus.shootFireball(air, ground, player);
 					}
-				}, 20);
+				}, 40);
 			}
 		}
 	}
