@@ -1,6 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Tracked;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -126,14 +129,12 @@ public class TrackedPlayer
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
 
-		// Disable prayer, re-enabled movement, etc. just to be safe
-		togglePraying(player, false);
-		togglePlayerChat(player, true);
-		togglePlayerMovement(player, true);
-
 		// Set new character to active
 		newChar.setActive(true);
 		this.current = newChar.getId();
+
+		// Disable prayer, re-enabled movement, etc. just to be safe
+		togglePraying(player, false);
 
 		// Teleport them
 		try
@@ -247,7 +248,7 @@ public class TrackedPlayer
 	{
 		try
 		{
-			return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_praying").toString());
+			return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "praying").toString());
 		}
 		catch(Exception ignored)
 		{}
@@ -265,33 +266,6 @@ public class TrackedPlayer
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(Demigods.permission.hasPermissionOrOP(player, "demigods.admin")) toReturn.add(player);
-		}
-		return toReturn;
-	}
-
-	/**
-	 * Returns an ArrayList of all online players.
-	 * 
-	 * @return ArrayList
-	 */
-	public static Set<Player> getOnlinePlayers() // TODO Is this even needed?
-	{
-		Set<Player> toReturn = new HashSet<Player>();
-		Collections.addAll(toReturn, Bukkit.getOnlinePlayers());
-		return toReturn;
-	}
-
-	/**
-	 * Returns an ArrayList of all offline players.
-	 * 
-	 * @return ArrayList
-	 */
-	public static Set<OfflinePlayer> getOfflinePlayers() // TODO Is this even needed?
-	{
-		Set<OfflinePlayer> toReturn = getAllPlayers();
-		for(Player player : Bukkit.getOnlinePlayers())
-		{
-			toReturn.remove(player);
 		}
 		return toReturn;
 	}
@@ -322,7 +296,8 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
@@ -330,7 +305,8 @@ public class TrackedPlayer
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
 			togglePlayerChat(player, true);
-			DemigodsData.removeTemp(player.getName(), "temp_praying");
+			DemigodsData.removeTemp(player.getName(), "praying");
+			DemigodsData.removeTemp(player.getName(), "praying_location");
 		}
 	}
 
@@ -345,12 +321,14 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			DemigodsData.saveTemp(player.getName(), "temp_praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying", option);
+			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
 			togglePlayerChat(player, true);
-			DemigodsData.removeTemp(player.getName(), "temp_praying");
+			DemigodsData.removeTemp(player.getName(), "praying");
+			DemigodsData.removeTemp(player.getName(), "praying_location");
 		}
 	}
 
@@ -362,8 +340,8 @@ public class TrackedPlayer
 	 */
 	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
-		else DemigodsData.saveTemp(player.getName(), "temp_player_hold", true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
+		else DemigodsData.saveTemp(player.getName(), "player_hold", true);
 	}
 
 	/**
@@ -374,7 +352,7 @@ public class TrackedPlayer
 	 */
 	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
-		else DemigodsData.saveTemp(player.getName(), "temp_no_chat", true);
+		if(DemigodsData.hasKeyTemp(player.getName(), "no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
+		else DemigodsData.saveTemp(player.getName(), "no_chat", true);
 	}
 }
