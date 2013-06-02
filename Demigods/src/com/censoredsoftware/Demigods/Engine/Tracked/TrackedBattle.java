@@ -37,9 +37,9 @@ public class TrackedBattle
 	@Indexed
 	private Set<TrackedLocation> involvedLocations;
 	@Attribute
-	private Long startTime;
+	private long startTime;
 	@Attribute
-	private Long endTime;
+	private long endTime;
 	@Attribute
 	private boolean active;
 
