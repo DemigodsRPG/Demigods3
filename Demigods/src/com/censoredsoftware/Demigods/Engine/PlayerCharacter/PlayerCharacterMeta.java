@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
 @Model
@@ -32,8 +33,8 @@ public class PlayerCharacterMeta
 	private Map<Integer, String> bindingData;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> taskData;
-	@CollectionMap(key = String.class, value = Integer.class)
-	private Map<String, Integer> levelsData;
+	@CollectionMap(key = String.class, value = Boolean.class)
+	private Map<Ability.Type, PlayerCharacterSpecialty> specialtyData;
 
 	private void save()
 	{
@@ -60,7 +61,7 @@ public class PlayerCharacterMeta
 		this.abilityData = new HashMap<String, Boolean>();
 		this.bindingData = new HashMap<Integer, String>();
 		this.taskData = new HashMap<String, Boolean>();
-		this.levelsData = new HashMap<String, Integer>();
+		this.specialtyData = new HashMap<Ability.Type, PlayerCharacterSpecialty>();
 	}
 
 	public long getId()
@@ -157,32 +158,15 @@ public class PlayerCharacterMeta
 		taskData.put(taskName, option);
 	}
 
-	public int getLevel(String level)
+	public void addSpecialty(PlayerCharacterSpecialty specialty)
 	{
-		try
-		{
-			return levelsData.get(level.toUpperCase());
-		}
-		catch(Exception ignored)
-		{}
-		return 1;
+		if(!this.specialtyData.containsKey(specialty.getType())) this.specialtyData.put(specialty.getType(), specialty);
 	}
 
-	public void setLevel(String level, int amount)
+	public Integer getLevel(Ability.Type type)
 	{
-		levelsData.put(level.toUpperCase(), amount);
-		save();
-	}
-
-	public void addLevel(String level, int amount)
-	{
-		setLevel(level.toUpperCase(), getLevel(level.toUpperCase()) + amount);
-	}
-
-	public void subtractLevel(String level, int amount)
-	{
-		if(getLevel(level.toUpperCase()) - amount < 1) setLevel(level.toUpperCase(), 1);
-		else setLevel(level.toUpperCase(), getLevel(level.toUpperCase()) - amount);
+		if(this.specialtyData.containsKey(type)) return this.specialtyData.get(type).getLevel();
+		else return 1;
 	}
 
 	public Integer getAscensions()

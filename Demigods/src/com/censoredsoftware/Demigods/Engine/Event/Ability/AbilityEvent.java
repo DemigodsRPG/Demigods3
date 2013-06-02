@@ -4,7 +4,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 /*
@@ -17,56 +17,41 @@ public class AbilityEvent extends Event implements Cancellable
 	private PlayerCharacter character;
 	private String deity;
 	private int cost;
-	private Ability.Type type;
+	private AbilityInfo info;
 	private boolean cancelled = false;
 
-	public AbilityEvent(final String name, final PlayerCharacter character, final int cost, final Ability.Type type)
+	public AbilityEvent(final String name, final PlayerCharacter character, final int cost, AbilityInfo info)
 	{
 		this.name = name;
 		this.character = character;
 		this.deity = character.getDeity().getInfo().getName();
 		this.cost = cost;
-		this.type = type;
+		this.info = info;
 	}
 
-	/*
-	 * getName() : Gets the ability's name.
-	 */
 	public String getName()
 	{
 		return this.name;
 	}
 
-	/*
-	 * getCharacter() : Gets the character involved.
-	 */
 	public PlayerCharacter getCharacter()
 	{
 		return this.character;
 	}
 
-	/*
-	 * getDeity() : Gets the deity involved.
-	 */
 	public String getDeity()
 	{
 		return this.deity;
 	}
 
-	/*
-	 * getCost() : Gets an ability's cost.
-	 */
 	public int getCost()
 	{
 		return this.cost;
 	}
 
-	/*
-	 * getType() : Gets an ability's type.
-	 */
-	public Ability.Type getType()
+	public AbilityInfo getInfo()
 	{
-		return this.type;
+		return this.info;
 	}
 
 	@Override

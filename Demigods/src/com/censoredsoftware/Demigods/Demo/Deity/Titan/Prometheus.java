@@ -81,6 +81,7 @@ class ShootFireball extends Ability
 {
 	private static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
 	private static int cost = 100, delay = 5, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -91,7 +92,7 @@ class ShootFireball extends Ability
 
 	protected ShootFireball()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -121,7 +122,7 @@ class ShootFireball extends Ability
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, "fireball", cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, target, "fireball", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
@@ -138,6 +139,7 @@ class Blaze extends Ability
 {
 	private static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
 	private static int cost = 400, delay = 15, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -148,7 +150,7 @@ class Blaze extends Ability
 
 	protected Blaze()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -177,11 +179,11 @@ class Blaze extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
-		int power = character.getMeta().getLevel("OFFENSE");
+		int power = character.getMeta().getLevel(type);
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 
-		if(!Ability.doAbilityPreProcess(player, target, name, cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, target, name, cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
@@ -208,6 +210,7 @@ class Firestorm extends Ability
 {
 	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
 	private static int cost = 5500, delay = 15, cooldownMin = 60, cooldownMax = 600;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -218,7 +221,7 @@ class Firestorm extends Ability
 
 	protected Firestorm()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -247,7 +250,7 @@ class Firestorm extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 
-		if(!Ability.doAbilityPreProcess(player, name, cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
 
 		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 		Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();

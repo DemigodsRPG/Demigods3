@@ -102,6 +102,7 @@ class Shove extends Ability
 {
 	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
 	private static int cost = 170, delay = 15, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -112,7 +113,7 @@ class Shove extends Ability
 
 	protected Shove()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -144,7 +145,7 @@ class Shove extends Ability
 		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
 		LivingEntity target = Ability.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, "shove", cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, target, "shove", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
@@ -161,6 +162,7 @@ class Lightning extends Ability
 {
 	private static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
 	private static int cost = 140, delay = 1000, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -171,7 +173,7 @@ class Lightning extends Ability
 
 	protected Lightning()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -200,7 +202,7 @@ class Lightning extends Ability
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, "lightning", cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, target, "lightning", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 

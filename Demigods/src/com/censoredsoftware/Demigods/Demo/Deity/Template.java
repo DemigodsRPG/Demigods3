@@ -64,6 +64,7 @@ class Test extends Ability
 {
 	private static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
 	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -74,7 +75,7 @@ class Test extends Ability
 
 	protected Test()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -105,7 +106,7 @@ class Test extends Ability
 		int devotion = character.getMeta().getDevotion();
 		LivingEntity target = Ability.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, "test", cost, type)) return;
+		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
