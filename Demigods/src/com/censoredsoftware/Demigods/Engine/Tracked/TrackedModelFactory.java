@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
@@ -89,6 +90,7 @@ public class TrackedModelFactory
 		battle.addCharacter(defending);
 		battle.setActive(true);
 		TrackedBattle.save(battle);
+		DemigodsData.saveTimed("battle", String.valueOf(battle.getId()), true, 10);
 		return battle;
 	}
 }

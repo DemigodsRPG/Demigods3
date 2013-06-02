@@ -10,7 +10,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -69,7 +68,7 @@ public class EntityListener implements Listener
 				PlayerCharacter hitChar = TrackedPlayer.getTracked(hit).getCurrent();
 				PlayerCharacter hittingChar = TrackedPlayer.getTracked(hitting).getCurrent();
 
-				TrackedBattle.battleProcess(hitChar, hittingChar);
+				// TrackedBattle.battleProcess(hitChar, hittingChar);
 			}
 		}
 	}
