@@ -324,7 +324,7 @@ public abstract class Ability
 		{
 			if(source instanceof Player)
 			{
-				target.damage(amount);
+				if(amount >= 1) target.damage(amount);
 				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
 			}
 			else target.damage(amount);
