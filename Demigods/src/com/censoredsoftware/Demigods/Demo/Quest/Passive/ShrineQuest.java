@@ -161,7 +161,12 @@ class Tribute extends Task
 			character.getMeta().addMaxFavor(tributeValue);
 
 			// Handle messaging and Shrine owner updating
-			if(character.getMeta().getMaxFavor() > favorBefore)
+			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor"))
+			{
+				// They already have the maximum allowed favor
+				player.sendMessage(ChatColor.RED + "You have already reached the global maximum for favor!");
+			}
+			else if(character.getMeta().getMaxFavor() > favorBefore || items > 0)
 			{
 				// Message the tributer
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
