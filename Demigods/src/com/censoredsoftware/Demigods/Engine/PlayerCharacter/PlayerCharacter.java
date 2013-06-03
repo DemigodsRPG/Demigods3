@@ -15,6 +15,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.google.common.collect.Sets;
 
 @Model
@@ -127,7 +128,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createPlayerCharacterInventory(this);
+		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(this);
 	}
 
 	public void setHealth(int health)
@@ -152,7 +153,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = com.censoredsoftware.Demigods.Engine.Tracked.Factory.createTrackedLocation(location);
+		this.location = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	public void setMeta(PlayerCharacterMeta meta)
@@ -162,7 +163,7 @@ public class PlayerCharacter
 
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory == null) this.inventory = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createEmptyCharacterInventory();
+		if(this.inventory == null) this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
 		return this.inventory;
 	}
 
@@ -170,7 +171,7 @@ public class PlayerCharacter
 	{
 		if(this.meta == null)
 		{
-			this.meta = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createCharacterMeta();
+			this.meta = PlayerCharacterFactory.createCharacterMeta();
 		}
 		return this.meta;
 	}
@@ -195,28 +196,14 @@ public class PlayerCharacter
 		return this.location.toLocation();
 	}
 
-	public Integer getHealth()
-	{
-		return this.health;
-	}
-
 	public Integer getLevel()
 	{
 		return this.level;
 	}
 
-	public ChatColor getHealthColor()
+	public Integer getHealth()
 	{
-		int hp = getHealth();
-		int maxHP = Bukkit.getPlayer(getOfflinePlayer().getName()).getMaxHealth();
-		ChatColor color = ChatColor.RESET;
-
-		// Set favor color dynamically
-		if(hp < Math.ceil(0.33 * maxHP)) color = ChatColor.RED;
-		else if(hp < Math.ceil(0.66 * maxHP) && hp > Math.ceil(0.33 * maxHP)) color = ChatColor.YELLOW;
-		if(hp > Math.ceil(0.66 * maxHP)) color = ChatColor.GREEN;
-
-		return color;
+		return this.health;
 	}
 
 	public Integer getHunger()

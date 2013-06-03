@@ -4,7 +4,7 @@ import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
-public class Factory
+public class StructureFactory
 {
 	public static Altar createAltar(Location location)
 	{

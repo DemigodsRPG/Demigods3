@@ -59,7 +59,7 @@ public class Devotion
 
 	public Integer getExpGoal()
 	{
-		return (int) Math.ceil(500 * Math.pow(this.level + 1, 2.02)); // TODO: Will need to be tweaked. Possibly different for each Type.
+		return (int) Math.ceil(500 * Math.pow(this.level + 1, 2.02)); // TODO: Will need to be tweaked and will possibly be different for each Type.
 	}
 
 	public static void save(Devotion devotion)

@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,6 +18,22 @@ public class MiscUtility
 	{
 		for(int x = 0; x < 120; x++)
 			player.sendMessage(" ");
+	}
+
+	/**
+	 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
+	 * 
+	 * @param value the actual value.
+	 * @param max the maximum value possible.
+	 * @return ChatColor
+	 */
+	public static ChatColor getColor(double value, double max)
+	{
+		ChatColor color = ChatColor.RESET;
+		if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
+		else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
+		if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
+		return color;
 	}
 
 	/**

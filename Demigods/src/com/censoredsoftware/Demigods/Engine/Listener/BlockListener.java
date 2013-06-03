@@ -27,8 +27,8 @@ import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Shrine.ShrineRemoveEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.Factory;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
@@ -167,7 +167,7 @@ public class BlockListener implements Listener
 			Bukkit.getServer().getPluginManager().callEvent(altarEvent);
 
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_GENERATE_ALTAR));
-			Factory.createAltar(location);
+			StructureFactory.createAltar(location);
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 		}
 
@@ -212,7 +212,7 @@ public class BlockListener implements Listener
 					Bukkit.getServer().getPluginManager().callEvent(shrineCreateEvent);
 					if(shrineCreateEvent.isCancelled()) return;
 
-					Factory.createShrine(character, location);
+					StructureFactory.createShrine(character, location);
 					location.getWorld().strikeLightningEffect(location);
 
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
