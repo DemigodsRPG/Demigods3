@@ -8,10 +8,10 @@ import redis.clients.johm.*;
 public class Devotion
 {
 	@Id
-	private Long id;
-	@Attribute
+	private Long Id;
+	@Reference
 	@Indexed
-	private Type type;
+	private String type;
 	@Attribute
 	private Integer exp;
 	@Attribute
@@ -24,7 +24,7 @@ public class Devotion
 
 	void setType(Type type)
 	{
-		this.type = type;
+		this.type = type.toString();
 	}
 
 	void setExp(Integer exp)
@@ -39,7 +39,7 @@ public class Devotion
 
 	public Type getType()
 	{
-		return this.type;
+		return Type.valueOf(this.type);
 	}
 
 	public Integer getLevel()
