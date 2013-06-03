@@ -9,7 +9,7 @@ public class Devotion
 {
 	@Id
 	private Long Id;
-	@Reference
+	@Attribute
 	@Indexed
 	private String type;
 	@Attribute
