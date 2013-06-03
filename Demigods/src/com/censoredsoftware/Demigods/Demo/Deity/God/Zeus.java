@@ -153,8 +153,8 @@ class Shove extends Ability
 
 		if(!Ability.targeting(player, target)) return;
 
-		Vector vector = target.getLocation().toVector();
-		Vector victor = target.getLocation().add(0.0, 100.0, 0.0).toVector().subtract(vector);
+		Vector vector = target.getLocation().add(0.0, 100.0, 0.0).toVector();
+		Vector victor = target.getLocation().toVector().subtract(vector);
 		victor.multiply(multiply);
 		target.setVelocity(victor);
 		Ability.customDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
