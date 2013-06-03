@@ -58,14 +58,14 @@ public class PlayerCharacterMeta
 
 	public Devotion getDevotion(Devotion.Type type)
 	{
-		if(this.devotionData.containsKey(type))
+		if(this.devotionData.containsKey(type.toString()))
 		{
-			return this.devotionData.get(type);
+			return this.devotionData.get(type.toString());
 		}
 		else
 		{
 			addDevotion(AbilityFactory.createDevotion(type));
-			return this.devotionData.get(type);
+			return this.devotionData.get(type.toString());
 		}
 	}
 
