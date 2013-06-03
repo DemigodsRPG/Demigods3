@@ -320,15 +320,12 @@ public abstract class Ability
 
 	public static void customDamage(LivingEntity source, LivingEntity target, int amount, EntityDamageEvent.DamageCause cause)
 	{
-		if(target instanceof Player)
+		if(target instanceof Player && source instanceof Player)
 		{
-			if(source instanceof Player)
-			{
-				if(amount >= 1) target.damage(amount);
-				target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
-			}
-			else target.damage(amount);
+			target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
+			if(amount >= 1) target.damage(amount);
+			return;
 		}
-		else target.damage(amount);
+		target.damage(amount);
 	}
 }

@@ -268,28 +268,24 @@ class Storm extends Ability
 
 		for(Entity entity : entitySet)
 		{
-			try
+			if(entity instanceof Player)
 			{
-				if(entity instanceof Player)
+				Player otherPlayer = (Player) entity;
+				PlayerCharacter otherChar = TrackedPlayer.getTracked(otherPlayer).getCurrent();
+				if(otherPlayer.equals(player)) continue;
+				if(otherChar != null && !PlayerCharacter.areAllied(character, otherChar) && !otherPlayer.equals(player))
 				{
-					Player otherPlayer = (Player) entity;
-					PlayerCharacter otherChar = TrackedPlayer.getTracked(otherPlayer).getCurrent();
-					if(otherChar != null && !PlayerCharacter.areAllied(character, otherChar) && !otherPlayer.equals(player))
-					{
-						Zeus.strikeLightning(player, otherPlayer);
-						Zeus.strikeLightning(player, otherPlayer);
-						continue;
-					}
-				}
-				if(entity instanceof LivingEntity)
-				{
-					LivingEntity livingEntity = (LivingEntity) entity;
-					Zeus.strikeLightning(player, livingEntity);
-					Zeus.strikeLightning(player, livingEntity);
+					Zeus.strikeLightning(player, otherPlayer);
+					Zeus.strikeLightning(player, otherPlayer);
+					continue;
 				}
 			}
-			catch(Exception ignored)
-			{}
+			if(entity instanceof LivingEntity)
+			{
+				LivingEntity livingEntity = (LivingEntity) entity;
+				Zeus.strikeLightning(player, livingEntity);
+				Zeus.strikeLightning(player, livingEntity);
+			}
 		}
 	}
 }

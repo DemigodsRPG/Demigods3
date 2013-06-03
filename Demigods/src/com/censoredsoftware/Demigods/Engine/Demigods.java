@@ -234,8 +234,7 @@ class EventFactory implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacter playerChar = null;
-			if(TrackedPlayer.getTracked(player).getCurrent() != null) playerChar = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter playerChar = TrackedPlayer.getTracked(player).getCurrent();
 
 			// if(playerChar != null)
 			// {
@@ -253,16 +252,9 @@ class EventFactory implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = null;
-					if(TrackedPlayer.getTracked(attacker).getCurrent() != null) attackChar = TrackedPlayer.getTracked(attacker).getCurrent();
-					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar))
-					{
-						Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, TrackedPlayer.getCurrentAlliance(player)));
-					}
-					else
-					{
-						Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
-					}
+					PlayerCharacter attackChar = TrackedPlayer.getTracked(attacker).getCurrent();
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, TrackedPlayer.getCurrentAlliance(player)));
+					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 
 					if(attackChar != null)
 					{
