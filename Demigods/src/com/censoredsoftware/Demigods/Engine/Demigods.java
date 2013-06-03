@@ -799,7 +799,7 @@ class Commands implements CommandExecutor
 		// int powerSupport = character.getPower(AbilityEvent.Type.SUPPORT);
 		// int powerPassive = character.getPower(AbilityEvent.Type.PASSIVE);
 		ChatColor deityColor = character.getDeity().getInfo().getColor();
-		ChatColor favorColor = character.getMeta().getFavorColor();
+		ChatColor favorColor = MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
 
 		// if(args.length == 1 && (args[0].equalsIgnoreCase("level") || args[0].equalsIgnoreCase("levels")))
 		// {

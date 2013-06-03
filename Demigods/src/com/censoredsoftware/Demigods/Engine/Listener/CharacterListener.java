@@ -16,8 +16,8 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayChara
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillstreakEvent;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CharacterListener implements Listener
@@ -31,7 +31,7 @@ public class CharacterListener implements Listener
 		String chosenName = event.getName();
 		String chosenDeity = event.getDeity();
 
-		PlayerCharacter character = Factory.createCharacter(player, chosenName, chosenDeity);
+		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
 
 		// Remove temporary data
 		DemigodsData.removeTemp(player.getName(), "temp_createchar");

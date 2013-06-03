@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
-public class Factory
+public class TrackedModelFactory
 {
 	public static TrackedLocation createTrackedLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
@@ -58,7 +58,7 @@ public class Factory
 
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material, byte matByte)
 	{
-		TrackedLocation trackedLocation = Factory.createTrackedLocation(location);
+		TrackedLocation trackedLocation = TrackedModelFactory.createTrackedLocation(location);
 
 		TrackedBlock trackedBlock = new TrackedBlock();
 		trackedBlock.setLocation(trackedLocation);
@@ -83,7 +83,7 @@ public class Factory
 		TrackedBattle battle = new TrackedBattle();
 		Location startedLocation = ((Player) attacking.getOfflinePlayer()).getLocation();
 		battle.setWhoStarted(attacking);
-		battle.setStartLocation(Factory.createTrackedLocation(startedLocation));
+		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
 		battle.setStartTime(startTime);
 		battle.initilize();
 		battle.addCharacter(attacking);

@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Ability.AbilityFactory;
 import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Ability.Factory;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
 @Model
@@ -64,7 +64,7 @@ public class PlayerCharacterMeta
 		}
 		else
 		{
-			addDevotion(Factory.createDevotion(type));
+			addDevotion(AbilityFactory.createDevotion(type));
 			return this.devotionData.get(type);
 		}
 	}
@@ -185,20 +185,6 @@ public class PlayerCharacterMeta
 	{
 		this.ascensions = amount;
 		save(this);
-	}
-
-	public ChatColor getFavorColor()
-	{
-		int favor = this.favor;
-		int maxFavor = this.maxFavor;
-		ChatColor color = ChatColor.RESET;
-
-		// Set favor color dynamically
-		if(favor < Math.ceil(0.33 * maxFavor)) color = ChatColor.RED;
-		else if(favor < Math.ceil(0.66 * maxFavor) && favor > Math.ceil(0.33 * maxFavor)) color = ChatColor.YELLOW;
-		if(favor > Math.ceil(0.66 * maxFavor)) color = ChatColor.GREEN;
-
-		return color;
 	}
 
 	public Integer getFavor()

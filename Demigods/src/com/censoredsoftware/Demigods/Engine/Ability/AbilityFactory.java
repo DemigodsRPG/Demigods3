@@ -2,7 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Ability;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
-public class Factory
+public class AbilityFactory
 {
 	public static Devotion createDevotion(Devotion.Type type)
 	{

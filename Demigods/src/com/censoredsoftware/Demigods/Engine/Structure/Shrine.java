@@ -13,9 +13,9 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.ComparableLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.Factory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.google.common.base.Objects;
 
 @Model
@@ -61,7 +61,7 @@ public class Shrine
 
 	void setCenter(Location location)
 	{
-		this.center = Factory.createTrackedLocation(location);
+		this.center = TrackedModelFactory.createTrackedLocation(location);
 	}
 
 	void setOwner(PlayerCharacter character)
@@ -153,17 +153,17 @@ public class Shrine
 		World locWorld = location.getWorld();
 
 		// Create the main block
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.GOLD_BLOCK));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.GOLD_BLOCK));
 
 		// Create the ender chest and the block below
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
 
 		// Create the rest
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 0));
-		blocks.add(Factory.createTrackedBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS, (byte) 3));
-		blocks.add(com.censoredsoftware.Demigods.Engine.Tracked.Factory.createTrackedBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS, (byte) 2));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 0));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS, (byte) 3));
+		blocks.add(TrackedModelFactory.createTrackedBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS, (byte) 2));
 
 		// Add the blocks to the set
 		shrine.getBlocks().addAll(blocks);
