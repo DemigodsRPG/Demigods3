@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
@@ -69,7 +70,7 @@ class Swim extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 		}
 	};
-	private static Type type = Type.PASSIVE;
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected Swim()
 	{

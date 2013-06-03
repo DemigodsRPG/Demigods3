@@ -364,7 +364,7 @@ public class TrackedBattle
 			int battleID = MiscUtility.generateInt(5);
 			BattleStartEvent battleEvent = new BattleStartEvent(battleID, hitChar, hittingChar, startTime);
 			Bukkit.getServer().getPluginManager().callEvent(battleEvent);
-			if(!battleEvent.isCancelled()) TrackedModelFactory.createTrackedBattle(hittingChar, hitChar, startTime);
+			if(!battleEvent.isCancelled()) Factory.createTrackedBattle(hittingChar, hitChar, startTime);
 		}
 		else
 		{
@@ -394,7 +394,7 @@ public class TrackedBattle
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = TrackedModelFactory.createTrackedBattle(battle.getWhoStarted(), hitChar, battle.getStartTime());
+						combinedBattle = Factory.createTrackedBattle(battle.getWhoStarted(), hitChar, battle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;
@@ -405,7 +405,7 @@ public class TrackedBattle
 					Bukkit.getServer().getPluginManager().callEvent(battleEvent);
 					if(!battleEvent.isCancelled())
 					{
-						combinedBattle = TrackedModelFactory.createTrackedBattle(otherBattle.getWhoStarted(), hitChar, otherBattle.getStartTime());
+						combinedBattle = Factory.createTrackedBattle(otherBattle.getWhoStarted(), hitChar, otherBattle.getStartTime());
 						combinedBattle.addCharacter(hittingChar);
 					}
 					else return;

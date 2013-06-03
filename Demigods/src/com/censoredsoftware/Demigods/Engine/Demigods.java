@@ -631,18 +631,6 @@ class Commands implements CommandExecutor
 					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
 					return true;
 				}
-				else if(option2.equalsIgnoreCase("devotion"))
-				{
-					// Set the devotion
-					character.getMeta().setDevotion(amount);
-
-					sender.sendMessage(ChatColor.GREEN + "Devotion set to " + amount + " for " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character's devotion has been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
-					return true;
-				}
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
@@ -697,18 +685,6 @@ class Commands implements CommandExecutor
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " favor.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
-					return true;
-				}
-				else if(option2.equalsIgnoreCase("devotion"))
-				{
-					// Set the devotion
-					character.getMeta().addDevotion(amount);
-
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion added to " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " devotion.");
 					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
 					return true;
 				}
@@ -769,18 +745,6 @@ class Commands implements CommandExecutor
 					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
 					return true;
 				}
-				else if(option2.equalsIgnoreCase("devotion"))
-				{
-					// Set the devotion
-					character.getMeta().subtractDevotion(amount);
-
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " devotion removed from " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " devotion removed.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
-					return true;
-				}
 				else if(option2.equalsIgnoreCase("ascensions"))
 				{
 					// Set the ascensions
@@ -828,9 +792,7 @@ class Commands implements CommandExecutor
 		String alliance = character.getAlliance();
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();
-		int devotion = character.getMeta().getDevotion();
 		int ascensions = character.getMeta().getAscensions();
-		int devotionGoal = character.getMeta().getDevotionGoal();
 		// int powerOffense = character.getPower(AbilityEvent.Type.OFFENSE);
 		// int powerDefense = character.getPower(AbilityEvent.Type.DEFENSE);
 		// int powerStealth = character.getPower(AbilityEvent.Type.STEALTH);
@@ -860,7 +822,6 @@ class Commands implements CommandExecutor
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + MiscUtility.capitalize(alliance) + "s");
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Devotion: " + ChatColor.GREEN + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE); // + " / Killstreak: " + ChatColor.RED + killstreak);
 
 		return true;

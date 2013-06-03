@@ -82,7 +82,7 @@ public class TrackedLocation
 		{
 			if(location.equals(tracked)) return tracked;
 		}
-		return TrackedModelFactory.createTrackedLocation(location);
+		return Factory.createTrackedLocation(location);
 	}
 
 	public Location toLocation() throws NullPointerException
@@ -204,7 +204,7 @@ public class TrackedLocation
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(TrackedModelFactory.createTrackedLocation(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
+		to.addInvite(Factory.createTrackedLocation(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
 	}
 
 	/**

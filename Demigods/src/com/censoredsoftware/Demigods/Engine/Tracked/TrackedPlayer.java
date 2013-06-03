@@ -70,7 +70,7 @@ public class TrackedPlayer
 		}
 		catch(Exception ignored)
 		{}
-		return TrackedModelFactory.createTrackedPlayer(player);
+		return Factory.createTrackedPlayer(player);
 	}
 
 	public OfflinePlayer getOfflinePlayer()

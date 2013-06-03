@@ -1,6 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Miscellaneous;
 
-public class MiscFactory
+public class Factory
 {
 	// Unused
 }

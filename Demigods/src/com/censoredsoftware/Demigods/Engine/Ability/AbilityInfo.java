@@ -7,9 +7,9 @@ public class AbilityInfo
 	private String deity, name, command, permission;
 	private int cost, delay, cooldownMin, cooldownMax;
 	private List<String> details;
-	private Ability.Type type;
+	private Devotion.Type type;
 
-	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int cooldownMin, int cooldownMax, List<String> details, Ability.Type type)
+	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int cooldownMin, int cooldownMax, List<String> details, Devotion.Type type)
 	{
 		this.deity = deity;
 		this.name = name;
@@ -68,7 +68,7 @@ public class AbilityInfo
 		return details;
 	}
 
-	public Ability.Type getType()
+	public Devotion.Type getType()
 	{
 		return type;
 	}

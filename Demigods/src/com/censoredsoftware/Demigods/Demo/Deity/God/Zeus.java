@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -109,7 +110,7 @@ class Shove extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
 		}
 	};
-	private static Type type = Type.DEFENSE;
+	private static Devotion.Type type = Devotion.Type.DEFENSE;
 
 	protected Shove()
 	{
@@ -141,8 +142,8 @@ class Shove extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		int devotion = character.getMeta().getDevotion();
-		double multiply = 0.1753 * Math.pow(devotion, 0.322917);
+		int ascensions = character.getMeta().getAscensions();
+		double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "shove", cost, info)) return;
@@ -169,7 +170,7 @@ class Lightning extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
 		}
 	};
-	private static Ability.Type type = Ability.Type.OFFENSE;
+	private static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Lightning()
 	{
@@ -220,7 +221,7 @@ class Storm extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
 		}
 	};
-	private static Type type = Type.ULTIMATE;
+	private static Devotion.Type type = Devotion.Type.ULTIMATE;
 
 	protected Storm()
 	{
@@ -302,7 +303,7 @@ class NoFall extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + "Take no damage from falling.");
 		}
 	};
-	private static Ability.Type type = Type.PASSIVE;
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected NoFall()
 	{

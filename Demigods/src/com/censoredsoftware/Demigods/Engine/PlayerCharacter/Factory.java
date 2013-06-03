@@ -5,11 +5,10 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
-public class PlayerCharacterFactory
+public class Factory
 {
 	// TODO: Make a createCharacter method that can set the meta values on creation as it was before. The way it was no longer worked as expected because I fixed the PlayerCharacterMeta issues so favor and everything actually works and I was too lazy to clean this all up so there are a ton of extra variables and all and whoa this is a really long TODO so I'm just going to keep going for a bit. Nice day, isn't it? I wouldn't know. I'm just stuck in here programming like some sort of animal. Damn. That's what I am. An animal. WHAT HAVE YOU DONE TO ME WORLD?
 	public static PlayerCharacter createCharacter(final OfflinePlayer player, final String charName, final Deity deity, final int favor, final int maxFavor, final int devotion, final int ascensions, final int offense, final int defense, final int stealth, final int support, final int passive, final boolean immortal)
@@ -44,10 +43,9 @@ public class PlayerCharacterFactory
 	public static PlayerCharacterMeta createCharacterMeta()
 	{
 		PlayerCharacterMeta charMeta = new PlayerCharacterMeta();
-		charMeta.setAscensions(Demigods.config.getSettingInt("character.default_ascensions"));
-		charMeta.setDevotion(Demigods.config.getSettingInt("character.default_devotion"));
-		charMeta.setFavor(Demigods.config.getSettingInt("character.default_favor"));
-		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.default_max_favor"));
+		charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
+		charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
+		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
 		charMeta.initializeMaps();
 		PlayerCharacterMeta.save(charMeta);
 		return charMeta;
@@ -76,15 +74,5 @@ public class PlayerCharacterFactory
 		charInventory.setBoots(new ItemStack(Material.AIR));
 		PlayerCharacterInventory.save(charInventory);
 		return charInventory;
-	}
-
-	public static PlayerCharacterSpecialty createSpecialty(Ability.Type type)
-	{
-		PlayerCharacterSpecialty specialty = new PlayerCharacterSpecialty();
-		specialty.setType(type);
-		specialty.setExp(0);
-		specialty.setLevel(1);
-		// TODO
-		return specialty;
 	}
 }

@@ -33,9 +33,8 @@ import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
+import com.censoredsoftware.Demigods.Engine.Tracked.Factory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
@@ -554,6 +553,7 @@ class AltarMenu extends Task
 	// View character
 	protected static void viewChar(Player player, PlayerCharacter character)
 	{
+		// TODO
 		player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtil.rightwardArrow() + " Viewing Character ---------------------------------");
 		player.sendMessage(" ");
 
@@ -568,8 +568,8 @@ class AltarMenu extends Task
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();
 		ChatColor favorColor = character.getMeta().getFavorColor();
-		int devotion = character.getMeta().getDevotion();
-		int devotionGoal = character.getMeta().getDevotionGoal();
+		// int devotion = character.getMeta().getDevotion();
+		// int devotionGoal = character.getMeta().getDevotionGoal();
 		int ascensions = character.getMeta().getAscensions();
 
 		if(character.isActive()) currentCharMsg = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET;
@@ -580,7 +580,7 @@ class AltarMenu extends Task
 		player.sendMessage(ChatColor.GRAY + "    Experience: " + ChatColor.WHITE + exp);
 		player.sendMessage(" ");
 		player.sendMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + ascensions);
-		player.sendMessage(ChatColor.GRAY + "    Devotion: " + ChatColor.WHITE + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
+		// player.sendMessage(ChatColor.GRAY + "    Devotion: " + ChatColor.WHITE + devotion + ChatColor.GRAY + " (" + ChatColor.YELLOW + (devotionGoal - devotion) + ChatColor.GRAY + " until next Ascension)");
 		player.sendMessage(ChatColor.GRAY + "    Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		player.sendMessage(" ");
 
@@ -761,7 +761,7 @@ class AltarMenu extends Task
 		if(character.getWarps().isEmpty())
 		{
 			// Save named TrackedLocation for warp.
-			character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
+			character.addWarp(Factory.createTrackedLocation(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -786,7 +786,7 @@ class AltarMenu extends Task
 		}
 
 		// Save named TrackedLocation for warp.
-		character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
+		character.addWarp(Factory.createTrackedLocation(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
@@ -894,7 +894,7 @@ class AltarGenerate extends Task
 							Bukkit.getServer().getPluginManager().callEvent(altarCreateEvent);
 							if(altarCreateEvent.isCancelled()) return;
 
-							StructureFactory.createAltar(location);
+							com.censoredsoftware.Demigods.Engine.Structure.Factory.createAltar(location);
 
 							location.getWorld().strikeLightningEffect(location);
 							location.getWorld().strikeLightningEffect(location);

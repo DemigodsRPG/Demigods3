@@ -15,7 +15,6 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.google.common.collect.Sets;
 
 @Model
@@ -128,7 +127,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(this);
+		this.inventory = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createPlayerCharacterInventory(this);
 	}
 
 	public void setHealth(int health)
@@ -153,7 +152,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = TrackedModelFactory.createTrackedLocation(location);
+		this.location = com.censoredsoftware.Demigods.Engine.Tracked.Factory.createTrackedLocation(location);
 	}
 
 	public void setMeta(PlayerCharacterMeta meta)
@@ -163,7 +162,7 @@ public class PlayerCharacter
 
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory == null) this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
+		if(this.inventory == null) this.inventory = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createEmptyCharacterInventory();
 		return this.inventory;
 	}
 
@@ -171,7 +170,7 @@ public class PlayerCharacter
 	{
 		if(this.meta == null)
 		{
-			this.meta = PlayerCharacterFactory.createCharacterMeta();
+			this.meta = com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory.createCharacterMeta();
 		}
 		return this.meta;
 	}
@@ -415,9 +414,6 @@ public class PlayerCharacter
 		return getChar(charID).getOfflinePlayer();
 	}
 
-	/*
-	 * getDeityList() : Gets list of characters in aligned to a Deity.
-	 */
 	public static Set<PlayerCharacter> getDeityList(String deity)
 	{
 		// Define variables
@@ -429,9 +425,6 @@ public class PlayerCharacter
 		return deityList;
 	}
 
-	/*
-	 * getActiveDeityList() : Gets list of active characters in aligned to a Deity.
-	 */
 	public static Set<PlayerCharacter> getActiveDeityList(String deity)
 	{
 		// Define variables
@@ -443,9 +436,6 @@ public class PlayerCharacter
 		return deityList;
 	}
 
-	/*
-	 * getAllianceList() : Gets list of characters in an alliance.
-	 */
 	public static Set<PlayerCharacter> getAllianceList(String alliance)
 	{
 		// Define variables
@@ -457,9 +447,6 @@ public class PlayerCharacter
 		return allianceList;
 	}
 
-	/*
-	 * getActiveAllianceList() : Gets list of active characters in an alliance.
-	 */
 	public static Set<PlayerCharacter> getActiveAllianceList(String alliance)
 	{
 		// Define variables
@@ -471,9 +458,6 @@ public class PlayerCharacter
 		return allianceList;
 	}
 
-	/*
-	 * getImmortalList() : Gets list of currently immortal players.
-	 */
 	public static Set<PlayerCharacter> getImmortalList()
 	{
 		// Define variables

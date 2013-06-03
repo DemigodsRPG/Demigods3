@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -71,7 +72,7 @@ class Test extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
 		}
 	};
-	private static Type type = Type.SUPPORT;
+	private static Devotion.Type type = Devotion.Type.SUPPORT;
 
 	protected Test()
 	{
@@ -103,7 +104,6 @@ class Test extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		int devotion = character.getMeta().getDevotion();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;

@@ -16,8 +16,8 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayChara
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterCreateEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillstreakEvent;
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.Factory;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacterFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class CharacterListener implements Listener
@@ -31,7 +31,7 @@ public class CharacterListener implements Listener
 		String chosenName = event.getName();
 		String chosenDeity = event.getDeity();
 
-		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
+		PlayerCharacter character = Factory.createCharacter(player, chosenName, chosenDeity);
 
 		// Remove temporary data
 		DemigodsData.removeTemp(player.getName(), "temp_createchar");
@@ -87,15 +87,7 @@ public class CharacterListener implements Listener
 		PlayerCharacter killed = event.getKilled();
 		String alliance = event.getAlliance();
 
-		int devotion = attacker.getMeta().getDevotion();
-		int devotionRemoved = (int) Math.ceil(devotion * .19);
-
-		// Set their devotion and add a death
-		attacker.getMeta().subtractDevotion(devotionRemoved);
-
-		// Let 'em know
-		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have failed " + attacker.getDeity().getInfo().getName() + " by attacking a fellow " + attacker.getAlliance() + "!");
-		attacker.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "You have been stripped of " + devotionRemoved + " devotion!");
+		// TODO: Punishments.
 
 		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
 		else Demigods.message.broadcast(ChatColor.GRAY + "A mortal was killed by another worthless mortal.");

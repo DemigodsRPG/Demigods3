@@ -11,8 +11,8 @@ import org.bukkit.inventory.PlayerInventory;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Tracked.Factory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedItemStack;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
 /**
  * Creates a saved version of a PlayerInventory.
@@ -43,22 +43,22 @@ public class PlayerCharacterInventory
 
 	void setHelmet(ItemStack helmet)
 	{
-		this.helmet = TrackedModelFactory.createTrackedItemStack(helmet);
+		this.helmet = Factory.createTrackedItemStack(helmet);
 	}
 
 	void setChestplate(ItemStack chestplate)
 	{
-		this.chestplate = TrackedModelFactory.createTrackedItemStack(chestplate);
+		this.chestplate = Factory.createTrackedItemStack(chestplate);
 	}
 
 	void setLeggings(ItemStack leggings)
 	{
-		this.leggings = TrackedModelFactory.createTrackedItemStack(leggings);
+		this.leggings = Factory.createTrackedItemStack(leggings);
 	}
 
 	void setBoots(ItemStack boots)
 	{
-		this.boots = TrackedModelFactory.createTrackedItemStack(boots);
+		this.boots = Factory.createTrackedItemStack(boots);
 	}
 
 	void setItems(Inventory inventory)
@@ -68,11 +68,11 @@ public class PlayerCharacterInventory
 		{
 			if(inventory.getItem(i) == null)
 			{
-				this.items[i] = TrackedModelFactory.createTrackedItemStack(new ItemStack(Material.AIR));
+				this.items[i] = Factory.createTrackedItemStack(new ItemStack(Material.AIR));
 			}
 			else
 			{
-				this.items[i] = TrackedModelFactory.createTrackedItemStack(inventory.getItem(i));
+				this.items[i] = com.censoredsoftware.Demigods.Engine.Tracked.Factory.createTrackedItemStack(inventory.getItem(i));
 			}
 		}
 	}

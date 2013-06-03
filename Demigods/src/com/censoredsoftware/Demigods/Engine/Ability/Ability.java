@@ -48,11 +48,6 @@ public abstract class Ability
 		return listener;
 	}
 
-	public enum Type
-	{
-		OFFENSE, DEFENSE, STEALTH, SUPPORT, PASSIVE, ULTIMATE
-	}
-
 	private static final int TARGETOFFSET = 5;
 
 	/**
@@ -290,7 +285,7 @@ public abstract class Ability
 	{
 		for(Ability ability : getLoadedAbilities())
 		{
-			if(ability.getInfo().getType() == Ability.Type.PASSIVE) continue;
+			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
 			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
 				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();

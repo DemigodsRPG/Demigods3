@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
+import com.censoredsoftware.Demigods.Engine.Ability.Factory;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 
 @Model
@@ -34,39 +35,38 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> taskData;
 	@CollectionMap(key = String.class, value = Boolean.class)
-	private Map<Ability.Type, PlayerCharacterSpecialty> specialtyData;
-
-	private void save()
-	{
-		PlayerCharacterMeta.save(this);
-	}
-
-	public static void save(PlayerCharacterMeta playerCharacterMeta)
-	{
-		JOhm.save(playerCharacterMeta);
-	}
-
-	public static PlayerCharacterMeta load(long id)
-	{
-		return JOhm.get(PlayerCharacterMeta.class, id);
-	}
-
-	public static Set<PlayerCharacterMeta> loadAll()
-	{
-		return JOhm.getAll(PlayerCharacterMeta.class);
-	}
+	private Map<Devotion.Type, Devotion> devotionData;
 
 	void initializeMaps()
 	{
 		this.abilityData = new HashMap<String, Boolean>();
 		this.bindingData = new HashMap<Integer, String>();
 		this.taskData = new HashMap<String, Boolean>();
-		this.specialtyData = new HashMap<Ability.Type, PlayerCharacterSpecialty>();
+		this.devotionData = new HashMap<Devotion.Type, Devotion>();
 	}
 
 	public long getId()
 	{
 		return this.id;
+	}
+
+	public void addDevotion(Devotion devotion)
+	{
+		if(!this.devotionData.containsKey(devotion.getType())) this.devotionData.put(devotion.getType(), devotion);
+		save(this);
+	}
+
+	public Devotion getDevotion(Devotion.Type type)
+	{
+		if(this.devotionData.containsKey(type))
+		{
+			return this.devotionData.get(type);
+		}
+		else
+		{
+			addDevotion(Factory.createDevotion(type));
+			return this.devotionData.get(type);
+		}
 	}
 
 	public boolean isEnabledAbility(String ability)
@@ -140,7 +140,7 @@ public class PlayerCharacterMeta
 	public void removeBind(Material material)
 	{
 		if(bindingData.containsKey(material.getId())) bindingData.remove(material.getId());
-		save();
+		save(this);
 	}
 
 	public void removeBind(String ability)
@@ -158,17 +158,6 @@ public class PlayerCharacterMeta
 		taskData.put(taskName, option);
 	}
 
-	public void addSpecialty(PlayerCharacterSpecialty specialty)
-	{
-		if(!this.specialtyData.containsKey(specialty.getType())) this.specialtyData.put(specialty.getType(), specialty);
-	}
-
-	public Integer getLevel(Ability.Type type)
-	{
-		if(this.specialtyData.containsKey(type)) return this.specialtyData.get(type).getLevel();
-		else return 1;
-	}
-
 	public Integer getAscensions()
 	{
 		return this.ascensions;
@@ -177,68 +166,25 @@ public class PlayerCharacterMeta
 	public void addAscension()
 	{
 		this.ascensions += 1;
-		save();
+		save(this);
 	}
 
 	public void addAscensions(int amount)
 	{
 		this.ascensions += amount;
-		save();
+		save(this);
 	}
 
 	public void subtractAscensions(int amount)
 	{
 		this.ascensions -= amount;
-		save();
+		save(this);
 	}
 
 	public void setAscensions(int amount)
 	{
 		this.ascensions = amount;
-		save();
-	}
-
-	public int getDevotionGoal()
-	{
-		return (int) Math.ceil(500 * Math.pow(getAscensions() + 1, 2.02));
-	}
-
-	public Integer getDevotion()
-	{
-		return this.devotion;
-	}
-
-	public void addDevotion(int amount)
-	{
-		int devotionBefore = this.devotion;
-		int devotionGoal = getDevotionGoal();
-		this.devotion += amount;
-		int devotionAfter = this.devotion;
-
-		if(devotionAfter > devotionBefore && devotionAfter > devotionGoal)
-		{
-			// Character leveled up!
-
-			// TODO Trigger an event here instead of doing it as part of the object,
-			// TODO that way we can grab a lot more stuff from the listener without having to make everything public.
-
-			this.ascensions += 1;
-			this.devotion = devotionAfter - devotionGoal;
-		}
-
-		save();
-	}
-
-	public void subtractDevotion(int amount)
-	{
-		this.devotion -= amount;
-		save();
-	}
-
-	public void setDevotion(int amount)
-	{
-		this.devotion = amount;
-		save();
+		save(this);
 	}
 
 	public ChatColor getFavorColor()
@@ -263,7 +209,7 @@ public class PlayerCharacterMeta
 	public void setFavor(int amount)
 	{
 		this.favor = amount;
-		save();
+		save(this);
 	}
 
 	public void addFavor(int amount)
@@ -276,7 +222,7 @@ public class PlayerCharacterMeta
 		{
 			this.favor += amount;
 		}
-		save();
+		save(this);
 	}
 
 	public void subtractFavor(int amount)
@@ -289,7 +235,7 @@ public class PlayerCharacterMeta
 		{
 			this.favor -= amount;
 		}
-		save();
+		save(this);
 	}
 
 	public Integer getMaxFavor()
@@ -307,7 +253,7 @@ public class PlayerCharacterMeta
 		{
 			this.maxFavor += amount;
 		}
-		save();
+		save(this);
 	}
 
 	public void setMaxFavor(int amount)
@@ -315,7 +261,22 @@ public class PlayerCharacterMeta
 		if(amount < 0) this.maxFavor = 0;
 		if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 		else this.maxFavor = amount;
-		save();
+		save(this);
+	}
+
+	public static void save(PlayerCharacterMeta playerCharacterMeta)
+	{
+		JOhm.save(playerCharacterMeta);
+	}
+
+	public static PlayerCharacterMeta load(long id)
+	{
+		return JOhm.get(PlayerCharacterMeta.class, id);
+	}
+
+	public static Set<PlayerCharacterMeta> loadAll()
+	{
+		return JOhm.getAll(PlayerCharacterMeta.class);
 	}
 
 	@Override

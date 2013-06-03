@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -88,7 +89,7 @@ class ShootFireball extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
 		}
 	};
-	private static Type type = Type.OFFENSE;
+	private static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected ShootFireball()
 	{
@@ -146,7 +147,7 @@ class Blaze extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
 		}
 	};
-	private static Type type = Type.OFFENSE;
+	private static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Blaze()
 	{
@@ -179,7 +180,7 @@ class Blaze extends Ability
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
-		int power = character.getMeta().getLevel(type);
+		int power = character.getMeta().getDevotion(type).getLevel();
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 
@@ -217,7 +218,7 @@ class Firestorm extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
 		}
 	};
-	private static Type type = Type.ULTIMATE;
+	private static Devotion.Type type = Devotion.Type.ULTIMATE;
 
 	protected Firestorm()
 	{

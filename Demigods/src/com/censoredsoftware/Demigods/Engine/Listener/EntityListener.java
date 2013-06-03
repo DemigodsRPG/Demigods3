@@ -83,16 +83,12 @@ public class EntityListener implements Listener
 			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 			if(character == null) return;
 			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
-			int devotion = character.getMeta().getDevotion();
-			int devotionRemoved = (int) Math.ceil(devotion * .19);
 
-			// Set their devotion and add a death
-			character.getMeta().subtractDevotion(devotionRemoved);
+			// TODO: Punishments.
 			character.addDeath();
 
 			// Let 'em know
 			player.sendMessage(ChatColor.RED + "You have failed " + deity + "!");
-			player.sendMessage(ChatColor.RED + "You have been stripped of " + devotionRemoved + " devotion!");
 		}
 	}
 }
