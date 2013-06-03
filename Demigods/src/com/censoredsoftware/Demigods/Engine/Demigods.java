@@ -236,7 +236,7 @@ class EventFactory implements Listener
 			Player player = (Player) entity;
 			PlayerCharacter playerChar = TrackedPlayer.getTracked(player).getCurrent();
 
-			// if(playerChar != null)
+			// if(playerChar != null) // TODO Killstreak in a new way.
 			// {
 			// if(playerChar.getKillstreak() > 3) Demigods.message.broadcast(ChatColor.YELLOW + playerChar.getName() + ChatColor.GRAY + "'s killstreak has ended.");
 			// playerChar.setKillstreak(0);
