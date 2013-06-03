@@ -154,7 +154,8 @@ class Tribute extends Task
 			tributeValue *= Demigods.config.getSettingDouble("multipliers.favor");
 
 			// Get the current favor for comparison
-			int favorBefore = character.getMeta().getMaxFavor();
+			int favorBefore = character.getMeta().getFavor();
+			int maxFavorBefore = character.getMeta().getMaxFavor();
 
 			// Update the character's favor
 			character.getMeta().addFavor(tributeValue / 3);
@@ -168,7 +169,7 @@ class Tribute extends Task
 			{
 				// They already have the maximum allowed favor
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
-				player.sendMessage(ChatColor.GRAY + "You have been given " + ChatColor.GREEN + (tributeValue / 3) + ChatColor.GRAY + " favor.");
+				if(character.getMeta().getFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "You have been given " + ChatColor.GREEN + (tributeValue / 3) + ChatColor.GRAY + " favor.");
 
 				if(!player.getName().equals(shrineOwnerPlayer.getName()))
 				{
@@ -183,7 +184,7 @@ class Tribute extends Task
 					}
 				}
 			}
-			else if(character.getMeta().getMaxFavor() > favorBefore || items > 0)
+			else if(character.getMeta().getMaxFavor() > maxFavorBefore || items > 0)
 			{
 				// Message the tributer
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
