@@ -35,14 +35,14 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> taskData;
 	@CollectionMap(key = String.class, value = Boolean.class)
-	private Map<Devotion.Type, Devotion> devotionData;
+	private Map<String, Devotion> devotionData;
 
 	void initializeMaps()
 	{
 		this.abilityData = new HashMap<String, Boolean>();
 		this.bindingData = new HashMap<Integer, String>();
 		this.taskData = new HashMap<String, Boolean>();
-		this.devotionData = new HashMap<Devotion.Type, Devotion>();
+		this.devotionData = new HashMap<String, Devotion>();
 	}
 
 	public long getId()
@@ -52,7 +52,7 @@ public class PlayerCharacterMeta
 
 	public void addDevotion(Devotion devotion)
 	{
-		if(!this.devotionData.containsKey(devotion.getType())) this.devotionData.put(devotion.getType(), devotion);
+		if(!this.devotionData.containsKey(devotion.getType())) this.devotionData.put(devotion.getType().toString(), devotion);
 		save(this);
 	}
 
