@@ -13,7 +13,7 @@ import redis.clients.johm.Model;
 public class Devotion
 {
 	@Id
-	private Long id;
+	private Long Id;
 	@Attribute
 	@Indexed
 	private Type type;
