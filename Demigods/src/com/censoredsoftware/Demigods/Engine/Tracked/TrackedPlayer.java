@@ -303,7 +303,7 @@ public class TrackedPlayer
 		{
 			MiscUtility.clearChat(player);
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
-			player.sendMessage(ChatColor.GRAY + "Your movement and chat have been re-enabled.");
+			player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
 			togglePlayerChat(player, true);
 			DemigodsData.removeTemp(player.getName(), "praying");
 			DemigodsData.removeTemp(player.getName(), "praying_location");
