@@ -278,9 +278,10 @@ class Storm extends Ability
 					{
 						Zeus.strikeLightning(player, otherPlayer);
 						Zeus.strikeLightning(player, otherPlayer);
+						continue;
 					}
 				}
-				else if(entity instanceof LivingEntity)
+				if(entity instanceof LivingEntity)
 				{
 					LivingEntity livingEntity = (LivingEntity) entity;
 					Zeus.strikeLightning(player, livingEntity);
