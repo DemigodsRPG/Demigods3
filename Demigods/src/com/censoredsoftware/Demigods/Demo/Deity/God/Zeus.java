@@ -153,7 +153,7 @@ class Shove extends Ability
 
 		if(!Ability.targeting(player, target)) return;
 
-		Vector vector = target.getLocation().add(0.0, 100.0, 0.0).toVector();
+		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
 		victor.multiply(multiply);
 		target.setVelocity(victor);
@@ -217,6 +217,7 @@ class Storm extends Ability
 {
 	private static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
 	private static int cost = 3700, delay = 1500, cooldownMin = 60, cooldownMax = 600;
+	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -227,7 +228,7 @@ class Storm extends Ability
 
 	protected Storm()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -253,17 +254,18 @@ class Storm extends Ability
 		});
 	}
 
-	public static int storm(Player player)
+	public static void storm(Player player)
 	{
 		// Define variables
 		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
+		if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
+
 		for(Entity anEntity : player.getWorld().getEntities())
 			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
 
-		int count = 0;
 		for(Entity entity : entitySet)
 		{
 			try
@@ -274,7 +276,6 @@ class Storm extends Ability
 					PlayerCharacter otherChar = TrackedPlayer.getTracked(otherPlayer).getCurrent();
 					if(otherChar != null && !PlayerCharacter.areAllied(character, otherChar) && !otherPlayer.equals(player))
 					{
-						if(Zeus.strikeLightning(player, otherPlayer)) count++;
 						Zeus.strikeLightning(player, otherPlayer);
 						Zeus.strikeLightning(player, otherPlayer);
 					}
@@ -282,7 +283,6 @@ class Storm extends Ability
 				else if(entity instanceof LivingEntity)
 				{
 					LivingEntity livingEntity = (LivingEntity) entity;
-					if(Zeus.strikeLightning(player, livingEntity)) count++;
 					Zeus.strikeLightning(player, livingEntity);
 					Zeus.strikeLightning(player, livingEntity);
 				}
@@ -290,8 +290,6 @@ class Storm extends Ability
 			catch(Exception ignored)
 			{}
 		}
-
-		return count;
 	}
 }
 
