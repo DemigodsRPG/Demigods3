@@ -38,6 +38,8 @@ public class DemigodsBlacklist
 					add("Penis");
 					add("Vagina");
 					add("Phil");
+					add("Server");
+					add("Console");
 				}
 			};
 		}
