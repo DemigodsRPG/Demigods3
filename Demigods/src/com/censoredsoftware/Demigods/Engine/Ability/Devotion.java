@@ -2,12 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Ability;
 
 import java.util.Set;
 
-import javax.persistence.Id;
-
-import redis.clients.johm.Attribute;
-import redis.clients.johm.Indexed;
-import redis.clients.johm.JOhm;
-import redis.clients.johm.Model;
+import redis.clients.johm.*;
 
 @Model
 public class Devotion
