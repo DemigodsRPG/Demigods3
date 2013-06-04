@@ -213,6 +213,7 @@ public class LatestTweetModule implements Listener
 	public boolean get(OfflinePlayer player)
 	{
 		get();
+		save();
 		String lastMessage = messagesData.get(player.getName());
 		return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
 	}
