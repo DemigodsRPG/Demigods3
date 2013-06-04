@@ -25,11 +25,11 @@ import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class PlayerListener implements Listener
 {
-	public static QuitReason lastQuit = QuitReason.QUITTING;
+	private static QuitReasonFilter quitReasonFilter;
 
 	public PlayerListener()
 	{
-		Bukkit.getServer().getLogger().setFilter(new DisconnectReason());
+		Bukkit.getServer().getLogger().setFilter(quitReasonFilter = new QuitReasonFilter());
 	}
 
 	@EventHandler
@@ -152,7 +152,7 @@ public class PlayerListener implements Listener
 	{
 		String name = event.getPlayer().getName();
 		String message = ChatColor.YELLOW + name + " has left the game.";
-		switch(lastQuit)
+		switch(quitReasonFilter.getLatestQuitReason())
 		{
 			case GENERIC_REASON:
 				message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
@@ -176,19 +176,31 @@ public class PlayerListener implements Listener
 		event.setQuitMessage(message);
 	}
 
-	public static class DisconnectReason implements Filter
+	public static class QuitReasonFilter implements Filter
 	{
+		public QuitReason latestQuit = QuitReason.QUITTING;
+
+		/**
+		 * Get the QuitReason of the last player to quit.
+		 * 
+		 * @return The last QuitReason.
+		 */
+		public QuitReason getLatestQuitReason()
+		{
+			return latestQuit;
+		}
+
 		@Override
 		public boolean isLoggable(LogRecord record)
 		{
 			if(!record.getMessage().toLowerCase().contains("disconnect")) return true;
 
-			lastQuit = QuitReason.QUITTING;
-			if(record.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
-			else if(record.getMessage().toLowerCase().contains("spam")) lastQuit = QuitReason.SPAM;
-			else if(record.getMessage().toLowerCase().contains("endofstream")) lastQuit = QuitReason.END_OF_STREAM;
-			else if(record.getMessage().toLowerCase().contains("overflow")) lastQuit = QuitReason.OVERFLOW;
-			else if(record.getMessage().toLowerCase().contains("timeout")) lastQuit = QuitReason.TIMEOUT;
+			latestQuit = QuitReason.QUITTING;
+			if(record.getMessage().toLowerCase().contains("genericreason")) latestQuit = QuitReason.GENERIC_REASON;
+			else if(record.getMessage().toLowerCase().contains("spam")) latestQuit = QuitReason.SPAM;
+			else if(record.getMessage().toLowerCase().contains("endofstream")) latestQuit = QuitReason.END_OF_STREAM;
+			else if(record.getMessage().toLowerCase().contains("overflow")) latestQuit = QuitReason.OVERFLOW;
+			else if(record.getMessage().toLowerCase().contains("timeout")) latestQuit = QuitReason.TIMEOUT;
 			return true;
 		}
 	}
