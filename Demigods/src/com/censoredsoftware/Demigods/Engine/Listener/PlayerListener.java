@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -30,7 +29,7 @@ public class PlayerListener implements Listener
 
 	public PlayerListener()
 	{
-		Demigods.message.getLog().setFilter(new DisconnectReason(Demigods.plugin));
+		Demigods.message.getLog().setFilter(new DisconnectReason());
 	}
 
 	@EventHandler
@@ -179,9 +178,6 @@ public class PlayerListener implements Listener
 
 	public static class DisconnectReason implements Filter
 	{
-		DisconnectReason(DemigodsPlugin instance)
-		{}
-
 		@Override
 		public boolean isLoggable(LogRecord arg0)
 		{
