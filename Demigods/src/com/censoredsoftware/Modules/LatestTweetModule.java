@@ -60,13 +60,13 @@ public class LatestTweetModule implements Listener
 	/**
 	 * Constructor to create a new LatestTweetModule.
 	 * 
-	 * @param plugin The demigods instance running the module.
+	 * @param pl The demigods instance running the module.
 	 * @param screenName The screen-name to the Twitter page.
-	 * @param command The full command for viewing the latest message.
-	 * @param permission The full permission node for viewing the latest message.
-	 * @param notify True if notifying is allowed.
+	 * @param c The full command for viewing the latest message.
+	 * @param p The full permission node for viewing the latest message.
+	 * @param n True if notifying is allowed.
 	 */
-	public static LatestTweetModule recreate(Plugin plugin, String screenName, String command, String permission, boolean notify)
+	public static LatestTweetModule recreate(Plugin pl, String screenName, String c, String p, boolean n)
 	{
 		LatestTweetModule module = null;
 		try
@@ -89,12 +89,12 @@ public class LatestTweetModule implements Listener
 
 		try
 		{
-			module.plugin = plugin;
-			module.twitterFeed = new URL("http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=" + screenName);
-			module.pluginName = plugin.getName();
-			module.command = command;
-			module.permission = permission;
-			module.notify = notify;
+			plugin = pl;
+			twitterFeed = new URL("http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=" + screenName);
+			pluginName = pl.getName();
+			command = c;
+			permission = p;
+			notify = n;
 
 			module.save();
 
