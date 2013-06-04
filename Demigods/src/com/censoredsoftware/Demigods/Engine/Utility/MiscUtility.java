@@ -348,12 +348,16 @@ public class MiscUtility
 
 		blocks.add(location.getBlock());
 
-		for(int i = 0; i <= radius; i++)
+		for(int i = 0; i <= radius - 1; i++)
 		{
 			blocks.add(location.getBlock().getRelative(i, 0, i));
 			blocks.add(location.getBlock().getRelative(-1 * i, 0, i));
 			blocks.add(location.getBlock().getRelative(i, 0, -1 * i));
 			blocks.add(location.getBlock().getRelative(-1 * i, 0, -1 * i));
+			blocks.add(location.getBlock().getRelative(i, 0, 0));
+			blocks.add(location.getBlock().getRelative(-1 * i, 0, 0));
+			blocks.add(location.getBlock().getRelative(0, 0, -1 * i));
+			blocks.add(location.getBlock().getRelative(0, 0, i));
 		}
 
 		return blocks;
