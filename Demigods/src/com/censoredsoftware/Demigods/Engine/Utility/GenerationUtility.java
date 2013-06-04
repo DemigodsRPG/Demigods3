@@ -111,25 +111,68 @@ public class GenerationUtility
 	/**
 	 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
 	 * 
-	 * @param location the center location to get the blocks from.
+	 * @param reference the center location to get the blocks from.
 	 * @param radius the radius around the center block from which to get the blocks.
 	 * @return Set<Block>
 	 */
-	public static Set<Block> getBlocks(Location location, int radius)
+	public static Set<Block> getBlocks(Location reference, int radius)
 	{
+        Location location = reference.clone();
 		Set<Block> blocks = Sets.newHashSet();
 
 		blocks.add(location.getBlock());
 
-		for(int i = 0; i <= radius - 1; i++)
+		for(int i = 0; i <= (Math.PI * Math.pow(radius, 2)); i++)
 		{
-            blocks.add(location.getBlock().getRelative(i + 2, 0, 0));
-            blocks.add(location.getBlock().getRelative((-1 * i) - 2, 0, 0));
-            blocks.add(location.getBlock().getRelative(0, 0, i + 2));
-            blocks.add(location.getBlock().getRelative(0, 0, (-1 * i) - 2));
+            blocks.add(location.getBlock().getRelative(i-1, 0, 0));
+            blocks.add(location.getBlock().getRelative(i-1, 0, i+1));
+            blocks.add(location.getBlock().getRelative(0, 0, i+1));
+            blocks.add(location.getBlock().getRelative(i+1, 0, i+1));
 
+
+            //blocks.add(location.getBlock().getRelative(i, 0, 0));
+            //blocks.add(location.getBlock().getRelative(-i, 0, 0));
+            //blocks.add(location.getBlock().getRelative(0, 0, i));
+            //blocks.add(location.getBlock().getRelative(0, 0, -i));
 		}
 
 		return blocks;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
