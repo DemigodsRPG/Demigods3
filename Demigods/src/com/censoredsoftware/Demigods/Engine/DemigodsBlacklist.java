@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Language.Blacklist;
 
 public class DemigodsBlacklist
@@ -28,9 +29,7 @@ public class DemigodsBlacklist
 			return new HashSet<String>()
 			{
 				{
-					add("Prometheus");
-					add("Zeus");
-					add("Poseidon");
+					// Manual Blacklist
 					add("Fuck");
 					add("Shit");
 					add("Ass");
@@ -39,13 +38,19 @@ public class DemigodsBlacklist
 					add("Vagina");
 					add("Cunt");
 					add("Bitch");
-					add("Titties");
 					add("Nigger");
 					add("God");
 					add("Titan");
 					add("Phil");
+					add("Staff");
 					add("Server");
 					add("Console");
+
+					// Deities
+					for(Deity deity : Demigods.getLoadedDeities())
+					{
+						add(deity.getInfo().getName());
+					}
 				}
 			};
 		}
