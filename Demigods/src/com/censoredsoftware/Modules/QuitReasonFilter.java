@@ -28,7 +28,6 @@ public class QuitReasonFilter implements Filter
 	public boolean isLoggable(LogRecord record)
 	{
 		if(!record.getMessage().toLowerCase().contains("disconnect")) return true;
-
 		latestQuit = QuitReason.QUITTING;
 		if(record.getMessage().toLowerCase().contains("genericreason")) latestQuit = QuitReason.GENERIC_REASON;
 		else if(record.getMessage().toLowerCase().contains("spam")) latestQuit = QuitReason.SPAM;
