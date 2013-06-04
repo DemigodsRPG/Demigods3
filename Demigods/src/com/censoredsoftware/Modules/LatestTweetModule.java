@@ -38,17 +38,17 @@ import com.google.common.collect.Maps;
 @Model
 public class LatestTweetModule implements Listener
 {
+	private static Plugin plugin;
+	private static Logger log = Logger.getLogger("Minecraft");
+	private static URL twitterFeed;
+	private static String pluginName, command, permission, date, link;
+	private static boolean notify;
 	@Id
 	private Long Id;
 	@Attribute
 	private String message;
 	@CollectionMap(key = String.class, value = String.class)
 	private Map<String, String> messagesData;
-	private static Plugin plugin;
-	private static Logger log = Logger.getLogger("Minecraft");
-	private static URL twitterFeed;
-	private static String pluginName, command, permission, date, link;
-	private static boolean notify;
 
 	public Map<String, String> getData()
 	{
@@ -103,7 +103,7 @@ public class LatestTweetModule implements Listener
 			command = c;
 			permission = p;
 			notify = n;
-			module.message = "";
+			module.get();
 
 			module.save();
 
@@ -149,10 +149,11 @@ public class LatestTweetModule implements Listener
 	/**
 	 * Gets the latest message from the Twitter feed.
 	 * 
-	 * @return True if successful.
+	 * @return The message.
 	 */
-	public synchronized boolean get(OfflinePlayer player)
+	public synchronized String get()
 	{
+		String toReturn = "";
 		try
 		{
 			InputStream input = twitterFeed.openConnection().getInputStream();
@@ -189,25 +190,31 @@ public class LatestTweetModule implements Listener
 			{
 				if(line.trim().startsWith("<p class=\"js-tweet-text tweet-text \">"))
 				{
-					this.message = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
-					break;
+					toReturn = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
+					this.message = toReturn;
 				}
 			}
 
 			reader.close();
 			input.close();
-
-			String lastMessage = messagesData.get(player.getName());
-
-			save();
-
-			return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
 		}
 		catch(Exception e)
 		{
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
-		return false;
+		return toReturn;
+	}
+
+	/**
+	 * Gets the latest message from the Twitter feed.
+	 * 
+	 * @return True if successful.
+	 */
+	public boolean get(OfflinePlayer player)
+	{
+		get();
+		String lastMessage = messagesData.get(player.getName());
+		return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
 	}
 
 	/**
