@@ -37,6 +37,12 @@ public class DemigodsBlacklist
 					add("Dick");
 					add("Penis");
 					add("Vagina");
+					add("Cunt");
+					add("Bitch");
+					add("Titties");
+					add("Nigger");
+					add("God");
+					add("Titan");
 					add("Phil");
 					add("Server");
 					add("Console");
