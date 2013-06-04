@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 
 import java.util.ArrayList;
 
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -23,7 +24,7 @@ public class ChunkListener implements Listener
 	public void onChunkLoad(ChunkLoadEvent event)
 	{
 		// Define variables
-		Location location = MiscUtility.randomChunkLocation(event.getChunk());
+		Location location = GenerationUtility.randomChunkLocation(event.getChunk());
 
 		// Let's randomly create chests
 		if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.chest_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
