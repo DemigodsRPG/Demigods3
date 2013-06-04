@@ -29,7 +29,7 @@ public class PlayerListener implements Listener
 
 	public PlayerListener()
 	{
-		Demigods.message.getLog().setFilter(new DisconnectReason());
+		Bukkit.getServer().getLogger().setFilter(new DisconnectReason());
 	}
 
 	@EventHandler
@@ -179,19 +179,16 @@ public class PlayerListener implements Listener
 	public static class DisconnectReason implements Filter
 	{
 		@Override
-		public boolean isLoggable(LogRecord arg0)
+		public boolean isLoggable(LogRecord record)
 		{
-			if(!arg0.getMessage().toLowerCase().contains("disconnect")) return true;
-
-			Demigods.message.broadcast("DISCONNECT");
+			if(!record.getMessage().toLowerCase().contains("disconnect")) return true;
 
 			lastQuit = QuitReason.QUITTING;
-			if(arg0.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
-			else if(arg0.getMessage().toLowerCase().contains("spam")) lastQuit = QuitReason.SPAM;
-			else if(arg0.getMessage().toLowerCase().contains("endofstream")) lastQuit = QuitReason.END_OF_STREAM;
-			else if(arg0.getMessage().toLowerCase().contains("overflow")) lastQuit = QuitReason.OVERFLOW;
-			else if(arg0.getMessage().toLowerCase().contains("timeout")) lastQuit = QuitReason.TIMEOUT;
-			else Demigods.message.broadcast("NOT FOUND");
+			if(record.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
+			else if(record.getMessage().toLowerCase().contains("spam")) lastQuit = QuitReason.SPAM;
+			else if(record.getMessage().toLowerCase().contains("endofstream")) lastQuit = QuitReason.END_OF_STREAM;
+			else if(record.getMessage().toLowerCase().contains("overflow")) lastQuit = QuitReason.OVERFLOW;
+			else if(record.getMessage().toLowerCase().contains("timeout")) lastQuit = QuitReason.TIMEOUT;
 			return true;
 		}
 	}
