@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -29,7 +30,7 @@ public class CommandListener implements Listener
 		{
 			if(TrackedBattle.isBlockedCommand(args[0]))
 			{
-				player.sendMessage(ChatColor.GRAY + "That command is blocked during a battle.");
+				player.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.COMMAND_BLOCKED_BATTLE));
 				event.setCancelled(true);
 				return;
 			}

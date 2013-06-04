@@ -9,6 +9,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -27,10 +29,7 @@ public class EntityListener implements Listener
 			entity = (LivingEntity) event.getEntity();
 
 			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS TODO Do we want to keep it that way?
-			if(!ZoneUtility.canTarget(entity))
-			{
-				event.setCancelled(true);
-			}
+			if(!ZoneUtility.canTarget(entity)) event.setCancelled(true);
 		}
 	}
 
@@ -47,7 +46,7 @@ public class EntityListener implements Listener
 			// NO PVP
 			if(!ZoneUtility.canTarget(attacked))
 			{
-				hitting.sendMessage(ChatColor.GRAY + "No-PVP in this zone.");
+				hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.NO_PVP_ZONE));
 				event.setCancelled(true);
 				return;
 			}
@@ -58,7 +57,7 @@ public class EntityListener implements Listener
 				Villager villager = (Villager) attacked;
 
 				// Define attacker and name
-				if(event.getDamage() > villager.getHealth()) hitting.sendMessage(ChatColor.GRAY + "One weaker than you has been slain by your hand.");
+				if(event.getDamage() > villager.getHealth()) hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.WEAKER_THAN_YOU));
 			}
 			else if(attacked instanceof Player) // If it's a player
 			{
@@ -88,7 +87,7 @@ public class EntityListener implements Listener
 			character.addDeath();
 
 			// Let 'em know
-			player.sendMessage(ChatColor.RED + "You have failed " + deity + "!");
+			player.sendMessage(ChatColor.RED + Demigods.text.getText(DemigodsText.Text.YOU_FAILED_DEITY).replace("{deity}", deity));
 		}
 	}
 }

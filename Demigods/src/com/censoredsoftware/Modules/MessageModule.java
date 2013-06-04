@@ -13,10 +13,10 @@ import org.bukkit.plugin.Plugin;
  */
 public class MessageModule
 {
+	private static Logger log = Logger.getLogger("Minecraft");
 	private Plugin plugin;
 	private boolean tag;
 	private String pluginName;
-	private Logger log;
 
 	/**
 	 * Grab the Logger.
@@ -38,7 +38,6 @@ public class MessageModule
 		this.plugin = instance;
 		this.pluginName = plugin.getName();
 		this.tag = tag;
-		this.log = Logger.getLogger("Minecraft");
 	}
 
 	/**

@@ -1,5 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,6 +30,11 @@ public class PlayerListener implements Listener
 	public static Boolean filterCheckOverflow = false;
 	public static Boolean filterCheckQuitting = false;
 	public static Boolean filterCheckTimeout = false;
+
+	public PlayerListener()
+	{
+		Demigods.message.getLog().setFilter(new DisconnectReason());
+	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
@@ -69,21 +77,15 @@ public class PlayerListener implements Listener
 		onPlayerLineJump(player, to, from, delayTime);
 
 		// Player Hold
-		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold"))
+		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold") && from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())
 		{
-			if(from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())
-			{
-				event.setCancelled(true);
-				player.teleport(from);
-				DemigodsData.saveTemp(player.getName(), "player_held", true);
-			}
+			event.setCancelled(true);
+			player.teleport(from);
+			DemigodsData.saveTemp(player.getName(), "player_held", true);
 		}
 
 		// Handle prayer disable
-		if(TrackedPlayer.isPraying(player) && to.distance((Location) DemigodsData.getValueTemp(player.getName(), "praying_location")) >= 3)
-		{
-			TrackedPlayer.togglePraying(player, false);
-		}
+		if(TrackedPlayer.isPraying(player) && to.distance((Location) DemigodsData.getValueTemp(player.getName(), "praying_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) TrackedPlayer.togglePraying(player, false);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -94,6 +96,8 @@ public class PlayerListener implements Listener
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
+
+		if(TrackedPlayer.isPraying(player)) TrackedPlayer.togglePrayingSilent(player, false);
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DemigodsData.hasKeyTemp(player.getName(), "teleport_ability"))
@@ -181,6 +185,49 @@ public class PlayerListener implements Listener
 		{
 			String message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
 			event.setQuitMessage(message);
+		}
+	}
+
+	public static class DisconnectReason implements Filter
+	{
+		@Override
+		public boolean isLoggable(LogRecord arg0)
+		{
+			if(arg0.getMessage().toLowerCase().contains("disconnect"))
+			{
+				filterCheckGeneric = false;
+				filterCheckStream = false;
+				filterCheckOverflow = false;
+				filterCheckTimeout = false;
+
+				if(arg0.getMessage().toLowerCase().contains("genericreason"))
+				{
+					filterCheckGeneric = true;
+					return true;
+				}
+				if(arg0.getMessage().toLowerCase().contains("endofstream"))
+				{
+					filterCheckStream = true;
+					return true;
+				}
+				if(arg0.getMessage().toLowerCase().contains("overflow"))
+				{
+					filterCheckOverflow = true;
+					return true;
+				}
+				if(arg0.getMessage().toLowerCase().contains("timeout"))
+				{
+					filterCheckTimeout = true;
+					return true;
+				}
+				if(arg0.getMessage().toLowerCase().contains("quitting"))
+				{
+					filterCheckQuitting = true;
+					return true;
+				}
+				return true;
+			}
+			return true;
 		}
 	}
 }

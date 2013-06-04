@@ -8,7 +8,7 @@ public class DemigodsText
 {
 	public static enum Text
 	{
-		PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2;
+		PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY;
 	}
 
 	public static class English implements Translation
@@ -64,6 +64,18 @@ public class DemigodsText
 					return "{killed} of the {killedAlliance} was slain by " + ChatColor.YELLOW + "a mortal" + ChatColor.GRAY + ".";
 				case DEMI_SLAIN_2:
 					return "{killed} of the {killedAlliance} was slain by {attacker} of the {attackerAlliance} alliance.";
+				case DEMI_BETRAY:
+					return "{killed} was betrayed by {attacker} of the {alliance} alliance.";
+				case MORTAL_BETRAY:
+					return "A mortal was killed by another worthless mortal.";
+				case COMMAND_BLOCKED_BATTLE:
+					return "That command is blocked during a battle.";
+				case NO_PVP_ZONE:
+					return "No-PVP in this zone.";
+				case WEAKER_THAN_YOU:
+					return "One weaker than you has been slain by your hand.";
+				case YOU_FAILED_DEITY:
+					return "You have failed {deity}!";
 			}
 			throw new NullPointerException("No such translation.");
 		}

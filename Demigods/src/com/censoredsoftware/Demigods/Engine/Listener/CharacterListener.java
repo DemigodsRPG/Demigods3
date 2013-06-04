@@ -76,8 +76,8 @@ public class CharacterListener implements Listener
 
 		if(killed == null && attacker == null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_1));
 		else if(killed == null && attacker != null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_1).replace("{killed", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
-		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_2).replace("{killed", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
+		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -89,7 +89,7 @@ public class CharacterListener implements Listener
 
 		// TODO: Punishments.
 
-		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.YELLOW + killed.getName() + ChatColor.GRAY + " was betrayed by " + ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY + " of the " + alliance + " alliance.");
-		else Demigods.message.broadcast(ChatColor.GRAY + "A mortal was killed by another worthless mortal.");
+		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+		else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.MORTAL_BETRAY));
 	}
 }

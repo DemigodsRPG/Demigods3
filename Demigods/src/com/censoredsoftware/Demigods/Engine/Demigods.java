@@ -34,7 +34,6 @@ import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedDisconnectReason;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -174,9 +173,6 @@ public class Demigods
 				instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
 		}
-
-		// Disconnect Reason
-		Demigods.message.getLog().setFilter(new TrackedDisconnectReason());
 	}
 
 	protected static void loadCommands(DemigodsPlugin instance)
