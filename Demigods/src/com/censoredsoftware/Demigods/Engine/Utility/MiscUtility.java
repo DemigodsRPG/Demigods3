@@ -3,7 +3,6 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class MiscUtility
@@ -230,25 +229,5 @@ public class MiscUtility
 		{
 			return false;
 		}
-	}
-
-	/**
-	 * Generates a random location with the center being <code>reference</code>.
-	 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
-	 * 
-	 * @param reference the location used as the center for reference.
-	 * @param min the minimum number of blocks away.
-	 * @param max the maximum number of blocks away.
-	 * @return the random location generated.
-	 */
-	public static Location randomLocation(Location reference, int min, int max)
-	{
-		Location location = reference.clone();
-		double randX = MiscUtility.generateIntRange(min, max);
-		double randZ = MiscUtility.generateIntRange(min, max);
-		location.add(randX, 0, randZ);
-		double highestY = location.clone().getWorld().getHighestBlockYAt(location);
-		location.setY(highestY);
-		return location;
 	}
 }
