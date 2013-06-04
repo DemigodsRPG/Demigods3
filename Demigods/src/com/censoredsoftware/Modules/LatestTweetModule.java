@@ -162,8 +162,8 @@ public class LatestTweetModule implements Listener
 
 			try
 			{
-				this.date = messageNodes.item(5).getTextContent().substring(0, messageNodes.item(5).getTextContent().lastIndexOf("+"));
-				this.link = messageNodes.item(9).getTextContent().replace("http://", "https://");
+				date = messageNodes.item(5).getTextContent().substring(0, messageNodes.item(5).getTextContent().lastIndexOf("+"));
+				link = messageNodes.item(9).getTextContent().replace("http://", "https://");
 			}
 			catch(Exception e)
 			{
