@@ -111,23 +111,19 @@ public class GenerationUtility
 	/**
 	 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
 	 * 
-	 * @param reference the center location to get the blocks from.
+	 * @param location the center location to get the blocks from.
 	 * @param radius the radius around the center block from which to get the blocks.
 	 * @return Set<Block>
 	 */
-	public static Set<Block> getBlocks(Location reference, int radius)
+	public static Set<Block> getBlocks(Location location, int radius)
 	{
-        Location location = reference.clone();
+        // Define variables
 		Set<Block> blocks = Sets.newHashSet();
+        blocks.add(location.getBlock());
 
-		blocks.add(location.getBlock());
-
-		for(int i = 0; i <= (Math.PI * Math.pow(radius, 2)); i++)
+		for(int x = 0; x <= radius; x++)
 		{
-            blocks.add(location.getBlock().getRelative(i, 0, 0));
-            blocks.add(location.getBlock().getRelative(-i, 0, 0));
-            blocks.add(location.getBlock().getRelative(0, 0, i));
-            blocks.add(location.getBlock().getRelative(0, 0, -i));
+            blocks.add(location.add(x, 0, x).getBlock());
 		}
 
 		return blocks;
