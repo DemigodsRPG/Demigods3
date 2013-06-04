@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -291,12 +292,17 @@ class Commands implements CommandExecutor
 
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		// Define repeatedly used unicode characters.
-		String s = UnicodeUtil.blackSquare();
+		Player player = (Player) sender;
 
-		// Test different unicode symbols.
-		sender.sendMessage(s + s + s + s + " don't " + s + s + s + s + s + " worry, everything will " + s + s + s + s + s + " be " + s + s + s + s + s + s + s + " fine " + s + s + s + ".");
-		sender.sendMessage("");
+		player.sendMessage("Setting blocks...");
+
+		for(Block block : MiscUtility.getBlocks(player.getTargetBlock(null, 10).getLocation(), 5))
+		{
+			block.setType(Material.GOLD_BLOCK);
+		}
+
+		player.sendMessage("Blocks set!");
+
 		return true;
 	}
 

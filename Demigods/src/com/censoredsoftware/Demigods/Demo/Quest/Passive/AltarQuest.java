@@ -877,18 +877,19 @@ class AltarGenerate extends Task
 	private static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void onChunkLoad(ChunkLoadEvent event)
+		public void onChunkLoad(final ChunkLoadEvent event)
 		{
-			// Define variables
-			final Location location = MiscUtility.randomChunkLocation(event.getChunk());
-
 			// If it's a new chunk then we'll generate structures
 			if(event.isNewChunk())
 			{
-				// Choose an arbitrary value and check the chance against it
-				if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
+				// Define variables
+				final Location location = MiscUtility.randomChunkLocation(event.getChunk());
+
+				// Check if it can generate
+				if(MiscUtility.canGenerateStrict(location, 3))
 				{
-					if(Altar.canGenerateSolid(location, 6))
+					// Return a random boolean based on the chance of Altar generation
+					if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
 					{
 						// If another Altar doesn't exist nearby then make one
 						if(!Altar.altarNearby(location, Demigods.config.getSettingInt("generation.min_blocks_between_altars")))
@@ -902,14 +903,12 @@ class AltarGenerate extends Task
 							location.getWorld().strikeLightningEffect(location);
 							location.getWorld().strikeLightningEffect(location);
 
-							final List<Entity> entities = event.getWorld().getEntities();
-
 							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 							{
 								@Override
 								public void run()
 								{
-									for(Entity entity : entities)
+									for(Entity entity : event.getWorld().getEntities())
 									{
 										if(entity instanceof Player)
 										{
