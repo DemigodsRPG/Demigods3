@@ -52,6 +52,11 @@ public class LatestTweetModule implements Listener
 		return this.messagesData;
 	}
 
+	public void save()
+	{
+		DemigodsData.jOhm.save(this);
+	}
+
 	/**
 	 * Constructor to create a new LatestTweetModule.
 	 * 
@@ -90,6 +95,8 @@ public class LatestTweetModule implements Listener
 			module.command = command;
 			module.permission = permission;
 			module.notify = notify;
+
+			module.save();
 
 			initilize(module);
 		}
@@ -182,6 +189,8 @@ public class LatestTweetModule implements Listener
 
 			String lastMessage = messagesData.get(player.getName());
 
+			save();
+
 			return !(lastMessage != null && lastMessage.equalsIgnoreCase(this.message));
 		}
 		catch(Exception e)
@@ -249,6 +258,7 @@ public class LatestTweetModule implements Listener
 
 			// Set that the message was seen
 			messagesData.put(player.getName(), message);
+			save();
 			event.setCancelled(true);
 		}
 	}
