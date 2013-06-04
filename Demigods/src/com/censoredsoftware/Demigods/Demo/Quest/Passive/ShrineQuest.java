@@ -167,9 +167,9 @@ class Tribute extends Task
 			// Handle messaging and Shrine owner updating
 			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor"))
 			{
-				// They already have the maximum allowed favor
+				// They have already met the max favor cap
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
-				if(character.getMeta().getFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "You have been given " + ChatColor.GREEN + (tributeValue / 3) + ChatColor.GRAY + " favor.");
+				if(character.getMeta().getFavor() > favorBefore) player.sendMessage(ChatColor.GRAY + "You have been blessed with " + ChatColor.GREEN + (tributeValue / 3) + ChatColor.GRAY + " favor.");
 
 				if(!player.getName().equals(shrineOwnerPlayer.getName()))
 				{
@@ -184,7 +184,7 @@ class Tribute extends Task
 					}
 				}
 			}
-			else if(character.getMeta().getMaxFavor() > maxFavorBefore || items > 0)
+			else if(character.getMeta().getMaxFavor() > maxFavorBefore)
 			{
 				// Message the tributer
 				player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");
@@ -192,6 +192,9 @@ class Tribute extends Task
 
 				if(!player.getName().equals(shrineOwnerPlayer.getName()))
 				{
+					// Define variables
+					int ownerFavorBefore = shrineOwner.getMeta().getMaxFavor();
+
 					// Give them some of the blessings
 					shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
@@ -199,14 +202,14 @@ class Tribute extends Task
 					if(shrineOwnerPlayer.isOnline() && TrackedPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
-						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
+						if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
 					}
 				}
 			}
-			else
+			else if(items > 0)
 			{
-				// If they aren't good enough let them know
-				if(items > 0) player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + character.getDeity().getInfo().getName() + "'s blessings.");
+				// They aren't good enough, let them know!
+				player.sendMessage(ChatColor.RED + "Your tributes were insufficient for " + character.getDeity().getInfo().getName() + "'s blessings.");
 			}
 
 			// Clear the tribute case
