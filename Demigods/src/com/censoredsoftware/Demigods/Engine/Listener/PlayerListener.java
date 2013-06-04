@@ -77,7 +77,7 @@ public class PlayerListener implements Listener
 		onPlayerLineJump(player, to, from, delayTime);
 
 		// Player Hold
-		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold") && from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ())
+		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold") && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
 		{
 			event.setCancelled(true);
 			player.teleport(from);
