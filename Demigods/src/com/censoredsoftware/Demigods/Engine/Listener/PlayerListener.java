@@ -178,7 +178,7 @@ public class PlayerListener implements Listener
 
 	public static class QuitReasonFilter implements Filter
 	{
-		public QuitReason latestQuit = QuitReason.QUITTING;
+		private QuitReason latestQuit = QuitReason.QUITTING;
 
 		/**
 		 * Get the QuitReason of the last player to quit.
