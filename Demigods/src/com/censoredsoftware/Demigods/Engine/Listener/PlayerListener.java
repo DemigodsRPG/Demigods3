@@ -181,7 +181,11 @@ public class PlayerListener implements Listener
 		@Override
 		public boolean isLoggable(LogRecord arg0)
 		{
-			if(!arg0.getMessage().toLowerCase().contains("disconnect")) return true;
+			if(!arg0.getMessage().toLowerCase().contains("disconnect"))
+			{
+				Demigods.message.broadcast("DISCONNECT");
+				return true;
+			}
 
 			lastQuit = QuitReason.QUITTING;
 			if(arg0.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
@@ -189,6 +193,7 @@ public class PlayerListener implements Listener
 			else if(arg0.getMessage().toLowerCase().contains("endofstream")) lastQuit = QuitReason.END_OF_STREAM;
 			else if(arg0.getMessage().toLowerCase().contains("overflow")) lastQuit = QuitReason.OVERFLOW;
 			else if(arg0.getMessage().toLowerCase().contains("timeout")) lastQuit = QuitReason.TIMEOUT;
+			else Demigods.message.broadcast("NOT FOUND");
 			return true;
 		}
 	}
