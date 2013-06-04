@@ -93,7 +93,7 @@ public class PlayerListener implements Listener
 		Location from = event.getFrom();
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
-		if(TrackedPlayer.isPraying(player)) TrackedPlayer.togglePrayingSilent(player, false);
+		if(TrackedPlayer.isPraying(player)) TrackedPlayer.togglePraying(player, false);
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DemigodsData.hasKeyTemp(player.getName(), "teleport_ability"))
