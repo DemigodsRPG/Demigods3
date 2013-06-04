@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -31,9 +32,9 @@ public class PlayerListener implements Listener
 	public static Boolean filterCheckQuitting = false;
 	public static Boolean filterCheckTimeout = false;
 
-	public PlayerListener()
+	public PlayerListener(DemigodsPlugin instance)
 	{
-		Demigods.message.getLog().setFilter(new DisconnectReason());
+		instance.getLogger().setFilter(new DisconnectReason());
 	}
 
 	@EventHandler
