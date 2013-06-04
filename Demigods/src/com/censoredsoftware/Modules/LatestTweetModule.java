@@ -105,8 +105,6 @@ public class LatestTweetModule implements Listener
 			notify = n;
 			module.get();
 
-			module.save();
-
 			initilize(module);
 		}
 		catch(Exception e)
@@ -191,7 +189,6 @@ public class LatestTweetModule implements Listener
 				if(line.trim().startsWith("<p class=\"js-tweet-text tweet-text \">"))
 				{
 					toReturn = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
-					this.message = toReturn;
 				}
 			}
 
@@ -202,6 +199,8 @@ public class LatestTweetModule implements Listener
 		{
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
+		this.message = toReturn;
+		save();
 		return toReturn;
 	}
 
@@ -213,7 +212,6 @@ public class LatestTweetModule implements Listener
 	public boolean get(OfflinePlayer player)
 	{
 		get();
-		save();
 		String lastMessage = messagesData.get(player.getName());
 		return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
 	}
