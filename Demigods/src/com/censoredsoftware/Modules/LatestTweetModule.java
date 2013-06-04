@@ -39,11 +39,11 @@ import com.google.common.collect.Maps;
 public class LatestTweetModule implements Listener
 {
 	@Id
-	private static Long Id;
-	@CollectionMap(key = String.class, value = String.class)
-	private static Map<String, String> messagesData;
+	private Long Id;
 	@Attribute
-	private static String message;
+	private String message;
+	@CollectionMap(key = String.class, value = String.class)
+	private Map<String, String> messagesData;
 	private static Plugin plugin;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static URL twitterFeed;
@@ -57,7 +57,12 @@ public class LatestTweetModule implements Listener
 
 	public void save()
 	{
-		DemigodsData.jOhm.save(this);
+		save(this);
+	}
+
+	public static void save(LatestTweetModule tweet)
+	{
+		DemigodsData.jOhm.save(tweet);
 	}
 
 	/**
