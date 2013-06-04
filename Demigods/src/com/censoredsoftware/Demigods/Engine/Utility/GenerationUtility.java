@@ -123,10 +123,10 @@ public class GenerationUtility
 
 		for(int i = 0; i <= radius - 1; i++)
 		{
-			blocks.add(location.getBlock().getRelative(i + (2 * i), 0, 0));
-			blocks.add(location.getBlock().getRelative(i - (2 * i), 0, 0));
-			blocks.add(location.getBlock().getRelative(0, 0, i + (2 * i)));
-			blocks.add(location.getBlock().getRelative(0, 0, i - (2 * i)));
+            blocks.add(location.getBlock().getRelative(i + 2, 0, 0));
+            blocks.add(location.getBlock().getRelative((-1 * i) - 2, 0, 0));
+            blocks.add(location.getBlock().getRelative(0, 0, i + 2));
+            blocks.add(location.getBlock().getRelative(0, 0, (-1 * i) - 2));
 
 		}
 
