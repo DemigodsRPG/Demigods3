@@ -1,10 +1,7 @@
 package com.censoredsoftware.Modules;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -42,12 +39,12 @@ public class LatestTweetModule implements Listener
 	private static Plugin plugin;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static URL twitterFeed;
-	private static String pluginName, command, permission, date, link;
+	private static String pluginName, command, permission, date;
 	private static boolean notify;
 	@Id
 	private Long Id;
 	@Attribute
-	private String message;
+	private String link;
 	@CollectionMap(key = String.class, value = String.class)
 	private Map<String, String> messagesData;
 
@@ -152,7 +149,6 @@ public class LatestTweetModule implements Listener
 	 */
 	public synchronized String get()
 	{
-		String toReturn = "";
 		try
 		{
 			InputStream input = twitterFeed.openConnection().getInputStream();
@@ -163,44 +159,21 @@ public class LatestTweetModule implements Listener
 			try
 			{
 				date = messageNodes.item(5).getTextContent().substring(0, messageNodes.item(5).getTextContent().lastIndexOf("+"));
-				link = messageNodes.item(9).getTextContent().replace("http://", "https://");
+				this.link = messageNodes.item(9).getTextContent().replace("http://", "https://");
 			}
 			catch(Exception e)
 			{
 				log.warning("[" + pluginName + "] Failed to find latest tweet.");
 			}
 			input.close();
-
-			try
-			{
-				URLConnection messageCon = (new URL(link)).openConnection();
-				messageCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2"); // FIXES 403 ERROR
-				input = messageCon.getInputStream();
-			}
-			catch(Exception e)
-			{
-				log.warning("[" + pluginName + "] Failed to open connection with twitter page.");
-			}
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-			String line;
-
-			while((line = reader.readLine()) != null)
-			{
-				if(line.trim().startsWith("<p class=\"js-tweet-text tweet-text \">")) toReturn = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
-			}
-
-			reader.close();
-			input.close();
 		}
 		catch(Exception e)
 		{
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
-		this.message = toReturn;
-		Demigods.message.broadcast(toReturn); // TODO Debug ONLY.
+		Demigods.message.broadcast(this.link); // TODO Debug ONLY.
 		save();
-		return toReturn;
+		return link;
 	}
 
 	/**
@@ -212,7 +185,7 @@ public class LatestTweetModule implements Listener
 	{
 		get();
 		String lastMessage = messagesData.get(player.getName());
-		return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
+		return !(lastMessage != null && lastMessage.equalsIgnoreCase(this.link));
 	}
 
 	/**
@@ -223,11 +196,11 @@ public class LatestTweetModule implements Listener
 	{
 		// Define Variables
 		final Player player = event.getPlayer();
-		final String pluginName = this.pluginName;
-		final String command = this.command;
+		final String pluginName = LatestTweetModule.pluginName;
+		final String command = LatestTweetModule.command;
 
 		// Official Messages
-		if(this.notify && (player.isOp() || player.hasPermission(this.permission)))
+		if(notify && (player.isOp() || player.hasPermission(permission)))
 		{
 			if(get(player))
 			{
@@ -255,10 +228,10 @@ public class LatestTweetModule implements Listener
 		String command = event.getMessage();
 
 		// Check for update command
-		if(command.toLowerCase().startsWith(this.command.toLowerCase()))
+		if(command.toLowerCase().startsWith(LatestTweetModule.command.toLowerCase()))
 		{
 			// Check Permissions
-			if(!(player.hasPermission(this.permission) || player.isOp()))
+			if(!(player.hasPermission(permission) || player.isOp()))
 			{
 				player.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
 				event.setCancelled(true);
@@ -267,12 +240,11 @@ public class LatestTweetModule implements Listener
 
 			// Send the message
 			player.sendMessage(ChatColor.DARK_AQUA + "[" + pluginName + "] " + ChatColor.RESET + "Posted on " + date);
-			player.sendMessage(ChatColor.YELLOW + " Message: " + ChatColor.WHITE + message);
-			player.sendMessage("  ");
-			player.sendMessage(ChatColor.YELLOW + " " + ChatColor.WHITE + link.replace("https://", ""));
+			player.sendMessage(ChatColor.YELLOW + " Link: ");
+			player.sendMessage(ChatColor.YELLOW + " " + ChatColor.WHITE + this.link.replace("https://", ""));
 
 			// Set that the message was seen
-			messagesData.put(player.getName(), message);
+			messagesData.put(player.getName(), this.link);
 			save();
 			event.setCancelled(true);
 		}
