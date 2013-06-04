@@ -181,11 +181,9 @@ public class PlayerListener implements Listener
 		@Override
 		public boolean isLoggable(LogRecord arg0)
 		{
-			if(!arg0.getMessage().toLowerCase().contains("disconnect"))
-			{
-				Demigods.message.broadcast("DISCONNECT");
-				return true;
-			}
+			if(!arg0.getMessage().toLowerCase().contains("disconnect")) return true;
+
+			Demigods.message.broadcast("DISCONNECT");
 
 			lastQuit = QuitReason.QUITTING;
 			if(arg0.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
