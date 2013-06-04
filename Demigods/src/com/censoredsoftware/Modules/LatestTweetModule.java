@@ -103,6 +103,7 @@ public class LatestTweetModule implements Listener
 		catch(Exception e)
 		{
 			log.severe("[" + pluginName + "] Could not connect to Twitter.");
+			e.printStackTrace();
 		}
 		return module;
 	}
