@@ -39,7 +39,7 @@ import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Modules.BukkitUpdateModule;
 import com.censoredsoftware.Modules.ConfigModule;
 import com.censoredsoftware.Modules.MessageModule;
@@ -801,11 +801,11 @@ class Commands implements CommandExecutor
 		// // Send the user their info via chat
 		// Demigods.message.tagged(sender, "Levels Check");
 		//
-		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Offense: " + ChatColor.GREEN + powerOffense);
-		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Defense: " + ChatColor.GREEN + powerDefense);
-		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Stealth: " + ChatColor.GREEN + powerStealth);
-		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Support: " + ChatColor.GREEN + powerSupport);
-		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Passive: " + ChatColor.GREEN + powerPassive);
+		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Offense: " + ChatColor.GREEN + powerOffense);
+		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Defense: " + ChatColor.GREEN + powerDefense);
+		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Stealth: " + ChatColor.GREEN + powerStealth);
+		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Support: " + ChatColor.GREEN + powerSupport);
+		// sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Passive: " + ChatColor.GREEN + powerPassive);
 		//
 		// return true;
 		// }
@@ -813,11 +813,11 @@ class Commands implements CommandExecutor
 		// Send the user their info via chat
 		Demigods.message.tagged(sender, "Player Check");
 
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + MiscUtility.capitalize(alliance) + "s");
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE); // + " / Killstreak: " + ChatColor.RED + killstreak);
+		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Character: " + ChatColor.AQUA + charName);
+		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + MiscUtility.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
+		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE); // + " / Killstreak: " + ChatColor.RED + killstreak);
 
 		return true;
 	}
@@ -885,9 +885,9 @@ class Commands implements CommandExecutor
 			for(Altar altar : Altar.getAllAltars())
 			{
 				sender.sendMessage(altar.getId() + ":");
-				sender.sendMessage(" " + UnicodeUtil.rightwardArrow() + " Active: " + altar.isActive());
-				if(sender instanceof Player) sender.sendMessage(" " + UnicodeUtil.rightwardArrow() + " Distance: " + altar.getLocation().distance(((Player) sender).getLocation()));
-				sender.sendMessage(" " + UnicodeUtil.rightwardArrow() + " Has Blocks: " + (altar.getBlocks() != null && !altar.getBlocks().isEmpty()));
+				sender.sendMessage(" " + UnicodeUtility.rightwardArrow() + " Active: " + altar.isActive());
+				if(sender instanceof Player) sender.sendMessage(" " + UnicodeUtility.rightwardArrow() + " Distance: " + altar.getLocation().distance(((Player) sender).getLocation()));
+				sender.sendMessage(" " + UnicodeUtility.rightwardArrow() + " Has Blocks: " + (altar.getBlocks() != null && !altar.getBlocks().isEmpty()));
 			}
 		}
 		catch(NullPointerException e)

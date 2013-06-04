@@ -1,6 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-public class UnicodeUtil
+public class UnicodeUtility
 {
 	public static String blackSquare()
 	{

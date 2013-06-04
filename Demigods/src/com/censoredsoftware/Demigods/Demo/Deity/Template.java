@@ -21,7 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
 {
@@ -42,7 +42,7 @@ public class Template extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
@@ -69,7 +69,7 @@ class Test extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtil.rightwardArrow() + " " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.SUPPORT;
