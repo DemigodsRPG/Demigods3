@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,64 +24,96 @@ import org.bukkit.plugin.Plugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Modules.Data.PlayerDataModule;
+import redis.clients.johm.CollectionMap;
+import redis.clients.johm.Id;
+import redis.clients.johm.Model;
+
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.google.common.collect.Maps;
 
 /**
  * Module to handle the latest messages from a Twitter feed.
  */
+@Model
 public class LatestTweetModule implements Listener
 {
-	private Plugin plugin;
-	private Logger log = Logger.getLogger("Minecraft");
-	private URL twitterFeed;
-	private String pluginName, command, permission, date, link, message;
-	private boolean notify;
+	@Id
+	private static Long Id;
+	@CollectionMap(key = String.class, value = String.class)
+	private static Map<String, String> messagesData;
+	private static Plugin plugin;
+	private static Logger log = Logger.getLogger("Minecraft");
+	private static URL twitterFeed;
+	private static String pluginName, command, permission, date, link, message;
+	private static boolean notify;
+
+	public Map<String, String> getData()
+	{
+		return this.messagesData;
+	}
 
 	/**
 	 * Constructor to create a new LatestTweetModule.
 	 * 
 	 * @param plugin The demigods instance running the module.
-	 * @param url The url to the Twitter project RSS feed.
+	 * @param screenName The screen-name to the Twitter page.
 	 * @param command The full command for viewing the latest message.
 	 * @param permission The full permission node for viewing the latest message.
 	 * @param notify True if notifying is allowed.
 	 */
-	public LatestTweetModule(Plugin plugin, String url, String command, String permission, boolean notify, int start_delay, int save_interval)
+	public static LatestTweetModule recreate(Plugin plugin, String screenName, String command, String permission, boolean notify)
 	{
+		LatestTweetModule module = null;
 		try
 		{
-			this.plugin = plugin;
-			this.twitterFeed = new URL(url);
-			this.pluginName = this.plugin.getName();
-			this.command = command;
-			this.permission = permission;
-			this.notify = notify;
+			Set<LatestTweetModule> latestTweetModules = DemigodsData.jOhm.getAll(LatestTweetModule.class);
+			for(LatestTweetModule tweet : latestTweetModules)
+			{
+				module = tweet;
+				break;
+			}
+		}
+		catch(Exception ignored)
+		{}
 
-			initilize(start_delay, save_interval);
+		if(module == null)
+		{
+			module = new LatestTweetModule();
+			module.messagesData = Maps.newHashMap();
+		}
+
+		try
+		{
+			module.plugin = plugin;
+			module.twitterFeed = new URL("http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=" + screenName);
+			module.pluginName = plugin.getName();
+			module.command = command;
+			module.permission = permission;
+			module.notify = notify;
+
+			initilize(module);
 		}
 		catch(Exception e)
 		{
 			log.severe("[" + pluginName + "] Could not connect to Twitter.");
 		}
+		return module;
 	}
 
 	/**
 	 * Checks for notifications and notifies if need be.
 	 */
-	public void initilize(int start_delay, int save_interval)
+	public static void initilize(LatestTweetModule module)
 	{
 		// Check for updates, and then update if need be
-		if(this.notify)
+		if(module.notify)
 		{
 			// Define Notify Listener
-			plugin.getServer().getPluginManager().registerEvents(this, plugin);
-
-			// Start Save Thread
-			startSaveThread(start_delay, save_interval);
+			plugin.getServer().getPluginManager().registerEvents(module, plugin);
 
 			for(final Player player : Bukkit.getOnlinePlayers())
 			{
-				if(get(player))
+				if(module.get(player))
 				{
 					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
 					{
@@ -146,7 +180,7 @@ public class LatestTweetModule implements Listener
 			reader.close();
 			input.close();
 
-			String lastMessage = messagesData.getDataString(player);
+			String lastMessage = messagesData.get(player.getName());
 
 			return !(lastMessage != null && lastMessage.equalsIgnoreCase(this.message));
 		}
@@ -155,22 +189,6 @@ public class LatestTweetModule implements Listener
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
 		return false;
-	}
-
-	/**
-	 * Save the official message data.
-	 */
-	private void startSaveThread(int start_delay, int save_interval)
-	{
-		// Start the Save Thread
-		plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				messagesYAML.save(messagesData);
-			}
-		}, start_delay, save_interval);
 	}
 
 	/**
@@ -224,13 +242,13 @@ public class LatestTweetModule implements Listener
 			}
 
 			// Send the message
-			player.sendMessage(ChatColor.DARK_AQUA + "[" + pluginName + "] " + ChatColor.RESET + "Posted on " + this.date);
-			player.sendMessage(ChatColor.YELLOW + " Message: " + ChatColor.WHITE + this.message);
+			player.sendMessage(ChatColor.DARK_AQUA + "[" + pluginName + "] " + ChatColor.RESET + "Posted on " + date);
+			player.sendMessage(ChatColor.YELLOW + " Message: " + ChatColor.WHITE + message);
 			player.sendMessage("  ");
-			player.sendMessage(ChatColor.YELLOW + " " + ChatColor.WHITE + this.link.replace("https://", ""));
+			player.sendMessage(ChatColor.YELLOW + " " + ChatColor.WHITE + link.replace("https://", ""));
 
 			// Set that the message was seen
-			this.messagesData.saveData(player, this.message);
+			messagesData.put(player.getName(), message);
 			event.setCancelled(true);
 		}
 	}

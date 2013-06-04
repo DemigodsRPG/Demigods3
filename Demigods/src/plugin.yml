@@ -60,3 +60,7 @@ permissions:
         default: true
     demigods.altar:
         default: true
+    demigods.update:
+        default: op
+    demigods.twitter:
+        default: op
