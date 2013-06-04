@@ -154,7 +154,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(final PlayerQuitEvent event)
 	{
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.plugin, new Runnable()
 		{
 			@Override
 			public void run()
@@ -192,7 +192,7 @@ public class PlayerListener implements Listener
 					event.setQuitMessage(message);
 				}
 			}
-		}, 10);
+		}, 20);
 	}
 
 	public static class DisconnectReason implements Filter
