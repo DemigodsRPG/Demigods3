@@ -113,7 +113,7 @@ public class LatestTweetModule implements Listener
 	public static void initilize(LatestTweetModule module)
 	{
 		// Check for updates, and then update if need be
-		if(module.notify)
+		if(notify)
 		{
 			// Define Notify Listener
 			plugin.getServer().getPluginManager().registerEvents(module, plugin);
@@ -145,7 +145,7 @@ public class LatestTweetModule implements Listener
 	{
 		try
 		{
-			InputStream input = this.twitterFeed.openConnection().getInputStream();
+			InputStream input = twitterFeed.openConnection().getInputStream();
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
 
 			NodeList messageNodes = document.getElementsByTagName("item").item(0).getChildNodes();
@@ -163,7 +163,7 @@ public class LatestTweetModule implements Listener
 
 			try
 			{
-				URLConnection messageCon = (new URL(this.link)).openConnection();
+				URLConnection messageCon = (new URL(link)).openConnection();
 				messageCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2"); // FIXES 403 ERROR
 				input = messageCon.getInputStream();
 			}
@@ -191,7 +191,7 @@ public class LatestTweetModule implements Listener
 
 			save();
 
-			return !(lastMessage != null && lastMessage.equalsIgnoreCase(this.message));
+			return !(lastMessage != null && lastMessage.equalsIgnoreCase(message));
 		}
 		catch(Exception e)
 		{
