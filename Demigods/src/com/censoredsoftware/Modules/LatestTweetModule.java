@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import redis.clients.johm.Attribute;
 import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
@@ -41,10 +42,12 @@ public class LatestTweetModule implements Listener
 	private static Long Id;
 	@CollectionMap(key = String.class, value = String.class)
 	private static Map<String, String> messagesData;
+	@Attribute
+	private static String message;
 	private static Plugin plugin;
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static URL twitterFeed;
-	private static String pluginName, command, permission, date, link, message;
+	private static String pluginName, command, permission, date, link;
 	private static boolean notify;
 
 	public Map<String, String> getData()
