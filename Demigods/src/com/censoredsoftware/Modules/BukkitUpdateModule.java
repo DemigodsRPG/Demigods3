@@ -229,7 +229,7 @@ public class BukkitUpdateModule implements Listener
 			reader.close();
 			input.close();
 
-			if(this.currentVersion.equals(this.latestVersion)) return false;
+			if(this.currentVersion.equals(this.latestVersion) || this.latestVersion.toLowerCase().contains("-pre") || this.latestVersion.toLowerCase().contains("-dev") || this.latestVersion.toLowerCase().contains("-demo")) return false;
 
 			try
 			{
@@ -300,8 +300,7 @@ public class BukkitUpdateModule implements Listener
 		{
 			log.warning("[" + pluginName + "] Failed to load download page.");
 		}
-
-		return false;
+		return this.currentVersion.toLowerCase().contains("-pre") || this.currentVersion.toLowerCase().contains("-dev") || this.currentVersion.toLowerCase().contains("-demo");
 	}
 
 	/**

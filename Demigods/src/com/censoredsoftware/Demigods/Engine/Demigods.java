@@ -137,7 +137,7 @@ public class Demigods
 	public Translation getTranslation()
 	{
 		// Default to EnglishCharNames
-		return new DemigodsText.English();
+		return new DemigodsText.Engrish();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)
