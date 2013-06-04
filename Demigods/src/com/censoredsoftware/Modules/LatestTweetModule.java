@@ -195,24 +195,17 @@ public class LatestTweetModule implements Listener
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		// Define Variables
-		final Player player = event.getPlayer();
-		final String pluginName = LatestTweetModule.pluginName;
-		final String command = LatestTweetModule.command;
+		Player player = event.getPlayer();
+		String pluginName = LatestTweetModule.pluginName;
+		String command = LatestTweetModule.command;
 
 		// Official Messages
 		if(notify && (player.isOp() || player.hasPermission(permission)))
 		{
 			if(get(player))
 			{
-				plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						player.sendMessage(ChatColor.GREEN + "There is a new message from the " + pluginName + " developers!");
-						player.sendMessage("Please view it now by using " + ChatColor.YELLOW + command);
-					}
-				}, 40);
+				player.sendMessage(ChatColor.GREEN + "There is a new message from the " + pluginName + " developers!");
+				player.sendMessage("Please view it now by using " + ChatColor.YELLOW + command);
 			}
 		}
 	}
