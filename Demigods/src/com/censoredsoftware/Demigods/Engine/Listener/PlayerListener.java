@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -25,15 +26,11 @@ import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class PlayerListener implements Listener
 {
-	public static Boolean filterCheckGeneric = false;
-	public static Boolean filterCheckStream = false;
-	public static Boolean filterCheckOverflow = false;
-	public static Boolean filterCheckQuitting = false;
-	public static Boolean filterCheckTimeout = false;
+	public static QuitReason lastQuit = QuitReason.QUITTING;
 
 	public PlayerListener()
 	{
-		Demigods.message.getLog().setFilter(new DisconnectReason());
+		Demigods.message.getLog().setFilter(new DisconnectReason(Demigods.plugin));
 	}
 
 	@EventHandler
@@ -154,87 +151,54 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(final PlayerQuitEvent event)
 	{
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.plugin, new Runnable()
+		String name = event.getPlayer().getName();
+		String message = ChatColor.YELLOW + name + " has left the game.";
+		switch(lastQuit)
 		{
-			@Override
-			public void run()
-			{
-				String name = event.getPlayer().getName();
-				if(filterCheckGeneric)
-				{
-					String message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
-					event.setQuitMessage(message);
-				}
-				else if(filterCheckStream)
-				{
-					String message = ChatColor.YELLOW + name + " has lost connection.";
-					event.setQuitMessage(message);
-				}
-				else if(filterCheckOverflow)
-				{
-					String message = ChatColor.YELLOW + name + " has disconnected due to overload.";
-					event.setQuitMessage(message);
-				}
-				else if(filterCheckQuitting)
-				{
-					if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
-					{
-						String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
-						event.setQuitMessage(message);
-						return;
-					}
-					String message = ChatColor.YELLOW + name + " has left the game.";
-					event.setQuitMessage(message);
-				}
-				else if(filterCheckTimeout)
-				{
-					String message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
-					event.setQuitMessage(message);
-				}
-			}
-		}, 20);
+			case GENERIC_REASON:
+				message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
+				break;
+			case SPAM:
+				message = ChatColor.YELLOW + name + " has disconnected due to spamming.";
+				break;
+			case END_OF_STREAM:
+				message = ChatColor.YELLOW + name + " has lost connection.";
+				break;
+			case OVERFLOW:
+				message = ChatColor.YELLOW + name + " has disconnected due to overload.";
+				break;
+			case QUITTING:
+				if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent())) message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
+				break;
+			case TIMEOUT:
+				message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
+				break;
+		}
+		event.setQuitMessage(message);
 	}
 
 	public static class DisconnectReason implements Filter
 	{
+		DisconnectReason(DemigodsPlugin instance)
+		{}
+
 		@Override
 		public boolean isLoggable(LogRecord arg0)
 		{
-			if(arg0.getMessage().toLowerCase().contains("disconnect"))
-			{
-				filterCheckGeneric = false;
-				filterCheckStream = false;
-				filterCheckOverflow = false;
-				filterCheckTimeout = false;
+			if(!arg0.getMessage().toLowerCase().contains("disconnect")) return true;
 
-				if(arg0.getMessage().toLowerCase().contains("genericreason"))
-				{
-					filterCheckGeneric = true;
-					return true;
-				}
-				if(arg0.getMessage().toLowerCase().contains("endofstream"))
-				{
-					filterCheckStream = true;
-					return true;
-				}
-				if(arg0.getMessage().toLowerCase().contains("overflow"))
-				{
-					filterCheckOverflow = true;
-					return true;
-				}
-				if(arg0.getMessage().toLowerCase().contains("timeout"))
-				{
-					filterCheckTimeout = true;
-					return true;
-				}
-				if(arg0.getMessage().toLowerCase().contains("quitting"))
-				{
-					filterCheckQuitting = true;
-					return true;
-				}
-				return true;
-			}
+			lastQuit = QuitReason.QUITTING;
+			if(arg0.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
+			else if(arg0.getMessage().toLowerCase().contains("spam")) lastQuit = QuitReason.SPAM;
+			else if(arg0.getMessage().toLowerCase().contains("endofstream")) lastQuit = QuitReason.END_OF_STREAM;
+			else if(arg0.getMessage().toLowerCase().contains("overflow")) lastQuit = QuitReason.OVERFLOW;
+			else if(arg0.getMessage().toLowerCase().contains("timeout")) lastQuit = QuitReason.TIMEOUT;
 			return true;
 		}
+	}
+
+	public static enum QuitReason
+	{
+		GENERIC_REASON, SPAM, END_OF_STREAM, OVERFLOW, TIMEOUT, QUITTING
 	}
 }
