@@ -39,8 +39,6 @@ public class DemigodsBlacklist
 					add("Cunt");
 					add("Bitch");
 					add("Nigger");
-					add("God");
-					add("Titan");
 					add("Phil");
 					add("Staff");
 					add("Server");
@@ -50,6 +48,7 @@ public class DemigodsBlacklist
 					for(Deity deity : Demigods.getLoadedDeities())
 					{
 						add(deity.getInfo().getName());
+						add(deity.getInfo().getAlliance());
 					}
 				}
 			};
