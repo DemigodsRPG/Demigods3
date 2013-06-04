@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
@@ -32,9 +31,9 @@ public class PlayerListener implements Listener
 	public static Boolean filterCheckQuitting = false;
 	public static Boolean filterCheckTimeout = false;
 
-	public PlayerListener(DemigodsPlugin instance)
+	public PlayerListener()
 	{
-		instance.getLogger().setFilter(new DisconnectReason());
+		Demigods.message.getLog().setFilter(new DisconnectReason());
 	}
 
 	@EventHandler
@@ -153,40 +152,47 @@ public class PlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerQuit(PlayerQuitEvent event)
+	public void onPlayerQuit(final PlayerQuitEvent event)
 	{
-		String name = event.getPlayer().getName();
-		if(filterCheckGeneric)
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
-			String message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
-			event.setQuitMessage(message);
-		}
-		else if(filterCheckStream)
-		{
-			String message = ChatColor.YELLOW + name + " has lost connection.";
-			event.setQuitMessage(message);
-		}
-		else if(filterCheckOverflow)
-		{
-			String message = ChatColor.YELLOW + name + " has disconnected due to overload.";
-			event.setQuitMessage(message);
-		}
-		else if(filterCheckQuitting)
-		{
-			if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
+			@Override
+			public void run()
 			{
-				String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
-				event.setQuitMessage(message);
-				return;
+				String name = event.getPlayer().getName();
+				if(filterCheckGeneric)
+				{
+					String message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
+					event.setQuitMessage(message);
+				}
+				else if(filterCheckStream)
+				{
+					String message = ChatColor.YELLOW + name + " has lost connection.";
+					event.setQuitMessage(message);
+				}
+				else if(filterCheckOverflow)
+				{
+					String message = ChatColor.YELLOW + name + " has disconnected due to overload.";
+					event.setQuitMessage(message);
+				}
+				else if(filterCheckQuitting)
+				{
+					if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent()))
+					{
+						String message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
+						event.setQuitMessage(message);
+						return;
+					}
+					String message = ChatColor.YELLOW + name + " has left the game.";
+					event.setQuitMessage(message);
+				}
+				else if(filterCheckTimeout)
+				{
+					String message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
+					event.setQuitMessage(message);
+				}
 			}
-			String message = ChatColor.YELLOW + name + " has left the game.";
-			event.setQuitMessage(message);
-		}
-		else if(filterCheckTimeout)
-		{
-			String message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
-			event.setQuitMessage(message);
-		}
+		}, 10);
 	}
 
 	public static class DisconnectReason implements Filter
