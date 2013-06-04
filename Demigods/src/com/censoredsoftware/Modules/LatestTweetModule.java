@@ -202,6 +202,7 @@ public class LatestTweetModule implements Listener
 		// Official Messages
 		if(notify && (player.isOp() || player.hasPermission(permission)))
 		{
+			// Seperate to prevent extra load when this option is disabled.
 			if(get(player))
 			{
 				player.sendMessage(ChatColor.GREEN + "There is a new message from the " + pluginName + " developers!");
