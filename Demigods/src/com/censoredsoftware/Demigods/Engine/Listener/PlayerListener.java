@@ -183,8 +183,6 @@ public class PlayerListener implements Listener
 		{
 			if(!record.getMessage().toLowerCase().contains("disconnect")) return true;
 
-			Demigods.message.broadcast("DEBUG: DISCONNECT");
-
 			lastQuit = QuitReason.QUITTING;
 			if(record.getMessage().toLowerCase().contains("genericreason")) lastQuit = QuitReason.GENERIC_REASON;
 			else if(record.getMessage().toLowerCase().contains("spam")) lastQuit = QuitReason.SPAM;
