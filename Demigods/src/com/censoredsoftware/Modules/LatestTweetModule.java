@@ -103,6 +103,7 @@ public class LatestTweetModule implements Listener
 			command = c;
 			permission = p;
 			notify = n;
+			module.message = "";
 
 			module.save();
 
