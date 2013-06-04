@@ -52,7 +52,7 @@ public class PlayerCharacterMeta
 
 	public void addDevotion(Devotion devotion)
 	{
-		if(!this.devotionData.containsKey(devotion.getType())) this.devotionData.put(devotion.getType().toString(), devotion);
+		if(!this.devotionData.containsKey(devotion.getType().toString())) this.devotionData.put(devotion.getType().toString(), devotion);
 		save(this);
 	}
 
