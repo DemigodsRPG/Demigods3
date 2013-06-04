@@ -37,6 +37,7 @@ import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -883,10 +884,10 @@ class AltarGenerate extends Task
 			if(event.isNewChunk())
 			{
 				// Define variables
-				final Location location = MiscUtility.randomChunkLocation(event.getChunk());
+				final Location location = GenerationUtility.randomChunkLocation(event.getChunk());
 
 				// Check if it can generate
-				if(MiscUtility.canGenerateStrict(location, 3))
+				if(GenerationUtility.canGenerateStrict(location, 3))
 				{
 					// Return a random boolean based on the chance of Altar generation
 					if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))

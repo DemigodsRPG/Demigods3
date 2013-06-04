@@ -37,6 +37,7 @@ import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtil;
 import com.censoredsoftware.Modules.BukkitUpdateModule;
@@ -296,7 +297,7 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Setting blocks...");
 
-		for(Block block : MiscUtility.getBlocks(player.getTargetBlock(null, 10).getLocation(), 5))
+		for(Block block : GenerationUtility.getBlocks(player.getTargetBlock(null, 10).getLocation(), 5))
 		{
 			block.setType(Material.GOLD_BLOCK);
 		}
