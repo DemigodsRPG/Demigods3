@@ -29,6 +29,7 @@ import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.google.common.collect.Maps;
 
@@ -186,10 +187,7 @@ public class LatestTweetModule implements Listener
 
 			while((line = reader.readLine()) != null)
 			{
-				if(line.trim().startsWith("<p class=\"js-tweet-text tweet-text \">"))
-				{
-					toReturn = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
-				}
+				if(line.trim().startsWith("<p class=\"js-tweet-text tweet-text \">")) toReturn = line.substring(line.indexOf("<p class=\"js-tweet-text tweet-text \">") + 37, line.lastIndexOf("<"));
 			}
 
 			reader.close();
@@ -200,6 +198,7 @@ public class LatestTweetModule implements Listener
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
 		this.message = toReturn;
+		Demigods.message.broadcast(toReturn); // TODO Debug ONLY.
 		save();
 		return toReturn;
 	}
