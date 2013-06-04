@@ -554,6 +554,13 @@ class AltarMenu extends Task
 	// View character
 	protected static void viewChar(Player player, PlayerCharacter character)
 	{
+		// Return if the character doesn't exist
+		if(character == null)
+		{
+			player.sendMessage(ChatColor.RED + "That character doesn't exist.");
+			return;
+		}
+
 		// Define variables
 		String status;
 
