@@ -396,14 +396,14 @@ class Commands implements CommandExecutor
 		StructureGenerator.GeneratorSchematic vineRight = new StructureGenerator.GeneratorSchematic(target, -1, 5, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 100));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 100));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 0));
 			}
 		});
 		StructureGenerator.GeneratorSchematic vineLeft = new StructureGenerator.GeneratorSchematic(target, 1, 5, -1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 100));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 100));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 0));
 			}
 		});
