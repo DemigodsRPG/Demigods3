@@ -307,12 +307,12 @@ public class GenerationUtility
 			// Z = i;
 			// spiralGenerate(target, X, i, Z);
 			// }
-			for(int k = i; k > j; k--)
-			{
-				X = i;
-				Z = k;
-				spiralGenerate(target, X, i, Z);
-			}
+			// for(int k = i; k > j; k--)
+			// {
+			// X = i;
+			// Z = k;
+			// spiralGenerate(target, X, i, Z);
+			// }
 			// for(int k = i; k > j; k--)
 			// {
 			// X = k;
