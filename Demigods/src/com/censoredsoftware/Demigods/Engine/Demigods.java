@@ -327,12 +327,19 @@ class Commands implements CommandExecutor
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
+		StructureGenerator.GeneratorSchematic pistonBase = new StructureGenerator.GeneratorSchematic(target, 0, 4, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.PISTON_STICKY_BASE));
+			}
+		});
 
 		sponge.generate();
 		bottomRight.generate();
 		bottomLeft.generate();
 		bottomFront.generate();
 		bottomBack.generate();
+		pistonBase.generate();
 
 		// TEST STRUCTURE
 
