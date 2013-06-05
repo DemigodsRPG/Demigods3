@@ -11,7 +11,7 @@ import org.bukkit.World;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
-public interface StructureGenerater
+public interface StructureGenerator
 {
 	public Set<GeneratorSchematic> getGenerateBlockAreas();
 
@@ -101,7 +101,7 @@ public interface StructureGenerater
 		 */
 		public Location getLocation(int X, int Y, int Z)
 		{
-			return new Location(world, reference.getBlockX() + X, reference.getBlockY() + Y, reference.getBlockZ() + Z);
+			return this.reference.clone().add(X, Y, Z);
 		}
 
 		/**
@@ -116,6 +116,7 @@ public interface StructureGenerater
 				final int X = this.X < this.XX ? this.X : this.XX, XX = this.X > this.XX ? this.X : this.XX;
 				final int Y = this.Y < this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
 				final int Z = this.Z < this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
+
 				return new HashSet<Location>()
 				{
 					{
@@ -141,6 +142,15 @@ public interface StructureGenerater
 						add(getLocation(X, Y, Z));
 					}
 				};
+			}
+		}
+
+		public void generate()
+		{
+			for(Location location : getBlockLocations())
+			{
+				BlockData data = getBlockData();
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
 		}
 	}
