@@ -297,7 +297,7 @@ class Commands implements CommandExecutor
 		// TEST STRUCTURE
 
 		Location target = player.getTargetBlock(null, 10).getLocation();
-		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, 2, -2, 2, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SPONGE));
