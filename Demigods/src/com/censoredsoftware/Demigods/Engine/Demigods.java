@@ -333,19 +333,19 @@ class Commands implements CommandExecutor
 				add(new StructureGenerator.BlockData(Material.PISTON_STICKY_BASE));
 			}
 		});
-		StructureGenerator.GeneratorSchematic redstoneBlock = new StructureGenerator.GeneratorSchematic(target, 0, 3, -1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic redstoneBlock = new StructureGenerator.GeneratorSchematic(target, 0, 3, 0, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.REDSTONE_BLOCK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternRight = new StructureGenerator.GeneratorSchematic(target, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic lanternRight = new StructureGenerator.GeneratorSchematic(target, 0, 3, -1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternLeft = new StructureGenerator.GeneratorSchematic(target, 0, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic lanternLeft = new StructureGenerator.GeneratorSchematic(target, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
