@@ -296,7 +296,7 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Setting blocks...");
 
-		GenerationUtility.testStructure(player.getTargetBlock(null, 10).getLocation());
+		GenerationUtility.fibonacciSequence(player.getTargetBlock(null, 10).getLocation());
 
 		player.sendMessage("Blocks set!");
 

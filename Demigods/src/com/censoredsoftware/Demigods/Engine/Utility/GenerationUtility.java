@@ -280,4 +280,17 @@ public class GenerationUtility
 		vineFront.generate();
 		vineBack.generate();
 	}
+
+	public static void fibonacciSequence(Location target)
+	{
+		for(int i = 1; i < 100; i++)
+		{
+			new StructureGenerator.GeneratorSchematic(target, MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), new HashSet<StructureGenerator.BlockData>()
+			{
+				{
+					add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
+				}
+			}).generate();
+		}
+	}
 }
