@@ -342,7 +342,7 @@ public class GenerationUtility
 		new StructureGenerator.GeneratorSchematic(target, X, Y, Z, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.STATIONARY_LAVA));
+				add(new StructureGenerator.BlockData(Material.STATIONARY_WATER));
 			}
 		}).generate();
 	}
