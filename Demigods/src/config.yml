@@ -38,7 +38,7 @@ update:
     auto: false
     notify: true
 
-## Twitte Settings ##
+## Twitter Settings ##
 twitter:
     notify: true
 
