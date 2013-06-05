@@ -147,6 +147,7 @@ public interface StructureGenerator
 
 		public void generate()
 		{
+			Demigods.message.broadcast("GENERATE");
 			for(Location location : getBlockLocations())
 			{
 				Demigods.message.broadcast("X:" + location.getBlockX());
