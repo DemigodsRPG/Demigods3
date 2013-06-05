@@ -113,9 +113,9 @@ public interface StructureGenerator
 		{
 			if(cuboid)
 			{
-				final int X = this.X < this.XX ? this.X : this.XX, XX = this.X > this.XX ? this.X : this.XX;
-				final int Y = this.Y < this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
-				final int Z = this.Z < this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
+				final int X = this.X <= this.XX ? this.X : this.XX, XX = this.X > this.XX ? this.X : this.XX;
+				final int Y = this.Y <= this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
+				final int Z = this.Z <= this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
 				return new HashSet<Location>()
 				{
 					{
