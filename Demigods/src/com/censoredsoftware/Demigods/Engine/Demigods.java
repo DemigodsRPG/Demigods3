@@ -1,10 +1,12 @@
 package com.censoredsoftware.Demigods.Engine;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,10 +33,10 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureGenerator;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Modules.*;
@@ -294,47 +296,7 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Setting blocks...");
 
-		// TEST STRUCTURE
-
-		Location target = player.getTargetBlock(null, 10).getLocation();
-		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, new HashSet<StructureGenerator.BlockData>()
-		{
-			{
-				add(new StructureGenerator.BlockData(Material.SPONGE));
-			}
-		});
-		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target, 0, 0, -1, 1, 3, 0, new HashSet<StructureGenerator.BlockData>()
-		{
-			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
-			}
-		});
-		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target, 0, 0, 1, 1, 3, 2, new HashSet<StructureGenerator.BlockData>()
-		{
-			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
-			}
-		});
-		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target, 1, 0, 0, 2, 3, 1, new HashSet<StructureGenerator.BlockData>()
-		{
-			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
-			}
-		});
-		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target, -1, 0, 0, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
-		{
-			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
-			}
-		});
-
-		sponge.generate();
-		bottomRight.generate();
-		bottomLeft.generate();
-		bottomFront.generate();
-		bottomBack.generate();
-
-		// TEST STRUCTURE
+		GenerationUtility.testStructure(player.getTargetBlock(null, 10).getLocation());
 
 		player.sendMessage("Blocks set!");
 
@@ -419,9 +381,9 @@ class Commands implements CommandExecutor
 				Demigods.message.tagged(sender, "About the Plugin");
 				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and usefull skills.");
+				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a PlayerCharacter to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
+				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a mere player to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
 				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");

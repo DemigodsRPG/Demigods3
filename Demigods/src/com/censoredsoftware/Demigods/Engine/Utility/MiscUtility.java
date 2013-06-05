@@ -86,6 +86,13 @@ public class MiscUtility
 		return new Random().nextInt(max - min + 1) + min;
 	}
 
+	public static int fibonacci(int n)
+	{
+		if(n == 0) return 0;
+		else if(n == 1) return 1;
+		else return fibonacci(n - 1) + fibonacci(n - 2);
+	}
+
 	/**
 	 * Capitalizes the <code>input</code> and returns it.
 	 * 
