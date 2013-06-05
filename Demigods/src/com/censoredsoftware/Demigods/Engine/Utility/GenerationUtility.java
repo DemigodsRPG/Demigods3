@@ -284,7 +284,7 @@ public class GenerationUtility
 	public static void spiral(Location target)
 	{
 		int X, Z;
-		int N = 50;
+		int N = 30;
 
 		// create N-by-N array of integers 1 through N
 		int[][] a = new int[N][N];
@@ -301,24 +301,31 @@ public class GenerationUtility
 				Z = k;
 				spiralGenerate(target, X, i, Z);
 			}
-			// for(int k = j; k < i; k++)
-			// {
-			// X = k;
-			// Z = i;
-			// spiralGenerate(target, X, i, Z);
-			// }
-			// for(int k = i; k > j; k--)
-			// {
-			// X = i;
-			// Z = k;
-			// spiralGenerate(target, X, i, Z);
-			// }
-			// for(int k = i; k > j; k--)
-			// {
-			// X = k;
-			// Z = j;
-			// spiralGenerate(target, X, i, Z);
-			// }
+			for(int k = j; k < i; k++)
+			{
+				X = k;
+				Z = i;
+				spiralGenerate(target, X, i, Z);
+			}
+			for(int k = i; k > j; k--)
+			{
+				X = i;
+				Z = k;
+				spiralGenerate(target, X, i, Z);
+			}
+			for(int k = i; k > j; k--)
+			{
+				X = k;
+				Z = j;
+				spiralGenerate(target, X, i, Z);
+			}
+			for(int x = 0; x < N; x++)
+			{
+				for(int z = 0; z < N; z++)
+				{
+					spiralGenerate(target, x, N, z);
+				}
+			}
 		}
 
 		// special case for middle element if N is odd
@@ -335,7 +342,7 @@ public class GenerationUtility
 		new StructureGenerator.GeneratorSchematic(target, X, Y, Z, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
+				add(new StructureGenerator.BlockData(Material.GRASS));
 			}
 		}).generate();
 	}
