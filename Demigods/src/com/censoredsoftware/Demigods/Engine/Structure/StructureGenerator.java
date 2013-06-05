@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -145,12 +146,13 @@ public interface StructureGenerator
 			}
 		}
 
-		public void generate()
+		public void generate(boolean protect)
 		{
 			for(Location location : getBlockLocations())
 			{
 				BlockData data = getBlockData();
-				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
+				if(!protect) location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
+				else TrackedModelFactory.createTrackedBlock(location, "obelisk", data.getMaterial(), data.getData());
 			}
 		}
 	}

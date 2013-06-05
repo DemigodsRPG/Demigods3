@@ -422,26 +422,28 @@ class Commands implements CommandExecutor
 			}
 		});
 
-		sponge.generate();
-		bottomRight.generate();
-		bottomLeft.generate();
-		bottomFront.generate();
-		bottomBack.generate();
-		piston.generate();
-		redstoneBlock.generate();
-		lanternRight.generate();
-		lanternLeft.generate();
-		lanternFront.generate();
-		lanternBack.generate();
-		topRight.generate();
-		topLeft.generate();
-		topFront.generate();
-		topBack.generate();
-		lightSensor.generate();
-		vineRight.generate();
-		vineLeft.generate();
-		vineFront.generate();
-		vineBack.generate();
+		boolean protect = true;
+
+		sponge.generate(protect);
+		bottomRight.generate(protect);
+		bottomLeft.generate(protect);
+		bottomFront.generate(protect);
+		bottomBack.generate(protect);
+		piston.generate(protect);
+		redstoneBlock.generate(protect);
+		lanternRight.generate(protect);
+		lanternLeft.generate(protect);
+		lanternFront.generate(protect);
+		lanternBack.generate(protect);
+		topRight.generate(protect);
+		topLeft.generate(protect);
+		topFront.generate(protect);
+		topBack.generate(protect);
+		lightSensor.generate(protect);
+		vineRight.generate(protect);
+		vineLeft.generate(protect);
+		vineFront.generate(protect);
+		vineBack.generate(protect);
 
 		// TEST STRUCTURE
 
