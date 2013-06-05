@@ -283,30 +283,60 @@ public class GenerationUtility
 
 	public static void spiral(Location target)
 	{
-		int X = target.getBlockX(), Z = target.getBlockZ(), XX = 1, ZZ = 1;
-		int spiral[][] = new int[3][3];
-		int current = 1;
-		while(current <= 50 * 50)
+		int X, Z;
+		int N = 50;
+
+		// create N-by-N array of integers 1 through N
+		int[][] a = new int[N][N];
+		for(int i = 0; i < N; i++)
+			for(int j = 0; j < N; j++)
+				a[i][j] = 1 + N * i + j;
+
+		// spiral
+		for(int i = N - 1, j = 0; i > 0; i--, j++)
 		{
-			// Go in a straight line
-			spiral[X][Z] = current++;
-			int nx = X + XX, nz = Z + ZZ;
-			// When you hit the edge...
-			if(nx < 0 || nx == 50 || nz < 0 || nz == 50 || spiral[nx][nz] != 0)
+			for(int k = j; k < i; k++)
 			{
-				// ...turn right
-				int t = ZZ;
-				ZZ = XX;
-				XX = -t;
+				X = j;
+				Z = k;
+				spiralGenerate(target, X, i, Z);
 			}
-			X += XX;
-			Z += ZZ;
-			new StructureGenerator.GeneratorSchematic(target, XX, current, ZZ, new HashSet<StructureGenerator.BlockData>()
+			for(int k = j; k < i; k++)
 			{
-				{
-					add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
-				}
-			}).generate();
+				X = k;
+				Z = i;
+				spiralGenerate(target, X, i, Z);
+			}
+			for(int k = i; k > j; k--)
+			{
+				X = i;
+				Z = k;
+				spiralGenerate(target, X, i, Z);
+			}
+			for(int k = i; k > j; k--)
+			{
+				X = k;
+				Z = j;
+				spiralGenerate(target, X, i, Z);
+			}
 		}
+
+		// special case for middle element if N is odd
+		if(N % 2 == 1)
+		{
+			X = (N - 1) / 2;
+			Z = (N - 1) / 2;
+			spiralGenerate(target, X, 1, Z);
+		}
+	}
+
+	public static void spiralGenerate(Location target, int X, int Y, int Z)
+	{
+		new StructureGenerator.GeneratorSchematic(target, X, Y, Z, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
+			}
+		}).generate();
 	}
 }
