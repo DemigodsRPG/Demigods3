@@ -303,25 +303,25 @@ class Commands implements CommandExecutor
 				add(new StructureGenerator.BlockData(Material.SPONGE));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target, 0, 0, -1, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target, 0, 0, -1, 1, 3, 0, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target, 0, 0, 1, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target, 0, 0, 1, 1, 3, 2, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target, 1, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target, 1, 0, 0, 2, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target, -1, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target, -1, 0, 0, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
