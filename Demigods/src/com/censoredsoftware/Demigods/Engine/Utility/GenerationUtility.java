@@ -283,7 +283,7 @@ public class GenerationUtility
 
 	public static void fibonacciSequence(Location target)
 	{
-		for(int i = 1; i < 100; i++)
+		for(int i = 1; i < 26; i++)
 		{
 			new StructureGenerator.GeneratorSchematic(target, MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), new HashSet<StructureGenerator.BlockData>()
 			{
