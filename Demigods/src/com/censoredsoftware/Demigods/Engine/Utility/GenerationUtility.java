@@ -301,24 +301,24 @@ public class GenerationUtility
 				Z = k;
 				spiralGenerate(target, X, i, Z);
 			}
-			for(int k = j; k < i; k++)
-			{
-				X = k;
-				Z = i;
-				spiralGenerate(target, X, i, Z);
-			}
+			// for(int k = j; k < i; k++)
+			// {
+			// X = k;
+			// Z = i;
+			// spiralGenerate(target, X, i, Z);
+			// }
 			for(int k = i; k > j; k--)
 			{
 				X = i;
 				Z = k;
 				spiralGenerate(target, X, i, Z);
 			}
-			for(int k = i; k > j; k--)
-			{
-				X = k;
-				Z = j;
-				spiralGenerate(target, X, i, Z);
-			}
+			// for(int k = i; k > j; k--)
+			// {
+			// X = k;
+			// Z = j;
+			// spiralGenerate(target, X, i, Z);
+			// }
 		}
 
 		// special case for middle element if N is odd
