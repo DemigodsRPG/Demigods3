@@ -281,14 +281,27 @@ public class GenerationUtility
 		vineBack.generate();
 	}
 
-	public static void fibonacciSequence(Location target)
+	public static void spiral(Location target)
 	{
-		int X = target.getBlockX(), Z = target.getBlockZ();
-		for(int i = 1; i < 26; i++)
+		int X = target.getBlockX(), Z = target.getBlockZ(), XX = 1, ZZ = 1;
+		int spiral[][] = new int[3][3];
+		int current = 1;
+		while(current <= 50 * 50)
 		{
-			double XX = X + MiscUtility.fibonacci(i) * (Math.sin(130) * 10);
-			double ZZ = Z + MiscUtility.fibonacci(i) * (Math.cos(145) * 10);
-			new StructureGenerator.GeneratorSchematic(target, (int) Math.round(XX), i, (int) Math.round(ZZ), new HashSet<StructureGenerator.BlockData>()
+			// Go in a straight line
+			spiral[X][Z] = current++;
+			int nx = X + XX, nz = Z + ZZ;
+			// When you hit the edge...
+			if(nx < 0 || nx == 50 || nz < 0 || nz == 50 || spiral[nx][nz] != 0)
+			{
+				// ...turn right
+				int t = ZZ;
+				ZZ = XX;
+				XX = -t;
+			}
+			X += XX;
+			Z += ZZ;
+			new StructureGenerator.GeneratorSchematic(target, XX, current, ZZ, new HashSet<StructureGenerator.BlockData>()
 			{
 				{
 					add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
