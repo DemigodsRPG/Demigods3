@@ -297,31 +297,31 @@ class Commands implements CommandExecutor
 		// TEST STRUCTURE
 
 		Location target = player.getTargetBlock(null, 10).getLocation();
-		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, 8, 8, 8, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SPONGE));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target.clone().add(0, 0, -1), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target, 0, 0, -1, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target.clone().add(0, 0, 1), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target, 0, 0, 1, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target.clone().add(1, 0, 0), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target, 1, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target.clone().add(-1, 0, 0), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target, -1, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
