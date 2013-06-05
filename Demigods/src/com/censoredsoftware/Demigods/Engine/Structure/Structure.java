@@ -1,12 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Structure;
 
-import com.censoredsoftware.Demigods.Engine.Listener.StructureListener;
+import org.bukkit.event.Listener;
 
 public interface Structure
 {
 	public StructureInfo getInfo();
 
-	public StructureListener getListener();
+	public Listener getUniqueListener();
 
 	public Structure getFromId(Long Id);
 
