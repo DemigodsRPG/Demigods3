@@ -300,7 +300,11 @@ class Commands implements CommandExecutor
 		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, 8, 8, 8, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SPONGE));
+				add(new StructureGenerator.BlockData(Material.SPONGE, (byte) 0, 20));
+				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 20));
+				add(new StructureGenerator.BlockData(Material.BEDROCK, (byte) 0, 20));
+				add(new StructureGenerator.BlockData(Material.LOG, (byte) 0, 20));
+				add(new StructureGenerator.BlockData(Material.STONE, (byte) 0, 20));
 			}
 		});
 
