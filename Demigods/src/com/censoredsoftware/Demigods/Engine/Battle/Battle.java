@@ -2,8 +2,6 @@ package com.censoredsoftware.Demigods.Engine.Battle;
 
 import java.util.Set;
 
-import javax.persistence.Id;
-
 import org.bukkit.Location;
 
 import redis.clients.johm.*;
