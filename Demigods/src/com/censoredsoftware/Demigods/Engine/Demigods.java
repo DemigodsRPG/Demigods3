@@ -1,14 +1,11 @@
 package com.censoredsoftware.Demigods.Engine;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,10 +31,10 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureGenerator;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Modules.*;
@@ -297,10 +294,19 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Setting blocks...");
 
-		for(Block block : GenerationUtility.getBlocks(player.getTargetBlock(null, 10).getLocation(), 5))
+		// TEST STRUCTURE
+
+		Location target = player.getTargetBlock(null, 10).getLocation();
+		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, new HashSet<StructureGenerator.BlockData>()
 		{
-			block.setType(Material.GOLD_BLOCK);
-		}
+			{
+				add(new StructureGenerator.BlockData(Material.SPONGE));
+			}
+		});
+
+		sponge.generate();
+
+		// TEST STRUCTURE
 
 		player.sendMessage("Blocks set!");
 

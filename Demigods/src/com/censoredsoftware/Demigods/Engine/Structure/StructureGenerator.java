@@ -11,7 +11,7 @@ import org.bukkit.World;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
-public interface StructureGenerater
+public interface StructureGenerator
 {
 	public Set<GeneratorSchematic> getGenerateBlockAreas();
 
@@ -141,6 +141,15 @@ public interface StructureGenerater
 						add(getLocation(X, Y, Z));
 					}
 				};
+			}
+		}
+
+		public void generate()
+		{
+			for(Location location : getBlockLocations())
+			{
+				BlockData data = getBlockData();
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
 		}
 	}
