@@ -3,11 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Tracked;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
 public class TrackedModelFactory
 {
@@ -76,21 +72,5 @@ public class TrackedModelFactory
 	public static TrackedBlock createTrackedBlock(Location location, String type, Material material)
 	{
 		return createTrackedBlock(location, type, material, (byte) 0);
-	}
-
-	public static TrackedBattle createTrackedBattle(PlayerCharacter attacking, PlayerCharacter defending, final Long startTime)
-	{
-		TrackedBattle battle = new TrackedBattle();
-		Location startedLocation = ((Player) attacking.getOfflinePlayer()).getLocation();
-		battle.setWhoStarted(attacking);
-		battle.setStartLocation(TrackedModelFactory.createTrackedLocation(startedLocation));
-		battle.setStartTime(startTime);
-		battle.initilize();
-		battle.addCharacter(attacking);
-		battle.addCharacter(defending);
-		battle.setActive(true);
-		TrackedBattle.save(battle);
-		DemigodsData.saveTimed("battle", String.valueOf(battle.getId()), true, 10);
-		return battle;
 	}
 }

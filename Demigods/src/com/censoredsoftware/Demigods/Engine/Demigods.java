@@ -142,8 +142,8 @@ public class Demigods
 	{
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance); // TODO: It seems that this still lags fireballs...
+		// TODO: instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);
