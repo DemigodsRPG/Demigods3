@@ -327,10 +327,70 @@ class Commands implements CommandExecutor
 				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic pistonBase = new StructureGenerator.GeneratorSchematic(target, 0, 4, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic piston = new StructureGenerator.GeneratorSchematic(target, 0, 4, 0, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
 				add(new StructureGenerator.BlockData(Material.PISTON_STICKY_BASE));
+			}
+		});
+		StructureGenerator.GeneratorSchematic redstoneBlock = new StructureGenerator.GeneratorSchematic(target, 0, 3, -1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.REDSTONE_BLOCK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic lanternRight = new StructureGenerator.GeneratorSchematic(target, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+			}
+		});
+		StructureGenerator.GeneratorSchematic lanternLeft = new StructureGenerator.GeneratorSchematic(target, 0, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+			}
+		});
+		StructureGenerator.GeneratorSchematic lanternFront = new StructureGenerator.GeneratorSchematic(target, 1, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+			}
+		});
+		StructureGenerator.GeneratorSchematic lanternBack = new StructureGenerator.GeneratorSchematic(target, -1, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+			}
+		});
+		StructureGenerator.GeneratorSchematic topRight = new StructureGenerator.GeneratorSchematic(target, 0, 4, -1, 1, 6, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic topLeft = new StructureGenerator.GeneratorSchematic(target, 0, 4, 1, 1, 6, 2, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic topFront = new StructureGenerator.GeneratorSchematic(target, 1, 4, 0, 2, 6, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic topBack = new StructureGenerator.GeneratorSchematic(target, -1, 4, 0, 0, 6, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic lightSensor = new StructureGenerator.GeneratorSchematic(target, 0, 5, 0, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.DAYLIGHT_DETECTOR));
 			}
 		});
 
@@ -339,7 +399,17 @@ class Commands implements CommandExecutor
 		bottomLeft.generate();
 		bottomFront.generate();
 		bottomBack.generate();
-		pistonBase.generate();
+		piston.generate();
+		redstoneBlock.generate();
+		lanternRight.generate();
+		lanternLeft.generate();
+		lanternFront.generate();
+		lanternBack.generate();
+		topRight.generate();
+		topLeft.generate();
+		topFront.generate();
+		topBack.generate();
+		lightSensor.generate();
 
 		// TEST STRUCTURE
 
