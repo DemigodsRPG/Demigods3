@@ -283,35 +283,12 @@ public class GenerationUtility
 
 	public static void fibonacciSequence(Location target)
 	{
+		int X = target.getBlockX(), Z = target.getBlockZ();
 		for(int i = 1; i < 26; i++)
 		{
-			int fib = MiscUtility.fibonacci(i);
-			int X = i, Y = i, Z = i;
-			if(i % 4 == 0)
-			{
-				X = i - 4 - fib;
-				Y = i - 4;
-				Z = i - 4;
-			}
-			else if(i % 3 == 0)
-			{
-				X = i - 3;
-				Y = i - 3;
-				Z = i - 3 - fib;
-			}
-			else if(i % 2 == 0)
-			{
-				X = i - 2 + fib;
-				Y = i - 2;
-				Z = i - 2;
-			}
-			else
-			{
-				X = i - 1;
-				Y = i - 1;
-				Z = i - 1 + fib;
-			}
-			new StructureGenerator.GeneratorSchematic(target, X, Y, Z, new HashSet<StructureGenerator.BlockData>()
+			double XX = X + i * Math.cos(90);
+			double ZZ = Z + i * Math.cos(90);
+			new StructureGenerator.GeneratorSchematic(target, (int) Math.round(XX), i, (int) Math.round(ZZ), new HashSet<StructureGenerator.BlockData>()
 			{
 				{
 					add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
