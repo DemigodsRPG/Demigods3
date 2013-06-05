@@ -145,13 +145,12 @@ public interface StructureGenerator
 			}
 		}
 
-		public void generate(boolean protect)
+		public void generate()
 		{
 			for(Location location : getBlockLocations())
 			{
 				BlockData data = getBlockData();
-				if(!protect) location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
-				else location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
 		}
 	}
