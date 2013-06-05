@@ -286,8 +286,8 @@ public class GenerationUtility
 		int X = target.getBlockX(), Z = target.getBlockZ();
 		for(int i = 1; i < 26; i++)
 		{
-			double XX = X + i * Math.sin(130);
-			double ZZ = Z + i * Math.cos(145);
+			double XX = X + MiscUtility.fibonacci(i) * Math.sin(130);
+			double ZZ = Z + MiscUtility.fibonacci(i) * Math.cos(145);
 			new StructureGenerator.GeneratorSchematic(target, (int) Math.round(XX), i, (int) Math.round(ZZ), new HashSet<StructureGenerator.BlockData>()
 			{
 				{
