@@ -285,7 +285,8 @@ public class GenerationUtility
 	{
 		for(int i = 1; i < 26; i++)
 		{
-			new StructureGenerator.GeneratorSchematic(target, MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), MiscUtility.fibonacci(i), new HashSet<StructureGenerator.BlockData>()
+			int fib = MiscUtility.fibonacci(i);
+			new StructureGenerator.GeneratorSchematic(target, fib, fib, fib, new HashSet<StructureGenerator.BlockData>()
 			{
 				{
 					add(new StructureGenerator.BlockData(Material.GOLD_BLOCK));
