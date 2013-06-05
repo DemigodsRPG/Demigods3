@@ -72,6 +72,8 @@ public interface StructureGenerater
 		/**
 		 * Get the material of the object (a random material is chosen based on the configured odds).
 		 * 
+		 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.
+		 * 
 		 * @return A material.
 		 */
 		public BlockData getBlockData()
