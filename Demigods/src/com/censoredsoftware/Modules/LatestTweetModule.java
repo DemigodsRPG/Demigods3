@@ -26,7 +26,6 @@ import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.google.common.collect.Maps;
 
@@ -171,7 +170,6 @@ public class LatestTweetModule implements Listener
 		{
 			log.warning("[" + pluginName + "] Failed to load twitter page.");
 		}
-		Demigods.message.broadcast(this.link); // TODO Debug ONLY.
 		save();
 		return link;
 	}
