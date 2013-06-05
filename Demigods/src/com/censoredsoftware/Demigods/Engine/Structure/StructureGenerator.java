@@ -118,7 +118,7 @@ public interface StructureGenerator
 				final int Y = this.Y <= this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
 				final int Z = this.Z <= this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
 
-				Demigods.message.broadcast("X: " + X + ", XX: " + XX + "Y: " + Y + ", YY: " + YY + "Z: " + Z + ", ZZ: " + ZZ);
+				Demigods.message.broadcast("X: " + X + ", XX: " + XX + ", Y: " + Y + ", YY: " + YY + ", Z: " + Z + ", ZZ: " + ZZ);
 
 				return new HashSet<Location>()
 				{
