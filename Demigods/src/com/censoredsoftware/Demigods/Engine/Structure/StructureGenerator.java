@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -148,6 +149,7 @@ public interface StructureGenerator
 		{
 			for(Location location : getBlockLocations())
 			{
+				Demigods.message.broadcast("X:" + location.getBlockX());
 				BlockData data = getBlockData();
 				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
