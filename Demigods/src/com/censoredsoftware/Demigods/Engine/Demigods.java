@@ -393,31 +393,31 @@ class Commands implements CommandExecutor
 				add(new StructureGenerator.BlockData(Material.DAYLIGHT_DETECTOR));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineRight = new StructureGenerator.GeneratorSchematic(target, 1, 5, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic vineRight = new StructureGenerator.GeneratorSchematic(target, -1, 5, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 0, 25));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 25));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 75));
 			}
 		});
 		StructureGenerator.GeneratorSchematic vineLeft = new StructureGenerator.GeneratorSchematic(target, 1, 5, -1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 0, 25));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 25));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 75));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineFront = new StructureGenerator.GeneratorSchematic(target, -1, 5, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureGenerator.GeneratorSchematic vineFront = new StructureGenerator.GeneratorSchematic(target, 1, 5, 1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 0, 25));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 25));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 75));
 			}
 		});
 		StructureGenerator.GeneratorSchematic vineBack = new StructureGenerator.GeneratorSchematic(target, -1, 5, -1, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 0, 25));
+				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 25));
 				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 75));
 			}
 		});
