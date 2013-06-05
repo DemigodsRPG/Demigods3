@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.censoredsoftware.Modules.QuitReasonFilter;
@@ -160,7 +159,7 @@ public class PlayerListener implements Listener
 				message = ChatColor.YELLOW + name + " has disconnected due to overload.";
 				break;
 			case QUITTING:
-				if(ZoneUtility.canTarget(event.getPlayer()) && TrackedBattle.isInAnyActiveBattle(TrackedPlayer.getTracked(event.getPlayer()).getCurrent())) message = ChatColor.YELLOW + name + " has PvP Logged."; // TODO
+				message = "TODO";
 				break;
 			case TIMEOUT:
 				message = ChatColor.YELLOW + name + " has disconnected due to timeout.";

@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBattle;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 
@@ -86,7 +85,7 @@ class BattleRunnable implements Runnable
 	@Override
 	public void run()
 	{
-		TrackedBattle.checkForInactiveBattles();
+		// TODO
 	}
 
 	@Override
