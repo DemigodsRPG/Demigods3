@@ -27,7 +27,7 @@ public class StructureListener implements Listener
 		}
 	}
 
-	private void sortStructuresByFlag(Structure structure, StructureInfo.Flag flag)
+	private static void sortStructuresByFlag(Structure structure, StructureInfo.Flag flag)
 	{
 		switch(flag)
 		{
