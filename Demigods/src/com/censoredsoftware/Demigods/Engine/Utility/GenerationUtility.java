@@ -284,7 +284,7 @@ public class GenerationUtility
 	public static void spiral(Location target)
 	{
 		int X, Z;
-		int N = 30;
+		int N = 61;
 
 		// create N-by-N array of integers 1 through N
 		int[][] a = new int[N][N];
