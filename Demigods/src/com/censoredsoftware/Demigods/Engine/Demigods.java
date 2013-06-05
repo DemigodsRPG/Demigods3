@@ -300,15 +300,39 @@ class Commands implements CommandExecutor
 		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, 8, 8, 8, new HashSet<StructureGenerator.BlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SPONGE, (byte) 0, 20));
-				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 20));
-				add(new StructureGenerator.BlockData(Material.BEDROCK, (byte) 0, 20));
-				add(new StructureGenerator.BlockData(Material.LOG, (byte) 0, 20));
-				add(new StructureGenerator.BlockData(Material.STONE, (byte) 0, 20));
+				add(new StructureGenerator.BlockData(Material.SPONGE));
+			}
+		});
+		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target.clone().add(0, 0, -1), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target.clone().add(0, 0, 1), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target.clone().add(1, 0, 0), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+			}
+		});
+		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target.clone().add(-1, 0, 0), 0, 0, 0, 1, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		{
+			{
+				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
 			}
 		});
 
 		sponge.generate();
+		bottomRight.generate();
+		bottomLeft.generate();
+		bottomFront.generate();
+		bottomBack.generate();
 
 		// TEST STRUCTURE
 

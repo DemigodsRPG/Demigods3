@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -118,8 +117,6 @@ public interface StructureGenerator
 				final int Y = this.Y <= this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
 				final int Z = this.Z <= this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
 
-				Demigods.message.broadcast("X: " + X + ", XX: " + XX + ", Y: " + Y + ", YY: " + YY + ", Z: " + Z + ", ZZ: " + ZZ);
-
 				return new HashSet<Location>()
 				{
 					{
@@ -150,10 +147,8 @@ public interface StructureGenerator
 
 		public void generate()
 		{
-			Demigods.message.broadcast("GENERATE");
 			for(Location location : getBlockLocations())
 			{
-				Demigods.message.broadcast("X:" + location.getBlockX());
 				BlockData data = getBlockData();
 				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
