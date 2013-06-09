@@ -24,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
@@ -36,7 +37,6 @@ import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Modules.*;
@@ -294,11 +294,14 @@ class Commands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Setting blocks...");
+		player.sendMessage("Removed data...");
 
-		GenerationUtility.testStructure(player.getTargetBlock(null, 10).getLocation());
+		for(Battle battle : Battle.getAll())
+		{
+			battle.delete();
+		}
 
-		player.sendMessage("Blocks set!");
+		player.sendMessage("Data removed!");
 
 		return true;
 	}
