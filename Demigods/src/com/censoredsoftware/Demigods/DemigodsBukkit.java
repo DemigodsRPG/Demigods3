@@ -3,7 +3,7 @@ package com.censoredsoftware.Demigods;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.censoredsoftware.Demigods.Demo.Demo;
+import com.censoredsoftware.Demigods.Demo.EpisodeDemo;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.DemigodsScheduler;
@@ -20,7 +20,7 @@ public class DemigodsBukkit extends JavaPlugin
 	public void onEnable()
 	{
 		// Load the game engine, passing in the game data.
-		new Demigods(this, Demo.Deities.values(), Demo.Quests.values());
+		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Quests.values());
 
 		// Start game threads.
 		DemigodsScheduler.startThreads(this);

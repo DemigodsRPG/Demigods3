@@ -41,11 +41,11 @@ permissions:
     demigods.god.poseidon:
         description: Allows the player to use Poseidon.
         default: true
-    demigods.titan.cronus:
-        description: Allows the player to use Cronus.
+    demigods.titan.oceanus:
+        description: Allows the player to use Oceanus.
         default: true
-    demigods.titan.cronus.ultimate:
-        description: Allows the player to use Cronus' ultimate.
+    demigods.titan.oceanus.ultimate:
+        description: Allows the player to use Oceanus' ultimate.
         default: true
     demigods.titan.prometheus:
         description: Allows the player to use Prometheus.
