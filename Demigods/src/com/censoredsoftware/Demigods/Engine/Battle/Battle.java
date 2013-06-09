@@ -24,7 +24,7 @@ public class Battle
 	@Indexed
 	private TrackedLocation endLoc;
 	@Attribute
-	private Double range;
+	private Integer range;
 	@Attribute
 	@Indexed
 	private long startTime;
@@ -40,7 +40,7 @@ public class Battle
 		Battle battle = new Battle();
 		battle.setActive(true);
 		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damagee.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
-		battle.setRange(damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation()));
+		battle.setRange((int) damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation()));
 		battle.setStartTime(System.currentTimeMillis());
 		BattleMeta meta = BattleMeta.create(damager);
 		meta.addLocation(damager.getOfflinePlayer().getPlayer().getLocation());
@@ -57,7 +57,7 @@ public class Battle
 		this.meta = meta;
 	}
 
-	void setRange(double range)
+	void setRange(int range)
 	{
 		this.range = range;
 	}
@@ -97,7 +97,7 @@ public class Battle
 		return this.id;
 	}
 
-	public double getRange()
+	public int getRange()
 	{
 		return this.range;
 	}

@@ -78,6 +78,7 @@ character:
 
 ## Battle Settings ##
 battles:
+    min_range: 16
     blocked_commands:
         - 'spawn'
         - 'home'
