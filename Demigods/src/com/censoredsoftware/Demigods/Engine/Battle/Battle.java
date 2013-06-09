@@ -25,7 +25,7 @@ public class Battle
 	@Indexed
 	private TrackedLocation endLoc;
 	@Attribute
-	private Integer range;
+	private Double range;
 	@Attribute
 	@Indexed
 	private long startTime;
@@ -44,7 +44,7 @@ public class Battle
 		battle.setStartTime(System.currentTimeMillis());
 
 		int default_range = Demigods.config.getSettingInt("battle.min_range");
-		int range = (int) damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation());
+		double range = damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation());
 		if(range < default_range)
 		{
 			battle.setRange(default_range);
@@ -69,7 +69,7 @@ public class Battle
 		this.meta = meta;
 	}
 
-	void setRange(int range)
+	void setRange(double range)
 	{
 		this.range = range;
 	}
@@ -109,7 +109,7 @@ public class Battle
 		return this.id;
 	}
 
-	public int getRange()
+	public double getRange()
 	{
 		return this.range;
 	}
