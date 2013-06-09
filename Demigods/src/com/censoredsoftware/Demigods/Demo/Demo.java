@@ -9,6 +9,7 @@ import com.censoredsoftware.Demigods.Demo.Quest.Tutorial;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
+import com.censoredsoftware.Demigods.Engine.Structure.Structure;
 
 public class Demo
 {
@@ -58,6 +59,17 @@ public class Demo
 		public Quest getQuest()
 		{
 			return deity;
+		}
+	}
+
+	public static enum Structures implements Demigods.ListedStructure
+	{
+		; // NOTHING YET
+
+		@Override
+		public Structure getQuest()
+		{
+			return null;
 		}
 	}
 }

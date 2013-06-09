@@ -34,6 +34,7 @@ import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
@@ -77,6 +78,11 @@ public class Demigods
 	public interface ListedQuest
 	{
 		public Quest getQuest();
+	}
+
+	public interface ListedStructure
+	{
+		public Structure getQuest();
 	}
 
 	public Demigods(DemigodsBukkit instance, final ListedDeity[] deities, final ListedQuest[] quests)

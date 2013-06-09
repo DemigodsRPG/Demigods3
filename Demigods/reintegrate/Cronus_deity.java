@@ -1,9 +1,9 @@
-package com.censoredsoftware.Demigods.Demo.Deity.Titan;
+package com.censoredsoftware.Demigods.Core.Demo.Deity.Titan;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Core.Engine.Demigods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -21,9 +21,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Core.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Core.Engine.Event.Ability.AbilityEvent.AbilityType;
+import com.censoredsoftware.Demigods.Core.Engine.PlayerCharacter.PlayerCharacter;
 
 public class Cronus_deity extends Deity implements Listener
 {

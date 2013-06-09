@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Core.Engine.DemigodsData;
 
 /**
  * Module to handle all update methods from BukkitDev.
