@@ -24,6 +24,8 @@ public class Battle
 	@Indexed
 	private TrackedLocation endLoc;
 	@Attribute
+	private Double range;
+	@Attribute
 	@Indexed
 	private long startTime;
 	@Attribute
@@ -33,13 +35,19 @@ public class Battle
 	@Indexed
 	private Boolean active;
 
-	public static Battle create(PlayerCharacter character, Location location)
+	public static Battle create(PlayerCharacter damager, PlayerCharacter damagee)
 	{
 		Battle battle = new Battle();
 		battle.setActive(true);
-		battle.setStartLocation(location);
+		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damagee.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
+		battle.setRange(damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation()));
 		battle.setStartTime(System.currentTimeMillis());
-		battle.setMeta(BattleMeta.create(character));
+		BattleMeta meta = BattleMeta.create(damager);
+		meta.addLocation(damager.getOfflinePlayer().getPlayer().getLocation());
+		meta.addLocation(damagee.getOfflinePlayer().getPlayer().getLocation());
+		meta.addParticipant(damager);
+		meta.addParticipant(damagee);
+		battle.setMeta(meta);
 		Battle.save(battle);
 		return battle;
 	}
@@ -47,6 +55,11 @@ public class Battle
 	void setMeta(BattleMeta meta)
 	{
 		this.meta = meta;
+	}
+
+	void setRange(double range)
+	{
+		this.range = range;
 	}
 
 	void setStartLocation(Location location)
@@ -84,6 +97,11 @@ public class Battle
 		return this.id;
 	}
 
+	public double getRange()
+	{
+		return this.range;
+	}
+
 	public BattleMeta getMeta()
 	{
 		return this.meta;
@@ -109,12 +127,12 @@ public class Battle
 		return this.endTime;
 	}
 
-	public static Battle load(Long id)
+	public static Battle get(Long id)
 	{
 		return JOhm.get(Battle.class, id);
 	}
 
-	public static Set<Battle> loadAll()
+	public static Set<Battle> getAll()
 	{
 		return JOhm.getAll(Battle.class);
 	}
