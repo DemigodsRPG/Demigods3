@@ -45,10 +45,6 @@
             <fileset dir="lib/inJar">
                 <include name="JOhm.jar"/>
             </fileset>
-            <fileset dir="lib">
-                <include name="Jetty-All.jar"/>
-                <include name="Jetty-Server-API.jar"/>
-            </fileset>
         </unzip>
         <jar basedir="Demigods/bin" destfile="build/Demigods.jar">
         <fileset dir="Demigods/bin">
