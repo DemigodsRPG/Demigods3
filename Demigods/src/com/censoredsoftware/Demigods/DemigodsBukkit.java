@@ -11,7 +11,7 @@ import com.censoredsoftware.Demigods.Engine.DemigodsScheduler;
 /**
  * Class for all plugins of Demigods.
  */
-public class DemigodsPlugin extends JavaPlugin
+public class DemigodsBukkit extends JavaPlugin
 {
 	/**
 	 * The Bukkit enable method.

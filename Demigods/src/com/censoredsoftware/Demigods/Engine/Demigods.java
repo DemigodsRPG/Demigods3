@@ -22,7 +22,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
-import com.censoredsoftware.Demigods.DemigodsPlugin;
+import com.censoredsoftware.Demigods.DemigodsBukkit;
 import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
@@ -46,7 +46,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 public class Demigods
 {
 	// Public Static Access
-	public static DemigodsPlugin plugin;
+	public static DemigodsBukkit plugin;
 
 	// Public Modules
 	public static ConfigModule config;
@@ -79,7 +79,7 @@ public class Demigods
 		public Quest getQuest();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedQuest[] quests)
+	public Demigods(DemigodsBukkit instance, final ListedDeity[] deities, final ListedQuest[] quests)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -140,7 +140,7 @@ public class Demigods
 		return new DemigodsText.Engrish();
 	}
 
-	protected static void loadListeners(DemigodsPlugin instance)
+	protected static void loadListeners(DemigodsBukkit instance)
 	{
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
@@ -176,7 +176,7 @@ public class Demigods
 		}
 	}
 
-	protected static void loadCommands(DemigodsPlugin instance)
+	protected static void loadCommands(DemigodsBukkit instance)
 	{
 		// Define Main CommandExecutor
 		Commands ce = new Commands();
@@ -190,7 +190,7 @@ public class Demigods
 		instance.getCommand("test1").setExecutor(ce);
 	}
 
-	protected static void loadDepends(DemigodsPlugin instance)
+	protected static void loadDepends(DemigodsBukkit instance)
 	{
 		// WorldGuard
 		Plugin depend = instance.getServer().getPluginManager().getPlugin("WorldGuard");
