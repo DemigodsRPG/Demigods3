@@ -30,9 +30,25 @@ public class BattleMeta
 	@CollectionSet(of = String.class)
 	private Set<String> alliances;
 
+	public static BattleMeta create(PlayerCharacter character)
+	{
+		BattleMeta meta = new BattleMeta();
+		meta.initialize();
+		meta.setStarter(character);
+		BattleMeta.save(meta);
+		return meta;
+	}
+
 	void setStarter(PlayerCharacter character)
 	{
 		this.startedBy = character;
+		addParticipant(character);
+	}
+
+	void initialize()
+	{
+		this.kills = 0;
+		this.deaths = 0;
 	}
 
 	public void addParticipant(PlayerCharacter character)
@@ -64,6 +80,7 @@ public class BattleMeta
 
 	public Set<PlayerCharacter> getParticipants()
 	{
+		if(this.participants == null) this.participants = Sets.newHashSet();
 		return this.participants;
 	}
 

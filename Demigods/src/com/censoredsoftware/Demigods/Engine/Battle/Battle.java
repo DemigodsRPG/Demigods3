@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 
@@ -31,6 +32,17 @@ public class Battle
 	@Attribute
 	@Indexed
 	private Boolean active;
+
+	public static Battle create(PlayerCharacter character, Location location)
+	{
+		Battle battle = new Battle();
+		battle.setActive(true);
+		battle.setStartLocation(location);
+		battle.setStartTime(System.currentTimeMillis());
+		battle.setMeta(BattleMeta.create(character));
+		Battle.save(battle);
+		return battle;
+	}
 
 	void setMeta(BattleMeta meta)
 	{

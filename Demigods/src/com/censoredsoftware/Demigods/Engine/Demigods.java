@@ -144,7 +144,7 @@ public class Demigods
 	{
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
-		// TODO: instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
