@@ -26,7 +26,7 @@ import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.Core.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.google.common.collect.Maps;
 
 /**
