@@ -26,9 +26,6 @@ public class DemigodsPlugin extends JavaPlugin
 		DemigodsScheduler.startThreads(this);
 
 		Demigods.message.info("Successfully enabled.");
-
-		// TODO TEST
-		new WebServer();
 	}
 
 	/**
