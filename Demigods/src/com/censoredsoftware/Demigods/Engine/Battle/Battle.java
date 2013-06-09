@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
@@ -40,8 +41,19 @@ public class Battle
 		Battle battle = new Battle();
 		battle.setActive(true);
 		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damagee.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
-		battle.setRange((int) damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation()));
 		battle.setStartTime(System.currentTimeMillis());
+
+		int default_range = Demigods.config.getSettingInt("battle.min_range");
+		int range = (int) damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation());
+		if(range < default_range)
+		{
+			battle.setRange(default_range);
+		}
+		else
+		{
+			battle.setRange(range);
+		}
+
 		BattleMeta meta = BattleMeta.create(damager);
 		meta.addLocation(damager.getOfflinePlayer().getPlayer().getLocation());
 		meta.addLocation(damagee.getOfflinePlayer().getPlayer().getLocation());
