@@ -76,7 +76,7 @@ public class Battle
 
 	void setStartLocation(Location location)
 	{
-		this.startLoc = DemigodsModelFactory.createTrackedLocation(location);
+		this.startLoc = DemigodsModelFactory.createDemigodsLocation(location);
 	}
 
 	void setStartTime(long time)
@@ -86,7 +86,7 @@ public class Battle
 
 	public void setEndLocation(Location location)
 	{
-		this.endLoc = DemigodsModelFactory.createTrackedLocation(location);
+		this.endLoc = DemigodsModelFactory.createDemigodsLocation(location);
 	}
 
 	public void setEndTime(long time)

@@ -60,7 +60,7 @@ public class BattleMeta
 	public void addLocation(Location location)
 	{
 		if(this.locations == null) this.locations = Sets.newHashSet();
-		this.locations.add(DemigodsModelFactory.createTrackedLocation(location));
+		this.locations.add(DemigodsModelFactory.createDemigodsLocation(location));
 	}
 
 	public void addKills(int kills)

@@ -754,7 +754,7 @@ class AltarMenu extends Task
 		if(character.getWarps().isEmpty())
 		{
 			// Save named DemigodsLocation for warp.
-			character.addWarp(DemigodsModelFactory.createTrackedLocation(player.getLocation()), name);
+			character.addWarp(DemigodsModelFactory.createDemigodsLocation(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -779,7 +779,7 @@ class AltarMenu extends Task
 		}
 
 		// Save named DemigodsLocation for warp.
-		character.addWarp(DemigodsModelFactory.createTrackedLocation(player.getLocation()), name);
+		character.addWarp(DemigodsModelFactory.createDemigodsLocation(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
