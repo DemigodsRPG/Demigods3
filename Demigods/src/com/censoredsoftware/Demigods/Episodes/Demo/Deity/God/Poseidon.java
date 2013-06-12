@@ -111,7 +111,7 @@ class Reel extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Reel()
 	{
