@@ -8,7 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.censoredsoftware.Demigods.Engine.Structure.StructureGenerator;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureBlockData;
+import com.censoredsoftware.Demigods.Engine.Structure.StructureSchematic;
 import com.google.common.collect.Sets;
 
 public class GenerationUtility
@@ -134,128 +135,128 @@ public class GenerationUtility
 
 	public static void testStructure(Location target)
 	{
-		StructureGenerator.GeneratorSchematic sponge = new StructureGenerator.GeneratorSchematic(target, 0, 0, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic sponge = new StructureSchematic(target, 0, 0, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SPONGE));
+				add(new StructureBlockData(Material.SPONGE));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomRight = new StructureGenerator.GeneratorSchematic(target, 0, 0, -1, 1, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic bottomRight = new StructureSchematic(target, 0, 0, -1, 1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomLeft = new StructureGenerator.GeneratorSchematic(target, 0, 0, 1, 1, 3, 2, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic bottomLeft = new StructureSchematic(target, 0, 0, 1, 1, 3, 2, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomFront = new StructureGenerator.GeneratorSchematic(target, 1, 0, 0, 2, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic bottomFront = new StructureSchematic(target, 1, 0, 0, 2, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic bottomBack = new StructureGenerator.GeneratorSchematic(target, -1, 0, 0, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic bottomBack = new StructureSchematic(target, -1, 0, 0, 0, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic piston = new StructureGenerator.GeneratorSchematic(target, 0, 4, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic piston = new StructureSchematic(target, 0, 4, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.PISTON_STICKY_BASE));
+				add(new StructureBlockData(Material.PISTON_STICKY_BASE));
 			}
 		});
-		StructureGenerator.GeneratorSchematic redstoneBlock = new StructureGenerator.GeneratorSchematic(target, 0, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic redstoneBlock = new StructureSchematic(target, 0, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.REDSTONE_BLOCK));
+				add(new StructureBlockData(Material.REDSTONE_BLOCK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternRight = new StructureGenerator.GeneratorSchematic(target, 0, 3, -1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic lanternRight = new StructureSchematic(target, 0, 3, -1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternLeft = new StructureGenerator.GeneratorSchematic(target, 0, 3, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic lanternLeft = new StructureSchematic(target, 0, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternFront = new StructureGenerator.GeneratorSchematic(target, 1, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic lanternFront = new StructureSchematic(target, 1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lanternBack = new StructureGenerator.GeneratorSchematic(target, -1, 3, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic lanternBack = new StructureSchematic(target, -1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.REDSTONE_LAMP_OFF));
+				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureGenerator.GeneratorSchematic topRight = new StructureGenerator.GeneratorSchematic(target, 0, 4, -1, 1, 6, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic topRight = new StructureSchematic(target, 0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic topLeft = new StructureGenerator.GeneratorSchematic(target, 0, 4, 1, 1, 6, 2, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic topLeft = new StructureSchematic(target, 0, 4, 1, 1, 6, 2, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic topFront = new StructureGenerator.GeneratorSchematic(target, 1, 4, 0, 2, 6, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic topFront = new StructureSchematic(target, 1, 4, 0, 2, 6, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic topBack = new StructureGenerator.GeneratorSchematic(target, -1, 4, 0, 0, 6, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic topBack = new StructureSchematic(target, -1, 4, 0, 0, 6, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.SMOOTH_BRICK));
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureGenerator.GeneratorSchematic lightSensor = new StructureGenerator.GeneratorSchematic(target, 0, 5, 0, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic lightSensor = new StructureSchematic(target, 0, 5, 0, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.DAYLIGHT_DETECTOR));
+				add(new StructureBlockData(Material.DAYLIGHT_DETECTOR));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineRight = new StructureGenerator.GeneratorSchematic(target, -1, 5, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic vineRight = new StructureSchematic(target, -1, 5, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 40));
-				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 60));
+				add(new StructureBlockData(Material.VINE, (byte) 4, 40));
+				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineLeft = new StructureGenerator.GeneratorSchematic(target, 1, 5, -1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic vineLeft = new StructureSchematic(target, 1, 5, -1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 40));
-				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 60));
+				add(new StructureBlockData(Material.VINE, (byte) 1, 40));
+				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineFront = new StructureGenerator.GeneratorSchematic(target, 1, 5, 1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic vineFront = new StructureSchematic(target, 1, 5, 1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 4, 40));
-				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 60));
+				add(new StructureBlockData(Material.VINE, (byte) 4, 40));
+				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureGenerator.GeneratorSchematic vineBack = new StructureGenerator.GeneratorSchematic(target, -1, 5, -1, new HashSet<StructureGenerator.BlockData>()
+		StructureSchematic vineBack = new StructureSchematic(target, -1, 5, -1, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.VINE, (byte) 1, 40));
-				add(new StructureGenerator.BlockData(Material.AIR, (byte) 0, 60));
+				add(new StructureBlockData(Material.VINE, (byte) 1, 40));
+				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
 
@@ -339,10 +340,10 @@ public class GenerationUtility
 
 	public static void spiralGenerate(Location target, int X, int Y, int Z)
 	{
-		new StructureGenerator.GeneratorSchematic(target, X, Y, Z, new HashSet<StructureGenerator.BlockData>()
+		new StructureSchematic(target, X, Y, Z, new HashSet<StructureBlockData>()
 		{
 			{
-				add(new StructureGenerator.BlockData(Material.STATIONARY_WATER));
+				add(new StructureBlockData(Material.STATIONARY_WATER));
 			}
 		}).generate();
 	}
