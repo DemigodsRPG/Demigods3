@@ -36,7 +36,7 @@ public class EpisodeDemo
 		}
 	}
 
-	public static enum Quests implements Demigods.ListedQuest
+	public static enum Tasks implements Demigods.ListedTaskSet
 	{
 		/**
 		 * The Passive Altar TaskSet that is always active for everyone along with
@@ -49,17 +49,17 @@ public class EpisodeDemo
 		 */
 		Tutorial(new Tutorial());
 
-		private TaskSet deity;
+		private TaskSet taskSet;
 
-		private Quests(TaskSet deity)
+		private Tasks(TaskSet tasks)
 		{
-			this.deity = deity;
+			this.taskSet = tasks;
 		}
 
 		@Override
-		public TaskSet getQuest()
+		public TaskSet getTaskSet()
 		{
-			return deity;
+			return taskSet;
 		}
 	}
 
@@ -68,7 +68,7 @@ public class EpisodeDemo
 		; // NOTHING YET
 
 		@Override
-		public Structure getQuest()
+		public Structure getStructure()
 		{
 			return null;
 		}

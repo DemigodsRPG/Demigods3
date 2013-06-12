@@ -73,17 +73,17 @@ public class Demigods
 		public Deity getDeity();
 	}
 
-	public interface ListedQuest
+	public interface ListedTaskSet
 	{
-		public TaskSet getQuest();
+		public TaskSet getTaskSet();
 	}
 
 	public interface ListedStructure
 	{
-		public Structure getQuest();
+		public Structure getStructure();
 	}
 
-	public Demigods(DemigodsBukkit instance, final ListedDeity[] deities, final ListedQuest[] quests)
+	public Demigods(DemigodsBukkit instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -109,9 +109,9 @@ public class Demigods
 		Demigods.quests = new ArrayDeque<TaskSet>()
 		{
 			{
-				for(ListedQuest quest : quests)
+				for(ListedTaskSet taskSet : taskSets)
 				{
-					add(quest.getQuest());
+					add(taskSet.getTaskSet());
 				}
 			}
 		};
@@ -168,7 +168,7 @@ public class Demigods
 			}
 		}
 
-		// Quests
+		// Tasks
 		for(TaskSet quest : getLoadedQuests())
 		{
 			if(quest.getTasks() == null) continue;

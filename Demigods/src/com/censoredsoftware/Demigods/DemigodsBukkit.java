@@ -20,7 +20,7 @@ public class DemigodsBukkit extends JavaPlugin
 	public void onEnable()
 	{
 		// Load the game engine, passing in the game data.
-		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Quests.values());
+		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values());
 
 		// Start game threads.
 		SchedulerUtility.startThreads(this);

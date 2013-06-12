@@ -158,7 +158,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = DemigodsModelFactory.createTrackedLocation(location);
+		this.location = DemigodsModelFactory.createDemigodsLocation(location);
 	}
 
 	public void setMeta(PlayerCharacterMeta meta)

@@ -43,22 +43,22 @@ public class PlayerCharacterInventory
 
 	void setHelmet(ItemStack helmet)
 	{
-		this.helmet = DemigodsModelFactory.createTrackedItemStack(helmet);
+		this.helmet = DemigodsModelFactory.createDemigodsItemStack(helmet);
 	}
 
 	void setChestplate(ItemStack chestplate)
 	{
-		this.chestplate = DemigodsModelFactory.createTrackedItemStack(chestplate);
+		this.chestplate = DemigodsModelFactory.createDemigodsItemStack(chestplate);
 	}
 
 	void setLeggings(ItemStack leggings)
 	{
-		this.leggings = DemigodsModelFactory.createTrackedItemStack(leggings);
+		this.leggings = DemigodsModelFactory.createDemigodsItemStack(leggings);
 	}
 
 	void setBoots(ItemStack boots)
 	{
-		this.boots = DemigodsModelFactory.createTrackedItemStack(boots);
+		this.boots = DemigodsModelFactory.createDemigodsItemStack(boots);
 	}
 
 	void setItems(Inventory inventory)
@@ -68,11 +68,11 @@ public class PlayerCharacterInventory
 		{
 			if(inventory.getItem(i) == null)
 			{
-				this.items[i] = DemigodsModelFactory.createTrackedItemStack(new ItemStack(Material.AIR));
+				this.items[i] = DemigodsModelFactory.createDemigodsItemStack(new ItemStack(Material.AIR));
 			}
 			else
 			{
-				this.items[i] = DemigodsModelFactory.createTrackedItemStack(inventory.getItem(i));
+				this.items[i] = DemigodsModelFactory.createDemigodsItemStack(inventory.getItem(i));
 			}
 		}
 	}
