@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +7,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
@@ -41,14 +39,14 @@ public class BattleListener implements Listener
 			Battle battle = Battle.create(damagerCharacter, damageeCharacter);
 
 			// Debug
-			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerCharacter.getName() + " and " + damageeCharacter.getName() + "!");
+			// Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerCharacter.getName() + " and " + damageeCharacter.getName() + "!");
 		}
 		else
 		{
 			Battle battle = BattleUtility.getNear(midpoint);
 
 			// Debug
-			Demigods.message.broadcast(ChatColor.GREEN + "Battle exists!");
+			// Demigods.message.broadcast(ChatColor.GREEN + "Battle exists!");
 		}
 	}
 }
