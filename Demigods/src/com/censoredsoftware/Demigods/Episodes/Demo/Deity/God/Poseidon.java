@@ -55,6 +55,7 @@ public class Poseidon extends Deity
 	{
 		{
 			add(new Swim());
+			add(new Reel());
 		}
 	};
 
