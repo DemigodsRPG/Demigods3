@@ -159,7 +159,7 @@ public class PlayerListener implements Listener
 				message = ChatColor.YELLOW + name + " has disconnected due to overload.";
 				break;
 			case QUITTING:
-				message = "TODO";
+				message = ChatColor.YELLOW + name + " has left this plane of existence."; // TODO
 				break;
 			case TIMEOUT:
 				message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
