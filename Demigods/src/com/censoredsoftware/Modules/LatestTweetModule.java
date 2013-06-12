@@ -26,7 +26,7 @@ import redis.clients.johm.CollectionMap;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.google.common.collect.Maps;
 
 /**
@@ -59,7 +59,7 @@ public class LatestTweetModule implements Listener
 
 	public static void save(LatestTweetModule tweet)
 	{
-		DemigodsData.jOhm.save(tweet);
+		DataUtility.jOhm.save(tweet);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class LatestTweetModule implements Listener
 		LatestTweetModule module = null;
 		try
 		{
-			Set<LatestTweetModule> latestTweetModules = DemigodsData.jOhm.getAll(LatestTweetModule.class);
+			Set<LatestTweetModule> latestTweetModules = DataUtility.jOhm.getAll(LatestTweetModule.class);
 			for(LatestTweetModule tweet : latestTweetModules)
 			{
 				module = tweet;

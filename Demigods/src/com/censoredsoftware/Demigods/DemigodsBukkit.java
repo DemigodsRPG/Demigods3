@@ -4,8 +4,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.DemigodsScheduler;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 /**
@@ -23,7 +23,7 @@ public class DemigodsBukkit extends JavaPlugin
 		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Quests.values());
 
 		// Start game threads.
-		DemigodsScheduler.startThreads(this);
+		SchedulerUtility.startThreads(this);
 
 		Demigods.message.info("Successfully enabled.");
 	}
@@ -35,12 +35,12 @@ public class DemigodsBukkit extends JavaPlugin
 	public void onDisable()
 	{
 		// Save all the data.
-		DemigodsData.save();
+		DataUtility.save();
 
 		// Cancel all threads, event calls, and concections.
-		DemigodsScheduler.stopThreads(this);
+		SchedulerUtility.stopThreads(this);
 		HandlerList.unregisterAll(this);
-		DemigodsData.disconnect();
+		DataUtility.disconnect();
 
 		Demigods.message.info("Successfully disabled.");
 	}

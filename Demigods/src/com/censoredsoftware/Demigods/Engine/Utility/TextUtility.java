@@ -1,11 +1,10 @@
-package com.censoredsoftware.Demigods.Engine;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.ChatColor;
 
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
-public class DemigodsText
+public class TextUtility
 {
 	public static enum Text
 	{

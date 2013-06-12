@@ -1,12 +1,13 @@
-package com.censoredsoftware.Demigods.Engine;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Language.Blacklist;
 
-public class DemigodsBlacklist
+public class BlacklistUtility
 {
 	public static class EnglishCharacterNames implements Blacklist
 	{

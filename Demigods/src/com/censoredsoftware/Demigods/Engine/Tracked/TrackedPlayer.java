@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Sets;
 
@@ -248,7 +248,7 @@ public class TrackedPlayer
 	{
 		try
 		{
-			return Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "praying").toString());
+			return Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "praying").toString());
 		}
 		catch(Exception ignored)
 		{}
@@ -296,8 +296,8 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			DemigodsData.saveTemp(player.getName(), "praying", option);
-			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
+			DataUtility.saveTemp(player.getName(), "praying", option);
+			DataUtility.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
@@ -305,8 +305,8 @@ public class TrackedPlayer
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
 			togglePlayerChat(player, true);
-			DemigodsData.removeTemp(player.getName(), "praying");
-			DemigodsData.removeTemp(player.getName(), "praying_location");
+			DataUtility.removeTemp(player.getName(), "praying");
+			DataUtility.removeTemp(player.getName(), "praying_location");
 		}
 	}
 
@@ -321,14 +321,14 @@ public class TrackedPlayer
 		if(option)
 		{
 			togglePlayerChat(player, false);
-			DemigodsData.saveTemp(player.getName(), "praying", option);
-			DemigodsData.saveTemp(player.getName(), "praying_location", player.getLocation());
+			DataUtility.saveTemp(player.getName(), "praying", option);
+			DataUtility.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
 			togglePlayerChat(player, true);
-			DemigodsData.removeTemp(player.getName(), "praying");
-			DemigodsData.removeTemp(player.getName(), "praying_location");
+			DataUtility.removeTemp(player.getName(), "praying");
+			DataUtility.removeTemp(player.getName(), "praying_location");
 		}
 	}
 
@@ -340,8 +340,8 @@ public class TrackedPlayer
 	 */
 	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.hasKeyTemp(player.getName(), "player_hold") && option) DemigodsData.removeTemp(player.getName(), "temp_player_hold");
-		else DemigodsData.saveTemp(player.getName(), "player_hold", true);
+		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && option) DataUtility.removeTemp(player.getName(), "temp_player_hold");
+		else DataUtility.saveTemp(player.getName(), "player_hold", true);
 	}
 
 	/**
@@ -352,7 +352,7 @@ public class TrackedPlayer
 	 */
 	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
-		if(DemigodsData.hasKeyTemp(player.getName(), "no_chat") && option) DemigodsData.removeTemp(player.getName(), "temp_no_chat");
-		else DemigodsData.saveTemp(player.getName(), "no_chat", true);
+		if(DataUtility.hasKeyTemp(player.getName(), "no_chat") && option) DataUtility.removeTemp(player.getName(), "temp_no_chat");
+		else DataUtility.saveTemp(player.getName(), "no_chat", true);
 	}
 }

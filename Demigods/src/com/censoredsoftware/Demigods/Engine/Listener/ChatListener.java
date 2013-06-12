@@ -12,9 +12,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 
 public class ChatListener implements Listener
 {
@@ -29,10 +29,10 @@ public class ChatListener implements Listener
 		if(message.equals("pl")) pl(player, event);
 
 		// No chat toggle
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_no_chat")) event.setCancelled(true);
+		if(DataUtility.hasKeyTemp(player.getName(), "temp_no_chat")) event.setCancelled(true);
 		for(Player victim : Bukkit.getOnlinePlayers())
 		{
-			if(DemigodsData.hasKeyTemp(victim.getName(), "temp_no_chat")) viewing.remove(victim);
+			if(DataUtility.hasKeyTemp(victim.getName(), "temp_no_chat")) viewing.remove(victim);
 		}
 	}
 
@@ -47,16 +47,16 @@ public class ChatListener implements Listener
 		if(TrackedPlayer.isPraying(player)) return;
 
 		// Handle chat for character switching
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number"))
+		if(DataUtility.hasKeyTemp(player.getName(), "temp_chat_number"))
 		{
 			// Define variables
 			PlayerCharacter prevChar = TrackedPlayer.getTracked(player).getPrevious();
 
 			if(prevChar == null) return;
 
-			DemigodsData.saveTemp(player.getName(), "temp_chat_number", Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
-			if(DemigodsData.hasKeyTemp(player.getName(), "temp_chat_number") && Integer.parseInt(DemigodsData.getValueTemp(player.getName(), "temp_chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
-			else DemigodsData.removeTemp(player.getName(), "temp_chat_number");
+			DataUtility.saveTemp(player.getName(), "temp_chat_number", Integer.parseInt(DataUtility.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
+			if(DataUtility.hasKeyTemp(player.getName(), "temp_chat_number") && Integer.parseInt(DataUtility.getValueTemp(player.getName(), "temp_chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
+			else DataUtility.removeTemp(player.getName(), "temp_chat_number");
 		}
 	}
 

@@ -6,10 +6,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 
 public class CharacterListener implements Listener
 {
@@ -25,10 +25,10 @@ public class CharacterListener implements Listener
 
 		attacker.addKill();
 
-		if(killed == null && attacker == null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_1));
-		else if(killed == null && attacker != null) Demigods.message.broadcast(Demigods.text.getText(DemigodsText.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
-		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+		if(killed == null && attacker == null) Demigods.message.broadcast(Demigods.text.getText(TextUtility.Text.MORTAL_SLAIN_1));
+		else if(killed == null && attacker != null) Demigods.message.broadcast(Demigods.text.getText(TextUtility.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
+		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -40,7 +40,7 @@ public class CharacterListener implements Listener
 
 		// TODO: Punishments.
 
-		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
-		else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(DemigodsText.Text.MORTAL_BETRAY));
+		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+		else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.MORTAL_BETRAY));
 	}
 }

@@ -24,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
@@ -123,7 +122,7 @@ class AltarMenu extends Task
 					altarMenu(player);
 
 					// If they are in the process of creating a character we'll just skip them to the confirm screen
-					if(DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
+					if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
 					{
 						MiscUtility.clearChat(player);
 						finalConfirmDeity(player);
@@ -136,7 +135,7 @@ class AltarMenu extends Task
 					TrackedPlayer.togglePraying(player, false);
 
 					// Clear whatever is being worked on in this Pray session
-					DemigodsData.removeTemp(player.getName(), "temp_createchar");
+					DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 					event.setCancelled(true);
 				}
@@ -163,7 +162,7 @@ class AltarMenu extends Task
 				if(message.equalsIgnoreCase("x") || message.startsWith("abort") || message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
 				{
 					// Remove now useless data
-					DemigodsData.removeTemp(player.getName(), "temp_createchar");
+					DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 					MiscUtility.clearChat(player);
 
@@ -189,17 +188,17 @@ class AltarMenu extends Task
 				/*
 				 * Character creation sub-steps
 				 */
-				if(DemigodsData.hasKeyTemp(player.getName(), "temp_createchar"))
+				if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar"))
 				{
 					// Step 1 of character creation
-					if(DemigodsData.getValueTemp(player.getName(), "temp_createchar").equals("choose_name"))
+					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_name"))
 					{
 						confirmName(player, message);
 						return;
 					}
 
 					// Step 2 of character creation
-					if(DemigodsData.getValueTemp(player.getName(), "temp_createchar").equals("confirm_name"))
+					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_name"))
 					{
 						if(message.equalsIgnoreCase("y") || message.contains("yes"))
 						{
@@ -214,14 +213,14 @@ class AltarMenu extends Task
 					}
 
 					// Step 3 of character creation
-					if(DemigodsData.getValueTemp(player.getName(), "temp_createchar").equals("choose_deity"))
+					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_deity"))
 					{
 						confirmDeity(player, message);
 						return;
 					}
 
 					// Step 4 of character creation
-					if(DemigodsData.getValueTemp(player.getName(), "temp_createchar").equals("confirm_deity"))
+					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_deity"))
 					{
 						if(message.equalsIgnoreCase("y") || message.contains("yes"))
 						{
@@ -236,7 +235,7 @@ class AltarMenu extends Task
 					}
 
 					// Step 5 of character creation
-					if(DemigodsData.getValueTemp(player.getName(), "temp_createchar").equals("confirm_all"))
+					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_all"))
 					{
 						if(message.equalsIgnoreCase("y") || message.contains("yes"))
 						{
@@ -360,11 +359,11 @@ class AltarMenu extends Task
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 				// Exit if this isn't for character creation
-				if(!TrackedPlayer.isPraying(player) || !DemigodsData.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
+				if(!TrackedPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
 
 				// Define variables
-				String chosenName = DemigodsData.getValueTemp(player.getName(), "temp_createchar_name").toString();
-				String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
+				String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
+				String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
 				String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
 
 				// Check the chest items
@@ -392,15 +391,15 @@ class AltarMenu extends Task
 					PlayerCharacter.create(player, chosenDeity, chosenName, true);
 
 					// Remove temporary data
-					DemigodsData.removeTemp(player.getName(), "temp_createchar");
+					DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 					// Stop their praying, enable movement, enable chat
 					TrackedPlayer.togglePraying(player, false);
 
 					// Remove old data now
-					DemigodsData.removeTemp(player.getName(), "temp_createchar_finalstep");
-					DemigodsData.removeTemp(player.getName(), "temp_createchar_name");
-					DemigodsData.removeTemp(player.getName(), "temp_createchar_deity");
+					DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
+					DataUtility.removeTemp(player.getName(), "temp_createchar_name");
+					DataUtility.removeTemp(player.getName(), "temp_createchar_deity");
 				}
 				else
 				{
@@ -434,7 +433,7 @@ class AltarMenu extends Task
 		player.sendMessage(ChatColor.GRAY + " To begin, choose an option by entering it's number in the chat:");
 		player.sendMessage(" ");
 
-		if(DemigodsData.hasKeyTemp(player.getName(), "temp_createchar"))
+		if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar"))
 		{
 			player.sendMessage(ChatColor.GRAY + "   [X.] " + ChatColor.RED + "Abort Character Creation");
 		}
@@ -605,7 +604,7 @@ class AltarMenu extends Task
 			player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 
 			// Save their previous character and chat number for later monitoring
-			DemigodsData.saveTemp(player.getName(), "temp_chat_number", 0);
+			DataUtility.saveTemp(player.getName(), "temp_chat_number", 0);
 
 			// Disable prayer
 			TrackedPlayer.togglePraying(player, false);
@@ -621,7 +620,7 @@ class AltarMenu extends Task
 	// Choose name
 	protected static void chooseName(Player player)
 	{
-		DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_name");
+		DataUtility.saveTemp(player.getName(), "temp_createchar", "choose_name");
 		player.sendMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 		player.sendMessage(" ");
 	}
@@ -633,7 +632,7 @@ class AltarMenu extends Task
 		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || TrackedPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
-			DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_name");
+			DataUtility.saveTemp(player.getName(), "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
 			if(TrackedPlayer.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
@@ -643,11 +642,11 @@ class AltarMenu extends Task
 		}
 		else
 		{
-			DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_name");
+			DataUtility.saveTemp(player.getName(), "temp_createchar", "confirm_name");
 			String chosenName = message.replace(" ", "");
 			player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + chosenName + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 			player.sendMessage(" ");
-			DemigodsData.saveTemp(player.getName(), "temp_createchar_name", chosenName);
+			DataUtility.saveTemp(player.getName(), "temp_createchar_name", chosenName);
 		}
 	}
 
@@ -662,7 +661,7 @@ class AltarMenu extends Task
 		}
 		player.sendMessage(" ");
 
-		DemigodsData.saveTemp(player.getName(), "temp_createchar", "choose_deity");
+		DataUtility.saveTemp(player.getName(), "temp_createchar", "choose_deity");
 	}
 
 	// Deity confirmation
@@ -679,8 +678,8 @@ class AltarMenu extends Task
 					String chosenDeity = message.replace(" ", "");
 					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + MiscUtility.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DemigodsData.saveTemp(player.getName(), "temp_createchar_deity", MiscUtility.capitalize(chosenDeity.toLowerCase()));
-					DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_deity");
+					DataUtility.saveTemp(player.getName(), "temp_createchar_deity", MiscUtility.capitalize(chosenDeity.toLowerCase()));
+					DataUtility.saveTemp(player.getName(), "temp_createchar", "confirm_deity");
 					return;
 				}
 			}
@@ -708,7 +707,7 @@ class AltarMenu extends Task
 	protected static void deityConfirmed(Player player)
 	{
 		// Define variables
-		String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
+		String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
 
 		// They accepted the Deity choice, now ask them to input their items so they can be accepted
 		player.sendMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + chosenDeity + ChatColor.AQUA + ",");
@@ -723,7 +722,7 @@ class AltarMenu extends Task
 		player.sendMessage(ChatColor.GRAY + "  confirm your new character.");
 		player.sendMessage(" ");
 
-		DemigodsData.saveTemp(player.getName(), "temp_createchar_finalstep", true);
+		DataUtility.saveTemp(player.getName(), "temp_createchar_finalstep", true);
 	}
 
 	// Final confirmation of deity
@@ -731,11 +730,11 @@ class AltarMenu extends Task
 	protected static void finalConfirmDeity(Player player)
 	{
 		// Define variables
-		String chosenDeity = DemigodsData.getValueTemp(player.getName(), "temp_createchar_deity").toString();
+		String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
 
 		// Save data
-		DemigodsData.saveTemp(player.getName(), "temp_createchar_finalstep", true);
-		DemigodsData.saveTemp(player.getName(), "temp_createchar", "confirm_all");
+		DataUtility.saveTemp(player.getName(), "temp_createchar_finalstep", true);
+		DataUtility.saveTemp(player.getName(), "temp_createchar", "confirm_all");
 
 		// Send them the chat
 		player.sendMessage(ChatColor.GREEN + " " + UnicodeUtility.rightwardArrow() + " Confirming Character -------------------------------");

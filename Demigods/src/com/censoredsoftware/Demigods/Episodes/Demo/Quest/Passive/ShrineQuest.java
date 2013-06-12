@@ -16,13 +16,13 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ValueUtility;
 
 public class ShrineQuest extends Quest
@@ -134,7 +134,7 @@ class Tribute extends Task
 			if(!event.getInventory().getName().contains("Shrine") || !Shrine.isShrine(player.getTargetBlock(null, 10).getLocation())) return;
 
 			// Get the creator of the shrine
-			PlayerCharacter shrineOwner = PlayerCharacter.getCharacterByName(DemigodsData.getValueTemp(player.getName(), character.getName()).toString());
+			PlayerCharacter shrineOwner = PlayerCharacter.getCharacterByName(DataUtility.getValueTemp(player.getName(), character.getName()).toString());
 
 			// Calculate the tribute value
 			int tributeValue = 0, items = 0;
@@ -226,7 +226,7 @@ class Tribute extends Task
 		// Open the tribute inventory
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, "Shrine of " + shrineDeity);
 		player.openInventory(ii);
-		DemigodsData.saveTemp(player.getName(), character.getName(), shrineOwner);
+		DataUtility.saveTemp(player.getName(), character.getName(), shrineOwner);
 	}
 
 	public Tribute(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)

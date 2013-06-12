@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 
 /**
  * Module to handle all update methods from BukkitDev.
@@ -441,7 +441,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private boolean getConfirmed(Player player)
 	{
-		return DemigodsData.hasTimed("update", player.getName());
+		return DataUtility.hasTimed("update", player.getName());
 	}
 
 	/**
@@ -449,7 +449,7 @@ public class BukkitUpdateModule implements Listener
 	 */
 	private void confirm(Player player, boolean keep)
 	{
-		if(keep) DemigodsData.saveTimed("update", player.getName(), true, confirmTime);
-		else if(DemigodsData.hasTimed("update", player.getName())) DemigodsData.removeTimed("update", player.getName());
+		if(keep) DataUtility.saveTimed("update", player.getName(), true, confirmTime);
+		else if(DataUtility.hasTimed("update", player.getName())) DataUtility.removeTimed("update", player.getName());
 	}
 }

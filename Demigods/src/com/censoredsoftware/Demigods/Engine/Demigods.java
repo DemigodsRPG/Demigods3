@@ -37,9 +37,7 @@ import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -121,7 +119,7 @@ public class Demigods
 		Demigods.text = getTranslation();
 
 		// Initialize soft data.
-		new DemigodsData(instance);
+		new DataUtility(instance);
 
 		// Setup protected modules that require data.
 		notice = LatestTweetModule.recreate(instance, "DemigodsRPG", "/dg twitter", "demigods.twitter", config.getSettingBoolean("twitter.notify"));
@@ -143,7 +141,7 @@ public class Demigods
 	public Translation getTranslation()
 	{
 		// Default to EnglishCharNames
-		return new DemigodsText.Engrish();
+		return new TextUtility.Engrish();
 	}
 
 	protected static void loadListeners(DemigodsBukkit instance)
@@ -514,26 +512,26 @@ class Commands implements CommandExecutor
 			{
 				if(!AdminUtility.wandEnabled(player))
 				{
-					DemigodsData.saveTemp(player.getName(), "temp_admin_wand", true);
+					DataUtility.saveTemp(player.getName(), "temp_admin_wand", true);
 					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Demigods.config.getSettingInt("admin.wand_tool")));
 				}
 				else if(AdminUtility.wandEnabled(player))
 				{
-					DemigodsData.removeTemp(player.getName(), "temp_admin_wand");
+					DataUtility.removeTemp(player.getName(), "temp_admin_wand");
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
 				}
 				return true;
 			}
 			else if(option1.equalsIgnoreCase("debug"))
 			{
-				if(!DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
+				if(!DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 				{
-					DemigodsData.saveTemp(player.getName(), "temp_admin_debug", true);
+					DataUtility.saveTemp(player.getName(), "temp_admin_debug", true);
 					player.sendMessage(ChatColor.RED + "You have enabled debugging.");
 				}
-				else if(DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString()))
+				else if(DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString()))
 				{
-					DemigodsData.removeTemp(player.getName(), "temp_admin_debug");
+					DataUtility.removeTemp(player.getName(), "temp_admin_debug");
 					player.sendMessage(ChatColor.RED + "You have disabled debugging.");
 				}
 			}

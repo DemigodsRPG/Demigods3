@@ -15,12 +15,12 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
-import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -354,7 +354,7 @@ public class PlayerCharacter
 
 	public static boolean isCooledDown(PlayerCharacter player, String ability, boolean sendMsg)
 	{
-		if(DemigodsData.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
+		if(DataUtility.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DataUtility.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
 		{
 			if(sendMsg) player.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + ability + " has not cooled down!");
 			return false;
@@ -364,12 +364,12 @@ public class PlayerCharacter
 
 	public static void setCoolDown(PlayerCharacter player, String ability, long cooldown)
 	{
-		DemigodsData.saveTemp(player.getName(), ability + "_cooldown", cooldown);
+		DataUtility.saveTemp(player.getName(), ability + "_cooldown", cooldown);
 	}
 
 	public static long getCoolDown(PlayerCharacter player, String ability)
 	{
-		return Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString());
+		return Long.parseLong(DataUtility.getValueTemp(player.getName(), ability + "_cooldown").toString());
 	}
 
 	public static void create(Player player, String chosenDeity, String chosenName, boolean switchCharacter)
@@ -382,7 +382,7 @@ public class PlayerCharacter
 			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 
-			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
+			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
 			online.getWorld().strikeLightningEffect(online.getLocation());
 
 			for(int i = 0; i < 20; i++)

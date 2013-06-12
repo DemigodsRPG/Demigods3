@@ -5,7 +5,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.massivecraft.factions.Board;
@@ -108,7 +107,7 @@ public class ZoneUtility
 	 */
 	public static boolean canTarget(Entity player, Location location)
 	{
-		return !(player instanceof Player) || DemigodsData.hasKeyTemp(((Player) player).getName(), "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
+		return !(player instanceof Player) || DataUtility.hasKeyTemp(((Player) player).getName(), "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
 	/**

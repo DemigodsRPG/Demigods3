@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine;
+package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import com.censoredsoftware.Demigods.DemigodsBukkit;
 import com.censoredsoftware.Demigods.Engine.Miscellaneous.TimedData;
 import com.google.common.collect.Maps;
 
-public class DemigodsData
+public class DataUtility
 {
 	// The Redis DB
 	private static JedisPool jedisPool;
@@ -23,7 +23,7 @@ public class DemigodsData
 	// Temp Data
 	private static Map<String, HashMap<String, Object>> tempData;
 
-	protected DemigodsData(DemigodsBukkit instance)
+	public DataUtility(DemigodsBukkit instance)
 	{
 		// Create Data Instances
 		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);

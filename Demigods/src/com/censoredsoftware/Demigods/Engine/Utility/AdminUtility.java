@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.DemigodsData;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 
 public class AdminUtility
@@ -18,7 +17,7 @@ public class AdminUtility
 	 */
 	public static boolean wandEnabled(OfflinePlayer player)
 	{
-		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DemigodsData.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_wand").toString());
+		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_wand").toString());
 	}
 
 	/**
@@ -40,7 +39,7 @@ public class AdminUtility
 	 */
 	public static boolean playerDebugEnabled(OfflinePlayer player)
 	{
-		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DemigodsData.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DemigodsData.getValueTemp(player.getName(), "temp_admin_debug").toString());
+		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString());
 	}
 
 	/**
