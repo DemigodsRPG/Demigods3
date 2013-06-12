@@ -1,16 +1,16 @@
-package com.censoredsoftware.Demigods.Demo;
+package com.censoredsoftware.Demigods.Episodes.Demo;
 
-import com.censoredsoftware.Demigods.Demo.Deity.God.Poseidon;
-import com.censoredsoftware.Demigods.Demo.Deity.God.Zeus;
-import com.censoredsoftware.Demigods.Demo.Deity.Titan.Oceanus;
-import com.censoredsoftware.Demigods.Demo.Deity.Titan.Prometheus;
-import com.censoredsoftware.Demigods.Demo.Quest.Passive.AltarQuest;
-import com.censoredsoftware.Demigods.Demo.Quest.Passive.ShrineQuest;
-import com.censoredsoftware.Demigods.Demo.Quest.Tutorial;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Quest.Quest;
 import com.censoredsoftware.Demigods.Engine.Structure.Structure;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Prometheus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Quest.Passive.AltarQuest;
+import com.censoredsoftware.Demigods.Episodes.Demo.Quest.Passive.ShrineQuest;
+import com.censoredsoftware.Demigods.Episodes.Demo.Quest.Tutorial;
 
 public class EpisodeDemo
 {

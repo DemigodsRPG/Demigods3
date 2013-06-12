@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Deity.Titan;
+package com.censoredsoftware.Demigods.Episodes.Demo.Deity.God;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,10 +21,10 @@ import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
-public class Oceanus extends Deity
+public class Poseidon extends Deity
 {
-	private static String name = "Oceanus", alliance = "Titan";
-	private static ChatColor color = ChatColor.DARK_AQUA;
+	private static String name = "Poseidon", alliance = "God";
+	private static ChatColor color = ChatColor.AQUA;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
@@ -53,7 +53,7 @@ public class Oceanus extends Deity
 		}
 	};
 
-	public Oceanus()
+	public Poseidon()
 	{
 		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
 	}
@@ -61,13 +61,13 @@ public class Oceanus extends Deity
 
 class Swim extends Ability
 {
-	private static String deity = "Oceanus", name = "Swim", command = null, permission = "demigods.titan.oceanus";
+	private static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
 	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Oceanus.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
@@ -85,7 +85,7 @@ class Swim extends Ability
 				// PHELPS SWIMMING
 				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
 				{
-					Vector direction = player.getLocation().getDirection().normalize().multiply(1.1D);
+					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					if(player.isSneaking()) player.setVelocity(victor);
 				}

@@ -95,7 +95,7 @@ public class Shrine
 
 	public PlayerCharacter getCharacter()
 	{
-		return PlayerCharacter.getChar(this.owner);
+		return PlayerCharacter.load(this.owner);
 	}
 
 	public Deity getDeity()

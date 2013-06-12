@@ -156,7 +156,6 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new DebugListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EventFactory(), instance);
@@ -862,13 +861,13 @@ class Commands implements CommandExecutor
 	{
 		try
 		{
-			if(!PlayerCharacter.getAllChars().isEmpty())
+			if(!PlayerCharacter.loadAll().isEmpty())
 			{
 				sender.sendMessage(" ");
 				sender.sendMessage("-- Characters ---------------");
 				sender.sendMessage(" ");
 
-				for(PlayerCharacter character : PlayerCharacter.getAllChars())
+				for(PlayerCharacter character : PlayerCharacter.loadAll())
 				{
 					sender.sendMessage(character.getName() + ": " + character.getDeity().getInfo().getName());
 				}

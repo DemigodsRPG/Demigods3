@@ -84,7 +84,7 @@ public class PlayerCharacterInventory
 
 	public PlayerCharacter getOwner()
 	{
-		return PlayerCharacter.getChar(this.owner);
+		return PlayerCharacter.load(this.owner);
 	}
 
 	public static void save(PlayerCharacterInventory inventory)

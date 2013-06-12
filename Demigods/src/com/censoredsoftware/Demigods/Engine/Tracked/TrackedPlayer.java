@@ -153,12 +153,12 @@ public class TrackedPlayer
 
 	public PlayerCharacter getCurrent()
 	{
-		return PlayerCharacter.getChar(this.current);
+		return PlayerCharacter.load(this.current);
 	}
 
 	public PlayerCharacter getPrevious()
 	{
-		return PlayerCharacter.getChar(this.previous);
+		return PlayerCharacter.load(this.previous);
 	}
 
 	public List<PlayerCharacter> getCharacters()

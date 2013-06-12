@@ -2,8 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 
 import java.util.ArrayList;
 
-import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,12 +10,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Demo.Item.Baetylus;
-import com.censoredsoftware.Demigods.Demo.Item.Books;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Event.Misc.ChestSpawnEvent;
+import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Baetylus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
 
 public class ChunkListener implements Listener
 {
@@ -29,10 +29,6 @@ public class ChunkListener implements Listener
 		// Let's randomly create chests
 		if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.chest_chance")) && location.clone().subtract(0, 1, 0).getBlock().getType().isSolid())
 		{
-			ChestSpawnEvent chestSpawnEvent = new ChestSpawnEvent(location);
-			Bukkit.getServer().getPluginManager().callEvent(chestSpawnEvent);
-			if(chestSpawnEvent.isCancelled()) return;
-
 			// Define variables
 			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
 
@@ -46,6 +42,8 @@ public class ChunkListener implements Listener
 
 			// Generate the chest
 			ItemUtility.createChest(location, items);
+
+			AdminUtility.sendDebug(ChatColor.RED + "Chest generated at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 		}
 	}
 }

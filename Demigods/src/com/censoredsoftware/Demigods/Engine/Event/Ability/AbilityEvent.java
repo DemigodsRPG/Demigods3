@@ -7,8 +7,6 @@ import org.bukkit.event.HandlerList;
 import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
 
-// TODO Remove this event and replace with a method to be called when this event would be triggered.
-
 /*
  * Represents an event that is called when an ability is executed.
  */

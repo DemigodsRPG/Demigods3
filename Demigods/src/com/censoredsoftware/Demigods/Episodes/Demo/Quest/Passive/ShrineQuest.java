@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Quest.Passive;
+package com.censoredsoftware.Demigods.Episodes.Demo.Quest.Passive;
 
 import java.util.ArrayList;
 import java.util.List;

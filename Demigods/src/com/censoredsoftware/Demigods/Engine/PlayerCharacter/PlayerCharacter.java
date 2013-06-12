@@ -8,14 +8,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.DemigodsData;
+import com.censoredsoftware.Demigods.Engine.DemigodsText;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
+import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.google.common.collect.Sets;
 
 @Model
@@ -367,19 +372,30 @@ public class PlayerCharacter
 		return Long.parseLong(DemigodsData.getValueTemp(player.getName(), ability + "_cooldown").toString());
 	}
 
-	public static Set<PlayerCharacter> getAllChars()
+	public static void create(Player player, String chosenDeity, String chosenName, boolean switchCharacter)
 	{
-		return PlayerCharacter.loadAll();
-	}
+		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
 
-	public static PlayerCharacter getChar(Long id)
-	{
-		return PlayerCharacter.load(id);
+		if(player.isOnline())
+		{
+			Player online = player.getPlayer();
+			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+
+			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(DemigodsText.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
+			online.getWorld().strikeLightningEffect(online.getLocation());
+
+			for(int i = 0; i < 20; i++)
+				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+		}
+
+		// Switch to new character
+		if(switchCharacter) TrackedPlayer.getTracked(player).switchCharacter(character);
 	}
 
 	public static PlayerCharacter getCharByName(String charName)
 	{
-		for(PlayerCharacter character : getAllChars())
+		for(PlayerCharacter character : loadAll())
 		{
 			if(character.getName().equalsIgnoreCase(charName)) return character;
 		}
@@ -389,7 +405,7 @@ public class PlayerCharacter
 	public static Set<PlayerCharacter> getAllActive()
 	{
 		Set<PlayerCharacter> active = Sets.newHashSet();
-		for(PlayerCharacter character : getAllChars())
+		for(PlayerCharacter character : loadAll())
 		{
 			if(character.isActive()) active.add(character);
 		}
@@ -398,14 +414,14 @@ public class PlayerCharacter
 
 	public static OfflinePlayer getOwner(long charID)
 	{
-		return getChar(charID).getOfflinePlayer();
+		return load(charID).getOfflinePlayer();
 	}
 
 	public static Set<PlayerCharacter> getDeityList(String deity)
 	{
 		// Define variables
 		Set<PlayerCharacter> deityList = Sets.newHashSet();
-		for(PlayerCharacter character : getAllChars())
+		for(PlayerCharacter character : loadAll())
 		{
 			if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
 		}
@@ -427,7 +443,7 @@ public class PlayerCharacter
 	{
 		// Define variables
 		Set<PlayerCharacter> allianceList = Sets.newHashSet();
-		for(PlayerCharacter character : getAllChars())
+		for(PlayerCharacter character : loadAll())
 		{
 			if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
 		}
@@ -449,7 +465,7 @@ public class PlayerCharacter
 	{
 		// Define variables
 		Set<PlayerCharacter> immortalList = Sets.newHashSet();
-		for(PlayerCharacter character : getAllChars())
+		for(PlayerCharacter character : loadAll())
 		{
 			if(character.isImmortal()) immortalList.add(character);
 		}

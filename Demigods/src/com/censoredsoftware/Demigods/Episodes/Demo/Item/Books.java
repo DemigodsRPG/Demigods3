@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Item;
+package com.censoredsoftware.Demigods.Episodes.Demo.Item;
 
 import java.util.ArrayList;
 

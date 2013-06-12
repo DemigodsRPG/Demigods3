@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Deity.Titan;
+package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan;
 
 import java.util.*;
 

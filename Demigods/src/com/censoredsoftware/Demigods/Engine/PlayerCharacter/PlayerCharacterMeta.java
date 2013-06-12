@@ -106,7 +106,7 @@ public class PlayerCharacterMeta
 
 	public void setBound(String ability, Material material)
 	{
-		Player player = PlayerCharacter.getChar(getId()).getOfflinePlayer().getPlayer();
+		Player player = PlayerCharacter.load(getId()).getOfflinePlayer().getPlayer();
 		if(!bindingData.containsValue(ability))
 		{
 			if(player.getItemInHand().getType() == Material.AIR)

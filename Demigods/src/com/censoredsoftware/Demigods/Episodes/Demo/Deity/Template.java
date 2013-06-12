@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Demo.Deity;
+package com.censoredsoftware.Demigods.Episodes.Demo.Deity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
