@@ -390,7 +390,7 @@ public class PlayerCharacter
 		}
 
 		// Switch to new character
-		if(switchCharacter) DemigodsPlayer.getTracked(player).switchCharacter(character);
+		if(switchCharacter) DemigodsPlayer.getPlayer(player).switchCharacter(character);
 	}
 
 	public static PlayerCharacter getCharByName(String charName)

@@ -20,7 +20,7 @@ public class FavorRunnable implements Runnable
 	{
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 			if(regenRate < 5) regenRate = 5;

@@ -22,16 +22,16 @@ public class BattleListener implements Listener
 		// Handle returns
 		if(!(event.getEntity() instanceof Player)) return;
 		if(!(event.getDamager() instanceof Player)) return;
-		if(DemigodsPlayer.getTracked((Player) event.getEntity()).getCurrent() == null) return;
-		if(DemigodsPlayer.getTracked((Player) event.getDamager()).getCurrent() == null) return;
+		if(DemigodsPlayer.getPlayer((Player) event.getEntity()).getCurrent() == null) return;
+		if(DemigodsPlayer.getPlayer((Player) event.getDamager()).getCurrent() == null) return;
 
 		// Define players
 		Player damageePlayer = (Player) event.getEntity();
 		Player damagerPlayer = (Player) event.getDamager();
 
 		// Define characters
-		PlayerCharacter damageeCharacter = DemigodsPlayer.getTracked(damageePlayer).getCurrent();
-		PlayerCharacter damagerCharacter = DemigodsPlayer.getTracked(damagerPlayer).getCurrent();
+		PlayerCharacter damageeCharacter = DemigodsPlayer.getPlayer(damageePlayer).getCurrent();
+		PlayerCharacter damagerCharacter = DemigodsPlayer.getPlayer(damagerPlayer).getCurrent();
 
 		// Calculate midpoint location
 		Location midpoint = damagerPlayer.getLocation().toVector().getMidpoint(damageePlayer.getLocation().toVector()).toLocation(damagerPlayer.getWorld());

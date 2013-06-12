@@ -23,7 +23,7 @@ public class AbilityListener implements Listener
 	{
 		if(!(event.getTarget() instanceof Player)) return;
 
-		PlayerCharacter hitChar = DemigodsPlayer.getTracked((Player) event.getTarget()).getCurrent();
+		PlayerCharacter hitChar = DemigodsPlayer.getPlayer((Player) event.getTarget()).getCurrent();
 		PlayerCharacter hittingChar = event.getCharacter();
 
 		// TrackedBattle.battleProcess(hitChar, hittingChar);

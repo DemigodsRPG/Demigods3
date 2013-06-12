@@ -193,7 +193,7 @@ public class BlockListener implements Listener
 		 */
 		if(DemigodsPlayer.isImmortal(player))
 		{
-			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Shrine.validBlockConfiguration(event.getClickedBlock()))
 			{
@@ -254,7 +254,7 @@ public class BlockListener implements Listener
 		/**
 		 * Entering Altar
 		 */
-		if(ZoneUtility.enterZoneAltar(to, from) && !DemigodsLocation.hasWarp(ZoneUtility.zoneAltar(to), DemigodsPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
+		if(ZoneUtility.enterZoneAltar(to, from) && !DemigodsLocation.hasWarp(ZoneUtility.zoneAltar(to), DemigodsPlayer.getPlayer(player).getCurrent())) // TODO This is an annoying message.
 		{
 			// player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_WARP_ALTAR));
 		}

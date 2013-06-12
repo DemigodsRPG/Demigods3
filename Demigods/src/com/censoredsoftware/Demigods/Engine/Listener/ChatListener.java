@@ -50,7 +50,7 @@ public class ChatListener implements Listener
 		if(DataUtility.hasKeyTemp(player.getName(), "temp_chat_number"))
 		{
 			// Define variables
-			PlayerCharacter prevChar = DemigodsPlayer.getTracked(player).getPrevious();
+			PlayerCharacter prevChar = DemigodsPlayer.getPlayer(player).getPrevious();
 
 			if(prevChar == null) return;
 

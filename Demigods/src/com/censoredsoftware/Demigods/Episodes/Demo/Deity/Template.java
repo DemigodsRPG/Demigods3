@@ -85,7 +85,7 @@ class Test extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -103,7 +103,7 @@ class Test extends Ability
 	public static void test(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;

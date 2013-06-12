@@ -63,7 +63,7 @@ public abstract class Ability
 	 */
 	public static boolean doAbilityPreProcess(Player player, String name, int cost, AbilityInfo info)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 		return doAbilityPreProcess(player, cost) && event(name, character, cost, info);
 	}
@@ -82,7 +82,7 @@ public abstract class Ability
 	 */
 	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityInfo info)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 		if(doAbilityPreProcess(player, cost) && event(name, character, cost, info))
 		{
@@ -98,7 +98,7 @@ public abstract class Ability
 			}
 			else if(target instanceof Player)
 			{
-				PlayerCharacter attacked = DemigodsPlayer.getTracked(((Player) target)).getCurrent();
+				PlayerCharacter attacked = DemigodsPlayer.getPlayer(((Player) target)).getCurrent();
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked)) return false;
 			}
 			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
@@ -162,7 +162,7 @@ public abstract class Ability
 	 */
 	public static boolean targeting(Player player, LivingEntity target)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		Location toHit = aimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -253,7 +253,7 @@ public abstract class Ability
 
 	private static boolean doAbilityPreProcess(Player player, int cost)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 		if(!ZoneUtility.canTarget(player))
 		{
@@ -288,7 +288,7 @@ public abstract class Ability
 			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
 			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
-				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 				if(!Demigods.permission.hasPermissionOrOP(player, ability.getInfo().getPermission())) return true;
 

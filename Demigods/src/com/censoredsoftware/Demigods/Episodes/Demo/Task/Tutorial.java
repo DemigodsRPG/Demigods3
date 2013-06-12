@@ -68,7 +68,7 @@ class TutorialTask extends Task
 		{
 			Player player = event.getPlayer();
 
-			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, name);

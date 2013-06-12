@@ -64,8 +64,8 @@ public class EntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-				PlayerCharacter hitChar = DemigodsPlayer.getTracked(hit).getCurrent();
-				PlayerCharacter hittingChar = DemigodsPlayer.getTracked(hitting).getCurrent();
+				PlayerCharacter hitChar = DemigodsPlayer.getPlayer(hit).getCurrent();
+				PlayerCharacter hittingChar = DemigodsPlayer.getPlayer(hitting).getCurrent();
 
 				// TrackedBattle.battleProcess(hitChar, hittingChar);
 			}
@@ -79,7 +79,7 @@ public class EntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 			if(character == null) return;
 			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
 

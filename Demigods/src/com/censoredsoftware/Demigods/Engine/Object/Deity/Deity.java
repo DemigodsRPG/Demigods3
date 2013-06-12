@@ -80,7 +80,7 @@ public abstract class Deity
 
 	public static boolean canUseDeity(Player player, String deity)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		if(!character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
@@ -96,7 +96,7 @@ public abstract class Deity
 
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		return character != null && character.isDeity(deity) && character.isImmortal();
 	}
 }

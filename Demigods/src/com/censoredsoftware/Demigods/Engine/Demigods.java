@@ -234,7 +234,7 @@ class EventFactory implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacter playerChar = DemigodsPlayer.getTracked(player).getCurrent();
+			PlayerCharacter playerChar = DemigodsPlayer.getPlayer(player).getCurrent();
 
 			// if(playerChar != null) // TODO Killstreak in a new way.
 			// {
@@ -252,7 +252,7 @@ class EventFactory implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = DemigodsPlayer.getTracked(attacker).getCurrent();
+					PlayerCharacter attackChar = DemigodsPlayer.getPlayer(attacker).getCurrent();
 					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, DemigodsPlayer.getCurrentAlliance(player)));
 					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 
@@ -600,7 +600,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -657,7 +657,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -714,7 +714,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -772,7 +772,7 @@ class Commands implements CommandExecutor
 	private static boolean check(CommandSender sender, String[] args)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{

@@ -265,7 +265,7 @@ class AltarMenu extends Task
 				// View Warps
 				else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 				{
-					if(DemigodsPlayer.getTracked(player).getCurrent() == null) return;
+					if(DemigodsPlayer.getPlayer(player).getCurrent() == null) return;
 
 					MiscUtility.clearChat(player);
 
@@ -277,7 +277,7 @@ class AltarMenu extends Task
 				// View Characters
 				else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 				{
-					if(DemigodsPlayer.getTracked(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getTracked(player).getCurrent())) return;
+					if(DemigodsPlayer.getPlayer(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getPlayer(player).getCurrent())) return;
 
 					MiscUtility.clearChat(player);
 
@@ -441,7 +441,7 @@ class AltarMenu extends Task
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		if(character != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
@@ -495,7 +495,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewWarps(Player player)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
@@ -537,7 +537,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewInvites(Player player)
 	{
-		for(Map.Entry<DemigodsLocation, String> invite : DemigodsPlayer.getTracked(player).getCurrent().getInvites().entrySet())
+		for(Map.Entry<DemigodsLocation, String> invite : DemigodsPlayer.getPlayer(player).getCurrent().getInvites().entrySet())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getValue());
 		}
@@ -592,13 +592,13 @@ class AltarMenu extends Task
 		if(newChar != null)
 		{
 			// Make sure they aren't trying to switch to their current character
-			if(DemigodsPlayer.getTracked(player).getCurrent().getName().equals(newChar.getName()))
+			if(DemigodsPlayer.getPlayer(player).getCurrent().getName().equals(newChar.getName()))
 			{
 				player.sendMessage(ChatColor.RED + "You can't switch to your current character.");
 				return;
 			}
 
-			DemigodsPlayer.getTracked(player).switchCharacter(newChar);
+			DemigodsPlayer.getPlayer(player).switchCharacter(newChar);
 
 			player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 			player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
@@ -750,7 +750,7 @@ class AltarMenu extends Task
 
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			// Save named DemigodsLocation for warp.
@@ -785,7 +785,7 @@ class AltarMenu extends Task
 
 	protected static void inviteWarp(Player player, String name)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		PlayerCharacter invited = PlayerCharacter.getCharByName(name);
 
 		if(character == null) return;
@@ -821,7 +821,7 @@ class AltarMenu extends Task
 
 	protected static void acceptInvite(Player player, String name)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		DemigodsLocation invite = DemigodsLocation.getInvite(character, name);
 
 		if(invite != null)
@@ -841,7 +841,7 @@ class AltarMenu extends Task
 
 	protected static void warpChar(Player player, String warpName)
 	{
-		for(Map.Entry<DemigodsLocation, String> warp : DemigodsPlayer.getTracked(player).getCurrent().getWarps().entrySet())
+		for(Map.Entry<DemigodsLocation, String> warp : DemigodsPlayer.getPlayer(player).getCurrent().getWarps().entrySet())
 		{
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{

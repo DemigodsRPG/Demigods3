@@ -61,7 +61,7 @@ public class DemigodsPlayer
 		}
 	}
 
-	public static DemigodsPlayer getTracked(OfflinePlayer player)
+	public static DemigodsPlayer getPlayer(OfflinePlayer player)
 	{
 		try
 		{
@@ -70,7 +70,7 @@ public class DemigodsPlayer
 		}
 		catch(Exception ignored)
 		{}
-		return DemigodsModelFactory.createTrackedPlayer(player);
+		return DemigodsModelFactory.createDemigodsPlayer(player);
 	}
 
 	public OfflinePlayer getOfflinePlayer()
@@ -174,7 +174,7 @@ public class DemigodsPlayer
 	 */
 	public static String getCurrentAlliance(OfflinePlayer player)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		if(character == null || !character.isImmortal()) return "Mortal";
 		return character.getAlliance();
 	}
@@ -187,7 +187,7 @@ public class DemigodsPlayer
 	 */
 	public static List<PlayerCharacter> getChars(OfflinePlayer player)
 	{
-		return DemigodsPlayer.getTracked(player).getCharacters();
+		return DemigodsPlayer.getPlayer(player).getCharacters();
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class DemigodsPlayer
 	 */
 	public static boolean isImmortal(OfflinePlayer player)
 	{
-		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		return character != null && character.isImmortal();
 	}
 
