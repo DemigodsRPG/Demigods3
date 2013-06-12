@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Quest;
+package com.censoredsoftware.Demigods.Engine.Task;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ public class TaskInfo
 	private int order;
 	private double award, penalty;
 	private List<String> about, accepted, complete, failed;
-	private Quest.Type type;
+	private TaskSet.Type type;
 	private Subtype subtype;
 
-	public TaskInfo(String name, String quest, String permission, int order, double award, double penalty, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type, Subtype subtype)
+	public TaskInfo(String name, String quest, String permission, int order, double award, double penalty, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type, Subtype subtype)
 	{
 		this.name = name;
 		this.quest = quest;
@@ -82,7 +82,7 @@ public class TaskInfo
 		return failed;
 	}
 
-	public Quest.Type getType()
+	public TaskSet.Type getType()
 	{
 		return type;
 	}

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Quest.Passive;
+package com.censoredsoftware.Demigods.Episodes.Demo.Task.Static;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +25,17 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Quest.Quest;
-import com.censoredsoftware.Demigods.Engine.Quest.Task;
-import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
+import com.censoredsoftware.Demigods.Engine.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
-public class AltarQuest extends Quest
+public class AltarTasks extends TaskSet
 {
 	private static String name = "Altar", permission = "demigods.altar";
 	private static Type type = Type.PASSIVE;
@@ -72,7 +72,7 @@ public class AltarQuest extends Quest
 		}
 	};
 
-	public AltarQuest()
+	public AltarTasks()
 	{
 		super(name, permission, about, accepted, complete, failed, type, tasks);
 	}
@@ -417,7 +417,7 @@ class AltarMenu extends Task
 		}
 	};
 
-	public AltarMenu(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
+	public AltarMenu(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
 	{
 		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.TECHNICAL), listener);
 	}
@@ -916,7 +916,7 @@ class AltarGenerate extends Task
 		}
 	};
 
-	public AltarGenerate(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
+	public AltarGenerate(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
 	{
 		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.TECHNICAL), listener);
 	}

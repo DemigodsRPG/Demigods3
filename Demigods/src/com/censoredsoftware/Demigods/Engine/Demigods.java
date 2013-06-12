@@ -31,10 +31,10 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharact
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Quest.Quest;
-import com.censoredsoftware.Demigods.Engine.Quest.Task;
 import com.censoredsoftware.Demigods.Engine.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
@@ -63,7 +63,7 @@ public class Demigods
 
 	// The Game Data
 	protected static Deque<Deity> deities;
-	protected static Deque<Quest> quests;
+	protected static Deque<TaskSet> quests;
 
 	// The Engline Default Text
 	public static Translation text;
@@ -75,7 +75,7 @@ public class Demigods
 
 	public interface ListedQuest
 	{
-		public Quest getQuest();
+		public TaskSet getQuest();
 	}
 
 	public interface ListedStructure
@@ -106,7 +106,7 @@ public class Demigods
 				}
 			}
 		};
-		Demigods.quests = new ArrayDeque<Quest>()
+		Demigods.quests = new ArrayDeque<TaskSet>()
 		{
 			{
 				for(ListedQuest quest : quests)
@@ -169,7 +169,7 @@ public class Demigods
 		}
 
 		// Quests
-		for(Quest quest : getLoadedQuests())
+		for(TaskSet quest : getLoadedQuests())
 		{
 			if(quest.getTasks() == null) continue;
 			for(Task task : quest.getTasks())
@@ -213,7 +213,7 @@ public class Demigods
 		return Demigods.deities;
 	}
 
-	public static Deque<Quest> getLoadedQuests()
+	public static Deque<TaskSet> getLoadedQuests()
 	{
 		return Demigods.quests;
 	}

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Quest;
+package com.censoredsoftware.Demigods.Episodes.Demo.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Quest.Quest;
-import com.censoredsoftware.Demigods.Engine.Quest.Task;
-import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
 
-public class Tutorial extends Quest
+public class Tutorial extends TaskSet
 {
 	private static String name = "Tutorial", permission = "demigods.tutorial";
 	private static List<String> about = new ArrayList<String>()
@@ -80,7 +80,7 @@ class TutorialTask extends Task
 		}
 	};
 
-	public TutorialTask(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
+	public TutorialTask(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
 	{
 		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.QUEST), listener);
 	}

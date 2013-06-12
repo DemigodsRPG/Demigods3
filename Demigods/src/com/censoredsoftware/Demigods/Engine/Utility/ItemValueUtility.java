@@ -2,7 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.inventory.ItemStack;
 
-public class ValueUtility
+public class ItemValueUtility
 {
 	/**
 	 * Returns the value of the passed in <code>item</code>.

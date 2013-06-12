@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Quest;
+package com.censoredsoftware.Demigods.Engine.Task;
 
 import org.bukkit.event.Listener;
 

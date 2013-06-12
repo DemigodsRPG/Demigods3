@@ -1,15 +1,15 @@
-package com.censoredsoftware.Demigods.Engine.Quest;
+package com.censoredsoftware.Demigods.Engine.Task;
 
 import java.util.List;
 
-public class Quest
+public class TaskSet
 {
 	private String name, permission;
 	private List<String> about, accepted, complete, failed;
 	private Type type;
 	private List<Task> tasks;
 
-	public Quest(String name, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Type type, List<Task> tasks)
+	public TaskSet(String name, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Type type, List<Task> tasks)
 	{
 		this.name = name;
 		this.permission = permission;
@@ -61,7 +61,7 @@ public class Quest
 		return tasks;
 	}
 
-	public Quest.Type getType()
+	public TaskSet.Type getType()
 	{
 		return type;
 	}

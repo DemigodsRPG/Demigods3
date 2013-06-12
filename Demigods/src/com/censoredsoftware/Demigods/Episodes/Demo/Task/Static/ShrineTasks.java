@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Quest.Passive;
+package com.censoredsoftware.Demigods.Episodes.Demo.Task.Static;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +17,15 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Quest.Quest;
-import com.censoredsoftware.Demigods.Engine.Quest.Task;
-import com.censoredsoftware.Demigods.Engine.Quest.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ValueUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ItemValueUtility;
 
-public class ShrineQuest extends Quest
+public class ShrineTasks extends TaskSet
 {
 	private static String name = "Shrine", permission = "demigods.shrine";
 	private static Type type = Type.PASSIVE;
@@ -61,7 +61,7 @@ public class ShrineQuest extends Quest
 		}
 	};
 
-	public ShrineQuest()
+	public ShrineTasks()
 	{
 		super(name, permission, about, accepted, complete, failed, type, tasks);
 	}
@@ -142,7 +142,7 @@ class Tribute extends Task
 			{
 				if(item != null)
 				{
-					tributeValue += ValueUtility.getTributeValue(item);
+					tributeValue += ItemValueUtility.getTributeValue(item);
 					items += item.getAmount();
 				}
 			}
@@ -229,7 +229,7 @@ class Tribute extends Task
 		DataUtility.saveTemp(player.getName(), character.getName(), shrineOwner);
 	}
 
-	public Tribute(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, Quest.Type type)
+	public Tribute(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
 	{
 		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.TECHNICAL), listener);
 	}
