@@ -18,13 +18,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsBlock;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureFactory;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -36,7 +36,7 @@ public class BlockListener implements Listener
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(TrackedBlock.isProtected(location))
+		if(DemigodsBlock.isProtected(location))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TextUtility.Text.PROTECTED_BLOCK));
@@ -47,14 +47,14 @@ public class BlockListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(TrackedBlock.isProtected(location)) event.setCancelled(true);
+		if(DemigodsBlock.isProtected(location)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(TrackedBlock.isProtected(location)) event.setCancelled(true);
+		if(DemigodsBlock.isProtected(location)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -66,7 +66,7 @@ public class BlockListener implements Listener
 		{
 			Location location = block.getLocation();
 
-			if(TrackedBlock.isProtected(location))
+			if(DemigodsBlock.isProtected(location))
 			{
 				event.setCancelled(true);
 				break;
@@ -79,7 +79,7 @@ public class BlockListener implements Listener
 	{
 		final Block block = event.getBlock().getRelative(event.getDirection(), 2);
 
-		if(TrackedBlock.isProtected(block.getLocation()) && event.isSticky())
+		if(DemigodsBlock.isProtected(block.getLocation()) && event.isSticky())
 		{
 			event.setCancelled(true);
 		}
@@ -130,7 +130,7 @@ public class BlockListener implements Listener
 	 * {
 	 * try
 	 * {
-	 * if(TrackedBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+	 * if(DemigodsBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
 	 * {
 	 * event.setDamage(0);
 	 * event.setCancelled(true);
@@ -191,9 +191,9 @@ public class BlockListener implements Listener
 		/**
 		 * Handle Shrines
 		 */
-		if(TrackedPlayer.isImmortal(player))
+		if(DemigodsPlayer.isImmortal(player))
 		{
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Shrine.validBlockConfiguration(event.getClickedBlock()))
 			{
@@ -254,7 +254,7 @@ public class BlockListener implements Listener
 		/**
 		 * Entering Altar
 		 */
-		if(ZoneUtility.enterZoneAltar(to, from) && !TrackedLocation.hasWarp(ZoneUtility.zoneAltar(to), TrackedPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
+		if(ZoneUtility.enterZoneAltar(to, from) && !DemigodsLocation.hasWarp(ZoneUtility.zoneAltar(to), DemigodsPlayer.getTracked(player).getCurrent())) // TODO This is an annoying message.
 		{
 			// player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_WARP_ALTAR));
 		}

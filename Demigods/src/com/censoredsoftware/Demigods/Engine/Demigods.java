@@ -23,20 +23,20 @@ import org.bukkit.plugin.Plugin;
 
 import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.DemigodsBukkit;
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedBlock;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsBlock;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.censoredsoftware.Modules.*;
 import com.massivecraft.factions.P;
@@ -130,7 +130,7 @@ public class Demigods
 		loadCommands(instance);
 
 		// Finally, regenerate structures
-		TrackedBlock.regenerateStructures();
+		DemigodsBlock.regenerateStructures();
 	}
 
 	/**
@@ -234,7 +234,7 @@ class EventFactory implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacter playerChar = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter playerChar = DemigodsPlayer.getTracked(player).getCurrent();
 
 			// if(playerChar != null) // TODO Killstreak in a new way.
 			// {
@@ -252,8 +252,8 @@ class EventFactory implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = TrackedPlayer.getTracked(attacker).getCurrent();
-					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, TrackedPlayer.getCurrentAlliance(player)));
+					PlayerCharacter attackChar = DemigodsPlayer.getTracked(attacker).getCurrent();
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, DemigodsPlayer.getCurrentAlliance(player)));
 					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 
 					if(attackChar != null)
@@ -552,7 +552,7 @@ class Commands implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final List<PlayerCharacter> chars = TrackedPlayer.getChars(toCheck);
+					final List<PlayerCharacter> chars = DemigodsPlayer.getChars(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
@@ -600,7 +600,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = TrackedPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -657,7 +657,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = TrackedPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -714,7 +714,7 @@ class Commands implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = TrackedPlayer.getTracked(toEdit).getCurrent();
+					character = DemigodsPlayer.getTracked(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -772,7 +772,7 @@ class Commands implements CommandExecutor
 	private static boolean check(CommandSender sender, String[] args)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{
@@ -871,7 +871,7 @@ class Commands implements CommandExecutor
 				}
 			}
 
-			if(TrackedBlock.getAllBlocks().isEmpty())
+			if(DemigodsBlock.getAllBlocks().isEmpty())
 			{
 				sender.sendMessage(" ");
 				sender.sendMessage("-- Blocks -------------------");
@@ -912,7 +912,7 @@ class Commands implements CommandExecutor
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		String charName = args[0];
 
-		if(TrackedPlayer.hasCharName(player, charName))
+		if(DemigodsPlayer.hasCharName(player, charName))
 		{
 			PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
 			character.remove();

@@ -22,17 +22,17 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureFactory;
-import com.censoredsoftware.Demigods.Engine.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Task.TaskInfo;
-import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedLocation;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedModelFactory;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureFactory;
+import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class AltarTasks extends TaskSet
@@ -97,7 +97,7 @@ class AltarMenu extends Task
 			// First we check if the player is in an Altar and return if not
 			if(Altar.isAltar(event.getClickedBlock().getLocation()))
 			{
-				if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !TrackedPlayer.isPraying(player))
+				if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !DemigodsPlayer.isPraying(player))
 				{
 					if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
 					{
@@ -106,7 +106,7 @@ class AltarMenu extends Task
 						event.setCancelled(true);
 						return;
 					}
-					TrackedPlayer.togglePraying(player, true);
+					DemigodsPlayer.togglePraying(player, true);
 
 					// First we clear chat
 					MiscUtility.clearChat(player);
@@ -130,9 +130,9 @@ class AltarMenu extends Task
 
 					event.setCancelled(true);
 				}
-				else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && TrackedPlayer.isPraying(player))
+				else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && DemigodsPlayer.isPraying(player))
 				{
-					TrackedPlayer.togglePraying(player, false);
+					DemigodsPlayer.togglePraying(player, false);
 
 					// Clear whatever is being worked on in this Pray session
 					DataUtility.removeTemp(player.getName(), "temp_createchar");
@@ -150,7 +150,7 @@ class AltarMenu extends Task
 			Location location = player.getLocation();
 
 			// First we check if the player is in/time an Altar and currently praying, if not we'll return
-			if(ZoneUtility.zoneAltar(location) != null && TrackedPlayer.isPraying(player))
+			if(ZoneUtility.zoneAltar(location) != null && DemigodsPlayer.isPraying(player))
 			{
 				// Cancel their chat
 				event.setCancelled(true);
@@ -265,7 +265,7 @@ class AltarMenu extends Task
 				// View Warps
 				else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 				{
-					if(TrackedPlayer.getTracked(player).getCurrent() == null) return;
+					if(DemigodsPlayer.getTracked(player).getCurrent() == null) return;
 
 					MiscUtility.clearChat(player);
 
@@ -277,7 +277,7 @@ class AltarMenu extends Task
 				// View Characters
 				else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 				{
-					if(TrackedPlayer.getTracked(player).getCurrent() == null || !TrackedLocation.hasInvites(TrackedPlayer.getTracked(player).getCurrent())) return;
+					if(DemigodsPlayer.getTracked(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getTracked(player).getCurrent())) return;
 
 					MiscUtility.clearChat(player);
 
@@ -359,7 +359,7 @@ class AltarMenu extends Task
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 				// Exit if this isn't for character creation
-				if(!TrackedPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
+				if(!DemigodsPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
 
 				// Define variables
 				String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
@@ -394,7 +394,7 @@ class AltarMenu extends Task
 					DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 					// Stop their praying, enable movement, enable chat
-					TrackedPlayer.togglePraying(player, false);
+					DemigodsPlayer.togglePraying(player, false);
 
 					// Remove old data now
 					DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
@@ -441,11 +441,11 @@ class AltarMenu extends Task
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		if(character != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
-			if(TrackedLocation.hasInvites(character)) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
+			if(DemigodsLocation.hasInvites(character)) player.sendMessage(ChatColor.GRAY + "   [4.] " + ChatColor.DARK_PURPLE + "View Invites");
 			player.sendMessage(" ");
 			player.sendMessage(ChatColor.GRAY + " Type" + ChatColor.YELLOW + " invite <character name> " + ChatColor.GRAY + "to invite another player here.");
 		}
@@ -456,7 +456,7 @@ class AltarMenu extends Task
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		final List<PlayerCharacter> chars = TrackedPlayer.getChars(player);
+		final List<PlayerCharacter> chars = DemigodsPlayer.getChars(player);
 
 		if(chars.isEmpty())
 		{
@@ -495,7 +495,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewWarps(Player player)
 	{
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no Altar warps. Why not go make one?");
@@ -508,7 +508,7 @@ class AltarMenu extends Task
 		player.sendMessage(" ");
 		boolean hasWarp = false;
 
-		for(Map.Entry<TrackedLocation, String> warp : character.getWarps().entrySet())
+		for(Map.Entry<DemigodsLocation, String> warp : character.getWarps().entrySet())
 		{
 			String color = "";
 			String name = warp.getValue();
@@ -537,7 +537,7 @@ class AltarMenu extends Task
 	// View warps
 	protected static void viewInvites(Player player)
 	{
-		for(Map.Entry<TrackedLocation, String> invite : TrackedPlayer.getTracked(player).getCurrent().getInvites().entrySet())
+		for(Map.Entry<DemigodsLocation, String> invite : DemigodsPlayer.getTracked(player).getCurrent().getInvites().entrySet())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getValue());
 		}
@@ -592,13 +592,13 @@ class AltarMenu extends Task
 		if(newChar != null)
 		{
 			// Make sure they aren't trying to switch to their current character
-			if(TrackedPlayer.getTracked(player).getCurrent().getName().equals(newChar.getName()))
+			if(DemigodsPlayer.getTracked(player).getCurrent().getName().equals(newChar.getName()))
 			{
 				player.sendMessage(ChatColor.RED + "You can't switch to your current character.");
 				return;
 			}
 
-			TrackedPlayer.getTracked(player).switchCharacter(newChar);
+			DemigodsPlayer.getTracked(player).switchCharacter(newChar);
 
 			player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 			player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
@@ -607,13 +607,13 @@ class AltarMenu extends Task
 			DataUtility.saveTemp(player.getName(), "temp_chat_number", 0);
 
 			// Disable prayer
-			TrackedPlayer.togglePraying(player, false);
+			DemigodsPlayer.togglePraying(player, false);
 		}
 		else
 		{
 			player.sendMessage(ChatColor.RED + "Your current character couldn't be changed...");
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
-			TrackedPlayer.togglePrayingSilent(player, false);
+			DemigodsPlayer.togglePrayingSilent(player, false);
 		}
 	}
 
@@ -629,12 +629,12 @@ class AltarMenu extends Task
 	protected static void confirmName(Player player, String message)
 	{
 		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || TrackedPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || DemigodsPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
 			DataUtility.saveTemp(player.getName(), "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
-			if(TrackedPlayer.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
+			if(DemigodsPlayer.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
 			if(MiscUtility.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
@@ -750,11 +750,11 @@ class AltarMenu extends Task
 
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
-			// Save named TrackedLocation for warp.
-			character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
+			// Save named DemigodsLocation for warp.
+			character.addWarp(DemigodsModelFactory.createTrackedLocation(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -770,7 +770,7 @@ class AltarMenu extends Task
 		}
 
 		// Check for same altars
-		for(TrackedLocation warp : character.getWarps().keySet())
+		for(DemigodsLocation warp : character.getWarps().keySet())
 		{
 			if(ZoneUtility.zoneAltar(warp.toLocation()) == ZoneUtility.zoneAltar(player.getLocation()))
 			{
@@ -778,14 +778,14 @@ class AltarMenu extends Task
 			}
 		}
 
-		// Save named TrackedLocation for warp.
-		character.addWarp(TrackedModelFactory.createTrackedLocation(player.getLocation()), name);
+		// Save named DemigodsLocation for warp.
+		character.addWarp(DemigodsModelFactory.createTrackedLocation(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
 	protected static void inviteWarp(Player player, String name)
 	{
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		PlayerCharacter invited = PlayerCharacter.getCharByName(name);
 
 		if(character == null) return;
@@ -808,10 +808,10 @@ class AltarMenu extends Task
 			return;
 		}
 
-		if(TrackedLocation.alreadyInvited(character, invited)) TrackedLocation.removeInvite(character, TrackedLocation.getInvite(character, invited));
+		if(DemigodsLocation.alreadyInvited(character, invited)) DemigodsLocation.removeInvite(character, DemigodsLocation.getInvite(character, invited));
 
-		TrackedLocation.addInvite(character, invited);
-		TrackedPlayer.togglePraying(player, false);
+		DemigodsLocation.addInvite(character, invited);
+		DemigodsPlayer.togglePraying(player, false);
 		MiscUtility.clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
@@ -821,19 +821,19 @@ class AltarMenu extends Task
 
 	protected static void acceptInvite(Player player, String name)
 	{
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
-		TrackedLocation invite = TrackedLocation.getInvite(character, name);
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
+		DemigodsLocation invite = DemigodsLocation.getInvite(character, name);
 
 		if(invite != null)
 		{
-			TrackedPlayer.togglePraying(player, false);
+			DemigodsPlayer.togglePraying(player, false);
 			MiscUtility.clearChat(player);
 
 			player.teleport(invite.toLocation());
 
 			// TODO player.sendMessage(ChatColor.GRAY + "Warp to " + ChatColor.YELLOW + invite.getName().toUpperCase() + ChatColor.GRAY + " complete.");
 
-			TrackedLocation.removeInvite(character, invite);
+			DemigodsLocation.removeInvite(character, invite);
 			return;
 		}
 		player.sendMessage(ChatColor.GRAY + "No invite by that name exists, try again.");
@@ -841,11 +841,11 @@ class AltarMenu extends Task
 
 	protected static void warpChar(Player player, String warpName)
 	{
-		for(Map.Entry<TrackedLocation, String> warp : TrackedPlayer.getTracked(player).getCurrent().getWarps().entrySet())
+		for(Map.Entry<DemigodsLocation, String> warp : DemigodsPlayer.getTracked(player).getCurrent().getWarps().entrySet())
 		{
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{
-				TrackedPlayer.togglePraying(player, false);
+				DemigodsPlayer.togglePraying(player, false);
 				MiscUtility.clearChat(player);
 
 				player.teleport(warp.getKey().toLocation());

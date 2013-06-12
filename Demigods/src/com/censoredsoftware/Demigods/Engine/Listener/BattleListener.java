@@ -8,10 +8,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.BattleUtility;
 
 public class BattleListener implements Listener
@@ -22,16 +22,16 @@ public class BattleListener implements Listener
 		// Handle returns
 		if(!(event.getEntity() instanceof Player)) return;
 		if(!(event.getDamager() instanceof Player)) return;
-		if(TrackedPlayer.getTracked((Player) event.getEntity()).getCurrent() == null) return;
-		if(TrackedPlayer.getTracked((Player) event.getDamager()).getCurrent() == null) return;
+		if(DemigodsPlayer.getTracked((Player) event.getEntity()).getCurrent() == null) return;
+		if(DemigodsPlayer.getTracked((Player) event.getDamager()).getCurrent() == null) return;
 
 		// Define players
 		Player damageePlayer = (Player) event.getEntity();
 		Player damagerPlayer = (Player) event.getDamager();
 
 		// Define characters
-		PlayerCharacter damageeCharacter = TrackedPlayer.getTracked(damageePlayer).getCurrent();
-		PlayerCharacter damagerCharacter = TrackedPlayer.getTracked(damagerPlayer).getCurrent();
+		PlayerCharacter damageeCharacter = DemigodsPlayer.getTracked(damageePlayer).getCurrent();
+		PlayerCharacter damagerCharacter = DemigodsPlayer.getTracked(damagerPlayer).getCurrent();
 
 		// Calculate midpoint location
 		Location midpoint = damagerPlayer.getLocation().toVector().getMidpoint(damageePlayer.getLocation().toVector()).toLocation(damagerPlayer.getWorld());

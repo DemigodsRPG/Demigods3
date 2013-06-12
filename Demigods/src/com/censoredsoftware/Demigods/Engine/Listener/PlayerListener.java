@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.censoredsoftware.Modules.QuitReasonFilter;
@@ -29,8 +29,8 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
-		TrackedPlayer tracked = TrackedPlayer.getTracked(player);
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		DemigodsPlayer tracked = DemigodsPlayer.getTracked(player);
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 		// Set their lastlogintime
 		Long now = System.currentTimeMillis();
@@ -73,7 +73,7 @@ public class PlayerListener implements Listener
 		}
 
 		// Handle prayer disable
-		if(TrackedPlayer.isPraying(player) && to.distance((Location) DataUtility.getValueTemp(player.getName(), "praying_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) TrackedPlayer.togglePraying(player, false);
+		if(DemigodsPlayer.isPraying(player) && to.distance((Location) DataUtility.getValueTemp(player.getName(), "praying_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) DemigodsPlayer.togglePraying(player, false);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -85,7 +85,7 @@ public class PlayerListener implements Listener
 		Location from = event.getFrom();
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
-		if(TrackedPlayer.isPraying(player)) TrackedPlayer.togglePraying(player, false);
+		if(DemigodsPlayer.isPraying(player)) DemigodsPlayer.togglePraying(player, false);
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DataUtility.hasKeyTemp(player.getName(), "teleport_ability"))

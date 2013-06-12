@@ -6,8 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 
 public class CommandListener implements Listener
 {

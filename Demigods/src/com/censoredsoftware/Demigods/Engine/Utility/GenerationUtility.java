@@ -8,8 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.censoredsoftware.Demigods.Engine.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureSchematic;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.google.common.collect.Sets;
 
 public class GenerationUtility

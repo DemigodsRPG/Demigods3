@@ -10,8 +10,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -64,8 +64,8 @@ public class EntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-				PlayerCharacter hitChar = TrackedPlayer.getTracked(hit).getCurrent();
-				PlayerCharacter hittingChar = TrackedPlayer.getTracked(hitting).getCurrent();
+				PlayerCharacter hitChar = DemigodsPlayer.getTracked(hit).getCurrent();
+				PlayerCharacter hittingChar = DemigodsPlayer.getTracked(hitting).getCurrent();
 
 				// TrackedBattle.battleProcess(hitChar, hittingChar);
 			}
@@ -79,7 +79,7 @@ public class EntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 			if(character == null) return;
 			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
 

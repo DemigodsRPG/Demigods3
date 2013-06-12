@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 
 public class CharacterListener implements Listener

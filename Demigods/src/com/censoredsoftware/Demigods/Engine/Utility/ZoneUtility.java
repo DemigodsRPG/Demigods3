@@ -5,8 +5,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;

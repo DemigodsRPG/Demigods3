@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.google.common.collect.Sets;
 
 public class StructureListener implements Listener

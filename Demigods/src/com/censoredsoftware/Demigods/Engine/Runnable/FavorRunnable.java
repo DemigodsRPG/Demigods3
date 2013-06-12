@@ -3,8 +3,8 @@ package com.censoredsoftware.Demigods.Engine.Runnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 public class FavorRunnable implements Runnable
 {
@@ -20,7 +20,7 @@ public class FavorRunnable implements Runnable
 	{
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 			if(character == null || !character.isImmortal()) continue;
 			int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 			if(regenRate < 5) regenRate = 5;

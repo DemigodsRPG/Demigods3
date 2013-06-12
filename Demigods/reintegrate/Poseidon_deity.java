@@ -3,7 +3,7 @@ package com.censoredsoftware.Demigods.Core.Demo.Deity.God;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,10 +20,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent.AbilityType;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 public class Poseidon_deity extends Deity implements Listener
 {

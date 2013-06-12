@@ -18,13 +18,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Sets;
@@ -72,7 +72,7 @@ public class Zeus extends Deity
 	protected static boolean strikeLightning(Player player, LivingEntity target)
 	{
 		// Set variables
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!ZoneUtility.canTarget(target)) return false;
@@ -124,7 +124,7 @@ class Shove extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -142,7 +142,7 @@ class Shove extends Ability
 	public static void shove(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		int ascensions = character.getMeta().getAscensions();
 		double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 		LivingEntity target = Ability.autoTarget(player);
@@ -185,7 +185,7 @@ class Lightning extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -202,7 +202,7 @@ class Lightning extends Ability
 	protected static void lightning(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "lightning", cost, info)) return;
@@ -237,7 +237,7 @@ class Storm extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -257,7 +257,7 @@ class Storm extends Ability
 	public static void storm(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
@@ -271,7 +271,7 @@ class Storm extends Ability
 			if(entity instanceof Player)
 			{
 				Player otherPlayer = (Player) entity;
-				PlayerCharacter otherChar = TrackedPlayer.getTracked(otherPlayer).getCurrent();
+				PlayerCharacter otherChar = DemigodsPlayer.getTracked(otherPlayer).getCurrent();
 				if(otherPlayer.equals(player)) continue;
 				if(otherChar != null && !PlayerCharacter.areAllied(character, otherChar) && !otherPlayer.equals(player))
 				{

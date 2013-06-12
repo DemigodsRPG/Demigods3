@@ -14,14 +14,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Structure.Shrine;
-import com.censoredsoftware.Demigods.Engine.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Task.TaskInfo;
-import com.censoredsoftware.Demigods.Engine.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ItemValueUtility;
 
@@ -80,13 +80,13 @@ class Tribute extends Task
 		public void onShrineInteract(PlayerInteractEvent event)
 		{
 			// Return if the player is mortal
-			if(!TrackedPlayer.isImmortal(event.getPlayer())) return;
+			if(!DemigodsPlayer.isImmortal(event.getPlayer())) return;
 			if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 			// Define variables
 			Location location = event.getClickedBlock().getLocation();
 			Player player = event.getPlayer();
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 			if(Shrine.isShrine(location))
 			{
@@ -125,7 +125,7 @@ class Tribute extends Task
 
 			// Define player and character
 			Player player = (Player) event.getPlayer();
-			PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+			PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 			// Make sure they have a character and are immortal
 			if(character == null || !character.isImmortal()) return;
@@ -177,7 +177,7 @@ class Tribute extends Task
 					shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 					// Message them
-					if(shrineOwnerPlayer.isOnline() && TrackedPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+					if(shrineOwnerPlayer.isOnline() && DemigodsPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap is now " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -199,7 +199,7 @@ class Tribute extends Task
 					shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 					// Message them
-					if(shrineOwnerPlayer.isOnline() && TrackedPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+					if(shrineOwnerPlayer.isOnline() && DemigodsPlayer.getTracked(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 					{
 						((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 						if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");

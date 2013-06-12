@@ -2,7 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Location;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 
 public class BattleUtility
 {

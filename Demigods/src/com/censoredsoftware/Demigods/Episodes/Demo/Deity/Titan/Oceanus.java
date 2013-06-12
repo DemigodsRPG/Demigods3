@@ -14,11 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Oceanus extends Deity

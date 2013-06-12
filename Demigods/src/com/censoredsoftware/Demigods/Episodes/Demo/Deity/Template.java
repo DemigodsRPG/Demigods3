@@ -14,13 +14,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.Demigods.Engine.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Tracked.TrackedPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
@@ -85,7 +85,7 @@ class Test extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+				PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -103,7 +103,7 @@ class Test extends Ability
 	public static void test(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = TrackedPlayer.getTracked(player).getCurrent();
+		PlayerCharacter character = DemigodsPlayer.getTracked(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;
