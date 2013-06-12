@@ -95,6 +95,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+// TODO Remove this event and replace with a method to be called when this event would be triggered.
+
 /*
  * Represents an event that is called when an Altar is created.
  */
