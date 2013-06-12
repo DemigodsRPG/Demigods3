@@ -349,7 +349,7 @@ class Fly extends Ability
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				// PHELPS FLYING (YES, PHELPS CAN FLY)
-				if(player.isSneaking() && player.getLocation().getBlock().getType().equals(Material.AIR) && player.getLocation().distance(player.getLocation().getWorld().getHighestBlockAt(player.getLocation()).getLocation().clone().add(0, 7, 0)) >= 7)
+				if(player.isSneaking() && player.getLocation().getBlock().getType().equals(Material.AIR) && player.getLocation().distance(player.getLocation().getWorld().getHighestBlockAt(player.getLocation()).getLocation().clone().add(0, 15, 0)) <= 15)
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
