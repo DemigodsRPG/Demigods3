@@ -56,6 +56,7 @@ public class Poseidon extends Deity
 		{
 			add(new Swim());
 			add(new Reel());
+			add(new InfiniteAir());
 		}
 	};
 
@@ -158,5 +159,37 @@ class Reel extends Ability
 			target.getLocation().getBlock().setType(Material.WATER);
 			target.getLocation().getBlock().setData((byte) 0x8);
 		}
+	}
+}
+
+class InfiniteAir extends Ability
+{
+	private static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
+	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Have infinite air when in the water.");
+		}
+	};
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
+
+	protected InfiniteAir()
+	{
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGH)
+			public void onPlayerMove(PlayerMoveEvent event)
+			{
+				Player player = event.getPlayer();
+				if(!Deity.canUseDeitySilent(player, deity)) return;
+
+				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
+				{
+					player.setRemainingAir(20);
+				}
+			}
+		});
 	}
 }
