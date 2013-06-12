@@ -170,7 +170,7 @@ class InfiniteAir extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Have infinite air when in the water.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Have infinite air when moving underwater.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
