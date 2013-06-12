@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
@@ -58,6 +59,7 @@ public class Zeus extends Deity
 	{
 		{
 			add(new NoFall());
+			add(new Fly());
 			add(new Shove());
 			add(new Lightning());
 			add(new Storm());
@@ -317,6 +319,41 @@ class NoFall extends Ability
 
 					// If the player receives falling damage, cancel it
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) damageEvent.setCancelled(true);
+				}
+			}
+		});
+	}
+}
+
+class Fly extends Ability
+{
+	private static String deity = "Zeus", name = "Fly", command = null, permission = "demigods.god.zeus";
+	private static int cost = 0, delay = 0, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in the air to fly like Zeus.");
+		}
+	};
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
+
+	protected Fly()
+	{
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGH)
+			public void onPlayerMove(PlayerMoveEvent event)
+			{
+				Player player = event.getPlayer();
+				if(!Deity.canUseDeitySilent(player, deity)) return;
+
+				// PHELPS FLYING (YES, PHELPS CAN FLY)
+				if(player.getLocation().getBlock().getType().equals(Material.AIR) && player.getLocation().clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR))
+				{
+					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
+					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
+					if(player.isSneaking()) player.setVelocity(victor);
 				}
 			}
 		});
