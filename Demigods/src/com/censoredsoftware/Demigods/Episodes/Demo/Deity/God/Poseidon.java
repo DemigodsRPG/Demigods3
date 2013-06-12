@@ -102,7 +102,7 @@ class Swim extends Ability
 
 class Reel extends Ability
 {
-	private static String deity = "Poseidon", name = "Reel", command = "/reel", permission = "demigods.god.poseidon";
+	private static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
 	private static int cost = 120, delay = 1100, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
