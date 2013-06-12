@@ -283,13 +283,12 @@ public abstract class Ability
 
 	public static boolean invokeAbilityCommand(Player player, String command, boolean bind)
 	{
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 		for(Ability ability : getLoadedAbilities())
 		{
 			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
 			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
-				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
-
 				if(!Demigods.permission.hasPermissionOrOP(player, ability.getInfo().getPermission())) return true;
 
 				if(!Deity.canUseDeity(player, ability.getInfo().getDeity())) return true;
