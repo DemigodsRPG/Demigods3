@@ -305,12 +305,6 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Data removed!");
 
-		player.sendMessage("Generating structure...");
-
-		GenerationUtility.spiral(player.getTargetBlock(null, 0).getLocation());
-
-		player.sendMessage("Generation complete!");
-
 		return true;
 	}
 
