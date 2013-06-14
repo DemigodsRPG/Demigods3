@@ -35,17 +35,18 @@ import com.google.common.collect.Maps;
 @Model
 public class LatestTweetModule implements Listener
 {
-	private static Plugin plugin;
-	private static Logger log = Logger.getLogger("Minecraft");
-	private static URL twitterFeed;
-	private static String pluginName, command, permission, date;
-	private static boolean notify;
 	@Id
 	private Long Id;
 	@Attribute
 	private String link;
 	@CollectionMap(key = String.class, value = String.class)
 	private Map<String, String> messagesData;
+
+	private static Plugin plugin;
+	private static Logger log = Logger.getLogger("Minecraft");
+	private static URL twitterFeed;
+	private static String pluginName, command, permission, date;
+	private static boolean notify;
 
 	public Map<String, String> getData()
 	{
