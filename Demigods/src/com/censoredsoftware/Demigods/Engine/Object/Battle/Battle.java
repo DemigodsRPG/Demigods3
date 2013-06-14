@@ -8,7 +8,7 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 @Model
@@ -76,7 +76,7 @@ public class Battle
 
 	void setStartLocation(Location location)
 	{
-		this.startLoc = DemigodsModelFactory.createDemigodsLocation(location);
+		this.startLoc = GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	void setStartTime(long time)
@@ -86,7 +86,7 @@ public class Battle
 
 	public void setEndLocation(Location location)
 	{
-		this.endLoc = DemigodsModelFactory.createDemigodsLocation(location);
+		this.endLoc = GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	public void setEndTime(long time)

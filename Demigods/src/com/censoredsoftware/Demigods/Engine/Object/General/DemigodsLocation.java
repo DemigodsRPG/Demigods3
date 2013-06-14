@@ -82,7 +82,7 @@ public class DemigodsLocation
 		{
 			if(location.equals(tracked)) return tracked;
 		}
-		return DemigodsModelFactory.createDemigodsLocation(location);
+		return GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	public Location toLocation() throws NullPointerException
@@ -204,7 +204,7 @@ public class DemigodsLocation
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(DemigodsModelFactory.createDemigodsLocation(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
+		to.addInvite(GeneralModelFactory.createDemigodsLocation(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
 	}
 
 	/**

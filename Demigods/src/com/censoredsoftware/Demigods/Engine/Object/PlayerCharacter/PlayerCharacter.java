@@ -16,8 +16,8 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -158,7 +158,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = DemigodsModelFactory.createDemigodsLocation(location);
+		this.location = GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	public void setMeta(PlayerCharacterMeta meta)

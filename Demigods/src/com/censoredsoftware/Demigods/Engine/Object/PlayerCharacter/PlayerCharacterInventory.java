@@ -12,7 +12,7 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 
 /**
  * Creates a saved version of a PlayerInventory.
@@ -43,22 +43,22 @@ public class PlayerCharacterInventory
 
 	void setHelmet(ItemStack helmet)
 	{
-		this.helmet = DemigodsModelFactory.createDemigodsItemStack(helmet);
+		this.helmet = GeneralModelFactory.createDemigodsItemStack(helmet);
 	}
 
 	void setChestplate(ItemStack chestplate)
 	{
-		this.chestplate = DemigodsModelFactory.createDemigodsItemStack(chestplate);
+		this.chestplate = GeneralModelFactory.createDemigodsItemStack(chestplate);
 	}
 
 	void setLeggings(ItemStack leggings)
 	{
-		this.leggings = DemigodsModelFactory.createDemigodsItemStack(leggings);
+		this.leggings = GeneralModelFactory.createDemigodsItemStack(leggings);
 	}
 
 	void setBoots(ItemStack boots)
 	{
-		this.boots = DemigodsModelFactory.createDemigodsItemStack(boots);
+		this.boots = GeneralModelFactory.createDemigodsItemStack(boots);
 	}
 
 	void setItems(Inventory inventory)
@@ -68,11 +68,11 @@ public class PlayerCharacterInventory
 		{
 			if(inventory.getItem(i) == null)
 			{
-				this.items[i] = DemigodsModelFactory.createDemigodsItemStack(new ItemStack(Material.AIR));
+				this.items[i] = GeneralModelFactory.createDemigodsItemStack(new ItemStack(Material.AIR));
 			}
 			else
 			{
-				this.items[i] = DemigodsModelFactory.createDemigodsItemStack(inventory.getItem(i));
+				this.items[i] = GeneralModelFactory.createDemigodsItemStack(inventory.getItem(i));
 			}
 		}
 	}

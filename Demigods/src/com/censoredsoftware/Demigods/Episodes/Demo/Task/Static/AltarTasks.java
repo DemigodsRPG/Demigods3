@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureFactory;
@@ -754,7 +754,7 @@ class AltarMenu extends Task
 		if(character.getWarps().isEmpty())
 		{
 			// Save named DemigodsLocation for warp.
-			character.addWarp(DemigodsModelFactory.createDemigodsLocation(player.getLocation()), name);
+			character.addWarp(GeneralModelFactory.createDemigodsLocation(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -779,7 +779,7 @@ class AltarMenu extends Task
 		}
 
 		// Save named DemigodsLocation for warp.
-		character.addWarp(DemigodsModelFactory.createDemigodsLocation(player.getLocation()), name);
+		character.addWarp(GeneralModelFactory.createDemigodsLocation(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 

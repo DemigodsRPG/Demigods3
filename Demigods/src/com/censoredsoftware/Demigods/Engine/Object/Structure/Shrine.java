@@ -14,7 +14,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlockLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.google.common.base.Objects;
 
@@ -61,7 +61,7 @@ public class Shrine
 
 	void setCenter(Location location)
 	{
-		this.center = DemigodsModelFactory.createDemigodsLocation(location);
+		this.center = GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	void setOwner(PlayerCharacter character)
@@ -153,17 +153,17 @@ public class Shrine
 		World locWorld = location.getWorld();
 
 		// Create the main block
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.GOLD_BLOCK));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ), "shrine", Material.GOLD_BLOCK));
 
 		// Create the ender chest and the block below
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ), "shrine", Material.ENDER_CHEST));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY - 1, locZ), "shrine", Material.SMOOTH_BRICK));
 
 		// Create the rest
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 0));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS, (byte) 3));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS, (byte) 2));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY, locZ), "shrine", Material.SMOOTH_STAIRS, (byte) 0));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ + 1), "shrine", Material.SMOOTH_STAIRS, (byte) 3));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY, locZ - 1), "shrine", Material.SMOOTH_STAIRS, (byte) 2));
 
 		// Add the blocks to the set
 		shrine.getBlocks().addAll(blocks);

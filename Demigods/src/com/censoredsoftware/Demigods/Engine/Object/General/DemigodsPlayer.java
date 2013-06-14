@@ -70,7 +70,7 @@ public class DemigodsPlayer
 		}
 		catch(Exception ignored)
 		{}
-		return DemigodsModelFactory.createDemigodsPlayer(player);
+		return GeneralModelFactory.createDemigodsPlayer(player);
 	}
 
 	public OfflinePlayer getOfflinePlayer()

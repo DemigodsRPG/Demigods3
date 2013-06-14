@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-public class DemigodsModelFactory
+public class GeneralModelFactory
 {
 	public static DemigodsLocation createDemigodsLocation(String world, double X, double Y, double Z, float yaw, float pitch)
 	{
@@ -54,7 +54,7 @@ public class DemigodsModelFactory
 
 	public static DemigodsBlock createDemigodsBlock(Location location, String type, Material material, byte matByte)
 	{
-		DemigodsLocation trackedLocation = DemigodsModelFactory.createDemigodsLocation(location);
+		DemigodsLocation trackedLocation = GeneralModelFactory.createDemigodsLocation(location);
 
 		DemigodsBlock trackedBlock = new DemigodsBlock();
 		trackedBlock.setLocation(trackedLocation);

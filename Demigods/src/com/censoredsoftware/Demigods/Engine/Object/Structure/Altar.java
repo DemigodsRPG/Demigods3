@@ -12,7 +12,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlockLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.google.common.base.Objects;
 
 @Model
@@ -32,7 +32,7 @@ public class Altar
 
 	void setCenter(Location location)
 	{
-		this.center = DemigodsModelFactory.createDemigodsLocation(location);
+		this.center = GeneralModelFactory.createDemigodsLocation(location);
 	}
 
 	public void setActive(boolean option)
@@ -117,68 +117,68 @@ public class Altar
 		Set<DemigodsBlock> blocks = new HashSet<DemigodsBlock>();
 
 		// Create the enchantment table
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 2, locZ), "altar", Material.ENCHANTMENT_TABLE));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 2, locZ), "altar", Material.ENCHANTMENT_TABLE));
 
 		// Create magical table stand
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 6, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 6, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ - 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ + 1), "altar", Material.getMaterial(5), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 3, locY, locZ - 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 3, locY, locZ + 3), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 3, locZ - 2), "altar", Material.getMaterial(44), (byte) 13));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 3, locZ + 2), "altar", Material.getMaterial(44), (byte) 13));
 
 		// Left beam
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 4, locZ - 2), "altar", Material.getMaterial(98), (byte) 3));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 4, locZ - 2), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 4, locZ - 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ - 2), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Right beam
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 4, locZ + 2), "altar", Material.getMaterial(98), (byte) 3));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 4, locZ + 2), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 4, locZ + 2), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 1, locY + 5, locZ + 2), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Top beam
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Bottom beam
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ + 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ), "altar", Material.getMaterial(98), (byte) 3));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 4, locZ - 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ + 1), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - 2, locY + 5, locZ - 1), "altar", Material.getMaterial(126), (byte) 1));
 
 		// Set locations to use for building
 		Location topLeft = new Location(locWorld, locX + 2, locY + 1, locZ - 2);
@@ -187,45 +187,45 @@ public class Altar
 		Location botRight = new Location(locWorld, locX - 2, locY + 1, locZ + 2);
 
 		// Top left of platform
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topLeft, "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topLeft, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Top right of platform
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topRight, "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topRight.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topRight, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topRight.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Bottom left of platform
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botLeft, "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botLeft, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botLeft.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botLeft.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botLeft.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Bottom right of platform
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botRight, "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botRight.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botRight, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botRight.subtract(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botRight.add(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botRight.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
 
 		// Create central structure of platform
 		for(int i = 1; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ + i), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ + i), "altar", Material.getMaterial(44), (byte) 5));
 		}
 		for(int i = 1; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ - i), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX, locY + 1, locZ - i), "altar", Material.getMaterial(44), (byte) 5));
 		}
 		for(int i = 1; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX - i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX - i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
 		}
 		for(int i = 1; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(new Location(locWorld, locX + i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(new Location(locWorld, locX + i, locY + 1, locZ), "altar", Material.getMaterial(44), (byte) 5));
 		}
 
 		// Build steps on all sides.
@@ -235,103 +235,103 @@ public class Altar
 		Location botSteps = new Location(locWorld, locX - 4, locY, locZ - 2);
 
 		// Create left steps
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.add(0, 0, 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.add(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Create right steps
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.subtract(1, 0, 0), "altar", Material.getMaterial(44), (byte) 5));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Create top steps
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.subtract(1, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.subtract(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 		}
 
 		// Create bottom steps
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps, "altar", Material.getMaterial(44), (byte) 5));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps, "altar", Material.getMaterial(44), (byte) 5));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.add(0, 0, 1), "altar", Material.getMaterial(44), (byte) 5));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.add(1, 0, 0), "altar", Material.getMaterial(98)));
 		for(int i = 1; i < 5; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.subtract(0, 0, 1), "altar", Material.getMaterial(98)));
 		}
 
 		// Create left step towers
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps, "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(leftSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(leftSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Create right step towers
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps, "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.subtract(4, 0, 0), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(rightSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(rightSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Create top step towers
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps, "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(topSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(topSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Create bottom step towers
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
-		blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps, "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.add(0, 1, 0), "altar", Material.getMaterial(126), (byte) 1));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.add(0, 0, 4), "altar", Material.getMaterial(98)));
+		blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps, "altar", Material.getMaterial(126), (byte) 1));
 		for(int i = 0; i < 3; i++)
 		{
-			blocks.add(DemigodsModelFactory.createDemigodsBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
+			blocks.add(GeneralModelFactory.createDemigodsBlock(botSteps.subtract(0, 1, 0), "altar", Material.getMaterial(98)));
 		}
 
 		// Add the blocks to the set
