@@ -296,7 +296,7 @@ class Commands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Removed data...");
+		player.sendMessage("Removing data...");
 
 		for(Battle battle : Battle.getAll())
 		{
@@ -304,6 +304,12 @@ class Commands implements CommandExecutor
 		}
 
 		player.sendMessage("Data removed!");
+
+		player.sendMessage("Generating structure...");
+
+		GenerationUtility.spiralGenerate(player.getTargetBlock(null, 0).getLocation(), 30, 30, 30);
+
+		player.sendMessage("Generation complete!");
 
 		return true;
 	}
