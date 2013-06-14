@@ -7,8 +7,8 @@ import org.bukkit.Location;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 @Model

@@ -9,7 +9,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.johm.JOhm;
 
 import com.censoredsoftware.Demigods.DemigodsBukkit;
-import com.censoredsoftware.Demigods.Engine.Object.TimedData;
+import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
 import com.google.common.collect.Maps;
 
 public class DataUtility

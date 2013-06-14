@@ -11,10 +11,10 @@ import org.bukkit.block.Block;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsBlock;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsBlockLocation;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlockLocation;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.google.common.base.Objects;
 

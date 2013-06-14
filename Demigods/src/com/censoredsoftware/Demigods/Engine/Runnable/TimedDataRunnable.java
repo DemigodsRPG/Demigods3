@@ -1,6 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Runnable;
 
-import com.censoredsoftware.Demigods.Engine.Object.TimedData;
+import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
 
 public class TimedDataRunnable implements Runnable
 {

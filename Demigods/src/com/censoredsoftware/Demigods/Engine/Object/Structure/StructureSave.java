@@ -7,7 +7,7 @@ import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 import redis.clients.johm.Reference;
 
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 
 @Model
 public class StructureSave

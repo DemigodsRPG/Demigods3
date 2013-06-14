@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object;
+package com.censoredsoftware.Demigods.Engine.Object.General;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

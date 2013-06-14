@@ -11,8 +11,8 @@ import org.bukkit.inventory.PlayerInventory;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsItemStack;
-import com.censoredsoftware.Demigods.Engine.Object.DemigodsModelFactory;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsModelFactory;
 
 /**
  * Creates a saved version of a PlayerInventory.
