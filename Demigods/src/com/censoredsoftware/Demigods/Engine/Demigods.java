@@ -307,7 +307,7 @@ class Commands implements CommandExecutor
 
 		player.sendMessage("Generating structure...");
 
-		GenerationUtility.spiralGenerate(player.getTargetBlock(null, 0).getLocation(), 30, 30, 30);
+		GenerationUtility.spiral(player.getTargetBlock(null, 0).getLocation());
 
 		player.sendMessage("Generation complete!");
 
