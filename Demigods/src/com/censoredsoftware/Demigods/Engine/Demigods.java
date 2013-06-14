@@ -38,7 +38,10 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
-import com.censoredsoftware.Modules.*;
+import com.censoredsoftware.Modules.BukkitUpdateModule;
+import com.censoredsoftware.Modules.ConfigModule;
+import com.censoredsoftware.Modules.MessageModule;
+import com.censoredsoftware.Modules.PermissionModule;
 import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -59,7 +62,6 @@ public class Demigods
 
 	// Protected Modules
 	protected static BukkitUpdateModule update;
-	protected static LatestTweetModule notice;
 
 	// The Game Data
 	protected static Deque<Deity> deities;
@@ -120,9 +122,6 @@ public class Demigods
 
 		// Initialize soft data.
 		new DataUtility(instance);
-
-		// Setup protected modules that require data.
-		notice = LatestTweetModule.recreate(instance, "DemigodsRPG", "/dg twitter", "demigods.twitter", config.getSettingBoolean("twitter.notify"));
 
 		// Finish loading the demigods based on the game data.
 		loadDepends(instance);
