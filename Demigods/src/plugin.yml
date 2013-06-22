@@ -22,6 +22,9 @@ commands:
     test1:
         usage: /test1
         permission: demigods.admin
+    soundtest:
+        usage: /soundtest <sound> <pitch>
+        permission: demigods.admin
 permissions:
     demigods.basic:
         description: The default permission for players.

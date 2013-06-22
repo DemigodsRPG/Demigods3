@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -190,6 +191,7 @@ public class Demigods
 		instance.getCommand("removechar").setExecutor(ce);
 		instance.getCommand("viewmaps").setExecutor(ce);
 		instance.getCommand("test1").setExecutor(ce);
+		instance.getCommand("soundtest").setExecutor(ce);
 	}
 
 	protected static void loadDepends(DemigodsBukkit instance)
@@ -285,6 +287,7 @@ class Commands implements CommandExecutor
 		// TESTING ONLY
 		else if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
+		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 
 		// Debugging
 		else if(command.getName().equalsIgnoreCase("viewmaps")) return viewMaps(sender);
@@ -306,6 +309,29 @@ class Commands implements CommandExecutor
 		player.sendMessage("Data removed!");
 
 		return true;
+	}
+
+	private static boolean soundTest(CommandSender sender, final String[] args)
+	{
+		Player player = (Player) sender;
+
+		if(Sound.valueOf(args[0].toUpperCase()) != null)
+		{
+			Sound sound = Sound.valueOf(args[0].toUpperCase());
+			if(!MiscUtility.isFloat(args[1]))
+			{
+				player.sendMessage(ChatColor.RED + "Set a pitch, ie: 1F");
+				return false;
+			}
+			else
+			{
+				player.playSound(player.getLocation(), sound, 1F, Float.parseFloat(args[1]));
+				player.sendMessage(ChatColor.YELLOW + "Sound played.");
+				return true;
+			}
+		}
+		player.sendMessage(ChatColor.RED + "Wrong arguments, please try again.");
+		return false;
 	}
 
 	/*
