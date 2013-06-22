@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -313,23 +314,25 @@ class Commands implements CommandExecutor
 
 	private static boolean soundTest(CommandSender sender, final String[] args)
 	{
+		if(sender instanceof ConsoleCommandSender) return false;
 		Player player = (Player) sender;
-
-		if(Sound.valueOf(args[0].toUpperCase()) != null)
+		try
 		{
 			Sound sound = Sound.valueOf(args[0].toUpperCase());
-			if(!MiscUtility.isFloat(args[1]))
+			if(!MiscUtility.isFloat(args[1].toUpperCase()))
 			{
 				player.sendMessage(ChatColor.RED + "Set a pitch, ie: 1F");
 				return false;
 			}
 			else
 			{
-				player.playSound(player.getLocation(), sound, 1F, Float.parseFloat(args[1]));
+				player.playSound(player.getLocation(), sound, 1F, Float.parseFloat(args[1].toUpperCase()));
 				player.sendMessage(ChatColor.YELLOW + "Sound played.");
 				return true;
 			}
 		}
+		catch(Exception ignored)
+		{}
 		player.sendMessage(ChatColor.RED + "Wrong arguments, please try again.");
 		return false;
 	}
