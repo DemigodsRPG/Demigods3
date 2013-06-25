@@ -644,7 +644,7 @@ class AltarMenu extends Task
             player.sendMessage(" ");
             chooseName(player);
         }
-        else if(Demigods.config.getSettingArrayListString("character.restrictions.forbidden_names").contains(message.toLowerCase()))
+        else if(Demigods.config.getSettingArrayListString("character.restrictions.forbidden_names").contains(message.toLowerCase())) // TODO: Check blacklist too.
         {
             player.sendMessage(ChatColor.RED + "  That name is forbidden from use. Please choose another.");
             player.sendMessage(" ");
