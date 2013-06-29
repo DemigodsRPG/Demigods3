@@ -61,6 +61,28 @@ public class DemigodsBlock
 		this.previousMaterialByte = (int) data;
 	}
 
+	public static DemigodsBlock create(Location location, String type, Material material, byte matByte)
+	{
+		DemigodsLocation trackedLocation = DemigodsLocation.create(location);
+
+		DemigodsBlock trackedBlock = new DemigodsBlock();
+		trackedBlock.setLocation(trackedLocation);
+		trackedBlock.setPreviousMaterial(Material.getMaterial(location.getBlock().getTypeId()));
+		trackedBlock.setPreviousMaterialByte(location.getBlock().getData());
+		trackedBlock.setType(type);
+		trackedBlock.setMaterial(material);
+		trackedBlock.setMaterialByte(matByte);
+		location.getBlock().setType(material);
+		location.getBlock().setData(matByte);
+		DemigodsBlock.save(trackedBlock);
+		return trackedBlock;
+	}
+
+	public static DemigodsBlock create(Location location, String type, Material material)
+	{
+		return create(location, type, material, (byte) 0);
+	}
+
 	public static void save(DemigodsBlock block)
 	{
 		JOhm.save(block);

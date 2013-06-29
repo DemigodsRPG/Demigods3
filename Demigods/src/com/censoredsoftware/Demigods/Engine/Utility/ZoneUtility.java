@@ -99,11 +99,11 @@ public class ZoneUtility
 	}
 
 	/**
-	 * Returns true if targeting is allowed for <code>player</code> in <code>location</code>.
+	 * Returns true if doTargeting is allowed for <code>player</code> in <code>location</code>.
 	 * 
 	 * @param player the player to check.
 	 * @param location the location to check.
-	 * @return true/false depending on if targeting is allowed.
+	 * @return true/false depending on if doTargeting is allowed.
 	 */
 	public static boolean canTarget(Entity player, Location location)
 	{
@@ -111,10 +111,10 @@ public class ZoneUtility
 	}
 
 	/**
-	 * Returns true if targeting is allowed for <code>player</code>.
+	 * Returns true if doTargeting is allowed for <code>player</code>.
 	 * 
 	 * @param player the player to check.
-	 * @return true/false depending on if targeting is allowed.
+	 * @return true/false depending on if doTargeting is allowed.
 	 */
 	public static boolean canTarget(Entity player)
 	{

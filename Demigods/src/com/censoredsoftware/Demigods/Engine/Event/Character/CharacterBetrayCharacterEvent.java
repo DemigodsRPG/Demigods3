@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 /*
- * Represents an event that is called when a player is killed by another player.
+ * Represents an callAbilityEvent that is called when a player is killed by another player.
  */
 public class CharacterBetrayCharacterEvent extends CharacterKillCharacterEvent
 {

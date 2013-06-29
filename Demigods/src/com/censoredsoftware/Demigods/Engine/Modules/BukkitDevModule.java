@@ -389,7 +389,7 @@ public class BukkitDevModule implements Listener
 	}
 
 	/**
-	 * The Player Command Preprocess Listener, cancelling the event if the update command is found, and executing the command inside of the listener.
+	 * The Player Command Preprocess Listener, cancelling the callAbilityEvent if the update command is found, and executing the command inside of the listener.
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)

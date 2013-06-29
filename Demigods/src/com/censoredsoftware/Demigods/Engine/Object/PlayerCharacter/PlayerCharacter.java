@@ -17,7 +17,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -66,44 +65,6 @@ public class PlayerCharacter
 	@CollectionMap(key = DemigodsLocation.class, value = String.class)
 	private Map<DemigodsLocation, String> invites;
 
-	public static void save(PlayerCharacter character)
-	{
-		JOhm.save(character);
-	}
-
-	public void remove()
-	{
-		for(Shrine shrine : Shrine.getAllShrines())
-		{
-			if(shrine.getCharacter().getId().equals(getId())) shrine.remove();
-		}
-		delete();
-	}
-
-	private void delete()
-	{
-		JOhm.delete(PlayerCharacter.class, getId());
-	}
-
-	public static PlayerCharacter load(Long id)
-	{
-		return JOhm.get(PlayerCharacter.class, id);
-	}
-
-	public static Set<PlayerCharacter> loadAll()
-	{
-		return JOhm.getAll(PlayerCharacter.class);
-	}
-
-	public static PlayerCharacter getCharacterByName(String name)
-	{
-		for(PlayerCharacter loaded : loadAll())
-		{
-			if(loaded.getName().equalsIgnoreCase(name)) return loaded;
-		}
-		return null;
-	}
-
 	void setName(String name)
 	{
 		this.name = name;
@@ -133,7 +94,7 @@ public class PlayerCharacter
 
 	public void saveInventory()
 	{
-		this.inventory = PlayerCharacterFactory.createPlayerCharacterInventory(this);
+		this.inventory = PlayerCharacterInventory.create(this);
 	}
 
 	public void setHealth(int health)
@@ -158,7 +119,7 @@ public class PlayerCharacter
 
 	public void setLocation(Location location)
 	{
-		this.location = GeneralModelFactory.createDemigodsLocation(location);
+		this.location = DemigodsLocation.create(location);
 	}
 
 	public void setMeta(PlayerCharacterMeta meta)
@@ -166,9 +127,92 @@ public class PlayerCharacter
 		this.meta = meta;
 	}
 
+	public static void create(Player player, String chosenDeity, String chosenName, boolean switchCharacter)
+	{
+		PlayerCharacter character = create(player, chosenName, chosenDeity);
+
+		if(player.isOnline())
+		{
+			Player online = player.getPlayer();
+			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
+
+			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
+			online.getWorld().strikeLightningEffect(online.getLocation());
+
+			for(int i = 0; i < 20; i++)
+				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
+		}
+
+		// Switch to new character
+		if(switchCharacter) DemigodsPlayer.getPlayer(player).switchCharacter(character);
+	}
+
+	public static PlayerCharacter create(OfflinePlayer player, String charName, String charDeity)
+	{
+		if(PlayerCharacter.getCharacterByName(charName) == null)
+		{
+			// Create the Character
+			return create(player, charName, Deity.getDeity(charDeity), true);
+		}
+		return null;
+	}
+
+	private static PlayerCharacter create(final OfflinePlayer player, final String charName, final Deity deity, final boolean immortal)
+	{
+		PlayerCharacter character = new PlayerCharacter();
+		character.setPlayer(player);
+		character.setName(charName);
+		character.setDeity(deity);
+		character.setImmortal(immortal);
+		character.setHealth(20);
+		character.setHunger(20);
+		character.setExperience(0);
+		character.setLevel(0);
+		character.setKills(0);
+		character.setDeaths(0);
+		character.setLocation(player.getPlayer().getLocation());
+		character.setMeta(PlayerCharacterMeta.create());
+		PlayerCharacter.save(character);
+		return character;
+	}
+
+	public static void save(PlayerCharacter character)
+	{
+		JOhm.save(character);
+	}
+
+	public void remove()
+	{
+		for(Shrine shrine : Shrine.getAllShrines())
+		{
+			if(shrine.getCharacter().getId().equals(getId())) shrine.remove();
+		}
+		JOhm.delete(PlayerCharacter.class, getId());
+	}
+
+	public static PlayerCharacter load(Long id)
+	{
+		return JOhm.get(PlayerCharacter.class, id);
+	}
+
+	public static Set<PlayerCharacter> loadAll()
+	{
+		return JOhm.getAll(PlayerCharacter.class);
+	}
+
+	public static PlayerCharacter getCharacterByName(String name)
+	{
+		for(PlayerCharacter loaded : loadAll())
+		{
+			if(loaded.getName().equalsIgnoreCase(name)) return loaded;
+		}
+		return null;
+	}
+
 	public PlayerCharacterInventory getInventory()
 	{
-		if(this.inventory == null) this.inventory = PlayerCharacterFactory.createEmptyCharacterInventory();
+		if(this.inventory == null) this.inventory = PlayerCharacterInventory.createEmpty();
 		return this.inventory;
 	}
 
@@ -176,7 +220,7 @@ public class PlayerCharacter
 	{
 		if(this.meta == null)
 		{
-			this.meta = PlayerCharacterFactory.createCharacterMeta();
+			this.meta = PlayerCharacterMeta.create();
 		}
 		return this.meta;
 	}
@@ -370,36 +414,6 @@ public class PlayerCharacter
 	public static long getCoolDown(PlayerCharacter player, String ability)
 	{
 		return Long.parseLong(DataUtility.getValueTemp(player.getName(), ability + "_cooldown").toString());
-	}
-
-	public static void create(Player player, String chosenDeity, String chosenName, boolean switchCharacter)
-	{
-		PlayerCharacter character = PlayerCharacterFactory.createCharacter(player, chosenName, chosenDeity);
-
-		if(player.isOnline())
-		{
-			Player online = player.getPlayer();
-			online.setDisplayName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
-			online.setPlayerListName(Deity.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
-
-			online.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
-			online.getWorld().strikeLightningEffect(online.getLocation());
-
-			for(int i = 0; i < 20; i++)
-				online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
-		}
-
-		// Switch to new character
-		if(switchCharacter) DemigodsPlayer.getPlayer(player).switchCharacter(character);
-	}
-
-	public static PlayerCharacter getCharByName(String charName)
-	{
-		for(PlayerCharacter character : loadAll())
-		{
-			if(character.getName().equalsIgnoreCase(charName)) return character;
-		}
-		return null;
 	}
 
 	public static Set<PlayerCharacter> getAllActive()

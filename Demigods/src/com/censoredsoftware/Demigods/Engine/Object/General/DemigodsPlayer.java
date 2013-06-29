@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Object.General;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -39,6 +37,15 @@ public class DemigodsPlayer
 		DemigodsPlayer.save(this);
 	}
 
+	public static DemigodsPlayer create(OfflinePlayer player)
+	{
+		DemigodsPlayer trackedPlayer = new DemigodsPlayer();
+		trackedPlayer.setPlayer(player.getName());
+		trackedPlayer.setLastLoginTime(player.getLastPlayed());
+		DemigodsPlayer.save(trackedPlayer);
+		return trackedPlayer;
+	}
+
 	public static void save(DemigodsPlayer trackedPlayer)
 	{
 		JOhm.save(trackedPlayer);
@@ -70,7 +77,7 @@ public class DemigodsPlayer
 		}
 		catch(Exception ignored)
 		{}
-		return GeneralModelFactory.createDemigodsPlayer(player);
+		return create(player);
 	}
 
 	public OfflinePlayer getOfflinePlayer()
@@ -203,23 +210,6 @@ public class DemigodsPlayer
 	}
 
 	/**
-	 * Returns true if <code>player</code> has a character with the id <code>charId</code>.
-	 * 
-	 * @param player the player to check.
-	 * @param charId the charID to check with.
-	 * @return boolean
-	 */
-	public static boolean hasCharID(OfflinePlayer player, long charId)
-	{
-		if(getChars(player) == null) return false;
-		for(PlayerCharacter character : getChars(player))
-		{
-			if(character.getId().equals(charId)) return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Returns true if <code>player</code> has a character with the name <code>charName</code>.
 	 * 
 	 * @param player the player to check.
@@ -253,36 +243,6 @@ public class DemigodsPlayer
 		catch(Exception ignored)
 		{}
 		return false;
-	}
-
-	/**
-	 * Returns an ArrayList of all online admins.
-	 * 
-	 * @return ArrayList
-	 */
-	public static ArrayList<Player> getOnlineAdmins() // TODO Does this belong here?
-	{
-		ArrayList<Player> toReturn = new ArrayList<Player>();
-		for(Player player : Bukkit.getOnlinePlayers())
-		{
-			if(player.hasPermission("demigods.admin")) toReturn.add(player);
-		}
-		return toReturn;
-	}
-
-	/**
-	 * Returns an ArrayList of all players, offline and online.
-	 * 
-	 * @return ArrayList
-	 */
-	public static Set<OfflinePlayer> getAllPlayers()
-	{
-		Set<OfflinePlayer> toReturn = new HashSet<OfflinePlayer>();
-		for(DemigodsPlayer player : DemigodsPlayer.loadAll())
-		{
-			toReturn.add(player.getOfflinePlayer());
-		}
-		return toReturn;
 	}
 
 	/**

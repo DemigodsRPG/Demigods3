@@ -76,7 +76,7 @@ public class Zeus extends Deity
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
 		if(!ZoneUtility.canTarget(target)) return false;
-		Location toHit = Ability.aimLocation(character, target.getLocation());
+		Location toHit = Ability.adjustedAimLocation(character, target.getLocation());
 
 		player.getWorld().strikeLightningEffect(toHit);
 
@@ -87,8 +87,8 @@ public class Zeus extends Deity
 				if(!ZoneUtility.canTarget(entity)) continue;
 				LivingEntity livingEntity = (LivingEntity) entity;
 				if(livingEntity.equals(player)) continue;
-				if((toHit.getBlock().getType().equals(Material.WATER) || toHit.getBlock().getType().equals(Material.STATIONARY_WATER)) && livingEntity.getLocation().distance(toHit) < 8) Ability.customDamage(player, livingEntity, character.getMeta().getAscensions() * 6, EntityDamageEvent.DamageCause.LIGHTNING);
-				else if(livingEntity.getLocation().distance(toHit) < 2) Ability.customDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
+				if((toHit.getBlock().getType().equals(Material.WATER) || toHit.getBlock().getType().equals(Material.STATIONARY_WATER)) && livingEntity.getLocation().distance(toHit) < 8) Ability.dealDamage(player, livingEntity, character.getMeta().getAscensions() * 6, EntityDamageEvent.DamageCause.LIGHTNING);
+				else if(livingEntity.getLocation().distance(toHit) < 2) Ability.dealDamage(player, livingEntity, character.getMeta().getAscensions() * 4, EntityDamageEvent.DamageCause.LIGHTNING);
 			}
 		}
 
@@ -152,13 +152,13 @@ class Shove extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.targeting(player, target)) return;
+		if(!Ability.doTargeting(player, target)) return;
 
 		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
 		victor.multiply(multiply);
 		target.setVelocity(victor);
-		Ability.customDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
+		Ability.dealDamage(player, target, 0, EntityDamageEvent.DamageCause.FALL);
 	}
 }
 

@@ -127,7 +127,7 @@ class ShootFireball extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.targeting(player, target)) return;
+		if(!Ability.doTargeting(player, target)) return;
 
 		if(target.getEntityId() != player.getEntityId())
 		{
@@ -188,7 +188,7 @@ class Blaze extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.targeting(player, target)) return;
+		if(!Ability.doTargeting(player, target)) return;
 
 		if(target.getEntityId() != player.getEntityId())
 		{

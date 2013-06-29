@@ -14,17 +14,6 @@ public class DemigodsBlockLocation extends Location
 	Float yaw;
 	Float pitch;
 
-	public DemigodsBlockLocation(World world, double x, double y, double z, float yaw, float pitch)
-	{
-		super(world, x, y, z, yaw, pitch);
-		this.world = world;
-		this.X = x;
-		this.Y = y;
-		this.Z = z;
-		this.yaw = yaw;
-		this.pitch = pitch;
-	}
-
 	public DemigodsBlockLocation(Location location)
 	{
 		super(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());

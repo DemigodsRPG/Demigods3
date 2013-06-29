@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityFactory;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 
 @Model
@@ -45,6 +44,23 @@ public class PlayerCharacterMeta
 		this.devotionData = new HashMap<String, Devotion>();
 	}
 
+	public static PlayerCharacterMeta create()
+	{
+		PlayerCharacterMeta charMeta = new PlayerCharacterMeta();
+		charMeta.initializeMaps();
+		charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
+		charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
+		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.OFFENSE));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.DEFENSE));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.PASSIVE));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.STEALTH));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.SUPPORT));
+		charMeta.addDevotion(Devotion.create(Devotion.Type.ULTIMATE));
+		PlayerCharacterMeta.save(charMeta);
+		return charMeta;
+	}
+
 	public long getId()
 	{
 		return this.id;
@@ -64,7 +80,7 @@ public class PlayerCharacterMeta
 		}
 		else
 		{
-			addDevotion(AbilityFactory.createDevotion(type));
+			addDevotion(Devotion.create(type));
 			return this.devotionData.get(type.toString());
 		}
 	}

@@ -1,11 +1,13 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 
 public class AdminUtility
 {
@@ -63,9 +65,24 @@ public class AdminUtility
 		if(consoleDebugEnabled()) Demigods.message.info("[Debug] " + ChatColor.stripColor(message));
 
 		// Log to online, debugging admins
-		for(Player player : DemigodsPlayer.getOnlineAdmins())
+		for(Player player : getOnlineAdmins())
 		{
 			if(playerDebugEnabled(player)) player.sendMessage(ChatColor.RED + "[Debug] " + message);
 		}
+	}
+
+	/**
+	 * Returns an ArrayList of all online admins.
+	 * 
+	 * @return ArrayList
+	 */
+	public static ArrayList<Player> getOnlineAdmins()
+	{
+		ArrayList<Player> toReturn = new ArrayList<Player>();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(player.hasPermission("demigods.admin")) toReturn.add(player);
+		}
+		return toReturn;
 	}
 }

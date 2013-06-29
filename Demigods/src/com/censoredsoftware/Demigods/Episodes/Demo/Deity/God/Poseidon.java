@@ -150,9 +150,9 @@ class Reel extends Ability
 		character.getMeta().subtractFavor(cost);
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
-		if(!Ability.targeting(player, target)) return;
+		if(!Ability.doTargeting(player, target)) return;
 
-		Ability.customDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
+		Ability.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
 
 		if(target.getLocation().getBlock().getType() == Material.AIR)
 		{

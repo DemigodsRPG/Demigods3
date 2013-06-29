@@ -50,6 +50,23 @@ public abstract class Ability
 
 	private static final int TARGETOFFSET = 5;
 
+	private static boolean doAbilityPreProcess(Player player, int cost)
+	{
+		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+
+		if(!ZoneUtility.canTarget(player))
+		{
+			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
+			return false;
+		}
+		else if(character.getMeta().getFavor() < cost)
+		{
+			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
+			return false;
+		}
+		else return true;
+	}
+
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
 	 * with a cost of <code>cost</code>, that is Type <code>type</code>, has
@@ -65,13 +82,13 @@ public abstract class Ability
 	{
 		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
-		return doAbilityPreProcess(player, cost) && event(name, character, cost, info);
+		return doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info);
 	}
 
 	/**
 	 * Returns true if the ability for <code>player</code>, called <code>name</code>,
 	 * with a cost of <code>cost</code>, that is Type <code>type</code>, that
-	 * is targeting the LivingEntity <code>target</code>, has passed all pre-process tests.
+	 * is doTargeting the LivingEntity <code>target</code>, has passed all pre-process tests.
 	 * 
 	 * @param player the Player doing the ability
 	 * @param target the LivingEntity being targeted
@@ -84,7 +101,7 @@ public abstract class Ability
 	{
 		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
 
-		if(doAbilityPreProcess(player, cost) && event(name, character, cost, info))
+		if(doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info))
 		{
 			if(!(target instanceof LivingEntity))
 			{
@@ -108,10 +125,10 @@ public abstract class Ability
 	}
 
 	/**
-	 * Returns true if the event <code>event</code> is caused by a left click.
+	 * Returns true if the callAbilityEvent <code>callAbilityEvent</code> is caused by a left click.
 	 * 
-	 * @param event the interact event
-	 * @return true/false depending on if the event is caused by a left click or not
+	 * @param event the interact callAbilityEvent
+	 * @return true/false depending on if the callAbilityEvent is caused by a left click or not
 	 */
 	public static boolean isLeftClick(PlayerInteractEvent event)
 	{
@@ -120,9 +137,9 @@ public abstract class Ability
 	}
 
 	/**
-	 * Returns the LivingEntity that <code>player</code> is targeting.
+	 * Returns the LivingEntity that <code>player</code> is doTargeting.
 	 * 
-	 * @param player the interact event
+	 * @param player the interact callAbilityEvent
 	 * @return the targeted LivingEntity
 	 */
 	public static LivingEntity autoTarget(Player player)
@@ -160,27 +177,27 @@ public abstract class Ability
 	 * @param target the targeted LivingEntity
 	 * @return true/false depending on if the ability hits or misses
 	 */
-	public static boolean targeting(Player player, LivingEntity target)
+	public static boolean doTargeting(Player player, LivingEntity target)
 	{
 		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
-		Location toHit = aimLocation(character, target.getLocation());
+		Location toHit = adjustedAimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
 		return false;
 	}
 
 	/**
-	 * Returns true if the ability event for <code>character</code>, called <code>name</code>,
+	 * Returns true if the ability callAbilityEvent for <code>character</code>, called <code>name</code>,
 	 * with a cost of <code>cost</code>, that is Type <code>type</code>, has passed
 	 * all pre-process tests.
 	 * 
-	 * @param character the character triggering the ability event
+	 * @param character the character triggering the ability callAbilityEvent
 	 * @param name the name of the ability
 	 * @param cost the cost (in favor) of the ability
 	 * @param info the AbilityInfo object
-	 * @return true/false if the event isn't cancelled or not
+	 * @return true/false if the callAbilityEvent isn't cancelled or not
 	 */
-	public static boolean event(String name, PlayerCharacter character, int cost, AbilityInfo info)
+	public static boolean callAbilityEvent(String name, PlayerCharacter character, int cost, AbilityInfo info)
 	{
 		AbilityEvent event = new AbilityEvent(name, character, cost, info);
 		Bukkit.getServer().getPluginManager().callEvent(event);
@@ -189,13 +206,13 @@ public abstract class Ability
 
 	/**
 	 * Returns the location that <code>character</code> is actually aiming
-	 * at when targeting <code>target</code>.
+	 * at when doTargeting <code>target</code>.
 	 * 
-	 * @param character the character triggering the ability event
-	 * @param target the location the character is targeting at
+	 * @param character the character triggering the ability callAbilityEvent
+	 * @param target the location the character is doTargeting at
 	 * @return the aimed at location
 	 */
-	public static Location aimLocation(PlayerCharacter character, Location target)
+	public static Location adjustedAimLocation(PlayerCharacter character, Location target)
 	{
 		int ascensions = character.getMeta().getAscensions();
 		if(ascensions < 3) ascensions = 3;
@@ -251,23 +268,6 @@ public abstract class Ability
 		return hit.distance(shouldHit) <= 2;
 	}
 
-	private static boolean doAbilityPreProcess(Player player, int cost)
-	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
-
-		if(!ZoneUtility.canTarget(player))
-		{
-			player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
-			return false;
-		}
-		else if(character.getMeta().getFavor() < cost)
-		{
-			player.sendMessage(ChatColor.YELLOW + "You do not have enough favor.");
-			return false;
-		}
-		else return true;
-	}
-
 	public static List<Ability> getLoadedAbilities()
 	{
 		return new ArrayList<Ability>()
@@ -317,7 +317,7 @@ public abstract class Ability
 		return false;
 	}
 
-	public static void customDamage(LivingEntity source, LivingEntity target, int amount, EntityDamageEvent.DamageCause cause)
+	public static void dealDamage(LivingEntity source, LivingEntity target, int amount, EntityDamageEvent.DamageCause cause)
 	{
 		if(target instanceof Player && source instanceof Player)
 		{

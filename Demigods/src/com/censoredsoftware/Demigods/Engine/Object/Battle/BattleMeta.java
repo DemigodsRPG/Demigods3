@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.google.common.collect.Sets;
 
@@ -60,7 +59,7 @@ public class BattleMeta
 	public void addLocation(Location location)
 	{
 		if(this.locations == null) this.locations = Sets.newHashSet();
-		this.locations.add(GeneralModelFactory.createDemigodsLocation(location));
+		this.locations.add(DemigodsLocation.create(location));
 	}
 
 	public void addKills(int kills)

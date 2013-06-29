@@ -6,6 +6,9 @@ import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharact
 
 public class StructureFactory
 {
+
+	// TODO New structures.
+
 	public static Altar createAltar(Location location)
 	{
 		Altar altar = new Altar();

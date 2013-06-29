@@ -22,7 +22,7 @@ public class OwnerCommand implements CommandExecutor
 			player.sendMessage(ChatColor.RED + "/owner <character>");
 			return true;
 		}
-		PlayerCharacter charToCheck = PlayerCharacter.getCharByName(args[0]);
+		PlayerCharacter charToCheck = PlayerCharacter.getCharacterByName(args[0]);
 		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;

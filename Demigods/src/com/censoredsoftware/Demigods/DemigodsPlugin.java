@@ -37,7 +37,7 @@ public class DemigodsPlugin extends JavaPlugin
 		// Save all the data.
 		DataUtility.save();
 
-		// Cancel all threads, event calls, and concections.
+		// Cancel all threads, callAbilityEvent calls, and connections.
 		SchedulerUtility.stopThreads(this);
 		HandlerList.unregisterAll(this);
 		DataUtility.disconnect();

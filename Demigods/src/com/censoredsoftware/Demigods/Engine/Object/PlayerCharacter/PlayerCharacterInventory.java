@@ -12,7 +12,6 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
-import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 
 /**
  * Creates a saved version of a PlayerInventory.
@@ -43,22 +42,22 @@ public class PlayerCharacterInventory
 
 	void setHelmet(ItemStack helmet)
 	{
-		this.helmet = GeneralModelFactory.createDemigodsItemStack(helmet);
+		this.helmet = DemigodsItemStack.create(helmet);
 	}
 
 	void setChestplate(ItemStack chestplate)
 	{
-		this.chestplate = GeneralModelFactory.createDemigodsItemStack(chestplate);
+		this.chestplate = DemigodsItemStack.create(chestplate);
 	}
 
 	void setLeggings(ItemStack leggings)
 	{
-		this.leggings = GeneralModelFactory.createDemigodsItemStack(leggings);
+		this.leggings = DemigodsItemStack.create(leggings);
 	}
 
 	void setBoots(ItemStack boots)
 	{
-		this.boots = GeneralModelFactory.createDemigodsItemStack(boots);
+		this.boots = DemigodsItemStack.create(boots);
 	}
 
 	void setItems(Inventory inventory)
@@ -68,13 +67,38 @@ public class PlayerCharacterInventory
 		{
 			if(inventory.getItem(i) == null)
 			{
-				this.items[i] = GeneralModelFactory.createDemigodsItemStack(new ItemStack(Material.AIR));
+				this.items[i] = DemigodsItemStack.create(new ItemStack(Material.AIR));
 			}
 			else
 			{
-				this.items[i] = GeneralModelFactory.createDemigodsItemStack(inventory.getItem(i));
+				this.items[i] = DemigodsItemStack.create(inventory.getItem(i));
 			}
 		}
+	}
+
+	public static PlayerCharacterInventory create(PlayerCharacter character)
+	{
+		PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setOwner(character.getId());
+		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
+		charInventory.setItems(inventory);
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
+	}
+
+	public static PlayerCharacterInventory createEmpty()
+	{
+		PlayerCharacterInventory charInventory = new PlayerCharacterInventory();
+		charInventory.setHelmet(new ItemStack(Material.AIR));
+		charInventory.setChestplate(new ItemStack(Material.AIR));
+		charInventory.setLeggings(new ItemStack(Material.AIR));
+		charInventory.setBoots(new ItemStack(Material.AIR));
+		PlayerCharacterInventory.save(charInventory);
+		return charInventory;
 	}
 
 	public Long getId()

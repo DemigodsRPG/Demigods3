@@ -4,6 +4,8 @@ import java.util.Set;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
+
 @Model
 public class Devotion
 {
@@ -20,6 +22,15 @@ public class Devotion
 	public enum Type
 	{
 		OFFENSE, DEFENSE, STEALTH, SUPPORT, PASSIVE, ULTIMATE
+	}
+
+	public static Devotion create(Devotion.Type type)
+	{
+		Devotion devotion = new Devotion();
+		devotion.setType(type);
+		devotion.setLevel(Demigods.config.getSettingInt("character.defaults." + type.name().toLowerCase()));
+		Devotion.save(devotion);
+		return devotion;
 	}
 
 	void setType(Type type)

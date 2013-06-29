@@ -61,6 +61,24 @@ public class DemigodsLocation
 		this.pitch = pitch;
 	}
 
+	public static DemigodsLocation create(String world, double X, double Y, double Z, float yaw, float pitch)
+	{
+		DemigodsLocation trackedLocation = new DemigodsLocation();
+		trackedLocation.setWorld(world);
+		trackedLocation.setX(X);
+		trackedLocation.setY(Y);
+		trackedLocation.setZ(Z);
+		trackedLocation.setYaw(yaw);
+		trackedLocation.setPitch(pitch);
+		DemigodsLocation.save(trackedLocation);
+		return trackedLocation;
+	}
+
+	public static DemigodsLocation create(Location location)
+	{
+		return create(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	}
+
 	public static void save(DemigodsLocation location)
 	{
 		JOhm.save(location);
@@ -76,13 +94,13 @@ public class DemigodsLocation
 		return JOhm.getAll(DemigodsLocation.class);
 	}
 
-	public static DemigodsLocation getTracked(Location location) // TODO: Determine if this should be the default for getting TrackedLocations, or if it is too intensive on the DB for constant use.
+	public static DemigodsLocation get(Location location)
 	{
 		for(DemigodsLocation tracked : loadAll())
 		{
 			if(location.equals(tracked)) return tracked;
 		}
-		return GeneralModelFactory.createDemigodsLocation(location);
+		return create(location);
 	}
 
 	public Location toLocation() throws NullPointerException
@@ -204,7 +222,7 @@ public class DemigodsLocation
 	 */
 	public static void addInvite(PlayerCharacter from, PlayerCharacter to)
 	{
-		to.addInvite(GeneralModelFactory.createDemigodsLocation(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
+		to.addInvite(create(from.getOfflinePlayer().getPlayer().getLocation()), from.getName());
 	}
 
 	/**

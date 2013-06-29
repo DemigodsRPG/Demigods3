@@ -26,7 +26,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.General.GeneralModelFactory;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureFactory;
@@ -292,7 +291,7 @@ class AltarMenu extends Task
 
 					// Define variables
 					String charName = message.replace(" info", "").trim();
-					PlayerCharacter character = PlayerCharacter.getCharByName(charName);
+					PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
 
 					viewChar(player, character);
 				}
@@ -587,7 +586,7 @@ class AltarMenu extends Task
 
 	protected static void switchChar(Player player, String charName)
 	{
-		PlayerCharacter newChar = PlayerCharacter.getCharByName(charName);
+		PlayerCharacter newChar = PlayerCharacter.getCharacterByName(charName);
 
 		if(newChar != null)
 		{
@@ -754,7 +753,7 @@ class AltarMenu extends Task
 		if(character.getWarps().isEmpty())
 		{
 			// Save named DemigodsLocation for warp.
-			character.addWarp(GeneralModelFactory.createDemigodsLocation(player.getLocation()), name);
+			character.addWarp(DemigodsLocation.create(player.getLocation()), name);
 			player.sendMessage(ChatColor.GRAY + "Your warp to this altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 			return;
 		}
@@ -779,14 +778,14 @@ class AltarMenu extends Task
 		}
 
 		// Save named DemigodsLocation for warp.
-		character.addWarp(GeneralModelFactory.createDemigodsLocation(player.getLocation()), name);
+		character.addWarp(DemigodsLocation.create(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 
 	protected static void inviteWarp(Player player, String name)
 	{
 		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
-		PlayerCharacter invited = PlayerCharacter.getCharByName(name);
+		PlayerCharacter invited = PlayerCharacter.getCharacterByName(name);
 
 		if(character == null) return;
 		else if(invited == null)

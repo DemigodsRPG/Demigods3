@@ -126,14 +126,14 @@ public class BlockListener implements Listener
 
 	/*
 	 * @EventHandler(priority = EventPriority.HIGHEST)
-	 * public void stopDestroyEnderCrystal(EntityDamageEvent event)
+	 * public void stopDestroyEnderCrystal(EntityDamageEvent callAbilityEvent)
 	 * {
 	 * try
 	 * {
-	 * if(DemigodsBlock.isProtected(event.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
+	 * if(DemigodsBlock.isProtected(callAbilityEvent.getEntity().getLocation().subtract(0.5, 1.0, 0.5)))
 	 * {
-	 * event.setDamage(0);
-	 * event.setCancelled(true);
+	 * callAbilityEvent.setDamage(0);
+	 * callAbilityEvent.setCancelled(true);
 	 * }
 	 * }
 	 * catch(Exception ignored)

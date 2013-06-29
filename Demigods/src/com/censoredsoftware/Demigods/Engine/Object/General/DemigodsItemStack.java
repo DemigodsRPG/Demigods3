@@ -112,6 +112,24 @@ public class DemigodsItemStack
 		}
 	}
 
+	public static DemigodsItemStack create(ItemStack item)
+	{
+		DemigodsItemStack trackedItem = new DemigodsItemStack();
+		trackedItem.setTypeId(item.getTypeId());
+		trackedItem.setByteId(item.getData().getData());
+		trackedItem.setAmount(item.getAmount());
+		trackedItem.setDurability(item.getDurability());
+		if(item.hasItemMeta())
+		{
+			if(item.getItemMeta().hasDisplayName()) trackedItem.setName(item.getItemMeta().getDisplayName());
+			if(item.getItemMeta().hasLore()) trackedItem.setLore(item.getItemMeta().getLore());
+		}
+		trackedItem.setEnchantments(item);
+		trackedItem.setBookMeta(item);
+		DemigodsItemStack.save(trackedItem);
+		return trackedItem;
+	}
+
 	public static void save(DemigodsItemStack item)
 	{
 		JOhm.save(item);
