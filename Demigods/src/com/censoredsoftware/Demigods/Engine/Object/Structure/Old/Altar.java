@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.Structure;
+package com.censoredsoftware.Demigods.Engine.Object.Structure.Old;
 
 import java.util.HashSet;
 import java.util.Set;

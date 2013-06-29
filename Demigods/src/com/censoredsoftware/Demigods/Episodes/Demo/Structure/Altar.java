@@ -1,8 +1,9 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Task.Static;
+package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -18,7 +19,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,398 +27,389 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.StructureFactory;
-import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Utility.*;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
-public class AltarTasks extends TaskSet
+public class Altar implements Structure
 {
-	private static String name = "Altar", permission = "demigods.altar";
-	private static Type type = Type.PASSIVE;
+	@Override
+	public StructureInfo getInfo()
+	{
+		return new StructureInfo(new HashSet<StructureInfo.Flag>()
+		{
+			{
+				add(StructureInfo.Flag.NO_PVP_ZONE);
+				add(StructureInfo.Flag.PROTECTED_BLOCKS);
+				add(StructureInfo.Flag.PRAYER_LOCATION);
+			}
+		});
+	}
 
-	private static List<String> about = new ArrayList<String>()
+	@Override
+	public Listener getUniqueListener()
 	{
-		{
-			add("Altars are the central feature of Demigods 3.");
-			add("Right click on the center block to view the Altar menu.");
-			add("From there you can create characters, view warps, and much more!");
-		}
-	}, accepted = new ArrayList<String>()
-	{
-		{
-			add("Accepted.");
-		}
-	}, complete = new ArrayList<String>()
-	{
-		{
-			add("Complete.");
-		}
-	}, failed = new ArrayList<String>()
-	{
-		{
-			add("Failed.");
-		}
-	};
+		return new AltarListener();
+	}
 
-	private static List<Task> tasks = new ArrayList<Task>()
+	@Override
+	public Structure getFromId(Long Id)
 	{
-		{
-			add(new AltarMenu(name, permission, about, accepted, complete, failed, type));
-			add(new AltarGenerate(name, permission, about, accepted, complete, failed, type));
-		}
-	};
+		return null;
+	}
 
-	public AltarTasks()
+	@Override
+	public Set<Location> getLocations(Long Id)
 	{
-		super(name, permission, about, accepted, complete, failed, type, tasks);
+		return null;
+	}
+
+	@Override
+	public Structure getAll()
+	{
+		return null;
+	}
+
+	@Override
+	public void createNew(Location reference, boolean generate)
+	{
+
 	}
 }
 
-class AltarMenu extends Task
+class AltarListener implements Listener
 {
-	private static String name = "Altar Menu";
-	private static int order = 0;
-	private static double reward = 0.0, penalty = 0.0;
-
-	private static Listener listener = new Listener()
+	@EventHandler(priority = EventPriority.HIGH)
+	public void altarInteract(PlayerInteractEvent event)
 	{
-		@EventHandler(priority = EventPriority.HIGH)
-		public void altarInteract(PlayerInteractEvent event)
+		if(event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+		// Define variables
+		Player player = event.getPlayer();
+
+		// First we check if the player is in an Altar and return if not
+		if(com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar.isAltar(event.getClickedBlock().getLocation()))
 		{
-			if(event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+			if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !DemigodsPlayer.isPraying(player))
+			{
+				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
+				{
+					player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
+					player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
+					event.setCancelled(true);
+					return;
+				}
+				DemigodsPlayer.togglePraying(player, true);
+
+				// First we clear chat
+				MiscUtility.clearChat(player);
+
+				// Tell nearby players that the user is praying
+				for(Entity entity : player.getNearbyEntities(16, 16, 16))
+				{
+					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt at a nearby Altar.");
+				}
+
+				player.sendMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
+
+				altarMenu(player);
+
+				// If they are in the process of creating a character we'll just skip them to the confirm screen
+				if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
+				{
+					MiscUtility.clearChat(player);
+					finalConfirmDeity(player);
+				}
+
+				event.setCancelled(true);
+			}
+			else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && DemigodsPlayer.isPraying(player))
+			{
+				DemigodsPlayer.togglePraying(player, false);
+
+				// Clear whatever is being worked on in this Pray session
+				DataUtility.removeTemp(player.getName(), "temp_createchar");
+
+				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH)
+	public void altarChatEvent(AsyncPlayerChatEvent event)
+	{
+		// Define variables
+		Player player = event.getPlayer();
+		Location location = player.getLocation();
+
+		// First we check if the player is in/time an Altar and currently praying, if not we'll return
+		if(ZoneUtility.zoneAltar(location) != null && DemigodsPlayer.isPraying(player))
+		{
+			// Cancel their chat
+			event.setCancelled(true);
 
 			// Define variables
-			Player player = event.getPlayer();
+			String message = event.getMessage();
 
-			// First we check if the player is in an Altar and return if not
-			if(Altar.isAltar(event.getClickedBlock().getLocation()))
+			// Return to main menu
+			if(message.equalsIgnoreCase("x") || message.startsWith("abort") || message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
 			{
-				if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && !DemigodsPlayer.isPraying(player))
+				// Remove now useless data
+				DataUtility.removeTemp(player.getName(), "temp_createchar");
+
+				MiscUtility.clearChat(player);
+
+				player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Main Menu ----------------------------------------");
+				player.sendMessage(" ");
+
+				altarMenu(player);
+				return;
+			}
+
+			// Create Character
+			if(message.equals("1") || message.contains("create") && message.contains("character"))
+			{
+				MiscUtility.clearChat(player);
+
+				player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
+				player.sendMessage(" ");
+
+				chooseName(player);
+				return;
+			}
+
+			/*
+			 * Character creation sub-steps
+			 */
+			if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar"))
+			{
+				// Step 1 of character creation
+				if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_name"))
 				{
-					if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
+					confirmName(player, message);
+					return;
+				}
+
+				// Step 2 of character creation
+				if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_name"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
 					{
-						player.sendMessage(ChatColor.GRAY + "You cannot use an Altar when PvP is still possible.");
-						player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
-						event.setCancelled(true);
+						chooseDeity(player);
 						return;
 					}
-					DemigodsPlayer.togglePraying(player, true);
-
-					// First we clear chat
-					MiscUtility.clearChat(player);
-
-					// Tell nearby players that the user is praying
-					for(Entity entity : player.getNearbyEntities(16, 16, 16))
+					else
 					{
-						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt at a nearby Altar.");
+						chooseName(player);
+						return;
 					}
+				}
 
-					player.sendMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
+				// Step 3 of character creation
+				if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_deity"))
+				{
+					confirmDeity(player, message);
+					return;
+				}
 
-					altarMenu(player);
+				// Step 4 of character creation
+				if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_deity"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					{
+						deityConfirmed(player);
+						return;
+					}
+					else
+					{
+						chooseDeity(player);
+						return;
+					}
+				}
 
-					// If they are in the process of creating a character we'll just skip them to the confirm screen
-					if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString()))
+				// Step 5 of character creation
+				if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_all"))
+				{
+					if(message.equalsIgnoreCase("y") || message.contains("yes"))
+					{
+						Inventory ii = Bukkit.getServer().createInventory(player, 27, "Place Your Tributes Here");
+						player.openInventory(ii);
+					}
+					else
 					{
 						MiscUtility.clearChat(player);
-						finalConfirmDeity(player);
+						player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Main Menu ----------------------------------------");
+						player.sendMessage(" ");
+						altarMenu(player);
 					}
-
-					event.setCancelled(true);
-				}
-				else if(event.getClickedBlock().getType().equals(Material.ENCHANTMENT_TABLE) && DemigodsPlayer.isPraying(player))
-				{
-					DemigodsPlayer.togglePraying(player, false);
-
-					// Clear whatever is being worked on in this Pray session
-					DataUtility.removeTemp(player.getName(), "temp_createchar");
-
-					event.setCancelled(true);
 				}
 			}
-		}
 
-		@EventHandler(priority = EventPriority.HIGH)
-		public void altarChatEvent(AsyncPlayerChatEvent event)
-		{
-			// Define variables
-			Player player = event.getPlayer();
-			Location location = player.getLocation();
-
-			// First we check if the player is in/time an Altar and currently praying, if not we'll return
-			if(ZoneUtility.zoneAltar(location) != null && DemigodsPlayer.isPraying(player))
+			// View Characters
+			else if(message.equals("2") || message.startsWith("view") && message.contains("characters"))
 			{
-				// Cancel their chat
-				event.setCancelled(true);
+				MiscUtility.clearChat(player);
+
+				player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Characters --------------------------------");
+				player.sendMessage(" ");
+
+				viewChars(player);
+			}
+			// View Warps
+			else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
+			{
+				if(DemigodsPlayer.getPlayer(player).getCurrent() == null) return;
+
+				MiscUtility.clearChat(player);
+
+				player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps --------------------------------");
+				player.sendMessage(" ");
+
+				viewWarps(player);
+			}
+			// View Characters
+			else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
+			{
+				if(DemigodsPlayer.getPlayer(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getPlayer(player).getCurrent())) return;
+
+				MiscUtility.clearChat(player);
+
+				player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Invites --------------------------------");
+				player.sendMessage(" ");
+
+				viewInvites(player);
+			}
+			else if(message.contains("info"))
+			{
+				MiscUtility.clearChat(player);
 
 				// Define variables
-				String message = event.getMessage();
+				String charName = message.replace(" info", "").trim();
+				PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
 
-				// Return to main menu
-				if(message.equalsIgnoreCase("x") || message.startsWith("abort") || message.equalsIgnoreCase("menu") || message.equalsIgnoreCase("exit"))
-				{
-					// Remove now useless data
-					DataUtility.removeTemp(player.getName(), "temp_createchar");
-
-					MiscUtility.clearChat(player);
-
-					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Main Menu ----------------------------------------");
-					player.sendMessage(" ");
-
-					altarMenu(player);
-					return;
-				}
-
-				// Create Character
-				if(message.equals("1") || message.contains("create") && message.contains("character"))
-				{
-					MiscUtility.clearChat(player);
-
-					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
-					player.sendMessage(" ");
-
-					chooseName(player);
-					return;
-				}
-
-				/*
-				 * Character creation sub-steps
-				 */
-				if(DataUtility.hasKeyTemp(player.getName(), "temp_createchar"))
-				{
-					// Step 1 of character creation
-					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_name"))
-					{
-						confirmName(player, message);
-						return;
-					}
-
-					// Step 2 of character creation
-					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_name"))
-					{
-						if(message.equalsIgnoreCase("y") || message.contains("yes"))
-						{
-							chooseDeity(player);
-							return;
-						}
-						else
-						{
-							chooseName(player);
-							return;
-						}
-					}
-
-					// Step 3 of character creation
-					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("choose_deity"))
-					{
-						confirmDeity(player, message);
-						return;
-					}
-
-					// Step 4 of character creation
-					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_deity"))
-					{
-						if(message.equalsIgnoreCase("y") || message.contains("yes"))
-						{
-							deityConfirmed(player);
-							return;
-						}
-						else
-						{
-							chooseDeity(player);
-							return;
-						}
-					}
-
-					// Step 5 of character creation
-					if(DataUtility.getValueTemp(player.getName(), "temp_createchar").equals("confirm_all"))
-					{
-						if(message.equalsIgnoreCase("y") || message.contains("yes"))
-						{
-							Inventory ii = Bukkit.getServer().createInventory(player, 27, "Place Your Tributes Here");
-							player.openInventory(ii);
-						}
-						else
-						{
-							MiscUtility.clearChat(player);
-							player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Main Menu ----------------------------------------");
-							player.sendMessage(" ");
-							altarMenu(player);
-						}
-					}
-				}
-
-				// View Characters
-				else if(message.equals("2") || message.startsWith("view") && message.contains("characters"))
-				{
-					MiscUtility.clearChat(player);
-
-					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Characters --------------------------------");
-					player.sendMessage(" ");
-
-					viewChars(player);
-				}
-				// View Warps
-				else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
-				{
-					if(DemigodsPlayer.getPlayer(player).getCurrent() == null) return;
-
-					MiscUtility.clearChat(player);
-
-					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps --------------------------------");
-					player.sendMessage(" ");
-
-					viewWarps(player);
-				}
-				// View Characters
-				else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
-				{
-					if(DemigodsPlayer.getPlayer(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getPlayer(player).getCurrent())) return;
-
-					MiscUtility.clearChat(player);
-
-					player.sendMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Invites --------------------------------");
-					player.sendMessage(" ");
-
-					viewInvites(player);
-				}
-				else if(message.contains("info"))
-				{
-					MiscUtility.clearChat(player);
-
-					// Define variables
-					String charName = message.replace(" info", "").trim();
-					PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
-
-					viewChar(player, character);
-				}
-
-				// Switch Character
-				else if(message.startsWith("switch to"))
-				{
-					MiscUtility.clearChat(player);
-
-					// Define variables
-					String charName = message.replace("switch to ", "").trim();
-
-					switchChar(player, charName);
-				}
-
-				// Warp Name
-				else if(message.startsWith("name warp"))
-				{
-					// Define variables
-					String name = message.replace("name warp", "").trim();
-
-					nameAltar(player, name);
-				}
-
-				// Warp Invite
-				else if(message.startsWith("invite"))
-				{
-					// Define variables
-					String name = message.replace("invite", "").trim();
-
-					inviteWarp(player, name);
-				}
-
-				// Invite Accept
-				else if(message.startsWith("accept invite"))
-				{
-					// Define variables
-					String name = message.replace("accept invite", "").trim();
-
-					acceptInvite(player, name);
-				}
-
-				// Warp Character
-				else if(message.startsWith("warp to"))
-				{
-					// Define variables
-					String warpName = message.replace("warp to ", "").trim();
-
-					AltarMenu.warpChar(player, warpName);
-				}
+				viewChar(player, character);
 			}
-		}
 
-		@SuppressWarnings("unchecked")
-		@EventHandler(priority = EventPriority.MONITOR)
-		public void createCharacter(InventoryCloseEvent event)
-		{
-			try
+			// Switch Character
+			else if(message.startsWith("switch to"))
 			{
-				if(!(event.getPlayer() instanceof Player)) return;
-				Player player = (Player) event.getPlayer();
-
-				// If it isn't a confirmation chest then exit
-				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
-
-				// Exit if this isn't for character creation
-				if(!DemigodsPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
+				MiscUtility.clearChat(player);
 
 				// Define variables
-				String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
-				String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
-				String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
+				String charName = message.replace("switch to ", "").trim();
 
-				// Check the chest items
-				int items = 0;
-				int neededItems = Deity.getDeity(chosenDeity).getInfo().getClaimItems().size();
-
-				for(ItemStack ii : event.getInventory().getContents())
-				{
-					if(ii != null)
-					{
-						for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
-						{
-							if(ii.getType().equals(item))
-							{
-								items++;
-							}
-						}
-					}
-				}
-
-				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
-				if(neededItems == items)
-				{
-					// They were accepted, finish everything up!
-					PlayerCharacter.create(player, chosenDeity, chosenName, true);
-
-					// Remove temporary data
-					DataUtility.removeTemp(player.getName(), "temp_createchar");
-
-					// Stop their praying, enable movement, enable chat
-					DemigodsPlayer.togglePraying(player, false);
-
-					// Remove old data now
-					DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
-					DataUtility.removeTemp(player.getName(), "temp_createchar_name");
-					DataUtility.removeTemp(player.getName(), "temp_createchar_deity");
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity + "!");
-				}
-
-				// Clear the confirmation case
-				event.getInventory().clear();
+				switchChar(player, charName);
 			}
-			catch(Exception e)
+
+			// Warp Name
+			else if(message.startsWith("name warp"))
 			{
-				// Print error for debugging
-				e.printStackTrace();
+				// Define variables
+				String name = message.replace("name warp", "").trim();
+
+				nameAltar(player, name);
+			}
+
+			// Warp Invite
+			else if(message.startsWith("invite"))
+			{
+				// Define variables
+				String name = message.replace("invite", "").trim();
+
+				inviteWarp(player, name);
+			}
+
+			// Invite Accept
+			else if(message.startsWith("accept invite"))
+			{
+				// Define variables
+				String name = message.replace("accept invite", "").trim();
+
+				acceptInvite(player, name);
+			}
+
+			// Warp Character
+			else if(message.startsWith("warp to"))
+			{
+				// Define variables
+				String warpName = message.replace("warp to ", "").trim();
+
+				AltarListener.warpChar(player, warpName);
 			}
 		}
-	};
 
-	public AltarMenu(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void createCharacter(InventoryCloseEvent event)
 	{
-		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.TECHNICAL), listener);
+		try
+		{
+			if(!(event.getPlayer() instanceof Player)) return;
+			Player player = (Player) event.getPlayer();
+
+			// If it isn't a confirmation chest then exit
+			if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
+
+			// Exit if this isn't for character creation
+			if(!DemigodsPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
+
+			// Define variables
+			String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
+			String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
+			String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
+
+			// Check the chest items
+			int items = 0;
+			int neededItems = Deity.getDeity(chosenDeity).getInfo().getClaimItems().size();
+
+			for(ItemStack ii : event.getInventory().getContents())
+			{
+				if(ii != null)
+				{
+					for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
+					{
+						if(ii.getType().equals(item))
+						{
+							items++;
+						}
+					}
+				}
+			}
+
+			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
+			if(neededItems == items)
+			{
+				// They were accepted, finish everything up!
+				PlayerCharacter.create(player, chosenDeity, chosenName, true);
+
+				// Remove temporary data
+				DataUtility.removeTemp(player.getName(), "temp_createchar");
+
+				// Stop their praying, enable movement, enable chat
+				DemigodsPlayer.togglePraying(player, false);
+
+				// Remove old data now
+				DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
+				DataUtility.removeTemp(player.getName(), "temp_createchar_name");
+				DataUtility.removeTemp(player.getName(), "temp_createchar_deity");
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity + "!");
+			}
+
+			// Clear the confirmation case
+			event.getInventory().clear();
+		}
+		catch(Exception e)
+		{
+			// Print error for debugging
+			e.printStackTrace();
+		}
 	}
 
 	// Method for use within Altars
@@ -854,69 +845,5 @@ class AltarMenu extends Task
 			}
 		}
 		player.sendMessage(ChatColor.GRAY + "No warp by that name exists, try again.");
-	}
-}
-
-class AltarGenerate extends Task
-{
-	private static String name = "Altar Generation";
-	private static int order = 0;
-	private static double reward = 0.0, penalty = 0.0;
-
-	private static Listener listener = new Listener()
-	{
-		@EventHandler(priority = EventPriority.MONITOR)
-		public void onChunkLoad(final ChunkLoadEvent event)
-		{
-			// If it's a new chunk then we'll generate structures
-			if(event.isNewChunk())
-			{
-				// Define variables
-				final Location location = GenerationUtility.randomChunkLocation(event.getChunk());
-
-				// Check if it can generate
-				if(GenerationUtility.canGenerateStrict(location, 3))
-				{
-					// Return a random boolean based on the chance of Altar generation
-					if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
-					{
-						// If another Altar doesn't exist nearby then make one
-						if(!Altar.altarNearby(location, Demigods.config.getSettingInt("generation.min_blocks_between_altars")))
-						{
-
-							AdminUtility.sendDebug(ChatColor.RED + "Altar generated by " + "SERVER" + " at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-
-							StructureFactory.createAltar(location);
-
-							location.getWorld().strikeLightningEffect(location);
-							location.getWorld().strikeLightningEffect(location);
-
-							Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
-							{
-								@Override
-								public void run()
-								{
-									for(Entity entity : event.getWorld().getEntities())
-									{
-										if(entity instanceof Player)
-										{
-											if(entity.getLocation().distance(location) < 400)
-											{
-												((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "An Altar has spawned near you...");
-											}
-										}
-									}
-								}
-							}, 1);
-						}
-					}
-				}
-			}
-		}
-	};
-
-	public AltarGenerate(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
-	{
-		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.TECHNICAL), listener);
 	}
 }

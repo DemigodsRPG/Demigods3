@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 @Model

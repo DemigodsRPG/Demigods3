@@ -8,6 +8,7 @@ import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Prometheus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
 import com.censoredsoftware.Demigods.Episodes.Demo.Task.Static.AltarTasks;
 import com.censoredsoftware.Demigods.Episodes.Demo.Task.Static.ShrineTasks;
 import com.censoredsoftware.Demigods.Episodes.Demo.Task.Tutorial;
@@ -65,12 +66,19 @@ public class EpisodeDemo
 
 	public static enum Structures implements Demigods.ListedStructure
 	{
-		; // NOTHING YET
+		ALTAR(new Altar());
+
+		private Structure structure;
+
+		private Structures(Structure structure)
+		{
+			this.structure = structure;
+		}
 
 		@Override
 		public Structure getStructure()
 		{
-			return null;
+			return structure;
 		}
 	}
 }

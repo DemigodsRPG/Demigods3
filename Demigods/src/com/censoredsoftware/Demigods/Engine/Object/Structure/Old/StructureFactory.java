@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.Structure;
+package com.censoredsoftware.Demigods.Engine.Object.Structure.Old;
 
 import org.bukkit.Location;
 

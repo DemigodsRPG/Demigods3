@@ -7,8 +7,8 @@ import org.bukkit.Material;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Shrine;
 import com.google.common.base.Objects;
 
 @Model

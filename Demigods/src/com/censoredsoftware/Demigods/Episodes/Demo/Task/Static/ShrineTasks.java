@@ -18,7 +18,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Shrine;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
