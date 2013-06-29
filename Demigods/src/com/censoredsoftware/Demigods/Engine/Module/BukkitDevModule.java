@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Modules;
+package com.censoredsoftware.Demigods.Engine.Module;
 
 import java.io.*;
 import java.net.MalformedURLException;

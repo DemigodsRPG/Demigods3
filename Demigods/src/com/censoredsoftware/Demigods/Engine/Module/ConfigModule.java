@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Modules;
+package com.censoredsoftware.Demigods.Engine.Module;
 
 import java.util.ArrayList;
 import java.util.List;

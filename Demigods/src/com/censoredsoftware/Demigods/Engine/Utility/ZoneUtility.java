@@ -7,9 +7,6 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Altar;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Shrine;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -30,16 +27,10 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
-			// Currently only supports WorldGuard for dynamic PVP zones
 			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotAltar(location);
 			else return zoneAltar(location) != null;
 		}
-		else
-		{
-			if(Demigods.worldguard != null && Demigods.factions != null) return !canWorldGuardAndFactionsPVP(location);
-			else if(Demigods.worldguard != null) return !canWorldGuardFlagPVP(location);
-			else return Demigods.factions != null && !canFactionsPVP(location);
-		}
+		else return !canWorldGuardFlagPVP(location);
 	}
 
 	/**
@@ -66,11 +57,6 @@ public class ZoneUtility
 		return enterZoneNoPVP(from, to);
 	}
 
-	private static boolean canWorldGuardAndFactionsPVP(Location location)
-	{
-		return canFactionsPVP(location) && canWorldGuardFlagPVP(location) || canFactionsPVP(location) && canWorldGuardFlagPVP(location);
-	}
-
 	private static boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
 	{
 		return (zoneAltar(location) == null) && canWorldGuardDynamicPVP(location) || canWorldGuardDynamicPVP(location) && zoneAltar(location) == null;
@@ -90,12 +76,6 @@ public class ZoneUtility
 	{
 		ApplicableRegionSet set = Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location);
 		return !set.allows(DefaultFlag.PVP);
-	}
-
-	private static boolean canFactionsPVP(Location location)
-	{
-		Faction faction = Board.getFactionAt(new FLocation(location.getBlock()));
-		return !(faction.isPeaceful() || faction.isSafeZone());
 	}
 
 	/**
@@ -131,9 +111,7 @@ public class ZoneUtility
 	 */
 	public static boolean zoneNoBuild(Player player, Location location)
 	{
-		if(Demigods.worldguard != null && Demigods.factions != null) return !canWorldGuardAndFactionsBuild(player, location);
-		else if(Demigods.worldguard != null) return !canWorldGuardBuild(player, location);
-		else return Demigods.factions != null && !canFactionsBuild(player, location);
+		return !canWorldGuardBuild(player, location);
 	}
 
 	/**
@@ -162,19 +140,9 @@ public class ZoneUtility
 		return enterZoneNoBuild(player, from, to);
 	}
 
-	private static boolean canWorldGuardAndFactionsBuild(Player player, Location location)
-	{
-		return canFactionsBuild(player, location) && canWorldGuardBuild(player, location) || canFactionsBuild(player, location) && canWorldGuardBuild(player, location);
-	}
-
 	private static boolean canWorldGuardBuild(Player player, Location location)
 	{
 		return Demigods.worldguard.canBuild(player, location);
-	}
-
-	private static boolean canFactionsBuild(Player player, Location location)
-	{
-		return Demigods.factions.isPlayerAllowedToBuildHere(player, location);
 	}
 
 	/**

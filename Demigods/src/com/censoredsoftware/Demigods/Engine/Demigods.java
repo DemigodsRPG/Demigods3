@@ -5,16 +5,15 @@ import java.util.Deque;
 
 import org.bukkit.plugin.Plugin;
 
-import com.bekvon.bukkit.residence.Residence;
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.CheckCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
 import com.censoredsoftware.Demigods.Engine.Command.OwnerCommand;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
-import com.censoredsoftware.Demigods.Engine.Modules.BukkitDevModule;
-import com.censoredsoftware.Demigods.Engine.Modules.ConfigModule;
-import com.censoredsoftware.Demigods.Engine.Modules.MessageModule;
+import com.censoredsoftware.Demigods.Engine.Module.BukkitDevModule;
+import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
+import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
@@ -24,7 +23,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.massivecraft.factions.P;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -38,8 +36,6 @@ public class Demigods
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
-	public static P factions;
-	public static Residence residence;
 
 	// Protected Modules
 	protected static BukkitDevModule update;
@@ -175,14 +171,6 @@ public class Demigods
 		// WorldGuard
 		Plugin depend = instance.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
-
-		// Factions
-		depend = instance.getServer().getPluginManager().getPlugin("Factions");
-		if(depend instanceof P) factions = (P) depend;
-
-		// Residence
-		depend = instance.getServer().getPluginManager().getPlugin("Residence");
-		if(depend instanceof Residence) residence = (Residence) depend;
 	}
 
 	public static Deque<Deity> getLoadedDeities()
