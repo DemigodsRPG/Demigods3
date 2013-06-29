@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules;
+package com.censoredsoftware.Demigods.Engine.Modules;
 
 import java.util.logging.Logger;
 
@@ -17,16 +17,6 @@ public class MessageModule
 	private Plugin plugin;
 	private boolean tag;
 	private String pluginName;
-
-	/**
-	 * Grab the Logger.
-	 * 
-	 * @return Logger.
-	 */
-	public Logger getLog()
-	{
-		return log;
-	}
 
 	/**
 	 * Constructor for the MessageModule.

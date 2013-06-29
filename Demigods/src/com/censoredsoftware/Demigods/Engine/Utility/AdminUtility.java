@@ -17,7 +17,7 @@ public class AdminUtility
 	 */
 	public static boolean wandEnabled(OfflinePlayer player)
 	{
-		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_wand").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_wand").toString());
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class AdminUtility
 	 */
 	public static boolean playerDebugEnabled(OfflinePlayer player)
 	{
-		return Demigods.permission.hasPermissionOrOP(player.getPlayer(), "demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString());
 	}
 
 	/**

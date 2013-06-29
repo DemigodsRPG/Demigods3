@@ -1,4 +1,4 @@
-package com.censoredsoftware.Modules;
+package com.censoredsoftware.Demigods.Engine.Modules;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -26,7 +26,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 /**
  * Module to handle all update methods from BukkitDev.
  */
-public class BukkitUpdateModule implements Listener
+public class BukkitDevModule implements Listener
 {
 	private Plugin plugin;
 	private Logger log = Logger.getLogger("Minecraft");
@@ -36,7 +36,7 @@ public class BukkitUpdateModule implements Listener
 	private int confirmTime;
 
 	/**
-	 * Constructor to create a new BukkitUpdateModule.
+	 * Constructor to create a new BukkitDevModule.
 	 * 
 	 * @param plugin The demigods instance running the module.
 	 * @param url The url to the BukkitDev project RSS feed.
@@ -46,7 +46,7 @@ public class BukkitUpdateModule implements Listener
 	 * @param notify True if notifying is allowed.
 	 * @param confirmTime Time in seconds to confirm the update command before it forgets.
 	 */
-	public BukkitUpdateModule(Plugin plugin, String url, String command, String permission, boolean auto, boolean notify, int confirmTime)
+	public BukkitDevModule(Plugin plugin, String url, String command, String permission, boolean auto, boolean notify, int confirmTime)
 	{
 		try
 		{

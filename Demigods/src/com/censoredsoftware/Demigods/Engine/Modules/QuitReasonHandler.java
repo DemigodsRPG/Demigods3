@@ -1,17 +1,17 @@
-package com.censoredsoftware.Modules;
+package com.censoredsoftware.Demigods.Engine.Modules;
 
-import java.util.logging.Filter;
+import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 import org.bukkit.Bukkit;
 
-public class QuitReasonFilter implements Filter
+public class QuitReasonHandler extends Handler
 {
 	private QuitReason latestQuit = QuitReason.QUITTING;
 
-	public QuitReasonFilter()
+	public QuitReasonHandler()
 	{
-		Bukkit.getServer().getLogger().setFilter(this);
+		Bukkit.getServer().getLogger().addHandler(this);
 	}
 
 	/**
@@ -25,17 +25,24 @@ public class QuitReasonFilter implements Filter
 	}
 
 	@Override
-	public boolean isLoggable(LogRecord record)
+	public void publish(LogRecord record)
 	{
-		if(!record.getMessage().toLowerCase().contains("disconnect")) return true;
+		if(!record.getMessage().toLowerCase().contains("disconnect")) return;
 		latestQuit = QuitReason.QUITTING;
 		if(record.getMessage().toLowerCase().contains("genericreason")) latestQuit = QuitReason.GENERIC_REASON;
 		else if(record.getMessage().toLowerCase().contains("spam")) latestQuit = QuitReason.SPAM;
 		else if(record.getMessage().toLowerCase().contains("endofstream")) latestQuit = QuitReason.END_OF_STREAM;
 		else if(record.getMessage().toLowerCase().contains("overflow")) latestQuit = QuitReason.OVERFLOW;
 		else if(record.getMessage().toLowerCase().contains("timeout")) latestQuit = QuitReason.TIMEOUT;
-		return true;
 	}
+
+	@Override
+	public void flush()
+	{}
+
+	@Override
+	public void close() throws SecurityException
+	{}
 
 	public static enum QuitReason
 	{

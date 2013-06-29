@@ -1,14 +1,12 @@
 name: Demigods
-main: com.censoredsoftware.Demigods.DemigodsBukkit
+main: com.censoredsoftware.Demigods.DemigodsPlugin
 version: 3.0.0.@BUILD@-DEMO
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard, Factions, Residence]
 commands:
-    dg:
-        usage: /dg [category] [subcategory]
-        permission: demigods.basic
-    viewmaps:
-        usage: /viewmaps
+    demigods:
+        usage: /demigods [category] [subcategory]
+        aliases: [dg, demigod]
         permission: demigods.basic
     check:
         usage: /check
@@ -64,6 +62,4 @@ permissions:
     demigods.altar:
         default: true
     demigods.update:
-        default: op
-    demigods.twitter:
         default: op

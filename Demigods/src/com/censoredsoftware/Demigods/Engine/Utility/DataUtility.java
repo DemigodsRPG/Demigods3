@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.johm.JOhm;
 
-import com.censoredsoftware.Demigods.DemigodsBukkit;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
 import com.google.common.collect.Maps;
 
@@ -23,7 +23,7 @@ public class DataUtility
 	// Temp Data
 	private static Map<String, HashMap<String, Object>> tempData;
 
-	public DataUtility(DemigodsBukkit instance)
+	public DataUtility(DemigodsPlugin instance)
 	{
 		// Create Data Instances
 		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);

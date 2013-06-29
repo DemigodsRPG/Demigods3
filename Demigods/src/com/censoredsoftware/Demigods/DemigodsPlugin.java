@@ -11,7 +11,7 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 /**
  * Class for all plugins of Demigods.
  */
-public class DemigodsBukkit extends JavaPlugin
+public class DemigodsPlugin extends JavaPlugin
 {
 	/**
 	 * The Bukkit enable method.

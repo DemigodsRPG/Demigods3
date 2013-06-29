@@ -289,7 +289,7 @@ public abstract class Ability
 			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
 			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
-				if(!Demigods.permission.hasPermissionOrOP(player, ability.getInfo().getPermission())) return true;
+				if(!player.hasPermission(ability.getInfo().getPermission())) return true;
 
 				if(!Deity.canUseDeity(player, ability.getInfo().getDeity())) return true;
 

@@ -3,22 +3,22 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.DemigodsBukkit;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 
 public class ExpansionUtility
 {
 	/**
-	 * Returns the DemigodsBukkit for <code>pluginName</code>.
+	 * Returns the DemigodsPlugin for <code>pluginName</code>.
 	 * 
 	 * @param pluginName the demigods name to look for.
-	 * @return DemigodsBukkit
+	 * @return DemigodsPlugin
 	 */
-	public static DemigodsBukkit getExpansion(String pluginName)
+	public static DemigodsPlugin getExpansion(String pluginName)
 	{
 		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(pluginName);
-		if(plugin != null && plugin instanceof DemigodsBukkit)
+		if(plugin != null && plugin instanceof DemigodsPlugin)
 		{
-			return (DemigodsBukkit) plugin;
+			return (DemigodsPlugin) plugin;
 		}
 		else return null;
 	}
@@ -29,7 +29,7 @@ public class ExpansionUtility
 	 * @param plugin the demigods whose class loader to return.
 	 * @return ClassLoader
 	 */
-	public static ClassLoader getClassLoader(DemigodsBukkit plugin)
+	public static ClassLoader getClassLoader(DemigodsPlugin plugin)
 	{
 		if(plugin != null) return plugin.getClass().getClassLoader();
 		else return null;

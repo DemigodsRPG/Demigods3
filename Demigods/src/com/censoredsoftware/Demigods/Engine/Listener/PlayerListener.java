@@ -14,15 +14,15 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Modules.QuitReasonHandler;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
-import com.censoredsoftware.Modules.QuitReasonFilter;
 
 public class PlayerListener implements Listener
 {
-	private static QuitReasonFilter quitReasonFilter = new QuitReasonFilter();
+	private static QuitReasonHandler quitReasonFilter = new QuitReasonHandler();
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)

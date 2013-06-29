@@ -1,9 +1,5 @@
-package com.censoredsoftware.Modules;
+package com.censoredsoftware.Demigods.Engine.Modules;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,35 +22,9 @@ public class ConfigModule
 	public ConfigModule(Plugin instance, boolean copyDefaults)
 	{
 		plugin = instance;
-		helpFile(plugin);
 		Configuration config = plugin.getConfig();
 		config.options().copyDefaults(copyDefaults);
 		plugin.saveConfig();
-	}
-
-	/**
-	 * On first run copy the entire config.yml file (comments and all).
-	 * 
-	 * @param plugin The demigods running this config module.
-	 */
-	private void helpFile(Plugin plugin)
-	{
-		InputStream input = plugin.getResource("config.creole");
-		File file = new File(plugin.getDataFolder() + File.separator + "config.creole");
-		if(!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
-		if(file.exists()) file.delete();
-		try
-		{
-			OutputStream out = new FileOutputStream(file);
-			byte[] buffer = new byte[1024];
-			int length;
-			while((length = input.read(buffer)) > 0)
-				out.write(buffer, 0, length);
-			out.close();
-			input.close();
-		}
-		catch(Exception ignored)
-		{}
 	}
 
 	/**
