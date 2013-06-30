@@ -37,7 +37,7 @@ public class StructureUtility
 			{
 				for(StructureInfo structure : Demigods.getLoadedStructures())
 				{
-					add(structure.getAll());
+					addAll(structure.getAll());
 				}
 			}
 		};

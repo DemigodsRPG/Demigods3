@@ -11,6 +11,7 @@ import redis.clients.johm.Reference;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 @Model
@@ -22,6 +23,26 @@ public class StructureSave
 	private String structureType;
 	@Reference
 	private DemigodsLocation reference;
+
+	public void setStructureType(String type)
+	{
+		this.structureType = type;
+	}
+
+	public void setReferenceLocation(Location reference)
+	{
+		this.reference = DemigodsLocation.create(reference);
+	}
+
+	public void save()
+	{
+		DataUtility.jOhm.save(this);
+	}
+
+	public StructureSave load(Long Id)
+	{
+		return DataUtility.jOhm.get(StructureSave.class, Id);
+	}
 
 	public Location getReferenceLocation()
 	{

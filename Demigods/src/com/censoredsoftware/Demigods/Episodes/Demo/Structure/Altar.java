@@ -523,15 +523,27 @@ public class Altar implements StructureInfo
 	}
 
 	@Override
-	public StructureSave getAll()
+	public Set<StructureSave> getAll()
 	{
-		return null; // TODO
+		return new HashSet<StructureSave>()
+		{
+			{
+				for(Object saved : DataUtility.jOhm.getAll(StructureSave.class))
+				{
+					if(saved instanceof StructureSave && ((StructureSave) saved).getStructureInfo().equals(this)) add((StructureSave) saved);
+				}
+			}
+		};
 	}
 
 	@Override
 	public void createNew(Location reference, boolean generate)
 	{
-		// TODO
+		StructureSave save = new StructureSave();
+		save.setReferenceLocation(reference);
+		save.setStructureType(getStructureType());
+		save.save();
+		if(generate) save.generate();
 	}
 }
 

@@ -17,7 +17,7 @@ public interface StructureInfo
 
 	public Listener getUniqueListener();
 
-	public StructureSave getAll();
+	public Set<StructureSave> getAll();
 
 	public Set<Flag> getFlags();
 
