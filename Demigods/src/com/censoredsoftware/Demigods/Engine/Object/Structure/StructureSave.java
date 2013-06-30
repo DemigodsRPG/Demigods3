@@ -25,12 +25,17 @@ public class StructureSave
 
 	public Location getReferenceLocation()
 	{
-		return reference.toLocation();
+		return this.reference.toLocation();
+	}
+
+	public Location getClickableBlock()
+	{
+		return getStructureInfo().getClickableBlock(this.reference.toLocation());
 	}
 
 	public Set<Location> getLocations()
 	{
-		return StructureUtility.getLocations(reference.toLocation(), getStructureInfo().getSchematics());
+		return StructureUtility.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics());
 	}
 
 	public StructureInfo getStructureInfo()

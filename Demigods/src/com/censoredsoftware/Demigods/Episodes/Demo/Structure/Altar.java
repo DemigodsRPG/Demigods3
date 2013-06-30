@@ -27,6 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
@@ -59,13 +60,460 @@ public class Altar implements StructureInfo
 	@Override
 	public Set<StructureSchematic> getSchematics()
 	{
-		return null; // TODO
+		return new HashSet<StructureSchematic>()
+		{
+			{
+				// Create the enchantment table
+				add(new StructureSchematic(0, 2, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
+					}
+				}));
+
+				// Create magical table stand
+				add(new StructureSchematic(0, 1, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(2, 4, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(-2, 4, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(2, 4, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(-2, 4, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+
+				add(new StructureSchematic(2, 5, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-2, 5, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(2, 5, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-2, 5, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 6, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+
+				add(new StructureSchematic(-1, 5, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(1, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(1, 5, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(1, 5, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 5, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 5, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+					}
+				}));
+
+				add(new StructureSchematic(3, 0, 3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-3, 0, -3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(3, 0, -3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-3, 0, 3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-3, 0, -3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+
+				add(new StructureSchematic(2, 3, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+					}
+				}));
+				add(new StructureSchematic(-2, 3, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+					}
+				}));
+				add(new StructureSchematic(2, 3, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+					}
+				}));
+				add(new StructureSchematic(-2, 3, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+					}
+				}));
+
+				// Left beam
+				add(new StructureSchematic(1, 4, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(0, 4, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+					}
+				}));
+				add(new StructureSchematic(-1, 4, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(1, 5, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 5, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+
+				// Right beam
+				add(new StructureSchematic(1, 4, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(0, 4, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+					}
+				}));
+				add(new StructureSchematic(-1, 4, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(1, 5, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(0, 5, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+
+				// Top beam
+				add(new StructureSchematic(2, 4, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(2, 4, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+					}
+				}));
+				add(new StructureSchematic(2, 4, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(2, 5, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(2, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(2, 5, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+
+				// Bottom beam
+				add(new StructureSchematic(-2, 4, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(-2, 4, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+					}
+				}));
+				add(new StructureSchematic(-2, 4, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(98)));
+					}
+				}));
+				add(new StructureSchematic(-2, 5, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-2, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+				add(new StructureSchematic(-2, 5, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+					}
+				}));
+
+				// Top left of platform
+				add(new StructureSchematic(2, 1, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(1, 1, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(1, 1, -3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(2, 1, -3, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+
+				// Top right of platform
+				add(new StructureSchematic(2, 1, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(1, 1, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(1, 1, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(2, 1, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+
+				// Bottom left of platform
+				add(new StructureSchematic(-2, 1, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-1, 1, -2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-1, 1, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-2, 1, -1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+
+				// Bottom right of platform
+				add(new StructureSchematic(-2, 1, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-2, 1, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-1, 1, 1, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+				add(new StructureSchematic(-1, 1, 2, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+					}
+				}));
+			}
+		};
 	}
 
 	@Override
 	public int getRadius()
 	{
 		return Demigods.config.getSettingInt("zones.altar_radius");
+	}
+
+	@Override
+	public Location getClickableBlock(Location reference)
+	{
+		return reference.clone().add(0, 2, 0);
 	}
 
 	@Override

@@ -13,6 +13,8 @@ public interface StructureInfo
 
 	public int getRadius();
 
+	public Location getClickableBlock(Location reference);
+
 	public Listener getUniqueListener();
 
 	public StructureSave getAll();
