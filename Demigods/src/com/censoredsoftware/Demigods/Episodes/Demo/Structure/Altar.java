@@ -27,26 +27,39 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
-public class Altar implements Structure
+public class Altar implements StructureInfo
 {
 	@Override
-	public StructureInfo getInfo()
+	public Set<Flag> getFlags()
 	{
-		return new StructureInfo(new HashSet<StructureInfo.Flag>()
+		return new HashSet<StructureInfo.Flag>()
 		{
 			{
 				add(StructureInfo.Flag.NO_PVP_ZONE);
 				add(StructureInfo.Flag.PROTECTED_BLOCKS);
 				add(StructureInfo.Flag.PRAYER_LOCATION);
 			}
-		});
+		};
+	}
+
+	@Override
+	public String getStructureType()
+	{
+		return "Altar";
+	}
+
+	@Override
+	public Set<StructureSchematic> getSchematics()
+	{
+		return null; // TODO
 	}
 
 	@Override
@@ -56,27 +69,15 @@ public class Altar implements Structure
 	}
 
 	@Override
-	public Structure getFromId(Long Id)
+	public StructureSave getAll()
 	{
-		return null;
-	}
-
-	@Override
-	public Set<Location> getLocations(Long Id)
-	{
-		return null;
-	}
-
-	@Override
-	public Structure getAll()
-	{
-		return null;
+		return null; // TODO
 	}
 
 	@Override
 	public void createNew(Location reference, boolean generate)
 	{
-
+		// TODO
 	}
 }
 

@@ -2,19 +2,22 @@ package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
 import java.util.Set;
 
-public class StructureInfo
+import org.bukkit.Location;
+import org.bukkit.event.Listener;
+
+public interface StructureInfo
 {
-	private Set<Flag> flags;
+	public String getStructureType();
 
-	public StructureInfo(Set<Flag> flags)
-	{
-		this.flags = flags;
-	}
+	public Set<StructureSchematic> getSchematics();
 
-	public Set<Flag> getFlags()
-	{
-		return flags;
-	}
+	public Listener getUniqueListener();
+
+	public StructureSave getAll();
+
+	public Set<Flag> getFlags();
+
+	public void createNew(Location reference, boolean generate);
 
 	public static enum Flag
 	{

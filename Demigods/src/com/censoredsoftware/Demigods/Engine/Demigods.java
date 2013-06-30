@@ -20,7 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
@@ -45,6 +45,7 @@ public class Demigods
 	// The Game Data
 	protected static Deque<Deity> deities;
 	protected static Deque<TaskSet> quests;
+	protected static Deque<StructureInfo> structures;
 
 	// The Engline Default Text
 	public static Translation text;
@@ -61,10 +62,10 @@ public class Demigods
 
 	public interface ListedStructure
 	{
-		public Structure getStructure();
+		public StructureInfo getStructure();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets)
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures)
 	{
 		// Allow static access.
 		plugin = instance;
@@ -92,6 +93,15 @@ public class Demigods
 				for(ListedTaskSet taskSet : taskSets)
 				{
 					add(taskSet.getTaskSet());
+				}
+			}
+		};
+		Demigods.structures = new ArrayDeque<StructureInfo>()
+		{
+			{
+				for(ListedStructure structure : structures)
+				{
+					add(structure.getStructure());
 				}
 			}
 		};
@@ -191,6 +201,11 @@ public class Demigods
 	public static Deque<TaskSet> getLoadedQuests()
 	{
 		return Demigods.quests;
+	}
+
+	public static Deque<StructureInfo> getLoadedStructures()
+	{
+		return Demigods.structures;
 	}
 
 	@Override

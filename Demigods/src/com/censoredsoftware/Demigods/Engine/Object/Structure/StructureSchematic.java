@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
 public class StructureSchematic
 {
-	private World world;
-	private Location reference;
 	private int X, Y, Z, XX, YY, ZZ;
 	private boolean cuboid;
 	private Set<StructureBlockData> blockData;
@@ -21,16 +18,13 @@ public class StructureSchematic
 	/**
 	 * Constructor for a StructureSchematic (non-cuboid).
 	 * 
-	 * @param reference The reference location that all the data is based off of.
 	 * @param X The relative X coordinate of the schematic from the reference location.
 	 * @param Y The relative Y coordinate of the schematic from the reference location.
 	 * @param Z The relative Z coordinate of the schematic from the reference location.
 	 * @param blockData The StructureBlockData objects of this schematic.
 	 */
-	public StructureSchematic(Location reference, int X, int Y, int Z, Set<StructureBlockData> blockData)
+	public StructureSchematic(int X, int Y, int Z, Set<StructureBlockData> blockData)
 	{
-		this.world = reference.getWorld();
-		this.reference = reference;
 		this.X = this.XX = X;
 		this.Y = this.YY = Y;
 		this.Z = this.ZZ = Z;
@@ -41,7 +35,6 @@ public class StructureSchematic
 	/**
 	 * Constructor for a StructureSchematic (cuboid).
 	 * 
-	 * @param reference The reference location that all the data is based off of.
 	 * @param X The relative X coordinate of the schematic from the reference location.
 	 * @param Y The relative Y coordinate of the schematic from the reference location.
 	 * @param Z The relative Z coordinate of the schematic from the reference location.
@@ -50,10 +43,8 @@ public class StructureSchematic
 	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param blockData The StructureBlockData objects of this schematic.
 	 */
-	public StructureSchematic(Location reference, int X, int Y, int Z, int XX, int YY, int ZZ, Set<StructureBlockData> blockData)
+	public StructureSchematic(int X, int Y, int Z, int XX, int YY, int ZZ, Set<StructureBlockData> blockData)
 	{
-		this.world = reference.getWorld();
-		this.reference = reference;
 		this.X = X;
 		this.Y = Y;
 		this.Z = Z;
@@ -94,9 +85,9 @@ public class StructureSchematic
 	 * @param Z Relative Z coordinate.
 	 * @return New relative location.
 	 */
-	public Location getLocation(int X, int Y, int Z)
+	public Location getLocation(Location reference, int X, int Y, int Z)
 	{
-		return this.reference.clone().add(X, Y, Z);
+		return reference.clone().add(X, Y, Z);
 	}
 
 	/**
@@ -104,7 +95,7 @@ public class StructureSchematic
 	 * 
 	 * @return A set of locations.
 	 */
-	public Set<Location> getBlockLocations()
+	public Set<Location> getBlockLocations(final Location reference)
 	{
 		if(cuboid)
 		{
@@ -121,7 +112,7 @@ public class StructureSchematic
 						{
 							for(int p = Z; p < ZZ; p++)
 							{
-								add(getLocation(i, o, p));
+								add(getLocation(reference, i, o, p));
 							}
 						}
 					}
@@ -134,15 +125,15 @@ public class StructureSchematic
 			return new HashSet<Location>()
 			{
 				{
-					add(getLocation(X, Y, Z));
+					add(getLocation(reference, X, Y, Z));
 				}
 			};
 		}
 	}
 
-	public void generate()
+	public void generate(Location reference)
 	{
-		for(Location location : getBlockLocations())
+		for(Location location : getBlockLocations(reference))
 		{
 			StructureBlockData data = getStructureBlockData();
 			location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);

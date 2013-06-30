@@ -135,124 +135,124 @@ public class GenerationUtility
 
 	public static void testStructure(Location target)
 	{
-		StructureSchematic sponge = new StructureSchematic(target, 0, 0, 0, new HashSet<StructureBlockData>()
+		StructureSchematic sponge = new StructureSchematic(0, 0, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SPONGE));
 			}
 		});
-		StructureSchematic bottomRight = new StructureSchematic(target, 0, 0, -1, 1, 3, 0, new HashSet<StructureBlockData>()
+		StructureSchematic bottomRight = new StructureSchematic(0, 0, -1, 1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic bottomLeft = new StructureSchematic(target, 0, 0, 1, 1, 3, 2, new HashSet<StructureBlockData>()
+		StructureSchematic bottomLeft = new StructureSchematic(0, 0, 1, 1, 3, 2, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic bottomFront = new StructureSchematic(target, 1, 0, 0, 2, 3, 1, new HashSet<StructureBlockData>()
+		StructureSchematic bottomFront = new StructureSchematic(1, 0, 0, 2, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic bottomBack = new StructureSchematic(target, -1, 0, 0, 0, 3, 1, new HashSet<StructureBlockData>()
+		StructureSchematic bottomBack = new StructureSchematic(-1, 0, 0, 0, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic piston = new StructureSchematic(target, 0, 4, 0, new HashSet<StructureBlockData>()
+		StructureSchematic piston = new StructureSchematic(0, 4, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.PISTON_STICKY_BASE));
 			}
 		});
-		StructureSchematic redstoneBlock = new StructureSchematic(target, 0, 3, 0, new HashSet<StructureBlockData>()
+		StructureSchematic redstoneBlock = new StructureSchematic(0, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.REDSTONE_BLOCK));
 			}
 		});
-		StructureSchematic lanternRight = new StructureSchematic(target, 0, 3, -1, new HashSet<StructureBlockData>()
+		StructureSchematic lanternRight = new StructureSchematic(0, 3, -1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureSchematic lanternLeft = new StructureSchematic(target, 0, 3, 1, new HashSet<StructureBlockData>()
+		StructureSchematic lanternLeft = new StructureSchematic(0, 3, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureSchematic lanternFront = new StructureSchematic(target, 1, 3, 0, new HashSet<StructureBlockData>()
+		StructureSchematic lanternFront = new StructureSchematic(1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureSchematic lanternBack = new StructureSchematic(target, -1, 3, 0, new HashSet<StructureBlockData>()
+		StructureSchematic lanternBack = new StructureSchematic(-1, 3, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 			}
 		});
-		StructureSchematic topRight = new StructureSchematic(target, 0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
+		StructureSchematic topRight = new StructureSchematic(0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic topLeft = new StructureSchematic(target, 0, 4, 1, 1, 6, 2, new HashSet<StructureBlockData>()
+		StructureSchematic topLeft = new StructureSchematic(0, 4, 1, 1, 6, 2, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic topFront = new StructureSchematic(target, 1, 4, 0, 2, 6, 1, new HashSet<StructureBlockData>()
+		StructureSchematic topFront = new StructureSchematic(1, 4, 0, 2, 6, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic topBack = new StructureSchematic(target, -1, 4, 0, 0, 6, 1, new HashSet<StructureBlockData>()
+		StructureSchematic topBack = new StructureSchematic(-1, 4, 0, 0, 6, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.SMOOTH_BRICK));
 			}
 		});
-		StructureSchematic lightSensor = new StructureSchematic(target, 0, 5, 0, new HashSet<StructureBlockData>()
+		StructureSchematic lightSensor = new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.DAYLIGHT_DETECTOR));
 			}
 		});
-		StructureSchematic vineRight = new StructureSchematic(target, -1, 5, 1, new HashSet<StructureBlockData>()
+		StructureSchematic vineRight = new StructureSchematic(-1, 5, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.VINE, (byte) 4, 40));
 				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureSchematic vineLeft = new StructureSchematic(target, 1, 5, -1, new HashSet<StructureBlockData>()
+		StructureSchematic vineLeft = new StructureSchematic(1, 5, -1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.VINE, (byte) 1, 40));
 				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureSchematic vineFront = new StructureSchematic(target, 1, 5, 1, new HashSet<StructureBlockData>()
+		StructureSchematic vineFront = new StructureSchematic(1, 5, 1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.VINE, (byte) 4, 40));
 				add(new StructureBlockData(Material.AIR, (byte) 0, 60));
 			}
 		});
-		StructureSchematic vineBack = new StructureSchematic(target, -1, 5, -1, new HashSet<StructureBlockData>()
+		StructureSchematic vineBack = new StructureSchematic(-1, 5, -1, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.VINE, (byte) 1, 40));
@@ -260,26 +260,26 @@ public class GenerationUtility
 			}
 		});
 
-		sponge.generate();
-		bottomRight.generate();
-		bottomLeft.generate();
-		bottomFront.generate();
-		bottomBack.generate();
-		piston.generate();
-		redstoneBlock.generate();
-		lanternRight.generate();
-		lanternLeft.generate();
-		lanternFront.generate();
-		lanternBack.generate();
-		topRight.generate();
-		topLeft.generate();
-		topFront.generate();
-		topBack.generate();
-		lightSensor.generate();
-		vineRight.generate();
-		vineLeft.generate();
-		vineFront.generate();
-		vineBack.generate();
+		sponge.generate(target);
+		bottomRight.generate(target);
+		bottomLeft.generate(target);
+		bottomFront.generate(target);
+		bottomBack.generate(target);
+		piston.generate(target);
+		redstoneBlock.generate(target);
+		lanternRight.generate(target);
+		lanternLeft.generate(target);
+		lanternFront.generate(target);
+		lanternBack.generate(target);
+		topRight.generate(target);
+		topLeft.generate(target);
+		topFront.generate(target);
+		topBack.generate(target);
+		lightSensor.generate(target);
+		vineRight.generate(target);
+		vineLeft.generate(target);
+		vineFront.generate(target);
+		vineBack.generate(target);
 	}
 
 	public static void spiral(Location target)
@@ -340,11 +340,11 @@ public class GenerationUtility
 
 	public static void spiralGenerate(Location target, int X, int Y, int Z)
 	{
-		new StructureSchematic(target, X, Y, Z, new HashSet<StructureBlockData>()
+		new StructureSchematic(X, Y, Z, new HashSet<StructureBlockData>()
 		{
 			{
 				add(new StructureBlockData(Material.STATIONARY_WATER));
 			}
-		}).generate();
+		}).generate(target);
 	}
 }
