@@ -13,7 +13,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class DevelopmentCommands implements CommandExecutor
 {
@@ -47,7 +47,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		StructureUtility.getLoadedStructure("altar").createNew(player.getLineOfSight(null, 10).get(0).getLocation(), true);
+		EpisodeDemo.Structures.ALTAR.getStructure().createNew(player.getLineOfSight(null, 10).get(0).getLocation(), true);
 
 		return true;
 	}

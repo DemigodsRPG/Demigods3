@@ -23,24 +23,18 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithFlag(Location location, StructureInfo.Flag flag)
 	{
+		Demigods.message.broadcast("Looking for structures...");
 		for(StructureSave structureSave : getAllStructureSaves())
 		{
 			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
 		}
+		Demigods.message.broadcast("Not found.");
 		return false;
 	}
 
 	public static Set<StructureSave> getAllStructureSaves()
 	{
-		return new HashSet<StructureSave>()
-		{
-			{
-				for(StructureInfo structure : Demigods.getLoadedStructures())
-				{
-					addAll(structure.getAll());
-				}
-			}
-		};
+		return DataUtility.jOhm.getAll(StructureSave.class);
 	}
 
 	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
@@ -54,14 +48,5 @@ public class StructureUtility
 				}
 			}
 		};
-	}
-
-	public static StructureInfo getLoadedStructure(String type)
-	{
-		for(StructureInfo structure : Demigods.getLoadedStructures())
-		{
-			if(structure.getStructureType().equalsIgnoreCase(type)) return structure;
-		}
-		throw new IllegalArgumentException("No such structure.");
 	}
 }

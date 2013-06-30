@@ -31,10 +31,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class Altar implements StructureInfo
 {
@@ -410,13 +407,13 @@ public class Altar implements StructureInfo
 						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
 					}
 				}));
-				add(new StructureSchematic(1, 1, -3, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 1, -1, new HashSet<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
 					}
 				}));
-				add(new StructureSchematic(2, 1, -3, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(2, 1, -1, new HashSet<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
@@ -528,9 +525,9 @@ public class Altar implements StructureInfo
 		return new HashSet<StructureSave>()
 		{
 			{
-				for(Object saved : DataUtility.jOhm.getAll(StructureSave.class))
+				for(StructureSave saved : StructureUtility.getAllStructureSaves())
 				{
-					if(saved instanceof StructureSave && ((StructureSave) saved).getStructureInfo().equals(this)) add((StructureSave) saved);
+					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
 				}
 			}
 		};
