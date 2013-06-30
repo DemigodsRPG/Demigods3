@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 public class OwnerCommand implements CommandExecutor
@@ -15,6 +16,9 @@ public class OwnerCommand implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
+		// Check Permissions
+		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		if(args.length < 1)
 		{

@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -10,6 +11,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -88,6 +91,33 @@ public class EntityListener implements Listener
 
 			// Let 'em know
 			player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.YOU_FAILED_DEITY).replace("{deity}", deity));
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public static void monitorEntityDeath(EntityDeathEvent event)
+	{
+		Entity entity = event.getEntity();
+		if(entity instanceof Player)
+		{
+			Player player = (Player) entity;
+			PlayerCharacter playerChar = DemigodsPlayer.getPlayer(player).getCurrent();
+
+			EntityDamageEvent damageEvent = player.getLastDamageCause();
+
+			if(damageEvent instanceof EntityDamageByEntityEvent)
+			{
+				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
+				Entity damager = damageByEvent.getDamager();
+
+				if(damager instanceof Player)
+				{
+					Player attacker = (Player) damager;
+					PlayerCharacter attackChar = DemigodsPlayer.getPlayer(attacker).getCurrent();
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, DemigodsPlayer.getCurrentAlliance(player)));
+					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
+				}
+			}
 		}
 	}
 }
