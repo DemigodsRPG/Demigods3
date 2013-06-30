@@ -1,9 +1,11 @@
 package com.censoredsoftware.Demigods.Engine;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.bukkit.plugin.Plugin;
+import org.mcstats.Metrics;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.CheckCommand;
@@ -98,6 +100,15 @@ public class Demigods
 
 		// Initialize soft data.
 		new DataUtility(instance);
+
+		// Initialize metrics.
+		try
+		{
+			Metrics metrics = new Metrics(instance);
+			// metrics.start();
+		}
+		catch(IOException ignored)
+		{}
 
 		// Finish loading the demigods based on the game data.
 		loadDepends(instance);
