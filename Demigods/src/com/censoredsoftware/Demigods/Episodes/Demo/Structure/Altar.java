@@ -63,6 +63,12 @@ public class Altar implements StructureInfo
 	}
 
 	@Override
+	public int getRadius()
+	{
+		return Demigods.config.getSettingInt("zones.altar_radius");
+	}
+
+	@Override
 	public Listener getUniqueListener()
 	{
 		return new AltarListener();

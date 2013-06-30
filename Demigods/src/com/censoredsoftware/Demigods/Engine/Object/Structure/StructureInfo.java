@@ -11,6 +11,8 @@ public interface StructureInfo
 
 	public Set<StructureSchematic> getSchematics();
 
+	public int getRadius();
+
 	public Listener getUniqueListener();
 
 	public StructureSave getAll();
