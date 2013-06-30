@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.bukkit.Location;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
@@ -23,12 +22,10 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		Demigods.message.broadcast("Looking for structures...");
 		for(StructureSave structureSave : getAllStructureSaves())
 		{
 			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
 		}
-		Demigods.message.broadcast("Not found.");
 		return false;
 	}
 
