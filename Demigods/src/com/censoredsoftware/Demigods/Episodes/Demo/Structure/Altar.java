@@ -546,6 +546,8 @@ public class Altar implements StructureInfo
 
 class AltarListener implements Listener
 {
+	// TODO Move prayer menu to Structure Listener.
+
 	@EventHandler(priority = EventPriority.HIGH)
 	public void altarInteract(PlayerInteractEvent event)
 	{
