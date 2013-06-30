@@ -127,8 +127,7 @@ public class Shrine
 		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
 		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 		if(block.getRelative(1, 0, -1).getType().isSolid()) return false;
-		if(block.getRelative(-1, 0, 1).getType().isSolid()) return false;
-		return !block.getRelative(-1, 0, -1).getType().isSolid();
+		return !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 	}
 
 	public static synchronized void generate(Shrine shrine, Location location)
