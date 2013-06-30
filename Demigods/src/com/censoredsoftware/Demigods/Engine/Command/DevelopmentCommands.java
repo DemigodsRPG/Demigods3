@@ -13,6 +13,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 public class DevelopmentCommands implements CommandExecutor
 {
@@ -21,6 +22,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
+		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
 		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 		return false;
 	}
@@ -37,6 +39,15 @@ public class DevelopmentCommands implements CommandExecutor
 		}
 
 		player.sendMessage("Data removed!");
+
+		return true;
+	}
+
+	private static boolean test2(CommandSender sender, final String[] args)
+	{
+		Player player = (Player) sender;
+
+		StructureUtility.getLoadedStructure("altar").createNew(player.getLineOfSight(null, 10).get(0).getLocation(), true);
 
 		return true;
 	}

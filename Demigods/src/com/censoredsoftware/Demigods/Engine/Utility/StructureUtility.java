@@ -55,4 +55,13 @@ public class StructureUtility
 			}
 		};
 	}
+
+	public static StructureInfo getLoadedStructure(String type)
+	{
+		for(StructureInfo structure : Demigods.getLoadedStructures())
+		{
+			if(structure.getStructureType().equalsIgnoreCase(type)) return structure;
+		}
+		throw new IllegalArgumentException("No such structure.");
+	}
 }

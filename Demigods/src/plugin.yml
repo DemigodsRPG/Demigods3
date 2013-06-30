@@ -20,6 +20,9 @@ commands:
     test1:
         usage: /test1
         permission: demigods.admin
+    test2:
+        usage: /test2
+        permission: demigods.admin
     soundtest:
         usage: /soundtest <sound> <pitch>
         permission: demigods.admin
