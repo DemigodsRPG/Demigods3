@@ -26,12 +26,10 @@
     <target depends="init" name="compile">
         <echo message="${ant.project.name}: ${ant.file}"/>
         <path id="Demigods.classpath">
-            <pathelement location="lib/Craftbukkit.jar"/>
+            <pathelement location="lib/Spigot.jar"/>
             <pathelement location="lib/inJar/JOhm.jar"/>
             <pathelement location="lib/WorldEdit.jar"/>
             <pathelement location="lib/WorldGuard.jar"/>
-            <pathelement location="lib/Factions.jar"/>
-            <pathelement location="lib/Residence.jar"/>
         </path>
         <javac debug="true" debuglevel="${debuglevel}" destdir="Demigods/bin" source="${source}" target="${target}">
             <src path="Demigods/src"/>
