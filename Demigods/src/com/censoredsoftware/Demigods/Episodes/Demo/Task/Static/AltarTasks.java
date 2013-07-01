@@ -627,7 +627,29 @@ class AltarMenu extends Task
 	// Name confirmation
 	protected static void confirmName(Player player, String message)
 	{
-		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
+		// Define variables
+        int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
+
+        // Check restrictions
+        if(message.equalsIgnoreCase("_Alex"))
+        {
+            player.sendMessage(ChatColor.AQUA + "  Well you can't be _Alex... but he is awesome!");
+            player.sendMessage(" ");
+            chooseName(player);
+        }
+        if(message.equalsIgnoreCase("HmmmQuestionMark") || message.equalsIgnoreCase("HQM"))
+        {
+            player.sendMessage(ChatColor.AQUA + "  Well you can't be HQM... but he is awesome!");
+            player.sendMessage(" ");
+            chooseName(player);
+        }
+        else if(Demigods.config.getSettingArrayListString("character.restrictions.forbidden_names").contains(message.toLowerCase())) // TODO: Check blacklist too.
+        {
+            player.sendMessage(ChatColor.RED + "  That name is forbidden from use. Please choose another.");
+            player.sendMessage(" ");
+            chooseName(player);
+        }
+
 		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || DemigodsPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
@@ -682,22 +704,6 @@ class AltarMenu extends Task
 					return;
 				}
 			}
-		}
-		if(message.equalsIgnoreCase("_Alex"))
-		{
-			player.sendMessage(ChatColor.AQUA + "  Well you can't be _Alex... but he is awesome!");
-			player.sendMessage(" ");
-
-			// They can't be _Alex silly! Make them re-choose
-			chooseDeity(player);
-		}
-		if(message.equalsIgnoreCase("HmmmQuestionMark") || message.equalsIgnoreCase("HQM"))
-		{
-			player.sendMessage(ChatColor.AQUA + "  Well you can't be HQM... but he is awesome!");
-			player.sendMessage(" ");
-
-			// They can't be HQM silly! Make them re-choose
-			chooseDeity(player);
 		}
 	}
 

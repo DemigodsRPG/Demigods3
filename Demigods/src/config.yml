@@ -75,6 +75,11 @@ character:
         max_favor: 750
         devotion: 200
         ascensions: 1
+    restrictions:
+        forbidden_names:
+            - admin
+            - op
+            - owner
 
 ## Battle Settings ##
 battles:
