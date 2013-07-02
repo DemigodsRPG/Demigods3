@@ -15,6 +15,10 @@
     </distributionManagement>
     <repositories>
         <repository>
+            <id>censored-software</id>
+            <url>http://censoredsoftware.com:8081/artifactory/repo</url>
+        </repository>
+        <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
@@ -25,10 +29,6 @@
         <repository>
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public/</url>
-        </repository>
-        <repository>
-            <id>censored-software</id>
-            <url>http://censoredsoftware.com:8081/artifactory/repo</url>
         </repository>
     </repositories>
     <dependencies>
