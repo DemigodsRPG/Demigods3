@@ -1,11 +1,12 @@
 package com.censoredsoftware.Demigods;
 
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Class for all plugins of Demigods.
