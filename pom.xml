@@ -3,11 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>Demigods-Maven</groupId>
-    <artifactId>Demigods-Maven</artifactId>
+    <groupId>Demigods</groupId>
+    <artifactId>Demigods</artifactId>
     <version>3.0.0-DEVELOPMENT</version>
-
     <distributionManagement>
         <snapshotRepository>
             <id>censored-software</id>
@@ -15,23 +13,25 @@
             <url>http://censoredsoftware.com:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
-
     <repositories>
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
+            <id>md_5-releases</id>
+            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
+            <url>http://repo.mcstats.org/content/repositories/public/</url>
         </repository>
     </repositories>
-
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.5.2-R1.0</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.5.2-R1.1-SNAPSHOT</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>true</optional>
@@ -43,8 +43,19 @@
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>5.7.6-SNAPSHOT</version>
+        </dependency>
     </dependencies>
-
     <build>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
@@ -74,6 +85,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
+                                    <include>redis.clients:jedis</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
