@@ -26,6 +26,10 @@
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public/</url>
         </repository>
+        <repository>
+            <id>censored-software</id>
+            <url>http://censoredsoftware.com:8081/artifactory/repo</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
