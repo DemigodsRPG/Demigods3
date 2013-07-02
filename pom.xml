@@ -15,10 +15,6 @@
     </distributionManagement>
     <repositories>
         <repository>
-            <id>censored-software</id>
-            <url>http://censoredsoftware.com:8081/artifactory/repo</url>
-        </repository>
-        <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
@@ -53,6 +49,11 @@
             <optional>false</optional>
         </dependency>
         <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>5.7.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.1.0</version>
@@ -60,14 +61,11 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>redis</groupId>
+            <groupId>johm</groupId>
             <artifactId>johm</artifactId>
             <version>0.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>5.7.6-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/johm-0.5.0.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
@@ -100,7 +98,6 @@
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis</include>
-                                    <include>redis:johm</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
