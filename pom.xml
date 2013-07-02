@@ -98,6 +98,7 @@
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis</include>
+                                    <include>johm:johm</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
