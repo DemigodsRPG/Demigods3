@@ -35,15 +35,18 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.5.2-R1.1-SNAPSHOT</version>
+            <version>1.6.1-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
             <type>jar</type>
-            <optional>true</optional>
+            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>commons-pool</groupId>
             <artifactId>commons-pool</artifactId>
             <version>1.6</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
@@ -56,6 +59,9 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>5.7.6-SNAPSHOT</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>

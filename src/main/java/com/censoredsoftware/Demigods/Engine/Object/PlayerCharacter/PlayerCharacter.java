@@ -1,5 +1,18 @@
 package com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+
+import redis.clients.johm.*;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
@@ -8,17 +21,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Shrine;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import redis.clients.johm.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Model
 public class PlayerCharacter
@@ -32,7 +34,7 @@ public class PlayerCharacter
 	@Indexed
 	private String player;
 	@Attribute
-	private Integer health;
+	private Double health;
 	@Attribute
 	private Integer hunger;
 	@Attribute
@@ -95,7 +97,7 @@ public class PlayerCharacter
 		this.inventory = PlayerCharacterInventory.create(this);
 	}
 
-	public void setHealth(int health)
+	public void setHealth(double health)
 	{
 		this.health = health;
 	}
@@ -248,7 +250,7 @@ public class PlayerCharacter
 		return this.level;
 	}
 
-	public Integer getHealth()
+	public Double getHealth()
 	{
 		return this.health;
 	}
