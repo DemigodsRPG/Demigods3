@@ -1,0 +1,98 @@
+## Miscellaneous Settings ##
+misc:
+    welcome_message: true
+    tag_messages: true
+    console_debug: true
+    balance_teams: true
+
+## Language Settings ##
+language: 'English'
+
+## Restrictions ##
+restrictions:
+    friendly_fire: false
+    inactive_worlds:
+        #- world_nodemigods
+
+## Generation ##
+generation:
+    min_blocks_between_altars: 450
+    altar_chance: 4.8 #percent
+    chest_chance: 0.32 #percent
+
+## Regeneration ##
+regeneration:
+    favor: 20
+
+## Zones ##
+zones:
+    prayer_radius: 3
+    shrine_radius: 8
+    altar_radius: 16
+    use_dynamic_pvp_zones: true
+    allow_skills_anywhere: false
+    pvp_area_delay_time: 10
+
+## Update Settings ##
+update:
+    auto: false
+    notify: true
+
+## Multipliers ##
+multipliers:
+    favor: 1.0
+    exp: 1.0
+
+## Caps ##
+caps:
+    ascension: 100
+    favor: 20000
+    target_range: 100
+
+## Bonuses ##
+bonuses:
+    pvp_exp: 1.5
+
+## Statistics ##
+stats:
+    display_freq: 0
+
+## Character Settings ##
+character:
+    max_caps_in_name: 3
+    defaults:
+        offense: 1
+        defense: 1
+        stealth: 1
+        support: 1
+        passive: 1
+        ultimate: 1
+        favor: 500
+        max_favor: 750
+        devotion: 200
+        ascensions: 1
+    restrictions:
+        forbidden_names:
+            - admin
+            - op
+            - owner
+
+## Battle Settings ##
+battles:
+    min_range: 16
+    blocked_commands:
+        - 'spawn'
+        - 'home'
+        - 'sethome'
+        - 'call'
+        - 'bring'
+        - 'myhome'
+        - 'back'
+
+## Administrative Settings ##
+admin:
+    wand_tool: 369
+
+## Data ##
+saving:
+    save_freq: 300
