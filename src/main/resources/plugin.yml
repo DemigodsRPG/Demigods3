@@ -2,7 +2,7 @@ name: Demigods
 main: com.censoredsoftware.Demigods.DemigodsPlugin
 version: @{project.version}
 authors: [_Alex, HmmmQuestionMark]
-softdepend: [WorldEdit, WorldGuard, Factions, Residence]
+softdepend: [WorldEdit, WorldGuard]
 commands:
     demigods:
         usage: /demigods [category] [subcategory]
