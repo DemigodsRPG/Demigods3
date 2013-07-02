@@ -38,10 +38,6 @@ update:
     auto: false
     notify: true
 
-## Twitter Settings ##
-twitter:
-    notify: true
-
 ## Multipliers ##
 multipliers:
     favor: 1.0
