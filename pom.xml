@@ -56,11 +56,9 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>johm</groupId>
+            <groupId>redis</groupId>
             <artifactId>johm</artifactId>
             <version>0.5.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/johm-0.5.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
@@ -98,7 +96,7 @@
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis</include>
-                                    <include>johm:johm</include>
+                                    <include>redis:johm</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
