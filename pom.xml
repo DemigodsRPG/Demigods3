@@ -44,9 +44,16 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>com.strategicgains.repoexpress</groupId>
-            <artifactId>repoexpress-redis</artifactId>
-            <version>0.3.1</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>redis</groupId>
+            <artifactId>johm</artifactId>
+            <version>0.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
