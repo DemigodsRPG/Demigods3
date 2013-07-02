@@ -15,10 +15,6 @@
     </distributionManagement>
     <repositories>
         <repository>
-            <id>censored-software</id>
-            <url>http://censoredsoftware.com:8081/artifactory/repo</url>
-        </repository>
-        <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
@@ -60,9 +56,11 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>redis</groupId>
+            <groupId>johm</groupId>
             <artifactId>johm</artifactId>
             <version>0.5.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/johm-0.5.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
