@@ -1,15 +1,18 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.Map;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.censoredsoftware.Demigods.DemigodsPlugin;
+import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.google.common.collect.Maps;
 
 public class DataUtility
 {
@@ -33,12 +36,29 @@ public class DataUtility
 		JOhm.setPool(jedisPool);
 	}
 
+	public static boolean isConnected()
+	{
+		try
+		{
+			jOhm.getAll(PlayerCharacter.class);
+			return true;
+		}
+		catch(JedisConnectionException ignored)
+		{}
+		return false;
+	}
+
 	public static void disconnect()
 	{
-		Jedis jedis = jedisPool.getResource();
-		jedis.disconnect();
-		jedisPool.returnBrokenResource(jedis);
-		jedisPool.destroy();
+		try
+		{
+			Jedis jedis = jedisPool.getResource();
+			jedis.disconnect();
+			jedisPool.returnBrokenResource(jedis);
+			jedisPool.destroy();
+		}
+		catch(Exception ignored)
+		{}
 	}
 
 	public static void save()

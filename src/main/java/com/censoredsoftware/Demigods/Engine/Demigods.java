@@ -1,5 +1,12 @@
 package com.censoredsoftware.Demigods.Engine;
 
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+import org.bukkit.plugin.Plugin;
+import org.mcstats.Metrics;
+
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.CheckCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
@@ -17,14 +24,9 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.plugin.Plugin;
-import org.mcstats.Metrics;
-
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class Demigods
 {
@@ -109,6 +111,14 @@ public class Demigods
 
 		// Initialize soft data.
 		new DataUtility(instance);
+		if(!DataUtility.isConnected())
+		{
+			message.severe("Demigods was unable to connect to a redis server.");
+			message.severe("A redis server is REQUIRED for Demigods to run.");
+			message.severe("Please install and configure a redis server.");
+			instance.getServer().getPluginManager().disablePlugin(instance);
+			return;
+		}
 
 		// Initialize metrics.
 		try
@@ -126,6 +136,11 @@ public class Demigods
 
 		// Finally, regenerate structures
 		DemigodsBlock.regenerateStructures();
+
+		// Start game threads.
+		SchedulerUtility.startThreads(instance);
+
+		message.info("Successfully enabled.");
 	}
 
 	/**

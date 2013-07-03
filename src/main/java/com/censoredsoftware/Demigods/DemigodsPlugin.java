@@ -21,11 +21,6 @@ public class DemigodsPlugin extends JavaPlugin
 	{
 		// Load the game engine, passing in the game data.
 		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
-
-		// Start game threads.
-		SchedulerUtility.startThreads(this);
-
-		Demigods.message.info("Successfully enabled.");
 	}
 
 	/**
@@ -35,7 +30,7 @@ public class DemigodsPlugin extends JavaPlugin
 	public void onDisable()
 	{
 		// Save all the data.
-		DataUtility.save();
+		if(DataUtility.isConnected()) DataUtility.save();
 
 		// Cancel all threads, callAbilityEvent calls, and connections.
 		SchedulerUtility.stopThreads(this);
