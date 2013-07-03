@@ -6,6 +6,12 @@
     <groupId>Demigods</groupId>
     <artifactId>Demigods</artifactId>
     <version>3.0.0-DEVELOPMENT</version>
+    <scm>
+        <connection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</connection>
+        <developerConnection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>http://github.com/Clashnia/Minecraft-Demigods</url>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>censored-software</id>
