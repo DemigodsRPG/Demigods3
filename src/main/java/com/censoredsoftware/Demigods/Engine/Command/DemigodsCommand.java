@@ -1,5 +1,17 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
@@ -7,22 +19,18 @@ import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DemigodsCommand implements CommandExecutor
 {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
+		// Check for console first
+		if(sender instanceof ConsoleCommandSender)
+		{
+			return Demigods.message.noConsole((ConsoleCommandSender) sender);
+		}
+
 		if(args.length > 0)
 		{
 			dg_extended(sender, args);
