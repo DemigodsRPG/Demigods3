@@ -12,7 +12,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.spigotmc:spigot-api:1.6.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.mcstats.bukkit:metrics:R6" level="project" />
+    <orderEntry type="library" name="Maven: org.mcstats.bukkit:metrics:R7" level="project" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.4.5-R0.3-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:worldguard:5.7.6-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:worldedit:5.5.3" level="project" />
