@@ -1,5 +1,1 @@
 language: java
-services:
-  - redis-server
-after_install:
-  - ./test/spigot.sh
