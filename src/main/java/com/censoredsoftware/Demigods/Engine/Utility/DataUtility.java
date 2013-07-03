@@ -11,7 +11,6 @@ import redis.clients.johm.JOhm;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import com.google.common.collect.Maps;
 
 public class DataUtility
@@ -40,7 +39,7 @@ public class DataUtility
 	{
 		try
 		{
-			jOhm.getAll(PlayerCharacter.class);
+			jedisPool.getResource();
 			return true;
 		}
 		catch(JedisConnectionException ignored)
