@@ -1,11 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,10 +13,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.List;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class StructureListener implements Listener
 {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockPlace(BlockPlaceEvent event)
+	{
+		Location location = event.getBlock().getLocation();
+		if(StructureUtility.partOfStructureWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS))
+		{
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TextUtility.Text.PROTECTED_BLOCK));
+		}
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
