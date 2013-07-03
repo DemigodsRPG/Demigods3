@@ -1,1 +1,4 @@
 language: java
+services:
+  - redis-server
+scripts: ./test/spigot.sh
