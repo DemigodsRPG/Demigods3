@@ -28,8 +28,7 @@ public class DemigodsCommand implements CommandExecutor
 		// Check for console first
 		if(sender instanceof ConsoleCommandSender)
 		{
-			Demigods.message.severe("That command cannot be ran from the console.");
-			return true;
+			return Demigods.message.noConsole((ConsoleCommandSender) sender);
 		}
 
 		if(args.length > 0)
