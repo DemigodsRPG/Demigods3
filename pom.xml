@@ -26,15 +26,15 @@
         </repository>
         <repository>
             <id>md_5-releases</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+            <url>http://repo.md-5.net/content/repositories/snapshots</url>
         </repository>
         <repository>
             <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <url>http://maven.sk89q.com/repo</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public/</url>
+            <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
     </repositories>
     <dependencies>
@@ -85,6 +85,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>Demigods</finalName>
         <defaultGoal>install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>
@@ -138,6 +139,14 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <finalName>Demigods</finalName>
                 </configuration>
             </plugin>
         </plugins>
