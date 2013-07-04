@@ -1,10 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Object.Deity;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
 public class DeityInfo
 {

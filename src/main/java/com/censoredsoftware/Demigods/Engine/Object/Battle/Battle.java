@@ -1,12 +1,14 @@
 package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
+import java.util.Set;
+
+import org.bukkit.Location;
+
+import redis.clients.johm.*;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import org.bukkit.Location;
-import redis.clients.johm.*;
-
-import java.util.Set;
 
 @Model
 public class Battle

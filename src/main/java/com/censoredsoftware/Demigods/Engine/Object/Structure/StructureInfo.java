@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
+import java.util.Set;
+
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
-
-import java.util.Set;
 
 public interface StructureInfo
 {

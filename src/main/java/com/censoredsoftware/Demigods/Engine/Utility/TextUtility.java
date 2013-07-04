@@ -1,7 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 import org.bukkit.ChatColor;
+
+import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 
 public class TextUtility
 {

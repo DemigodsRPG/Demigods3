@@ -17,7 +17,6 @@ import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsBlock;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
@@ -134,7 +133,7 @@ public class Demigods
 		loadCommands(instance);
 
 		// Finally, regenerate structures
-		DemigodsBlock.regenerateStructures();
+		// DemigodsBlock.regenerateStructures();
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
@@ -158,7 +157,6 @@ public class Demigods
 		// Engine
 		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new BlockListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new ChunkListener(), instance);
@@ -166,6 +164,7 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new StructureListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new PrayerListener(), instance);
 
 		// Deities
 		for(Deity deity : getLoadedDeities())
@@ -185,6 +184,13 @@ public class Demigods
 			{
 				instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
+		}
+
+		// Structures
+		for(StructureInfo structure : getLoadedStructures())
+		{
+			if(structure.getUniqueListener() == null) continue;
+			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 	}
 

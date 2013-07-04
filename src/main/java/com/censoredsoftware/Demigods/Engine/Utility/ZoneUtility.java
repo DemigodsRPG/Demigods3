@@ -1,20 +1,17 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Shrine;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 public class ZoneUtility
 {
-	public static int SHRINE_RADIUS = Demigods.config.getSettingInt("zones.shrine_radius");
-	public static int ALTAR_RADIUS = Demigods.config.getSettingInt("zones.altar_radius");
 
 	/**
 	 * Returns true if <code>location</code> is within a no-PVP zone.
@@ -27,8 +24,8 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
-			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotAltar(location);
-			else return zoneAltar(location) != null;
+			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
+			else return StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE);
 		}
 		else return !canWorldGuardFlagPVP(location);
 	}
@@ -57,9 +54,9 @@ public class ZoneUtility
 		return enterZoneNoPVP(from, to);
 	}
 
-	private static boolean canWorldGuardDynamicPVPAndNotAltar(Location location)
+	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
-		return (zoneAltar(location) == null) && canWorldGuardDynamicPVP(location) || canWorldGuardDynamicPVP(location) && zoneAltar(location) == null;
+		return (!StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE)) && canWorldGuardDynamicPVP(location);
 	}
 
 	private static boolean canWorldGuardDynamicPVP(Location location)
@@ -143,124 +140,5 @@ public class ZoneUtility
 	private static boolean canWorldGuardBuild(Player player, Location location)
 	{
 		return Demigods.worldguard.canBuild(player, location);
-	}
-
-	/**
-	 * Returns the shrine at <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return the Shrine object.
-	 */
-	public static Shrine zoneShrine(Location location)
-	{
-		if(Shrine.getAllShrines() == null) return null;
-
-		for(Shrine shrine : Shrine.getAllShrines())
-		{
-			if(location.getWorld() != shrine.getLocation().getWorld()) continue;
-			if(location.distance(shrine.getLocation()) <= SHRINE_RADIUS) return shrine;
-		}
-		return null;
-	}
-
-	/**
-	 * Returns the shrine at <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return the Shrine object.
-	 */
-	public static StructureSave zoneProtectedStructure(Location location)
-	{
-		if(StructureUtility.getAllStructureSaves() == null) return null;
-
-		for(StructureSave save : StructureUtility.getAllStructureSaves())
-		{
-			if(location.getWorld() != save.getReferenceLocation().getWorld()) continue;
-			if(location.distance(save.getReferenceLocation()) <= save.getStructureInfo().getRadius()) return save;
-		}
-		return null;
-	}
-
-	/**
-	 * Returns the character ID of the Shrine owner at <code>location</code>.
-	 * 
-	 * @param location the location to check.
-	 * @return the character ID of the owner.
-	 */
-	public static long zoneShrineOwner(Location location)
-	{
-		if(Shrine.getAllShrines() == null) return -1;
-
-		for(Shrine shrine : Shrine.getAllShrines())
-		{
-			if(shrine.getLocation().equals(location)) return shrine.getCharacter().getId();
-		}
-		return -1;
-	}
-
-	/**
-	 * Returns true if <code>from</code> is entering Altar <code>to</code>.
-	 * 
-	 * @param to location coming from.
-	 * @param from location heading to.
-	 * @return true/false depending on the direction of movement.
-	 */
-	public static boolean enterZoneShrine(Location to, Location from)
-	{
-		return (zoneShrine(from) == null) && zoneShrine(to) != null;
-	}
-
-	/**
-	 * Returns true if <code>to</code> is leaving Shrine <code>from</code>.
-	 * 
-	 * @param to location coming from.
-	 * @param from location heading to.
-	 * @return true/false depending on the direction of movement.
-	 */
-	public static boolean exitZoneShrine(Location to, Location from)
-	{
-		return enterZoneShrine(from, to);
-	}
-
-	/**
-	 * Returns true if <code>location</code> is within an Altar zone.
-	 * 
-	 * @param location the location to check.
-	 * @return true/false depending on the position of <code>location</code>.
-	 */
-	public static Altar zoneAltar(Location location)
-	{
-		if(Altar.getAllAltars() == null) return null;
-
-		for(Altar altar : Altar.getAllAltars())
-		{
-			if(location.getWorld() != altar.getLocation().getWorld()) continue;
-			if(location.distance(altar.getLocation()) <= ALTAR_RADIUS) return altar;
-		}
-		return null;
-	}
-
-	/**
-	 * Returns true if <code>from</code> is entering Altar <code>to</code>.
-	 * 
-	 * @param to location coming from.
-	 * @param from location heading to.
-	 * @return true/false depending on the direction of movement.
-	 */
-	public static boolean enterZoneAltar(Location to, Location from)
-	{
-		return (zoneAltar(from) == null) && zoneAltar(to) != null;
-	}
-
-	/**
-	 * Returns true if <code>to</code> is leaving Altar <code>from</code>.
-	 * 
-	 * @param to location coming from.
-	 * @param from location heading to.
-	 * @return true/false depending on the direction of movement.
-	 */
-	public static boolean exitZoneAltar(Location to, Location from)
-	{
-		return enterZoneAltar(from, to);
 	}
 }

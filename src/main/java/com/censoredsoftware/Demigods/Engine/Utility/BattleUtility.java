@@ -1,7 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import org.bukkit.Location;
+
+import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 
 public class BattleUtility
 {

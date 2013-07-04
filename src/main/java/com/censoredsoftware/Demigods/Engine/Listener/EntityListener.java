@@ -1,13 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
@@ -17,6 +9,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class EntityListener implements Listener
 {

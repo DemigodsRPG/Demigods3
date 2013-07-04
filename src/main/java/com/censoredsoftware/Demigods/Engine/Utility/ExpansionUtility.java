@@ -1,8 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+
+import com.censoredsoftware.Demigods.DemigodsPlugin;
 
 public class ExpansionUtility
 {

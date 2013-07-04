@@ -1,12 +1,13 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.Lists;
-import org.bukkit.Location;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.Location;
+
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.google.common.collect.Lists;
 
 public class StructureSchematic
 {

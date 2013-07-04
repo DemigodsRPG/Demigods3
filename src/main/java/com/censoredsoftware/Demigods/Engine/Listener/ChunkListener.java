@@ -1,12 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.Item.Baetylus;
-import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -15,7 +10,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.GenerationUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Baetylus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
 
 public class ChunkListener implements Listener
 {

@@ -17,7 +17,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Shrine;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
@@ -34,7 +33,7 @@ public class PlayerCharacter
 	@Indexed
 	private String player;
 	@Attribute
-	private Double health;
+	private String health;
 	@Attribute
 	private Integer hunger;
 	@Attribute
@@ -99,7 +98,7 @@ public class PlayerCharacter
 
 	public void setHealth(double health)
 	{
-		this.health = health;
+		this.health = String.valueOf(health);
 	}
 
 	public void setHunger(int hunger)
@@ -165,7 +164,7 @@ public class PlayerCharacter
 		character.setName(charName);
 		character.setDeity(deity);
 		character.setImmortal(immortal);
-		character.setHealth(20);
+		character.setHealth(20.0);
 		character.setHunger(20);
 		character.setExperience(0);
 		character.setLevel(0);
@@ -184,10 +183,10 @@ public class PlayerCharacter
 
 	public void remove()
 	{
-		for(Shrine shrine : Shrine.getAllShrines())
-		{
-			if(shrine.getCharacter().getId().equals(getId())) shrine.remove();
-		}
+		// for(Shrine shrine : Shrine.getAllShrines())
+		// {
+		// if(shrine.getCharacter().getId().equals(getId())) shrine.remove();
+		// }
 		JOhm.delete(PlayerCharacter.class, getId());
 	}
 
@@ -252,7 +251,7 @@ public class PlayerCharacter
 
 	public Double getHealth()
 	{
-		return this.health;
+		return Double.valueOf(this.health);
 	}
 
 	public Integer getHunger()

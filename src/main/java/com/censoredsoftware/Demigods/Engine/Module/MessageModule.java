@@ -1,12 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Module;
 
+import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.logging.Logger;
 
 /**
  * Module to handle all common messages sent to players or the console.

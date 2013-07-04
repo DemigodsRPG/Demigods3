@@ -1,15 +1,16 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
-import com.google.common.collect.Sets;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
+import com.google.common.collect.Sets;
 
 public class GenerationUtility
 {

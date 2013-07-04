@@ -1,11 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Blacklist;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class BlacklistUtility
 {

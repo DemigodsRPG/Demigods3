@@ -1,14 +1,15 @@
 package com.censoredsoftware.Demigods.Engine.Object.Deity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public abstract class Deity
 {

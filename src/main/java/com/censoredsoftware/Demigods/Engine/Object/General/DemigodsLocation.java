@@ -1,14 +1,14 @@
 package com.censoredsoftware.Demigods.Engine.Object.General;
 
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Old.Altar;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import redis.clients.johm.*;
-
 import java.util.Map;
 import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
+import redis.clients.johm.*;
+
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 @Model
 public class DemigodsLocation
@@ -136,17 +136,12 @@ public class DemigodsLocation
 	/**
 	 * Checks to see if <code>character</code> has a warp for <code>altar</code>.
 	 * 
-	 * @param altar the altar to be checked.
 	 * @param character the character to be checked.
 	 * @return true/false depending on if the <code>character</code> has the warp.
 	 */
-	public static boolean hasWarp(Altar altar, PlayerCharacter character) // TODO Move all warps and invites to PlayerCharacterMeta.
+	public static boolean hasWarp(PlayerCharacter character) // TODO Move all warps and invites to PlayerCharacterMeta.
 	{
-		if(character == null || character.getWarps() == null) return false;
-		for(Map.Entry<DemigodsLocation, String> warp : character.getWarps().entrySet())
-		{
-			if(ZoneUtility.zoneAltar(warp.getKey().toLocation()) == altar) return true;
-		}
+		// TODO Fix warps.
 		return false;
 	}
 

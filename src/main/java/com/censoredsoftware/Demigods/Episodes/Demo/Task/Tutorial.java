@@ -1,12 +1,8 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Task;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,8 +10,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
 
 public class Tutorial extends TaskSet
 {

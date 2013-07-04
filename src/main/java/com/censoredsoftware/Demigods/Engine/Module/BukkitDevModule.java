@@ -1,6 +1,13 @@
 package com.censoredsoftware.Demigods.Engine.Module;
 
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,12 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.logging.Logger;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 
 /**
  * Module to handle all update methods from BukkitDev.

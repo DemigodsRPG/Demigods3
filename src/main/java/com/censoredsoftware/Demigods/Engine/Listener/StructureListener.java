@@ -18,7 +18,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class StructureListener implements Listener
 {
@@ -90,7 +89,7 @@ public class StructureListener implements Listener
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		final Location location = event.getLocation();
-		if(ZoneUtility.zoneProtectedStructure(location) == null) return;
+		if(StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS) == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
@@ -101,12 +100,11 @@ public class StructureListener implements Listener
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
 					Location dropLocation = drop.getLocation();
-					if(ZoneUtility.zoneAltar(dropLocation) != null)
+					if(StructureUtility.getInRadiusWithFlag(dropLocation, StructureInfo.Flag.PROTECTED_BLOCKS) != null)
 					{
 						drop.remove();
 						continue;
 					}
-					if(ZoneUtility.zoneShrine(dropLocation) != null) drop.remove();
 				}
 			}
 		}, 1);
@@ -119,7 +117,7 @@ public class StructureListener implements Listener
 			@Override
 			public void run()
 			{
-				if(ZoneUtility.zoneProtectedStructure(location) != null) ZoneUtility.zoneProtectedStructure(location).generate();
+				if(StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS) != null) StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS).generate();
 			}
 		}, 30);
 	}

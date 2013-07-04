@@ -1,16 +1,19 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
+import java.util.Set;
+
 import org.bukkit.Location;
+import org.bukkit.Material;
+
 import redis.clients.johm.Attribute;
 import redis.clients.johm.Id;
 import redis.clients.johm.Model;
 import redis.clients.johm.Reference;
 
-import java.util.Set;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 @Model
 public class StructureSave
@@ -37,9 +40,18 @@ public class StructureSave
 		DataUtility.jOhm.save(this);
 	}
 
+	public void remove()
+	{
+		for(Location location : getLocations())
+		{
+			location.getBlock().setTypeId(Material.AIR.getId());
+		}
+		DataUtility.jOhm.delete(StructureSave.class, this.Id);
+	}
+
 	public StructureSave load(Long Id)
 	{
-		return DataUtility.jOhm.get(StructureSave.class, Id);
+		return DataUtility.jOhm.get(StructureSave.class, this.Id);
 	}
 
 	public Location getReferenceLocation()

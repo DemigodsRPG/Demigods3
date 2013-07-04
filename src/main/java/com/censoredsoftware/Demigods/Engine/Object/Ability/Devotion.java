@@ -1,9 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Object.Ability;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
+import java.util.Set;
+
 import redis.clients.johm.*;
 
-import java.util.Set;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 
 @Model
 public class Devotion

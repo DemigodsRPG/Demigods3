@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
-import java.util.Random;
 
 public class MiscUtility
 {

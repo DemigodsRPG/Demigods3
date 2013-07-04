@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Module;
 
-import org.bukkit.Bukkit;
-
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+
+import org.bukkit.Bukkit;
 
 public class QuitReasonHandler extends Handler
 {

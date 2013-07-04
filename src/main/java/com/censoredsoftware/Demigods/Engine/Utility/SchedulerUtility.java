@@ -1,10 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import org.bukkit.Bukkit;
+
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Runnable.FavorRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.TimedDataRunnable;
-import org.bukkit.Bukkit;
 
 public class SchedulerUtility
 {

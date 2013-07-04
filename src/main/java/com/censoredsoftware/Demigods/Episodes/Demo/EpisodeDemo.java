@@ -9,8 +9,6 @@ import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Prometheus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
-import com.censoredsoftware.Demigods.Episodes.Demo.Task.Static.AltarTasks;
-import com.censoredsoftware.Demigods.Episodes.Demo.Task.Static.ShrineTasks;
 import com.censoredsoftware.Demigods.Episodes.Demo.Task.Tutorial;
 
 public class EpisodeDemo
@@ -39,12 +37,6 @@ public class EpisodeDemo
 
 	public static enum Tasks implements Demigods.ListedTaskSet
 	{
-		/**
-		 * The Passive Altar TaskSet that is always active for everyone along with
-		 * the Passive Shrine TaskSet.
-		 */
-		Altar(new AltarTasks()), Shrine(new ShrineTasks()),
-
 		/**
 		 * The Tutorial TaskSet.
 		 */

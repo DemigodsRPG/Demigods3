@@ -1,9 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Runnable;
 
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
 
 public class FavorRunnable implements Runnable
 {

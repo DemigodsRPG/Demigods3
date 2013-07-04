@@ -1,15 +1,17 @@
 package com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
 import redis.clients.johm.*;
 
-import java.util.Set;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
 
 /**
  * Creates a saved version of a PlayerInventory.
