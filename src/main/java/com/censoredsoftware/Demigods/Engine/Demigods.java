@@ -151,7 +151,7 @@ public class Demigods
 	public Translation getTranslation()
 	{
 		// Default to EnglishCharNames
-		return new TextUtility.Engrish();
+		return new TextUtility.English();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)

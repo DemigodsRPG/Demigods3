@@ -1,10 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Module;
 
-import org.bukkit.configuration.Configuration;
-import org.bukkit.plugin.Plugin;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.configuration.Configuration;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Module to load configuration settings from any passed in demigods's config.yml.
@@ -90,5 +90,10 @@ public class ConfigModule
 			return strings;
 		}
 		else return null;
+	}
+
+	public boolean isSettingSet(String id)
+	{
+		return plugin.getConfig().isSet(id);
 	}
 }

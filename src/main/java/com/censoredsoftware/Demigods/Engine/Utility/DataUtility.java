@@ -28,6 +28,7 @@ public class DataUtility
 	{
 		// Create Data Instances
 		jedisPool = new JedisPool(new JedisPoolConfig(), Demigods.config.getSettingString("redis.host"), Demigods.config.getSettingInt("redis.port"));
+		if(Demigods.config.isSettingSet("redis.password")) jedisPool.getResource().auth(Demigods.config.getSettingString("redis.password"));
 		tempData = Maps.newHashMap();
 
 		// Create Persistence
