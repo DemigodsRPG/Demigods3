@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter;
+package com.censoredsoftware.Demigods.Engine.Object.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class PlayerCharacter
 	@Indexed
 	private String player;
 	@Attribute
-	private String health;
+	private double health;
 	@Attribute
 	private Integer hunger;
 	@Attribute
@@ -98,7 +98,7 @@ public class PlayerCharacter
 
 	public void setHealth(double health)
 	{
-		this.health = String.valueOf(health);
+		this.health = health;
 	}
 
 	public void setHunger(int hunger)
@@ -251,7 +251,7 @@ public class PlayerCharacter
 
 	public Double getHealth()
 	{
-		return Double.valueOf(this.health);
+		return this.health;
 	}
 
 	public Integer getHunger()

@@ -2,7 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Event.Character;
 
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 
 /*
  * Represents an callAbilityEvent that is called when a player is killed by another player.

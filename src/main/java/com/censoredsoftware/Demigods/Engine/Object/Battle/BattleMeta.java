@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Sets;
 
 @Model
@@ -23,7 +23,7 @@ public class BattleMeta
 	private Set<DemigodsLocation> locations;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter startedBy;
+	private com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter startedBy;
 	@CollectionSet(of = Long.class)
 	private Set<PlayerCharacter> participants;
 	@CollectionSet(of = String.class)

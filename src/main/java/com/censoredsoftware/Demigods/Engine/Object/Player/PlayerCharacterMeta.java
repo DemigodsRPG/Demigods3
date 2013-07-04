@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter;
+package com.censoredsoftware.Demigods.Engine.Object.Player;
 
 import java.util.HashMap;
 import java.util.HashSet;
