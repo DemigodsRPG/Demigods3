@@ -110,7 +110,7 @@ public class Demigods
 		Demigods.text = getTranslation();
 
 		// Initialize soft data.
-		new DataUtility(instance);
+		new DataUtility();
 		if(!DataUtility.isConnected())
 		{
 			message.severe("Demigods was unable to connect to a redis server.");

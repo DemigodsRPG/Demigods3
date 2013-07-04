@@ -9,7 +9,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
 import com.google.common.collect.Maps;
 
@@ -24,10 +24,10 @@ public class DataUtility
 	// Temp Data
 	private static Map<String, HashMap<String, Object>> tempData;
 
-	public DataUtility(DemigodsPlugin instance)
+	public DataUtility()
 	{
 		// Create Data Instances
-		jedisPool = new JedisPool(new JedisPoolConfig(), "localhost", 6379);
+		jedisPool = new JedisPool(new JedisPoolConfig(), Demigods.config.getSettingString("redis.host"), Demigods.config.getSettingInt("redis.port"));
 		tempData = Maps.newHashMap();
 
 		// Create Persistence
