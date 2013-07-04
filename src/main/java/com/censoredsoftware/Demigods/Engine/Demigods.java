@@ -8,10 +8,9 @@ import org.bukkit.plugin.Plugin;
 import org.mcstats.Metrics;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Command.CheckCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
-import com.censoredsoftware.Demigods.Engine.Command.OwnerCommand;
+import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.Module.BukkitDevModule;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
@@ -191,10 +190,15 @@ public class Demigods
 
 	protected static void loadCommands(DemigodsPlugin instance)
 	{
+		// Main Demigods Command
 		instance.getCommand("demigods").setExecutor(new DemigodsCommand());
-		instance.getCommand("check").setExecutor(new CheckCommand());
-		instance.getCommand("owner").setExecutor(new OwnerCommand());
 
+		// General Commands
+		GeneralCommands genCommands = new GeneralCommands();
+		instance.getCommand("check").setExecutor(genCommands);
+		instance.getCommand("owner").setExecutor(genCommands);
+
+		// Development/Backend Commands
 		DevelopmentCommands devCommands = new DevelopmentCommands();
 		instance.getCommand("test1").setExecutor(devCommands);
 		instance.getCommand("test2").setExecutor(devCommands);

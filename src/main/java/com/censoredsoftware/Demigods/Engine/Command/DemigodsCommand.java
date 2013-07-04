@@ -26,11 +26,9 @@ public class DemigodsCommand implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		// Check for console first
-		if(sender instanceof ConsoleCommandSender)
-		{
-			return Demigods.message.noConsole((ConsoleCommandSender) sender);
-		}
+		if(sender instanceof ConsoleCommandSender) return Demigods.message.noConsole((ConsoleCommandSender) sender);
 
+		// Check args and pass onto dg_extended() if need be
 		if(args.length > 0)
 		{
 			dg_extended(sender, args);

@@ -13,11 +13,11 @@
         <url>http://github.com/Clashnia/Minecraft-Demigods</url>
     </scm>
     <distributionManagement>
-        <snapshotRepository>
+        <repository>
             <id>censored-software</id>
-            <name>censored-software-snapshots</name>
-            <url>http://censoredsoftware.com:8081/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
+            <name>censored-software-releases</name>
+            <url>http://censoredsoftware.com:8081/artifactory/libs-release-local</url>
+        </repository>
     </distributionManagement>
     <repositories>
         <repository>

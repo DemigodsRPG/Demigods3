@@ -1,10 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,10 +7,23 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CheckCommand implements CommandExecutor
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.PlayerCharacter.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+
+public class GeneralCommands implements CommandExecutor
 {
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
+	{
+		if(command.getName().equalsIgnoreCase("check")) return check(sender);
+		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);
+		return false;
+	}
+
+	private boolean check(CommandSender sender)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
@@ -47,6 +55,24 @@ public class CheckCommand implements CommandExecutor
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.WHITE);
 
+		return true;
+	}
+
+	private boolean owner(CommandSender sender, String[] args)
+	{
+		// Check Permissions
+		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+
+		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
+		if(args.length < 1)
+		{
+			player.sendMessage(ChatColor.RED + "You must select a character.");
+			player.sendMessage(ChatColor.RED + "/owner <character>");
+			return true;
+		}
+		PlayerCharacter charToCheck = PlayerCharacter.getCharacterByName(args[0]);
+		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
+		else player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;
 	}
 }
