@@ -66,9 +66,6 @@ public class Demigods
 
 	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures) throws DemigodsStartupException
 	{
-		// Allow static access.
-		plugin = instance;
-
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));

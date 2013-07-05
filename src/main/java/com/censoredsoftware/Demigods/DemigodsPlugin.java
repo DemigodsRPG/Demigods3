@@ -20,10 +20,12 @@ public class DemigodsPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		// Load the game engine, passing in the game data.
 		try
 		{
-			// Initialize the main Demigods class
+			// Allow static access.
+			Demigods.plugin = this;
+
+			// Load the game engine, passing in the game data.
 			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
 
 			// Print success!
