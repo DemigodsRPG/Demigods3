@@ -37,7 +37,7 @@ public class MessageModule
 	 */
 	public void tagged(CommandSender sender, String msg)
 	{
-		if(tag) sender.sendMessage(ChatColor.AQUA + "[" + pluginName + "] " + ChatColor.RESET + msg);
+		if(tag) sender.sendMessage(ChatColor.RED + "[" + pluginName + "] " + ChatColor.RESET + msg);
 		else sender.sendMessage(msg);
 	}
 

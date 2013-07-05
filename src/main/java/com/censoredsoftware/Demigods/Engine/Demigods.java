@@ -111,9 +111,9 @@ public class Demigods
 		new DataUtility();
 		if(!DataUtility.isConnected())
 		{
-			message.severe("Demigods was unable to connect to a redis server.");
-			message.severe("A redis server is REQUIRED for Demigods to run.");
-			message.severe("Please install and configure a redis server.");
+			message.severe("Demigods was unable to connect to a Redis server.");
+			message.severe("A Redis server is required for Demigods to run.");
+			message.severe("Please install and configure a Redis server. (http://redis.io)");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			return;
 		}
@@ -137,8 +137,6 @@ public class Demigods
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
-
-		message.info("Successfully enabled.");
 	}
 
 	/**

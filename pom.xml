@@ -3,27 +3,41 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>Demigods</groupId>
+
+    <groupId>com.censoredsoftware.minecraft</groupId>
     <artifactId>Demigods</artifactId>
     <version>3.0.0-DEVELOPMENT</version>
+    <packaging>jar</packaging>
+
+    <name>Demigods Bukkit Plugin</name>
+    <url>http://github.com/Clashnia/Minecraft-Demigods</url>
+
     <scm>
         <connection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</connection>
         <developerConnection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</developerConnection>
         <tag>HEAD</tag>
         <url>http://github.com/Clashnia/Minecraft-Demigods</url>
     </scm>
+
     <distributionManagement>
         <repository>
             <id>censored-software</id>
             <name>censored-software-releases</name>
             <url>http://censoredsoftware.com:8081/artifactory/libs-release-local</url>
         </repository>
+        <snapshotRepository>
+            <id>censored-software</id>
+            <name>censored-software-snapshots</name>
+            <url>http://censoredsoftware.com:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
     </distributionManagement>
+
     <repositories>
         <repository>
             <id>censored-software</id>
             <url>http://censoredsoftware.com:8081/artifactory/repo</url>
         </repository>
+
         <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots</url>
@@ -37,6 +51,7 @@
             <url>http://repo.mcstats.org/content/repositories/public</url>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -84,10 +99,19 @@
             <optional>false</optional>
         </dependency>
     </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>comphenix-repo</id>
+            <url>http://repo.comphenix.net/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <finalName>Demigods</finalName>
-        <defaultGoal>install</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -99,7 +123,26 @@
                 </includes>
             </resource>
         </resources>
+
         <plugins>
+            <plugin>
+                <groupId>com.comphenix.maven</groupId>
+                <artifactId>yaml-properties-plugin</artifactId>
+                <version>0.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>read-yaml-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <plugin>${basedir}/src/main/resources/plugin.yml</plugin>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -122,6 +165,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -132,6 +176,7 @@
                     <tagNameFormat>@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -141,6 +186,7 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

@@ -21,6 +21,8 @@ public class DemigodsPlugin extends JavaPlugin
 	{
 		// Load the game engine, passing in the game data.
 		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
+
+		Demigods.message.info("Successfully enabled.");
 	}
 
 	/**
