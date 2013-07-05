@@ -8,7 +8,14 @@ public class SpigotUtility
 {
 	public static boolean runningSpigot()
 	{
-		return Bukkit.getBukkitVersion().toLowerCase().contains("spigot");
+		try
+		{
+			Bukkit.getServer().getWorlds().get(0).spigot();
+			return true;
+		}
+		catch(Exception ignored)
+		{}
+		return false;
 	}
 
 	public static void playParticle(Location location, Effect effect, int offsetX, int offsetY, int offsetZ, float speed, int particles, int viewRadius)

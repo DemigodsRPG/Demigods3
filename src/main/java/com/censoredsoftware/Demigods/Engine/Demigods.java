@@ -74,7 +74,7 @@ public class Demigods
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 
 		// Setup protected modules.
-		update = new BukkitDevModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
+		// update = new BukkitDevModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
 
 		// Define the game data.
 		Demigods.deities = new ArrayDeque<Deity>()
