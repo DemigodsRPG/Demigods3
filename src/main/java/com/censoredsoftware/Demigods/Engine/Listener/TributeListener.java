@@ -56,7 +56,11 @@ public class TributeListener implements Listener
 				return;
 			}
 
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && !character.getDeity().equals(save.getOwner().getDeity())) player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getInfo().getName() + " in order to tribute here.");
+			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
+			{
+				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getInfo().getName() + " in order to tribute here.");
+				return;
+			}
 			tribute(character, save);
 		}
 	}
