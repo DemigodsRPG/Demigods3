@@ -102,11 +102,14 @@ class RainbowWalking extends Ability
 
 	private static void rainbow(Player disco, Player player)
 	{
-		if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-		if(SpigotUtility.runningSpigot())
+		if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
-			SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 1, 1, 10F, 100, 10);
-			DataUtility.saveTimed(player.getName(), "disco_invisible", true, 1);
+			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
+			if(SpigotUtility.runningSpigot())
+			{
+				SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 0, 1, 0, 10F, 100, 10);
+				DataUtility.saveTimed(player.getName(), "disco_invisible", true, 1);
+			}
 		}
 	}
 }
