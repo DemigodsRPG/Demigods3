@@ -36,7 +36,7 @@ Still confused?  Check out the official beta server at **beta.demigodsrpg.com**!
 Developers
 ==========
 
-Demigods 3 is being developed solely by **_Alex** and **HmmmQuestionMark**, the owners of _Insignia RPG_ and _Clashnia_.
+Demigods 3 is being developed solely by **_Alex** and **HmmmQuestionMark**.
 
 More Documentation
 ==================
