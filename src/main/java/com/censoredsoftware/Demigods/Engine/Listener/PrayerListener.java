@@ -594,7 +594,9 @@ public class PrayerListener implements Listener
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
+			{
 				player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+			}
 		}
 		player.sendMessage(" ");
 

@@ -97,6 +97,7 @@ class RainbowWalking extends Ability
 								viewer.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 							}
 						}
+						player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 					}
 				}
 			}
