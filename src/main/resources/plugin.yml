@@ -57,6 +57,9 @@ permissions:
     demigods.titan.prometheus.ultimate:
         description: Allows the player to use Prometheus' ultimate.
         default: true
+    demigods.donator.disco:
+        description: Disco.
+        default: false
     demigods.tutorial:
         description: Allows the player to participate in the Tutorial quest.
         default: true
