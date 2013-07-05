@@ -9,6 +9,7 @@ import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Prometheus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
+import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Shrine;
 import com.censoredsoftware.Demigods.Episodes.Demo.Task.Tutorial;
 
 public class EpisodeDemo
@@ -58,7 +59,7 @@ public class EpisodeDemo
 
 	public static enum Structures implements Demigods.ListedStructure
 	{
-		ALTAR(new Altar());
+		ALTAR(new Altar()), SHRINE(new Shrine());
 
 		private StructureInfo structure;
 

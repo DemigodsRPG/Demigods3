@@ -12,6 +12,7 @@ import redis.clients.johm.Reference;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
@@ -24,6 +25,8 @@ public class StructureSave
 	private String structureType;
 	@Reference
 	private DemigodsLocation reference;
+	@Reference
+	private PlayerCharacter owner;
 
 	public void setStructureType(String type)
 	{
@@ -33,6 +36,11 @@ public class StructureSave
 	public void setReferenceLocation(Location reference)
 	{
 		this.reference = DemigodsLocation.create(reference);
+	}
+
+	public void setOwner(PlayerCharacter character)
+	{
+		this.owner = character;
 	}
 
 	public void save()
@@ -49,9 +57,9 @@ public class StructureSave
 		DataUtility.jOhm.delete(StructureSave.class, this.Id);
 	}
 
-	public StructureSave load(Long Id)
+	public static StructureSave load(Long Id)
 	{
-		return DataUtility.jOhm.get(StructureSave.class, this.Id);
+		return DataUtility.jOhm.get(StructureSave.class, Id);
 	}
 
 	public Location getReferenceLocation()
@@ -76,6 +84,16 @@ public class StructureSave
 			if(structure.getStructureType().equalsIgnoreCase(this.structureType)) return structure;
 		}
 		return null;
+	}
+
+	public PlayerCharacter getOwner()
+	{
+		return this.owner;
+	}
+
+	public long getId()
+	{
+		return this.Id;
 	}
 
 	public void generate()
