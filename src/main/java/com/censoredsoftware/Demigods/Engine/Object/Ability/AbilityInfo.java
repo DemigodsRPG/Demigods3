@@ -5,11 +5,11 @@ import java.util.List;
 public class AbilityInfo
 {
 	private String deity, name, command, permission;
-	private int cost, delay, cooldownMin, cooldownMax;
+	private int cost, delay, repeat, cooldownMin, cooldownMax;
 	private List<String> details;
 	private Devotion.Type type;
 
-	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int cooldownMin, int cooldownMax, List<String> details, Devotion.Type type)
+	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int repeat, int cooldownMin, int cooldownMax, List<String> details, Devotion.Type type)
 	{
 		this.deity = deity;
 		this.name = name;
@@ -17,6 +17,7 @@ public class AbilityInfo
 		this.permission = permission;
 		this.cost = cost;
 		this.delay = delay;
+		this.repeat = repeat;
 		this.cooldownMin = cooldownMin;
 		this.cooldownMax = cooldownMax;
 		this.details = details;
@@ -51,6 +52,11 @@ public class AbilityInfo
 	public int getDelay()
 	{
 		return delay;
+	}
+
+	public int getRepeat()
+	{
+		return repeat;
 	}
 
 	public int getCooldownMin()

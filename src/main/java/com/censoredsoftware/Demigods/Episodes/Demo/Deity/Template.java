@@ -64,7 +64,7 @@ public class Template extends Deity
 class Test extends Ability
 {
 	private static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
-	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 170, delay = 1500, repeat = 0, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -76,7 +76,7 @@ class Test extends Ability
 
 	protected Test()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)

@@ -60,26 +60,26 @@ public class Disco extends Deity
 class RainbowWalking extends Ability
 {
 	private static String deity = "Disco", name = "Rainbow Walking", command = null, permission = "demigods.donator.disco";
-	private static int cost = 0, delay = 5, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 5, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Constantly shit rainbows.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Spread the disco while sneaking.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.SUPPORT;
+	private static Devotion.Type type = Devotion.Type.STEALTH;
 
 	protected RainbowWalking()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
 		{
 			@Override
 			public void run()
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE)) doEffect(online, true);
+					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) & !ZoneUtility.zoneNoBuild(online, online.getLocation()) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) doEffect(online, true);
 					else doEffect(online, false);
 				}
 			}
@@ -106,14 +106,11 @@ class RainbowWalking extends Ability
 
 			private void rainbow(Player disco, Player player)
 			{
-				if(!ZoneUtility.zoneNoBuild(disco, disco.getLocation()) && !StructureUtility.isInRadiusWithFlag(disco.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(disco.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
+				player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
+				if(SpigotUtility.runningSpigot())
 				{
-					player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-					if(SpigotUtility.runningSpigot())
-					{
-						SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
-						DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
-					}
+					SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
+					DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
 				}
 			}
 
