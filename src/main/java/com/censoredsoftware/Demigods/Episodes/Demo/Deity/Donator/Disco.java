@@ -89,16 +89,16 @@ class RainbowWalking extends Ability
 				{
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
 					{
-						if(entity instanceof Player) rainbow((Player) entity);
+						if(entity instanceof Player) rainbow(player, (Player) entity);
 					}
-					rainbow(player);
+					rainbow(player, player);
 				}
 			}
 		});
 	}
 
-	private static void rainbow(Player player)
+	private static void rainbow(Player disco, Player player)
 	{
-		player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
+		player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 	}
 }
