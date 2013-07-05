@@ -23,10 +23,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -140,6 +137,8 @@ public class Demigods
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
+
+		if(SpigotUtility.runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
 
 	/**
