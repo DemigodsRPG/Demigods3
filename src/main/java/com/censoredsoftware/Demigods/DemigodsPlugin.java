@@ -22,9 +22,6 @@ public class DemigodsPlugin extends JavaPlugin
 	{
 		try
 		{
-			// Allow static access.
-			Demigods.plugin = this;
-
 			// Load the game engine, passing in the game data.
 			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
 

@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Runnable.FavorRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.TimedDataRunnable;
 
@@ -23,6 +25,14 @@ public class SchedulerUtility
 		// Start timed data runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
 		AdminUtility.sendDebug("Timed data runnable enabled...");
+
+		for(Deity deity : Demigods.getLoadedDeities())
+		{
+			for(Ability ability : deity.getAbilities())
+			{
+				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, 2);
+			}
+		}
 	}
 
 	public static void stopThreads(DemigodsPlugin instance)

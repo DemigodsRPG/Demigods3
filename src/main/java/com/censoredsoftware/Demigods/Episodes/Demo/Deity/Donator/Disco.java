@@ -16,10 +16,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityRunnable;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
@@ -114,12 +114,8 @@ class RainbowWalking extends Ability
 	}
 }
 
-class DiscoRunnable extends AbilityRunnable
+class DiscoRunnable extends BukkitRunnable
 {
-	DiscoRunnable()
-	{
-		super(0, 2);
-	}
 
 	@Override
 	public void run()
