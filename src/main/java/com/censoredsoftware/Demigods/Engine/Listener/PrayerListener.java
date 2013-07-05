@@ -56,9 +56,9 @@ public class PrayerListener implements Listener
 				MiscUtility.clearChat(player);
 
 				// Tell nearby players that the user is praying
-				for(Entity entity : player.getNearbyEntities(16, 16, 16))
+				for(Entity entity : player.getNearbyEntities(20, 20, 20))
 				{
-					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt to being prayer.");
+					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt to begin prayer.");
 				}
 
 				player.sendMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
