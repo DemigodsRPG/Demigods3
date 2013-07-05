@@ -347,7 +347,7 @@ public class PrayerListener implements Listener
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity + "!");
+				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
 			}
 
 			// Clear the confirmation case
@@ -529,7 +529,7 @@ public class PrayerListener implements Listener
 		if(newChar != null)
 		{
 			// Make sure they aren't trying to switch to their current character
-			if(PlayerWrapper.getPlayer(player).getCurrent().getName().equals(newChar.getName()))
+			if(PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().getName().equals(newChar.getName()))
 			{
 				player.sendMessage(ChatColor.RED + "You can't switch to your current character.");
 				return;

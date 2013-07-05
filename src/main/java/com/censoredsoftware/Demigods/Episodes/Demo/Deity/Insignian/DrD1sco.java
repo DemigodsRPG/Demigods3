@@ -21,7 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class DrD1sco extends Deity
 {
-	private static String name = "DrD1sco", alliance = "Donator";
+	private static String name = "DrD1sco", alliance = "Insignian";
 	private static ChatColor color = ChatColor.STRIKETHROUGH;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -59,7 +59,7 @@ public class DrD1sco extends Deity
 
 class RainbowWalking extends Ability
 {
-	private static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.donator.disco";
+	private static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.insignian.disco";
 	private static int cost = 0, delay = 0, repeat = 5, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
