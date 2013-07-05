@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Donator;
+package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,9 +19,9 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
-public class Disco extends Deity
+public class DrD1sco extends Deity
 {
-	private static String name = "Disco", alliance = "Donator";
+	private static String name = "DrD1sco", alliance = "Donator";
 	private static ChatColor color = ChatColor.STRIKETHROUGH;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -51,7 +51,7 @@ public class Disco extends Deity
 		}
 	};
 
-	public Disco()
+	public DrD1sco()
 	{
 		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
 	}
@@ -59,7 +59,7 @@ public class Disco extends Deity
 
 class RainbowWalking extends Ability
 {
-	private static String deity = "Disco", name = "Rainbow Walking", command = null, permission = "demigods.donator.disco";
+	private static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.donator.disco";
 	private static int cost = 0, delay = 0, repeat = 5, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
@@ -79,14 +79,14 @@ class RainbowWalking extends Ability
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) & !ZoneUtility.zoneNoBuild(online, online.getLocation()) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) doEffect(online, true);
+					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) & !ZoneUtility.zoneNoBuild(online, online.getLocation()) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) doEffect(online, true);
 					else doEffect(online, false);
 				}
 			}
 
 			private void doEffect(Player player, boolean effect)
 			{
-				for(Entity entity : player.getNearbyEntities(20, 20, 20))
+				for(Entity entity : player.getNearbyEntities(30, 30, 30))
 				{
 					if(!(entity instanceof Player)) continue;
 					Player viewing = (Player) entity;
@@ -107,11 +107,7 @@ class RainbowWalking extends Ability
 			private void rainbow(Player disco, Player player)
 			{
 				player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-				if(SpigotUtility.runningSpigot())
-				{
-					SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
-					DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
-				}
+				if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 			}
 
 			private void playRandomNote(Location location)
