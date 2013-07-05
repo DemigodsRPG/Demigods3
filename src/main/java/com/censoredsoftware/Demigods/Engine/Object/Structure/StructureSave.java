@@ -41,6 +41,7 @@ public class StructureSave
 	public void setOwner(PlayerCharacter character)
 	{
 		this.owner = character;
+		save();
 	}
 
 	public void save()

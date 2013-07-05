@@ -68,9 +68,6 @@ public class TributeListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerTribute(InventoryCloseEvent event)
 	{
-		// Return if it's not a player
-		if(!(event.getPlayer() instanceof Player)) return;
-
 		// Define player and character
 		Player player = (Player) event.getPlayer();
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
@@ -79,7 +76,7 @@ public class TributeListener implements Listener
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute") || !StructureUtility.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureInfo.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !StructureUtility.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureInfo.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureSave save = StructureSave.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));

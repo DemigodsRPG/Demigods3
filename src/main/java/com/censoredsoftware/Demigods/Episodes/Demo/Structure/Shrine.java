@@ -139,13 +139,14 @@ public class Shrine implements StructureInfo
 	}
 
 	@Override
-	public void createNew(Location reference, boolean generate)
+	public StructureSave createNew(Location reference, boolean generate)
 	{
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.save();
 		if(generate) save.generate();
+		return save;
 	}
 
 	public static boolean validBlockConfiguration(Block block)
@@ -183,8 +184,8 @@ class ShrineListener implements Listener
 				{
 					// Shrine created!
 					AdminUtility.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-					EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
-					StructureUtility.getStructure(location).setOwner(character);
+					StructureSave save = EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
+					save.setOwner(character);
 					location.getWorld().strikeLightningEffect(location);
 
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));

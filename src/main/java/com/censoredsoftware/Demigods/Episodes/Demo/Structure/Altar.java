@@ -998,13 +998,14 @@ public class Altar implements StructureInfo
 	}
 
 	@Override
-	public void createNew(Location reference, boolean generate)
+	public StructureSave createNew(Location reference, boolean generate)
 	{
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.save();
 		if(generate) save.generate();
+		return save;
 	}
 
 	public static boolean altarNearby(Location location)

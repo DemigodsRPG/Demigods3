@@ -21,7 +21,7 @@ public interface StructureInfo
 
 	public Set<Flag> getFlags();
 
-	public void createNew(Location reference, boolean generate);
+	public StructureSave createNew(Location reference, boolean generate);
 
 	public static enum Flag
 	{
