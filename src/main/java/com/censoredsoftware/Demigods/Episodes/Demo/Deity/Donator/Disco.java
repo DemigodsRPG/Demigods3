@@ -87,18 +87,15 @@ class RainbowWalking extends Ability
 				// PHELPS RAINBOW SHITTING
 				if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid())
 				{
-					if(player.isSneaking())
+					for(Entity entity : player.getNearbyEntities(20, 20, 20))
 					{
-						for(Entity entity : player.getNearbyEntities(20, 20, 20))
+						if(entity instanceof Player)
 						{
-							if(entity instanceof Player)
-							{
-								Player viewer = (Player) entity;
-								viewer.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-							}
+							Player viewer = (Player) entity;
+							viewer.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 						}
-						player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 					}
+					player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 				}
 			}
 		});
