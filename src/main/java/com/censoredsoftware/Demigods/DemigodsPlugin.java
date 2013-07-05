@@ -4,6 +4,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
@@ -20,9 +21,16 @@ public class DemigodsPlugin extends JavaPlugin
 	public void onEnable()
 	{
 		// Load the game engine, passing in the game data.
-		new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
+		try
+		{
+			// Initialize the main Demigods class
+			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
 
-		Demigods.message.info("Successfully enabled.");
+			// Print success!
+			Demigods.message.info("Successfully enabled.");
+		}
+		catch(DemigodsStartupException e)
+		{}
 	}
 
 	/**

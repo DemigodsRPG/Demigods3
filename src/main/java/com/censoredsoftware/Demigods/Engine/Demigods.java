@@ -11,6 +11,7 @@ import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
 import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
+import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.Module.BukkitDevModule;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
@@ -64,7 +65,7 @@ public class Demigods
 		public StructureInfo getStructure();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures)
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures) throws DemigodsStartupException
 	{
 		// Allow static access.
 		plugin = instance;
@@ -115,7 +116,7 @@ public class Demigods
 			message.severe("A Redis server is required for Demigods to run.");
 			message.severe("Please install and configure a Redis server. (http://redis.io)");
 			instance.getServer().getPluginManager().disablePlugin(instance);
-			return;
+			throw new DemigodsStartupException();
 		}
 
 		// Initialize metrics.
