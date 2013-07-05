@@ -66,6 +66,14 @@ public class StructureUtility
 		return null;
 	}
 
+	public static void regenerateStructures()
+	{
+		for(StructureSave save : getAllStructureSaves())
+		{
+			save.generate();
+		}
+	}
+
 	public static Set<StructureSave> getAllStructureSaves()
 	{
 		return DataUtility.jOhm.getAll(StructureSave.class);

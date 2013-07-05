@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.mcstats.Metrics;
 
@@ -24,6 +25,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -47,7 +49,7 @@ public class Demigods
 	protected static Deque<TaskSet> quests;
 	protected static Deque<StructureInfo> structures;
 
-	// The Engline Default Text
+	// The Engine Default Text
 	public static Translation text;
 
 	public interface ListedDeity
@@ -114,7 +116,7 @@ public class Demigods
 		{
 			message.severe("Demigods was unable to connect to a Redis server.");
 			message.severe("A Redis server is required for Demigods to run.");
-			message.severe("Please install and configure a Redis server. (http://redis.io)");
+			message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
@@ -128,13 +130,13 @@ public class Demigods
 		catch(IOException ignored)
 		{}
 
-		// Finish loading the demigods based on the game data.
+		// Finish loading the plugin based on the game data.
 		loadDepends(instance);
 		loadListeners(instance);
 		loadCommands(instance);
 
 		// Finally, regenerate structures
-		// DemigodsBlock.regenerateStructures();
+		StructureUtility.regenerateStructures();
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);

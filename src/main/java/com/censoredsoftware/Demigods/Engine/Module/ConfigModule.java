@@ -7,14 +7,14 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Module to load configuration settings from any passed in demigods's config.yml.
+ * Module to load configuration settings from any passed in plugin's config.yml.
  */
 public class ConfigModule
 {
 	private static Plugin plugin;
 
 	/**
-	 * Constructor to create a new ConfigModule for the given demigods's <code>instance</code>.
+	 * Constructor to create a new ConfigModule for the given plugin's <code>instance</code>.
 	 * 
 	 * @param instance The demigods instance the ConfigModule attaches to.
 	 * @param copyDefaults Boolean for copying the default config.yml found inside this demigods over the config file utilized by this library.
