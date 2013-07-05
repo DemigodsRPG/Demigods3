@@ -60,7 +60,7 @@ public class Disco extends Deity
 class RainbowWalking extends Ability
 {
 	private static String deity = "Disco", name = "Rainbow Walking", command = null, permission = "demigods.donator.disco";
-	private static int cost = 170, delay = 1500, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 5, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -79,7 +79,7 @@ class RainbowWalking extends Ability
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking()) doEffect(online, true);
+					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE)) doEffect(online, true);
 					else doEffect(online, false);
 				}
 			}
@@ -100,7 +100,7 @@ class RainbowWalking extends Ability
 				if(effect)
 				{
 					rainbow(player, player);
-					player.getWorld().playSound(player.getLocation(), Sound.SILVERFISH_WALK, 1F, 0F);
+					playRandomNote(player.getLocation());
 				}
 			}
 
@@ -115,6 +115,11 @@ class RainbowWalking extends Ability
 						DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
 					}
 				}
+			}
+
+			private void playRandomNote(Location location)
+			{
+				location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, 0.5F, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
 			}
 		});
 	}
