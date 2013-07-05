@@ -99,12 +99,6 @@ class RainbowWalking extends Ability
 
 	private static void rainbow(Player player)
 	{
-		for(int x = -1; x < 1; x++)
-		{
-			for(int z = -1; z < 1; z++)
-			{
-				player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation().add(x, 0, z), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-			}
-		}
+		player.sendBlockChange(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 	}
 }
