@@ -100,7 +100,7 @@ class RainbowWalking extends Ability
 				if(effect)
 				{
 					rainbow(player, player);
-					player.playSound(player.getLocation(), Sound.BURP, 1F, 0F);
+					player.getWorld().playSound(player.getLocation(), Sound.SILVERFISH_WALK, 1F, 0F);
 				}
 			}
 
