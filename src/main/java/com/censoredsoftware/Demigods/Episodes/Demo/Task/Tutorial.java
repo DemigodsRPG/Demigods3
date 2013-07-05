@@ -11,8 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
@@ -68,7 +68,7 @@ class TutorialTask extends Task
 		{
 			Player player = event.getPlayer();
 
-			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, name);

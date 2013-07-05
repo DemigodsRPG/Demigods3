@@ -1,8 +1,10 @@
 package com.censoredsoftware.Demigods.Engine.Runnable;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
 
-public class TimedDataRunnable implements Runnable
+public class TimedDataRunnable extends BukkitRunnable
 {
 	@Override
 	public void run()
@@ -11,11 +13,5 @@ public class TimedDataRunnable implements Runnable
 		{
 			if(data.getExpiration() <= System.currentTimeMillis()) data.delete();
 		}
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		throw new CloneNotSupportedException();
 	}
 }

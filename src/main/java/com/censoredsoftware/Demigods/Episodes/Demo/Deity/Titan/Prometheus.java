@@ -20,8 +20,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -102,7 +102,7 @@ class ShootFireball extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -120,7 +120,7 @@ class ShootFireball extends Ability
 	public static void fireball(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "fireball", cost, info)) return;
@@ -160,7 +160,7 @@ class Blaze extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -178,7 +178,7 @@ class Blaze extends Ability
 	public static void blaze(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 		int power = character.getMeta().getDevotion(type).getLevel();
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
@@ -231,7 +231,7 @@ class Firestorm extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -249,7 +249,7 @@ class Firestorm extends Ability
 	public static void firestorm(final Player player)
 	{
 		// Define variables
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
 
@@ -262,7 +262,7 @@ class Firestorm extends Ability
 			if(!(entity instanceof LivingEntity)) continue;
 			if(entity instanceof Player)
 			{
-				PlayerCharacter otherCharacter = DemigodsPlayer.getPlayer((Player) entity).getCurrent();
+				PlayerCharacter otherCharacter = PlayerWrapper.getPlayer((Player) entity).getCurrent();
 				if(otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
 			}
 			if(!ZoneUtility.canTarget(entity)) continue;

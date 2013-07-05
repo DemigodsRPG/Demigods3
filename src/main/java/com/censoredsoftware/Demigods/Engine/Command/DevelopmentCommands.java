@@ -10,8 +10,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
@@ -85,7 +85,7 @@ public class DevelopmentCommands implements CommandExecutor
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		String charName = args[0];
 
-		if(DemigodsPlayer.hasCharName(player, charName))
+		if(PlayerWrapper.hasCharName(player, charName))
 		{
 			PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
 			character.remove();

@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
@@ -26,7 +26,7 @@ public class GeneralCommands implements CommandExecutor
 	private boolean check(CommandSender sender)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{

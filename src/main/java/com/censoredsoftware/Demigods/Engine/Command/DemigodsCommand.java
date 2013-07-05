@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 
@@ -260,7 +260,7 @@ public class DemigodsCommand implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final List<PlayerCharacter> chars = DemigodsPlayer.getChars(toCheck);
+					final List<PlayerCharacter> chars = PlayerWrapper.getChars(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
@@ -308,7 +308,7 @@ public class DemigodsCommand implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
+					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -365,7 +365,7 @@ public class DemigodsCommand implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
+					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -422,7 +422,7 @@ public class DemigodsCommand implements CommandExecutor
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = DemigodsPlayer.getPlayer(toEdit).getCurrent();
+					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 

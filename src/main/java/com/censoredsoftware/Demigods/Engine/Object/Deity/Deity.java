@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 
 public abstract class Deity
 {
@@ -80,7 +80,7 @@ public abstract class Deity
 
 	public static boolean canUseDeity(Player player, String deity)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		if(!character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
@@ -96,7 +96,7 @@ public abstract class Deity
 
 	public static boolean canUseDeitySilent(Player player, String deity)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		return character != null && character.isDeity(deity) && character.isImmortal();
 	}
 }

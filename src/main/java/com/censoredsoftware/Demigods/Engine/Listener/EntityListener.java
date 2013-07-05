@@ -13,8 +13,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -67,8 +67,8 @@ public class EntityListener implements Listener
 				// Define player
 				Player hit = (Player) attacked;
 
-				PlayerCharacter hitChar = DemigodsPlayer.getPlayer(hit).getCurrent();
-				PlayerCharacter hittingChar = DemigodsPlayer.getPlayer(hitting).getCurrent();
+				PlayerCharacter hitChar = PlayerWrapper.getPlayer(hit).getCurrent();
+				PlayerCharacter hittingChar = PlayerWrapper.getPlayer(hitting).getCurrent();
 
 				// TrackedBattle.battleProcess(hitChar, hittingChar);
 			}
@@ -82,7 +82,7 @@ public class EntityListener implements Listener
 		{
 			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 			if(character == null) return;
 			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
 
@@ -101,7 +101,7 @@ public class EntityListener implements Listener
 		if(entity instanceof Player)
 		{
 			Player player = (Player) entity;
-			PlayerCharacter playerChar = DemigodsPlayer.getPlayer(player).getCurrent();
+			PlayerCharacter playerChar = PlayerWrapper.getPlayer(player).getCurrent();
 
 			EntityDamageEvent damageEvent = player.getLastDamageCause();
 
@@ -113,8 +113,8 @@ public class EntityListener implements Listener
 				if(damager instanceof Player)
 				{
 					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = DemigodsPlayer.getPlayer(attacker).getCurrent();
-					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, DemigodsPlayer.getCurrentAlliance(player)));
+					PlayerCharacter attackChar = PlayerWrapper.getPlayer(attacker).getCurrent();
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerWrapper.getCurrentAlliance(player)));
 					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
 				}
 			}

@@ -16,7 +16,6 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
@@ -144,7 +143,7 @@ public class PlayerCharacter
 		}
 
 		// Switch to new character
-		if(switchCharacter) DemigodsPlayer.getPlayer(player).switchCharacter(character);
+		if(switchCharacter) PlayerWrapper.getPlayer(player).switchCharacter(character);
 	}
 
 	public static PlayerCharacter create(OfflinePlayer player, String charName, String charDeity)

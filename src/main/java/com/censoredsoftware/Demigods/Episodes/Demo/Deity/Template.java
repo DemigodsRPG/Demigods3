@@ -19,8 +19,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
@@ -85,7 +85,7 @@ class Test extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
@@ -103,7 +103,7 @@ class Test extends Ability
 	public static void test(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		LivingEntity target = Ability.autoTarget(player);
 
 		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;

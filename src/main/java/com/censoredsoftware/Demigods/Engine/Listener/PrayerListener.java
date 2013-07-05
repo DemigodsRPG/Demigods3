@@ -23,8 +23,8 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
@@ -41,7 +41,7 @@ public class PrayerListener implements Listener
 		// First we check if the player is clicking a prayer block
 		if(StructureUtility.isCenterBlockWithFlag(event.getClickedBlock().getLocation(), StructureInfo.Flag.PRAYER_LOCATION))
 		{
-			if(!DemigodsPlayer.isPraying(player))
+			if(!PlayerWrapper.isPraying(player))
 			{
 				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
 				{
@@ -50,7 +50,7 @@ public class PrayerListener implements Listener
 					event.setCancelled(true);
 					return;
 				}
-				DemigodsPlayer.togglePraying(player, true);
+				PlayerWrapper.togglePraying(player, true);
 
 				// First we clear chat
 				MiscUtility.clearChat(player);
@@ -74,9 +74,9 @@ public class PrayerListener implements Listener
 
 				event.setCancelled(true);
 			}
-			else if(DemigodsPlayer.isPraying(player))
+			else if(PlayerWrapper.isPraying(player))
 			{
-				DemigodsPlayer.togglePraying(player, false);
+				PlayerWrapper.togglePraying(player, false);
 
 				// Clear whatever is being worked on in this Pray session
 				DataUtility.removeTemp(player.getName(), "temp_createchar");
@@ -94,7 +94,7 @@ public class PrayerListener implements Listener
 		Location location = player.getLocation();
 
 		// First we check if the player is currently praying, if not we'll return
-		if(DemigodsPlayer.isPraying(player))
+		if(PlayerWrapper.isPraying(player))
 		{
 			// Cancel their chat
 			event.setCancelled(true);
@@ -209,7 +209,7 @@ public class PrayerListener implements Listener
 			// View Warps
 			else if(message.equals("3") || message.startsWith("view") && message.contains("warps"))
 			{
-				if(DemigodsPlayer.getPlayer(player).getCurrent() == null) return;
+				if(PlayerWrapper.getPlayer(player).getCurrent() == null) return;
 
 				MiscUtility.clearChat(player);
 
@@ -221,7 +221,7 @@ public class PrayerListener implements Listener
 			// View Characters
 			else if(message.equals("4") || message.startsWith("view") && message.contains("invites"))
 			{
-				if(DemigodsPlayer.getPlayer(player).getCurrent() == null || !DemigodsLocation.hasInvites(DemigodsPlayer.getPlayer(player).getCurrent())) return;
+				if(PlayerWrapper.getPlayer(player).getCurrent() == null || !DemigodsLocation.hasInvites(PlayerWrapper.getPlayer(player).getCurrent())) return;
 
 				MiscUtility.clearChat(player);
 
@@ -303,7 +303,7 @@ public class PrayerListener implements Listener
 			if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
 
 			// Exit if this isn't for character creation
-			if(!DemigodsPlayer.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
+			if(!PlayerWrapper.isPraying(player) || !DataUtility.hasKeyTemp(player.getName(), "temp_createchar_finalstep") || !Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_createchar_finalstep").toString())) return;
 
 			// Define variables
 			String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
@@ -338,7 +338,7 @@ public class PrayerListener implements Listener
 				DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 				// Stop their praying, enable movement, enable chat
-				DemigodsPlayer.togglePraying(player, false);
+				PlayerWrapper.togglePraying(player, false);
 
 				// Remove old data now
 				DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
@@ -378,7 +378,7 @@ public class PrayerListener implements Listener
 
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		if(character != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");
@@ -393,7 +393,7 @@ public class PrayerListener implements Listener
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		final List<PlayerCharacter> chars = DemigodsPlayer.getChars(player);
+		final List<PlayerCharacter> chars = PlayerWrapper.getChars(player);
 
 		if(chars.isEmpty())
 		{
@@ -432,7 +432,7 @@ public class PrayerListener implements Listener
 	// View warps
 	protected static void viewWarps(Player player)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			player.sendMessage(ChatColor.GRAY + "  You have no prayer warps. Why not go make one?");
@@ -474,7 +474,7 @@ public class PrayerListener implements Listener
 	// View warps
 	protected static void viewInvites(Player player)
 	{
-		for(Map.Entry<DemigodsLocation, String> invite : DemigodsPlayer.getPlayer(player).getCurrent().getInvites().entrySet())
+		for(Map.Entry<DemigodsLocation, String> invite : PlayerWrapper.getPlayer(player).getCurrent().getInvites().entrySet())
 		{
 			player.sendMessage(ChatColor.GRAY + "  " + invite.getValue());
 		}
@@ -529,13 +529,13 @@ public class PrayerListener implements Listener
 		if(newChar != null)
 		{
 			// Make sure they aren't trying to switch to their current character
-			if(DemigodsPlayer.getPlayer(player).getCurrent().getName().equals(newChar.getName()))
+			if(PlayerWrapper.getPlayer(player).getCurrent().getName().equals(newChar.getName()))
 			{
 				player.sendMessage(ChatColor.RED + "You can't switch to your current character.");
 				return;
 			}
 
-			DemigodsPlayer.getPlayer(player).switchCharacter(newChar);
+			PlayerWrapper.getPlayer(player).switchCharacter(newChar);
 
 			player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
 			player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName() + ChatColor.WHITE);
@@ -544,13 +544,13 @@ public class PrayerListener implements Listener
 			DataUtility.saveTemp(player.getName(), "temp_chat_number", 0);
 
 			// Disable prayer
-			DemigodsPlayer.togglePraying(player, false);
+			PlayerWrapper.togglePraying(player, false);
 		}
 		else
 		{
 			player.sendMessage(ChatColor.RED + "Your current character couldn't be changed...");
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
-			DemigodsPlayer.togglePrayingSilent(player, false);
+			PlayerWrapper.togglePrayingSilent(player, false);
 		}
 	}
 
@@ -566,12 +566,12 @@ public class PrayerListener implements Listener
 	protected static void confirmName(Player player, String message)
 	{
 		int maxCaps = Demigods.config.getSettingInt("character.max_caps_in_name");
-		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || DemigodsPlayer.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
+		if(message.length() >= 15 || !StringUtils.isAlphanumeric(message) || PlayerWrapper.hasCharName(player, message) || MiscUtility.hasCapitalLetters(message, maxCaps))
 		{
 			// Validate the name
 			DataUtility.saveTemp(player.getName(), "temp_createchar", "choose_name");
 			if(message.length() >= 15) player.sendMessage(ChatColor.RED + "  That name is too long.");
-			if(DemigodsPlayer.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
+			if(PlayerWrapper.hasCharName(player, message)) player.sendMessage(ChatColor.RED + "  You already have a character with that name.");
 			if(!StringUtils.isAlphanumeric(message)) player.sendMessage(ChatColor.RED + "  You can only use Alpha-Numeric characters.");
 			if(MiscUtility.hasCapitalLetters(message, maxCaps)) player.sendMessage(ChatColor.RED + "  Too many capital letters. You can only have " + maxCaps + ".");
 			player.sendMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
@@ -687,7 +687,7 @@ public class PrayerListener implements Listener
 
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
 			// Save named DemigodsLocation for warp.
@@ -722,7 +722,7 @@ public class PrayerListener implements Listener
 
 	protected static void inviteWarp(Player player, String name)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		PlayerCharacter invited = PlayerCharacter.getCharacterByName(name);
 
 		if(character == null) return;
@@ -748,7 +748,7 @@ public class PrayerListener implements Listener
 		if(DemigodsLocation.alreadyInvited(character, invited)) DemigodsLocation.removeInvite(character, DemigodsLocation.getInvite(character, invited));
 
 		DemigodsLocation.addInvite(character, invited);
-		DemigodsPlayer.togglePraying(player, false);
+		PlayerWrapper.togglePraying(player, false);
 		MiscUtility.clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
@@ -758,12 +758,12 @@ public class PrayerListener implements Listener
 
 	protected static void acceptInvite(Player player, String name)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		DemigodsLocation invite = DemigodsLocation.getInvite(character, name);
 
 		if(invite != null)
 		{
-			DemigodsPlayer.togglePraying(player, false);
+			PlayerWrapper.togglePraying(player, false);
 			MiscUtility.clearChat(player);
 
 			player.teleport(invite.toLocation());
@@ -778,11 +778,11 @@ public class PrayerListener implements Listener
 
 	protected static void warpChar(Player player, String warpName)
 	{
-		for(Map.Entry<DemigodsLocation, String> warp : DemigodsPlayer.getPlayer(player).getCurrent().getWarps().entrySet())
+		for(Map.Entry<DemigodsLocation, String> warp : PlayerWrapper.getPlayer(player).getCurrent().getWarps().entrySet())
 		{
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{
-				DemigodsPlayer.togglePraying(player, false);
+				PlayerWrapper.togglePraying(player, false);
 				MiscUtility.clearChat(player);
 
 				player.teleport(warp.getKey().toLocation());

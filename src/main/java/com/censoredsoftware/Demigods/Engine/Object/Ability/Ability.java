@@ -23,8 +23,8 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public abstract class Ability
@@ -52,7 +52,7 @@ public abstract class Ability
 
 	private static boolean doAbilityPreProcess(Player player, int cost)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		if(!ZoneUtility.canTarget(player))
 		{
@@ -80,7 +80,7 @@ public abstract class Ability
 	 */
 	public static boolean doAbilityPreProcess(Player player, String name, int cost, AbilityInfo info)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		return doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info);
 	}
@@ -99,7 +99,7 @@ public abstract class Ability
 	 */
 	public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, AbilityInfo info)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		if(doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info))
 		{
@@ -115,7 +115,7 @@ public abstract class Ability
 			}
 			else if(target instanceof Player)
 			{
-				PlayerCharacter attacked = DemigodsPlayer.getPlayer(((Player) target)).getCurrent();
+				PlayerCharacter attacked = PlayerWrapper.getPlayer(((Player) target)).getCurrent();
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked)) return false;
 			}
 			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
@@ -179,7 +179,7 @@ public abstract class Ability
 	 */
 	public static boolean doTargeting(Player player, LivingEntity target)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		Location toHit = adjustedAimLocation(character, target.getLocation());
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -283,7 +283,7 @@ public abstract class Ability
 
 	public static boolean invokeAbilityCommand(Player player, String command, boolean bind)
 	{
-		PlayerCharacter character = DemigodsPlayer.getPlayer(player).getCurrent();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		for(Ability ability : getLoadedAbilities())
 		{
 			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
