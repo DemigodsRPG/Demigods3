@@ -107,8 +107,8 @@ class RainbowWalking extends Ability
 			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 			if(SpigotUtility.runningSpigot())
 			{
-				SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 0, 1, 0, 10F, 100, 10);
-				DataUtility.saveTimed(player.getName(), "disco_invisible", true, 1);
+				SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
+				DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
 			}
 		}
 	}
