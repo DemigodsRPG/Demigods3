@@ -105,7 +105,7 @@ class RainbowWalking extends Ability
 
 			private void rainbow(Player disco, Player player)
 			{
-				if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
+				if(!ZoneUtility.zoneNoBuild(disco, disco.getLocation()) && !StructureUtility.isInRadiusWithFlag(disco.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(disco.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
 				{
 					player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 					if(SpigotUtility.runningSpigot())
