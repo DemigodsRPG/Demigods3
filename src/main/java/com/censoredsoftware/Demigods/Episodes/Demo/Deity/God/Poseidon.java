@@ -97,7 +97,7 @@ class Swim extends Ability
 					if(player.isSneaking()) player.setVelocity(victor);
 				}
 			}
-		});
+		}, null);
 	}
 }
 
@@ -136,7 +136,7 @@ class Reel extends Ability
 					reel(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	public static void reel(Player player)
@@ -190,6 +190,6 @@ class InfiniteAir extends Ability
 					player.setRemainingAir(20);
 				}
 			}
-		});
+		}, null);
 	}
 }

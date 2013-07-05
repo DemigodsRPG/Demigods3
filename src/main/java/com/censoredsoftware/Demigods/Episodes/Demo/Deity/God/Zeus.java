@@ -136,7 +136,7 @@ class Shove extends Ability
 					shove(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	// The actual ability command
@@ -197,7 +197,7 @@ class Lightning extends Ability
 					lightning(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	protected static void lightning(Player player)
@@ -252,7 +252,7 @@ class Storm extends Ability
 					PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}
-		});
+		}, null);
 	}
 
 	public static void storm(Player player)
@@ -319,6 +319,6 @@ class NoFall extends Ability
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) damageEvent.setCancelled(true);
 				}
 			}
-		});
+		}, null);
 	}
 }

@@ -96,7 +96,7 @@ class Test extends Ability
 					test(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	// The actual ability command

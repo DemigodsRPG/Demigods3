@@ -113,7 +113,7 @@ class ShootFireball extends Ability
 					fireball(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	// The actual ability command
@@ -171,7 +171,7 @@ class Blaze extends Ability
 					blaze(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	// The actual ability command
@@ -242,7 +242,7 @@ class Firestorm extends Ability
 					firestorm(player);
 				}
 			}
-		});
+		}, null);
 	}
 
 	// The actual ability command

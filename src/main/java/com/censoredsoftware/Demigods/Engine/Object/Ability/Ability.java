@@ -31,11 +31,13 @@ public abstract class Ability
 {
 	private AbilityInfo info;
 	private Listener listener;
+	private Runnable runnable;
 
-	public Ability(AbilityInfo info, Listener listener)
+	public Ability(AbilityInfo info, Listener listener, Runnable runnable)
 	{
 		this.info = info;
 		this.listener = listener;
+		this.runnable = runnable;
 	}
 
 	public AbilityInfo getInfo()
@@ -46,6 +48,11 @@ public abstract class Ability
 	public Listener getListener()
 	{
 		return listener;
+	}
+
+	public Runnable getRunnable()
+	{
+		return runnable;
 	}
 
 	private static final int TARGETOFFSET = 5;

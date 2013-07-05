@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityRunnable;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
@@ -83,7 +85,7 @@ class RainbowWalking extends Ability
 			public void onPlayerMove(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
-				if(!Deity.canUseDeitySilent(player, deity) || ZoneUtility.zoneNoBuild(player, player.getLocation()) || StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) || StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) return;
+				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				// PHELPS RAINBOW SHITTING
 				if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid())
@@ -95,12 +97,43 @@ class RainbowWalking extends Ability
 					rainbow(player, player);
 				}
 			}
-		});
+		}, new DiscoRunnable());
 	}
 
 	private static void rainbow(Player disco, Player player)
 	{
-		player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 0, 0, 0, 10F, 100, 10);
+		if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
+		if(SpigotUtility.runningSpigot())
+		{
+			SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 0, 0, 0, 10F, 100, 10);
+			DataUtility.saveTimed(player.getName(), "disco_invisible", true, 1);
+		}
+	}
+}
+
+class DiscoRunnable extends AbilityRunnable
+{
+	DiscoRunnable()
+	{
+		super(0, 2);
+	}
+
+	@Override
+	public void run()
+	{
+		for(Player online : Bukkit.getOnlinePlayers())
+		{
+			if(DataUtility.hasTimed(online.getName(), "disco_invisible")) setInvisible(online, true);
+			else setInvisible(online, false);
+		}
+	}
+
+	private static void setInvisible(Player player, boolean hide)
+	{
+		for(Player online : Bukkit.getOnlinePlayers())
+		{
+			if(hide) online.hidePlayer(player);
+			else online.showPlayer(player);
+		}
 	}
 }

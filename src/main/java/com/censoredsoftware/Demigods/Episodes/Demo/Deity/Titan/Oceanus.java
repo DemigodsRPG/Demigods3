@@ -90,6 +90,6 @@ class Swim extends Ability
 					if(player.isSneaking()) player.setVelocity(victor);
 				}
 			}
-		});
+		}, null);
 	}
 }
