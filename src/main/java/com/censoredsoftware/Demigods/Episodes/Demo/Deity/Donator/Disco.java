@@ -12,10 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
@@ -79,60 +75,46 @@ class RainbowWalking extends Ability
 
 	protected RainbowWalking()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
 		{
-			@EventHandler(priority = EventPriority.HIGH)
-			public void onPlayerMove(PlayerMoveEvent event)
+			@Override
+			public void run()
 			{
-				Player player = event.getPlayer();
-				if(!Deity.canUseDeitySilent(player, deity)) return;
-
-				// PHELPS RAINBOW SHITTING
-				if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid())
+				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					for(Entity entity : player.getNearbyEntities(20, 20, 20))
-					{
-						if(entity instanceof Player) rainbow(player, (Player) entity);
-					}
-					rainbow(player, player);
+					if(Deity.canUseDeitySilent(online, "Disco") && online.isSneaking()) doEffect(online, true);
+					else doEffect(online, false);
 				}
 			}
-		}, new DiscoRunnable());
-	}
 
-	private static void rainbow(Player disco, Player player)
-	{
-		if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
-		{
-			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-			if(SpigotUtility.runningSpigot())
+			private void doEffect(Player player, boolean effect)
 			{
-				SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
-				DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
+				for(Entity entity : player.getNearbyEntities(20, 20, 20))
+				{
+					if(!(entity instanceof Player)) continue;
+					Player viewing = (Player) entity;
+					if(effect)
+					{
+						viewing.hidePlayer(player);
+						rainbow(player, viewing);
+					}
+					else viewing.showPlayer(player);
+				}
+				if(effect) rainbow(player, player);
 			}
-		}
-	}
-}
 
-class DiscoRunnable extends BukkitRunnable
-{
-
-	@Override
-	public void run()
-	{
-		for(Player online : Bukkit.getOnlinePlayers())
-		{
-			if(DataUtility.hasTimed(online.getName(), "disco_invisible")) setInvisible(online, true);
-			else setInvisible(online, false);
-		}
-	}
-
-	private static void setInvisible(Player player, boolean hide)
-	{
-		for(Player online : Bukkit.getOnlinePlayers())
-		{
-			if(hide) online.hidePlayer(player);
-			else online.showPlayer(player);
-		}
+			private void rainbow(Player disco, Player player)
+			{
+				if(!ZoneUtility.zoneNoBuild(player, player.getLocation()) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && !StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
+				{
+					player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
+					if(SpigotUtility.runningSpigot())
+					{
+						SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 10);
+						DataUtility.saveTimed(player.getName(), "disco_invisible", true, 3);
+					}
+				}
+			}
+		});
 	}
 }
