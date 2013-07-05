@@ -299,7 +299,7 @@ public class PlayerWrapper
 	 */
 	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
 	{
-		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && option) DataUtility.removeTemp(player.getName(), "temp_player_hold");
+		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && option) DataUtility.removeTemp(player.getName(), "player_hold");
 		else DataUtility.saveTemp(player.getName(), "player_hold", true);
 	}
 
@@ -311,7 +311,7 @@ public class PlayerWrapper
 	 */
 	public static void togglePlayerChat(OfflinePlayer player, boolean option)
 	{
-		if(DataUtility.hasKeyTemp(player.getName(), "no_chat") && option) DataUtility.removeTemp(player.getName(), "temp_no_chat");
+		if(DataUtility.hasKeyTemp(player.getName(), "no_chat") && option) DataUtility.removeTemp(player.getName(), "no_chat");
 		else DataUtility.saveTemp(player.getName(), "no_chat", true);
 	}
 }
