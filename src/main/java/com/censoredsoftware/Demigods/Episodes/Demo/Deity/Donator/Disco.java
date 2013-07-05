@@ -5,10 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -100,7 +97,11 @@ class RainbowWalking extends Ability
 					}
 					else viewing.showPlayer(player);
 				}
-				if(effect) rainbow(player, player);
+				if(effect)
+				{
+					rainbow(player, player);
+					player.playSound(player.getLocation(), Sound.BURP, 1F, 0F);
+				}
 			}
 
 			private void rainbow(Player disco, Player player)
