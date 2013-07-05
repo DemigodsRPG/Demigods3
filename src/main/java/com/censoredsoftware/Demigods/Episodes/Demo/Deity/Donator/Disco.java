@@ -21,9 +21,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class Disco extends Deity
 {
@@ -84,7 +83,7 @@ class RainbowWalking extends Ability
 			public void onPlayerMove(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.canUseDeitySilent(player, deity) || ZoneUtility.zoneNoBuild(player, player.getLocation()) || StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) || StructureUtility.isInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) return;
 
 				// PHELPS RAINBOW SHITTING
 				if(player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid())
