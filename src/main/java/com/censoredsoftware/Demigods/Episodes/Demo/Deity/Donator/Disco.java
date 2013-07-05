@@ -69,7 +69,7 @@ class RainbowWalking extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch to shit rainbows.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Constantly shit rainbows.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.SUPPORT;
