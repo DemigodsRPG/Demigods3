@@ -43,6 +43,7 @@ public class PlayerListener implements Listener
 			ChatColor color = character.getDeity().getInfo().getColor();
 			player.setDisplayName(color + name + ChatColor.WHITE);
 			player.setPlayerListName(color + name + ChatColor.WHITE);
+			player.setMaxHealth(40.0);
 		}
 
 		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
