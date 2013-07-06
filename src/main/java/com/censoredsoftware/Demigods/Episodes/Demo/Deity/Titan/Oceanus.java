@@ -23,7 +23,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Oceanus extends Deity
 {
-	private static String name = "Oceanus", alliance = "Titan";
+	private static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
 	private static ChatColor color = ChatColor.DARK_AQUA;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -55,7 +55,7 @@ public class Oceanus extends Deity
 
 	public Oceanus()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 

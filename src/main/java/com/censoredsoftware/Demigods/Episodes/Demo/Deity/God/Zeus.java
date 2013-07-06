@@ -31,7 +31,7 @@ import com.google.common.collect.Sets;
 
 public class Zeus extends Deity
 {
-	private static String name = "Zeus", alliance = "God";
+	private static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
 	private static ChatColor color = ChatColor.YELLOW;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -66,7 +66,7 @@ public class Zeus extends Deity
 
 	public Zeus()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
 	protected static boolean strikeLightning(Player player, LivingEntity target)

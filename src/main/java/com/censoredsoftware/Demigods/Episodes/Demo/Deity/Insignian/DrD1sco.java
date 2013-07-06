@@ -21,7 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class DrD1sco extends Deity
 {
-	private static String name = "DrD1sco", alliance = "Insignian";
+	private static String name = "DrD1sco", alliance = "Insignian", permission = "demigods.insignian.disco";
 	private static ChatColor color = ChatColor.STRIKETHROUGH;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -53,7 +53,7 @@ public class DrD1sco extends Deity
 
 	public DrD1sco()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 

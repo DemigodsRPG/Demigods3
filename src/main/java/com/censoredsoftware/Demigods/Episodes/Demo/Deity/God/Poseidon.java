@@ -28,7 +28,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Poseidon extends Deity
 {
-	private static String name = "Poseidon", alliance = "God";
+	private static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private static ChatColor color = ChatColor.AQUA;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -62,7 +62,7 @@ public class Poseidon extends Deity
 
 	public Poseidon()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 

@@ -595,7 +595,7 @@ public class PrayerListener implements Listener
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 			{
-				player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				if(player.hasPermission(deity.getInfo().getPermission())) player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 			}
 		}
 		player.sendMessage(" ");
@@ -611,7 +611,7 @@ public class PrayerListener implements Listener
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 			{
-				if(message.equalsIgnoreCase(deity.getInfo().getName()))
+				if(message.equalsIgnoreCase(deity.getInfo().getName()) && player.hasPermission(deity.getInfo().getPermission()))
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");

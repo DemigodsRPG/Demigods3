@@ -25,7 +25,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
 {
-	private static String name = "Template", alliance = "Test";
+	private static String name = "Template", alliance = "Test", permission = "demigods.test.test";
 	private static ChatColor color = ChatColor.GRAY;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -57,7 +57,7 @@ public class Template extends Deity
 
 	public Template()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 

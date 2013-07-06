@@ -27,7 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class Prometheus extends Deity
 {
-	private static String name = "Prometheus", alliance = "Titan";
+	private static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
 	private static ChatColor color = ChatColor.GOLD;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
@@ -61,7 +61,7 @@ public class Prometheus extends Deity
 
 	public Prometheus()
 	{
-		super(new DeityInfo(name, alliance, color, claimItems, lore, type), abilities);
+		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
 	public static void shootFireball(Location from, Location to, Player shooter)
