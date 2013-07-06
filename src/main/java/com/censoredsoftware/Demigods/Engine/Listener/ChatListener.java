@@ -29,10 +29,10 @@ public class ChatListener implements Listener
 		if(message.equals("pl")) pl(player, event);
 
 		// No chat toggle
-		if(DataUtility.hasKeyTemp(player.getName(), "temp_no_chat")) event.setCancelled(true);
+		if(DataUtility.hasKeyTemp(player.getName(), "no_chat")) event.setCancelled(true);
 		for(Player victim : Bukkit.getOnlinePlayers())
 		{
-			if(DataUtility.hasKeyTemp(victim.getName(), "temp_no_chat")) viewing.remove(victim);
+			if(DataUtility.hasKeyTemp(victim.getName(), "no_chat")) viewing.remove(victim);
 		}
 	}
 
@@ -47,16 +47,16 @@ public class ChatListener implements Listener
 		if(PlayerWrapper.isPraying(player)) return;
 
 		// Handle chat for character switching
-		if(DataUtility.hasKeyTemp(player.getName(), "temp_chat_number"))
+		if(DataUtility.hasKeyTemp(player.getName(), "chat_number"))
 		{
 			// Define variables
 			PlayerCharacter prevChar = PlayerWrapper.getPlayer(player).getPrevious();
 
 			if(prevChar == null) return;
 
-			DataUtility.saveTemp(player.getName(), "temp_chat_number", Integer.parseInt(DataUtility.getValueTemp(player.getName(), "temp_chat_number").toString()) + 1);
-			if(DataUtility.hasKeyTemp(player.getName(), "temp_chat_number") && Integer.parseInt(DataUtility.getValueTemp(player.getName(), "temp_chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
-			else DataUtility.removeTemp(player.getName(), "temp_chat_number");
+			DataUtility.saveTemp(player.getName(), "hat_number", Integer.parseInt(DataUtility.getValueTemp(player.getName(), "chat_number").toString()) + 1);
+			if(DataUtility.hasKeyTemp(player.getName(), "chat_number") && Integer.parseInt(DataUtility.getValueTemp(player.getName(), "chat_number").toString()) <= 2) event.setMessage(ChatColor.GRAY + "(Previously " + prevChar.getDeity().getInfo().getColor() + prevChar.getName() + ChatColor.GRAY + ") " + ChatColor.WHITE + message);
+			else DataUtility.removeTemp(player.getName(), "chat_number");
 		}
 	}
 
