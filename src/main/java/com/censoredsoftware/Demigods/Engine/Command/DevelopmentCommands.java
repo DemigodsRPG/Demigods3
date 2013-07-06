@@ -9,11 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class DevelopmentCommands implements CommandExecutor
 {
@@ -47,7 +47,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		EpisodeDemo.Structures.ALTAR.getStructure().createNew(player.getLineOfSight(null, 10).get(0).getLocation(), true);
+		new Prayer(player);
 
 		return true;
 	}
