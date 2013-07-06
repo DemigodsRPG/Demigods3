@@ -61,9 +61,10 @@ public class DevelopmentCommands implements CommandExecutor
 		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
 		{
 			Horse horse = (Horse) player.getVehicle();
-			// horse.eject();
+			horse.eject();
 			horse.teleport(player.getLocation().getWorld().getSpawnLocation());
-			// horse.setPassenger(player);
+			horse.setPassenger(player);
+			player.sendMessage(ChatColor.YELLOW + "Teleported to spawn...");
 		}
 
 		return true;
