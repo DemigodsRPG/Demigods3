@@ -37,6 +37,8 @@ public class PlayerCharacter
 	@Attribute
 	private double health;
 	@Attribute
+	private double maxhealth;
+	@Attribute
 	private Integer hunger;
 	@Attribute
 	private Float experience;
@@ -103,6 +105,11 @@ public class PlayerCharacter
 		this.health = health;
 	}
 
+	public void setMaxHealth(double maxhealth)
+	{
+		this.maxhealth = maxhealth;
+	}
+
 	public void setHunger(int hunger)
 	{
 		this.hunger = hunger;
@@ -166,7 +173,8 @@ public class PlayerCharacter
 		character.setName(charName);
 		character.setDeity(deity);
 		character.setImmortal(immortal);
-		character.setHealth(20.0);
+		character.setHealth(40.0);
+		character.setMaxHealth(40.0);
 		character.setHunger(20);
 		character.setExperience(0);
 		character.setLevel(0);
@@ -254,6 +262,11 @@ public class PlayerCharacter
 	public Double getHealth()
 	{
 		return this.health;
+	}
+
+	public Double getMaxHealth()
+	{
+		return this.maxhealth;
 	}
 
 	public Integer getHunger()

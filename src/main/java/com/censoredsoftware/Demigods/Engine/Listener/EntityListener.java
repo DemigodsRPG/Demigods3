@@ -95,7 +95,13 @@ public class EntityListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public static void monitorEntityDeath(EntityDeathEvent event)
+	public void fdsafdfd()
+	{
+
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void monitorEntityDeath(EntityDeathEvent event)
 	{
 		Entity entity = event.getEntity();
 		if(entity instanceof Player)

@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.bukkit.ChatColor;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 import org.mcstats.Metrics;
 
@@ -30,6 +31,7 @@ public class Demigods
 {
 	// Public Static Access
 	public static DemigodsPlugin plugin;
+	public static ConversationFactory conversation;
 
 	// Public Modules
 	public static ConfigModule config;
@@ -68,6 +70,7 @@ public class Demigods
 	{
 		// Allow static access.
 		plugin = instance;
+		conversation = new ConversationFactory(instance);
 
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
