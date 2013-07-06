@@ -87,13 +87,7 @@ public class Obelisk implements StructureInfo
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(0, 4, 0, new HashSet<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.PISTON_STICKY_BASE));
-					}
-				}));
-				add(new StructureSchematic(0, 3, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 3, 0, 0, 4, 0, new HashSet<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_BLOCK));
@@ -123,6 +117,12 @@ public class Obelisk implements StructureInfo
 						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
 					}
 				}));
+				add(new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+					}
+				}));
 				add(new StructureSchematic(0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
 				{
 					{
@@ -145,12 +145,6 @@ public class Obelisk implements StructureInfo
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
-					}
-				}));
-				add(new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.DAYLIGHT_DETECTOR));
 					}
 				}));
 				add(new StructureSchematic(-1, 5, 1, new HashSet<StructureBlockData>()
