@@ -58,6 +58,8 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
+		// This SHOULD happen automatically, but bukkit doesn't do this, so we need to.
+
 		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
 		{
 			Horse horse = (Horse) player.getVehicle();
