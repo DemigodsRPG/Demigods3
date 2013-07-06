@@ -7,10 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -41,9 +38,10 @@ public class PlayerListener implements Listener
 		{
 			String name = character.getName();
 			ChatColor color = character.getDeity().getInfo().getColor();
-			player.setDisplayName(color + name + ChatColor.WHITE);
-			player.setPlayerListName(color + name + ChatColor.WHITE);
-			player.setMaxHealth(40.0);
+			player.setDisplayName(color + name + ChatColor.RESET);
+			player.setPlayerListName(color + name + ChatColor.RESET);
+			event.getPlayer().setMaxHealth(character.getMaxHealth());
+			event.getPlayer().setHealth(character.getHealth());
 		}
 
 		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
@@ -167,5 +165,17 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerRespawn(PlayerRespawnEvent event)
+	{
+		PlayerWrapper wrapper = PlayerWrapper.getPlayer(event.getPlayer());
+		if(wrapper.getCurrent() != null)
+		{
+			double maxhealth = wrapper.getCurrent().getMaxHealth();
+			event.getPlayer().setMaxHealth(maxhealth);
+			event.getPlayer().setHealth(maxhealth);
+		}
 	}
 }
