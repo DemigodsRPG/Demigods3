@@ -213,6 +213,7 @@ public class Demigods
 		DevelopmentCommands devCommands = new DevelopmentCommands();
 		instance.getCommand("test1").setExecutor(devCommands);
 		instance.getCommand("test2").setExecutor(devCommands);
+		instance.getCommand("hspawn").setExecutor(devCommands);
 		instance.getCommand("soundtest").setExecutor(devCommands);
 		instance.getCommand("removechar").setExecutor(devCommands);
 	}

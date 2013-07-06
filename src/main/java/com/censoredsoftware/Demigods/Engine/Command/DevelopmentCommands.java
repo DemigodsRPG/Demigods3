@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
@@ -23,6 +24,7 @@ public class DevelopmentCommands implements CommandExecutor
 		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
+		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 		return false;
 	}
@@ -48,6 +50,21 @@ public class DevelopmentCommands implements CommandExecutor
 		Player player = (Player) sender;
 
 		EpisodeDemo.Structures.ALTAR.getStructure().createNew(player.getLineOfSight(null, 10).get(0).getLocation(), true);
+
+		return true;
+	}
+
+	private static boolean hspawn(CommandSender sender)
+	{
+		Player player = (Player) sender;
+
+		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
+		{
+			Horse horse = (Horse) player.getVehicle();
+			// horse.eject();
+			horse.teleport(player.getLocation().getWorld().getSpawnLocation());
+			// horse.setPassenger(player);
+		}
 
 		return true;
 	}
