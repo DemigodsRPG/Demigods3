@@ -5,10 +5,7 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import redis.clients.johm.Attribute;
-import redis.clients.johm.Id;
-import redis.clients.johm.Model;
-import redis.clients.johm.Reference;
+import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
@@ -21,8 +18,12 @@ public class StructureSave
 {
 	@Id
 	private Long Id;
+	@Indexed
 	@Attribute
 	private String structureType;
+	@Indexed
+	@Attribute
+	private Boolean active;
 	@Reference
 	private DemigodsLocation reference;
 	@Reference
@@ -41,6 +42,12 @@ public class StructureSave
 	public void setOwner(PlayerCharacter character)
 	{
 		this.owner = character;
+		save();
+	}
+
+	public void setActive(Boolean bool)
+	{
+		this.active = bool;
 		save();
 	}
 
@@ -90,6 +97,11 @@ public class StructureSave
 	public PlayerCharacter getOwner()
 	{
 		return this.owner;
+	}
+
+	public Boolean getActive()
+	{
+		return this.active;
 	}
 
 	public long getId()
