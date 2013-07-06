@@ -96,31 +96,31 @@ public class Obelisk implements StructureInfo
 				add(new StructureSchematic(0, 3, -1, new HashSet<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
 				add(new StructureSchematic(0, 3, 1, new HashSet<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
 				add(new StructureSchematic(1, 3, 0, new HashSet<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
 				add(new StructureSchematic(-1, 3, 0, new HashSet<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
 				add(new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.REDSTONE_LAMP_OFF));
+						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
 				add(new StructureSchematic(0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
