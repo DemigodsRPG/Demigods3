@@ -29,6 +29,7 @@ zones:
     prayer_radius: 3
     shrine_radius: 8
     altar_radius: 16
+    obelisk_radius: 16
     use_dynamic_pvp_zones: true
     allow_skills_anywhere: false
     pvp_area_delay_time: 10
