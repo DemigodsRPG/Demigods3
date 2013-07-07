@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class MiscUtility
 {
 	/**
-	 * Clears the chat for <code>player</code>.
+	 * Clears the chat for <code>player</code> using .sendMessage().
 	 * 
 	 * @param player the player whose chat to clear.
 	 */
@@ -16,6 +16,17 @@ public class MiscUtility
 	{
 		for(int x = 0; x < 120; x++)
 			player.sendMessage(" ");
+	}
+
+	/**
+	 * Clears the chat for <code>player</code> using .sendRawMessage().
+	 * 
+	 * @param player the player whose chat to clear.
+	 */
+	public static void clearRawChat(Player player)
+	{
+		for(int x = 0; x < 120; x++)
+			player.sendRawMessage(" ");
 	}
 
 	/**
