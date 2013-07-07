@@ -239,6 +239,15 @@ public class Obelisk implements StructureInfo
 		if(block.getRelative(1, 0, -1).getType().isSolid()) return false;
 		return !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 	}
+
+	public static boolean noPvPStructureNearby(Location location)
+	{
+		for(StructureSave structureSave : StructureUtility.getAllStructureSaves())
+		{
+			if(structureSave.getStructureInfo().getFlags().contains(Flag.NO_PVP_ZONE) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
+		}
+		return false;
+	}
 }
 
 class ObeliskListener implements Listener
@@ -259,6 +268,12 @@ class ObeliskListener implements Listener
 
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
 			{
+				if(Obelisk.noPvPStructureNearby(location))
+				{
+					player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
+					return;
+				}
+
 				try
 				{
 					// Obelisk created!

@@ -1,6 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.Location;
+import org.bukkit.block.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,6 +11,8 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -69,5 +73,21 @@ public class GriefListener implements Listener
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		event.setCancelled(StructureUtility.isInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE));
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onInventoryOpen(InventoryOpenEvent event)
+	{
+		InventoryHolder holder = event.getInventory().getHolder();
+		if(holder instanceof Chest || holder instanceof Furnace || holder instanceof Dispenser || holder instanceof Dropper || holder instanceof BrewingStand || holder instanceof Beacon || holder instanceof Hopper)
+		{
+			Location location = ((BlockState) holder).getLocation();
+			if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+			{
+				StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
+				if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+				event.setCancelled(true);
+			}
+		}
 	}
 }

@@ -324,7 +324,7 @@ public abstract class Ability
 		return false;
 	}
 
-	public static void dealDamage(LivingEntity source, LivingEntity target, int amount, EntityDamageEvent.DamageCause cause)
+	public static void dealDamage(LivingEntity source, LivingEntity target, double amount, EntityDamageEvent.DamageCause cause)
 	{
 		if(target instanceof Player && source instanceof Player)
 		{

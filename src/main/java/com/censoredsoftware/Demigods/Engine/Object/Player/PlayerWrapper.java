@@ -130,6 +130,7 @@ public class PlayerWrapper
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health and experience
+		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
@@ -245,6 +246,23 @@ public class PlayerWrapper
 	}
 
 	/**
+	 * Returns true if the <code>player</code> is currently praying.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean isMobTargetable(OfflinePlayer player)
+	{
+		try
+		{
+			return Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "no_target").toString());
+		}
+		catch(Exception ignored)
+		{}
+		return false;
+	}
+
+	/**
 	 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
 	 * 
 	 * @param player the player the manipulate.
@@ -313,5 +331,17 @@ public class PlayerWrapper
 	{
 		if(DataUtility.hasKeyTemp(player.getName(), "no_chat") && option) DataUtility.removeTemp(player.getName(), "no_chat");
 		else DataUtility.saveTemp(player.getName(), "no_chat", true);
+	}
+
+	/**
+	 * Enables or disables player targetable for <code>player</code> based on <code>option</code>.
+	 * 
+	 * @param player the player to manipulate.
+	 * @param option the boolean to set to.
+	 */
+	public static void togglePlayerMobTargetable(OfflinePlayer player, boolean option)
+	{
+		if(DataUtility.hasKeyTemp(player.getName(), "no_target") && option) DataUtility.removeTemp(player.getName(), "no_target");
+		else DataUtility.saveTemp(player.getName(), "no_target", true);
 	}
 }

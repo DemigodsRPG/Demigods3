@@ -23,11 +23,9 @@ public class BattleMeta
 	private Set<DemigodsLocation> locations;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter startedBy;
+	private PlayerCharacter startedBy;
 	@CollectionSet(of = Long.class)
-	private Set<PlayerCharacter> participants;
-	@CollectionSet(of = String.class)
-	private Set<String> alliances;
+	private Set<Long> participants;
 
 	public static BattleMeta create(PlayerCharacter character)
 	{
@@ -53,7 +51,7 @@ public class BattleMeta
 	public void addParticipant(PlayerCharacter character)
 	{
 		if(this.participants == null) this.participants = Sets.newHashSet();
-		this.participants.add(character);
+		this.participants.add(character.getId());
 	}
 
 	public void addLocation(Location location)
@@ -77,7 +75,7 @@ public class BattleMeta
 		return this.startedBy;
 	}
 
-	public Set<PlayerCharacter> getParticipants()
+	public Set<Long> getParticipants()
 	{
 		if(this.participants == null) this.participants = Sets.newHashSet();
 		return this.participants;

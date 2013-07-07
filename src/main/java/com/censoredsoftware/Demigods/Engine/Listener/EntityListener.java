@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
@@ -119,5 +120,11 @@ public class EntityListener implements Listener
 				}
 			}
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onTarget(EntityTargetLivingEntityEvent event)
+	{
+		event.setCancelled(event.getTarget() instanceof Player && !PlayerWrapper.isMobTargetable((Player) event.getTarget()));
 	}
 }

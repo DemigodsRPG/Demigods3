@@ -16,15 +16,15 @@ public class Battle
 	@Id
 	private Long id;
 	@Reference
-	private com.censoredsoftware.Demigods.Engine.Object.Battle.BattleMeta meta;
+	private BattleMeta meta;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation startLoc;
+	private DemigodsLocation startLoc;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation endLoc;
+	private DemigodsLocation endLoc;
 	@Attribute
-	private Double range;
+	private double range;
 	@Attribute
 	@Indexed
 	private long startTime;

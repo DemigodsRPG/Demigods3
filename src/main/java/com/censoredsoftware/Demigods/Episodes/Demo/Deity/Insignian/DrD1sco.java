@@ -16,6 +16,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
@@ -80,7 +81,7 @@ class RainbowWalking extends Ability
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
 					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) & !ZoneUtility.zoneNoBuild(online, online.getLocation()) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && (!StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))) doEffect(online, true);
-					else doEffect(online, false);
+					else if(Deity.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 				}
 			}
 
@@ -101,7 +102,9 @@ class RainbowWalking extends Ability
 				{
 					rainbow(player, player);
 					playRandomNote(player.getLocation());
+					PlayerWrapper.togglePlayerMobTargetable(player, false);
 				}
+				else PlayerWrapper.togglePlayerMobTargetable(player, true);
 			}
 
 			private void rainbow(Player disco, Player player)
