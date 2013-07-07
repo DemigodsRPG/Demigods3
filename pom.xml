@@ -125,23 +125,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>com.comphenix.maven</groupId>
-                <artifactId>yaml-properties-plugin</artifactId>
-                <version>0.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>read-yaml-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <plugin>${basedir}/src/main/resources/plugin.yml</plugin>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
