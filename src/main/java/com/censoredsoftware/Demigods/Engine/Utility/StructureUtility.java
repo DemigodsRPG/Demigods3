@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
@@ -64,6 +66,19 @@ public class StructureUtility
 			if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
 		}
 		return null;
+	}
+
+	public static boolean isTrespassingInNoGriefingZone(Player player)
+	{
+		Location location = player.getLocation();
+		if(ZoneUtility.zoneNoBuild(player, player.getLocation())) return true;
+		if(isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		{
+			StructureSave save = getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
+			if(save.getOwner() != null && save.getOwner().getId().equals(PlayerWrapper.getPlayer(player).getCurrent().getId())) return false;
+			return true;
+		}
+		return false;
 	}
 
 	public static void regenerateStructures()
