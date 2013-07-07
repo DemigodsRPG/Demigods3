@@ -8,7 +8,7 @@ public class TextUtility
 {
 	public static enum Text
 	{
-		PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, CREATE_OBELISK, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
+		CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
 	}
 
 	public static class English implements Translation
@@ -29,9 +29,10 @@ public class TextUtility
 		public String getText(Enum text)
 		{
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
-			Text get = (Text) text;
-			switch(get)
+			switch((Text) text)
 			{
+				case CREATE_OBELISK:
+					return "You created an Obelisk!";
 				case PROTECTED_BLOCK:
 					return "That block is protected by a Deity!";
 				case ADMIN_WAND_GENERATE_ALTAR:
@@ -42,8 +43,8 @@ public class TextUtility
 					return "Right-click this Altar again to remove it.";
 				case ADMIN_WAND_REMOVE_ALTAR_COMPLETE:
 					return "Altar removed!";
-				case CREATE_OBELISK:
-					return "You have just created an Obelisk!";
+				case ALTAR_SPAWNED_NEAR:
+					return "An Altar has spawned near you...";
 				case CREATE_SHRINE_1:
 					return "The {alliance} are pleased...";
 				case CREATE_SHRINE_2:
