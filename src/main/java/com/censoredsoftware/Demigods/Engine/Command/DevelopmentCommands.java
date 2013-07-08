@@ -13,8 +13,8 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Utility.BattleUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
 public class DevelopmentCommands implements CommandExecutor
 {
@@ -51,6 +51,25 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
+		if(!SpigotUtility.runningSpigot()) return true;
+
+		if(args.length != 1)
+		{
+			player.sendMessage(ChatColor.RED + "I need more info.");
+			return false;
+		}
+
+		try
+		{
+			Effect effect = Effect.getByName(args[0].toUpperCase());
+			effect.getType();
+		}
+		catch(Exception notImportant)
+		{
+			player.sendMessage(ChatColor.RED + "Not a valid effect name.");
+			return false;
+		}
+
 		final Location center = player.getLocation();
 		if(circle == null)
 		{
@@ -59,7 +78,7 @@ public class DevelopmentCommands implements CommandExecutor
 				@Override
 				public void run()
 				{
-					BattleUtility.drawCircle(center, Effect.HEART, 16, 60);
+					SpigotUtility.drawCircle(center, Effect.getByName(args[0].toUpperCase()), 16, 60);
 				}
 			};
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
