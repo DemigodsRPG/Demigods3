@@ -31,9 +31,18 @@ public class SpigotUtility
 	public static void drawCircle(Location center, Effect effect, double radius, int points)
 	{
 		if(!runningSpigot()) throw new IllegalArgumentException("Spigot is required to use this feature.");
+
+		if(center.getBlockY() == center.getWorld().getHighestBlockYAt(center))
+		{
+			for(Location point : getCirclePoints(center, radius, points))
+			{
+				playParticle(new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ()), effect, 0, 6, 0, 1F, 15, (int) (radius * 2.5));
+			}
+			return;
+		}
 		for(Location point : getCirclePoints(center, radius, points))
 		{
-			playParticle(point.add(0, -3, 0), effect, 0, 6, 0, 1F, 15, (int) (radius * 2.5));
+			playParticle(point.add(0, -6, 0), effect, 0, 12, 0, 1F, 15, (int) (radius * 2.5));
 		}
 	}
 
