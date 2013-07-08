@@ -257,6 +257,6 @@ public class MiscUtility
 
 	public static Location getAboveGround(Location location)
 	{
-		return new Location(location.getWorld(), location.getBlockX(), location.getWorld().getHighestBlockYAt(location), location.getBlockZ());
+		return new Location(location.getWorld(), location.getX(), (double) location.getWorld().getHighestBlockYAt(location), location.getZ());
 	}
 }
