@@ -53,14 +53,17 @@ public class DevelopmentCommands implements CommandExecutor
 
 		final Location center = player.getLocation();
 
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, new BukkitRunnable()
+		for(int i = 1; i < 61; i++)
 		{
-			@Override
-			public void run()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
 			{
-				SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
-			}
-		}, 20, 20);
+				@Override
+				public void run()
+				{
+					SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
+				}
+			}, i * 20);
+		}
 
 		return true;
 	}
