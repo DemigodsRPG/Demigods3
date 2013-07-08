@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class MiscUtility
@@ -247,5 +248,15 @@ public class MiscUtility
 		{
 			return false;
 		}
+	}
+
+	public static boolean isAboveGround(Location location)
+	{
+		return location.getBlockY() == location.getWorld().getHighestBlockYAt(location);
+	}
+
+	public static Location getAboveGround(Location location)
+	{
+		return new Location(location.getWorld(), location.getBlockX(), location.getWorld().getHighestBlockYAt(location), location.getBlockZ());
 	}
 }

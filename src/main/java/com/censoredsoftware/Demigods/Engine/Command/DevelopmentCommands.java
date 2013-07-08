@@ -51,10 +51,20 @@ public class DevelopmentCommands implements CommandExecutor
 
 		if(!SpigotUtility.runningSpigot()) return true;
 
+		final Location original = player.getLocation();
+
+		if(!MiscUtility.isAboveGround(original)) player.teleport(MiscUtility.getAboveGround(original));
+
 		final Location center = player.getLocation();
 
-		for(int i = 1; i < 61; i++)
+		for(int i = 1; i < 62; i++)
 		{
+			if(i == 61 && !original.equals(center))
+			{
+				player.teleport(original);
+				break;
+			}
+
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
 			{
 				@Override

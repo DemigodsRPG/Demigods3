@@ -5,6 +5,7 @@ import java.util.Set;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -20,6 +21,8 @@ public class BattleMeta
 	private Map<Long, Integer> kills;
 	@CollectionMap(key = Long.class, value = Integer.class)
 	private Map<Long, Integer> deaths;
+	@CollectionMap(key = DemigodsLocation.class, value = Integer.class)
+	private Map<DemigodsLocation, Integer> locations;
 	@Reference
 	@Indexed
 	private PlayerCharacter startedBy;
