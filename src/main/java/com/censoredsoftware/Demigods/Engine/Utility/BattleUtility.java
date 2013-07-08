@@ -40,7 +40,7 @@ public class BattleUtility
 	public static void battleBorder(Battle battle)
 	{
 		if(!SpigotUtility.runningSpigot()) return;
-		SpigotUtility.drawCircle(battle.getStartLocation(), Effect.FLAME, battle.getRange(), 60);
+		SpigotUtility.drawCircle(battle.getStartLocation(), Effect.WITCH_MAGIC, 16, 120);
 	}
 
 }
