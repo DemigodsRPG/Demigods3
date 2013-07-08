@@ -59,9 +59,11 @@ public class DevelopmentCommands implements CommandExecutor
 			return false;
 		}
 
+		final String effectName = args[0].toUpperCase();
+
 		try
 		{
-			Effect effect = Effect.getByName(args[0].toUpperCase());
+			Effect effect = Effect.getByName(effectName);
 			effect.getType();
 		}
 		catch(Exception notImportant)
@@ -78,7 +80,7 @@ public class DevelopmentCommands implements CommandExecutor
 				@Override
 				public void run()
 				{
-					SpigotUtility.drawCircle(center, Effect.getByName(args[0].toUpperCase()), 16, 60);
+					SpigotUtility.drawCircle(center, Effect.getByName(effectName), 16, 60);
 				}
 			};
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
