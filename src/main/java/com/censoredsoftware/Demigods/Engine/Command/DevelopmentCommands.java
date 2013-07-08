@@ -1,16 +1,15 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
@@ -19,6 +18,8 @@ import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 
 public class DevelopmentCommands implements CommandExecutor
 {
+	private static BukkitRunnable circle;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
 	{
@@ -50,7 +51,24 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		BattleUtility.drawCircle(player.getLocation(), Effect.HEART, 10, 60);
+		final Location center = player.getLocation();
+		if(circle == null)
+		{
+			circle = new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					BattleUtility.drawCircle(center, Effect.HEART, 16, 60);
+				}
+			};
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
+		}
+		else
+		{
+			Bukkit.getScheduler().cancelTask(circle.getTaskId());
+			circle = null;
+		}
 
 		return true;
 	}
