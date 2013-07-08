@@ -33,7 +33,7 @@ public class SpigotUtility
 		if(!runningSpigot()) throw new IllegalArgumentException("Spigot is required to use this feature.");
 		for(Location point : getCirclePoints(center, radius, points))
 		{
-			playParticle(point, effect, 0, 3, 0, 10F, 30, (int) (radius * 2.5));
+			playParticle(point.add(0, -3, 0), effect, 0, 6, 0, 1F, 15, (int) (radius * 2.5));
 		}
 	}
 
