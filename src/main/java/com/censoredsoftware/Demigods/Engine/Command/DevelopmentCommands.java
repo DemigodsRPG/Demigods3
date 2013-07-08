@@ -61,7 +61,7 @@ public class DevelopmentCommands implements CommandExecutor
 				@Override
 				public void run()
 				{
-					SpigotUtility.drawCircle(center, Effect.CLOUD, 16, 120);
+					SpigotUtility.drawCircle(center, Effect.FIREWORKS_SPARK, 16, 120);
 				}
 			};
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
