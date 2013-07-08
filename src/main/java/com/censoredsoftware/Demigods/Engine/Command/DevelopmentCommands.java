@@ -53,25 +53,6 @@ public class DevelopmentCommands implements CommandExecutor
 
 		if(!SpigotUtility.runningSpigot()) return true;
 
-		if(args.length != 1)
-		{
-			player.sendMessage(ChatColor.RED + "I need more info.");
-			return false;
-		}
-
-		final String effectName = args[0].toUpperCase();
-
-		try
-		{
-			Effect effect = Effect.getByName(effectName);
-			effect.getType();
-		}
-		catch(Exception notImportant)
-		{
-			player.sendMessage(ChatColor.RED + "Not a valid effect name.");
-			return false;
-		}
-
 		final Location center = player.getLocation();
 		if(circle == null)
 		{
@@ -80,7 +61,7 @@ public class DevelopmentCommands implements CommandExecutor
 				@Override
 				public void run()
 				{
-					SpigotUtility.drawCircle(center, Effect.getByName(effectName), 16, 60);
+					SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 60);
 				}
 			};
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
