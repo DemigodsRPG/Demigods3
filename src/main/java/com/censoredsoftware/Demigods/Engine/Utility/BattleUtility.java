@@ -51,7 +51,7 @@ public class BattleUtility
 		if(!SpigotUtility.runningSpigot()) return;
 		for(Location point : getCirclePoints(center, radius, points))
 		{
-			SpigotUtility.playParticle(point, Effect.FLYING_GLYPH, 0, 1, 0, 10F, 30, 50);
+			SpigotUtility.playParticle(point, Effect.FLAME, 0, 1, 0, 10F, 30, 50);
 		}
 	}
 
