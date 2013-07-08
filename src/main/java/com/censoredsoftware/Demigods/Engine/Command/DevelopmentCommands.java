@@ -85,7 +85,7 @@ public class DevelopmentCommands implements CommandExecutor
 		}
 		else
 		{
-			Bukkit.getScheduler().cancelTask(circle.getTaskId());
+			circle.cancel();
 			circle = null;
 		}
 
