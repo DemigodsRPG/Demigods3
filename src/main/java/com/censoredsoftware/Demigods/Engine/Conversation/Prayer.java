@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
+package com.censoredsoftware.Demigods.Engine.Conversation;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
