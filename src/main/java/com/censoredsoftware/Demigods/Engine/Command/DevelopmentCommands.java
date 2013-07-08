@@ -18,8 +18,6 @@ import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
 public class DevelopmentCommands implements CommandExecutor
 {
-	private static BukkitRunnable circle;
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
 	{
@@ -54,23 +52,15 @@ public class DevelopmentCommands implements CommandExecutor
 		if(!SpigotUtility.runningSpigot()) return true;
 
 		final Location center = player.getLocation();
-		if(circle == null)
+
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, new BukkitRunnable()
 		{
-			circle = new BukkitRunnable()
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
-				{
-					SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
-				}
-			};
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, circle, 20, 20);
-		}
-		else
-		{
-			circle.cancel();
-			circle = null;
-		}
+				SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
+			}
+		}, 20, 20);
 
 		return true;
 	}
