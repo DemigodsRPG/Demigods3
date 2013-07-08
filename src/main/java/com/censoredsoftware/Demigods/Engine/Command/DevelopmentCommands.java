@@ -10,10 +10,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Utility.BattleUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 
 public class DevelopmentCommands implements CommandExecutor
@@ -49,7 +49,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		new Prayer(player);
+		BattleUtility.drawCircle(player.getLocation(), 10, 60);
 
 		return true;
 	}

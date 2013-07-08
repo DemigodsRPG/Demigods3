@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
@@ -34,19 +36,19 @@ public class BattleListener implements Listener
 		// Calculate midpoint location
 		Location midpoint = damagerPlayer.getLocation().toVector().getMidpoint(damageePlayer.getLocation().toVector()).toLocation(damagerPlayer.getWorld());
 
-		if(!BattleUtility.existsNear(midpoint))
+		if(!BattleUtility.existsInRadius(midpoint))
 		{
 			Battle battle = Battle.create(damagerCharacter, damageeCharacter);
 
 			// Debug
-			// Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerCharacter.getName() + " and " + damageeCharacter.getName() + "!");
+			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerCharacter.getName() + " and " + damageeCharacter.getName() + "!");
 		}
 		else
 		{
-			Battle battle = BattleUtility.getNear(midpoint);
+			Battle battle = BattleUtility.getInRadius(midpoint);
 
 			// Debug
-			// Demigods.message.broadcast(ChatColor.GREEN + "Battle exists!");
+			Demigods.message.broadcast(ChatColor.GREEN + "Battle exists!");
 		}
 	}
 }

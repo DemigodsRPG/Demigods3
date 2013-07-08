@@ -1,13 +1,11 @@
 package com.censoredsoftware.Demigods.Engine;
 
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
-import org.mcstats.Metrics;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
@@ -124,10 +122,9 @@ public class Demigods
 		// Initialize metrics.
 		try
 		{
-			Metrics metrics = new Metrics(instance);
-			// metrics.start();
+			// (new Metrics(instance)).start();
 		}
-		catch(IOException ignored)
+		catch(Exception ignored)
 		{}
 
 		// Finish loading the plugin based on the game data.
