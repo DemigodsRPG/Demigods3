@@ -54,8 +54,6 @@ public class Battle
 		}
 
 		BattleMeta meta = BattleMeta.create(damager);
-		meta.addLocation(damager.getOfflinePlayer().getPlayer().getLocation());
-		meta.addLocation(damagee.getOfflinePlayer().getPlayer().getLocation());
 		meta.addParticipant(damager);
 		meta.addParticipant(damagee);
 		battle.setMeta(meta);

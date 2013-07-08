@@ -126,7 +126,7 @@ public class PlayerWrapper
 		}
 
 		// Update their inventory
-		if(getChars(player).size() == 1) newChar.saveInventory();
+		if(getCharacters(player).size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health and experience
@@ -150,7 +150,7 @@ public class PlayerWrapper
 		}
 		catch(Exception e)
 		{
-			Demigods.message.severe("There was a problem while teleporting a player to their character.");
+			Demigods.message.severe("There was a problem while teleporting a player to their character's location.");
 		}
 
 		// Save instances
@@ -192,7 +192,7 @@ public class PlayerWrapper
 	 * @param player the player to check.
 	 * @return List the list of all character IDs.
 	 */
-	public static List<PlayerCharacter> getChars(OfflinePlayer player)
+	public static List<PlayerCharacter> getCharacters(OfflinePlayer player)
 	{
 		return PlayerWrapper.getPlayer(player).getCharacters();
 	}
@@ -218,7 +218,7 @@ public class PlayerWrapper
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		final List<PlayerCharacter> characters = getChars(player);
+		final List<PlayerCharacter> characters = getCharacters(player);
 
 		for(PlayerCharacter character : characters)
 		{
