@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,7 +50,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		BattleUtility.drawCircle(player.getLocation(), 10, 60);
+		BattleUtility.drawCircle(player.getLocation(), Effect.HEART, 10, 60);
 
 		return true;
 	}

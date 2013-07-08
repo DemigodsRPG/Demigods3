@@ -43,15 +43,15 @@ public class BattleUtility
 
 	public static void battleBorder(Battle battle)
 	{
-		drawCircle(battle.getStartLocation(), battle.getRange(), 60);
+		drawCircle(battle.getStartLocation(), Effect.FLAME, battle.getRange(), 60);
 	}
 
-	public static void drawCircle(Location center, double radius, int points)
+	public static void drawCircle(Location center, Effect effect, double radius, int points)
 	{
 		if(!SpigotUtility.runningSpigot()) return;
 		for(Location point : getCirclePoints(center, radius, points))
 		{
-			SpigotUtility.playParticle(point, Effect.FLAME, 0, 1, 0, 10F, 30, 50);
+			SpigotUtility.playParticle(point, effect, 0, 1, 0, 10F, 30, 50);
 		}
 	}
 
