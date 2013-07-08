@@ -55,8 +55,9 @@ public class DevelopmentCommands implements CommandExecutor
 
 		if(!MiscUtility.isAboveGround(original))
 		{
-			Demigods.message.broadcast("Test");
-			player.teleport(MiscUtility.getAboveGround(original));
+			Location newLoc = MiscUtility.getAboveGround(original);
+			player.sendMessage("Old: " + original.getBlockY() + ", New: " + newLoc.getBlockY());
+			player.teleport(newLoc);
 		}
 
 		final Location center = player.getLocation();
