@@ -70,9 +70,6 @@ public class PlayerListener implements Listener
 			player.teleport(from);
 			DataUtility.saveTemp(player.getName(), "player_held", true);
 		}
-
-		// Handle prayer disable
-		if(PlayerWrapper.isPraying(player) && to.distance((Location) DataUtility.getValueTemp(player.getName(), "praying_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) PlayerWrapper.togglePraying(player, false);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

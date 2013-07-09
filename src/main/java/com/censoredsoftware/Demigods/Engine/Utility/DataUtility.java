@@ -82,7 +82,8 @@ public class DataUtility
 
 	public static Object getValueTemp(String key, String subKey)
 	{
-		return tempData.get(key).get(subKey);
+		if(tempData.containsKey(key)) return tempData.get(key).get(subKey);
+		else return null;
 	}
 
 	public static void saveTemp(String key, String subKey, Object value)

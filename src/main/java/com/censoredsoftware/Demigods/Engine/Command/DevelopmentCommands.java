@@ -47,7 +47,7 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		new Prayer(player);
+		(new Prayer()).startPrayer(player);
 
 		return true;
 	}
