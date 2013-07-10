@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -57,7 +58,7 @@ public class DevelopmentCommands implements CommandExecutor
 		{
 			Location newLoc = MiscUtility.getAboveGround(original);
 			player.sendMessage("Old: " + original.getBlockY() + ", New: " + newLoc.getBlockY());
-			player.teleport(newLoc);
+			player.teleport(newLoc, PlayerTeleportEvent.TeleportCause.COMMAND);
 		}
 
 		final Location center = player.getLocation();
