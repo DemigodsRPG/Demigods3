@@ -100,13 +100,6 @@
         </dependency>
     </dependencies>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>comphenix-repo</id>
-            <url>http://repo.comphenix.net/content/groups/public</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <finalName>Demigods</finalName>
         <defaultGoal>clean install</defaultGoal>
@@ -125,24 +118,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>com.comphenix.maven</groupId>
-                <artifactId>yaml-properties-plugin</artifactId>
-                <version>0.1.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>read-yaml-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <plugin>${basedir}/src/main/resources/plugin.yml</plugin>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
