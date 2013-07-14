@@ -9,7 +9,7 @@
     <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Demigods Bukkit Plugin</name>
+    <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/Clashnia/Minecraft-Demigods</url>
 
     <scm>
