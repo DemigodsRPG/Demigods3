@@ -23,19 +23,19 @@
         <repository>
             <id>censored-software</id>
             <name>censored-software-releases</name>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/libs-release-local</url>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>censored-software</id>
             <name>censored-software-snapshots</name>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/libs-snapshot-local</url>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>censored-software</id>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/repo</url>
+            <url>http://artifactory.censoredsoftware.com/artifactory/repo</url>
         </repository>
 
         <repository>
