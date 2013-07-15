@@ -173,8 +173,8 @@ public class PlayerCharacter
 		character.setName(charName);
 		character.setDeity(deity);
 		character.setImmortal(immortal);
-		character.setHealth(40.0);
 		character.setMaxHealth(40.0);
+		character.setHealth(40.0);
 		character.setHunger(20);
 		character.setExperience(0);
 		character.setLevel(0);

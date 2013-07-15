@@ -47,7 +47,7 @@ public class Prayer implements ConversationInfo
 	 */
 	public enum Menu
 	{
-		CREATE_CHARACTER(1, new CreateCharacter());
+		CREATE_CHARACTER(1, new CreateCharacter()), CONFIRM_DEITY(2, new ConfirmDeity());
 
 		private Integer id;
 		private Category category;
@@ -84,7 +84,7 @@ public class Prayer implements ConversationInfo
 
 		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context"))
 		{
-			// ((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context"));
+			conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
 		}
 
 		// Toggle player to praying
@@ -352,8 +352,9 @@ public class Prayer implements ConversationInfo
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the conversation, and return
-					prayerConversation.abandon();
+					context.setSessionData("confirming_deity", true);
 					DataUtility.saveTemp(player.getName(), "prayer_context", prayerConversation.getContext());
+					prayerConversation.abandon();
 					return null;
 				}
 				else
@@ -414,8 +415,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			if(context.getSessionData("confirming_deity") != null) return true;
-			else return false;
+			return context.getSessionData("confirming_deity") != null && Boolean.parseBoolean(context.getSessionData("confirming_deity").toString());
 		}
 
 		@Override
@@ -429,13 +429,13 @@ public class Prayer implements ConversationInfo
 			MiscUtility.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendMessage(ChatColor.GREEN + " " + UnicodeUtility.rightwardArrow() + " Confirming Character -------------------------------");
-			player.sendMessage(" ");
-			player.sendMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
-			player.sendMessage(" ");
+			player.sendRawMessage(ChatColor.GREEN + " " + UnicodeUtility.rightwardArrow() + " Confirming Character -------------------------------");
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
+			player.sendRawMessage(" ");
 			for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
 			{
-				player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+				player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 			}
 			return "";
 		}
@@ -456,8 +456,8 @@ public class Prayer implements ConversationInfo
 			player.openInventory(inv);
 
 			// Abandon, save data, and return
-			prayerConversation.abandon();
 			DataUtility.saveTemp(player.getName(), "prayer_context", prayerConversation.getContext());
+			prayerConversation.abandon();
 			return null;
 		}
 	}
@@ -553,6 +553,7 @@ class PrayerListener implements Listener
 			}
 
 			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
+
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!

@@ -6,10 +6,10 @@
 
     <groupId>com.censoredsoftware.minecraft</groupId>
     <artifactId>Demigods</artifactId>
-    <version>3.0.0-DEVELOPMENT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Demigods Bukkit Plugin</name>
+    <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/Clashnia/Minecraft-Demigods</url>
 
     <scm>
@@ -23,21 +23,20 @@
         <repository>
             <id>censored-software</id>
             <name>censored-software-releases</name>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/libs-release-local</url>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>censored-software</id>
             <name>censored-software-snapshots</name>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/libs-snapshot-local</url>
+            <url>http://artifactory.censoredsoftware.com/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>censored-software</id>
-            <url>http://direct.censoredsoftware.com:8081/artifactory/repo</url>
+            <url>http://repo.censoredsoftware.com</url>
         </repository>
-
         <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots</url>
@@ -56,7 +55,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.6.1-R0.1-SNAPSHOT</version>
+            <version>1.6.2-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
@@ -79,7 +78,7 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
-            <version>5.7.6-SNAPSHOT</version>
+            <version>5.8-SNAPSHOT</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
@@ -92,20 +91,13 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>redis</groupId>
+            <groupId>redis.clients</groupId>
             <artifactId>johm</artifactId>
             <version>0.5.0</version>
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
     </dependencies>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>comphenix-repo</id>
-            <url>http://repo.comphenix.net/content/groups/public</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <finalName>Demigods</finalName>
@@ -125,7 +117,6 @@
         </resources>
 
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -141,7 +132,8 @@
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis</include>
-                                    <include>redis:johm</include>
+                                    <include>redis.clients:johm</include>
+                                    <include>commons-pool:commons-pool</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

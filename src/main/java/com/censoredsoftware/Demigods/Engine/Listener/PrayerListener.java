@@ -379,6 +379,7 @@ public class PrayerListener implements Listener
 		player.sendMessage(ChatColor.GRAY + "   [2.] " + ChatColor.YELLOW + "View Characters");
 
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+
 		if(character != null)
 		{
 			player.sendMessage(ChatColor.GRAY + "   [3.] " + ChatColor.BLUE + "View Warps");

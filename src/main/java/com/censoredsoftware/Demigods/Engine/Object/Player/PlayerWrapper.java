@@ -110,6 +110,8 @@ public class PlayerWrapper
 		if(currChar != null)
 		{
 			// Set the values
+			// TODO: Confirm that this covers all of the bases.
+			currChar.setMaxHealth(player.getMaxHealth());
 			currChar.setHealth(player.getHealth());
 			currChar.setHunger(player.getFoodLevel());
 			currChar.setLevel(player.getLevel());
@@ -130,6 +132,8 @@ public class PlayerWrapper
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health and experience
+		// TODO: Confirm that this covers all of the bases too.
+		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
