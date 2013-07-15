@@ -35,7 +35,7 @@
     <repositories>
         <repository>
             <id>censored-software</id>
-            <url>http://artifactory.censoredsoftware.com/artifactory/repo</url>
+            <url>http://repo.censoredsoftware.com</url>
         </repository>
 
         <repository>
