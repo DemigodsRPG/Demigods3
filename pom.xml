@@ -134,6 +134,7 @@
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis</include>
                                     <include>redis:johm</include>
+                                    <include>commons-pool:commons-pool</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
