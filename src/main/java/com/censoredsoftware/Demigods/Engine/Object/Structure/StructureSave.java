@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
@@ -72,6 +73,11 @@ public class StructureSave
 	public static Set<StructureSave> loadAll()
 	{
 		return JOhm.getAll(StructureSave.class);
+	}
+
+	public static List<StructureSave> findAll(String label, Object value)
+	{
+		return JOhm.find(StructureSave.class, label, value);
 	}
 
 	public Location getReferenceLocation()

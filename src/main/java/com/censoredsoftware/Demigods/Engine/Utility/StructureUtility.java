@@ -7,8 +7,6 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.JOhm;
-
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -29,7 +27,7 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithType(Location location, String structureType)
 	{
-		for(StructureSave save : (List<StructureSave>) JOhm.find(StructureSave.class, "structureType", structureType))
+		for(StructureSave save : StructureSave.findAll("structureType", structureType))
 		{
 			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(save.getClickableBlock().equals(location)) return true;
@@ -117,7 +115,7 @@ public class StructureUtility
 
 	public static List<StructureSave> getStructuresByInfo(StructureInfo info)
 	{
-		return JOhm.find(StructureSave.class, "structureType", info.getStructureType());
+		return StructureSave.findAll("structureType", info.getStructureType());
 	}
 
 	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
