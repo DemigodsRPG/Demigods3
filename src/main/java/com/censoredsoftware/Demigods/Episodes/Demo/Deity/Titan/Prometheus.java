@@ -121,18 +121,26 @@ class ShootFireball extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		LivingEntity target = Ability.autoTarget(player);
+		Location target;
+		LivingEntity entity = Ability.autoTarget(player);
+		if(entity != null)
+		{
+			target = Ability.autoTarget(player).getLocation();
+			if(!Ability.doAbilityPreProcess(player, entity, "fireball", cost, info) || entity.getEntityId() == player.getEntityId()) return;
+		}
+		else
+		{
+			target = Ability.directTarget(player);
+			if(!Ability.doAbilityPreProcess(player, "fireball", cost, info)) return;
+		}
 
-		if(!Ability.doAbilityPreProcess(player, target, "fireball", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
 		if(!Ability.doTargeting(player, target)) return;
 
-		if(target.getEntityId() != player.getEntityId())
-		{
-			Prometheus.shootFireball(player.getEyeLocation(), target.getLocation(), player);
-		}
+		Prometheus.shootFireball(player.getEyeLocation(), target, player);
+
 	}
 }
 
@@ -179,28 +187,35 @@ class Blaze extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		LivingEntity target = Ability.autoTarget(player);
+		Location target;
+		LivingEntity entity = Ability.autoTarget(player);
+		if(entity != null)
+		{
+			target = Ability.autoTarget(player).getLocation();
+			if(!Ability.doAbilityPreProcess(player, entity, name, cost, info) || entity.getEntityId() == player.getEntityId()) return;
+		}
+		else
+		{
+			target = Ability.directTarget(player);
+			if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
+		}
 		int power = character.getMeta().getDevotion(type).getLevel();
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 
-		if(!Ability.doAbilityPreProcess(player, target, name, cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
 		if(!Ability.doTargeting(player, target)) return;
 
-		if(target.getEntityId() != player.getEntityId())
+		for(int X = -diameter / 2; X <= diameter / 2; X++)
 		{
-			for(int X = -diameter / 2; X <= diameter / 2; X++)
+			for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
 			{
-				for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
+				for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
 				{
-					for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
-					{
-						Block block = target.getWorld().getBlockAt(target.getLocation().getBlockX() + X, target.getLocation().getBlockY() + Y, target.getLocation().getBlockZ() + Z);
-						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !ZoneUtility.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
-					}
+					Block block = target.getWorld().getBlockAt(target.getBlockX() + X, target.getBlockY() + Y, target.getBlockZ() + Z);
+					if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !ZoneUtility.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
 				}
 			}
 		}

@@ -71,12 +71,17 @@ public class Zeus extends Deity
 
 	protected static boolean strikeLightning(Player player, LivingEntity target)
 	{
+		if(ZoneUtility.canTarget(target)) return strikeLightning(player, target.getLocation());
+		return false;
+	}
+
+	protected static boolean strikeLightning(Player player, Location target)
+	{
 		// Set variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
 		if(!player.getWorld().equals(target.getWorld())) return false;
-		if(!ZoneUtility.canTarget(target)) return false;
-		Location toHit = Ability.adjustedAimLocation(character, target.getLocation());
+		Location toHit = Ability.adjustedAimLocation(character, target);
 
 		player.getWorld().strikeLightningEffect(toHit);
 
@@ -152,7 +157,7 @@ class Shove extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target)) return;
+		if(!Ability.doTargeting(player, target.getLocation())) return;
 
 		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
@@ -204,9 +209,19 @@ class Lightning extends Ability
 	{
 		// Define variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		LivingEntity target = Ability.autoTarget(player);
+		Location target;
+		LivingEntity entity = Ability.autoTarget(player);
+		if(entity != null)
+		{
+			target = Ability.autoTarget(player).getLocation();
+			if(!Ability.doAbilityPreProcess(player, entity, "lightning", cost, info)) return;
+		}
+		else
+		{
+			target = Ability.directTarget(player);
+			if(!Ability.doAbilityPreProcess(player, "lightning", cost, info)) return;
+		}
 
-		if(!Ability.doAbilityPreProcess(player, target, "lightning", cost, info)) return;
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 

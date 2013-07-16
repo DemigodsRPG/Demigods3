@@ -61,7 +61,7 @@ public class PlayerListener implements Listener
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
 		// No-PVP Zones
-		onPlayerLineJump(player, to, from, delayTime);
+		// onPlayerLineJump(player, to, from, delayTime);
 
 		// Player Hold
 		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
@@ -86,7 +86,7 @@ public class PlayerListener implements Listener
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DataUtility.hasKeyTemp(player.getName(), "teleport_ability"))
 		{
-			onPlayerLineJump(player, to, from, delayTime);
+			// onPlayerLineJump(player, to, from, delayTime);
 		}
 		else if(ZoneUtility.enterZoneNoPVP(to, from))
 		{

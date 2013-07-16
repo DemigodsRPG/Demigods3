@@ -177,6 +177,11 @@ public abstract class Ability
 		return null;
 	}
 
+	public static Location directTarget(Player player)
+	{
+		return player.getTargetBlock(null, Demigods.config.getSettingInt("caps.target_range")).getLocation();
+	}
+
 	/**
 	 * Returns true if the <code>player</code> ability hits <code>target</code>.
 	 * 
@@ -184,10 +189,10 @@ public abstract class Ability
 	 * @param target the targeted LivingEntity
 	 * @return true/false depending on if the ability hits or misses
 	 */
-	public static boolean doTargeting(Player player, LivingEntity target)
+	public static boolean doTargeting(Player player, Location target)
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		Location toHit = adjustedAimLocation(character, target.getLocation());
+		Location toHit = adjustedAimLocation(character, target);
 		if(isHit(target, toHit)) return true;
 		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
 		return false;
@@ -269,9 +274,9 @@ public abstract class Ability
 	 * @param hit the location actually hit
 	 * @return true/false if <code>target</code> is hit
 	 */
-	public static boolean isHit(LivingEntity target, Location hit)
+	public static boolean isHit(Location target, Location hit)
 	{
-		Location shouldHit = target.getLocation();
+		Location shouldHit = target;
 		return hit.distance(shouldHit) <= 2;
 	}
 
