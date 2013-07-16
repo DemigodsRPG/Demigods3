@@ -69,6 +69,11 @@ public class StructureSave
 		return JOhm.get(StructureSave.class, Id);
 	}
 
+	public static Set<StructureSave> loadAll()
+	{
+		return JOhm.getAll(StructureSave.class);
+	}
+
 	public Location getReferenceLocation()
 	{
 		return this.reference.toLocation();

@@ -6,8 +6,6 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.JOhm;
-
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
@@ -17,7 +15,7 @@ public class StructureUtility
 {
 	public static StructureSave getStructure(Location location)
 	{
-		for(StructureSave structureSave : getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(structureSave.getLocations().contains(location)) return structureSave;
@@ -27,7 +25,7 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithType(Location location, String structureType)
 	{
-		for(StructureSave structureSave : getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getStructureType().equals(structureType)) return true;
@@ -37,7 +35,7 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
@@ -47,7 +45,7 @@ public class StructureUtility
 
 	public static boolean isCenterBlockWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(structureSave.getClickableBlock().equals(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
@@ -62,7 +60,7 @@ public class StructureUtility
 
 	public static StructureSave getInRadiusWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
@@ -85,15 +83,10 @@ public class StructureUtility
 
 	public static void regenerateStructures()
 	{
-		for(StructureSave save : getAllStructureSaves())
+		for(StructureSave save : StructureSave.loadAll())
 		{
 			save.generate();
 		}
-	}
-
-	public static Set<StructureSave> getAllStructureSaves()
-	{
-		return JOhm.getAll(StructureSave.class);
 	}
 
 	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
