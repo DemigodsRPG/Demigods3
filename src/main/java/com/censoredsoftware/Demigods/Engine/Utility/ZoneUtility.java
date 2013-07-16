@@ -56,7 +56,7 @@ public class ZoneUtility
 
 	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
-		return canWorldGuardDynamicPVP(location);
+		return (!StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE)) && canWorldGuardDynamicPVP(location);
 	}
 
 	private static boolean canWorldGuardDynamicPVP(Location location)

@@ -55,7 +55,7 @@ public class StructureUtility
 
 	public static boolean isInRadiusWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		return getInRadiusWithFlag(location, flag) != null;
+		return true; // getInRadiusWithFlag(location, flag) != null;
 	}
 
 	public static StructureSave getInRadiusWithFlag(Location location, StructureInfo.Flag flag)
