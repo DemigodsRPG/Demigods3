@@ -58,10 +58,10 @@ public class PlayerListener implements Listener
 		final Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
-		int delayTime = 10; // Demigods.config.getSettingInt("pvp_area_delay_time");
+		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
 		// No-PVP Zones
-		onPlayerLineJump(player, to, from, delayTime);
+		// onPlayerLineJump(player, to, from, delayTime);
 
 		// Player Hold
 		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
