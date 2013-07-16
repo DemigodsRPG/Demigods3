@@ -199,7 +199,7 @@ public class Demigods
 		for(ConversationInfo conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
-			// instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
+			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
 	}
 
