@@ -10,6 +10,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
+import com.google.common.collect.Sets;
 
 public class StructureUtility
 {
@@ -62,8 +63,8 @@ public class StructureUtility
 	{
 		for(StructureSave structureSave : getAllStructureSaves())
 		{
-			// if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			// if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
+			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
 		}
 		return null;
 	}
@@ -91,7 +92,7 @@ public class StructureUtility
 
 	public static Set<StructureSave> getAllStructureSaves()
 	{
-		return DataUtility.jOhm.getAll(StructureSave.class);
+		return Sets.newHashSet(); // DataUtility.jOhm.getAll(StructureSave.class);
 	}
 
 	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
