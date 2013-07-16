@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -113,18 +114,18 @@ public class PlayerListener implements Listener
 		// No Spawn Line-Jumping
 		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
-			// DataUtility.saveTemp(player.getName(), "was_PVP", true);
-			// if(DataUtility.hasKeyTemp(player.getName(), "teleport_ability")) DataUtility.removeTemp(player.getName(), "teleport_ability");
-			//
-			// Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
-			// {
-			// @Override
-			// public void run()
-			// {
-			// DataUtility.removeTemp(player.getName(), "was_PVP");
-			// if(ZoneUtility.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
-			// }
-			// }, (delayTime * 20));
+			DataUtility.saveTemp(player.getName(), "was_PVP", true);
+			if(DataUtility.hasKeyTemp(player.getName(), "teleport_ability")) DataUtility.removeTemp(player.getName(), "teleport_ability");
+
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					DataUtility.removeTemp(player.getName(), "was_PVP");
+					if(ZoneUtility.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
+				}
+			}, (delayTime * 20));
 		}
 
 		// Let players know where they can PVP
