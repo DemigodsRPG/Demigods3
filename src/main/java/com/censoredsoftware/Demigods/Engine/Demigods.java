@@ -166,7 +166,6 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new StructureListener(), instance);
-		// instance.getServer().getPluginManager().registerEvents(new PrayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 
@@ -201,7 +200,7 @@ public class Demigods
 		for(ConversationInfo conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
+			// instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
 	}
 
