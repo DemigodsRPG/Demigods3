@@ -55,15 +55,15 @@ public class StructureUtility
 
 	public static boolean isInRadiusWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		return true; // getInRadiusWithFlag(location, flag) != null;
+		return getInRadiusWithFlag(location, flag) != null;
 	}
 
 	public static StructureSave getInRadiusWithFlag(Location location, StructureInfo.Flag flag)
 	{
 		for(StructureSave structureSave : getAllStructureSaves())
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
+			// if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			// if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
 		}
 		return null;
 	}
