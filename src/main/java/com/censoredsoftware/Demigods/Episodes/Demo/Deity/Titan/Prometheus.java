@@ -123,21 +123,24 @@ class ShootFireball extends Ability
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		Location target;
 		LivingEntity entity = Ability.autoTarget(player);
+		boolean notify;
 		if(entity != null)
 		{
 			target = Ability.autoTarget(player).getLocation();
+			notify = true;
 			if(!Ability.doAbilityPreProcess(player, entity, "fireball", cost, info) || entity.getEntityId() == player.getEntityId()) return;
 		}
 		else
 		{
 			target = Ability.directTarget(player);
+			notify = false;
 			if(!Ability.doAbilityPreProcess(player, "fireball", cost, info)) return;
 		}
 
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target)) return;
+		if(!Ability.doTargeting(player, target, notify)) return;
 
 		Prometheus.shootFireball(player.getEyeLocation(), target, player);
 
@@ -189,14 +192,17 @@ class Blaze extends Ability
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		Location target;
 		LivingEntity entity = Ability.autoTarget(player);
+		boolean notify;
 		if(entity != null)
 		{
 			target = Ability.autoTarget(player).getLocation();
+			notify = true;
 			if(!Ability.doAbilityPreProcess(player, entity, name, cost, info) || entity.getEntityId() == player.getEntityId()) return;
 		}
 		else
 		{
 			target = Ability.directTarget(player);
+			notify = false;
 			if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
 		}
 		int power = character.getMeta().getDevotion(type).getLevel();
@@ -206,7 +212,7 @@ class Blaze extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target)) return;
+		if(!Ability.doTargeting(player, target, notify)) return;
 
 		for(int X = -diameter / 2; X <= diameter / 2; X++)
 		{

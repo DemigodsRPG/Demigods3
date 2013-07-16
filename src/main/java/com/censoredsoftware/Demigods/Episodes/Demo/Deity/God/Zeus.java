@@ -71,11 +71,11 @@ public class Zeus extends Deity
 
 	protected static boolean strikeLightning(Player player, LivingEntity target)
 	{
-		if(ZoneUtility.canTarget(target)) return strikeLightning(player, target.getLocation());
+		if(ZoneUtility.canTarget(target)) return strikeLightning(player, target.getLocation(), true);
 		return false;
 	}
 
-	protected static boolean strikeLightning(Player player, Location target)
+	protected static boolean strikeLightning(Player player, Location target, boolean notify)
 	{
 		// Set variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
@@ -99,7 +99,7 @@ public class Zeus extends Deity
 
 		if(!Ability.isHit(target, toHit))
 		{
-			player.sendMessage(ChatColor.RED + "Missed...");
+			if(notify) player.sendMessage(ChatColor.RED + "Missed...");
 		}
 
 		return true;
@@ -157,7 +157,7 @@ class Shove extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target.getLocation())) return;
+		if(!Ability.doTargeting(player, target.getLocation(), true)) return;
 
 		Vector vector = player.getLocation().toVector();
 		Vector victor = target.getLocation().toVector().subtract(vector);
@@ -211,21 +211,24 @@ class Lightning extends Ability
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		Location target;
 		LivingEntity entity = Ability.autoTarget(player);
+		boolean notify;
 		if(entity != null)
 		{
 			target = Ability.autoTarget(player).getLocation();
+			notify = true;
 			if(!Ability.doAbilityPreProcess(player, entity, "lightning", cost, info)) return;
 		}
 		else
 		{
 			target = Ability.directTarget(player);
+			notify = false;
 			if(!Ability.doAbilityPreProcess(player, "lightning", cost, info)) return;
 		}
 
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		Zeus.strikeLightning(player, target);
+		Zeus.strikeLightning(player, target, notify);
 	}
 }
 

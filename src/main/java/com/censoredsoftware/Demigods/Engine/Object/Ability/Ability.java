@@ -189,12 +189,12 @@ public abstract class Ability
 	 * @param target the targeted LivingEntity
 	 * @return true/false depending on if the ability hits or misses
 	 */
-	public static boolean doTargeting(Player player, Location target)
+	public static boolean doTargeting(Player player, Location target, boolean notify)
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		Location toHit = adjustedAimLocation(character, target);
 		if(isHit(target, toHit)) return true;
-		player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
+		if(notify) player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
 		return false;
 	}
 

@@ -110,7 +110,7 @@ class Test extends Ability
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target.getLocation())) return;
+		if(!Ability.doTargeting(player, target.getLocation(), true)) return;
 
 		if(target instanceof Player)
 		{

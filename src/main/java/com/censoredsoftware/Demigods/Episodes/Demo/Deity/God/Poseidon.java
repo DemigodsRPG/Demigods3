@@ -150,7 +150,7 @@ class Reel extends Ability
 		character.getMeta().subtractFavor(cost);
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
-		if(!Ability.doTargeting(player, target.getLocation())) return;
+		if(!Ability.doTargeting(player, target.getLocation(), true)) return;
 
 		Ability.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
 
