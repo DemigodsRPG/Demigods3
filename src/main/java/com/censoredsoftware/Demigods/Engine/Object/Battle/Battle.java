@@ -16,48 +16,34 @@ public class Battle
 	@Id
 	private Long id;
 	@Reference
-	private com.censoredsoftware.Demigods.Engine.Object.Battle.BattleMeta meta;
+	private BattleMeta meta;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation startLoc;
-	@Reference
-	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation endLoc;
+	private DemigodsLocation startLoc;
 	@Attribute
-	private Double range;
+	private double range;
+	@Attribute
+	private long duration;
 	@Attribute
 	@Indexed
 	private long startTime;
-	@Attribute
-	@Indexed
-	private long endTime;
-	@Attribute
-	@Indexed
-	private Boolean active;
 
-	public static Battle create(PlayerCharacter damager, PlayerCharacter damagee)
+	public static Battle create(PlayerCharacter damager, PlayerCharacter damaged)
 	{
 		Battle battle = new Battle();
-		battle.setActive(true);
-		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damagee.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
+		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damaged.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
 		battle.setStartTime(System.currentTimeMillis());
 
-		int default_range = Demigods.config.getSettingInt("battle.min_range");
-		double range = damager.getOfflinePlayer().getPlayer().getLocation().distance(damagee.getOfflinePlayer().getPlayer().getLocation());
-		if(range < default_range)
-		{
-			battle.setRange(default_range);
-		}
-		else
-		{
-			battle.setRange(range);
-		}
+		int default_range = Demigods.config.getSettingInt("battles.min_range");
+		double range = damager.getOfflinePlayer().getPlayer().getLocation().distance(damaged.getOfflinePlayer().getPlayer().getLocation());
+		if(range < default_range) battle.setRange(default_range);
+		else battle.setRange(range);
+
+		battle.setDuration(Demigods.config.getSettingInt("battles.min_duration") * 1000);
 
 		BattleMeta meta = BattleMeta.create(damager);
-		meta.addLocation(damager.getOfflinePlayer().getPlayer().getLocation());
-		meta.addLocation(damagee.getOfflinePlayer().getPlayer().getLocation());
 		meta.addParticipant(damager);
-		meta.addParticipant(damagee);
+		meta.addParticipant(damaged);
 		battle.setMeta(meta);
 		Battle.save(battle);
 		return battle;
@@ -68,9 +54,14 @@ public class Battle
 		this.meta = meta;
 	}
 
-	void setRange(double range)
+	public void setRange(double range)
 	{
 		this.range = range;
+	}
+
+	public void setDuration(long duration)
+	{
+		this.duration = duration;
 	}
 
 	void setStartLocation(Location location)
@@ -83,26 +74,6 @@ public class Battle
 		this.startTime = time;
 	}
 
-	public void setEndLocation(Location location)
-	{
-		this.endLoc = DemigodsLocation.create(location);
-	}
-
-	public void setEndTime(long time)
-	{
-		this.endTime = time;
-	}
-
-	public void setActive(boolean option)
-	{
-		this.active = option;
-	}
-
-	public boolean isActive()
-	{
-		return this.active;
-	}
-
 	public long getId()
 	{
 		return this.id;
@@ -111,6 +82,11 @@ public class Battle
 	public double getRange()
 	{
 		return this.range;
+	}
+
+	public long getDuration()
+	{
+		return this.duration;
 	}
 
 	public BattleMeta getMeta()
@@ -123,19 +99,9 @@ public class Battle
 		return this.startLoc.toLocation();
 	}
 
-	public Location getEndLocation()
-	{
-		return this.endLoc.toLocation();
-	}
-
 	public long getStartTime()
 	{
 		return this.startTime;
-	}
-
-	public long getEndTime()
-	{
-		return this.endTime;
 	}
 
 	public static Battle get(Long id)

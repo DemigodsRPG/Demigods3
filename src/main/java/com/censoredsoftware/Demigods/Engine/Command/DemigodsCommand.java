@@ -260,7 +260,7 @@ public class DemigodsCommand implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final List<PlayerCharacter> chars = PlayerWrapper.getChars(toCheck);
+					final List<PlayerCharacter> chars = PlayerWrapper.getCharacters(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{

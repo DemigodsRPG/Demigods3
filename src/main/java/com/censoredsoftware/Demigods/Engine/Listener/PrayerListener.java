@@ -394,7 +394,7 @@ public class PrayerListener implements Listener
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		final List<PlayerCharacter> chars = PlayerWrapper.getChars(player);
+		final List<PlayerCharacter> chars = PlayerWrapper.getCharacters(player);
 
 		if(chars.isEmpty())
 		{

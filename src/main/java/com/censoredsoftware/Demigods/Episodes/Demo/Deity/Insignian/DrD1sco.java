@@ -16,7 +16,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class DrD1sco extends Deity
@@ -79,8 +78,8 @@ class RainbowWalking extends Ability
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) & !ZoneUtility.zoneNoBuild(online, online.getLocation()) && !StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_PVP_ZONE) && (!StructureUtility.isInRadiusWithFlag(online.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))) doEffect(online, true);
-					else doEffect(online, false);
+					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) && !ZoneUtility.zoneNoPVP(online.getLocation()) && !StructureUtility.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
+					else if(Deity.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 				}
 			}
 

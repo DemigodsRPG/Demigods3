@@ -1,14 +1,15 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -24,7 +25,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -36,7 +37,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -48,7 +49,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -60,7 +61,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getId().equals(save.getOwner().getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -69,5 +70,20 @@ public class GriefListener implements Listener
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		event.setCancelled(StructureUtility.isInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE));
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onAttemptInventoryOpen(PlayerInteractEvent event)
+	{
+		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+		Block block = event.getClickedBlock();
+		Location location = block.getLocation();
+		if(!StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE)) return;
+		if(block.getType().equals(Material.CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().equals(Material.FURNACE) || block.getType().equals(Material.BURNING_FURNACE) || block.getType().equals(Material.DISPENSER) || block.getType().equals(Material.DROPPER) || block.getType().equals(Material.BREWING_STAND) || block.getType().equals(Material.BEACON) || block.getType().equals(Material.HOPPER) || block.getType().equals(Material.HOPPER_MINECART) || block.getType().equals(Material.STORAGE_MINECART))
+		{
+			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			event.setCancelled(true);
+		}
 	}
 }

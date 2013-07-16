@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.HorseWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -91,6 +92,16 @@ public class EntityListener implements Listener
 
 			// Let 'em know
 			player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.YOU_FAILED_DEITY).replace("{deity}", deity));
+		}
+		else if(event.getEntityType().equals(EntityType.HORSE))
+		{
+			Horse horse = (Horse) event.getEntity();
+			HorseWrapper wrapper = HorseWrapper.getHorse(horse);
+			PlayerCharacter owner = wrapper.getOwner();
+			if(wrapper == null) return;
+			if(owner.getOfflinePlayer().isOnline()) if(horse.getCustomName() != null) owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your horse, " + horse.getCustomName() + ChatColor.RED + ", was slain in battle.");
+			else owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your horse was slain in battle.");
+			wrapper.delete();
 		}
 	}
 

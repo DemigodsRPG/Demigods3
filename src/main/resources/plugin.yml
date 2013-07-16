@@ -23,6 +23,8 @@ commands:
     test2:
         usage: /test2
         permission: demigods.admin
+    hspawn:
+        usage: /hspawn
     soundtest:
         usage: /soundtest <sound> <pitch>
         permission: demigods.admin

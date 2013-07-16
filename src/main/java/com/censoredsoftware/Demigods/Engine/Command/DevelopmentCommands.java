@@ -1,19 +1,21 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
 public class DevelopmentCommands implements CommandExecutor
 {
@@ -23,6 +25,7 @@ public class DevelopmentCommands implements CommandExecutor
 		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
+		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 		return false;
 	}
@@ -47,7 +50,54 @@ public class DevelopmentCommands implements CommandExecutor
 	{
 		Player player = (Player) sender;
 
-		(new Prayer()).startPrayer(player);
+		if(!SpigotUtility.runningSpigot()) return true;
+
+		final Location original = player.getLocation();
+
+		if(!MiscUtility.isAboveGround(original))
+		{
+			Location newLoc = MiscUtility.getAboveGround(original);
+			player.sendMessage("Old: " + original.getBlockY() + ", New: " + newLoc.getBlockY());
+			player.teleport(newLoc, PlayerTeleportEvent.TeleportCause.COMMAND);
+		}
+
+		final Location center = player.getLocation();
+
+		for(int i = 1; i < 62; i++)
+		{
+			if(i == 61 && !original.equals(center))
+			{
+				player.teleport(original);
+				break;
+			}
+
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
+				}
+			}, i * 20);
+		}
+
+		return true;
+	}
+
+	private static boolean hspawn(CommandSender sender)
+	{
+		Player player = (Player) sender;
+
+		// This SHOULD happen automatically, but bukkit doesn't do this, so we need to.
+
+		if(player.isInsideVehicle() && player.getVehicle() instanceof Horse)
+		{
+			Horse horse = (Horse) player.getVehicle();
+			horse.eject();
+			horse.teleport(player.getLocation().getWorld().getSpawnLocation());
+			horse.setPassenger(player);
+			player.sendMessage(ChatColor.YELLOW + "Teleported to spawn...");
+		}
 
 		return true;
 	}

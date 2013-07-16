@@ -1,33 +1,31 @@
 package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
+import java.util.Map;
 import java.util.Set;
-
-import org.bukkit.Location;
 
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Model
 public class BattleMeta
 {
 	@Id
-	private Long id;
-	@Attribute
-	private Integer kills;
-	@Attribute
-	private Integer deaths;
-	@CollectionSet(of = DemigodsLocation.class)
-	private Set<DemigodsLocation> locations;
+	private Long Id;
+	@CollectionSet(of = Long.class)
+	private Set<Long> involvedPlayers;
+	@CollectionMap(key = Long.class, value = Integer.class)
+	private Map<Long, Integer> kills;
+	@CollectionMap(key = Long.class, value = Integer.class)
+	private Map<Long, Integer> deaths;
+	@CollectionMap(key = DemigodsLocation.class, value = Integer.class)
+	private Map<DemigodsLocation, Integer> locations;
 	@Reference
 	@Indexed
-	private com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter startedBy;
-	@CollectionSet(of = Long.class)
-	private Set<PlayerCharacter> participants;
-	@CollectionSet(of = String.class)
-	private Set<String> alliances;
+	private PlayerCharacter startedBy;
 
 	public static BattleMeta create(PlayerCharacter character)
 	{
@@ -46,30 +44,29 @@ public class BattleMeta
 
 	void initialize()
 	{
-		this.kills = 0;
-		this.deaths = 0;
+		this.kills = Maps.newHashMap();
+		this.deaths = Maps.newHashMap();
+		this.involvedPlayers = Sets.newHashSet();
 	}
 
 	public void addParticipant(PlayerCharacter character)
 	{
-		if(this.participants == null) this.participants = Sets.newHashSet();
-		this.participants.add(character);
+		this.involvedPlayers.add(character.getId());
+		save(this);
 	}
 
-	public void addLocation(Location location)
+	public void addKill(PlayerCharacter character)
 	{
-		if(this.locations == null) this.locations = Sets.newHashSet();
-		this.locations.add(DemigodsLocation.create(location));
+		if(this.kills.containsKey(character.getId())) this.kills.put(character.getId(), this.kills.get(character.getId() + 1));
+		else this.kills.put(character.getId(), 1);
+		save(this);
 	}
 
-	public void addKills(int kills)
+	public void addDeath(PlayerCharacter character)
 	{
-		this.kills += kills;
-	}
-
-	public void addDeaths(int deaths)
-	{
-		this.deaths += deaths;
+		if(this.deaths.containsKey(character.getId())) this.deaths.put(character.getId(), this.deaths.get(character.getId() + 1));
+		else this.deaths.put(character.getId(), 1);
+		save(this);
 	}
 
 	public PlayerCharacter getStarter()
@@ -77,30 +74,14 @@ public class BattleMeta
 		return this.startedBy;
 	}
 
-	public Set<PlayerCharacter> getParticipants()
+	public Set<Long> getParticipants()
 	{
-		if(this.participants == null) this.participants = Sets.newHashSet();
-		return this.participants;
-	}
-
-	public Set<Location> getLocations()
-	{
-		Set<Location> locations = Sets.newHashSet();
-
-		if(this.locations != null)
-		{
-			for(DemigodsLocation location : this.locations)
-			{
-				locations.add(location.toLocation());
-			}
-		}
-
-		return locations;
+		return this.involvedPlayers;
 	}
 
 	public long getId()
 	{
-		return this.id;
+		return this.Id;
 	}
 
 	public static BattleMeta load(Long id)

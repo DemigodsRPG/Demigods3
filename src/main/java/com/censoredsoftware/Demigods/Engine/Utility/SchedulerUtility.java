@@ -6,6 +6,7 @@ import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Runnable.BattleRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.FavorRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.TimedDataRunnable;
 
@@ -19,8 +20,8 @@ public class SchedulerUtility
 		AdminUtility.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start battle runnable
-		// Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
-		// AdminUtility.sendDebug("Battle tracking runnable enabled...");
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
+		AdminUtility.sendDebug("Battle tracking runnable enabled...");
 
 		// Start timed data runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
