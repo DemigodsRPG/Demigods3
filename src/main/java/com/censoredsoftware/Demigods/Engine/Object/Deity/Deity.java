@@ -81,6 +81,7 @@ public abstract class Deity
 	public static boolean canUseDeity(Player player, String deity)
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		if(character == null) return false;
 		if(!character.isDeity(deity))
 		{
 			player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
