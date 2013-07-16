@@ -15,7 +15,7 @@ public enum Baetylus
 	/**
 	 * A large shard of the Baetylus.
 	 */
-	LARGE_SHARD(new Shard(20, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>()
+	LARGE_SHARD(new Shard(20.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>()
 	{
 		{
 			add("Regain full health instead of dying.");
@@ -30,7 +30,7 @@ public enum Baetylus
 	/**
 	 * A shard of the Baetylus.
 	 */
-	NORMAL_SHARD(new Shard(10, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Baetylus Shard", new ArrayList<String>()
+	NORMAL_SHARD(new Shard(10.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Baetylus Shard", new ArrayList<String>()
 	{
 		{
 			add("Regain half health instead of dying.");
@@ -45,7 +45,7 @@ public enum Baetylus
 	/**
 	 * A small shard of the Baetylus.
 	 */
-	SMALL_SHARD(new Shard(5, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Small Baetylus Shard", new ArrayList<String>()
+	SMALL_SHARD(new Shard(5.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Small Baetylus Shard", new ArrayList<String>()
 	{
 		{
 			add("Regain quarter health instead of dying.");
@@ -71,18 +71,18 @@ public enum Baetylus
 
 	public static class Shard
 	{
-		private int health;
+		private double health;
 		private Sound sound;
 		private ItemStack item;
 
-		public Shard(int health, Sound sound, ItemStack item)
+		public Shard(double health, Sound sound, ItemStack item)
 		{
 			this.health = health;
 			this.sound = sound;
 			this.item = item;
 		}
 
-		public int getHealth()
+		public double getHealth()
 		{
 			return health;
 		}

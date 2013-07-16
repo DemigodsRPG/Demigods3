@@ -16,7 +16,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Episodes.Demo.Item.Books;
+import com.censoredsoftware.Demigods.Episodes.Demo.Item.Book;
 
 public class Tutorial extends TaskSet
 {
@@ -74,7 +74,7 @@ class TutorialTask extends Task
 			Demigods.message.tagged(player, name);
 			Demigods.message.tagged(player, "Use " + ChatColor.YELLOW + "/dg" + ChatColor.WHITE + " for more information.");
 
-			player.getInventory().setItem(player.getInventory().firstEmpty(), Books.FIRST_JOIN.getBook().getItem());
+			player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
 
 			character.getMeta().finishTask(name, true);
 		}

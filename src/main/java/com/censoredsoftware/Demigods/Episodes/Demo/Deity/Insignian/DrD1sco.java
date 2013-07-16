@@ -46,7 +46,7 @@ public class DrD1sco extends Deity
 	private static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
-			// add(new RainbowWalking());
+			add(new RainbowWalking());
 		}
 	};
 
