@@ -18,9 +18,6 @@ public class DataUtility
 	// The Redis DB
 	private static JedisPool jedisPool;
 
-	// Persistence
-	public static JOhm jOhm;
-
 	// Temp Data
 	private static Map<String, HashMap<String, Object>> tempData;
 
@@ -32,7 +29,7 @@ public class DataUtility
 		tempData = Maps.newHashMap();
 
 		// Create Persistence
-		jOhm = new JOhm();
+		new JOhm();
 		JOhm.setPool(jedisPool);
 	}
 

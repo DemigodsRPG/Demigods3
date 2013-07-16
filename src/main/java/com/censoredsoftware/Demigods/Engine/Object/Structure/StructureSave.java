@@ -10,7 +10,6 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 @Model
@@ -53,7 +52,7 @@ public class StructureSave
 
 	public void save()
 	{
-		DataUtility.jOhm.save(this);
+		JOhm.save(this);
 	}
 
 	public void remove()
@@ -62,12 +61,12 @@ public class StructureSave
 		{
 			location.getBlock().setTypeId(Material.AIR.getId());
 		}
-		DataUtility.jOhm.delete(StructureSave.class, this.Id);
+		JOhm.delete(StructureSave.class, this.Id);
 	}
 
 	public static StructureSave load(Long Id)
 	{
-		return DataUtility.jOhm.get(StructureSave.class, Id);
+		return JOhm.get(StructureSave.class, Id);
 	}
 
 	public Location getReferenceLocation()
