@@ -71,9 +71,7 @@ public class StructureSave
 
 	public static Set<StructureSave> loadAll()
 	{
-		Set<StructureSave> saves = JOhm.getAll(StructureSave.class);
-		Demigods.message.info("Found " + saves.size() + " structure saves.");
-		return saves;
+		return JOhm.getAll(StructureSave.class);
 	}
 
 	public Location getReferenceLocation()
