@@ -1,11 +1,15 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import redis.clients.johm.JOhm;
+
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
@@ -25,30 +29,36 @@ public class StructureUtility
 
 	public static boolean partOfStructureWithType(Location location, String structureType)
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureSave save : (List<StructureSave>) JOhm.find(StructureSave.class, "structureType", structureType))
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getStructureType().equals(structureType)) return true;
+			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			if(save.getClickableBlock().equals(location)) return true;
 		}
 		return false;
 	}
 
 	public static boolean partOfStructureWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureInfo info : getStructureInfoFromFlag(flag))
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getLocations().contains(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
+			for(StructureSave save : getStructuresByInfo(info))
+			{
+				if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+				if(save.getLocations().contains(location)) return true;
+			}
 		}
 		return false;
 	}
 
 	public static boolean isCenterBlockWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureInfo info : getStructureInfoFromFlag(flag))
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getClickableBlock().equals(location) && structureSave.getStructureInfo().getFlags().contains(flag)) return true;
+			for(StructureSave save : getStructuresByInfo(info))
+			{
+				if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+				if(save.getClickableBlock().equals(location)) return true;
+			}
 		}
 		return false;
 	}
@@ -60,10 +70,13 @@ public class StructureUtility
 
 	public static StructureSave getInRadiusWithFlag(Location location, StructureInfo.Flag flag)
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureInfo info : getStructureInfoFromFlag(flag))
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getReferenceLocation().distance(location) <= structureSave.getStructureInfo().getRadius() && structureSave.getStructureInfo().getFlags().contains(flag)) return structureSave;
+			for(StructureSave save : getStructuresByInfo(info))
+			{
+				if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+				if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
+			}
 		}
 		return null;
 	}
@@ -87,6 +100,24 @@ public class StructureUtility
 		{
 			save.generate();
 		}
+	}
+
+	public static Set<StructureInfo> getStructureInfoFromFlag(final StructureInfo.Flag flag)
+	{
+		return new HashSet<StructureInfo>()
+		{
+			{
+				for(StructureInfo info : Demigods.getLoadedStructures())
+				{
+					if(info.getFlags().contains(flag)) add(info);
+				}
+			}
+		};
+	}
+
+	public static List<StructureSave> getStructuresByInfo(StructureInfo info)
+	{
+		return JOhm.find(StructureSave.class, "structureType", info.getStructureType());
 	}
 
 	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
