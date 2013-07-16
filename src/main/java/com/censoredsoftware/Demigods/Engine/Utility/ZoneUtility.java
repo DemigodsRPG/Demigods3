@@ -24,7 +24,7 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
-			// if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
+			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
 			// else return StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE);
 		}
 		// else return !canWorldGuardFlagPVP(location);
