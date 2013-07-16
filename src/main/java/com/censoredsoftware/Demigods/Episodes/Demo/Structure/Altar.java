@@ -989,7 +989,7 @@ public class Altar implements StructureInfo
 		return new HashSet<StructureSave>()
 		{
 			{
-				for(StructureSave saved : StructureUtility.getAllStructureSaves())
+				for(StructureSave saved : StructureSave.loadAll())
 				{
 					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
 				}
@@ -1010,7 +1010,7 @@ public class Altar implements StructureInfo
 
 	public static boolean altarNearby(Location location)
 	{
-		for(StructureSave structureSave : StructureUtility.getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(structureSave.getReferenceLocation().distance(location) <= Demigods.config.getSettingInt("generation.min_blocks_between_altars") && structureSave.getStructureInfo().getStructureType().equals(EpisodeDemo.Structures.ALTAR.getStructure().getStructureType())) return true;
 		}

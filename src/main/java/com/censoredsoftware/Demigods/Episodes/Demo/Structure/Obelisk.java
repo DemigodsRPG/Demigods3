@@ -209,7 +209,7 @@ public class Obelisk implements StructureInfo
 		return new HashSet<StructureSave>()
 		{
 			{
-				for(StructureSave saved : StructureUtility.getAllStructureSaves())
+				for(StructureSave saved : StructureSave.loadAll())
 				{
 					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
 				}
@@ -242,7 +242,7 @@ public class Obelisk implements StructureInfo
 
 	public static boolean noPvPStructureNearby(Location location)
 	{
-		for(StructureSave structureSave : StructureUtility.getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(structureSave.getStructureInfo().getFlags().contains(Flag.NO_PVP_ZONE) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
 		}

@@ -130,7 +130,7 @@ public class Shrine implements StructureInfo
 		return new HashSet<StructureSave>()
 		{
 			{
-				for(StructureSave saved : StructureUtility.getAllStructureSaves())
+				for(StructureSave saved : StructureSave.loadAll())
 				{
 					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
 				}

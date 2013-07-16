@@ -19,7 +19,6 @@ import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
 
@@ -193,7 +192,7 @@ public class PlayerCharacter
 
 	public void remove()
 	{
-		for(StructureSave structureSave : StructureUtility.getAllStructureSaves())
+		for(StructureSave structureSave : StructureSave.loadAll())
 		{
 			if(structureSave.getStructureInfo().getFlags().contains(StructureInfo.Flag.DELETE_ON_OWNER_DELETE) && structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 		}
