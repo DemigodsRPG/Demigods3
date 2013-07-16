@@ -13,7 +13,6 @@
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>

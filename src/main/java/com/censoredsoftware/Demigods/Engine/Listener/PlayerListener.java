@@ -51,7 +51,7 @@ public class PlayerListener implements Listener
 		}
 	}
 
-	// TODO @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
 		// Define variables
