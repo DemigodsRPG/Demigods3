@@ -12,6 +12,13 @@
     <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/Clashnia/Minecraft-Demigods</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
+        <mcstats.version>R7</mcstats.version>
+        <worldguard.version>5.8-SNAPSHOT</worldguard.version>
+    </properties>
+
     <scm>
         <connection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</connection>
         <developerConnection>scm:git:git://github.com/Clashnia/Minecraft-Demigods.git</developerConnection>
@@ -55,7 +62,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.6.2-R0.1-SNAPSHOT</version>
+            <version>${spigot.version}</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
@@ -71,14 +78,14 @@
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
             <artifactId>metrics</artifactId>
-            <version>R7</version>
+            <version>${mcstats.version}</version>
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
-            <version>5.8-SNAPSHOT</version>
+            <version>${worldguard.version}</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>

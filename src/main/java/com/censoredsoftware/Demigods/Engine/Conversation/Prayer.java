@@ -378,7 +378,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			if(PlayerWrapper.getChars(player) != null) return true;
+			if(PlayerWrapper.getCharacters(player) != null) return true;
 			else return false;
 		}
 
