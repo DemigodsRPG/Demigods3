@@ -21,7 +21,7 @@ public class ZoneUtility
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		// if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		// if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		// {
 		// if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
