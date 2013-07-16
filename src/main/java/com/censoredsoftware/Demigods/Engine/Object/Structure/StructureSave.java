@@ -22,7 +22,7 @@ public class StructureSave
 	private String structureType;
 	@Indexed
 	@Attribute
-	private Boolean active;
+	private boolean active;
 	@Reference
 	private DemigodsLocation reference;
 	@Reference
