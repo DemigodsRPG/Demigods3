@@ -78,7 +78,7 @@ class RainbowWalking extends Ability
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.getGameMode().equals(GameMode.CREATIVE) && !ZoneUtility.zoneNoPVP(online.getLocation()) && !StructureUtility.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
+					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !ZoneUtility.zoneNoPVP(online.getLocation()) && !StructureUtility.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
 					else if(Deity.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 				}
 			}
