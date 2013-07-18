@@ -50,7 +50,7 @@ public class PrayerListener implements Listener
 					event.setCancelled(true);
 					return;
 				}
-				PlayerWrapper.togglePraying(player, true);
+				// PlayerWrapper.togglePraying(player, true);
 
 				// First we clear chat
 				MiscUtility.clearChat(player);
@@ -76,7 +76,7 @@ public class PrayerListener implements Listener
 			}
 			else if(PlayerWrapper.isPraying(player))
 			{
-				PlayerWrapper.togglePraying(player, false);
+				// PlayerWrapper.togglePraying(player, false);
 
 				// Clear whatever is being worked on in this Pray session
 				DataUtility.removeTemp(player.getName(), "temp_createchar");
@@ -338,7 +338,7 @@ public class PrayerListener implements Listener
 				DataUtility.removeTemp(player.getName(), "temp_createchar");
 
 				// Stop their praying, enable movement, enable chat
-				PlayerWrapper.togglePraying(player, false);
+				// PlayerWrapper.togglePraying(player, false);
 
 				// Remove old data now
 				DataUtility.removeTemp(player.getName(), "temp_createchar_finalstep");
@@ -545,13 +545,13 @@ public class PrayerListener implements Listener
 			DataUtility.saveTemp(player.getName(), "temp_chat_number", 0);
 
 			// Disable prayer
-			PlayerWrapper.togglePraying(player, false);
+			// PlayerWrapper.togglePraying(player, false);
 		}
 		else
 		{
 			player.sendMessage(ChatColor.RED + "Your current character couldn't be changed...");
 			player.sendMessage(ChatColor.RED + "Please let an admin know.");
-			PlayerWrapper.togglePrayingSilent(player, false);
+			// PlayerWrapper.togglePrayingSilent(player, false);
 		}
 	}
 
@@ -751,7 +751,7 @@ public class PrayerListener implements Listener
 		if(DemigodsLocation.alreadyInvited(character, invited)) DemigodsLocation.removeInvite(character, DemigodsLocation.getInvite(character, invited));
 
 		DemigodsLocation.addInvite(character, invited);
-		PlayerWrapper.togglePraying(player, false);
+		// PlayerWrapper.togglePraying(player, false);
 		MiscUtility.clearChat(player);
 
 		player.sendMessage(invited.getDeity().getInfo().getColor() + invited.getName() + ChatColor.GRAY + " has been invited to this Altar.");
@@ -766,7 +766,7 @@ public class PrayerListener implements Listener
 
 		if(invite != null)
 		{
-			PlayerWrapper.togglePraying(player, false);
+			// PlayerWrapper.togglePraying(player, false);
 			MiscUtility.clearChat(player);
 
 			player.teleport(invite.toLocation());
@@ -785,7 +785,7 @@ public class PrayerListener implements Listener
 		{
 			if(warp.getValue().equals(warpName.toUpperCase()))
 			{
-				PlayerWrapper.togglePraying(player, false);
+				// PlayerWrapper.togglePraying(player, false);
 				MiscUtility.clearChat(player);
 
 				player.teleport(warp.getKey().toLocation());

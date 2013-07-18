@@ -242,15 +242,14 @@ public class Prayer implements ConversationInfo
 				MiscUtility.clearRawChat((Player) context.getForWhom());
 				context.getForWhom().sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
 				context.getForWhom().sendRawMessage(" ");
-				return ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)";
+				context.getForWhom().sendRawMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+				return "";
 			}
 
 			@Override
 			protected boolean isInputValid(ConversationContext context, String name)
 			{
 				Player player = (Player) context.getForWhom();
-
-				// TODO: Figure out why checking to see if the player has a character with the given name stops the check.
 
 				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 				{
@@ -468,8 +467,6 @@ public class Prayer implements ConversationInfo
 			Inventory inv = Bukkit.getServer().createInventory(player, 27, "Place Your Tributes Here");
 			player.openInventory(inv);
 
-			// Abandon, save data, and return
-			PlayerWrapper.togglePrayingSilent(player, false);
 			return null;
 		}
 	}
@@ -564,10 +561,7 @@ class PrayerListener implements Listener
 				PlayerCharacter.create(player, chosenDeity, chosenName, true);
 
 				// Stop their praying, enable movement, enable chat
-				PlayerWrapper.togglePraying(player, false);
-
-				// Remove old data now
-				DataUtility.removeTemp(player.getName(), "prayer_context");
+				PlayerWrapper.togglePrayingSilent(player, false);
 			}
 			else
 			{
