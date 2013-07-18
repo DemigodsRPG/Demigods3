@@ -100,6 +100,9 @@ public class Prayer implements ConversationInfo
 			Player player = (Player) context.getForWhom();
 			PlayerCharacter currentCharacter = PlayerWrapper.getPlayer(player).getCurrent();
 
+			// Clear chat
+			MiscUtility.clearRawChat(player);
+
 			// Send Prayer menu
 			MiscUtility.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
@@ -496,17 +499,14 @@ class PrayerListener implements Listener
 					return;
 				}
 
-				// Toggle praying and clear chat
+				// Toggle praying
 				PlayerWrapper.togglePraying(player, true);
-				MiscUtility.clearChat(player);
 
 				// Tell nearby players that the user is praying
 				for(Entity entity : player.getNearbyEntities(20, 20, 20))
 				{
 					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt to begin prayer.");
 				}
-
-				event.setCancelled(true);
 			}
 			else if(PlayerWrapper.isPraying(player))
 			{

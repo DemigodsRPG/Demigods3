@@ -314,7 +314,7 @@ public class PlayerWrapper
 		{
 			// Save context and abandon the conversation
 			Conversation prayer = (Conversation) DataUtility.getValueTemp(player.getName(), "prayer_conversation");
-			DataUtility.saveTemp(player.getName(), "prayer_context", prayer.getContext().getAllSessionData());
+			DataUtility.saveTemp(player.getName(), "prayer_context", prayer.getContext());
 			prayer.abandon();
 
 			// Remove the data
