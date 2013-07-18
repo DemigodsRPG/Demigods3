@@ -26,7 +26,7 @@ regeneration:
 
 ## Zones ##
 zones:
-    prayer_radius: 3
+    prayer_radius: 2
     shrine_radius: 8
     altar_radius: 16
     obelisk_radius: 16
