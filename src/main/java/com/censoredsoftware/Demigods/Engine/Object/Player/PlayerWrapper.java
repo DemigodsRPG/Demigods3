@@ -262,9 +262,9 @@ public class PlayerWrapper
 	 */
 	public static void clearPrayerSession(Player player)
 	{
-		if(DataUtility.hasKeyTemp(player.getName(), "prayer_conversation")) DataUtility.removeTemp(player.getName(), "prayer_conversation");
-		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) DataUtility.removeTemp(player.getName(), "prayer_context");
-		if(DataUtility.hasKeyTemp(player.getName(), "prayer_location")) DataUtility.removeTemp(player.getName(), "prayer_location");
+		DataUtility.removeTemp(player.getName(), "prayer_conversation");
+		DataUtility.removeTemp(player.getName(), "prayer_context");
+		DataUtility.removeTemp(player.getName(), "prayer_location");
 	}
 
 	/**

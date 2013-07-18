@@ -28,6 +28,7 @@ public class ChatListener implements Listener
 
 		if(message.equals("pl")) pl(player, event);
 
+		// TODO: Remove this when we determine if it's needed or not.
 		// No chat toggle
 		if(DataUtility.hasKeyTemp(player.getName(), "no_chat")) event.setCancelled(true);
 		for(Player victim : Bukkit.getOnlinePlayers())
