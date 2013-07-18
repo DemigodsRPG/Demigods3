@@ -293,13 +293,10 @@ public class Prayer implements ConversationInfo
 
 				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || PlayerWrapper.hasCharName(player, name))
 				{
-					MiscUtility.clearRawChat(player);
-
-					player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
-					context.getForWhom().sendRawMessage(" ");
-
+					// Create the list
 					List<Error> errors = Lists.newArrayList();
 
+					// Check the errors
 					if(name.length() < 4 || name.length() > 14)
 					{
 						errors.add(Error.NAME_LENGTH);
@@ -317,8 +314,8 @@ public class Prayer implements ConversationInfo
 						errors.add(Error.CHAR_EXISTS);
 					}
 
+					// Save the info
 					context.setSessionData("name_errors", errors);
-
 					return false;
 				}
 				else
