@@ -80,9 +80,7 @@ public class Prayer implements ConversationInfo
 
 	public static org.bukkit.conversations.Conversation startPrayer(Player player)
 	{
-		// Toggle player to praying
-		PlayerWrapper.togglePraying(player, true);
-
+		// Grab the context Map
 		Map<Object, Object> conversationContext = Maps.newHashMap();
 		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
 
@@ -146,7 +144,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public String getChatName()
 		{
-			return ChatColor.GREEN + "View Characters";
+			return ChatColor.YELLOW + "View Characters";
 		}
 
 		@Override
