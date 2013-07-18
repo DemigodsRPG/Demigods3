@@ -285,13 +285,13 @@ public class PlayerWrapper
 		}
 		else
 		{
+			// Toggle off
+			togglePrayingSilent(player, false);
+
 			// Message them
 			MiscUtility.clearChat(player);
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
-
-			// Toggle off
-			togglePrayingSilent(player, false);
 		}
 	}
 
