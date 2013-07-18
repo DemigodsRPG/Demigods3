@@ -256,6 +256,18 @@ public class PlayerWrapper
 	}
 
 	/**
+	 * Removes all temp data related to prayer for the <code>player</code>.
+	 * 
+	 * @param player the player to clean.
+	 */
+	public static void clearPrayerSession(Player player)
+	{
+		if(DataUtility.hasKeyTemp(player.getName(), "prayer_conversation")) DataUtility.removeTemp(player.getName(), "prayer_conversation");
+		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) DataUtility.removeTemp(player.getName(), "prayer_context");
+		if(DataUtility.hasKeyTemp(player.getName(), "prayer_location")) DataUtility.removeTemp(player.getName(), "prayer_location");
+	}
+
+	/**
 	 * Returns the context for the <code>player</code>'s prayer converstion.
 	 * 
 	 * @param player the player whose context to return.
@@ -305,7 +317,7 @@ public class PlayerWrapper
 			// Create the conversation and save it
 			Conversation prayer = Prayer.startPrayer(player);
 			DataUtility.saveTemp(player.getName(), "prayer_conversation", prayer);
-			DataUtility.saveTemp(player.getName(), "praying_location", player.getLocation());
+			DataUtility.saveTemp(player.getName(), "prayer_location", player.getLocation());
 		}
 		else
 		{
@@ -319,7 +331,7 @@ public class PlayerWrapper
 
 			// Remove the data
 			DataUtility.removeTemp(player.getName(), "prayer_conversation");
-			DataUtility.removeTemp(player.getName(), "praying_location");
+			DataUtility.removeTemp(player.getName(), "prayer_location");
 		}
 	}
 

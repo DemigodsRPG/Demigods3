@@ -564,6 +564,9 @@ class PrayerListener implements Listener
 			{
 				// They were accepted, finish everything up!
 				PlayerCharacter.create(player, chosenDeity, chosenName, true);
+
+				// Clear the prayer session
+				PlayerWrapper.clearPrayerSession(player);
 			}
 			else
 			{
