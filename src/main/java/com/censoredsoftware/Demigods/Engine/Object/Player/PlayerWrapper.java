@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Sets;
@@ -119,6 +120,9 @@ public class PlayerWrapper
 			currChar.setLocation(player.getLocation());
 			currChar.saveInventory();
 
+			// Disown pets
+			TameableWrapper.disownPets(currChar.getName());
+
 			// Set to inactive and update previous
 			currChar.setActive(false);
 			this.previous = currChar.getId();
@@ -142,6 +146,9 @@ public class PlayerWrapper
 		// Set new character to active
 		newChar.setActive(true);
 		this.current = newChar.getId();
+
+		// Re-own pets
+		TameableWrapper.reownPets(player);
 
 		// Disable prayer, re-enabled movement, etc. just to be safe
 		togglePraying(player, false);

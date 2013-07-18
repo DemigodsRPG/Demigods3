@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -23,6 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -125,6 +127,11 @@ public abstract class Ability
 				PlayerCharacter attacked = PlayerWrapper.getPlayer(((Player) target)).getCurrent();
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked)) return false;
 			}
+			else if(target instanceof Tameable)
+			{
+				TameableWrapper attacked = TameableWrapper.getTameable(target);
+				if(attacked != null && PlayerCharacter.areAllied(character, attacked.getOwner())) return false;
+			}
 			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
 			return true;
 		}
@@ -167,6 +174,11 @@ public abstract class Ability
 						{
 							for(int y = -acc; y < acc; y++)
 							{
+								if(entity instanceof Tameable && ((Tameable) entity).isTamed())
+								{
+									TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
+									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+								}
 								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item)) return (LivingEntity) entity;
 							}
 						}
@@ -331,12 +343,25 @@ public abstract class Ability
 
 	public static void dealDamage(LivingEntity source, LivingEntity target, double amount, EntityDamageEvent.DamageCause cause)
 	{
-		if(target instanceof Player && source instanceof Player)
+		if(source instanceof Player)
 		{
-			target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
-			if(amount >= 1) target.damage(amount);
-			return;
+			PlayerWrapper owner = PlayerWrapper.getPlayer(((Player) source));
+			if(owner != null)
+			{
+				if(target instanceof Player)
+				{
+					PlayerCharacter targetChar = PlayerWrapper.getPlayer(((Player) target)).getCurrent();
+					if(targetChar != null && PlayerCharacter.areAllied(owner.getCurrent(), targetChar)) return;
+				}
+				else if(target instanceof Tameable && ((Tameable) target).isTamed())
+				{
+					TameableWrapper wrapper = TameableWrapper.getTameable(target);
+					if(wrapper != null && PlayerCharacter.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
+				}
+			}
 		}
-		target.damage(amount);
+		EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);
+		target.setLastDamageCause(event);
+		if(amount >= 1 && !event.isCancelled()) target.damage(amount);
 	}
 }
