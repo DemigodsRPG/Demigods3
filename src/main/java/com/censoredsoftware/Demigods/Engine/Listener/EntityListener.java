@@ -103,8 +103,8 @@ public class EntityListener implements Listener
 				PlayerCharacter damager = PlayerWrapper.getPlayer((Player) ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).getCurrent();
 				if(damager != null) damagerMessage = " by " + damager.getDeity().getInfo().getColor() + damager.getName();
 			}
-			if(entity.getCustomName() != null) Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName() + ", " + owner.getDeity().getInfo().getColor() + entity.getCustomName() + ChatColor.YELLOW + ", was slain" + damagerMessage + ChatColor.YELLOW + ".");
-			else Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName() + " was slain" + damagerMessage + ChatColor.YELLOW + ".");
+			if(entity.getCustomName() != null) Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + ", " + owner.getDeity().getInfo().getColor() + entity.getCustomName() + ChatColor.YELLOW + ", was slain" + damagerMessage + ChatColor.YELLOW + ".");
+			else Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + " was slain" + damagerMessage + ChatColor.YELLOW + ".");
 			wrapper.delete();
 		}
 	}
