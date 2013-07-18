@@ -158,14 +158,20 @@ public abstract class Ability
 	 */
 	public static LivingEntity autoTarget(Player player)
 	{
-		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, 100);
+		int checkArea = Demigods.config.getSettingInt("caps.target_range");
+		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, checkArea);
 
 		while(iterator.hasNext())
 		{
 			Block block = iterator.next();
-			for(Entity entity : player.getNearbyEntities(100, 100, 100))
+			for(Entity entity : player.getNearbyEntities(checkArea, checkArea, checkArea))
 			{
-				if(entity instanceof LivingEntity)
+				if(entity instanceof Tameable && ((Tameable) entity).isTamed())
+				{
+					TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
+					if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+				}
+				else if(entity instanceof LivingEntity)
 				{
 					int acc = 2;
 					for(int x = -acc; x < acc; x++)
@@ -174,11 +180,6 @@ public abstract class Ability
 						{
 							for(int y = -acc; y < acc; y++)
 							{
-								if(entity instanceof Tameable && ((Tameable) entity).isTamed())
-								{
-									TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
-									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
-								}
 								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
 							}
 						}
