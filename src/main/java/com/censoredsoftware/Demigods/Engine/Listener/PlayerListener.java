@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -62,14 +63,6 @@ public class PlayerListener implements Listener
 
 		// No-PVP Zones
 		onPlayerLineJump(player, to, from, delayTime);
-
-		// Player Hold
-		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()))
-		{
-			event.setCancelled(true);
-			player.teleport(from);
-			DataUtility.saveTemp(player.getName(), "player_held", true);
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -98,16 +91,12 @@ public class PlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 			return;
 		}
-
-		// Player Hold
-		if(DataUtility.hasKeyTemp(player.getName(), "player_held")) DataUtility.removeTemp(player.getName(), "player_held");
-		else if(DataUtility.hasKeyTemp(player.getName(), "player_hold")) event.setCancelled(true);
 	}
 
-	public void onPlayerLineJump(final Player player, Location to, Location from, int delayTime)
+	public void onPlayerLineJump(final OfflinePlayer player, Location to, Location from, int delayTime)
 	{
 		// NullPointer Check
-		if(to == null || from == null) return;
+		if(to == null || from == null || !player.isOnline()) return;
 
 		if(DataUtility.hasKeyTemp(player.getName(), "was_PVP")) return;
 
@@ -122,8 +111,9 @@ public class PlayerListener implements Listener
 				@Override
 				public void run()
 				{
-					DataUtility.removeTemp(player.getName(), "was_PVP");
-					if(ZoneUtility.zoneNoPVP(player.getLocation())) player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
+					if(!player.isOnline()) return;
+					DataUtility.removeTemp(player.getPlayer().getName(), "was_PVP");
+					if(ZoneUtility.zoneNoPVP(player.getPlayer().getLocation())) player.getPlayer().sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
 		}
@@ -131,7 +121,7 @@ public class PlayerListener implements Listener
 		// Let players know where they can PVP
 		if(!DataUtility.hasKeyTemp(player.getName(), "was_PVP"))
 		{
-			if(ZoneUtility.exitZoneNoPVP(to, from)) player.sendMessage(ChatColor.GRAY + "You can now PVP!");
+			if(ZoneUtility.exitZoneNoPVP(to, from)) player.getPlayer().sendMessage(ChatColor.GRAY + "You can now PVP!");
 		}
 	}
 
@@ -143,7 +133,7 @@ public class PlayerListener implements Listener
 		switch(quitReasonFilter.getLatestQuitReason())
 		{
 			case GENERIC_REASON:
-				message = ChatColor.YELLOW + name + " has either lost connection or crashed.";
+				message = ChatColor.YELLOW + name + " has either quit or crashed.";
 				break;
 			case SPAM:
 				message = ChatColor.YELLOW + name + " has disconnected due to spamming.";

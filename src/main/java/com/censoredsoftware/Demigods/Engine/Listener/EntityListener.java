@@ -64,16 +64,6 @@ public class EntityListener implements Listener
 				// Define attacker and name
 				if(event.getDamage() > villager.getHealth()) hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.WEAKER_THAN_YOU));
 			}
-			else if(attacked instanceof Player) // If it's a player
-			{
-				// Define player
-				Player hit = (Player) attacked;
-
-				PlayerCharacter hitChar = PlayerWrapper.getPlayer(hit).getCurrent();
-				PlayerCharacter hittingChar = PlayerWrapper.getPlayer(hitting).getCurrent();
-
-				// TrackedBattle.battleProcess(hitChar, hittingChar);
-			}
 		}
 	}
 
