@@ -180,7 +180,6 @@ public abstract class Ability
 						{
 							for(int y = -acc; y < acc; y++)
 							{
-
 								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
 							}
 						}
