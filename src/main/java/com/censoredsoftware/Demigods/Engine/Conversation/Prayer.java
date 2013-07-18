@@ -601,7 +601,7 @@ class PrayerListener implements Listener
 
 			if(neededItems == items)
 			{
-				// They were accepted, finish everything up!
+				// Accepted, finish everything up!
 				PlayerCharacter.create(player, chosenDeity, chosenName, true);
 
 				// Clear the prayer session
@@ -630,7 +630,7 @@ class PrayerListener implements Listener
 
 		if(!PlayerWrapper.isPraying(player)) return;
 
-		if(event.getTo().distance((Location) DataUtility.getValueTemp(player.getName(), "praying_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
+		if(event.getTo().distance((Location) DataUtility.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
 		{
 			PlayerWrapper.togglePraying(player, false);
 		}
