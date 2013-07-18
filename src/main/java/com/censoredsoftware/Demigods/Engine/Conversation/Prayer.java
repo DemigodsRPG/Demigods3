@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Conversation;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +30,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class Prayer implements ConversationInfo
@@ -201,6 +203,23 @@ public class Prayer implements ConversationInfo
 	// Character creation
 	static class CreateCharacter extends ValidatingPrompt implements Category
 	{
+		public enum Error
+		{
+			NAME_LENGTH("Your name should be between 4 and 14 characters."), ALPHA_NUMERIC("Only alpha-numeric characters are allowed."), MAX_CAPS("Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters."), CHAR_EXISTS("You already have a character with that name.");
+
+			private String message;
+
+			private Error(String message)
+			{
+				this.message = message;
+			}
+
+			public String getMessage()
+			{
+				return this.message;
+			}
+		}
+
 		@Override
 		public String getChatName()
 		{
@@ -239,10 +258,31 @@ public class Prayer implements ConversationInfo
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				MiscUtility.clearRawChat((Player) context.getForWhom());
-				context.getForWhom().sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
-				context.getForWhom().sendRawMessage(" ");
-				context.getForWhom().sendRawMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+				Player player = (Player) context.getForWhom();
+				MiscUtility.clearRawChat(player);
+				player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
+				player.sendRawMessage(" ");
+
+				if(context.getSessionData("name_errors") == null)
+				{
+					// No errors, continue
+					player.sendRawMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+				}
+				else
+				{
+					// Grab the errors.
+					List<Error> errors = (List<Error>) context.getSessionData("name_errors");
+
+					// List the errors
+					for(Error error : errors)
+					{
+						player.sendRawMessage(ChatColor.RED + "  " + error.getMessage());
+					}
+
+					// Ask for a new name
+					player.sendRawMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+				}
+
 				return "";
 			}
 
@@ -258,30 +298,32 @@ public class Prayer implements ConversationInfo
 					player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
 					context.getForWhom().sendRawMessage(" ");
 
+					List<Error> errors = Lists.newArrayList();
+
 					if(name.length() < 4 || name.length() > 14)
 					{
-						player.sendRawMessage(ChatColor.RED + "  Your name should be between 4 and 14 characters.");
+						errors.add(Error.NAME_LENGTH);
 					}
 					if(!StringUtils.isAlphanumeric(name))
 					{
-						player.sendRawMessage(ChatColor.RED + "  Only alpha-numeric characters are allowed.");
+						errors.add(Error.ALPHA_NUMERIC);
 					}
 					if(MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
-						player.sendRawMessage(ChatColor.RED + "  Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters.");
+						errors.add(Error.MAX_CAPS);
 					}
 					if(PlayerWrapper.hasCharName(player, name))
 					{
-						player.sendRawMessage(ChatColor.RED + "  You already have a character with that name.");
+						errors.add(Error.CHAR_EXISTS);
 					}
 
-					player.sendRawMessage(" ");
-					player.sendRawMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
+					context.setSessionData("name_errors", errors);
 
 					return false;
 				}
 				else
 				{
+					context.setSessionData("name_errors", null);
 					return true;
 				}
 			}
