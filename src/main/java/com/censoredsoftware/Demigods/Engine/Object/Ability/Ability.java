@@ -162,7 +162,7 @@ public abstract class Ability
 
 		while(iterator.hasNext())
 		{
-			Block item = iterator.next();
+			Block block = iterator.next();
 			for(Entity entity : player.getNearbyEntities(100, 100, 100))
 			{
 				if(entity instanceof LivingEntity)
@@ -179,7 +179,7 @@ public abstract class Ability
 									TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
 									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
 								}
-								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item)) return (LivingEntity) entity;
+								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
 							}
 						}
 					}
