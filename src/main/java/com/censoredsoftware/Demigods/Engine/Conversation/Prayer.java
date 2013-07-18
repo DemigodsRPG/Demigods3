@@ -47,7 +47,7 @@ public class Prayer implements ConversationInfo
 	 */
 	public enum Menu
 	{
-		CREATE_CHARACTER(1, new CreateCharacter()), CONFIRM_DEITY(2, new ConfirmDeity());
+		CONFIRM_DEITY(0, new ConfirmDeity()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters());
 
 		private Integer id;
 		private Category category;
@@ -140,6 +140,63 @@ public class Prayer implements ConversationInfo
 		}
 	}
 
+	// Character viewing
+	static class ViewCharacters extends ValidatingPrompt implements Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.GREEN + "View Characters";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context, Player player)
+		{
+			return PlayerWrapper.getCharacters(player) != null;
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+
+			MiscUtility.clearRawChat(player);
+
+			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Character ---------------------------------");
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
+			player.sendRawMessage(" ");
+
+			for(PlayerCharacter character : PlayerWrapper.getCharacters(player))
+			{
+				ChatColor color = ChatColor.GRAY;
+				if(character.isActive()) color = ChatColor.LIGHT_PURPLE;
+				player.sendRawMessage(color + "  " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+			}
+
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information."); // TODO
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " switch to <character name> " + ChatColor.GRAY + "to change your current");
+			player.sendRawMessage(ChatColor.GRAY + "  character.");
+
+			return "";
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return false;
+		}
+
+		@Override
+		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			return null;
+		}
+	}
+
 	// Character creation
 	static class CreateCharacter extends ValidatingPrompt implements Category
 	{
@@ -152,7 +209,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			// TODO
+			// TODO: Add permissions support.
 			return true;
 		}
 
@@ -368,44 +425,7 @@ public class Prayer implements ConversationInfo
 		}
 	}
 
-	// Character viewing
-	static class ViewCharacters extends ValidatingPrompt implements Category
-	{
-		@Override
-		public String getChatName()
-		{
-			return ChatColor.YELLOW + "View Characters";
-		}
-
-		@Override
-		public boolean canUse(ConversationContext context, Player player)
-		{
-			if(PlayerWrapper.getCharacters(player) != null) return true;
-			else return false;
-		}
-
-		@Override
-		public String getPromptText(ConversationContext context)
-		{
-			MiscUtility.clearRawChat((Player) context.getForWhom());
-			return null;
-		}
-
-		@Override
-		protected boolean isInputValid(ConversationContext context, String message)
-		{
-			// TODO
-			return true;
-		}
-
-		@Override
-		protected Prompt acceptValidatedInput(ConversationContext context, String message)
-		{
-			return new ViewCharacters();
-		}
-	}
-
-	// Character viewing
+	// Character confirmation
 	static class ConfirmDeity extends ValidatingPrompt implements Category
 	{
 		@Override
