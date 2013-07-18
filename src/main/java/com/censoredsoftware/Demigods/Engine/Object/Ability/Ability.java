@@ -160,13 +160,14 @@ public abstract class Ability
 	 */
 	public static LivingEntity autoTarget(Player player)
 	{
-		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, 100);
+		int checkArea = Demigods.config.getSettingInt("caps.target_range");
+		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, checkArea);
 		Set<Entity> checked = Sets.newHashSet();
 
 		while(iterator.hasNext())
 		{
 			Block block = iterator.next();
-			ENTITY_LOOP: for(Entity entity : player.getNearbyEntities(100, 100, 100))
+			ENTITY_LOOP: for(Entity entity : player.getNearbyEntities(checkArea, checkArea, checkArea))
 			{
 				if(checked.contains(entity)) continue;
 				if(entity instanceof LivingEntity)
