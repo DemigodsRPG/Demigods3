@@ -9,11 +9,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Object.Mob.HorseWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -93,14 +94,15 @@ public class EntityListener implements Listener
 			// Let 'em know
 			player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.YOU_FAILED_DEITY).replace("{deity}", deity));
 		}
-		else if(event.getEntityType().equals(EntityType.HORSE))
+		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
-			Horse horse = (Horse) event.getEntity();
-			HorseWrapper wrapper = HorseWrapper.getHorse(horse);
-			PlayerCharacter owner = wrapper.getOwner();
+			LivingEntity entity = event.getEntity();
+			TameableWrapper wrapper = TameableWrapper.getTameable(entity);
 			if(wrapper == null) return;
-			if(owner.getOfflinePlayer().isOnline()) if(horse.getCustomName() != null) owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your horse, " + horse.getCustomName() + ChatColor.RED + ", was slain in battle.");
-			else owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your horse was slain in battle.");
+			PlayerCharacter owner = wrapper.getOwner();
+			if(owner == null) return;
+			if(owner.getOfflinePlayer().isOnline()) if(entity.getCustomName() != null) owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your pet, " + entity.getCustomName() + ChatColor.RED + ", was slain in battle.");
+			else owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your pet was slain in battle.");
 			wrapper.delete();
 		}
 	}
@@ -130,5 +132,13 @@ public class EntityListener implements Listener
 				}
 			}
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onTame(EntityTameEvent event)
+	{
+		LivingEntity entity = event.getEntity();
+		AnimalTamer owner = event.getOwner();
+		TameableWrapper.create(entity, PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent());
 	}
 }

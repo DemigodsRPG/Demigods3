@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -23,6 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -124,6 +126,11 @@ public abstract class Ability
 			{
 				PlayerCharacter attacked = PlayerWrapper.getPlayer(((Player) target)).getCurrent();
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked)) return false;
+			}
+			else if(target instanceof Tameable)
+			{
+				TameableWrapper attacked = TameableWrapper.getTameable(target);
+				if(attacked != null && PlayerCharacter.areAllied(character, attacked.getOwner())) return false;
 			}
 			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
 			return true;

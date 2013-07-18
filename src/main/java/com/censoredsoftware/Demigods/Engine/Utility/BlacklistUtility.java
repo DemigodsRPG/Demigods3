@@ -44,6 +44,7 @@ public class BlacklistUtility
 					add("Staff");
 					add("Server");
 					add("Console");
+					add("Disowned");
 
 					// Deities
 					for(Deity deity : Demigods.getLoadedDeities())
