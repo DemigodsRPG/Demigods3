@@ -153,9 +153,6 @@ public class PlayerWrapper
 		// Re-own pets
 		TameableWrapper.reownPets(player);
 
-		// Disable prayer, re-enabled movement, etc. just to be safe
-		togglePraying(player, false);
-
 		// Teleport them
 		try
 		{

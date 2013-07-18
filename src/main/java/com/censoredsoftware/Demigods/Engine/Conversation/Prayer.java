@@ -553,20 +553,22 @@ class PrayerListener implements Listener
 				}
 			}
 
+			// Clear chat and send update
+			MiscUtility.clearChat(player);
 			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
 
 			if(neededItems == items)
 			{
 				// They were accepted, finish everything up!
 				PlayerCharacter.create(player, chosenDeity, chosenName, true);
-
-				// Stop their praying, enable movement, enable chat
-				PlayerWrapper.togglePrayingSilent(player, false);
 			}
 			else
 			{
 				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
 			}
+
+			// Stop their praying
+			PlayerWrapper.togglePrayingSilent(player, false);
 
 			// Clear the confirmation case
 			event.getInventory().clear();
