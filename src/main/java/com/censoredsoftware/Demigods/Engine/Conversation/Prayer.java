@@ -80,18 +80,14 @@ public class Prayer implements ConversationInfo
 
 	public static org.bukkit.conversations.Conversation startPrayer(Player player)
 	{
-		Map<Object, Object> conversationContext = Maps.newHashMap();
-
-		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context"))
-		{
-			conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
-		}
-
 		// Toggle player to praying
 		PlayerWrapper.togglePraying(player, true);
 
+		Map<Object, Object> conversationContext = Maps.newHashMap();
+		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+
 		// Build the conversation and begin
-		prayerConversation = Demigods.conversation.withLocalEcho(false).withInitialSessionData(conversationContext).withEscapeSequence("/exit").withFirstPrompt(new StartPrayer()).buildConversation(player);
+		prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
 		prayerConversation.begin();
 
 		return prayerConversation;
@@ -128,7 +124,13 @@ public class Prayer implements ConversationInfo
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return Menu.getFromId(Integer.parseInt(message)) != null;
+			try
+			{
+				return Menu.getFromId(Integer.parseInt(message)) != null;
+			}
+			catch(Exception ignored)
+			{}
+			return false;
 		}
 
 		@Override
