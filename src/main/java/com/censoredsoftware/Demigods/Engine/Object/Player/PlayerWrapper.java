@@ -6,10 +6,13 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
@@ -244,15 +247,27 @@ public class PlayerWrapper
 	 * @param player the player to check.
 	 * @return boolean
 	 */
-	public static boolean isPraying(OfflinePlayer player)
+	public static boolean isPraying(Player player)
 	{
 		try
 		{
-			return Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "praying").toString());
+			return DataUtility.hasKeyTemp(player.getName(), "prayer_conversation");
 		}
 		catch(Exception ignored)
 		{}
 		return false;
+	}
+
+	/**
+	 * Returns the context for the <code>player</code>'s prayer converstion.
+	 * 
+	 * @param player the player whose context to return.
+	 * @return ConversationContext
+	 */
+	public static ConversationContext getPrayerContext(Player player)
+	{
+		if(!isPraying(player)) return null;
+		return (ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context");
 	}
 
 	/**
@@ -265,18 +280,18 @@ public class PlayerWrapper
 	{
 		if(option)
 		{
-			togglePlayerChat(player, false);
-			DataUtility.saveTemp(player.getName(), "praying", option);
-			DataUtility.saveTemp(player.getName(), "praying_location", player.getLocation());
+			// Toggle on
+			togglePrayingSilent(player, true);
 		}
 		else
 		{
+			// Message them
 			MiscUtility.clearChat(player);
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
-			togglePlayerChat(player, true);
-			DataUtility.removeTemp(player.getName(), "praying");
-			DataUtility.removeTemp(player.getName(), "praying_location");
+
+			// Toggle off
+			togglePrayingSilent(player, false);
 		}
 	}
 
@@ -290,14 +305,20 @@ public class PlayerWrapper
 	{
 		if(option)
 		{
-			togglePlayerChat(player, false);
-			DataUtility.saveTemp(player.getName(), "praying", option);
+			// Create the conversation and save it
+			Conversation prayer = Prayer.startPrayer(player);
+			DataUtility.saveTemp(player.getName(), "prayer_conversation", prayer);
 			DataUtility.saveTemp(player.getName(), "praying_location", player.getLocation());
 		}
 		else
 		{
-			togglePlayerChat(player, true);
-			DataUtility.removeTemp(player.getName(), "praying");
+			// Save context and abandon the conversation
+			Conversation prayer = (Conversation) DataUtility.getValueTemp(player.getName(), "prayer_conversation");
+			DataUtility.saveTemp(player.getName(), "prayer_context", prayer.getContext());
+			prayer.abandon();
+
+			// Remove the data
+			DataUtility.removeTemp(player.getName(), "prayer_conversation");
 			DataUtility.removeTemp(player.getName(), "praying_location");
 		}
 	}
