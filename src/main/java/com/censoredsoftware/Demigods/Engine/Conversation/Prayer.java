@@ -251,7 +251,7 @@ public class Prayer implements ConversationInfo
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
+				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || PlayerWrapper.hasCharName(player, name))
 				{
 					MiscUtility.clearRawChat(player);
 
@@ -262,10 +262,6 @@ public class Prayer implements ConversationInfo
 					{
 						player.sendRawMessage(ChatColor.RED + "  Your name should be between 4 and 14 characters.");
 					}
-					if(PlayerWrapper.hasCharName(player, name))
-					{
-						player.sendRawMessage(ChatColor.RED + "  You already have a character with that name.");
-					}
 					if(!StringUtils.isAlphanumeric(name))
 					{
 						player.sendRawMessage(ChatColor.RED + "  Only alpha-numeric characters are allowed.");
@@ -273,6 +269,10 @@ public class Prayer implements ConversationInfo
 					if(MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
 						player.sendRawMessage(ChatColor.RED + "  Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters.");
+					}
+					if(PlayerWrapper.hasCharName(player, name))
+					{
+						player.sendRawMessage(ChatColor.RED + "  You already have a character with that name.");
 					}
 
 					player.sendRawMessage(" ");
@@ -553,6 +553,9 @@ class PrayerListener implements Listener
 				}
 			}
 
+			// Stop their praying
+			PlayerWrapper.togglePrayingSilent(player, false);
+
 			// Clear chat and send update
 			MiscUtility.clearChat(player);
 			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
@@ -566,9 +569,6 @@ class PrayerListener implements Listener
 			{
 				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
 			}
-
-			// Stop their praying
-			PlayerWrapper.togglePrayingSilent(player, false);
 
 			// Clear the confirmation case
 			event.getInventory().clear();
