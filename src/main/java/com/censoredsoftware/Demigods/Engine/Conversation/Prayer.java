@@ -229,14 +229,8 @@ public class Prayer implements ConversationInfo
 		@Override
 		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.contains("y"))
-			{
-				return new ChooseName();
-			}
-			else
-			{
-				return new StartPrayer();
-			}
+			if(message.contains("y")) return new ChooseName();
+			return new StartPrayer();
 		}
 
 		class ChooseName extends ValidatingPrompt
@@ -318,10 +312,7 @@ public class Prayer implements ConversationInfo
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.contains("y"))
-				{
-					return new ChooseDeity();
-				}
+				if(message.contains("y")) return new ChooseDeity();
 				else
 				{
 					context.setSessionData("chosen_name", null);
@@ -412,8 +403,7 @@ public class Prayer implements ConversationInfo
 
 					// Save temporary data, end the conversation, and return
 					context.setSessionData("confirming_deity", true);
-					DataUtility.saveTemp(player.getName(), "prayer_context", prayerConversation.getContext());
-					prayerConversation.abandon();
+					PlayerWrapper.togglePrayingSilent(player, false);
 					return null;
 				}
 				else
@@ -478,8 +468,7 @@ public class Prayer implements ConversationInfo
 			player.openInventory(inv);
 
 			// Abandon, save data, and return
-			DataUtility.saveTemp(player.getName(), "prayer_context", prayerConversation.getContext());
-			prayerConversation.abandon();
+			PlayerWrapper.togglePrayingSilent(player, false);
 			return null;
 		}
 	}
@@ -509,7 +498,7 @@ class PrayerListener implements Listener
 					return;
 				}
 
-				// Toggly praying and clear chat
+				// Toggle praying and clear chat
 				PlayerWrapper.togglePraying(player, true);
 				MiscUtility.clearChat(player);
 
@@ -519,20 +508,15 @@ class PrayerListener implements Listener
 					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt to begin prayer.");
 				}
 
-				// Start praying
-				Prayer.startPrayer(player);
-
 				event.setCancelled(true);
 			}
 			else if(PlayerWrapper.isPraying(player))
 			{
+				// Toggle prayer to false
 				PlayerWrapper.togglePraying(player, false);
-
-				// Clear whatever is being worked on in this Pray session
-				DataUtility.removeTemp(player.getName(), "prayer_context");
-
-				event.setCancelled(true);
 			}
+
+			event.setCancelled(true);
 		}
 	}
 
@@ -551,7 +535,7 @@ class PrayerListener implements Listener
 			if(!PlayerWrapper.isPraying(player)) return;
 
 			// Define variables
-			ConversationContext prayerContext = (ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context");
+			ConversationContext prayerContext = PlayerWrapper.getPrayerContext(player);
 			String chosenName = (String) prayerContext.getSessionData("chosen_name");
 			String chosenDeity = (String) prayerContext.getSessionData("chosen_deity");
 			String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
