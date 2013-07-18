@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Object.Ability;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,6 +29,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.google.common.collect.Sets;
 
 public abstract class Ability
 {
@@ -159,12 +161,14 @@ public abstract class Ability
 	public static LivingEntity autoTarget(Player player)
 	{
 		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, 100);
+		Set<Entity> checked = Sets.newHashSet();
 
 		while(iterator.hasNext())
 		{
 			Block block = iterator.next();
-			for(Entity entity : player.getNearbyEntities(100, 100, 100))
+			ENTITY_LOOP: for(Entity entity : player.getNearbyEntities(100, 100, 100))
 			{
+				if(checked.contains(entity)) continue;
 				if(entity instanceof LivingEntity)
 				{
 					int acc = 2;
@@ -174,12 +178,18 @@ public abstract class Ability
 						{
 							for(int y = -acc; y < acc; y++)
 							{
+								if(checked.contains(entity)) continue ENTITY_LOOP;
 								if(entity instanceof Tameable && ((Tameable) entity).isTamed())
 								{
 									TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
-									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner()))
+									{
+										checked.add(entity);
+										continue;
+									}
 								}
 								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
+								checked.add(entity);
 							}
 						}
 					}
