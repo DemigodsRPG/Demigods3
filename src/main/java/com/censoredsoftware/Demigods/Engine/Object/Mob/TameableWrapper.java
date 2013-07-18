@@ -5,10 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 
 import redis.clients.johm.*;
 
@@ -117,12 +114,13 @@ public class TameableWrapper
 	{
 		for(World world : Bukkit.getServer().getWorlds())
 		{
-			for(LivingEntity living : world.getLivingEntities())
+			for(Entity pet : world.getEntitiesByClasses(Horse.class, Wolf.class, Ocelot.class))
 			{
-				if(!(living instanceof Tameable)) continue;
-				if(living.getUniqueId().toString().equals(this.UUID)) return living;
+				if(!(pet instanceof Tameable)) continue;
+				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
 			}
 		}
+
 		return null;
 	}
 
