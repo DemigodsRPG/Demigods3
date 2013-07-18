@@ -56,6 +56,12 @@ public class EntityListener implements Listener
 				return;
 			}
 
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && TameableWrapper.getTameable((LivingEntity) attacked) != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(hitting).getCurrent(), TameableWrapper.getTameable((LivingEntity) attacked).getOwner()))
+			{
+				event.setCancelled(true);
+				return;
+			}
+
 			if(attacked instanceof Villager) // If it's a villager
 			{
 				// Define villager
@@ -91,8 +97,14 @@ public class EntityListener implements Listener
 			if(wrapper == null) return;
 			PlayerCharacter owner = wrapper.getOwner();
 			if(owner == null) return;
-			if(owner.getOfflinePlayer().isOnline()) if(entity.getCustomName() != null) owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your pet, " + entity.getCustomName() + ChatColor.RED + ", was slain in battle.");
-			else owner.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your pet was slain in battle.");
+			String damagerMessage = "";
+			if(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() instanceof Player)
+			{
+				PlayerCharacter damager = PlayerWrapper.getPlayer((Player) ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).getCurrent();
+				if(damager != null) damagerMessage = " by " + damager.getDeity().getInfo().getColor() + damager.getName();
+			}
+			if(entity.getCustomName() != null) Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + ", " + owner.getDeity().getInfo().getColor() + entity.getCustomName() + ChatColor.YELLOW + ", was slain" + damagerMessage + ChatColor.YELLOW + ".");
+			else Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + " was slain" + damagerMessage + ChatColor.YELLOW + ".");
 			wrapper.delete();
 		}
 	}

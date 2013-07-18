@@ -91,8 +91,7 @@ public class DataUtility
 
 	public static void removeTemp(String key, String subKey)
 	{
-		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
-		if(tempData.get(key).containsKey(subKey)) tempData.get(key).remove(subKey);
+		if(tempData.containsKey(key) && tempData.get(key).containsKey(subKey)) tempData.get(key).remove(subKey);
 	}
 
 	public static void saveTimed(String key, String subKey, Object data, Integer seconds)

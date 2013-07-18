@@ -3,7 +3,6 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -85,7 +84,6 @@ public class ZoneUtility
 	 */
 	public static boolean canTarget(Entity player, Location location)
 	{
-		if(player instanceof Tameable && ((Tameable) player).isTamed()) return false;
 		return !(player instanceof Player) || DataUtility.hasKeyTemp(((Player) player).getName(), "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
 	}
 
