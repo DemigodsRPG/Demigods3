@@ -174,6 +174,11 @@ public abstract class Ability
 						{
 							for(int y = -acc; y < acc; y++)
 							{
+								if(entity instanceof Tameable && ((Tameable) entity).isTamed())
+								{
+									TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
+									if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+								}
 								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(item)) return (LivingEntity) entity;
 							}
 						}
@@ -338,12 +343,25 @@ public abstract class Ability
 
 	public static void dealDamage(LivingEntity source, LivingEntity target, double amount, EntityDamageEvent.DamageCause cause)
 	{
-		if(target instanceof Player && source instanceof Player)
+		if(source instanceof Player)
 		{
-			target.setLastDamageCause(new EntityDamageByEntityEvent(source, target, cause, amount));
-			if(amount >= 1) target.damage(amount);
-			return;
+			PlayerWrapper owner = PlayerWrapper.getPlayer(((Player) source));
+			if(owner != null)
+			{
+				if(target instanceof Player)
+				{
+					PlayerCharacter targetChar = PlayerWrapper.getPlayer(((Player) target)).getCurrent();
+					if(targetChar != null && PlayerCharacter.areAllied(owner.getCurrent(), targetChar)) return;
+				}
+				else if(target instanceof Tameable && ((Tameable) target).isTamed())
+				{
+					TameableWrapper wrapper = TameableWrapper.getTameable(target);
+					if(wrapper != null && PlayerCharacter.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
+				}
+			}
 		}
-		target.damage(amount);
+		EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);
+		target.setLastDamageCause(event);
+		if(amount >= 1 && !event.isCancelled()) target.damage(amount);
 	}
 }
