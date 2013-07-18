@@ -56,6 +56,12 @@ public class EntityListener implements Listener
 				return;
 			}
 
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && TameableWrapper.getTameable((LivingEntity) attacked) != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(hitting).getCurrent(), TameableWrapper.getTameable((LivingEntity) attacked).getOwner()))
+			{
+				event.setCancelled(true);
+				return;
+			}
+
 			if(attacked instanceof Villager) // If it's a villager
 			{
 				// Define villager
