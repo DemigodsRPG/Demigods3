@@ -9,6 +9,7 @@ import org.bukkit.entity.*;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Sets;
@@ -61,6 +62,11 @@ public class TameableWrapper
 		return JOhm.find(TameableWrapper.class, "animalTamer", animalTamer);
 	}
 
+	public static List<TameableWrapper> findByUUID(java.util.UUID uniqueId)
+	{
+		return JOhm.find(TameableWrapper.class, "UUID", uniqueId.toString());
+	}
+
 	public static Set<TameableWrapper> loadAll()
 	{
 		try
@@ -75,7 +81,7 @@ public class TameableWrapper
 
 	public void remove()
 	{
-		getLivingEntity().remove();
+		getOwnableEntity().remove();
 		delete();
 	}
 
@@ -102,25 +108,34 @@ public class TameableWrapper
 		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 		try
 		{
-			List<TameableWrapper> tracking = JOhm.find(TameableWrapper.class, "UUID", tameable.getUniqueId().toString());
-			return tracking.get(0);
+			return findByUUID(tameable.getUniqueId()).get(0);
 		}
 		catch(Exception ignored)
 		{}
 		return null;
 	}
 
-	public LivingEntity getLivingEntity()
+	public LivingEntity getNearbyLivingEntity(Player player)
+	{
+		int searchRadius = Demigods.config.getSettingInt("caps.target_range");
+		for(Entity pet : player.getNearbyEntities(searchRadius, searchRadius, searchRadius))
+		{
+			if(!(pet instanceof LivingEntity) || !(pet instanceof Tameable)) continue;
+			if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
+		}
+		return null;
+	}
+
+	public LivingEntity getOwnableEntity()
 	{
 		for(World world : Bukkit.getServer().getWorlds())
 		{
-			for(Entity pet : world.getEntitiesByClasses(Horse.class, Wolf.class, Ocelot.class))
+			for(Entity pet : world.getEntitiesByClasses(Wolf.class, Ocelot.class))
 			{
 				if(!(pet instanceof Tameable)) continue;
 				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
 			}
 		}
-
 		return null;
 	}
 
@@ -138,7 +153,7 @@ public class TameableWrapper
 	{
 		for(TameableWrapper wrapper : findByTamer(animalTamer))
 		{
-			((Tameable) wrapper.getLivingEntity()).setOwner(new AnimalTamer()
+			((Tameable) wrapper.getOwnableEntity()).setOwner(new AnimalTamer()
 			{
 				@Override
 				public String getName()
@@ -153,7 +168,7 @@ public class TameableWrapper
 	{
 		for(TameableWrapper wrapper : findByTamer(tamer.getName()))
 		{
-			((Tameable) wrapper.getLivingEntity()).setOwner(tamer);
+			((Tameable) wrapper.getOwnableEntity()).setOwner(tamer);
 		}
 	}
 }
