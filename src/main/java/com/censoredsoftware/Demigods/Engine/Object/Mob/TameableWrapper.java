@@ -81,7 +81,7 @@ public class TameableWrapper
 
 	public void remove()
 	{
-		getOwnableEntity().remove();
+		getEntity().remove();
 		delete();
 	}
 
@@ -126,11 +126,11 @@ public class TameableWrapper
 		return null;
 	}
 
-	public LivingEntity getOwnableEntity()
+	public LivingEntity getEntity()
 	{
 		for(World world : Bukkit.getServer().getWorlds())
 		{
-			for(Entity pet : world.getEntitiesByClasses(Wolf.class, Ocelot.class))
+			for(Entity pet : world.getEntitiesByClasses(Horse.class, Wolf.class, Ocelot.class))
 			{
 				if(!(pet instanceof Tameable)) continue;
 				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
@@ -153,7 +153,7 @@ public class TameableWrapper
 	{
 		for(TameableWrapper wrapper : findByTamer(animalTamer))
 		{
-			((Tameable) wrapper.getOwnableEntity()).setOwner(new AnimalTamer()
+			((Tameable) wrapper.getEntity()).setOwner(new AnimalTamer()
 			{
 				@Override
 				public String getName()
@@ -168,7 +168,7 @@ public class TameableWrapper
 	{
 		for(TameableWrapper wrapper : findByTamer(tamer.getName()))
 		{
-			((Tameable) wrapper.getOwnableEntity()).setOwner(tamer);
+			((Tameable) wrapper.getEntity()).setOwner(tamer);
 		}
 	}
 }

@@ -144,9 +144,9 @@ class RainbowHorse extends Ability
 			{
 				for(TameableWrapper horse : TameableWrapper.findByType(EntityType.HORSE))
 				{
-					if(horse.getDeity().getInfo().getName().equals("DrD1sco") && !horse.getOwnableEntity().isDead())
+					if(horse.getDeity().getInfo().getName().equals("DrD1sco") && !horse.getEntity().isDead())
 					{
-						((Horse) horse.getOwnableEntity()).setColor(getRandomHorseColor());
+						((Horse) horse.getEntity()).setColor(getRandomHorseColor());
 					}
 				}
 			}
