@@ -196,7 +196,7 @@ class Discoball extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) && (player.getItemInHand().getType() == Material.FISHING_ROD))
+				if(character.getMeta().isEnabledAbility(name))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
