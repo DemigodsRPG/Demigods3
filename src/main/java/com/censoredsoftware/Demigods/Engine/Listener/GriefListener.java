@@ -13,6 +13,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -72,7 +73,13 @@ public class GriefListener implements Listener
 		FallingBlock block = (FallingBlock) event.getEntity();
 		boolean start = StructureUtility.isInRadiusWithFlag(block.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
 		boolean target = StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		event.setCancelled(start != target);
+		if(start != target)
+		{
+			// Break the block
+			event.setCancelled(true);
+			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), new ItemStack(block.getMaterial()));
+			block.remove();
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
