@@ -197,7 +197,7 @@ public class Prayer implements ConversationInfo
 
 			if(splitMsg[1].equalsIgnoreCase("info"))
 			{
-				context.setSessionData("viewing_character", PlayerCharacter.getCharacterByName(splitMsg[0]));
+				context.setSessionData("viewing_character", splitMsg[0]);
 				return new DetailedInfo();
 			}
 			else if(splitMsg[1].equalsIgnoreCase("switch"))
@@ -215,7 +215,7 @@ public class Prayer implements ConversationInfo
 			{
 				// Define variables
 				Player player = (Player) context.getForWhom();
-				PlayerCharacter character = (PlayerCharacter) context.getSessionData("viewing_character");
+				PlayerCharacter character = PlayerCharacter.getCharacterByName(context.getSessionData("viewing_character").toString());
 				String status = (character.isActive()) ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 
 				// Clear chat
