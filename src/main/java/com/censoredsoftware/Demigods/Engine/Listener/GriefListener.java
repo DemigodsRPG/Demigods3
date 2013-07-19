@@ -71,9 +71,7 @@ public class GriefListener implements Listener
 	{
 		if(event.getEntityType() != EntityType.FALLING_BLOCK) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
-		boolean start = StructureUtility.isInRadiusWithFlag(block.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		boolean target = StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		if(start != target)
+		if(StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			// Break the block
 			event.setCancelled(true);
