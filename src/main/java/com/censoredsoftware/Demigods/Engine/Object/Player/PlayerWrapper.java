@@ -140,6 +140,7 @@ public class PlayerWrapper
 
 		// Update health and experience
 		// TODO: Confirm that this covers all of the bases too.
+		player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName());
 		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
 		player.setFoodLevel(newChar.getHunger());

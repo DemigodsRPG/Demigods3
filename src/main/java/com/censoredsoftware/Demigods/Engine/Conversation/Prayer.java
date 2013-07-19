@@ -177,8 +177,9 @@ public class Prayer implements ConversationInfo
 			}
 
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> info" + ChatColor.GRAY + " for detailed information or type");
-			player.sendRawMessage(ChatColor.YELLOW + "  <character name> switch" + ChatColor.GRAY + " to change your current character.");
+			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> info" + ChatColor.GRAY + " for detailed information or");
+			player.sendRawMessage(ChatColor.GRAY + "  type " + ChatColor.YELLOW + "<character name> switch" + ChatColor.GRAY + " to change your current");
+			player.sendRawMessage(ChatColor.GRAY + "  character.");
 
 			return "";
 		}
@@ -235,7 +236,7 @@ public class Prayer implements ConversationInfo
 				player.sendRawMessage(" ");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters or type " + ChatColor.YELLOW + "switch");
-				player.sendRawMessage(ChatColor.GRAY + "  to change your current character.");
+				player.sendRawMessage(ChatColor.GRAY + "  to change your current character to " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.GRAY + ".");
 
 				return "";
 			}
