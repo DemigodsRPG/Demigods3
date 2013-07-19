@@ -195,10 +195,10 @@ public abstract class Ability
 		{
 			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity)
 			{
-				if(entity instanceof Tameable && ((Tameable) entity).isTamed())
+				if(entity instanceof Tameable && ((Tameable) entity).isTamed() && TameableWrapper.getTameable((LivingEntity) entity) != null)
 				{
 					TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
-					if(wrapper != null && !PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue ENTITIES;
+					if(PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue ENTITIES;
 				}
 
 				return (LivingEntity) entity;
