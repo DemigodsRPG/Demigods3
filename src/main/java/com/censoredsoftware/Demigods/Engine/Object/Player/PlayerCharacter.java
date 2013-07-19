@@ -218,6 +218,11 @@ public class PlayerCharacter
 		return null;
 	}
 
+	public static boolean charExists(String name)
+	{
+		return getCharacterByName(name) != null;
+	}
+
 	public PlayerCharacterInventory getInventory()
 	{
 		if(this.inventory == null) this.inventory = PlayerCharacterInventory.createEmpty();

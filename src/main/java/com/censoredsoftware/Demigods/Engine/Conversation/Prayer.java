@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.MessagePrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.ValidatingPrompt;
 import org.bukkit.entity.Entity;
@@ -49,7 +50,7 @@ public class Prayer implements ConversationInfo
 	 */
 	public enum Menu
 	{
-		CONFIRM_DEITY(0, new ConfirmDeity()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters());
+		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters());
 
 		private Integer id;
 		private Category category;
@@ -173,15 +174,13 @@ public class Prayer implements ConversationInfo
 
 			for(PlayerCharacter character : PlayerWrapper.getCharacters(player))
 			{
-				ChatColor color = ChatColor.GRAY;
-				if(character.isActive()) color = ChatColor.LIGHT_PURPLE;
-				player.sendRawMessage(color + "  " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+				player.sendRawMessage(((character.isActive()) ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "  " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information."); // TODO
+			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information.");
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " switch to <character name> " + ChatColor.GRAY + "to change your current");
+			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> switch" + ChatColor.GRAY + " to change your current");
 			player.sendRawMessage(ChatColor.GRAY + "  character.");
 
 			return "";
@@ -190,36 +189,67 @@ public class Prayer implements ConversationInfo
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return false;
+			String[] splitMsg = message.split(" ");
+			return PlayerWrapper.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
 		}
 
 		@Override
-		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
+			String[] splitMsg = message.split(" ");
+
+			if(splitMsg[1].equalsIgnoreCase("info"))
+			{
+				context.setSessionData("viewing_character", PlayerCharacter.getCharacterByName(splitMsg[0]));
+				return new DetailedInfo();
+			}
+			else if(splitMsg[1].equalsIgnoreCase("switch"))
+			{
+				PlayerWrapper.getPlayer((Player) context.getForWhom()).switchCharacter(PlayerCharacter.getCharacterByName(splitMsg[0]));
+			}
 			return null;
+		}
+
+		// Detailed character info
+		class DetailedInfo extends MessagePrompt
+		{
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+				PlayerCharacter character = (PlayerCharacter) context.getSessionData("viewing_character");
+				String status = (character.isActive()) ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
+
+				// Clear chat
+				MiscUtility.clearRawChat(player);
+
+				// Send the player the info
+				player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Character ---------------------------------");
+				player.sendRawMessage(" ");
+				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
+				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
+				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + MiscUtility.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + MiscUtility.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Experience: " + ChatColor.WHITE + (int) (Math.round(character.getExperience()))); // TODO: Exp isn't correct.
+				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
+
+				return "";
+			}
+
+			@Override
+			protected Prompt getNextPrompt(ConversationContext context)
+			{
+				return new ViewCharacters();
+			}
 		}
 	}
 
 	// Character creation
 	static class CreateCharacter extends ValidatingPrompt implements Category
 	{
-		public enum Error
-		{
-			NAME_LENGTH("Your name should be between 4 and 14 characters."), ALPHA_NUMERIC("Only alpha-numeric characters are allowed."), MAX_CAPS("Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters."), CHAR_EXISTS("You already have a character with that name.");
-
-			private String message;
-
-			private Error(String message)
-			{
-				this.message = message;
-			}
-
-			public String getMessage()
-			{
-				return this.message;
-			}
-		}
-
 		@Override
 		public String getChatName()
 		{
@@ -294,24 +324,24 @@ public class Prayer implements ConversationInfo
 				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || PlayerWrapper.hasCharName(player, name))
 				{
 					// Create the list
-					List<Error> errors = Lists.newArrayList();
+					List<TextUtility.Text> errors = Lists.newArrayList();
 
 					// Check the errors
 					if(name.length() < 4 || name.length() > 14)
 					{
-						errors.add(Error.NAME_LENGTH);
+						errors.add(TextUtility.Text.ERROR_NAME_LENGTH);
 					}
 					if(!StringUtils.isAlphanumeric(name))
 					{
-						errors.add(Error.ALPHA_NUMERIC);
+						errors.add(TextUtility.Text.ERROR_ALPHA_NUMERIC);
 					}
 					if(MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
-						errors.add(Error.MAX_CAPS);
+						errors.add(TextUtility.Text.ERROR_MAX_CAPS);
 					}
-					if(PlayerWrapper.hasCharName(player, name))
+					if(PlayerCharacter.charExists(name))
 					{
-						errors.add(Error.CHAR_EXISTS);
+						errors.add(TextUtility.Text.ERROR_CHAR_EXISTS);
 					}
 
 					// Save the info
@@ -455,7 +485,7 @@ public class Prayer implements ConversationInfo
 	}
 
 	// Character confirmation
-	static class ConfirmDeity extends ValidatingPrompt implements Category
+	static class ConfirmCharacter extends ValidatingPrompt implements Category
 	{
 		@Override
 		public String getChatName()

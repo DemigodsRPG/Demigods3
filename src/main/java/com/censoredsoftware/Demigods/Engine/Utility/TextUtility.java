@@ -2,13 +2,14 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.ChatColor;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 
 public class TextUtility
 {
 	public static enum Text
 	{
-		CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
+		ERROR_NAME_LENGTH, ERROR_CHAR_EXISTS, ERROR_ALPHA_NUMERIC, ERROR_MAX_CAPS, CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
 	}
 
 	public static class English implements Translation
@@ -31,6 +32,14 @@ public class TextUtility
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
 			switch((Text) text)
 			{
+				case ERROR_ALPHA_NUMERIC:
+					return "Only alpha-numeric characters are allowed.";
+				case ERROR_NAME_LENGTH:
+					return "Your name should be between 4 and 14 characters.";
+				case ERROR_CHAR_EXISTS:
+					return "A character with that name already exists.";
+				case ERROR_MAX_CAPS:
+					return "Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters.";
 				case CREATE_OBELISK:
 					return "You created an Obelisk!";
 				case PROTECTED_BLOCK:
