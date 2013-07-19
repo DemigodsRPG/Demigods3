@@ -74,7 +74,6 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			// Break the block
-			event.setCancelled(true);
 			block.getLocation().getWorld().dropItemNaturally(block.getLocation(), new ItemStack(block.getMaterial()));
 			block.remove();
 		}

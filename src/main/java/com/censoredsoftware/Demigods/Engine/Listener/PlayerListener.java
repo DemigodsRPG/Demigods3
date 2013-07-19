@@ -27,15 +27,15 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
-		PlayerWrapper tracked = PlayerWrapper.getPlayer(player);
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		PlayerWrapper wrapper = PlayerWrapper.getPlayer(player);
+		PlayerCharacter character = wrapper.getCurrent();
 
 		// Set their lastlogintime
 		Long now = System.currentTimeMillis();
-		tracked.setLastLoginTime(now);
+		wrapper.setLastLoginTime(now);
 
 		// Set Displayname
-		if(character != null)
+		if(wrapper.canUseCurrent() && character != null)
 		{
 			String name = character.getName();
 			ChatColor color = character.getDeity().getInfo().getColor();

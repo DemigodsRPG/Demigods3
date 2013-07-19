@@ -173,6 +173,7 @@ public class Prayer implements ConversationInfo
 
 			for(PlayerCharacter character : PlayerWrapper.getCharacters(player))
 			{
+				if(!character.canUse()) continue;
 				player.sendRawMessage(((character.isActive()) ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "  " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 

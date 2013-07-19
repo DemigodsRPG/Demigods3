@@ -1,7 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -394,7 +394,7 @@ public class PrayerListener implements Listener
 	// View characters
 	protected static void viewChars(Player player)
 	{
-		final List<PlayerCharacter> chars = PlayerWrapper.getCharacters(player);
+		final Set<PlayerCharacter> chars = PlayerWrapper.getCharacters(player);
 
 		if(chars.isEmpty())
 		{

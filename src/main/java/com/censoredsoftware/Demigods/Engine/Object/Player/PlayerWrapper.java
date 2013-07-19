@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object.Player;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -171,7 +172,9 @@ public class PlayerWrapper
 
 	public PlayerCharacter getCurrent()
 	{
-		return PlayerCharacter.load(this.current);
+		PlayerCharacter character = PlayerCharacter.load(this.current);
+		if(character.canUse()) return character;
+		return null;
 	}
 
 	public PlayerCharacter getPrevious()
@@ -179,9 +182,17 @@ public class PlayerWrapper
 		return PlayerCharacter.load(this.previous);
 	}
 
-	public List<PlayerCharacter> getCharacters()
+	public Set<PlayerCharacter> getCharacters()
 	{
-		return JOhm.find(PlayerCharacter.class, "player", this.player);
+		return new HashSet<PlayerCharacter>()
+		{
+			{
+				for(PlayerCharacter character : (List<PlayerCharacter>) JOhm.find(PlayerCharacter.class, "player", player))
+				{
+					if(character.canUse()) add(character);
+				}
+			}
+		};
 	}
 
 	/**
@@ -203,7 +214,7 @@ public class PlayerWrapper
 	 * @param player the player to check.
 	 * @return List the list of all character IDs.
 	 */
-	public static List<PlayerCharacter> getCharacters(OfflinePlayer player)
+	public static Set<PlayerCharacter> getCharacters(OfflinePlayer player)
 	{
 		return PlayerWrapper.getPlayer(player).getCharacters();
 	}
@@ -229,7 +240,7 @@ public class PlayerWrapper
 	 */
 	public static boolean hasCharName(OfflinePlayer player, String charName)
 	{
-		final List<PlayerCharacter> characters = getCharacters(player);
+		final Set<PlayerCharacter> characters = getCharacters(player);
 
 		for(PlayerCharacter character : characters)
 		{
@@ -336,27 +347,12 @@ public class PlayerWrapper
 		}
 	}
 
-	/**
-	 * Enables or disables player movement for <code>player</code> based on <code>option</code>.
-	 * 
-	 * @param player the player to manipulate.
-	 * @param option the boolean to set to.
-	 */
-	public static void togglePlayerMovement(OfflinePlayer player, boolean option)
+	public boolean canUseCurrent()
 	{
-		if(DataUtility.hasKeyTemp(player.getName(), "player_hold") && option) DataUtility.removeTemp(player.getName(), "player_hold");
-		else DataUtility.saveTemp(player.getName(), "player_hold", true);
-	}
-
-	/**
-	 * Enables or disables player chat for <code>player</code> based on <code>option</code>.
-	 * 
-	 * @param player the player to manipulate.
-	 * @param option the boolean to set to.
-	 */
-	public static void togglePlayerChat(OfflinePlayer player, boolean option)
-	{
-		if(DataUtility.hasKeyTemp(player.getName(), "no_chat") && option) DataUtility.removeTemp(player.getName(), "no_chat");
-		else DataUtility.saveTemp(player.getName(), "no_chat", true);
+		if(getCurrent().canUse()) return true;
+		if(!getOfflinePlayer().isOnline()) return false;
+		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
+		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
+		return false;
 	}
 }

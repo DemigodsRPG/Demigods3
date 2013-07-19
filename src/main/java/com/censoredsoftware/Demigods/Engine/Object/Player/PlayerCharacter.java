@@ -516,4 +516,13 @@ public class PlayerCharacter
 	{
 		return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
 	}
+
+	public boolean canUse()
+	{
+		for(Deity deity : Demigods.getLoadedDeities())
+		{
+			if(deity.getInfo().getName().equals(this.deity)) return true;
+		}
+		return false;
+	}
 }

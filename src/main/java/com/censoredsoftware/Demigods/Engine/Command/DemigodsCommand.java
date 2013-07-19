@@ -1,7 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -260,7 +260,7 @@ public class DemigodsCommand implements CommandExecutor
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final List<PlayerCharacter> chars = PlayerWrapper.getCharacters(toCheck);
+					final Set<PlayerCharacter> chars = PlayerWrapper.getCharacters(toCheck);
 
 					for(PlayerCharacter checkingChar : chars)
 					{
