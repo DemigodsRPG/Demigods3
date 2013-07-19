@@ -62,7 +62,7 @@ public class Oceanus extends Deity
 class Swim extends Ability
 {
 	private static String deity = "Oceanus", name = "Swim", command = null, permission = "demigods.titan.oceanus";
-	private static int cost = 0, delay = 0, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -74,7 +74,7 @@ class Swim extends Ability
 
 	protected Swim()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerMove(PlayerMoveEvent event)

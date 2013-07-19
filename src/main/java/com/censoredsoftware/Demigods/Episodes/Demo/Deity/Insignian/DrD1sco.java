@@ -31,7 +31,7 @@ import com.google.common.collect.Sets;
 public class DrD1sco extends Deity
 {
 	private static String name = "DrD1sco", alliance = "Insignian", permission = "demigods.insignian.disco";
-	private static ChatColor color = ChatColor.STRIKETHROUGH;
+	private static ChatColor color = ChatColor.DARK_PURPLE;
 	private static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
@@ -76,7 +76,7 @@ public class DrD1sco extends Deity
 class RainbowWalking extends Ability
 {
 	private static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.insignian.disco";
-	private static int cost = 0, delay = 0, repeat = 5, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 5;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -88,7 +88,7 @@ class RainbowWalking extends Ability
 
 	protected RainbowWalking()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -132,7 +132,7 @@ class RainbowWalking extends Ability
 class RainbowHorse extends Ability
 {
 	private static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
-	private static int cost = 0, delay = 0, repeat = 200, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 200;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -144,7 +144,7 @@ class RainbowHorse extends Ability
 
 	protected RainbowHorse()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -169,12 +169,12 @@ class RainbowHorse extends Ability
 class Discoball extends Ability
 {
 	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 30, delay = 0, repeat = 3, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 30, delay = 0, repeat = 3;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/discoball" + ChatColor.WHITE + "Spread the music while causing destruction.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/discoball" + ChatColor.WHITE + " - Spread the music while causing destruction.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.ULTIMATE;
@@ -183,7 +183,7 @@ class Discoball extends Ability
 
 	protected Discoball()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)

@@ -81,7 +81,7 @@ public class Prometheus extends Deity
 class ShootFireball extends Ability
 {
 	private static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
-	private static int cost = 100, delay = 5, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 100, delay = 5, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -93,7 +93,7 @@ class ShootFireball extends Ability
 
 	protected ShootFireball()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -150,7 +150,7 @@ class ShootFireball extends Ability
 class Blaze extends Ability
 {
 	private static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
-	private static int cost = 400, delay = 15, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 400, delay = 15, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -162,7 +162,7 @@ class Blaze extends Ability
 
 	protected Blaze()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -231,7 +231,7 @@ class Blaze extends Ability
 class Firestorm extends Ability
 {
 	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
-	private static int cost = 5500, delay = 15, repeat = 0, cooldownMin = 60, cooldownMax = 600;
+	private static int cost = 5500, delay = 15, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -243,7 +243,7 @@ class Firestorm extends Ability
 
 	protected Firestorm()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)

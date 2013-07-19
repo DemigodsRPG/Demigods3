@@ -69,7 +69,7 @@ public class Poseidon extends Deity
 class Swim extends Ability
 {
 	private static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
-	private static int cost = 0, delay = 0, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -81,7 +81,7 @@ class Swim extends Ability
 
 	protected Swim()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerMove(PlayerMoveEvent event)
@@ -104,7 +104,7 @@ class Swim extends Ability
 class Reel extends Ability
 {
 	private static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
-	private static int cost = 120, delay = 1100, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 120, delay = 1100, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -116,7 +116,7 @@ class Reel extends Ability
 
 	protected Reel()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -165,7 +165,7 @@ class Reel extends Ability
 class InfiniteAir extends Ability
 {
 	private static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
-	private static int cost = 0, delay = 0, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -177,7 +177,7 @@ class InfiniteAir extends Ability
 
 	protected InfiniteAir()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerMove(PlayerMoveEvent event)

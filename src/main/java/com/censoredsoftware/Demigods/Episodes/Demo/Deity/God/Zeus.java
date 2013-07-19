@@ -109,7 +109,7 @@ public class Zeus extends Deity
 class Shove extends Ability
 {
 	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
-	private static int cost = 170, delay = 15, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 170, delay = 15, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -121,7 +121,7 @@ class Shove extends Ability
 
 	protected Shove()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -170,7 +170,7 @@ class Shove extends Ability
 class Lightning extends Ability
 {
 	private static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
-	private static int cost = 140, delay = 1000, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 140, delay = 1000, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -182,7 +182,7 @@ class Lightning extends Ability
 
 	protected Lightning()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -235,7 +235,7 @@ class Lightning extends Ability
 class Storm extends Ability
 {
 	private static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
-	private static int cost = 3700, delay = 1500, repeat = 0, cooldownMin = 60, cooldownMax = 600;
+	private static int cost = 3700, delay = 600, repeat = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -247,7 +247,7 @@ class Storm extends Ability
 
 	protected Storm()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -266,7 +266,7 @@ class Storm extends Ability
 
 					storm(player);
 
-					int cooldownMultiplier = (int) (cooldownMax - ((cooldownMax - cooldownMin) * ((double) character.getMeta().getAscensions() / 100)));
+					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
 					PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}
@@ -312,7 +312,7 @@ class Storm extends Ability
 class NoFall extends Ability
 {
 	private static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "demigods.god.zeus";
-	private static int cost = 0, delay = 0, repeat = 0, cooldownMin = 0, cooldownMax = 0;
+	private static int cost = 0, delay = 0, repeat = 0;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -323,7 +323,7 @@ class NoFall extends Ability
 
 	protected NoFall()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), new Listener()
+		super(new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.MONITOR)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
