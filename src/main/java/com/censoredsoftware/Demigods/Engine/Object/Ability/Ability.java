@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -18,7 +17,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.BlockIterator;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
@@ -158,35 +156,55 @@ public abstract class Ability
 	 */
 	public static LivingEntity autoTarget(Player player)
 	{
-		int checkArea = Demigods.config.getSettingInt("caps.target_range");
-		BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, checkArea);
+		int targetRangeCap = Demigods.config.getSettingInt("caps.target_range");
 
-		while(iterator.hasNext())
+		/*
+		 * BlockIterator iterator = new BlockIterator(player.getWorld(), player.getLocation().toVector(), player.getEyeLocation().getDirection(), 0, checkArea);
+		 * 
+		 * while(iterator.hasNext())
+		 * {
+		 * Block block = iterator.next();
+		 * for(Entity entity : player.getNearbyEntities(checkArea, checkArea, checkArea))
+		 * {
+		 * if(entity instanceof Tameable && ((Tameable) entity).isTamed())
+		 * {
+		 * TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
+		 * if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+		 * }
+		 * else if(entity instanceof LivingEntity)
+		 * {
+		 * int acc = 2;
+		 * for(int x = -acc; x < acc; x++)
+		 * {
+		 * for(int z = -acc; z < acc; z++)
+		 * {
+		 * for(int y = -acc; y < acc; y++)
+		 * {
+		 * if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
+		 * }
+		 * }
+		 * }
+		 * }
+		 * }
+		 * }
+		 */
+
+		Location targetLoc = player.getTargetBlock(null, targetRangeCap).getLocation();
+
+		ENTITIES: for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
 		{
-			Block block = iterator.next();
-			for(Entity entity : player.getNearbyEntities(checkArea, checkArea, checkArea))
+			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity)
 			{
 				if(entity instanceof Tameable && ((Tameable) entity).isTamed())
 				{
 					TameableWrapper wrapper = TameableWrapper.getTameable((LivingEntity) entity);
-					if(wrapper != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+					if(wrapper != null && !PlayerCharacter.areAllied(PlayerWrapper.getPlayer(player).getCurrent(), wrapper.getOwner())) continue ENTITIES;
 				}
-				else if(entity instanceof LivingEntity)
-				{
-					int acc = 2;
-					for(int x = -acc; x < acc; x++)
-					{
-						for(int z = -acc; z < acc; z++)
-						{
-							for(int y = -acc; y < acc; y++)
-							{
-								if(entity.getLocation().getBlock().getRelative(x, y, z).equals(block)) return (LivingEntity) entity;
-							}
-						}
-					}
-				}
+
+				return (LivingEntity) entity;
 			}
 		}
+
 		return null;
 	}
 
