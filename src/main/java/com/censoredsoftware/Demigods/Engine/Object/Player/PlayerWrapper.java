@@ -187,12 +187,17 @@ public class PlayerWrapper
 		return new HashSet<PlayerCharacter>()
 		{
 			{
-				for(PlayerCharacter character : (List<PlayerCharacter>) JOhm.find(PlayerCharacter.class, "player", player))
+				for(PlayerCharacter character : getRawCharacters())
 				{
 					if(character.canUse()) add(character);
 				}
 			}
 		};
+	}
+
+	private List<PlayerCharacter> getRawCharacters()
+	{
+		return JOhm.find(PlayerCharacter.class, "player", player);
 	}
 
 	/**
