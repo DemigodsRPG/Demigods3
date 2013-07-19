@@ -131,8 +131,9 @@ public class TameableWrapper
 	{
 		for(World world : Bukkit.getServer().getWorlds())
 		{
-			for(Entity pet : world.getEntitiesByClasses(Horse.class, Wolf.class, Ocelot.class))
+			for(Entity pet : world.getLivingEntities())
 			{
+				if(!(pet instanceof Tameable)) continue;
 				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
 			}
 		}
