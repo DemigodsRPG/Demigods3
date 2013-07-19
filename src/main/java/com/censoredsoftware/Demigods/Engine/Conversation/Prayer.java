@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.MessagePrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.ValidatingPrompt;
 import org.bukkit.entity.Entity;
@@ -211,7 +210,7 @@ public class Prayer implements ConversationInfo
 		}
 
 		// Detailed character info
-		class DetailedInfo extends MessagePrompt
+		class DetailedInfo extends ValidatingPrompt
 		{
 			@Override
 			public String getPromptText(ConversationContext context)
@@ -240,9 +239,23 @@ public class Prayer implements ConversationInfo
 			}
 
 			@Override
-			protected Prompt getNextPrompt(ConversationContext context)
+			protected boolean isInputValid(ConversationContext context, String message)
 			{
-				return new ViewCharacters();
+				return message.equalsIgnoreCase("back") || message.equalsIgnoreCase("switch");
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String message)
+			{
+				if(message.equalsIgnoreCase("back"))
+				{
+					return new ViewCharacters();
+				}
+				else if(message.equalsIgnoreCase("switch"))
+				{
+					PlayerWrapper.getPlayer((Player) context.getForWhom()).switchCharacter(PlayerCharacter.getCharacterByName(context.getSessionData("viewing_character").toString()));
+				}
+				return null;
 			}
 		}
 	}
