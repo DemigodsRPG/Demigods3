@@ -161,7 +161,7 @@ public abstract class Ability
 
 		for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
 		{
-			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity)
+			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity) // TODO: Possibly implement devotion-based range
 			{
 				if(entity instanceof Tameable && ((Tameable) entity).isTamed() && TameableWrapper.getTameable((LivingEntity) entity) != null)
 				{
