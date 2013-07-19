@@ -67,8 +67,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			event.setCancelled(true);
-			Block block = event.getBlock();
-			event.getBlock().setTypeIdAndData(block.getTypeId(), block.getData(), false);
+			event.getBlock().breakNaturally();
 		}
 	}
 
