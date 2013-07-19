@@ -3,17 +3,21 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 public class GriefListener implements Listener
@@ -62,15 +66,13 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBlockPhysics(BlockPhysicsEvent event)
+	public void onBlockFall(EntityChangeBlockEvent event)
 	{
-		boolean block = StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		boolean target = StructureUtility.isInRadiusWithFlag(event.getBlock().getWorld().getHighestBlockAt(event.getBlock().getLocation()).getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		if(block != target)
-		{
-			event.setCancelled(true);
-			event.getBlock().breakNaturally();
-		}
+		if(event.getEntityType() != EntityType.FALLING_BLOCK) return;
+		FallingBlock block = (FallingBlock) event.getEntity();
+		boolean start = StructureUtility.isInRadiusWithFlag(block.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		boolean target = StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		event.setCancelled(start != target);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -113,7 +115,7 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onAttemptInventoryOpen(PlayerInteractEvent event)
+	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();

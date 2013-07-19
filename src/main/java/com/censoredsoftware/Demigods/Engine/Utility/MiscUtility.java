@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class MiscUtility
@@ -258,5 +259,11 @@ public class MiscUtility
 	public static Location getAboveGround(Location location)
 	{
 		return new Location(location.getWorld(), location.getX(), (double) location.getWorld().getHighestBlockYAt(location), location.getZ());
+	}
+
+	public static Location getFloorBelowLocation(Location location)
+	{
+		if(location.getBlock().getType().isSolid()) return location;
+		return getFloorBelowLocation(location.getBlock().getRelative(BlockFace.DOWN).getLocation());
 	}
 }
