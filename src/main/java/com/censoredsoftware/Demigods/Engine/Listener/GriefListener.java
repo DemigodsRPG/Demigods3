@@ -64,7 +64,12 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPhysics(BlockPhysicsEvent event)
 	{
-		event.setCancelled(StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE));
+		if(StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE))
+		{
+			event.setCancelled(true);
+			Block block = event.getBlock();
+			event.getBlock().setTypeIdAndData(block.getTypeId(), block.getData(), false);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
