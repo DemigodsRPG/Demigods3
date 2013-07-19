@@ -101,6 +101,7 @@ public class TameableWrapper
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner;
+		save();
 	}
 
 	public static TameableWrapper getTameable(LivingEntity tameable)
@@ -132,7 +133,6 @@ public class TameableWrapper
 		{
 			for(Entity pet : world.getEntitiesByClasses(Horse.class, Wolf.class, Ocelot.class))
 			{
-				if(!(pet instanceof Tameable)) continue;
 				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
 			}
 		}
