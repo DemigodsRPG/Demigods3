@@ -38,6 +38,12 @@ permissions:
     demigods.bypass.pvpareacooldown:
         description: Bypass the wait for leaving/entering PVP zones.
         default: false
+    demigods.god:
+        default: true
+    demigods.titan:
+        default: true
+    demigods.insignian:
+        default: false
     demigods.god.zeus:
         description: Allows the player to use Zeus.
         default: true
@@ -59,7 +65,7 @@ permissions:
     demigods.titan.prometheus.ultimate:
         description: Allows the player to use Prometheus' ultimate.
         default: true
-    demigods.donator.disco:
+    demigods.insignian.disco:
         description: Disco.
         default: false
     demigods.tutorial:

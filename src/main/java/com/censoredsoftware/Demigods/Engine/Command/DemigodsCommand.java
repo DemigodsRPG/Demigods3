@@ -44,6 +44,7 @@ public class DemigodsCommand implements CommandExecutor
 		Demigods.message.tagged(sender, "Documentation");
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
+			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
@@ -145,6 +146,7 @@ public class DemigodsCommand implements CommandExecutor
 
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
+			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			if(category.equalsIgnoreCase(alliance))
 			{
 				if(args.length < 2)

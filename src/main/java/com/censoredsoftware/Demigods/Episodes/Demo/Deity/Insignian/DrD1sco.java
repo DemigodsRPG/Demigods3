@@ -169,12 +169,12 @@ class RainbowHorse extends Ability
 class Discoball extends Ability
 {
 	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 500, delay = 5, repeat = 3, cooldownMin = 60, cooldownMax = 600;
+	private static int cost = 30, delay = 0, repeat = 3, cooldownMin = 0, cooldownMax = 0;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Spread the music while causing destruction.");
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/discoball" + ChatColor.WHITE + "Spread the music while causing destruction.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.ULTIMATE;
