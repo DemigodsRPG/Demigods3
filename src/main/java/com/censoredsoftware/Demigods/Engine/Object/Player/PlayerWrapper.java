@@ -152,7 +152,7 @@ public class PlayerWrapper
 		this.current = newChar.getId();
 
 		// Re-own pets
-		TameableWrapper.reownPets(player);
+		TameableWrapper.reownPets(player, newChar);
 
 		// Teleport them
 		try

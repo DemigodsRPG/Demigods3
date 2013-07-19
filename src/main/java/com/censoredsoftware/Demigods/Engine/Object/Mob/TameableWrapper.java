@@ -165,9 +165,9 @@ public class TameableWrapper
 		}
 	}
 
-	public static void reownPets(AnimalTamer tamer)
+	public static void reownPets(AnimalTamer tamer, PlayerCharacter character)
 	{
-		for(TameableWrapper wrapper : findByTamer(tamer.getName()))
+		for(TameableWrapper wrapper : findByTamer(character.getName()))
 		{
 			((Tameable) wrapper.getEntity()).setOwner(tamer);
 		}
