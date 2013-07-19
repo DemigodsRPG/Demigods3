@@ -8,6 +8,8 @@ import java.util.Set;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,7 +18,9 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
+import com.google.common.collect.Lists;
 
 public class DrD1sco extends Deity
 {
@@ -47,6 +51,7 @@ public class DrD1sco extends Deity
 	{
 		{
 			add(new RainbowWalking());
+			add(new RainbowHorse());
 		}
 	};
 
@@ -112,6 +117,43 @@ class RainbowWalking extends Ability
 			private void playRandomNote(Location location)
 			{
 				location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, 0.5F, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
+			}
+		});
+	}
+}
+
+class RainbowHorse extends Ability
+{
+	private static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
+	private static int cost = 0, delay = 0, repeat = 200, cooldownMin = 0, cooldownMax = 0;
+	private static AbilityInfo info;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "All of you horse are belong to us.");
+		}
+	};
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
+
+	protected RainbowHorse()
+	{
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, cooldownMin, cooldownMax, details, type), null, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(TameableWrapper horse : TameableWrapper.findByType(EntityType.HORSE))
+				{
+					if(horse.getDeity().getInfo().getName().equals("DrD1sco") && !horse.getOwnableEntity().isDead())
+					{
+						((Horse) horse.getOwnableEntity()).setColor(getRandomHorseColor());
+					}
+				}
+			}
+
+			private Horse.Color getRandomHorseColor()
+			{
+				return Lists.newArrayList(Horse.Color.values()).get(MiscUtility.generateIntRange(0, 5));
 			}
 		});
 	}
