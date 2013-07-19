@@ -55,6 +55,40 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockBurn(BlockBurnEvent event)
+	{
+		Location location = event.getBlock().getLocation();
+		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockPhysics(BlockPhysicsEvent event)
+	{
+		event.setCancelled(StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE));
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPistonExtend(BlockPistonExtendEvent event)
+	{
+		boolean in = false;
+		boolean out = false;
+		for(Block block : event.getBlocks())
+		{
+			if(StructureUtility.isInRadiusWithFlag(block.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) in = true;
+			else out = true;
+		}
+		event.setCancelled(in && out);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPistonRetract(BlockPistonRetractEvent event)
+	{
+		boolean block = StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		boolean retract = StructureUtility.isInRadiusWithFlag(event.getRetractLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		event.setCancelled(block != retract);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
