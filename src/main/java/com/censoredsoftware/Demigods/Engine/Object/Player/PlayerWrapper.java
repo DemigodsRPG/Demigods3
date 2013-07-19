@@ -139,9 +139,18 @@ public class PlayerWrapper
 		if(getCharacters(player).size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
 
-		// Update health and experience
+		// Update health, experience, and name
 		// TODO: Confirm that this covers all of the bases too.
 		player.setDisplayName(newChar.getDeity().getInfo().getColor() + newChar.getName());
+		try
+		{
+			player.setPlayerListName(newChar.getDeity().getInfo().getColor() + newChar.getName());
+		}
+		catch(Exception e)
+		{
+			Demigods.message.warning("Character name too long.");
+			e.printStackTrace();
+		}
 		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
 		player.setFoodLevel(newChar.getHunger());
