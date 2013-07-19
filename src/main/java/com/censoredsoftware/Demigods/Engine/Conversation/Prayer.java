@@ -177,9 +177,9 @@ public class Prayer implements ConversationInfo
 			}
 
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> info" + ChatColor.GRAY + " for detailed information.");
+			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> info" + ChatColor.GRAY + " for detailed information.");
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Type" + ChatColor.YELLOW + " <character name> switch" + ChatColor.GRAY + " to change your current");
+			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> switch" + ChatColor.GRAY + " to change your current");
 			player.sendRawMessage(ChatColor.GRAY + "  character.");
 
 			return "";
@@ -234,6 +234,9 @@ public class Prayer implements ConversationInfo
 				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters or");
+				player.sendRawMessage(ChatColor.YELLOW + "  switch" + ChatColor.GRAY + " to change to this character.");
 
 				return "";
 			}
@@ -481,6 +484,8 @@ public class Prayer implements ConversationInfo
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
 					player.sendRawMessage(ChatColor.GRAY + "  confirm your new character.");
+					player.sendRawMessage(" ");
+					player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the conversation, and return
