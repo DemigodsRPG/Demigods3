@@ -67,9 +67,9 @@ public class DrD1sco extends Deity
 		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
-	protected static void playRandomNote(Location location)
+	protected static void playRandomNote(Location location, float volume)
 	{
-		location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, 0.5F, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
+		location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
 	}
 }
 
@@ -116,7 +116,7 @@ class RainbowWalking extends Ability
 				if(effect)
 				{
 					rainbow(player, player);
-					DrD1sco.playRandomNote(player.getLocation());
+					DrD1sco.playRandomNote(player.getLocation(), 0.5F);
 				}
 			}
 		});
@@ -169,7 +169,7 @@ class RainbowHorse extends Ability
 class Discoball extends Ability
 {
 	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 30, delay = 0, repeat = 3;
+	private static int cost = 30, delay = 30, repeat = 4;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -198,7 +198,7 @@ class Discoball extends Ability
 
 				if(character.getMeta().isEnabledAbility(name))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 
 					discoBall(player);
 				}
@@ -208,6 +208,7 @@ class Discoball extends Ability
 			public void onBlockChange(EntityChangeBlockEvent changeEvent)
 			{
 				if(changeEvent.getEntityType() != EntityType.FALLING_BLOCK) return;
+				changeEvent.getBlock().setType(Material.AIR);
 				FallingBlock block = (FallingBlock) changeEvent.getEntity();
 				if(discoBalls.contains(block))
 				{
@@ -225,7 +226,7 @@ class Discoball extends Ability
 					if(block != null)
 					{
 						Location location = block.getLocation();
-						DrD1sco.playRandomNote(location);
+						DrD1sco.playRandomNote(location, 2F);
 						sparkleSparkle(location);
 						destoryNearby(location);
 					}
@@ -234,7 +235,7 @@ class Discoball extends Ability
 		});
 	}
 
-	private static void discoBall(Player player)
+	private static void discoBall(final Player player)
 	{
 		// Set variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
@@ -243,13 +244,30 @@ class Discoball extends Ability
 		character.getMeta().subtractFavor(cost);
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
-		int X = player.getLocation().getBlockX();
-		int Y = player.getLocation().getBlockY();
-		int Z = player.getLocation().getBlockZ();
+		// Cooldown
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
 
-		spawnBall(new Location(player.getWorld(), X, Y + 120 < 256 ? 120 : 256, Z));
+		balls(player);
 
-		player.sendMessage(ChatColor.YELLOW + "Party!");
+		player.sendMessage(ChatColor.YELLOW + "Dance!");
+
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				player.sendMessage(ChatColor.RED + "B" + ChatColor.GOLD + "o" + ChatColor.YELLOW + "o" + ChatColor.GREEN + "g" + ChatColor.AQUA + "i" + ChatColor.LIGHT_PURPLE + "e" + ChatColor.DARK_PURPLE + " W" + ChatColor.BLUE + "o" + ChatColor.RED + "n" + ChatColor.GOLD + "d" + ChatColor.YELLOW + "e" + ChatColor.GREEN + "r" + ChatColor.AQUA + "l" + ChatColor.LIGHT_PURPLE + "a" + ChatColor.DARK_PURPLE + "n" + ChatColor.BLUE + "d" + ChatColor.RED + "!");
+			}
+		}, 40);
+	}
+
+	private static void balls(Player player)
+	{
+		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
+		{
+			spawnBall(location);
+		}
+
 	}
 
 	private static void spawnBall(Location location)
@@ -269,7 +287,7 @@ class Discoball extends Ability
 
 	private static void sparkleSparkle(Location location)
 	{
-		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(location, Effect.COLOURED_DUST, 1, 1, 1, 10F, 100, 30);
+		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 	}
 
 	private static void destoryNearby(Location location)

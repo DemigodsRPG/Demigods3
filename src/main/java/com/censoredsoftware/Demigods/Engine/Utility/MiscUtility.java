@@ -1,9 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
@@ -265,5 +268,24 @@ public class MiscUtility
 	{
 		if(location.getBlock().getType().isSolid()) return location;
 		return getFloorBelowLocation(location.getBlock().getRelative(BlockFace.DOWN).getLocation());
+	}
+
+	public static Set<Location> getCirclePoints(Location center, final double radius, final int points)
+	{
+		final World world = center.getWorld();
+		final double X = center.getX();
+		final double Y = center.getY();
+		final double Z = center.getZ();
+		return new HashSet<Location>()
+		{
+			{
+				for(int i = 0; i < points; i++)
+				{
+					double x = X + radius * Math.cos((2 * Math.PI * i) / points);
+					double z = Z + radius * Math.sin((2 * Math.PI * i) / points);
+					add(new Location(world, x, Y, z));
+				}
+			}
+		};
 	}
 }

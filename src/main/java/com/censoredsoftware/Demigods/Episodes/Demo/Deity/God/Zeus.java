@@ -262,7 +262,7 @@ class Storm extends Ability
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 
 					storm(player);
 
