@@ -14,6 +14,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
@@ -25,6 +26,7 @@ public class DevelopmentCommands implements CommandExecutor
 		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
+		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 		return false;
@@ -47,6 +49,22 @@ public class DevelopmentCommands implements CommandExecutor
 	}
 
 	private static boolean test2(CommandSender sender, final String[] args)
+	{
+		Player player = (Player) sender;
+
+		player.sendMessage("Removing all structures...");
+
+		for(StructureSave save : StructureSave.loadAll())
+		{
+			save.remove();
+		}
+
+		player.sendMessage("Structures removed!");
+
+		return true;
+	}
+
+	private static boolean test3(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
 
