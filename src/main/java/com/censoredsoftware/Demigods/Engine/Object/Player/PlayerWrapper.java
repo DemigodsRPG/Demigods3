@@ -363,7 +363,7 @@ public class PlayerWrapper
 
 	public boolean canUseCurrent()
 	{
-		if(getCurrent().canUse()) return true;
+		if(getCurrent() != null && getCurrent().canUse()) return true;
 		if(!getOfflinePlayer().isOnline()) return false;
 		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
 		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
