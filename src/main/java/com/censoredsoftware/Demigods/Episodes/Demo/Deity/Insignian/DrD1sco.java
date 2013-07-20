@@ -169,7 +169,7 @@ class RainbowHorse extends Ability
 class Discoball extends Ability
 {
 	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 30, delay = 0, repeat = 3;
+	private static int cost = 30, delay = 20, repeat = 3;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -260,7 +260,7 @@ class Discoball extends Ability
 
 	private static void balls(Player player)
 	{
-		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 60 < 256 ? player.getLocation().getBlockY() + 60 : 256, player.getLocation().getBlockZ()), 3.0, 50))
+		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 		{
 			spawnBall(location);
 		}
@@ -284,7 +284,7 @@ class Discoball extends Ability
 
 	private static void sparkleSparkle(Location location)
 	{
-		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(location, Effect.COLOURED_DUST, 1, 1, 1, 10F, 100, 30);
+		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 	}
 
 	private static void destoryNearby(Location location)
