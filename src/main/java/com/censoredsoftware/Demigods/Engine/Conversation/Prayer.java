@@ -185,16 +185,16 @@ public class Prayer implements ConversationInfo
 				}
 
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp, " + ChatColor.YELLOW + "new <name>");
-				player.sendRawMessage(ChatColor.GRAY + "  to create a warp at this Altar, or " + ChatColor.YELLOW + "delete <warp name>" + ChatColor.GRAY + " to");
-				player.sendRawMessage(ChatColor.GRAY + "  remove a warp. You can also invite a player by using " + ChatColor.YELLOW + "invite");
-				player.sendRawMessage(ChatColor.YELLOW + "  <player> <warp name>" + ChatColor.GRAY + ".");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp, " + ChatColor.YELLOW + "new");
+				player.sendRawMessage(ChatColor.YELLOW + "  <warp name> to create a warp at this Altar, or " + ChatColor.YELLOW + "delete");
+				player.sendRawMessage(ChatColor.YELLOW + "  <warp name> remove a warp. You can also invite a player by using");
+				player.sendRawMessage(ChatColor.YELLOW + "  <invite> <player> <warp name>" + ChatColor.GRAY + ".");
 			}
 			else
 			{
 				player.sendRawMessage(ChatColor.RED + "    You have no warps or invites!");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <warp name>" + ChatColor.GRAY + " to create a warp at this Altar.");
 			}
 
 			return "";
@@ -209,12 +209,14 @@ public class Prayer implements ConversationInfo
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1) || character.getInvites().containsKey(arg1)) || (arg0.equalsIgnoreCase("invite") && PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)) != null && character.getWarps().containsKey(arg2)));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1) || character.getInvites().containsKey(arg1)) || (arg0.equalsIgnoreCase("invite") && PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null && character.getWarps().containsKey(arg2)));
 		}
 
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
+			// TODO: Add notifications of things like invites sent, warp created, etc.
+
 			// Define variables
 			Player player = (Player) context.getForWhom();
 			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
@@ -250,6 +252,25 @@ public class Prayer implements ConversationInfo
 				}
 
 				// Return to view warps
+				return new ViewWarps();
+			}
+			else if(arg0.equalsIgnoreCase("invite"))
+			{
+				// Define variables
+				PlayerCharacter invitee = PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
+				Location warp = character.getWarps().get(arg2).toLocation();
+
+				// Add the invite
+				invitee.addInvite(character.getName(), warp);
+
+				// Message the player if they're online
+				if(invitee.getOfflinePlayer().isOnline())
+				{
+					invitee.getOfflinePlayer().getPlayer().sendMessage(ChatColor.LIGHT_PURPLE + "You've been invited to a warp by " + character.getName() + "!");
+					invitee.getOfflinePlayer().getPlayer().sendMessage(ChatColor.GRAY + "Go to an Altar to accept this invite.");
+				}
+
+				// Return to warps menu
 				return new ViewWarps();
 			}
 			else if(arg0.equalsIgnoreCase("warp"))
