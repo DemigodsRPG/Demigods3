@@ -182,14 +182,14 @@ public class Prayer implements ConversationInfo
 				}
 				for(Map.Entry<String, DemigodsLocation> entry : character.getInvites().entrySet())
 				{
-					player.sendRawMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ") " + ChatColor.YELLOW + "Invited by [ALLAN PLEASE ADD DETAILS]"); // TODO: Invited by
+					player.sendRawMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ") " + ChatColor.YELLOW + "Invited by [ALLAN!!]"); // TODO: Invited by
 				}
 
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp, " + ChatColor.YELLOW + "new");
 				player.sendRawMessage(ChatColor.YELLOW + "  <warp name>" + ChatColor.GRAY + " to create a warp at this Altar, or " + ChatColor.YELLOW + "delete");
 				player.sendRawMessage(ChatColor.YELLOW + "  <warp name>" + ChatColor.GRAY + " remove a warp. You can also invite a player");
-				player.sendRawMessage(ChatColor.GRAY + "  by using " + ChatColor.YELLOW + "<invite> <player> <warp name>" + ChatColor.GRAY + ".");
+				player.sendRawMessage(ChatColor.GRAY + "  by using " + ChatColor.YELLOW + "invite <player> <warp name>" + ChatColor.GRAY + ".");
 			}
 			else
 			{
