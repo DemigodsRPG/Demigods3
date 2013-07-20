@@ -132,7 +132,7 @@ class RainbowWalking extends Ability
 class RainbowHorse extends Ability
 {
 	private static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
-	private static int cost = 0, delay = 0, repeat = 200;
+	private static int cost = 0, delay = 0, repeat = 100;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
