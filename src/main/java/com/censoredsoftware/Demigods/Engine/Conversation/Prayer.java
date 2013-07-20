@@ -112,7 +112,7 @@ public class Prayer implements ConversationInfo
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " While praying you are unable chat with players.");
-			player.sendRawMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"menu\".");
+			player.sendRawMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing \"" + ChatColor.YELLOW + "menu" + ChatColor.GRAY + "\".");
 			player.sendRawMessage(ChatColor.GRAY + " Walk away to stop praying.");
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
@@ -151,7 +151,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public String getChatName()
 		{
-			return ChatColor.LIGHT_PURPLE + "View Warps";
+			return ChatColor.LIGHT_PURPLE + "View Warps " + ChatColor.GRAY + "(& Invites)";
 		}
 
 		@Override
@@ -175,13 +175,13 @@ public class Prayer implements ConversationInfo
 			{
 				for(Map.Entry<String, DemigodsLocation> entry : character.getWarps().entrySet())
 				{
-					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName()) + ", " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
+					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
 				}
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp or type");
 				player.sendRawMessage(ChatColor.YELLOW + "  new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to the main menu.");
+				player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + " to return to the main menu.");
 
 			}
 			else
@@ -202,7 +202,7 @@ public class Prayer implements ConversationInfo
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ")[1];
 
-			return arg0.equalsIgnoreCase("back") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1) || (arg0.equalsIgnoreCase("warp") && character.getWarps().containsKey(arg1));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1) || (arg0.equalsIgnoreCase("warp") && character.getWarps().containsKey(arg1));
 		}
 
 		@Override
@@ -216,7 +216,7 @@ public class Prayer implements ConversationInfo
 
 			MiscUtility.clearRawChat(player);
 
-			if(arg0.equalsIgnoreCase("back"))
+			if(message.equalsIgnoreCase("menu"))
 			{
 				return new StartPrayer();
 			}
@@ -232,42 +232,8 @@ public class Prayer implements ConversationInfo
 			{
 				PlayerWrapper.togglePrayingSilent(player, false);
 				player.teleport(character.getWarps().get(arg1).toLocation());
-				player.sendMessage(ChatColor.YELLOW + "Teleported to " + arg1.toUpperCase() + ".");
+				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
 			}
-			return null;
-		}
-	}
-
-	// Warp invites
-	static class ViewWarpInvites extends ValidatingPrompt implements Category
-	{
-		@Override
-		public String getChatName()
-		{
-			return ChatColor.LIGHT_PURPLE + "View Warp Invites";
-		}
-
-		@Override
-		public boolean canUse(ConversationContext context, Player player)
-		{
-			return PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().hasInvites();
-		}
-
-		@Override
-		protected boolean isInputValid(ConversationContext context, String s)
-		{
-			return false;
-		}
-
-		@Override
-		protected Prompt acceptValidatedInput(ConversationContext context, String s)
-		{
-			return null;
-		}
-
-		@Override
-		public String getPromptText(ConversationContext context)
-		{
 			return null;
 		}
 	}
@@ -311,7 +277,7 @@ public class Prayer implements ConversationInfo
 			player.sendRawMessage(ChatColor.GRAY + "  type " + ChatColor.YELLOW + "<character name> switch" + ChatColor.GRAY + " to change your current");
 			player.sendRawMessage(ChatColor.GRAY + "  character.");
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to the main menu.");
+			player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + " to return to the main menu.");
 
 			return "";
 		}
@@ -320,7 +286,7 @@ public class Prayer implements ConversationInfo
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
 			String[] splitMsg = message.split(" ");
-			return splitMsg.length == 1 && splitMsg[0].equalsIgnoreCase("back") || PlayerWrapper.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
+			return message.equalsIgnoreCase("menu") || PlayerWrapper.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
 		}
 
 		@Override
@@ -329,7 +295,7 @@ public class Prayer implements ConversationInfo
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ")[1];
 
-			if(arg0.equalsIgnoreCase("back"))
+			if(message.equalsIgnoreCase("menu"))
 			{
 				return new StartPrayer();
 			}
