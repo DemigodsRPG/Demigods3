@@ -308,7 +308,7 @@ public class PrayerListener implements Listener
 			// Define variables
 			String chosenName = DataUtility.getValueTemp(player.getName(), "temp_createchar_name").toString();
 			String chosenDeity = DataUtility.getValueTemp(player.getName(), "temp_createchar_deity").toString();
-			String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
+			String deityAlliance = StringUtils.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
 
 			// Check the chest items
 			int items = 0;
@@ -596,7 +596,7 @@ public class PrayerListener implements Listener
 		{
 			for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 			{
-				if(player.hasPermission(deity.getInfo().getPermission())) player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				if(player.hasPermission(deity.getInfo().getPermission())) player.sendMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 			}
 		}
 		player.sendMessage(" ");
@@ -616,9 +616,9 @@ public class PrayerListener implements Listener
 				{
 					// Their chosen deity matches an existing deity, ask for confirmation
 					String chosenDeity = message.replace(" ", "");
-					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + MiscUtility.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
+					player.sendMessage(ChatColor.AQUA + "  Are you sure you want to use " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + "?" + ChatColor.GRAY + " (y/n)");
 					player.sendMessage(" ");
-					DataUtility.saveTemp(player.getName(), "temp_createchar_deity", MiscUtility.capitalize(chosenDeity.toLowerCase()));
+					DataUtility.saveTemp(player.getName(), "temp_createchar_deity", StringUtils.capitalize(chosenDeity.toLowerCase()));
 					DataUtility.saveTemp(player.getName(), "temp_createchar", "confirm_deity");
 					return;
 				}
@@ -690,6 +690,7 @@ public class PrayerListener implements Listener
 
 	protected static void nameAltar(Player player, String name) // TODO Make warps store differently.
 	{
+		/*
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 		if(character.getWarps().isEmpty())
 		{
@@ -719,7 +720,7 @@ public class PrayerListener implements Listener
 		}
 
 		// Save named DemigodsLocation for warp.
-		character.addWarp(DemigodsLocation.create(player.getLocation()), name);
+		//character.addWarp(DemigodsLocation.create(player.getLocation()), name);
 		player.sendMessage(ChatColor.GRAY + "Your warp to this Altar was named: " + ChatColor.YELLOW + name.toUpperCase() + ChatColor.GRAY + ".");
 	}
 

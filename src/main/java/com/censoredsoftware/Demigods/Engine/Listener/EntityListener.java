@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
@@ -17,7 +18,6 @@ import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharact
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -82,7 +82,7 @@ public class EntityListener implements Listener
 			Player player = (Player) event.getEntity();
 			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 			if(character == null) return;
-			String deity = MiscUtility.capitalize(character.getDeity().getInfo().getName());
+			String deity = StringUtils.capitalize(character.getDeity().getInfo().getName());
 
 			// TODO: Punishments.
 			character.addDeath();

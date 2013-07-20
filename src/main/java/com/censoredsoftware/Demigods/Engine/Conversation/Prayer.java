@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -93,6 +94,7 @@ public class Prayer implements ConversationInfo
 		return prayerConversation;
 	}
 
+	// Main prayer menu
 	static class StartPrayer extends ValidatingPrompt
 	{
 		@Override
@@ -159,20 +161,71 @@ public class Prayer implements ConversationInfo
 		}
 
 		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
+
+			MiscUtility.clearRawChat(player);
+			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps -------------------------------------");
+			player.sendRawMessage(" ");
+
+			if(character.hasWarps())
+			{
+				for(Map.Entry<String, DemigodsLocation> entry : character.getWarps().entrySet())
+				{
+					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName()) + ", " + entry.getValue().toLocation().getX() + ", " + entry.getValue().toLocation().getY() + ", " + entry.getValue().toLocation().getZ() + ")");
+				}
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp or");
+				player.sendRawMessage(ChatColor.GRAY + "  type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+			}
+			else
+			{
+				player.sendRawMessage(ChatColor.GRAY + "  You have no warps!");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+			}
+
+			return "";
+		}
+
+		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return true;
+			// Define variables
+			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
+			String arg0 = message.split(" ")[0];
+			String arg1 = message.split(" ")[1];
+
+			return (arg0.equalsIgnoreCase("new") && (StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1))) || (arg0.equalsIgnoreCase("warp") && character.getWarps().containsKey(arg1));
 		}
 
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			return null;
-		}
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
+			String arg0 = message.split(" ")[0];
+			String arg1 = message.split(" ")[1];
 
-		@Override
-		public String getPromptText(ConversationContext context)
-		{
+			MiscUtility.clearRawChat(player);
+
+			if(arg0.equalsIgnoreCase("new"))
+			{
+				// Add the warp
+				character.addWarp(arg1, player.getLocation());
+
+				// Message them
+				player.sendRawMessage(ChatColor.GREEN + "  Warp created!");
+			}
+			else if(arg0.equalsIgnoreCase("warp"))
+			{
+				PlayerWrapper.togglePrayingSilent(player, false);
+				player.teleport(character.getWarps().get(arg1).toLocation());
+				player.sendMessage(ChatColor.YELLOW + "Teleported to " + arg1.toUpperCase() + ".");
+			}
 			return null;
 		}
 	}
@@ -263,16 +316,17 @@ public class Prayer implements ConversationInfo
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			String[] splitMsg = message.split(" ");
+			String arg0 = message.split(" ")[0];
+			String arg1 = message.split(" ")[1];
 
-			if(splitMsg[1].equalsIgnoreCase("info"))
+			if(arg1.equalsIgnoreCase("info"))
 			{
-				context.setSessionData("viewing_character", splitMsg[0]);
+				context.setSessionData("viewing_character", arg0);
 				return new DetailedInfo();
 			}
-			else if(splitMsg[1].equalsIgnoreCase("switch"))
+			else if(arg1.equalsIgnoreCase("switch"))
 			{
-				PlayerWrapper.getPlayer((Player) context.getForWhom()).switchCharacter(PlayerCharacter.getCharacterByName(splitMsg[0]));
+				PlayerWrapper.getPlayer((Player) context.getForWhom()).switchCharacter(PlayerCharacter.getCharacterByName(arg0));
 			}
 			return null;
 		}
@@ -492,7 +546,7 @@ public class Prayer implements ConversationInfo
 				{
 					for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
 					{
-						if(player.hasPermission(deity.getInfo().getPermission())) player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + MiscUtility.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+						if(player.hasPermission(deity.getInfo().getPermission())) player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 					}
 				}
 
@@ -523,7 +577,7 @@ public class Prayer implements ConversationInfo
 			public String getPromptText(ConversationContext context)
 			{
 				MiscUtility.clearRawChat((Player) context.getForWhom());
-				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + MiscUtility.capitalize((String) context.getSessionData("chosen_deity")) + ChatColor.GRAY + "? (y/n)";
+				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + StringUtils.capitalize((String) context.getSessionData("chosen_deity")) + ChatColor.GRAY + "? (y/n)";
 			}
 
 			@Override
@@ -543,7 +597,7 @@ public class Prayer implements ConversationInfo
 
 					// Give the player further directions
 					MiscUtility.clearRawChat(player);
-					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + MiscUtility.capitalize(chosenDeity) + ChatColor.AQUA + ",");
+					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
 					for(Material item : Deity.getDeity(chosenDeity).getInfo().getClaimItems())
@@ -689,7 +743,7 @@ class PrayerListener implements Listener
 			ConversationContext prayerContext = PlayerWrapper.getPrayerContext(player);
 			String chosenName = (String) prayerContext.getSessionData("chosen_name");
 			String chosenDeity = (String) prayerContext.getSessionData("chosen_deity");
-			String deityAlliance = MiscUtility.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
+			String deityAlliance = StringUtils.capitalize(Deity.getDeity(chosenDeity).getInfo().getAlliance());
 
 			// Check the chest items
 			int items = 0;

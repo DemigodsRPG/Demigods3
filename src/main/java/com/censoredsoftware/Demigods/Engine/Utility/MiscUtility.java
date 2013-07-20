@@ -110,17 +110,6 @@ public class MiscUtility
 	}
 
 	/**
-	 * Capitalizes the <code>input</code> and returns it.
-	 * 
-	 * @param input the string to capitalize.
-	 * @return String
-	 */
-	public static String capitalize(String input)
-	{
-		return input.substring(0, 1).toUpperCase() + input.substring(1);
-	}
-
-	/**
 	 * Returns a boolean whose value is based on the given <code>percent</code>.
 	 * 
 	 * @param percent the percent chance for true.

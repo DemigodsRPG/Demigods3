@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Model
@@ -62,10 +63,10 @@ public class PlayerCharacter
 	private PlayerCharacterMeta meta;
 	@Reference
 	private PlayerCharacterInventory inventory;
+	@CollectionMap(key = String.class, value = DemigodsLocation.class)
+	private Map<String, DemigodsLocation> warps = Maps.newHashMap();
 	@CollectionMap(key = DemigodsLocation.class, value = String.class)
-	private Map<DemigodsLocation, String> warps;
-	@CollectionMap(key = DemigodsLocation.class, value = String.class)
-	private Map<DemigodsLocation, String> invites;
+	private Map<DemigodsLocation, String> invites = Maps.newHashMap();
 
 	void setName(String name)
 	{
@@ -231,10 +232,7 @@ public class PlayerCharacter
 
 	public PlayerCharacterMeta getMeta()
 	{
-		if(this.meta == null)
-		{
-			this.meta = PlayerCharacterMeta.create();
-		}
+		if(this.meta == null) this.meta = PlayerCharacterMeta.create();
 		return this.meta;
 	}
 
@@ -303,19 +301,17 @@ public class PlayerCharacter
 		return this.immortal;
 	}
 
-	public void addWarp(DemigodsLocation location, String name)
+	public void addWarp(String name, Location location)
 	{
-		this.warps.put(location, name.toUpperCase());
-		save(this);
+		this.warps.put(name, DemigodsLocation.create(location));
 	}
 
-	public void removeWarp(DemigodsLocation location)
+	public void removeWarp(String name)
 	{
-		this.warps.remove(location);
-		save(this);
+		this.warps.remove(name);
 	}
 
-	public Map<DemigodsLocation, String> getWarps()
+	public Map<String, DemigodsLocation> getWarps()
 	{
 		return this.warps;
 	}
@@ -323,13 +319,11 @@ public class PlayerCharacter
 	public void addInvite(DemigodsLocation location, String name)
 	{
 		this.invites.put(location, name);
-		save(this);
 	}
 
 	public void removeInvite(DemigodsLocation location)
 	{
 		this.invites.remove(location);
-		save(this);
 	}
 
 	public void clearInvites()
