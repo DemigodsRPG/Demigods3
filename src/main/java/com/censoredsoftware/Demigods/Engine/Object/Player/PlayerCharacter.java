@@ -64,8 +64,8 @@ public class PlayerCharacter
 	private PlayerCharacterInventory inventory;
 	@CollectionMap(key = String.class, value = DemigodsLocation.class)
 	private Map<String, DemigodsLocation> warps;
-	@CollectionMap(key = DemigodsLocation.class, value = String.class)
-	private Map<DemigodsLocation, String> invites;
+	@CollectionMap(key = String.class, value = DemigodsLocation.class)
+	private Map<String, DemigodsLocation> invites;
 
 	void setName(String name)
 	{
@@ -323,24 +323,20 @@ public class PlayerCharacter
 		return !this.warps.isEmpty();
 	}
 
-	public void addInvite(DemigodsLocation location, String name)
+	public void addInvite(String name, Location location)
 	{
 		if(this.invites == null) this.invites = Maps.newHashMap();
-		this.invites.put(location, name);
-	}
-
-	public void removeInvite(DemigodsLocation location)
-	{
-		this.invites.remove(location);
-	}
-
-	public void clearInvites()
-	{
-		this.invites = Maps.newHashMap();
+		this.invites.put(name, DemigodsLocation.create(location));
 		save(this);
 	}
 
-	public Map<DemigodsLocation, String> getInvites()
+	public void removeInvite(String name)
+	{
+		this.invites.remove(name);
+		save(this);
+	}
+
+	public Map<String, DemigodsLocation> getInvites()
 	{
 		return this.invites;
 	}
