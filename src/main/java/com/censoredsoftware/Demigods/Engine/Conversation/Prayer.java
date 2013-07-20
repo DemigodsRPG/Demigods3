@@ -155,7 +155,41 @@ public class Prayer implements ConversationInfo
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			return PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().hasWarps();
+			return PlayerWrapper.getPlayer(player).getCurrent() != null;
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return true;
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			return null;
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			return null;
+		}
+	}
+
+	// Warp invites
+	static class ViewWarpInvites extends ValidatingPrompt implements Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.LIGHT_PURPLE + "View Warp Invites";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context, Player player)
+		{
+			return PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().hasInvites();
 		}
 
 		@Override

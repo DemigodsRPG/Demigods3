@@ -56,7 +56,7 @@ public class GriefListener implements Listener
 		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(event.getPlayer() != null && PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
