@@ -187,7 +187,8 @@ public class Prayer implements ConversationInfo
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp, " + ChatColor.YELLOW + "new <name>");
 				player.sendRawMessage(ChatColor.GRAY + "  to create a warp at this Altar, or " + ChatColor.YELLOW + "delete <warp name>" + ChatColor.GRAY + " to");
-				player.sendRawMessage(ChatColor.GRAY + "  remove a warp. You can also invite a player by typing " + ChatColor.YELLOW + "invite <player> <warp name>" + ChatColor.GRAY + ".");
+				player.sendRawMessage(ChatColor.GRAY + "  remove a warp. You can also invite a player by using " + ChatColor.YELLOW + "invite");
+				player.sendRawMessage(ChatColor.YELLOW + "  <player> <warp name>" + ChatColor.GRAY + ".");
 			}
 			else
 			{
