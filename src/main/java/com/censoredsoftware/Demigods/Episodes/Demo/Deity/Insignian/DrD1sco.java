@@ -235,7 +235,7 @@ class Discoball extends Ability
 		});
 	}
 
-	private static void discoBall(Player player)
+	private static void discoBall(final Player player)
 	{
 		// Set variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
@@ -246,18 +246,25 @@ class Discoball extends Ability
 
 		balls(player);
 
-		player.sendMessage(ChatColor.YELLOW + "Party!");
+		player.sendMessage(ChatColor.YELLOW + "Dance!");
+
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				player.sendMessage(ChatColor.RED + "B" + ChatColor.GOLD + "o" + ChatColor.YELLOW + "o" + ChatColor.GREEN + "g" + ChatColor.AQUA + "i" + ChatColor.LIGHT_PURPLE + "e" + ChatColor.DARK_PURPLE + " W" + ChatColor.DARK_BLUE + "o" + ChatColor.RED + "n" + ChatColor.GOLD + "d" + ChatColor.YELLOW + "e" + ChatColor.GREEN + "r" + ChatColor.AQUA + "l" + ChatColor.LIGHT_PURPLE + "a" + ChatColor.DARK_PURPLE + "n" + ChatColor.DARK_BLUE + "d" + ChatColor.RED + "!");
+			}
+		}, 40);
 	}
 
 	private static void balls(Player player)
 	{
-		for(Entity entity : player.getNearbyEntities(20, 20, 20))
+		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 120 < 256 ? 120 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 		{
-			if(entity instanceof LivingEntity)
-			{
-				spawnBall(new Location(entity.getWorld(), entity.getLocation().getBlockX(), entity.getLocation().getBlockY() + 120 < 256 ? 120 : 256, entity.getLocation().getBlockZ()));
-			}
+			spawnBall(location);
 		}
+
 	}
 
 	private static void spawnBall(Location location)
