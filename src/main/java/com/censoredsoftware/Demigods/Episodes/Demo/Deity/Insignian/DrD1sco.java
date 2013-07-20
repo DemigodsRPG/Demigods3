@@ -67,9 +67,9 @@ public class DrD1sco extends Deity
 		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
-	protected static void playRandomNote(Location location)
+	protected static void playRandomNote(Location location, float volume)
 	{
-		location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, 0.5F, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
+		location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
 	}
 }
 
@@ -116,7 +116,7 @@ class RainbowWalking extends Ability
 				if(effect)
 				{
 					rainbow(player, player);
-					DrD1sco.playRandomNote(player.getLocation());
+					DrD1sco.playRandomNote(player.getLocation(), 0.5F);
 				}
 			}
 		});
@@ -208,6 +208,7 @@ class Discoball extends Ability
 			public void onBlockChange(EntityChangeBlockEvent changeEvent)
 			{
 				if(changeEvent.getEntityType() != EntityType.FALLING_BLOCK) return;
+				changeEvent.getBlock().setType(Material.AIR);
 				FallingBlock block = (FallingBlock) changeEvent.getEntity();
 				if(discoBalls.contains(block))
 				{
@@ -225,7 +226,7 @@ class Discoball extends Ability
 					if(block != null)
 					{
 						Location location = block.getLocation();
-						DrD1sco.playRandomNote(location);
+						DrD1sco.playRandomNote(location, 2F);
 						sparkleSparkle(location);
 						destoryNearby(location);
 					}
@@ -243,13 +244,20 @@ class Discoball extends Ability
 		character.getMeta().subtractFavor(cost);
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
-		int X = player.getLocation().getBlockX();
-		int Y = player.getLocation().getBlockY();
-		int Z = player.getLocation().getBlockZ();
-
-		spawnBall(new Location(player.getWorld(), X, Y + 120 < 256 ? 120 : 256, Z));
+		balls(player);
 
 		player.sendMessage(ChatColor.YELLOW + "Party!");
+	}
+
+	private static void balls(Player player)
+	{
+		for(Entity entity : player.getNearbyEntities(20, 20, 20))
+		{
+			if(entity instanceof LivingEntity)
+			{
+				spawnBall(new Location(entity.getWorld(), entity.getLocation().getBlockX(), entity.getLocation().getBlockY() + 120 < 256 ? 120 : 256, entity.getLocation().getBlockZ()));
+			}
+		}
 	}
 
 	private static void spawnBall(Location location)
