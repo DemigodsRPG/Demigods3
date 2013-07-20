@@ -71,8 +71,7 @@ class TutorialTask extends Task
 			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
-			Demigods.message.tagged(player, name);
-			Demigods.message.tagged(player, "Use " + ChatColor.YELLOW + "/dg" + ChatColor.WHITE + " for more information.");
+			Demigods.message.tagged(player, "Welcome to Demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
 
 			player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
 
