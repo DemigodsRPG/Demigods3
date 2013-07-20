@@ -303,13 +303,13 @@ public class PlayerCharacter
 	public void addWarp(String name, Location location)
 	{
 		if(this.warps == null) this.warps = Maps.newHashMap();
-		this.warps.put(name, DemigodsLocation.create(location));
+		this.warps.put(name.toLowerCase(), DemigodsLocation.create(location));
 		save(this);
 	}
 
 	public void removeWarp(String name)
 	{
-		this.warps.remove(name);
+		this.warps.remove(name.toLowerCase());
 		save(this);
 	}
 
@@ -326,13 +326,13 @@ public class PlayerCharacter
 	public void addInvite(String name, Location location)
 	{
 		if(this.invites == null) this.invites = Maps.newHashMap();
-		this.invites.put(name, DemigodsLocation.create(location));
+		this.invites.put(name.toLowerCase(), DemigodsLocation.create(location));
 		save(this);
 	}
 
 	public void removeInvite(String name)
 	{
-		this.invites.remove(name);
+		this.invites.remove(name.toLowerCase());
 		save(this);
 	}
 
