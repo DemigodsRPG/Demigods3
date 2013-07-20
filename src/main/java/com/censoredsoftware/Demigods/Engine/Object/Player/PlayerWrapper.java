@@ -188,7 +188,13 @@ public class PlayerWrapper
 
 	public PlayerCharacter getPrevious()
 	{
-		return PlayerCharacter.load(this.previous);
+		try
+		{
+			return PlayerCharacter.load(this.previous);
+		}
+		catch(Exception ignored)
+		{}
+		return null;
 	}
 
 	public Set<PlayerCharacter> getCharacters()
@@ -198,7 +204,7 @@ public class PlayerWrapper
 			{
 				for(PlayerCharacter character : getRawCharacters())
 				{
-					if(character.canUse()) add(character);
+					if(character != null && character.canUse()) add(character);
 				}
 			}
 		};
