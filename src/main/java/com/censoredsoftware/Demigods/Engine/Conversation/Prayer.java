@@ -143,6 +143,40 @@ public class Prayer implements ConversationInfo
 		}
 	}
 
+	// Warps
+	static class ViewWarps extends ValidatingPrompt implements Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return null;
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context, Player player)
+		{
+			return false;
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String s)
+		{
+			return false;
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String s)
+		{
+			return null;
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			return null;
+		}
+	}
+
 	// Character viewing
 	static class ViewCharacters extends ValidatingPrompt implements Category
 	{
