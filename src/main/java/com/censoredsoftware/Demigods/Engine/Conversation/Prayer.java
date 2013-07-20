@@ -168,25 +168,25 @@ public class Prayer implements ConversationInfo
 			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			MiscUtility.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps -------------------------------------");
+			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps & Invites ---------------------------");
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) closest to you.");
 			player.sendRawMessage(" ");
 
-			if(character.hasWarps())
+			if(character.hasWarps() || character.hasInvites())
 			{
 				for(Map.Entry<String, DemigodsLocation> entry : character.getWarps().entrySet())
 				{
-					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
+					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 16 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
 				}
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp or type");
-				player.sendRawMessage(ChatColor.YELLOW + "  new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
-				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + " to return to the main menu.");
-
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp, " + ChatColor.YELLOW + "new <name>");
+				player.sendRawMessage(ChatColor.GRAY + "  to create a warp at this Altar, or " + ChatColor.YELLOW + "delete <warp name>" + ChatColor.GRAY + " to remove a");
+				player.sendRawMessage(ChatColor.GRAY + "  warp.");
 			}
 			else
 			{
-				player.sendRawMessage(ChatColor.GRAY + "  You have no warps!");
+				player.sendRawMessage(ChatColor.RED + "    You have no warps or invites!");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
 			}
@@ -269,7 +269,7 @@ public class Prayer implements ConversationInfo
 			for(PlayerCharacter character : PlayerWrapper.getCharacters(player))
 			{
 				if(!character.canUse()) continue;
-				player.sendRawMessage(((character.isActive()) ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 
 			player.sendRawMessage(" ");
@@ -320,7 +320,7 @@ public class Prayer implements ConversationInfo
 				// Define variables
 				Player player = (Player) context.getForWhom();
 				PlayerCharacter character = PlayerCharacter.getCharacterByName(context.getSessionData("viewing_character").toString());
-				String status = (character.isActive()) ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
+				String status = character.isActive() ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 
 				// Clear chat
 				MiscUtility.clearRawChat(player);
