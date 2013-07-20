@@ -175,11 +175,14 @@ public class Prayer implements ConversationInfo
 			{
 				for(Map.Entry<String, DemigodsLocation> entry : character.getWarps().entrySet())
 				{
-					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName()) + ", " + entry.getValue().toLocation().getX() + ", " + entry.getValue().toLocation().getY() + ", " + entry.getValue().toLocation().getZ() + ")");
+					player.sendRawMessage(ChatColor.LIGHT_PURPLE + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName()) + ", " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
 				}
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp or");
-				player.sendRawMessage(ChatColor.GRAY + "  type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "warp <warp name>" + ChatColor.GRAY + " to teleport to a warp or type");
+				player.sendRawMessage(ChatColor.YELLOW + "  new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to the main menu.");
+
 			}
 			else
 			{
@@ -199,7 +202,7 @@ public class Prayer implements ConversationInfo
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ")[1];
 
-			return (arg0.equalsIgnoreCase("new") && (StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1))) || (arg0.equalsIgnoreCase("warp") && character.getWarps().containsKey(arg1));
+			return arg0.equalsIgnoreCase("back") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1) || (arg0.equalsIgnoreCase("warp") && character.getWarps().containsKey(arg1));
 		}
 
 		@Override
@@ -213,14 +216,17 @@ public class Prayer implements ConversationInfo
 
 			MiscUtility.clearRawChat(player);
 
+			if(arg0.equalsIgnoreCase("back"))
+			{
+				return new StartPrayer();
+			}
 			if(arg0.equalsIgnoreCase("new"))
 			{
 				// Add the warp
 				character.addWarp(arg1, player.getLocation());
 
-				// Message them
-				player.sendRawMessage(ChatColor.GREEN + "  Warp created!");
-				player.sendRawMessage(" ");
+				// Return to view warps
+				return new ViewWarps();
 			}
 			else if(arg0.equalsIgnoreCase("warp"))
 			{
@@ -297,13 +303,15 @@ public class Prayer implements ConversationInfo
 			for(PlayerCharacter character : PlayerWrapper.getCharacters(player))
 			{
 				if(!character.canUse()) continue;
-				player.sendRawMessage(((character.isActive()) ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "  " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+				player.sendRawMessage(((character.isActive()) ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> info" + ChatColor.GRAY + " for detailed information or");
 			player.sendRawMessage(ChatColor.GRAY + "  type " + ChatColor.YELLOW + "<character name> switch" + ChatColor.GRAY + " to change your current");
 			player.sendRawMessage(ChatColor.GRAY + "  character.");
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.GRAY + "  Use " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to the main menu.");
 
 			return "";
 		}
@@ -312,7 +320,7 @@ public class Prayer implements ConversationInfo
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
 			String[] splitMsg = message.split(" ");
-			return PlayerWrapper.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
+			return splitMsg.length == 1 && splitMsg[0].equalsIgnoreCase("back") || PlayerWrapper.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
 		}
 
 		@Override
@@ -321,6 +329,10 @@ public class Prayer implements ConversationInfo
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ")[1];
 
+			if(arg0.equalsIgnoreCase("back"))
+			{
+				return new StartPrayer();
+			}
 			if(arg1.equalsIgnoreCase("info"))
 			{
 				context.setSessionData("viewing_character", arg0);

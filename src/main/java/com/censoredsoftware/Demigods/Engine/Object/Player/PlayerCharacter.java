@@ -325,6 +325,7 @@ public class PlayerCharacter
 
 	public void addInvite(DemigodsLocation location, String name)
 	{
+		if(this.invites == null) this.invites = Maps.newHashMap();
 		this.invites.put(location, name);
 	}
 
