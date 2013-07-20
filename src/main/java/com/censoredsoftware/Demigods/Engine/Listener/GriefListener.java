@@ -82,6 +82,14 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPistonExtend(BlockFromToEvent event)
+	{
+		boolean from = StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		boolean to = StructureUtility.isInRadiusWithFlag(event.getToBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		event.setCancelled(from != to);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
 		boolean in = false;
