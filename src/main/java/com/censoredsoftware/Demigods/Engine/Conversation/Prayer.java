@@ -155,7 +155,7 @@ public class Prayer implements ConversationInfo
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			return PlayerWrapper.getPlayer(player).getCurrent().hasWarps();
+			return PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().hasWarps();
 		}
 
 		@Override
