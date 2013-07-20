@@ -21,6 +21,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
+// TODO Fix for lag.
+
 public class GriefListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)

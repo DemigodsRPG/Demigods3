@@ -142,18 +142,46 @@ public class TameableWrapper
 
 	public PlayerCharacter getOwner()
 	{
+		if(this.owner == null)
+		{
+			disownPet();
+			delete();
+			return null;
+		}
+		else if(!this.owner.canUse()) return null;
 		return this.owner;
 	}
 
 	public Deity getDeity()
 	{
+		if(this.owner == null)
+		{
+			disownPet();
+			delete();
+			return null;
+		}
+		else if(!this.owner.canUse()) return null;
 		return this.owner.getDeity();
+	}
+
+	public void disownPet()
+	{
+		if(this.getEntity() == null) return;
+		((Tameable) this.getEntity()).setOwner(new AnimalTamer()
+		{
+			@Override
+			public String getName()
+			{
+				return "Disowned";
+			}
+		});
 	}
 
 	public static void disownPets(String animalTamer)
 	{
 		for(TameableWrapper wrapper : findByTamer(animalTamer))
 		{
+			if(wrapper.getEntity() == null) continue;
 			((Tameable) wrapper.getEntity()).setOwner(new AnimalTamer()
 			{
 				@Override
