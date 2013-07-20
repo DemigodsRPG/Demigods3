@@ -63,9 +63,9 @@ public class PlayerCharacter
 	@Reference
 	private PlayerCharacterInventory inventory;
 	@CollectionMap(key = String.class, value = DemigodsLocation.class)
-	private Map<String, DemigodsLocation> warps = Maps.newHashMap();
+	private Map<String, DemigodsLocation> warps;
 	@CollectionMap(key = DemigodsLocation.class, value = String.class)
-	private Map<DemigodsLocation, String> invites = Maps.newHashMap();
+	private Map<DemigodsLocation, String> invites;
 
 	void setName(String name)
 	{
@@ -302,6 +302,7 @@ public class PlayerCharacter
 
 	public void addWarp(String name, Location location)
 	{
+		if(this.warps == null) this.warps = Maps.newHashMap();
 		this.warps.put(name, DemigodsLocation.create(location));
 		save(this);
 	}
