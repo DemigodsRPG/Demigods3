@@ -198,7 +198,7 @@ class Discoball extends Ability
 
 				if(character.getMeta().isEnabledAbility(name))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 
 					discoBall(player);
 				}
