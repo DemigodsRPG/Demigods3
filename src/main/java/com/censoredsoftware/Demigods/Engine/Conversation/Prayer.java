@@ -184,6 +184,7 @@ public class Prayer implements ConversationInfo
 			else
 			{
 				player.sendRawMessage(ChatColor.GRAY + "  You have no warps!");
+				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <name>" + ChatColor.GRAY + " to create a warp at this Altar.");
 			}
 
@@ -219,6 +220,7 @@ public class Prayer implements ConversationInfo
 
 				// Message them
 				player.sendRawMessage(ChatColor.GREEN + "  Warp created!");
+				player.sendRawMessage(" ");
 			}
 			else if(arg0.equalsIgnoreCase("warp"))
 			{

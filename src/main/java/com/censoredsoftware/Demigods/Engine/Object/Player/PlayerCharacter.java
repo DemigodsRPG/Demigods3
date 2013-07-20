@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Object.Player;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -304,16 +303,23 @@ public class PlayerCharacter
 	public void addWarp(String name, Location location)
 	{
 		this.warps.put(name, DemigodsLocation.create(location));
+		save(this);
 	}
 
 	public void removeWarp(String name)
 	{
 		this.warps.remove(name);
+		save(this);
 	}
 
 	public Map<String, DemigodsLocation> getWarps()
 	{
 		return this.warps;
+	}
+
+	public boolean hasWarps()
+	{
+		return !this.warps.isEmpty();
 	}
 
 	public void addInvite(DemigodsLocation location, String name)
@@ -328,7 +334,7 @@ public class PlayerCharacter
 
 	public void clearInvites()
 	{
-		this.invites = new HashMap<DemigodsLocation, String>();
+		this.invites = Maps.newHashMap();
 		save(this);
 	}
 
@@ -337,14 +343,9 @@ public class PlayerCharacter
 		return this.invites;
 	}
 
-	public boolean hasWarps()
-	{
-		return this.warps != null && !this.warps.isEmpty();
-	}
-
 	public boolean hasInvites()
 	{
-		return this.invites != null && !this.invites.isEmpty();
+		return !this.invites.isEmpty();
 	}
 
 	/**
