@@ -169,7 +169,7 @@ class RainbowHorse extends Ability
 class Discoball extends Ability
 {
 	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 30, delay = 20, repeat = 3;
+	private static int cost = 30, delay = 30, repeat = 4;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -243,6 +243,9 @@ class Discoball extends Ability
 		if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
 		character.getMeta().subtractFavor(cost);
 		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+
+		// Cooldown
+		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
 
 		balls(player);
 
