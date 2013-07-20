@@ -343,6 +343,11 @@ public class PlayerCharacter
 		return this.invites;
 	}
 
+	public boolean hasWarps()
+	{
+		return this.warps != null && !this.warps.isEmpty();
+	}
+
 	/**
 	 * Returns the number of total kills.
 	 * 

@@ -49,7 +49,7 @@ public class Prayer implements ConversationInfo
 	 */
 	public enum Menu
 	{
-		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters());
+		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps());
 
 		private Integer id;
 		private Category category;
@@ -140,6 +140,40 @@ public class Prayer implements ConversationInfo
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
 			return Menu.getFromId(Integer.parseInt(message)).getCategory();
+		}
+	}
+
+	// Warps
+	static class ViewWarps extends ValidatingPrompt implements Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.LIGHT_PURPLE + "View Warps";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context, Player player)
+		{
+			return PlayerWrapper.getPlayer(player).getCurrent().hasWarps();
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String s)
+		{
+			return false;
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String s)
+		{
+			return null;
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			return null;
 		}
 	}
 
