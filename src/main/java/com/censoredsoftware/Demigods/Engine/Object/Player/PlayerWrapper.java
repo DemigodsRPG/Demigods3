@@ -182,7 +182,7 @@ public class PlayerWrapper
 	public PlayerCharacter getCurrent()
 	{
 		PlayerCharacter character = PlayerCharacter.load(this.current);
-		if(character.canUse()) return character;
+		if(character != null && character.canUse()) return character;
 		return null;
 	}
 

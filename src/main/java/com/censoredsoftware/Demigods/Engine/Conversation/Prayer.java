@@ -49,7 +49,7 @@ public class Prayer implements ConversationInfo
 	 */
 	public enum Menu
 	{
-		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters());
+		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps());
 
 		private Integer id;
 		private Category category;
@@ -149,13 +149,13 @@ public class Prayer implements ConversationInfo
 		@Override
 		public String getChatName()
 		{
-			return null;
+			return ChatColor.LIGHT_PURPLE + "View Warps";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context, Player player)
 		{
-			return false;
+			return PlayerWrapper.getPlayer(player).getCurrent().hasWarps();
 		}
 
 		@Override
