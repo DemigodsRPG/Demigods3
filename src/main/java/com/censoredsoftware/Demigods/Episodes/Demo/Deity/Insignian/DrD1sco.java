@@ -260,7 +260,7 @@ class Discoball extends Ability
 
 	private static void balls(Player player)
 	{
-		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 120 < 256 ? player.getLocation().getBlockY() + 120 : 256, player.getLocation().getBlockZ()), 3.0, 50))
+		for(Location location : MiscUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 60 < 256 ? player.getLocation().getBlockY() + 60 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 		{
 			spawnBall(location);
 		}
