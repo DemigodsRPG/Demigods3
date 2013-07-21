@@ -170,21 +170,6 @@ public class Prayer implements ConversationInfo
 			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps & Invites -----------------------------");
 			player.sendRawMessage(" ");
 
-			// Display notifications if available
-			if(context.getSessionData("warp_notifications") != null && !((List<TextUtility.Text>) context.getSessionData("warp_notifications")).isEmpty())
-			{
-				// Grab the notifications
-				List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
-
-				// List them
-				for(TextUtility.Text notification : notifications)
-				{
-					player.sendRawMessage("  " + Demigods.text.getText(notification));
-				}
-
-				player.sendRawMessage(" ");
-			}
-
 			if(character.hasWarps() || character.hasInvites())
 			{
 				player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) at this location.");
@@ -210,6 +195,22 @@ public class Prayer implements ConversationInfo
 				player.sendRawMessage(ChatColor.RED + "    You have no warps or invites!");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "new <warp name>" + ChatColor.GRAY + " to create a warp at this Altar.");
+			}
+
+			// Display notifications if available
+			if(context.getSessionData("warp_notifications") != null && !((List<TextUtility.Text>) context.getSessionData("warp_notifications")).isEmpty())
+			{
+				// Grab the notifications
+				List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
+
+				player.sendRawMessage(" ");
+
+				// List them
+				for(TextUtility.Text notification : notifications)
+				{
+					player.sendRawMessage("  " + Demigods.text.getText(notification));
+					notifications.remove(notification);
+				}
 			}
 
 			return "";
@@ -511,6 +512,7 @@ public class Prayer implements ConversationInfo
 					}
 
 					// Ask for a new name
+					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.AQUA + "  Enter a different name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 				}
 
