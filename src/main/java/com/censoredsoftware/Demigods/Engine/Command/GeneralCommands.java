@@ -1,21 +1,30 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.google.common.collect.Lists;
 
-public class GeneralCommands implements CommandExecutor
+public class GeneralCommands extends DemigodsCommand
 {
+	@Override
+	public List<String> getCommands()
+	{
+		return Lists.newArrayList("check", "owner");
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
 	{

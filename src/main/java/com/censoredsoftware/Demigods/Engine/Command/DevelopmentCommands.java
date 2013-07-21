@@ -1,8 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
+import java.util.List;
+
 import org.bukkit.*;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
@@ -12,14 +13,22 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
+import com.google.common.collect.Lists;
 
-public class DevelopmentCommands implements CommandExecutor
+public class DevelopmentCommands extends DemigodsCommand
 {
+	@Override
+	public List<String> getCommands()
+	{
+		return Lists.newArrayList("test1", "test2", "test3", "hspawn", "soundtest", "removechar");
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
 	{

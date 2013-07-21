@@ -8,9 +8,9 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Command.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
 import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
+import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
 import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
@@ -132,7 +133,7 @@ public class Demigods
 		// Finish loading the plugin based on the game data.
 		loadDepends(instance);
 		loadListeners(instance);
-		loadCommands(instance);
+		loadCommands();
 
 		// Finally, regenerate structures
 		StructureUtility.regenerateStructures();
@@ -203,24 +204,11 @@ public class Demigods
 		}
 	}
 
-	protected static void loadCommands(DemigodsPlugin instance)
+	protected static void loadCommands()
 	{
-		// Main Demigods Command
-		instance.getCommand("demigods").setExecutor(new DemigodsCommand());
-
-		// General Commands
-		GeneralCommands genCommands = new GeneralCommands();
-		instance.getCommand("check").setExecutor(genCommands);
-		instance.getCommand("owner").setExecutor(genCommands);
-
-		// Development/Backend Commands
-		DevelopmentCommands devCommands = new DevelopmentCommands();
-		instance.getCommand("test1").setExecutor(devCommands);
-		instance.getCommand("test2").setExecutor(devCommands);
-		instance.getCommand("test3").setExecutor(devCommands);
-		instance.getCommand("hspawn").setExecutor(devCommands);
-		instance.getCommand("soundtest").setExecutor(devCommands);
-		instance.getCommand("removechar").setExecutor(devCommands);
+		DemigodsCommand.registerCommand(new MainCommand());
+		DemigodsCommand.registerCommand(new GeneralCommands());
+		DemigodsCommand.registerCommand(new DevelopmentCommands());
 	}
 
 	protected static void loadDepends(DemigodsPlugin instance)
