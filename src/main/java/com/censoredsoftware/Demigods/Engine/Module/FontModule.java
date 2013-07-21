@@ -1,16 +1,19 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.Demigods.Engine.Module;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class FontUtility
+public class FontModule
 {
-	private static List<Integer> charWidths = Lists.newArrayList();
-	private static List<Character> charMapIndex = Lists.newArrayList();
+	private List<Integer> charWidths;
+	private List<Character> charMapIndex;
 
-	public FontUtility()
+	public FontModule()
 	{
+		charWidths = Lists.newArrayList();
+		charMapIndex = Lists.newArrayList();
+
 		charWidths.add(0);
 		charMapIndex.add(null);
 
@@ -37,7 +40,7 @@ public class FontUtility
 		overrideCharWidths(charWidths1, 1);
 	}
 
-	private static void overrideCharWidths(int[] widthsArray, int toVal)
+	private void overrideCharWidths(int[] widthsArray, int toVal)
 	{
 		if((widthsArray != null) && (widthsArray.length > 0))
 		{
@@ -48,7 +51,7 @@ public class FontUtility
 		}
 	}
 
-	public static int getStringWidth(String string)
+	public int getStringWidth(String string)
 	{
 		int stringWidth = 0;
 		String inputString = string.replaceAll("\u00A7.", "");
@@ -64,24 +67,24 @@ public class FontUtility
 		return stringWidth;
 	}
 
-	public static int getCharWidth(char c)
+	public int getCharWidth(char c)
 	{
 		return getCharWidth(c, 5);
 	}
 
-	public static int getCharWidth(char c, int defaultVal)
+	public int getCharWidth(char c, int defaultVal)
 	{
 		int k = charMapIndex.indexOf(c);
 		if(c != '\247' && k >= 0) return charWidths.get(k);
 		return defaultVal;
 	}
 
-	public static int getChatBoxWidth()
+	public int getChatBoxWidth()
 	{
 		return 318;
 	}
 
-	public static int getRemainingChatWidth(String string)
+	public int getRemainingChatWidth(String string)
 	{
 		return(getChatBoxWidth() - getStringWidth(string));
 	}

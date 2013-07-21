@@ -8,7 +8,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.Engine.Utility.FontUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 /**
@@ -18,6 +17,7 @@ public class MessageModule
 {
 	private static Logger log = Logger.getLogger("Minecraft");
 	private Plugin plugin;
+	private FontModule font;
 	private boolean tag;
 	private String pluginName;
 
@@ -26,10 +26,11 @@ public class MessageModule
 	 * 
 	 * @param instance The current instance of the Plugin running this module.
 	 */
-	public MessageModule(Plugin instance, boolean tag)
+	public MessageModule(Plugin instance, FontModule font, boolean tag)
 	{
 		this.plugin = instance;
 		this.pluginName = plugin.getName();
+		this.font = font;
 		this.tag = tag;
 	}
 
@@ -51,12 +52,12 @@ public class MessageModule
 	 * @param title the title to return
 	 * @return String
 	 */
-	public static String chatTitle(String title)
+	public String chatTitle(String title)
 	{
-		int remaining = FontUtility.getRemainingChatWidth(title + " " + UnicodeUtility.rightwardArrow() + " " + " ");
-		int dashLength = FontUtility.getCharWidth('-');
+		int remaining = font.getRemainingChatWidth(title + " " + UnicodeUtility.rightwardArrow() + " " + " ");
+		int dashLength = font.getCharWidth('-');
 		String dashes = "";
-		for(int i = 0; i + remaining >= FontUtility.getChatBoxWidth(); i += dashLength)
+		for(int i = 0; i + remaining >= font.getChatBoxWidth(); i += dashLength)
 			dashes += "-";
 		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
 	}

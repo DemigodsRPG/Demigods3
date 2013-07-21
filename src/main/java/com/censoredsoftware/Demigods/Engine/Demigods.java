@@ -14,8 +14,8 @@ import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
 import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
-import com.censoredsoftware.Demigods.Engine.Module.BukkitDevModule;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
+import com.censoredsoftware.Demigods.Engine.Module.FontModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
@@ -36,13 +36,11 @@ public class Demigods
 
 	// Public Modules
 	public static ConfigModule config;
+	public static FontModule font;
 	public static MessageModule message;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
-
-	// Protected Modules
-	protected static BukkitDevModule update;
 
 	// The Game Data
 	protected static Deque<Deity> deities;
@@ -75,10 +73,8 @@ public class Demigods
 
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
-		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
-
-		// Setup protected modules.
-		// update = new BukkitDevModule(instance, "http://dev.bukkit.org/server-mods/demigods/files.rss", "/dg update", "demigods.update", config.getSettingBoolean("update.auto"), config.getSettingBoolean("update.notify"), 10);
+		font = new FontModule();
+		message = new MessageModule(instance, font, config.getSettingBoolean("misc.tag_messages"));
 
 		// Define the game data.
 		Demigods.deities = new ArrayDeque<Deity>()
@@ -121,9 +117,6 @@ public class Demigods
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
-
-		// Initialize font data.
-		new FontUtility();
 
 		// Initialize metrics.
 		try
