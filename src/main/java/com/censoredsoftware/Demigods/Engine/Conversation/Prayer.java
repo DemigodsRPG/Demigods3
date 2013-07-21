@@ -475,6 +475,7 @@ public class Prayer implements ConversationInfo
 					player.sendRawMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 				}
 				else
+				// TODO Doesn't work - HQM
 				{
 					// Grab the errors.
 					List<Error> errors = (List<Error>) context.getSessionData("name_errors");
