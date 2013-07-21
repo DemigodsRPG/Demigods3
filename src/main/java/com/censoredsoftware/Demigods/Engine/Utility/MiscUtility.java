@@ -51,22 +51,6 @@ public class MiscUtility
 	}
 
 	/**
-	 * Creates a title ready for use in the chat with the following format:
-	 * > Title Here -------------------------------------
-	 * 
-	 * @param title the title to return
-	 * @return String
-	 */
-	public static String chatTitle(String title)
-	{
-		int chatLength = 50;
-		String dashes = "";
-		for(int i = 0; i < chatLength - title.length(); i++)
-			dashes += "-";
-		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
-	}
-
-	/**
 	 * Generates a random string with a length of <code>length</code>.
 	 * 
 	 * @param length the length of the generated string.

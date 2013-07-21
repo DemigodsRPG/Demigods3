@@ -122,6 +122,9 @@ public class Demigods
 			throw new DemigodsStartupException();
 		}
 
+		// Initialize font data.
+		new FontUtility();
+
 		// Initialize metrics.
 		try
 		{

@@ -8,6 +8,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.Demigods.Engine.Utility.FontUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+
 /**
  * Module to handle all common messages sent to players or the console.
  */
@@ -39,6 +42,23 @@ public class MessageModule
 	{
 		if(tag) sender.sendMessage(ChatColor.RED + "[" + pluginName + "] " + ChatColor.RESET + msg);
 		else sender.sendMessage(msg);
+	}
+
+	/**
+	 * Creates a title ready for use in the chat with the following format:
+	 * > Title Here -------------------------------------
+	 * 
+	 * @param title the title to return
+	 * @return String
+	 */
+	public static String chatTitle(String title)
+	{
+		int remaining = FontUtility.getRemainingChatWidth(title + " " + UnicodeUtility.rightwardArrow() + " " + " ");
+		int dashLength = FontUtility.getCharWidth('-');
+		String dashes = "";
+		for(int i = 0; i + remaining >= FontUtility.getChatBoxWidth(); i += dashLength)
+			dashes += "-";
+		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
 	}
 
 	/**
