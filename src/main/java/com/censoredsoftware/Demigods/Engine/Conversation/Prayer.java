@@ -170,6 +170,21 @@ public class Prayer implements ConversationInfo
 			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Warps & Invites -----------------------------");
 			player.sendRawMessage(" ");
 
+			// Display notifications if available
+			if(context.getSessionData("warp_notifications") != null && !((List<TextUtility.Text>) context.getSessionData("warp_notifications")).isEmpty())
+			{
+				// Grab the notifications
+				List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
+
+				// List them
+				for(TextUtility.Text notification : notifications)
+				{
+					player.sendRawMessage("  " + Demigods.text.getText(notification));
+				}
+
+				player.sendRawMessage(" ");
+			}
+
 			if(character.hasWarps() || character.hasInvites())
 			{
 				player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) at this location.");
@@ -209,20 +224,22 @@ public class Prayer implements ConversationInfo
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null || PlayerCharacter.getCharacterByName(arg1) != null) && character.getWarps().containsKey(arg2.toLowerCase())));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null || PlayerCharacter.charExists(arg1)) && character.getWarps().containsKey(arg2.toLowerCase())));
 		}
 
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			// TODO: Add notifications of things like invites sent, warp created, etc.
-
 			// Define variables
 			Player player = (Player) context.getForWhom();
 			PlayerCharacter character = PlayerWrapper.getPlayer((Player) context.getForWhom()).getCurrent();
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
+
+			// Create and save the notification list
+			context.setSessionData("warp_notifications", Lists.newArrayList());
+			List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
 
 			MiscUtility.clearRawChat(player);
 
@@ -233,6 +250,9 @@ public class Prayer implements ConversationInfo
 			}
 			if(arg0.equalsIgnoreCase("new"))
 			{
+				// Save notification
+				notifications.add(TextUtility.Text.NOTIFICATION_WARP_CREATED);
+
 				// Add the warp
 				character.addWarp(arg1, player.getLocation());
 
@@ -241,6 +261,9 @@ public class Prayer implements ConversationInfo
 			}
 			else if(arg0.equalsIgnoreCase("delete"))
 			{
+				// Save notification
+				notifications.add(TextUtility.Text.NOTIFICATION_WARP_DELETED);
+
 				// Remove the warp/invite
 				if(character.getWarps().containsKey(arg1.toLowerCase()))
 				{
@@ -256,6 +279,9 @@ public class Prayer implements ConversationInfo
 			}
 			else if(arg0.equalsIgnoreCase("invite"))
 			{
+				// Save notification
+				notifications.add(TextUtility.Text.NOTIFICATION_INVITE_SENT);
+
 				// Define variables
 				PlayerCharacter invitee = PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
 				Location warp = character.getWarps().get(arg2).toLocation();
@@ -475,7 +501,7 @@ public class Prayer implements ConversationInfo
 				}
 				else
 				{
-					// Grab the errors.
+					// Grab the errors
 					List<TextUtility.Text> errors = (List<TextUtility.Text>) context.getSessionData("name_errors");
 
 					// List the errors
