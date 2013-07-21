@@ -26,6 +26,7 @@ public abstract class DemigodsCommand implements TabExecutor
 				{
 					PlayerWrapper wrapper = PlayerWrapper.getPlayer(online);
 					if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
+					else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName()); 
 				}
 			}
 		};
