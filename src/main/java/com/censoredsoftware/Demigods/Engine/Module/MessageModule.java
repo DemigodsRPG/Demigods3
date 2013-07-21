@@ -56,10 +56,9 @@ public class MessageModule
 	{
 		int remaining = font.getRemainingChatWidth(UnicodeUtility.rightwardArrow() + title + "   ");
 		String dashes = "";
-		for(int i = 0; i + remaining >= font.getChatBoxWidth(); i += 6)
+		for(int i = 0; i + remaining < font.getChatBoxWidth(); i += 6)
 		{
 			dashes += "-";
-			broadcast("" + i); // TODO Testing.
 		}
 
 		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
