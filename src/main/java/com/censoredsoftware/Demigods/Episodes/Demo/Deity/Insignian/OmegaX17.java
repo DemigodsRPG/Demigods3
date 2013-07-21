@@ -92,7 +92,7 @@ class SplosionWalking extends Ability
 
 			public void doIt(Player player)
 			{
-				player.getWorld().createExplosion(player.getLocation(), 400F, false);
+				player.getWorld().createExplosion(player.getLocation(), 1F, false);
 			}
 		});
 	}
