@@ -477,12 +477,12 @@ public class Prayer implements ConversationInfo
 				// TODO Doesn't work - HQM
 				{
 					// Grab the errors.
-					List<Error> errors = (List<Error>) context.getSessionData("name_errors");
+					List<TextUtility.Text> errors = (List<TextUtility.Text>) context.getSessionData("name_errors");
 
 					// List the errors
-					for(Error error : errors)
+					for(TextUtility.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + error.getMessage());
+						player.sendRawMessage(ChatColor.RED + "  " + error.toString());
 					}
 
 					// Ask for a new name
