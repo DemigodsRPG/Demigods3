@@ -492,7 +492,7 @@ public class Prayer implements ConversationInfo
 			{
 				Player player = (Player) context.getForWhom();
 				MiscUtility.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
+				player.sendRawMessage(ChatColor.YELLOW + MiscUtility.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
 				if(context.getSessionData("name_errors") == null)

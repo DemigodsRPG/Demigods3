@@ -61,8 +61,8 @@ public class MiscUtility
 	{
 		int chatLength = 53;
 		String dashes = "";
-		for(int i = 0; i < chatLength - 4 - title.length(); i++)
-			dashes += "+";
+		for(int i = 0; i < chatLength - title.length(); i++)
+			dashes += "-";
 		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
 	}
 
