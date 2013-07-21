@@ -474,7 +474,6 @@ public class Prayer implements ConversationInfo
 					player.sendRawMessage(ChatColor.AQUA + "  Enter a name: " + ChatColor.GRAY + "(Alpha-Numeric Only)");
 				}
 				else
-				// TODO Doesn't work - HQM
 				{
 					// Grab the errors.
 					List<TextUtility.Text> errors = (List<TextUtility.Text>) context.getSessionData("name_errors");
@@ -482,7 +481,7 @@ public class Prayer implements ConversationInfo
 					// List the errors
 					for(TextUtility.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + error.toString());
+						player.sendRawMessage(ChatColor.RED + "  " + Demigods.text.getText(error));
 					}
 
 					// Ask for a new name
