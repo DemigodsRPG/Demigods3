@@ -225,7 +225,7 @@ public class Prayer implements ConversationInfo
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null || PlayerCharacter.charExists(arg1)) && character.getWarps().containsKey(arg2.toLowerCase())));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (PlayerCharacter.charExists(arg1) || PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && character.getWarps().containsKey(arg2.toLowerCase())));
 		}
 
 		@Override
@@ -284,7 +284,7 @@ public class Prayer implements ConversationInfo
 				notifications.add(TextUtility.Text.NOTIFICATION_INVITE_SENT);
 
 				// Define variables
-				PlayerCharacter invitee = PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
+				PlayerCharacter invitee = PlayerCharacter.charExists(arg1) ? PlayerCharacter.getCharacterByName(arg1) : PlayerWrapper.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
 				Location warp = character.getWarps().get(arg2).toLocation();
 
 				// Add the invite
