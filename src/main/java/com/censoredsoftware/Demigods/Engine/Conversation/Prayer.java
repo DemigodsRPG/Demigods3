@@ -344,7 +344,7 @@ public class Prayer implements ConversationInfo
 
 			MiscUtility.clearRawChat(player);
 
-			player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Character ---------------------------------");
+			player.sendRawMessage(ChatColor.YELLOW + MiscUtility.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
@@ -409,7 +409,7 @@ public class Prayer implements ConversationInfo
 				MiscUtility.clearRawChat(player);
 
 				// Send the player the info
-				player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Viewing Character ---------------------------------");
+				player.sendRawMessage(ChatColor.YELLOW + MiscUtility.chatTitle("Viewing Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
@@ -601,7 +601,7 @@ public class Prayer implements ConversationInfo
 				Player player = (Player) context.getForWhom();
 
 				MiscUtility.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + " " + UnicodeUtility.rightwardArrow() + " Creating Character --------------------------------");
+				player.sendRawMessage(ChatColor.YELLOW + MiscUtility.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -715,7 +715,7 @@ public class Prayer implements ConversationInfo
 			MiscUtility.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendRawMessage(ChatColor.GREEN + " " + UnicodeUtility.rightwardArrow() + " Confirming Character -------------------------------");
+			player.sendRawMessage(ChatColor.YELLOW + MiscUtility.chatTitle("Confirming Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");

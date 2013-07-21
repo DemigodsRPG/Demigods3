@@ -59,7 +59,7 @@ public class MiscUtility
 	 */
 	public static String chatTitle(String title)
 	{
-		int chatLength = 53;
+		int chatLength = 50;
 		String dashes = "";
 		for(int i = 0; i < chatLength - title.length(); i++)
 			dashes += "-";
