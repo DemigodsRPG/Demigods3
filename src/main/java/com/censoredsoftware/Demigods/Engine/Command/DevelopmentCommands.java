@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
@@ -43,16 +42,8 @@ public class DevelopmentCommands extends DemigodsCommand
 
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		Player player = (Player) sender;
-
-		player.sendMessage("Removing data...");
-
-		for(Battle battle : Battle.getAll())
-		{
-			battle.delete();
-		}
-
-		player.sendMessage("Data removed!");
+		if(args.length != 1) return false;
+		sender.sendMessage("Remaining: " + Demigods.font.getRemainingChatWidth(args[0]));
 
 		return true;
 	}
