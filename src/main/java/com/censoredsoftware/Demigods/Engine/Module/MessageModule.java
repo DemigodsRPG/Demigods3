@@ -54,11 +54,14 @@ public class MessageModule
 	 */
 	public String chatTitle(String title)
 	{
-		int remaining = font.getRemainingChatWidth(title + " " + UnicodeUtility.rightwardArrow() + " " + " ");
-		int dashLength = font.getCharWidth('-');
+		int remaining = font.getRemainingChatWidth(UnicodeUtility.rightwardArrow() + title + "   ");
 		String dashes = "";
-		for(int i = 0; i + remaining >= font.getChatBoxWidth(); i += dashLength)
+		for(int i = 0; i + remaining >= font.getChatBoxWidth(); i += 6)
+		{
 			dashes += "-";
+			broadcast("" + i); // TODO Testing.
+		}
+
 		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
 	}
 
