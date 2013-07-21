@@ -67,7 +67,7 @@ public class OmegaX17 extends Deity
 class SplosionWalking extends Ability
 {
 	private static String deity = "OmegaX17", name = "Explosion Walking", command = null, permission = "demigods.insignian.omega";
-	private static int cost = 0, delay = 0, repeat = 1;
+	private static int cost = 0, delay = 0, repeat = 20;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -92,7 +92,7 @@ class SplosionWalking extends Ability
 
 			public void doIt(Player player)
 			{
-				player.getWorld().createExplosion(player.getLocation(), 40F, false);
+				player.getWorld().createExplosion(player.getLocation(), 400F, false);
 			}
 		});
 	}
