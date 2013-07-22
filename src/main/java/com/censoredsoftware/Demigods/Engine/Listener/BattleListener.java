@@ -33,7 +33,7 @@ public class BattleListener implements Listener
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
 
-		if(!BattleUtility.existsNear(midpoint))
+		if(!BattleUtility.existsNear(midpoint) && !BattleUtility.existsInRadius(midpoint))
 		{
 			// Create new battle
 			Battle battle = Battle.create(damagerParticipant, damageeParticipant);
