@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -70,7 +71,7 @@ public class OmegaX17 extends Deity
 class SplosionWalking extends Ability
 {
 	private static String deity = "OmegaX17", name = "Explosion Walking", command = null, permission = "demigods.insignian.omega";
-	private static int cost = 0, delay = 0, repeat = 20;
+	private static int cost = 0, delay = 0, repeat = 30;
 	private static AbilityInfo info;
 	private static List<String> details = new ArrayList<String>()
 	{
@@ -95,7 +96,10 @@ class SplosionWalking extends Ability
 
 			public void doIt(Player player)
 			{
-				player.getWorld().createExplosion(player.getLocation(), 1F, false);
+				for(int i = 0; i < MiscUtility.generateIntRange(4, 30); i++)
+				{
+					player.getWorld().spawnEntity(player.getLocation(), EntityType.PRIMED_TNT);
+				}
 			}
 		});
 	}
@@ -160,7 +164,7 @@ class Equalizer extends Ability
 				{
 					chatEvent.setCancelled(true);
 					equalizing.remove(player);
-					player.sendMessage(ChatColor.YELLOW + "Hooray!  You may now continue being OP.");
+					player.sendMessage(ChatColor.YELLOW + "Hooray! You may now continue being OP.");
 				}
 			}
 
