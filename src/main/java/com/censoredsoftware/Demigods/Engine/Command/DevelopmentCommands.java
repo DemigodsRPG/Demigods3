@@ -50,7 +50,8 @@ public class DevelopmentCommands extends DemigodsCommand
 
 		for(int i = 0; i < 100; i++)
 		{
-			((Creature) world.spawnEntity(location, EntityType.BAT)).setTarget(player);
+			Creature creature = (Creature) world.spawnEntity(location.add(MiscUtility.generateIntRange(1, 15), MiscUtility.generateIntRange(1, 15), MiscUtility.generateIntRange(1, 15)), EntityType.CAVE_SPIDER);
+			creature.setTarget(player);
 		}
 
 		return true;
