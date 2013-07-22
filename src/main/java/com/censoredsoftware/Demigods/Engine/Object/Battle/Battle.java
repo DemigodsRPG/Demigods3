@@ -153,6 +153,7 @@ public class Battle
 
 		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended.");
 
+		getMeta().delete();
 		delete();
 	}
 
