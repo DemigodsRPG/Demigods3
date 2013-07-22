@@ -49,7 +49,7 @@ public class DevelopmentCommands extends DemigodsCommand
 
 		for(Location point : MiscUtility.getCirclePoints(player.getLocation(), 10, 100))
 		{
-			Creature creature = (Creature) world.spawnEntity(point, EntityType.CHICKEN);
+			Creature creature = (Creature) world.spawnEntity(point, EntityType.CAVE_SPIDER);
 			creature.setTarget(player);
 		}
 
