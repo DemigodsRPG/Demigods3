@@ -6,6 +6,8 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -42,8 +44,14 @@ public class DevelopmentCommands extends DemigodsCommand
 
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
-		if(args.length != 1) return false;
-		sender.sendMessage("Remaining: " + Demigods.font.getRemainingChatWidth(args[0]));
+		Player player = (Player) sender;
+		Location location = player.getLocation();
+		World world = player.getWorld();
+
+		for(int i = 0; i < 100; i++)
+		{
+			((Creature) world.spawnEntity(location, EntityType.BAT)).setTarget(player);
+		}
 
 		return true;
 	}
