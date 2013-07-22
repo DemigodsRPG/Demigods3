@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
@@ -23,7 +24,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Model
-public class PlayerCharacter
+public class PlayerCharacter implements BattleParticipant
 {
 	@Id
 	private Long id;
@@ -253,6 +254,18 @@ public class PlayerCharacter
 	public Location getLocation()
 	{
 		return this.location.toLocation();
+	}
+
+	public Location getCurrentLocation()
+	{
+		if(getOfflinePlayer().isOnline()) return getOfflinePlayer().getPlayer().getLocation();
+		return getLocation();
+	}
+
+	@Override
+	public PlayerCharacter getRelatedCharacter()
+	{
+		return this;
 	}
 
 	public Integer getLevel()

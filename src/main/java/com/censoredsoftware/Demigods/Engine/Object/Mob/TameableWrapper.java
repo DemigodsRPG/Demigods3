@@ -4,18 +4,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Sets;
 
 @Model
-public class TameableWrapper
+public class TameableWrapper implements BattleParticipant
 {
 	@Id
 	private Long Id;
@@ -162,6 +164,24 @@ public class TameableWrapper
 		}
 		else if(!this.owner.canUse()) return null;
 		return this.owner.getDeity();
+	}
+
+	@Override
+	public Long getId()
+	{
+		return this.Id;
+	}
+
+	@Override
+	public Location getCurrentLocation()
+	{
+		return getEntity().getLocation();
+	}
+
+	@Override
+	public PlayerCharacter getRelatedCharacter()
+	{
+		return getOwner();
 	}
 
 	public void disownPet()

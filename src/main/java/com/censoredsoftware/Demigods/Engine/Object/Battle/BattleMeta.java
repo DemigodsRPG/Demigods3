@@ -1,11 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
+import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -17,18 +18,20 @@ public class BattleMeta
 	private Long Id;
 	@CollectionSet(of = Long.class)
 	private Set<Long> involvedPlayers;
+	@CollectionSet(of = Long.class)
+	private Set<Long> involvedTameable;
 	@CollectionMap(key = Long.class, value = Integer.class)
 	private Map<Long, Integer> kills;
 	@CollectionMap(key = Long.class, value = Integer.class)
 	private Map<Long, Integer> deaths;
-	@CollectionMap(key = DemigodsLocation.class, value = Integer.class)
-	private Map<DemigodsLocation, Integer> locations;
 	@Reference
 	@Indexed
 	private PlayerCharacter startedBy;
 
-	public static BattleMeta create(PlayerCharacter character)
+	public static BattleMeta create(BattleParticipant participant)
 	{
+		PlayerCharacter character = participant.getRelatedCharacter();
+
 		BattleMeta meta = new BattleMeta();
 		meta.initialize();
 		meta.setStarter(character);
@@ -47,23 +50,27 @@ public class BattleMeta
 		this.kills = Maps.newHashMap();
 		this.deaths = Maps.newHashMap();
 		this.involvedPlayers = Sets.newHashSet();
+		this.involvedTameable = Sets.newHashSet();
 	}
 
-	public void addParticipant(PlayerCharacter character)
+	public void addParticipant(BattleParticipant participant)
 	{
-		this.involvedPlayers.add(character.getId());
+		if(participant instanceof PlayerCharacter) this.involvedPlayers.add(participant.getId());
+		else this.involvedTameable.add(participant.getId());
 		save(this);
 	}
 
-	public void addKill(PlayerCharacter character)
+	public void addKill(BattleParticipant participant)
 	{
+		PlayerCharacter character = participant.getRelatedCharacter();
 		if(this.kills.containsKey(character.getId())) this.kills.put(character.getId(), this.kills.get(character.getId() + 1));
 		else this.kills.put(character.getId(), 1);
 		save(this);
 	}
 
-	public void addDeath(PlayerCharacter character)
+	public void addDeath(BattleParticipant participant)
 	{
+		PlayerCharacter character = participant.getRelatedCharacter();
 		if(this.deaths.containsKey(character.getId())) this.deaths.put(character.getId(), this.deaths.get(character.getId() + 1));
 		else this.deaths.put(character.getId(), 1);
 		save(this);
@@ -74,9 +81,21 @@ public class BattleMeta
 		return this.startedBy;
 	}
 
-	public Set<Long> getParticipants()
+	public Set<BattleParticipant> getParticipants()
 	{
-		return this.involvedPlayers;
+		return new HashSet<BattleParticipant>()
+		{
+			{
+				for(long Id : involvedPlayers)
+				{
+					add(PlayerCharacter.load(Id));
+				}
+				for(long Id : involvedTameable)
+				{
+					add(TameableWrapper.load(Id));
+				}
+			}
+		};
 	}
 
 	public long getId()

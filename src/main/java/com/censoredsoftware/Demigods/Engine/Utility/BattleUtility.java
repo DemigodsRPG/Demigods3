@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
@@ -24,7 +25,7 @@ public class BattleUtility
 
 	public static boolean existsNear(Location location)
 	{
-		return getInRadius(location) != null;
+		return getNear(location) != null;
 	}
 
 	public static Battle getNear(Location location)
@@ -40,6 +41,22 @@ public class BattleUtility
 	public static void battleBorder(Battle battle)
 	{
 		if(!SpigotUtility.runningSpigot()) return;
-		SpigotUtility.drawCircle(battle.getStartLocation(), Effect.MOBSPAWNER_FLAMES, 16, 120);
+		SpigotUtility.drawCircle(battle.getStartLocation(), Effect.MOBSPAWNER_FLAMES, battle.getRange(), 120);
+	}
+
+	public static Location randomBorderLocation(Battle battle)
+	{
+		Location target = MiscUtility.getCirclePoints(battle.getStartLocation(), battle.getRange() - 0.5, 20).get(MiscUtility.generateIntRange(0, 19));
+
+		Vector direction = target.toVector().subtract(battle.getStartLocation().toVector()).normalize();
+		double X = direction.getX();
+		double Y = direction.getY();
+		double Z = direction.getZ();
+
+		// Now change the angle
+		Location changed = target.clone();
+		changed.setYaw(180 - MiscUtility.toDegree(Math.atan2(X, Y)));
+		changed.setPitch(90 - MiscUtility.toDegree(Math.acos(Z)));
+		return changed;
 	}
 }

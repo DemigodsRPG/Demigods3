@@ -152,6 +152,8 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
+		PlayerCharacter loggingOff = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
+		if(loggingOff != null) loggingOff.setLocation(event.getPlayer().getLocation());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

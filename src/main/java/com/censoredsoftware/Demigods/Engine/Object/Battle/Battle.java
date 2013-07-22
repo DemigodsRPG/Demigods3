@@ -8,7 +8,6 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 
 @Model
 public class Battle
@@ -28,14 +27,14 @@ public class Battle
 	@Indexed
 	private long startTime;
 
-	public static Battle create(PlayerCharacter damager, PlayerCharacter damaged)
+	public static Battle create(BattleParticipant damager, BattleParticipant damaged)
 	{
 		Battle battle = new Battle();
-		battle.setStartLocation(damager.getOfflinePlayer().getPlayer().getLocation().toVector().getMidpoint(damaged.getOfflinePlayer().getPlayer().getLocation().toVector()).toLocation(damager.getOfflinePlayer().getPlayer().getWorld()));
+		battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 		battle.setStartTime(System.currentTimeMillis());
 
 		int default_range = Demigods.config.getSettingInt("battles.min_range");
-		double range = damager.getOfflinePlayer().getPlayer().getLocation().distance(damaged.getOfflinePlayer().getPlayer().getLocation());
+		double range = damager.getCurrentLocation().distance(damaged.getCurrentLocation());
 		if(range < default_range) battle.setRange(default_range);
 		else battle.setRange(range);
 

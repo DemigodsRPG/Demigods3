@@ -1,14 +1,16 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class MiscUtility
 {
@@ -259,13 +261,13 @@ public class MiscUtility
 		return getFloorBelowLocation(location.getBlock().getRelative(BlockFace.DOWN).getLocation());
 	}
 
-	public static Set<Location> getCirclePoints(Location center, final double radius, final int points)
+	public static List<Location> getCirclePoints(Location center, final double radius, final int points)
 	{
 		final World world = center.getWorld();
 		final double X = center.getX();
 		final double Y = center.getY();
 		final double Z = center.getZ();
-		return new HashSet<Location>()
+		return new ArrayList<Location>()
 		{
 			{
 				for(int i = 0; i < points; i++)
@@ -276,5 +278,16 @@ public class MiscUtility
 				}
 			}
 		};
+	}
+
+	public static float toDegree(double angle)
+	{
+		return (float) Math.toDegrees(angle);
+	}
+
+	public static Vector getVector(Entity entity)
+	{
+		if(entity instanceof Player) return ((Player) entity).getEyeLocation().toVector();
+		return entity.getLocation().toVector();
 	}
 }
