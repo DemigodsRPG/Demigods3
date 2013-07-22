@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import redis.clients.johm.*;
@@ -24,6 +25,10 @@ public class Battle
 	@Attribute
 	private long duration;
 	@Attribute
+	private int minKills;
+	@Attribute
+	private int maxKills;
+	@Attribute
 	@Indexed
 	private long startTime;
 
@@ -39,6 +44,8 @@ public class Battle
 		else battle.setRange(range);
 
 		battle.setDuration(Demigods.config.getSettingInt("battles.min_duration") * 1000);
+		battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
+		battle.setMaxKills(Demigods.config.getSettingInt("battles.max_kills"));
 
 		BattleMeta meta = BattleMeta.create(damager);
 		meta.addParticipant(damager);
@@ -61,6 +68,18 @@ public class Battle
 	public void setDuration(long duration)
 	{
 		this.duration = duration;
+	}
+
+	public void setMinKills(int kills)
+	{
+		this.minKills = kills;
+		save(this);
+	}
+
+	public void setMaxKills(int kills)
+	{
+		this.maxKills = kills;
+		save(this);
 	}
 
 	void setStartLocation(Location location)
@@ -86,6 +105,16 @@ public class Battle
 	public long getDuration()
 	{
 		return this.duration;
+	}
+
+	public int getMinKills()
+	{
+		return this.minKills;
+	}
+
+	public int getMaxKills()
+	{
+		return this.maxKills;
 	}
 
 	public BattleMeta getMeta()
@@ -116,6 +145,15 @@ public class Battle
 	public static void save(Battle battle)
 	{
 		JOhm.save(battle);
+	}
+
+	public void end()
+	{
+		// TODO
+
+		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended.");
+
+		delete();
 	}
 
 	public void delete()

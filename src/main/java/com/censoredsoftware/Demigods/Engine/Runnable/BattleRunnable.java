@@ -12,7 +12,7 @@ public class BattleRunnable extends BukkitRunnable
 	{
 		for(Battle battle : Battle.getAll())
 		{
-			if(battle.getStartTime() + (battle.getDuration()) <= System.currentTimeMillis()) battle.delete();
+			if(battle.getMeta().getKills() > battle.getMaxKills() || (battle.getStartTime() + (battle.getDuration()) <= System.currentTimeMillis() && battle.getMeta().getKills() > battle.getMinKills())) battle.end();
 			else BattleUtility.battleBorder(battle);
 		}
 	}

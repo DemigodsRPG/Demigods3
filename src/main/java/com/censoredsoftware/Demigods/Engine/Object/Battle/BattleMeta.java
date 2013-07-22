@@ -20,6 +20,8 @@ public class BattleMeta
 	private Set<Long> involvedPlayers;
 	@CollectionSet(of = Long.class)
 	private Set<Long> involvedTameable;
+	@Attribute
+	private int killCounter;
 	@CollectionMap(key = Long.class, value = Integer.class)
 	private Map<Long, Integer> kills;
 	@CollectionMap(key = Long.class, value = Integer.class)
@@ -51,6 +53,7 @@ public class BattleMeta
 		this.deaths = Maps.newHashMap();
 		this.involvedPlayers = Sets.newHashSet();
 		this.involvedTameable = Sets.newHashSet();
+		this.killCounter = 0;
 	}
 
 	public void addParticipant(BattleParticipant participant)
@@ -62,6 +65,7 @@ public class BattleMeta
 
 	public void addKill(BattleParticipant participant)
 	{
+		this.killCounter += 1;
 		PlayerCharacter character = participant.getRelatedCharacter();
 		if(this.kills.containsKey(character.getId())) this.kills.put(character.getId(), this.kills.get(character.getId() + 1));
 		else this.kills.put(character.getId(), 1);
@@ -96,6 +100,11 @@ public class BattleMeta
 				}
 			}
 		};
+	}
+
+	public int getKills()
+	{
+		return this.killCounter;
 	}
 
 	public long getId()
