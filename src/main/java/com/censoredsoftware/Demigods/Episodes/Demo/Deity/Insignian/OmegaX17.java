@@ -195,7 +195,7 @@ class Equalizer extends Ability
 			public void equalize(Player player)
 			{
 				player.sendMessage(ChatColor.DARK_RED + Demigods.message.chatTitle("Equalizer"));
-				equalizing.put(player, MiscUtility.generateString(128));
+				equalizing.put(player, MiscUtility.generateString(19));
 				player.sendMessage(ChatColor.YELLOW + "  Here is your special code (you have 10 seconds to say it in chat): ");
 				player.sendMessage(ChatColor.GRAY + "  " + equalizing.get(player));
 			}
