@@ -5,8 +5,6 @@ import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,9 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Maps;
 
 public class OmegaX17 extends Deity
@@ -56,7 +52,6 @@ public class OmegaX17 extends Deity
 	private static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
-			add(new SplosionWalking());
 			add(new NoSplosion());
 			add(new Equalizer());
 		}
@@ -65,43 +60,6 @@ public class OmegaX17 extends Deity
 	public OmegaX17()
 	{
 		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
-	}
-}
-
-class SplosionWalking extends Ability
-{
-	private static String deity = "OmegaX17", name = "Explosion Walking", command = null, permission = "demigods.insignian.omega";
-	private static int cost = 0, delay = 0, repeat = 30;
-	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
-	{
-		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "The end of all things.");
-		}
-	};
-	private static Devotion.Type type = Devotion.Type.SUPPORT;
-
-	protected SplosionWalking()
-	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player online : Bukkit.getOnlinePlayers())
-				{
-					if(Deity.canUseDeitySilent(online, "OmegaX17") && online.getLocation().getBlock().getRelative(BlockFace.DOWN).getType().isSolid() && !online.isFlying() && !ZoneUtility.zoneNoPVP(online.getLocation()) && !StructureUtility.isTrespassingInNoGriefingZone(online)) doIt(online);
-				}
-			}
-
-			public void doIt(Player player)
-			{
-				for(int i = 0; i < MiscUtility.generateIntRange(4, 30); i++)
-				{
-					player.getWorld().spawnEntity(player.getLocation(), EntityType.PRIMED_TNT);
-				}
-			}
-		});
 	}
 }
 
