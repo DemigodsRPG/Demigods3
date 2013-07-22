@@ -6,14 +6,13 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
@@ -45,13 +44,15 @@ public class DevelopmentCommands extends DemigodsCommand
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-		World world = player.getWorld();
 
-		for(Location point : MiscUtility.getCirclePoints(player.getLocation(), 10, 100))
+		player.sendMessage("Removing all battles...");
+
+		for(Battle battle : Battle.getAll())
 		{
-			Creature creature = (Creature) world.spawnEntity(point, EntityType.CAVE_SPIDER);
-			creature.setTarget(player);
+			battle.end();
 		}
+
+		player.sendMessage("All battles removed!");
 
 		return true;
 	}
