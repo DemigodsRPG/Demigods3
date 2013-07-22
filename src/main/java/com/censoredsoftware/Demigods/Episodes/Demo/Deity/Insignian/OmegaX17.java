@@ -1,9 +1,6 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,16 +11,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.google.common.collect.Maps;
 
 public class OmegaX17 extends Deity
 {
@@ -55,6 +57,7 @@ public class OmegaX17 extends Deity
 		{
 			add(new SplosionWalking());
 			add(new NoSplosion());
+			add(new Equalizer());
 		}
 	};
 
@@ -75,7 +78,7 @@ class SplosionWalking extends Ability
 			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "The end of all things.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.STEALTH;
+	private static Devotion.Type type = Devotion.Type.SUPPORT;
 
 	protected SplosionWalking()
 	{
@@ -127,5 +130,75 @@ class NoSplosion extends Ability
 				}
 			}
 		}, null);
+	}
+}
+
+class Equalizer extends Ability
+{
+	private static String deity = "OmegaX17", name = "Omega Equalizer", command = null, permission = "demigods.insignian.omega";
+	private static int cost = 0, delay = 0, repeat = 600;
+	private static AbilityInfo info;
+	private static List<String> details = new ArrayList<String>()
+	{
+		{
+			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Prevent Omega from being too OP.");
+		}
+	};
+	private static Devotion.Type type = Devotion.Type.PASSIVE;
+
+	private static Map<Player, String> equalizing = Maps.newHashMap();
+
+	protected Equalizer()
+	{
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGHEST)
+			public void onAsyncPlayerChat(AsyncPlayerChatEvent chatEvent)
+			{
+				Player player = chatEvent.getPlayer();
+				if(equalizing.containsKey(player) && chatEvent.getMessage().equals(equalizing.get(player)))
+				{
+					chatEvent.setCancelled(true);
+					equalizing.remove(player);
+					player.sendMessage(ChatColor.YELLOW + "Hooray!  You may now continue being OP.");
+				}
+			}
+
+			@EventHandler(priority = EventPriority.HIGHEST)
+			public void onPlayerMove(PlayerMoveEvent moveEvent)
+			{
+				Player player = moveEvent.getPlayer();
+				if(equalizing.containsKey(player)) moveEvent.setCancelled(true);
+			}
+		}, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(Player online : Bukkit.getOnlinePlayers())
+				{
+					if(Deity.canUseDeitySilent(online, "OmegaX17") && !tooSlow(online) && MiscUtility.generateIntRange(0, 19) == 1) equalize(online);
+				}
+			}
+
+			public boolean tooSlow(Player player)
+			{
+				if(equalizing.containsKey(player))
+				{
+					player.sendMessage(ChatColor.YELLOW + "Too slow, try again:");
+					equalize(player);
+					return true;
+				}
+				return false;
+			}
+
+			public void equalize(Player player)
+			{
+				player.sendMessage(ChatColor.DARK_RED + Demigods.message.chatTitle("Equalizer"));
+				equalizing.put(player, MiscUtility.generateString(128));
+				player.sendMessage(ChatColor.YELLOW + "  Here is your special code (you have 10 seconds to say it in chat): ");
+				player.sendMessage(ChatColor.GRAY + "  " + equalizing.get(player));
+			}
+		});
 	}
 }
