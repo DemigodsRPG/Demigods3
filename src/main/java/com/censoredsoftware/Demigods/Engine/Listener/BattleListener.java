@@ -21,7 +21,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.BattleUtility;
 
 public class BattleListener implements Listener
 {
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
 	{
 		if(!canParticipate(event.getEntity()) || !canParticipate(event.getDamager())) return;
