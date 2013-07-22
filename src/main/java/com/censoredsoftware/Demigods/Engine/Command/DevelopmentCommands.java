@@ -45,12 +45,11 @@ public class DevelopmentCommands extends DemigodsCommand
 	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-		Location location = player.getLocation();
 		World world = player.getWorld();
 
-		for(int i = 0; i < 100; i++)
+		for(Location point : MiscUtility.getCirclePoints(player.getLocation(), 10, 100))
 		{
-			Creature creature = (Creature) world.spawnEntity(location.add(MiscUtility.generateIntRange(-5, 5), 1, MiscUtility.generateIntRange(-5, 5)), EntityType.CHICKEN);
+			Creature creature = (Creature) world.spawnEntity(point, EntityType.CHICKEN);
 			creature.setTarget(player);
 		}
 
