@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
@@ -266,6 +267,12 @@ public class PlayerCharacter implements BattleParticipant
 	public PlayerCharacter getRelatedCharacter()
 	{
 		return this;
+	}
+
+	@Override
+	public LivingEntity getEntity()
+	{
+		return getOfflinePlayer().getPlayer();
 	}
 
 	public Integer getLevel()
