@@ -46,7 +46,7 @@ public class BattleUtility
 
 	public static Location randomBorderLocation(Battle battle)
 	{
-		Location target = MiscUtility.getCirclePoints(battle.getStartLocation(), battle.getRange() - 0.5, 20).get(MiscUtility.generateIntRange(0, 19));
+		Location target = MiscUtility.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 20).get(MiscUtility.generateIntRange(0, 19));
 
 		Vector direction = target.toVector().subtract(battle.getStartLocation().toVector()).normalize();
 		double X = direction.getX();
