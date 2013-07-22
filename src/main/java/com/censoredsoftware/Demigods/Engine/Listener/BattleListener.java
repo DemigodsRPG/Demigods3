@@ -90,11 +90,13 @@ public class BattleListener implements Listener
 		event.setCancelled(onBattleMove(event.getTo(), event.getFrom(), participant));
 	}
 
-	private static boolean onBattleMove(Location to, Location from, BattleParticipant participant)
+	private static boolean onBattleMove(Location toLocation, Location fromLocation, BattleParticipant participant)
 	{
-		boolean enter = BattleUtility.existsInRadius(to) == true && BattleUtility.existsInRadius(from) == false;
-		boolean exit = BattleUtility.existsInRadius(to) == false && BattleUtility.existsInRadius(from) == true;
-		if(enter) BattleUtility.getInRadius(to).getMeta().addParticipant(participant);
+		boolean to = BattleUtility.existsInRadius(toLocation);
+		boolean from = BattleUtility.existsInRadius(fromLocation);
+		boolean enter = to == true && from == false;
+		boolean exit = to == false && from == true;
+		if(enter) BattleUtility.getInRadius(toLocation).getMeta().addParticipant(participant);
 		if(exit && BattleUtility.isInBattle(participant)) return true;
 		return false;
 	}
