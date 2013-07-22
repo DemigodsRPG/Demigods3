@@ -10,18 +10,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.BattleUtility;
 
 public class BattleListener implements Listener
 {
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDamageByEntityEvent(EntityDamageByEntityEvent event)
 	{
 		if(!canParticipate(event.getEntity()) || !canParticipate(event.getDamager())) return;
@@ -42,6 +42,9 @@ public class BattleListener implements Listener
 			teleportIfNeeded(damageeParticipant, battle);
 			teleportIfNeeded(damagerParticipant, battle);
 
+			// Battle death
+			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(battleDeath(damagerParticipant, damageeParticipant, battle));
+
 			// Debug
 			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerParticipant.getRelatedCharacter().getName() + " and " + damageeParticipant.getRelatedCharacter().getName() + "!");
 		}
@@ -57,19 +60,13 @@ public class BattleListener implements Listener
 			// Add participants from this event
 			battle.getMeta().addParticipant(damageeParticipant);
 			battle.getMeta().addParticipant(damagerParticipant);
+
+			// Battle death
+			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(battleDeath(damagerParticipant, damageeParticipant, battle));
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onDeath(EntityDeathEvent event)
-	{
-		// Handle returns
-		if(!(event.getEntity() instanceof Player && !(event.getEntity() instanceof Tameable))) return;
-		if(event.getEntity() instanceof Player && PlayerWrapper.getPlayer((Player) event.getEntity()).getCurrent() == null) return;
-		if(event.getEntity() instanceof Tameable && TameableWrapper.getTameable(event.getEntity()) == null) return;
-	}
-
-	private static boolean canParticipate(Entity entity)
+	public static boolean canParticipate(Entity entity)
 	{
 		if(!(entity instanceof Player) && !(entity instanceof Tameable)) return false;
 		if(entity instanceof Player && PlayerWrapper.getPlayer((Player) entity).getCurrent() == null) return false;
@@ -77,14 +74,27 @@ public class BattleListener implements Listener
 		return true;
 	}
 
-	private static BattleParticipant defineParticipant(Entity entity)
+	public static BattleParticipant defineParticipant(Entity entity)
 	{
 		if(entity instanceof Player) return PlayerWrapper.getPlayer((Player) entity).getCurrent();
 		return TameableWrapper.getTameable((LivingEntity) entity);
 	}
 
-	private static void teleportIfNeeded(BattleParticipant participant, Battle battle)
+	public static void teleportIfNeeded(BattleParticipant participant, Battle battle)
 	{
 		if(participant.getRelatedCharacter().getOfflinePlayer().isOnline() && !BattleUtility.existsInRadius(participant.getRelatedCharacter().getOfflinePlayer().getPlayer().getLocation())) participant.getRelatedCharacter().getOfflinePlayer().getPlayer().teleport(BattleUtility.randomBorderLocation(battle));
+	}
+
+	public static boolean battleDeath(BattleParticipant damager, BattleParticipant damagee, Battle battle)
+	{
+		damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
+		damagee.getEntity().teleport(BattleUtility.randomBorderLocation(battle));
+		if(damagee instanceof PlayerCharacter) ((PlayerCharacter) damagee).addDeath();
+		if(damager instanceof PlayerCharacter) ((PlayerCharacter) damager).addKill();
+		if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
+		if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
+		battle.getMeta().addDeath(damagee);
+		battle.getMeta().addKill(damager);
+		return true;
 	}
 }
