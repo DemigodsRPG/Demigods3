@@ -18,7 +18,8 @@ public class BattleRunnable extends BukkitRunnable
 		}
 
 		// Delete old battles
-		if(Battle.battleQueue.size() >= (int) Math.ceil(Bukkit.getOnlinePlayers().length / 2.0))
+		int limit = (int) Math.ceil(Bukkit.getOnlinePlayers().length / 2.0);
+		if(Battle.battleQueue.size() >= (limit < 3 ? 3 : limit))
 		{
 			Battle delete = Battle.battleQueue.poll();
 			if(delete != null) delete.delete();
