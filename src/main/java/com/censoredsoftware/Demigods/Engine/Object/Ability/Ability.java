@@ -322,7 +322,7 @@ public abstract class Ability
 						{
 							// Can't bind to air dummy
 							player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_AIR));
-							return false;
+							return true;
 						}
 
 						ItemStack item = player.getItemInHand();

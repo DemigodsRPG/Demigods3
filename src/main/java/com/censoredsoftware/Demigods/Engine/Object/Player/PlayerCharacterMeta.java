@@ -97,6 +97,11 @@ public class PlayerCharacterMeta
 		return getBind(ability.toLowerCase()) != null;
 	}
 
+	public boolean checkBind(String ability, ItemStack item)
+	{
+		return isBound(ability) && isBound(item) && item.getItemMeta().getLore().toString().contains(getBind(ability).getIdentifier());
+	}
+
 	public boolean isBound(ItemStack item)
 	{
 		return getBind(item) != null;
