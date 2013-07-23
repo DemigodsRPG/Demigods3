@@ -84,17 +84,17 @@ public class PlayerCharacterMeta
 
 	public boolean isEnabledAbility(String ability)
 	{
-		return abilityData.containsKey(ability) && abilityData.get(ability);
+		return abilityData.containsKey(ability.toLowerCase()) && abilityData.get(ability.toLowerCase());
 	}
 
 	public void toggleAbility(String ability, boolean option)
 	{
-		abilityData.put(ability, option);
+		abilityData.put(ability.toLowerCase(), option);
 	}
 
 	public boolean isBound(String ability)
 	{
-		return getBind(ability) != null;
+		return getBind(ability.toLowerCase()) != null;
 	}
 
 	public boolean isBound(ItemStack item)
@@ -104,7 +104,7 @@ public class PlayerCharacterMeta
 
 	public DemigodsItemStack getBind(String ability)
 	{
-		return this.bindingData.containsKey(ability) ? DemigodsItemStack.load(this.bindingData.get(ability)) : null;
+		return this.bindingData.containsKey(ability.toLowerCase()) ? DemigodsItemStack.load(this.bindingData.get(ability.toLowerCase())) : null;
 	}
 
 	public DemigodsItemStack getBind(ItemStack item)
@@ -132,12 +132,12 @@ public class PlayerCharacterMeta
 
 	public void removeBind(String ability)
 	{
-		this.bindingData.remove(ability);
+		this.bindingData.remove(ability.toLowerCase());
 	}
 
 	public void setBound(String ability, ItemStack item)
 	{
-		this.bindingData.put(ability, DemigodsItemStack.create(item).getId());
+		this.bindingData.put(ability.toLowerCase(), DemigodsItemStack.create(item).getId());
 	}
 
 	public void removeBind(ItemStack item)
