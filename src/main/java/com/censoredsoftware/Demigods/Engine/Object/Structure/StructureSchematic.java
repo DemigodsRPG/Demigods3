@@ -7,12 +7,13 @@ import java.util.Set;
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ranges;
 
 public class StructureSchematic
 {
 	private int X, Y, Z, XX, YY, ZZ;
-	private boolean cuboid;
 	private Set<StructureBlockData> blockData;
 
 	/**
@@ -28,7 +29,6 @@ public class StructureSchematic
 		this.X = this.XX = X;
 		this.Y = this.YY = Y;
 		this.Z = this.ZZ = Z;
-		this.cuboid = false;
 		this.blockData = blockData;
 	}
 
@@ -51,7 +51,6 @@ public class StructureSchematic
 		this.XX = XX;
 		this.YY = YY;
 		this.ZZ = ZZ;
-		this.cuboid = true;
 		this.blockData = blockData;
 	}
 
@@ -97,38 +96,21 @@ public class StructureSchematic
 	 */
 	public Set<Location> getBlockLocations(final Location reference)
 	{
-		if(cuboid)
+		return new HashSet<Location>()
 		{
-			final int X = this.X < this.XX ? this.X : this.XX, XX = this.X > this.XX ? this.X : this.XX;
-			final int Y = this.Y < this.YY ? this.Y : this.YY, YY = this.Y > this.YY ? this.Y : this.YY;
-			final int Z = this.Z < this.ZZ ? this.Z : this.ZZ, ZZ = this.Z > this.ZZ ? this.Z : this.ZZ;
-
-			return new HashSet<Location>()
 			{
+				for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integers()))
 				{
-					for(int i = X; i < XX; i++)
+					for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integers()))
 					{
-						for(int o = Y; o < YY; o++)
+						for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integers()))
 						{
-							for(int p = Z; p < ZZ; p++)
-							{
-								add(getLocation(reference, i, o, p));
-							}
+							add(getLocation(reference, x, y, z));
 						}
 					}
 				}
-			};
-		}
-		else
-		{
-			final int X = this.X, Y = this.Y, Z = this.Z;
-			return new HashSet<Location>()
-			{
-				{
-					add(getLocation(reference, X, Y, Z));
-				}
-			};
-		}
+			}
+		};
 	}
 
 	public void generate(Location reference)
@@ -138,5 +120,29 @@ public class StructureSchematic
 			StructureBlockData data = getStructureBlockData();
 			location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 		}
+	}
+
+	public static DiscreteDomain<Integer> integers()
+	{
+		return new DiscreteDomain<Integer>()
+		{
+			@Override
+			public Integer next(Integer integer)
+			{
+				return integer + 1;
+			}
+
+			@Override
+			public Integer previous(Integer integer)
+			{
+				return integer - 1;
+			}
+
+			@Override
+			public long distance(Integer integer, Integer integer2)
+			{
+				return Math.abs(integer - integer2);
+			}
+		};
 	}
 }

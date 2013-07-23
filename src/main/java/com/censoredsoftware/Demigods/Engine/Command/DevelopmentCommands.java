@@ -20,8 +20,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
@@ -72,30 +72,11 @@ public class DevelopmentCommands extends DemigodsCommand
 		final int XX = Integer.parseInt(args[1]);
 
 		Range range = Ranges.closed(X, XX);
-		Set<Integer> numbers = range.asSet(new DiscreteDomain<Integer>()
-		{
-			@Override
-			public Integer next(Integer integer)
-			{
-				return integer + 1;
-			}
-
-			@Override
-			public Integer previous(Integer integer)
-			{
-				return integer - 1;
-			}
-
-			@Override
-			public long distance(Integer integer, Integer integer2)
-			{
-				return X > XX ? Math.abs(X - XX) : Math.abs(XX - X);
-			}
-		});
+		Set<Integer> numbers = range.asSet(StructureSchematic.integers());
 
 		range.toString();
 
-		StringBuilder numberMessage = new StringBuilder("");
+		StringBuilder numberMessage = new StringBuilder(" ");
 
 		for(int i : numbers)
 		{
