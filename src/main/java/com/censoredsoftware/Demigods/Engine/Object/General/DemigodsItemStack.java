@@ -166,6 +166,11 @@ public class DemigodsItemStack
 		return this.id;
 	}
 
+	public String getIdentifier()
+	{
+		return this.identifier;
+	}
+
 	/**
 	 * Returns the DemigodsItemStack as an actual, usable ItemStack.
 	 * 
