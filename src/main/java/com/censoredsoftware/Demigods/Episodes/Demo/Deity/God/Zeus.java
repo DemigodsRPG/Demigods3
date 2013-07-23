@@ -315,7 +315,7 @@ class NoFall extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Take no damage from falling.");
+			add("Take no damage from falling.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
