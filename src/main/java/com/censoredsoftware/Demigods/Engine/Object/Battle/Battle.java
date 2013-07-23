@@ -210,7 +210,7 @@ public class Battle
 
 	public static Battle getInRadius(Location location)
 	{
-		for(Battle battle : Battle.getAll())
+		for(Battle battle : Battle.getAllActive())
 		{
 			if(battle.getStartLocation().distance(location) <= battle.getRange()) return battle;
 		}
@@ -219,7 +219,7 @@ public class Battle
 
 	public static boolean isInBattle(BattleParticipant participant)
 	{
-		for(Battle battle : Battle.getAll())
+		for(Battle battle : Battle.getAllActive())
 		{
 			if(battle.getMeta().getParticipants().contains(participant)) return true;
 		}
@@ -228,7 +228,7 @@ public class Battle
 
 	public static Battle getBattle(BattleParticipant participant)
 	{
-		for(Battle battle : Battle.getAll())
+		for(Battle battle : Battle.getAllActive())
 		{
 			if(battle.getMeta().getParticipants().contains(participant)) return battle;
 		}
@@ -242,7 +242,7 @@ public class Battle
 
 	public static Battle getNear(Location location)
 	{
-		for(Battle battle : Battle.getAll())
+		for(Battle battle : Battle.getAllActive())
 		{
 			double distance = battle.getStartLocation().distance(location);
 			if(distance > battle.getRange() && distance <= Demigods.config.getSettingInt("battles.merge_range")) return battle;
