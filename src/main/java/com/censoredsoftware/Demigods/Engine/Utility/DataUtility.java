@@ -82,6 +82,9 @@ public class DataUtility
 		{
 			player.kickPlayer(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.DATA_RESET_KICK));
 		}
+
+		// Reload the server
+		Bukkit.getServer().reload();
 	}
 
 	public static boolean hasKeyTemp(String key, String subKey)
