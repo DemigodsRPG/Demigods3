@@ -11,7 +11,7 @@ public class BattleRunnable extends BukkitRunnable
 	public void run()
 	{
 		// Battle onTick logic
-		for(Battle battle : Battle.getAll()) // TODO Something is buggy here.
+		for(Battle battle : Battle.getAllActive())
 		{
 			if(battle.getMeta().getKills() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getMeta().getKills() > battle.getMinKills()) battle.end();
 			else Battle.battleBorder(battle);

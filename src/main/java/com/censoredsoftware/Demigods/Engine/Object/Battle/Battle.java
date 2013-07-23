@@ -34,8 +34,10 @@ public class Battle
 	@Reference
 	private BattleMeta meta;
 	@Reference
-	@Indexed
 	private DemigodsLocation startLoc;
+	@Attribute
+	@Indexed
+	private boolean active;
 	@Attribute
 	private double range;
 	@Attribute
@@ -45,7 +47,6 @@ public class Battle
 	@Attribute
 	private int maxKills;
 	@Attribute
-	@Indexed
 	private long startTime;
 
 	public static LinkedList<Battle> battleQueue = Lists.newLinkedList();
@@ -60,6 +61,8 @@ public class Battle
 		double range = damager.getCurrentLocation().distance(damaged.getCurrentLocation());
 		if(range < default_range) battle.setRange(default_range);
 		else battle.setRange(range);
+
+		battle.setActive();
 
 		battle.setDuration(Demigods.config.getSettingInt("battles.min_duration") * 1000);
 		battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
@@ -81,6 +84,16 @@ public class Battle
 	public void setRange(double range)
 	{
 		this.range = range;
+	}
+
+	public void setActive()
+	{
+		this.active = true;
+	}
+
+	public void setInactive()
+	{
+		this.active = false;
 	}
 
 	public void setDuration(long duration)
@@ -118,6 +131,11 @@ public class Battle
 	public double getRange()
 	{
 		return this.range;
+	}
+
+	public boolean isActive()
+	{
+		return this.active;
 	}
 
 	public long getDuration()
@@ -160,6 +178,11 @@ public class Battle
 		return JOhm.getAll(Battle.class);
 	}
 
+	public static List<Battle> getAllActive()
+	{
+		return JOhm.find(Battle.class, "active", true);
+	}
+
 	public static void save(Battle battle)
 	{
 		JOhm.save(battle);
@@ -167,9 +190,9 @@ public class Battle
 
 	public void end()
 	{
-		// TODO
+		setInactive();
 
-		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended.");
+		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended."); // TODO
 
 		battleQueue.add(this);
 	}
