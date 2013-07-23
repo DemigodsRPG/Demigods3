@@ -95,7 +95,6 @@ public class BattleListener implements Listener
 		boolean from = Battle.existsInRadius(fromLocation);
 		boolean enter = to == true && from == false;
 		boolean exit = to == false && from == true;
-		if(to && from) return true; // TODO
 		if(enter) Battle.getInRadius(toLocation).getMeta().addParticipant(participant);
 		if(exit && Battle.isInBattle(participant)) return true;
 		return false;

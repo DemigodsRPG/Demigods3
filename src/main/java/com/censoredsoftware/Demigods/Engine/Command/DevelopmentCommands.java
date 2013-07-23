@@ -45,14 +45,14 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Removing all battles...");
+		player.sendMessage("Disabling all battles...");
 
-		for(Battle battle : Battle.getAll())
+		for(Battle battle : Battle.getAllActive())
 		{
 			battle.end();
 		}
 
-		player.sendMessage("All battles removed!");
+		player.sendMessage("All battles disabled!");
 
 		return true;
 	}
