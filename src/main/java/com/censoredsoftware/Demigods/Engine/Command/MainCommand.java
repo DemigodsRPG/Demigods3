@@ -182,7 +182,10 @@ public class MainCommand extends DemigodsCommand
 										{
 											for(String detail : ability.getInfo().getDetails())
 											{
-												add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/" + ability.getInfo().getName().toLowerCase() + ChatColor.WHITE + ": " + detail);
+												StringBuilder details = new StringBuilder(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " ");
+												if(ability.getInfo().getCommand() != null) details.append(ChatColor.GREEN + "/" + ability.getInfo().getCommand().toLowerCase() + ChatColor.WHITE + ": ");
+												details.append(ChatColor.WHITE + detail);
+												add(details.toString());
 											}
 										}
 									}
