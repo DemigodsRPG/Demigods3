@@ -8,9 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class MiscUtility
 {
@@ -102,13 +100,6 @@ public class MiscUtility
 	public static int generateIntRange(int min, int max)
 	{
 		return new Random().nextInt(max - min + 1) + min;
-	}
-
-	public static int fibonacci(int n)
-	{
-		if(n == 0) return 0;
-		else if(n == 1) return 1;
-		else return fibonacci(n - 1) + fibonacci(n - 2);
 	}
 
 	/**
@@ -245,16 +236,6 @@ public class MiscUtility
 		}
 	}
 
-	public static boolean isAboveGround(Location location)
-	{
-		return location.getBlockY() == location.getWorld().getHighestBlockYAt(location);
-	}
-
-	public static Location getAboveGround(Location location)
-	{
-		return new Location(location.getWorld(), location.getX(), (double) location.getWorld().getHighestBlockYAt(location), location.getZ());
-	}
-
 	public static Location getFloorBelowLocation(Location location)
 	{
 		if(location.getBlock().getType().isSolid()) return location;
@@ -283,11 +264,5 @@ public class MiscUtility
 	public static float toDegree(double angle)
 	{
 		return (float) Math.toDegrees(angle);
-	}
-
-	public static Vector getVector(Entity entity)
-	{
-		if(entity instanceof Player) return ((Player) entity).getEyeLocation().toVector();
-		return entity.getLocation().toVector();
 	}
 }

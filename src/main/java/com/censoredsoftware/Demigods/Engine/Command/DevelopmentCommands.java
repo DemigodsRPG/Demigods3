@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -19,9 +20,11 @@ import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.collect.Ranges;
 
 public class DevelopmentCommands extends DemigodsCommand
 {
@@ -63,14 +66,41 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Removing all structures...");
+		if(args.length != 2 || !MiscUtility.isInt(args[0]) || !MiscUtility.isInt(args[1])) return false;
 
-		for(StructureSave save : StructureSave.loadAll())
+		final int X = Integer.parseInt(args[0]);
+		final int XX = Integer.parseInt(args[1]);
+
+		Range range = Ranges.closed(X, XX);
+		Set<Integer> numbers = range.asSet(new DiscreteDomain<Integer>()
 		{
-			save.remove();
+			@Override
+			public Integer next(Integer integer)
+			{
+				return integer + 1;
+			}
+
+			@Override
+			public Integer previous(Integer integer)
+			{
+				return integer - 1;
+			}
+
+			@Override
+			public long distance(Integer integer, Integer integer2)
+			{
+				return X > XX ? Math.abs(X - XX) : Math.abs(XX - X);
+			}
+		});
+
+		StringBuilder numberMessage = new StringBuilder("");
+
+		for(int i : numbers)
+		{
+			numberMessage.append(i + ", ");
 		}
 
-		player.sendMessage("Structures removed!");
+		player.sendMessage(numberMessage.substring(0, 2));
 
 		return true;
 	}

@@ -1,15 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.google.common.collect.Sets;
 
 public class GenerationUtility
@@ -98,21 +94,6 @@ public class GenerationUtility
 	}
 
 	/**
-	 * Generates a mound at the given <code>location</code> with a top radius of <code>radius</code>based on the predominant material found. Used in situations
-	 * such as generating structures on hills.
-	 * 
-	 * @param reference the center location to generate at.
-	 * @param radius the radii that the top of the mound will be.
-	 */
-	public static void generateMound(Location reference, int radius)
-	{
-		Location location = reference.clone();
-
-		// Get the blocks in the area
-		// TODO
-	}
-
-	/**
 	 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
 	 * 
 	 * @param location the center location to get the blocks from.
@@ -131,74 +112,5 @@ public class GenerationUtility
 		}
 
 		return blocks;
-	}
-
-	public static void testStructure(Location target)
-	{}
-
-	public static void spiral(Location target)
-	{
-		int X, Z;
-		int N = 61;
-
-		// create N-by-N array of integers 1 through N
-		int[][] a = new int[N][N];
-		for(int i = 0; i < N; i++)
-			for(int j = 0; j < N; j++)
-				a[i][j] = 1 + N * i + j;
-
-		// spiral
-		for(int i = N - 1, j = 0; i > 0; i--, j++)
-		{
-			for(int k = j; k < i; k++)
-			{
-				X = j;
-				Z = k;
-				spiralGenerate(target, X, i, Z);
-			}
-			for(int k = j; k < i; k++)
-			{
-				X = k;
-				Z = i;
-				spiralGenerate(target, X, i, Z);
-			}
-			for(int k = i; k > j; k--)
-			{
-				X = i;
-				Z = k;
-				spiralGenerate(target, X, i, Z);
-			}
-			for(int k = i; k > j; k--)
-			{
-				X = k;
-				Z = j;
-				spiralGenerate(target, X, i, Z);
-			}
-			for(int x = 0; x < N; x++)
-			{
-				for(int z = 0; z < N; z++)
-				{
-					spiralGenerate(target, x, N, z);
-				}
-			}
-		}
-
-		// special case for middle element if N is odd
-		if(N % 2 == 1)
-		{
-			X = (N - 1) / 2;
-			Z = (N - 1) / 2;
-			spiralGenerate(target, X, 1, Z);
-		}
-	}
-
-	public static void spiralGenerate(Location target, int X, int Y, int Z)
-	{
-		new StructureSchematic(X, Y, Z, new HashSet<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.STATIONARY_WATER));
-			}
-		}).generate(target);
 	}
 }
