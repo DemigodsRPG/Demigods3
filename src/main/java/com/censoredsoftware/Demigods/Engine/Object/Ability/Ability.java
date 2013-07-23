@@ -339,7 +339,7 @@ public abstract class Ability
 									add(ChatColor.AQUA + detail);
 								}
 								add("");
-								add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + identifier);
+								add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + identifier);
 							}
 						});
 
