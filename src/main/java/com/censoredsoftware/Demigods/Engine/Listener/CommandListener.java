@@ -8,17 +8,23 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 
 public class CommandListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
+		// Return if a character doesn't exist
+		if(PlayerWrapper.getPlayer(event.getPlayer()).getCurrent() == null) return;
+
+		// Define variables
 		String message = event.getMessage();
 		message = message.substring(1);
 		String[] args = message.split("\\s+");
 		Player player = event.getPlayer();
 
+		// Process the command
 		try
 		{
 			if(Ability.invokeAbilityCommand(player, args[0], args.length == 2 && args[1].equalsIgnoreCase("bind")))
