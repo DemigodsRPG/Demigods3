@@ -70,7 +70,7 @@ class NoSplosion extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Take no damage from explosions.");
+			add("Take no damage from explosions.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
@@ -103,7 +103,7 @@ class Equalizer extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Prevent Omega from being too OP.");
+			add("Prevent Omega from being too OP.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;

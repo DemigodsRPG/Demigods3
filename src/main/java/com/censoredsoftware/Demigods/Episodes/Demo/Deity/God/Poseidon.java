@@ -74,7 +74,7 @@ class Swim extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Poseidon.");
+			add("Crouch while in water to swim like Poseidon.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
@@ -109,7 +109,7 @@ class Reel extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/reel" + ChatColor.WHITE + " - Use a fishing rod for a stronger attack.");
+			add("Use a fishing rod for a stronger attack.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.OFFENSE;
@@ -170,7 +170,7 @@ class InfiniteAir extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Have infinite air when moving underwater.");
+			add("Have infinite air when moving underwater.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;

@@ -81,7 +81,7 @@ class RainbowWalking extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Spread the disco while sneaking.");
+			add("Spread the disco while sneaking.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.STEALTH;
@@ -137,7 +137,7 @@ class RainbowHorse extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "All of you horse are belong to us.");
+			add("All of you horse are belong to us.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;
@@ -174,7 +174,7 @@ class Discoball extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/discoball" + ChatColor.WHITE + " - Spread the music while causing destruction.");
+			add("Spread the music while causing destruction.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.ULTIMATE;

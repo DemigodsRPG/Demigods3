@@ -102,6 +102,11 @@ public class PlayerCharacterMeta
 		return getBind(item) != null;
 	}
 
+	public void setBound(String ability, ItemStack item, String identifier)
+	{
+		this.bindingData.put(ability.toLowerCase(), DemigodsItemStack.create(item, identifier).getId());
+	}
+
 	public DemigodsItemStack getBind(String ability)
 	{
 		return this.bindingData.containsKey(ability.toLowerCase()) ? DemigodsItemStack.load(this.bindingData.get(ability.toLowerCase())) : null;
@@ -112,7 +117,7 @@ public class PlayerCharacterMeta
 		for(long bindId : this.bindingData.values())
 		{
 			DemigodsItemStack bind = DemigodsItemStack.load(bindId);
-			if(bind.toItemStack().equals(item))
+			if(item.getItemMeta().getLore().get(item.getItemMeta().getLore().size()).contains(bind.getId().toString())) ;
 			{
 				return bind;
 			}
@@ -133,11 +138,6 @@ public class PlayerCharacterMeta
 	public void removeBind(String ability)
 	{
 		this.bindingData.remove(ability.toLowerCase());
-	}
-
-	public void setBound(String ability, ItemStack item)
-	{
-		this.bindingData.put(ability.toLowerCase(), DemigodsItemStack.create(item).getId());
 	}
 
 	public void removeBind(ItemStack item)

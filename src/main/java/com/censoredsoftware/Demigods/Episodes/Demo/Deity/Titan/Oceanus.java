@@ -67,7 +67,7 @@ class Swim extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + "Crouch while in water to swim like Oceanus.");
+			add("Crouch while in water to swim like Oceanus.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.PASSIVE;

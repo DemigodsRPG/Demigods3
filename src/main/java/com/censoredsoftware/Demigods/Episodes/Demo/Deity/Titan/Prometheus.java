@@ -86,7 +86,7 @@ class ShootFireball extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/fireball" + ChatColor.WHITE + " - Shoot a fireball at the cursor's location.");
+			add("Shoot a fireball at the cursor's location.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.OFFENSE;
@@ -106,7 +106,7 @@ class ShootFireball extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -155,7 +155,7 @@ class Blaze extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/blaze" + ChatColor.WHITE + " - Ignite the ground at the target location.");
+			add("Ignite the ground at the target location.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.OFFENSE;
@@ -175,7 +175,7 @@ class Blaze extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -236,7 +236,7 @@ class Firestorm extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/firestorm" + ChatColor.WHITE + " - Rain down fireballs from the sky.");
+			add("Rain down fireballs from the sky.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.ULTIMATE;
@@ -256,7 +256,7 @@ class Firestorm extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 

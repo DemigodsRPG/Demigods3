@@ -69,7 +69,7 @@ class Test extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/test" + ChatColor.WHITE + " - Blaze your target.");
+			add("Blaze your target.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.SUPPORT;
@@ -89,7 +89,7 @@ class Test extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 

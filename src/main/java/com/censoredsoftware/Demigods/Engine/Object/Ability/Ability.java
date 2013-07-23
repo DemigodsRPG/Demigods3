@@ -28,6 +28,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -309,8 +310,9 @@ public abstract class Ability
 				if(!player.hasPermission(ability.getInfo().getPermission())) return true;
 
 				// Handle enabling the command
-				if(bind) // TODO: Handle binding
+				if(bind)
 				{
+					final String identifier = MiscUtility.generateString(6);
 					final AbilityInfo abilityInfo = ability.getInfo();
 					String abilityName = abilityInfo.getName();
 
@@ -326,16 +328,18 @@ public abstract class Ability
 						ItemStack item = player.getItemInHand();
 						ItemMeta itemMeta = item.getItemMeta();
 
-						itemMeta.setDisplayName(abilityName);
+						itemMeta.setDisplayName(ChatColor.RESET + abilityName);
 						itemMeta.setLore(new ArrayList<String>()
 						{
 							{
-								add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Consumes " + abilityInfo.getCost() + " per use.");
+								add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Consumes " + abilityInfo.getCost() + " favor per use.");
 								add("");
 								for(String detail : abilityInfo.getDetails())
 								{
 									add(ChatColor.AQUA + detail);
 								}
+								add("");
+								add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + identifier);
 							}
 						});
 
@@ -343,7 +347,7 @@ public abstract class Ability
 						item.setItemMeta(itemMeta);
 
 						// Save the bind
-						character.getMeta().setBound(abilityName, item);
+						character.getMeta().setBound(abilityName, item, identifier);
 
 						// Let them know
 						player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", item.getType().name().toLowerCase()));
@@ -354,6 +358,9 @@ public abstract class Ability
 					{
 						// Remove the bind
 						character.getMeta().removeBind(ability.getInfo().getName());
+
+						// Let them know
+						player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
 					}
 				}
 				else

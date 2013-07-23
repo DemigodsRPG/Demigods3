@@ -134,7 +134,7 @@ class Shove extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -194,7 +194,7 @@ class Lightning extends Ability
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -239,7 +239,7 @@ class Storm extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/storm" + ChatColor.WHITE + " - Throw all of your enemies into the sky as lightning fills the heavens.");
+			add("Throw all of your enemies into the sky as lightning fills the heavens.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.ULTIMATE;
@@ -259,7 +259,7 @@ class Storm extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().getBind(name) != null && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
+				if(character.getMeta().isEnabledAbility(name) || player.getItemInHand() != null && character.getMeta().isBound(name) && character.getMeta().getBind(name).toItemStack().equals(player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 
