@@ -29,7 +29,7 @@ public class MainCommand extends DemigodsCommand
 	@Override
 	public List<String> getCommands()
 	{
-		return Lists.newArrayList("demigods");
+		return Lists.newArrayList("demigods", "deity");
 	}
 
 	@Override
@@ -50,6 +50,18 @@ public class MainCommand extends DemigodsCommand
 
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Demigods.message.noPermission(player);
+
+		if(command.getName().equals("deity") && PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().canUse())
+		{
+			Deity deity = PlayerWrapper.getPlayer(player).getCurrent().getDeity();
+			player.sendMessage("/dg " + deity.getInfo().getAlliance().toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
+			return true;
+		}
+		else if(command.getName().equals("deity"))
+		{
+			player.sendMessage(ChatColor.RED + "This command requires you to have a character.");
+			return true;
+		}
 
 		Demigods.message.tagged(sender, "Documentation");
 		for(String alliance : Deity.getLoadedDeityAlliances())

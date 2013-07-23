@@ -8,6 +8,9 @@ commands:
         usage: /demigods [category] [subcategory]
         aliases: [dg, demigod]
         permission: demigods.basic
+    deity:
+        usage: /deity
+        permission: demigods.basic
     check:
         usage: /check
         permission: demigods.basic
