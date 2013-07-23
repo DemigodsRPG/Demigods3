@@ -7,8 +7,6 @@ import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 
 public class AbilityListener implements Listener
 {
@@ -22,10 +20,5 @@ public class AbilityListener implements Listener
 	public static void onAbilityTarget(AbilityTargetEvent event)
 	{
 		if(!(event.getTarget() instanceof Player)) return;
-
-		PlayerCharacter hitChar = PlayerWrapper.getPlayer((Player) event.getTarget()).getCurrent();
-		PlayerCharacter hittingChar = event.getCharacter();
-
-		// TrackedBattle.battleProcess(hitChar, hittingChar);
 	}
 }
