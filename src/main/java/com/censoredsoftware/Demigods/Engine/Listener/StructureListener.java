@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -60,16 +58,12 @@ public class StructureListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
-		List<Block> blocks = event.getBlocks();
-
-		for(Block block : blocks)
+		for(Block block : event.getBlocks())
 		{
-			Location location = block.getLocation();
-
-			if(StructureUtility.partOfStructureWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS))
+			if(StructureUtility.partOfStructureWithFlag(block.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS))
 			{
 				event.setCancelled(true);
-				break;
+				return;
 			}
 		}
 	}
@@ -77,19 +71,13 @@ public class StructureListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
-		final Block block = event.getBlock().getRelative(event.getDirection(), 2);
-
-		if(StructureUtility.partOfStructureWithFlag(block.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS) && event.isSticky())
-		{
-			event.setCancelled(true);
-		}
+		if(StructureUtility.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		final Location location = event.getLocation();
-		if(StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS) == null) return;
+		if(StructureUtility.getInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS) == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
@@ -99,8 +87,7 @@ public class StructureListener implements Listener
 				// Remove all drops from explosion zone
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
-					Location dropLocation = drop.getLocation();
-					if(StructureUtility.getInRadiusWithFlag(dropLocation, StructureInfo.Flag.PROTECTED_BLOCKS) != null)
+					if(StructureUtility.getInRadiusWithFlag(drop.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS) != null)
 					{
 						drop.remove();
 						continue;
@@ -117,7 +104,7 @@ public class StructureListener implements Listener
 			@Override
 			public void run()
 			{
-				if(StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS) != null) StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.PROTECTED_BLOCKS).generate();
+				if(StructureUtility.getInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS) != null) StructureUtility.getInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS).generate();
 			}
 		}, 30);
 	}

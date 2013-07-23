@@ -1,8 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Conversation;
 
+import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
 
-public enum Conversation
+public enum Conversation implements Demigods.ListedConversation
 {
 	// Prayer
 	PRAYER(new Prayer());

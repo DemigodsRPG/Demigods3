@@ -46,6 +46,7 @@ public class Demigods
 	protected static Deque<Deity> deities;
 	protected static Deque<TaskSet> quests;
 	protected static Deque<StructureInfo> structures;
+	protected static Deque<ConversationInfo> conversasions;
 
 	// The Engine Default Text
 	public static Translation text;
@@ -65,7 +66,12 @@ public class Demigods
 		public StructureInfo getStructure();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures) throws DemigodsStartupException
+	public interface ListedConversation
+	{
+		public ConversationInfo getConversation();
+	}
+
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation[] conversations) throws DemigodsStartupException
 	{
 		// Allow static access.
 		plugin = instance;
@@ -81,27 +87,30 @@ public class Demigods
 		{
 			{
 				for(ListedDeity deity : deities)
-				{
 					add(deity.getDeity());
-				}
 			}
 		};
 		Demigods.quests = new ArrayDeque<TaskSet>()
 		{
 			{
 				for(ListedTaskSet taskSet : taskSets)
-				{
 					add(taskSet.getTaskSet());
-				}
 			}
 		};
 		Demigods.structures = new ArrayDeque<StructureInfo>()
 		{
 			{
 				for(ListedStructure structure : structures)
-				{
 					add(structure.getStructure());
-				}
+			}
+		};
+		Demigods.conversasions = new ArrayDeque<ConversationInfo>()
+		{
+			{
+				for(Conversation conversation : Conversation.values())
+					add(conversation.getConversation());
+				for(ListedConversation conversation : conversations)
+					add(conversation.getConversation());
 			}
 		};
 
@@ -231,15 +240,7 @@ public class Demigods
 
 	public static Deque<ConversationInfo> getLoadedConversations()
 	{
-		return new ArrayDeque<ConversationInfo>()
-		{
-			{
-				for(Conversation conversation : Conversation.values())
-				{
-					add(conversation.getConversation());
-				}
-			}
-		};
+		return Demigods.getLoadedConversations();
 	}
 
 	@Override

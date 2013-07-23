@@ -2,23 +2,25 @@ package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.List;
 
-import org.bukkit.*;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 import com.google.common.collect.Lists;
 
 public class DevelopmentCommands extends DemigodsCommand
@@ -77,35 +79,17 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		if(!SpigotUtility.runningSpigot()) return true;
-
-		final Location original = player.getLocation();
-
-		if(!MiscUtility.isAboveGround(original))
+		if(Battle.existsInRadius(player.getLocation()))
 		{
-			Location newLoc = MiscUtility.getAboveGround(original);
-			player.sendMessage("Old: " + original.getBlockY() + ", New: " + newLoc.getBlockY());
-			player.teleport(newLoc, PlayerTeleportEvent.TeleportCause.COMMAND);
-		}
+			Battle getInfo = Battle.getInRadius(player.getLocation());
 
-		final Location center = player.getLocation();
-
-		for(int i = 1; i < 62; i++)
-		{
-			if(i == 61 && !original.equals(center))
-			{
-				player.teleport(original);
-				break;
-			}
-
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					SpigotUtility.drawCircle(center, Effect.MOBSPAWNER_FLAMES, 16, 120);
-				}
-			}, i * 20);
+			Demigods.message.chatTitle(ChatColor.DARK_AQUA + "Battle Info");
+			Location center = getInfo.getStartLocation();
+			player.sendMessage(ChatColor.YELLOW + "Center: " + ChatColor.GRAY + StringUtils.capitalize(center.getWorld().getName().toLowerCase()) + ": " + Math.round(center.getX()) + ", " + Math.round(center.getY()) + ", " + Math.round(center.getZ()));
+			StringBuilder butts = new StringBuilder(ChatColor.YELLOW + "Participants: ");
+			for(BattleParticipant participant : getInfo.getMeta().getParticipants())
+				if(participant instanceof PlayerCharacter) butts.append(((PlayerCharacter) participant).getName() + ", ");
+			player.sendMessage(ChatColor.YELLOW + "Participants: " + ChatColor.GRAY + butts.substring(0, 2) + ".");
 		}
 
 		return true;

@@ -26,7 +26,7 @@ public class DemigodsPlugin extends JavaPlugin
 		try
 		{
 			// Load the game engine, passing in the game data.
-			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values());
+			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values(), null);
 
 			// Print success!
 			Demigods.message.info("Successfully enabled.");
