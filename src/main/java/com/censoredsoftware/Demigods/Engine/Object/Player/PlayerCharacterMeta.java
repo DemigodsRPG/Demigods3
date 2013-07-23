@@ -122,7 +122,7 @@ public class PlayerCharacterMeta
 		for(long bindId : this.bindingData.values())
 		{
 			DemigodsItemStack bind = DemigodsItemStack.load(bindId);
-			if(item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
+			if(item.hasItemMeta() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
 			{
 				return bind;
 			}
