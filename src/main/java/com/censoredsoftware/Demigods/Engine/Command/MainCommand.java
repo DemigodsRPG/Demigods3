@@ -237,6 +237,7 @@ public class MainCommand extends DemigodsCommand
 				player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ADMIN_CLEAR_DATA_STARTING));
 				DataUtility.flushData();
 				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.ADMIN_CLEAR_DATA_FINISHED));
+				return true;
 			}
 			if(option1.equalsIgnoreCase("wand"))
 			{

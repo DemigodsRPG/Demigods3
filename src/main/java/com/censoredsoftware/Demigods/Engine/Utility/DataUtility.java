@@ -3,6 +3,10 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -67,10 +71,17 @@ public class DataUtility
 
 	public static void flushData()
 	{
+		// Clear the data
 		Jedis jedis = jedisPool.getResource();
 		jedis.flushDB();
 		jedisPool.returnResource(jedis);
 		tempData.clear();
+
+		// Kick everyone
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			player.kickPlayer(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.DATA_RESET_KICK));
+		}
 	}
 
 	public static boolean hasKeyTemp(String key, String subKey)
