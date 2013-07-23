@@ -24,7 +24,7 @@ public class PlayerCharacterMeta
 	private Integer favor;
 	@Attribute
 	private Integer maxFavor;
-	@CollectionMap(key = Integer.class, value = String.class)
+	@CollectionMap(key = String.class, value = Long.class)
 	private Map<String, Long> bindingData;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
