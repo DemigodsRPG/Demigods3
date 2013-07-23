@@ -266,8 +266,8 @@ public class Battle
 		if(!SpigotUtility.runningSpigot()) return;
 		for(Location location : MiscUtility.getCirclePoints(getStartLocation(), getRange(), 120))
 		{
-			if(add) SpigotParticleRunnable.particleLocation.put(location, Effect.MOBSPAWNER_FLAMES);
-			else SpigotParticleRunnable.particleLocation.remove(location);
+			if(add) SpigotParticleRunnable.particleLocation.put(MiscUtility.getFloorBelowLocation(location), Effect.MOBSPAWNER_FLAMES);
+			else SpigotParticleRunnable.particleLocation.remove(MiscUtility.getFloorBelowLocation(location));
 		}
 	}
 
