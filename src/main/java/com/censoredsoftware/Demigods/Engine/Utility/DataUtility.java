@@ -70,6 +70,7 @@ public class DataUtility
 		Jedis jedis = jedisPool.getResource();
 		jedis.flushDB();
 		jedisPool.returnResource(jedis);
+		tempData.clear();
 	}
 
 	public static boolean hasKeyTemp(String key, String subKey)

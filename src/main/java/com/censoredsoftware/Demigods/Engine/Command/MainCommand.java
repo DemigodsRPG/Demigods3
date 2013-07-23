@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
@@ -226,10 +227,17 @@ public class MainCommand extends DemigodsCommand
 			sender.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			sender.sendMessage(ChatColor.RED + " /dg admin clear data yesdoitforsurepermanantly");
 		}
 
 		if(option1 != null)
 		{
+			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanantly"))
+			{
+				player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ADMIN_CLEAR_DATA_STARTING));
+				DataUtility.flushData();
+				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.ADMIN_CLEAR_DATA_FINISHED));
+			}
 			if(option1.equalsIgnoreCase("wand"))
 			{
 				if(!AdminUtility.wandEnabled(player))
