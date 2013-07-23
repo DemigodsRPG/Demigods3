@@ -4,9 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
 public class BattleRunnable extends BukkitRunnable
 {
+	private static boolean spigot = SpigotUtility.runningSpigot();
+
 	@Override
 	public void run()
 	{
@@ -14,7 +17,6 @@ public class BattleRunnable extends BukkitRunnable
 		for(Battle battle : Battle.getAllActive())
 		{
 			if(battle.getMeta().getKills() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getMeta().getKills() > battle.getMinKills()) battle.end();
-			else Battle.battleBorder(battle);
 		}
 
 		// Delete old battles

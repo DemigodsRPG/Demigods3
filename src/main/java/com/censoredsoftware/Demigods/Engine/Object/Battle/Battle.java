@@ -22,6 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Runnable.SpigotParticleRunnable;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 import com.google.common.collect.Lists;
@@ -83,16 +84,20 @@ public class Battle
 
 	public void setRange(double range)
 	{
+		battleBorder(false);
 		this.range = range;
+		battleBorder(true);
 	}
 
 	public void setActive()
 	{
+		battleBorder(true);
 		this.active = true;
 	}
 
 	public void setInactive()
 	{
+		battleBorder(false);
 		this.active = false;
 	}
 
@@ -256,10 +261,14 @@ public class Battle
 		return null;
 	}
 
-	public static void battleBorder(Battle battle)
+	public void battleBorder(boolean add)
 	{
 		if(!SpigotUtility.runningSpigot()) return;
-		SpigotUtility.drawCircle(battle.getStartLocation(), Effect.MOBSPAWNER_FLAMES, battle.getRange(), 120);
+		for(Location location : MiscUtility.getCirclePoints(getStartLocation(), getRange(), 120))
+		{
+			if(add) SpigotParticleRunnable.particleLocation.put(location, Effect.MOBSPAWNER_FLAMES);
+			else SpigotParticleRunnable.particleLocation.remove(location);
+		}
 	}
 
 	public static Location randomRespawnPoint(Battle battle)
