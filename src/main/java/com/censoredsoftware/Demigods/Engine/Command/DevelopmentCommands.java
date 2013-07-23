@@ -93,6 +93,8 @@ public class DevelopmentCommands extends DemigodsCommand
 			}
 		});
 
+		range.toString();
+
 		StringBuilder numberMessage = new StringBuilder("");
 
 		for(int i : numbers)
@@ -100,7 +102,8 @@ public class DevelopmentCommands extends DemigodsCommand
 			numberMessage.append(i + ", ");
 		}
 
-		player.sendMessage(numberMessage.substring(0, 2));
+		player.sendMessage(ChatColor.YELLOW + range.toString());
+		player.sendMessage(ChatColor.GRAY + numberMessage.toString());
 
 		return true;
 	}
