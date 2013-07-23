@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
@@ -323,9 +324,10 @@ public abstract class Ability
 						}
 
 						ItemStack item = player.getItemInHand();
+						ItemMeta itemMeta = item.getItemMeta();
 
-						item.getItemMeta().setDisplayName(abilityName);
-						item.getItemMeta().setLore(new ArrayList<String>()
+						itemMeta.setDisplayName(abilityName);
+						itemMeta.setLore(new ArrayList<String>()
 						{
 							{
 								add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Consumes " + abilityInfo.getCost() + " per use.");
@@ -336,6 +338,9 @@ public abstract class Ability
 								}
 							}
 						});
+
+						// Set the item meta
+						item.setItemMeta(itemMeta);
 
 						// Save the bind
 						character.getMeta().setBound(abilityName, item);
