@@ -54,7 +54,7 @@ public class MainCommand extends DemigodsCommand
 		if(command.getName().equals("deity") && PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().canUse())
 		{
 			Deity deity = PlayerWrapper.getPlayer(player).getCurrent().getDeity();
-			player.sendMessage("/dg " + deity.getInfo().getAlliance().toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
+			player.chat("/dg " + deity.getInfo().getAlliance().toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 			return true;
 		}
 		else if(command.getName().equals("deity"))
