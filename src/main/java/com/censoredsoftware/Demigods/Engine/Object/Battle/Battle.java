@@ -203,6 +203,12 @@ public class Battle
 		JOhm.delete(Battle.class, getId());
 	}
 
+	public static void deleteAllInQueue()
+	{
+		for(Battle battle : battleQueue)
+			battle.delete();
+	}
+
 	public static boolean existsInRadius(Location location)
 	{
 		return getInRadius(location) != null;
