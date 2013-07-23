@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Conversation;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -83,15 +84,34 @@ public class Prayer implements ConversationInfo
 
 	public static org.bukkit.conversations.Conversation startPrayer(Player player)
 	{
-		// Grab the context Map
-		Map<Object, Object> conversationContext = Maps.newHashMap();
-		if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+		try
+		{
+			Map<Object, Object> conversationContext = Maps.newHashMap();
 
-		// Build the conversation and begin
-		prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
-		prayerConversation.begin();
+			if(!Demigods.runningSpigot())
+			{
+				// Compatibility with vanilla Bukkit
+				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
+				sessionDataField.setAccessible(true);
+				if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")));
+			}
+			else
+			{
+				// Grab the context Map
+				if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+			}
 
-		return prayerConversation;
+			// Build the conversation and begin
+			prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
+			prayerConversation.begin();
+
+			return prayerConversation;
+		}
+		catch(NoSuchFieldException ignored)
+		{}
+		catch(IllegalAccessException ignored)
+		{}
+		return null;
 	}
 
 	// Main prayer menu

@@ -4,12 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 
 public class BattleRunnable extends BukkitRunnable
 {
-	private static boolean spigot = SpigotUtility.runningSpigot();
-
 	@Override
 	public void run()
 	{

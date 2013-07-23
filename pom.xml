@@ -12,12 +12,53 @@
     <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
 
+    <licenses>
+        <license>
+            <name>Artistic License 2.0</name>
+            <url>LICENSE.txt</url>
+            <distribution>repo</distribution>
+            <comments>License on all contributions</comments>
+        </license>
+    </licenses>
+
+    <ciManagement>
+        <system>TeamCity</system>
+        <url>http://teamcity.censoredsoftware.com/</url>
+    </ciManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
     </properties>
+
+    <developers>
+        <developer>
+            <id>alexbennett</id>
+            <name>Alex Bennett</name>
+            <url>http://alexben.net/t</url>
+            <organization>CensoredSoftware</organization>
+            <organizationUrl>http://www.censoredsoftware.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+        <developer>
+            <id>HmmmQuestionMark</id>
+            <name>Alexander Chauncey</name>
+            <organization>CensoredSoftware</organization>
+            <organizationUrl>http://www.censoredsoftware.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <skype>HmmmQuestionMark</skype>
+            </properties>
+            <timezone>-4</timezone>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:git://github.com/CensoredSoftware/Minecraft-Demigods.git</connection>
@@ -76,9 +117,16 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>${mcstats.version}</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis-cs</artifactId>
+            <version>2.2.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>redis</groupId>
+            <artifactId>johm-cs</artifactId>
+            <version>0.5.0-SNAPSHOT</version>
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
@@ -86,21 +134,26 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.1.0</version>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>johm</artifactId>
-            <version>0.5.0</version>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics</artifactId>
+            <version>${mcstats.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
@@ -136,8 +189,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
-                                    <include>redis.clients:jedis</include>
-                                    <include>redis.clients:johm</include>
+                                    <include>redis.clients:jedis-cs</include>
+                                    <include>redis:johm-cs</include>
                                     <include>commons-pool:commons-pool</include>
                                 </includes>
                             </artifactSet>

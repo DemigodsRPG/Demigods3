@@ -125,7 +125,7 @@ class RainbowWalking extends Ability
 	private static void rainbow(Player disco, Player player)
 	{
 		player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
+		if(Demigods.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 	}
 }
 
@@ -287,7 +287,7 @@ class Discoball extends Ability
 
 	private static void sparkleSparkle(Location location)
 	{
-		if(SpigotUtility.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
+		if(Demigods.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 	}
 
 	private static void destoryNearby(Location location)

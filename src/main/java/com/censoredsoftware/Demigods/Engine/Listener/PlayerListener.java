@@ -35,7 +35,7 @@ public class PlayerListener implements Listener
 		wrapper.setLastLoginTime(now);
 
 		// Set Displayname
-		if(wrapper.canUseCurrent() && character != null)
+		if(character != null && wrapper.canUseCurrent())
 		{
 			String name = character.getName();
 			ChatColor color = character.getDeity().getInfo().getColor();

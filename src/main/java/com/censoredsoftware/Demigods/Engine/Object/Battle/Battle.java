@@ -24,7 +24,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Runnable.SpigotParticleRunnable;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 import com.google.common.collect.Lists;
 
 @Model
@@ -263,7 +262,7 @@ public class Battle
 
 	public void battleBorder(boolean add)
 	{
-		if(!SpigotUtility.runningSpigot()) return;
+		if(!Demigods.runningSpigot()) return;
 		for(Location location : MiscUtility.getCirclePoints(getStartLocation(), getRange(), 120))
 		{
 			if(add) SpigotParticleRunnable.particleLocation.put(MiscUtility.getFloorBelowLocation(location), Effect.MOBSPAWNER_FLAMES);

@@ -25,10 +25,10 @@ public class SchedulerUtility
 		AdminUtility.sendDebug("Battle tracking runnable enabled...");
 
 		// Start spigot particle runnable
-		if(SpigotUtility.runningSpigot())
+		if(Demigods.runningSpigot())
 		{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new SpigotParticleRunnable(), 20, 20);
-			AdminUtility.sendDebug("Battle tracking runnable enabled...");
+			AdminUtility.sendDebug("Spigot particle runnable enabled...");
 		}
 
 		// Start timed data runnable

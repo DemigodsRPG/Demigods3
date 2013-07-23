@@ -3,6 +3,7 @@ package com.censoredsoftware.Demigods.Engine;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +26,10 @@ import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Engine.Utility.*;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -146,7 +150,7 @@ public class Demigods
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
 
-		if(SpigotUtility.runningSpigot()) message.info(("Spigot found, will use extra API features."));
+		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
 
 	/**
@@ -241,6 +245,18 @@ public class Demigods
 	public static Deque<ConversationInfo> getLoadedConversations()
 	{
 		return Demigods.conversasions;
+	}
+
+	public static boolean runningSpigot()
+	{
+		try
+		{
+			Bukkit.getServer().getWorlds().get(0).spigot();
+			return true;
+		}
+		catch(NoSuchMethodError ignored)
+		{}
+		return false;
 	}
 
 	@Override
