@@ -104,12 +104,12 @@ public class PlayerCharacterMeta
 
 	public DemigodsItemStack getBind(String ability)
 	{
-		return this.bindingData.containsKey(ability) ? DemigodsItemStack.load(this.bindingData.get(ability)) : null;
+		return this.bindingData.containsKey(ability) ? DemigodsItemStack.load(Long.parseLong(this.bindingData.get(ability).toString())) : null;
 	}
 
 	public DemigodsItemStack getBind(ItemStack item)
 	{
-		for(Long bindId : this.bindingData.values())
+		for(long bindId : this.bindingData.values())
 		{
 			DemigodsItemStack bind = DemigodsItemStack.load(bindId);
 			if(bind.toItemStack().equals(item))
