@@ -109,7 +109,7 @@ public class Demigods
 			{
 				for(Conversation conversation : Conversation.values())
 					add(conversation.getConversation());
-				for(ListedConversation conversation : conversations)
+				if(conversations != null) for(ListedConversation conversation : conversations)
 					add(conversation.getConversation());
 			}
 		};
