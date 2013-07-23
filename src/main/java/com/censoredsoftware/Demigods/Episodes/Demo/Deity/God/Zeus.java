@@ -114,7 +114,7 @@ class Shove extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/shove" + ChatColor.WHITE + " - Shove your target away from you.");
+			add("Shove your target away from you.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.DEFENSE;
@@ -175,7 +175,7 @@ class Lightning extends Ability
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
-			add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/lightning" + ChatColor.WHITE + " - Strike lightning upon your enemies.");
+			add("Strike lightning upon your enemies.");
 		}
 	};
 	private static Devotion.Type type = Devotion.Type.OFFENSE;
@@ -188,12 +188,11 @@ class Lightning extends Ability
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
 				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Deity.canUseDeitySilent(interactEvent.getPlayer(), deity)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-
-				if(!Deity.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isEnabledAbility(name) || ((player.getItemInHand() != null) && (player.getItemInHand().getType() == character.getMeta().getBind(name))))
 				{

@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
 public class MainCommand extends DemigodsCommand
@@ -113,7 +114,7 @@ public class MainCommand extends DemigodsCommand
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
 				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
-				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/Clashnia/Minecraft-Demigods");
+				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/CensoredSoftware/Minecraft-Demigods");
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
@@ -178,7 +179,10 @@ public class MainCommand extends DemigodsCommand
 										addAll(deity.getInfo().getLore());
 										for(Ability ability : deity.getAbilities())
 										{
-											addAll(ability.getInfo().getDetails());
+											for(String detail : ability.getInfo().getDetails())
+											{
+												add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.GREEN + "/" + ability.getInfo().getName().toLowerCase() + ChatColor.WHITE + ": " + detail);
+											}
 										}
 									}
 								})

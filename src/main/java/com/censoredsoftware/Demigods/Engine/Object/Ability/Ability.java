@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,6 +18,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
@@ -25,6 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public abstract class Ability
@@ -32,6 +35,7 @@ public abstract class Ability
 	private AbilityInfo info;
 	private Listener listener;
 	private Runnable runnable;
+	private static final int TARGETOFFSET = 5;
 
 	public Ability(AbilityInfo info, Listener listener, Runnable runnable)
 	{
@@ -54,8 +58,6 @@ public abstract class Ability
 	{
 		return runnable;
 	}
-
-	private static final int TARGETOFFSET = 5;
 
 	private static boolean doAbilityPreProcess(Player player, int cost)
 	{
@@ -161,7 +163,7 @@ public abstract class Ability
 
 		for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
 		{
-			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity) // TODO: Possibly implement devotion-based range
+			if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity) // TODO: Fix this.
 			{
 				if(entity instanceof Tameable && ((Tameable) entity).isTamed() && TameableWrapper.getTameable((LivingEntity) entity) != null)
 				{
@@ -295,19 +297,59 @@ public abstract class Ability
 	public static boolean invokeAbilityCommand(Player player, String command, boolean bind)
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		for(Ability ability : getLoadedAbilities())
+		for(Ability ability : character.getDeity().getAbilities())
 		{
-			if(ability.getInfo().getType() == Devotion.Type.PASSIVE) continue;
+			if(ability.getInfo().getType().equals(Devotion.Type.PASSIVE)) continue;
+
 			if(ability.getInfo().getCommand() != null && ability.getInfo().getCommand().equalsIgnoreCase(command))
 			{
+				// Ensure that the deity can be used, permission allows it, etc
+				if(!Deity.canUseDeity(player, ability.getInfo().getDeity())) return true;
 				if(!player.hasPermission(ability.getInfo().getPermission())) return true;
 
-				if(!Deity.canUseDeity(player, ability.getInfo().getDeity())) return true;
-
-				if(bind)
+				// Handle enabling the command
+				if(bind) // TODO: Handle binding
 				{
-					// Bind item
-					character.getMeta().setBound(ability.getInfo().getName(), player.getItemInHand().getType());
+					final AbilityInfo abilityInfo = ability.getInfo();
+					String abilityName = abilityInfo.getName();
+
+					if(!character.getMeta().isBound(ability.getInfo().getName()))
+					{
+						if(player.getItemInHand() == null)
+						{
+							// Can't bind to air dummy
+							player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_AIR));
+							return false;
+						}
+
+						ItemStack item = player.getItemInHand();
+
+						item.getItemMeta().setDisplayName(abilityName);
+						item.getItemMeta().setLore(new ArrayList<String>()
+						{
+							{
+								add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Consumes " + abilityInfo.getCost() + " per use.");
+								add("");
+								for(String detail : abilityInfo.getDetails())
+								{
+									add(ChatColor.AQUA + detail);
+								}
+							}
+						});
+
+						// Save the bind
+						character.getMeta().setBound(abilityName, item);
+
+						// Let them know
+						player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", item.getType().name().toLowerCase()));
+
+						return true;
+					}
+					else
+					{
+						// Remove the bind
+						character.getMeta().removeBind(ability.getInfo().getName());
+					}
 				}
 				else
 				{

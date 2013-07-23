@@ -1,18 +1,17 @@
 package com.censoredsoftware.Demigods.Engine.Object.Player;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
+import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
+import com.google.common.collect.Sets;
 
 @Model
 public class PlayerCharacterMeta
@@ -22,15 +21,13 @@ public class PlayerCharacterMeta
 	@Attribute
 	private Integer ascensions;
 	@Attribute
-	private Integer devotion;
-	@Attribute
 	private Integer favor;
 	@Attribute
 	private Integer maxFavor;
+	@CollectionMap(key = Integer.class, value = String.class)
+	private Map<String, Long> bindingData;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
-	@CollectionMap(key = Integer.class, value = String.class)
-	private Map<Integer, String> bindingData;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> taskData;
 	@CollectionMap(key = String.class, value = Boolean.class)
@@ -39,7 +36,7 @@ public class PlayerCharacterMeta
 	void initializeMaps()
 	{
 		this.abilityData = new HashMap<String, Boolean>();
-		this.bindingData = new HashMap<Integer, String>();
+		this.bindingData = new HashMap<String, Long>();
 		this.taskData = new HashMap<String, Boolean>();
 		this.devotionData = new HashMap<String, Devotion>();
 	}
@@ -95,73 +92,61 @@ public class PlayerCharacterMeta
 		abilityData.put(ability, option);
 	}
 
-	public boolean isBound(Material material)
+	public boolean isBound(String ability)
 	{
-		return getBindings() != null && getBindings().contains(material.getId());
+		return getBind(ability) != null;
 	}
 
-	public Material getBind(String ability)
+	public boolean isBound(ItemStack item)
 	{
-		for(int type : getBindings())
+		return getBind(item) != null;
+	}
+
+	public DemigodsItemStack getBind(String ability)
+	{
+		return this.bindingData.containsKey(ability) ? DemigodsItemStack.load(this.bindingData.get(ability)) : null;
+	}
+
+	public DemigodsItemStack getBind(ItemStack item)
+	{
+		for(Long bindId : this.bindingData.values())
 		{
-			if(bindingData.get(type).equalsIgnoreCase(ability)) return Material.getMaterial(type);
+			DemigodsItemStack bind = DemigodsItemStack.load(bindId);
+			if(bind.toItemStack().equals(item))
+			{
+				return bind;
+			}
 		}
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Set<Integer> getBindings()
+	public Set<DemigodsItemStack> getBindings()
 	{
-		Set<Integer> bindings = new HashSet<Integer>();
-		for(int bind : bindingData.keySet())
+		Set<DemigodsItemStack> bindings = Sets.newHashSet();
+		for(Long id : this.bindingData.values())
 		{
-			bindings.add(bind);
+			bindings.add(DemigodsItemStack.load(id));
 		}
 		return bindings;
 	}
 
-	public void setBound(String ability, Material material)
-	{
-		Player player = PlayerCharacter.load(getId()).getOfflinePlayer().getPlayer();
-		if(!bindingData.containsValue(ability))
-		{
-			if(player.getItemInHand().getType() == Material.AIR)
-			{
-				player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-			}
-			else
-			{
-				if(isBound(material))
-				{
-					player.sendMessage(ChatColor.YELLOW + "That item is already bound to a skill.");
-				}
-				else if(material == Material.AIR)
-				{
-					player.sendMessage(ChatColor.YELLOW + "You cannot bind a skill to air.");
-				}
-				else
-				{
-					bindingData.put(material.getId(), ability);
-					player.sendMessage(ChatColor.YELLOW + ability + " is now bound to: " + material.name().toUpperCase());
-				}
-			}
-		}
-		else
-		{
-			removeBind(ability);
-			player.sendMessage(ChatColor.YELLOW + ability + "'s bind has been removed.");
-		}
-	}
-
-	public void removeBind(Material material)
-	{
-		if(bindingData.containsKey(material.getId())) bindingData.remove(material.getId());
-		save(this);
-	}
-
 	public void removeBind(String ability)
 	{
-		if(getBind(ability) != null) removeBind(getBind(ability));
+		this.bindingData.remove(ability);
+	}
+
+	public void setBound(String ability, ItemStack item)
+	{
+		this.bindingData.put(ability, DemigodsItemStack.create(item).getId());
+	}
+
+	public void removeBind(ItemStack item)
+	{
+		if(isBound(item))
+		{
+			DemigodsItemStack bind = getBind(item);
+			this.bindingData.values().remove(bind);
+		}
 	}
 
 	public boolean isFinishedTask(String taskName)

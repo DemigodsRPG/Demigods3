@@ -16,9 +16,7 @@ public class CommandListener implements Listener
 	{
 		String message = event.getMessage();
 		message = message.substring(1);
-
 		String[] args = message.split("\\s+");
-
 		Player player = event.getPlayer();
 
 		try
