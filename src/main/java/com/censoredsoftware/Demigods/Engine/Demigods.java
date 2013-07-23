@@ -240,7 +240,7 @@ public class Demigods
 
 	public static Deque<ConversationInfo> getLoadedConversations()
 	{
-		return Demigods.getLoadedConversations();
+		return Demigods.conversasions;
 	}
 
 	@Override
