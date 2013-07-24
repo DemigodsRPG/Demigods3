@@ -24,7 +24,7 @@ public class InventoryListener implements Listener
 
 		for(AbilityBind bind : character.getMeta().getBinds())
 		{
-			Demigods.message.broadcast("HALT!"); // TODO: DEBUG
+			Demigods.message.broadcast("HALT! " + event.getSlot() + ", " + bind.getSlot()); // TODO: DEBUG
 			if(event.getSlot() == bind.getSlot()) event.setCancelled(true);
 		}
 	}

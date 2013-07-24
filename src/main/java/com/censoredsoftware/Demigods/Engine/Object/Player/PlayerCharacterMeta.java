@@ -101,7 +101,6 @@ public class PlayerCharacterMeta
 	{
 		AbilityBind bind = AbilityBind.create(ability, slot, item);
 		this.binds.add(bind);
-		save(this);
 		return bind;
 	}
 
@@ -118,7 +117,7 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains(bind.getIdentifier()))
+			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
 			{
 				Demigods.message.broadcast("Match found!"); // TODO: DEBUG
 				return bind;
@@ -138,7 +137,6 @@ public class PlayerCharacterMeta
 		{
 			this.binds.remove(getBind(ability));
 		}
-		save(this);
 	}
 
 	public void removeBind(ItemStack item)
@@ -147,7 +145,6 @@ public class PlayerCharacterMeta
 		{
 			this.binds.remove(getBind(item));
 		}
-		save(this);
 	}
 
 	public boolean isFinishedTask(String taskName)
