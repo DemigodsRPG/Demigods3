@@ -57,7 +57,7 @@ public class TextUtility
 				case ERROR_ALPHA_NUMERIC:
 					return "Only alpha-numeric characters are allowed.";
 				case ERROR_NAME_LENGTH:
-					return "Your name should be between 4 and 14 characters.";
+					return "Your name should be between 4 and 13 characters.";
 				case ERROR_CHAR_EXISTS:
 					return "A character with that name already exists.";
 				case ERROR_MAX_CAPS:
