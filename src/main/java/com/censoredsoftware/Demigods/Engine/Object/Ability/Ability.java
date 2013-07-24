@@ -336,7 +336,7 @@ public abstract class Ability
 					character.getMeta().setBound(abilityName, player.getInventory().getHeldItemSlot(), item);
 
 					// Let them know
-					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + player.getInventory().getHeldItemSlot() + 1));
+					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + (player.getInventory().getHeldItemSlot() + 1)));
 
 					return true;
 				}
