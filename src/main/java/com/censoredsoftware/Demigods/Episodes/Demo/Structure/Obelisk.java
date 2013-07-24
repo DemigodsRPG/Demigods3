@@ -64,25 +64,25 @@ public class Obelisk implements StructureInfo
 				}));
 
 				// Everything else.
-				add(new StructureSchematic(0, 0, -1, 1, 3, 0, new ArrayList<StructureBlockData>()
+				add(new StructureSchematic(0, 0, -1, 0, 3, -1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(0, 0, 1, 1, 3, 1, new ArrayList<StructureBlockData>()
+				add(new StructureSchematic(0, 0, 1, 0, 3, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(1, 0, 0, 1, 3, 1, new ArrayList<StructureBlockData>()
+				add(new StructureSchematic(1, 0, 0, 1, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(-1, 0, 0, 0, 3, 1, new ArrayList<StructureBlockData>()
+				add(new StructureSchematic(-1, 0, 0, -1, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
