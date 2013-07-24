@@ -130,7 +130,58 @@ public class Obelisk implements StructureInfo
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-
+				add(new StructureSchematic(0, 4, -1, 0, 5, -1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.SMOOTH_BRICK));
+					}
+				}));
+				add(new StructureSchematic(0, 4, 1, 0, 5, 1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.SMOOTH_BRICK));
+					}
+				}));
+				add(new StructureSchematic(1, 4, 0, 1, 5, 0, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.SMOOTH_BRICK));
+					}
+				}));
+				add(new StructureSchematic(-1, 4, 0, -1, 5, 0, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.SMOOTH_BRICK));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, 1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.VINE, (byte) 4, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
+					}
+				}));
+				add(new StructureSchematic(1, 5, -1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.VINE, (byte) 1, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
+					}
+				}));
+				add(new StructureSchematic(1, 5, 1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.VINE, (byte) 4, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
+					}
+				}));
+				add(new StructureSchematic(-1, 5, -1, new ArrayList<StructureBlockData>()
+				{
+					{
+						add(new StructureBlockData(Material.VINE, (byte) 1, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
+					}
+				}));
 			}
 		};
 	}
