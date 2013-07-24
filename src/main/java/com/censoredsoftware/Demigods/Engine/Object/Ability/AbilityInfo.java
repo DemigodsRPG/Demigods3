@@ -88,4 +88,9 @@ public class AbilityInfo
 	{
 		return weapon;
 	}
+
+	public boolean hasWeapon()
+	{
+		return weapon != null;
+	}
 }

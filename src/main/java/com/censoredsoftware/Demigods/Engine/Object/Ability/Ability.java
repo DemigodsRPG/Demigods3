@@ -296,17 +296,24 @@ public abstract class Ability
 
 				if(!character.getMeta().isBound(ability.getInfo().getName()))
 				{
-					if(player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR))
+					if(!abilityInfo.hasWeapon() && (player.getItemInHand() != null || !player.getItemInHand().getType().equals(Material.AIR)))
 					{
-						// Can't bind to air dummy
-						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_AIR));
+						// Slot must be empty
+						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_SLOT));
+						return true;
+					}
+					else if(abilityInfo.hasWeapon())
+					{
+						// Weapon required
+						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", abilityInfo.getWeapon().name().toLowerCase().replace("_", " ")).replace("{ability}", abilityName.toLowerCase()));
 						return true;
 					}
 
-					ItemStack item = player.getItemInHand();
+					// Create a stick and set the meta
+					ItemStack item = abilityInfo.hasWeapon() ? player.getItemInHand() : new ItemStack(Material.STICK);
 					ItemMeta itemMeta = item.getItemMeta();
-
 					itemMeta.setDisplayName(ChatColor.RESET + abilityName);
+
 					itemMeta.setLore(new ArrayList<String>()
 					{
 						{
@@ -328,7 +335,7 @@ public abstract class Ability
 					character.getMeta().setBound(abilityName, player.getInventory().getHeldItemSlot(), item);
 
 					// Let them know
-					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", item.getType().name().toLowerCase()).replace("_", " "));
+					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + player.getInventory().getHeldItemSlot()));
 
 					return true;
 				}
