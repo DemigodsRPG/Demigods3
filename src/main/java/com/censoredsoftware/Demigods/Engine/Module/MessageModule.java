@@ -52,8 +52,7 @@ public class MessageModule
 	 */
 	public String chatTitle(String title)
 	{
-		int total = 380;
-
+		int total = 310;
 		StringBuilder chatTitle = new StringBuilder(" " + UnicodeUtility.rightwardArrow() + " " + title + " ");
 		for(int i = 0; i < total - title.length(); i += 6)
 		{
