@@ -72,9 +72,6 @@ public class Battle
 		meta.addParticipant(damaged);
 		battle.setMeta(meta);
 		Battle.save(battle);
-
-		Demigods.message.broadcast("Battle created."); // TODO Debug.
-
 		return battle;
 	}
 

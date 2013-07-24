@@ -2,7 +2,9 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -20,11 +22,13 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
-		if(!Battle.canParticipate(event.getEntity()) || !Battle.canParticipate(event.getDamager())) return;
+		Entity damager = event.getDamager();
+		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
+		if(!Battle.canParticipate(event.getEntity()) || !Battle.canParticipate(damager)) return;
 
 		// Define participants
 		BattleParticipant damageeParticipant = Battle.defineParticipant(event.getEntity());
-		BattleParticipant damagerParticipant = Battle.defineParticipant(event.getDamager());
+		BattleParticipant damagerParticipant = Battle.defineParticipant(damager);
 
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
@@ -73,7 +77,7 @@ public class BattleListener implements Listener
 		if(Battle.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(participant, Battle.getBattle(participant)));
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleMove(PlayerMoveEvent event)
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;
@@ -81,7 +85,7 @@ public class BattleListener implements Listener
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;
