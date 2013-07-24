@@ -89,7 +89,7 @@ class Test extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				if(character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 

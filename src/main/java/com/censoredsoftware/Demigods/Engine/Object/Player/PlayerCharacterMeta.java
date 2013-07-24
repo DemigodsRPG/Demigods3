@@ -107,6 +107,11 @@ public class PlayerCharacterMeta
 		return getBind(item) != null;
 	}
 
+	public void addBind(AbilityBind bind)
+	{
+		this.binds.add(bind);
+	}
+
 	public AbilityBind setBound(String ability, int slot, ItemStack item)
 	{
 		AbilityBind bind = AbilityBind.create(ability, slot, item);
