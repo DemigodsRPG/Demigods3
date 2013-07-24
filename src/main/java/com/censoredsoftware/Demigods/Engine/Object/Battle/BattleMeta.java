@@ -67,7 +67,7 @@ public class BattleMeta
 	{
 		this.killCounter += 1;
 		PlayerCharacter character = participant.getRelatedCharacter();
-		if(this.kills.containsKey(character.getId())) this.kills.put(character.getId(), this.kills.get(character.getId() + 1));
+		if(this.kills.containsKey(character.getId())) this.kills.put(character.getId(), this.kills.get(character.getId()) + 1);
 		else this.kills.put(character.getId(), 1);
 		save(this);
 	}
@@ -75,7 +75,7 @@ public class BattleMeta
 	public void addDeath(BattleParticipant participant)
 	{
 		PlayerCharacter character = participant.getRelatedCharacter();
-		if(this.deaths.containsKey(character.getId())) this.deaths.put(character.getId(), this.deaths.get(character.getId() + 1));
+		if(this.deaths.containsKey(character.getId())) this.deaths.put(character.getId(), this.deaths.get(character.getId()) + 1);
 		else this.deaths.put(character.getId(), 1);
 		save(this);
 	}
