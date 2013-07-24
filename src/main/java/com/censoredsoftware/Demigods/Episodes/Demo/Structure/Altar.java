@@ -60,9 +60,9 @@ public class Altar implements StructureInfo
 		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
 		{
 			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, 7));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, 8));
 				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 2));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
 			}
 		};
 		final List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
