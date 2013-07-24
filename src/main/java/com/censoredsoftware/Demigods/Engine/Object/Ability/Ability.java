@@ -296,7 +296,7 @@ public abstract class Ability
 
 				if(!character.getMeta().isBound(ability.getInfo().getName()))
 				{
-					if(!abilityInfo.hasWeapon() && (player.getItemInHand() != null || !player.getItemInHand().getType().equals(Material.AIR)))
+					if(!abilityInfo.hasWeapon() && player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
 					{
 						// Slot must be empty
 						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_SLOT));

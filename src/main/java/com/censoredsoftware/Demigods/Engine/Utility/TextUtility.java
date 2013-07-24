@@ -35,7 +35,7 @@ public class TextUtility
 			switch((Text) text)
 			{
 				case ERROR_BIND_WEAPON_REQUIRED:
-					return "A(n) {weapon} is required to bind {ability}!";
+					return "A {weapon} is required to bind {ability}!";
 				case DATA_RESET_KICK:
 					return "All Demigods data has been reset, you may now rejoin!";
 				case ADMIN_CLEAR_DATA_STARTING:
