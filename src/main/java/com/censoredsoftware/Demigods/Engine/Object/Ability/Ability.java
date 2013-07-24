@@ -313,8 +313,7 @@ public abstract class Ability
 
 				if(!character.getMeta().isBound(ability.getInfo().getName()))
 				{
-					Demigods.message.broadcast("Item: " + player.getItemInHand().getType().name());
-					if(player.getItemInHand() == null || player.getItemInHand().equals(Material.AIR))
+					if(player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR))
 					{
 						// Can't bind to air dummy
 						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_AIR));
