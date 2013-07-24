@@ -179,14 +179,7 @@ public class Altar implements StructureInfo
 				add(new StructureSchematic(-2, 5, -1, -2, 5, 1, woodSlab));
 
 				// Create main platform
-				add(new StructureSchematic(2, 1, -2, 2, 1, 2, stoneBrickSlabBottom));
-				add(new StructureSchematic(-1, 1, -2, 1, 1, -2, stoneBrickSlabBottom));
-				add(new StructureSchematic(-2, 1, -2, -2, 1, 2, stoneBrickSlabBottom));
-				add(new StructureSchematic(-1, 1, -1, -1, 1, 2, stoneBrickSlabBottom));
-				add(new StructureSchematic(0, 1, -2, stoneBrickSlabBottom));
-				add(new StructureSchematic(0, 1, 2, stoneBrickSlabBottom));
-				add(new StructureSchematic(0, 1, -1, stoneBrickSlabBottom));
-				add(new StructureSchematic(0, 1, 1, stoneBrickSlabBottom));
+				add(new StructureSchematic(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom));
 			}
 		};
 	}
