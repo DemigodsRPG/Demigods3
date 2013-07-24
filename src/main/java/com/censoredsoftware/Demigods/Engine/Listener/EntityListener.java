@@ -53,7 +53,7 @@ public class EntityListener implements Listener
 				return;
 			}
 
-			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && TameableWrapper.getTameable((LivingEntity) attacked) != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(hitting).getCurrent(), TameableWrapper.getTameable((LivingEntity) attacked).getOwner()))
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && TameableWrapper.getTameable((LivingEntity) attacked) != null && PlayerWrapper.getPlayer(hitting).getCurrent() != null && PlayerCharacter.areAllied(PlayerWrapper.getPlayer(hitting).getCurrent(), TameableWrapper.getTameable((LivingEntity) attacked).getOwner()))
 			{
 				event.setCancelled(true);
 				return;

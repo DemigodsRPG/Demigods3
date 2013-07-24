@@ -550,7 +550,7 @@ public class Prayer implements ConversationInfo
 					List<TextUtility.Text> errors = Lists.newArrayList();
 
 					// Check the errors
-					if(name.length() < 4 || name.length() > 14)
+					if(name.length() < 4 || name.length() >= 14)
 					{
 						errors.add(TextUtility.Text.ERROR_NAME_LENGTH);
 					}
