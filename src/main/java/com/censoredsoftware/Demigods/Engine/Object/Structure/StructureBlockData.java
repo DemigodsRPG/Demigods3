@@ -17,7 +17,7 @@ public class StructureBlockData
 	{
 		this.material = material;
 		this.data = 0;
-		this.odds = 5;
+		this.odds = 10;
 	}
 
 	/**
@@ -28,9 +28,9 @@ public class StructureBlockData
 	 */
 	public StructureBlockData(Material material, int odds)
 	{
-		if(odds == 0 || odds > 5) throw new IllegalArgumentException("Odds must be between 1 and 5.");
+		if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 		this.material = material;
-		this.data = 0;
+		this.data = 10;
 		this.odds = odds;
 	}
 
@@ -44,7 +44,7 @@ public class StructureBlockData
 	{
 		this.material = material;
 		this.data = data;
-		this.odds = 5;
+		this.odds = 10;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class StructureBlockData
 	 */
 	public StructureBlockData(Material material, byte data, int odds)
 	{
-		if(odds == 0 || odds > 5) throw new IllegalArgumentException("Odds must be between 1 and 5.");
+		if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 		this.material = material;
 		this.data = data;
 		this.odds = odds;

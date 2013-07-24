@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -53,56 +54,63 @@ public class Shrine implements StructureInfo
 	@Override
 	public Set<StructureSchematic> getSchematics()
 	{
+		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.GOLD_BLOCK));
+			}
+		};
+		final List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.ENDER_CHEST));
+			}
+		};
+		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
+			}
+		};
 		return new HashSet<StructureSchematic>()
 		{
 			{
 				// Create the main block
-				add(new StructureSchematic(0, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.GOLD_BLOCK));
-					}
-				}));
+				add(new StructureSchematic(0, 1, 0, clickBlock));
 
 				// Create the ender chest and the block below
-				add(new StructureSchematic(0, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.ENDER_CHEST));
-					}
-				}));
-				add(new StructureSchematic(0, -1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.SMOOTH_BRICK));
-					}
-				}));
+				add(new StructureSchematic(0, 0, 0, enderChest));
+				add(new StructureSchematic(0, -1, 0, stoneBrick));
 
 				// Create the rest
-				add(new StructureSchematic(1, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 0));
-					}
-				}));
-				add(new StructureSchematic(0, 0, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
-					}
-				}));
-				add(new StructureSchematic(0, 0, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
-					}
-				}));
+				add(new StructureSchematic(-1, 0, 0, stoneBrickStairs));
+				add(new StructureSchematic(1, 0, 0, stoneBrickStairs1));
+				add(new StructureSchematic(0, 0, -1, stoneBrickStairs2));
+				add(new StructureSchematic(0, 0, 1, stoneBrickStairs3));
 			}
 		};
 	}

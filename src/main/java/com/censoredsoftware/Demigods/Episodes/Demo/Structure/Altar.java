@@ -2,6 +2,7 @@ package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -50,918 +51,136 @@ public class Altar implements StructureInfo
 	@Override
 	public Set<StructureSchematic> getSchematics()
 	{
+		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
+			}
+		};
+		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_BRICK, 8));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+			}
+		};
+		final List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+			}
+		};
+		final List<StructureBlockData> stoneBrickSlabTop = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+			}
+		};
+		final List<StructureBlockData> stoneBrickSpecial = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+			}
+		};
+		final List<StructureBlockData> wood = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+			}
+		};
+		final List<StructureBlockData> woodSlab = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+			}
+		};
 		return new HashSet<StructureSchematic>()
 		{
 			{
 				// Create roof
-				add(new StructureSchematic(2, 3, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
-					}
-				}));
-				add(new StructureSchematic(-2, 3, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
-					}
-				}));
-				add(new StructureSchematic(2, 3, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
-					}
-				}));
-				add(new StructureSchematic(-2, 3, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
-					}
-				}));
-				add(new StructureSchematic(2, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 5, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 5, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(2, 5, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 5, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 6, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 5, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 5, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 5, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(1, 5, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(1, 5, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(1, 5, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 5, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 5, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 5, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(2, 3, 2, stoneBrickSlabTop));
+				add(new StructureSchematic(-2, 3, -2, stoneBrickSlabTop));
+				add(new StructureSchematic(2, 3, -2, stoneBrickSlabTop));
+				add(new StructureSchematic(-2, 3, 2, stoneBrickSlabTop));
+				add(new StructureSchematic(2, 4, 2, stoneBrick));
+				add(new StructureSchematic(-2, 4, -2, stoneBrick));
+				add(new StructureSchematic(2, 4, -2, stoneBrick));
+				add(new StructureSchematic(-2, 4, 2, stoneBrick));
+				add(new StructureSchematic(2, 5, 2, woodSlab));
+				add(new StructureSchematic(-2, 5, -2, woodSlab));
+				add(new StructureSchematic(2, 5, -2, woodSlab));
+				add(new StructureSchematic(-2, 5, 2, woodSlab));
+				add(new StructureSchematic(0, 6, 0, woodSlab));
+				add(new StructureSchematic(-1, 5, -1, 1, 5, 1, wood));
 
 				// Create the enchantment table
-				add(new StructureSchematic(0, 2, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
-					}
-				}));
+				add(new StructureSchematic(0, 2, 0, clickBlock));
 
 				// Create magical table stand
-				add(new StructureSchematic(0, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
+				add(new StructureSchematic(0, 1, 0, stoneBrick));
 
 				// Create outer steps
-				add(new StructureSchematic(3, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(4, 0, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(4, 0, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(4, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(4, 0, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(4, 0, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-4, 0, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-4, 0, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-4, 0, -0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-4, 0, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-4, 0, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(3, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 0, -4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 0, -4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 0, -4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 0, -4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 0, -4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 0, 4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 0, 4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 0, 4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 0, 4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 0, 4, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
+				add(new StructureSchematic(3, 0, 3, stoneBrickSlabBottom));
+				add(new StructureSchematic(-3, 0, -3, stoneBrickSlabBottom));
+				add(new StructureSchematic(3, 0, -3, stoneBrickSlabBottom));
+				add(new StructureSchematic(-3, 0, 3, stoneBrickSlabBottom));
+				add(new StructureSchematic(4, 0, -2, 4, 0, 2, stoneBrickSlabBottom));
+				add(new StructureSchematic(-4, 0, -2, -4, 0, 2, stoneBrickSlabBottom));
+				add(new StructureSchematic(2, 0, -4, -2, 0, -4, stoneBrickSlabBottom));
+				add(new StructureSchematic(-2, 0, 4, 2, 0, 4, stoneBrickSlabBottom));
 
 				// Create inner steps
-				add(new StructureSchematic(3, 0, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 0, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(1, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(0, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-1, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(1, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(0, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-1, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
+				add(new StructureSchematic(3, 0, -1, 3, 0, 1, stoneBrick));
+				add(new StructureSchematic(-1, 0, 3, 1, 0, 3, stoneBrick));
+				add(new StructureSchematic(-3, 0, -1, -3, 0, 1, stoneBrick));
+				add(new StructureSchematic(-1, 0, -3, 1, 0, -3, stoneBrick));
 
 				// Create pillars
-				add(new StructureSchematic(3, 0, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 2, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 3, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(3, 0, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 2, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 3, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(3, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(2, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 1, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 2, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 3, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 4, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 0, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 2, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 3, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, 3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 2, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 3, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-3, 0, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 2, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 3, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-3, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(2, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 1, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 2, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 3, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 4, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 0, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 2, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 3, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, -3, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(3, 4, 2, woodSlab));
+				add(new StructureSchematic(3, 4, -2, woodSlab));
+				add(new StructureSchematic(2, 4, 3, woodSlab));
+				add(new StructureSchematic(-2, 4, 3, woodSlab));
+				add(new StructureSchematic(-3, 4, 2, woodSlab));
+				add(new StructureSchematic(-3, 4, -2, woodSlab));
+				add(new StructureSchematic(2, 4, -3, woodSlab));
+				add(new StructureSchematic(-2, 4, -3, woodSlab));
+				add(new StructureSchematic(3, 0, 2, 3, 3, 2, stoneBrick));
+				add(new StructureSchematic(3, 0, -2, 3, 3, -2, stoneBrick));
+				add(new StructureSchematic(2, 0, 3, 2, 3, 3, stoneBrick));
+				add(new StructureSchematic(-2, 0, 3, -2, 3, 3, stoneBrick));
+				add(new StructureSchematic(-3, 0, 2, -3, 3, 2, stoneBrick));
+				add(new StructureSchematic(-3, 0, -2, -3, 3, -2, stoneBrick));
+				add(new StructureSchematic(2, 0, -3, 2, 3, -3, stoneBrick));
+				add(new StructureSchematic(-2, 0, -3, -2, 3, -3, stoneBrick));
 
 				// Left beam
-				add(new StructureSchematic(1, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(0, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
-					}
-				}));
-				add(new StructureSchematic(-1, 4, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(1, 5, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 5, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 5, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(1, 4, -2, stoneBrick));
+				add(new StructureSchematic(-1, 4, -2, stoneBrick));
+				add(new StructureSchematic(0, 4, -2, stoneBrickSpecial));
+				add(new StructureSchematic(-1, 5, -2, 1, 5, -2, woodSlab));
 
 				// Right beam
-				add(new StructureSchematic(1, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(0, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
-					}
-				}));
-				add(new StructureSchematic(-1, 4, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(1, 5, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(0, 5, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-1, 5, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(1, 4, 2, stoneBrick));
+				add(new StructureSchematic(-1, 4, 2, stoneBrick));
+				add(new StructureSchematic(0, 4, 2, stoneBrickSpecial));
+				add(new StructureSchematic(-1, 5, 2, 1, 5, 2, woodSlab));
 
 				// Top beam
-				add(new StructureSchematic(2, 4, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 4, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
-					}
-				}));
-				add(new StructureSchematic(2, 4, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(2, 5, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(2, 5, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(2, 5, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(2, 4, 1, stoneBrick));
+				add(new StructureSchematic(2, 4, -1, stoneBrick));
+				add(new StructureSchematic(2, 4, 0, stoneBrickSpecial));
+				add(new StructureSchematic(2, 5, -1, 2, 5, 1, woodSlab));
 
 				// Bottom beam
-				add(new StructureSchematic(-2, 4, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
-					}
-				}));
-				add(new StructureSchematic(-2, 4, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(98)));
-					}
-				}));
-				add(new StructureSchematic(-2, 5, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 5, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
-				add(new StructureSchematic(-2, 5, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-					}
-				}));
+				add(new StructureSchematic(-2, 4, 1, stoneBrick));
+				add(new StructureSchematic(-2, 4, -1, stoneBrick));
+				add(new StructureSchematic(-2, 4, 0, stoneBrickSpecial));
+				add(new StructureSchematic(-2, 5, -1, -2, 5, 1, woodSlab));
 
 				// Create main platform
-				add(new StructureSchematic(2, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 1, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 1, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(2, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, -2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-2, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 1, 2, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 1, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(1, 1, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 1, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 1, -1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 1, 0, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(-1, 1, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
-				add(new StructureSchematic(0, 1, 1, new ArrayList<StructureBlockData>()
-				{
-					{
-						add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-					}
-				}));
+				add(new StructureSchematic(-2, 1, -2, 2, 1, 2, stoneBrick));
+				add(new StructureSchematic(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
 			}
 		};
 	}
