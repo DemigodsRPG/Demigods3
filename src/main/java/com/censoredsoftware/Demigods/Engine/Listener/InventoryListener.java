@@ -31,16 +31,16 @@ public class InventoryListener implements Listener
 		{
 			Set<Integer> hotBar = Ranges.closed(event.getInventory().getSize() - 9, event.getInventory().getSize()).asSet(DiscreteDomains.integers());
 
-			Demigods.message.broadcast("Debug: " + (event.getInventory().getSize() - 9) + ", " + event.getInventory().getSize());
-			Demigods.message.broadcast("Debug: " + event.getSlot());
-			Demigods.message.broadcast("Debug: " + event.getRawSlot());
+			Demigods.message.broadcast("Range: " + (event.getInventory().getSize() - 9) + ", " + event.getInventory().getSize());
+			Demigods.message.broadcast("Slot: " + event.getSlot());
+			Demigods.message.broadcast("Raw Slot: " + event.getRawSlot());
 
 			for(Integer integer : hotBar)
 			{
-				Demigods.message.broadcast("Debug: " + integer);
+				Demigods.message.broadcast("Range Check: " + integer);
 			}
 
-			if(bind.getSlot() == MiscUtility.getIndex(hotBar, event.getSlot())) event.setCancelled(true);
+			if(bind.getSlot() == MiscUtility.getIndex(hotBar, event.getRawSlot())) event.setCancelled(true);
 		}
 	}
 }
