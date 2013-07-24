@@ -35,8 +35,8 @@ public class BattleListener implements Listener
 			Battle battle = Battle.create(damagerParticipant, damageeParticipant);
 
 			// Teleport if needed
-			Battle.teleportIfNeeded(damageeParticipant, battle);
-			Battle.teleportIfNeeded(damagerParticipant, battle);
+			// Battle.teleportIfNeeded(damageeParticipant, battle);
+			// Battle.teleportIfNeeded(damagerParticipant, battle);
 
 			// Battle death
 			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(damagerParticipant, damageeParticipant, battle));
@@ -50,8 +50,8 @@ public class BattleListener implements Listener
 			Battle battle = Battle.getInRadius(midpoint);
 
 			// Teleport if needed
-			Battle.teleportIfNeeded(damageeParticipant, battle);
-			Battle.teleportIfNeeded(damagerParticipant, battle);
+			// Battle.teleportIfNeeded(damageeParticipant, battle);
+			// Battle.teleportIfNeeded(damagerParticipant, battle);
 
 			// Add participants from this event
 			battle.getMeta().addParticipant(damageeParticipant);
@@ -78,7 +78,7 @@ public class BattleListener implements Listener
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;
 		BattleParticipant participant = Battle.defineParticipant(event.getPlayer());
-		event.setCancelled(onBattleMove(event.getTo(), event.getFrom(), participant));
+		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
 	// @EventHandler(priority = EventPriority.HIGHEST)
@@ -86,7 +86,7 @@ public class BattleListener implements Listener
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;
 		BattleParticipant participant = Battle.defineParticipant(event.getPlayer());
-		event.setCancelled(onBattleMove(event.getTo(), event.getFrom(), participant));
+		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
 	private static boolean onBattleMove(Location toLocation, Location fromLocation, BattleParticipant participant)

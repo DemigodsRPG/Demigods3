@@ -87,7 +87,7 @@ public class GriefListener implements Listener
 	{
 		boolean from = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		boolean to = Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
-		event.setCancelled(from != to);
+		if(from != to) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -100,7 +100,7 @@ public class GriefListener implements Listener
 			if(Structure.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) in = true;
 			else out = true;
 		}
-		event.setCancelled(in && out);
+		if(in != out) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -108,7 +108,7 @@ public class GriefListener implements Listener
 	{
 		boolean block = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		boolean retract = Structure.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING_ZONE);
-		event.setCancelled(block != retract);
+		if(block != retract) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -126,7 +126,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		event.setCancelled(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE));
+		if(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

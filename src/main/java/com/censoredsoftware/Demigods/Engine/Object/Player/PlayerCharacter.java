@@ -216,9 +216,7 @@ public class PlayerCharacter implements BattleParticipant
 	public static PlayerCharacter getCharacterByName(String name)
 	{
 		for(PlayerCharacter loaded : loadAll())
-		{
 			if(loaded.getName().equalsIgnoreCase(name)) return loaded;
-		}
 		return null;
 	}
 
