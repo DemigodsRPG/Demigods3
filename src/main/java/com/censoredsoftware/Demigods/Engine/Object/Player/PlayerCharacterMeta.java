@@ -141,7 +141,7 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.isSimilar(bind.getItem().toItemStack()))
+			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
 			{
 				return bind;
 			}
