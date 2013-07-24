@@ -30,7 +30,6 @@ public class InventoryListener implements Listener
 			PlayerInventory inventory = (PlayerInventory) event.getClickedInventory();
 			Demigods.message.broadcast("Clicked slot: " + event.getSlot() + "/" + event.getRawSlot());
 			Demigods.message.broadcast("Item: " + inventory.getItem(event.getSlot()));
-			Demigods.message.broadcast("Item (Raw Slot): " + inventory.getItem(event.getRawSlot()));
 			Demigods.message.broadcast("Size: " + inventory.getSize());
 		}
 
