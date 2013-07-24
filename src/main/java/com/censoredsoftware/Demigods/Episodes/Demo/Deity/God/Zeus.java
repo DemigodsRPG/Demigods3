@@ -134,7 +134,7 @@ class Shove extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -194,7 +194,7 @@ class Lightning extends Ability
 				Player player = interactEvent.getPlayer();
 				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-				if(character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -259,7 +259,7 @@ class Storm extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 

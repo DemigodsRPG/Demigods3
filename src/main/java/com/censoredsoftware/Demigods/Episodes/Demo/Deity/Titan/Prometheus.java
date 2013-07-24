@@ -106,7 +106,7 @@ class ShootFireball extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().checkBind(name, player.getInventory().getHeldItemSlot()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -175,7 +175,7 @@ class Blaze extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 
@@ -256,7 +256,7 @@ class Firestorm extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 

@@ -143,7 +143,6 @@ public class PlayerCharacterMeta
 		{
 			if(item.isSimilar(bind.getItem().toItemStack()))
 			{
-				Demigods.message.broadcast("Match found!"); // TODO: DEBUG
 				return bind;
 			}
 		}
