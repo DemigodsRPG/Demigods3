@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
@@ -47,12 +46,7 @@ public class DemigodsPlugin extends JavaPlugin
 
 		// Toggle all prayer off
 		for(Player player : Bukkit.getOnlinePlayers())
-		{
 			PlayerWrapper.togglePrayingSilent(player, false);
-		}
-
-		// Delete all inactive battles
-		Battle.deleteAllInQueue();
 
 		// Cancel all threads, callAbilityEvent calls, and connections.
 		SchedulerUtility.stopThreads(this);

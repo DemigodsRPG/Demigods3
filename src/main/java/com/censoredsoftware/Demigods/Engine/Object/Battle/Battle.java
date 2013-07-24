@@ -1,6 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,13 +24,12 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.Lists;
 
 @Model
 public class Battle
 {
 	@Id
-	private Long id;
+	private Long Id;
 	@Reference
 	private BattleMeta meta;
 	@Reference
@@ -45,8 +47,8 @@ public class Battle
 	private int maxKills;
 	@Attribute
 	private long startTime;
-
-	public static LinkedList<Battle> battleQueue = Lists.newLinkedList();
+	@Attribute
+	private long deleteTime;
 
 	public static Battle create(BattleParticipant damager, BattleParticipant damaged)
 	{
@@ -120,9 +122,14 @@ public class Battle
 		this.startTime = time;
 	}
 
+	void setDeleteTime(long time)
+	{
+		this.deleteTime = time;
+	}
+
 	public long getId()
 	{
-		return this.id;
+		return this.Id;
 	}
 
 	public double getRange()
@@ -165,6 +172,11 @@ public class Battle
 		return this.startTime;
 	}
 
+	public long getDeleteTime()
+	{
+		return this.deleteTime;
+	}
+
 	public static Battle get(Long id)
 	{
 		return JOhm.get(Battle.class, id);
@@ -180,6 +192,11 @@ public class Battle
 		return JOhm.find(Battle.class, "active", true);
 	}
 
+	public static List<Battle> getAllInactive()
+	{
+		return JOhm.find(Battle.class, "active", false);
+	}
+
 	public static void save(Battle battle)
 	{
 		JOhm.save(battle);
@@ -187,23 +204,17 @@ public class Battle
 
 	public void end()
 	{
+		// Prepare for graceful delete
+		setDeleteTime(System.currentTimeMillis() + 3000L);
 		setInactive();
 
 		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended."); // TODO
-
-		battleQueue.add(this);
 	}
 
 	public void delete()
 	{
 		getMeta().delete();
 		JOhm.delete(Battle.class, getId());
-	}
-
-	public static void deleteAllInQueue()
-	{
-		for(Battle battle : battleQueue)
-			battle.delete();
 	}
 
 	public static boolean existsInRadius(Location location)

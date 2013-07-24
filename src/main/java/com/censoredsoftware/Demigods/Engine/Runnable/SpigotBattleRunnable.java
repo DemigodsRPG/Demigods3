@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Runnable;
 
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
@@ -12,8 +13,7 @@ public class SpigotBattleRunnable extends BukkitRunnable
 	public void run()
 	{
 		for(Battle battle : Battle.getAllActive())
-		{
-			SpigotUtility.drawCircle(battle.getStartLocation(), Effect.MOBSPAWNER_FLAMES, battle.getRange(), 60);
-		}
+			for(Location point : battle.battleBorder())
+				SpigotUtility.drawCircle(point, Effect.MOBSPAWNER_FLAMES, battle.getRange(), 60);
 	}
 }
