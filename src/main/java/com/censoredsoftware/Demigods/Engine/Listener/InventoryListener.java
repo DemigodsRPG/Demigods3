@@ -29,9 +29,17 @@ public class InventoryListener implements Listener
 
 		for(AbilityBind bind : character.getMeta().getBinds())
 		{
-			Demigods.message.broadcast("Debug: " + (event.getInventory().getSize() - 9) + ", " + event.getInventory().getSize()); // TODO: Debug
 			Set<Integer> hotBar = Ranges.closed(event.getInventory().getSize() - 9, event.getInventory().getSize()).asSet(DiscreteDomains.integers());
-			Demigods.message.broadcast("Debug: " + MiscUtility.getIndex(hotBar, event.getSlot())); // TODO: Debug
+
+			Demigods.message.broadcast("Debug: " + (event.getInventory().getSize() - 9) + ", " + event.getInventory().getSize());
+			Demigods.message.broadcast("Debug: " + event.getSlot());
+			Demigods.message.broadcast("Debug: " + event.getRawSlot());
+
+			for(Integer integer : hotBar)
+			{
+				Demigods.message.broadcast("Debug: " + integer);
+			}
+
 			if(bind.getSlot() == MiscUtility.getIndex(hotBar, event.getSlot())) event.setCancelled(true);
 		}
 	}
