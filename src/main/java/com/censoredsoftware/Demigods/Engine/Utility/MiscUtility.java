@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 
@@ -209,4 +210,21 @@ public class MiscUtility
 		}
 	}
 
+	/**
+	 * Returns the index of <code>value</code> in the given <code>set</code>.
+	 * 
+	 * @param set the set to look through.
+	 * @param value the value to look for.
+	 * @return Integer
+	 */
+	public static int getIndex(Set<? extends Object> set, Object value)
+	{
+		int result = 0;
+		for(Object object : set)
+		{
+			if(object.equals(value)) return result;
+			result++;
+		}
+		return -1;
+	}
 }
