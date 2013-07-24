@@ -75,6 +75,11 @@ public class AbilityBind
 		return this.identifier;
 	}
 
+	public int getSlot()
+	{
+		return this.slot;
+	}
+
 	public static void save(AbilityBind item)
 	{
 		JOhm.save(item);
