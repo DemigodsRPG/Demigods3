@@ -17,7 +17,6 @@ import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -330,7 +329,7 @@ public class PlayerWrapper
 			togglePrayingSilent(player, false);
 
 			// Message them
-			MiscUtility.clearChat(player);
+			clearChat(player);
 			player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
 			player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
 		}
@@ -365,6 +364,28 @@ public class PlayerWrapper
 			DataUtility.removeTemp(player.getName(), "prayer_conversation");
 			DataUtility.removeTemp(player.getName(), "prayer_location");
 		}
+	}
+
+	/**
+	 * Clears the chat for <code>player</code> using .sendMessage().
+	 * 
+	 * @param player the player whose chat to clear.
+	 */
+	public static void clearChat(Player player)
+	{
+		for(int x = 0; x < 120; x++)
+			player.sendMessage(" ");
+	}
+
+	/**
+	 * Clears the chat for <code>player</code> using .sendRawMessage().
+	 * 
+	 * @param player the player whose chat to clear.
+	 */
+	public static void clearRawChat(Player player)
+	{
+		for(int x = 0; x < 120; x++)
+			player.sendRawMessage(" ");
 	}
 
 	public boolean canUseCurrent()

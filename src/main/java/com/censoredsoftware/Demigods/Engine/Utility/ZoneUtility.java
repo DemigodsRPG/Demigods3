@@ -5,7 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -25,7 +25,7 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
 			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
-			else return StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE);
+			else return Structure.isInRadiusWithFlag(location, Structure.Flag.NO_PVP_ZONE);
 		}
 		else return !canWorldGuardFlagPVP(location);
 	}
@@ -56,7 +56,7 @@ public class ZoneUtility
 
 	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
-		return (!StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_PVP_ZONE)) && canWorldGuardDynamicPVP(location);
+		return (!Structure.isInRadiusWithFlag(location, Structure.Flag.NO_PVP_ZONE)) && canWorldGuardDynamicPVP(location);
 	}
 
 	private static boolean canWorldGuardDynamicPVP(Location location)

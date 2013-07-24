@@ -25,7 +25,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 
 public class PrayerListener implements Listener
@@ -39,7 +39,7 @@ public class PrayerListener implements Listener
 		Player player = event.getPlayer();
 
 		// First we check if the player is clicking a prayer block
-		if(StructureUtility.isCenterBlockWithFlag(event.getClickedBlock().getLocation(), StructureInfo.Flag.PRAYER_LOCATION))
+		if(StructureUtility.isCenterBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 		{
 			if(!PlayerWrapper.isPraying(player))
 			{
@@ -455,7 +455,7 @@ public class PrayerListener implements Listener
 			int Z = (int) warp.getKey().toLocation().getZ();
 			String world = warp.getKey().toLocation().getWorld().getName().toUpperCase();
 
-			if(StructureUtility.getInRadiusWithFlag(warp.getKey().toLocation(), StructureInfo.Flag.PROTECTED_BLOCKS).getReferenceLocation().equals(StructureUtility.getInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS).getReferenceLocation()))
+			if(StructureUtility.getInRadiusWithFlag(warp.getKey().toLocation(), Structure.Flag.PROTECTED_BLOCKS).getReferenceLocation().equals(StructureUtility.getInRadiusWithFlag(player.getLocation(), Structure.Flag.PROTECTED_BLOCKS).getReferenceLocation()))
 			{
 				color = ChatColor.LIGHT_PURPLE + "";
 				hasWarp = true;
@@ -713,7 +713,7 @@ public class PrayerListener implements Listener
 		// Check for same altars
 		for(DemigodsLocation warp : character.getWarps().keySet())
 		{
-			if(StructureUtility.getInRadiusWithFlag(warp.toLocation(), StructureInfo.Flag.PROTECTED_BLOCKS).getReferenceLocation().equals(StructureUtility.getInRadiusWithFlag(player.getLocation(), StructureInfo.Flag.PROTECTED_BLOCKS).getReferenceLocation()))
+			if(StructureUtility.getInRadiusWithFlag(warp.toLocation(), Structure.Flag.PROTECTED_BLOCKS).getReferenceLocation().equals(StructureUtility.getInRadiusWithFlag(player.getLocation(), Structure.Flag.PROTECTED_BLOCKS).getReferenceLocation()))
 			{
 				character.removeWarp(warp);
 			}

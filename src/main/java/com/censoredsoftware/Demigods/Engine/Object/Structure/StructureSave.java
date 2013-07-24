@@ -11,7 +11,6 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 @Model
 public class StructureSave
@@ -92,12 +91,12 @@ public class StructureSave
 
 	public Set<Location> getLocations()
 	{
-		return StructureUtility.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics());
+		return Structure.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics());
 	}
 
-	public StructureInfo getStructureInfo()
+	public Structure getStructureInfo()
 	{
-		for(StructureInfo structure : Demigods.getLoadedStructures())
+		for(Structure structure : Demigods.getLoadedStructures())
 		{
 			if(structure.getStructureType().equalsIgnoreCase(this.structureType)) return structure;
 		}

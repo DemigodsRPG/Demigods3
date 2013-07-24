@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -19,8 +22,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityEvent;
-import com.censoredsoftware.Demigods.Engine.Event.Ability.AbilityTargetEvent;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
@@ -90,7 +91,7 @@ public abstract class Ability
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-		return doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info);
+		return doAbilityPreProcess(player, cost); // TODO callAbilityEvent(name, character, cost, info);
 	}
 
 	/**
@@ -109,7 +110,7 @@ public abstract class Ability
 	{
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-		if(doAbilityPreProcess(player, cost) && callAbilityEvent(name, character, cost, info))
+		if(doAbilityPreProcess(player, cost)) // TODO callAbilityEvent(name, character, cost, info))
 		{
 			if(!(target instanceof LivingEntity))
 			{
@@ -131,7 +132,7 @@ public abstract class Ability
 				TameableWrapper attacked = TameableWrapper.getTameable(target);
 				if(attacked != null && PlayerCharacter.areAllied(character, attacked.getOwner())) return false;
 			}
-			Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
+			// TODO Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
 			return true;
 		}
 		return false;
@@ -196,24 +197,6 @@ public abstract class Ability
 		if(isHit(target, toHit)) return true;
 		if(notify) player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
 		return false;
-	}
-
-	/**
-	 * Returns true if the ability callAbilityEvent for <code>character</code>, called <code>name</code>,
-	 * with a cost of <code>cost</code>, that is Type <code>type</code>, has passed
-	 * all pre-process tests.
-	 * 
-	 * @param character the character triggering the ability callAbilityEvent
-	 * @param name the name of the ability
-	 * @param cost the cost (in favor) of the ability
-	 * @param info the AbilityInfo object
-	 * @return true/false if the callAbilityEvent isn't cancelled or not
-	 */
-	public static boolean callAbilityEvent(String name, PlayerCharacter character, int cost, AbilityInfo info)
-	{
-		AbilityEvent event = new AbilityEvent(name, character, cost, info);
-		Bukkit.getServer().getPluginManager().callEvent(event);
-		return !event.isCancelled();
 	}
 
 	/**

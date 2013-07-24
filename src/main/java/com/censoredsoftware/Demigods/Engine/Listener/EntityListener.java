@@ -1,6 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
@@ -13,8 +12,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterBetrayCharacterEvent;
-import com.censoredsoftware.Demigods.Engine.Event.Character.CharacterKillCharacterEvent;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
@@ -61,34 +58,32 @@ public class EntityListener implements Listener
 				event.setCancelled(true);
 				return;
 			}
-
-			if(attacked instanceof Villager) // If it's a villager
-			{
-				// Define villager
-				Villager villager = (Villager) attacked;
-
-				// Define attacker and name
-				if(event.getDamage() > villager.getHealth()) hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.WEAKER_THAN_YOU));
-			}
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public static void entityDeath(EntityDeathEvent event)
 	{
-		if(event.getEntityType().equals(EntityType.PLAYER))
+		if(event.getEntity() instanceof Player)
 		{
-			// Define variables
 			Player player = (Player) event.getEntity();
-			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-			if(character == null) return;
-			String deity = StringUtils.capitalize(character.getDeity().getInfo().getName());
+			PlayerCharacter playerChar = PlayerWrapper.getPlayer(player).getCurrent();
 
-			// TODO: Punishments.
-			character.addDeath();
+			EntityDamageEvent damageEvent = player.getLastDamageCause();
 
-			// Let 'em know
-			player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.YOU_FAILED_DEITY).replace("{deity}", deity));
+			if(damageEvent instanceof EntityDamageByEntityEvent)
+			{
+				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
+				Entity damager = damageByEvent.getDamager();
+
+				if(damager instanceof Player)
+				{
+					Player attacker = (Player) damager;
+					PlayerCharacter attackChar = PlayerWrapper.getPlayer(attacker).getCurrent();
+					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) PlayerCharacter.onCharacterKillCharacter(attackChar, playerChar);
+					else PlayerCharacter.onCharacterKillCharacter(attackChar, playerChar);
+				}
+			}
 		}
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
@@ -106,33 +101,6 @@ public class EntityListener implements Listener
 			if(entity.getCustomName() != null) Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + ", " + owner.getDeity().getInfo().getColor() + entity.getCustomName() + ChatColor.YELLOW + ", was slain" + damagerMessage + ChatColor.YELLOW + ".");
 			else Demigods.message.broadcast(owner.getDeity().getInfo().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + " was slain" + damagerMessage + ChatColor.YELLOW + ".");
 			wrapper.delete();
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void monitorEntityDeath(EntityDeathEvent event)
-	{
-		Entity entity = event.getEntity();
-		if(entity instanceof Player)
-		{
-			Player player = (Player) entity;
-			PlayerCharacter playerChar = PlayerWrapper.getPlayer(player).getCurrent();
-
-			EntityDamageEvent damageEvent = player.getLastDamageCause();
-
-			if(damageEvent instanceof EntityDamageByEntityEvent)
-			{
-				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
-				Entity damager = damageByEvent.getDamager();
-
-				if(damager instanceof Player)
-				{
-					Player attacker = (Player) damager;
-					PlayerCharacter attackChar = PlayerWrapper.getPlayer(attacker).getCurrent();
-					if(attackChar != null && playerChar != null && PlayerCharacter.areAllied(attackChar, playerChar)) Bukkit.getServer().getPluginManager().callEvent(new CharacterBetrayCharacterEvent(attackChar, playerChar, PlayerWrapper.getCurrentAlliance(player)));
-					else Bukkit.getServer().getPluginManager().callEvent(new CharacterKillCharacterEvent(attackChar, playerChar));
-				}
-			}
 		}
 	}
 

@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
 
+// TODO Replace with YAML.
+
 public class TextUtility
 {
 	public static enum Text

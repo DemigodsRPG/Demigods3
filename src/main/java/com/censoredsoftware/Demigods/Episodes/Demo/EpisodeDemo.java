@@ -2,7 +2,7 @@ package com.censoredsoftware.Demigods.Episodes.Demo;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
@@ -67,15 +67,15 @@ public class EpisodeDemo
 	{
 		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
 
-		private StructureInfo structure;
+		private Structure structure;
 
-		private Structures(StructureInfo structure)
+		private Structures(Structure structure)
 		{
 			this.structure = structure;
 		}
 
 		@Override
-		public StructureInfo getStructure()
+		public Structure getStructure()
 		{
 			return structure;
 		}

@@ -17,7 +17,6 @@ public class MessageModule
 {
 	private static Logger log = Logger.getLogger("Minecraft");
 	private Plugin plugin;
-	private FontModule font;
 	private boolean tag;
 	private String pluginName;
 
@@ -26,11 +25,10 @@ public class MessageModule
 	 * 
 	 * @param instance The current instance of the Plugin running this module.
 	 */
-	public MessageModule(Plugin instance, FontModule font, boolean tag)
+	public MessageModule(Plugin instance, boolean tag)
 	{
 		this.plugin = instance;
 		this.pluginName = plugin.getName();
-		this.font = font;
 		this.tag = tag;
 	}
 
@@ -54,14 +52,15 @@ public class MessageModule
 	 */
 	public String chatTitle(String title)
 	{
-		int remaining = font.getRemainingChatWidth(UnicodeUtility.rightwardArrow() + title + "   ");
-		String dashes = "";
-		for(int i = 0; i + remaining < font.getChatBoxWidth(); i += 6)
+		int total = 380;
+
+		StringBuilder chatTitle = new StringBuilder(" " + UnicodeUtility.rightwardArrow() + " " + title + " ");
+		for(int i = 0; i < total - title.length(); i += 6)
 		{
-			dashes += "-";
+			chatTitle.append('-');
 		}
 
-		return " " + UnicodeUtility.rightwardArrow() + " " + title + " " + dashes;
+		return chatTitle.toString();
 	}
 
 	/**

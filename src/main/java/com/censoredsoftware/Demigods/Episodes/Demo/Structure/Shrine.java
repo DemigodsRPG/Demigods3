@@ -19,17 +19,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
-public class Shrine implements StructureInfo
+public class Shrine extends Structure
 {
 	@Override
 	public Set<Flag> getFlags()
@@ -208,11 +207,11 @@ class ShrineListener implements Listener
 			}
 		}
 
-		if(AdminUtility.useWand(player) && StructureUtility.partOfStructureWithType(location, "Shrine"))
+		if(AdminUtility.useWand(player) && Structure.partOfStructureWithType(location, "Shrine"))
 		{
 			event.setCancelled(true);
 
-			StructureSave save = StructureUtility.getStructure(location);
+			StructureSave save = Structure.getStructure(location);
 			PlayerCharacter owner = save.getOwner();
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_shrine"))

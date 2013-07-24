@@ -8,7 +8,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Runnable.BattleRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.FavorRunnable;
-import com.censoredsoftware.Demigods.Engine.Runnable.SpigotParticleRunnable;
+import com.censoredsoftware.Demigods.Engine.Runnable.SpigotBattleRunnable;
 import com.censoredsoftware.Demigods.Engine.Runnable.TimedDataRunnable;
 
 public class SchedulerUtility
@@ -24,11 +24,11 @@ public class SchedulerUtility
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
 		AdminUtility.sendDebug("Battle tracking runnable enabled...");
 
-		// Start spigot particle runnable
+		// Start spigot particle runnables
 		if(Demigods.runningSpigot())
 		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new SpigotParticleRunnable(), 20, 20);
-			AdminUtility.sendDebug("Spigot particle runnable enabled...");
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new SpigotBattleRunnable(), 20, 20);
+			AdminUtility.sendDebug("Special (spigot) battle runnable enabled...");
 		}
 
 		// Start timed data runnable

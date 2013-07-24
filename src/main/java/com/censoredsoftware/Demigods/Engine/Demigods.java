@@ -16,19 +16,17 @@ import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
-import com.censoredsoftware.Demigods.Engine.Module.FontModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -40,7 +38,6 @@ public class Demigods
 
 	// Public Modules
 	public static ConfigModule config;
-	public static FontModule font;
 	public static MessageModule message;
 
 	// Public Dependency Plugins
@@ -49,7 +46,7 @@ public class Demigods
 	// The Game Data
 	protected static Deque<Deity> deities;
 	protected static Deque<TaskSet> quests;
-	protected static Deque<StructureInfo> structures;
+	protected static Deque<Structure> structures;
 	protected static Deque<ConversationInfo> conversasions;
 
 	// The Engine Default Text
@@ -67,7 +64,7 @@ public class Demigods
 
 	public interface ListedStructure
 	{
-		public StructureInfo getStructure();
+		public Structure getStructure();
 	}
 
 	public interface ListedConversation
@@ -83,8 +80,7 @@ public class Demigods
 
 		// Setup public modules.
 		config = new ConfigModule(instance, true);
-		font = new FontModule();
-		message = new MessageModule(instance, font, config.getSettingBoolean("misc.tag_messages"));
+		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 
 		// Define the game data.
 		Demigods.deities = new ArrayDeque<Deity>()
@@ -101,7 +97,7 @@ public class Demigods
 					add(taskSet.getTaskSet());
 			}
 		};
-		Demigods.structures = new ArrayDeque<StructureInfo>()
+		Demigods.structures = new ArrayDeque<Structure>()
 		{
 			{
 				for(ListedStructure structure : structures)
@@ -145,7 +141,7 @@ public class Demigods
 		loadCommands();
 
 		// Finally, regenerate structures
-		StructureUtility.regenerateStructures();
+		Structure.regenerateStructures();
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
@@ -167,9 +163,7 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		instance.getServer().getPluginManager().registerEvents(new AbilityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new CharacterListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
@@ -199,7 +193,7 @@ public class Demigods
 		}
 
 		// Structures
-		for(StructureInfo structure : getLoadedStructures())
+		for(Structure structure : getLoadedStructures())
 		{
 			if(structure.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
@@ -237,7 +231,7 @@ public class Demigods
 		return Demigods.quests;
 	}
 
-	public static Deque<StructureInfo> getLoadedStructures()
+	public static Deque<Structure> getLoadedStructures()
 	{
 		return Demigods.structures;
 	}

@@ -17,7 +17,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -196,7 +196,7 @@ public class PlayerCharacter implements BattleParticipant
 	{
 		for(StructureSave structureSave : StructureSave.loadAll())
 		{
-			if(structureSave.getStructureInfo().getFlags().contains(StructureInfo.Flag.DELETE_ON_OWNER_DELETE) && structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
+			if(structureSave.getStructureInfo().getFlags().contains(Structure.Flag.DELETE_ON_OWNER_DELETE) && structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 		}
 		JOhm.delete(PlayerCharacter.class, getId());
 	}
@@ -525,6 +525,31 @@ public class PlayerCharacter implements BattleParticipant
 			if(character.isImmortal()) immortalList.add(character);
 		}
 		return immortalList;
+	}
+
+	public static void onCharacterKillCharacter(PlayerCharacter attacker, PlayerCharacter killed)
+	{
+		String attackerAlliance = "Mortal";
+		if(attacker != null) attackerAlliance = attacker.getAlliance();
+		String killedAlliance = "Mortal";
+		if(killed != null) killedAlliance = killed.getAlliance();
+
+		attacker.addKill();
+
+		if(killed == null && attacker == null) Demigods.message.broadcast(Demigods.text.getText(TextUtility.Text.MORTAL_SLAIN_1));
+		else if(killed == null && attacker != null) Demigods.message.broadcast(Demigods.text.getText(TextUtility.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+		else if(killed != null && attacker == null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
+		else if(killed != null && attacker != null) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+	}
+
+	public static void onCharacterBetrayCharacter(PlayerCharacter attacker, PlayerCharacter killed)
+	{
+		String alliance = attacker.getAlliance();
+
+		// TODO: Punishments.
+
+		if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+		else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.MORTAL_BETRAY));
 	}
 
 	/**

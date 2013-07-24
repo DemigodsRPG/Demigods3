@@ -1,38 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 
 public class MiscUtility
 {
-	/**
-	 * Clears the chat for <code>player</code> using .sendMessage().
-	 * 
-	 * @param player the player whose chat to clear.
-	 */
-	public static void clearChat(Player player)
-	{
-		for(int x = 0; x < 120; x++)
-			player.sendMessage(" ");
-	}
-
-	/**
-	 * Clears the chat for <code>player</code> using .sendRawMessage().
-	 * 
-	 * @param player the player whose chat to clear.
-	 */
-	public static void clearRawChat(Player player)
-	{
-		for(int x = 0; x < 120; x++)
-			player.sendRawMessage(" ");
-	}
 
 	/**
 	 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
@@ -236,33 +209,4 @@ public class MiscUtility
 		}
 	}
 
-	public static Location getFloorBelowLocation(Location location)
-	{
-		if(location.getBlock().getType().isSolid()) return location;
-		return getFloorBelowLocation(location.getBlock().getRelative(BlockFace.DOWN).getLocation());
-	}
-
-	public static List<Location> getCirclePoints(Location center, final double radius, final int points)
-	{
-		final World world = center.getWorld();
-		final double X = center.getX();
-		final double Y = center.getY();
-		final double Z = center.getZ();
-		return new ArrayList<Location>()
-		{
-			{
-				for(int i = 0; i < points; i++)
-				{
-					double x = X + radius * Math.cos((2 * Math.PI * i) / points);
-					double z = Z + radius * Math.sin((2 * Math.PI * i) / points);
-					add(new Location(world, x, Y, z));
-				}
-			}
-		};
-	}
-
-	public static float toDegree(double angle)
-	{
-		return (float) Math.toDegrees(angle);
-	}
 }

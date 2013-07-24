@@ -16,10 +16,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 // TODO Fix for lag.
 
@@ -29,10 +28,10 @@ public class GriefListener implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
-			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -41,10 +40,10 @@ public class GriefListener implements Listener
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
-			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -53,10 +52,10 @@ public class GriefListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
-			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(event.getPlayer() != null && PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
+			if(event.getPlayer() != null && PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -65,7 +64,7 @@ public class GriefListener implements Listener
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
+		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -73,7 +72,7 @@ public class GriefListener implements Listener
 	{
 		if(event.getEntityType() != EntityType.FALLING_BLOCK) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
-		if(StructureUtility.isInRadiusWithFlag(MiscUtility.getFloorBelowLocation(block.getLocation()), StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(Structure.isInRadiusWithFlag(LocationUtility.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING_ZONE))
 		{
 			// Break the block
 			event.setCancelled(true);
@@ -86,8 +85,8 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockFromToEvent event)
 	{
-		boolean from = StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		boolean to = StructureUtility.isInRadiusWithFlag(event.getToBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		boolean from = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
+		boolean to = Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		event.setCancelled(from != to);
 	}
 
@@ -98,7 +97,7 @@ public class GriefListener implements Listener
 		boolean out = false;
 		for(Block block : event.getBlocks())
 		{
-			if(StructureUtility.isInRadiusWithFlag(block.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE)) in = true;
+			if(Structure.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) in = true;
 			else out = true;
 		}
 		event.setCancelled(in && out);
@@ -107,8 +106,8 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event)
 	{
-		boolean block = StructureUtility.isInRadiusWithFlag(event.getBlock().getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
-		boolean retract = StructureUtility.isInRadiusWithFlag(event.getRetractLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE);
+		boolean block = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
+		boolean retract = Structure.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		event.setCancelled(block != retract);
 	}
 
@@ -116,10 +115,10 @@ public class GriefListener implements Listener
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
-			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getId().equals(save.getOwner().getId())) return;
+			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getId().equals(save.getOwner().getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -127,7 +126,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		event.setCancelled(StructureUtility.isInRadiusWithFlag(event.getLocation(), StructureInfo.Flag.NO_GRIEFING_ZONE));
+		event.setCancelled(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -136,11 +135,11 @@ public class GriefListener implements Listener
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
 		Location location = block.getLocation();
-		if(!StructureUtility.isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE)) return;
+		if(!Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE)) return;
 		if(block.getType().equals(Material.CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().equals(Material.FURNACE) || block.getType().equals(Material.BURNING_FURNACE) || block.getType().equals(Material.DISPENSER) || block.getType().equals(Material.DROPPER) || block.getType().equals(Material.BREWING_STAND) || block.getType().equals(Material.BEACON) || block.getType().equals(Material.HOPPER) || block.getType().equals(Material.HOPPER_MINECART) || block.getType().equals(Material.STORAGE_MINECART))
 		{
-			StructureSave save = StructureUtility.getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}

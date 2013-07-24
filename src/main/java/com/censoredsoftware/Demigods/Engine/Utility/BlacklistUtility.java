@@ -7,6 +7,8 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Blacklist;
 
+// TODO Replace with YAML.
+
 public class BlacklistUtility
 {
 	public static class EnglishCharacterNames implements Blacklist

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
 import java.util.HashSet;
 import java.util.List;
@@ -6,15 +6,35 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
-public class StructureUtility
+public abstract class Structure
 {
+	public abstract String getStructureType();
+
+	public abstract Set<StructureSchematic> getSchematics();
+
+	public abstract int getRadius();
+
+	public abstract Location getClickableBlock(Location reference);
+
+	public abstract Listener getUniqueListener();
+
+	public abstract Set<StructureSave> getAll();
+
+	public abstract Set<Flag> getFlags();
+
+	public abstract StructureSave createNew(Location reference, boolean generate);
+
+	public static enum Flag
+	{
+		PROTECTED_BLOCKS, NO_PVP_ZONE, NO_GRIEFING_ZONE, TRIBUTE_LOCATION, PRAYER_LOCATION, HAS_OWNER, DELETE_ON_OWNER_DELETE
+	}
+
 	public static StructureSave getStructure(Location location)
 	{
 		for(StructureSave structureSave : StructureSave.loadAll())
@@ -35,9 +55,9 @@ public class StructureUtility
 		return false;
 	}
 
-	public static boolean partOfStructureWithFlag(Location location, StructureInfo.Flag flag)
+	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureInfo info : getStructureInfoFromFlag(flag))
+		for(Structure info : getStructureInfoFromFlag(flag))
 		{
 			for(StructureSave save : getStructuresByInfo(info))
 			{
@@ -48,9 +68,9 @@ public class StructureUtility
 		return false;
 	}
 
-	public static boolean isCenterBlockWithFlag(Location location, StructureInfo.Flag flag)
+	public static boolean isCenterBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureInfo info : getStructureInfoFromFlag(flag))
+		for(Structure info : getStructureInfoFromFlag(flag))
 		{
 			for(StructureSave save : getStructuresByInfo(info))
 			{
@@ -61,14 +81,14 @@ public class StructureUtility
 		return false;
 	}
 
-	public static boolean isInRadiusWithFlag(Location location, StructureInfo.Flag flag)
+	public static boolean isInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
 		return getInRadiusWithFlag(location, flag) != null;
 	}
 
-	public static StructureSave getInRadiusWithFlag(Location location, StructureInfo.Flag flag)
+	public static StructureSave getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureInfo info : getStructureInfoFromFlag(flag))
+		for(Structure info : getStructureInfoFromFlag(flag))
 		{
 			for(StructureSave save : getStructuresByInfo(info))
 			{
@@ -83,9 +103,9 @@ public class StructureUtility
 	{
 		Location location = player.getLocation();
 		if(ZoneUtility.zoneNoBuild(player, player.getLocation())) return true;
-		if(isInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE))
+		if(isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
-			StructureSave save = getInRadiusWithFlag(location, StructureInfo.Flag.NO_GRIEFING_ZONE);
+			StructureSave save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
 			if(save.getOwner() != null && save.getOwner().getId().equals(PlayerWrapper.getPlayer(player).getCurrent().getId())) return false;
 			return true;
 		}
@@ -100,12 +120,12 @@ public class StructureUtility
 		}
 	}
 
-	public static Set<StructureInfo> getStructureInfoFromFlag(final StructureInfo.Flag flag)
+	public static Set<Structure> getStructureInfoFromFlag(final Structure.Flag flag)
 	{
-		return new HashSet<StructureInfo>()
+		return new HashSet<Structure>()
 		{
 			{
-				for(StructureInfo info : Demigods.getLoadedStructures())
+				for(Structure info : Demigods.getLoadedStructures())
 				{
 					if(info.getFlags().contains(flag)) add(info);
 				}
@@ -113,7 +133,7 @@ public class StructureUtility
 		};
 	}
 
-	public static List<StructureSave> getStructuresByInfo(StructureInfo info)
+	public static List<StructureSave> getStructuresByInfo(Structure info)
 	{
 		return StructureSave.findAll("structureType", info.getStructureType());
 	}

@@ -157,7 +157,7 @@ public class PlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerRespawn(PlayerRespawnEvent event)
+	public void onPlayerRespawn(PlayerRespawnEvent event) // TODO Is this working?
 	{
 		PlayerWrapper wrapper = PlayerWrapper.getPlayer(event.getPlayer());
 		if(wrapper.getCurrent() != null)

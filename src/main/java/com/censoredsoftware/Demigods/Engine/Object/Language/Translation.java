@@ -1,5 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Object.Language;
 
+// TODO Replace with YAML.
+
 public interface Translation
 {
 	/**

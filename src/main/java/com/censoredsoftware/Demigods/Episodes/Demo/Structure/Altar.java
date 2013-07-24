@@ -20,14 +20,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
-public class Altar implements StructureInfo
+public class Altar extends Structure
 {
 	@Override
 	public Set<Flag> getFlags()
@@ -35,9 +35,9 @@ public class Altar implements StructureInfo
 		return new HashSet<Flag>()
 		{
 			{
-				add(StructureInfo.Flag.NO_PVP_ZONE);
-				add(StructureInfo.Flag.PROTECTED_BLOCKS);
-				add(StructureInfo.Flag.PRAYER_LOCATION);
+				add(Structure.Flag.NO_PVP_ZONE);
+				add(Structure.Flag.PROTECTED_BLOCKS);
+				add(Structure.Flag.PRAYER_LOCATION);
 			}
 		};
 	}
@@ -247,10 +247,10 @@ class AltarListener implements Listener
 		if(event.isNewChunk())
 		{
 			// Define variables
-			final Location location = GenerationUtility.randomChunkLocation(event.getChunk());
+			final Location location = LocationUtility.randomChunkLocation(event.getChunk());
 
 			// Check if it can generate
-			if(GenerationUtility.canGenerateStrict(location, 3))
+			if(LocationUtility.canGenerateStrict(location, 3))
 			{
 				// Return a random boolean based on the chance of Altar generation
 				if(MiscUtility.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
@@ -312,11 +312,11 @@ class AltarListener implements Listener
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 		}
 
-		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && AdminUtility.useWand(player) && StructureUtility.partOfStructureWithType(location, "Altar"))
+		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && AdminUtility.useWand(player) && Structure.partOfStructureWithType(location, "Altar"))
 		{
 			event.setCancelled(true);
 
-			StructureSave altar = StructureUtility.getStructure(location);
+			StructureSave altar = Structure.getStructure(location);
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_altar"))
 			{

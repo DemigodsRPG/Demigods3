@@ -1,12 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Object.Battle;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -18,11 +14,12 @@ import org.bukkit.util.Vector;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Exceptions.SpigotNotFoundException;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Runnable.SpigotParticleRunnable;
+import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -83,20 +80,16 @@ public class Battle
 
 	public void setRange(double range)
 	{
-		battleBorder(false);
 		this.range = range;
-		battleBorder(true);
 	}
 
 	public void setActive()
 	{
-		battleBorder(true);
 		this.active = true;
 	}
 
 	public void setInactive()
 	{
-		battleBorder(false);
 		this.active = false;
 	}
 
@@ -260,14 +253,16 @@ public class Battle
 		return null;
 	}
 
-	public void battleBorder(boolean add)
+	public Set<Location> battleBorder()
 	{
-		if(!Demigods.runningSpigot()) return;
-		for(Location location : MiscUtility.getCirclePoints(getStartLocation(), getRange(), 120))
+		if(!Demigods.runningSpigot()) throw new SpigotNotFoundException();
+		return new HashSet<Location>()
 		{
-			if(add) SpigotParticleRunnable.particleLocation.put(MiscUtility.getFloorBelowLocation(location), Effect.MOBSPAWNER_FLAMES);
-			else SpigotParticleRunnable.particleLocation.remove(MiscUtility.getFloorBelowLocation(location));
-		}
+			{
+				for(Location location : LocationUtility.getCirclePoints(getStartLocation(), getRange(), 120))
+					add(location);
+			}
+		};
 	}
 
 	public static Location randomRespawnPoint(Battle battle)
@@ -284,8 +279,8 @@ public class Battle
 
 		// Now change the angle
 		Location changed = target.clone();
-		changed.setYaw(180 - MiscUtility.toDegree(Math.atan2(X, Y)));
-		changed.setPitch(90 - MiscUtility.toDegree(Math.acos(Z)));
+		changed.setYaw(180 - LocationUtility.toDegree(Math.atan2(X, Y)));
+		changed.setPitch(90 - LocationUtility.toDegree(Math.acos(Z)));
 		return changed;
 	}
 
@@ -303,7 +298,7 @@ public class Battle
 		return new ArrayList<Location>()
 		{
 			{
-				for(Location location : MiscUtility.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 20))
+				for(Location location : LocationUtility.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 20))
 				{
 					if(isSafeLocation(battle.getStartLocation(), location)) add(location);
 				}

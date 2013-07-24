@@ -18,16 +18,18 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ItemValueUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.StructureUtility;
 
 public class TributeListener implements Listener
 {
+	// TODO This seems way to complicated for something as simple as tributing...
+	// TODO Maybe we're just doing too much in one method-- I'm not sure...
+
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onShrineInteract(PlayerInteractEvent event)
+	public void onTributeInteract(PlayerInteractEvent event)
 	{
 		// Return if the player is mortal
 		if(!PlayerWrapper.isImmortal(event.getPlayer())) return;
@@ -38,13 +40,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-		if(StructureUtility.partOfStructureWithFlag(location, StructureInfo.Flag.TRIBUTE_LOCATION))
+		if(Structure.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureSave save = StructureUtility.getStructure(location);
+			StructureSave save = Structure.getStructure(location);
 
 			// Return if they aren't clicking the gold block
 			if(!event.getClickedBlock().getLocation().equals(save.getClickableBlock())) return;
@@ -56,7 +58,7 @@ public class TributeListener implements Listener
 				return;
 			}
 
-			if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER) && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
+			if(save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getInfo().getName() + " in order to tribute here.");
 				return;
@@ -76,7 +78,7 @@ public class TributeListener implements Listener
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !StructureUtility.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureInfo.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureSave save = StructureSave.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));
@@ -107,7 +109,7 @@ public class TributeListener implements Listener
 		character.getMeta().addMaxFavor(tributeValue);
 
 		// Define the shrine owner
-		if(save.getStructureInfo().getFlags().contains(StructureInfo.Flag.HAS_OWNER))
+		if(save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER))
 		{
 			PlayerCharacter shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
