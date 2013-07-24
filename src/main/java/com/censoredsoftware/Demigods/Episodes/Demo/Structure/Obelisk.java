@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ public class Obelisk implements StructureInfo
 		{
 			{
 				// Clickable block.
-				add(new StructureSchematic(0, 0, 2, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, 2, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 3));
@@ -63,122 +64,122 @@ public class Obelisk implements StructureInfo
 				}));
 
 				// Everything else.
-				add(new StructureSchematic(0, 0, -1, 1, 3, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, -1, 1, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(0, 0, 1, 1, 3, 2, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, 1, 1, 3, 2, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(1, 0, 0, 2, 3, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 0, 0, 2, 3, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(-1, 0, 0, 0, 3, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 0, 0, 0, 3, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(0, 3, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_BLOCK));
 					}
 				}));
-				add(new StructureSchematic(0, 4, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 4, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_BLOCK));
 					}
 				}));
-				add(new StructureSchematic(0, 3, -1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 3, -1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-				add(new StructureSchematic(0, 3, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 3, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-				add(new StructureSchematic(1, 3, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-				add(new StructureSchematic(-1, 3, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 3, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-				add(new StructureSchematic(0, 5, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 5, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 					}
 				}));
-				add(new StructureSchematic(0, 4, -1, 1, 6, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 4, -1, 1, 6, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(0, 4, 1, 1, 6, 2, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 4, 1, 1, 6, 2, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(1, 4, 0, 2, 6, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 4, 0, 2, 6, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(-1, 4, 0, 0, 6, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 4, 0, 0, 6, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
 					}
 				}));
-				add(new StructureSchematic(-1, 5, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 5, 1, new ArrayList<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.VINE, (byte) 4, 40));
-						add(new StructureBlockData(Material.AIR, (byte) 0, 60));
+						add(new StructureBlockData(Material.VINE, (byte) 4, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
 					}
 				}));
-				add(new StructureSchematic(1, 5, -1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 5, -1, new ArrayList<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.VINE, (byte) 1, 40));
-						add(new StructureBlockData(Material.AIR, (byte) 0, 60));
+						add(new StructureBlockData(Material.VINE, (byte) 1, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
 					}
 				}));
-				add(new StructureSchematic(1, 5, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 5, 1, new ArrayList<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.VINE, (byte) 4, 40));
-						add(new StructureBlockData(Material.AIR, (byte) 0, 60));
+						add(new StructureBlockData(Material.VINE, (byte) 4, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
 					}
 				}));
-				add(new StructureSchematic(-1, 5, -1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 5, -1, new ArrayList<StructureBlockData>()
 				{
 					{
-						add(new StructureBlockData(Material.VINE, (byte) 1, 40));
-						add(new StructureBlockData(Material.AIR, (byte) 0, 60));
+						add(new StructureBlockData(Material.VINE, (byte) 1, 2));
+						add(new StructureBlockData(Material.AIR, (byte) 0, 3));
 					}
 				}));
 			}

@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,13 +9,13 @@ import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.DiscreteDomain;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Ranges;
 
 public class StructureSchematic
 {
-	private int X, Y, Z, XX, YY, ZZ;
-	private Set<StructureBlockData> blockData;
+	final private int X, Y, Z, XX, YY, ZZ;
+	final private boolean cuboid;
+	final private List<StructureBlockData> blockData;
 
 	/**
 	 * Constructor for a StructureSchematic (non-cuboid).
@@ -24,11 +25,13 @@ public class StructureSchematic
 	 * @param Z The relative Z coordinate of the schematic from the reference location.
 	 * @param blockData The StructureBlockData objects of this schematic.
 	 */
-	public StructureSchematic(int X, int Y, int Z, Set<StructureBlockData> blockData)
+	public StructureSchematic(int X, int Y, int Z, List<StructureBlockData> blockData)
 	{
+		if(blockData.size() == 0 || blockData.size() > 5) throw new IllegalArgumentException("Incorrect block data list size.");
 		this.X = this.XX = X;
 		this.Y = this.YY = Y;
 		this.Z = this.ZZ = Z;
+		this.cuboid = false;
 		this.blockData = blockData;
 	}
 
@@ -43,14 +46,16 @@ public class StructureSchematic
 	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 	 * @param blockData The StructureBlockData objects of this schematic.
 	 */
-	public StructureSchematic(int X, int Y, int Z, int XX, int YY, int ZZ, Set<StructureBlockData> blockData)
+	public StructureSchematic(int X, int Y, int Z, int XX, int YY, int ZZ, List<StructureBlockData> blockData)
 	{
+		if(blockData.size() == 0 || blockData.size() > 5) throw new IllegalArgumentException("Incorrect block data list size.");
 		this.X = X;
 		this.Y = Y;
 		this.Z = Z;
 		this.XX = XX;
 		this.YY = YY;
 		this.ZZ = ZZ;
+		this.cuboid = true;
 		this.blockData = blockData;
 	}
 
@@ -63,17 +68,19 @@ public class StructureSchematic
 	 */
 	public StructureBlockData getStructureBlockData()
 	{
-		List<StructureBlockData> blockData = Lists.newArrayList();
-		for(StructureBlockData block : this.blockData)
+		if(blockData.size() == 1) return blockData.get(0);
+		return new ArrayList<StructureBlockData>(5)
 		{
-			if(block.getOdds() == 0) continue;
-			if(block.getOdds() == 100) return block;
-			for(int i = 0; i < block.getOdds(); i++)
 			{
-				blockData.add(block);
+				for(StructureBlockData block : blockData)
+				{
+					for(int i = 0; i < block.getOdds(); i++)
+					{
+						blockData.add(block);
+					}
+				}
 			}
-		}
-		return blockData.get(MiscUtility.generateIntRange(0, blockData.size()));
+		}.get(MiscUtility.generateIntRange(0, 4));
 	}
 
 	/**
@@ -99,16 +106,20 @@ public class StructureSchematic
 		return new HashSet<Location>()
 		{
 			{
-				for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integers()))
+				if(cuboid)
 				{
-					for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integers()))
+					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integers()))
 					{
-						for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integers()))
+						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integers()))
 						{
-							add(getLocation(reference, x, y, z));
+							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integers()))
+							{
+								add(getLocation(reference, x, y, z));
+							}
 						}
 					}
 				}
+				else add(getLocation(reference, X, Y, Z));
 			}
 		};
 	}

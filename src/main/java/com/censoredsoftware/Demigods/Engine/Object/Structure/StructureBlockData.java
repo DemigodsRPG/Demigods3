@@ -17,7 +17,7 @@ public class StructureBlockData
 	{
 		this.material = material;
 		this.data = 0;
-		this.odds = 100;
+		this.odds = 5;
 	}
 
 	/**
@@ -28,6 +28,7 @@ public class StructureBlockData
 	 */
 	public StructureBlockData(Material material, int odds)
 	{
+		if(odds == 0 || odds > 5) throw new IllegalArgumentException("Odds must be between 1 and 5.");
 		this.material = material;
 		this.data = 0;
 		this.odds = odds;
@@ -43,7 +44,7 @@ public class StructureBlockData
 	{
 		this.material = material;
 		this.data = data;
-		this.odds = 100;
+		this.odds = 5;
 	}
 
 	/**
@@ -55,6 +56,7 @@ public class StructureBlockData
 	 */
 	public StructureBlockData(Material material, byte data, int odds)
 	{
+		if(odds == 0 || odds > 5) throw new IllegalArgumentException("Odds must be between 1 and 5.");
 		this.material = material;
 		this.data = data;
 		this.odds = odds;
@@ -83,7 +85,7 @@ public class StructureBlockData
 	/**
 	 * Get the odds of this object generating.
 	 * 
-	 * @return Odds (as an integer, out of 100).
+	 * @return Odds (as an integer, out of 5).
 	 */
 	public int getOdds()
 	{

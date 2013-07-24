@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,7 +57,7 @@ public class Shrine implements StructureInfo
 		{
 			{
 				// Create the main block
-				add(new StructureSchematic(0, 1, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 1, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.GOLD_BLOCK));
@@ -64,13 +65,13 @@ public class Shrine implements StructureInfo
 				}));
 
 				// Create the ender chest and the block below
-				add(new StructureSchematic(0, 0, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.ENDER_CHEST));
 					}
 				}));
-				add(new StructureSchematic(0, -1, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, -1, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_BRICK));
@@ -78,25 +79,25 @@ public class Shrine implements StructureInfo
 				}));
 
 				// Create the rest
-				add(new StructureSchematic(1, 0, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(1, 0, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
 					}
 				}));
-				add(new StructureSchematic(-1, 0, 0, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(-1, 0, 0, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 0));
 					}
 				}));
-				add(new StructureSchematic(0, 0, 1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, 1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
 					}
 				}));
-				add(new StructureSchematic(0, 0, -1, new HashSet<StructureBlockData>()
+				add(new StructureSchematic(0, 0, -1, new ArrayList<StructureBlockData>()
 				{
 					{
 						add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
