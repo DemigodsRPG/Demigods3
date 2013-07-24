@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -316,7 +313,7 @@ public abstract class Ability
 
 				if(!character.getMeta().isBound(ability.getInfo().getName()))
 				{
-					if(player.getItemInHand() == null)
+					if(player.getItemInHand() == null || player.getItemInHand().getType().equals(Material.AIR))
 					{
 						// Can't bind to air dummy
 						player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ERROR_BIND_TO_AIR));
@@ -359,6 +356,8 @@ public abstract class Ability
 
 					// Let them know
 					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
+
+					return true;
 				}
 			}
 		}
