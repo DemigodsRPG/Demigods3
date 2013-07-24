@@ -39,9 +39,20 @@ public class AbilityBind
 		this.slot = slot;
 	}
 
-	void setItem(ItemStack item)
+	public void setItem(ItemStack item)
 	{
 		this.item = DemigodsItemStack.create(item);
+		save(this);
+	}
+
+	public static AbilityBind create(String ability, int slot)
+	{
+		AbilityBind bind = new AbilityBind();
+		bind.setIdentifier(MiscUtility.generateString(6));
+		bind.setAbility(ability);
+		bind.setSlot(slot);
+		AbilityBind.save(bind);
+		return bind;
 	}
 
 	public static AbilityBind create(String ability, int slot, ItemStack item)
@@ -80,9 +91,9 @@ public class AbilityBind
 		return this.slot;
 	}
 
-	public static void save(AbilityBind item)
+	public static void save(AbilityBind bind)
 	{
-		JOhm.save(item);
+		JOhm.save(bind);
 	}
 
 	public static AbilityBind load(long id)

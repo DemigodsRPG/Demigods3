@@ -26,7 +26,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -290,7 +289,6 @@ public abstract class Ability
 				if(!player.hasPermission(ability.getInfo().getPermission())) return true;
 
 				// Handle enabling the command
-				final String identifier = MiscUtility.generateString(6);
 				final AbilityInfo abilityInfo = ability.getInfo();
 				String abilityName = abilityInfo.getName();
 
@@ -309,7 +307,10 @@ public abstract class Ability
 						return true;
 					}
 
-					// Create a stick and set the meta
+					// Create the bind
+					final AbilityBind bind = AbilityBind.create(ability.getInfo().getName(), player.getInventory().getHeldItemSlot());
+
+					// Handle the item
 					ItemStack item = abilityInfo.hasWeapon() ? player.getItemInHand() : new ItemStack(Material.STICK);
 					ItemMeta itemMeta = item.getItemMeta();
 					itemMeta.setDisplayName(ChatColor.RESET + abilityName);
@@ -324,16 +325,19 @@ public abstract class Ability
 								add(ChatColor.AQUA + detail);
 							}
 							add("");
-							add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + identifier);
+							add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + bind.getIdentifier());
 						}
 					});
 
 					// Set the item meta
 					item.setItemMeta(itemMeta);
 
+					// Set the bind item
+					bind.setItem(item);
+
 					// Save the bind and give the item
 					player.getInventory().setItemInHand(item);
-					character.getMeta().setBound(abilityName, player.getInventory().getHeldItemSlot(), item);
+					character.getMeta().addBind(bind);
 
 					// Let them know
 					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + (player.getInventory().getHeldItemSlot() + 1)));
