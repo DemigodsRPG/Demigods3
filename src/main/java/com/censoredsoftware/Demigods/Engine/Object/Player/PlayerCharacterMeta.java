@@ -117,7 +117,11 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains(bind.getIdentifier())) return bind;
+			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains(bind.getIdentifier()))
+			{
+				Demigods.message.broadcast("Match found!");
+				return bind;
+			}
 		}
 		return null;
 	}
