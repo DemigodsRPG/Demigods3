@@ -27,7 +27,7 @@ public class CommandListener implements Listener
 		// Process the command
 		try
 		{
-			if(Ability.invokeAbilityCommand(player, args[0], args.length == 2 && args[1].equalsIgnoreCase("bind")))
+			if(Ability.invokeAbilityCommand(player, args[0]))
 			{
 				Demigods.message.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
