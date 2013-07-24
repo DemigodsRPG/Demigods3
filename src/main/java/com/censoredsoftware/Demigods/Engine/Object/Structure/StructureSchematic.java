@@ -76,7 +76,7 @@ public class StructureSchematic
 				{
 					for(int i = 0; i < block.getOdds(); i++)
 					{
-						blockData.add(block);
+						add(block);
 					}
 				}
 			}
