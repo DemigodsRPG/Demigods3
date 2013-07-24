@@ -6,8 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityBind;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 
@@ -32,11 +32,19 @@ public class InventoryListener implements Listener
 		// Return if no character exists
 		if(character == null) return;
 
-		for(AbilityBind bind : character.getMeta().getBinds())
-		{
-			if(event.getSlotType().equals(InventoryType.SlotType.QUICKBAR))
-			{}
-			if(event.getCurrentItem() != null && event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().hasLore() && event.getCurrentItem().getItemMeta().getLore().toString().contains(bind.getIdentifier())) event.setCancelled(true);
-		}
+		// Perform the check
+		if(event.getSlotType().equals(InventoryType.SlotType.QUICKBAR) && event.getCurrentItem() != null && character.getMeta().isBound(event.getCurrentItem())) event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	private void onPlayerDropItemEvent(PlayerDropItemEvent event)
+	{
+		Player player = event.getPlayer();
+		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+
+		// Return if no character exists
+		if(character == null) return;
+
+		if(event.getItemDrop() != null && character.getMeta().isBound(event.getItemDrop().getItemStack())) event.setCancelled(true);
 	}
 }
