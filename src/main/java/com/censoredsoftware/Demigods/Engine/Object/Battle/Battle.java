@@ -86,21 +86,25 @@ public class Battle
 	public void setRange(double range)
 	{
 		this.range = range;
+		save(this);
 	}
 
 	public void setActive()
 	{
 		this.active = true;
+		save(this);
 	}
 
 	public void setInactive()
 	{
 		this.active = false;
+		save(this);
 	}
 
 	public void setDuration(long duration)
 	{
 		this.duration = duration;
+		save(this);
 	}
 
 	public void setMinKills(int kills)
@@ -128,6 +132,7 @@ public class Battle
 	void setDeleteTime(long time)
 	{
 		this.deleteTime = time;
+		save(this);
 	}
 
 	public long getId()
