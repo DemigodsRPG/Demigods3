@@ -313,6 +313,7 @@ public abstract class Ability
 
 				if(!character.getMeta().isBound(ability.getInfo().getName()))
 				{
+					Demigods.message.broadcast("Item: " + player.getItemInHand().getType().name());
 					if(player.getItemInHand() == null || player.getItemInHand().equals(Material.AIR))
 					{
 						// Can't bind to air dummy
@@ -356,6 +357,8 @@ public abstract class Ability
 
 					// Let them know
 					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
+
+					return true;
 				}
 			}
 		}
