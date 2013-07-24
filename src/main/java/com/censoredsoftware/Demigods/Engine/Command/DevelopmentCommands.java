@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -20,11 +19,8 @@ import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.collect.Ranges;
 
 public class DevelopmentCommands extends DemigodsCommand
 {
@@ -66,25 +62,7 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		if(args.length != 2 || !MiscUtility.isInt(args[0]) || !MiscUtility.isInt(args[1])) return false;
-
-		final int X = Integer.parseInt(args[0]);
-		final int XX = Integer.parseInt(args[1]);
-
-		Range range = Ranges.closed(X, XX);
-		Set<Integer> numbers = range.asSet(StructureSchematic.integers());
-
-		range.toString();
-
-		StringBuilder numberMessage = new StringBuilder(" ");
-
-		for(int i : numbers)
-		{
-			numberMessage.append(i + ", ");
-		}
-
-		player.sendMessage(ChatColor.YELLOW + range.toString());
-		player.sendMessage(ChatColor.GRAY + numberMessage.toString());
+		// TODO Eh.
 
 		return true;
 	}
