@@ -47,7 +47,7 @@ public class BattleListener implements Listener
 		else
 		{
 			// Add to existing battle
-			Battle battle = Battle.getInRadius(midpoint);
+			Battle battle = Battle.getNear(midpoint) != null ? Battle.getNear(midpoint) : Battle.getInRadius(midpoint);
 
 			// Teleport if needed
 			// Battle.teleportIfNeeded(damageeParticipant, battle);

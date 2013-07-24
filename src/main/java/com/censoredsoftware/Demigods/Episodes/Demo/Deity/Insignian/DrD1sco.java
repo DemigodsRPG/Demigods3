@@ -59,7 +59,7 @@ public class DrD1sco extends Deity
 		{
 			add(new RainbowWalking());
 			add(new RainbowHorse());
-			add(new Discoball());
+			// add(new Discoball());
 		}
 	};
 
