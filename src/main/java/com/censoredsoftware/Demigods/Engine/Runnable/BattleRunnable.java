@@ -11,7 +11,7 @@ public class BattleRunnable extends BukkitRunnable
 	{
 		// Battle onTick logic
 		for(Battle battle : Battle.getAllActive())
-			if(battle.getMeta().getKills() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getMeta().getKills() > battle.getMinKills()) battle.end();
+			if(battle.getMeta().getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getMeta().getKillCounter() > battle.getMinKills()) battle.end();
 
 		// Delete all inactive battles
 		for(Battle remove : Battle.getAllInactive())
