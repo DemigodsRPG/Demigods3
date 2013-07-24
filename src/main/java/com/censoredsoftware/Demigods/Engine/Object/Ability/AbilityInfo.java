@@ -2,12 +2,15 @@ package com.censoredsoftware.Demigods.Engine.Object.Ability;
 
 import java.util.List;
 
+import org.bukkit.Material;
+
 public class AbilityInfo
 {
 	private String deity, name, command, permission;
 	private int cost, delay, repeat;
 	private List<String> details;
 	private Devotion.Type type;
+	private Material weapon;
 
 	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int repeat, List<String> details, Devotion.Type type)
 	{
@@ -20,6 +23,20 @@ public class AbilityInfo
 		this.repeat = repeat;
 		this.details = details;
 		this.type = type;
+	}
+
+	public AbilityInfo(String deity, String name, String command, String permission, int cost, int delay, int repeat, List<String> details, Devotion.Type type, Material weapon)
+	{
+		this.deity = deity;
+		this.name = name;
+		this.command = command;
+		this.permission = permission;
+		this.cost = cost;
+		this.delay = delay;
+		this.repeat = repeat;
+		this.details = details;
+		this.type = type;
+		this.weapon = weapon;
 	}
 
 	public String getDeity()
@@ -65,5 +82,10 @@ public class AbilityInfo
 	public Devotion.Type getType()
 	{
 		return type;
+	}
+
+	public Material getWeapon()
+	{
+		return weapon;
 	}
 }

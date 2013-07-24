@@ -342,10 +342,10 @@ public abstract class Ability
 					item.setItemMeta(itemMeta);
 
 					// Save the bind
-					character.getMeta().setBound(abilityName, item, identifier);
+					character.getMeta().setBound(abilityName, player.getInventory().getHeldItemSlot(), item);
 
 					// Let them know
-					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", item.getType().name().toLowerCase()));
+					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", item.getType().name().toLowerCase()).replace("_", " "));
 
 					return true;
 				}

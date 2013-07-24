@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityBind;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsItemStack;
 import com.google.common.collect.Sets;
 
 @Model
@@ -24,8 +24,8 @@ public class PlayerCharacterMeta
 	private Integer favor;
 	@Attribute
 	private Integer maxFavor;
-	@CollectionMap(key = String.class, value = Long.class)
-	private Map<String, Long> bindingData;
+	@CollectionSet(of = AbilityBind.class)
+	private Set<AbilityBind> binds;
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Boolean> abilityData;
 	@CollectionMap(key = String.class, value = Boolean.class)
@@ -33,10 +33,10 @@ public class PlayerCharacterMeta
 	@CollectionMap(key = String.class, value = Boolean.class)
 	private Map<String, Devotion> devotionData;
 
-	void initializeMaps()
+	void initialize()
 	{
+		this.binds = Sets.newHashSet();
 		this.abilityData = new HashMap<String, Boolean>();
-		this.bindingData = new HashMap<String, Long>();
 		this.taskData = new HashMap<String, Boolean>();
 		this.devotionData = new HashMap<String, Devotion>();
 	}
@@ -44,7 +44,7 @@ public class PlayerCharacterMeta
 	public static PlayerCharacterMeta create()
 	{
 		PlayerCharacterMeta charMeta = new PlayerCharacterMeta();
-		charMeta.initializeMaps();
+		charMeta.initialize();
 		charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
 		charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
 		charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
@@ -82,24 +82,14 @@ public class PlayerCharacterMeta
 		}
 	}
 
-	public boolean isEnabledAbility(String ability)
+	public boolean checkBind(String ability, ItemStack item)
 	{
-		return abilityData.containsKey(ability.toLowerCase()) && abilityData.get(ability.toLowerCase());
-	}
-
-	public void toggleAbility(String ability, boolean option)
-	{
-		abilityData.put(ability.toLowerCase(), option);
+		return(getBind(item) != null && getBind(item).getAbility().equalsIgnoreCase(ability));
 	}
 
 	public boolean isBound(String ability)
 	{
-		return getBind(ability.toLowerCase()) != null;
-	}
-
-	public boolean checkBind(String ability, ItemStack item)
-	{
-		return isBound(ability) && isBound(item) && item.getItemMeta().getLore().toString().contains(getBind(ability).getIdentifier());
+		return getBind(ability) != null;
 	}
 
 	public boolean isBound(ItemStack item)
@@ -107,50 +97,49 @@ public class PlayerCharacterMeta
 		return getBind(item) != null;
 	}
 
-	public void setBound(String ability, ItemStack item, String identifier)
+	public AbilityBind setBound(String ability, int slot, ItemStack item)
 	{
-		this.bindingData.put(ability.toLowerCase(), DemigodsItemStack.create(item, identifier).getId());
+		AbilityBind bind = AbilityBind.create(ability, slot, item);
+		this.binds.add(bind);
+		return bind;
 	}
 
-	public DemigodsItemStack getBind(String ability)
+	public AbilityBind getBind(String ability)
 	{
-		return this.bindingData.containsKey(ability.toLowerCase()) ? DemigodsItemStack.load(this.bindingData.get(ability.toLowerCase())) : null;
-	}
-
-	public DemigodsItemStack getBind(ItemStack item)
-	{
-		for(long bindId : this.bindingData.values())
+		for(AbilityBind bind : this.binds)
 		{
-			DemigodsItemStack bind = DemigodsItemStack.load(bindId);
-			if(item.hasItemMeta() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
-			{
-				return bind;
-			}
+			if(bind.getAbility().equalsIgnoreCase(ability)) return bind;
 		}
 		return null;
 	}
 
-	public Set<DemigodsItemStack> getBindings()
+	public AbilityBind getBind(ItemStack item)
 	{
-		Set<DemigodsItemStack> bindings = Sets.newHashSet();
-		for(Long id : this.bindingData.values())
+		for(AbilityBind bind : this.binds)
 		{
-			bindings.add(DemigodsItemStack.load(id));
+			if(item.getItemMeta() != null && item.getItemMeta().getLore().contains(bind.getIdentifier())) return bind;
 		}
-		return bindings;
+		return null;
+	}
+
+	public Set<AbilityBind> getBinds()
+	{
+		return this.binds;
 	}
 
 	public void removeBind(String ability)
 	{
-		this.bindingData.remove(ability.toLowerCase());
+		if(isBound(ability))
+		{
+			this.binds.remove(getBind(ability));
+		}
 	}
 
 	public void removeBind(ItemStack item)
 	{
 		if(isBound(item))
 		{
-			DemigodsItemStack bind = getBind(item);
-			this.bindingData.values().remove(bind);
+			this.binds.remove(getBind(item));
 		}
 	}
 

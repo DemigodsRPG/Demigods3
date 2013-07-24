@@ -106,6 +106,7 @@ class Reel extends Ability
 	private static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
 	private static int cost = 120, delay = 1100, repeat = 0;
 	private static AbilityInfo info;
+	private static Material weapon = Material.FISHING_ROD;
 	private static List<String> details = new ArrayList<String>()
 	{
 		{
@@ -116,7 +117,7 @@ class Reel extends Ability
 
 	protected Reel()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type, weapon), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -129,7 +130,7 @@ class Reel extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name) && (player.getItemInHand().getType() == Material.FISHING_ROD))
+				if(character.getMeta().isBound(name) && player.getItemInHand().getType() == weapon)
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
 

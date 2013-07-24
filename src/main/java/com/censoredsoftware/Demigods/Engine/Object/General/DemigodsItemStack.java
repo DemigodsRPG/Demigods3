@@ -19,8 +19,6 @@ public class DemigodsItemStack
 	@Id
 	private Long id;
 	@Attribute
-	private String identifier;
-	@Attribute
 	private int typeId;
 	@Attribute
 	private byte byteId;
@@ -45,11 +43,6 @@ public class DemigodsItemStack
 	private List<String> pages;
 	@Attribute
 	private int type;
-
-	void setIdentifier(String identifier)
-	{
-		this.identifier = identifier;
-	}
 
 	void setType(ItemType type)
 	{
@@ -138,14 +131,6 @@ public class DemigodsItemStack
 		return trackedItem;
 	}
 
-	public static DemigodsItemStack create(ItemStack item, String identifier)
-	{
-		DemigodsItemStack trackedItem = create(item);
-		trackedItem.setIdentifier(identifier);
-		DemigodsItemStack.save(trackedItem);
-		return trackedItem;
-	}
-
 	public static void save(DemigodsItemStack item)
 	{
 		JOhm.save(item);
@@ -164,11 +149,6 @@ public class DemigodsItemStack
 	public Long getId()
 	{
 		return this.id;
-	}
-
-	public String getIdentifier()
-	{
-		return this.identifier;
 	}
 
 	/**

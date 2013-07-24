@@ -196,7 +196,7 @@ class Discoball extends Ability
 
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(character.getMeta().isEnabledAbility(name))
+				if(character.getMeta().isBound(name))
 				{
 					if(!PlayerCharacter.isCooledDown(character, name, true)) return;
 

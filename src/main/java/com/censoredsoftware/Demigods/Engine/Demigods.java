@@ -173,10 +173,11 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new ChatListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new StructureListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 
 		// Deities
 		for(Deity deity : getLoadedDeities())
