@@ -136,7 +136,7 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
+			if(item.isSimilar(bind.getItem().toItemStack()))
 			{
 				Demigods.message.broadcast("Match found!"); // TODO: DEBUG
 				return bind;
