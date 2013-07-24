@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.ChatColor;
 
@@ -62,6 +61,25 @@ public class MiscUtility
 			sb.append(c);
 		}
 		return Integer.parseInt(sb.toString());
+	}
+
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(final Map<K, V> map)
+	{
+		return new LinkedHashMap<K, V>()
+		{
+			{
+				List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+				Collections.sort(list, new Comparator<Map.Entry<K, V>>()
+				{
+					public int compare(Map.Entry<K, V> object1, Map.Entry<K, V> object2)
+					{
+						return (object1.getValue()).compareTo(object2.getValue());
+					}
+				});
+				for(Map.Entry<K, V> entry : list)
+					put(entry.getKey(), entry.getValue());
+			}
+		};
 	}
 
 	/**

@@ -212,8 +212,7 @@ public class Battle
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
 		setInactive();
-
-		Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended."); // TODO
+		getMeta().printBattleOutcome();
 	}
 
 	public void delete()
