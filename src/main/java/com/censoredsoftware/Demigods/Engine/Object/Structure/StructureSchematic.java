@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.DiscreteDomain;
+import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
 
 public class StructureSchematic
@@ -19,26 +19,6 @@ public class StructureSchematic
 	private boolean exclude;
 	private boolean excludeCuboid;
 	private List<StructureBlockData> blockData;
-	private static DiscreteDomain<Integer> integerDomain = new DiscreteDomain<Integer>()
-	{
-		@Override
-		public Integer next(Integer integer)
-		{
-			return integer + 1;
-		}
-
-		@Override
-		public Integer previous(Integer integer)
-		{
-			return integer - 1;
-		}
-
-		@Override
-		public long distance(Integer integer, Integer integer2)
-		{
-			return Math.abs(integer - integer2);
-		}
-	};
 
 	/**
 	 * Constructor for a StructureSchematic (non-cuboid).
@@ -213,9 +193,9 @@ public class StructureSchematic
 		return new HashSet<Location>()
 		{
 			{
-				for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integerDomain))
-					for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integerDomain))
-						for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integerDomain))
+				for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
+					for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
+						for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
 							add(getLocation(reference, x, y, z));
 			}
 		};

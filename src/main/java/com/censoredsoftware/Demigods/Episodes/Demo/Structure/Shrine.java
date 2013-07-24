@@ -30,6 +30,66 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Shrine extends Structure
 {
+	final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.GOLD_BLOCK));
+		}
+	};
+	final static List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.ENDER_CHEST));
+		}
+	};
+	final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_BRICK));
+		}
+	};
+	final static List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_STAIRS));
+		}
+	};
+	final static List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
+		}
+	};
+	final static List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
+		}
+	};
+	final static List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
+		}
+	};
+	final static Set<StructureSchematic> shrine = new HashSet<StructureSchematic>()
+	{
+		{
+			// Create the main block
+			add(new StructureSchematic(0, 1, 0, clickBlock));
+
+			// Create the ender chest and the block below
+			add(new StructureSchematic(0, 0, 0, enderChest));
+			add(new StructureSchematic(0, -1, 0, stoneBrick));
+
+			// Create the rest
+			add(new StructureSchematic(-1, 0, 0, stoneBrickStairs));
+			add(new StructureSchematic(1, 0, 0, stoneBrickStairs1));
+			add(new StructureSchematic(0, 0, -1, stoneBrickStairs2));
+			add(new StructureSchematic(0, 0, 1, stoneBrickStairs3));
+		}
+	};
+
 	@Override
 	public Set<Flag> getFlags()
 	{
@@ -53,65 +113,7 @@ public class Shrine extends Structure
 	@Override
 	public Set<StructureSchematic> getSchematics()
 	{
-		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.GOLD_BLOCK));
-			}
-		};
-		final List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.ENDER_CHEST));
-			}
-		};
-		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK));
-			}
-		};
-		final List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_STAIRS));
-			}
-		};
-		final List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
-			}
-		};
-		final List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
-			}
-		};
-		final List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
-			}
-		};
-		return new HashSet<StructureSchematic>()
-		{
-			{
-				// Create the main block
-				add(new StructureSchematic(0, 1, 0, clickBlock));
-
-				// Create the ender chest and the block below
-				add(new StructureSchematic(0, 0, 0, enderChest));
-				add(new StructureSchematic(0, -1, 0, stoneBrick));
-
-				// Create the rest
-				add(new StructureSchematic(-1, 0, 0, stoneBrickStairs));
-				add(new StructureSchematic(1, 0, 0, stoneBrickStairs1));
-				add(new StructureSchematic(0, 0, -1, stoneBrickStairs2));
-				add(new StructureSchematic(0, 0, 1, stoneBrickStairs3));
-			}
-		};
+		return shrine;
 	}
 
 	@Override

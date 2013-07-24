@@ -30,6 +30,74 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Obelisk extends Structure
 {
+	final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 3));
+		}
+	};
+	final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_BRICK, 9));
+			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+		}
+	};
+	final static List<StructureBlockData> redstoneBlock = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.REDSTONE_BLOCK));
+		}
+	};
+	final static List<StructureBlockData> redstoneLamp = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
+		}
+	};
+	final static List<StructureBlockData> vine1 = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.VINE, (byte) 1, 4));
+			add(new StructureBlockData(Material.AIR, 6));
+		}
+	};
+	final static List<StructureBlockData> vine4 = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.VINE, (byte) 4, 4));
+			add(new StructureBlockData(Material.AIR, 6));
+		}
+	};
+	final static Set<StructureSchematic> obelisk = new HashSet<StructureSchematic>()
+	{
+		{
+			// Clickable block.
+			add(new StructureSchematic(0, 0, 2, clickBlock));
+
+			// Everything else.
+			add(new StructureSchematic(0, 0, -1, 0, 2, -1, stoneBrick));
+			add(new StructureSchematic(0, 0, 1, 0, 2, 1, stoneBrick));
+			add(new StructureSchematic(1, 0, 0, 1, 2, 0, stoneBrick));
+			add(new StructureSchematic(-1, 0, 0, -1, 2, 0, stoneBrick));
+			add(new StructureSchematic(0, 4, -1, 0, 5, -1, stoneBrick));
+			add(new StructureSchematic(0, 4, 1, 0, 5, 1, stoneBrick));
+			add(new StructureSchematic(1, 4, 0, 1, 5, 0, stoneBrick));
+			add(new StructureSchematic(-1, 4, 0, -1, 5, 0, stoneBrick));
+			add(new StructureSchematic(0, 3, 0, redstoneBlock));
+			add(new StructureSchematic(0, 4, 0, redstoneBlock));
+			add(new StructureSchematic(0, 3, -1, redstoneLamp));
+			add(new StructureSchematic(0, 3, 1, redstoneLamp));
+			add(new StructureSchematic(1, 3, 0, redstoneLamp));
+			add(new StructureSchematic(-1, 3, 0, redstoneLamp));
+			add(new StructureSchematic(0, 5, 0, redstoneLamp));
+			add(new StructureSchematic(1, 5, -1, vine1));
+			add(new StructureSchematic(-1, 5, -1, vine1));
+			add(new StructureSchematic(1, 5, 1, vine4));
+			add(new StructureSchematic(-1, 5, 1, vine4));
+		}
+	};
+
 	@Override
 	public Set<Flag> getFlags()
 	{
@@ -52,73 +120,7 @@ public class Obelisk extends Structure
 	@Override
 	public Set<StructureSchematic> getSchematics()
 	{
-		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 3));
-			}
-		};
-		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, 9));
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
-			}
-		};
-		final List<StructureBlockData> redstoneBlock = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.REDSTONE_BLOCK));
-			}
-		};
-		final List<StructureBlockData> redstoneLamp = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
-			}
-		};
-		final List<StructureBlockData> vine1 = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.VINE, (byte) 1, 4));
-				add(new StructureBlockData(Material.AIR, 6));
-			}
-		};
-		final List<StructureBlockData> vine4 = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.VINE, (byte) 4, 4));
-				add(new StructureBlockData(Material.AIR, 6));
-			}
-		};
-		return new HashSet<StructureSchematic>()
-		{
-			{
-				// Clickable block.
-				add(new StructureSchematic(0, 0, 2, clickBlock));
-
-				// Everything else.
-				add(new StructureSchematic(0, 0, -1, 0, 2, -1, stoneBrick));
-				add(new StructureSchematic(0, 0, 1, 0, 2, 1, stoneBrick));
-				add(new StructureSchematic(1, 0, 0, 1, 2, 0, stoneBrick));
-				add(new StructureSchematic(-1, 0, 0, -1, 2, 0, stoneBrick));
-				add(new StructureSchematic(0, 4, -1, 0, 5, -1, stoneBrick));
-				add(new StructureSchematic(0, 4, 1, 0, 5, 1, stoneBrick));
-				add(new StructureSchematic(1, 4, 0, 1, 5, 0, stoneBrick));
-				add(new StructureSchematic(-1, 4, 0, -1, 5, 0, stoneBrick));
-				add(new StructureSchematic(0, 3, 0, redstoneBlock));
-				add(new StructureSchematic(0, 4, 0, redstoneBlock));
-				add(new StructureSchematic(0, 3, -1, redstoneLamp));
-				add(new StructureSchematic(0, 3, 1, redstoneLamp));
-				add(new StructureSchematic(1, 3, 0, redstoneLamp));
-				add(new StructureSchematic(-1, 3, 0, redstoneLamp));
-				add(new StructureSchematic(0, 5, 0, redstoneLamp));
-				add(new StructureSchematic(1, 5, -1, vine1));
-				add(new StructureSchematic(-1, 5, -1, vine1));
-				add(new StructureSchematic(1, 5, 1, vine4));
-				add(new StructureSchematic(-1, 5, 1, vine4));
-			}
-		};
+		return obelisk;
 	}
 
 	@Override
