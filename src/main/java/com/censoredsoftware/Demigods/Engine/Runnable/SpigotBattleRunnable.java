@@ -14,6 +14,6 @@ public class SpigotBattleRunnable extends BukkitRunnable
 	{
 		for(Battle battle : Battle.getAllActive())
 			for(Location point : battle.battleBorder())
-				SpigotUtility.drawCircle(point, Effect.MOBSPAWNER_FLAMES, battle.getRange(), 60);
+				SpigotUtility.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
 	}
 }
