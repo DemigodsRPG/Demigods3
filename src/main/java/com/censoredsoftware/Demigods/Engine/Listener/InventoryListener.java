@@ -1,7 +1,5 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
-import java.util.Set;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,9 +10,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityBind;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
 
 public class InventoryListener implements Listener
 {
@@ -29,18 +24,13 @@ public class InventoryListener implements Listener
 
 		for(AbilityBind bind : character.getMeta().getBinds())
 		{
-			Set<Integer> hotBar = Ranges.closed(event.getClickedInventory().getSize(), event.getClickedInventory().getSize() + 9).asSet(DiscreteDomains.integers());
+			// Set<Integer> hotBar = Ranges.closed(event.getClickedInventory().getSize(), event.getClickedInventory().getSize() + 9).asSet(DiscreteDomains.integers());
 
 			Demigods.message.broadcast("Range: " + event.getInventory().getSize() + ", " + (event.getClickedInventory().getSize() + 9));
-			Demigods.message.broadcast("Slot: " + event.getSlot());
+			Demigods.message.broadcast("Slot: " + (event.getSlot() - 9));
 			Demigods.message.broadcast("Raw Slot: " + event.getRawSlot());
 
-			for(Integer integer : hotBar)
-			{
-				Demigods.message.broadcast("Range Check: " + integer);
-			}
-
-			if(bind.getSlot() == MiscUtility.getIndex(hotBar, event.getRawSlot())) event.setCancelled(true);
+			if(bind.getSlot() == (event.getSlot() - 9)) event.setCancelled(true);
 		}
 	}
 }
