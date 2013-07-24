@@ -141,7 +141,7 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.isSimilar(bind.getItem().toItemStack()))
+			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
 			{
 				return bind;
 			}
@@ -158,7 +158,9 @@ public class PlayerCharacterMeta
 	{
 		if(isBound(ability))
 		{
-			this.binds.remove(getBind(ability));
+			AbilityBind bind = getBind(ability);
+			this.binds.remove(bind);
+			JOhm.delete(AbilityBind.class, bind.getId());
 		}
 	}
 
@@ -166,8 +168,16 @@ public class PlayerCharacterMeta
 	{
 		if(isBound(item))
 		{
-			this.binds.remove(getBind(item));
+			AbilityBind bind = getBind(item);
+			this.binds.remove(bind);
+			JOhm.delete(AbilityBind.class, bind.getId());
 		}
+	}
+
+	public void removeBind(AbilityBind bind)
+	{
+		this.binds.remove(bind);
+		JOhm.delete(AbilityBind.class, bind.getId());
 	}
 
 	public boolean isFinishedTask(String taskName)

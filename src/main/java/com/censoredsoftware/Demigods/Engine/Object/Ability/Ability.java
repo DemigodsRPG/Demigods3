@@ -346,8 +346,12 @@ public abstract class Ability
 				}
 				else
 				{
-					// Remove the bind
-					character.getMeta().removeBind(ability.getInfo().getName());
+					// Get the bind for info
+					AbilityBind bind = character.getMeta().getBind(abilityName);
+
+					// Remove the bind and item
+					character.getMeta().removeBind(bind);
+					player.getInventory().setItem(bind.getSlot(), new ItemStack(Material.AIR));
 
 					// Let them know
 					player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));

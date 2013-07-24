@@ -66,6 +66,11 @@ public class AbilityBind
 		return bind;
 	}
 
+	public Long getId()
+	{
+		return this.id;
+	}
+
 	public ItemStack getRawItem()
 	{
 		return new ItemStack(this.item.toItemStack().getType());
@@ -105,5 +110,4 @@ public class AbilityBind
 	{
 		return JOhm.getAll(AbilityBind.class);
 	}
-
 }
