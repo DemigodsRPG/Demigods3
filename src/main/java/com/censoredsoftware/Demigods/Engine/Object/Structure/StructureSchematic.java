@@ -86,6 +86,14 @@ public class StructureSchematic
 		this.blockData = blockData;
 	}
 
+	/**
+	 * Excluding for a StructureSchematic (non-cuboid).
+	 * 
+	 * @param X The relative X coordinate of the schematic from the reference location.
+	 * @param Y The relative Y coordinate of the schematic from the reference location.
+	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 * @return This schematic.
+	 */
 	public StructureSchematic exclude(int X, int Y, int Z)
 	{
 		this.eX = this.eXX = X;
@@ -95,6 +103,17 @@ public class StructureSchematic
 		return this;
 	}
 
+	/**
+	 * Excluding for a StructureSchematic (cuboid).
+	 * 
+	 * @param X The relative X coordinate of the schematic from the reference location.
+	 * @param Y The relative Y coordinate of the schematic from the reference location.
+	 * @param Z The relative Z coordinate of the schematic from the reference location.
+	 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+	 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+	 * @return This schematic.
+	 */
 	public StructureSchematic exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
 	{
 		this.eX = X;
@@ -129,21 +148,9 @@ public class StructureSchematic
 	}
 
 	/**
-	 * Get a relative location, based on the <code>X</code>, <code>Y</code>, <code>Z</code> coordinates relative to the object's central location.
-	 * 
-	 * @param X Relative X coordinate.
-	 * @param Y Relative Y coordinate.
-	 * @param Z Relative Z coordinate.
-	 * @return New relative location.
-	 */
-	public Location getLocation(Location reference, int X, int Y, int Z)
-	{
-		return reference.clone().add(X, Y, Z);
-	}
-
-	/**
 	 * Get the block locations in this object.
 	 * 
+	 * @param reference The reference location.
 	 * @return A set of locations.
 	 */
 	public Set<Location> getBlockLocations(final Location reference)
@@ -151,29 +158,22 @@ public class StructureSchematic
 		return new HashSet<Location>()
 		{
 			{
-				if(cuboid)
-				{
-					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integerDomain))
-						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integerDomain))
-							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integerDomain))
-								add(getLocation(reference, x, y, z));
-				}
+				if(cuboid) addAll(rangeLoop(reference, X, XX, Y, YY, Z, ZZ));
 				else add(getLocation(reference, X, Y, Z));
 				if(exclude)
 				{
-					if(excludeCuboid)
-					{
-						for(int x : Ranges.closed(eX < eXX ? eX : eXX, eX < eXX ? eXX : eX).asSet(integerDomain))
-							for(int y : Ranges.closed(eY < eYY ? eY : eYY, eY < eYY ? eYY : eY).asSet(integerDomain))
-								for(int z : Ranges.closed(eZ < eZZ ? eZ : eZZ, eZ < eZZ ? eZZ : eZ).asSet(integerDomain))
-									remove(getLocation(reference, x, y, z));
-					}
+					if(excludeCuboid) removeAll(rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
 					else remove(getLocation(reference, eX, eY, eZ));
 				}
 			}
 		};
 	}
 
+	/**
+	 * Generate this schematic.
+	 * 
+	 * @param reference The reference Location.
+	 */
 	public void generate(Location reference)
 	{
 		for(Location location : getBlockLocations(reference))
@@ -182,4 +182,43 @@ public class StructureSchematic
 			location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 		}
 	}
+
+	/**
+	 * Get a relative location, based on the <code>X</code>, <code>Y</code>, <code>Z</code> coordinates relative to the object's central location.
+	 * 
+	 * @param X Relative X coordinate.
+	 * @param Y Relative Y coordinate.
+	 * @param Z Relative Z coordinate.
+	 * @return New relative location.
+	 */
+	public static Location getLocation(Location reference, int X, int Y, int Z)
+	{
+		return reference.clone().add(X, Y, Z);
+	}
+
+	/**
+	 * Get a cuboid selection as a HashSet.
+	 * 
+	 * @param reference The reference location.
+	 * @param X The relative X coordinate.
+	 * @param XX The second relative X coordinate.
+	 * @param Y The relative Y coordinate.
+	 * @param YY The second relative Y coordinate.
+	 * @param Z The relative Z coordinate.
+	 * @param ZZ The second relative Z coordinate.
+	 * @return The HashSet collection of a cuboid selection.
+	 */
+	public static Set<Location> rangeLoop(final Location reference, final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
+	{
+		return new HashSet<Location>()
+		{
+			{
+				for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integerDomain))
+					for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integerDomain))
+						for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integerDomain))
+							add(getLocation(reference, x, y, z));
+			}
+		};
+	}
+
 }
