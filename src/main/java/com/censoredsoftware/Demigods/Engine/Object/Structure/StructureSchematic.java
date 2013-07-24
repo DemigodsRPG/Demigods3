@@ -13,9 +13,32 @@ import com.google.common.collect.Ranges;
 
 public class StructureSchematic
 {
-	final private int X, Y, Z, XX, YY, ZZ;
-	final private boolean cuboid;
-	final private List<StructureBlockData> blockData;
+	private int X, Y, Z, XX, YY, ZZ;
+	private int eX, eY, eZ, eXX, eYY, eZZ;
+	private boolean cuboid;
+	private boolean exclude;
+	private boolean excludeCuboid;
+	private List<StructureBlockData> blockData;
+	private static DiscreteDomain<Integer> integerDomain = new DiscreteDomain<Integer>()
+	{
+		@Override
+		public Integer next(Integer integer)
+		{
+			return integer + 1;
+		}
+
+		@Override
+		public Integer previous(Integer integer)
+		{
+			return integer - 1;
+		}
+
+		@Override
+		public long distance(Integer integer, Integer integer2)
+		{
+			return Math.abs(integer - integer2);
+		}
+	};
 
 	/**
 	 * Constructor for a StructureSchematic (non-cuboid).
@@ -32,6 +55,8 @@ public class StructureSchematic
 		this.Y = this.YY = Y;
 		this.Z = this.ZZ = Z;
 		this.cuboid = false;
+		this.exclude = false;
+		this.excludeCuboid = false;
 		this.blockData = blockData;
 	}
 
@@ -56,7 +81,31 @@ public class StructureSchematic
 		this.YY = YY;
 		this.ZZ = ZZ;
 		this.cuboid = true;
+		this.exclude = false;
+		this.excludeCuboid = false;
 		this.blockData = blockData;
+	}
+
+	public StructureSchematic exclude(int X, int Y, int Z)
+	{
+		this.eX = this.eXX = X;
+		this.eY = this.eYY = Y;
+		this.eZ = this.eZZ = Z;
+		this.exclude = true;
+		return this;
+	}
+
+	public StructureSchematic exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
+	{
+		this.eX = X;
+		this.eY = Y;
+		this.eZ = Z;
+		this.eXX = XX;
+		this.eYY = YY;
+		this.eZZ = ZZ;
+		this.exclude = true;
+		this.excludeCuboid = true;
+		return this;
 	}
 
 	/**
@@ -73,12 +122,8 @@ public class StructureSchematic
 		{
 			{
 				for(StructureBlockData block : blockData)
-				{
 					for(int i = 0; i < block.getOdds(); i++)
-					{
 						add(block);
-					}
-				}
 			}
 		}.get(MiscUtility.generateIntRange(0, 9));
 	}
@@ -108,18 +153,23 @@ public class StructureSchematic
 			{
 				if(cuboid)
 				{
-					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integers()))
-					{
-						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integers()))
-						{
-							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integers()))
-							{
+					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(integerDomain))
+						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(integerDomain))
+							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(integerDomain))
 								add(getLocation(reference, x, y, z));
-							}
-						}
-					}
 				}
 				else add(getLocation(reference, X, Y, Z));
+				if(exclude)
+				{
+					if(excludeCuboid)
+					{
+						for(int x : Ranges.closed(eX < eXX ? eX : eXX, eX < eXX ? eXX : eX).asSet(integerDomain))
+							for(int y : Ranges.closed(eY < eYY ? eY : eYY, eY < eYY ? eYY : eY).asSet(integerDomain))
+								for(int z : Ranges.closed(eZ < eZZ ? eZ : eZZ, eZ < eZZ ? eZZ : eZ).asSet(integerDomain))
+									remove(getLocation(reference, x, y, z));
+					}
+					else remove(getLocation(reference, eX, eY, eZ));
+				}
 			}
 		};
 	}
@@ -131,29 +181,5 @@ public class StructureSchematic
 			StructureBlockData data = getStructureBlockData();
 			location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 		}
-	}
-
-	public static DiscreteDomain<Integer> integers()
-	{
-		return new DiscreteDomain<Integer>()
-		{
-			@Override
-			public Integer next(Integer integer)
-			{
-				return integer + 1;
-			}
-
-			@Override
-			public Integer previous(Integer integer)
-			{
-				return integer - 1;
-			}
-
-			@Override
-			public long distance(Integer integer, Integer integer2)
-			{
-				return Math.abs(integer - integer2);
-			}
-		};
 	}
 }
