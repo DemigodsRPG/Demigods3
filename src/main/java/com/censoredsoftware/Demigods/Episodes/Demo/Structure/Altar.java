@@ -60,8 +60,9 @@ public class Altar implements StructureInfo
 		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
 		{
 			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, 4));
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, 7));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 2));
 			}
 		};
 		final List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
@@ -145,7 +146,7 @@ public class Altar implements StructureInfo
 				add(new StructureSchematic(2, 4, -3, woodSlab));
 				add(new StructureSchematic(-2, 4, -3, woodSlab));
 				add(new StructureSchematic(3, 0, 2, 3, 3, 2, stoneBrick));
-				add(new StructureSchematic(3, 0, -2, 3, 4, -2, stoneBrick));
+				add(new StructureSchematic(3, 0, -2, 3, 3, -2, stoneBrick));
 				add(new StructureSchematic(2, 0, 3, 2, 3, 3, stoneBrick));
 				add(new StructureSchematic(-2, 0, 3, -2, 3, 3, stoneBrick));
 				add(new StructureSchematic(-3, 0, 2, -3, 3, 2, stoneBrick));
@@ -173,8 +174,8 @@ public class Altar implements StructureInfo
 
 				// Bottom beam
 				add(new StructureSchematic(-2, 4, 1, stoneBrick));
-				add(new StructureSchematic(-2, 4, -1, stoneBrickSpecial));
-				add(new StructureSchematic(-2, 4, 0, stoneBrick));
+				add(new StructureSchematic(-2, 4, -1, stoneBrick));
+				add(new StructureSchematic(-2, 4, 0, stoneBrickSpecial));
 				add(new StructureSchematic(-2, 5, -1, -2, 5, 1, woodSlab));
 
 				// Create main platform

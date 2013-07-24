@@ -27,7 +27,7 @@ public class StructureSchematic
 	 */
 	public StructureSchematic(int X, int Y, int Z, List<StructureBlockData> blockData)
 	{
-		if(blockData.size() == 0 || blockData.size() > 5) throw new IllegalArgumentException("Incorrect block data list size.");
+		if(blockData.size() == 0 || blockData.size() > 10) throw new IllegalArgumentException("Incorrect block data list size.");
 		this.X = this.XX = X;
 		this.Y = this.YY = Y;
 		this.Z = this.ZZ = Z;
@@ -48,7 +48,7 @@ public class StructureSchematic
 	 */
 	public StructureSchematic(int X, int Y, int Z, int XX, int YY, int ZZ, List<StructureBlockData> blockData)
 	{
-		if(blockData.size() == 0 || blockData.size() > 5) throw new IllegalArgumentException("Incorrect block data list size.");
+		if(blockData.size() == 0 || blockData.size() > 10) throw new IllegalArgumentException("Incorrect block data list size.");
 		this.X = X;
 		this.Y = Y;
 		this.Z = Z;
@@ -69,7 +69,7 @@ public class StructureSchematic
 	public StructureBlockData getStructureBlockData()
 	{
 		if(blockData.size() == 1) return blockData.get(0);
-		return new ArrayList<StructureBlockData>(5)
+		return new ArrayList<StructureBlockData>(10)
 		{
 			{
 				for(StructureBlockData block : blockData)
@@ -80,7 +80,7 @@ public class StructureSchematic
 					}
 				}
 			}
-		}.get(MiscUtility.generateIntRange(0, 4));
+		}.get(MiscUtility.generateIntRange(0, 9));
 	}
 
 	/**

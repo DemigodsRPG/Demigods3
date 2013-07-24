@@ -62,7 +62,7 @@ public class Obelisk implements StructureInfo
 		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
 		{
 			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, 4));
+				add(new StructureBlockData(Material.SMOOTH_BRICK, 9));
 				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
 			}
 		};
@@ -81,15 +81,15 @@ public class Obelisk implements StructureInfo
 		final List<StructureBlockData> vine1 = new ArrayList<StructureBlockData>()
 		{
 			{
-				add(new StructureBlockData(Material.VINE, (byte) 1, 2));
-				add(new StructureBlockData(Material.AIR, 3));
+				add(new StructureBlockData(Material.VINE, (byte) 1, 4));
+				add(new StructureBlockData(Material.AIR, 6));
 			}
 		};
 		final List<StructureBlockData> vine4 = new ArrayList<StructureBlockData>()
 		{
 			{
-				add(new StructureBlockData(Material.VINE, (byte) 4, 2));
-				add(new StructureBlockData(Material.AIR, 3));
+				add(new StructureBlockData(Material.VINE, (byte) 4, 4));
+				add(new StructureBlockData(Material.AIR, 6));
 			}
 		};
 		return new HashSet<StructureSchematic>()
