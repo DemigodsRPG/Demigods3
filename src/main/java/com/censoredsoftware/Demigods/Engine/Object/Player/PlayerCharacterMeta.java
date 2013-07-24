@@ -84,7 +84,17 @@ public class PlayerCharacterMeta
 
 	public boolean checkBind(String ability, ItemStack item)
 	{
-		return(getBind(item) != null && getBind(item).getAbility().equalsIgnoreCase(ability));
+		return(isBound(item) && getBind(item).getAbility().equalsIgnoreCase(ability));
+	}
+
+	public boolean checkBind(String ability, int slot)
+	{
+		return(isBound(slot) && getBind(slot).getAbility().equalsIgnoreCase(ability));
+	}
+
+	public boolean isBound(int slot)
+	{
+		return getBind(slot) != null;
 	}
 
 	public boolean isBound(String ability)
@@ -102,6 +112,15 @@ public class PlayerCharacterMeta
 		AbilityBind bind = AbilityBind.create(ability, slot, item);
 		this.binds.add(bind);
 		return bind;
+	}
+
+	public AbilityBind getBind(int slot)
+	{
+		for(AbilityBind bind : this.binds)
+		{
+			if(bind.getSlot() == slot) return bind;
+		}
+		return null;
 	}
 
 	public AbilityBind getBind(String ability)
