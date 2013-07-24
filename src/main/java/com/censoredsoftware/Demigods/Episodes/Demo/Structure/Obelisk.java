@@ -19,10 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -30,10 +27,22 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Obelisk extends Structure
 {
-	final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	final static List<StructureBlockData> specialStoneBrick = new ArrayList<StructureBlockData>()
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 3));
+		}
+	};
+	final static List<StructureBlockData> specialSandstone = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SANDSTONE, (byte) 1));
+		}
+	};
+	final static List<StructureBlockData> sandstone = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SANDSTONE));
 		}
 	};
 	final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
@@ -69,34 +78,91 @@ public class Obelisk extends Structure
 			add(new StructureBlockData(Material.AIR, 6));
 		}
 	};
-	final static Set<StructureSchematic> obelisk = new HashSet<StructureSchematic>()
+	final static StructureSchematic general = new StructureSchematic("general", "HmmmQuestionMark")
 	{
 		{
 			// Clickable block.
-			add(new StructureSchematic(0, 0, 2, clickBlock));
+			add(new StructureCuboid(0, 0, 2, specialStoneBrick));
 
 			// Everything else.
-			add(new StructureSchematic(0, 0, -1, 0, 2, -1, stoneBrick));
-			add(new StructureSchematic(0, 0, 1, 0, 2, 1, stoneBrick));
-			add(new StructureSchematic(1, 0, 0, 1, 2, 0, stoneBrick));
-			add(new StructureSchematic(-1, 0, 0, -1, 2, 0, stoneBrick));
-			add(new StructureSchematic(0, 4, -1, 0, 5, -1, stoneBrick));
-			add(new StructureSchematic(0, 4, 1, 0, 5, 1, stoneBrick));
-			add(new StructureSchematic(1, 4, 0, 1, 5, 0, stoneBrick));
-			add(new StructureSchematic(-1, 4, 0, -1, 5, 0, stoneBrick));
-			add(new StructureSchematic(0, 3, 0, redstoneBlock));
-			add(new StructureSchematic(0, 4, 0, redstoneBlock));
-			add(new StructureSchematic(0, 3, -1, redstoneLamp));
-			add(new StructureSchematic(0, 3, 1, redstoneLamp));
-			add(new StructureSchematic(1, 3, 0, redstoneLamp));
-			add(new StructureSchematic(-1, 3, 0, redstoneLamp));
-			add(new StructureSchematic(0, 5, 0, redstoneLamp));
-			add(new StructureSchematic(1, 5, -1, vine1));
-			add(new StructureSchematic(-1, 5, -1, vine1));
-			add(new StructureSchematic(1, 5, 1, vine4));
-			add(new StructureSchematic(-1, 5, 1, vine4));
+			add(new StructureCuboid(0, 0, -1, 0, 2, -1, stoneBrick));
+			add(new StructureCuboid(0, 0, 1, 0, 2, 1, stoneBrick));
+			add(new StructureCuboid(1, 0, 0, 1, 2, 0, stoneBrick));
+			add(new StructureCuboid(-1, 0, 0, -1, 2, 0, stoneBrick));
+			add(new StructureCuboid(0, 4, -1, 0, 5, -1, stoneBrick));
+			add(new StructureCuboid(0, 4, 1, 0, 5, 1, stoneBrick));
+			add(new StructureCuboid(1, 4, 0, 1, 5, 0, stoneBrick));
+			add(new StructureCuboid(-1, 4, 0, -1, 5, 0, stoneBrick));
+			add(new StructureCuboid(0, 3, 0, redstoneBlock));
+			add(new StructureCuboid(0, 4, 0, redstoneBlock));
+			add(new StructureCuboid(0, 3, -1, redstoneLamp));
+			add(new StructureCuboid(0, 3, 1, redstoneLamp));
+			add(new StructureCuboid(1, 3, 0, redstoneLamp));
+			add(new StructureCuboid(-1, 3, 0, redstoneLamp));
+			add(new StructureCuboid(0, 5, 0, redstoneLamp));
+			add(new StructureCuboid(1, 5, -1, vine1));
+			add(new StructureCuboid(-1, 5, -1, vine1));
+			add(new StructureCuboid(1, 5, 1, vine4));
+			add(new StructureCuboid(-1, 5, 1, vine4));
 		}
 	};
+	final static StructureSchematic desert = new StructureSchematic("desert", "HmmmQuestionMark")
+	{
+		{
+			// Clickable block.
+			add(new StructureCuboid(0, 0, 2, specialSandstone));
+
+			// Everything else.
+			add(new StructureCuboid(0, 0, -1, 0, 2, -1, sandstone));
+			add(new StructureCuboid(0, 0, 1, 0, 2, 1, sandstone));
+			add(new StructureCuboid(1, 0, 0, 1, 2, 0, sandstone));
+			add(new StructureCuboid(-1, 0, 0, -1, 2, 0, sandstone));
+			add(new StructureCuboid(0, 4, -1, 0, 5, -1, sandstone));
+			add(new StructureCuboid(0, 4, 1, 0, 5, 1, sandstone));
+			add(new StructureCuboid(1, 4, 0, 1, 5, 0, sandstone));
+			add(new StructureCuboid(-1, 4, 0, -1, 5, 0, sandstone));
+			add(new StructureCuboid(0, 3, 0, redstoneBlock));
+			add(new StructureCuboid(0, 4, 0, redstoneBlock));
+			add(new StructureCuboid(0, 3, -1, redstoneLamp));
+			add(new StructureCuboid(0, 3, 1, redstoneLamp));
+			add(new StructureCuboid(1, 3, 0, redstoneLamp));
+			add(new StructureCuboid(-1, 3, 0, redstoneLamp));
+			add(new StructureCuboid(0, 5, 0, redstoneLamp));
+		}
+	};
+	final static List<StructureSchematic> obelisk = new ArrayList<StructureSchematic>()
+	{
+		{
+			add(general);
+			add(desert);
+		}
+	};
+
+	public static enum ObeliskDesign implements StructureSchematic.StructureDesign
+	{
+		GENERAL(0, "general"), DESERT(1, "desert");
+
+		private int index;
+		private String name;
+
+		private ObeliskDesign(int index, String name)
+		{
+			this.index = index;
+			this.name = name;
+		}
+
+		@Override
+		public int getIndex()
+		{
+			return index;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+	}
 
 	@Override
 	public Set<Flag> getFlags()
@@ -118,7 +184,7 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public Set<StructureSchematic> getSchematics()
+	public List<StructureSchematic> getSchematics()
 	{
 		return obelisk;
 	}
@@ -161,9 +227,22 @@ public class Obelisk extends Structure
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
+		save.setStructureDesign(getDesign(reference));
 		save.save();
 		if(generate) save.generate();
 		return save;
+	}
+
+	public int getDesign(Location reference)
+	{
+		switch(reference.getChunk().getChunkSnapshot().getBiome(reference.getBlockX(), reference.getBlockZ()))
+		{
+			case DESERT:
+			case DESERT_HILLS:
+				return ObeliskDesign.DESERT.getIndex();
+			default:
+				return ObeliskDesign.GENERAL.getIndex();
+		}
 	}
 
 	public static boolean validBlockConfiguration(Block block)

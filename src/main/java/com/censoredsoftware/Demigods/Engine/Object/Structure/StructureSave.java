@@ -22,6 +22,9 @@ public class StructureSave
 	private String structureType;
 	@Indexed
 	@Attribute
+	private int structureDesign;
+	@Indexed
+	@Attribute
 	private Boolean active;
 	@Reference
 	private DemigodsLocation reference;
@@ -31,6 +34,11 @@ public class StructureSave
 	public void setStructureType(String type)
 	{
 		this.structureType = type;
+	}
+
+	public void setStructureDesign(int design)
+	{
+		this.structureDesign = design;
 	}
 
 	public void setReferenceLocation(Location reference)
@@ -91,7 +99,7 @@ public class StructureSave
 
 	public Set<Location> getLocations()
 	{
-		return Structure.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics());
+		return Structure.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics().get(this.structureDesign));
 	}
 
 	public Structure getStructureInfo()
@@ -120,9 +128,6 @@ public class StructureSave
 
 	public void generate()
 	{
-		for(StructureSchematic schematic : getStructureInfo().getSchematics())
-		{
-			schematic.generate(this.reference.toLocation());
-		}
+		getStructureInfo().getSchematics().get(this.structureDesign).generate(this.reference.toLocation());
 	}
 }

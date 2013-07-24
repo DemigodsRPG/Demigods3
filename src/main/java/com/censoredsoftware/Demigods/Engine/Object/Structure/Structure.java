@@ -16,7 +16,7 @@ public abstract class Structure
 {
 	public abstract String getStructureType();
 
-	public abstract Set<StructureSchematic> getSchematics();
+	public abstract List<StructureSchematic> getSchematics();
 
 	public abstract int getRadius();
 
@@ -138,12 +138,12 @@ public abstract class Structure
 		return StructureSave.findAll("structureType", info.getStructureType());
 	}
 
-	public static Set<Location> getLocations(final Location reference, final Set<StructureSchematic> schematics)
+	public static Set<Location> getLocations(final Location reference, final Set<StructureCuboid> schematics)
 	{
 		return new HashSet<Location>()
 		{
 			{
-				for(StructureSchematic schematic : schematics)
+				for(StructureCuboid schematic : schematics)
 				{
 					addAll(schematic.getBlockLocations(reference));
 				}

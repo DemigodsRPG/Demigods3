@@ -19,10 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureBlockData;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSchematic;
+import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -72,21 +69,27 @@ public class Shrine extends Structure
 			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
-	final static Set<StructureSchematic> shrine = new HashSet<StructureSchematic>()
+	final static StructureSchematic general = new StructureSchematic("general", "_Alex")
 	{
 		{
 			// Create the main block
-			add(new StructureSchematic(0, 1, 0, clickBlock));
+			add(new StructureCuboid(0, 1, 0, clickBlock));
 
 			// Create the ender chest and the block below
-			add(new StructureSchematic(0, 0, 0, enderChest));
-			add(new StructureSchematic(0, -1, 0, stoneBrick));
+			add(new StructureCuboid(0, 0, 0, enderChest));
+			add(new StructureCuboid(0, -1, 0, stoneBrick));
 
 			// Create the rest
-			add(new StructureSchematic(-1, 0, 0, stoneBrickStairs));
-			add(new StructureSchematic(1, 0, 0, stoneBrickStairs1));
-			add(new StructureSchematic(0, 0, -1, stoneBrickStairs2));
-			add(new StructureSchematic(0, 0, 1, stoneBrickStairs3));
+			add(new StructureCuboid(-1, 0, 0, stoneBrickStairs));
+			add(new StructureCuboid(1, 0, 0, stoneBrickStairs1));
+			add(new StructureCuboid(0, 0, -1, stoneBrickStairs2));
+			add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
+		}
+	};
+	final static List<StructureSchematic> shrine = new ArrayList<StructureSchematic>()
+	{
+		{
+			add(general);
 		}
 	};
 
@@ -111,7 +114,7 @@ public class Shrine extends Structure
 	}
 
 	@Override
-	public Set<StructureSchematic> getSchematics()
+	public List<StructureSchematic> getSchematics()
 	{
 		return shrine;
 	}
@@ -154,6 +157,7 @@ public class Shrine extends Structure
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
+		save.setStructureDesign(0);
 		save.save();
 		if(generate) save.generate();
 		return save;

@@ -24,7 +24,7 @@ public class SchedulerUtility
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
 		AdminUtility.sendDebug("Battle tracking runnable enabled...");
 
-		// Start spigot particle runnables
+		// Start spigot particle runnable
 		if(Demigods.runningSpigot())
 		{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new SpigotBattleRunnable(), 20, 20);
