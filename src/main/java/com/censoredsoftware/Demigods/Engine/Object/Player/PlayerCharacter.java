@@ -198,6 +198,8 @@ public class PlayerCharacter implements BattleParticipant
 		{
 			if(structureSave.getStructureInfo().getFlags().contains(Structure.Flag.DELETE_ON_OWNER_DELETE) && structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 		}
+		JOhm.delete(PlayerCharacterInventory.class, getInventory().getId());
+		JOhm.delete(PlayerCharacterMeta.class, getMeta().getId());
 		JOhm.delete(PlayerCharacter.class, getId());
 	}
 
