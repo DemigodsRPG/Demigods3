@@ -13,13 +13,4 @@ public class SpigotUtility
 		if(!Demigods.runningSpigot()) throw new SpigotNotFoundException();
 		location.getWorld().spigot().playEffect(location, effect, 1, 1, offsetX, offsetY, offsetZ, speed, particles, viewRadius);
 	}
-
-	public static void drawCircle(Location center, Effect effect, double radius, int points)
-	{
-		if(!Demigods.runningSpigot()) throw new SpigotNotFoundException();
-		for(Location point : LocationUtility.getCirclePoints(center, radius, points))
-		{
-			playParticle(new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ()), effect, 0, 6, 0, 1F, 15, (int) (radius * 2.5));
-		}
-	}
 }

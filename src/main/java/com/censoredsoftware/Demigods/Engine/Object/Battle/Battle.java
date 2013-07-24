@@ -273,8 +273,8 @@ public class Battle
 		return new HashSet<Location>()
 		{
 			{
-				for(Location location : LocationUtility.getCirclePoints(getStartLocation(), getRange(), 120))
-					add(location);
+				for(Location point : LocationUtility.getCirclePoints(getStartLocation(), getRange(), 120))
+					add(new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ()));
 			}
 		};
 	}
