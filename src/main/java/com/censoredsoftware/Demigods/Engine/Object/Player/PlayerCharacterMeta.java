@@ -117,7 +117,7 @@ public class PlayerCharacterMeta
 	{
 		for(AbilityBind bind : this.binds)
 		{
-			if(item.getItemMeta() != null && item.getItemMeta().getLore().contains(bind.getIdentifier())) return bind;
+			if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().contains(bind.getIdentifier())) return bind;
 		}
 		return null;
 	}
