@@ -126,9 +126,9 @@ public class BattleMeta
 			allianceKills.put(murderer.getAlliance(), allianceKills.get(murderer.getAlliance()) + entry.getValue());
 		}
 
-		for(Map.Entry<String, Integer> entry : Lists.reverse(Lists.newArrayList(MiscUtility.sortByValue(allianceKills).entrySet())))
+		for(Map.Entry<String, Integer> entry : Lists.newArrayList(MiscUtility.sortByValue(allianceKills).entrySet()))
 		{
-			winningAlliance = "The " + entry.getKey() + "  alliance wins with " + entry.getValue() + " total kills!";
+			winningAlliance = "The " + entry.getKey() + " alliance wins with " + entry.getValue() + " total kills!";
 			break;
 		}
 
@@ -139,7 +139,7 @@ public class BattleMeta
 			allianceDeaths.put(victim.getAlliance(), allianceKills.get(victim.getAlliance()) + entry.getValue());
 		}
 
-		for(Map.Entry<String, Integer> entry : Lists.reverse(Lists.newArrayList(MiscUtility.sortByValue(allianceDeaths).entrySet())))
+		for(Map.Entry<String, Integer> entry : Lists.newArrayList(MiscUtility.sortByValue(allianceDeaths).entrySet()))
 		{
 			mostDeathsAlliance = "The " + entry.getKey() + " alliance had the most deaths (" + entry.getValue() + ") this battle.";
 			break;
@@ -155,12 +155,12 @@ public class BattleMeta
 
 	public List<Map.Entry<PlayerCharacter, Integer>> getKills()
 	{
-		return Lists.reverse(Lists.newArrayList(MiscUtility.sortByValue(this.kills).entrySet()));
+		return Lists.newArrayList(MiscUtility.sortByValue(this.kills).entrySet());
 	}
 
 	public List<Map.Entry<PlayerCharacter, Integer>> getDeaths()
 	{
-		return Lists.reverse(Lists.newArrayList(MiscUtility.sortByValue(this.deaths).entrySet()));
+		return Lists.newArrayList(MiscUtility.sortByValue(this.deaths).entrySet());
 	}
 
 	public int getKillCounter()
