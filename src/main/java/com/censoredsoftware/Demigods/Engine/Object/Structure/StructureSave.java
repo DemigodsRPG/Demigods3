@@ -11,12 +11,14 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.censoredsoftware.Demigods.Engine.StructureFlags.StructureFlag;
+import com.google.common.collect.Sets;
 
 @Model
 public class StructureSave
 {
 	@Id
-	private Long Id;
+	private Long id;
 	@Indexed
 	@Attribute
 	private String structureType;
@@ -41,6 +43,16 @@ public class StructureSave
 	@Indexed
 	@Attribute
 	private Boolean deleteOnOwnerDelete;
+	@CollectionSet(of = Flag.class)
+	@Indexed
+	private Set<StructureFlag> flags;
+
+	public void setFlag(StructureFlag flag)
+	{
+		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
+		this.flags.add(flag);
+		save();
+	}
 
 	public void setStructureType(String type)
 	{
@@ -87,7 +99,7 @@ public class StructureSave
 		for(Location location : getLocations())
 			location.getBlock().setTypeId(Material.AIR.getId());
 		JOhm.delete(DemigodsLocation.class, reference.getId());
-		JOhm.delete(StructureSave.class, this.Id);
+		JOhm.delete(StructureSave.class, this.id);
 	}
 
 	public static StructureSave load(Long Id)
@@ -152,9 +164,14 @@ public class StructureSave
 		return this.active;
 	}
 
+	public Set<StructureFlag> getFlags()
+	{
+		return this.flags;
+	}
+
 	public long getId()
 	{
-		return this.Id;
+		return this.id;
 	}
 
 	public void generate()

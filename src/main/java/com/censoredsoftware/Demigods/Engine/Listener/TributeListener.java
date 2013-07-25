@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
+import com.censoredsoftware.Demigods.Engine.StructureFlags.StructureFlag;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ItemValueUtility;
 
@@ -40,7 +41,7 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
 
-		if(Structure.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(Structure.partOfStructureWithFlag(location, StructureFlag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
@@ -78,7 +79,7 @@ public class TributeListener implements Listener
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structure.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureFlag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureSave save = StructureSave.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));

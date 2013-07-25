@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
+import com.censoredsoftware.Demigods.Engine.StructureFlags.StructureFlag;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -150,12 +151,12 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public Set<Flag> getFlags()
+	public Set<StructureFlag> getFlags()
 	{
-		return new HashSet<Flag>(1)
+		return new HashSet<StructureFlag>(1)
 		{
 			{
-				add(Flag.NO_GRIEFING_ZONE);
+				add(StructureFlag.NO_GRIEFING);
 			}
 		};
 	}
@@ -247,7 +248,7 @@ public class Obelisk extends Structure
 	{
 		for(StructureSave structureSave : StructureSave.loadAll())
 		{
-			if(structureSave.getStructureInfo().getFlags().contains(Flag.NO_PVP_ZONE) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
+			if(structureSave.getStructureInfo().getFlags().contains(StructureFlag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
 		}
 		return false;
 	}

@@ -21,6 +21,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
+import com.censoredsoftware.Demigods.Engine.StructureFlags.StructureFlag;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
@@ -178,13 +179,13 @@ public class Altar extends Structure
 	}
 
 	@Override
-	public Set<Flag> getFlags()
+	public Set<StructureFlag> getFlags()
 	{
-		return new HashSet<Flag>(2)
+		return new HashSet<StructureFlag>(2)
 		{
 			{
-				add(Structure.Flag.NO_PVP_ZONE);
-				add(Structure.Flag.PRAYER_LOCATION);
+				add(StructureFlag.NO_PVP);
+				add(StructureFlag.PRAYER_LOCATION);
 			}
 		};
 	}

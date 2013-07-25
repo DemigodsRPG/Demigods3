@@ -29,10 +29,10 @@ public class PlayerWrapper
 	private String player;
 	@Attribute
 	private long lastLoginTime;
-	@Attribute
-	private long current;
-	@Attribute
-	private long previous;
+	@Reference
+	private PlayerCharacter current;
+	@Reference
+	private PlayerCharacter previous;
 
 	void setPlayer(String player)
 	{
@@ -128,7 +128,7 @@ public class PlayerWrapper
 
 			// Set to inactive and update previous
 			currChar.setActive(false);
-			this.previous = currChar.getId();
+			this.previous = currChar;
 
 			// Save it
 			PlayerCharacter.save(currChar);
@@ -158,7 +158,7 @@ public class PlayerWrapper
 
 		// Set new character to active
 		newChar.setActive(true);
-		this.current = newChar.getId();
+		this.current = newChar;
 
 		// Re-own pets
 		TameableWrapper.reownPets(player, newChar);
@@ -178,22 +178,20 @@ public class PlayerWrapper
 		PlayerCharacter.save(newChar);
 	}
 
+	public boolean hasCurrent()
+	{
+		return getCurrent() != null;
+	}
+
 	public PlayerCharacter getCurrent()
 	{
-		PlayerCharacter character = PlayerCharacter.load(this.current);
-		if(character != null && character.canUse()) return character;
+		if(this.current != null && this.current.canUse()) return this.current;
 		return null;
 	}
 
 	public PlayerCharacter getPrevious()
 	{
-		try
-		{
-			return PlayerCharacter.load(this.previous);
-		}
-		catch(Exception ignored)
-		{}
-		return null;
+		return this.previous;
 	}
 
 	public Set<PlayerCharacter> getCharacters()
