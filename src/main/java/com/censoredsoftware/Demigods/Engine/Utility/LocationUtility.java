@@ -57,7 +57,7 @@ public class LocationUtility
 	 * @param area how big of an area (in blocks) to validate
 	 * @return Boolean
 	 */
-	public static boolean canGenerateStrictOld(Location reference, int area)
+	public static boolean canGenerateStrict(Location reference, int area)
 	{
 		Location location = reference.clone();
 		location.subtract(0, 1, 0);
@@ -93,31 +93,6 @@ public class LocationUtility
 			location.add(0, 1, 1);
 			location.subtract(1, 0, 0);
 		}
-
-		return true;
-	}
-
-	public static boolean canGenerateStrict(Location reference, int area)
-	{
-		Block center = reference.clone().subtract(0, 1, 0).getBlock();
-
-		// Check ground
-		for(int i = 0; i < area; i++)
-			if(!center.getRelative(BlockFace.EAST, i + 1).getType().isSolid()) return false;
-
-		// Check ground adjacent
-		for(int i = 0; i < area; i++)
-			if(!center.getRelative(BlockFace.NORTH, i + 1).getType().isSolid()) return false;
-
-		// Check ground adjacent again
-		for(int i = 0; i < area; i++)
-			if(!center.getRelative(BlockFace.WEST, i + 1).getType().isSolid()) return false;
-
-		center = reference.clone().getBlock();
-
-		// Check air diagonally
-		for(int i = 0; i < area + 1; i++)
-			if(!center.getRelative(BlockFace.UP, i + 1).getRelative(BlockFace.NORTH_WEST, i + 1).getType().isTransparent()) return false;
 
 		return true;
 	}
