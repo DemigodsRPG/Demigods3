@@ -150,12 +150,12 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public Set<StructureFlag> getFlags()
+	public Set<Flag> getFlags()
 	{
-		return new HashSet<StructureFlag>(1)
+		return new HashSet<Flag>()
 		{
 			{
-				add(StructureFlag.NO_GRIEFING);
+				add(Flag.NO_GRIEFING);
 			}
 		};
 	}
@@ -213,10 +213,7 @@ public class Obelisk extends Structure
 		save.setStructureType(getStructureType());
 		save.setStructureDesign(getDesign(reference));
 		save.setSettings(true, true, false);
-		for(StructureFlag flag : getFlags())
-		{
-			save.addFlag(flag);
-		}
+		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
 		return save;
@@ -251,7 +248,7 @@ public class Obelisk extends Structure
 	{
 		for(StructureSave structureSave : StructureSave.loadAll())
 		{
-			if(structureSave.getStructureInfo().getFlags().contains(StructureFlag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
+			if(structureSave.getStructureInfo().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
 		}
 		return false;
 	}

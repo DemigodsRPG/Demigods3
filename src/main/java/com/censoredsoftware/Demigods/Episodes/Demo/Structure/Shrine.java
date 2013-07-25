@@ -88,12 +88,12 @@ public class Shrine extends Structure
 	};
 
 	@Override
-	public Set<StructureFlag> getFlags()
+	public Set<Flag> getFlags()
 	{
-		return new HashSet<StructureFlag>(1)
+		return new HashSet<Flag>()
 		{
 			{
-				add(StructureFlag.TRIBUTE_LOCATION);
+				add(Flag.TRIBUTE_LOCATION);
 			}
 		};
 	}
@@ -150,10 +150,7 @@ public class Shrine extends Structure
 		save.setStructureType(getStructureType());
 		save.setStructureDesign("general");
 		save.setSettings(true, true, true);
-		for(StructureFlag flag : getFlags())
-		{
-			save.addFlag(flag);
-		}
+		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
 		return save;

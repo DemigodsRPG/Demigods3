@@ -22,9 +22,7 @@ import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
 import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Flag;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureFlag;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
@@ -49,7 +47,6 @@ public class Demigods
 	protected static Deque<Deity> deities;
 	protected static Deque<TaskSet> quests;
 	protected static Deque<Structure> structures;
-	protected static Deque<StructureFlag> flags;
 	protected static Deque<ConversationInfo> conversasions;
 
 	// The Engine Default Text
@@ -68,11 +65,6 @@ public class Demigods
 	public interface ListedStructure
 	{
 		public Structure getStructure();
-	}
-
-	public interface ListedStructureFlag
-	{
-		public Flag getFlag();
 	}
 
 	public interface ListedConversation
@@ -119,13 +111,6 @@ public class Demigods
 					add(conversation.getConversation());
 				if(conversations != null) for(ListedConversation conversation : conversations)
 					add(conversation.getConversation());
-			}
-		};
-		Demigods.flags = new ArrayDeque<StructureFlag>()
-		{
-			{
-				for(StructureFlag flag : StructureFlag.values())
-					add(flag);
 			}
 		};
 
@@ -214,13 +199,6 @@ public class Demigods
 			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 
-		// Structure Flags
-		for(StructureFlag structureFlag : getLoadedStructureFlags())
-		{
-			if(structureFlag.getFlag() == null || structureFlag.getFlag().getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(structureFlag.getFlag().getUniqueListener(), instance);
-		}
-
 		// Conversations
 		for(ConversationInfo conversation : getLoadedConversations())
 		{
@@ -257,11 +235,6 @@ public class Demigods
 	public static Deque<Structure> getLoadedStructures()
 	{
 		return Demigods.structures;
-	}
-
-	public static Deque<StructureFlag> getLoadedStructureFlags()
-	{
-		return Demigods.flags;
 	}
 
 	public static Deque<ConversationInfo> getLoadedConversations()

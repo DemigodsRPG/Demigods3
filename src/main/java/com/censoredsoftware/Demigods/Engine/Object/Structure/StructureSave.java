@@ -47,16 +47,16 @@ public class StructureSave
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
-	public void addFlags(Set<StructureFlag> flags)
+	public void addFlags(Set<Structure.Flag> flags)
 	{
 		if(this.flags == null) this.flags = Sets.newHashSet();
-		for(StructureFlag flag : flags)
+		for(Structure.Flag flag : flags)
 		{
 			this.flags.add(flag.name());
 		}
 	}
 
-	public void addFlag(StructureFlag flag)
+	public void addFlag(Structure.Flag flag)
 	{
 		if(this.flags == null) this.flags = Sets.newHashSet();
 		this.flags.add(flag.name());
@@ -172,15 +172,14 @@ public class StructureSave
 		return this.active;
 	}
 
-	public Set<StructureFlag> getFlags()
+	public Set<Structure.Flag> getFlags()
 	{
-		return new HashSet<StructureFlag>()
+		return new HashSet<Structure.Flag>()
 		{
 			{
 				for(String name : flags)
 				{
-					Demigods.message.broadcast("Flag: " + StructureFlag.valueOf(name));
-					add(StructureFlag.valueOf(name));
+					add(Structure.Flag.valueOf(name));
 				}
 			}
 		};

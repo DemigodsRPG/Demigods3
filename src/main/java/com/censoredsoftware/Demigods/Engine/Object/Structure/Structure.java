@@ -26,9 +26,14 @@ public abstract class Structure
 
 	public abstract Set<StructureSave> getAll();
 
-	public abstract Set<StructureFlag> getFlags();
+	public abstract Set<Flag> getFlags();
 
 	public abstract StructureSave createNew(Location reference, boolean generate);
+
+	public enum Flag
+	{
+		PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
+	}
 
 	public static StructureSave getStructure(Location location)
 	{
@@ -75,7 +80,7 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean partOfStructureWithFlag(Location location, StructureFlag flag)
+	public static boolean partOfStructureWithFlag(Location location, Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -84,7 +89,7 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean isCenterBlockWithFlag(Location location, StructureFlag flag)
+	public static boolean isCenterBlockWithFlag(Location location, Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -93,12 +98,12 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean isInRadiusWithFlag(Location location, StructureFlag flag)
+	public static boolean isInRadiusWithFlag(Location location, Flag flag)
 	{
 		return getInRadiusWithFlag(location, flag) != null;
 	}
 
-	public static StructureSave getInRadiusWithFlag(Location location, StructureFlag flag)
+	public static StructureSave getInRadiusWithFlag(Location location, Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -111,9 +116,9 @@ public abstract class Structure
 	{
 		Location location = player.getLocation();
 		if(ZoneUtility.zoneNoBuild(player, player.getLocation())) return true;
-		if(isInRadiusWithFlag(location, StructureFlag.NO_GRIEFING))
+		if(isInRadiusWithFlag(location, Flag.NO_GRIEFING))
 		{
-			StructureSave save = getInRadiusWithFlag(location, StructureFlag.NO_GRIEFING);
+			StructureSave save = getInRadiusWithFlag(location, Flag.NO_GRIEFING);
 			if(save.getOwner() != null && save.getOwner().getId().equals(PlayerWrapper.getPlayer(player).getCurrent().getId())) return false;
 			return true;
 		}
@@ -126,7 +131,7 @@ public abstract class Structure
 			save.generate();
 	}
 
-	public static Set<Structure> getStructuresWithFlag(final StructureFlag flag)
+	public static Set<Structure> getStructuresWithFlag(final Flag flag)
 	{
 		return new HashSet<Structure>()
 		{

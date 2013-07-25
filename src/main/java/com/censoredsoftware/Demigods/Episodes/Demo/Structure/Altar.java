@@ -178,14 +178,14 @@ public class Altar extends Structure
 	}
 
 	@Override
-	public Set<StructureFlag> getFlags()
+	public Set<Flag> getFlags()
 	{
-		return new HashSet<StructureFlag>(2)
+		return new HashSet<Flag>()
 		{
 			{
-				add(StructureFlag.NO_PVP);
-				add(StructureFlag.PRAYER_LOCATION);
-				add(StructureFlag.PROTECTED_BLOCKS);
+				add(Flag.NO_PVP);
+				add(Flag.PRAYER_LOCATION);
+				add(Flag.PROTECTED_BLOCKS);
 			}
 		};
 	}
