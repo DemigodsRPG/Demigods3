@@ -43,8 +43,8 @@ public class StructureSave
 	@Indexed
 	@Attribute
 	private Boolean deleteOnOwnerDelete;
-	@CollectionSet(of = String.class)
 	@Indexed
+	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
 	public void addFlags(Set<StructureFlag> flags)
@@ -177,12 +177,16 @@ public class StructureSave
 
 	public Set<StructureFlag> getFlags()
 	{
+		for(String name : this.flags)
+		{
+			Demigods.message.broadcast("Flag: " + StructureFlag.valueOf(name));
+		}
+
 		return new HashSet<StructureFlag>()
 		{
 			{
 				for(String name : flags)
 				{
-					Demigods.message.broadcast("Flag: " + StructureFlag.valueOf(name));
 					add(StructureFlag.valueOf(name));
 				}
 			}
