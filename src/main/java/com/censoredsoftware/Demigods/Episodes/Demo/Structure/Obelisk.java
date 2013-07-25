@@ -235,8 +235,9 @@ public class Obelisk extends Structure
 
 	public int getDesign(Location reference)
 	{
-		switch(reference.getChunk().getChunkSnapshot().getBiome(reference.getBlockX(), reference.getBlockZ()))
+		switch(reference.getBlock().getBiome())
 		{
+			case BEACH:
 			case DESERT:
 			case DESERT_HILLS:
 				return ObeliskDesign.DESERT.getIndex();
