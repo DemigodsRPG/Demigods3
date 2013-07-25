@@ -82,15 +82,15 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
-	public void onPistonExtend(BlockFromToEvent event)
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onLiquidMove(BlockFromToEvent event)
 	{
 		boolean from = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		boolean to = Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
 		if(from != to) event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
 		boolean in = false;
