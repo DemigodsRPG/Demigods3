@@ -123,13 +123,13 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
