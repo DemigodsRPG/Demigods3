@@ -49,7 +49,7 @@ public class Demigods
 	protected static Deque<Deity> deities;
 	protected static Deque<TaskSet> quests;
 	protected static Deque<Structure> structures;
-	protected static Deque<Flag> flags;
+	protected static Deque<StructureFlag> flags;
 	protected static Deque<ConversationInfo> conversasions;
 
 	// The Engine Default Text
@@ -121,11 +121,11 @@ public class Demigods
 					add(conversation.getConversation());
 			}
 		};
-		Demigods.flags = new ArrayDeque<Flag>()
+		Demigods.flags = new ArrayDeque<StructureFlag>()
 		{
 			{
 				for(StructureFlag flag : StructureFlag.values())
-					add(flag.getFlag());
+					add(flag);
 			}
 		};
 
@@ -215,10 +215,10 @@ public class Demigods
 		}
 
 		// Structure Flags
-		for(Flag flag : getLoadedStructureFlags())
+		for(StructureFlag structureFlag : getLoadedStructureFlags())
 		{
-			if(flag.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(flag.getUniqueListener(), instance);
+			if(structureFlag.getFlag() == null || structureFlag.getFlag().getUniqueListener() == null) continue;
+			instance.getServer().getPluginManager().registerEvents(structureFlag.getFlag().getUniqueListener(), instance);
 		}
 
 		// Conversations
@@ -259,7 +259,7 @@ public class Demigods
 		return Demigods.structures;
 	}
 
-	public static Deque<Flag> getLoadedStructureFlags()
+	public static Deque<StructureFlag> getLoadedStructureFlags()
 	{
 		return Demigods.flags;
 	}
