@@ -4,7 +4,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Obelisk;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Shrine;
@@ -16,10 +16,10 @@ public class EpisodeDemo
 	{
 		// GODS
 		// ZEUS(new Zeus()),
-		POSEIDON(new Poseidon()),
+		// POSEIDON(new Poseidon()),
 
 		// TITANS
-		// OCEANUS(new Oceanus()),
+		OCEANUS(new Oceanus()),
 		// PROMETHEUS(new Prometheus()),
 
 		// DONATORS
