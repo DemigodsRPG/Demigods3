@@ -137,7 +137,7 @@ public class Demigods
 
 		// Finish loading the plugin based on the game data.
 		loadDepends(instance);
-		loadListeners(instance);
+		// loadListeners(instance);
 		loadCommands();
 
 		// Finally, regenerate structures

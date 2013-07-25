@@ -36,12 +36,8 @@ public class SchedulerUtility
 		AdminUtility.sendDebug("Timed data runnable enabled...");
 
 		for(Deity deity : Demigods.getLoadedDeities())
-		{
 			for(Ability ability : deity.getAbilities())
-			{
-				// if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, ability.getInfo().getRepeat());
-			}
-		}
+				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, ability.getInfo().getRepeat());
 	}
 
 	public static void stopThreads(DemigodsPlugin instance)
