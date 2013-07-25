@@ -77,7 +77,8 @@ public class BattleListener implements Listener
 		if(Battle.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(participant, Battle.getBattle(participant)));
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST) TODO Doesn't work.
+	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO Doesn't work.
 	public void onBattleMove(PlayerMoveEvent event)
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;
@@ -85,7 +86,8 @@ public class BattleListener implements Listener
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST) TODO Doesn't work.
+	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO Doesn't work.
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
 		if(!Battle.canParticipate(event.getPlayer())) return;

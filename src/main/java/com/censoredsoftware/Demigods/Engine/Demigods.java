@@ -14,7 +14,7 @@ import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
 import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
 import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Listener.CommandListener;
+import com.censoredsoftware.Demigods.Engine.Listener.BattleListener;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
@@ -163,8 +163,8 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		// instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
