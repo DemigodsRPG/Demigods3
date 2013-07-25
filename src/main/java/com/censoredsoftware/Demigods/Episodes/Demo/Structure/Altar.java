@@ -272,7 +272,7 @@ public class Altar extends Structure
 
 class AltarListener implements Listener
 {
-	// @EventHandler(priority = EventPriority.MONITOR) TODO Fix lag.
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(final ChunkLoadEvent event)
 	{
 		// If it's a new chunk then we'll generate structures
