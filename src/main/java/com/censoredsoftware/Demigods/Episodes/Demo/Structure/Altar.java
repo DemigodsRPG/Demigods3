@@ -26,13 +26,13 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Altar extends Structure
 {
-	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>(2)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_BRICK, 8));
@@ -40,31 +40,31 @@ public class Altar extends Structure
 			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickSlabTop = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickSlabTop = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickSpecial = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickSpecial = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
 		}
 	};
-	private final static List<StructureBlockData> wood = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> wood = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
 		}
 	};
-	private final static List<StructureBlockData> woodSlab = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> woodSlab = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
@@ -158,7 +158,7 @@ public class Altar extends Structure
 			add(new StructureCuboid(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>()
+	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(1)
 	{
 		{
 			add(general);
@@ -194,7 +194,7 @@ public class Altar extends Structure
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return new HashSet<Flag>()
+		return new HashSet<Flag>(2)
 		{
 			{
 				add(Structure.Flag.NO_PVP_ZONE);

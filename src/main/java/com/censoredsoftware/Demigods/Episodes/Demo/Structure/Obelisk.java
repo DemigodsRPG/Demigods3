@@ -27,51 +27,51 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Obelisk extends Structure
 {
-	private final static List<StructureBlockData> specialStoneBrick = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> specialStoneBrick = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 3));
 		}
 	};
-	private final static List<StructureBlockData> specialSandstone = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> specialSandstone = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SANDSTONE, (byte) 1));
 		}
 	};
-	private final static List<StructureBlockData> sandstone = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> sandstone = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SANDSTONE));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>(2)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_BRICK, 9));
 			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
 		}
 	};
-	private final static List<StructureBlockData> redstoneBlock = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> redstoneBlock = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.REDSTONE_BLOCK));
 		}
 	};
-	private final static List<StructureBlockData> redstoneLamp = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> redstoneLamp = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.REDSTONE_LAMP_ON));
 		}
 	};
-	private final static List<StructureBlockData> vine1 = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> vine1 = new ArrayList<StructureBlockData>(2)
 	{
 		{
 			add(new StructureBlockData(Material.VINE, (byte) 1, 4));
 			add(new StructureBlockData(Material.AIR, 6));
 		}
 	};
-	private final static List<StructureBlockData> vine4 = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> vine4 = new ArrayList<StructureBlockData>(2)
 	{
 		{
 			add(new StructureBlockData(Material.VINE, (byte) 4, 4));
@@ -130,7 +130,7 @@ public class Obelisk extends Structure
 			add(new StructureCuboid(0, 5, 0, redstoneLamp));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>()
+	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(2)
 	{
 		{
 			add(general);
@@ -167,7 +167,7 @@ public class Obelisk extends Structure
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return new HashSet<Flag>()
+		return new HashSet<Flag>(1)
 		{
 			{
 				add(Flag.NO_GRIEFING_ZONE);

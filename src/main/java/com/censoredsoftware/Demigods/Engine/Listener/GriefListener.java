@@ -27,7 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
 {
-	private final static Set<Material> blockInventories = new HashSet<Material>()
+	private final static Set<Material> blockInventories = new HashSet<Material>(11)
 	{
 		{
 			add(Material.CHEST);

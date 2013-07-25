@@ -25,7 +25,7 @@ public class Oceanus extends Deity
 {
 	private final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
 	private final static ChatColor color = ChatColor.DARK_AQUA;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.DIRT);
@@ -46,7 +46,7 @@ public class Oceanus extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(1)
 	{
 		{
 			add(new Swim());
@@ -64,7 +64,7 @@ class Swim extends Ability
 	private final static String deity = "Oceanus", name = "Swim", command = null, permission = "demigods.titan.oceanus";
 	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Crouch while in water to swim like Oceanus.");

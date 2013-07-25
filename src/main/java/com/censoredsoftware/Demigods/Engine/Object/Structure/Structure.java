@@ -140,9 +140,7 @@ public abstract class Structure
 	public static void regenerateStructures()
 	{
 		for(StructureSave save : StructureSave.loadAll())
-		{
 			save.generate();
-		}
 	}
 
 	public static Set<Structure> getStructureInfoFromFlag(final Structure.Flag flag)

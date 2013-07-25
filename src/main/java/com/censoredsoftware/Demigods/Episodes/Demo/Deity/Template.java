@@ -27,7 +27,7 @@ public class Template extends Deity
 {
 	private final static String name = "Template", alliance = "Test", permission = "demigods.test.test";
 	private final static ChatColor color = ChatColor.GRAY;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.DIRT);
@@ -48,7 +48,7 @@ public class Template extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(1)
 	{
 		{
 			add(new Test());
@@ -66,10 +66,10 @@ class Test extends Ability
 	private final static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
-			add("Blaze your target.");
+			add("Test your target.");
 		}
 	};
 	private final static Devotion.Type type = Devotion.Type.SUPPORT;

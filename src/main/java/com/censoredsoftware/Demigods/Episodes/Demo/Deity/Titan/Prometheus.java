@@ -29,7 +29,7 @@ public class Prometheus extends Deity
 {
 	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
 	private final static ChatColor color = ChatColor.GOLD;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.DIRT);
@@ -50,7 +50,7 @@ public class Prometheus extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(3)
 	{
 		{
 			add(new ShootFireball());
@@ -83,7 +83,7 @@ class ShootFireball extends Ability
 	private final static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
 	private final static int cost = 100, delay = 5, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Shoot a fireball at the cursor's location.");
@@ -152,7 +152,7 @@ class Blaze extends Ability
 	private final static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
 	private final static int cost = 400, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Ignite the ground at the target location.");
@@ -233,7 +233,7 @@ class Firestorm extends Ability
 	private final static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
 	private final static int cost = 5500, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Rain down fireballs from the sky.");

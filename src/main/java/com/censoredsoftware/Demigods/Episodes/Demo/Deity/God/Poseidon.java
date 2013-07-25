@@ -30,7 +30,7 @@ public class Poseidon extends Deity
 {
 	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private final static ChatColor color = ChatColor.AQUA;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.DIRT);
@@ -51,7 +51,7 @@ public class Poseidon extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(3)
 	{
 		{
 			add(new Swim());
@@ -71,7 +71,7 @@ class Swim extends Ability
 	private final static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
 	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Crouch while in water to swim like Poseidon.");
@@ -107,7 +107,7 @@ class Reel extends Ability
 	private final static int cost = 120, delay = 1100, repeat = 0;
 	private static AbilityInfo info;
 	private final static Material weapon = Material.FISHING_ROD;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Use a fishing rod for a stronger attack.");
@@ -168,7 +168,7 @@ class InfiniteAir extends Ability
 	private final static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
 	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Have infinite air when moving underwater.");
@@ -186,10 +186,7 @@ class InfiniteAir extends Ability
 				Player player = event.getPlayer();
 				if(!Deity.canUseDeitySilent(player, deity)) return;
 
-				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
-				{
-					player.setRemainingAir(20);
-				}
+				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) player.setRemainingAir(20);
 			}
 		}, null);
 	}

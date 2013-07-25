@@ -15,12 +15,12 @@ public enum Baetylus
 	/**
 	 * A large shard of the Baetylus.
 	 */
-	LARGE_SHARD(new Shard(20.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>()
+	LARGE_SHARD(new Shard(20.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>(1)
 	{
 		{
 			add("Regain full health instead of dying.");
 		}
-	}, new HashMap<Enchantment, Integer>()
+	}, new HashMap<Enchantment, Integer>(1)
 	{
 		{
 			put(Enchantment.THORNS, 3);
@@ -30,12 +30,12 @@ public enum Baetylus
 	/**
 	 * A shard of the Baetylus.
 	 */
-	NORMAL_SHARD(new Shard(10.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Baetylus Shard", new ArrayList<String>()
+	NORMAL_SHARD(new Shard(10.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Baetylus Shard", new ArrayList<String>(1)
 	{
 		{
 			add("Regain half health instead of dying.");
 		}
-	}, new HashMap<Enchantment, Integer>()
+	}, new HashMap<Enchantment, Integer>(1)
 	{
 		{
 			put(Enchantment.THORNS, 2);
@@ -45,12 +45,12 @@ public enum Baetylus
 	/**
 	 * A small shard of the Baetylus.
 	 */
-	SMALL_SHARD(new Shard(5.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Small Baetylus Shard", new ArrayList<String>()
+	SMALL_SHARD(new Shard(5.0, Sound.ANVIL_BREAK, ItemUtility.create(Material.GHAST_TEAR, "Small Baetylus Shard", new ArrayList<String>(1)
 	{
 		{
 			add("Regain quarter health instead of dying.");
 		}
-	}, new HashMap<Enchantment, Integer>()
+	}, new HashMap<Enchantment, Integer>(1)
 	{
 		{
 			put(Enchantment.THORNS, 1);

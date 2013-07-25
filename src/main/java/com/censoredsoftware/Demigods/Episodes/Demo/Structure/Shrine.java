@@ -27,43 +27,43 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Shrine extends Structure
 {
-	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.GOLD_BLOCK));
 		}
 	};
-	private final static List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.ENDER_CHEST));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_BRICK));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_STAIRS));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
+	private final static List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>(1)
 	{
 		{
 			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
@@ -86,7 +86,7 @@ public class Shrine extends Structure
 			add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>()
+	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(1)
 	{
 		{
 			add(general);
@@ -96,7 +96,7 @@ public class Shrine extends Structure
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return new HashSet<Flag>()
+		return new HashSet<Flag>(1)
 		{
 			{
 				add(Flag.TRIBUTE_LOCATION);

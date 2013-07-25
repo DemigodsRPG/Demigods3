@@ -12,7 +12,7 @@ public enum Book
 	/**
 	 * Instructions
 	 */
-	FIRST_JOIN(ItemUtility.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>()
+	FIRST_JOIN(ItemUtility.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>(2)
 	{
 		{
 			add("Welcome, adventurer, to the world of Demigods!");

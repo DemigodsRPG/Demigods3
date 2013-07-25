@@ -33,7 +33,7 @@ public class Zeus extends Deity
 {
 	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
 	private final static ChatColor color = ChatColor.YELLOW;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.DIRT);
@@ -54,7 +54,7 @@ public class Zeus extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(4)
 	{
 		{
 			add(new NoFall());
@@ -111,7 +111,7 @@ class Shove extends Ability
 	private final static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
 	private final static int cost = 170, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Shove your target away from you.");
@@ -172,7 +172,7 @@ class Lightning extends Ability
 	private final static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
 	private final static int cost = 140, delay = 1000, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Strike lightning upon your enemies.");
@@ -236,7 +236,7 @@ class Storm extends Ability
 	private final static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
 	private final static int cost = 3700, delay = 600, repeat = 0;
 	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Throw all of your enemies into the sky as lightning fills the heavens.");
@@ -312,7 +312,7 @@ class NoFall extends Ability
 {
 	private final static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "demigods.god.zeus";
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Take no damage from falling.");

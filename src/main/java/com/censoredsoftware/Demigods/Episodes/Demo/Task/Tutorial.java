@@ -21,22 +21,22 @@ import com.censoredsoftware.Demigods.Episodes.Demo.Item.Book;
 public class Tutorial extends TaskSet
 {
 	private static String name = "Tutorial", permission = "demigods.tutorial";
-	private static List<String> about = new ArrayList<String>()
+	private static List<String> about = new ArrayList<String>(1)
 	{
 		{
 			add("About."); // TODO This.
 		}
-	}, accepted = new ArrayList<String>()
+	}, accepted = new ArrayList<String>(1)
 	{
 		{
 			add("Accepted.");
 		}
-	}, complete = new ArrayList<String>()
+	}, complete = new ArrayList<String>(1)
 	{
 		{
 			add("Complete.");
 		}
-	}, failed = new ArrayList<String>()
+	}, failed = new ArrayList<String>(1)
 	{
 		{
 			add("Failed.");

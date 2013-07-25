@@ -1,8 +1,10 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,25 +12,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.google.common.collect.Maps;
 
 public class OmegaX17 extends Deity
 {
 	private final static String name = "OmegaX17", alliance = "Insignian", permission = "demigods.insignian.omega";
 	private final static ChatColor color = ChatColor.BLACK;
-	private final static Set<Material> claimItems = new HashSet<Material>()
+	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
 			add(Material.TNT);
@@ -49,11 +45,10 @@ public class OmegaX17 extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Set<Ability> abilities = new HashSet<Ability>(1)
 	{
 		{
 			add(new NoSplosion());
-			add(new Equalizer());
 		}
 	};
 
@@ -67,7 +62,7 @@ class NoSplosion extends Ability
 {
 	private final static String deity = "OmegaX17", name = "No Explosion Damage", command = null, permission = "demigods.insignian.omega";
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Take no damage from explosions.");
@@ -92,75 +87,5 @@ class NoSplosion extends Ability
 				}
 			}
 		}, null);
-	}
-}
-
-class Equalizer extends Ability
-{
-	private final static String deity = "OmegaX17", name = "Omega Equalizer", command = null, permission = "demigods.insignian.omega";
-	private final static int cost = 0, delay = 0, repeat = 600;
-	private static AbilityInfo info;
-	private final static List<String> details = new ArrayList<String>()
-	{
-		{
-			add("Prevent Omega from being too OP.");
-		}
-	};
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
-
-	private final static Map<Player, String> equalizing = Maps.newHashMap();
-
-	protected Equalizer()
-	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onAsyncPlayerChat(AsyncPlayerChatEvent chatEvent)
-			{
-				Player player = chatEvent.getPlayer();
-				if(equalizing.containsKey(player) && chatEvent.getMessage().equals(equalizing.get(player)))
-				{
-					chatEvent.setCancelled(true);
-					equalizing.remove(player);
-					player.sendMessage(ChatColor.YELLOW + "Hooray! You may now continue being OP.");
-				}
-			}
-
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerMove(PlayerMoveEvent moveEvent)
-			{
-				Player player = moveEvent.getPlayer();
-				if(equalizing.containsKey(player)) moveEvent.setCancelled(true);
-			}
-		}, new BukkitRunnable()
-		{
-			@Override
-			public void run()
-			{
-				for(Player online : Bukkit.getOnlinePlayers())
-				{
-					if(Deity.canUseDeitySilent(online, "OmegaX17") && !tooSlow(online) && MiscUtility.generateIntRange(0, 19) == 1) equalize(online);
-				}
-			}
-
-			public boolean tooSlow(Player player)
-			{
-				if(equalizing.containsKey(player))
-				{
-					player.sendMessage(ChatColor.YELLOW + "Too slow, try again:");
-					equalize(player);
-					return true;
-				}
-				return false;
-			}
-
-			public void equalize(Player player)
-			{
-				player.sendMessage(ChatColor.DARK_RED + Demigods.message.chatTitle("Equalizer"));
-				equalizing.put(player, MiscUtility.generateString(19));
-				player.sendMessage(ChatColor.YELLOW + "  Here is your code (you have 10 seconds to say it in chat): ");
-				player.sendMessage(ChatColor.GRAY + "  " + equalizing.get(player));
-			}
-		});
 	}
 }
