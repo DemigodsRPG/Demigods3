@@ -13,25 +13,34 @@ import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 
 public enum StructureFlag implements Demigods.ListedStructureFlag
 {
-	NO_GRIEFING(1, new NoGrief()), NO_PVP(2, new NoPvp()), PRAYER_LOCATION(3, null), TRIBUTE_LOCATION(4, null);
+	PROTECTED_BLOCKS(new ProtectedBlocks()), NO_GRIEFING(new NoGrief()), NO_PVP(new NoPvp()), PRAYER_LOCATION(null), TRIBUTE_LOCATION(null);
 
-	private Integer id;
 	private Flag flag;
 
-	private StructureFlag(Integer id, Flag flag)
+	private StructureFlag(Flag flag)
 	{
-		this.id = id;
 		this.flag = flag;
-	}
-
-	public int getId()
-	{
-		return this.id;
 	}
 
 	public Flag getFlag()
 	{
 		return this.flag;
+	}
+}
+
+class ProtectedBlocks implements Flag
+{
+	@Override
+	public Listener getUniqueListener()
+	{
+		return new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGHEST)
+			private void onBlockBreak(BlockBreakEvent event)
+			{
+				if(Structure.partOfStructureWithFlag(event.getBlock().getLocation(), StructureFlag.PROTECTED_BLOCKS)) event.setCancelled(true);
+			}
+		};
 	}
 }
 
@@ -45,7 +54,7 @@ class NoGrief implements Flag
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onBlockBreak(BlockBreakEvent event)
 			{
-				if(Structure.partOfStructureWithFlag(event.getBlock().getLocation(), StructureFlag.NO_GRIEFING)) event.setCancelled(true);
+				if(Structure.isInRadiusWithFlag(event.getBlock().getLocation(), StructureFlag.NO_GRIEFING)) event.setCancelled(true);
 			}
 
 			@EventHandler(priority = EventPriority.HIGHEST)

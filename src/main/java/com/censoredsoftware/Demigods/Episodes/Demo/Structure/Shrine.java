@@ -150,6 +150,10 @@ public class Shrine extends Structure
 		save.setStructureType(getStructureType());
 		save.setStructureDesign("general");
 		save.setSettings(true, true, true);
+		for(StructureFlag flag : getFlags())
+		{
+			save.setFlag(flag);
+		}
 		save.save();
 		if(generate) save.generate();
 		return save;

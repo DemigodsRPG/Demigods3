@@ -185,6 +185,7 @@ public class Altar extends Structure
 			{
 				add(StructureFlag.NO_PVP);
 				add(StructureFlag.PRAYER_LOCATION);
+				add(StructureFlag.PROTECTED_BLOCKS);
 			}
 		};
 	}
@@ -241,6 +242,10 @@ public class Altar extends Structure
 		save.setStructureType(getStructureType());
 		save.setStructureDesign("general");
 		save.setSettings(true, false, false);
+		for(StructureFlag flag : getFlags())
+		{
+			save.setFlag(flag);
+		}
 		save.save();
 		if(generate) save.generate();
 		return save;
