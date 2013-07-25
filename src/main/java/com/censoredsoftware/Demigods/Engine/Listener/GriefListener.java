@@ -48,7 +48,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -60,14 +60,14 @@ public class GriefListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		Location location = event.getBlock().getLocation();
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST) TODO MINOR LAG
+	// @EventHandler(priority = EventPriority.HIGHEST) TODO MINOR LAGw
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
 		if(event.getEntityType() != EntityType.FALLING_BLOCK) return;
