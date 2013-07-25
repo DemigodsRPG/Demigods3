@@ -24,7 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
 {
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
@@ -37,7 +37,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -49,7 +49,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -61,14 +61,14 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		Location location = event.getBlock().getLocation();
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MINOR LAG
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
@@ -84,7 +84,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MAJOR LAG
 	public void onLiquidMove(BlockFromToEvent event)
 	{
@@ -93,7 +93,7 @@ public class GriefListener implements Listener
 		if(from != to) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
 		boolean in = false;
@@ -106,7 +106,7 @@ public class GriefListener implements Listener
 		if(in != out) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event)
 	{
 		boolean block = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
@@ -114,7 +114,7 @@ public class GriefListener implements Listener
 		if(block != retract) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -126,13 +126,13 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
