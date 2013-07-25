@@ -26,7 +26,7 @@ public abstract class Structure
 
 	public abstract Set<StructureSave> getAll();
 
-	public abstract Set<Flag> getFlags();
+	public abstract Set<Structure.Flag> getFlags();
 
 	public abstract StructureSave createNew(Location reference, boolean generate);
 
@@ -45,31 +45,6 @@ public abstract class Structure
 		return null;
 	}
 
-	public static boolean partOfStructureWithSetting(Location location, String setting, boolean yes)
-	{
-		for(StructureSave save : StructureSave.findAll(setting, yes))
-		{
-			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(save.getLocations().contains(location)) return true;
-		}
-		return false;
-	}
-
-	public static boolean isInRadiusWithSetting(Location location, String setting, boolean yes)
-	{
-		return getInRadiusWithSetting(location, setting, yes) != null;
-	}
-
-	public static StructureSave getInRadiusWithSetting(Location location, String setting, boolean yes)
-	{
-		for(StructureSave save : StructureSave.findAll(setting, yes))
-		{
-			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
-		}
-		return null;
-	}
-
 	public static boolean partOfStructureWithType(Location location, String structureType)
 	{
 		for(StructureSave save : StructureSave.findAll("structureType", structureType))
@@ -80,7 +55,7 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean partOfStructureWithFlag(Location location, Flag flag)
+	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -89,7 +64,7 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean isCenterBlockWithFlag(Location location, Flag flag)
+	public static boolean isCenterBlockWithFlag(Location location, Structure.Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -98,12 +73,12 @@ public abstract class Structure
 		return false;
 	}
 
-	public static boolean isInRadiusWithFlag(Location location, Flag flag)
+	public static boolean isInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
 		return getInRadiusWithFlag(location, flag) != null;
 	}
 
-	public static StructureSave getInRadiusWithFlag(Location location, Flag flag)
+	public static StructureSave getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -131,7 +106,7 @@ public abstract class Structure
 			save.generate();
 	}
 
-	public static Set<Structure> getStructuresWithFlag(final Flag flag)
+	public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
 	{
 		return new HashSet<Structure>()
 		{

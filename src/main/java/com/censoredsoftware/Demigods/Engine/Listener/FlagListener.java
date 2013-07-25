@@ -2,7 +2,6 @@ package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -22,8 +21,7 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		Location location = event.getBlock().getLocation();
-		if(Structure.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS))
+		if(Structure.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TextUtility.Text.PROTECTED_BLOCK));
