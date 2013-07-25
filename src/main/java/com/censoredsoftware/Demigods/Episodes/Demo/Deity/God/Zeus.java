@@ -31,15 +31,15 @@ import com.google.common.collect.Sets;
 
 public class Zeus extends Deity
 {
-	private static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
-	private static ChatColor color = ChatColor.YELLOW;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
+	private final static ChatColor color = ChatColor.YELLOW;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -53,8 +53,8 @@ public class Zeus extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new NoFall());
@@ -108,16 +108,16 @@ public class Zeus extends Deity
 
 class Shove extends Ability
 {
-	private static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
-	private static int cost = 170, delay = 15, repeat = 0;
+	private final static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
+	private final static int cost = 170, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Shove your target away from you.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.DEFENSE;
+	private final static Devotion.Type type = Devotion.Type.DEFENSE;
 
 	protected Shove()
 	{
@@ -169,16 +169,16 @@ class Shove extends Ability
 
 class Lightning extends Ability
 {
-	private static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
-	private static int cost = 140, delay = 1000, repeat = 0;
+	private final static String deity = "Zeus", name = "Lighting", command = "lightning", permission = "demigods.god.zeus";
+	private final static int cost = 140, delay = 1000, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Strike lightning upon your enemies.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Lightning()
 	{
@@ -233,16 +233,16 @@ class Lightning extends Ability
 
 class Storm extends Ability
 {
-	private static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
-	private static int cost = 3700, delay = 600, repeat = 0;
+	private final static String deity = "Zeus", name = "Storm", command = "storm", permission = "demigods.god.zeus.ultimate";
+	private final static int cost = 3700, delay = 600, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Throw all of your enemies into the sky as lightning fills the heavens.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
 
 	protected Storm()
 	{
@@ -310,15 +310,15 @@ class Storm extends Ability
 
 class NoFall extends Ability
 {
-	private static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "demigods.god.zeus";
-	private static int cost = 0, delay = 0, repeat = 0;
-	private static List<String> details = new ArrayList<String>()
+	private final static String deity = "Zeus", name = "No Fall Damage", command = null, permission = "demigods.god.zeus";
+	private final static int cost = 0, delay = 0, repeat = 0;
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Take no damage from falling.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected NoFall()
 	{

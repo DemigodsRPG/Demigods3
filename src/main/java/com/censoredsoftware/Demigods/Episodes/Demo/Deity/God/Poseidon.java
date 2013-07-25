@@ -28,15 +28,15 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Poseidon extends Deity
 {
-	private static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
-	private static ChatColor color = ChatColor.AQUA;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
+	private final static ChatColor color = ChatColor.AQUA;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -50,8 +50,8 @@ public class Poseidon extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new Swim());
@@ -68,16 +68,16 @@ public class Poseidon extends Deity
 
 class Swim extends Ability
 {
-	private static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
-	private static int cost = 0, delay = 0, repeat = 0;
+	private final static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
+	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Crouch while in water to swim like Poseidon.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected Swim()
 	{
@@ -103,17 +103,17 @@ class Swim extends Ability
 
 class Reel extends Ability
 {
-	private static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
-	private static int cost = 120, delay = 1100, repeat = 0;
+	private final static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
+	private final static int cost = 120, delay = 1100, repeat = 0;
 	private static AbilityInfo info;
-	private static Material weapon = Material.FISHING_ROD;
-	private static List<String> details = new ArrayList<String>()
+	private final static Material weapon = Material.FISHING_ROD;
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Use a fishing rod for a stronger attack.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Reel()
 	{
@@ -165,16 +165,16 @@ class Reel extends Ability
 
 class InfiniteAir extends Ability
 {
-	private static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
-	private static int cost = 0, delay = 0, repeat = 0;
+	private final static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
+	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Have infinite air when moving underwater.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected InfiniteAir()
 	{

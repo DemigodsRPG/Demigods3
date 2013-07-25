@@ -31,7 +31,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getSettingHasOwner() && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -43,7 +43,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getSettingHasOwner() && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -55,7 +55,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
-			if(event.getPlayer() != null && PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(event.getPlayer() != null && PlayerWrapper.isImmortal(event.getPlayer()) && save.getSettingHasOwner() && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -118,7 +118,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE))
 		{
 			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getId().equals(save.getOwner().getId())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getSettingHasOwner() && save.getOwner() != null && PlayerWrapper.getPlayer(event.getPlayer()).getCurrent().getId().equals(save.getOwner().getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -139,7 +139,7 @@ public class GriefListener implements Listener
 		if(block.getType().equals(Material.CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().equals(Material.FURNACE) || block.getType().equals(Material.BURNING_FURNACE) || block.getType().equals(Material.DISPENSER) || block.getType().equals(Material.DROPPER) || block.getType().equals(Material.BREWING_STAND) || block.getType().equals(Material.BEACON) || block.getType().equals(Material.HOPPER) || block.getType().equals(Material.HOPPER_MINECART) || block.getType().equals(Material.STORAGE_MINECART))
 		{
 			StructureSave save = Structure.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE);
-			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
+			if(PlayerWrapper.isImmortal(event.getPlayer()) && save.getSettingHasOwner() && save.getOwner() != null && PlayerWrapper.getPlayer((Player) event.getPlayer()).getCurrent().getName().equals(save.getOwner().getName())) return;
 			event.setCancelled(true);
 		}
 	}

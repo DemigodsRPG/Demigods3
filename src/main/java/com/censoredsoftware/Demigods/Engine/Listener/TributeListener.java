@@ -58,7 +58,7 @@ public class TributeListener implements Listener
 				return;
 			}
 
-			if(save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER) && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
+			if(save.getSettingHasOwner() && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getInfo().getName() + " in order to tribute here.");
 				return;
@@ -109,7 +109,7 @@ public class TributeListener implements Listener
 		character.getMeta().addMaxFavor(tributeValue);
 
 		// Define the shrine owner
-		if(save.getStructureInfo().getFlags().contains(Structure.Flag.HAS_OWNER))
+		if(save.getSettingHasOwner())
 		{
 			PlayerCharacter shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();

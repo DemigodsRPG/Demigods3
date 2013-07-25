@@ -32,15 +32,40 @@ public abstract class Structure
 
 	public static enum Flag
 	{
-		PROTECTED_BLOCKS, NO_PVP_ZONE, NO_GRIEFING_ZONE, TRIBUTE_LOCATION, PRAYER_LOCATION, HAS_OWNER, DELETE_ON_OWNER_DELETE
+		NO_PVP_ZONE, NO_GRIEFING_ZONE, TRIBUTE_LOCATION, PRAYER_LOCATION
 	}
 
 	public static StructureSave getStructure(Location location)
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(!structureSave.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
-			if(structureSave.getLocations().contains(location)) return structureSave;
+			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			if(save.getLocations().contains(location)) return save;
+		}
+		return null;
+	}
+
+	public static boolean partOfStructureWithSetting(Location location, String setting, boolean yes)
+	{
+		for(StructureSave save : StructureSave.findAll(setting, yes))
+		{
+			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			if(save.getLocations().contains(location)) return true;
+		}
+		return false;
+	}
+
+	public static boolean isInRadiusWithSetting(Location location, String setting, boolean yes)
+	{
+		return getInRadiusWithSetting(location, setting, yes) != null;
+	}
+
+	public static StructureSave getInRadiusWithSetting(Location location, String setting, boolean yes)
+	{
+		for(StructureSave save : StructureSave.findAll(setting, yes))
+		{
+			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
+			if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
 		}
 		return null;
 	}

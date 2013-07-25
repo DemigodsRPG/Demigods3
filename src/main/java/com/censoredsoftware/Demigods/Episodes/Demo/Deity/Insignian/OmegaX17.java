@@ -26,15 +26,15 @@ import com.google.common.collect.Maps;
 
 public class OmegaX17 extends Deity
 {
-	private static String name = "OmegaX17", alliance = "Insignian", permission = "demigods.insignian.omega";
-	private static ChatColor color = ChatColor.BLACK;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "OmegaX17", alliance = "Insignian", permission = "demigods.insignian.omega";
+	private final static ChatColor color = ChatColor.BLACK;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.TNT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -48,8 +48,8 @@ public class OmegaX17 extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new NoSplosion());
@@ -65,15 +65,15 @@ public class OmegaX17 extends Deity
 
 class NoSplosion extends Ability
 {
-	private static String deity = "OmegaX17", name = "No Explosion Damage", command = null, permission = "demigods.insignian.omega";
-	private static int cost = 0, delay = 0, repeat = 0;
-	private static List<String> details = new ArrayList<String>()
+	private final static String deity = "OmegaX17", name = "No Explosion Damage", command = null, permission = "demigods.insignian.omega";
+	private final static int cost = 0, delay = 0, repeat = 0;
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Take no damage from explosions.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected NoSplosion()
 	{
@@ -97,18 +97,18 @@ class NoSplosion extends Ability
 
 class Equalizer extends Ability
 {
-	private static String deity = "OmegaX17", name = "Omega Equalizer", command = null, permission = "demigods.insignian.omega";
-	private static int cost = 0, delay = 0, repeat = 600;
+	private final static String deity = "OmegaX17", name = "Omega Equalizer", command = null, permission = "demigods.insignian.omega";
+	private final static int cost = 0, delay = 0, repeat = 600;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Prevent Omega from being too OP.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
-	private static Map<Player, String> equalizing = Maps.newHashMap();
+	private final static Map<Player, String> equalizing = Maps.newHashMap();
 
 	protected Equalizer()
 	{

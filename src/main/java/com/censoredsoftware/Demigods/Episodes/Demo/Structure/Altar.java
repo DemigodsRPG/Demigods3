@@ -26,6 +26,145 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Altar extends Structure
 {
+	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
+		}
+	};
+	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.SMOOTH_BRICK, 8));
+			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
+			add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+		}
+	};
+	private final static List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
+		}
+	};
+	private final static List<StructureBlockData> stoneBrickSlabTop = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
+		}
+	};
+	private final static List<StructureBlockData> stoneBrickSpecial = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
+		}
+	};
+	private final static List<StructureBlockData> wood = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
+		}
+	};
+	private final static List<StructureBlockData> woodSlab = new ArrayList<StructureBlockData>()
+	{
+		{
+			add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
+		}
+	};
+	private final static StructureSchematic general = new StructureSchematic("general", "_Alex")
+	{
+		{
+			// Create roof
+			add(new StructureCuboid(2, 3, 2, stoneBrickSlabTop));
+			add(new StructureCuboid(-2, 3, -2, stoneBrickSlabTop));
+			add(new StructureCuboid(2, 3, -2, stoneBrickSlabTop));
+			add(new StructureCuboid(-2, 3, 2, stoneBrickSlabTop));
+			add(new StructureCuboid(2, 4, 2, stoneBrick));
+			add(new StructureCuboid(-2, 4, -2, stoneBrick));
+			add(new StructureCuboid(2, 4, -2, stoneBrick));
+			add(new StructureCuboid(-2, 4, 2, stoneBrick));
+			add(new StructureCuboid(2, 5, 2, woodSlab));
+			add(new StructureCuboid(-2, 5, -2, woodSlab));
+			add(new StructureCuboid(2, 5, -2, woodSlab));
+			add(new StructureCuboid(-2, 5, 2, woodSlab));
+			add(new StructureCuboid(0, 6, 0, woodSlab));
+			add(new StructureCuboid(-1, 5, -1, 1, 5, 1, wood));
+
+			// Create the enchantment table
+			add(new StructureCuboid(0, 2, 0, clickBlock));
+
+			// Create magical table stand
+			add(new StructureCuboid(0, 1, 0, stoneBrick));
+
+			// Create outer steps
+			add(new StructureCuboid(3, 0, 3, stoneBrickSlabBottom));
+			add(new StructureCuboid(-3, 0, -3, stoneBrickSlabBottom));
+			add(new StructureCuboid(3, 0, -3, stoneBrickSlabBottom));
+			add(new StructureCuboid(-3, 0, 3, stoneBrickSlabBottom));
+			add(new StructureCuboid(4, 0, -2, 4, 0, 2, stoneBrickSlabBottom));
+			add(new StructureCuboid(-4, 0, -2, -4, 0, 2, stoneBrickSlabBottom));
+			add(new StructureCuboid(-2, 0, -4, 2, 0, -4, stoneBrickSlabBottom));
+			add(new StructureCuboid(-2, 0, 4, 2, 0, 4, stoneBrickSlabBottom));
+
+			// Create inner steps
+			add(new StructureCuboid(3, 0, -1, 3, 0, 1, stoneBrick));
+			add(new StructureCuboid(-1, 0, 3, 1, 0, 3, stoneBrick));
+			add(new StructureCuboid(-3, 0, -1, -3, 0, 1, stoneBrick));
+			add(new StructureCuboid(-1, 0, -3, 1, 0, -3, stoneBrick));
+
+			// Create pillars
+			add(new StructureCuboid(3, 4, 2, woodSlab));
+			add(new StructureCuboid(3, 4, -2, woodSlab));
+			add(new StructureCuboid(2, 4, 3, woodSlab));
+			add(new StructureCuboid(-2, 4, 3, woodSlab));
+			add(new StructureCuboid(-3, 4, 2, woodSlab));
+			add(new StructureCuboid(-3, 4, -2, woodSlab));
+			add(new StructureCuboid(2, 4, -3, woodSlab));
+			add(new StructureCuboid(-2, 4, -3, woodSlab));
+			add(new StructureCuboid(3, 0, 2, 3, 3, 2, stoneBrick));
+			add(new StructureCuboid(3, 0, -2, 3, 3, -2, stoneBrick));
+			add(new StructureCuboid(2, 0, 3, 2, 3, 3, stoneBrick));
+			add(new StructureCuboid(-2, 0, 3, -2, 3, 3, stoneBrick));
+			add(new StructureCuboid(-3, 0, 2, -3, 3, 2, stoneBrick));
+			add(new StructureCuboid(-3, 0, -2, -3, 3, -2, stoneBrick));
+			add(new StructureCuboid(2, 0, -3, 2, 3, -3, stoneBrick));
+			add(new StructureCuboid(-2, 0, -3, -2, 3, -3, stoneBrick));
+
+			// Left beam
+			add(new StructureCuboid(1, 4, -2, stoneBrick));
+			add(new StructureCuboid(-1, 4, -2, stoneBrick));
+			add(new StructureCuboid(0, 4, -2, stoneBrickSpecial));
+			add(new StructureCuboid(-1, 5, -2, 1, 5, -2, woodSlab));
+
+			// Right beam
+			add(new StructureCuboid(1, 4, 2, stoneBrick));
+			add(new StructureCuboid(-1, 4, 2, stoneBrick));
+			add(new StructureCuboid(0, 4, 2, stoneBrickSpecial));
+			add(new StructureCuboid(-1, 5, 2, 1, 5, 2, woodSlab));
+
+			// Top beam
+			add(new StructureCuboid(2, 4, 1, stoneBrick));
+			add(new StructureCuboid(2, 4, -1, stoneBrick));
+			add(new StructureCuboid(2, 4, 0, stoneBrickSpecial));
+			add(new StructureCuboid(2, 5, -1, 2, 5, 1, woodSlab));
+
+			// Bottom beam
+			add(new StructureCuboid(-2, 4, 1, stoneBrick));
+			add(new StructureCuboid(-2, 4, -1, stoneBrick));
+			add(new StructureCuboid(-2, 4, 0, stoneBrickSpecial));
+			add(new StructureCuboid(-2, 5, -1, -2, 5, 1, woodSlab));
+
+			// Create main platform
+			add(new StructureCuboid(0, 1, 0, stoneBrick));
+			add(new StructureCuboid(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
+		}
+	};
+	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>()
+	{
+		{
+			add(general);
+		}
+	};
+
 	public static enum AltarDesign implements StructureSchematic.StructureDesign
 	{
 		GENERAL(0, "general");
@@ -59,7 +198,6 @@ public class Altar extends Structure
 		{
 			{
 				add(Structure.Flag.NO_PVP_ZONE);
-				add(Structure.Flag.PROTECTED_BLOCKS);
 				add(Structure.Flag.PRAYER_LOCATION);
 			}
 		};
@@ -74,144 +212,7 @@ public class Altar extends Structure
 	@Override
 	public List<StructureSchematic> getSchematics()
 	{
-		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.ENCHANTMENT_TABLE));
-			}
-		};
-		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.SMOOTH_BRICK, 8));
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
-				add(new StructureBlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
-			}
-		};
-		final List<StructureBlockData> stoneBrickSlabBottom = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.getMaterial(44), (byte) 5));
-			}
-		};
-		final List<StructureBlockData> stoneBrickSlabTop = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.getMaterial(44), (byte) 13));
-			}
-		};
-		final List<StructureBlockData> stoneBrickSpecial = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.getMaterial(98), (byte) 3));
-			}
-		};
-		final List<StructureBlockData> wood = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.getMaterial(5), (byte) 1));
-			}
-		};
-		final List<StructureBlockData> woodSlab = new ArrayList<StructureBlockData>()
-		{
-			{
-				add(new StructureBlockData(Material.getMaterial(126), (byte) 1));
-			}
-		};
-		final StructureSchematic general = new StructureSchematic("general", "_Alex")
-		{
-			{
-				// Create roof
-				add(new StructureCuboid(2, 3, 2, stoneBrickSlabTop));
-				add(new StructureCuboid(-2, 3, -2, stoneBrickSlabTop));
-				add(new StructureCuboid(2, 3, -2, stoneBrickSlabTop));
-				add(new StructureCuboid(-2, 3, 2, stoneBrickSlabTop));
-				add(new StructureCuboid(2, 4, 2, stoneBrick));
-				add(new StructureCuboid(-2, 4, -2, stoneBrick));
-				add(new StructureCuboid(2, 4, -2, stoneBrick));
-				add(new StructureCuboid(-2, 4, 2, stoneBrick));
-				add(new StructureCuboid(2, 5, 2, woodSlab));
-				add(new StructureCuboid(-2, 5, -2, woodSlab));
-				add(new StructureCuboid(2, 5, -2, woodSlab));
-				add(new StructureCuboid(-2, 5, 2, woodSlab));
-				add(new StructureCuboid(0, 6, 0, woodSlab));
-				add(new StructureCuboid(-1, 5, -1, 1, 5, 1, wood));
-
-				// Create the enchantment table
-				add(new StructureCuboid(0, 2, 0, clickBlock));
-
-				// Create magical table stand
-				add(new StructureCuboid(0, 1, 0, stoneBrick));
-
-				// Create outer steps
-				add(new StructureCuboid(3, 0, 3, stoneBrickSlabBottom));
-				add(new StructureCuboid(-3, 0, -3, stoneBrickSlabBottom));
-				add(new StructureCuboid(3, 0, -3, stoneBrickSlabBottom));
-				add(new StructureCuboid(-3, 0, 3, stoneBrickSlabBottom));
-				add(new StructureCuboid(4, 0, -2, 4, 0, 2, stoneBrickSlabBottom));
-				add(new StructureCuboid(-4, 0, -2, -4, 0, 2, stoneBrickSlabBottom));
-				add(new StructureCuboid(-2, 0, -4, 2, 0, -4, stoneBrickSlabBottom));
-				add(new StructureCuboid(-2, 0, 4, 2, 0, 4, stoneBrickSlabBottom));
-
-				// Create inner steps
-				add(new StructureCuboid(3, 0, -1, 3, 0, 1, stoneBrick));
-				add(new StructureCuboid(-1, 0, 3, 1, 0, 3, stoneBrick));
-				add(new StructureCuboid(-3, 0, -1, -3, 0, 1, stoneBrick));
-				add(new StructureCuboid(-1, 0, -3, 1, 0, -3, stoneBrick));
-
-				// Create pillars
-				add(new StructureCuboid(3, 4, 2, woodSlab));
-				add(new StructureCuboid(3, 4, -2, woodSlab));
-				add(new StructureCuboid(2, 4, 3, woodSlab));
-				add(new StructureCuboid(-2, 4, 3, woodSlab));
-				add(new StructureCuboid(-3, 4, 2, woodSlab));
-				add(new StructureCuboid(-3, 4, -2, woodSlab));
-				add(new StructureCuboid(2, 4, -3, woodSlab));
-				add(new StructureCuboid(-2, 4, -3, woodSlab));
-				add(new StructureCuboid(3, 0, 2, 3, 3, 2, stoneBrick));
-				add(new StructureCuboid(3, 0, -2, 3, 3, -2, stoneBrick));
-				add(new StructureCuboid(2, 0, 3, 2, 3, 3, stoneBrick));
-				add(new StructureCuboid(-2, 0, 3, -2, 3, 3, stoneBrick));
-				add(new StructureCuboid(-3, 0, 2, -3, 3, 2, stoneBrick));
-				add(new StructureCuboid(-3, 0, -2, -3, 3, -2, stoneBrick));
-				add(new StructureCuboid(2, 0, -3, 2, 3, -3, stoneBrick));
-				add(new StructureCuboid(-2, 0, -3, -2, 3, -3, stoneBrick));
-
-				// Left beam
-				add(new StructureCuboid(1, 4, -2, stoneBrick));
-				add(new StructureCuboid(-1, 4, -2, stoneBrick));
-				add(new StructureCuboid(0, 4, -2, stoneBrickSpecial));
-				add(new StructureCuboid(-1, 5, -2, 1, 5, -2, woodSlab));
-
-				// Right beam
-				add(new StructureCuboid(1, 4, 2, stoneBrick));
-				add(new StructureCuboid(-1, 4, 2, stoneBrick));
-				add(new StructureCuboid(0, 4, 2, stoneBrickSpecial));
-				add(new StructureCuboid(-1, 5, 2, 1, 5, 2, woodSlab));
-
-				// Top beam
-				add(new StructureCuboid(2, 4, 1, stoneBrick));
-				add(new StructureCuboid(2, 4, -1, stoneBrick));
-				add(new StructureCuboid(2, 4, 0, stoneBrickSpecial));
-				add(new StructureCuboid(2, 5, -1, 2, 5, 1, woodSlab));
-
-				// Bottom beam
-				add(new StructureCuboid(-2, 4, 1, stoneBrick));
-				add(new StructureCuboid(-2, 4, -1, stoneBrick));
-				add(new StructureCuboid(-2, 4, 0, stoneBrickSpecial));
-				add(new StructureCuboid(-2, 5, -1, -2, 5, 1, woodSlab));
-
-				// Create main platform
-				add(new StructureCuboid(0, 1, 0, stoneBrick));
-				add(new StructureCuboid(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
-			}
-		};
-		return new ArrayList<StructureSchematic>()
-		{
-			{
-				add(general);
-			}
-		};
+		return schematics;
 	}
 
 	@Override
@@ -253,6 +254,7 @@ public class Altar extends Structure
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.setStructureDesign(0);
+		save.setSettings(true, false, false);
 		save.save();
 		if(generate) save.generate();
 		return save;

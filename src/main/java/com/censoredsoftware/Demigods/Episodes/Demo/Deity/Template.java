@@ -25,15 +25,15 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
 {
-	private static String name = "Template", alliance = "Test", permission = "demigods.test.test";
-	private static ChatColor color = ChatColor.GRAY;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "Template", alliance = "Test", permission = "demigods.test.test";
+	private final static ChatColor color = ChatColor.GRAY;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -47,8 +47,8 @@ public class Template extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new Test());
@@ -63,16 +63,16 @@ public class Template extends Deity
 
 class Test extends Ability
 {
-	private static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
-	private static int cost = 170, delay = 1500, repeat = 0;
+	private final static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
+	private final static int cost = 170, delay = 1500, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Blaze your target.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.SUPPORT;
+	private final static Devotion.Type type = Devotion.Type.SUPPORT;
 
 	protected Test()
 	{

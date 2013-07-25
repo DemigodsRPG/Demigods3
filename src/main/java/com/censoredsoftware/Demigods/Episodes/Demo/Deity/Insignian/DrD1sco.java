@@ -31,15 +31,15 @@ import com.google.common.collect.Sets;
 
 public class DrD1sco extends Deity
 {
-	private static String name = "DrD1sco", alliance = "Insignian", permission = "demigods.insignian.disco";
-	private static ChatColor color = ChatColor.DARK_PURPLE;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "DrD1sco", alliance = "Insignian", permission = "demigods.insignian.disco";
+	private final static ChatColor color = ChatColor.DARK_PURPLE;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -53,8 +53,8 @@ public class DrD1sco extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new RainbowWalking());
@@ -76,16 +76,16 @@ public class DrD1sco extends Deity
 
 class RainbowWalking extends Ability
 {
-	private static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.insignian.disco";
-	private static int cost = 0, delay = 0, repeat = 5;
+	private final static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.insignian.disco";
+	private final static int cost = 0, delay = 0, repeat = 5;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Spread the disco while sneaking.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.STEALTH;
+	private final static Devotion.Type type = Devotion.Type.STEALTH;
 
 	protected RainbowWalking()
 	{
@@ -123,7 +123,7 @@ class RainbowWalking extends Ability
 		});
 	}
 
-	private static void rainbow(Player disco, Player player)
+	private final static void rainbow(Player disco, Player player)
 	{
 		player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
 		if(Demigods.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
@@ -132,16 +132,16 @@ class RainbowWalking extends Ability
 
 class RainbowHorse extends Ability
 {
-	private static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
-	private static int cost = 0, delay = 0, repeat = 100;
+	private final static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
+	private final static int cost = 0, delay = 0, repeat = 100;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("All of you horse are belong to us.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected RainbowHorse()
 	{
@@ -169,18 +169,18 @@ class RainbowHorse extends Ability
 
 class Discoball extends Ability
 {
-	private static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
-	private static int cost = 30, delay = 30, repeat = 4;
+	private final static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
+	private final static int cost = 30, delay = 30, repeat = 4;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Spread the music while causing destruction.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
 
-	private static Set<FallingBlock> discoBalls = Sets.newHashSet();
+	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 
 	protected Discoball()
 	{
@@ -236,7 +236,7 @@ class Discoball extends Ability
 		});
 	}
 
-	private static void discoBall(final Player player)
+	private final static void discoBall(final Player player)
 	{
 		// Set variables
 		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
@@ -262,7 +262,7 @@ class Discoball extends Ability
 		}, 40);
 	}
 
-	private static void balls(Player player)
+	private final static void balls(Player player)
 	{
 		for(Location location : LocationUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 		{
@@ -271,7 +271,7 @@ class Discoball extends Ability
 
 	}
 
-	private static void spawnBall(Location location)
+	private final static void spawnBall(Location location)
 	{
 		final FallingBlock discoBall = location.getWorld().spawnFallingBlock(location, Material.GLOWSTONE, (byte) 0);
 		discoBalls.add(discoBall);
@@ -286,12 +286,12 @@ class Discoball extends Ability
 		}, 600);
 	}
 
-	private static void sparkleSparkle(Location location)
+	private final static void sparkleSparkle(Location location)
 	{
 		if(Demigods.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 	}
 
-	private static void destoryNearby(Location location)
+	private final static void destoryNearby(Location location)
 	{
 		location.getWorld().createExplosion(location, 2F);
 	}

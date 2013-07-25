@@ -23,15 +23,15 @@ import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Oceanus extends Deity
 {
-	private static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
-	private static ChatColor color = ChatColor.DARK_AQUA;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
+	private final static ChatColor color = ChatColor.DARK_AQUA;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -45,8 +45,8 @@ public class Oceanus extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new Swim());
@@ -61,16 +61,16 @@ public class Oceanus extends Deity
 
 class Swim extends Ability
 {
-	private static String deity = "Oceanus", name = "Swim", command = null, permission = "demigods.titan.oceanus";
-	private static int cost = 0, delay = 0, repeat = 0;
+	private final static String deity = "Oceanus", name = "Swim", command = null, permission = "demigods.titan.oceanus";
+	private final static int cost = 0, delay = 0, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Crouch while in water to swim like Oceanus.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	protected Swim()
 	{

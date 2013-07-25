@@ -27,15 +27,15 @@ import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class Prometheus extends Deity
 {
-	private static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
-	private static ChatColor color = ChatColor.GOLD;
-	private static Set<Material> claimItems = new HashSet<Material>()
+	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
+	private final static ChatColor color = ChatColor.GOLD;
+	private final static Set<Material> claimItems = new HashSet<Material>()
 	{
 		{
 			add(Material.DIRT);
 		}
 	};
-	private static List<String> lore = new ArrayList<String>()
+	private final static List<String> lore = new ArrayList<String>()
 	{
 		{
 			add(" ");
@@ -49,8 +49,8 @@ public class Prometheus extends Deity
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private static Type type = Type.DEMO;
-	private static Set<Ability> abilities = new HashSet<Ability>()
+	private final static Type type = Type.DEMO;
+	private final static Set<Ability> abilities = new HashSet<Ability>()
 	{
 		{
 			add(new ShootFireball());
@@ -80,16 +80,16 @@ public class Prometheus extends Deity
 
 class ShootFireball extends Ability
 {
-	private static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
-	private static int cost = 100, delay = 5, repeat = 0;
+	private final static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
+	private final static int cost = 100, delay = 5, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Shoot a fireball at the cursor's location.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected ShootFireball()
 	{
@@ -149,16 +149,16 @@ class ShootFireball extends Ability
 
 class Blaze extends Ability
 {
-	private static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
-	private static int cost = 400, delay = 15, repeat = 0;
+	private final static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
+	private final static int cost = 400, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Ignite the ground at the target location.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	protected Blaze()
 	{
@@ -230,16 +230,16 @@ class Blaze extends Ability
 
 class Firestorm extends Ability
 {
-	private static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
-	private static int cost = 5500, delay = 15, repeat = 0;
+	private final static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
+	private final static int cost = 5500, delay = 15, repeat = 0;
 	private static AbilityInfo info;
-	private static List<String> details = new ArrayList<String>()
+	private final static List<String> details = new ArrayList<String>()
 	{
 		{
 			add("Rain down fireballs from the sky.");
 		}
 	};
-	private static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
 
 	protected Firestorm()
 	{

@@ -17,7 +17,6 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -194,9 +193,9 @@ public class PlayerCharacter implements BattleParticipant
 
 	public void remove()
 	{
-		for(StructureSave structureSave : StructureSave.loadAll())
+		for(StructureSave structureSave : StructureSave.findAll("deleteOnOwnerDelete", true))
 		{
-			if(structureSave.getStructureInfo().getFlags().contains(Structure.Flag.DELETE_ON_OWNER_DELETE) && structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
+			if(structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 		}
 		JOhm.delete(PlayerCharacterInventory.class, getInventory().getId());
 		JOhm.delete(PlayerCharacterMeta.class, getMeta().getId());

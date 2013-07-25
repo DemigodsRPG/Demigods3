@@ -31,6 +31,17 @@ public class StructureSave
 	@Reference
 	private PlayerCharacter owner;
 
+	// Settings
+	@Indexed
+	@Attribute
+	private Boolean protectedBlocks;
+	@Indexed
+	@Attribute
+	private Boolean hasOwner;
+	@Indexed
+	@Attribute
+	private Boolean deleteOnOwnerDelete;
+
 	public void setStructureType(String type)
 	{
 		this.structureType = type;
@@ -52,6 +63,14 @@ public class StructureSave
 		save();
 	}
 
+	public void setSettings(boolean protectedBlocks, boolean hasOwner, boolean deleteOnOwnerDelete)
+	{
+		this.protectedBlocks = protectedBlocks;
+		this.hasOwner = hasOwner;
+		this.deleteOnOwnerDelete = deleteOnOwnerDelete;
+		save();
+	}
+
 	public void setActive(Boolean bool)
 	{
 		this.active = bool;
@@ -66,9 +85,8 @@ public class StructureSave
 	public void remove()
 	{
 		for(Location location : getLocations())
-		{
 			location.getBlock().setTypeId(Material.AIR.getId());
-		}
+		JOhm.delete(DemigodsLocation.class, reference.getId());
 		JOhm.delete(StructureSave.class, this.Id);
 	}
 
@@ -112,6 +130,21 @@ public class StructureSave
 	public PlayerCharacter getOwner()
 	{
 		return this.owner;
+	}
+
+	public boolean getSettingProtectedBlocks()
+	{
+		return this.protectedBlocks;
+	}
+
+	public boolean getSettingHasOwner()
+	{
+		return this.hasOwner;
+	}
+
+	public boolean getSettingDeleteOnOwnerDelete()
+	{
+		return this.deleteOnOwnerDelete;
 	}
 
 	public Boolean getActive()
