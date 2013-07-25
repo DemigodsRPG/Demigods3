@@ -68,13 +68,13 @@ public class StructureListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		if(Structure.partOfStructureWithSetting(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), "protectedBlocks", true) && event.isSticky()) event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		final StructureSave save = Structure.getInRadiusWithSetting(event.getLocation(), "protectedBlocks", true);
