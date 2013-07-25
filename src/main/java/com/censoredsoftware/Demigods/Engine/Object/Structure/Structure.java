@@ -137,17 +137,4 @@ public abstract class Structure
 	{
 		return StructureSave.findAll("structureType", info.getStructureType());
 	}
-
-	public static Set<Location> getLocations(final Location reference, final Set<StructureCuboid> schematics)
-	{
-		return new HashSet<Location>()
-		{
-			{
-				for(StructureCuboid schematic : schematics)
-				{
-					addAll(schematic.getBlockLocations(reference));
-				}
-			}
-		};
-	}
 }

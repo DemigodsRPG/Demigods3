@@ -99,15 +99,13 @@ public class StructureSave
 
 	public Set<Location> getLocations()
 	{
-		return Structure.getLocations(this.reference.toLocation(), getStructureInfo().getSchematics().get(this.structureDesign));
+		return getStructureInfo().getSchematics().get(this.structureDesign).getLocations(this.reference.toLocation());
 	}
 
 	public Structure getStructureInfo()
 	{
 		for(Structure structure : Demigods.getLoadedStructures())
-		{
 			if(structure.getStructureType().equalsIgnoreCase(this.structureType)) return structure;
-		}
 		return null;
 	}
 
