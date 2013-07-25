@@ -187,7 +187,7 @@ public class Demigods
 			if(quest.getTasks() == null) continue;
 			for(Task task : quest.getTasks())
 			{
-				// if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
+				if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
 		}
 
@@ -202,7 +202,7 @@ public class Demigods
 		for(ConversationInfo conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
+			// instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
 	}
 
