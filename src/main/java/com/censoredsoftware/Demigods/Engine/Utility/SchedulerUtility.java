@@ -39,7 +39,7 @@ public class SchedulerUtility
 		{
 			for(Ability ability : deity.getAbilities())
 			{
-				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, ability.getInfo().getRepeat());
+				// if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, ability.getInfo().getRepeat());
 			}
 		}
 	}
