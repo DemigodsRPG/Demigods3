@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,14 +44,14 @@ public class StructureSave
 	@Indexed
 	@Attribute
 	private Boolean deleteOnOwnerDelete;
-	@CollectionSet(of = Flag.class)
+	@CollectionSet(of = String.class)
 	@Indexed
-	private Set<StructureFlag> flags;
+	private Set<String> flags;
 
 	public void setFlag(StructureFlag flag)
 	{
 		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
-		this.flags.add(flag);
+		this.flags.add(flag.name());
 		save();
 	}
 
@@ -166,7 +167,15 @@ public class StructureSave
 
 	public Set<StructureFlag> getFlags()
 	{
-		return this.flags;
+		return new HashSet<StructureFlag>()
+		{
+			{
+				for(String name : flags)
+				{
+					add(StructureFlag.valueOf(name));
+				}
+			}
+		};
 	}
 
 	public long getId()
