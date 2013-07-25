@@ -47,6 +47,16 @@ public class StructureSave
 	@Indexed
 	private Set<String> flags;
 
+	public void addFlags(Set<StructureFlag> flags)
+	{
+		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
+		for(StructureFlag flag : flags)
+		{
+			this.flags.add(flag.name());
+		}
+		save();
+	}
+
 	public void addFlag(StructureFlag flag)
 	{
 		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
