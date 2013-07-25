@@ -4,7 +4,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
+import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Obelisk;
 import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Shrine;
@@ -15,8 +15,8 @@ public class EpisodeDemo
 	public static enum Deities implements Demigods.ListedDeity
 	{
 		// GODS
-		ZEUS(new Zeus()),
-		// POSEIDON(new Poseidon()),
+		// ZEUS(new Zeus()),
+		POSEIDON(new Poseidon()),
 
 		// TITANS
 		// OCEANUS(new Oceanus()),
