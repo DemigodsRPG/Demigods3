@@ -197,7 +197,7 @@ public class Demigods
 		for(Structure structure : getLoadedStructures())
 		{
 			if(structure.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
+			// instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 
 		// Conversations
