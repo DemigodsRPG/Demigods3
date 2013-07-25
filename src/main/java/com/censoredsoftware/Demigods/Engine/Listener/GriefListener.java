@@ -6,6 +6,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
@@ -127,7 +129,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
