@@ -23,75 +23,10 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Shrine extends Structure
 {
-	final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.GOLD_BLOCK));
-		}
-	};
-	final static List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.ENDER_CHEST));
-		}
-	};
-	final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.SMOOTH_BRICK));
-		}
-	};
-	final static List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS));
-		}
-	};
-	final static List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
-		}
-	};
-	final static List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
-		}
-	};
-	final static List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
-	{
-		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
-		}
-	};
-	final static StructureSchematic general = new StructureSchematic("general", "_Alex")
-	{
-		{
-			// Create the main block
-			add(new StructureCuboid(0, 1, 0, clickBlock));
-
-			// Create the ender chest and the block below
-			add(new StructureCuboid(0, 0, 0, enderChest));
-			add(new StructureCuboid(0, -1, 0, stoneBrick));
-
-			// Create the rest
-			add(new StructureCuboid(-1, 0, 0, stoneBrickStairs));
-			add(new StructureCuboid(1, 0, 0, stoneBrickStairs1));
-			add(new StructureCuboid(0, 0, -1, stoneBrickStairs2));
-			add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
-		}
-	};
-	final static List<StructureSchematic> shrine = new ArrayList<StructureSchematic>()
-	{
-		{
-			add(general);
-		}
-	};
-
 	@Override
 	public Set<Flag> getFlags()
 	{
@@ -115,7 +50,71 @@ public class Shrine extends Structure
 	@Override
 	public List<StructureSchematic> getSchematics()
 	{
-		return shrine;
+		final List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.GOLD_BLOCK));
+			}
+		};
+		final List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.ENDER_CHEST));
+			}
+		};
+		final List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_BRICK));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
+			}
+		};
+		final List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>()
+		{
+			{
+				add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
+			}
+		};
+		final StructureSchematic general = new StructureSchematic("general", "_Alex")
+		{
+			{
+				// Create the main block
+				add(new StructureCuboid(0, 1, 0, clickBlock));
+
+				// Create the ender chest and the block below
+				add(new StructureCuboid(0, 0, 0, enderChest));
+				add(new StructureCuboid(0, -1, 0, stoneBrick));
+
+				// Create the rest
+				add(new StructureCuboid(-1, 0, 0, stoneBrickStairs));
+				add(new StructureCuboid(1, 0, 0, stoneBrickStairs1));
+				add(new StructureCuboid(0, 0, -1, stoneBrickStairs2));
+				add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
+			}
+		};
+		return new ArrayList<StructureSchematic>()
+		{
+			{
+				add(general);
+			}
+		};
 	}
 
 	@Override
@@ -197,8 +196,8 @@ class ShrineListener implements Listener
 				{
 					// Shrine created!
 					AdminUtility.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-					// StructureSave save = EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
-					// save.setOwner(character);
+					StructureSave save = EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
+					save.setOwner(character);
 					location.getWorld().strikeLightningEffect(location);
 
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
