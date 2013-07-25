@@ -215,7 +215,7 @@ public class Obelisk extends Structure
 		save.setSettings(true, true, false);
 		for(StructureFlag flag : getFlags())
 		{
-			save.setFlag(flag);
+			save.addFlag(flag);
 		}
 		save.save();
 		if(generate) save.generate();

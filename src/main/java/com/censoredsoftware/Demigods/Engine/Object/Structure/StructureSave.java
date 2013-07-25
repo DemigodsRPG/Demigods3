@@ -47,7 +47,7 @@ public class StructureSave
 	@Indexed
 	private Set<String> flags;
 
-	public void setFlag(StructureFlag flag)
+	public void addFlag(StructureFlag flag)
 	{
 		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
 		this.flags.add(flag.name());
@@ -166,6 +166,7 @@ public class StructureSave
 
 	public Set<StructureFlag> getFlags()
 	{
+		Demigods.message.broadcast("Getting flags!");
 		return new HashSet<StructureFlag>()
 		{
 			{

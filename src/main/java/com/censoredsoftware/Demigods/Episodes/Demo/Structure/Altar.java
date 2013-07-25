@@ -244,7 +244,7 @@ public class Altar extends Structure
 		save.setSettings(true, false, false);
 		for(StructureFlag flag : getFlags())
 		{
-			save.setFlag(flag);
+			save.addFlag(flag);
 		}
 		save.save();
 		if(generate) save.generate();
