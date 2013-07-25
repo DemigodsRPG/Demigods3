@@ -171,6 +171,7 @@ public class StructureSave
 			{
 				for(String name : flags)
 				{
+					Demigods.message.broadcast("Flag: " + StructureFlag.valueOf(name));
 					add(StructureFlag.valueOf(name));
 				}
 			}

@@ -38,7 +38,6 @@ class ProtectedBlocks implements Flag
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onBlockBreak(BlockBreakEvent event)
 			{
-				Demigods.message.broadcast("I'm listening!");
 				if(Structure.partOfStructureWithFlag(event.getBlock().getLocation(), StructureFlag.PROTECTED_BLOCKS)) event.setCancelled(true);
 			}
 		};
