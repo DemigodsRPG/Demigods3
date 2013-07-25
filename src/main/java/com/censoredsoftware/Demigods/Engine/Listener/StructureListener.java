@@ -19,7 +19,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 
 public class StructureListener implements Listener
 {
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -55,7 +55,7 @@ public class StructureListener implements Listener
 		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		for(Block block : event.getBlocks())
