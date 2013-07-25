@@ -22,7 +22,7 @@ public class StructureSave
 	private String structureType;
 	@Indexed
 	@Attribute
-	private int structureDesign;
+	private String structureDesign;
 	@Indexed
 	@Attribute
 	private Boolean active;
@@ -47,9 +47,9 @@ public class StructureSave
 		this.structureType = type;
 	}
 
-	public void setStructureDesign(int design)
+	public void setStructureDesign(String name)
 	{
-		this.structureDesign = design;
+		this.structureDesign = name;
 	}
 
 	public void setReferenceLocation(Location reference)
@@ -117,7 +117,7 @@ public class StructureSave
 
 	public Set<Location> getLocations()
 	{
-		return getStructureInfo().getSchematics().get(this.structureDesign).getLocations(this.reference.toLocation());
+		return getStructureInfo().get(this.structureDesign).getLocations(this.reference.toLocation());
 	}
 
 	public Structure getStructureInfo()
@@ -159,6 +159,6 @@ public class StructureSave
 
 	public void generate()
 	{
-		getStructureInfo().getSchematics().get(this.structureDesign).generate(this.reference.toLocation());
+		getStructureInfo().get(this.structureDesign).generate(this.reference.toLocation());
 	}
 }

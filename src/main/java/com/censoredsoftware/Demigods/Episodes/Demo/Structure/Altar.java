@@ -158,30 +158,16 @@ public class Altar extends Structure
 			add(new StructureCuboid(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(1)
-	{
-		{
-			add(general);
-		}
-	};
 
 	public static enum AltarDesign implements StructureSchematic.StructureDesign
 	{
-		GENERAL(0, "general");
+		GENERAL("general");
 
-		private int index;
 		private String name;
 
-		private AltarDesign(int index, String name)
+		private AltarDesign(String name)
 		{
-			this.index = index;
 			this.name = name;
-		}
-
-		@Override
-		public int getIndex()
-		{
-			return index;
 		}
 
 		@Override
@@ -210,9 +196,9 @@ public class Altar extends Structure
 	}
 
 	@Override
-	public List<StructureSchematic> getSchematics()
+	public StructureSchematic get(String name)
 	{
-		return schematics;
+		return general;
 	}
 
 	@Override
@@ -253,7 +239,7 @@ public class Altar extends Structure
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
-		save.setStructureDesign(0);
+		save.setStructureDesign("general");
 		save.setSettings(true, false, false);
 		save.save();
 		if(generate) save.generate();

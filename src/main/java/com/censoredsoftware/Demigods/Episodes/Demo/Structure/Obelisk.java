@@ -130,31 +130,16 @@ public class Obelisk extends Structure
 			add(new StructureCuboid(0, 5, 0, redstoneLamp));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(2)
-	{
-		{
-			add(general);
-			add(desert);
-		}
-	};
 
 	public static enum ObeliskDesign implements StructureSchematic.StructureDesign
 	{
-		GENERAL(0, "general"), DESERT(1, "desert");
+		GENERAL("general"), DESERT("desert");
 
-		private int index;
 		private String name;
 
-		private ObeliskDesign(int index, String name)
+		private ObeliskDesign(String name)
 		{
-			this.index = index;
 			this.name = name;
-		}
-
-		@Override
-		public int getIndex()
-		{
-			return index;
 		}
 
 		@Override
@@ -182,9 +167,10 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public List<StructureSchematic> getSchematics()
+	public StructureSchematic get(String name)
 	{
-		return schematics;
+		if(name.equals(general)) return general;
+		return desert;
 	}
 
 	@Override
@@ -232,16 +218,16 @@ public class Obelisk extends Structure
 		return save;
 	}
 
-	public int getDesign(Location reference)
+	public String getDesign(Location reference)
 	{
 		switch(reference.getBlock().getBiome())
 		{
 			case BEACH:
 			case DESERT:
 			case DESERT_HILLS:
-				return ObeliskDesign.DESERT.getIndex();
+				return ObeliskDesign.DESERT.getName();
 			default:
-				return ObeliskDesign.GENERAL.getIndex();
+				return ObeliskDesign.GENERAL.getName();
 		}
 	}
 

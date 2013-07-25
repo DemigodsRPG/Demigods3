@@ -33,8 +33,12 @@ public class StructureSchematic extends HashSet<StructureCuboid>
 
 	public interface StructureDesign
 	{
-		public int getIndex();
-
 		public String getName();
+	}
+
+	@Override
+	public String toString()
+	{
+		return this.name;
 	}
 }

@@ -86,12 +86,6 @@ public class Shrine extends Structure
 			add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
 		}
 	};
-	private final static List<StructureSchematic> schematics = new ArrayList<StructureSchematic>(1)
-	{
-		{
-			add(general);
-		}
-	};
 
 	@Override
 	public Set<Flag> getFlags()
@@ -111,9 +105,9 @@ public class Shrine extends Structure
 	}
 
 	@Override
-	public List<StructureSchematic> getSchematics()
+	public StructureSchematic get(String name)
 	{
-		return schematics;
+		return general;
 	}
 
 	@Override
@@ -154,7 +148,7 @@ public class Shrine extends Structure
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
-		save.setStructureDesign(0);
+		save.setStructureDesign("general");
 		save.setSettings(true, true, true);
 		save.save();
 		if(generate) save.generate();

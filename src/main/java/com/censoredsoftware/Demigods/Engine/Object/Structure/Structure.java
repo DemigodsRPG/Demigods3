@@ -16,7 +16,7 @@ public abstract class Structure
 {
 	public abstract String getStructureType();
 
-	public abstract List<StructureSchematic> getSchematics();
+	public abstract StructureSchematic get(String name);
 
 	public abstract int getRadius();
 
