@@ -177,7 +177,7 @@ public class Demigods
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
 			{
-				// if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
+				if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
 			}
 		}
 
@@ -187,7 +187,7 @@ public class Demigods
 			if(quest.getTasks() == null) continue;
 			for(Task task : quest.getTasks())
 			{
-				if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
+				// if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
 		}
 
