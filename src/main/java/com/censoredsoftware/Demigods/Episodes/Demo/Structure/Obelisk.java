@@ -155,6 +155,7 @@ public class Obelisk extends Structure
 		return new HashSet<Flag>()
 		{
 			{
+				add(Flag.PROTECTED_BLOCKS);
 				add(Flag.NO_GRIEFING);
 			}
 		};

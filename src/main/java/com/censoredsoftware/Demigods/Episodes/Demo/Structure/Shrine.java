@@ -93,6 +93,7 @@ public class Shrine extends Structure
 		return new HashSet<Flag>()
 		{
 			{
+				add(Flag.PROTECTED_BLOCKS);
 				add(Flag.TRIBUTE_LOCATION);
 			}
 		};

@@ -23,7 +23,7 @@ public class StructureListener implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true))
+		if(Structure.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TextUtility.Text.PROTECTED_BLOCK));
@@ -34,7 +34,7 @@ public class StructureListener implements Listener
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true))
+		if(Structure.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TextUtility.Text.PROTECTED_BLOCK));
@@ -45,14 +45,14 @@ public class StructureListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true)) event.setCancelled(true);
+		if(Structure.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true)) event.setCancelled(true);
+		if(Structure.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -60,7 +60,7 @@ public class StructureListener implements Listener
 	{
 		for(Block block : event.getBlocks())
 		{
-			if(Structure.partOfStructureWithSetting(block.getLocation(), "protectedBlocks", true))
+			if(Structure.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 			{
 				event.setCancelled(true);
 				return;
@@ -71,13 +71,13 @@ public class StructureListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
-		if(Structure.partOfStructureWithSetting(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), "protectedBlocks", true) && event.isSticky()) event.setCancelled(true);
+		if(Structure.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		final StructureSave save = Structure.getInRadiusWithSetting(event.getLocation(), "protectedBlocks", true);
+		final StructureSave save = Structure.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
