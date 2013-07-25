@@ -270,7 +270,7 @@ public class Altar extends Structure
 
 class AltarListener implements Listener
 {
-	@EventHandler(priority = EventPriority.MONITOR)
+	// @EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(final ChunkLoadEvent event)
 	{
 		if(!event.isNewChunk()) return;
