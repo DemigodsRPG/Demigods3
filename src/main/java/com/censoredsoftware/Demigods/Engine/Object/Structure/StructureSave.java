@@ -49,7 +49,7 @@ public class StructureSave
 
 	public void addFlags(Set<StructureFlag> flags)
 	{
-		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
+		if(this.flags == null) this.flags = Sets.newHashSet();
 		for(StructureFlag flag : flags)
 		{
 			this.flags.add(flag.name());
@@ -59,7 +59,7 @@ public class StructureSave
 
 	public void addFlag(StructureFlag flag)
 	{
-		if(this.flags == null || this.flags.isEmpty()) this.flags = Sets.newHashSet();
+		if(this.flags == null) this.flags = Sets.newHashSet();
 		Demigods.message.broadcast("Name: " + flag.name());
 		this.flags.add(flag.name());
 		save();
@@ -177,10 +177,8 @@ public class StructureSave
 
 	public Set<StructureFlag> getFlags()
 	{
-		for(String name : this.flags)
-		{
-			Demigods.message.broadcast("Flag: " + StructureFlag.valueOf(name));
-		}
+		if(this.flags == null) Demigods.message.broadcast("Flags are null");
+		if(this.flags != null && this.flags.isEmpty()) Demigods.message.broadcast("Flags are empty");
 
 		return new HashSet<StructureFlag>()
 		{
