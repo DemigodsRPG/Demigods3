@@ -21,7 +21,6 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
-import com.censoredsoftware.Demigods.Engine.StructureFlags.StructureFlag;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
