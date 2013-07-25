@@ -24,7 +24,8 @@ import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
 {
-	// @EventHandler(priority = EventPriority.HIGHEST) // TODO MINOR LAG - NOT SURE
+	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -83,7 +84,8 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST) // TODO MAJOR LAG
+	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO MAJOR LAG
 	public void onLiquidMove(BlockFromToEvent event)
 	{
 		boolean from = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING_ZONE);
