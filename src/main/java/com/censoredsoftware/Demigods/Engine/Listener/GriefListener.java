@@ -27,7 +27,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
 {
-	private final static Set<Material> blockInventories = new HashSet<Material>(11)
+	private final static Set<Material> blockInventories = new HashSet<Material>()
 	{
 		{
 			add(Material.CHEST);
@@ -108,10 +108,9 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO MAJOR LAG
 	public void onLiquidMove(BlockFromToEvent event)
 	{
-		if(Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		// TODO: Major lag - if(Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
