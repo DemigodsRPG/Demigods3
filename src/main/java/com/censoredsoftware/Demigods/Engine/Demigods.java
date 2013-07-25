@@ -14,7 +14,8 @@ import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
 import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
 import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
 import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Listener.BattleListener;
+import com.censoredsoftware.Demigods.Engine.Listener.GriefListener;
+import com.censoredsoftware.Demigods.Engine.Listener.StructureListener;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
@@ -163,13 +164,13 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
-		// instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
-		// instance.getServer().getPluginManager().registerEvents(new StructureListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new StructureListener(), instance);
 		// instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
 
 		// Deities
@@ -178,7 +179,7 @@ public class Demigods
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
 			{
-				// if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
+				if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
 			}
 		}
 
@@ -196,7 +197,7 @@ public class Demigods
 		for(Structure structure : getLoadedStructures())
 		{
 			if(structure.getUniqueListener() == null) continue;
-			// instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
+			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 
 		// Conversations
