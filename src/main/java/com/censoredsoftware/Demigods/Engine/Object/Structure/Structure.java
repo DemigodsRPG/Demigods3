@@ -73,6 +73,15 @@ public abstract class Structure
 		return false;
 	}
 
+	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag)
+	{
+		for(StructureSave save : StructureSave.loadAll())
+		{
+			return save.getFlags().contains(flag) && save.getClickableBlock().equals(location);
+		}
+		return false;
+	}
+
 	public static boolean isInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
 		return getInRadiusWithFlag(location, flag) != null;
