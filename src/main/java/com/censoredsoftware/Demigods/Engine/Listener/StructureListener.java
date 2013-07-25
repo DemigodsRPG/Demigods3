@@ -55,7 +55,7 @@ public class StructureListener implements Listener
 		if(Structure.partOfStructureWithSetting(location, "protectedBlocks", true)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
 		for(Block block : event.getBlocks())
@@ -68,7 +68,7 @@ public class StructureListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		if(Structure.partOfStructureWithSetting(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), "protectedBlocks", true) && event.isSticky()) event.setCancelled(true);
