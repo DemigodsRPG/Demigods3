@@ -24,7 +24,7 @@ import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
 {
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
@@ -37,7 +37,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		Location location = event.getBlock().getLocation();
@@ -68,7 +68,7 @@ public class GriefListener implements Listener
 		if(Structure.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING_ZONE)) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MINOR LAG
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
@@ -84,7 +84,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MAJOR LAG
 	public void onLiquidMove(BlockFromToEvent event)
 	{
@@ -114,7 +114,7 @@ public class GriefListener implements Listener
 		if(block != retract) event.setCancelled(true);
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockDamage(BlockDamageEvent event)
 	{
