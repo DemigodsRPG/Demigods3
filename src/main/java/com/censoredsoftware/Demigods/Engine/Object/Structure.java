@@ -328,7 +328,7 @@ public abstract class Structure
 		private Long id;
 		@Indexed
 		@CollectionSet(of = String.class)
-		private HashSet<String> flags;
+		private Set<String> flags;
 		@Indexed
 		@Attribute
 		private String type;
