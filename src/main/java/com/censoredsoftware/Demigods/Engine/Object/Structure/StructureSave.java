@@ -36,6 +36,12 @@ public class StructureSave
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
+	public StructureSave()
+	{
+		// Initialize data
+		this.flags = Sets.newHashSet();
+	}
+
 	public void setType(String type)
 	{
 		this.type = type;
@@ -54,19 +60,15 @@ public class StructureSave
 	public void setOwner(PlayerCharacter character)
 	{
 		this.owner = character;
-		save();
 	}
 
 	public void setActive(Boolean bool)
 	{
 		this.active = bool;
-		save();
 	}
 
-	public void addFlags(Set<? extends Structure.Flag> flags)
+	public void addFlags(Set<Structure.Flag> flags)
 	{
-		if(this.flags == null) this.flags = Sets.newHashSet();
-		save();
 		for(Structure.Flag flag : flags)
 		{
 			this.flags.add(flag.name());
@@ -75,8 +77,6 @@ public class StructureSave
 
 	public void addFlag(Structure.Flag flag)
 	{
-		if(this.flags == null) this.flags = Sets.newHashSet();
-		save();
 		this.flags.add(flag.name());
 	}
 
