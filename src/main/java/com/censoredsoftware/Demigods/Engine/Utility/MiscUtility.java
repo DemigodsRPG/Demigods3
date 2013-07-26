@@ -4,8 +4,6 @@ import java.util.*;
 
 import org.bukkit.ChatColor;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-
 public class MiscUtility
 {
 
@@ -251,8 +249,10 @@ public class MiscUtility
 	public static int closestIntDivisibleBy(int number, int divisor)
 	{
 		if(divisor == 0) throw new IllegalArgumentException("Undefined.");
-		if(number % divisor == 0) return number;
-		Demigods.message.broadcast("" + Math.round((number + (double) (divisor / 2))));
-		return (int) Math.floor(Math.round((number + (double) (divisor / 2)) / divisor) + 0.5D) * divisor;
+		int remainder = number % divisor;
+		if(remainder == 0) return number;
+		int roundUp = (int) Math.ceil(number / divisor);
+		if(remainder > 8) return divisor * roundUp;
+		return divisor * (roundUp - 1);
 	}
 }
