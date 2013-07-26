@@ -12,6 +12,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
+import com.google.common.collect.Sets;
 
 @Model
 public class StructureSave
@@ -34,19 +35,6 @@ public class StructureSave
 	@Indexed
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
-
-	public void addFlags(Set<? extends Structure.Flag> flags)
-	{
-		for(Structure.Flag flag : flags)
-		{
-			this.flags.add(flag.name());
-		}
-	}
-
-	public void addFlag(Structure.Flag flag)
-	{
-		this.flags.add(flag.name());
-	}
 
 	public void setType(String type)
 	{
@@ -73,6 +61,23 @@ public class StructureSave
 	{
 		this.active = bool;
 		save();
+	}
+
+	public void addFlags(Set<? extends Structure.Flag> flags)
+	{
+		if(this.flags == null) this.flags = Sets.newHashSet();
+		save();
+		for(Structure.Flag flag : flags)
+		{
+			this.flags.add(flag.name());
+		}
+	}
+
+	public void addFlag(Structure.Flag flag)
+	{
+		if(this.flags == null) this.flags = Sets.newHashSet();
+		save();
+		this.flags.add(flag.name());
 	}
 
 	public void save()
