@@ -19,6 +19,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
+import redis.clients.johm.JOhm;
+
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
 import com.censoredsoftware.Demigods.Engine.Utility.*;
@@ -238,17 +240,11 @@ public class Altar extends Structure
 	public StructureSave createNew(Location reference, boolean generate)
 	{
 		StructureSave save = new StructureSave();
+		JOhm.save(save);
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign("general");
 		save.addFlags(getFlags());
-
-		for(Flag flag : save.getFlags())
-		{
-			Demigods.message.broadcast("Flag is found! " + flag.name());
-		}
-
-		save.save();
 		if(generate) save.generate();
 		return save;
 	}
