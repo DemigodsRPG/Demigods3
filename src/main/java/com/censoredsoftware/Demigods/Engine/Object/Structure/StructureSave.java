@@ -32,7 +32,6 @@ public class StructureSave
 	private DemigodsLocation reference;
 	@Reference
 	private PlayerCharacter owner;
-	@Indexed
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
@@ -40,7 +39,6 @@ public class StructureSave
 	{
 		// Initialize data
 		this.flags = Sets.newHashSet();
-		save();
 	}
 
 	public void setType(String type)
