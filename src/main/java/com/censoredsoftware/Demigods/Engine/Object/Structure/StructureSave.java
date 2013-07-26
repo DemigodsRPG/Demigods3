@@ -40,6 +40,7 @@ public class StructureSave
 	{
 		// Initialize data
 		this.flags = Sets.newHashSet();
+		save();
 	}
 
 	public void setType(String type)
