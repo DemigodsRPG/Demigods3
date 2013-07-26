@@ -550,7 +550,19 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithType(Location location, String type)
 		{
-			for(Save save : filterForRegion(location, _findAll("type", type)))
+			for(Save save : filterForRegion(location, findAll("type", type)))
+			{
+				if(save.getLocations().contains(location)) return true;
+			}
+			return false;
+		}
+
+		/**
+		 * @deprecated Only to get it working again until we figure out why JOhm isn't finding the flags.
+		 */
+		public static boolean _partOfStructureWithFlag(Location location, Flag flg)
+		{
+			for(Save save : _findAll("", Flag.PROTECTED_BLOCKS.name()))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
