@@ -39,7 +39,6 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(save.getLocations().contains(location)) return save;
 		}
 		return null;
@@ -49,7 +48,6 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("structureType", structureType))
 		{
-			if(!save.getReferenceLocation().getWorld().equals(location.getWorld())) continue;
 			if(save.getClickableBlock().equals(location)) return true;
 		}
 		return false;

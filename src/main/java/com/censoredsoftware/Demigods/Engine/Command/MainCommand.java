@@ -80,7 +80,7 @@ public class MainCommand extends DemigodsCommand
 	private static boolean dg_extended(CommandSender sender, String[] args)
 	{
 		// Define Player
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
+		Player player = (Player) sender;
 
 		// Define args
 		String category = args[0];
@@ -100,7 +100,7 @@ public class MainCommand extends DemigodsCommand
 		else if(category.equalsIgnoreCase("commands"))
 		{
 			Demigods.message.tagged(sender, "Command Directory");
-			sender.sendMessage(ChatColor.GRAY + " There's nothing here...");
+			sender.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
 		}
 		else if(category.equalsIgnoreCase("info"))
 		{
