@@ -1,8 +1,10 @@
-package com.censoredsoftware.Demigods.Engine.Object.Language;
+package com.censoredsoftware.Demigods.Engine.Language;
 
 // TODO Replace with YAML.
 
-public interface Translation
+import java.util.Set;
+
+public interface Blacklist
 {
 	/**
 	 * The version of this language text.
@@ -19,10 +21,9 @@ public interface Translation
 	public String translator();
 
 	/**
-	 * Get a specific line of <code>text</code>.
+	 * Get the blacklist.
 	 * 
-	 * @param text The line we want.
-	 * @return The String value of the Text.
+	 * @return The Set of Strings.
 	 */
-	public String getText(Enum text);
+	public Set<String> getBlackList();
 }

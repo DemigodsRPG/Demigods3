@@ -13,11 +13,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class OmegaX17 extends Deity
@@ -54,7 +51,7 @@ public class OmegaX17 extends Deity
 
 	public OmegaX17()
 	{
-		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
+		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 
@@ -72,7 +69,7 @@ class NoSplosion extends Ability
 
 	protected NoSplosion()
 	{
-		super(new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.MONITOR)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
@@ -80,7 +77,7 @@ class NoSplosion extends Ability
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.canUseDeitySilent(player, deity)) return;
+					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives falling damage, cancel it
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION || damageEvent.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) damageEvent.setCancelled(true);

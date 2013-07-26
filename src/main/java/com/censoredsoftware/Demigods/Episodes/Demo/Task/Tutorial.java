@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Task;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,17 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Task;
 import com.censoredsoftware.Demigods.Episodes.Demo.Item.Book;
 
-public class Tutorial extends TaskSet
+public class Tutorial extends Task.List
 {
 	private static String name = "Tutorial", permission = "demigods.tutorial";
-	private static List<String> about = new ArrayList<String>(1)
+	private static java.util.List about = new ArrayList<String>(1)
 	{
 		{
 			add("About."); // TODO This.
@@ -43,7 +39,7 @@ public class Tutorial extends TaskSet
 		}
 	};
 	private static Type type = Type.TUTORIAL;
-	private static List<Task> tasks = new ArrayList<Task>()
+	private static java.util.List tasks = new ArrayList<Task>()
 	{
 		{
 			add(new TutorialTask(name, permission, about, accepted, complete, failed, type));
@@ -68,7 +64,7 @@ class TutorialTask extends Task
 		{
 			Player player = event.getPlayer();
 
-			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, "Welcome to Demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
@@ -79,8 +75,8 @@ class TutorialTask extends Task
 		}
 	};
 
-	public TutorialTask(String quest, String permission, List<String> about, List<String> accepted, List<String> complete, List<String> failed, TaskSet.Type type)
+	public TutorialTask(String quest, String permission, java.util.List about, java.util.List accepted, java.util.List complete, java.util.List failed, List.Type type)
 	{
-		super(new TaskInfo(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, TaskInfo.Subtype.QUEST), listener);
+		super(new Info(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, Info.Subtype.QUEST), listener);
 	}
 }

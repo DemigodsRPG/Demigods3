@@ -7,8 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 
 public class CommandListener implements Listener
 {
@@ -16,7 +16,7 @@ public class CommandListener implements Listener
 	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 		// Return if a character doesn't exist
-		if(PlayerWrapper.getPlayer(event.getPlayer()).getCurrent() == null) return;
+		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() == null) return;
 
 		// Define variables
 		String message = event.getMessage();
@@ -27,7 +27,7 @@ public class CommandListener implements Listener
 		// Process the command
 		try
 		{
-			if(Ability.invokeAbilityCommand(player, args[0]))
+			if(Ability.Util.invokeAbilityCommand(player, args[0]))
 			{
 				Demigods.message.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);

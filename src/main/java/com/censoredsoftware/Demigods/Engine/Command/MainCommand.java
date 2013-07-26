@@ -13,18 +13,17 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DCommand;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
-public class MainCommand extends DemigodsCommand
+public class MainCommand extends DCommand
 {
 	@Override
 	public List<String> getCommands()
@@ -51,9 +50,9 @@ public class MainCommand extends DemigodsCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Demigods.message.noPermission(player);
 
-		if(command.getName().equals("deity") && PlayerWrapper.getPlayer(player).getCurrent() != null && PlayerWrapper.getPlayer(player).getCurrent().canUse())
+		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().canUse())
 		{
-			Deity deity = PlayerWrapper.getPlayer(player).getCurrent().getDeity();
+			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getInfo().getAlliance().toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 			return true;
 		}
@@ -174,12 +173,12 @@ public class MainCommand extends DemigodsCommand
 				if(args.length < 2)
 				{
 					Demigods.message.tagged(sender, alliance + " Directory");
-					for(Deity deity : Deity.getAllDeitiesInAlliance(alliance))
+					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 						sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 				}
 				else
 				{
-					for(final Deity deity : Deity.getAllDeitiesInAlliance(alliance))
+					for(final Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 					{
 						assert option1 != null;
 						if(option1.equalsIgnoreCase(deity.getInfo().getName()))
@@ -227,7 +226,7 @@ public class MainCommand extends DemigodsCommand
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		Player toEdit;
-		PlayerCharacter character;
+		DPlayer.Character character;
 		int amount;
 
 		if(!player.hasPermission("demigods.admin")) return Demigods.message.noPermission(player);
@@ -298,9 +297,9 @@ public class MainCommand extends DemigodsCommand
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final Set<PlayerCharacter> chars = PlayerWrapper.getCharacters(toCheck);
+					final Set<DPlayer.Character> chars = DPlayer.Util.getCharacters(toCheck);
 
-					for(PlayerCharacter checkingChar : chars)
+					for(DPlayer.Character checkingChar : chars)
 					{
 						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getId() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
 					}
@@ -325,7 +324,7 @@ public class MainCommand extends DemigodsCommand
 					}
 					else if(option2.equalsIgnoreCase("character"))
 					{
-						PlayerCharacter removing = PlayerCharacter.getCharacterByName(option3);
+						DPlayer.Character removing = DPlayer.Character.Util.getCharacterByName(option3);
 						String removingName = removing.getName();
 
 						// Remove the data
@@ -346,7 +345,7 @@ public class MainCommand extends DemigodsCommand
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
+					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -403,7 +402,7 @@ public class MainCommand extends DemigodsCommand
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
+					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 
@@ -460,7 +459,7 @@ public class MainCommand extends DemigodsCommand
 				{
 					// Define variables
 					toEdit = Bukkit.getPlayer(option3);
-					character = PlayerWrapper.getPlayer(toEdit).getCurrent();
+					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
 					amount = Integer.parseInt(option4);
 				}
 

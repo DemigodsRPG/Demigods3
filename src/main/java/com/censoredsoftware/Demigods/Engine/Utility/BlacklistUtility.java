@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Language.Blacklist;
+import com.censoredsoftware.Demigods.Engine.Language.Blacklist;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 
 // TODO Replace with YAML.
 

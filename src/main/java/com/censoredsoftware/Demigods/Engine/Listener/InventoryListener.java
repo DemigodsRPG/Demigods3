@@ -9,8 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 
 public class InventoryListener implements Listener
 {
@@ -18,10 +17,10 @@ public class InventoryListener implements Listener
 	private void onInventoryClickEvent(InventoryClickEvent event)
 	{
 		Player player = (Player) event.getWhoClicked();
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Return if no character exists
-		if(!PlayerWrapper.getPlayer(player).hasCurrent()) return;
+		if(!DPlayer.Util.getPlayer(player).hasCurrent()) return;
 
 		// Perform the check
 		if(event.getSlotType().equals(InventoryType.SlotType.QUICKBAR) && event.getCurrentItem() != null && character.getMeta().isBound(event.getCurrentItem())) event.setCancelled(true);
@@ -31,7 +30,7 @@ public class InventoryListener implements Listener
 	private void onPlayerDropItemEvent(PlayerDropItemEvent event)
 	{
 		Player player = event.getPlayer();
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Return if no character exists
 		if(character == null) return;

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.General;
+package com.censoredsoftware.Demigods.Engine.Object;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
 
-public abstract class DemigodsCommand implements TabExecutor
+public abstract class DCommand implements TabExecutor
 {
 	public abstract List<String> getCommands();
 
@@ -24,20 +23,23 @@ public abstract class DemigodsCommand implements TabExecutor
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					PlayerWrapper wrapper = PlayerWrapper.getPlayer(online);
+					DPlayer wrapper = DPlayer.Util.getPlayer(online);
 					if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
-					else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName()); 
+					else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName());
 				}
 			}
 		};
 	}
 
-	public static void registerCommand(DemigodsCommand dgCommand)
+	public static class Util
 	{
-		for(String command : dgCommand.getCommands())
+		public static void registerCommand(DCommand dgCommand)
 		{
-			Demigods.plugin.getCommand(command).setExecutor(dgCommand);
-			Demigods.plugin.getCommand(command).setTabCompleter(dgCommand);
+			for(String command : dgCommand.getCommands())
+			{
+				Demigods.plugin.getCommand(command).setExecutor(dgCommand);
+				Demigods.plugin.getCommand(command).setTabCompleter(dgCommand);
+			}
 		}
 	}
 }

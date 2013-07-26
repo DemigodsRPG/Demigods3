@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.Mob;
+package com.censoredsoftware.Demigods.Engine.Object;
 
 import java.util.List;
 import java.util.Set;
@@ -11,13 +11,10 @@ import org.bukkit.entity.*;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
 import com.google.common.collect.Sets;
 
 @Model
-public class TameableWrapper implements BattleParticipant
+public class Pet implements Battle.Participant
 {
 	@Id
 	private Long Id;
@@ -32,53 +29,11 @@ public class TameableWrapper implements BattleParticipant
 	private String UUID;
 	@Reference
 	@Indexed
-	private PlayerCharacter owner;
-
-	public static TameableWrapper create(LivingEntity tameable, PlayerCharacter owner)
-	{
-		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
-		TameableWrapper wrapper = new TameableWrapper();
-		wrapper.setTamable(tameable);
-		wrapper.setOwner(owner);
-		wrapper.save();
-		return wrapper;
-	}
+	private DPlayer.Character owner;
 
 	public void save()
 	{
 		JOhm.save(this);
-	}
-
-	public static TameableWrapper load(Long id)
-	{
-		return JOhm.get(TameableWrapper.class, id);
-	}
-
-	public static List<TameableWrapper> findByType(EntityType type)
-	{
-		return JOhm.find(TameableWrapper.class, "entityType", type.getName());
-	}
-
-	public static List<TameableWrapper> findByTamer(String animalTamer)
-	{
-		return JOhm.find(TameableWrapper.class, "animalTamer", animalTamer);
-	}
-
-	public static List<TameableWrapper> findByUUID(java.util.UUID uniqueId)
-	{
-		return JOhm.find(TameableWrapper.class, "UUID", uniqueId.toString());
-	}
-
-	public static Set<TameableWrapper> loadAll()
-	{
-		try
-		{
-			return JOhm.getAll(TameableWrapper.class);
-		}
-		catch(Exception e)
-		{
-			return Sets.newHashSet();
-		}
 	}
 
 	public void remove()
@@ -89,7 +44,7 @@ public class TameableWrapper implements BattleParticipant
 
 	public void delete()
 	{
-		JOhm.delete(TameableWrapper.class, this.Id);
+		JOhm.delete(Pet.class, this.Id);
 	}
 
 	public void setTamable(LivingEntity tameable)
@@ -99,23 +54,11 @@ public class TameableWrapper implements BattleParticipant
 		this.UUID = tameable.getUniqueId().toString();
 	}
 
-	public void setOwner(PlayerCharacter owner)
+	public void setOwner(DPlayer.Character owner)
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner;
 		save();
-	}
-
-	public static TameableWrapper getTameable(LivingEntity tameable)
-	{
-		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
-		try
-		{
-			return findByUUID(tameable.getUniqueId()).get(0);
-		}
-		catch(Exception ignored)
-		{}
-		return null;
 	}
 
 	public LivingEntity getNearbyLivingEntity(Player player)
@@ -142,7 +85,7 @@ public class TameableWrapper implements BattleParticipant
 		return null;
 	}
 
-	public PlayerCharacter getOwner()
+	public DPlayer.Character getOwner()
 	{
 		if(this.owner == null)
 		{
@@ -179,7 +122,7 @@ public class TameableWrapper implements BattleParticipant
 	}
 
 	@Override
-	public PlayerCharacter getRelatedCharacter()
+	public DPlayer.Character getRelatedCharacter()
 	{
 		return getOwner();
 	}
@@ -197,27 +140,84 @@ public class TameableWrapper implements BattleParticipant
 		});
 	}
 
-	public static void disownPets(String animalTamer)
+	public static class Util
 	{
-		for(TameableWrapper wrapper : findByTamer(animalTamer))
+		public static Pet create(LivingEntity tameable, DPlayer.Character owner)
 		{
-			if(wrapper.getEntity() == null) continue;
-			((Tameable) wrapper.getEntity()).setOwner(new AnimalTamer()
-			{
-				@Override
-				public String getName()
-				{
-					return "Disowned";
-				}
-			});
+			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
+			Pet wrapper = new Pet();
+			wrapper.setTamable(tameable);
+			wrapper.setOwner(owner);
+			wrapper.save();
+			return wrapper;
 		}
-	}
 
-	public static void reownPets(AnimalTamer tamer, PlayerCharacter character)
-	{
-		for(TameableWrapper wrapper : findByTamer(character.getName()))
+		public static Pet load(Long id)
 		{
-			((Tameable) wrapper.getEntity()).setOwner(tamer);
+			return JOhm.get(Pet.class, id);
+		}
+
+		public static List<Pet> findByType(EntityType type)
+		{
+			return JOhm.find(Pet.class, "entityType", type.getName());
+		}
+
+		public static List<Pet> findByTamer(String animalTamer)
+		{
+			return JOhm.find(Pet.class, "animalTamer", animalTamer);
+		}
+
+		public static List<Pet> findByUUID(java.util.UUID uniqueId)
+		{
+			return JOhm.find(Pet.class, "UUID", uniqueId.toString());
+		}
+
+		public static Set<Pet> loadAll()
+		{
+			try
+			{
+				return JOhm.getAll(Pet.class);
+			}
+			catch(Exception e)
+			{
+				return Sets.newHashSet();
+			}
+		}
+
+		public static Pet getTameable(LivingEntity tameable)
+		{
+			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
+			try
+			{
+				return findByUUID(tameable.getUniqueId()).get(0);
+			}
+			catch(Exception ignored)
+			{}
+			return null;
+		}
+
+		public static void disownPets(String animalTamer)
+		{
+			for(Pet wrapper : findByTamer(animalTamer))
+			{
+				if(wrapper.getEntity() == null) continue;
+				((Tameable) wrapper.getEntity()).setOwner(new AnimalTamer()
+				{
+					@Override
+					public String getName()
+					{
+						return "Disowned";
+					}
+				});
+			}
+		}
+
+		public static void reownPets(AnimalTamer tamer, DPlayer.Character character)
+		{
+			for(Pet wrapper : findByTamer(character.getName()))
+			{
+				((Tameable) wrapper.getEntity()).setOwner(tamer);
+			}
 		}
 	}
 }

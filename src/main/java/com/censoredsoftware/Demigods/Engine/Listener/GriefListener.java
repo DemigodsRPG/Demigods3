@@ -19,10 +19,8 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 
 public class GriefListener implements Listener
@@ -48,11 +46,11 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		StructureSave save = Structure.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
-			PlayerCharacter owner = save.getOwner();
+			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DPlayer.Character owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -61,11 +59,11 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		StructureSave save = Structure.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
-			PlayerCharacter owner = save.getOwner();
+			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DPlayer.Character owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -74,11 +72,11 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
-		StructureSave save = Structure.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
-			PlayerCharacter owner = save.getOwner();
+			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DPlayer.Character owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -87,7 +85,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
-		if(Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		if(Structure.Util.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -97,7 +95,7 @@ public class GriefListener implements Listener
 		if(event.getEntityType() != EntityType.FALLING_BLOCK) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
 		Location blockLocation = block.getLocation();
-		if(Structure.isInRadiusWithFlag(LocationUtility.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING))
+		if(Structure.Util.isInRadiusWithFlag(LocationUtility.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING))
 		{
 			// Break the block
 			event.setCancelled(true);
@@ -120,7 +118,7 @@ public class GriefListener implements Listener
 		boolean out = false;
 		for(Block block : event.getBlocks())
 		{
-			if(Structure.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING)) in = true;
+			if(Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING)) in = true;
 			else out = true;
 		}
 		if(in != out) event.setCancelled(true);
@@ -129,8 +127,8 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event)
 	{
-		boolean block = Structure.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		boolean retract = Structure.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING);
+		boolean block = Structure.Util.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		boolean retract = Structure.Util.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING);
 		if(block != retract) event.setCancelled(true);
 	}
 
@@ -138,11 +136,11 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockDamage(BlockDamageEvent event)
 	{
-		StructureSave save = Structure.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
-			PlayerCharacter owner = save.getOwner();
+			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DPlayer.Character owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -151,7 +149,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		if(Structure.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		if(Structure.Util.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -159,12 +157,12 @@ public class GriefListener implements Listener
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
-		StructureSave save = Structure.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+		Structure.Save save = Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save == null) return;
 		if(blockInventories.contains(block.getType()))
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
-			PlayerCharacter owner = save.getOwner();
+			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DPlayer.Character owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}

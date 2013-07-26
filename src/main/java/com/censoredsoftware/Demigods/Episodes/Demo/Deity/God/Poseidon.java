@@ -17,13 +17,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Poseidon extends Deity
@@ -62,7 +58,7 @@ public class Poseidon extends Deity
 
 	public Poseidon()
 	{
-		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
+		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 
@@ -70,7 +66,7 @@ class Swim extends Ability
 {
 	private final static String deity = "Poseidon", name = "Swim", command = null, permission = "demigods.god.poseidon";
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -81,13 +77,13 @@ class Swim extends Ability
 
 	protected Swim()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerMove(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				// PHELPS SWIMMING
 				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
@@ -105,7 +101,7 @@ class Reel extends Ability
 {
 	private final static String deity = "Poseidon", name = "Reel", command = "reel", permission = "demigods.god.poseidon";
 	private final static int cost = 120, delay = 1100, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static Material weapon = Material.FISHING_ROD;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
@@ -117,22 +113,22 @@ class Reel extends Ability
 
 	protected Reel()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type, weapon), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type, weapon), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(character.getMeta().isBound(name) && player.getItemInHand().getType() == weapon)
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
 
 					reel(player);
 				}
@@ -143,17 +139,17 @@ class Reel extends Ability
 	public static void reel(Player player)
 	{
 		// Set variables
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 		int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
-		LivingEntity target = Ability.autoTarget(player);
+		LivingEntity target = Ability.Util.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, name, cost, info)) return;
+		if(!Ability.Util.doAbilityPreProcess(player, target, name, cost, info)) return;
 		character.getMeta().subtractFavor(cost);
-		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
-		if(!Ability.doTargeting(player, target.getLocation(), true)) return;
+		if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;
 
-		Ability.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
+		Ability.Util.dealDamage(player, target, damage, EntityDamageEvent.DamageCause.CUSTOM);
 
 		if(target.getLocation().getBlock().getType() == Material.AIR)
 		{
@@ -167,7 +163,7 @@ class InfiniteAir extends Ability
 {
 	private final static String deity = "Poseidon", name = "InfiniteAir", command = null, permission = "demigods.god.poseidon";
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -178,13 +174,13 @@ class InfiniteAir extends Ability
 
 	protected InfiniteAir()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerMove(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) player.setRemainingAir(20);
 			}

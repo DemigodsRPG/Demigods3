@@ -17,9 +17,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.*;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -27,63 +26,63 @@ import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Shrine extends Structure
 {
-	private final static List<StructureBlockData> clickBlock = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> clickBlock = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.GOLD_BLOCK));
+			add(new BlockData(Material.GOLD_BLOCK));
 		}
 	};
-	private final static List<StructureBlockData> enderChest = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> enderChest = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.ENDER_CHEST));
+			add(new BlockData(Material.ENDER_CHEST));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrick = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.SMOOTH_BRICK));
+			add(new BlockData(Material.SMOOTH_BRICK));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> stoneBrickStairs = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS));
+			add(new BlockData(Material.SMOOTH_STAIRS));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs1 = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> stoneBrickStairs1 = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 1));
+			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 1));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs2 = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> stoneBrickStairs2 = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 2));
+			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 2));
 		}
 	};
-	private final static List<StructureBlockData> stoneBrickStairs3 = new ArrayList<StructureBlockData>(1)
+	private final static List<BlockData> stoneBrickStairs3 = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new StructureBlockData(Material.SMOOTH_STAIRS, (byte) 3));
+			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
-	private final static StructureSchematic general = new StructureSchematic("general", "_Alex")
+	private final static Schematic general = new Schematic("general", "_Alex")
 	{
 		{
 			// Create the main block
-			add(new StructureCuboid(0, 1, 0, clickBlock));
+			add(new Cuboid(0, 1, 0, clickBlock));
 
 			// Create the ender chest and the block below
-			add(new StructureCuboid(0, 0, 0, enderChest));
-			add(new StructureCuboid(0, -1, 0, stoneBrick));
+			add(new Cuboid(0, 0, 0, enderChest));
+			add(new Cuboid(0, -1, 0, stoneBrick));
 
 			// Create the rest
-			add(new StructureCuboid(-1, 0, 0, stoneBrickStairs));
-			add(new StructureCuboid(1, 0, 0, stoneBrickStairs1));
-			add(new StructureCuboid(0, 0, -1, stoneBrickStairs2));
-			add(new StructureCuboid(0, 0, 1, stoneBrickStairs3));
+			add(new Cuboid(-1, 0, 0, stoneBrickStairs));
+			add(new Cuboid(1, 0, 0, stoneBrickStairs1));
+			add(new Cuboid(0, 0, -1, stoneBrickStairs2));
+			add(new Cuboid(0, 0, 1, stoneBrickStairs3));
 		}
 	};
 
@@ -106,7 +105,7 @@ public class Shrine extends Structure
 	}
 
 	@Override
-	public StructureSchematic get(String name)
+	public Schematic get(String name)
 	{
 		return general;
 	}
@@ -130,15 +129,15 @@ public class Shrine extends Structure
 	}
 
 	@Override
-	public List<StructureSave> getAll()
+	public List<Save> getAll()
 	{
-		return StructureSave.findAll("type", getStructureType());
+		return Util.findAll("type", getStructureType());
 	}
 
 	@Override
-	public StructureSave createNew(Location reference, boolean generate)
+	public Save createNew(Location reference, boolean generate)
 	{
-		StructureSave save = new StructureSave();
+		Save save = new Save();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign("general");
@@ -173,9 +172,9 @@ class ShrineListener implements Listener
 		Location location = clickedBlock.getLocation();
 		Player player = event.getPlayer();
 
-		if(PlayerWrapper.isImmortal(player))
+		if(DPlayer.Util.isImmortal(player))
 		{
-			PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Shrine.validBlockConfiguration(event.getClickedBlock()))
 			{
@@ -183,7 +182,7 @@ class ShrineListener implements Listener
 				{
 					// Shrine created!
 					AdminUtility.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-					StructureSave save = EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
+					Structure.Save save = EpisodeDemo.Structures.SHRINE.getStructure().createNew(location, true);
 					save.setOwner(character);
 					location.getWorld().strikeLightningEffect(location);
 
@@ -198,12 +197,12 @@ class ShrineListener implements Listener
 			}
 		}
 
-		if(AdminUtility.useWand(player) && Structure.partOfStructureWithType(location, "Shrine"))
+		if(AdminUtility.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
 		{
 			event.setCancelled(true);
 
-			StructureSave save = Structure.getStructureSave(location);
-			PlayerCharacter owner = save.getOwner();
+			Structure.Save save = Structure.Util.getStructureSave(location);
+			DPlayer.Character owner = save.getOwner();
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_shrine"))
 			{

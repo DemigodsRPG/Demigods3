@@ -2,9 +2,7 @@ package com.censoredsoftware.Demigods.Engine.Conversation;
 
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
-
-public class NoGrief implements ConversationInfo
+public class NoGrief implements DConversation
 {
 	// Define variables
 	private static org.bukkit.conversations.Conversation noGriefConversation;

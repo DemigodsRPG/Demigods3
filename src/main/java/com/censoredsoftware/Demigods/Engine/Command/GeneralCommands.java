@@ -10,14 +10,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.DCommand;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
-public class GeneralCommands extends DemigodsCommand
+public class GeneralCommands extends DCommand
 {
 	@Override
 	public List<String> getCommands()
@@ -36,7 +35,7 @@ public class GeneralCommands extends DemigodsCommand
 	private boolean check(CommandSender sender)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{
@@ -80,7 +79,7 @@ public class GeneralCommands extends DemigodsCommand
 			player.sendMessage(ChatColor.RED + "/owner <character>");
 			return true;
 		}
-		PlayerCharacter charToCheck = PlayerCharacter.getCharacterByName(args[0]);
+		DPlayer.Character charToCheck = DPlayer.Character.Util.getCharacterByName(args[0]);
 		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;

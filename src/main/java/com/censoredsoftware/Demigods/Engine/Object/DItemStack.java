@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Object.General;
+package com.censoredsoftware.Demigods.Engine.Object;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import redis.clients.johm.*;
 
 @Model
-public class DemigodsItemStack
+public class DItemStack
 {
 	@Id
 	private Long id;
@@ -112,47 +112,13 @@ public class DemigodsItemStack
 		}
 	}
 
-	public static DemigodsItemStack create(ItemStack item)
-	{
-		DemigodsItemStack trackedItem = new DemigodsItemStack();
-		trackedItem.setTypeId(item.getTypeId());
-		trackedItem.setByteId(item.getData().getData());
-		trackedItem.setAmount(item.getAmount());
-		trackedItem.setDurability(item.getDurability());
-		if(item.hasItemMeta())
-		{
-			if(item.getItemMeta().hasDisplayName()) trackedItem.setName(item.getItemMeta().getDisplayName());
-			if(item.getItemMeta().hasLore()) trackedItem.setLore(item.getItemMeta().getLore());
-		}
-		trackedItem.setEnchantments(item);
-		trackedItem.setBookMeta(item);
-
-		DemigodsItemStack.save(trackedItem);
-		return trackedItem;
-	}
-
-	public static void save(DemigodsItemStack item)
-	{
-		JOhm.save(item);
-	}
-
-	public static DemigodsItemStack load(long id) // TODO This belongs somewhere else.
-	{
-		return JOhm.get(DemigodsItemStack.class, id);
-	}
-
-	public static Set<DemigodsItemStack> loadAll()
-	{
-		return JOhm.getAll(DemigodsItemStack.class);
-	}
-
 	public Long getId()
 	{
 		return this.id;
 	}
 
 	/**
-	 * Returns the DemigodsItemStack as an actual, usable ItemStack.
+	 * Returns the DItemStack as an actual, usable ItemStack.
 	 * 
 	 * @return ItemStack
 	 */
@@ -201,10 +167,47 @@ public class DemigodsItemStack
 		return item;
 	}
 
+	public static class Util
+	{
+		public static DItemStack create(ItemStack item)
+		{
+			DItemStack trackedItem = new DItemStack();
+			trackedItem.setTypeId(item.getTypeId());
+			trackedItem.setByteId(item.getData().getData());
+			trackedItem.setAmount(item.getAmount());
+			trackedItem.setDurability(item.getDurability());
+			if(item.hasItemMeta())
+			{
+				if(item.getItemMeta().hasDisplayName()) trackedItem.setName(item.getItemMeta().getDisplayName());
+				if(item.getItemMeta().hasLore()) trackedItem.setLore(item.getItemMeta().getLore());
+			}
+			trackedItem.setEnchantments(item);
+			trackedItem.setBookMeta(item);
+
+			save(trackedItem);
+			return trackedItem;
+		}
+
+		public static void save(DItemStack item)
+		{
+			JOhm.save(item);
+		}
+
+		public static DItemStack load(long id)
+		{
+			return JOhm.get(DItemStack.class, id);
+		}
+
+		public static Set<DItemStack> loadAll()
+		{
+			return JOhm.getAll(DItemStack.class);
+		}
+	}
+
 	/**
 	 * The type enum.
 	 */
-	public enum ItemType
+	public static enum ItemType
 	{
 		STANDARD(0), WRITTEN_BOOK(1);
 

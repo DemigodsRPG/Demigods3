@@ -14,13 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Mob.TameableWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Pet;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
@@ -62,7 +59,7 @@ public class DrD1sco extends Deity
 
 	public DrD1sco()
 	{
-		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
+		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
 	protected static void playRandomNote(Location location, float volume)
@@ -75,7 +72,7 @@ class RainbowWalking extends Ability
 {
 	private final static String deity = "DrD1sco", name = "Rainbow Walking", command = null, permission = "demigods.insignian.disco";
 	private final static int cost = 0, delay = 0, repeat = 5;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -86,15 +83,15 @@ class RainbowWalking extends Ability
 
 	protected RainbowWalking()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
 		{
 			@Override
 			public void run()
 			{
 				for(Player online : Bukkit.getOnlinePlayers())
 				{
-					if(Deity.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !ZoneUtility.zoneNoPVP(online.getLocation()) && !Structure.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
-					else if(Deity.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
+					if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !ZoneUtility.zoneNoPVP(online.getLocation()) && !Structure.Util.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
+					else if(Deity.Util.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 				}
 			}
 
@@ -131,7 +128,7 @@ class RainbowHorse extends Ability
 {
 	private final static String deity = "DrD1sco", name = "Horse of a Different Color", command = null, permission = "demigods.insignian.disco";
 	private final static int cost = 0, delay = 0, repeat = 100;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -142,12 +139,12 @@ class RainbowHorse extends Ability
 
 	protected RainbowHorse()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
 		{
 			@Override
 			public void run()
 			{
-				for(TameableWrapper horse : TameableWrapper.findByType(EntityType.HORSE))
+				for(Pet horse : Pet.Util.findByType(EntityType.HORSE))
 				{
 					if(horse.getDeity().getInfo().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead())
 					{
@@ -170,7 +167,7 @@ class RainbowHorse extends Ability
  * 
  * private final static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
  * private final static int cost = 30, delay = 30, repeat = 4;
- * private static AbilityInfo info;
+ * private static Info info;
  * private final static List<String> details = new ArrayList<String>(1)
  * {
  * {
@@ -183,7 +180,7 @@ class RainbowHorse extends Ability
  * 
  * protected Discoball()
  * {
- * super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+ * super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
  * {
  * 
  * @EventHandler(priority = EventPriority.HIGHEST)
@@ -191,7 +188,7 @@ class RainbowHorse extends Ability
  *                        {
  *                        // Set variables
  *                        Player player = interactEvent.getPlayer();
- *                        PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+ *                        Character character = DPlayer.getPlayer(player).getCurrent();
  * 
  *                        if(!Ability.isLeftClick(interactEvent)) return;
  * 
@@ -199,7 +196,7 @@ class RainbowHorse extends Ability
  * 
  *                        if(character.getMeta().isBound(name))
  *                        {
- *                        if(!PlayerCharacter.isCooledDown(character, name, true)) return;
+ *                        if(!Character.isCooledDown(character, name, true)) return;
  * 
  *                        discoBall(player);
  *                        }
@@ -238,14 +235,14 @@ class RainbowHorse extends Ability
  *           private final static void discoBall(final Player player)
  *           {
  *           // Set variables
- *           PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+ *           Character character = DPlayer.getPlayer(player).getCurrent();
  * 
  *           if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
  *           character.getMeta().subtractFavor(cost);
- *           PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+ *           Character.setCoolDown(character, name, System.currentTimeMillis() + delay);
  * 
  *           // Cooldown
- *           PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
+ *           Character.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
  * 
  *           balls(player);
  * 

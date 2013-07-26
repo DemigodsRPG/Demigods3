@@ -1,7 +1,9 @@
-package com.censoredsoftware.Demigods.Engine.Object.General;
+package com.censoredsoftware.Demigods.Engine.Object;
 
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.scheduler.BukkitRunnable;
 
 import redis.clients.johm.*;
 
@@ -106,48 +108,6 @@ public class TimedData
 		JOhm.delete(TimedData.class, getId());
 	}
 
-	public static TimedData get(Long id)
-	{
-		return JOhm.get(TimedData.class, id);
-	}
-
-	public static Set<TimedData> getAll()
-	{
-		return JOhm.getAll(TimedData.class);
-	}
-
-	public static TimedData find(String key, String subKey)
-	{
-		if(TimedData.findByKey(key) == null) return null;
-
-		for(TimedData data : TimedData.findByKey(key))
-		{
-			if(data.getSubKey().equals(subKey)) return data;
-		}
-
-		return null;
-	}
-
-	public static List<TimedData> findByKey(String key)
-	{
-		return JOhm.find(TimedData.class, "key", key);
-	}
-
-	public static List<TimedData> findBySubKey(String key, String subKey)
-	{
-		return JOhm.find(TimedData.class, "subKey", subKey);
-	}
-
-	public static List<TimedData> findByExpiration(Long expiration)
-	{
-		return JOhm.find(TimedData.class, "expiration", expiration);
-	}
-
-	public static void remove(String key, String subKey)
-	{
-		if(find(key, subKey) != null) find(key, subKey).delete();
-	}
-
 	@Override
 	public boolean equals(final Object obj)
 	{
@@ -173,5 +133,62 @@ public class TimedData
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
+	}
+
+	public static class Util
+	{
+		public static TimedData get(Long id)
+		{
+			return JOhm.get(TimedData.class, id);
+		}
+
+		public static Set<TimedData> getAll()
+		{
+			return JOhm.getAll(TimedData.class);
+		}
+
+		public static TimedData find(String key, String subKey)
+		{
+			if(findByKey(key) == null) return null;
+
+			for(TimedData data : findByKey(key))
+			{
+				if(data.getSubKey().equals(subKey)) return data;
+			}
+
+			return null;
+		}
+
+		public static List<TimedData> findByKey(String key)
+		{
+			return JOhm.find(TimedData.class, "key", key);
+		}
+
+		public static List<TimedData> findBySubKey(String key, String subKey)
+		{
+			return JOhm.find(TimedData.class, "subKey", subKey);
+		}
+
+		public static List<TimedData> findByExpiration(Long expiration)
+		{
+			return JOhm.find(TimedData.class, "expiration", expiration);
+		}
+
+		public static void remove(String key, String subKey)
+		{
+			if(find(key, subKey) != null) find(key, subKey).delete();
+		}
+	}
+
+	public static class TimedDataRunnable extends BukkitRunnable
+	{
+		@Override
+		public void run()
+		{
+			for(TimedData data : TimedData.Util.getAll())
+			{
+				if(data.getExpiration() <= System.currentTimeMillis()) data.delete();
+			}
+		}
 	}
 }

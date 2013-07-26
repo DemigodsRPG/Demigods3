@@ -246,17 +246,14 @@ public class MiscUtility
 		return -1;
 	}
 
-	public static int getClosestNonNegativeIntDivisibleBy(int number, int divisor) throws IllegalArgumentException
+	public static int getClosestIntDivisibleBy(int number, int divisor) throws IllegalArgumentException
 	{
+		// TODO Find more efficient way of getting this.
 		if(divisor == 0) throw new IllegalArgumentException("Undefined.");
-		int remainder = number % divisor;
-		if(remainder == 0) return number;
-
-		double roundUp = Math.ceil(number / divisor);
-		int guess1 = (int) (divisor * roundUp);
-		if(remainder > 8) return guess1;
-		int guess2 = (int) (divisor * (roundUp - 1.0));
-		if(guess2 < 1) return guess1;
-		else return guess2;
+		int round = ((number + (divisor / 2)) / divisor);
+		if(round == 0) return 0;
+		if(round == 1) return divisor;
+		if(number % divisor > divisor / 2) return divisor * round;
+		return divisor * (round - 1);
 	}
 }

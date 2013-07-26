@@ -4,12 +4,7 @@ import org.bukkit.Bukkit;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Runnable.BattleRunnable;
-import com.censoredsoftware.Demigods.Engine.Runnable.FavorRunnable;
-import com.censoredsoftware.Demigods.Engine.Runnable.SpigotBattleRunnable;
-import com.censoredsoftware.Demigods.Engine.Runnable.TimedDataRunnable;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 
 public class SchedulerUtility
 {
@@ -17,22 +12,22 @@ public class SchedulerUtility
 	{
 		// Start favor runnable
 		int rate = Demigods.config.getSettingInt("regeneration.favor") * 20;
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), 20, rate);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new DPlayer.FavorRunnable(Demigods.config.getSettingDouble("multipliers.favor")), 20, rate);
 		AdminUtility.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start battle runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BattleRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new Battle.BattleRunnable(), 20, 20);
 		AdminUtility.sendDebug("Battle tracking runnable enabled...");
 
 		// Start spigot particle runnable
 		if(Demigods.runningSpigot())
 		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new SpigotBattleRunnable(), 20, 20);
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Battle.SpigotBattleRunnable(), 20, 20);
 			AdminUtility.sendDebug("Special (spigot) battle runnable enabled...");
 		}
 
 		// Start timed data runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new TimedDataRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new TimedData.TimedDataRunnable(), 20, 20);
 		AdminUtility.sendDebug("Timed data runnable enabled...");
 
 		for(Deity deity : Demigods.getLoadedDeities())

@@ -14,13 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 
 public class Template extends Deity
@@ -57,7 +53,7 @@ public class Template extends Deity
 
 	public Template()
 	{
-		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
+		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 }
 
@@ -65,7 +61,7 @@ class Test extends Ability
 {
 	private final static String deity = "Template", name = "Test", command = "test", permission = "demigods.test.test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -76,22 +72,22 @@ class Test extends Ability
 
 	protected Test()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
 
 					test(player);
 				}
@@ -103,14 +99,14 @@ class Test extends Ability
 	public static void test(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
-		LivingEntity target = Ability.autoTarget(player);
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		LivingEntity target = Ability.Util.autoTarget(player);
 
-		if(!Ability.doAbilityPreProcess(player, target, "test", cost, info)) return;
-		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		if(!Ability.Util.doAbilityPreProcess(player, target, "test", cost, info)) return;
+		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target.getLocation(), true)) return;
+		if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;
 
 		if(target instanceof Player)
 		{

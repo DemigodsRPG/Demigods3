@@ -15,11 +15,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.StructureSave;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ItemValueUtility;
 
@@ -33,21 +31,21 @@ public class TributeListener implements Listener
 	public void onTributeInteract(PlayerInteractEvent event)
 	{
 		// Return if the player is mortal
-		if(!PlayerWrapper.isImmortal(event.getPlayer())) return;
+		if(!DPlayer.Util.isImmortal(event.getPlayer())) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structure.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureSave save = Structure.getStructureSave(location);
+			Structure.Save save = Structure.Util.getStructureSave(location);
 
 			// Return if they aren't clicking the gold block
 			if(!event.getClickedBlock().getLocation().equals(save.getClickableBlock())) return;
@@ -73,16 +71,16 @@ public class TributeListener implements Listener
 	{
 		// Define player and character
 		Player player = (Player) event.getPlayer();
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Make sure they have a character and are immortal
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structure.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
-		StructureSave save = StructureSave.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));
+		Structure.Save save = Structure.Util.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;
@@ -112,7 +110,7 @@ public class TributeListener implements Listener
 		// Define the shrine owner
 		if(save.getOwner() != null)
 		{
-			PlayerCharacter shrineOwner = save.getOwner();
+			DPlayer.Character shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
 			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
@@ -121,7 +119,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && PlayerWrapper.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap is now " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -136,7 +134,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && PlayerWrapper.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 					if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -167,7 +165,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(PlayerCharacter character, StructureSave save)
+	private static void tribute(DPlayer.Character character, Structure.Save save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

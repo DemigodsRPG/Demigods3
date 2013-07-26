@@ -14,8 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
+import com.censoredsoftware.Demigods.Engine.Object.Battle;
 
 public class BattleListener implements Listener
 {
@@ -24,26 +23,26 @@ public class BattleListener implements Listener
 	{
 		Entity damager = event.getDamager();
 		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
-		if(!Battle.canParticipate(event.getEntity()) || !Battle.canParticipate(damager)) return;
+		if(!Battle.Util.canParticipate(event.getEntity()) || !Battle.Util.canParticipate(damager)) return;
 
 		// Define participants
-		BattleParticipant damageeParticipant = Battle.defineParticipant(event.getEntity());
-		BattleParticipant damagerParticipant = Battle.defineParticipant(damager);
+		Battle.Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
+		Battle.Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
 
-		if(!Battle.existsNear(midpoint) && !Battle.existsInRadius(midpoint))
+		if(!Battle.Util.existsNear(midpoint) && !Battle.Util.existsInRadius(midpoint))
 		{
 			// Create new battle
-			Battle battle = Battle.create(damagerParticipant, damageeParticipant);
+			Battle battle = Battle.Util.create(damagerParticipant, damageeParticipant);
 
 			// Teleport if needed
 			// Battle.teleportIfNeeded(damageeParticipant, battle);
 			// Battle.teleportIfNeeded(damagerParticipant, battle);
 
 			// Battle death
-			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(damagerParticipant, damageeParticipant, battle));
+			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle));
 
 			// Debug
 			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerParticipant.getRelatedCharacter().getName() + " and " + damageeParticipant.getRelatedCharacter().getName() + "!");
@@ -51,7 +50,7 @@ public class BattleListener implements Listener
 		else
 		{
 			// Add to existing battle
-			Battle battle = Battle.getNear(midpoint) != null ? Battle.getNear(midpoint) : Battle.getInRadius(midpoint);
+			Battle battle = Battle.Util.getNear(midpoint) != null ? Battle.Util.getNear(midpoint) : Battle.Util.getInRadius(midpoint);
 
 			// Teleport if needed
 			// Battle.teleportIfNeeded(damageeParticipant, battle);
@@ -62,27 +61,27 @@ public class BattleListener implements Listener
 			battle.getMeta().addParticipant(damagerParticipant);
 
 			// Battle death
-			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(damagerParticipant, damageeParticipant, battle));
+			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle));
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDamage(EntityDamageEvent event)
 	{
-		if(event instanceof EntityDamageByEntityEvent || !Battle.canParticipate(event.getEntity())) return;
+		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
 
-		BattleParticipant participant = Battle.defineParticipant(event.getEntity());
+		Battle.Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
 		// Battle death
-		if(Battle.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.battleDeath(participant, Battle.getBattle(participant)));
+		if(Battle.Util.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.Util.battleDeath(participant, Battle.Util.getBattle(participant)));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	// TODO Doesn't work.
 	public void onBattleMove(PlayerMoveEvent event)
 	{
-		if(!Battle.canParticipate(event.getPlayer())) return;
-		BattleParticipant participant = Battle.defineParticipant(event.getPlayer());
+		if(!Battle.Util.canParticipate(event.getPlayer())) return;
+		Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
@@ -90,19 +89,19 @@ public class BattleListener implements Listener
 	// TODO Doesn't work.
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
-		if(!Battle.canParticipate(event.getPlayer())) return;
-		BattleParticipant participant = Battle.defineParticipant(event.getPlayer());
+		if(!Battle.Util.canParticipate(event.getPlayer())) return;
+		Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
 	}
 
-	private static boolean onBattleMove(Location toLocation, Location fromLocation, BattleParticipant participant)
+	private static boolean onBattleMove(Location toLocation, Location fromLocation, Battle.Participant participant)
 	{
-		boolean to = Battle.existsInRadius(toLocation);
-		boolean from = Battle.existsInRadius(fromLocation);
+		boolean to = Battle.Util.existsInRadius(toLocation);
+		boolean from = Battle.Util.existsInRadius(fromLocation);
 		boolean enter = to == true && from == false;
 		boolean exit = to == false && from == true;
-		if(enter) Battle.getInRadius(toLocation).getMeta().addParticipant(participant);
-		if(exit && Battle.isInBattle(participant)) return true;
+		if(enter) Battle.Util.getInRadius(toLocation).getMeta().addParticipant(participant);
+		if(exit && Battle.Util.isInBattle(participant)) return true;
 		return false;
 	}
 }

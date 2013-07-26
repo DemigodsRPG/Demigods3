@@ -3,7 +3,7 @@ package com.censoredsoftware.Demigods.Engine.Utility;
 import org.bukkit.ChatColor;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
+import com.censoredsoftware.Demigods.Engine.Language.Translation;
 
 // TODO Replace with YAML.
 

@@ -15,13 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.AbilityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Devotion;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.DeityInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -61,7 +57,7 @@ public class Prometheus extends Deity
 
 	public Prometheus()
 	{
-		super(new DeityInfo(name, alliance, permission, color, claimItems, lore, type), abilities);
+		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}
 
 	public static void shootFireball(Location from, Location to, Player shooter)
@@ -82,7 +78,7 @@ class ShootFireball extends Ability
 {
 	private final static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
 	private final static int cost = 100, delay = 5, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -93,22 +89,22 @@ class ShootFireball extends Ability
 
 	protected ShootFireball()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
 
 					fireball(player);
 				}
@@ -120,27 +116,27 @@ class ShootFireball extends Ability
 	public static void fireball(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 		Location target;
-		LivingEntity entity = Ability.autoTarget(player);
+		LivingEntity entity = Ability.Util.autoTarget(player);
 		boolean notify;
 		if(entity != null)
 		{
-			target = Ability.autoTarget(player).getLocation();
+			target = Ability.Util.autoTarget(player).getLocation();
 			notify = true;
-			if(!Ability.doAbilityPreProcess(player, entity, "fireball", cost, info) || entity.getEntityId() == player.getEntityId()) return;
+			if(!Ability.Util.doAbilityPreProcess(player, entity, "fireball", cost, info) || entity.getEntityId() == player.getEntityId()) return;
 		}
 		else
 		{
-			target = Ability.directTarget(player);
+			target = Ability.Util.directTarget(player);
 			notify = false;
-			if(!Ability.doAbilityPreProcess(player, "fireball", cost, info)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, "fireball", cost, info)) return;
 		}
 
-		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target, notify)) return;
+		if(!Ability.Util.doTargeting(player, target, notify)) return;
 
 		Prometheus.shootFireball(player.getEyeLocation(), target, player);
 
@@ -151,7 +147,7 @@ class Blaze extends Ability
 {
 	private final static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
 	private final static int cost = 400, delay = 15, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -162,22 +158,22 @@ class Blaze extends Ability
 
 	protected Blaze()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
 
 					blaze(player);
 				}
@@ -189,30 +185,30 @@ class Blaze extends Ability
 	public static void blaze(Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 		Location target;
-		LivingEntity entity = Ability.autoTarget(player);
+		LivingEntity entity = Ability.Util.autoTarget(player);
 		boolean notify;
 		if(entity != null)
 		{
-			target = Ability.autoTarget(player).getLocation();
+			target = Ability.Util.autoTarget(player).getLocation();
 			notify = true;
-			if(!Ability.doAbilityPreProcess(player, entity, name, cost, info) || entity.getEntityId() == player.getEntityId()) return;
+			if(!Ability.Util.doAbilityPreProcess(player, entity, name, cost, info) || entity.getEntityId() == player.getEntityId()) return;
 		}
 		else
 		{
-			target = Ability.directTarget(player);
+			target = Ability.Util.directTarget(player);
 			notify = false;
-			if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
 		}
 		int power = character.getMeta().getDevotion(type).getLevel();
 		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 		if(diameter > 12) diameter = 12;
 
-		PlayerCharacter.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
-		if(!Ability.doTargeting(player, target, notify)) return;
+		if(!Ability.Util.doTargeting(player, target, notify)) return;
 
 		for(int X = -diameter / 2; X <= diameter / 2; X++)
 		{
@@ -232,7 +228,7 @@ class Firestorm extends Ability
 {
 	private final static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
 	private final static int cost = 5500, delay = 15, repeat = 0;
-	private static AbilityInfo info;
+	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
@@ -243,22 +239,22 @@ class Firestorm extends Ability
 
 	protected Firestorm()
 	{
-		super(info = new AbilityInfo(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(!Ability.isLeftClick(interactEvent)) return;
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!PlayerCharacter.isCooledDown(character, name, false)) return;
+					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
 
 					firestorm(player);
 				}
@@ -270,9 +266,9 @@ class Firestorm extends Ability
 	public static void firestorm(final Player player)
 	{
 		// Define variables
-		PlayerCharacter character = PlayerWrapper.getPlayer(player).getCurrent();
+		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(!Ability.doAbilityPreProcess(player, name, cost, info)) return;
+		if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
 
 		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 		Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();
@@ -283,8 +279,8 @@ class Firestorm extends Ability
 			if(!(entity instanceof LivingEntity)) continue;
 			if(entity instanceof Player)
 			{
-				PlayerCharacter otherCharacter = PlayerWrapper.getPlayer((Player) entity).getCurrent();
-				if(otherCharacter != null && PlayerCharacter.areAllied(character, otherCharacter)) continue;
+				DPlayer.Character otherCharacter = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+				if(otherCharacter != null && DPlayer.Character.Util.areAllied(character, otherCharacter)) continue;
 			}
 			if(!ZoneUtility.canTarget(entity)) continue;
 

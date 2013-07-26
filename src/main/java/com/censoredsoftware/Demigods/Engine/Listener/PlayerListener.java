@@ -13,8 +13,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Module.QuitReasonHandler;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
@@ -27,8 +26,8 @@ public class PlayerListener implements Listener
 	{
 		// Define Variables
 		Player player = event.getPlayer();
-		PlayerWrapper wrapper = PlayerWrapper.getPlayer(player);
-		PlayerCharacter character = wrapper.getCurrent();
+		DPlayer wrapper = DPlayer.Util.getPlayer(player);
+		DPlayer.Character character = wrapper.getCurrent();
 
 		// Set their lastlogintime
 		Long now = System.currentTimeMillis();
@@ -74,7 +73,7 @@ public class PlayerListener implements Listener
 		Location from = event.getFrom();
 		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
-		if(PlayerWrapper.isPraying(player)) PlayerWrapper.togglePraying(player, false);
+		if(DPlayer.Util.isPraying(player)) DPlayer.Util.togglePraying(player, false);
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DataUtility.hasKeyTemp(player.getName(), "teleport_ability"))
@@ -152,14 +151,14 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
-		PlayerCharacter loggingOff = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
+		DPlayer.Character loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(loggingOff != null) loggingOff.setLocation(event.getPlayer().getLocation());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerRespawn(PlayerRespawnEvent event) // TODO Is this working?
 	{
-		PlayerWrapper wrapper = PlayerWrapper.getPlayer(event.getPlayer());
+		DPlayer wrapper = DPlayer.Util.getPlayer(event.getPlayer());
 		if(wrapper.getCurrent() != null)
 		{
 			double maxhealth = wrapper.getCurrent().getMaxHealth();

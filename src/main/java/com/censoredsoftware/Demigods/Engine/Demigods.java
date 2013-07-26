@@ -12,19 +12,13 @@ import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
 import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
 import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
-import com.censoredsoftware.Demigods.Engine.Conversation.Conversation;
-import com.censoredsoftware.Demigods.Engine.Exceptions.DemigodsStartupException;
+import com.censoredsoftware.Demigods.Engine.Conversation.DConversation;
+import com.censoredsoftware.Demigods.Engine.Exception.DemigodsStartupException;
+import com.censoredsoftware.Demigods.Engine.Language.Translation;
 import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
-import com.censoredsoftware.Demigods.Engine.Object.Ability.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Conversation.ConversationInfo;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
-import com.censoredsoftware.Demigods.Engine.Object.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -45,9 +39,9 @@ public class Demigods
 
 	// The Game Data
 	protected static Deque<Deity> deities;
-	protected static Deque<TaskSet> quests;
+	protected static Deque<Task.List> quests;
 	protected static Deque<Structure> structures;
-	protected static Deque<ConversationInfo> conversasions;
+	protected static Deque<DConversation> conversasions;
 
 	// The Engine Default Text
 	public static Translation text;
@@ -59,7 +53,7 @@ public class Demigods
 
 	public interface ListedTaskSet
 	{
-		public TaskSet getTaskSet();
+		public Task.List getTaskSet();
 	}
 
 	public interface ListedStructure
@@ -69,7 +63,7 @@ public class Demigods
 
 	public interface ListedConversation
 	{
-		public ConversationInfo getConversation();
+		public DConversation getConversation();
 	}
 
 	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation[] conversations) throws DemigodsStartupException
@@ -90,7 +84,7 @@ public class Demigods
 					add(deity.getDeity());
 			}
 		};
-		Demigods.quests = new ArrayDeque<TaskSet>()
+		Demigods.quests = new ArrayDeque<Task.List>()
 		{
 			{
 				for(ListedTaskSet taskSet : taskSets)
@@ -104,10 +98,10 @@ public class Demigods
 					add(structure.getStructure());
 			}
 		};
-		Demigods.conversasions = new ArrayDeque<ConversationInfo>()
+		Demigods.conversasions = new ArrayDeque<DConversation>()
 		{
 			{
-				for(Conversation conversation : Conversation.values())
+				for(DConversation.Required conversation : DConversation.Required.values())
 					add(conversation.getConversation());
 				if(conversations != null) for(ListedConversation conversation : conversations)
 					add(conversation.getConversation());
@@ -141,7 +135,7 @@ public class Demigods
 		loadCommands();
 
 		// Finally, regenerate structures
-		Structure.regenerateStructures();
+		Structure.Util.regenerateStructures();
 
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
@@ -183,10 +177,10 @@ public class Demigods
 		}
 
 		// Tasks
-		for(TaskSet quest : getLoadedQuests())
+		for(Task.List quest : getLoadedQuests())
 		{
 			if(quest.getTasks() == null) continue;
-			for(Task task : quest.getTasks())
+			for(Task task : quest)
 			{
 				if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
@@ -200,7 +194,7 @@ public class Demigods
 		}
 
 		// Conversations
-		for(ConversationInfo conversation : getLoadedConversations())
+		for(DConversation conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
@@ -210,9 +204,9 @@ public class Demigods
 
 	protected static void loadCommands()
 	{
-		DemigodsCommand.registerCommand(new MainCommand());
-		DemigodsCommand.registerCommand(new GeneralCommands());
-		DemigodsCommand.registerCommand(new DevelopmentCommands());
+		DCommand.Util.registerCommand(new MainCommand());
+		DCommand.Util.registerCommand(new GeneralCommands());
+		DCommand.Util.registerCommand(new DevelopmentCommands());
 	}
 
 	protected static void loadDepends(DemigodsPlugin instance)
@@ -227,7 +221,7 @@ public class Demigods
 		return Demigods.deities;
 	}
 
-	public static Deque<TaskSet> getLoadedQuests()
+	public static Deque<Task.List> getLoadedQuests()
 	{
 		return Demigods.quests;
 	}
@@ -237,7 +231,7 @@ public class Demigods
 		return Demigods.structures;
 	}
 
-	public static Deque<ConversationInfo> getLoadedConversations()
+	public static Deque<DConversation> getLoadedConversations()
 	{
 		return Demigods.conversasions;
 	}

@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Episodes.Demo;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Deity.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
+import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.Task;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian.DrD1sco;
@@ -45,19 +45,19 @@ public class EpisodeDemo
 	public static enum Tasks implements Demigods.ListedTaskSet
 	{
 		/**
-		 * The Tutorial TaskSet.
+		 * The Tutorial List.
 		 */
 		Tutorial(new Tutorial());
 
-		private TaskSet taskSet;
+		private Task.List taskSet;
 
-		private Tasks(TaskSet tasks)
+		private Tasks(Task.List tasks)
 		{
 			this.taskSet = tasks;
 		}
 
 		@Override
-		public TaskSet getTaskSet()
+		public Task.List getTaskSet()
 		{
 			return taskSet;
 		}

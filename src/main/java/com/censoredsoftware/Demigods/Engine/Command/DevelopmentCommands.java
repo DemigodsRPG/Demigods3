@@ -14,15 +14,13 @@ import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.Battle.BattleParticipant;
-import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsCommand;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerWrapper;
+import com.censoredsoftware.Demigods.Engine.Object.Battle;
+import com.censoredsoftware.Demigods.Engine.Object.DCommand;
+import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
-public class DevelopmentCommands extends DemigodsCommand
+public class DevelopmentCommands extends DCommand
 {
 	@Override
 	public List<String> getCommands()
@@ -48,7 +46,7 @@ public class DevelopmentCommands extends DemigodsCommand
 
 		player.sendMessage("Disabling all battles...");
 
-		for(Battle battle : Battle.getAllActive())
+		for(Battle battle : Battle.Util.getAllActive())
 		{
 			battle.end();
 		}
@@ -62,12 +60,18 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		if(args.length == 1 && MiscUtility.isInt(args[0]))
+		if(args.length == 2 && MiscUtility.isInt(args[0]) && MiscUtility.isInt(args[1]))
 		{
 			try
 			{
-				player.sendMessage("Pass: " + (Integer.parseInt(args[0]) % 64 == 0));
-				player.sendMessage("Closest: " + MiscUtility.getClosestNonNegativeIntDivisibleBy(Integer.parseInt(args[0]), 64));
+				int number = Integer.parseInt(args[0]);
+				int divisor = Integer.parseInt(args[1]);
+				long start = System.currentTimeMillis();
+				int answer = MiscUtility.getClosestIntDivisibleBy(number, divisor);
+				long end = System.currentTimeMillis();
+				player.sendMessage("Pass: " + (number % divisor == 0));
+				player.sendMessage("Closest: " + answer);
+				player.sendMessage("Time: " + (int) ((end - start) / 1000) + " seconds.");
 			}
 			catch(Exception e)
 			{
@@ -82,16 +86,16 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		if(Battle.existsInRadius(player.getLocation()))
+		if(Battle.Util.existsInRadius(player.getLocation()))
 		{
-			Battle getInfo = Battle.getInRadius(player.getLocation());
+			Battle getInfo = Battle.Util.getInRadius(player.getLocation());
 
 			Demigods.message.chatTitle(ChatColor.DARK_AQUA + "Battle Info");
 			Location center = getInfo.getStartLocation();
 			player.sendMessage(ChatColor.YELLOW + "Center: " + ChatColor.GRAY + StringUtils.capitalize(center.getWorld().getName().toLowerCase()) + ": " + Math.round(center.getX()) + ", " + Math.round(center.getY()) + ", " + Math.round(center.getZ()));
 			StringBuilder butts = new StringBuilder(ChatColor.YELLOW + "Participants: ");
-			for(BattleParticipant participant : getInfo.getMeta().getParticipants())
-				if(participant instanceof PlayerCharacter) butts.append(((PlayerCharacter) participant).getName() + ", ");
+			for(Battle.Participant participant : getInfo.getMeta().getParticipants())
+				if(participant instanceof DPlayer.Character) butts.append(((DPlayer.Character) participant).getName() + ", ");
 			player.sendMessage(ChatColor.YELLOW + "Participants: " + ChatColor.GRAY + butts.substring(0, 2) + ".");
 		}
 
@@ -149,9 +153,9 @@ public class DevelopmentCommands extends DemigodsCommand
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		String charName = args[0];
 
-		if(PlayerWrapper.hasCharName(player, charName))
+		if(DPlayer.Util.hasCharName(player, charName))
 		{
-			PlayerCharacter character = PlayerCharacter.getCharacterByName(charName);
+			DPlayer.Character character = DPlayer.Character.Util.getCharacterByName(charName);
 			character.remove();
 
 			sender.sendMessage(ChatColor.RED + "Character removed!");

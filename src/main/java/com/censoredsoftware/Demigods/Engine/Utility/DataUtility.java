@@ -14,7 +14,7 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.General.TimedData;
+import com.censoredsoftware.Demigods.Engine.Object.TimedData;
 import com.google.common.collect.Maps;
 
 public class DataUtility
@@ -112,7 +112,7 @@ public class DataUtility
 	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
 	{
 		// Remove the data if it exists already
-		TimedData.remove(key, subKey);
+		TimedData.Util.remove(key, subKey);
 
 		// Create and save the timed data
 		TimedData timedData = new TimedData();
@@ -125,16 +125,16 @@ public class DataUtility
 
 	public static void removeTimed(String key, String subKey)
 	{
-		TimedData.remove(key, subKey);
+		TimedData.Util.remove(key, subKey);
 	}
 
 	public static boolean hasTimed(String key, String subKey)
 	{
-		return TimedData.find(key, subKey) != null;
+		return TimedData.Util.find(key, subKey) != null;
 	}
 
 	public static Object getTimedValue(String key, String subKey)
 	{
-		return TimedData.find(key, subKey).getData();
+		return TimedData.Util.find(key, subKey).getData();
 	}
 }
