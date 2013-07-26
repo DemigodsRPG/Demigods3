@@ -2,10 +2,8 @@ package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,10 +11,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.DCommand;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -86,17 +84,9 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		if(Battle.Util.existsInRadius(player.getLocation()))
+		for(Structure.Save save : Structure.Util._findAll("flags", Structure.Flag.PROTECTED_BLOCKS.name()))
 		{
-			Battle getInfo = Battle.Util.getInRadius(player.getLocation());
-
-			Demigods.message.chatTitle(ChatColor.DARK_AQUA + "Battle Info");
-			Location center = getInfo.getStartLocation();
-			player.sendMessage(ChatColor.YELLOW + "Center: " + ChatColor.GRAY + StringUtils.capitalize(center.getWorld().getName().toLowerCase()) + ": " + Math.round(center.getX()) + ", " + Math.round(center.getY()) + ", " + Math.round(center.getZ()));
-			StringBuilder butts = new StringBuilder(ChatColor.YELLOW + "Participants: ");
-			for(Battle.Participant participant : getInfo.getMeta().getParticipants())
-				if(participant instanceof DPlayer.Character) butts.append(((DPlayer.Character) participant).getName() + ", ");
-			player.sendMessage(ChatColor.YELLOW + "Participants: " + ChatColor.GRAY + butts.substring(0, 2) + ".");
+			player.sendMessage("" + save.getId());
 		}
 
 		return true;
