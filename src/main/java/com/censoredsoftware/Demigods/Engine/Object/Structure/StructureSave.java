@@ -36,21 +36,19 @@ public class StructureSave
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
-	public void addFlags(Set<Structure.Flag> flags)
+	public void addFlags(Set<? extends Structure.Flag> flags)
 	{
 		if(this.flags == null) this.flags = Sets.newHashSet();
 		for(Structure.Flag flag : flags)
 		{
 			this.flags.add(flag.name());
 		}
-		save();
 	}
 
 	public void addFlag(Structure.Flag flag)
 	{
 		if(this.flags == null) this.flags = Sets.newHashSet();
 		this.flags.add(flag.name());
-		save();
 	}
 
 	public void setType(String type)

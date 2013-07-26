@@ -55,9 +55,11 @@ public abstract class Structure
 
 	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(save.getLocations().contains(location)) return true;
+			Demigods.message.broadcast("Save loaded.");
+			if(save.hasFlag(flag)) Demigods.message.broadcast("Has flag.");
+			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
