@@ -137,7 +137,7 @@ public class Shrine extends Structure
 			{
 				for(StructureSave saved : StructureSave.loadAll())
 				{
-					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
+					if(saved.getStructure().getStructureType().equals(getStructureType())) add(saved);
 				}
 			}
 		};
@@ -150,7 +150,6 @@ public class Shrine extends Structure
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.setStructureDesign("general");
-		save.setSettings(true, true, true);
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
@@ -211,7 +210,7 @@ class ShrineListener implements Listener
 		{
 			event.setCancelled(true);
 
-			StructureSave save = Structure.getStructure(location);
+			StructureSave save = Structure.getStructureSave(location);
 			PlayerCharacter owner = save.getOwner();
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_shrine"))

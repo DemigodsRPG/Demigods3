@@ -32,17 +32,6 @@ public class StructureSave
 	private DemigodsLocation reference;
 	@Reference
 	private PlayerCharacter owner;
-
-	// Settings
-	@Indexed
-	@Attribute
-	private Boolean protectedBlocks;
-	@Indexed
-	@Attribute
-	private Boolean hasOwner;
-	@Indexed
-	@Attribute
-	private Boolean deleteOnOwnerDelete;
 	@Indexed
 	@CollectionSet(of = String.class)
 	private Set<String> flags;
@@ -83,14 +72,6 @@ public class StructureSave
 		save();
 	}
 
-	public void setSettings(boolean protectedBlocks, boolean hasOwner, boolean deleteOnOwnerDelete)
-	{
-		this.protectedBlocks = protectedBlocks;
-		this.hasOwner = hasOwner;
-		this.deleteOnOwnerDelete = deleteOnOwnerDelete;
-		save();
-	}
-
 	public void setActive(Boolean bool)
 	{
 		this.active = bool;
@@ -105,7 +86,9 @@ public class StructureSave
 	public void remove()
 	{
 		for(Location location : getLocations())
+		{
 			location.getBlock().setTypeId(Material.AIR.getId());
+		}
 		JOhm.delete(DemigodsLocation.class, reference.getId());
 		JOhm.delete(StructureSave.class, this.id);
 	}
@@ -132,39 +115,26 @@ public class StructureSave
 
 	public Location getClickableBlock()
 	{
-		return getStructureInfo().getClickableBlock(this.reference.toLocation());
+		return getStructure().getClickableBlock(this.reference.toLocation());
 	}
 
 	public Set<Location> getLocations()
 	{
-		return getStructureInfo().get(this.structureDesign).getLocations(this.reference.toLocation());
+		return getStructure().get(this.structureDesign).getLocations(this.reference.toLocation());
 	}
 
-	public Structure getStructureInfo()
+	public Structure getStructure()
 	{
 		for(Structure structure : Demigods.getLoadedStructures())
+		{
 			if(structure.getStructureType().equalsIgnoreCase(this.structureType)) return structure;
+		}
 		return null;
 	}
 
 	public PlayerCharacter getOwner()
 	{
 		return this.owner;
-	}
-
-	public boolean getSettingProtectedBlocks()
-	{
-		return this.protectedBlocks;
-	}
-
-	public boolean getSettingHasOwner()
-	{
-		return this.hasOwner;
-	}
-
-	public boolean getSettingDeleteOnOwnerDelete()
-	{
-		return this.deleteOnOwnerDelete;
 	}
 
 	public Boolean getActive()
@@ -192,6 +162,6 @@ public class StructureSave
 
 	public void generate()
 	{
-		getStructureInfo().get(this.structureDesign).generate(this.reference.toLocation());
+		getStructure().get(this.structureDesign).generate(this.reference.toLocation());
 	}
 }

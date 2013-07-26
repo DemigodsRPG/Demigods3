@@ -200,7 +200,7 @@ public class Obelisk extends Structure
 			{
 				for(StructureSave saved : StructureSave.loadAll())
 				{
-					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
+					if(saved.getStructure().getStructureType().equals(getStructureType())) add(saved);
 				}
 			}
 		};
@@ -213,7 +213,6 @@ public class Obelisk extends Structure
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.setStructureDesign(getDesign(reference));
-		save.setSettings(true, true, false);
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
@@ -249,7 +248,7 @@ public class Obelisk extends Structure
 	{
 		for(StructureSave structureSave : StructureSave.loadAll())
 		{
-			if(structureSave.getStructureInfo().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
+			if(structureSave.getStructure().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
 		}
 		return false;
 	}
@@ -301,7 +300,7 @@ class ObeliskListener implements Listener
 		{
 			event.setCancelled(true);
 
-			StructureSave save = Structure.getStructure(location);
+			StructureSave save = Structure.getStructureSave(location);
 			PlayerCharacter owner = save.getOwner();
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_obelisk"))

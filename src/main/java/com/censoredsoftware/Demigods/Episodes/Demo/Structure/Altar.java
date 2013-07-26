@@ -228,7 +228,7 @@ public class Altar extends Structure
 			{
 				for(StructureSave saved : StructureSave.loadAll())
 				{
-					if(saved.getStructureInfo().getStructureType().equals(getStructureType())) add(saved);
+					if(saved.getStructure().getStructureType().equals(getStructureType())) add(saved);
 				}
 			}
 		};
@@ -241,7 +241,6 @@ public class Altar extends Structure
 		save.setReferenceLocation(reference);
 		save.setStructureType(getStructureType());
 		save.setStructureDesign("general");
-		save.setSettings(true, false, false);
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
@@ -337,7 +336,7 @@ class AltarListener implements Listener
 		{
 			event.setCancelled(true);
 
-			StructureSave altar = Structure.getStructure(location);
+			StructureSave altar = Structure.getStructureSave(location);
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_altar"))
 			{

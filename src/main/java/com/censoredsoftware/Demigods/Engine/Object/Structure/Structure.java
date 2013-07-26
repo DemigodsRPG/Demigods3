@@ -35,7 +35,7 @@ public abstract class Structure
 		PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
 	}
 
-	public static StructureSave getStructure(Location location)
+	public static StructureSave getStructureSave(Location location)
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
@@ -89,7 +89,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
+			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 		}
 		return null;
 	}

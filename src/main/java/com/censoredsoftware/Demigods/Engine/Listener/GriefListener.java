@@ -53,7 +53,7 @@ public class GriefListener implements Listener
 		{
 			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
 			PlayerCharacter owner = save.getOwner();
-			if(character != null && save.getSettingHasOwner() && owner != null && character.getId().equals(owner.getId())) return;
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -66,7 +66,7 @@ public class GriefListener implements Listener
 		{
 			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
 			PlayerCharacter owner = save.getOwner();
-			if(character != null && save.getSettingHasOwner() && owner != null && character.getId().equals(owner.getId())) return;
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -79,7 +79,7 @@ public class GriefListener implements Listener
 		{
 			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
 			PlayerCharacter owner = save.getOwner();
-			if(character != null && save.getSettingHasOwner() && owner != null && character.getId().equals(owner.getId())) return;
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -143,7 +143,7 @@ public class GriefListener implements Listener
 		{
 			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
 			PlayerCharacter owner = save.getOwner();
-			if(character != null && save.getSettingHasOwner() && owner != null && character.getId().equals(owner.getId())) return;
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -165,7 +165,7 @@ public class GriefListener implements Listener
 		{
 			PlayerCharacter character = PlayerWrapper.getPlayer(event.getPlayer()).getCurrent();
 			PlayerCharacter owner = save.getOwner();
-			if(character != null && save.getSettingHasOwner() && owner != null && character.getId().equals(owner.getId())) return;
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
 	}

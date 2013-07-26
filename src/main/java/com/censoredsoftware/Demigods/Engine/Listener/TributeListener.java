@@ -47,7 +47,7 @@ public class TributeListener implements Listener
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureSave save = Structure.getStructure(location);
+			StructureSave save = Structure.getStructureSave(location);
 
 			// Return if they aren't clicking the gold block
 			if(!event.getClickedBlock().getLocation().equals(save.getClickableBlock())) return;
@@ -59,7 +59,7 @@ public class TributeListener implements Listener
 				return;
 			}
 
-			if(save.getSettingHasOwner() && save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
+			if(save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getInfo().getName() + " in order to tribute here.");
 				return;
@@ -110,7 +110,7 @@ public class TributeListener implements Listener
 		character.getMeta().addMaxFavor(tributeValue);
 
 		// Define the shrine owner
-		if(save.getSettingHasOwner())
+		if(save.getOwner() != null)
 		{
 			PlayerCharacter shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
