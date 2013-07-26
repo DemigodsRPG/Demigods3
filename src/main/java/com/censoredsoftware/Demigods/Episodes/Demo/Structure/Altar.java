@@ -229,14 +229,14 @@ public class Altar extends Structure
 	@Override
 	public StructureSave createNew(Location reference, boolean generate)
 	{
-		StructureSave structureSave = new StructureSave();
-		structureSave.setReferenceLocation(reference);
-		structureSave.setType(getStructureType());
-		structureSave.setDesign("general");
-		structureSave.addFlags(getFlags());
-		structureSave.save();
-		if(generate) structureSave.generate();
-		return structureSave;
+		StructureSave save = new StructureSave();
+		save.setReferenceLocation(reference);
+		save.setType(getStructureType());
+		save.setDesign("general");
+		save.addFlags(getFlags());
+		save.save();
+		if(generate) save.generate();
+		return save;
 	}
 
 	public static boolean altarNearby(Location location)
