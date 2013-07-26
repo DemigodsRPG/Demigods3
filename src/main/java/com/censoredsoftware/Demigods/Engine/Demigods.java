@@ -163,11 +163,11 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
@@ -196,7 +196,7 @@ public class Demigods
 		for(Structure structure : getLoadedStructures())
 		{
 			if(structure.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
+			// instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 
 		// Conversations
