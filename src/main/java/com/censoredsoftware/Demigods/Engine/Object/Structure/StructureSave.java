@@ -21,10 +21,10 @@ public class StructureSave
 	private Long id;
 	@Indexed
 	@Attribute
-	private String structureType;
+	private String type;
 	@Indexed
 	@Attribute
-	private String structureDesign;
+	private String design;
 	@Indexed
 	@Attribute
 	private Boolean active;
@@ -51,14 +51,14 @@ public class StructureSave
 		this.flags.add(flag.name());
 	}
 
-	public void setStructureType(String type)
+	public void setType(String type)
 	{
-		this.structureType = type;
+		this.type = type;
 	}
 
-	public void setStructureDesign(String name)
+	public void setDesign(String name)
 	{
-		this.structureDesign = name;
+		this.design = name;
 	}
 
 	public void setReferenceLocation(Location reference)
@@ -120,14 +120,14 @@ public class StructureSave
 
 	public Set<Location> getLocations()
 	{
-		return getStructure().get(this.structureDesign).getLocations(this.reference.toLocation());
+		return getStructure().get(this.design).getLocations(this.reference.toLocation());
 	}
 
 	public Structure getStructure()
 	{
 		for(Structure structure : Demigods.getLoadedStructures())
 		{
-			if(structure.getStructureType().equalsIgnoreCase(this.structureType)) return structure;
+			if(structure.getStructureType().equalsIgnoreCase(this.type)) return structure;
 		}
 		return null;
 	}
@@ -162,6 +162,6 @@ public class StructureSave
 
 	public void generate()
 	{
-		getStructure().get(this.structureDesign).generate(this.reference.toLocation());
+		getStructure().get(this.design).generate(this.reference.toLocation());
 	}
 }

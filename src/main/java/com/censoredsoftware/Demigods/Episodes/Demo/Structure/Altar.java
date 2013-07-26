@@ -239,8 +239,8 @@ public class Altar extends Structure
 	{
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
-		save.setStructureType(getStructureType());
-		save.setStructureDesign("general");
+		save.setType(getStructureType());
+		save.setDesign("general");
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();

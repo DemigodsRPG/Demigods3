@@ -211,8 +211,8 @@ public class Obelisk extends Structure
 	{
 		StructureSave save = new StructureSave();
 		save.setReferenceLocation(reference);
-		save.setStructureType(getStructureType());
-		save.setStructureDesign(getDesign(reference));
+		save.setType(getStructureType());
+		save.setDesign(getDesign(reference));
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();

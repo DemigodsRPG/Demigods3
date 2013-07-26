@@ -46,7 +46,7 @@ public abstract class Structure
 
 	public static boolean partOfStructureWithType(Location location, String structureType)
 	{
-		for(StructureSave save : StructureSave.findAll("structureType", structureType))
+		for(StructureSave save : StructureSave.findAll("type", structureType))
 		{
 			if(save.getClickableBlock().equals(location)) return true;
 		}
@@ -130,6 +130,6 @@ public abstract class Structure
 
 	public static List<StructureSave> getStructuresByInfo(Structure info)
 	{
-		return StructureSave.findAll("structureType", info.getStructureType());
+		return StructureSave.findAll("type", info.getStructureType());
 	}
 }
