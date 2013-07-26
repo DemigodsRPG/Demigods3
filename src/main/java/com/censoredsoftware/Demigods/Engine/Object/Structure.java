@@ -624,6 +624,7 @@ public abstract class Structure
 				{
 					for(Save save : loadAll())
 					{
+						Demigods.message.broadcast("Found.");
 						if(save.getRawFlags().contains(flagName)) add(save);
 					}
 				}
