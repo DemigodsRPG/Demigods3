@@ -62,14 +62,12 @@ public class DevelopmentCommands extends DemigodsCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Deleting all battles...");
-
-		for(Battle battle : Battle.getAll())
+		if(args.length == 1 && MiscUtility.isInt(args[0]))
 		{
-			battle.delete();
+			int closest64 = MiscUtility.closestIntDivisibleBy(Integer.parseInt(args[0]), 64);
+			player.sendMessage("Result: " + closest64);
+			player.sendMessage("Pass: " + (closest64 % 64 == 0));
 		}
-
-		player.sendMessage("All battles deleted!");
 
 		return true;
 	}
