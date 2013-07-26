@@ -32,8 +32,8 @@ public class StructureSave
 	private DemigodsLocation reference;
 	@Reference
 	private PlayerCharacter owner;
-	@CollectionSet(of = String.class)
 	@Indexed
+	@CollectionSet(of = String.class)
 	private Set<String> flags;
 
 	public void addFlags(Set<? extends Structure.Flag> flags)
@@ -41,13 +41,7 @@ public class StructureSave
 		if(this.flags == null) this.flags = Sets.newHashSet();
 		for(Structure.Flag flag : flags)
 		{
-			Demigods.message.broadcast("Adding flag! " + flag.name());
 			this.flags.add(flag.name());
-		}
-
-		for(String flag : this.flags)
-		{
-			Demigods.message.broadcast("Flag added! " + flag);
 		}
 	}
 

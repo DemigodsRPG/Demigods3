@@ -242,6 +242,12 @@ public class Altar extends Structure
 		save.setType(getStructureType());
 		save.setDesign("general");
 		save.addFlags(getFlags());
+
+		for(Flag flag : save.getFlags())
+		{
+			Demigods.message.broadcast("Flag is found! " + flag.name());
+		}
+
 		save.save();
 		if(generate) save.generate();
 		return save;
