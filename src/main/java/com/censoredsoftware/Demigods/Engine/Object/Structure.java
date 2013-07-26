@@ -1,9 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -534,7 +531,7 @@ public abstract class Structure
 	{
 		public static Save getStructureSave(Location location)
 		{
-			for(Save save : loadAll())
+			for(Save save : filterForRegion(location, loadAll()))
 			{
 				if(save.getLocations().contains(location)) return save;
 			}
@@ -548,7 +545,7 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithType(Location location, String type)
 		{
-			for(Save save : findAll("type", type))
+			for(Save save : filterForRegion(location, findAll("type", type)))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -557,7 +554,7 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag)
 		{
-			for(Save save : loadAll())
+			for(Save save : filterForRegion(location, loadAll()))
 			{
 				Demigods.message.broadcast(save.getId() + " - " + save.getFlags());
 				if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
@@ -567,7 +564,7 @@ public abstract class Structure
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : findAll("flags", flag.name()))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -576,7 +573,7 @@ public abstract class Structure
 
 		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : findAll("flags", flag.name()))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
@@ -590,7 +587,7 @@ public abstract class Structure
 
 		public static Save getInRadiusWithFlag(Location location, Flag flag)
 		{
-			for(Save save : findAll("flags", flag.name()))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 			}
@@ -618,6 +615,11 @@ public abstract class Structure
 			}
 		}
 
+		public static Set<Save> filterForRegion(Location location, Collection<Save> structures)
+		{
+			return Sets.intersection(getStructuresInRegion(Region.Util.getRegion(location)), Sets.newHashSet(structures));
+		}
+
 		public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
 		{
 			return new HashSet<Structure>()
@@ -629,11 +631,6 @@ public abstract class Structure
 					}
 				}
 			};
-		}
-
-		public static List<Save> getStructuresByInfo(Structure info)
-		{
-			return findAll("type", info.getStructureType());
 		}
 
 		public static Save load(Long id)

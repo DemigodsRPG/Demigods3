@@ -108,7 +108,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onLiquidMove(BlockFromToEvent event)
 	{
-		// TODO: Major lag - if(Structure.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		if(Structure.Util.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
