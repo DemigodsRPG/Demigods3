@@ -43,13 +43,14 @@ public class Region
 
 		private static int getRegionCoordinate(int number)
 		{
-			int round = ((number + 128) / 256);
 			if(number % 256 == 0) return number;
+			int round = ((number + 128) / 256);
 			if(round == -1) return -256;
 			if(round == 0) return 0;
 			if(round == 1) return 256;
-			if(Math.abs(number % 256) > 128) return 256 * round;
-			return 256 * (round + number > 0 ? 1 : -1);
+			boolean positive = number > 0;
+			if(positive ? number % 256 > 128 : number % 256 < 128) return 256 * round;
+			return 256 * (round + (positive ? 1 : -1));
 		}
 	}
 }

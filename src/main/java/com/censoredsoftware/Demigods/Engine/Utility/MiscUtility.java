@@ -254,7 +254,8 @@ public class MiscUtility
 		if(round == -1) return -number;
 		if(round == 0) return 0;
 		if(round == 1) return divisor;
-		if(Math.abs(number % divisor) > divisor / 2) return divisor * round;
-		return divisor * (round + number > 0 ? 1 : -1);
+		boolean positive = number > 0;
+		if(positive ? number % divisor > divisor / 2 : number % divisor < divisor / 2) return (divisor / 2) * round;
+		return divisor * (round + (positive ? 1 : -1));
 	}
 }
