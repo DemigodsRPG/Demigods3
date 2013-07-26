@@ -19,6 +19,9 @@ public class StructureSave
 	@Id
 	private Long id;
 	@Indexed
+	@CollectionSet(of = Structure.Flag.class)
+	private Set<Structure.Flag> flags;
+	@Indexed
 	@Attribute
 	private String type;
 	@Indexed
@@ -32,9 +35,6 @@ public class StructureSave
 	@Indexed
 	@Reference
 	private PlayerCharacter owner;
-	@Indexed
-	@CollectionSet(of = Structure.Flag.class)
-	private Set<Structure.Flag> flags;
 
 	public StructureSave()
 	{
