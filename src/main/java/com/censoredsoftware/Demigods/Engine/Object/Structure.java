@@ -617,6 +617,7 @@ public abstract class Structure
 		 */
 		public static Set<Save> _findAll(String ignored, final String flagName)
 		{
+			if(flagName.equals("NO_GRIEFING") || flagName.equals("TRIBUTE_LOCATION")) return Sets.newHashSet();
 			return Sets.newHashSet(findAll("type", "Altar"));
 		}
 
