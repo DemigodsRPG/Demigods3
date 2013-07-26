@@ -36,28 +36,7 @@ public abstract class Structure
 
 	public enum Flag
 	{
-		PROTECTED_BLOCKS(1), NO_GRIEFING(2), NO_PVP(3), PRAYER_LOCATION(4), TRIBUTE_LOCATION(5);
-
-		private int id;
-
-		private Flag(int id)
-		{
-			this.id = id;
-		}
-
-		public int getId()
-		{
-			return this.id;
-		}
-
-		public static Flag valueOf(int id)
-		{
-			for(Flag flag : values())
-			{
-				if(flag.getId() == id) return flag;
-			}
-			return null;
-		}
+		PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
 	}
 
 	public static class BlockData
@@ -362,8 +341,8 @@ public abstract class Structure
 		@Reference
 		private DPlayer.Character owner;
 		@Indexed
-		@CollectionSet(of = Integer.class)
-		private Set<Integer> flags;
+		@CollectionSet(of = String.class)
+		private Set<String> flags;
 		@Indexed
 		@Attribute
 		private int regionX;
@@ -419,13 +398,13 @@ public abstract class Structure
 		{
 			for(Structure.Flag flag : flags)
 			{
-				this.flags.add(flag.getId());
+				this.flags.add(flag.name());
 			}
 		}
 
 		public void addFlag(Structure.Flag flag)
 		{
-			this.flags.add(flag.getId());
+			this.flags.add(flag.name());
 			save();
 		}
 
@@ -483,7 +462,7 @@ public abstract class Structure
 			return new HashSet<Structure.Flag>()
 			{
 				{
-					for(Integer flag : getRawFlags())
+					for(String flag : getRawFlags())
 					{
 						add(Structure.Flag.valueOf(flag));
 					}
@@ -491,7 +470,7 @@ public abstract class Structure
 			};
 		}
 
-		public Set<Integer> getRawFlags()
+		public Set<String> getRawFlags()
 		{
 			return this.flags;
 		}
