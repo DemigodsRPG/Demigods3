@@ -59,7 +59,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getLocations().contains(location);
+			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
@@ -68,7 +68,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getReferenceLocation().equals(location);
+			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
@@ -77,7 +77,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getClickableBlock().equals(location);
+			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
