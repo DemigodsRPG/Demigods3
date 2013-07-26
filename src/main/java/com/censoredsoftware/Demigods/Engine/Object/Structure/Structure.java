@@ -77,7 +77,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.getLocations().contains(location)) return true;
+			if(save.getClickableBlock().equals(location)) return true;
 		}
 		return false;
 	}
