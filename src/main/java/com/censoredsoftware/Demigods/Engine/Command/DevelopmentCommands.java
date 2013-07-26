@@ -55,10 +55,10 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		for(Structure.Save save : Structure.Util.findAll("regionX", Region.Util.getRegion(player.getLocation()).getX()))
-		{
-			player.sendMessage("" + save.getId());
-		}
+		Region region = Region.Util.getRegion(player.getLocation());
+
+		player.sendMessage(ChatColor.YELLOW + "X: " + region.getX());
+		player.sendMessage(ChatColor.YELLOW + "Z: " + region.getZ());
 
 		return true;
 	}
