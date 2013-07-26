@@ -67,7 +67,7 @@ public class DevelopmentCommands extends DemigodsCommand
 			try
 			{
 				player.sendMessage("Pass: " + (Integer.parseInt(args[0]) % 64 == 0));
-				player.sendMessage("Closest: " + MiscUtility.closestIntDivisibleBy(Integer.parseInt(args[0]), 64));
+				player.sendMessage("Closest: " + MiscUtility.getClosestNonNegativeIntDivisibleBy(Integer.parseInt(args[0]), 64));
 			}
 			catch(Exception e)
 			{

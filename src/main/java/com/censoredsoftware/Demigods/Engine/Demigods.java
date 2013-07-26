@@ -26,7 +26,6 @@ import com.censoredsoftware.Demigods.Engine.Object.Structure.Structure;
 import com.censoredsoftware.Demigods.Engine.Object.Task.Task;
 import com.censoredsoftware.Demigods.Engine.Object.Task.TaskSet;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -137,14 +136,14 @@ public class Demigods
 
 		// Finish loading the plugin based on the game data.
 		loadDepends(instance);
-		loadListeners(instance);
+		// loadListeners(instance);
 		loadCommands();
 
 		// Finally, regenerate structures
-		Structure.regenerateStructures();
+		// Structure.regenerateStructures();
 
 		// Start game threads.
-		SchedulerUtility.startThreads(instance);
+		// SchedulerUtility.startThreads(instance);
 
 		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
@@ -163,11 +162,11 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		// instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
-		// instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
-		// instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
+		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
@@ -196,7 +195,7 @@ public class Demigods
 		for(Structure structure : getLoadedStructures())
 		{
 			if(structure.getUniqueListener() == null) continue;
-			// instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
+			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 
 		// Conversations
