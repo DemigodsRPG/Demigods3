@@ -18,7 +18,6 @@ public class StructureSave
 {
 	@Id
 	private Long id;
-	@Indexed
 	@CollectionSet(of = Structure.Flag.class)
 	private Set<Structure.Flag> flags;
 	@Indexed
