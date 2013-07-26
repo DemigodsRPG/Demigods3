@@ -44,6 +44,11 @@ public class StructureSave
 			Demigods.message.broadcast("Adding flag! " + flag.name());
 			this.flags.add(flag.name());
 		}
+
+		for(String flag : this.flags)
+		{
+			Demigods.message.broadcast("Flag added! " + flag);
+		}
 	}
 
 	public void addFlag(Structure.Flag flag)
