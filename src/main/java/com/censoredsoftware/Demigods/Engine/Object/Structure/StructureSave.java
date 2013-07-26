@@ -11,13 +11,13 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.google.common.collect.Sets;
 
 @Model
 public class StructureSave
 {
 	@Id
 	private Long id;
+	@Indexed
 	@CollectionSet(of = Structure.Flag.class)
 	private Set<Structure.Flag> flags;
 	@Indexed
@@ -34,12 +34,6 @@ public class StructureSave
 	@Indexed
 	@Reference
 	private PlayerCharacter owner;
-
-	public StructureSave()
-	{
-		// Initialize data
-		this.flags = Sets.newHashSet();
-	}
 
 	public void setType(String type)
 	{
