@@ -44,9 +44,9 @@ public abstract class Structure
 		return null;
 	}
 
-	public static boolean partOfStructureWithType(Location location, String structureType)
+	public static boolean partOfStructureWithType(Location location, String type)
 	{
-		for(StructureSave save : StructureSave.findAll("type", structureType))
+		for(StructureSave save : StructureSave.findAll("type", type))
 		{
 			if(save.getClickableBlock().equals(location)) return true;
 		}
@@ -57,6 +57,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
+			Demigods.message.broadcast("Debug: partOfStructureWithFlag()");
 			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
