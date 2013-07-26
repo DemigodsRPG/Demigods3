@@ -12,7 +12,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.General.DemigodsLocation;
 import com.censoredsoftware.Demigods.Engine.Object.Player.PlayerCharacter;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 
 @Model
 public class StructureSave
@@ -32,13 +32,14 @@ public class StructureSave
 	private DemigodsLocation reference;
 	@Reference
 	private PlayerCharacter owner;
-	@CollectionSet(of = String.class)
-	private Set<String> flags;
+	@Indexed
+	@CollectionList(of = String.class)
+	private List<String> flags;
 
 	public StructureSave()
 	{
 		// Initialize data
-		this.flags = Sets.newHashSet();
+		this.flags = Lists.newArrayList();
 	}
 
 	public void setType(String type)
@@ -161,7 +162,7 @@ public class StructureSave
 		};
 	}
 
-	public Set<String> getRawFlags()
+	public List<String> getRawFlags()
 	{
 		return this.flags;
 	}
