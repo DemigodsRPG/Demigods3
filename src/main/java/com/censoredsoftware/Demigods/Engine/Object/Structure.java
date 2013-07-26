@@ -557,24 +557,11 @@ public abstract class Structure
 			return false;
 		}
 
-		/**
-		 * @deprecated Only to get it working again until we figure out why JOhm isn't finding the flags.
-		 */
-		public static boolean _partOfStructureWithFlag(Location location, Flag flg)
-		{
-			for(Save save : _findAll("", Flag.PROTECTED_BLOCKS.name()))
-			{
-				if(save.getLocations().contains(location)) return true;
-			}
-			return false;
-		}
-
 		public static boolean partOfStructureWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, loadAll()))
+			for(Save save : _findAll("flags", flag.name()))
 			{
 				Demigods.message.broadcast(save.getId() + " - " + save.getFlags());
-				if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 			}
 			return false;
 		}
@@ -590,7 +577,7 @@ public abstract class Structure
 
 		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
+			for(Save save : _findAll("flags", flag.name()))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
