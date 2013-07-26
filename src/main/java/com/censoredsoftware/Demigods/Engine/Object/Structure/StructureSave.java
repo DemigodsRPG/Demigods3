@@ -43,12 +43,14 @@ public class StructureSave
 		{
 			this.flags.add(flag.name());
 		}
+		save();
 	}
 
 	public void addFlag(Structure.Flag flag)
 	{
 		if(this.flags == null) this.flags = Sets.newHashSet();
 		this.flags.add(flag.name());
+		save();
 	}
 
 	public void setType(String type)
