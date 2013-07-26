@@ -221,30 +221,22 @@ public class Altar extends Structure
 	}
 
 	@Override
-	public Set<StructureSave> getAll()
+	public List<StructureSave> getAll()
 	{
-		return new HashSet<StructureSave>()
-		{
-			{
-				for(StructureSave saved : StructureSave.loadAll())
-				{
-					if(saved.getStructure().getStructureType().equals(getStructureType())) add(saved);
-				}
-			}
-		};
+		return StructureSave.findAll("type", getStructureType());
 	}
 
 	@Override
 	public StructureSave createNew(Location reference, boolean generate)
 	{
-		StructureSave save = new StructureSave();
-		save.setReferenceLocation(reference);
-		save.setType(getStructureType());
-		save.setDesign("general");
-		save.save();
-		save.addFlags(getFlags());
-		if(generate) save.generate();
-		return save;
+		StructureSave structureSave = new StructureSave();
+		structureSave.setReferenceLocation(reference);
+		structureSave.setType(getStructureType());
+		structureSave.setDesign("general");
+		structureSave.addFlags(getFlags());
+		structureSave.save();
+		if(generate) structureSave.generate();
+		return structureSave;
 	}
 
 	public static boolean altarNearby(Location location)

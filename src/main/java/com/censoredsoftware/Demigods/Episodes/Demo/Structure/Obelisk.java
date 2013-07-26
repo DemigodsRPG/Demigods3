@@ -193,17 +193,9 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public Set<StructureSave> getAll()
+	public List<StructureSave> getAll()
 	{
-		return new HashSet<StructureSave>()
-		{
-			{
-				for(StructureSave saved : StructureSave.loadAll())
-				{
-					if(saved.getStructure().getStructureType().equals(getStructureType())) add(saved);
-				}
-			}
-		};
+		return StructureSave.findAll("type", getStructureType());
 	}
 
 	@Override

@@ -42,6 +42,6 @@ public class InventoryListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	private void onPlayerDeathEvent(PlayerDeathEvent event)
 	{
-
+		// TODO: Save hot bar
 	}
 }

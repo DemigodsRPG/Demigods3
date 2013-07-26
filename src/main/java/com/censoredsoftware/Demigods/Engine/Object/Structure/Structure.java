@@ -24,7 +24,7 @@ public abstract class Structure
 
 	public abstract Listener getUniqueListener();
 
-	public abstract Set<StructureSave> getAll();
+	public abstract List<StructureSave> getAll();
 
 	public abstract Set<Structure.Flag> getFlags();
 
@@ -57,12 +57,6 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
-			// Debug AGAIN
-			for(String bitch : save.getRawFlags())
-			{
-				Demigods.message.broadcast(bitch);
-			}
-
 			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 		}
 		return false;
