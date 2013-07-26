@@ -236,6 +236,14 @@ public class Altar extends Structure
 		save.setType(getStructureType());
 		save.setDesign("general");
 		save.addFlags(getFlags());
+
+		// TODO
+		for(Flag flag : getFlags())
+		{
+			Demigods.message.broadcast("Given: " + flag.name());
+		}
+		// TODO
+
 		save.save();
 		if(generate) save.generate();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new _runnable(save.getId()), 120);
