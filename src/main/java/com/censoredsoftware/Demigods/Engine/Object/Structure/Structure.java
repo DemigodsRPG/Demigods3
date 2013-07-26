@@ -57,27 +57,27 @@ public abstract class Structure
 
 	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			return save.getLocations().contains(location);
+			return save.getFlags().contains(flag) && save.getLocations().contains(location);
 		}
 		return false;
 	}
 
-	public static boolean isCenterBlockWithFlag(Location location, Structure.Flag flag)
+	public static boolean isReferenceBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			return save.getReferenceLocation().equals(location);
+			return save.getFlags().contains(flag) && save.getReferenceLocation().equals(location);
 		}
 		return false;
 	}
 
 	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			return save.getClickableBlock().equals(location);
+			return save.getFlags().contains(flag) && save.getClickableBlock().equals(location);
 		}
 		return false;
 	}
@@ -89,9 +89,9 @@ public abstract class Structure
 
 	public static StructureSave getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
+			if(save.getFlags().contains(flag) && save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
 		}
 		return null;
 	}
@@ -112,7 +112,9 @@ public abstract class Structure
 	public static void regenerateStructures()
 	{
 		for(StructureSave save : StructureSave.loadAll())
+		{
 			save.generate();
+		}
 	}
 
 	public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
