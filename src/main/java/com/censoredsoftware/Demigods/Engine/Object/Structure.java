@@ -545,7 +545,7 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithType(Location location, String type)
 		{
-			for(Save save : filterForRegion(location, findAll("type", type)))
+			for(Save save : filterForRegion(location, _findAll("type", type)))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -564,7 +564,7 @@ public abstract class Structure
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -573,7 +573,7 @@ public abstract class Structure
 
 		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
@@ -587,7 +587,7 @@ public abstract class Structure
 
 		public static Save getInRadiusWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
 			{
 				if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 			}
@@ -605,6 +605,22 @@ public abstract class Structure
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		 * @deprecated Only to get it working again until we figure out why JOhm isn't finding the flags.
+		 */
+		public static Set<Save> _findAll(String ignored, final String flagName)
+		{
+			return new HashSet<Save>()
+			{
+				{
+					for(Save save : loadAll())
+					{
+						if(save.getRawFlags().contains(flagName)) add(save);
+					}
+				}
+			};
 		}
 
 		public static void regenerateStructures()
