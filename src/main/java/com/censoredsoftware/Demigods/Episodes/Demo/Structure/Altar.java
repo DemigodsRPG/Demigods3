@@ -247,6 +247,8 @@ public class Altar extends Structure
 		save.save();
 		if(generate) save.generate();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new _runnable(save.getId()), 120);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new _runnable(save.getId()), 240);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new _runnable(save.getId()), 360);
 		return save;
 	}
 
@@ -263,7 +265,7 @@ public class Altar extends Structure
 		public void run()
 		{
 			Save save = Util.load(id);
-			for(String saved : save.getRawFlags().keySet())
+			for(String saved : save.getRawFlags())
 			{
 				Demigods.message.broadcast("Flag: " + saved);
 			}
