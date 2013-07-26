@@ -246,7 +246,7 @@ public class MiscUtility
 		return -1;
 	}
 
-	public static int closestIntDivisibleBy(int number, int divisor)
+	public static int closestIntDivisibleBy(int number, int divisor) throws IllegalArgumentException
 	{
 		if(divisor == 0) throw new IllegalArgumentException("Undefined.");
 		int remainder = number % divisor;
