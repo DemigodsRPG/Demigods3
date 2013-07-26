@@ -55,27 +55,27 @@ public abstract class Structure
 
 	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.loadAll())
+		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
+			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
 
 	public static boolean isReferenceBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.loadAll())
+		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
+			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
 
 	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.loadAll())
+		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.hasFlag(flag) && save.getClickableBlock().equals(location)) return true;
+			if(save.getClickableBlock().equals(location)) return true;
 		}
 		return false;
 	}
@@ -87,9 +87,9 @@ public abstract class Structure
 
 	public static StructureSave getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.loadAll())
+		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.hasFlag(flag) && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
+			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 		}
 		return null;
 	}
