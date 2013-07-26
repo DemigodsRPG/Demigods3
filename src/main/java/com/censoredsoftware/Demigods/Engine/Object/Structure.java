@@ -13,6 +13,7 @@ import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
 
@@ -327,8 +328,8 @@ public abstract class Structure
 		@Id
 		private Long id;
 		@Indexed
-		@CollectionSet(of = String.class)
-		private Set<String> flags;
+		@CollectionMap(key = String.class, value = String.class)
+		private Map<String, String> flags;
 		@Indexed
 		@Attribute
 		private String type;
@@ -352,7 +353,7 @@ public abstract class Structure
 
 		public void init()
 		{
-			this.flags = Sets.newHashSet();
+			this.flags = Maps.newHashMap();
 		}
 
 		public void setType(String type)
@@ -397,16 +398,16 @@ public abstract class Structure
 
 		public void addFlags(Set<Structure.Flag> flags)
 		{
-			if(this.flags == null) this.flags = Sets.newHashSet();
 			for(Structure.Flag flag : flags)
 			{
-				this.flags.add(flag.name());
+				this.flags.put(flag.name(), flag.name());
 			}
+			save();
 		}
 
 		public void addFlag(Structure.Flag flag)
 		{
-			this.flags.add(flag.name());
+			this.flags.put(flag.name(), flag.name());
 			save();
 		}
 
@@ -456,7 +457,7 @@ public abstract class Structure
 
 		public Boolean hasFlag(Structure.Flag flag)
 		{
-			return this.flags != null && this.flags.contains(flag.name());
+			return this.flags != null && this.flags.containsKey(flag.name());
 		}
 
 		public Set<Structure.Flag> getFlags()
@@ -464,7 +465,7 @@ public abstract class Structure
 			return new HashSet<Structure.Flag>()
 			{
 				{
-					for(String flag : getRawFlags())
+					for(String flag : getRawFlags().keySet())
 					{
 						add(Structure.Flag.valueOf(flag));
 					}
@@ -472,7 +473,7 @@ public abstract class Structure
 			};
 		}
 
-		public Set<String> getRawFlags()
+		public Map<String, String> getRawFlags()
 		{
 			return this.flags;
 		}
@@ -624,7 +625,7 @@ public abstract class Structure
 				{
 					for(Save save : loadAll())
 					{
-						if(save.getRawFlags().contains(flagName))
+						if(save.getRawFlags().containsKey(flagName))
 						{
 							Demigods.message.broadcast("Saved!");
 							add(save);

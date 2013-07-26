@@ -263,7 +263,7 @@ public class Altar extends Structure
 		public void run()
 		{
 			Save save = Util.load(id);
-			for(String saved : save.getRawFlags())
+			for(String saved : save.getRawFlags().keySet())
 			{
 				Demigods.message.broadcast("Flag: " + saved);
 			}
