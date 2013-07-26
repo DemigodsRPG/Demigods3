@@ -251,9 +251,10 @@ public class MiscUtility
 		if(divisor == 0) throw new IllegalArgumentException("Undefined.");
 		if(number % divisor == 0) return number;
 		int round = ((number + (divisor / 2)) / divisor);
+		if(round == -1) return -number;
 		if(round == 0) return 0;
 		if(round == 1) return divisor;
-		if(number % divisor > (divisor / 2)) return divisor * round;
+		if(number % divisor > divisor / 2) return divisor * round;
 		return divisor * (round - 1);
 	}
 }

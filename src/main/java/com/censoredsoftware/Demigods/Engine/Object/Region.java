@@ -45,6 +45,7 @@ public class Region
 		{
 			int round = ((number + 128) / 256);
 			if(number % 256 == 0) return number;
+			if(round == -1) return -256;
 			if(round == 0) return 0;
 			if(round == 1) return 256;
 			if(number % 256 > 128) return 256 * round;
