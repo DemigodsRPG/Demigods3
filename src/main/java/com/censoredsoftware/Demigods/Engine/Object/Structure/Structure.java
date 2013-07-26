@@ -59,7 +59,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getFlags().contains(flag) && save.getLocations().contains(location);
+			return save.getLocations().contains(location);
 		}
 		return false;
 	}
@@ -68,7 +68,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getFlags().contains(flag) && save.getReferenceLocation().equals(location);
+			return save.getReferenceLocation().equals(location);
 		}
 		return false;
 	}
@@ -77,7 +77,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			return save.getFlags().contains(flag) && save.getClickableBlock().equals(location);
+			return save.getClickableBlock().equals(location);
 		}
 		return false;
 	}
@@ -91,7 +91,7 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
 		{
-			if(save.getFlags().contains(flag) && save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
+			if(save.getReferenceLocation().distance(location) <= save.getStructureInfo().getRadius()) return save;
 		}
 		return null;
 	}
