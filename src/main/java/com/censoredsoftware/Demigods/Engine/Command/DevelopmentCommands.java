@@ -57,7 +57,6 @@ public class DevelopmentCommands extends DCommand
 		{
 			int test = Integer.parseInt(args[0]);
 			player.sendMessage("Region: " + Region.Util.getRegion(test, test).getX());
-			player.sendMessage("MiscUtil: " + MiscUtility.getClosestIntDivisibleBy(test, 256));
 		}
 
 		return true;

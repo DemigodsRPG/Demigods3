@@ -245,18 +245,4 @@ public class MiscUtility
 		}
 		return -1;
 	}
-
-	public static int getClosestIntDivisibleBy(int number, int divisor) throws IllegalArgumentException
-	{
-		if(divisor == 0) throw new IllegalArgumentException("Undefined.");
-		if(number % divisor == 0) return number;
-		boolean positive = number > 0;
-		int half = positive ? divisor / 2 : divisor / -2;
-		int round = (number + half) / divisor;
-		if(round == -1) return -number;
-		if(round == 0) return 0;
-		if(round == 1) return divisor;
-		if(number % divisor > half) return divisor * round;
-		return divisor * (round + (positive ? 1 : -1));
-	}
 }
