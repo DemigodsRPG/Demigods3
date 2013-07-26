@@ -60,7 +60,7 @@ public class LocationUtility
 	 */
 	public static boolean canGenerateStrict(Location reference, int area)
 	{
-		if(reference.distance(Region.Util.getRegion(reference).getCenter(reference.getWorld())) > 115) return false;
+		if(reference.distance(Region.Util.getRegion(reference).getCenter(reference.getWorld())) > 240) return false;
 		Location location = reference.clone();
 		location.subtract(0, 1, 0);
 		location.add((area / 3), 0, (area / 2));

@@ -617,19 +617,7 @@ public abstract class Structure
 		 */
 		public static Set<Save> _findAll(String ignored, final String flagName)
 		{
-			return new HashSet<Save>()
-			{
-				{
-					for(Save save : loadAll())
-					{
-						if(save.getRawFlags().contains(flagName))
-						{
-							Demigods.message.broadcast("Saved!");
-							add(save);
-						}
-					}
-				}
-			};
+			return Sets.newHashSet(findAll("type", "Altar"));
 		}
 
 		public static void regenerateStructures()

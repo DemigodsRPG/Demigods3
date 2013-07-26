@@ -26,7 +26,7 @@ public class Region
 
 	public Location getCenter(World world)
 	{
-		return new Location(world, x, world.getSeaLevel(), z);
+		return new Location(world, x, 128, z);
 	}
 
 	public static class Util
@@ -43,11 +43,11 @@ public class Region
 
 		private static int getRegionCoordinate(int number)
 		{
-			int round = ((number + 64) / 128);
+			int round = ((number + 128) / 256);
 			if(round == 0) return 0;
-			if(round == 1) return 128;
-			if(number % 128 > 64) return 128 * round;
-			return 128 * (round - 1);
+			if(round == 1) return 256;
+			if(number % 256 > 128) return 256 * round;
+			return 256 * (round - 1);
 		}
 	}
 }
