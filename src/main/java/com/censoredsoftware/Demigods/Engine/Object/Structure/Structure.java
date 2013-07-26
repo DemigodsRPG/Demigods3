@@ -57,6 +57,13 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
+			// Debug AGAIN
+			Demigods.message.broadcast(save.getFlags().toString());
+			for(String bitch : save.getRawFlags())
+			{
+				Demigods.message.broadcast(bitch);
+			}
+
 			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 		}
 		return false;
