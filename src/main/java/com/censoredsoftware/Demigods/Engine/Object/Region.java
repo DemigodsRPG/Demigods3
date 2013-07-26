@@ -1,16 +1,17 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Region
 {
 	private int x;
-	private int y;
+	private int z;
 
-	public Region(int x, int y)
+	public Region(int x, int z)
 	{
 		this.x = x;
-		this.y = y;
+		this.z = z;
 	}
 
 	public int getX()
@@ -18,21 +19,26 @@ public class Region
 		return x;
 	}
 
-	public int getY()
+	public int getZ()
 	{
-		return y;
+		return z;
+	}
+
+	public Location getCenter(World world)
+	{
+		return new Location(world, x, world.getSeaLevel(), z);
 	}
 
 	public static class Util
 	{
 		public static Region getRegion(Location location)
 		{
-			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockX()));
+			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockZ()));
 		}
 
-		public static Region getRegion(int X, int Y)
+		public static Region getRegion(int X, int Z)
 		{
-			return new Region(getRegionCoordinate(X), getRegionCoordinate(Y));
+			return new Region(getRegionCoordinate(X), getRegionCoordinate(Z));
 		}
 
 		private static int getRegionCoordinate(int number)

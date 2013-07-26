@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import com.censoredsoftware.Demigods.Engine.Object.Region;
 import com.google.common.collect.Sets;
 
 public class LocationUtility
@@ -59,6 +60,7 @@ public class LocationUtility
 	 */
 	public static boolean canGenerateStrict(Location reference, int area)
 	{
+		if(reference.distance(Region.Util.getRegion(reference).getCenter(reference.getWorld())) > 115) return false;
 		Location location = reference.clone();
 		location.subtract(0, 1, 0);
 		location.add((area / 3), 0, (area / 2));

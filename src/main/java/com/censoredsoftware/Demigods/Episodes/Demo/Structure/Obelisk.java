@@ -201,6 +201,7 @@ public class Obelisk extends Structure
 	public Save createNew(Location reference, boolean generate)
 	{
 		Save save = new Save();
+		save.init();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign(getDesign(reference));

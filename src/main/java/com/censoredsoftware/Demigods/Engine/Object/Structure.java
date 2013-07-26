@@ -328,7 +328,7 @@ public abstract class Structure
 		private Long id;
 		@Indexed
 		@CollectionSet(of = String.class)
-		private Set<String> flags;
+		private HashSet<String> flags;
 		@Indexed
 		@Attribute
 		private String type;
@@ -348,7 +348,12 @@ public abstract class Structure
 		private int regionX;
 		@Indexed
 		@Attribute
-		private int regionY;
+		private int regionZ;
+
+		public void init()
+		{
+			this.flags = Sets.newHashSet();
+		}
 
 		public void setType(String type)
 		{
@@ -376,16 +381,16 @@ public abstract class Structure
 			this.active = bool;
 		}
 
-		public void setRegion(int X, int Y)
+		public void setRegion(int X, int Z)
 		{
 			this.regionX = X;
-			this.regionY = Y;
+			this.regionZ = Z;
 		}
 
 		public void setRegion(Region region)
 		{
 			this.regionX = region.getX();
-			this.regionY = region.getY();
+			this.regionZ = region.getZ();
 		}
 
 		public void addFlags(Set<Structure.Flag> flags)
@@ -444,7 +449,7 @@ public abstract class Structure
 
 		public Region getRegion()
 		{
-			return Region.Util.getRegion(this.regionX, this.regionY);
+			return Region.Util.getRegion(this.regionX, this.regionZ);
 		}
 
 		public Boolean hasFlag(Structure.Flag flag)
@@ -540,7 +545,7 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInRegion(Region region)
 		{
-			return Sets.intersection(Sets.newHashSet(findAll("regionX", region.getX())), Sets.newHashSet(findAll("regionX", region.getY())));
+			return Sets.intersection(Sets.newHashSet(findAll("regionX", region.getX())), Sets.newHashSet(findAll("regionX", region.getZ())));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type)

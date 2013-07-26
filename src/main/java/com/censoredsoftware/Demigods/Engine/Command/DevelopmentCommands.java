@@ -11,10 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Object.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.DCommand;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -58,23 +55,9 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		if(args.length == 2 && MiscUtility.isInt(args[0]) && MiscUtility.isInt(args[1]))
+		for(Structure.Save save : Structure.Util.getStructuresInRegion(Region.Util.getRegion(player.getLocation())))
 		{
-			try
-			{
-				int number = Integer.parseInt(args[0]);
-				int divisor = Integer.parseInt(args[1]);
-				long start = System.currentTimeMillis();
-				int answer = MiscUtility.getClosestIntDivisibleBy(number, divisor);
-				long end = System.currentTimeMillis();
-				player.sendMessage("Pass: " + (number % divisor == 0));
-				player.sendMessage("Closest: " + answer);
-				player.sendMessage("Time: " + (int) ((end - start) / 1000) + " seconds.");
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+			player.sendMessage("" + save.getId());
 		}
 
 		return true;
