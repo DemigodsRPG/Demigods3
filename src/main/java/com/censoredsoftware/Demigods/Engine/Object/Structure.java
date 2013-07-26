@@ -385,12 +385,14 @@ public abstract class Structure
 		{
 			this.regionX = X;
 			this.regionZ = Z;
+			save();
 		}
 
 		public void setRegion(Region region)
 		{
 			this.regionX = region.getX();
 			this.regionZ = region.getZ();
+			save();
 		}
 
 		public void addFlags(Set<Structure.Flag> flags)
@@ -404,8 +406,8 @@ public abstract class Structure
 
 		public void addFlag(Structure.Flag flag)
 		{
-			if(this.flags == null) this.flags = Sets.newHashSet();
 			this.flags.add(flag.name());
+			save();
 		}
 
 		public Location getReferenceLocation()
