@@ -249,7 +249,7 @@ public class Altar extends Structure
 
 	public static boolean altarNearby(Location location)
 	{
-		for(StructureSave structureSave : StructureSave.findAll("structureType", "Altar"))
+		for(StructureSave structureSave : StructureSave.findAll("type", "Altar"))
 		{
 			if(structureSave.getReferenceLocation().distance(location) <= Demigods.config.getSettingInt("generation.min_blocks_between_altars")) return true;
 		}
