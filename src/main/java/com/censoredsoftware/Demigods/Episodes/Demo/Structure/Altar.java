@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Structure;
@@ -237,7 +238,30 @@ public class Altar extends Structure
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new _runnable(save.getId()), 120);
 		return save;
+	}
+
+	public static class _runnable extends BukkitRunnable
+	{
+		private long id;
+
+		public _runnable(long id)
+		{
+			this.id = id;
+		}
+
+		@Override
+		public void run()
+		{
+			Save save = Util.load(id);
+			for(String saved : save.getRawFlags())
+			{
+				Demigods.message.broadcast("Flag: " + saved);
+			}
+			Demigods.message.broadcast("X:" + save.getRegion().getX());
+			Demigods.message.broadcast("Z:" + save.getRegion().getZ());
+		}
 	}
 
 	public static boolean altarNearby(Location location)
