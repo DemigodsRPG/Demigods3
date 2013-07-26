@@ -142,6 +142,11 @@ public class StructureSave
 		return this.active;
 	}
 
+	public Boolean hasFlag(Structure.Flag flag)
+	{
+		return this.flags != null && this.flags.contains(flag.name());
+	}
+
 	public Set<Structure.Flag> getFlags()
 	{
 		return new HashSet<Structure.Flag>()
@@ -153,6 +158,11 @@ public class StructureSave
 				}
 			}
 		};
+	}
+
+	public Set<String> getRawFlags()
+	{
+		return this.flags;
 	}
 
 	public long getId()

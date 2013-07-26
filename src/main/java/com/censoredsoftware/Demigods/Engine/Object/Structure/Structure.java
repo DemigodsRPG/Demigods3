@@ -57,26 +57,25 @@ public abstract class Structure
 	{
 		for(StructureSave save : StructureSave.loadAll())
 		{
-			Demigods.message.broadcast("Debug: partOfStructureWithFlag()");
-			if(save.getLocations().contains(location)) return true;
+			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
 
 	public static boolean isReferenceBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(save.getLocations().contains(location)) return true;
+			if(save.hasFlag(flag) && save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
 
 	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(save.getClickableBlock().equals(location)) return true;
+			if(save.hasFlag(flag) && save.getClickableBlock().equals(location)) return true;
 		}
 		return false;
 	}
@@ -88,9 +87,9 @@ public abstract class Structure
 
 	public static StructureSave getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		for(StructureSave save : StructureSave.findAll("flags", flag.name()))
+		for(StructureSave save : StructureSave.loadAll())
 		{
-			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
+			if(save.hasFlag(flag) && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 		}
 		return null;
 	}
