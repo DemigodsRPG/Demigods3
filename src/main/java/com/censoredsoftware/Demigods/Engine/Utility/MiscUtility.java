@@ -252,8 +252,11 @@ public class MiscUtility
 		int remainder = number % divisor;
 		if(remainder == 0) return number;
 
-		int roundUp = (int) Math.ceil(number / divisor);
-		if(remainder > 8) return divisor * roundUp;
-		return divisor * (roundUp - 1);
+		double roundUp = Math.ceil(number / divisor);
+		int guess1 = (int) (divisor * roundUp);
+		if(remainder > 8) return guess1;
+		int guess2 = (int) (divisor * (roundUp - 1.0));
+		if(guess2 < 1) return guess1;
+		else return guess2;
 	}
 }
