@@ -58,7 +58,6 @@ public abstract class Structure
 		for(StructureSave save : StructureSave.loadAll())
 		{
 			// Debug AGAIN
-			Demigods.message.broadcast(save.getFlags().toString());
 			for(String bitch : save.getRawFlags())
 			{
 				Demigods.message.broadcast(bitch);

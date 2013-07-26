@@ -80,36 +80,6 @@ public class StructureSave
 		this.flags.add(flag.name());
 	}
 
-	public void save()
-	{
-		JOhm.save(this);
-	}
-
-	public void remove()
-	{
-		for(Location location : getLocations())
-		{
-			location.getBlock().setTypeId(Material.AIR.getId());
-		}
-		JOhm.delete(DemigodsLocation.class, reference.getId());
-		JOhm.delete(StructureSave.class, this.id);
-	}
-
-	public static StructureSave load(Long Id)
-	{
-		return JOhm.get(StructureSave.class, Id);
-	}
-
-	public static Set<StructureSave> loadAll()
-	{
-		return JOhm.getAll(StructureSave.class);
-	}
-
-	public static List<StructureSave> findAll(String label, Object value)
-	{
-		return JOhm.find(StructureSave.class, label, value);
-	}
-
 	public Location getReferenceLocation()
 	{
 		return this.reference.toLocation();
@@ -175,5 +145,35 @@ public class StructureSave
 	public void generate()
 	{
 		getStructure().get(this.design).generate(this.reference.toLocation());
+	}
+
+	public void save()
+	{
+		JOhm.save(this);
+	}
+
+	public void remove()
+	{
+		for(Location location : getLocations())
+		{
+			location.getBlock().setTypeId(Material.AIR.getId());
+		}
+		JOhm.delete(DemigodsLocation.class, reference.getId());
+		JOhm.delete(StructureSave.class, this.id);
+	}
+
+	public static StructureSave load(Long id)
+	{
+		return JOhm.get(StructureSave.class, id);
+	}
+
+	public static Set<StructureSave> loadAll()
+	{
+		return JOhm.getAll(StructureSave.class);
+	}
+
+	public static List<StructureSave> findAll(String label, Object value)
+	{
+		return JOhm.find(StructureSave.class, label, value);
 	}
 }
