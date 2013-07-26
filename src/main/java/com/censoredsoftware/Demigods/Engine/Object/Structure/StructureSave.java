@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object.Structure;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,8 +19,8 @@ public class StructureSave
 	@Id
 	private Long id;
 	@Indexed
-	@CollectionSet(of = Structure.Flag.class)
-	private Set<Structure.Flag> flags;
+	@CollectionSet(of = String.class)
+	private Set<String> flags;
 	@Indexed
 	@Attribute
 	private String type;
@@ -62,12 +63,15 @@ public class StructureSave
 
 	public void addFlags(Set<Structure.Flag> flags)
 	{
-		this.flags.addAll(flags);
+		for(Structure.Flag flag : flags)
+		{
+			this.flags.add(flag.name());
+		}
 	}
 
 	public void addFlag(Structure.Flag flag)
 	{
-		this.flags.add(flag);
+		this.flags.add(flag.name());
 	}
 
 	public Location getReferenceLocation()
@@ -115,6 +119,19 @@ public class StructureSave
 	}
 
 	public Set<Structure.Flag> getFlags()
+	{
+		return new HashSet<Structure.Flag>()
+		{
+			{
+				for(String flag : getRawFlags())
+				{
+					add(Structure.Flag.valueOf(flag));
+				}
+			}
+		};
+	}
+
+	public Set<String> getRawFlags()
 	{
 		return this.flags;
 	}
