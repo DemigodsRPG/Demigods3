@@ -26,7 +26,7 @@ public class GeneralCommands extends DCommand
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String labels, String[] args)
+	public boolean process(CommandSender sender, Command command, String[] args)
 	{
 		if(command.getName().equalsIgnoreCase("check")) return check(sender);
 		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);

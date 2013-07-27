@@ -31,6 +31,14 @@ public abstract class DCommand implements TabExecutor
 		};
 	}
 
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	{
+		return process(sender, command, args);
+	}
+
+	public abstract boolean process(CommandSender sender, Command command, final String[] args);
+
 	public static class Util
 	{
 		public static void registerCommand(DCommand dgCommand)
