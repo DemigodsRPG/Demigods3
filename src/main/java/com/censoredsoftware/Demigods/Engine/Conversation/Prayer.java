@@ -777,10 +777,9 @@ class PrayerListener implements Listener
 		// First we check if the player is clicking a prayer block
 		if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 		{
-			// TODO: Update this stuff with the language system
 			if(!DPlayer.Util.isPraying(player))
 			{
-				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && Battle.Util.canTarget(Battle.Util.defineParticipant(player)))
+				if(DPlayer.Util.getPlayer(player).canPvp())
 				{
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_1));
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_2));
@@ -794,7 +793,7 @@ class PrayerListener implements Listener
 				// Tell nearby players that the user is praying
 				for(Entity entity : player.getNearbyEntities(20, 20, 20))
 				{
-					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + player.getName() + " has knelt to begin prayer.");
+					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TextUtility.Text.KNELT_FOR_PRAYER).replace("{player}", player.getDisplayName()));
 				}
 			}
 			else if(DPlayer.Util.isPraying(player))
