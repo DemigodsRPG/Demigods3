@@ -18,10 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
@@ -52,7 +49,7 @@ public class Discoball extends Ability
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -60,7 +57,7 @@ public class Discoball extends Ability
 
 				if(character.getMeta().isBound(name))
 				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, true)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
 					Util.discoBall(player);
 				}
@@ -152,14 +149,14 @@ public class Discoball extends Ability
 		public final static void discoBall(final Player player)
 		{
 			// Set variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
 			character.getMeta().subtractFavor(cost);
-			DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			// Cooldown
-			DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
 
 			balls(player);
 

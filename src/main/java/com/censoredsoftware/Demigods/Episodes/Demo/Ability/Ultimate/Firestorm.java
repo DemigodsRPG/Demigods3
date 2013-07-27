@@ -15,10 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 
 public class Firestorm extends Ability
 {
@@ -44,13 +41,13 @@ public class Firestorm extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					Util.firestorm(player);
 				}
@@ -82,13 +79,13 @@ public class Firestorm extends Ability
 
 					// Set variables
 					Player player = interactEvent.getPlayer();
-					DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 					{
-						if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
+						if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 						Firestorm.Util.fireball(player);
 					}
@@ -117,7 +114,7 @@ public class Firestorm extends Ability
 		public static void fireball(Player player)
 		{
 			// Define variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			Location target;
 			LivingEntity entity = Ability.Util.autoTarget(player);
 			boolean notify;
@@ -134,7 +131,7 @@ public class Firestorm extends Ability
 				if(!Ability.Util.doAbilityPreProcess(player, "fireball", cost, info)) return;
 			}
 
-			DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 
 			if(!Ability.Util.doTargeting(player, target, notify)) return;
@@ -146,7 +143,7 @@ public class Firestorm extends Ability
 		public static void firestorm(final Player player)
 		{
 			// Define variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
 
@@ -159,8 +156,8 @@ public class Firestorm extends Ability
 				if(!(entity instanceof LivingEntity)) continue;
 				if(entity instanceof Player)
 				{
-					DPlayer.Character otherCharacter = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-					if(otherCharacter != null && DPlayer.Character.Util.areAllied(character, otherCharacter)) continue;
+					DCharacter otherCharacter = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+					if(otherCharacter != null && DCharacter.Util.areAllied(character, otherCharacter)) continue;
 				}
 				if(!Battle.Util.canParticipate(entity) || !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
 

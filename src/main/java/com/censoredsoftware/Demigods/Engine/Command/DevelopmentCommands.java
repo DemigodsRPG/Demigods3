@@ -128,7 +128,7 @@ public class DevelopmentCommands extends DCommand
 
 		if(DPlayer.Util.hasCharName(player, charName))
 		{
-			DPlayer.Character character = DPlayer.Character.Util.getCharacterByName(charName);
+			DCharacter character = DCharacter.Util.getCharacterByName(charName);
 			character.remove();
 
 			sender.sendMessage(ChatColor.RED + "Character removed!");

@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Structure;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
@@ -49,8 +50,8 @@ public class GriefListener implements Listener
 		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DPlayer.Character owner = save.getOwner();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -62,8 +63,8 @@ public class GriefListener implements Listener
 		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DPlayer.Character owner = save.getOwner();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -75,8 +76,8 @@ public class GriefListener implements Listener
 		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DPlayer.Character owner = save.getOwner();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -139,8 +140,8 @@ public class GriefListener implements Listener
 		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DPlayer.Character owner = save.getOwner();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -161,8 +162,8 @@ public class GriefListener implements Listener
 		if(save == null) return;
 		if(blockInventories.contains(block.getType()))
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DPlayer.Character owner = save.getOwner();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}

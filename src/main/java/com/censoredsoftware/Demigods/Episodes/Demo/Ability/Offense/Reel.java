@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
 
@@ -39,7 +40,7 @@ public class Reel extends Ability
 			{
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -47,7 +48,7 @@ public class Reel extends Ability
 
 				if(character.getMeta().isBound(name) && player.getItemInHand().getType() == weapon)
 				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					Util.reel(player);
 				}
@@ -60,13 +61,13 @@ public class Reel extends Ability
 		public static void reel(Player player)
 		{
 			// Set variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
 			LivingEntity target = Ability.Util.autoTarget(player);
 
 			if(!Ability.Util.doAbilityPreProcess(player, target, name, cost, info)) return;
 			character.getMeta().subtractFavor(cost);
-			DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;
 

@@ -175,22 +175,22 @@ public class Battle
 	public static class Meta
 	{
 		@Id
-		private Long Id;
-		@CollectionSet(of = DPlayer.Character.class)
-		private Set<DPlayer.Character> involvedPlayers;
+		private Long id;
+		@CollectionSet(of = DCharacter.class)
+		private Set<DCharacter> involvedPlayers;
 		@CollectionSet(of = Pet.class)
 		private Set<Pet> involvedTameable;
 		@Attribute
 		private int killCounter;
-		@CollectionMap(key = DPlayer.Character.class, value = Integer.class)
-		private Map<DPlayer.Character, Integer> kills;
-		@CollectionMap(key = DPlayer.Character.class, value = Integer.class)
-		private Map<DPlayer.Character, Integer> deaths;
+		@CollectionMap(key = DCharacter.class, value = Integer.class)
+		private Map<DCharacter, Integer> kills;
+		@CollectionMap(key = DCharacter.class, value = Integer.class)
+		private Map<DCharacter, Integer> deaths;
 		@Reference
 		@Indexed
-		private DPlayer.Character startedBy;
+		private DCharacter startedBy;
 
-		void setStarter(DPlayer.Character character)
+		void setStarter(DCharacter character)
 		{
 			this.startedBy = character;
 			addParticipant(character);
@@ -207,7 +207,7 @@ public class Battle
 
 		public void addParticipant(Battle.Participant participant)
 		{
-			if(participant instanceof DPlayer.Character) this.involvedPlayers.add((DPlayer.Character) participant);
+			if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
 			else this.involvedTameable.add((Pet) participant);
 			Util.save(this);
 		}
@@ -215,7 +215,7 @@ public class Battle
 		public void addKill(Battle.Participant participant)
 		{
 			this.killCounter += 1;
-			DPlayer.Character character = participant.getRelatedCharacter();
+			DCharacter character = participant.getRelatedCharacter();
 			if(this.kills.containsKey(character)) this.kills.put(character, this.kills.get(character) + 1);
 			else this.kills.put(character, 1);
 			Util.save(this);
@@ -223,13 +223,13 @@ public class Battle
 
 		public void addDeath(Battle.Participant participant)
 		{
-			DPlayer.Character character = participant.getRelatedCharacter();
+			DCharacter character = participant.getRelatedCharacter();
 			if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
 			else this.deaths.put(character, 1);
 			Util.save(this);
 		}
 
-		public DPlayer.Character getStarter()
+		public DCharacter getStarter()
 		{
 			return this.startedBy;
 		}
@@ -239,7 +239,7 @@ public class Battle
 			return new HashSet<Battle.Participant>()
 			{
 				{
-					for(DPlayer.Character character : involvedPlayers)
+					for(DCharacter character : involvedPlayers)
 						add(character);
 					for(Pet tamable : involvedTameable)
 						add(tamable);
@@ -262,9 +262,9 @@ public class Battle
 			}
 
 			// Get Kill Data
-			for(Map.Entry<DPlayer.Character, Integer> entry : getDeaths())
+			for(Map.Entry<DCharacter, Integer> entry : getDeaths())
 			{
-				DPlayer.Character murderer = entry.getKey();
+				DCharacter murderer = entry.getKey();
 				allianceKills.put(murderer.getAlliance(), allianceKills.get(murderer.getAlliance()) + entry.getValue());
 			}
 
@@ -275,9 +275,9 @@ public class Battle
 			}
 
 			// Get Death Data
-			for(Map.Entry<DPlayer.Character, Integer> entry : getDeaths())
+			for(Map.Entry<DCharacter, Integer> entry : getDeaths())
 			{
-				DPlayer.Character victim = entry.getKey();
+				DCharacter victim = entry.getKey();
 				allianceDeaths.put(victim.getAlliance(), allianceKills.get(victim.getAlliance()) + entry.getValue());
 			}
 
@@ -295,12 +295,12 @@ public class Battle
 			Demigods.message.broadcast(ChatColor.YELLOW + getDeaths().get(1).getKey().getName() + " had the most deaths: " + getDeaths().get(1).getValue());
 		}
 
-		public List<Map.Entry<DPlayer.Character, Integer>> getKills()
+		public List<Map.Entry<DCharacter, Integer>> getKills()
 		{
 			return Lists.newArrayList(MiscUtility.sortByValue(this.kills).entrySet());
 		}
 
-		public List<Map.Entry<DPlayer.Character, Integer>> getDeaths()
+		public List<Map.Entry<DCharacter, Integer>> getDeaths()
 		{
 			return Lists.newArrayList(MiscUtility.sortByValue(this.deaths).entrySet());
 		}
@@ -312,7 +312,7 @@ public class Battle
 
 		public long getId()
 		{
-			return this.Id;
+			return this.id;
 		}
 
 		public void delete()
@@ -351,7 +351,7 @@ public class Battle
 
 		public static Meta createMeta(Battle.Participant participant)
 		{
-			DPlayer.Character character = participant.getRelatedCharacter();
+			DCharacter character = participant.getRelatedCharacter();
 
 			Meta meta = new Meta();
 			meta.initialize();
@@ -521,7 +521,7 @@ public class Battle
 
 		public static boolean battleDeath(Participant damager, Participant damagee, Battle battle)
 		{
-			if(damager instanceof DPlayer.Character) ((DPlayer.Character) damager).addKill();
+			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.getMeta().addKill(damager);
 			return battleDeath(damagee, battle);
@@ -531,7 +531,7 @@ public class Battle
 		{
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof DPlayer.Character) ((DPlayer.Character) damagee).addDeath();
+			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.getMeta().addDeath(damagee);
 			return true;
@@ -550,7 +550,7 @@ public class Battle
 		 */
 		public static boolean canTarget(Battle.Participant participant)
 		{
-			return !(participant instanceof DPlayer.Character || participant instanceof Pet) || participant.getPvP() == true && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !ZoneUtility.zoneNoPVP(participant.getCurrentLocation());
+			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !ZoneUtility.zoneNoPVP(participant.getCurrentLocation());
 		}
 	}
 
@@ -584,15 +584,15 @@ public class Battle
 	{
 		public Deity getDeity();
 
-		public void setPvP(boolean pvp);
+		public void setCanPvp(boolean pvp);
 
-		public Boolean getPvP();
+		public Boolean canPvp();
 
 		public Long getId();
 
 		public Location getCurrentLocation();
 
-		public DPlayer.Character getRelatedCharacter();
+		public DCharacter getRelatedCharacter();
 
 		public LivingEntity getEntity();
 	}

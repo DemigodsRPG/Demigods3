@@ -15,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Object.Structure;
@@ -37,7 +38,7 @@ public class TributeListener implements Listener
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
@@ -71,7 +72,7 @@ public class TributeListener implements Listener
 	{
 		// Define player and character
 		Player player = (Player) event.getPlayer();
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Make sure they have a character and are immortal
 		if(character == null || !character.isImmortal()) return;
@@ -110,7 +111,7 @@ public class TributeListener implements Listener
 		// Define the shrine owner
 		if(save.getOwner() != null)
 		{
-			DPlayer.Character shrineOwner = save.getOwner();
+			DCharacter shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
 			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
@@ -165,7 +166,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DPlayer.Character character, Structure.Save save)
+	private static void tribute(DCharacter character, Structure.Save save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

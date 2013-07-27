@@ -13,16 +13,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alex
- * Date: 7/26/13
- * Time: 10:40 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Shove extends Ability
 {
 	private final static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
@@ -47,13 +41,13 @@ public class Shove extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					shove(player);
 				}
@@ -65,13 +59,13 @@ public class Shove extends Ability
 	public static void shove(Player player)
 	{
 		// Define variables
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		int ascensions = character.getMeta().getAscensions();
 		double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 		LivingEntity target = Util.autoTarget(player);
 
 		if(!Util.doAbilityPreProcess(player, target, "shove", cost, info)) return;
-		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
 		if(!Util.doTargeting(player, target.getLocation(), true)) return;
