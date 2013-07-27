@@ -269,8 +269,7 @@ public class DPlayer
 		{
 			try
 			{
-				List<DPlayer> tracking = JOhm.find(DPlayer.class, "player", player.getName());
-				return tracking.get(0);
+				JOhm.find(DPlayer.class, "player", player.getName()).get(0);
 			}
 			catch(Exception ignored)
 			{}
