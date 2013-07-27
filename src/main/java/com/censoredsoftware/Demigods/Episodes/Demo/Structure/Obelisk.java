@@ -192,7 +192,7 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public List<Save> getAll()
+	public Set<Save> getAll()
 	{
 		return Util.findAll("type", getStructureType());
 	}

@@ -1,6 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,7 +31,7 @@ public abstract class Structure
 
 	public abstract Listener getUniqueListener();
 
-	public abstract List<Save> getAll();
+	public abstract Set<Save> getAll();
 
 	public abstract Set<Structure.Flag> getFlags();
 
@@ -627,7 +630,7 @@ public abstract class Structure
 			}
 		}
 
-		public static Set<Save> filterForRegion(Location location, Collection<Save> structures)
+		public static Set<Save> filterForRegion(Location location, Set<Save> structures)
 		{
 			Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), Sets.newHashSet(structures));
 			for(Save save : answer)
@@ -660,9 +663,9 @@ public abstract class Structure
 			return JOhm.getAll(Save.class);
 		}
 
-		public static List<Save> findAll(String label, Object value)
+		public static Set<Save> findAll(String label, Object value)
 		{
-			return JOhm.find(Save.class, label, value);
+			return Sets.newHashSet((List) JOhm.find(Save.class, label, value));
 		}
 	}
 
