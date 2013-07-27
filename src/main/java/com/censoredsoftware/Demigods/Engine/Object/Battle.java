@@ -508,6 +508,7 @@ public class Battle
 
 		public static Participant defineParticipant(Entity entity)
 		{
+			if(!canParticipate(entity)) return null;
 			if(entity instanceof Player) return DPlayer.Util.getPlayer((Player) entity).getCurrent();
 			return Pet.Util.getTameable((LivingEntity) entity);
 		}
