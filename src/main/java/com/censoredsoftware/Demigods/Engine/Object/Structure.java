@@ -539,9 +539,21 @@ public abstract class Structure
 			return null;
 		}
 
-		public static Set<Save> getStructuresInRegion(Region region)
+		public static Set<Save> getStructuresInRegionalArea(final Region region)
 		{
-			return Sets.intersection(Sets.newHashSet(findAll("regionX", region.getX())), Sets.newHashSet(findAll("regionX", region.getZ())));
+			return new HashSet<Save>()
+			{
+				{
+					for(int x : Ranges.closed(region.getX() - 1, region.getX() + 1).asSet(DiscreteDomains.integers()))
+						for(int y : Ranges.closed(region.getZ() - 1, region.getZ() + 1).asSet(DiscreteDomains.integers()))
+							addAll(getStructuresInSingleRegion(x, y));
+				}
+			};
+		}
+
+		public static Set<Save> getStructuresInSingleRegion(int X, int Z)
+		{
+			return Sets.intersection(Sets.newHashSet(findAll("regionX", X)), Sets.newHashSet(findAll("regionX", Z)));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type)
@@ -555,16 +567,16 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag)
 		{
-			for(Save save : _findAll("flags", flag.name()))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
-				Demigods.message.broadcast(save.getId() + " - " + save.getFlags());
+				if(save.getLocations().contains(location)) return true;
 			}
 			return false;
 		}
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -573,7 +585,7 @@ public abstract class Structure
 
 		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : _findAll("flags", flag.name()))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
@@ -587,7 +599,7 @@ public abstract class Structure
 
 		public static Save getInRadiusWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
 			{
 				if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 			}
@@ -607,15 +619,6 @@ public abstract class Structure
 			return false;
 		}
 
-		/**
-		 * @deprecated Only to get it working again until we figure out why JOhm isn't finding the flags.
-		 */
-		public static Set<Save> _findAll(String ignored, final String flagName)
-		{
-			if(flagName.equals("NO_GRIEFING") || flagName.equals("TRIBUTE_LOCATION")) return Sets.newHashSet();
-			return Sets.newHashSet(findAll("type", "Altar"));
-		}
-
 		public static void regenerateStructures()
 		{
 			for(Save save : loadAll())
@@ -626,7 +629,7 @@ public abstract class Structure
 
 		public static Set<Save> filterForRegion(Location location, Collection<Save> structures)
 		{
-			return Sets.intersection(getStructuresInRegion(Region.Util.getRegion(location)), Sets.newHashSet(structures));
+			return Sets.intersection(getStructuresInRegionalArea(Region.Util.getRegion(location)), Sets.newHashSet(structures));
 		}
 
 		public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)

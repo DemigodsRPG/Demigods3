@@ -43,8 +43,8 @@ public class Region
 
 		private static int getRegionCoordinate(int number)
 		{
-			int temp = number % 256;
-			if(temp >= 128) return number + 256 - temp;
+			int temp = number % 64;
+			if(temp >= 32) return number + 64 - temp;
 			return number - temp;
 		}
 	}
