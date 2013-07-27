@@ -73,13 +73,16 @@ public class DPlayer
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
 			{
 				@Override
 				public void run()
 				{
-					setCanPvp(false);
-					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP)) player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
+					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
+					{
+						setCanPvp(false);
+						player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
+					}
 				}
 			}, (delay * 20));
 		}
