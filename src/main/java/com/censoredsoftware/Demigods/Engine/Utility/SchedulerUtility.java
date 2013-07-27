@@ -13,7 +13,7 @@ public class SchedulerUtility
 	public static void startThreads(DemigodsPlugin instance)
 	{
 		// Start sync Demigods runnable
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
+		// Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
 		AdminUtility.sendDebug("Main Demigods runnable enabled...");
 
 		// TODO: Move these to methods where needed and organize
@@ -60,7 +60,7 @@ public class SchedulerUtility
 					// Update PVP
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
-						// DPlayer.Util.getPlayer(player).updateCanPvp();
+						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 				}
 			};
