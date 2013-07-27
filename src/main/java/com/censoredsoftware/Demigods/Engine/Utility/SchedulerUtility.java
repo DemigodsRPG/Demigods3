@@ -6,10 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 
 public class SchedulerUtility
 {
@@ -84,6 +81,9 @@ public class SchedulerUtility
 				{
 					// Update Battles
 					Battle.Util.updateBattles();
+
+					// Update Timed Data
+					TimedData.Util.updateTimedData();
 				}
 			};
 		}
