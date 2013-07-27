@@ -403,8 +403,10 @@ public class DPlayer
 
 				// Message them
 				clearChat(player);
-				player.sendMessage(ChatColor.AQUA + "You are no longer praying.");
-				player.sendMessage(ChatColor.GRAY + "Your chat has been re-enabled.");
+				for(String message : Demigods.text.getTextBlock(TextUtility.Text.PRAYER_ENDED))
+				{
+					player.sendMessage(message);
+				}
 			}
 		}
 
