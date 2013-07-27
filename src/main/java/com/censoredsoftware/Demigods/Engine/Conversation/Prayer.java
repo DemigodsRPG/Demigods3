@@ -394,7 +394,7 @@ public class Prayer implements DConversation
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
 			String arg0 = message.split(" ")[0];
-			String arg1 = message.split(" ")[1];
+			String arg1 = message.split(" ").length == 2 ? message.split(" ")[1] : "";
 
 			if(message.equalsIgnoreCase("menu"))
 			{
