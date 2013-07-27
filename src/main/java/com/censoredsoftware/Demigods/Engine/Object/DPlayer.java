@@ -62,7 +62,7 @@ public class DPlayer
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
 
 			// Cancel PVP cooldown if they have it
-			if(DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
+			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown_task_id")) // TODO: This isn't stopped the runnable
 			{
 				Bukkit.getScheduler().cancelTask(Integer.parseInt(DataUtility.getValueTemp(player.getName(), "pvp_cooldown_task_id").toString()));
 			}
