@@ -1,11 +1,14 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import redis.clients.johm.*;
+
+import com.google.common.collect.Sets;
 
 @Model
 public class DLocation
@@ -25,6 +28,12 @@ public class DLocation
 	Float pitch;
 	@Attribute
 	Float yaw;
+	@Indexed
+	@Attribute
+	Integer regionX;
+	@Indexed
+	@Attribute
+	Integer regionZ;
 
 	void setWorld(String world)
 	{
@@ -56,6 +65,12 @@ public class DLocation
 		this.pitch = pitch;
 	}
 
+	void setRegion(Region region)
+	{
+		this.regionX = region.getX();
+		this.regionZ = region.getZ();
+	}
+
 	public Location toLocation() throws NullPointerException
 	{
 		return new Location(Bukkit.getServer().getWorld(this.world), this.X, this.Y, this.Z, this.yaw, this.pitch);
@@ -64,6 +79,16 @@ public class DLocation
 	public Long getId()
 	{
 		return this.id;
+	}
+
+	public Integer getRegionX()
+	{
+		return this.regionX;
+	}
+
+	public Integer getRegionZ()
+	{
+		return this.regionZ;
 	}
 
 	@Override
@@ -83,6 +108,7 @@ public class DLocation
 			trackedLocation.setZ(Z);
 			trackedLocation.setYaw(yaw);
 			trackedLocation.setPitch(pitch);
+			trackedLocation.setRegion(Region.Util.getRegion((int) X, (int) Z));
 			save(trackedLocation);
 			return trackedLocation;
 		}
@@ -105,6 +131,11 @@ public class DLocation
 		public static Set<DLocation> loadAll()
 		{
 			return JOhm.getAll(DLocation.class);
+		}
+
+		public static Set<DLocation> find(String attribute, Object value)
+		{
+			return Sets.newHashSet((List) JOhm.find(DLocation.class, attribute, value));
 		}
 
 		public static DLocation get(Location location)

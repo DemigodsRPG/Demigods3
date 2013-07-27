@@ -346,10 +346,10 @@ public abstract class Structure
 		private Set<String> flags;
 		@Indexed
 		@Attribute
-		private int regionX;
+		private Integer regionX;
 		@Indexed
 		@Attribute
-		private int regionZ;
+		private Integer regionZ;
 
 		public void setType(String type)
 		{
@@ -365,7 +365,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			setRegion(reference.getBlockX(), reference.getBlockZ());
+			setRegion(this.reference.getRegionX(), this.reference.getRegionZ());
 		}
 
 		public void setOwner(DCharacter character)
