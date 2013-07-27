@@ -232,20 +232,20 @@ public class Altar extends Structure
 			add(new Cuboid(-3, 0, -3, quartzSlabBottom));
 			add(new Cuboid(3, 0, -3, quartzSlabBottom));
 			add(new Cuboid(-3, 0, 3, quartzSlabBottom));
-			add(new Cuboid(4, 0, 0, quartzSpecial));
-			add(new Cuboid(-4, 0, 0, quartzSpecial));
-			add(new Cuboid(0, 0, -4, quartzSpecial));
-			add(new Cuboid(0, 0, 4, quartzSpecial));
-			add(new Cuboid(4, 0, -2, 4, 0, 2, quartzSlabBottom).exclude(4, 0, 0));
-			add(new Cuboid(-4, 0, -2, -4, 0, 2, quartzSlabBottom).exclude(-4, 0, -0));
-			add(new Cuboid(-2, 0, -4, 2, 0, -4, quartzSlabBottom).exclude(0, 0, -4));
-			add(new Cuboid(-2, 0, 4, 2, 0, 4, quartzSlabBottom).exclude(0, 0, 4));
+			add(new Cuboid(4, 0, -2, 4, 0, 2, quartzSlabBottom));
+			add(new Cuboid(-4, 0, -2, -4, 0, 2, quartzSlabBottom));
+			add(new Cuboid(-2, 0, -4, 2, 0, -4, quartzSlabBottom));
+			add(new Cuboid(-2, 0, 4, 2, 0, 4, quartzSlabBottom));
 
 			// Create inner steps
-			add(new Cuboid(3, 0, -1, 3, 0, 1, quartz));
-			add(new Cuboid(-1, 0, 3, 1, 0, 3, quartz));
-			add(new Cuboid(-3, 0, -1, -3, 0, 1, quartz));
-			add(new Cuboid(-1, 0, -3, 1, 0, -3, quartz));
+			add(new Cuboid(3, 0, -1, 3, 0, 1, quartz).exclude(3, 0, 0));
+			add(new Cuboid(-1, 0, 3, 1, 0, 3, quartz).exclude(0, 0, 3));
+			add(new Cuboid(-3, 0, -1, -3, 0, 1, quartz).exclude(-3, 0, 0));
+			add(new Cuboid(-1, 0, -3, 1, 0, -3, quartz).exclude(0, 0, -3));
+			add(new Cuboid(3, 0, 0, quartzSpecial));
+			add(new Cuboid(0, 0, 3, quartzSpecial));
+			add(new Cuboid(-3, 0, 0, quartzSpecial));
+			add(new Cuboid(0, 0, -3, quartzSpecial));
 
 			// Create pillars
 			add(new Cuboid(3, 4, 2, birchSlab));
