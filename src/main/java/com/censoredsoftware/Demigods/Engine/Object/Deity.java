@@ -136,7 +136,7 @@ public abstract class Deity
 
 		public static boolean canUseDeity(Player player, String deity)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null) return false;
 			if(!character.isDeity(deity))
 			{
@@ -153,7 +153,7 @@ public abstract class Deity
 
 		public static boolean canUseDeitySilent(Player player, String deity)
 		{
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			return character != null && character.isDeity(deity) && character.isImmortal();
 		}
 	}

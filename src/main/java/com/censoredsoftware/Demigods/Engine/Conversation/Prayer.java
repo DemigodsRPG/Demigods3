@@ -182,7 +182,7 @@ public class Prayer implements DConversation
 		{
 			// Define variables
 			Player player = (Player) context.getForWhom();
-			DPlayer.Character character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Warps & Invites"));
@@ -238,12 +238,12 @@ public class Prayer implements DConversation
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
 			// Define variables
-			DPlayer.Character character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DPlayer.Character.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && character.getWarps().containsKey(arg2.toLowerCase())));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && character.getWarps().containsKey(arg2.toLowerCase())));
 		}
 
 		@Override
@@ -251,7 +251,7 @@ public class Prayer implements DConversation
 		{
 			// Define variables
 			Player player = (Player) context.getForWhom();
-			DPlayer.Character character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
@@ -302,7 +302,7 @@ public class Prayer implements DConversation
 				notifications.add(TextUtility.Text.NOTIFICATION_INVITE_SENT);
 
 				// Define variables
-				DPlayer.Character invitee = DPlayer.Character.Util.charExists(arg1) ? DPlayer.Character.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
+				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
 				Location warp = character.getWarps().get(arg2).toLocation();
 
 				// Add the invite
@@ -367,7 +367,7 @@ public class Prayer implements DConversation
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
 
-			for(DPlayer.Character character : DPlayer.Util.getCharacters(player))
+			for(DCharacter character : DPlayer.Util.getCharacters(player))
 			{
 				if(!character.canUse()) continue;
 				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
@@ -407,7 +407,7 @@ public class Prayer implements DConversation
 			}
 			else if(arg1.equalsIgnoreCase("switch"))
 			{
-				DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DPlayer.Character.Util.getCharacterByName(arg0));
+				DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(arg0));
 			}
 			return null;
 		}
@@ -420,7 +420,7 @@ public class Prayer implements DConversation
 			{
 				// Define variables
 				Player player = (Player) context.getForWhom();
-				DPlayer.Character character = DPlayer.Character.Util.getCharacterByName(context.getSessionData("viewing_character").toString());
+				DCharacter character = DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString());
 				String status = character.isActive() ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 
 				// Clear chat
@@ -460,7 +460,7 @@ public class Prayer implements DConversation
 				}
 				else if(message.equalsIgnoreCase("switch"))
 				{
-					DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DPlayer.Character.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
+					DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
 				}
 				return null;
 			}
@@ -560,7 +560,7 @@ public class Prayer implements DConversation
 					{
 						errors.add(TextUtility.Text.ERROR_MAX_CAPS);
 					}
-					if(DPlayer.Character.Util.charExists(name))
+					if(DCharacter.Util.charExists(name))
 					{
 						errors.add(TextUtility.Text.ERROR_CHAR_EXISTS);
 					}
@@ -855,7 +855,7 @@ class PrayerListener implements Listener
 			if(neededItems == items)
 			{
 				// Accepted, finish everything up!
-				DPlayer.Character.Util.create(player, chosenDeity, chosenName, true);
+				DCharacter.Util.create(player, chosenDeity, chosenName, true);
 
 				// Clear the prayer session
 				DPlayer.Util.clearPrayerSession(player);

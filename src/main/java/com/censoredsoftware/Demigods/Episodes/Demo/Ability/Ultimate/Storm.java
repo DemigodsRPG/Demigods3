@@ -17,10 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Battle;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.google.common.collect.Sets;
 
 public class Storm extends Ability
@@ -47,18 +44,18 @@ public class Storm extends Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, true)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
 					storm(player);
 
 					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
-					DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}
 		}, null);
@@ -67,7 +64,7 @@ public class Storm extends Ability
 	public static void storm(Player player)
 	{
 		// Define variables
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
@@ -81,9 +78,9 @@ public class Storm extends Ability
 			if(entity instanceof Player)
 			{
 				Player otherPlayer = (Player) entity;
-				DPlayer.Character otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
+				DCharacter otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
 				if(otherPlayer.equals(player)) continue;
-				if(otherChar != null && !DPlayer.Character.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
+				if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
 				{
 					Util.strikeLightning(player, otherPlayer);
 					Util.strikeLightning(player, otherPlayer);
@@ -124,11 +121,11 @@ public class Storm extends Ability
 
 					// Set variables
 					Player player = interactEvent.getPlayer();
-					DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 					if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
 					{
-						if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
+						if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 						lightning(player);
 					}
@@ -139,7 +136,7 @@ public class Storm extends Ability
 		protected static void lightning(Player player)
 		{
 			// Define variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			Location target;
 			LivingEntity entity = Util.autoTarget(player);
 			boolean notify;
@@ -156,7 +153,7 @@ public class Storm extends Ability
 				if(!Util.doAbilityPreProcess(player, "lightning", cost, info)) return;
 			}
 
-			DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 
 			Storm.Util.strikeLightning(player, target, notify);
@@ -174,7 +171,7 @@ public class Storm extends Ability
 		public static boolean strikeLightning(Player player, Location target, boolean notify)
 		{
 			// Set variables
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!player.getWorld().equals(target.getWorld())) return false;
 			Location toHit = Ability.Util.adjustedAimLocation(character, target);

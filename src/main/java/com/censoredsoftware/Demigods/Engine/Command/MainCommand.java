@@ -13,10 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.DCommand;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
@@ -226,7 +223,7 @@ public class MainCommand extends DCommand
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		Player toEdit;
-		DPlayer.Character character;
+		DCharacter character;
 		int amount;
 
 		if(!player.hasPermission("demigods.admin")) return Demigods.message.noPermission(player);
@@ -297,9 +294,9 @@ public class MainCommand extends DCommand
 					Demigods.message.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
-					final Set<DPlayer.Character> chars = DPlayer.Util.getCharacters(toCheck);
+					final Set<DCharacter> chars = DPlayer.Util.getCharacters(toCheck);
 
-					for(DPlayer.Character checkingChar : chars)
+					for(DCharacter checkingChar : chars)
 					{
 						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getId() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
 					}
@@ -324,7 +321,7 @@ public class MainCommand extends DCommand
 					}
 					else if(option2.equalsIgnoreCase("character"))
 					{
-						DPlayer.Character removing = DPlayer.Character.Util.getCharacterByName(option3);
+						DCharacter removing = DCharacter.Util.getCharacterByName(option3);
 						String removingName = removing.getName();
 
 						// Remove the data

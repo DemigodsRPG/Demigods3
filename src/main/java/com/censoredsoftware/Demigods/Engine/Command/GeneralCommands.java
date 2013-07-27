@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DCommand;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
@@ -35,7 +36,7 @@ public class GeneralCommands extends DCommand
 	private boolean check(CommandSender sender)
 	{
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
 		{
@@ -79,7 +80,7 @@ public class GeneralCommands extends DCommand
 			player.sendMessage(ChatColor.RED + "/owner <character>");
 			return true;
 		}
-		DPlayer.Character charToCheck = DPlayer.Character.Util.getCharacterByName(args[0]);
+		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
 		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;

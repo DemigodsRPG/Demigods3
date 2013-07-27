@@ -342,7 +342,7 @@ public abstract class Structure
 		private DLocation reference;
 		@Indexed
 		@Reference
-		private DPlayer.Character owner;
+		private DCharacter owner;
 		@Indexed
 		@CollectionSet(of = String.class)
 		private Set<String> flags;
@@ -369,7 +369,7 @@ public abstract class Structure
 			setRegion(reference.getBlockX(), reference.getBlockZ());
 		}
 
-		public void setOwner(DPlayer.Character character)
+		public void setOwner(DCharacter character)
 		{
 			this.owner = character;
 		}
@@ -408,7 +408,7 @@ public abstract class Structure
 			return this.owner != null;
 		}
 
-		public DPlayer.Character getOwner()
+		public DCharacter getOwner()
 		{
 			return this.owner;
 		}

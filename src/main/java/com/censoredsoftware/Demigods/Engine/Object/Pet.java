@@ -32,7 +32,7 @@ public class Pet implements Battle.Participant
 	private String UUID;
 	@Reference
 	@Indexed
-	private DPlayer.Character owner;
+	private DCharacter owner;
 
 	public void save()
 	{
@@ -57,20 +57,20 @@ public class Pet implements Battle.Participant
 		this.UUID = tameable.getUniqueId().toString();
 	}
 
-	public void setOwner(DPlayer.Character owner)
+	public void setOwner(DCharacter owner)
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner;
 		save();
 	}
 
-	public void setPvP(boolean PvP)
+	public void setCanPvp(boolean PvP)
 	{
 		this.PvP = PvP;
 		save();
 	}
 
-	public Boolean getPvP()
+	public Boolean getPvp()
 	{
 		return this.PvP;
 	}
@@ -99,7 +99,7 @@ public class Pet implements Battle.Participant
 		return null;
 	}
 
-	public DPlayer.Character getOwner()
+	public DCharacter getOwner()
 	{
 		if(this.owner == null)
 		{
@@ -136,7 +136,7 @@ public class Pet implements Battle.Participant
 	}
 
 	@Override
-	public DPlayer.Character getRelatedCharacter()
+	public DCharacter getRelatedCharacter()
 	{
 		return getOwner();
 	}
@@ -156,7 +156,7 @@ public class Pet implements Battle.Participant
 
 	public static class Util
 	{
-		public static Pet create(LivingEntity tameable, DPlayer.Character owner)
+		public static Pet create(LivingEntity tameable, DCharacter owner)
 		{
 			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 			Pet wrapper = new Pet();
@@ -226,7 +226,7 @@ public class Pet implements Battle.Participant
 			}
 		}
 
-		public static void reownPets(AnimalTamer tamer, DPlayer.Character character)
+		public static void reownPets(AnimalTamer tamer, DCharacter character)
 		{
 			for(Pet wrapper : findByTamer(character.getName()))
 			{

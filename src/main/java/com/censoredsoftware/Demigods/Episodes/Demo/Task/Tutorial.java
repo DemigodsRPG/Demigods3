@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Task;
 import com.censoredsoftware.Demigods.Episodes.Demo.Item.Book;
@@ -64,7 +65,7 @@ class TutorialTask extends Task
 		{
 			Player player = event.getPlayer();
 
-			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
 			Demigods.message.tagged(player, "Welcome to Demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
