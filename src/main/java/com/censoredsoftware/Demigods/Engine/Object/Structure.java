@@ -514,7 +514,7 @@ public abstract class Structure
 		@Override
 		public int hashCode()
 		{
-			return Objects.hashCode(this);
+			return Objects.hashCode(id);
 		}
 
 		@Override
