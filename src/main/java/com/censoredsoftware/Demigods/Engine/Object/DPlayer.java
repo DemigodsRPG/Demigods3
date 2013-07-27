@@ -11,6 +11,7 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import redis.clients.johm.*;
 
@@ -62,7 +63,7 @@ public class DPlayer
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
 
 			// Cancel PVP cooldown if they have it
-			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown_task_id")) // TODO: This isn't stopped the runnable
+			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown_task_id")) // TODO: This isn't stopping the runnable
 			{
 				Bukkit.getScheduler().cancelTask(Integer.parseInt(DataUtility.getValueTemp(player.getName(), "pvp_cooldown_task_id").toString()));
 			}
@@ -72,7 +73,7 @@ public class DPlayer
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			int taskId = Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.plugin, new Runnable()
+			BukkitTask cooldown = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -80,10 +81,10 @@ public class DPlayer
 					setCanPvp(false);
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
 				}
-			}, (delay * 20));
+			}.runTaskLaterAsynchronously(Demigods.plugin, (delay * 20));
 
 			// Save the task id for later
-			DataUtility.saveTemp(player.getName(), "pvp_cooldown_task_id", taskId);
+			DataUtility.saveTemp(player.getName(), "pvp_cooldown_task_id", cooldown.getTaskId());
 		}
 	}
 
