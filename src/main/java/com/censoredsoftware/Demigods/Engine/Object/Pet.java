@@ -70,7 +70,7 @@ public class Pet implements Battle.Participant
 		save();
 	}
 
-	public Boolean getPvp()
+	public Boolean canPvp()
 	{
 		return this.PvP;
 	}
