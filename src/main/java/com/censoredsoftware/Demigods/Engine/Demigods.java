@@ -1,7 +1,7 @@
 package com.censoredsoftware.Demigods.Engine;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,10 +38,10 @@ public class Demigods
 	public static WorldGuardPlugin worldguard;
 
 	// The Game Data
-	protected static Deque<Deity> deities;
-	protected static Deque<Task.List> quests;
-	protected static Deque<Structure> structures;
-	protected static Deque<DConversation> conversasions;
+	protected static Set<Deity> deities;
+	protected static Set<Task.List> quests;
+	protected static Set<Structure> structures;
+	protected static Set<DConversation> conversasions;
 
 	// The Engine Default Text
 	public static Translation text;
@@ -77,28 +77,28 @@ public class Demigods
 		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
 
 		// Define the game data.
-		Demigods.deities = new ArrayDeque<Deity>()
+		Demigods.deities = new HashSet<Deity>()
 		{
 			{
 				for(ListedDeity deity : deities)
 					add(deity.getDeity());
 			}
 		};
-		Demigods.quests = new ArrayDeque<Task.List>()
+		Demigods.quests = new HashSet<Task.List>()
 		{
 			{
 				for(ListedTaskSet taskSet : taskSets)
 					add(taskSet.getTaskSet());
 			}
 		};
-		Demigods.structures = new ArrayDeque<Structure>()
+		Demigods.structures = new HashSet<Structure>()
 		{
 			{
 				for(ListedStructure structure : structures)
 					add(structure.getStructure());
 			}
 		};
-		Demigods.conversasions = new ArrayDeque<DConversation>()
+		Demigods.conversasions = new HashSet<DConversation>()
 		{
 			{
 				for(DConversation.Required conversation : DConversation.Required.values())
@@ -216,22 +216,22 @@ public class Demigods
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
 	}
 
-	public static Deque<Deity> getLoadedDeities()
+	public static Set<Deity> getLoadedDeities()
 	{
 		return Demigods.deities;
 	}
 
-	public static Deque<Task.List> getLoadedQuests()
+	public static Set<Task.List> getLoadedQuests()
 	{
 		return Demigods.quests;
 	}
 
-	public static Deque<Structure> getLoadedStructures()
+	public static Set<Structure> getLoadedStructures()
 	{
 		return Demigods.structures;
 	}
 
-	public static Deque<DConversation> getLoadedConversations()
+	public static Set<DConversation> getLoadedConversations()
 	{
 		return Demigods.conversasions;
 	}
