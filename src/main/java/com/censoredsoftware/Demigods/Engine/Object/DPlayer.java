@@ -57,17 +57,19 @@ public class DPlayer
 
 		if(!Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !canPvp())
 		{
+			Demigods.message.broadcast("Can pvp!");
+
 			setCanPvp(true);
 		}
 
 		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp() && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
-			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
+			Demigods.message.broadcast("Setting cooldown!");
 
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 			{
 				@Override
 				public void run()
