@@ -63,8 +63,6 @@ public class DPlayer
 		}
 		if(canPvp() && Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
-			Demigods.message.broadcast("Setting cooldown!");
-
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
