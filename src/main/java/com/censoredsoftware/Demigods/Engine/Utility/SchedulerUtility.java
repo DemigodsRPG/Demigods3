@@ -1,6 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
@@ -57,9 +58,9 @@ public class SchedulerUtility
 				public void run()
 				{
 					// Update PVP
-					for(DCharacter character : DCharacter.Util.loadAll())
+					for(Player player : Bukkit.getOnlinePlayers())
 					{
-						character.updateCanPvp();
+						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 				}
 			};

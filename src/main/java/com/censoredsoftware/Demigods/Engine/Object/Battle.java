@@ -582,13 +582,11 @@ public class Battle
 
 	public interface Participant
 	{
-		public Deity getDeity();
+		public Long getId();
 
 		public void setCanPvp(boolean pvp);
 
 		public Boolean canPvp();
-
-		public Long getId();
 
 		public Location getCurrentLocation();
 
