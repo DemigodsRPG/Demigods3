@@ -270,7 +270,8 @@ public class DPlayer
 		{
 			try
 			{
-				JOhm.find(DPlayer.class, "player", player.getName()).get(0);
+				List<DPlayer> list = JOhm.find(DPlayer.class, "player", player.getName());
+				return list.get(0);
 			}
 			catch(Exception ignored)
 			{}
