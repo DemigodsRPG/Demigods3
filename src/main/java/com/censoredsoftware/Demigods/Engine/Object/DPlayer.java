@@ -58,10 +58,14 @@ public class DPlayer
 		final Player player = getOfflinePlayer().getPlayer();
 		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
-		if(!canPvp() && !inNoPvpZone)
+		if(!inNoPvpZone)
 		{
 			setCanPvp(true);
 			DataUtility.removeTimed(player.getName(), "pvp_cooldown");
+		}
+		else if(!canPvp() && !inNoPvpZone)
+		{
+			setCanPvp(true);
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
 		}
 		else if(canPvp() && inNoPvpZone && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
