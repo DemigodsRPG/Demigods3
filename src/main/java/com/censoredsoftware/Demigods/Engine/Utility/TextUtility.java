@@ -6,7 +6,6 @@ import org.bukkit.ChatColor;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
-import com.google.common.collect.Lists;
 
 // TODO Replace with YAML.
 
@@ -35,22 +34,26 @@ public class TextUtility
 		public ArrayList<String> getTextBlock(Enum text)
 		{
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
-
-			ArrayList<String> textBlock = Lists.newArrayList();
-
 			switch((Text) text)
 			{
 				case PRAYER_INTRO:
-					textBlock.add(ChatColor.GRAY + " While praying you are unable chat with players.");
-					textBlock.add(ChatColor.GRAY + " You can return to the main menu at anytime by typing " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + ".");
-					textBlock.add(ChatColor.GRAY + " Walk away to stop praying.");
-					return textBlock;
+					return new ArrayList<String>()
+					{
+						{
+							add(ChatColor.GRAY + " While praying you are unable chat with players.");
+							add(ChatColor.GRAY + " You can return to the main menu at anytime by typing " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + ".");
+							add(ChatColor.GRAY + " Walk away to stop praying.");
+						}
+					};
 				case PVP_NO_PRAYER:
-					textBlock.add(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
-					textBlock.add(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
-					return textBlock;
+					return new ArrayList<String>()
+					{
+						{
+							add(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
+							add(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
+						}
+					};
 			}
-
 			throw new NullPointerException("No such translation.");
 		}
 
