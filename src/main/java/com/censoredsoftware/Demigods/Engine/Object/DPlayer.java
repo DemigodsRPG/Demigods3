@@ -55,20 +55,21 @@ public class DPlayer
 	{
 		if(!getOfflinePlayer().isOnline()) return;
 
+		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
+		boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
-		if(!canPvp() && !Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
+		if(!canPvp() && !inNoPvpZone)
 		{
 			setCanPvp(true);
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
-
-			// Cancel PVP cooldown if they have it
-			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown_task_id")) // TODO: This isn't stopping the runnable
-			{
-				Bukkit.getScheduler().cancelTask(Integer.parseInt(DataUtility.getValueTemp(player.getName(), "pvp_cooldown_task_id").toString()));
-			}
 		}
-		if(canPvp() && Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
+		else if(!inNoPvpZone && DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown_task_id"))
+		{
+			// Cancel PVP cooldown if they have it
+			Bukkit.getScheduler().cancelTask(Integer.parseInt(DataUtility.getValueTemp(player.getName(), "pvp_cooldown_task_id").toString()));
+		}
+		else if(canPvp() && inNoPvpZone && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
