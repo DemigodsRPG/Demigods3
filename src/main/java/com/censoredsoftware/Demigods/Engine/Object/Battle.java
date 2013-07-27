@@ -20,7 +20,6 @@ import com.censoredsoftware.Demigods.Engine.Exception.SpigotNotFoundException;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -550,7 +549,7 @@ public class Battle
 		 */
 		public static boolean canTarget(Battle.Participant participant)
 		{
-			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !ZoneUtility.zoneNoPVP(participant.getCurrentLocation());
+			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
 		}
 	}
 
