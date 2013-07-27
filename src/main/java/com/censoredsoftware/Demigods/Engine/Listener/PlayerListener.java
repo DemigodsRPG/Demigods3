@@ -54,14 +54,8 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerMove(PlayerMoveEvent event)
 	{
-		// Define variables
-		final Player player = event.getPlayer();
-		Location to = event.getTo();
-		Location from = event.getFrom();
-		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
-
 		// No-PVP Zones
-		onPlayerLineJump(player, to, from, delayTime);
+		onPlayerLineJump(event.getPlayer(), event.getTo(), event.getFrom(), Demigods.config.getSettingInt("zones.pvp_area_delay_time"));
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -95,9 +89,7 @@ public class PlayerListener implements Listener
 	public void onPlayerLineJump(final OfflinePlayer player, Location to, Location from, int delayTime)
 	{
 		// NullPointer Check
-		if(to == null || from == null || !player.isOnline()) return;
-
-		if(DataUtility.hasKeyTemp(player.getName(), "was_PVP")) return;
+		if(!player.isOnline() || DataUtility.hasKeyTemp(player.getName(), "was_PVP")) return;
 
 		// No Spawn Line-Jumping
 		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)

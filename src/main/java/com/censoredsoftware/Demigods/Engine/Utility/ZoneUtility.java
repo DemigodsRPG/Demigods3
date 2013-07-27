@@ -12,6 +12,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class ZoneUtility
 {
+	// TODO Optimize this stuff.
 
 	/**
 	 * Returns true if <code>location</code> is within a no-PVP zone.
@@ -25,9 +26,9 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
 			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
-			else return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
+			return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
 		}
-		else return !canWorldGuardFlagPVP(location);
+		return !canWorldGuardFlagPVP(location);
 	}
 
 	/**
@@ -109,32 +110,6 @@ public class ZoneUtility
 	public static boolean zoneNoBuild(Player player, Location location)
 	{
 		return !canWorldGuardBuild(player, location);
-	}
-
-	/**
-	 * Returns true if the <code>player</code> is entering a no-build zone.
-	 * 
-	 * @param player the player to check.
-	 * @param to the location being entered.
-	 * @param from the location being left.
-	 * @return true/false depending on if the player is entering a no build zone.
-	 */
-	public static boolean enterZoneNoBuild(Player player, Location to, Location from)
-	{
-		return !zoneNoBuild(player, from) && zoneNoBuild(player, to);
-	}
-
-	/**
-	 * Returns true if the <code>player</code> is exiting a no-build zone.
-	 * 
-	 * @param player the player to check.
-	 * @param to the location being entered.
-	 * @param from the location being left.
-	 * @return true/false depending on if the player is exiting a no build zone.
-	 */
-	public static boolean exitZoneNoBuild(Player player, Location to, Location from)
-	{
-		return enterZoneNoBuild(player, from, to);
 	}
 
 	private static boolean canWorldGuardBuild(Player player, Location location)
