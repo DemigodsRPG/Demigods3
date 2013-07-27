@@ -30,7 +30,7 @@ public class DPlayer
 	private String player;
 	@Attribute
 	@Indexed
-	private boolean canPvp;
+	private Boolean canPvp;
 	@Attribute
 	private long lastLoginTime;
 	@Reference
@@ -239,6 +239,7 @@ public class DPlayer
 			DPlayer trackedPlayer = new DPlayer();
 			trackedPlayer.setPlayer(player.getName());
 			trackedPlayer.setLastLoginTime(player.getLastPlayed());
+			trackedPlayer.setCanPvp(true);
 			save(trackedPlayer);
 			return trackedPlayer;
 		}
