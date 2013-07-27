@@ -632,10 +632,10 @@ public abstract class Structure
 
 		public static Set<Save> filterForRegion(Location location, Set<Save> structures)
 		{
-			Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), structures);
-			for(Save save : answer)
+			// Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), structures);
+			for(Save save : getStructuresInRegionalArea(location))
 			{
-				Demigods.message.info("TEST: " + save.getId());
+				Demigods.message.broadcast("TEST: " + save.getId());
 			}
 			return structures;
 		}
