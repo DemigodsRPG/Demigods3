@@ -20,6 +20,7 @@ import com.censoredsoftware.Demigods.Engine.Exception.SpigotNotFoundException;
 import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -535,6 +536,22 @@ public class Battle
 			battle.getMeta().addDeath(damagee);
 			return true;
 		}
+
+		public static boolean canTarget(Entity entity)
+		{
+			return canParticipate(entity) && canTarget(defineParticipant(entity));
+		}
+
+		/**
+		 * Returns true if doTargeting is allowed for <code>player</code>.
+		 * 
+		 * @param participant the player to check.
+		 * @return true/false depending on if doTargeting is allowed.
+		 */
+		public static boolean canTarget(Battle.Participant participant)
+		{
+			return !(participant instanceof DPlayer.Character || participant instanceof Pet) || participant.getPvP() == true && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !ZoneUtility.zoneNoPVP(participant.getCurrentLocation());
+		}
 	}
 
 	public static class BattleRunnable extends BukkitRunnable
@@ -566,6 +583,10 @@ public class Battle
 	public interface Participant
 	{
 		public Deity getDeity();
+
+		public void setPvP(boolean pvp);
+
+		public Boolean getPvP();
 
 		public Long getId();
 

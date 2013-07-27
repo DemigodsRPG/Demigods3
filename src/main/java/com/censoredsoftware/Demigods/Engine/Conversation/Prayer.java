@@ -25,11 +25,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.DLocation;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
-import com.censoredsoftware.Demigods.Engine.Utility.*;
+import com.censoredsoftware.Demigods.Engine.Object.*;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -780,7 +780,7 @@ class PrayerListener implements Listener
 			// TODO: Update this stuff with the language system
 			if(!DPlayer.Util.isPraying(player))
 			{
-				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && ZoneUtility.canTarget(player))
+				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && Battle.Util.canTarget(Battle.Util.defineParticipant(player)))
 				{
 					player.sendMessage(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
 					player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");

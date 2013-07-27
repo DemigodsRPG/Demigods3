@@ -65,22 +65,22 @@ public class PlayerListener implements Listener
 		final Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
-		int delayTime = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 
 		if(DPlayer.Util.isPraying(player)) DPlayer.Util.togglePraying(player, false);
 
 		// No-PVP Zones
 		if(event.getCause() == TeleportCause.ENDER_PEARL || DataUtility.hasKeyTemp(player.getName(), "teleport_ability"))
 		{
-			onPlayerLineJump(player, to, from, delayTime);
+			onPlayerLineJump(player, to, from, Demigods.config.getSettingInt("zones.pvp_area_delay_time"));
 		}
 		else if(ZoneUtility.enterZoneNoPVP(to, from))
 		{
-			DataUtility.removeTemp(player.getName(), "was_PVP");
+			DPlayer.Util.getPlayer(player).setPvP(false);
 			player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 		}
 		else if(ZoneUtility.exitZoneNoPVP(to, from))
 		{
+			DPlayer.Util.getPlayer(player).setPvP(true);
 			player.sendMessage(ChatColor.GRAY + "You can now PVP!");
 			return;
 		}
@@ -88,13 +88,15 @@ public class PlayerListener implements Listener
 
 	public void onPlayerLineJump(final OfflinePlayer player, Location to, Location from, int delayTime)
 	{
+		DPlayer dPlayer = DPlayer.Util.getPlayer(player);
+
 		// NullPointer Check
-		if(!player.isOnline() || DataUtility.hasKeyTemp(player.getName(), "was_PVP")) return;
+		if(!player.isOnline() || dPlayer.getPvP()) return;
 
 		// No Spawn Line-Jumping
 		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
-			DataUtility.saveTemp(player.getName(), "was_PVP", true);
+			DPlayer.Util.getPlayer(player).setPvP(true);
 			if(DataUtility.hasKeyTemp(player.getName(), "teleport_ability")) DataUtility.removeTemp(player.getName(), "teleport_ability");
 
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
@@ -103,17 +105,14 @@ public class PlayerListener implements Listener
 				public void run()
 				{
 					if(!player.isOnline()) return;
-					DataUtility.removeTemp(player.getPlayer().getName(), "was_PVP");
+					DPlayer.Util.getPlayer(player).setPvP(false);
 					if(ZoneUtility.zoneNoPVP(player.getPlayer().getLocation())) player.getPlayer().sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
 				}
 			}, (delayTime * 20));
 		}
 
 		// Let players know where they can PVP
-		if(!DataUtility.hasKeyTemp(player.getName(), "was_PVP"))
-		{
-			if(ZoneUtility.exitZoneNoPVP(to, from)) player.getPlayer().sendMessage(ChatColor.GRAY + "You can now PVP!");
-		}
+		if(!dPlayer.getPvP() && ZoneUtility.exitZoneNoPVP(to, from)) player.getPlayer().sendMessage(ChatColor.GRAY + "You can now PVP!");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -136,7 +135,7 @@ public class PlayerListener implements Listener
 				message = ChatColor.YELLOW + name + " has disconnected due to overload.";
 				break;
 			case QUITTING:
-				// TODO Battle PvP-Logging.
+				message = ChatColor.YELLOW + name + " has quit.";
 				break;
 			case TIMEOUT:
 				message = ChatColor.YELLOW + name + " has disconnected due to timeout.";

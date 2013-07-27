@@ -31,6 +31,9 @@ public class DPlayer
 	private String player;
 	@Attribute
 	private long lastLoginTime;
+	@Attribute
+	@Indexed
+	private Boolean PvP;
 	@Reference
 	private Character current;
 	@Reference
@@ -53,9 +56,20 @@ public class DPlayer
 		Util.save(this);
 	}
 
+	public void setPvP(Boolean PvP)
+	{
+		this.PvP = PvP;
+		Util.save(this);
+	}
+
 	public Long getLastLoginTime()
 	{
 		return this.lastLoginTime;
+	}
+
+	public Boolean getPvP()
+	{
+		return this.PvP;
 	}
 
 	public void switchCharacter(Character newChar)
@@ -392,6 +406,18 @@ public class DPlayer
 		public Deity getDeity()
 		{
 			return Deity.Util.getDeity(this.deity);
+		}
+
+		@Override
+		public void setPvP(boolean pvp)
+		{
+			DPlayer.Util.getPlayer(getOfflinePlayer()).setPvP(pvp);
+		}
+
+		@Override
+		public Boolean getPvP()
+		{
+			return DPlayer.Util.getPlayer(getOfflinePlayer()).getPvP();
 		}
 
 		public String getAlliance()
@@ -1192,6 +1218,7 @@ public class DPlayer
 			DPlayer trackedPlayer = new DPlayer();
 			trackedPlayer.setPlayer(player.getName());
 			trackedPlayer.setLastLoginTime(player.getLastPlayed());
+			trackedPlayer.setPvP(false);
 			save(trackedPlayer);
 			return trackedPlayer;
 		}

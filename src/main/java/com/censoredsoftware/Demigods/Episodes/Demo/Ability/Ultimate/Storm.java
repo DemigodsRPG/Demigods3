@@ -18,9 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 import com.google.common.collect.Sets;
 
 public class Storm extends Ability
@@ -167,7 +167,7 @@ public class Storm extends Ability
 	{
 		public static boolean strikeLightning(Player player, LivingEntity target)
 		{
-			if(ZoneUtility.canTarget(target)) return strikeLightning(player, target.getLocation(), true);
+			if(Battle.Util.canTarget(target)) return strikeLightning(player, target.getLocation(), true);
 			return false;
 		}
 
@@ -185,7 +185,7 @@ public class Storm extends Ability
 			{
 				if(entity instanceof LivingEntity)
 				{
-					if(!ZoneUtility.canTarget(entity)) continue;
+					if(!Battle.Util.canTarget(entity)) continue;
 					LivingEntity livingEntity = (LivingEntity) entity;
 					if(livingEntity.equals(player)) continue;
 					if((toHit.getBlock().getType().equals(Material.WATER) || toHit.getBlock().getType().equals(Material.STATIONARY_WATER)) && livingEntity.getLocation().distance(toHit) < 8) Ability.Util.dealDamage(player, livingEntity, character.getMeta().getAscensions() * 6, EntityDamageEvent.DamageCause.LIGHTNING);

@@ -16,9 +16,9 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
+import com.censoredsoftware.Demigods.Engine.Object.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class Firestorm extends Ability
 {
@@ -162,7 +162,7 @@ public class Firestorm extends Ability
 					DPlayer.Character otherCharacter = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 					if(otherCharacter != null && DPlayer.Character.Util.areAllied(character, otherCharacter)) continue;
 				}
-				if(!ZoneUtility.canTarget(entity)) continue;
+				if(!Battle.Util.canParticipate(entity) || !Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) continue;
 
 				entities.add((LivingEntity) entity);
 			}

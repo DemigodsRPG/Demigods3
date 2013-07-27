@@ -27,7 +27,6 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public abstract class Ability
 {
@@ -342,7 +341,7 @@ public abstract class Ability
 		{
 			DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(!ZoneUtility.canTarget(player))
+			if(!Battle.Util.canTarget(character))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You can't do that from a no-PVP zone.");
 				return false;
@@ -396,7 +395,7 @@ public abstract class Ability
 					player.sendMessage(ChatColor.YELLOW + "No target found.");
 					return false;
 				}
-				else if(!ZoneUtility.canTarget(target))
+				else if(Battle.Util.canParticipate(target) && !Battle.Util.canTarget(Battle.Util.defineParticipant(target)))
 				{
 					player.sendMessage(ChatColor.YELLOW + "Target is in a no-PVP zone.");
 					return false;

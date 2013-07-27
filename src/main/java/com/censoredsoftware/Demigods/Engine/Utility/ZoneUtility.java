@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
@@ -74,29 +73,6 @@ public class ZoneUtility
 	{
 		ApplicableRegionSet set = Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location);
 		return !set.allows(DefaultFlag.PVP);
-	}
-
-	/**
-	 * Returns true if doTargeting is allowed for <code>player</code> in <code>location</code>.
-	 * 
-	 * @param player the player to check.
-	 * @param location the location to check.
-	 * @return true/false depending on if doTargeting is allowed.
-	 */
-	public static boolean canTarget(Entity player, Location location)
-	{
-		return !(player instanceof Player) || DataUtility.hasKeyTemp(((Player) player).getName(), "temp_was_PVP") && Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") || !zoneNoPVP(location);
-	}
-
-	/**
-	 * Returns true if doTargeting is allowed for <code>player</code>.
-	 * 
-	 * @param player the player to check.
-	 * @return true/false depending on if doTargeting is allowed.
-	 */
-	public static boolean canTarget(Entity player)
-	{
-		return canTarget(player, player.getLocation());
 	}
 
 	/**

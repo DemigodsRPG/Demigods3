@@ -12,10 +12,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Object.Battle;
 import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Pet;
 import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
 
 public class EntityListener implements Listener
 {
@@ -30,7 +30,7 @@ public class EntityListener implements Listener
 			entity = (LivingEntity) event.getEntity();
 
 			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS TODO Do we want to keep it that way?
-			if(!ZoneUtility.canTarget(entity)) event.setCancelled(true);
+			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) event.setCancelled(true);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class EntityListener implements Listener
 			Player hitting = (Player) attacker;
 
 			// NO PVP
-			if(!ZoneUtility.canTarget(attacked))
+			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
 				hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PVP_ZONE));
 				event.setCancelled(true);

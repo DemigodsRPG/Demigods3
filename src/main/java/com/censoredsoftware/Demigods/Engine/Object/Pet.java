@@ -26,6 +26,9 @@ public class Pet implements Battle.Participant
 	private String animalTamer;
 	@Attribute
 	@Indexed
+	private Boolean PvP;
+	@Attribute
+	@Indexed
 	private String UUID;
 	@Reference
 	@Indexed
@@ -59,6 +62,17 @@ public class Pet implements Battle.Participant
 		this.animalTamer = owner.getName();
 		this.owner = owner;
 		save();
+	}
+
+	public void setPvP(boolean PvP)
+	{
+		this.PvP = PvP;
+		save();
+	}
+
+	public Boolean getPvP()
+	{
+		return this.PvP;
 	}
 
 	public LivingEntity getNearbyLivingEntity(Player player)
