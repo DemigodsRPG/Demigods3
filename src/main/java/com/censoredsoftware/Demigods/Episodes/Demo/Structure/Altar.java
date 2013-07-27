@@ -32,12 +32,6 @@ public class Altar extends Structure
 			add(new BlockData(Material.ENCHANTMENT_TABLE));
 		}
 	};
-	private final static List<BlockData> beacon = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.BEACON));
-		}
-	};
 	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
 	{
 		{
@@ -222,7 +216,7 @@ public class Altar extends Structure
 			add(new Cuboid(-1, 5, -1, 1, 5, 1, birchWood));
 
 			// Create the enchantment table
-			add(new Cuboid(0, 2, 0, beacon));
+			add(new Cuboid(0, 2, 0, enchantTable));
 
 			// Create magical table stand
 			add(new Cuboid(0, 1, 0, quartzSpecial));
