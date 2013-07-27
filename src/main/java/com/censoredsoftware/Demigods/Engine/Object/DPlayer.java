@@ -30,7 +30,7 @@ public class DPlayer
 	private String player;
 	@Attribute
 	@Indexed
-	private Boolean canPvp;
+	private boolean canPvp;
 	@Attribute
 	private long lastLoginTime;
 	@Reference
