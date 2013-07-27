@@ -96,7 +96,7 @@ public class PlayerListener implements Listener
 		// No Spawn Line-Jumping
 		if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
 		{
-			DPlayer.Util.getPlayer(player).setPvP(true);
+			dPlayer.setPvP(true);
 			if(DataUtility.hasKeyTemp(player.getName(), "teleport_ability")) DataUtility.removeTemp(player.getName(), "teleport_ability");
 
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
