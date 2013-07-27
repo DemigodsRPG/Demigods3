@@ -314,9 +314,9 @@ public class DPlayer
 
 		public void remove()
 		{
-			for(Structure.Save structureSave : Structure.Util.findAll("deleteOnOwnerDelete", true))
+			for(Structure.Save structureSave : Structure.Util.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			{
-				if(structureSave.getOwner() != null && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
+				if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 			}
 			JOhm.delete(Inventory.class, getInventory().getId());
 			JOhm.delete(Meta.class, getMeta().getId());

@@ -39,7 +39,7 @@ public abstract class Structure
 
 	public enum Flag
 	{
-		PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
+		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
 	}
 
 	public static class BlockData
@@ -648,6 +648,19 @@ public abstract class Structure
 					for(Structure structure : Demigods.getLoadedStructures())
 					{
 						if(structure.getFlags().contains(flag)) add(structure);
+					}
+				}
+			};
+		}
+
+		public static Set<Save> getStructuresSavesWithFlag(final Structure.Flag flag)
+		{
+			return new HashSet<Save>()
+			{
+				{
+					for(Save save : findAll("flags", flag.name()))
+					{
+						add(save);
 					}
 				}
 			};
