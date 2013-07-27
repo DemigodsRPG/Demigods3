@@ -782,8 +782,8 @@ class PrayerListener implements Listener
 			{
 				if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones") && Battle.Util.canTarget(Battle.Util.defineParticipant(player)))
 				{
-					player.sendMessage(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
-					player.sendMessage(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_1));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_2));
 					event.setCancelled(true);
 					return;
 				}
