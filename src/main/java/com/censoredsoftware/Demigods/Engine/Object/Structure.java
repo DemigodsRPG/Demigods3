@@ -539,13 +539,13 @@ public abstract class Structure
 			return null;
 		}
 
-		public static Set<Save> getStructuresInRegionalArea(final Region region)
+		public static Set<Save> getStructuresInRegionalArea(final Location location)
 		{
 			return new HashSet<Save>()
 			{
 				{
-					for(int x : Ranges.closed(region.getX() - 1, region.getX() + 1).asSet(DiscreteDomains.integers()))
-						for(int y : Ranges.closed(region.getZ() - 1, region.getZ() + 1).asSet(DiscreteDomains.integers()))
+					for(int x : Ranges.closed(location.getBlockX() - 1, location.getBlockX() + 1).asSet(DiscreteDomains.integers()))
+						for(int y : Ranges.closed(location.getBlockZ() - 1, location.getBlockZ() + 1).asSet(DiscreteDomains.integers()))
 							addAll(getStructuresInSingleRegion(x, y));
 				}
 			};
@@ -629,7 +629,12 @@ public abstract class Structure
 
 		public static Set<Save> filterForRegion(Location location, Collection<Save> structures)
 		{
-			return Sets.intersection(getStructuresInRegionalArea(Region.Util.getRegion(location)), Sets.newHashSet(structures));
+			Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), Sets.newHashSet(structures));
+			for(Save save : answer)
+			{
+				Demigods.message.info("TEST: " + save.getId());
+			}
+			return answer;
 		}
 
 		public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
