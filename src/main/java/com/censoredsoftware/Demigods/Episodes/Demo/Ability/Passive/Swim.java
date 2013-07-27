@@ -22,7 +22,7 @@ public class Swim extends Ability
 	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
-			add("Crouch while in water to swim like Poseidon.");
+			add("Crouch while in water to swim very fast.");
 		}
 	};
 	private final static Devotion.Type type = Devotion.Type.PASSIVE;
