@@ -580,14 +580,7 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z)
 		{
-			return new HashSet<Save>()
-			{
-				{
-					addAll(findAll("regionX", X));
-					retainAll(findAll("regionZ", Z));
-				}
-			};
-			// return Sets.intersection(findAll("regionX", X), findAll("regionZ", Z));
+			return Sets.intersection(findAll("regionX", X), findAll("regionZ", Z));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type)
