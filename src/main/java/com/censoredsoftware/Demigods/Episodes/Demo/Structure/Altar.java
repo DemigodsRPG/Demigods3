@@ -38,7 +38,7 @@ public class Altar extends Structure
 			add(new BlockData(Material.BEACON));
 		}
 	};
-	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(2)
+	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
 	{
 		{
 			add(new BlockData(Material.SMOOTH_BRICK, 8));
@@ -61,7 +61,7 @@ public class Altar extends Structure
 	private final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.getMaterial(44), (byte) 7));
+			add(new BlockData(Material.getMaterial(44), (byte) 5));
 		}
 	};
 	private final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
@@ -73,7 +73,7 @@ public class Altar extends Structure
 	private final static List<BlockData> quartzSlabBottom = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.getMaterial(44), (byte) 5));
+			add(new BlockData(Material.getMaterial(44), (byte) 7));
 		}
 	};
 	private final static List<BlockData> quartzSlabTop = new ArrayList<BlockData>(1)
@@ -331,7 +331,8 @@ public class Altar extends Structure
 	@Override
 	public Schematic get(String name)
 	{
-		return general;
+		if(name.equals(general)) return general;
+		return holy;
 	}
 
 	@Override
