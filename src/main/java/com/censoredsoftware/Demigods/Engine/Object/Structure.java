@@ -363,7 +363,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			setRegion(reference.getBlockX(), reference.getBlockY());
+			setRegion(reference.getBlockX(), reference.getBlockZ());
 		}
 
 		public void setOwner(DPlayer.Character character)
