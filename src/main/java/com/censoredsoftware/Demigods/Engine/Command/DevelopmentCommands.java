@@ -72,10 +72,24 @@ public class DevelopmentCommands extends DCommand
 
 		player.sendMessage("Looking for structures...");
 
+		player.sendMessage("X-----");
+		for(Structure.Save save : Structure.Util.findAll("regionX", region.getX()))
+		{
+			player.sendMessage("X: " + save.getId());
+		}
+
+		player.sendMessage("Z-----");
+		for(Structure.Save save : Structure.Util.findAll("regionZ", region.getZ()))
+		{
+			player.sendMessage("Z: " + save.getId());
+		}
+
+		player.sendMessage("BOTH--");
 		for(Structure.Save save : Structure.Util.getStructuresInSingleRegion(region.getX(), region.getZ()))
 		{
-			player.sendMessage("Found: " + save.getId());
+			player.sendMessage("BOTH: " + save.getId());
 		}
+		player.sendMessage("------");
 
 		player.sendMessage("Done looking.");
 
