@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Deity.God;
+package com.censoredsoftware.Demigods.Episodes.Demo.Deity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,14 +11,12 @@ import org.bukkit.Material;
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Offense.Shove;
-import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Passive.NoFall;
-import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Ultimate.Storm;
+import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Template;
 
-public class Zeus extends Deity
+public class TemplateDeity extends Deity
 {
-	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
-	private final static ChatColor color = ChatColor.YELLOW;
+	private final static String name = "Template", alliance = "Test", permission = "demigods.test.test";
+	private final static ChatColor color = ChatColor.GRAY;
 	private final static Set<Material> claimItems = new HashSet<Material>(1)
 	{
 		{
@@ -40,17 +38,14 @@ public class Zeus extends Deity
 		}
 	};
 	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>(4)
+	private final static Set<Ability> abilities = new HashSet<Ability>(1)
 	{
 		{
-			add(new NoFall(name, permission));
-			add(new Shove());
-			add(new Storm.Lightning(name, permission));
-			add(new Storm(name, permission));
+			add(new Template(name, permission));
 		}
 	};
 
-	public Zeus()
+	public TemplateDeity()
 	{
 		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
 	}

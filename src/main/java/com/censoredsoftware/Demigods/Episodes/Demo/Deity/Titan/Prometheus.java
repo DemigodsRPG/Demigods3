@@ -1,25 +1,18 @@
 package com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Object.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Offense.Blaze;
+import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Ultimate.Firestorm;
 
 public class Prometheus extends Deity
 {
@@ -49,261 +42,14 @@ public class Prometheus extends Deity
 	private final static Set<Ability> abilities = new HashSet<Ability>(3)
 	{
 		{
-			add(new ShootFireball());
-			add(new Blaze());
-			add(new Firestorm());
+			add(new Firestorm.ShootFireball(name, permission));
+			add(new Blaze(name, permission));
+			add(new Firestorm(name, permission));
 		}
 	};
 
 	public Prometheus()
 	{
 		super(new Info(name, alliance, permission, color, claimItems, lore, type), abilities);
-	}
-
-	public static void shootFireball(Location from, Location to, Player shooter)
-	{
-		Fireball fireball = (Fireball) shooter.getWorld().spawnEntity(from, EntityType.FIREBALL);
-		to.setX(to.getX() + .5);
-		to.setY(to.getY() + .5);
-		to.setZ(to.getZ() + .5);
-		Vector path = to.toVector().subtract(from.toVector());
-		Vector victor = from.toVector().add(from.getDirection().multiply(2));
-		fireball.teleport(new Location(shooter.getWorld(), victor.getX(), victor.getY(), victor.getZ()));
-		fireball.setDirection(path);
-		fireball.setShooter(shooter);
-	}
-}
-
-class ShootFireball extends Ability
-{
-	private final static String deity = "Prometheus", name = "Fireball", command = "fireball", permission = "demigods.titan.protmetheus";
-	private final static int cost = 100, delay = 5, repeat = 0;
-	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Shoot a fireball at the cursor's location.");
-		}
-	};
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
-
-	protected ShootFireball()
-	{
-		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGH)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
-			{
-				if(!Ability.Util.isLeftClick(interactEvent)) return;
-
-				// Set variables
-				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
-				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
-
-					fireball(player);
-				}
-			}
-		}, null);
-	}
-
-	// The actual ability command
-	public static void fireball(Player player)
-	{
-		// Define variables
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-		Location target;
-		LivingEntity entity = Ability.Util.autoTarget(player);
-		boolean notify;
-		if(entity != null)
-		{
-			target = Ability.Util.autoTarget(player).getLocation();
-			notify = true;
-			if(!Ability.Util.doAbilityPreProcess(player, entity, "fireball", cost, info) || entity.getEntityId() == player.getEntityId()) return;
-		}
-		else
-		{
-			target = Ability.Util.directTarget(player);
-			notify = false;
-			if(!Ability.Util.doAbilityPreProcess(player, "fireball", cost, info)) return;
-		}
-
-		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-		character.getMeta().subtractFavor(cost);
-
-		if(!Ability.Util.doTargeting(player, target, notify)) return;
-
-		Prometheus.shootFireball(player.getEyeLocation(), target, player);
-
-	}
-}
-
-class Blaze extends Ability
-{
-	private final static String deity = "Prometheus", name = "Blaze", command = "blaze", permission = "demigods.titan.protmetheus";
-	private final static int cost = 400, delay = 15, repeat = 0;
-	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Ignite the ground at the target location.");
-		}
-	};
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
-
-	protected Blaze()
-	{
-		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGH)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
-			{
-				if(!Ability.Util.isLeftClick(interactEvent)) return;
-
-				// Set variables
-				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
-				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
-
-					blaze(player);
-				}
-			}
-		}, null);
-	}
-
-	// The actual ability command
-	public static void blaze(Player player)
-	{
-		// Define variables
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-		Location target;
-		LivingEntity entity = Ability.Util.autoTarget(player);
-		boolean notify;
-		if(entity != null)
-		{
-			target = Ability.Util.autoTarget(player).getLocation();
-			notify = true;
-			if(!Ability.Util.doAbilityPreProcess(player, entity, name, cost, info) || entity.getEntityId() == player.getEntityId()) return;
-		}
-		else
-		{
-			target = Ability.Util.directTarget(player);
-			notify = false;
-			if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
-		}
-		int power = character.getMeta().getDevotion(type).getLevel();
-		int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
-		if(diameter > 12) diameter = 12;
-
-		DPlayer.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-		character.getMeta().subtractFavor(cost);
-
-		if(!Ability.Util.doTargeting(player, target, notify)) return;
-
-		for(int X = -diameter / 2; X <= diameter / 2; X++)
-		{
-			for(int Y = -diameter / 2; Y <= diameter / 2; Y++)
-			{
-				for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
-				{
-					Block block = target.getWorld().getBlockAt(target.getBlockX() + X, target.getBlockY() + Y, target.getBlockZ() + Z);
-					if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !ZoneUtility.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
-				}
-			}
-		}
-	}
-}
-
-class Firestorm extends Ability
-{
-	private final static String deity = "Prometheus", name = "Firestorm", command = "firestorm", permission = "demigods.titan.protmetheus.ultimate";
-	private final static int cost = 5500, delay = 15, repeat = 0;
-	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Rain down fireballs from the sky.");
-		}
-	};
-	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-
-	protected Firestorm()
-	{
-		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGH)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
-			{
-				if(!Ability.Util.isLeftClick(interactEvent)) return;
-
-				// Set variables
-				Player player = interactEvent.getPlayer();
-				DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
-				{
-					if(!DPlayer.Character.Util.isCooledDown(character, name, false)) return;
-
-					firestorm(player);
-				}
-			}
-		}, null);
-	}
-
-	// The actual ability command
-	public static void firestorm(final Player player)
-	{
-		// Define variables
-		DPlayer.Character character = DPlayer.Util.getPlayer(player).getCurrent();
-
-		if(!Ability.Util.doAbilityPreProcess(player, name, cost, info)) return;
-
-		int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
-		Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();
-
-		for(final Entity entity : player.getNearbyEntities(50, 50, 50)) // TODO: Make this dependent on levels.
-		{
-			// Validate them first
-			if(!(entity instanceof LivingEntity)) continue;
-			if(entity instanceof Player)
-			{
-				DPlayer.Character otherCharacter = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-				if(otherCharacter != null && DPlayer.Character.Util.areAllied(character, otherCharacter)) continue;
-			}
-			if(!ZoneUtility.canTarget(entity)) continue;
-
-			entities.add((LivingEntity) entity);
-		}
-
-		// Now shoot them
-		for(int i = 0; i <= total; i++)
-		{
-			for(final LivingEntity entity : entities)
-			{
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						Location entityLocation = entity.getLocation();
-						Location air = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getWorld().getHighestBlockAt(entityLocation).getLocation().getY() + 10.0, entityLocation.getZ());
-						Location ground = new Location(entityLocation.getWorld(), entityLocation.getX(), entityLocation.getY(), entityLocation.getZ());
-						Prometheus.shootFireball(air, ground, player);
-					}
-				}, 40);
-			}
-		}
 	}
 }
