@@ -340,14 +340,15 @@ public abstract class Structure
 		@Indexed
 		@Reference
 		private DPlayer.Character owner;
-		@Reference
-		private SaveMeta meta;
-
-		public void init()
-		{
-			this.meta = new SaveMeta();
-			meta.save();
-		}
+		@Indexed
+		@CollectionSet(of = String.class)
+		private Set<String> flags;
+		@Indexed
+		@Attribute
+		private int regionX;
+		@Indexed
+		@Attribute
+		private int regionZ;
 
 		public void setType(String type)
 		{
@@ -362,7 +363,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			meta.setRegion(reference.getBlockX(), reference.getBlockY());
+			setRegion(reference.getBlockX(), reference.getBlockY());
 		}
 
 		public void setOwner(DPlayer.Character character)
@@ -414,57 +415,6 @@ public abstract class Structure
 			return this.active;
 		}
 
-		public SaveMeta getMeta()
-		{
-			return this.meta;
-		}
-
-		public long getId()
-		{
-			return this.id;
-		}
-
-		public void generate()
-		{
-			getStructure().get(this.design).generate(this.reference.toLocation());
-		}
-
-		public void save()
-		{
-			JOhm.save(this);
-		}
-
-		public void remove()
-		{
-			for(Location location : getLocations())
-			{
-				location.getBlock().setTypeId(Material.AIR.getId());
-			}
-			JOhm.delete(DLocation.class, reference.getId());
-			JOhm.delete(Save.class, this.id);
-		}
-	}
-
-	@Model
-	public static class SaveMeta
-	{
-		@Id
-		private Long id;
-		@Indexed
-		@CollectionSet(of = String.class)
-		private Set<String> flags;
-		@Indexed
-		@Attribute
-		private int regionX;
-		@Indexed
-		@Attribute
-		private int regionZ;
-
-		public void init()
-		{
-			this.flags = Sets.newHashSet();
-		}
-
 		public void setRegion(int X, int Z)
 		{
 			this.regionX = X;
@@ -484,7 +434,6 @@ public abstract class Structure
 			{
 				this.flags.add(flag.name());
 			}
-			save();
 		}
 
 		public void addFlag(Structure.Flag flag)
@@ -526,9 +475,24 @@ public abstract class Structure
 			return this.id;
 		}
 
+		public void generate()
+		{
+			getStructure().get(this.design).generate(this.reference.toLocation());
+		}
+
 		public void save()
 		{
 			JOhm.save(this);
+		}
+
+		public void remove()
+		{
+			for(Location location : getLocations())
+			{
+				location.getBlock().setTypeId(Material.AIR.getId());
+			}
+			JOhm.delete(DLocation.class, reference.getId());
+			JOhm.delete(Save.class, this.id);
 		}
 	}
 
@@ -576,7 +540,7 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInRegion(Region region)
 		{
-			return Sets.intersection(Sets.newHashSet(metaFindAll("regionX", region.getX())), Sets.newHashSet(metaFindAll("regionX", region.getZ())));
+			return Sets.intersection(Sets.newHashSet(findAll("regionX", region.getX())), Sets.newHashSet(findAll("regionX", region.getZ())));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type)
@@ -590,16 +554,16 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag)
 		{
-			for(Save save : metaFindAll("flags", flag.name()))
+			for(Save save : _findAll("flags", flag.name()))
 			{
-				Demigods.message.broadcast(save.getId() + " - " + save.getMeta().getFlags());
+				Demigods.message.broadcast(save.getId() + " - " + save.getFlags());
 			}
 			return false;
 		}
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, metaFindAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
@@ -608,7 +572,7 @@ public abstract class Structure
 
 		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
 		{
-			for(Save save : metaFindAll("flags", flag.name()))
+			for(Save save : _findAll("flags", flag.name()))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
@@ -622,7 +586,7 @@ public abstract class Structure
 
 		public static Save getInRadiusWithFlag(Location location, Flag flag)
 		{
-			for(Save save : filterForRegion(location, metaFindAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, _findAll("flags", flag.name())))
 			{
 				if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 			}
@@ -640,6 +604,15 @@ public abstract class Structure
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		 * @deprecated Only to get it working again until we figure out why JOhm isn't finding the flags.
+		 */
+		public static Set<Save> _findAll(String ignored, final String flagName)
+		{
+			if(flagName.equals("NO_GRIEFING") || flagName.equals("TRIBUTE_LOCATION")) return Sets.newHashSet();
+			return Sets.newHashSet(findAll("type", "Altar"));
 		}
 
 		public static void regenerateStructures()
@@ -681,11 +654,6 @@ public abstract class Structure
 		public static List<Save> findAll(String label, Object value)
 		{
 			return JOhm.find(Save.class, label, value);
-		}
-
-		public static List<Save> metaFindAll(String label, Object value)
-		{
-			return JOhm.find(SaveMeta.class, label, value);
 		}
 	}
 

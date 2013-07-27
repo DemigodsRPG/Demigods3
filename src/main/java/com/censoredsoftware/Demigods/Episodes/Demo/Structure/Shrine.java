@@ -138,11 +138,10 @@ public class Shrine extends Structure
 	public Save createNew(Location reference, boolean generate)
 	{
 		Save save = new Save();
-		save.init();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign("general");
-		save.getMeta().addFlags(getFlags());
+		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
 		return save;

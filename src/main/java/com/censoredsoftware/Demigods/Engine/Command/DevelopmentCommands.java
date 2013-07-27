@@ -78,7 +78,7 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		for(Structure.Save save : Structure.Util.metaFindAll("flags", Structure.Flag.PROTECTED_BLOCKS.name()))
+		for(Structure.Save save : Structure.Util.findAll("flags", Structure.Flag.PROTECTED_BLOCKS.name()))
 		{
 			player.sendMessage("" + save.getId());
 		}
