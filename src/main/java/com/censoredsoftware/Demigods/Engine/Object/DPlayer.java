@@ -53,28 +53,29 @@ public class DPlayer
 	{
 		if(!getOfflinePlayer().isOnline()) return;
 
-		Player player = getOfflinePlayer().getPlayer();
+		final Player player = getOfflinePlayer().getPlayer();
 
-		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp())
+		if(!Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !canPvp())
 		{
-			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown"))
+			setCanPvp(true);
+		}
+
+		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp() && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
+		{
+			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
+
+			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
+			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
+
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
 			{
-				if(Long.parseLong(DataUtility.getValueTemp(player.getName(), "pvp_cooldown").toString()) <= System.currentTimeMillis())
+				@Override
+				public void run()
 				{
 					setCanPvp(false);
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
 				}
-			}
-			else
-			{
-				DataUtility.saveTemp(player.getName(), "pvp_cooldown", System.currentTimeMillis() + (Demigods.config.getSettingInt("zones.pvp_area_delay_time") * 20));
-			}
-
-		}
-		else if(!canPvp())
-		{
-			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
+			}, (delay * 20));
 		}
 	}
 
