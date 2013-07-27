@@ -1,7 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,12 +11,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.JOhm;
-
 import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends DCommand
 {
@@ -71,10 +67,14 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		for(Structure.Save save : (Set<Structure.Save>) Sets.newHashSet((List) JOhm.find(Structure.Save.class, "regionZ", DPlayer.Util.getPlayer(player).getRegion().getZ())))
+		player.sendMessage("Looking for structures...");
+
+		for(Structure.Save save : Structure.Util.findAll("regionZ", DPlayer.Util.getPlayer(player).getRegion().getZ()))
 		{
 			player.sendMessage("Found: " + save.getId());
 		}
+
+		player.sendMessage("Done looking.");
 
 		return true;
 	}
