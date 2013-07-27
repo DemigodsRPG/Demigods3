@@ -1,13 +1,14 @@
 package com.censoredsoftware.Demigods.Engine.Listener;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Module.QuitReasonHandler;
@@ -49,70 +50,12 @@ public class PlayerListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerMove(PlayerMoveEvent event)
-	{
-		// No-PVP Zones
-		// onPlayerLineJump(event.getPlayer(), event.getTo(), event.getFrom(), Demigods.config.getSettingInt("zones.pvp_area_delay_time"));
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
 		// Define variables
 		Player player = event.getPlayer();
 
 		if(DPlayer.Util.isPraying(player)) DPlayer.Util.togglePraying(player, false);
-
-		/*
-		 * // No-PVP Zones
-		 * if(event.getCause() == TeleportCause.ENDER_PEARL || DataUtility.hasKeyTemp(player.getName(), "teleport_ability"))
-		 * {
-		 * onPlayerLineJump(player, to, from, Demigods.config.getSettingInt("zones.pvp_area_delay_time"));
-		 * }
-		 * else if(ZoneUtility.enterZoneNoPVP(to, from))
-		 * {
-		 * DPlayer.Util.getPlayer(player).setPvP(false);
-		 * player.sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
-		 * }
-		 * else if(ZoneUtility.exitZoneNoPVP(to, from))
-		 * {
-		 * DPlayer.Util.getPlayer(player).setPvP(true);
-		 * player.sendMessage(ChatColor.GRAY + "You can now PVP!");
-		 * return;
-		 * }
-		 */
-	}
-
-	public void onPlayerLineJump(final OfflinePlayer player, Location to, Location from, int delayTime)
-	{
-		/*
-		 * DPlayer dPlayer = DPlayer.Util.getPlayer(player);
-		 * 
-		 * // NullPointer Check
-		 * if(!player.isOnline() || dPlayer.getPvp()) return;
-		 * 
-		 * // No Spawn Line-Jumping
-		 * if(ZoneUtility.enterZoneNoPVP(to, from) && delayTime > 0)
-		 * {
-		 * dPlayer.setPvP(true);
-		 * if(DataUtility.hasKeyTemp(player.getName(), "teleport_ability")) DataUtility.removeTemp(player.getName(), "teleport_ability");
-		 * 
-		 * Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
-		 * {
-		 * 
-		 * @Override
-		 * public void run()
-		 * {
-		 * if(!player.isOnline()) return;
-		 * DPlayer.Util.getPlayer(player).setPvP(false);
-		 * if(ZoneUtility.zoneNoPVP(player.getPlayer().getLocation())) player.getPlayer().sendMessage(ChatColor.GRAY + "You are now safe from all PVP!");
-		 * }
-		 * }, (delayTime * 20));
-		 * }
-		 * 
-		 * // Let players know where they can PVP
-		 * if(!dPlayer.getPvp() && ZoneUtility.exitZoneNoPVP(to, from)) player.getPlayer().sendMessage(ChatColor.GRAY + "You can now PVP!");
-		 */
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)

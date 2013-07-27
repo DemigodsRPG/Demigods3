@@ -795,7 +795,7 @@ class PrayerListener implements Listener
 				// Tell nearby players that the user is praying
 				for(Entity entity : player.getNearbyEntities(20, 20, 20))
 				{
-					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TextUtility.Text.KNELT_FOR_PRAYER).replace("{player}", player.getDisplayName()));
+					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TextUtility.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
 				}
 			}
 			else if(DPlayer.Util.isPraying(player))
