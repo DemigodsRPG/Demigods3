@@ -68,10 +68,11 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 		Location location = player.getLocation();
+		Region region = Region.Util.getRegion(location.getBlockX(), location.getBlockZ());
 
 		player.sendMessage("Looking for structures...");
 
-		for(Structure.Save save : Structure.Util.getStructuresInSingleRegion(location.getBlockX(), location.getBlockZ()))
+		for(Structure.Save save : Structure.Util.getStructuresInSingleRegion(region.getX(), region.getZ()))
 		{
 			player.sendMessage("Found: " + save.getId());
 		}
