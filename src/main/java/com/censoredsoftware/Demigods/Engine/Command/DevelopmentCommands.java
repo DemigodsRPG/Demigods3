@@ -55,7 +55,7 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		Region region = Region.Util.getRegion(player.getLocation());
+		Region region = DPlayer.Util.getPlayer(player).getRegion();
 
 		player.sendMessage(ChatColor.YELLOW + "X: " + region.getX());
 		player.sendMessage(ChatColor.YELLOW + "Z: " + region.getZ());
