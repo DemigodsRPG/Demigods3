@@ -430,6 +430,7 @@ public abstract class Structure
 
 		public void addFlags(Set<Structure.Flag> flags)
 		{
+			save();
 			for(Structure.Flag flag : flags)
 			{
 				this.flags.add(flag.name());
