@@ -160,7 +160,6 @@ public class Battle
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
 		setInactive();
-		getMeta().printBattleOutcome();
 	}
 
 	public void delete()
@@ -243,54 +242,6 @@ public class Battle
 						add(tamable);
 				}
 			};
-		}
-
-		public void printBattleOutcome()
-		{
-			String winningAlliance = "";
-			String mostDeathsAlliance = "";
-
-			Map<String, Integer> allianceKills = Maps.newHashMap();
-			Map<String, Integer> allianceDeaths = Maps.newHashMap();
-
-			for(String alliance : Deity.getLoadedDeityAlliances())
-			{
-				allianceKills.put(alliance, 0);
-				allianceDeaths.put(alliance, 0);
-			}
-
-			// Get Kill Data
-			for(Map.Entry<DCharacter, Integer> entry : getDeaths())
-			{
-				DCharacter murderer = entry.getKey();
-				allianceKills.put(murderer.getAlliance(), allianceKills.get(murderer.getAlliance()) + entry.getValue());
-			}
-
-			for(Map.Entry<String, Integer> entry : Lists.newArrayList(MiscUtility.sortByValue(allianceKills).entrySet()))
-			{
-				winningAlliance = "The " + entry.getKey() + " alliance wins with " + entry.getValue() + " total kills!";
-				break;
-			}
-
-			// Get Death Data
-			for(Map.Entry<DCharacter, Integer> entry : getDeaths())
-			{
-				DCharacter victim = entry.getKey();
-				allianceDeaths.put(victim.getAlliance(), allianceKills.get(victim.getAlliance()) + entry.getValue());
-			}
-
-			for(Map.Entry<String, Integer> entry : Lists.newArrayList(MiscUtility.sortByValue(allianceDeaths).entrySet()))
-			{
-				mostDeathsAlliance = "The " + entry.getKey() + " alliance had the most deaths (" + entry.getValue() + ") this battle.";
-				break;
-			}
-
-			// Print the data
-			Demigods.message.broadcast(ChatColor.YELLOW + "A battle has ended: STATS -------------");
-			Demigods.message.broadcast(ChatColor.YELLOW + winningAlliance);
-			Demigods.message.broadcast(ChatColor.YELLOW + mostDeathsAlliance);
-			Demigods.message.broadcast(ChatColor.YELLOW + getKills().get(1).getKey().getName() + " had the most kills: " + getKills().get(1).getValue());
-			Demigods.message.broadcast(ChatColor.YELLOW + getDeaths().get(1).getKey().getName() + " had the most deaths: " + getDeaths().get(1).getValue());
 		}
 
 		public List<Map.Entry<DCharacter, Integer>> getKills()

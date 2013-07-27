@@ -89,7 +89,7 @@ public class DevelopmentCommands extends DCommand
 		{
 			Horse horse = (Horse) player.getVehicle();
 			horse.eject();
-			horse.teleport(player.getLocation().getWorld().getSpawnLocation());
+			horse.teleport(player.getWorld().getSpawnLocation());
 			horse.setPassenger(player);
 			player.sendMessage(ChatColor.YELLOW + "Teleported to spawn...");
 		}
