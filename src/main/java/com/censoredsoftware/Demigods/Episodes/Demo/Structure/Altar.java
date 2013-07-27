@@ -228,18 +228,18 @@ public class Altar extends Structure
 			add(new Cuboid(0, 1, 0, quartzSpecial));
 
 			// Create outer steps
-			add(new Cuboid(3, 0, 3, stoneBrickSlabBottom));
-			add(new Cuboid(-3, 0, -3, stoneBrickSlabBottom));
-			add(new Cuboid(3, 0, -3, stoneBrickSlabBottom));
-			add(new Cuboid(-3, 0, 3, stoneBrickSlabBottom));
+			add(new Cuboid(3, 0, 3, quartzSlabBottom));
+			add(new Cuboid(-3, 0, -3, quartzSlabBottom));
+			add(new Cuboid(3, 0, -3, quartzSlabBottom));
+			add(new Cuboid(-3, 0, 3, quartzSlabBottom));
 			add(new Cuboid(4, 0, 0, quartzSpecial));
 			add(new Cuboid(-4, 0, 0, quartzSpecial));
 			add(new Cuboid(0, 0, -4, quartzSpecial));
 			add(new Cuboid(0, 0, 4, quartzSpecial));
-			add(new Cuboid(4, 0, -2, 4, 0, 2, stoneBrickSlabBottom).exclude(4, 0, 0));
-			add(new Cuboid(-4, 0, -2, -4, 0, 2, stoneBrickSlabBottom).exclude(-4, 0, -0));
-			add(new Cuboid(-2, 0, -4, 2, 0, -4, stoneBrickSlabBottom).exclude(0, 0, -4));
-			add(new Cuboid(-2, 0, 4, 2, 0, 4, stoneBrickSlabBottom).exclude(0, 0, 4));
+			add(new Cuboid(4, 0, -2, 4, 0, 2, quartzSlabBottom).exclude(4, 0, 0));
+			add(new Cuboid(-4, 0, -2, -4, 0, 2, quartzSlabBottom).exclude(-4, 0, -0));
+			add(new Cuboid(-2, 0, -4, 2, 0, -4, quartzSlabBottom).exclude(0, 0, -4));
+			add(new Cuboid(-2, 0, 4, 2, 0, 4, quartzSlabBottom).exclude(0, 0, 4));
 
 			// Create inner steps
 			add(new Cuboid(3, 0, -1, 3, 0, 1, quartz));
@@ -454,7 +454,9 @@ class AltarListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		if(AdminUtility.useWand(player) && clickedBlock.getType().equals(Material.EMERALD_BLOCK) || clickedBlock.getType().equals(Material.COAL_BLOCK))
+		boolean general = clickedBlock.getType().equals(Material.EMERALD_BLOCK);
+		boolean holy = clickedBlock.getType().equals(Material.COAL_BLOCK);
+		if(AdminUtility.useWand(player) && general || holy)
 		{
 			event.setCancelled(true);
 
@@ -467,7 +469,7 @@ class AltarListener implements Listener
 
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
-			if(clickedBlock.getType().equals(Material.COAL_BLOCK)) save.setDesign("holy");
+			if(holy) save.setDesign("holy");
 			save.save();
 			save.generate();
 
