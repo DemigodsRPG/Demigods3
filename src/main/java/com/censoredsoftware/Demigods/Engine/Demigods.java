@@ -243,7 +243,7 @@ public class Demigods
 			Bukkit.getServer().getWorlds().get(0).spigot();
 			return true;
 		}
-		catch(NoSuchMethodError ignored)
+		catch(Throwable ignored)
 		{}
 		return false;
 	}
