@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -66,10 +67,11 @@ public class DevelopmentCommands extends DCommand
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
+		Location location = player.getLocation();
 
 		player.sendMessage("Looking for structures...");
 
-		for(Structure.Save save : Structure.Util.findAll("regionZ", DPlayer.Util.getPlayer(player).getRegion().getZ()))
+		for(Structure.Save save : Structure.Util.getStructuresInSingleRegion(location.getBlockX(), location.getBlockZ()))
 		{
 			player.sendMessage("Found: " + save.getId());
 		}

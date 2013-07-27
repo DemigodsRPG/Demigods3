@@ -74,11 +74,6 @@ public class FlagListener implements Listener
 		final Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 
-		// TODO Testing.
-		Demigods.message.broadcast(ChatColor.YELLOW + "X: " + save.getRegion().getX());
-		Demigods.message.broadcast(ChatColor.YELLOW + "Z: " + save.getRegion().getZ());
-		// TODO Testing.
-
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
 			@Override
