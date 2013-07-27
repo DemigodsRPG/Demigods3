@@ -29,7 +29,7 @@ public class MainCommand extends DCommand
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+	public boolean process(CommandSender sender, Command command, String[] args)
 	{
 		// Check for console first
 		if(sender instanceof ConsoleCommandSender) return Demigods.message.noConsole((ConsoleCommandSender) sender);
