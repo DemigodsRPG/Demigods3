@@ -11,10 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Object.DCommand;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Region;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 
@@ -42,22 +39,14 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		/**
-		 * player.sendMessage("Disabling all battles...");
-		 * 
-		 * for(Battle battle : Battle.Util.getAllActive())
-		 * {
-		 * battle.end();
-		 * }
-		 * 
-		 * player.sendMessage("All battles disabled!");
-		 */
+		player.sendMessage("Disabling all battles...");
 
-		if(args.length == 1 && MiscUtility.isInt(args[0]))
+		for(Battle battle : Battle.Util.getAllActive())
 		{
-			int test = Integer.parseInt(args[0]);
-			player.sendMessage("Region: " + Region.Util.getRegion(test, test).getX());
+			battle.end();
 		}
+
+		player.sendMessage("All battles disabled!");
 
 		return true;
 	}
