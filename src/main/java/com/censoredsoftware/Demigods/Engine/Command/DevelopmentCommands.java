@@ -1,7 +1,8 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
-import java.util.List;
-
+import com.censoredsoftware.Demigods.Engine.Object.*;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -11,9 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Object.*;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class DevelopmentCommands extends DCommand
 {
@@ -67,7 +66,7 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		for(Structure.Save save : Structure.Util.getStructuresInRegionalArea(Region.Util.getRegion(player.getLocation())))
+		for(Structure.Save save : Structure.Util.findAll("regionX", DPlayer.Util.getPlayer(player).getRegion()))
 		{
 			player.sendMessage("Found: " + save.getId());
 		}

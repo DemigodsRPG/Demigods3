@@ -1,5 +1,6 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
+import com.google.common.collect.DiscreteDomain;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -46,6 +47,32 @@ public class Region
 			int temp = number % 64;
 			if(temp >= 32) return number + 64 - temp;
 			return number - temp;
+		}
+
+		public static Size size()
+		{
+			return new Size();
+		}
+
+		private static class Size extends DiscreteDomain<Integer>
+		{
+			@Override
+			public Integer next(Integer integer)
+			{
+				return integer + 64;
+			}
+
+			@Override
+			public Integer previous(Integer integer)
+			{
+				return integer - 64;
+			}
+
+			@Override
+			public long distance(Integer integer, Integer integer2)
+			{
+				return Math.abs((getRegionCoordinate(integer) / 64) - (getRegionCoordinate(integer2) / 64));
+			}
 		}
 	}
 }

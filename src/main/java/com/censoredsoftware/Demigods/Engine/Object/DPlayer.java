@@ -1,7 +1,11 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
-import java.util.*;
-
+import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
+import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
@@ -11,15 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 @Model
 public class DPlayer
@@ -146,6 +144,12 @@ public class DPlayer
 	{
 		if(this.current != null && this.current.canUse()) return this.current;
 		return null;
+	}
+
+	public Region getRegion()
+	{
+		if(getOfflinePlayer().isOnline()) return Region.Util.getRegion(getOfflinePlayer().getPlayer().getLocation());
+		return Region.Util.getRegion(getCurrent().getLocation());
 	}
 
 	public Character getPrevious()
