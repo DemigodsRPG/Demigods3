@@ -60,7 +60,7 @@ public class SchedulerUtility
 					// Update PVP
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
-						DPlayer.Util.getPlayer(player).updateCanPvp();
+						// DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 				}
 			};
