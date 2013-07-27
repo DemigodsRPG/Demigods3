@@ -450,7 +450,7 @@ class AltarListener implements Listener
 		 */
 		boolean general = clickedBlock.getType().equals(Material.EMERALD_BLOCK);
 		boolean holy = clickedBlock.getType().equals(Material.COAL_BLOCK);
-		if(AdminUtility.useWand(player) && general || holy)
+		if(AdminUtility.useWand(player) && (general || holy))
 		{
 			event.setCancelled(true);
 
