@@ -205,7 +205,7 @@ public class Obelisk extends Structure
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign(getDesign(reference));
-		save.addFlags(getFlags());
+		save.getMeta().addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
 		return save;

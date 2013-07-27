@@ -340,19 +340,13 @@ public abstract class Structure
 		@Indexed
 		@Reference
 		private DPlayer.Character owner;
-		@Indexed
-		@CollectionSet(of = String.class)
-		private Set<String> flags;
-		@Indexed
-		@Attribute
-		private int regionX;
-		@Indexed
-		@Attribute
-		private int regionZ;
+		@Reference
+		private SaveMeta meta;
 
 		public void init()
 		{
-			this.flags = Sets.newHashSet();
+			this.meta = new SaveMeta();
+			meta.save();
 		}
 
 		public void setType(String type)
@@ -368,7 +362,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			setRegion(reference.getBlockX(), reference.getBlockY());
+			meta.setRegion(reference.getBlockX(), reference.getBlockY());
 		}
 
 		public void setOwner(DPlayer.Character character)
@@ -379,33 +373,6 @@ public abstract class Structure
 		public void setActive(Boolean bool)
 		{
 			this.active = bool;
-		}
-
-		public void setRegion(int X, int Z)
-		{
-			this.regionX = X;
-			this.regionZ = Z;
-		}
-
-		public void setRegion(Region region)
-		{
-			this.regionX = region.getX();
-			this.regionZ = region.getZ();
-			save();
-		}
-
-		public void addFlags(Set<Structure.Flag> flags)
-		{
-			for(Structure.Flag flag : flags)
-			{
-				this.flags.add(flag.name());
-			}
-		}
-
-		public void addFlag(Structure.Flag flag)
-		{
-			this.flags.add(flag.name());
-			save();
 		}
 
 		public Location getReferenceLocation()
@@ -447,6 +414,85 @@ public abstract class Structure
 			return this.active;
 		}
 
+		public SaveMeta getMeta()
+		{
+			return this.meta;
+		}
+
+		public long getId()
+		{
+			return this.id;
+		}
+
+		public void generate()
+		{
+			getStructure().get(this.design).generate(this.reference.toLocation());
+		}
+
+		public void save()
+		{
+			JOhm.save(this);
+		}
+
+		public void remove()
+		{
+			for(Location location : getLocations())
+			{
+				location.getBlock().setTypeId(Material.AIR.getId());
+			}
+			JOhm.delete(DLocation.class, reference.getId());
+			JOhm.delete(Save.class, this.id);
+		}
+	}
+
+	@Model
+	public static class SaveMeta
+	{
+		@Id
+		private Long id;
+		@Indexed
+		@CollectionSet(of = String.class)
+		private Set<String> flags;
+		@Indexed
+		@Attribute
+		private int regionX;
+		@Indexed
+		@Attribute
+		private int regionZ;
+
+		public void init()
+		{
+			this.flags = Sets.newHashSet();
+		}
+
+		public void setRegion(int X, int Z)
+		{
+			this.regionX = X;
+			this.regionZ = Z;
+		}
+
+		public void setRegion(Region region)
+		{
+			this.regionX = region.getX();
+			this.regionZ = region.getZ();
+			save();
+		}
+
+		public void addFlags(Set<Structure.Flag> flags)
+		{
+			for(Structure.Flag flag : flags)
+			{
+				this.flags.add(flag.name());
+			}
+			save();
+		}
+
+		public void addFlag(Structure.Flag flag)
+		{
+			this.flags.add(flag.name());
+			save();
+		}
+
 		public Region getRegion()
 		{
 			return Region.Util.getRegion(this.regionX, this.regionZ);
@@ -480,24 +526,9 @@ public abstract class Structure
 			return this.id;
 		}
 
-		public void generate()
-		{
-			getStructure().get(this.design).generate(this.reference.toLocation());
-		}
-
 		public void save()
 		{
 			JOhm.save(this);
-		}
-
-		public void remove()
-		{
-			for(Location location : getLocations())
-			{
-				location.getBlock().setTypeId(Material.AIR.getId());
-			}
-			JOhm.delete(DLocation.class, reference.getId());
-			JOhm.delete(Save.class, this.id);
 		}
 	}
 
@@ -561,7 +592,7 @@ public abstract class Structure
 		{
 			for(Save save : _findAll("flags", flag.name()))
 			{
-				Demigods.message.broadcast(save.getId() + " - " + save.getFlags());
+				Demigods.message.broadcast(save.getId() + " - " + save.getMeta().getFlags());
 			}
 			return false;
 		}

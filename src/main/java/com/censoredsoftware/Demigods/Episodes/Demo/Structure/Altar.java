@@ -235,7 +235,7 @@ public class Altar extends Structure
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign("general");
-		save.addFlags(getFlags());
+		save.getMeta().addFlags(getFlags());
 
 		// TODO
 		for(Flag flag : getFlags())
@@ -267,12 +267,12 @@ public class Altar extends Structure
 		public void run()
 		{
 			Save save = Util.load(id);
-			for(String saved : save.getRawFlags())
+			for(String saved : save.getMeta().getRawFlags())
 			{
 				Demigods.message.broadcast("Flag: " + saved);
 			}
-			Demigods.message.broadcast("X:" + save.getRegion().getX());
-			Demigods.message.broadcast("Z:" + save.getRegion().getZ());
+			Demigods.message.broadcast("X:" + save.getMeta().getRegion().getX());
+			Demigods.message.broadcast("Z:" + save.getMeta().getRegion().getZ());
 		}
 	}
 
