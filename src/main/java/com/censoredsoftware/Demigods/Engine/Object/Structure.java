@@ -632,12 +632,12 @@ public abstract class Structure
 
 		public static Set<Save> filterForRegion(Location location, Set<Save> structures)
 		{
-			Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), Sets.newHashSet(structures));
+			Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), structures);
 			for(Save save : answer)
 			{
 				Demigods.message.info("TEST: " + save.getId());
 			}
-			return answer;
+			return structures;
 		}
 
 		public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
