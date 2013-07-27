@@ -421,6 +421,7 @@ public abstract class Structure
 		{
 			this.regionX = X;
 			this.regionZ = Z;
+			save();
 		}
 
 		public void setRegion(Region region)
