@@ -44,10 +44,11 @@ public class TextUtility
 					textBlock.add(ChatColor.GRAY + " While praying you are unable chat with players.");
 					textBlock.add(ChatColor.GRAY + " You can return to the main menu at anytime by typing " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + ".");
 					textBlock.add(ChatColor.GRAY + " Walk away to stop praying.");
+					return textBlock;
 				case PVP_NO_PRAYER:
 					textBlock.add(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
 					textBlock.add(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
-
+					return textBlock;
 			}
 
 			throw new NullPointerException("No such translation.");
