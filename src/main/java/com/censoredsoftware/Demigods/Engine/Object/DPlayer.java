@@ -60,13 +60,19 @@ public class DPlayer
 		{
 			setCanPvp(true);
 			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
+
+			// Cancel PVP cooldown if they have it
+			if(DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
+			{
+				Bukkit.getScheduler().cancelTask(Integer.parseInt(DataUtility.getValueTemp(player.getName(), "pvp_cooldown_task_id").toString()));
+			}
 		}
 		if(canPvp() && Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+			int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 			{
 				@Override
 				public void run()
@@ -75,6 +81,9 @@ public class DPlayer
 					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
 				}
 			}, (delay * 20));
+
+			// Save the task id for later
+			DataUtility.saveTemp(player.getName(), "pvp_cooldown_task_id", taskId);
 		}
 	}
 
