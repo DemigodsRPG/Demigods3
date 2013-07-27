@@ -279,15 +279,7 @@ public abstract class Structure
 			for(Location location : getBlockLocations(reference))
 			{
 				Structure.BlockData data = getStructureBlockData();
-
-				try
-				{
-					location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
-				}
-				catch(Exception ignored)
-				{
-					ignored.printStackTrace();
-				}
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
 			}
 		}
 

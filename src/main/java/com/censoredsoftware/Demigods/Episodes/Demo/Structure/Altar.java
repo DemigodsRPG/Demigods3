@@ -55,7 +55,7 @@ public class Altar extends Structure
 	private final static List<BlockData> pillarQuartz = new ArrayList<BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.QUARTZ, (byte) 2));
+			add(new BlockData(Material.QUARTZ_BLOCK, (byte) 2));
 		}
 	};
 	private final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
