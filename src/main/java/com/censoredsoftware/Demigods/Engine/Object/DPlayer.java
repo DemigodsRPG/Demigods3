@@ -17,6 +17,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -28,6 +29,9 @@ public class DPlayer
 	@Indexed
 	private String player;
 	@Attribute
+	@Indexed
+	private Boolean canPvp;
+	@Attribute
 	private long lastLoginTime;
 	@Reference
 	private DCharacter current;
@@ -38,6 +42,40 @@ public class DPlayer
 	{
 		this.player = player;
 		Util.save(this);
+	}
+
+	public void setCanPvp(boolean pvp)
+	{
+		this.canPvp = pvp;
+	}
+
+	public void updateCanPvp()
+	{
+		if(!getOfflinePlayer().isOnline()) return;
+
+		Player player = getOfflinePlayer().getPlayer();
+
+		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp())
+		{
+			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown"))
+			{
+				if(Long.parseLong(DataUtility.getValueTemp(player.getName(), "pvp_cooldown").toString()) <= System.currentTimeMillis())
+				{
+					setCanPvp(false);
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
+				}
+			}
+			else
+			{
+				DataUtility.saveTemp(player.getName(), "pvp_cooldown", System.currentTimeMillis() + (Demigods.config.getSettingInt("zones.pvp_area_delay_time") * 20));
+			}
+
+		}
+		else if(!canPvp())
+		{
+			setCanPvp(true);
+			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
+		}
 	}
 
 	public OfflinePlayer getOfflinePlayer()
@@ -133,6 +171,16 @@ public class DPlayer
 		// Save instances
 		Util.save(this);
 		DCharacter.Util.save(newChar);
+	}
+
+	public Long getId()
+	{
+		return this.id;
+	}
+
+	public Boolean canPvp()
+	{
+		return this.canPvp;
 	}
 
 	public boolean hasCurrent()

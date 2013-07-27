@@ -134,40 +134,6 @@ public class DCharacter implements Battle.Participant
 		this.meta = meta;
 	}
 
-	public void setCanPvp(boolean pvp)
-	{
-		this.canPvp = pvp;
-	}
-
-	public void updateCanPvp()
-	{
-		if(!getOfflinePlayer().isOnline()) return;
-
-		Player player = getOfflinePlayer().getPlayer();
-
-		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp())
-		{
-			if(DataUtility.hasKeyTemp(player.getName(), "pvp_cooldown"))
-			{
-				if(Long.parseLong(DataUtility.getValueTemp(player.getName(), "pvp_cooldown").toString()) <= System.currentTimeMillis())
-				{
-					setCanPvp(false);
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
-				}
-			}
-			else
-			{
-				DataUtility.saveTemp(player.getName(), "pvp_cooldown", System.currentTimeMillis() + (Demigods.config.getSettingInt("zones.pvp_area_delay_time") * 20));
-			}
-
-		}
-		else if(!canPvp())
-		{
-			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
-		}
-	}
-
 	public void remove()
 	{
 		for(Structure.Save structureSave : Structure.Util.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
@@ -183,11 +149,6 @@ public class DCharacter implements Battle.Participant
 	{
 		if(this.inventory == null) this.inventory = Util.createEmptyInventory();
 		return this.inventory;
-	}
-
-	public Boolean canPvp()
-	{
-		return this.canPvp;
 	}
 
 	public Meta getMeta()
@@ -388,6 +349,18 @@ public class DCharacter implements Battle.Participant
 	public Long getId()
 	{
 		return id;
+	}
+
+	@Override
+	public void setCanPvp(boolean pvp)
+	{
+		DPlayer.Util.getPlayer(getOfflinePlayer()).setCanPvp(pvp);
+	}
+
+	@Override
+	public Boolean canPvp()
+	{
+		return DPlayer.Util.getPlayer(getOfflinePlayer()).canPvp();
 	}
 
 	@Override
