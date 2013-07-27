@@ -446,9 +446,14 @@ public abstract class Structure
 			save();
 		}
 
-		public Region getRegion()
+		public int getRegionX()
 		{
-			return Region.Util.getRegion(this.regionX, this.regionZ);
+			return this.regionX;
+		}
+
+		public int getRegionZ()
+		{
+			return this.regionZ;
 		}
 
 		public Boolean hasFlag(Structure.Flag flag)

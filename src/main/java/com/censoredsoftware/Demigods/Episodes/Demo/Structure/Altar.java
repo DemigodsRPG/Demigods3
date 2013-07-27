@@ -477,6 +477,13 @@ class AltarListener implements Listener
 
 			Structure.Save altar = Structure.Util.getStructureSave(location);
 
+			// TODO Testing.
+			int X = altar.getRegionX();
+			int Z = altar.getRegionZ();
+
+			Demigods.message.broadcast("" + X + ":" + Z);
+			// TODO Testing.
+
 			if(DataUtility.hasTimed(player.getName(), "destroy_altar"))
 			{
 				AdminUtility.sendDebug(ChatColor.RED + "Altar at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed by " + "ADMIN WAND" + ".");
