@@ -1,9 +1,12 @@
 package com.censoredsoftware.Demigods.Engine.Utility;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
+import com.google.common.collect.Lists;
 
 // TODO Replace with YAML.
 
@@ -11,7 +14,7 @@ public class TextUtility
 {
 	public static enum Text
 	{
-		KNELT_FOR_PRAYER, NO_PRAY_PVP_1, NO_PRAY_PVP_2, UNSAFE_FROM_PVP, SAFE_FROM_PVP, ERROR_BIND_WEAPON_REQUIRED, DATA_RESET_KICK, ADMIN_CLEAR_DATA_STARTING, ADMIN_CLEAR_DATA_FINISHED, SUCCESS_ABILITY_BOUND, SUCCESS_ABILITY_UNBOUND, ERROR_BIND_TO_SLOT, NOTIFICATION_WARP_CREATED, NOTIFICATION_WARP_DELETED, NOTIFICATION_INVITE_SENT, ERROR_NAME_LENGTH, ERROR_CHAR_EXISTS, ERROR_ALPHA_NUMERIC, ERROR_MAX_CAPS, CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
+		PRAYER_INTRO, KNELT_FOR_PRAYER, PVP_NO_PRAYER, UNSAFE_FROM_PVP, SAFE_FROM_PVP, ERROR_BIND_WEAPON_REQUIRED, DATA_RESET_KICK, ADMIN_CLEAR_DATA_STARTING, ADMIN_CLEAR_DATA_FINISHED, SUCCESS_ABILITY_BOUND, SUCCESS_ABILITY_UNBOUND, ERROR_BIND_TO_SLOT, NOTIFICATION_WARP_CREATED, NOTIFICATION_WARP_DELETED, NOTIFICATION_INVITE_SENT, ERROR_NAME_LENGTH, ERROR_CHAR_EXISTS, ERROR_ALPHA_NUMERIC, ERROR_MAX_CAPS, CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
 	}
 
 	public static class English implements Translation
@@ -26,6 +29,28 @@ public class TextUtility
 		public String translator()
 		{
 			return "Censored Software";
+		}
+
+		@Override
+		public ArrayList<String> getTextBlock(Enum text)
+		{
+			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
+
+			ArrayList<String> textBlock = Lists.newArrayList();
+
+			switch((Text) text)
+			{
+				case PRAYER_INTRO:
+					textBlock.add(ChatColor.GRAY + " While praying you are unable chat with players.");
+					textBlock.add(ChatColor.GRAY + " You can return to the main menu at anytime by typing " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + ".");
+					textBlock.add(ChatColor.GRAY + " Walk away to stop praying.");
+				case PVP_NO_PRAYER:
+					textBlock.add(ChatColor.GRAY + "You cannot pray when PvP is still possible.");
+					textBlock.add(ChatColor.GRAY + "Wait a few moments and then try again when it's safe.");
+
+			}
+
+			throw new NullPointerException("No such translation.");
 		}
 
 		@Override
@@ -116,10 +141,6 @@ public class TextUtility
 					return "One weaker than you has been slain by your hand.";
 				case YOU_FAILED_DEITY:
 					return "You have failed {deity}!";
-				case NO_PRAY_PVP_1:
-					return "You cannot pray when PvP is still possible.";
-				case NO_PRAY_PVP_2:
-					return "Wait a few moments and then try again when it's safe.";
 			}
 			throw new NullPointerException("No such translation.");
 		}
@@ -193,6 +214,12 @@ public class TextUtility
 					return UnicodeUtility.heavyHeart() + " " + "{deity} has failed!";
 			}
 			return new English().getText(text);
+		}
+
+		@Override
+		public ArrayList<String> getTextBlock(Enum text)
+		{
+			return null;
 		}
 	}
 }

@@ -128,9 +128,10 @@ public class Prayer implements DConversation
 			DPlayer.Util.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
-			player.sendRawMessage(ChatColor.GRAY + " While praying you are unable chat with players.");
-			player.sendRawMessage(ChatColor.GRAY + " You can return to the main menu at anytime by typing " + ChatColor.YELLOW + "menu" + ChatColor.GRAY + ".");
-			player.sendRawMessage(ChatColor.GRAY + " Walk away to stop praying.");
+			for(String message : Demigods.text.getTextBlock(TextUtility.Text.PRAYER_INTRO))
+			{
+				player.sendRawMessage(message);
+			}
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
 			player.sendRawMessage(" ");
@@ -227,7 +228,6 @@ public class Prayer implements DConversation
 				for(TextUtility.Text notification : notifications)
 				{
 					player.sendRawMessage("  " + Demigods.text.getText(notification));
-					notifications.remove(notification);
 				}
 			}
 
@@ -781,8 +781,10 @@ class PrayerListener implements Listener
 			{
 				if(DPlayer.Util.getPlayer(player).canPvp())
 				{
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_1));
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.NO_PRAY_PVP_2));
+					for(String message : Demigods.text.getTextBlock(TextUtility.Text.PVP_NO_PRAYER))
+					{
+						player.sendMessage(message);
+					}
 					event.setCancelled(true);
 					return;
 				}
