@@ -134,11 +134,11 @@ public class Demigods
 		loadListeners(instance);
 		loadCommands();
 
-		// Finally, regenerate structures
-		Structure.Util.regenerateStructures();
-
 		// Start game threads.
 		SchedulerUtility.startThreads(instance);
+
+		// Finally, regenerate structures
+		Structure.Util.regenerateStructures();
 
 		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
