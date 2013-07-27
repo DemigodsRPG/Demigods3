@@ -15,6 +15,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.Demigods.Engine.Demigods;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
@@ -502,6 +503,24 @@ public abstract class Structure
 			}
 			JOhm.delete(DLocation.class, reference.getId());
 			JOhm.delete(Save.class, this.id);
+		}
+
+		@Override
+		public String toString()
+		{
+			return Objects.toStringHelper(this).add("id", this.id).toString();
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return Objects.hashCode(this);
+		}
+
+		@Override
+		public boolean equals(Object other)
+		{
+			return other != null && other instanceof Save && ((Save) other).getId() == getId();
 		}
 	}
 
