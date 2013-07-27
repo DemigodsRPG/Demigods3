@@ -60,6 +60,7 @@ public class DPlayer
 
 		if(!inNoPvpZone)
 		{
+			setCanPvp(true);
 			DataUtility.removeTimed(player.getName(), "pvp_cooldown");
 		}
 		if(!canPvp() && !inNoPvpZone)
