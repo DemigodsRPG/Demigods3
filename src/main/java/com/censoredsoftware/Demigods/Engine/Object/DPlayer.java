@@ -11,7 +11,6 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import redis.clients.johm.*;
 
@@ -57,7 +56,7 @@ public class DPlayer
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
+		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -74,18 +73,15 @@ public class DPlayer
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataUtility.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			BukkitTask cooldown = new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
 			{
 				@Override
 				public void run()
 				{
 					setCanPvp(false);
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
+					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP)) player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));
 				}
-			}.runTaskLaterAsynchronously(Demigods.plugin, (delay * 20));
-
-			// Save the task id for later
-			DataUtility.saveTemp(player.getName(), "pvp_cooldown_task_id", cooldown.getTaskId());
+			}, (delay * 20));
 		}
 	}
 
