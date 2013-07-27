@@ -257,18 +257,16 @@ public abstract class Structure
 		 */
 		public Set<Location> getBlockLocations(final Location reference)
 		{
-			return new HashSet<Location>()
+			if(cuboid)
 			{
+				if(exclude)
 				{
-					if(cuboid) addAll(rangeLoop(reference, X, XX, Y, YY, Z, ZZ));
-					else add(getLocation(reference, X, Y, Z));
-					if(exclude)
-					{
-						if(excludeCuboid) removeAll(rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
-						else remove(getLocation(reference, eX, eY, eZ));
-					}
+					if(excludeCuboid) Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
+					return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), Sets.newHashSet(getLocation(reference, eX, eY, eZ)));
 				}
-			};
+				return rangeLoop(reference, X, XX, Y, YY, Z, ZZ);
+			}
+			return Sets.newHashSet(getLocation(reference, X, Y, Z));
 		}
 
 		/**
