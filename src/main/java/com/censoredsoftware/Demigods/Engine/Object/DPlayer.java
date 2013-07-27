@@ -47,6 +47,7 @@ public class DPlayer
 	public void setCanPvp(boolean pvp)
 	{
 		this.canPvp = pvp;
+		Util.save(this);
 	}
 
 	public void updateCanPvp()
@@ -62,7 +63,7 @@ public class DPlayer
 			setCanPvp(true);
 		}
 
-		if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && canPvp() && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
+		if(canPvp() && Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP) && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
 			Demigods.message.broadcast("Setting cooldown!");
 
