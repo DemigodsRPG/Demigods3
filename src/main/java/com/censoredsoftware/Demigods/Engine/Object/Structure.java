@@ -359,6 +359,7 @@ public abstract class Structure
 		public void setDesign(String name)
 		{
 			this.design = name;
+			save();
 		}
 
 		public void setReferenceLocation(Location reference)

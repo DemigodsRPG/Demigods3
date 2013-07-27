@@ -474,6 +474,7 @@ class AltarListener implements Listener
 			save.generate();
 
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
+			return;
 		}
 
 		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && AdminUtility.useWand(player) && Structure.Util.partOfStructureWithType(location, "Altar"))
