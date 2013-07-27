@@ -61,12 +61,8 @@ public class DPlayer
 		if(!canPvp() && !inNoPvpZone)
 		{
 			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
-		}
-		else if(!inNoPvpZone)
-		{
-			setCanPvp(true);
 			DataUtility.removeTimed(player.getName(), "pvp_cooldown");
+			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.UNSAFE_FROM_PVP));
 		}
 		else if(canPvp() && inNoPvpZone && !DataUtility.hasTimed(player.getName(), "pvp_cooldown"))
 		{
