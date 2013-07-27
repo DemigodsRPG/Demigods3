@@ -542,13 +542,13 @@ public abstract class Structure
 			return null;
 		}
 
-		public static Set<Save> getStructuresInRegionalArea(final Location location)
+		public static Set<Save> getStructuresInRegionalArea(final Region region)
 		{
 			return new HashSet<Save>()
 			{
 				{
-					for(int x : Ranges.closed(location.getBlockX() - 1, location.getBlockX() + 1).asSet(DiscreteDomains.integers()))
-						for(int y : Ranges.closed(location.getBlockZ() - 1, location.getBlockZ() + 1).asSet(DiscreteDomains.integers()))
+					for(int x : Ranges.closed(region.getX() - 1, region.getX() + 1).asSet(DiscreteDomains.integers()))
+						for(int y : Ranges.closed(region.getZ() - 1, region.getZ() + 1).asSet(DiscreteDomains.integers()))
 							addAll(getStructuresInSingleRegion(x, y));
 				}
 			};
