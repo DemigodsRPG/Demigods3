@@ -464,19 +464,13 @@ public class DPlayer
 			for(int x = 0; x < 120; x++)
 				player.sendRawMessage(" ");
 		}
-	}
 
-	public static class FavorRunnable extends BukkitRunnable
-	{
-		private double multiplier;
-
-		public FavorRunnable(double multiplier)
-		{
-			this.multiplier = multiplier;
-		}
-
-		@Override
-		public void run()
+		/**
+		 * Updates favor for all online players.
+		 * 
+		 * @param multiplier the favor multiplier.
+		 */
+		public static void updateFavor(double multiplier)
 		{
 			for(Player player : Bukkit.getOnlinePlayers())
 			{

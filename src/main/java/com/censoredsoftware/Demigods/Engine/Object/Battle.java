@@ -10,7 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import redis.clients.johm.*;
@@ -551,12 +550,21 @@ public class Battle
 		{
 			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP); // This
 		}
-	}
 
-	public static class BattleRunnable extends BukkitRunnable
-	{
-		@Override
-		public void run()
+		/**
+		 * Updates all battle particles. Meant for use in a Runnable.
+		 */
+		public static void updateBattleParticles()
+		{
+			for(Battle battle : Battle.Util.getAllActive())
+				for(Location point : Battle.Util.battleBorder(battle))
+					SpigotUtility.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
+		}
+
+		/**
+		 * Updates all battles.
+		 */
+		public static void updateBattles()
 		{
 			// Battle onTick logic
 			for(Battle battle : Battle.Util.getAllActive())
@@ -565,17 +573,6 @@ public class Battle
 			// Delete all inactive battles
 			for(Battle remove : Battle.Util.getAllInactive())
 				if(remove.getDeleteTime() >= System.currentTimeMillis()) remove.delete();
-		}
-	}
-
-	public static class SpigotBattleRunnable extends BukkitRunnable
-	{
-		@Override
-		public void run()
-		{
-			for(Battle battle : Battle.Util.getAllActive())
-				for(Location point : Battle.Util.battleBorder(battle))
-					SpigotUtility.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
 		}
 	}
 

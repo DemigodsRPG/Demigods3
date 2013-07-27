@@ -3,8 +3,6 @@ package com.censoredsoftware.Demigods.Engine.Object;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.scheduler.BukkitRunnable;
-
 import redis.clients.johm.*;
 
 import com.google.common.base.Objects;
@@ -178,12 +176,11 @@ public class TimedData
 		{
 			if(find(key, subKey) != null) find(key, subKey).delete();
 		}
-	}
 
-	public static class TimedDataRunnable extends BukkitRunnable
-	{
-		@Override
-		public void run()
+		/**
+		 * Updates all timed data.
+		 */
+		public static void updateTimedData()
 		{
 			for(TimedData data : TimedData.Util.getAll())
 			{
