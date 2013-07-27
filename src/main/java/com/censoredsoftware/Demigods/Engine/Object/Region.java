@@ -1,8 +1,9 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
-import com.google.common.collect.DiscreteDomain;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import com.google.common.collect.DiscreteDomain;
 
 public class Region
 {

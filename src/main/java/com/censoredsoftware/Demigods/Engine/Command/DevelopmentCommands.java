@@ -1,8 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Command;
 
-import com.censoredsoftware.Demigods.Engine.Object.*;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -12,7 +11,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import com.censoredsoftware.Demigods.Engine.Object.*;
+import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.google.common.collect.Lists;
 
 public class DevelopmentCommands extends DCommand
 {
