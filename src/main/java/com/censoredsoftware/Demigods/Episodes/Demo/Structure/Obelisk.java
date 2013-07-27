@@ -170,7 +170,7 @@ public class Obelisk extends Structure
 	@Override
 	public Schematic get(String name)
 	{
-		if(name.equals(general)) return general;
+		if(name.equals(general.toString())) return general;
 		return desert;
 	}
 
