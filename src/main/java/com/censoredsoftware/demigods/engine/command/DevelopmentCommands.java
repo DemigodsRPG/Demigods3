@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.command;
 
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.StopWatches;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -69,7 +70,7 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-		// Unused.
+        StopWatches.end(StopWatches.start(), "test3");
 
 		return true;
 	}

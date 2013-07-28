@@ -20,7 +20,7 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Task;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
@@ -35,7 +35,7 @@ public class Demigods
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
 
-	// Public Dependency Plugins
+    // Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
 
 	// The Game Data
@@ -78,12 +78,11 @@ public class Demigods
 		new Configs(instance, true);
 		new Messages(instance);
 
-		// Define the game data.
 		Demigods.deities = new HashSet<Deity>()
 		{
 			{
 				for(ListedDeity deity : deities)
-					add(deity.getDeity());
+                    add(deity.getDeity());
 			}
 		};
 		Demigods.quests = new HashSet<Task.List>()

@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Task;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.episodes.demo.deity.god.Poseidon;
 import com.censoredsoftware.demigods.episodes.demo.deity.god.Zeus;
 import com.censoredsoftware.demigods.episodes.demo.deity.insignian.DrD1sco;

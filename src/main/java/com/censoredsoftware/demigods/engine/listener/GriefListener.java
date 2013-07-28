@@ -5,7 +5,7 @@ package com.censoredsoftware.demigods.engine.listener;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
