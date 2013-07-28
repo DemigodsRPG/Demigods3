@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.StopWatches;
+import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -378,10 +380,13 @@ public class DCharacter implements Battle.Participant
 
 	public boolean canUse()
 	{
+        StopWatch test = StopWatches.newStopWatch();
 		for(Deity deity : Demigods.getLoadedDeities())
 		{
+            StopWatches.reportTime(test);
 			if(deity.getInfo().getName().equals(this.deity)) return true;
 		}
+        StopWatches.endStopWatch(test);
 		return false;
 	}
 

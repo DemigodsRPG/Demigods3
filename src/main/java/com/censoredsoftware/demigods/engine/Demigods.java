@@ -32,7 +32,7 @@ public class Demigods
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
 
-	// Public Dependency Plugins
+    // Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
 
 	// The Game Data
@@ -74,12 +74,11 @@ public class Demigods
 		new Configs(instance, true);
 		new Messages(instance);
 
-		// Define the game data.
 		Demigods.deities = new HashSet<Deity>()
 		{
 			{
 				for(ListedDeity deity : deities)
-					add(deity.getDeity());
+                    add(deity.getDeity());
 			}
 		};
 		Demigods.quests = new HashSet<Task.List>()
