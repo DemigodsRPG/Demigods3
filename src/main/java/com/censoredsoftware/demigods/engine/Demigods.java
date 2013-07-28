@@ -223,22 +223,22 @@ public class Demigods
 
 	public static Map<String, Deity> getLoadedDeities()
 	{
-		return Demigods.deities;
+		return deities;
 	}
 
 	public static Set<Task.List> getLoadedQuests()
 	{
-		return Demigods.quests;
+		return quests;
 	}
 
 	public static Set<Structure> getLoadedStructures()
 	{
-		return Demigods.structures;
+		return structures;
 	}
 
 	public static Set<DConversation> getLoadedConversations()
 	{
-		return Demigods.conversasions;
+		return conversasions;
 	}
 
 	public static boolean runningSpigot()

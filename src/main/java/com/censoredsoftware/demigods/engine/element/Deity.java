@@ -137,15 +137,14 @@ public abstract class Deity
 		public static boolean canUseDeity(Player player, String deity)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			if(character == null) return false;
-			if(!character.isDeity(deity))
-			{
-				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
-				return false;
-			}
-			else if(!character.isImmortal())
+			if(character == null || !character.isImmortal())
 			{
 				player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
+				return false;
+			}
+			else if(!character.isDeity(deity))
+			{
+				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 				return false;
 			}
 			return true;
