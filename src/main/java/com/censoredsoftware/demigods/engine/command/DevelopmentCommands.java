@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,14 +15,14 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends DCommand
 {
 	@Override
-	public List<String> getCommands()
+	public Set<String> getCommands()
 	{
-		return Lists.newArrayList("test1", "test2", "test3", "hspawn", "soundtest", "removechar");
+		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "soundtest", "removechar");
 	}
 
 	@Override

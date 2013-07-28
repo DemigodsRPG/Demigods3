@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -14,7 +15,7 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public abstract class DCommand implements TabExecutor
 {
-	public abstract List<String> getCommands();
+	public abstract Set<String> getCommands();
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, final String[] args)
@@ -42,12 +43,12 @@ public abstract class DCommand implements TabExecutor
 
 	public static class Util
 	{
-		public static void registerCommand(DCommand dgCommand)
+		public static void registerCommand(DCommand dCommand)
 		{
-			for(String command : dgCommand.getCommands())
+			for(String command : dCommand.getCommands())
 			{
-				Demigods.plugin.getCommand(command).setExecutor(dgCommand);
-				Demigods.plugin.getCommand(command).setTabCompleter(dgCommand);
+				Demigods.plugin.getCommand(command).setExecutor(dCommand);
+				Demigods.plugin.getCommand(command).setTabCompleter(dCommand);
 			}
 		}
 	}

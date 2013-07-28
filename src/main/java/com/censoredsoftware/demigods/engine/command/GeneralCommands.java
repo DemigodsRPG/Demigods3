@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -14,14 +14,14 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Unicodes;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class GeneralCommands extends DCommand
 {
 	@Override
-	public List<String> getCommands()
+	public Set<String> getCommands()
 	{
-		return Lists.newArrayList("check", "owner");
+		return Sets.newHashSet("check", "owner");
 	}
 
 	@Override

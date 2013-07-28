@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.command;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -23,14 +22,14 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Unicodes;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class MainCommand extends DCommand
 {
 	@Override
-	public List<String> getCommands()
+	public Set<String> getCommands()
 	{
-		return Lists.newArrayList("demigods", "deity");
+		return Sets.newHashSet("demigods", "deity");
 	}
 
 	@Override
@@ -39,15 +38,15 @@ public class MainCommand extends DCommand
 		// Check for console first
 		if(sender instanceof ConsoleCommandSender) return Messages.noConsole((ConsoleCommandSender) sender);
 
+		// Define Player
+		Player player = (Player) sender;
+
 		// Check args and pass onto dg_extended() if need be
 		if(args.length > 0)
 		{
-			dg_extended(sender, args);
+			dg_extended(player, args);
 			return true;
 		}
-
-		// Define Player
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
@@ -78,11 +77,8 @@ public class MainCommand extends DCommand
 		return true;
 	}
 
-	private static boolean dg_extended(CommandSender sender, String[] args)
+	private static boolean dg_extended(Player player, String[] args)
 	{
-		// Define Player
-		Player player = (Player) sender;
-
 		// Define args
 		String category = args[0];
 		String option1 = null, option2 = null, option3 = null, option4 = null;
@@ -96,87 +92,87 @@ public class MainCommand extends DCommand
 
 		if(category.equalsIgnoreCase("admin"))
 		{
-			dg_admin(sender, option1, option2, option3, option4);
+			dg_admin(player, option1, option2, option3, option4);
 		}
 		else if(category.equalsIgnoreCase("commands"))
 		{
-			Messages.tagged(sender, "Command Directory");
-			sender.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
+			Messages.tagged(player, "Command Directory");
+			player.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
 		}
 		else if(category.equalsIgnoreCase("info"))
 		{
 			if(option1 == null)
 			{
-				Messages.tagged(sender, "Information Directory");
-				sender.sendMessage(ChatColor.GRAY + " /dg info characters");
-				sender.sendMessage(ChatColor.GRAY + " /dg info shrines");
-				sender.sendMessage(ChatColor.GRAY + " /dg info tributes");
-				sender.sendMessage(ChatColor.GRAY + " /dg info players");
-				sender.sendMessage(ChatColor.GRAY + " /dg info pvp");
-				sender.sendMessage(ChatColor.GRAY + " /dg info stats");
-				sender.sendMessage(ChatColor.GRAY + " /dg info rankings");
-				sender.sendMessage(ChatColor.GRAY + " /dg info demigods");
+				Messages.tagged(player, "Information Directory");
+				player.sendMessage(ChatColor.GRAY + " /dg info characters");
+				player.sendMessage(ChatColor.GRAY + " /dg info shrines");
+				player.sendMessage(ChatColor.GRAY + " /dg info tributes");
+				player.sendMessage(ChatColor.GRAY + " /dg info players");
+				player.sendMessage(ChatColor.GRAY + " /dg info pvp");
+				player.sendMessage(ChatColor.GRAY + " /dg info stats");
+				player.sendMessage(ChatColor.GRAY + " /dg info rankings");
+				player.sendMessage(ChatColor.GRAY + " /dg info demigods");
 			}
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
-				Messages.tagged(sender, "About the Plugin");
-				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
-				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
-				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a mere player to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
-				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
-				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
-				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/CensoredSoftware/Minecraft-Demigods");
+				Messages.tagged(player, "About the Plugin");
+				player.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a mere player to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
+				player.sendMessage(" ");
+				player.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
+				player.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
+				player.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/CensoredSoftware/Minecraft-Demigods");
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
-				Messages.tagged(sender, "Characters");
-				sender.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
+				Messages.tagged(player, "Characters");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
 			}
 			else if(option1.equalsIgnoreCase("shrine"))
 			{
-				Messages.tagged(sender, "Shrines");
-				sender.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
+				Messages.tagged(player, "Shrines");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
 			}
 			else if(option1.equalsIgnoreCase("tribute"))
 			{
-				Messages.tagged(sender, "Tributes");
-				sender.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
+				Messages.tagged(player, "Tributes");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
 			}
 			else if(option1.equalsIgnoreCase("player"))
 			{
-				Messages.tagged(sender, "Players");
-				sender.sendMessage(ChatColor.GRAY + " This is some info about Players.");
+				Messages.tagged(player, "Players");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Players.");
 			}
 			else if(option1.equalsIgnoreCase("pvp"))
 			{
-				Messages.tagged(sender, "PVP");
-				sender.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
+				Messages.tagged(player, "PVP");
+				player.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 			}
 			else if(option1.equalsIgnoreCase("stats"))
 			{
-				Messages.tagged(sender, "Stats");
-				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
+				Messages.tagged(player, "Stats");
+				player.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
 			}
 			else if(option1.equalsIgnoreCase("rankings"))
 			{
-				Messages.tagged(sender, "Rankings");
-				sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
+				Messages.tagged(player, "Rankings");
+				player.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
 			}
 		}
 
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
-			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
+			if(!player.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			if(category.equalsIgnoreCase(alliance))
 			{
 				if(args.length < 2)
 				{
-					Messages.tagged(sender, alliance + " Directory");
+					Messages.tagged(player, alliance + " Directory");
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
-						sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
+						player.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 				}
 				else
 				{
@@ -204,19 +200,19 @@ public class MainCommand extends DCommand
 									}
 								})
 								{
-									sender.sendMessage(toPrint);
+									player.sendMessage(toPrint);
 								}
 								return true;
 							}
 							catch(Exception e)
 							{
-								sender.sendMessage(ChatColor.RED + "(ERR: 3001)  Please report this immediately.");
+								player.sendMessage(ChatColor.RED + "(ERR: 3001)  Please report this immediately.");
 								e.printStackTrace(); // DEBUG
 								return true;
 							}
 						}
 					}
-					sender.sendMessage(ChatColor.DARK_RED + " No such deity, please try again.");
+					player.sendMessage(ChatColor.DARK_RED + " No such deity, please try again.");
 					return false;
 				}
 			}
@@ -224,9 +220,8 @@ public class MainCommand extends DCommand
 		return true;
 	}
 
-	private static boolean dg_admin(CommandSender sender, String option1, String option2, String option3, String option4)
+	private static boolean dg_admin(Player player, String option1, String option2, String option3, String option4)
 	{
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		Player toEdit;
 		DCharacter character;
 		int amount;
@@ -235,20 +230,20 @@ public class MainCommand extends DCommand
 
 		if(option1 == null)
 		{
-			Messages.tagged(sender, "Admin Directory");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin remove [player|character] <name>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
-			sender.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
-			sender.sendMessage(ChatColor.RED + " /dg admin clear data yesdoitforsurepermanantly");
+			Messages.tagged(player, "Admin Directory");
+			player.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			player.sendMessage(ChatColor.GRAY + " /dg admin debug");
+			player.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin remove [player|character] <name>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
 		}
 
 		if(option1 != null)
 		{
-			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanantly"))
+			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanently"))
 			{
 				player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ADMIN_CLEAR_DATA_STARTING));
 				DataManager.flushData();
@@ -286,8 +281,8 @@ public class MainCommand extends DCommand
 			{
 				if(option2 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to specify a player.");
-					sender.sendMessage("/dg admin check <p>");
+					player.sendMessage(ChatColor.RED + "You need to specify a player.");
+					player.sendMessage("/dg admin check <p>");
 					return true;
 				}
 
@@ -296,8 +291,8 @@ public class MainCommand extends DCommand
 
 				if(option3 == null)
 				{
-					Messages.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
-					sender.sendMessage(" Characters:");
+					Messages.tagged(player, ChatColor.RED + toCheck.getName() + " Player Check");
+					player.sendMessage(" Characters:");
 
 					final Set<DCharacter> chars = DPlayer.Util.getCharacters(toCheck);
 
@@ -315,7 +310,7 @@ public class MainCommand extends DCommand
 			{
 				if(option2 == null || option3 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to be more specific with what you want to remove.");
+					player.sendMessage(ChatColor.RED + "You need to be more specific with what you want to remove.");
 					return true;
 				}
 				else
@@ -332,7 +327,7 @@ public class MainCommand extends DCommand
 						// Remove the data
 						removing.remove();
 
-						sender.sendMessage(ChatColor.RED + "Character \"" + removingName + "\" removed.");
+						player.sendMessage(ChatColor.RED + "Character \"" + removingName + "\" removed.");
 					}
 				}
 			}
@@ -340,7 +335,7 @@ public class MainCommand extends DCommand
 			{
 				if(option2 == null || option3 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to specify a player and amount.");
+					player.sendMessage(ChatColor.RED + "You need to specify a player and amount.");
 					return true;
 				}
 				else
@@ -356,11 +351,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().setMaxFavor(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "Max favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "Max favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				else if(option2.equalsIgnoreCase("favor"))
@@ -368,11 +363,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().setFavor(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character's favor has been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				else if(option2.equalsIgnoreCase("ascensions"))
@@ -380,11 +375,11 @@ public class MainCommand extends DCommand
 					// Set the ascensions
 					character.getMeta().setAscensions(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character's Ascensions have been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 			}
@@ -392,12 +387,12 @@ public class MainCommand extends DCommand
 			{
 				if(option2 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to be more specific.");
+					player.sendMessage(ChatColor.RED + "You need to be more specific.");
 					return true;
 				}
 				else if(option3 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+					player.sendMessage(ChatColor.RED + "You must select a player and amount.");
 					return true;
 				}
 				else
@@ -413,11 +408,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().setMaxFavor(character.getMeta().getMaxFavor() + amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been increased by " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				else if(option2.equalsIgnoreCase("favor"))
@@ -425,11 +420,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().addFavor(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " favor.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				else if(option2.equalsIgnoreCase("ascensions"))
@@ -437,11 +432,11 @@ public class MainCommand extends DCommand
 					// Set the ascensions
 					character.getMeta().addAscensions(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " Ascensions.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 			}
@@ -449,12 +444,12 @@ public class MainCommand extends DCommand
 			{
 				if(option2 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You need to be more specific.");
+					player.sendMessage(ChatColor.RED + "You need to be more specific.");
 					return true;
 				}
 				else if(option3 == null)
 				{
-					sender.sendMessage(ChatColor.RED + "You must select a player and amount.");
+					player.sendMessage(ChatColor.RED + "You must select a player and amount.");
 					return true;
 				}
 				else
@@ -470,11 +465,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().subtractFavor(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " removed from " + toEdit.getName() + "'s current character's max favor.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " removed from " + toEdit.getName() + "'s current character's max favor.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.RED + "Your current character's max favor has been reduced by " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				if(option2.equalsIgnoreCase("favor"))
@@ -482,11 +477,11 @@ public class MainCommand extends DCommand
 					// Set the favor
 					character.getMeta().subtractFavor(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " favor removed.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 				else if(option2.equalsIgnoreCase("ascensions"))
@@ -494,18 +489,18 @@ public class MainCommand extends DCommand
 					// Set the ascensions
 					character.getMeta().subtractAscensions(amount);
 
-					sender.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
+					player.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
 
 					// Tell who was edited
 					toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " Ascension(s) removed.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
 					return true;
 				}
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "Invalid category selected.");
-				sender.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|devotion|ascensions] <p> <amt>");
+				player.sendMessage(ChatColor.RED + "Invalid category selected.");
+				player.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|devotion|ascensions] <p> <amt>");
 				return true;
 			}
 		}
