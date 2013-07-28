@@ -234,7 +234,7 @@ public class DPlayer
 
 	private List<DCharacter> getRawCharacters()
 	{
-		return JOhm.find(DCharacter.class, "player", player);
+		return JOhm.find(DCharacter.class, "player", getId());
 	}
 
 	public boolean canUseCurrent()

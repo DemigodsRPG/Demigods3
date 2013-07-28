@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -36,7 +39,7 @@ public class DCharacter implements Battle.Participant
 	private String name;
 	@Attribute
 	@Indexed
-	private String player;
+	private long player;
 	@Attribute
 	private double health;
 	@Attribute
@@ -81,9 +84,9 @@ public class DCharacter implements Battle.Participant
 		this.deity = deity.getInfo().getName();
 	}
 
-	void setPlayer(OfflinePlayer player)
+	void setPlayer(DPlayer player)
 	{
-		this.player = player.getName();
+		this.player = player.getId();
 	}
 
 	public void setImmortal(boolean option)
@@ -163,7 +166,7 @@ public class DCharacter implements Battle.Participant
 
 	public OfflinePlayer getOfflinePlayer()
 	{
-		return Bukkit.getOfflinePlayer(this.player);
+		return DPlayer.Util.load(this.player).getOfflinePlayer();
 	}
 
 	public String getName()
@@ -747,13 +750,13 @@ public class DCharacter implements Battle.Participant
 
 	public static class Util
 	{
-		public static void create(Player player, String chosenDeity, String chosenName, boolean switchCharacter)
+		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
 		{
 			DCharacter character = create(player, chosenName, chosenDeity);
 
-			if(player.isOnline())
+			if(player.getOfflinePlayer().isOnline())
 			{
-				Player online = player.getPlayer();
+				Player online = player.getOfflinePlayer().getPlayer();
 				online.setDisplayName(Deity.Util.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 				online.setPlayerListName(Deity.Util.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 
@@ -765,10 +768,10 @@ public class DCharacter implements Battle.Participant
 			}
 
 			// Switch to new character
-			if(switchCharacter) DPlayer.Util.getPlayer(player).switchCharacter(character);
+			if(switchCharacter) player.switchCharacter(character);
 		}
 
-		public static DCharacter create(OfflinePlayer player, String charName, String charDeity)
+		public static DCharacter create(DPlayer player, String charName, String charDeity)
 		{
 			if(getCharacterByName(charName) == null)
 			{
@@ -778,7 +781,7 @@ public class DCharacter implements Battle.Participant
 			return null;
 		}
 
-		private static DCharacter create(final OfflinePlayer player, final String charName, final Deity deity, final boolean immortal)
+		private static DCharacter create(final DPlayer player, final String charName, final Deity deity, final boolean immortal)
 		{
 			DCharacter character = new DCharacter();
 			character.setPlayer(player);
@@ -792,7 +795,7 @@ public class DCharacter implements Battle.Participant
 			character.setLevel(0);
 			character.setKills(0);
 			character.setDeaths(0);
-			character.setLocation(player.getPlayer().getLocation());
+			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta());
 			save(character);
 			return character;

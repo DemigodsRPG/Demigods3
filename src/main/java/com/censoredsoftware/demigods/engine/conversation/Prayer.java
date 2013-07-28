@@ -905,7 +905,7 @@ class PrayerListener implements Listener
 			if(neededItems == items)
 			{
 				// Accepted, finish everything up!
-				DCharacter.Util.create(player, chosenDeity, chosenName, true);
+				DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
 
 				// Clear the prayer session
 				DPlayer.Util.clearPrayerSession(player);
