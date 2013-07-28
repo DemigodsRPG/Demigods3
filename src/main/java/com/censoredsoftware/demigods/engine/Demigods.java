@@ -1,13 +1,19 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.module.Configs;
+import com.censoredsoftware.core.module.Messages;
+import com.censoredsoftware.demigods.engine.conversation.Required;
 import com.censoredsoftware.demigods.engine.listener.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.demigods.DemigodsPlugin;
@@ -59,7 +65,7 @@ public class Demigods
 		public Structure getStructure();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation[] conversations) throws DemigodsStartupException
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation.ConversationData[] conversations, final Listener EpisodeListener) throws DemigodsStartupException
 	{
 		// Allow static access.
 		plugin = instance;
@@ -69,13 +75,13 @@ public class Demigods
         config = new Configs(instance, true);
         message = new Messages(instance);
 
-		Demigods.deities = new HashSet<Deity>()
-		{
-			{
-				for(ListedDeity deity : deities)
-                    add(deity.getDeity());
-			}
-		};
+        Demigods.deities = new HashMap<String, Deity>()
+        {
+            {
+                for(ListedDeity deity : deities)
+                    put(deity.getDeity().getInfo().getName(), deity.getDeity());
+            }
+        };
 		Demigods.quests = new HashSet<Task.List>()
 		{
 			{
@@ -90,12 +96,12 @@ public class Demigods
 					add(structure.getStructure());
 			}
 		};
-		Demigods.conversasions = new HashSet<DConversation>()
+		Demigods.conversasions = new HashSet<ListedConversation>()
 		{
 			{
-				for(DConversation.Required conversation : DConversation.Required.values())
+				for(Required conversation : Required.values())
 					add(conversation.getConversation());
-				if(conversations != null) for(ListedConversation conversation : conversations)
+				if(conversations != null) for(ListedConversation.ConversationData conversation : conversations)
 					add(conversation.getConversation());
 			}
 		};
@@ -106,9 +112,9 @@ public class Demigods
 		new DataManager();
 		if(!DataManager.isConnected())
 		{
-			Messages.severe("Demigods was unable to connect to a Redis server.");
-			Messages.severe("A Redis server is required for Demigods to run.");
-			Messages.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
+			message.severe("Demigods was unable to connect to a Redis server.");
+			message.severe("A Redis server is required for Demigods to run.");
+            message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
@@ -124,7 +130,7 @@ public class Demigods
 		// Finish loading the plugin based on the game data.
 		loadDepends(instance);
 		loadListeners(instance);
-		loadCommands();
+		loadCommands(instance);
 
 		// Start game threads.
 		ThreadManager.startThreads(instance);
@@ -132,7 +138,7 @@ public class Demigods
 		// Finally, regenerate structures
 		Structure.Util.regenerateStructures();
 
-		if(runningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
 
 	/**
@@ -159,7 +165,7 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
 
 		// Deities
-		for(Deity deity : getLoadedDeities())
+		for(Deity deity : getLoadedDeities().values())
 		{
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
@@ -186,7 +192,7 @@ public class Demigods
 		}
 
 		// Conversations
-		for(DConversation conversation : getLoadedConversations())
+		for(ListedConversation conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
@@ -194,11 +200,11 @@ public class Demigods
 
 	}
 
-	protected static void loadCommands()
+	protected static void loadCommands(DemigodsPlugin instance)
 	{
-		DCommand.Util.registerCommand(new MainCommand());
-		DCommand.Util.registerCommand(new GeneralCommands());
-		DCommand.Util.registerCommand(new DevelopmentCommands());
+		(new MainCommand()).register(instance, false);
+		(new GeneralCommands()).register(instance, false);
+		(new DevelopmentCommands()).register(instance, true);
 	}
 
 	protected static void loadDepends(DemigodsPlugin instance)
@@ -208,7 +214,7 @@ public class Demigods
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
 	}
 
-	public static Set<Deity> getLoadedDeities()
+	public static Map<String, Deity> getLoadedDeities()
 	{
 		return Demigods.deities;
 	}
@@ -223,7 +229,7 @@ public class Demigods
 		return Demigods.structures;
 	}
 
-	public static Set<DConversation> getLoadedConversations()
+	public static Set<ListedConversation> getLoadedConversations()
 	{
 		return Demigods.conversasions;
 	}
