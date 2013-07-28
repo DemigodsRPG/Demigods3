@@ -108,7 +108,7 @@ public class DLocation
 			trackedLocation.setZ(Z);
 			trackedLocation.setYaw(yaw);
 			trackedLocation.setPitch(pitch);
-			trackedLocation.setRegion(Region.Util.getRegion((int) X, (int) Z, world));
+			trackedLocation.setRegion(Region.Util.getRegion((int) X, (int) Z));
 			save(trackedLocation);
 			return trackedLocation;
 		}

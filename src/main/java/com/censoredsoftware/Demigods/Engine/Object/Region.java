@@ -1,24 +1,19 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import com.google.common.collect.DiscreteDomain;
 
 public class Region
 {
-	public final static int REGION_LENGTH = 46;
-	public final static int HALF_REGION_LENGTH = REGION_LENGTH / 2;
-
 	private int x;
 	private int z;
-	private String world;
 
-	public Region(int x, int z, String world)
+	public Region(int x, int z)
 	{
 		this.x = x;
 		this.z = z;
-		this.world = world;
 	}
 
 	public int getX()
@@ -31,32 +26,27 @@ public class Region
 		return z;
 	}
 
-	public String getWorld()
+	public Location getCenter(World world)
 	{
-		return world;
-	}
-
-	public Location getCenter() throws Exception
-	{
-		return new Location(Bukkit.getWorld(world), x, 128, z);
+		return new Location(world, x, 128, z);
 	}
 
 	public static class Util
 	{
 		public static Region getRegion(Location location)
 		{
-			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockZ()), location.getWorld().getName());
+			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockZ()));
 		}
 
-		public static Region getRegion(int X, int Z, String WORLD)
+		public static Region getRegion(int X, int Z)
 		{
-			return new Region(getRegionCoordinate(X), getRegionCoordinate(Z), WORLD);
+			return new Region(getRegionCoordinate(X), getRegionCoordinate(Z));
 		}
 
 		private static int getRegionCoordinate(int number)
 		{
-			int temp = number % REGION_LENGTH;
-			if(temp >= HALF_REGION_LENGTH) return number + REGION_LENGTH - temp;
+			int temp = number % 64;
+			if(temp >= 32) return number + 64 - temp;
 			return number - temp;
 		}
 
@@ -70,19 +60,19 @@ public class Region
 			@Override
 			public Integer next(Integer integer)
 			{
-				return integer + REGION_LENGTH;
+				return integer + 64;
 			}
 
 			@Override
 			public Integer previous(Integer integer)
 			{
-				return integer - REGION_LENGTH;
+				return integer - 64;
 			}
 
 			@Override
 			public long distance(Integer integer, Integer integer2)
 			{
-				return Math.abs((getRegionCoordinate(integer) / REGION_LENGTH) - (getRegionCoordinate(integer2) / REGION_LENGTH));
+				return Math.abs((getRegionCoordinate(integer) / 64) - (getRegionCoordinate(integer2) / 64));
 			}
 		}
 	}

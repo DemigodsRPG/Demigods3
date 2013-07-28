@@ -351,9 +351,6 @@ public abstract class Structure
 		@Indexed
 		@Attribute
 		private Integer regionZ;
-		@Indexed
-		@Attribute
-		private String regionWorld;
 
 		public void setType(String type)
 		{
@@ -369,7 +366,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			setRegion(this.reference.getRegionX(), this.reference.getRegionZ(), reference.getWorld().getName());
+			setRegion(this.reference.getRegionX(), this.reference.getRegionZ());
 		}
 
 		public void setOwner(DCharacter character)
@@ -421,11 +418,10 @@ public abstract class Structure
 			return this.active;
 		}
 
-		public void setRegion(int X, int Z, String WORLD)
+		public void setRegion(int X, int Z)
 		{
 			this.regionX = X;
 			this.regionZ = Z;
-			this.regionWorld = WORLD;
 			save();
 		}
 
@@ -578,14 +574,14 @@ public abstract class Structure
 				{
 					for(int x : Ranges.closed(region.getX() - 64, region.getX() + 64).asSet(Region.Util.size()))
 						for(int y : Ranges.closed(region.getZ() - 64, region.getZ() + 64).asSet(Region.Util.size()))
-							addAll(getStructuresInSingleRegion(x, y, region.getWorld()));
+							addAll(getStructuresInSingleRegion(x, y));
 				}
 			};
 		}
 
-		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z, String world)
+		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z)
 		{
-			return Sets.newHashSet(); // Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionWorld", world)), Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z))));
+			return Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z)));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type, boolean filter)
