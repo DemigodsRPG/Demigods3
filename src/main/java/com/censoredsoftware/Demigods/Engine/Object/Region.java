@@ -1,7 +1,7 @@
 package com.censoredsoftware.Demigods.Engine.Object;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import com.google.common.collect.DiscreteDomain;
 
@@ -12,11 +12,13 @@ public class Region
 
 	private int x;
 	private int z;
+	private String world;
 
-	public Region(int x, int z)
+	public Region(int x, int z, String world)
 	{
 		this.x = x;
 		this.z = z;
+		this.world = world;
 	}
 
 	public int getX()
@@ -29,21 +31,26 @@ public class Region
 		return z;
 	}
 
-	public Location getCenter(World world)
+	public String getWorld()
 	{
-		return new Location(world, x, 128, z);
+		return world;
+	}
+
+	public Location getCenter() throws Exception
+	{
+		return new Location(Bukkit.getWorld(world), x, 128, z);
 	}
 
 	public static class Util
 	{
 		public static Region getRegion(Location location)
 		{
-			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockZ()));
+			return new Region(getRegionCoordinate(location.getBlockX()), getRegionCoordinate(location.getBlockZ()), location.getWorld().getName());
 		}
 
-		public static Region getRegion(int X, int Z)
+		public static Region getRegion(int X, int Z, String WORLD)
 		{
-			return new Region(getRegionCoordinate(X), getRegionCoordinate(Z));
+			return new Region(getRegionCoordinate(X), getRegionCoordinate(Z), WORLD);
 		}
 
 		private static int getRegionCoordinate(int number)

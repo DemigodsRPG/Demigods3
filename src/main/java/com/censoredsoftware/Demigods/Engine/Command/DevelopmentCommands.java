@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 import com.google.common.collect.Lists;
 
 public class DevelopmentCommands extends DCommand
@@ -66,32 +66,8 @@ public class DevelopmentCommands extends DCommand
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
-		Player player = (Player) sender;
-		Location location = player.getLocation();
-		Region region = Region.Util.getRegion(location.getBlockX(), location.getBlockZ());
 
-		player.sendMessage("Looking for structures...");
-
-		player.sendMessage("X-----");
-		for(Structure.Save save : Structure.Util.findAll("regionX", region.getX()))
-		{
-			player.sendMessage("X: " + save.getId());
-		}
-
-		player.sendMessage("Z-----");
-		for(Structure.Save save : Structure.Util.findAll("regionZ", region.getZ()))
-		{
-			player.sendMessage("Z: " + save.getId());
-		}
-
-		player.sendMessage("BOTH--");
-		for(Structure.Save save : Structure.Util.getStructuresInSingleRegion(region.getX(), region.getZ()))
-		{
-			player.sendMessage("BOTH: " + save.getId());
-		}
-		player.sendMessage("------");
-
-		player.sendMessage("Done looking.");
+		EpisodeDemo.Structures.ALTAR.getStructure().createNew(Bukkit.getWorlds().get(0).getSpawnLocation(), true);
 
 		return true;
 	}
