@@ -585,7 +585,7 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z, String world)
 		{
-			return Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionWorld", world)), Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z))));
+			return Sets.newHashSet(); // Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionWorld", world)), Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z))));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type, boolean filter)

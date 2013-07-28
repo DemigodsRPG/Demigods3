@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Object.*;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 import com.google.common.collect.Lists;
 
 public class DevelopmentCommands extends DCommand
@@ -66,8 +65,9 @@ public class DevelopmentCommands extends DCommand
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
+		Player player = (Player) sender;
 
-		EpisodeDemo.Structures.ALTAR.getStructure().createNew(Bukkit.getWorlds().get(0).getSpawnLocation(), true);
+		// Unused.
 
 		return true;
 	}
