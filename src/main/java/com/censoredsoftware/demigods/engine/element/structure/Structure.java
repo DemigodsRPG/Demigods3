@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.StopWatches;
+import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import org.junit.Test;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -605,10 +608,12 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
+            StopWatch stopWatch = StopWatches.newStopWatch("partOfStructureWithFlag");
 			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
+            StopWatches.endStopWatch(stopWatch);
 			return false;
 		}
 

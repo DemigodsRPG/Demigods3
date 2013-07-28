@@ -32,13 +32,13 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockBreak(BlockBreakEvent event)
 	{
-        StopWatch blockBreak = StopWatches.newStopWatch("Block Break");
+        StopWatch stopWatch = StopWatches.newStopWatch("onBlockBreak");
         if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TranslationManager.Text.PROTECTED_BLOCK));
 		}
-        StopWatches.endStopWatch(blockBreak);
+        StopWatches.endStopWatch(stopWatch);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
