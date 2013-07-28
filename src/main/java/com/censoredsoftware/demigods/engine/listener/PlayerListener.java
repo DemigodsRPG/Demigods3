@@ -3,6 +3,8 @@ package com.censoredsoftware.demigods.engine.listener;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.QuitReasonHandler;
+import com.censoredsoftware.demigods.engine.util.StopWatches;
+import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +25,8 @@ public class PlayerListener implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		// Define Variables
+        StopWatch watch = StopWatches.start();
+        // Define Variables
 		Player player = event.getPlayer();
 		DPlayer wrapper = DPlayer.Util.getPlayer(player);
 		DCharacter character = wrapper.getCurrent();
@@ -48,6 +51,7 @@ public class PlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
+        StopWatches.end(watch, "onPlayerJoin");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
