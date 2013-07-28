@@ -210,7 +210,7 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null && this.current.canUse()) return this.current;
+		if(this.current != null /* && this.current.canUse() */) return this.current;
 		return null;
 	}
 
@@ -400,13 +400,13 @@ public class DPlayer
 			{
 				// Toggle on
 				togglePrayingSilent(player, true);
-                player.setSneaking(true);
+				player.setSneaking(true);
 			}
 			else
 			{
 				// Toggle off
 				togglePrayingSilent(player, false);
-                player.setSneaking(false);
+				player.setSneaking(false);
 
 				// Message them
 				clearChat(player);
