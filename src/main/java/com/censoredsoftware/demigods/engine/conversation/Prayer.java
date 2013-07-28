@@ -643,11 +643,7 @@ public class Prayer implements DConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String deityName)
 			{
-				for(Deity deity : Demigods.getLoadedDeities())
-				{
-					if(deity.getInfo().getName().equalsIgnoreCase(deityName)) return true;
-				}
-				return false;
+				return Deity.Util.getDeity(deityName) != null;
 			}
 
 			@Override

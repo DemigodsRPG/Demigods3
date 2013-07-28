@@ -1,6 +1,8 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -19,8 +21,8 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
@@ -35,11 +37,11 @@ public class Demigods
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
 
-    // Public Dependency Plugins
+	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
 
 	// The Game Data
-	protected static Set<Deity> deities;
+	protected static Map<String, Deity> deities;
 	protected static Set<Task.List> quests;
 	protected static Set<Structure> structures;
 	protected static Set<DConversation> conversasions;
@@ -78,11 +80,11 @@ public class Demigods
 		new Configs(instance, true);
 		new Messages(instance);
 
-		Demigods.deities = new HashSet<Deity>()
+		Demigods.deities = new HashMap<String, Deity>()
 		{
 			{
 				for(ListedDeity deity : deities)
-                    add(deity.getDeity());
+					put(deity.getDeity().getInfo().getName(), deity.getDeity());
 			}
 		};
 		Demigods.quests = new HashSet<Task.List>()
@@ -171,7 +173,7 @@ public class Demigods
 		// TODO: instance.getServer().getPluginManager().registerEvents(listener, instance);
 
 		// Deities
-		for(Deity deity : getLoadedDeities())
+		for(Deity deity : getLoadedDeities().values())
 		{
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
@@ -219,7 +221,7 @@ public class Demigods
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
 	}
 
-	public static Set<Deity> getLoadedDeities()
+	public static Map<String, Deity> getLoadedDeities()
 	{
 		return Demigods.deities;
 	}

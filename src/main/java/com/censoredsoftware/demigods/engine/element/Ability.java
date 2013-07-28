@@ -561,7 +561,7 @@ public abstract class Ability
 			return new ArrayList<Ability>()
 			{
 				{
-					for(Deity deity : Demigods.getLoadedDeities())
+					for(Deity deity : Demigods.getLoadedDeities().values())
 					{
 						addAll(deity.getAbilities());
 					}

@@ -378,11 +378,7 @@ public class DCharacter implements Battle.Participant
 
 	public boolean canUse()
 	{
-		for(Deity deity : Demigods.getLoadedDeities())
-		{
-			if(deity.getInfo().getName().equals(this.deity)) return true;
-		}
-		return false;
+		return Deity.Util.getDeity(this.deity) != null;
 	}
 
 	@Model

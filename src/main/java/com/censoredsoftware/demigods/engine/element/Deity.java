@@ -49,7 +49,7 @@ public abstract class Deity
 		return new HashSet<String>()
 		{
 			{
-				for(Deity deity : Demigods.getLoadedDeities())
+				for(Deity deity : Demigods.getLoadedDeities().values())
 				{
 					if(!contains(deity.getInfo().getAlliance())) add(deity.getInfo().getAlliance());
 				}
@@ -121,7 +121,7 @@ public abstract class Deity
 			return new HashSet<Deity>()
 			{
 				{
-					for(Deity deity : Demigods.getLoadedDeities())
+					for(Deity deity : Demigods.getLoadedDeities().values())
 					{
 						if(deity.getInfo().getAlliance().equalsIgnoreCase(alliance)) add(deity);
 					}
@@ -131,11 +131,7 @@ public abstract class Deity
 
 		public static Deity getDeity(String deity)
 		{
-			for(Deity loaded : Demigods.getLoadedDeities())
-			{
-				if(loaded.getInfo().getName().equalsIgnoreCase(deity)) return loaded;
-			}
-			return null;
+			return Demigods.getLoadedDeities().get(deity);
 		}
 
 		public static boolean canUseDeity(Player player, String deity)

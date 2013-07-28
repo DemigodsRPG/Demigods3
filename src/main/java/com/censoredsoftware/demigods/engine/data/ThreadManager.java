@@ -38,7 +38,7 @@ public class ThreadManager
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Enable Deity runnables
-		for(Deity deity : Demigods.getLoadedDeities())
+		for(Deity deity : Demigods.getLoadedDeities().values())
 			for(Ability ability : deity.getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), 0, ability.getInfo().getRepeat());
 	}
