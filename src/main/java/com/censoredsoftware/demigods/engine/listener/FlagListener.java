@@ -1,6 +1,9 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.util.StopWatches;
 import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.Bukkit;
@@ -12,10 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
-
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
 
 public class FlagListener implements Listener
 {

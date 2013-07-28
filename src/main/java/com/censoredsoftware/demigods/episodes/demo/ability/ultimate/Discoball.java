@@ -1,9 +1,16 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -17,17 +24,9 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.engine.util.Spigots;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Discoball extends Ability
 {
@@ -202,13 +201,13 @@ public class Discoball extends Ability
 
 		public static void rainbow(Player disco, Player player)
 		{
-			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Generates.generateIntRange(0, 15));
+			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Randoms.generateIntRange(0, 15));
 			if(Demigods.runningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 		}
 
 		public static void playRandomNote(Location location, float volume)
 		{
-			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Generates.generateIntRange(5, 10) / 10.0));
+			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Randoms.generateIntRange(5, 10) / 10.0));
 		}
 
 		public static void sparkleSparkle(Location location)

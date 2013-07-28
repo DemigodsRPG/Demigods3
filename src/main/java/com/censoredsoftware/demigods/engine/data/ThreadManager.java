@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
@@ -11,7 +7,9 @@ import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
@@ -34,7 +32,7 @@ public class ThreadManager
 		}
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Demigods.config.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Enable Deity runnables
@@ -122,7 +120,7 @@ public class ThreadManager
 		{
 			return new BukkitRunnable()
 			{
-				private final double multiplier = Configs.getSettingDouble("multipliers.favor");
+				private final double multiplier = Demigods.config.getSettingDouble("multipliers.favor");
 
 				@Override
 				public void run()

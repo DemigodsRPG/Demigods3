@@ -28,6 +28,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <core.version>1.0.0-BETA</core.version>
         <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
@@ -104,6 +105,14 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.censoredsoftware.minecraft</groupId>
+            <artifactId>core</artifactId>
+            <version>${core.version}</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>
@@ -188,6 +197,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
+                                    <include>com.censoredsoftware.minecraft:core</include>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis-cs</include>
                                     <include>redis:johm-cs</include>

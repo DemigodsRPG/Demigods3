@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.engine.language;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
 import org.bukkit.ChatColor;
 
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
+import java.util.ArrayList;
 
 // TODO Replace with YAML.
 
@@ -104,7 +103,7 @@ public class TranslationManager
 				case ERROR_CHAR_EXISTS:
 					return "A character with that name already exists.";
 				case ERROR_MAX_CAPS:
-					return "Please use no more than " + Configs.getSettingInt("character.max_caps_in_name") + " capital letters.";
+					return "Please use no more than " + Demigods.config.getSettingInt("character.max_caps_in_name") + " capital letters.";
 				case CREATE_OBELISK:
 					return "You created an Obelisk!";
 				case PROTECTED_BLOCK:

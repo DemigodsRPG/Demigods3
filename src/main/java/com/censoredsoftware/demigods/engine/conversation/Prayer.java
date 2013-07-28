@@ -1,9 +1,17 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,22 +33,12 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
-public class Prayer implements DConversation
+public class Prayer implements ListedConversation
 {
 
 	@Override
@@ -191,7 +189,7 @@ public class Prayer implements DConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Warps & Invites"));
+			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
 			if(character.hasWarps() || character.hasInvites())
@@ -367,7 +365,7 @@ public class Prayer implements DConversation
 
 			DPlayer.Util.clearRawChat(player);
 
-			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
@@ -432,14 +430,14 @@ public class Prayer implements DConversation
 				DPlayer.Util.clearRawChat(player);
 
 				// Send the player the info
-				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Util.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Util.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + Math.round(character.getExperience())); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Configs.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(" ");
@@ -515,7 +513,7 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
 				if(context.getSessionData("name_errors") == null)
@@ -547,7 +545,7 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Util.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
 					List<TranslationManager.Text> errors = Lists.newArrayList();
@@ -561,7 +559,7 @@ public class Prayer implements DConversation
 					{
 						errors.add(TranslationManager.Text.ERROR_ALPHA_NUMERIC);
 					}
-					if(Util.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")))
+					if(Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
 						errors.add(TranslationManager.Text.ERROR_MAX_CAPS);
 					}
@@ -624,7 +622,7 @@ public class Prayer implements DConversation
 				Player player = (Player) context.getForWhom();
 
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -738,7 +736,7 @@ public class Prayer implements DConversation
 			DPlayer.Util.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Confirming Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Confirming Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
@@ -933,7 +931,7 @@ class PrayerListener implements Listener
 
 		if(!DPlayer.Util.isPraying(player)) return;
 
-		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius"))
+		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
 		{
 			DPlayer.Util.togglePraying(player, false);
 		}

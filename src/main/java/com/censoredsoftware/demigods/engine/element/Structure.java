@@ -1,30 +1,28 @@
 package com.censoredsoftware.demigods.engine.element;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.censoredsoftware.demigods.engine.util.StopWatches;
-import org.apache.commons.lang.time.StopWatch;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
-import redis.clients.johm.*;
-
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.StopWatches;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.time.StopWatch;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import redis.clients.johm.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class Structure
 {
@@ -253,7 +251,7 @@ public abstract class Structure
 						for(int i = 0; i < block.getOdds(); i++)
 							add(block);
 				}
-			}.get(Generates.generateIntRange(0, 9));
+			}.get(Randoms.generateIntRange(0, 9));
 		}
 
 		/**

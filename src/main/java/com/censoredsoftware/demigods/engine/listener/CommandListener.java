@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Messages;
 
 public class CommandListener implements Listener
 {
@@ -29,7 +28,7 @@ public class CommandListener implements Listener
 		{
 			if(Ability.Util.invokeAbilityCommand(player, args[0]))
 			{
-				Messages.info(event.getPlayer().getName() + " used the command: /" + message);
+                Demigods.message.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
 			}
 		}

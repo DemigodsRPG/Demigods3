@@ -1,7 +1,12 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.Set;
-
+import com.censoredsoftware.core.improve.ListedCommand;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,14 +14,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
-import com.google.common.collect.Sets;
+import java.util.Set;
 
-public class GeneralCommands extends DCommand
+public class GeneralCommands extends ListedCommand
 {
 	@Override
 	public Set<String> getCommands()
@@ -25,7 +25,7 @@ public class GeneralCommands extends DCommand
 	}
 
 	@Override
-	public boolean process(CommandSender sender, Command command, String[] args)
+	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
 		if(command.getName().equalsIgnoreCase("check")) return check(sender);
 		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);
@@ -56,7 +56,7 @@ public class GeneralCommands extends DCommand
 		ChatColor favorColor = Prayer.Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
 
 		// Send the user their info via chat
-		Messages.tagged(sender, "Player Check");
+		Demigods.message.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
 		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
@@ -70,7 +70,7 @@ public class GeneralCommands extends DCommand
 	private boolean owner(CommandSender sender, String[] args)
 	{
 		// Check Permissions
-		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
+		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
 
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		if(args.length < 1)

@@ -1,9 +1,12 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -11,18 +14,11 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.Region;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.collect.Sets;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Model
 public class DPlayer
@@ -74,7 +70,7 @@ public class DPlayer
 		}
 		else if(canPvp() && !DataManager.hasTimed(player.getName(), "pvp_cooldown"))
 		{
-			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
+			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
@@ -156,7 +152,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-			Messages.warning("Character name too long.");
+            Demigods.message.warning("Character name too long.");
 			e.printStackTrace();
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
@@ -179,7 +175,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-			Messages.severe("There was a problem while teleporting a player to their character.");
+            Demigods.message.severe("There was a problem while teleporting a player to their character.");
 		}
 
 		// Save instances

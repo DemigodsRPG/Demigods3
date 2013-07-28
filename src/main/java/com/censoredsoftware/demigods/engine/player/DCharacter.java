@@ -1,9 +1,15 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,21 +19,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Model
 public class DCharacter implements Battle.Participant
@@ -722,9 +718,9 @@ public class DCharacter implements Battle.Participant
 
 		public void addMaxFavor(int amount)
 		{
-			if((this.maxFavor + amount) > Configs.getSettingInt("caps.favor"))
+			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor"))
 			{
-				this.maxFavor = Configs.getSettingInt("caps.favor");
+				this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 			}
 			else
 			{
@@ -736,7 +732,7 @@ public class DCharacter implements Battle.Participant
 		public void setMaxFavor(int amount)
 		{
 			if(amount < 0) this.maxFavor = 0;
-			if(amount > Configs.getSettingInt("caps.favor")) this.maxFavor = Configs.getSettingInt("caps.favor");
+			if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 			else this.maxFavor = amount;
 			Util.save(this);
 		}
@@ -830,9 +826,9 @@ public class DCharacter implements Battle.Participant
 		{
 			Meta charMeta = new Meta();
 			charMeta.initialize();
-			charMeta.setAscensions(Configs.getSettingInt("character.defaults.ascensions"));
-			charMeta.setFavor(Configs.getSettingInt("character.defaults.favor"));
-			charMeta.setMaxFavor(Configs.getSettingInt("character.defaults.max_favor"));
+			charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
+			charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
+			charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.OFFENSE));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.DEFENSE));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.PASSIVE));
@@ -973,8 +969,8 @@ public class DCharacter implements Battle.Participant
 				attacker.addKill();
 			}
 
-			if(killed == null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-			else Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			if(killed == null) Demigods.message.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 		}
 
 		// TODO Remake this.
@@ -984,8 +980,8 @@ public class DCharacter implements Battle.Participant
 
 			// TODO: Punishments.
 
-			if(!alliance.equals("Mortal")) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
-			else Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.MORTAL_BETRAY));
+			if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.MORTAL_BETRAY));
 		}
 
 		/**
@@ -1009,7 +1005,7 @@ public class DCharacter implements Battle.Participant
 			}
 			catch(Exception e)
 			{
-				Messages.severe("Could not save inventory: " + inventory.getId());
+				Demigods.message.severe("Could not save inventory: " + inventory.getId());
 			}
 		}
 

@@ -2,10 +2,10 @@ package com.censoredsoftware.demigods.engine.listener;
 
 // TODO Fix for lag.
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,9 +20,8 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GriefListener implements Listener
 {

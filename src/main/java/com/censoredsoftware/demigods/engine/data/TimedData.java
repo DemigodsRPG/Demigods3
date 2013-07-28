@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.base.Objects;
 import redis.clients.johm.*;
 
-import com.google.common.base.Objects;
+import java.util.List;
+import java.util.Set;
 
 @Model
 public class TimedData

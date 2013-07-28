@@ -1,12 +1,11 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Zones
 {
@@ -20,7 +19,7 @@ public class Zones
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
 		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 	}

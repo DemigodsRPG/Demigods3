@@ -1,22 +1,19 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataManager
 {
@@ -29,8 +26,8 @@ public class DataManager
 	public DataManager()
 	{
 		// Create Data Instances
-		jedisPool = new JedisPool(new JedisPoolConfig(), Configs.getSettingString("redis.host"), Configs.getSettingInt("redis.port"));
-		if(Configs.isSettingSet("redis.password")) jedisPool.getResource().auth(Configs.getSettingString("redis.password"));
+		jedisPool = new JedisPool(new JedisPoolConfig(), Demigods.config.getSettingString("redis.host"), Demigods.config.getSettingInt("redis.port"));
+		if(Demigods.config.isSettingSet("redis.password")) jedisPool.getResource().auth(Demigods.config.getSettingString("redis.password"));
 		tempData = Maps.newHashMap();
 
 		// Create Persistence

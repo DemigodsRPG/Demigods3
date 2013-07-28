@@ -1,10 +1,13 @@
 package com.censoredsoftware.demigods.engine.element;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DItemStack;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Pet;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,18 +24,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DItemStack;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Generates;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public abstract class Ability
 {
@@ -291,7 +288,7 @@ public abstract class Ability
 		public static Bind createBind(String ability, int slot)
 		{
 			Bind bind = new Bind();
-			bind.setIdentifier(Generates.generateString(6));
+			bind.setIdentifier(Randoms.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
 			save(bind);
@@ -301,7 +298,7 @@ public abstract class Ability
 		public static Bind createBind(String ability, int slot, ItemStack item)
 		{
 			Bind bind = new Bind();
-			bind.setIdentifier(Generates.generateString(6));
+			bind.setIdentifier(Randoms.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
 			bind.setItem(item);
@@ -313,7 +310,7 @@ public abstract class Ability
 		{
 			Devotion devotion = new Devotion();
 			devotion.setType(type);
-			devotion.setLevel(Configs.getSettingInt("character.defaults." + type.name().toLowerCase()));
+			devotion.setLevel(Demigods.config.getSettingInt("character.defaults." + type.name().toLowerCase()));
 			save(devotion);
 			return devotion;
 		}
@@ -446,7 +443,7 @@ public abstract class Ability
 		 */
 		public static LivingEntity autoTarget(Player player)
 		{
-			int targetRangeCap = Configs.getSettingInt("caps.target_range");
+			int targetRangeCap = Demigods.config.getSettingInt("caps.target_range");
 			Location targetLoc = player.getTargetBlock(null, targetRangeCap).getLocation();
 
 			for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
@@ -474,7 +471,7 @@ public abstract class Ability
 
 		public static Location directTarget(Player player)
 		{
-			return player.getTargetBlock(null, Configs.getSettingInt("caps.target_range")).getLocation();
+			return player.getTargetBlock(null, Demigods.config.getSettingInt("caps.target_range")).getLocation();
 		}
 
 		/**

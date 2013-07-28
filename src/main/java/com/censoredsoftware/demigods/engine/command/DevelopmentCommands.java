@@ -1,8 +1,12 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.Set;
-
+import com.censoredsoftware.core.improve.ListedCommand;
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.StopWatches;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -12,13 +16,11 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.location.Region;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
-public class DevelopmentCommands extends DCommand
+public class DevelopmentCommands extends ListedCommand
 {
 	@Override
 	public Set<String> getCommands()
@@ -27,7 +29,7 @@ public class DevelopmentCommands extends DCommand
 	}
 
 	@Override
-	public boolean process(CommandSender sender, Command command, String[] args)
+	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
 		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
 		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
@@ -38,7 +40,23 @@ public class DevelopmentCommands extends DCommand
 		return false;
 	}
 
-	private static boolean test1(CommandSender sender, final String[] args)
+    @Override
+    public List<String> processTab(CommandSender sender, Command command, final String[] args)
+    {
+        return new ArrayList<String>()
+        {
+            {
+                for(Player online : Bukkit.getOnlinePlayers())
+                {
+                    DPlayer wrapper = DPlayer.Util.getPlayer(online);
+                    if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
+                    else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName());
+                }
+            }
+        };
+    }
+
+    private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
 

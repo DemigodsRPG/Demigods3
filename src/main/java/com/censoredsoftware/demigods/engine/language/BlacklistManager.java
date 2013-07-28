@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.engine.language;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Deity;
+
+import java.util.HashSet;
+import java.util.Set;
 
 // TODO Replace with YAML.
 

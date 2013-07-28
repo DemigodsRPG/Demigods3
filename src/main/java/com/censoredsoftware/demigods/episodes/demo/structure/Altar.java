@@ -1,10 +1,13 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,15 +22,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Altar extends Structure
 {
@@ -337,7 +335,7 @@ public class Altar extends Structure
 	@Override
 	public int getRadius()
 	{
-		return Configs.getSettingInt("zones.altar_radius");
+		return Demigods.config.getSettingInt("zones.altar_radius");
 	}
 
 	@Override
@@ -386,7 +384,7 @@ public class Altar extends Structure
 	{
 		for(Save structureSave : Util.findAll("type", "Altar"))
 		{
-			if(structureSave.getReferenceLocation().distance(location) <= Configs.getSettingInt("generation.min_blocks_between_altars")) return true;
+			if(structureSave.getReferenceLocation().distance(location) <= Demigods.config.getSettingInt("generation.min_blocks_between_altars")) return true;
 		}
 		return false;
 	}
@@ -406,7 +404,7 @@ class AltarListener implements Listener
 		if(DLocation.Util.canGenerateStrict(location, 3))
 		{
 			// Return a random boolean based on the chance of Altar generation
-			if(Generates.randomPercentBool(Configs.getSettingDouble("generation.altar_chance")))
+			if(Randoms.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
 			{
 				// If another Altar doesn't exist nearby then make one
 				if(!Altar.altarNearby(location))

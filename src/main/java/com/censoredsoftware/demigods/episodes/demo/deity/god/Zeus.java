@@ -1,19 +1,18 @@
 package com.censoredsoftware.demigods.episodes.demo.deity.god;
 
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.episodes.demo.ability.offense.Shove;
+import com.censoredsoftware.demigods.episodes.demo.ability.passive.NoFall;
+import com.censoredsoftware.demigods.episodes.demo.ability.ultimate.Storm;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
-import com.censoredsoftware.demigods.episodes.demo.ability.offense.Shove;
-import com.censoredsoftware.demigods.episodes.demo.ability.passive.NoFall;
-import com.censoredsoftware.demigods.episodes.demo.ability.ultimate.Storm;
 
 public class Zeus extends Deity
 {

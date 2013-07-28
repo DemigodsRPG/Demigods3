@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.util.StopWatches;
 import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.ChatColor;
@@ -15,13 +15,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.util.Configs;
-
 public class PlayerListener implements Listener
 {
-	private static final QuitReasonHandler quitReasonFilter = new QuitReasonHandler();
-
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
@@ -46,7 +41,7 @@ public class PlayerListener implements Listener
 			event.getPlayer().setHealth(character.getHealth());
 		}
 
-		if(Configs.getSettingBoolean("misc.welcome_message"))
+		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
 		{
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
@@ -68,7 +63,7 @@ public class PlayerListener implements Listener
 	{
 		String name = event.getPlayer().getName();
 		String message = ChatColor.YELLOW + name + " has left the game.";
-		switch(quitReasonFilter.getLatestQuitReason())
+		switch(Demigods.plugin.getLatestQuitReason())
 		{
 			case GENERIC_REASON:
 				message = ChatColor.YELLOW + name + " has either quit or crashed.";

@@ -1,19 +1,17 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
 
 @Model
 public class Pet implements Battle.Participant
@@ -79,7 +77,7 @@ public class Pet implements Battle.Participant
 
 	public LivingEntity getNearbyLivingEntity(Player player)
 	{
-		int searchRadius = Configs.getSettingInt("caps.target_range");
+		int searchRadius = Demigods.config.getSettingInt("caps.target_range");
 		for(Entity pet : player.getNearbyEntities(searchRadius, searchRadius, searchRadius))
 		{
 			if(!(pet instanceof LivingEntity) || !(pet instanceof Tameable)) continue;

@@ -1,8 +1,9 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
+import com.censoredsoftware.core.improve.ListedConversation;
 import org.bukkit.event.Listener;
 
-public class NoGrief implements DConversation
+public class NoGrief implements ListedConversation
 {
 	// Define variables
 	private static org.bukkit.conversations.Conversation noGriefConversation;

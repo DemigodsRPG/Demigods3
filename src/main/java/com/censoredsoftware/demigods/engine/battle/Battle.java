@@ -1,7 +1,16 @@
 package com.censoredsoftware.demigods.engine.battle;
 
-import java.util.*;
-
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Pet;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -11,21 +20,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.util.Vector;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.engine.util.Spigots;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 @Model
 public class Battle
@@ -273,16 +270,16 @@ public class Battle
 			battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 			battle.setStartTime(System.currentTimeMillis());
 
-			int default_range = Configs.getSettingInt("battles.min_range");
+			int default_range = Demigods.config.getSettingInt("battles.min_range");
 			double range = damager.getCurrentLocation().distance(damaged.getCurrentLocation());
 			if(range < default_range) battle.setRange(default_range);
 			else battle.setRange(range);
 
 			battle.setActive();
 
-			battle.setDuration(Configs.getSettingInt("battles.min_duration") * 1000);
-			battle.setMinKills(Configs.getSettingInt("battles.min_kills"));
-			battle.setMaxKills(Configs.getSettingInt("battles.max_kills"));
+			battle.setDuration(Demigods.config.getSettingInt("battles.min_duration") * 1000);
+			battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
+			battle.setMaxKills(Demigods.config.getSettingInt("battles.max_kills"));
 
 			Meta meta = createMeta(damager);
 			meta.addParticipant(damager);
@@ -385,7 +382,7 @@ public class Battle
 			for(Battle battle : getAllActive())
 			{
 				double distance = battle.getStartLocation().distance(location);
-				if(distance > battle.getRange() && distance <= Configs.getSettingInt("battles.merge_range")) return battle;
+				if(distance > battle.getRange() && distance <= Demigods.config.getSettingInt("battles.merge_range")) return battle;
 			}
 			return null;
 		}
@@ -407,7 +404,7 @@ public class Battle
 			List<Location> respawnPoints = getSafeRespawnPoints(battle);
 			if(respawnPoints.size() == 0) return battle.getStartLocation();
 
-			Location target = respawnPoints.get(Generates.generateIntRange(0, respawnPoints.size() - 1));
+			Location target = respawnPoints.get(Randoms.generateIntRange(0, respawnPoints.size() - 1));
 
 			Vector direction = target.toVector().subtract(battle.getStartLocation().toVector()).normalize();
 			double X = direction.getX();

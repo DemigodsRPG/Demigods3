@@ -1,20 +1,19 @@
 package com.censoredsoftware.demigods.engine.location;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.core.util.Randoms;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Model
 public class DLocation
@@ -175,7 +174,7 @@ public class DLocation
 		}
 
 		/**
-		 * Generates a random location with the center being <code>reference</code>.
+		 * Randoms a random location with the center being <code>reference</code>.
 		 * Must be at least <code>min</code> blocks from the center and no more than <code>max</code> blocks away.
 		 * 
 		 * @param reference the location used as the center for reference.
@@ -186,8 +185,8 @@ public class DLocation
 		public static Location randomLocation(Location reference, int min, int max)
 		{
 			Location location = reference.clone();
-			double randX = Generates.generateIntRange(min, max);
-			double randZ = Generates.generateIntRange(min, max);
+			double randX = Randoms.generateIntRange(min, max);
+			double randZ = Randoms.generateIntRange(min, max);
 			location.add(randX, 0, randZ);
 			double highestY = location.clone().getWorld().getHighestBlockYAt(location);
 			location.setY(highestY);
@@ -202,7 +201,7 @@ public class DLocation
 		 */
 		public static Location randomChunkLocation(Chunk chunk)
 		{
-			Location reference = chunk.getBlock(Generates.generateIntRange(1, 16), 64, Generates.generateIntRange(1, 16)).getLocation();
+			Location reference = chunk.getBlock(Randoms.generateIntRange(1, 16), 64, Randoms.generateIntRange(1, 16)).getLocation();
 			double locX = reference.getX();
 			double locY = chunk.getWorld().getHighestBlockYAt(reference);
 			double locZ = reference.getZ();
