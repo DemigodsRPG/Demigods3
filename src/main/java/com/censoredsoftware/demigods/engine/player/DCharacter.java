@@ -380,10 +380,9 @@ public class DCharacter implements Battle.Participant
 
 	public boolean canUse()
 	{
-        StopWatch test = StopWatches.newStopWatch();
+        StopWatch test = StopWatches.newStopWatch("canUse");
 		for(Deity deity : Demigods.getLoadedDeities())
 		{
-            StopWatches.reportTime(test);
 			if(deity.getInfo().getName().equals(this.deity)) return true;
 		}
         StopWatches.endStopWatch(test);

@@ -1,25 +1,31 @@
 package com.censoredsoftware.demigods.engine.util;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.time.StopWatch;
+
+import java.util.Map;
 
 public class StopWatches
 {
-    public static StopWatch newStopWatch()
+    private static Map<Long, String> sWs = Maps.newHashMap();
+
+    public static StopWatch newStopWatch(String n)
     {
         StopWatch sW = new StopWatch();
         sW.start();
+        sWs.put(sW.getStartTime(), n);
         return sW;
     }
 
     public static void reportTime(StopWatch sW)
     {
-        Messages.broadcast(sW.toString());
-        sW.reset();
+        Messages.broadcast(sWs.get(sW.getStartTime()) + ": " + sW.toString());
     }
 
     public static void endStopWatch(StopWatch sW)
     {
-        Messages.broadcast(sW.toString());
+        reportTime(sW);
+        sWs.remove(sW.getStartTime());
         sW.stop();
     }
 }
