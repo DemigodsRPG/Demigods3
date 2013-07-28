@@ -15,7 +15,7 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 public class Swim extends Ability
 {
 	private final static String name = "Swim", command = null;
-	private final static int cost = 0, delay = 0, repeat = 0;
+	private final static int cost = 0, delay = 0, repeat = 20;
 	private static Info info;
 	private final static List<String> details = new ArrayList<String>(1)
 	{
