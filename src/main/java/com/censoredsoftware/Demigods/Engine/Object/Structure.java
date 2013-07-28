@@ -576,8 +576,8 @@ public abstract class Structure
 			return new HashSet<Save>()
 			{
 				{
-					for(int x : Ranges.closed(region.getX() - 64, region.getX() + 64).asSet(Region.Util.size()))
-						for(int y : Ranges.closed(region.getZ() - 64, region.getZ() + 64).asSet(Region.Util.size()))
+					for(int x : Ranges.closed(region.getX() - Region.REGION_LENGTH, region.getX() + Region.REGION_LENGTH).asSet(Region.Util.size()))
+						for(int y : Ranges.closed(region.getZ() - Region.REGION_LENGTH, region.getZ() + Region.REGION_LENGTH).asSet(Region.Util.size()))
 							addAll(getStructuresInSingleRegion(x, y, region.getWorld()));
 				}
 			};

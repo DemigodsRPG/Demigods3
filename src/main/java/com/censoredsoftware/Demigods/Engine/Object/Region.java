@@ -7,6 +7,9 @@ import com.google.common.collect.DiscreteDomain;
 
 public class Region
 {
+	public final static int REGION_LENGTH = 64;
+	public final static int HALF_REGION_LENGTH = REGION_LENGTH / 2;
+
 	private int x;
 	private int z;
 	private String world;
@@ -52,8 +55,8 @@ public class Region
 
 		private static int getRegionCoordinate(int number)
 		{
-			int temp = number % 46;
-			if(temp >= 23) return number + 46 - temp;
+			int temp = number % REGION_LENGTH;
+			if(temp >= HALF_REGION_LENGTH) return number + REGION_LENGTH - temp;
 			return number - temp;
 		}
 
@@ -67,19 +70,19 @@ public class Region
 			@Override
 			public Integer next(Integer integer)
 			{
-				return integer + 46;
+				return integer + REGION_LENGTH;
 			}
 
 			@Override
 			public Integer previous(Integer integer)
 			{
-				return integer - 46;
+				return integer - REGION_LENGTH;
 			}
 
 			@Override
 			public long distance(Integer integer, Integer integer2)
 			{
-				return Math.abs((getRegionCoordinate(integer) / 46) - (getRegionCoordinate(integer2) / 46));
+				return Math.abs((getRegionCoordinate(integer) / REGION_LENGTH) - (getRegionCoordinate(integer2) / REGION_LENGTH));
 			}
 		}
 	}
