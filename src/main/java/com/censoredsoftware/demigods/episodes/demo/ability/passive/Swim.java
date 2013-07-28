@@ -39,7 +39,11 @@ public class Swim extends Ability
 				StopWatch stopWatch = StopWatches.start();
 
 				Player player = event.getPlayer();
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity))
+				{
+					StopWatches.end(stopWatch, "Swim");
+					return;
+				}
 
 				// PHELPS SWIMMING
 				if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
@@ -49,7 +53,7 @@ public class Swim extends Ability
 					player.setVelocity(victor);
 				}
 
-				StopWatches.end(stopWatch, "Swim:");
+				StopWatches.end(stopWatch, "Swim");
 			}
 		}, null);
 	}
