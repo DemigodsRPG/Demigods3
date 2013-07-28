@@ -608,12 +608,12 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
-            StopWatch stopWatch = StopWatches.newStopWatch("partOfStructureWithFlag");
+            StopWatch stopWatch = StopWatches.newStopWatch();
 			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
-            StopWatches.endStopWatch(stopWatch);
+            StopWatches.endStopWatch(stopWatch, "partOfStructureWithFlag");
 			return false;
 		}
 
