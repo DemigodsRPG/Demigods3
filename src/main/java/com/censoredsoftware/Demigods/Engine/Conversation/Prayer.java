@@ -775,7 +775,7 @@ class PrayerListener implements Listener
 		Player player = event.getPlayer();
 
 		// First we check if the player is clicking a prayer block
-		if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
+		if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION, true))
 		{
 			if(!DPlayer.Util.isPraying(player))
 			{

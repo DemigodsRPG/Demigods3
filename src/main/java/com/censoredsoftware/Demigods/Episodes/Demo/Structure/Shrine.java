@@ -199,11 +199,11 @@ class ShrineListener implements Listener
 			}
 		}
 
-		if(AdminUtility.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
+		if(AdminUtility.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine", true))
 		{
 			event.setCancelled(true);
 
-			Structure.Save save = Structure.Util.getStructureSave(location);
+			Structure.Save save = Structure.Util.getStructureSave(location, true);
 			DCharacter owner = save.getOwner();
 
 			if(DataUtility.hasTimed(player.getName(), "destroy_shrine"))

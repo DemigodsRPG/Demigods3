@@ -25,7 +25,7 @@ public class ZoneUtility
 		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
 		{
 			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
-			return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
+			return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 		}
 		return !canWorldGuardFlagPVP(location);
 	}
@@ -56,7 +56,7 @@ public class ZoneUtility
 
 	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
-		return (!Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP)) && canWorldGuardDynamicPVP(location);
+		return (!Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true)) && canWorldGuardDynamicPVP(location);
 	}
 
 	private static boolean canWorldGuardDynamicPVP(Location location)

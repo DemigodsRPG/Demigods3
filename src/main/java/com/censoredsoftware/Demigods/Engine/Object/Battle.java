@@ -500,7 +500,7 @@ public class Battle
 		 */
 		public static boolean canTarget(Battle.Participant participant)
 		{
-			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP); // This
+			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP, true); // TODO Make this work with new PVP.
 		}
 
 		/**

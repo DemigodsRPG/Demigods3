@@ -56,7 +56,7 @@ public class DPlayer
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
+		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -78,7 +78,7 @@ public class DPlayer
 				@Override
 				public void run()
 				{
-					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
+					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
 					{
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.SAFE_FROM_PVP));

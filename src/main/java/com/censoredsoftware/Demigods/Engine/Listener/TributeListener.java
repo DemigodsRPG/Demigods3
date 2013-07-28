@@ -40,13 +40,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION, true))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			Structure.Save save = Structure.Util.getStructureSave(location);
+			Structure.Save save = Structure.Util.getStructureSave(location, true);
 
 			// Return if they aren't clicking the gold block
 			if(!event.getClickedBlock().getLocation().equals(save.getClickableBlock())) return;
@@ -78,7 +78,7 @@ public class TributeListener implements Listener
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION, true)) return;
 
 		// Get the creator of the shrine
 		Structure.Save save = Structure.Util.load(Long.valueOf(DataUtility.getValueTemp(player.getName(), character.getName()).toString()));

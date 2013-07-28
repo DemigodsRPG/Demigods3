@@ -557,17 +557,18 @@ public abstract class Structure
 
 	public static class Util
 	{
-		public static Save getStructureSave(Location location)
+		public static Save getStructureSave(Location location, boolean filter)
 		{
-			for(Save save : filterForRegion(location, loadAll()))
+			for(Save save : filterForRegion(location, loadAll(), filter))
 			{
 				if(save.getLocations().contains(location)) return save;
 			}
 			return null;
 		}
 
-		public static Set<Save> getStructuresInRegionalArea(final Region region)
+		public static Set<Save> getStructuresInRegionalArea(Location location)
 		{
+			final Region region = Region.Util.getRegion(location);
 			return new HashSet<Save>()
 			{
 				{
@@ -580,53 +581,53 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z)
 		{
-			return Sets.intersection(findAll("regionX", X), findAll("regionZ", Z));
+			return Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z)));
 		}
 
-		public static boolean partOfStructureWithType(Location location, String type)
+		public static boolean partOfStructureWithType(Location location, String type, boolean filter)
 		{
-			for(Save save : filterForRegion(location, findAll("type", type)))
+			for(Save save : filterForRegion(location, findAll("type", type), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
 			return false;
 		}
 
-		public static boolean partOfStructureWithFlag(Location location, Flag flag)
+		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
 			return false;
 		}
 
-		public static boolean isReferenceBlockWithFlag(Location location, Flag flag)
+		public static boolean isReferenceBlockWithFlag(Location location, Flag flag, boolean filter)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
 			return false;
 		}
 
-		public static boolean isClickableBlockWithFlag(Location location, Flag flag)
+		public static boolean isClickableBlockWithFlag(Location location, Flag flag, boolean filter)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getClickableBlock().equals(location)) return true;
 			}
 			return false;
 		}
 
-		public static boolean isInRadiusWithFlag(Location location, Flag flag)
+		public static boolean isInRadiusWithFlag(Location location, Flag flag, boolean filter)
 		{
-			return getInRadiusWithFlag(location, flag) != null;
+			return getInRadiusWithFlag(location, flag, filter) != null;
 		}
 
-		public static Save getInRadiusWithFlag(Location location, Flag flag)
+		public static Save getInRadiusWithFlag(Location location, Flag flag, boolean filter)
 		{
-			for(Save save : filterForRegion(location, findAll("flags", flag.name())))
+			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 			}
@@ -637,9 +638,9 @@ public abstract class Structure
 		{
 			Location location = player.getLocation();
 			if(ZoneUtility.zoneNoBuild(player, player.getLocation())) return true;
-			if(isInRadiusWithFlag(location, Flag.NO_GRIEFING))
+			if(isInRadiusWithFlag(location, Flag.NO_GRIEFING, true))
 			{
-				Save save = getInRadiusWithFlag(location, Flag.NO_GRIEFING);
+				Save save = getInRadiusWithFlag(location, Flag.NO_GRIEFING, true);
 				if(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId())) return false;
 				return true;
 			}
@@ -654,13 +655,9 @@ public abstract class Structure
 			}
 		}
 
-		public static Set<Save> filterForRegion(Location location, Set<Save> structures)
+		public static Set<Save> filterForRegion(Location location, Set<Save> structures, boolean filter)
 		{
-			// Set<Save> answer = Sets.intersection(getStructuresInRegionalArea(location), structures);
-			// for(Save save : getStructuresInRegionalArea(location))
-			// {
-			// Demigods.message.broadcast("TEST: " + save.getId());
-			// }
+			if(filter) return Sets.intersection(structures, getStructuresInRegionalArea(location));
 			return structures;
 		}
 
