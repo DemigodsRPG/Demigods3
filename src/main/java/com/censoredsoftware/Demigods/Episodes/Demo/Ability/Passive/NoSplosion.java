@@ -9,8 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
 
 public class NoSplosion extends Ability
 {

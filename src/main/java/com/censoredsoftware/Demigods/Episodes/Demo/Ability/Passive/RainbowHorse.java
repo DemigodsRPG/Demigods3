@@ -7,8 +7,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Pet;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Player.Pet;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 

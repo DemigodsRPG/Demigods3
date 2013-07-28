@@ -1,9 +1,9 @@
 package com.censoredsoftware.Demigods.Episodes.Demo;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
-import com.censoredsoftware.Demigods.Engine.Object.Task;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Element.Task;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
 import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian.DrD1sco;

@@ -4,7 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Exception.SpigotNotFoundException;
+import com.censoredsoftware.Demigods.Engine.Misc.Exception.SpigotNotFoundException;
 
 public class SpigotUtility
 {

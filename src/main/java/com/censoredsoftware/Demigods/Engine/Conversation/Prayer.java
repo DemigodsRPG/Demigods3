@@ -24,11 +24,17 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.Demigods.Engine.Data.DataManager;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.*;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
+import com.censoredsoftware.Demigods.Engine.Location.DLocation;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -91,12 +97,12 @@ public class Prayer implements DConversation
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
 				sessionDataField.setAccessible(true);
-				if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")));
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")));
 			}
 			else
 			{
 				// Grab the context Map
-				if(DataUtility.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataUtility.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
 			}
 
 			// Build the conversation and begin
@@ -128,7 +134,7 @@ public class Prayer implements DConversation
 			DPlayer.Util.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
-			for(String message : Demigods.text.getTextBlock(TextUtility.Text.PRAYER_INTRO))
+			for(String message : Demigods.text.getTextBlock(TranslationManager.Text.PRAYER_INTRO))
 			{
 				player.sendRawMessage(message);
 			}
@@ -186,7 +192,7 @@ public class Prayer implements DConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Warps & Invites"));
+			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
 			if(character.hasWarps() || character.hasInvites())
@@ -217,15 +223,15 @@ public class Prayer implements DConversation
 			}
 
 			// Display notifications if available
-			if(context.getSessionData("warp_notifications") != null && !((List<TextUtility.Text>) context.getSessionData("warp_notifications")).isEmpty())
+			if(context.getSessionData("warp_notifications") != null && !((List<TranslationManager.Text>) context.getSessionData("warp_notifications")).isEmpty())
 			{
 				// Grab the notifications
-				List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
+				List<TranslationManager.Text> notifications = (List<TranslationManager.Text>) context.getSessionData("warp_notifications");
 
 				player.sendRawMessage(" ");
 
 				// List them
-				for(TextUtility.Text notification : notifications)
+				for(TranslationManager.Text notification : notifications)
 				{
 					player.sendRawMessage("  " + Demigods.text.getText(notification));
 				}
@@ -258,7 +264,7 @@ public class Prayer implements DConversation
 
 			// Create and save the notification list
 			context.setSessionData("warp_notifications", Lists.newArrayList());
-			List<TextUtility.Text> notifications = (List<TextUtility.Text>) context.getSessionData("warp_notifications");
+			List<TranslationManager.Text> notifications = (List<TranslationManager.Text>) context.getSessionData("warp_notifications");
 
 			DPlayer.Util.clearRawChat(player);
 
@@ -270,7 +276,7 @@ public class Prayer implements DConversation
 			if(arg0.equalsIgnoreCase("new"))
 			{
 				// Save notification
-				notifications.add(TextUtility.Text.NOTIFICATION_WARP_CREATED);
+				notifications.add(TranslationManager.Text.NOTIFICATION_WARP_CREATED);
 
 				// Add the warp
 				character.addWarp(arg1, player.getLocation());
@@ -281,7 +287,7 @@ public class Prayer implements DConversation
 			else if(arg0.equalsIgnoreCase("delete"))
 			{
 				// Save notification
-				notifications.add(TextUtility.Text.NOTIFICATION_WARP_DELETED);
+				notifications.add(TranslationManager.Text.NOTIFICATION_WARP_DELETED);
 
 				// Remove the warp/invite
 				if(character.getWarps().containsKey(arg1.toLowerCase()))
@@ -299,7 +305,7 @@ public class Prayer implements DConversation
 			else if(arg0.equalsIgnoreCase("invite"))
 			{
 				// Save notification
-				notifications.add(TextUtility.Text.NOTIFICATION_INVITE_SENT);
+				notifications.add(TranslationManager.Text.NOTIFICATION_INVITE_SENT);
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
@@ -362,7 +368,7 @@ public class Prayer implements DConversation
 
 			DPlayer.Util.clearRawChat(player);
 
-			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Character"));
+			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
@@ -427,14 +433,14 @@ public class Prayer implements DConversation
 				DPlayer.Util.clearRawChat(player);
 
 				// Send the player the info
-				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Character"));
+				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + MiscUtility.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + MiscUtility.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + (int) (Math.round(character.getExperience()))); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + ConfigUtility.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(" ");
@@ -510,7 +516,7 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
 				if(context.getSessionData("name_errors") == null)
@@ -521,10 +527,10 @@ public class Prayer implements DConversation
 				else
 				{
 					// Grab the errors
-					List<TextUtility.Text> errors = (List<TextUtility.Text>) context.getSessionData("name_errors");
+					List<TranslationManager.Text> errors = (List<TranslationManager.Text>) context.getSessionData("name_errors");
 
 					// List the errors
-					for(TextUtility.Text error : errors)
+					for(TranslationManager.Text error : errors)
 					{
 						player.sendRawMessage(ChatColor.RED + "  " + Demigods.text.getText(error));
 					}
@@ -542,27 +548,27 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, ConfigUtility.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
-					List<TextUtility.Text> errors = Lists.newArrayList();
+					List<TranslationManager.Text> errors = Lists.newArrayList();
 
 					// Check the errors
 					if(name.length() < 4 || name.length() >= 14)
 					{
-						errors.add(TextUtility.Text.ERROR_NAME_LENGTH);
+						errors.add(TranslationManager.Text.ERROR_NAME_LENGTH);
 					}
 					if(!StringUtils.isAlphanumeric(name))
 					{
-						errors.add(TextUtility.Text.ERROR_ALPHA_NUMERIC);
+						errors.add(TranslationManager.Text.ERROR_ALPHA_NUMERIC);
 					}
-					if(MiscUtility.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
+					if(MiscUtility.hasCapitalLetters(name, ConfigUtility.getSettingInt("character.max_caps_in_name")))
 					{
-						errors.add(TextUtility.Text.ERROR_MAX_CAPS);
+						errors.add(TranslationManager.Text.ERROR_MAX_CAPS);
 					}
 					if(DCharacter.Util.charExists(name))
 					{
-						errors.add(TextUtility.Text.ERROR_CHAR_EXISTS);
+						errors.add(TranslationManager.Text.ERROR_CHAR_EXISTS);
 					}
 
 					// Save the info
@@ -619,7 +625,7 @@ public class Prayer implements DConversation
 				Player player = (Player) context.getForWhom();
 
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -733,7 +739,7 @@ public class Prayer implements DConversation
 			DPlayer.Util.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Confirming Character"));
+			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Confirming Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
@@ -781,7 +787,7 @@ class PrayerListener implements Listener
 			{
 				if(DPlayer.Util.getPlayer(player).canPvp())
 				{
-					for(String message : Demigods.text.getTextBlock(TextUtility.Text.PVP_NO_PRAYER))
+					for(String message : Demigods.text.getTextBlock(TranslationManager.Text.PVP_NO_PRAYER))
 					{
 						player.sendMessage(message);
 					}
@@ -795,7 +801,7 @@ class PrayerListener implements Listener
 				// Tell nearby players that the user is praying
 				for(Entity entity : player.getNearbyEntities(20, 20, 20))
 				{
-					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TextUtility.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
+					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TranslationManager.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
 				}
 			}
 			else if(DPlayer.Util.isPraying(player))
@@ -884,7 +890,7 @@ class PrayerListener implements Listener
 
 		if(!DPlayer.Util.isPraying(player)) return;
 
-		if(event.getTo().distance((Location) DataUtility.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
+		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= ConfigUtility.getSettingInt("zones.prayer_radius"))
 		{
 			DPlayer.Util.togglePraying(player, false);
 		}

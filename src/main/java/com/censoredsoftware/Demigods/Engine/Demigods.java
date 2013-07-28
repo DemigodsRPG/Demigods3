@@ -9,19 +9,26 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Command.DevelopmentCommands;
-import com.censoredsoftware.Demigods.Engine.Command.GeneralCommands;
-import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
+import com.censoredsoftware.Demigods.Engine.Battle.BattleListener;
+import com.censoredsoftware.Demigods.Engine.Command.*;
 import com.censoredsoftware.Demigods.Engine.Conversation.DConversation;
-import com.censoredsoftware.Demigods.Engine.Exception.DemigodsStartupException;
+import com.censoredsoftware.Demigods.Engine.Data.DataManager;
+import com.censoredsoftware.Demigods.Engine.Data.ThreadManager;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.FlagListener;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.GriefListener;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.TributeListener;
+import com.censoredsoftware.Demigods.Engine.Element.Task;
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Listener.*;
-import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
-import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
-import com.censoredsoftware.Demigods.Engine.Object.*;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
+import com.censoredsoftware.Demigods.Engine.Misc.Exception.DemigodsStartupException;
+import com.censoredsoftware.Demigods.Engine.Player.EntityListener;
+import com.censoredsoftware.Demigods.Engine.Player.InventoryListener;
+import com.censoredsoftware.Demigods.Engine.Player.PlayerListener;
+import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -29,10 +36,6 @@ public class Demigods
 	// Public Static Access
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
-
-	// Public Modules
-	public static ConfigModule config;
-	public static MessageModule message;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
@@ -72,9 +75,9 @@ public class Demigods
 		plugin = instance;
 		conversation = new ConversationFactory(instance);
 
-		// Setup public modules.
-		config = new ConfigModule(instance, true);
-		message = new MessageModule(instance, config.getSettingBoolean("misc.tag_messages"));
+		// Setup utilities.
+		new ConfigUtility(instance, true);
+		new MessageUtility(instance);
 
 		// Define the game data.
 		Demigods.deities = new HashSet<Deity>()
@@ -111,12 +114,12 @@ public class Demigods
 		Demigods.text = getTranslation();
 
 		// Initialize soft data.
-		new DataUtility();
-		if(!DataUtility.isConnected())
+		new DataManager();
+		if(!DataManager.isConnected())
 		{
-			message.severe("Demigods was unable to connect to a Redis server.");
-			message.severe("A Redis server is required for Demigods to run.");
-			message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
+			MessageUtility.severe("Demigods was unable to connect to a Redis server.");
+			MessageUtility.severe("A Redis server is required for Demigods to run.");
+			MessageUtility.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
@@ -135,12 +138,12 @@ public class Demigods
 		loadCommands();
 
 		// Start game threads.
-		SchedulerUtility.startThreads(instance);
+		ThreadManager.startThreads(instance);
 
 		// Finally, regenerate structures
 		Structure.Util.regenerateStructures();
 
-		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
+		if(runningSpigot()) MessageUtility.info(("Spigot found, will use extra API features."));
 	}
 
 	/**
@@ -151,7 +154,7 @@ public class Demigods
 	public Translation getTranslation()
 	{
 		// Default to EnglishCharNames
-		return new TextUtility.English();
+		return new TranslationManager.English();
 	}
 
 	protected static void loadListeners(DemigodsPlugin instance)

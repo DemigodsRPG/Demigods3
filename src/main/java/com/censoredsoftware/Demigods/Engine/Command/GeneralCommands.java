@@ -9,10 +9,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.DCommand;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.google.common.collect.Lists;
@@ -57,7 +56,7 @@ public class GeneralCommands extends DCommand
 		ChatColor favorColor = MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
 
 		// Send the user their info via chat
-		Demigods.message.tagged(sender, "Player Check");
+		MessageUtility.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
 		sender.sendMessage(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
@@ -71,7 +70,7 @@ public class GeneralCommands extends DCommand
 	private boolean owner(CommandSender sender, String[] args)
 	{
 		// Check Permissions
-		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+		if(!sender.hasPermission("demigods.basic")) return MessageUtility.noPermission(sender);
 
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 		if(args.length < 1)

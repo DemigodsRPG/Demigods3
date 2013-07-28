@@ -5,11 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.censoredsoftware.Demigods.Engine.Data.DataManager;
+import com.censoredsoftware.Demigods.Engine.Data.ThreadManager;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Exception.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SchedulerUtility;
+import com.censoredsoftware.Demigods.Engine.Misc.Exception.DemigodsStartupException;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 /**
@@ -29,7 +30,7 @@ public class DemigodsPlugin extends JavaPlugin
 			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values(), null);
 
 			// Print success!
-			Demigods.message.info("Successfully enabled.");
+			MessageUtility.info("Successfully enabled.");
 		}
 		catch(DemigodsStartupException e)
 		{}
@@ -42,17 +43,17 @@ public class DemigodsPlugin extends JavaPlugin
 	public void onDisable()
 	{
 		// Save all the data.
-		if(DataUtility.isConnected()) DataUtility.save();
+		if(DataManager.isConnected()) DataManager.save();
 
 		// Toggle all prayer off
 		for(Player player : Bukkit.getOnlinePlayers())
 			DPlayer.Util.togglePrayingSilent(player, false);
 
 		// Cancel all threads, callAbilityEvent calls, and connections.
-		SchedulerUtility.stopThreads(this);
+		ThreadManager.stopThreads(this);
 		HandlerList.unregisterAll(this);
-		DataUtility.disconnect();
+		DataManager.disconnect();
 
-		Demigods.message.info("Successfully disabled.");
+		MessageUtility.info("Successfully disabled.");
 	}
 }

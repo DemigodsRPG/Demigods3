@@ -11,7 +11,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Object.*;
+import com.censoredsoftware.Demigods.Engine.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Location.Region;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.google.common.collect.Lists;
 

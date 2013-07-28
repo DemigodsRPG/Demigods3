@@ -18,8 +18,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.*;
-import com.censoredsoftware.Demigods.Engine.Utility.LocationUtility;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Location.DLocation;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
 import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
@@ -174,7 +178,7 @@ public class Discoball extends Ability
 
 		public final static void balls(Player player)
 		{
-			for(Location location : LocationUtility.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
+			for(Location location : DLocation.Util.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 			{
 				spawnBall(location);
 			}

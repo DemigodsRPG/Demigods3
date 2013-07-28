@@ -16,13 +16,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.censoredsoftware.Demigods.Engine.Data.DataManager;
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Object.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
 import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.DataUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.TextUtility;
+import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
 
 public class Shrine extends Structure
@@ -115,7 +116,7 @@ public class Shrine extends Structure
 	@Override
 	public int getRadius()
 	{
-		return Demigods.config.getSettingInt("zones.shrine_radius");
+		return ConfigUtility.getSettingInt("zones.shrine_radius");
 	}
 
 	@Override
@@ -188,8 +189,8 @@ class ShrineListener implements Listener
 					save.setOwner(character);
 					location.getWorld().strikeLightningEffect(location);
 
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TextUtility.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
+					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getInfo().getName() + ChatColor.GRAY));
 				}
 				catch(Exception e)
 				{
@@ -206,20 +207,20 @@ class ShrineListener implements Listener
 			Structure.Save save = Structure.Util.getStructureSave(location, true);
 			DCharacter owner = save.getOwner();
 
-			if(DataUtility.hasTimed(player.getName(), "destroy_shrine"))
+			if(DataManager.hasTimed(player.getName(), "destroy_shrine"))
 			{
 				// Remove the Shrine
 				save.remove();
-				DataUtility.removeTimed(player.getName(), "destroy_shrine");
+				DataManager.removeTimed(player.getName(), "destroy_shrine");
 
 				AdminUtility.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TextUtility.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
+				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
 			}
 			else
 			{
-				DataUtility.saveTimed(player.getName(), "destroy_shrine", true, 5);
-				player.sendMessage(ChatColor.RED + Demigods.text.getText(TextUtility.Text.ADMIN_WAND_REMOVE_SHRINE));
+				DataManager.saveTimed(player.getName(), "destroy_shrine", true, 5);
+				player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_REMOVE_SHRINE));
 			}
 		}
 	}

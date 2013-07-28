@@ -8,8 +8,8 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import com.censoredsoftware.Demigods.Engine.Object.Ability;
-import com.censoredsoftware.Demigods.Engine.Object.Deity;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
 import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
 import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Offense.Shove;
 import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Passive.NoFall;

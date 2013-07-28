@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.Demigods.Engine.Data.DataManager;
 
 public class AdminUtility
 {
@@ -19,7 +19,7 @@ public class AdminUtility
 	 */
 	public static boolean wandEnabled(OfflinePlayer player)
 	{
-		return player.getPlayer().hasPermission("demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_wand").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_wand").toString());
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class AdminUtility
 	 */
 	public static boolean useWand(OfflinePlayer player)
 	{
-		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Demigods.config.getSettingInt("admin.wand_tool");
+		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == ConfigUtility.getSettingInt("admin.wand_tool");
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class AdminUtility
 	 */
 	public static boolean playerDebugEnabled(OfflinePlayer player)
 	{
-		return player.getPlayer().hasPermission("demigods.admin") && DataUtility.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataUtility.getValueTemp(player.getName(), "temp_admin_debug").toString());
+		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString());
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class AdminUtility
 	 */
 	public static boolean consoleDebugEnabled()
 	{
-		return Demigods.config.getSettingBoolean("misc.console_debug");
+		return ConfigUtility.getSettingBoolean("misc.console_debug");
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class AdminUtility
 	public static void sendDebug(String message)
 	{
 		// Log to console
-		if(consoleDebugEnabled()) Demigods.message.info("[Debug] " + ChatColor.stripColor(message));
+		if(consoleDebugEnabled()) MessageUtility.info("[Debug] " + ChatColor.stripColor(message));
 
 		// Log to online, debugging admins
 		for(Player player : getOnlineAdmins())

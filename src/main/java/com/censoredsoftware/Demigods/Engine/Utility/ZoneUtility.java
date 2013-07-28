@@ -4,9 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Object.Structure;
+import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class ZoneUtility
@@ -21,13 +20,9 @@ public class ZoneUtility
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		if(Demigods.config.getSettingBoolean("zones.use_dynamic_pvp_zones"))
-		{
-			if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
-			return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
-		}
-		return !canWorldGuardFlagPVP(location);
+		if(ConfigUtility.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
+		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 	}
 
 	/**
@@ -67,12 +62,6 @@ public class ZoneUtility
 			if(region.getId().toLowerCase().contains("nopvp")) return false;
 		}
 		return true;
-	}
-
-	private static boolean canWorldGuardFlagPVP(Location location)
-	{
-		ApplicableRegionSet set = Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location);
-		return !set.allows(DefaultFlag.PVP);
 	}
 
 	/**

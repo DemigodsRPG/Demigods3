@@ -17,7 +17,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Object.*;
+import com.censoredsoftware.Demigods.Engine.Battle.Battle;
+import com.censoredsoftware.Demigods.Engine.Element.Ability;
+import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
+import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
 import com.google.common.collect.Sets;
 
 public class Storm extends Ability
