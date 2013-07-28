@@ -3,18 +3,14 @@ package com.censoredsoftware.demigods.episodes.demo.ability.passive;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.util.StopWatches;
 
 public class Swim extends Ability
 {
@@ -31,41 +27,24 @@ public class Swim extends Ability
 
 	public Swim(final String deity, String permission)
 	{
-		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), null, new BukkitRunnable()
 		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerMove(PlayerMoveEvent event)
+			@Override
+			public void run()
 			{
-				StopWatch stopWatch = StopWatches.start();
-
-				Player player = event.getPlayer();
-
-				if(!player.isSneaking())
+				for(Player player : Bukkit.getOnlinePlayers())
 				{
-					StopWatches.end(stopWatch, "Swim (not sneaking)");
-					return;
-					// TODO: This should KINDA solve this issue for swimming (only when actually not swimming), but there's still an issue somewhere in canUseDeity().
-				}
+					if(!player.isSneaking() || !Deity.Util.canUseDeitySilent(player, deity)) return;
 
-				if(!Deity.Util.canUseDeitySilent(player, deity))
-				{
-					StopWatches.end(stopWatch, "Swim (can't use)");
-					return;
-				}
-
-				if(Deity.Util.canUseDeitySilent(player, deity))
-				{
-					StopWatches.end(stopWatch, "Swim (can use)");
-				}
-
-				// PHELPS SWIMMING
-				if((player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
-				{
-					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
-					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
-					player.setVelocity(victor);
+					// PHELPS SWIMMING
+					if((player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
+					{
+						Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
+						Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
+						player.setVelocity(victor);
+					}
 				}
 			}
-		}, null);
+		});
 	}
 }
