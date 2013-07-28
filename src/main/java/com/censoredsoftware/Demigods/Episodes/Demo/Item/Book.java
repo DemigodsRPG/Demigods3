@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.engine.utility.ItemUtility;
+import com.censoredsoftware.demigods.engine.util.ItemUtility;
 
 public enum Book
 {

@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
 
 public class CommandListener implements Listener
 {

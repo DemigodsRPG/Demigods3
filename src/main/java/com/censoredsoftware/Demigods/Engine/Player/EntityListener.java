@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
 
 public class EntityListener implements Listener
 {

@@ -16,14 +16,14 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.misc.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
-import com.censoredsoftware.demigods.engine.utility.SpigotUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.SpigotUtility;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

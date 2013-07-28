@@ -31,8 +31,8 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
 
 public abstract class Ability
 {

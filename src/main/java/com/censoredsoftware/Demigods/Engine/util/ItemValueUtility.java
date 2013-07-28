@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.utility;
+package com.censoredsoftware.demigods.engine.util;
 
 import org.bukkit.inventory.ItemStack;
 

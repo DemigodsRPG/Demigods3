@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
 import com.google.common.collect.Lists;
 
 public class RainbowHorse extends Ability

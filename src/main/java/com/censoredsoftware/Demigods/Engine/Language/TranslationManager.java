@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
-import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 
 // TODO Replace with YAML.
 

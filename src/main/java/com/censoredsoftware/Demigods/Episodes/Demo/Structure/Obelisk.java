@@ -22,8 +22,8 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.AdminUtility;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.AdminUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Obelisk extends Structure

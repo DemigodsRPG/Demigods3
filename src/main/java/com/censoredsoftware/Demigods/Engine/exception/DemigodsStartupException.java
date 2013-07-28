@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.misc.exception;
+package com.censoredsoftware.demigods.engine.exception;
 
 public class DemigodsStartupException extends Exception
 {

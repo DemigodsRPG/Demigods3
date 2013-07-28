@@ -12,7 +12,7 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
 import com.google.common.collect.Sets;
 
 @Model

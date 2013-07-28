@@ -8,9 +8,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
-import com.censoredsoftware.demigods.engine.misc.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 /**

@@ -8,7 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.engine.utility.ItemUtility;
+import com.censoredsoftware.demigods.engine.util.ItemUtility;
 
 public enum Baetylus
 {

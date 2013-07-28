@@ -19,10 +19,10 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.AdminUtility;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
-import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.AdminUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 import com.google.common.collect.Lists;
 
 public class MainCommand extends DCommand

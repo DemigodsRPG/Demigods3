@@ -10,8 +10,8 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.AdminUtility;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.AdminUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
 
 public class ThreadManager
 {

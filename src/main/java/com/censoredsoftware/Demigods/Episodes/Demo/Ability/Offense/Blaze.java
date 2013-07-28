@@ -17,7 +17,7 @@ import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.ZoneUtility;
+import com.censoredsoftware.demigods.engine.util.ZoneUtility;
 
 public class Blaze extends Ability
 {

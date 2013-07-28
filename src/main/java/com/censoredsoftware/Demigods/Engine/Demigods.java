@@ -21,14 +21,14 @@ import com.censoredsoftware.demigods.engine.element.structure.FlagListener;
 import com.censoredsoftware.demigods.engine.element.structure.GriefListener;
 import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.element.structure.TributeListener;
+import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.misc.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.player.EntityListener;
 import com.censoredsoftware.demigods.engine.player.InventoryListener;
 import com.censoredsoftware.demigods.engine.player.PlayerListener;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods

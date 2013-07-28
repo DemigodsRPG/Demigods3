@@ -10,7 +10,7 @@ import org.bukkit.Material;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.NoSplosion;
 
 public class OmegaX17 extends Deity

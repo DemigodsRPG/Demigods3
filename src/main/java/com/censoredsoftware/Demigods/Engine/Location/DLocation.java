@@ -13,7 +13,7 @@ import org.bukkit.block.BlockFace;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model

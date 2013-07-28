@@ -24,9 +24,9 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
-import com.censoredsoftware.demigods.engine.utility.SpigotUtility;
-import com.censoredsoftware.demigods.engine.utility.ZoneUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.SpigotUtility;
+import com.censoredsoftware.demigods.engine.util.ZoneUtility;
 import com.google.common.collect.Sets;
 
 public class Discoball extends Ability

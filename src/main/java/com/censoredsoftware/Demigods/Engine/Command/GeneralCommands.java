@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
-import com.censoredsoftware.demigods.engine.utility.MiscUtility;
-import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.MiscUtility;
+import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 import com.google.common.collect.Lists;
 
 public class GeneralCommands extends DCommand

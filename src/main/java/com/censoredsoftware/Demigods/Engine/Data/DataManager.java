@@ -15,7 +15,7 @@ import redis.clients.johm.JOhm;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.ConfigUtility;
 import com.google.common.collect.Maps;
 
 public class DataManager

@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.MessageUtility;
 import com.censoredsoftware.demigods.episodes.demo.item.Book;
 
 public class Tutorial extends Task.List
