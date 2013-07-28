@@ -206,7 +206,7 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null /* && this.current.canUse() */) return this.current;
+		if(this.current != null && this.current.canUse()) return this.current;
 		return null;
 	}
 
@@ -235,11 +235,17 @@ public class DPlayer
 
 	public boolean canUseCurrent()
 	{
-		if(getCurrent() != null && getCurrent().canUse()) return true;
-		if(!getOfflinePlayer().isOnline() || getCurrent() == null) return false;
-		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
-		getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
-		return false;
+		if(getCurrent() == null || !getCurrent().canUse())
+		{
+			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
+			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
+			return false;
+		}
+		else
+		{
+			return getOfflinePlayer().isOnline();
+		}
+
 	}
 
 	public static class Util

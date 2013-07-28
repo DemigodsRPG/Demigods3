@@ -48,7 +48,7 @@ public class BlacklistManager
 					add("Disowned");
 
 					// Deities
-					for(Deity deity : Demigods.getLoadedDeities())
+					for(Deity deity : Demigods.getLoadedDeities().values())
 					{
 						add(deity.getInfo().getName());
 						add(deity.getInfo().getAlliance());

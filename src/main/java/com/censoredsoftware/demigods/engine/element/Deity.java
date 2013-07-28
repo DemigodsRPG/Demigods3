@@ -48,7 +48,7 @@ public abstract class Deity
 		return new HashSet<String>()
 		{
 			{
-				for(Deity deity : Demigods.getLoadedDeities())
+				for(Deity deity : Demigods.getLoadedDeities().values())
 				{
 					if(!contains(deity.getInfo().getAlliance())) add(deity.getInfo().getAlliance());
 				}
@@ -120,7 +120,7 @@ public abstract class Deity
 			return new HashSet<Deity>()
 			{
 				{
-					for(Deity deity : Demigods.getLoadedDeities())
+					for(Deity deity : Demigods.getLoadedDeities().values())
 					{
 						if(deity.getInfo().getAlliance().equalsIgnoreCase(alliance)) add(deity);
 					}
@@ -130,25 +130,20 @@ public abstract class Deity
 
 		public static Deity getDeity(String deity)
 		{
-			for(Deity loaded : Demigods.getLoadedDeities())
-			{
-				if(loaded.getInfo().getName().equalsIgnoreCase(deity)) return loaded;
-			}
-			return null;
+			return Demigods.getLoadedDeities().get(deity);
 		}
 
 		public static boolean canUseDeity(Player player, String deity)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			if(character == null) return false;
-			if(!character.isDeity(deity))
-			{
-				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
-				return false;
-			}
-			else if(!character.isImmortal())
+			if(character == null || !character.isImmortal())
 			{
 				player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
+				return false;
+			}
+			else if(!character.isDeity(deity))
+			{
+				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 				return false;
 			}
 			return true;

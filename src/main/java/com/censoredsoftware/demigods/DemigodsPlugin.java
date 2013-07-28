@@ -25,7 +25,7 @@ public class DemigodsPlugin extends CSPlugin
 		try
 		{
 			// Load the game engine, passing in the game data.
-			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values(), null);
+			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values(), null, EpisodeDemo.getListener());
 
 			// Print success!
             Demigods.message.info("Successfully enabled.");

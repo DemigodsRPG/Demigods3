@@ -1,5 +1,10 @@
 package com.censoredsoftware.demigods.episodes.demo;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Structure;
@@ -79,5 +84,17 @@ public class EpisodeDemo
 		{
 			return structure;
 		}
+	}
+
+	public static Listener getListener()
+	{
+		return new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGHEST)
+			private void onPlayerInteractEvent(PlayerInteractEvent event)
+			{
+				// TODO: Maybe.
+			}
+		};
 	}
 }
