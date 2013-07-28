@@ -111,7 +111,7 @@
         </dependency>
         <dependency>
             <groupId>com.censoredsoftware.minecraft</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>Core</artifactId>
             <version>${core.version}</version>
             <scope>compile</scope>
             <type>jar</type>
