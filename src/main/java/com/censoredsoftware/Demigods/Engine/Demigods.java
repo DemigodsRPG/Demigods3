@@ -15,7 +15,6 @@ import com.censoredsoftware.Demigods.Engine.Command.MainCommand;
 import com.censoredsoftware.Demigods.Engine.Conversation.DConversation;
 import com.censoredsoftware.Demigods.Engine.Exception.DemigodsStartupException;
 import com.censoredsoftware.Demigods.Engine.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Listener.*;
 import com.censoredsoftware.Demigods.Engine.Module.ConfigModule;
 import com.censoredsoftware.Demigods.Engine.Module.MessageModule;
 import com.censoredsoftware.Demigods.Engine.Object.*;
@@ -157,14 +156,14 @@ public class Demigods
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
 		// Engine
-		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
+		// instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
 
 		// Deities
 		for(Deity deity : getLoadedDeities())
@@ -172,7 +171,7 @@ public class Demigods
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
 			{
-				if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
+				// if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
 			}
 		}
 
@@ -182,7 +181,7 @@ public class Demigods
 			if(quest.getTasks() == null) continue;
 			for(Task task : quest)
 			{
-				if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
+				// if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
 			}
 		}
 
@@ -197,7 +196,7 @@ public class Demigods
 		for(DConversation conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
+			// instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
 
 	}

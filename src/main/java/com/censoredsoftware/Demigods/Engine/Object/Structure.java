@@ -581,7 +581,6 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z)
 		{
-			if(loadAll() == null || loadAll().isEmpty()) return Sets.newHashSet();
 			return Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z)));
 		}
 
