@@ -40,7 +40,12 @@ public class Swim extends Ability
 
 				Player player = event.getPlayer();
 
-				if(player.isSneaking()) return; // TODO: This should KINDA solve this issue for swimming (only when actually not swimming), but there's still an issue somewhere in canUseDeity().
+				if(!player.isSneaking())
+				{
+					StopWatches.end(stopWatch, "Swim (not sneaking)");
+					return;
+					// TODO: This should KINDA solve this issue for swimming (only when actually not swimming), but there's still an issue somewhere in canUseDeity().
+				}
 
 				if(!Deity.Util.canUseDeitySilent(player, deity))
 				{
