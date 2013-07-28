@@ -1,5 +1,5 @@
 name: Demigods
-main: com.censoredsoftware.demigods.DemigodsPlugin
+main: com.censoredsoftware.why.DemigodsPlugin
 version: ${project.version}
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard]
