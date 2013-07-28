@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Ability.Passive;
+package com.censoredsoftware.demigods.episodes.demo.ability.passive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
 
 public class NoSplosion extends Ability
 {

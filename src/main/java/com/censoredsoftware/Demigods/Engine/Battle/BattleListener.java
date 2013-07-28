@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Battle;
+package com.censoredsoftware.demigods.engine.battle;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 
 public class BattleListener implements Listener
 {

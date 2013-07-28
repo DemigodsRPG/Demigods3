@@ -1,19 +1,19 @@
-package com.censoredsoftware.Demigods.Episodes.Demo;
+package com.censoredsoftware.demigods.episodes.demo;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Element.Task;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Poseidon;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.God.Zeus;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian.DrD1sco;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Insignian.OmegaX17;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Oceanus;
-import com.censoredsoftware.Demigods.Episodes.Demo.Deity.Titan.Prometheus;
-import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Altar;
-import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Obelisk;
-import com.censoredsoftware.Demigods.Episodes.Demo.Structure.Shrine;
-import com.censoredsoftware.Demigods.Episodes.Demo.Task.Tutorial;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Task;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.episodes.demo.deity.god.Poseidon;
+import com.censoredsoftware.demigods.episodes.demo.deity.god.Zeus;
+import com.censoredsoftware.demigods.episodes.demo.deity.insignian.DrD1sco;
+import com.censoredsoftware.demigods.episodes.demo.deity.insignian.OmegaX17;
+import com.censoredsoftware.demigods.episodes.demo.deity.titan.Oceanus;
+import com.censoredsoftware.demigods.episodes.demo.deity.titan.Prometheus;
+import com.censoredsoftware.demigods.episodes.demo.structure.Altar;
+import com.censoredsoftware.demigods.episodes.demo.structure.Obelisk;
+import com.censoredsoftware.demigods.episodes.demo.structure.Shrine;
+import com.censoredsoftware.demigods.episodes.demo.task.Tutorial;
 
 public class EpisodeDemo
 {

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Command;
+package com.censoredsoftware.demigods.engine.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +12,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.AdminUtility;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
 public class MainCommand extends DCommand
@@ -120,15 +120,15 @@ public class MainCommand extends DCommand
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
 				MessageUtility.tagged(sender, "About the Plugin");
-				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "Demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
+				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
 				sender.sendMessage(" ");
-				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
+				sender.sendMessage(ChatColor.GREEN + " demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a mere player to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
 				sender.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com/");
-				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/CensoredSoftware/Minecraft-Demigods");
+				sender.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "https://github.com/CensoredSoftware/Minecraft-demigods");
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
@@ -158,12 +158,12 @@ public class MainCommand extends DCommand
 			else if(option1.equalsIgnoreCase("stats"))
 			{
 				MessageUtility.tagged(sender, "Stats");
-				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
+				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for demigods.");
 			}
 			else if(option1.equalsIgnoreCase("rankings"))
 			{
 				MessageUtility.tagged(sender, "Rankings");
-				sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
+				sender.sendMessage(ChatColor.GRAY + " This is some ranking info about demigods.");
 			}
 		}
 

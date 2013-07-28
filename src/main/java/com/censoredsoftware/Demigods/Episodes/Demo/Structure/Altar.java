@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Structure;
+package com.censoredsoftware.demigods.episodes.demo.structure;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,15 +19,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Location.DLocation;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.utility.AdminUtility;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Altar extends Structure
 {

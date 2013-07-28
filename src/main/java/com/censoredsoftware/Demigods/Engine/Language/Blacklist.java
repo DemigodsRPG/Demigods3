@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Language;
+package com.censoredsoftware.demigods.engine.language;
 
 // TODO Replace with YAML.
 

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Command;
+package com.censoredsoftware.demigods.engine.command;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -6,9 +6,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 
 public class CommandListener implements Listener
 {

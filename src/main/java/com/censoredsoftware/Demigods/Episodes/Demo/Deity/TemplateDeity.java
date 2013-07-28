@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Deity;
+package com.censoredsoftware.demigods.episodes.demo.deity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,10 +8,10 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.Ability.Template;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
+import com.censoredsoftware.demigods.episodes.demo.ability.Template;
 
 public class TemplateDeity extends Deity
 {
@@ -27,7 +27,7 @@ public class TemplateDeity extends Deity
 	{
 		{
 			add(" ");
-			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
+			add(ChatColor.AQUA + " demigods > " + ChatColor.RESET + color + name);
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)

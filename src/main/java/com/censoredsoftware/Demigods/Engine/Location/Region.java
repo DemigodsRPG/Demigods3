@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Location;
+package com.censoredsoftware.demigods.engine.location;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

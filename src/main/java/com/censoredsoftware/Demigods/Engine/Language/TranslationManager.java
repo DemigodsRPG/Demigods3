@@ -1,11 +1,11 @@
-package com.censoredsoftware.Demigods.Engine.Language;
+package com.censoredsoftware.demigods.engine.language;
 
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
 
 // TODO Replace with YAML.
 
@@ -80,11 +80,11 @@ public class TranslationManager
 				case ERROR_BIND_WEAPON_REQUIRED:
 					return "A {weapon} is required to bind {ability}!";
 				case DATA_RESET_KICK:
-					return "All Demigods data has been reset, you may now rejoin!";
+					return "All demigods data has been reset, you may now rejoin!";
 				case ADMIN_CLEAR_DATA_STARTING:
-					return "Clearing all Demigods data...";
+					return "Clearing all demigods data...";
 				case ADMIN_CLEAR_DATA_FINISHED:
-					return "All Demigods data cleared successfully!";
+					return "All demigods data cleared successfully!";
 				case SUCCESS_ABILITY_BOUND:
 					return "{ability} has been bound to slot {slot}!";
 				case SUCCESS_ABILITY_UNBOUND:

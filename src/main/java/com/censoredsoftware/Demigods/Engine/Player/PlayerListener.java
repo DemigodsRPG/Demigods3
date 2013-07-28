@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Player;
+package com.censoredsoftware.demigods.engine.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
 
 public class PlayerListener implements Listener
 {
@@ -42,7 +42,7 @@ public class PlayerListener implements Listener
 
 		if(ConfigUtility.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "This server is running demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 	}

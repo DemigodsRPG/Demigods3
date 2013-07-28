@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Ability.Ultimate;
+package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -14,12 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class Firestorm extends Ability
 {

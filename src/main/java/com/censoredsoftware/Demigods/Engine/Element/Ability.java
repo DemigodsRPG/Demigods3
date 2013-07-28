@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Element;
+package com.censoredsoftware.demigods.engine.element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +24,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DItemStack;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Player.Pet;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DItemStack;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
 
 public abstract class Ability
 {

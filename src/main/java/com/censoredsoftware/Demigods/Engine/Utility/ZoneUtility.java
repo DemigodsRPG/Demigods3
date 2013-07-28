@@ -1,10 +1,10 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.demigods.engine.utility;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 

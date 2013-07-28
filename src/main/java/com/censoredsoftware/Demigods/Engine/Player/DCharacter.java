@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Player;
+package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,16 +13,16 @@ import org.bukkit.inventory.PlayerInventory;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Location.DLocation;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 

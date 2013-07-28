@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Player;
+package com.censoredsoftware.demigods.engine.player;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;

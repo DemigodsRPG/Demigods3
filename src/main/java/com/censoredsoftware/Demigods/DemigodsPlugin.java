@@ -1,20 +1,20 @@
-package com.censoredsoftware.Demigods;
+package com.censoredsoftware.demigods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Data.ThreadManager;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Misc.Exception.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.EpisodeDemo;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.misc.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 /**
- * Class for all plugins of Demigods.
+ * Class for all plugins of demigods.
  */
 public class DemigodsPlugin extends JavaPlugin
 {

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Ability.Passive;
+package com.censoredsoftware.demigods.episodes.demo.ability.passive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Player.Pet;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
 import com.google.common.collect.Lists;
 
 public class RainbowHorse extends Ability

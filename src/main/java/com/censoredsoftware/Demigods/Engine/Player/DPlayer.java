@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Player;
+package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,14 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Conversation.Prayer;
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Location.Region;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.Region;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 import com.google.common.collect.Sets;
 
 @Model

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.demigods.engine.utility;
 
 public class UnicodeUtility
 {

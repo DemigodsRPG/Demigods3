@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine;
+package com.censoredsoftware.demigods.engine;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,27 +8,27 @@ import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Battle.BattleListener;
-import com.censoredsoftware.Demigods.Engine.Command.*;
-import com.censoredsoftware.Demigods.Engine.Conversation.DConversation;
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
-import com.censoredsoftware.Demigods.Engine.Data.ThreadManager;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.FlagListener;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.GriefListener;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.TributeListener;
-import com.censoredsoftware.Demigods.Engine.Element.Task;
-import com.censoredsoftware.Demigods.Engine.Language.Translation;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Misc.Exception.DemigodsStartupException;
-import com.censoredsoftware.Demigods.Engine.Player.EntityListener;
-import com.censoredsoftware.Demigods.Engine.Player.InventoryListener;
-import com.censoredsoftware.Demigods.Engine.Player.PlayerListener;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.battle.BattleListener;
+import com.censoredsoftware.demigods.engine.command.*;
+import com.censoredsoftware.demigods.engine.conversation.DConversation;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Task;
+import com.censoredsoftware.demigods.engine.element.structure.FlagListener;
+import com.censoredsoftware.demigods.engine.element.structure.GriefListener;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.structure.TributeListener;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.misc.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.engine.player.EntityListener;
+import com.censoredsoftware.demigods.engine.player.InventoryListener;
+import com.censoredsoftware.demigods.engine.player.PlayerListener;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -46,7 +46,7 @@ public class Demigods
 	protected static Set<Structure> structures;
 	protected static Set<DConversation> conversasions;
 
-	// The Engine Default Text
+	// The engine Default Text
 	public static Translation text;
 
 	public interface ListedDeity
@@ -117,8 +117,8 @@ public class Demigods
 		new DataManager();
 		if(!DataManager.isConnected())
 		{
-			MessageUtility.severe("Demigods was unable to connect to a Redis server.");
-			MessageUtility.severe("A Redis server is required for Demigods to run.");
+			MessageUtility.severe("demigods was unable to connect to a Redis server.");
+			MessageUtility.severe("A Redis server is required for demigods to run.");
 			MessageUtility.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
@@ -159,7 +159,7 @@ public class Demigods
 
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
-		// Engine
+		// engine
 		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);

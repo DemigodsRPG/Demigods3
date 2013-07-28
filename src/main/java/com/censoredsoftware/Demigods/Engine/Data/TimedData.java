@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Data;
+package com.censoredsoftware.demigods.engine.data;
 
 import java.util.List;
 import java.util.Set;

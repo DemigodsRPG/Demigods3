@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Element.Structure;
+package com.censoredsoftware.demigods.engine.element.structure;
 
 // TODO Fix for lag.
 
@@ -19,9 +19,9 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Location.DLocation;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class GriefListener implements Listener
 {

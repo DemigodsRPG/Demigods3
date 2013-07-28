@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Misc.Exception;
+package com.censoredsoftware.demigods.engine.misc.exception;
 
 public class SpigotNotFoundException extends IllegalArgumentException
 {

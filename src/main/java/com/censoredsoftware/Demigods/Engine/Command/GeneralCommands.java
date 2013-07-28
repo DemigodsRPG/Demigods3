@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Command;
+package com.censoredsoftware.demigods.engine.command;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.utility.UnicodeUtility;
 import com.google.common.collect.Lists;
 
 public class GeneralCommands extends DCommand

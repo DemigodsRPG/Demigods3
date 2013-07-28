@@ -1,11 +1,11 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Item;
+package com.censoredsoftware.demigods.episodes.demo.item;
 
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
+import com.censoredsoftware.demigods.engine.utility.ItemUtility;
 
 public enum Book
 {
@@ -15,7 +15,7 @@ public enum Book
 	FIRST_JOIN(ItemUtility.createBook(ChatColor.DARK_AQUA + "Instructions", "Server", new ArrayList<String>(2)
 	{
 		{
-			add("Welcome, adventurer, to the world of Demigods!");
+			add("Welcome, adventurer, to the world of demigods!");
 			add("Allan please add details");
 		}
 	}, null));

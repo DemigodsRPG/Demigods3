@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Item;
+package com.censoredsoftware.demigods.episodes.demo.item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.Demigods.Engine.Utility.ItemUtility;
+import com.censoredsoftware.demigods.engine.utility.ItemUtility;
 
 public enum Baetylus
 {

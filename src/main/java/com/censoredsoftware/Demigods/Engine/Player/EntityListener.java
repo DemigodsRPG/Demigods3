@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Player;
+package com.censoredsoftware.demigods.engine.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,10 +11,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
 
 public class EntityListener implements Listener
 {

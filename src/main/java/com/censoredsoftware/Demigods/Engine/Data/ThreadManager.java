@@ -1,29 +1,29 @@
-package com.censoredsoftware.Demigods.Engine.Data;
+package com.censoredsoftware.demigods.engine.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.DemigodsPlugin;
-import com.censoredsoftware.Demigods.Engine.Battle.Battle;
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.AdminUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
+import com.censoredsoftware.demigods.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.AdminUtility;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
 
 public class ThreadManager
 {
 	public static void startThreads(DemigodsPlugin instance)
 	{
-		// Start sync Demigods runnable
+		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main Demigods SYNC runnable enabled...");
+		AdminUtility.sendDebug("Main demigods SYNC runnable enabled...");
 
-		// Start sync Demigods runnable
+		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getAsyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main Demigods ASYNC runnable enabled...");
+		AdminUtility.sendDebug("Main demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
 		if(Demigods.runningSpigot())
@@ -50,7 +50,7 @@ public class ThreadManager
 	private static class Util
 	{
 		/**
-		 * Returns the main sync Demigods runnable. Methods requiring the Bukkit API and a constant
+		 * Returns the main sync demigods runnable. Methods requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.
@@ -72,7 +72,7 @@ public class ThreadManager
 		}
 
 		/**
-		 * Returns the main async Demigods runnable. Methods NOT requiring the Bukkit API and a constant
+		 * Returns the main async demigods runnable. Methods NOT requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.

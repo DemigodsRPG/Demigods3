@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Location;
+package com.censoredsoftware.demigods.engine.location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.bukkit.block.BlockFace;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model

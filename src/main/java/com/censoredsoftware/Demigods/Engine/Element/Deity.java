@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Element;
+package com.censoredsoftware.demigods.engine.element;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,9 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public abstract class Deity
 {

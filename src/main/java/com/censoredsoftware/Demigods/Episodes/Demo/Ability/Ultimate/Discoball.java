@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Ability.Ultimate;
+package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +17,16 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Element.Ability;
-import com.censoredsoftware.Demigods.Engine.Element.Deity;
-import com.censoredsoftware.Demigods.Engine.Element.Structure.Structure;
-import com.censoredsoftware.Demigods.Engine.Location.DLocation;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.MiscUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.SpigotUtility;
-import com.censoredsoftware.Demigods.Engine.Utility.ZoneUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.MiscUtility;
+import com.censoredsoftware.demigods.engine.utility.SpigotUtility;
+import com.censoredsoftware.demigods.engine.utility.ZoneUtility;
 import com.google.common.collect.Sets;
 
 public class Discoball extends Ability

@@ -1,10 +1,10 @@
-package com.censoredsoftware.Demigods.Engine.Conversation;
+package com.censoredsoftware.demigods.engine.conversation;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.event.Listener;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 
 public interface DConversation
 {

@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.demigods.engine.utility;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Data.DataManager;
+import com.censoredsoftware.demigods.engine.data.DataManager;
 
 public class AdminUtility
 {
@@ -34,7 +34,7 @@ public class AdminUtility
 	}
 
 	/**
-	 * Returns true if <code>player</code>'s Demigods debugging is enabled.
+	 * Returns true if <code>player</code>'s demigods debugging is enabled.
 	 * 
 	 * @param player the player to check.
 	 * @return boolean

@@ -1,10 +1,10 @@
-package com.censoredsoftware.Demigods.Engine.Utility;
+package com.censoredsoftware.demigods.engine.utility;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Misc.Exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.misc.exception.SpigotNotFoundException;
 
 public class SpigotUtility
 {

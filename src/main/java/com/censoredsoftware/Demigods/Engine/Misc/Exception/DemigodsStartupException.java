@@ -1,9 +1,9 @@
-package com.censoredsoftware.Demigods.Engine.Misc.Exception;
+package com.censoredsoftware.demigods.engine.misc.exception;
 
 public class DemigodsStartupException extends Exception
 {
 	public DemigodsStartupException()
 	{
-		super("Demigods failed to initialize.");
+		super("demigods failed to initialize.");
 	}
 }

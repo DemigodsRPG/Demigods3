@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Command;
+package com.censoredsoftware.demigods.engine.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public abstract class DCommand implements TabExecutor
 {

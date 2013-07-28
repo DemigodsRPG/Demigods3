@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Episodes.Demo.Task;
+package com.censoredsoftware.demigods.episodes.demo.task;
 
 import java.util.ArrayList;
 
@@ -9,11 +9,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.censoredsoftware.Demigods.Engine.Element.Task;
-import com.censoredsoftware.Demigods.Engine.Player.DCharacter;
-import com.censoredsoftware.Demigods.Engine.Player.DPlayer;
-import com.censoredsoftware.Demigods.Engine.Utility.MessageUtility;
-import com.censoredsoftware.Demigods.Episodes.Demo.Item.Book;
+import com.censoredsoftware.demigods.engine.element.Task;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.utility.MessageUtility;
+import com.censoredsoftware.demigods.episodes.demo.item.Book;
 
 public class Tutorial extends Task.List
 {
@@ -55,7 +55,7 @@ public class Tutorial extends Task.List
 
 class TutorialTask extends Task
 {
-	private static String name = "Welcome to Demigods!";
+	private static String name = "Welcome to demigods!";
 	private static int order = 0;
 	private static double reward = 50.0, penalty = 0;
 	private static Listener listener = new Listener()
@@ -68,7 +68,7 @@ class TutorialTask extends Task
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
-			MessageUtility.tagged(player, "Welcome to Demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
+			MessageUtility.tagged(player, "Welcome to demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
 
 			player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
 

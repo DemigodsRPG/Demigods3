@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Data;
+package com.censoredsoftware.demigods.engine.data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +13,9 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
-import com.censoredsoftware.Demigods.Engine.Demigods;
-import com.censoredsoftware.Demigods.Engine.Language.TranslationManager;
-import com.censoredsoftware.Demigods.Engine.Utility.ConfigUtility;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.utility.ConfigUtility;
 import com.google.common.collect.Maps;
 
 public class DataManager

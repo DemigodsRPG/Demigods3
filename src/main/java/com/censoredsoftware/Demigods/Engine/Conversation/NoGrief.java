@@ -1,4 +1,4 @@
-package com.censoredsoftware.Demigods.Engine.Conversation;
+package com.censoredsoftware.demigods.engine.conversation;
 
 import org.bukkit.event.Listener;
 
