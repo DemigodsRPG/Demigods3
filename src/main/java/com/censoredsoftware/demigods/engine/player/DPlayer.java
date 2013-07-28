@@ -400,11 +400,13 @@ public class DPlayer
 			{
 				// Toggle on
 				togglePrayingSilent(player, true);
+                player.setSneaking(true);
 			}
 			else
 			{
 				// Toggle off
 				togglePrayingSilent(player, false);
+                player.setSneaking(false);
 
 				// Message them
 				clearChat(player);
