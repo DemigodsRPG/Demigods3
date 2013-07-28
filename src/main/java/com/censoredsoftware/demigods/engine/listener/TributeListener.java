@@ -24,10 +24,6 @@ import com.censoredsoftware.demigods.engine.util.ItemValues;
 
 public class TributeListener implements Listener
 {
-	// TODO This seems way to complicated for something as simple as tributing...
-	// TODO Maybe we're just doing too much in one method-- I'm not sure...
-	// TODO: It's not really as complicated as it looks. The main thing taking up space is the messaging. It's varied highly depending on how pleased the deity is, etc.
-
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onTributeInteract(PlayerInteractEvent event)
 	{
