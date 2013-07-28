@@ -2,10 +2,9 @@ package com.censoredsoftware.demigods.engine.language;
 
 import java.util.ArrayList;
 
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.bukkit.ChatColor;
-
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 
 // TODO Replace with YAML.
 
@@ -104,7 +103,7 @@ public class TranslationManager
 				case ERROR_CHAR_EXISTS:
 					return "A character with that name already exists.";
 				case ERROR_MAX_CAPS:
-					return "Please use no more than " + ConfigUtility.getSettingInt("character.max_caps_in_name") + " capital letters.";
+					return "Please use no more than " + Configs.getSettingInt("character.max_caps_in_name") + " capital letters.";
 				case CREATE_OBELISK:
 					return "You created an Obelisk!";
 				case PROTECTED_BLOCK:
@@ -181,49 +180,49 @@ public class TranslationManager
 			switch(get)
 			{
 				case PROTECTED_BLOCK:
-					return UnicodeUtility.heavyHeart() + " " + "Block is protected by God!";
+					return Unicodes.heavyHeart() + " " + "Block is protected by God!";
 				case ADMIN_WAND_GENERATE_ALTAR:
-					return UnicodeUtility.heavyHeart() + " " + "Generate a new Altar...";
+					return Unicodes.heavyHeart() + " " + "Generate a new Altar...";
 				case ADMIN_WAND_GENERATE_ALTAR_COMPLETE:
-					return UnicodeUtility.heavyHeart() + " " + "The creation of the Altar!";
+					return Unicodes.heavyHeart() + " " + "The creation of the Altar!";
 				case ADMIN_WAND_REMOVE_ALTAR:
-					return UnicodeUtility.heavyHeart() + " " + "Right-click this Altar to remove it again.";
+					return Unicodes.heavyHeart() + " " + "Right-click this Altar to remove it again.";
 				case ADMIN_WAND_REMOVE_ALTAR_COMPLETE:
-					return UnicodeUtility.heavyHeart() + " " + "Removal of the Altar!";
+					return Unicodes.heavyHeart() + " " + "Removal of the Altar!";
 				case CREATE_SHRINE_1:
-					return UnicodeUtility.heavyHeart() + " " + "{alliance} are satisfied....";
+					return Unicodes.heavyHeart() + " " + "{alliance} are satisfied....";
 				case CREATE_SHRINE_2:
-					return UnicodeUtility.heavyHeart() + " " + "Create a shrine of {deity}!";
+					return Unicodes.heavyHeart() + " " + "Create a shrine of {deity}!";
 				case ADMIN_WAND_REMOVE_SHRINE:
-					return UnicodeUtility.heavyHeart() + " " + "Right-click this Shrine to remove it again.";
+					return Unicodes.heavyHeart() + " " + "Right-click this Shrine to remove it again.";
 				case ADMIN_WAND_REMOVE_SHRINE_COMPLETE:
-					return UnicodeUtility.heavyHeart() + " " + "Removal of the Shrine!";
+					return Unicodes.heavyHeart() + " " + "Removal of the Shrine!";
 				case NO_WARP_ALTAR:
-					return UnicodeUtility.heavyHeart() + " " + "Set warp on this Altar.";
+					return Unicodes.heavyHeart() + " " + "Set warp on this Altar.";
 				case CHARACTER_CREATE_COMPLETE:
-					return UnicodeUtility.heavyHeart() + " " + "You have been accepted to the genealogy of {deity}!";
+					return Unicodes.heavyHeart() + " " + "You have been accepted to the genealogy of {deity}!";
 				case KILLSTREAK:
-					return UnicodeUtility.heavyHeart() + " " + "{character} killstreak {kills} kills.";
+					return Unicodes.heavyHeart() + " " + "{character} killstreak {kills} kills.";
 				case MORTAL_SLAIN_1:
-					return ChatColor.YELLOW + UnicodeUtility.heavyHeart() + " " + "Man" + ChatColor.GRAY + " killed by " + ChatColor.YELLOW + "another man" + ChatColor.GRAY + ".";
+					return ChatColor.YELLOW + Unicodes.heavyHeart() + " " + "Man" + ChatColor.GRAY + " killed by " + ChatColor.YELLOW + "another man" + ChatColor.GRAY + ".";
 				case MORTAL_SLAIN_2:
-					return ChatColor.YELLOW + UnicodeUtility.heavyHeart() + " " + "The man" + ChatColor.GRAY + " killed by the {attackerAlliance} allies {attacker}.";
+					return ChatColor.YELLOW + Unicodes.heavyHeart() + " " + "The man" + ChatColor.GRAY + " killed by the {attackerAlliance} allies {attacker}.";
 				case DEMI_SLAIN_1:
-					return UnicodeUtility.heavyHeart() + " " + "{killed} {killedAlliance} is killed by " + ChatColor.YELLOW + "humans" + ChatColor.GRAY + ".";
+					return Unicodes.heavyHeart() + " " + "{killed} {killedAlliance} is killed by " + ChatColor.YELLOW + "humans" + ChatColor.GRAY + ".";
 				case DEMI_SLAIN_2:
-					return UnicodeUtility.heavyHeart() + " " + "{killed} {attacker} {killedAlliance} {attackerAlliance} league-allies were killed.";
+					return Unicodes.heavyHeart() + " " + "{killed} {attacker} {killedAlliance} {attackerAlliance} league-allies were killed.";
 				case DEMI_BETRAY:
-					return UnicodeUtility.heavyHeart() + " " + "The vibrant performance by {attacker}, {killed} {alliance} ally.";
+					return Unicodes.heavyHeart() + " " + "The vibrant performance by {attacker}, {killed} {alliance} ally.";
 				case MORTAL_BETRAY:
-					return UnicodeUtility.heavyHeart() + " " + "Value is no longer a killer.";
+					return Unicodes.heavyHeart() + " " + "Value is no longer a killer.";
 				case COMMAND_BLOCKED_BATTLE:
-					return UnicodeUtility.heavyHeart() + " " + "Command is blocked during the battle.";
+					return Unicodes.heavyHeart() + " " + "Command is blocked during the battle.";
 				case NO_PVP_ZONE:
-					return UnicodeUtility.heavyHeart() + " " + "No zone-PvP.";
+					return Unicodes.heavyHeart() + " " + "No zone-PvP.";
 				case WEAKER_THAN_YOU:
-					return UnicodeUtility.heavyHeart() + " " + "Also should die too weak on your hands.";
+					return Unicodes.heavyHeart() + " " + "Also should die too weak on your hands.";
 				case YOU_FAILED_DEITY:
-					return UnicodeUtility.heavyHeart() + " " + "{deity} has failed!";
+					return Unicodes.heavyHeart() + " " + "{deity} has failed!";
 			}
 			return new English().getText(text);
 		}

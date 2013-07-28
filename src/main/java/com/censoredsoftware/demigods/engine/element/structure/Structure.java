@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,8 +19,6 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
-import com.censoredsoftware.demigods.engine.util.ZoneUtility;
 import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
@@ -251,7 +251,7 @@ public abstract class Structure
 						for(int i = 0; i < block.getOdds(); i++)
 							add(block);
 				}
-			}.get(MiscUtility.generateIntRange(0, 9));
+			}.get(Generates.generateIntRange(0, 9));
 		}
 
 		/**
@@ -645,7 +645,7 @@ public abstract class Structure
 		public static boolean isTrespassingInNoGriefingZone(Player player)
 		{
 			Location location = player.getLocation();
-			if(ZoneUtility.zoneNoBuild(player, player.getLocation())) return true;
+			if(Zones.zoneNoBuild(player, player.getLocation())) return true;
 			if(isInRadiusWithFlag(location, Flag.NO_GRIEFING, true))
 			{
 				Save save = getInRadiusWithFlag(location, Flag.NO_GRIEFING, true);

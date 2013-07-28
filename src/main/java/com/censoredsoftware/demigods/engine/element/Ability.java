@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Generates;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,8 +33,6 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
 
 public abstract class Ability
 {
@@ -286,7 +286,7 @@ public abstract class Ability
 		public static Bind createBind(String ability, int slot)
 		{
 			Bind bind = new Bind();
-			bind.setIdentifier(MiscUtility.generateString(6));
+			bind.setIdentifier(Generates.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
 			save(bind);
@@ -296,7 +296,7 @@ public abstract class Ability
 		public static Bind createBind(String ability, int slot, ItemStack item)
 		{
 			Bind bind = new Bind();
-			bind.setIdentifier(MiscUtility.generateString(6));
+			bind.setIdentifier(Generates.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
 			bind.setItem(item);
@@ -308,7 +308,7 @@ public abstract class Ability
 		{
 			Devotion devotion = new Devotion();
 			devotion.setType(type);
-			devotion.setLevel(ConfigUtility.getSettingInt("character.defaults." + type.name().toLowerCase()));
+			devotion.setLevel(Configs.getSettingInt("character.defaults." + type.name().toLowerCase()));
 			save(devotion);
 			return devotion;
 		}
@@ -442,7 +442,7 @@ public abstract class Ability
 		 */
 		public static LivingEntity autoTarget(Player player)
 		{
-			int targetRangeCap = ConfigUtility.getSettingInt("caps.target_range");
+			int targetRangeCap = Configs.getSettingInt("caps.target_range");
 			Location targetLoc = player.getTargetBlock(null, targetRangeCap).getLocation();
 
 			for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
@@ -470,7 +470,7 @@ public abstract class Ability
 
 		public static Location directTarget(Player player)
 		{
-			return player.getTargetBlock(null, ConfigUtility.getSettingInt("caps.target_range")).getLocation();
+			return player.getTargetBlock(null, Configs.getSettingInt("caps.target_range")).getLocation();
 		}
 
 		/**

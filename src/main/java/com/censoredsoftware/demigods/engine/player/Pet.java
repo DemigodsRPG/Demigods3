@@ -12,7 +12,7 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.collect.Sets;
 
 @Model
@@ -79,7 +79,7 @@ public class Pet implements Battle.Participant
 
 	public LivingEntity getNearbyLivingEntity(Player player)
 	{
-		int searchRadius = ConfigUtility.getSettingInt("caps.target_range");
+		int searchRadius = Configs.getSettingInt("caps.target_range");
 		for(Entity pet : player.getNearbyEntities(searchRadius, searchRadius, searchRadius))
 		{
 			if(!(pet instanceof LivingEntity) || !(pet instanceof Tameable)) continue;

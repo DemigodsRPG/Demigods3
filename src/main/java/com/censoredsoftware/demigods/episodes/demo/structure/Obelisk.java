@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Admins;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,8 +23,7 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.AdminUtility;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Obelisk extends Structure
@@ -178,7 +178,7 @@ public class Obelisk extends Structure
 	@Override
 	public int getRadius()
 	{
-		return ConfigUtility.getSettingInt("zones.obelisk_radius");
+		return Configs.getSettingInt("zones.obelisk_radius");
 	}
 
 	@Override
@@ -241,7 +241,7 @@ public class Obelisk extends Structure
 	{
 		for(Save structureSave : Util.loadAll())
 		{
-			if(structureSave.getStructure().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (ConfigUtility.getSettingInt("altar_radius") + ConfigUtility.getSettingInt("obelisk_radius") + 6)) return true;
+			if(structureSave.getStructure().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Configs.getSettingInt("altar_radius") + Configs.getSettingInt("obelisk_radius") + 6)) return true;
 		}
 		return false;
 	}
@@ -274,7 +274,7 @@ class ObeliskListener implements Listener
 				try
 				{
 					// Obelisk created!
-					AdminUtility.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+					Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 					Structure.Save save = EpisodeDemo.Structures.OBELISK.getStructure().createNew(location, true);
 					save.setOwner(character);
 					location.getWorld().strikeLightningEffect(location);
@@ -289,7 +289,7 @@ class ObeliskListener implements Listener
 			}
 		}
 
-		if(AdminUtility.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk", true))
+		if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk", true))
 		{
 			event.setCancelled(true);
 
@@ -302,7 +302,7 @@ class ObeliskListener implements Listener
 				save.remove();
 				DataManager.removeTimed(player.getName(), "destroy_obelisk");
 
-				// AdminUtility.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+				// Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
 				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
 			}

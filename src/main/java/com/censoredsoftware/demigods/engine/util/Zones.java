@@ -8,7 +8,7 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-public class ZoneUtility
+public class Zones
 {
 	// TODO Optimize this stuff.
 
@@ -20,7 +20,7 @@ public class ZoneUtility
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		if(ConfigUtility.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
 		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 	}

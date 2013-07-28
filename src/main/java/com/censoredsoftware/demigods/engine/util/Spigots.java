@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
 
-public class SpigotUtility
+public class Spigots
 {
 	public static void playParticle(Location location, Effect effect, int offsetX, int offsetY, int offsetZ, float speed, int particles, int viewRadius)
 	{

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Generates;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.block.BlockFace;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
 import com.google.common.collect.Sets;
 
 @Model
@@ -165,8 +165,8 @@ public class DLocation
 		public static Location randomLocation(Location reference, int min, int max)
 		{
 			Location location = reference.clone();
-			double randX = MiscUtility.generateIntRange(min, max);
-			double randZ = MiscUtility.generateIntRange(min, max);
+			double randX = Generates.generateIntRange(min, max);
+			double randZ = Generates.generateIntRange(min, max);
 			location.add(randX, 0, randZ);
 			double highestY = location.clone().getWorld().getHighestBlockYAt(location);
 			location.setY(highestY);
@@ -181,7 +181,7 @@ public class DLocation
 		 */
 		public static Location randomChunkLocation(Chunk chunk)
 		{
-			Location reference = chunk.getBlock(MiscUtility.generateIntRange(1, 16), 64, MiscUtility.generateIntRange(1, 16)).getLocation();
+			Location reference = chunk.getBlock(Generates.generateIntRange(1, 16), 64, Generates.generateIntRange(1, 16)).getLocation();
 			double locX = reference.getX();
 			double locY = chunk.getWorld().getHighestBlockYAt(reference);
 			double locZ = reference.getZ();

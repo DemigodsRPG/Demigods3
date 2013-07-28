@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.element.structure;
 
+import com.censoredsoftware.demigods.engine.util.ItemValues;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,8 +19,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.ItemValueUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 
 public class TributeListener implements Listener
 {
@@ -88,7 +88,7 @@ public class TributeListener implements Listener
 		{
 			if(item != null)
 			{
-				tributeValue += ItemValueUtility.getTributeValue(item);
+				tributeValue += ItemValues.getTributeValue(item);
 				items += item.getAmount();
 			}
 		}
@@ -97,7 +97,7 @@ public class TributeListener implements Listener
 		if(items == 0) return;
 
 		// Handle the multiplier
-		tributeValue *= ConfigUtility.getSettingDouble("multipliers.favor");
+		tributeValue *= Configs.getSettingDouble("multipliers.favor");
 
 		// Get the current favor for comparison
 		int favorBefore = character.getMeta().getFavor();
@@ -113,7 +113,7 @@ public class TributeListener implements Listener
 			DCharacter shrineOwner = save.getOwner();
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
-			if(character.getMeta().getMaxFavor() >= ConfigUtility.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
+			if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
 			{
 				// Give them some of the blessings
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
@@ -143,7 +143,7 @@ public class TributeListener implements Listener
 		}
 
 		// Handle messaging and Shrine owner updating
-		if(character.getMeta().getMaxFavor() >= ConfigUtility.getSettingInt("caps.favor"))
+		if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor"))
 		{
 			// They have already met the max favor cap
 			player.sendMessage(ChatColor.YELLOW + character.getDeity().getInfo().getName() + " is pleased!");

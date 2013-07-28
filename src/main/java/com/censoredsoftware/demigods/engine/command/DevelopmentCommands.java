@@ -15,7 +15,6 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
 import com.google.common.collect.Lists;
 
 public class DevelopmentCommands extends DCommand
@@ -100,7 +99,7 @@ public class DevelopmentCommands extends DCommand
 		try
 		{
 			Sound sound = Sound.valueOf(args[0].toUpperCase());
-			if(!MiscUtility.isFloat(args[1].toUpperCase()))
+			if(!isFloat(args[1].toUpperCase()))
 			{
 				player.sendMessage(ChatColor.RED + "Set a pitch, ie: 1F");
 				return false;
@@ -117,6 +116,25 @@ public class DevelopmentCommands extends DCommand
 		player.sendMessage(ChatColor.RED + "Wrong arguments, please try again.");
 		return false;
 	}
+
+    /**
+     * Check to see if an input string is a float.
+     *
+     * @param string The input string.
+     * @return True if the string is a float.
+     */
+    private static boolean isFloat(String string)
+    {
+        try
+        {
+            Float.parseFloat(string);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
 	private static boolean removeChar(CommandSender sender, String[] args)
 	{

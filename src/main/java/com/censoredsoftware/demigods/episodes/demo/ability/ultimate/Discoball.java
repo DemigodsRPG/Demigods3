@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Spigots;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -24,9 +27,6 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
-import com.censoredsoftware.demigods.engine.util.SpigotUtility;
-import com.censoredsoftware.demigods.engine.util.ZoneUtility;
 import com.google.common.collect.Sets;
 
 public class Discoball extends Ability
@@ -120,7 +120,7 @@ public class Discoball extends Ability
 				{
 					for(Player online : Bukkit.getOnlinePlayers())
 					{
-						if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !ZoneUtility.zoneNoPVP(online.getLocation()) && !Structure.Util.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
+						if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structure.Util.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
 						else if(Deity.Util.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 					}
 				}
@@ -202,18 +202,18 @@ public class Discoball extends Ability
 
 		public final static void rainbow(Player disco, Player player)
 		{
-			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) MiscUtility.generateIntRange(0, 15));
-			if(Demigods.runningSpigot()) SpigotUtility.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
+			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Generates.generateIntRange(0, 15));
+			if(Demigods.runningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 		}
 
 		public final static void playRandomNote(Location location, float volume)
 		{
-			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) MiscUtility.generateIntRange(5, 10) / 10.0));
+			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Generates.generateIntRange(5, 10) / 10.0));
 		}
 
 		public final static void sparkleSparkle(Location location)
 		{
-			if(Demigods.runningSpigot()) SpigotUtility.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
+			if(Demigods.runningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 		}
 
 		public final static void destoryNearby(Location location)

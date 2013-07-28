@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemUtility
+public class Items
 {
 	/**
 	 * Creates a new item with the given variables.

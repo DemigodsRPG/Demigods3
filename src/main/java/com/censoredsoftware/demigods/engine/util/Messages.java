@@ -11,18 +11,18 @@ import org.bukkit.plugin.Plugin;
 /**
  * Module to handle all common messages sent to players or the console.
  */
-public class MessageUtility
+public class Messages
 {
 	private static Logger log = Logger.getLogger("Minecraft");
 	private static Plugin plugin;
 	private static String pluginName;
 
 	/**
-	 * Constructor for the MessageUtility.
+	 * Constructor for the Messages.
 	 * 
 	 * @param instance The current instance of the Plugin running this module.
 	 */
-	public MessageUtility(Plugin instance)
+	public Messages(Plugin instance)
 	{
 		this.plugin = instance;
 		this.pluginName = plugin.getName();
@@ -48,7 +48,7 @@ public class MessageUtility
 	public static String chatTitle(String title)
 	{
 		int total = 255;
-		StringBuilder chatTitle = new StringBuilder(" " + UnicodeUtility.rightwardArrow() + " " + title + " ");
+		StringBuilder chatTitle = new StringBuilder(" " + Unicodes.rightwardArrow() + " " + title + " ");
 		for(int i = 0; i < total - title.length(); i += 6)
 		{
 			chatTitle.append('-');

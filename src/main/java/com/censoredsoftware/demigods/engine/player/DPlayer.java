@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -20,8 +21,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.Region;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Sets;
 
 @Model
@@ -74,7 +74,7 @@ public class DPlayer
 		}
 		else if(canPvp() && inNoPvpZone && !DataManager.hasTimed(player.getName(), "pvp_cooldown"))
 		{
-			int delay = ConfigUtility.getSettingInt("zones.pvp_area_delay_time");
+			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
@@ -156,7 +156,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-			MessageUtility.warning("Character name too long.");
+			Messages.warning("Character name too long.");
 			e.printStackTrace();
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
@@ -179,7 +179,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-			MessageUtility.severe("There was a problem while teleporting a player to their character.");
+			Messages.severe("There was a problem while teleporting a player to their character.");
 		}
 
 		// Save instances

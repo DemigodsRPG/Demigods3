@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.demigods.engine.data.DataManager;
 
-public class AdminUtility
+public class Admins
 {
 	/**
 	 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
@@ -30,7 +30,7 @@ public class AdminUtility
 	 */
 	public static boolean useWand(OfflinePlayer player)
 	{
-		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == ConfigUtility.getSettingInt("admin.wand_tool");
+		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class AdminUtility
 	 */
 	public static boolean consoleDebugEnabled()
 	{
-		return ConfigUtility.getSettingBoolean("misc.console_debug");
+		return Configs.getSettingBoolean("misc.console_debug");
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class AdminUtility
 	public static void sendDebug(String message)
 	{
 		// Log to console
-		if(consoleDebugEnabled()) MessageUtility.info("[Debug] " + ChatColor.stripColor(message));
+		if(consoleDebugEnabled()) Messages.info("[Debug] " + ChatColor.stripColor(message));
 
 		// Log to online, debugging admins
 		for(Player player : getOnlineAdmins())

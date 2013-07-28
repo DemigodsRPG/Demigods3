@@ -2,6 +2,9 @@ package com.censoredsoftware.demigods.engine.battle;
 
 import java.util.*;
 
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Spigots;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -21,10 +24,6 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
-import com.censoredsoftware.demigods.engine.util.SpigotUtility;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -249,16 +248,6 @@ public class Battle
 			};
 		}
 
-		public List<Map.Entry<DCharacter, Integer>> getKills()
-		{
-			return Lists.newArrayList(MiscUtility.sortByValue(this.kills).entrySet());
-		}
-
-		public List<Map.Entry<DCharacter, Integer>> getDeaths()
-		{
-			return Lists.newArrayList(MiscUtility.sortByValue(this.deaths).entrySet());
-		}
-
 		public int getKillCounter()
 		{
 			return this.killCounter;
@@ -284,16 +273,16 @@ public class Battle
 			battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 			battle.setStartTime(System.currentTimeMillis());
 
-			int default_range = ConfigUtility.getSettingInt("battles.min_range");
+			int default_range = Configs.getSettingInt("battles.min_range");
 			double range = damager.getCurrentLocation().distance(damaged.getCurrentLocation());
 			if(range < default_range) battle.setRange(default_range);
 			else battle.setRange(range);
 
 			battle.setActive();
 
-			battle.setDuration(ConfigUtility.getSettingInt("battles.min_duration") * 1000);
-			battle.setMinKills(ConfigUtility.getSettingInt("battles.min_kills"));
-			battle.setMaxKills(ConfigUtility.getSettingInt("battles.max_kills"));
+			battle.setDuration(Configs.getSettingInt("battles.min_duration") * 1000);
+			battle.setMinKills(Configs.getSettingInt("battles.min_kills"));
+			battle.setMaxKills(Configs.getSettingInt("battles.max_kills"));
 
 			Meta meta = createMeta(damager);
 			meta.addParticipant(damager);
@@ -396,7 +385,7 @@ public class Battle
 			for(Battle battle : getAllActive())
 			{
 				double distance = battle.getStartLocation().distance(location);
-				if(distance > battle.getRange() && distance <= ConfigUtility.getSettingInt("battles.merge_range")) return battle;
+				if(distance > battle.getRange() && distance <= Configs.getSettingInt("battles.merge_range")) return battle;
 			}
 			return null;
 		}
@@ -418,7 +407,7 @@ public class Battle
 			List<Location> respawnPoints = getSafeRespawnPoints(battle);
 			if(respawnPoints.size() == 0) return battle.getStartLocation();
 
-			Location target = respawnPoints.get(MiscUtility.generateIntRange(0, respawnPoints.size() - 1));
+			Location target = respawnPoints.get(Generates.generateIntRange(0, respawnPoints.size() - 1));
 
 			Vector direction = target.toVector().subtract(battle.getStartLocation().toVector()).normalize();
 			double X = direction.getX();
@@ -515,7 +504,7 @@ public class Battle
 		{
 			for(Battle battle : Battle.Util.getAllActive())
 				for(Location point : Battle.Util.battleBorder(battle))
-					SpigotUtility.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
+					Spigots.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
 		}
 
 		/**

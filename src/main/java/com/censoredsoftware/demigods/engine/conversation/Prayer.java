@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,10 +34,7 @@ import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
-import com.censoredsoftware.demigods.engine.util.MiscUtility;
-import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -192,7 +191,7 @@ public class Prayer implements DConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Warps & Invites"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
 			if(character.hasWarps() || character.hasInvites())
@@ -368,7 +367,7 @@ public class Prayer implements DConversation
 
 			DPlayer.Util.clearRawChat(player);
 
-			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
@@ -376,7 +375,7 @@ public class Prayer implements DConversation
 			for(DCharacter character : DPlayer.Util.getCharacters(player))
 			{
 				if(!character.canUse()) continue;
-				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 
 			player.sendRawMessage(" ");
@@ -433,14 +432,14 @@ public class Prayer implements DConversation
 				DPlayer.Util.clearRawChat(player);
 
 				// Send the player the info
-				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Viewing Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
-				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + MiscUtility.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + MiscUtility.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + (int) (Math.round(character.getExperience()))); // TODO: Exp isn't correct.
+				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Util.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Util.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + (int) (Math.round(character.getExperience()))); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + MiscUtility.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + ConfigUtility.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Configs.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(" ");
@@ -516,7 +515,7 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
 				if(context.getSessionData("name_errors") == null)
@@ -548,7 +547,7 @@ public class Prayer implements DConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || MiscUtility.hasCapitalLetters(name, ConfigUtility.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Util.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
 					List<TranslationManager.Text> errors = Lists.newArrayList();
@@ -562,7 +561,7 @@ public class Prayer implements DConversation
 					{
 						errors.add(TranslationManager.Text.ERROR_ALPHA_NUMERIC);
 					}
-					if(MiscUtility.hasCapitalLetters(name, ConfigUtility.getSettingInt("character.max_caps_in_name")))
+					if(Util.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")))
 					{
 						errors.add(TranslationManager.Text.ERROR_MAX_CAPS);
 					}
@@ -625,7 +624,7 @@ public class Prayer implements DConversation
 				Player player = (Player) context.getForWhom();
 
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -634,7 +633,7 @@ public class Prayer implements DConversation
 				{
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 					{
-						if(player.hasPermission(deity.getInfo().getPermission())) player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
+						if(player.hasPermission(deity.getInfo().getPermission())) player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getInfo().getName()) + ChatColor.GRAY + " (" + alliance + ")");
 					}
 				}
 
@@ -690,7 +689,7 @@ public class Prayer implements DConversation
 					player.sendRawMessage(" ");
 					for(Material item : Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems())
 					{
-						player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+						player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 					}
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
@@ -739,13 +738,13 @@ public class Prayer implements DConversation
 			DPlayer.Util.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendRawMessage(ChatColor.YELLOW + MessageUtility.chatTitle("Confirming Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Confirming Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
 			for(Material item : Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "  " + UnicodeUtility.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+				player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 			}
 			return "";
 		}
@@ -768,6 +767,50 @@ public class Prayer implements DConversation
 			return null;
 		}
 	}
+
+    public static class Util
+    {
+        /**
+         * Checks the <code>string</code> for <code>max</code> capital letters.
+         *
+         * @param string the string to check.
+         * @param max the maximum allowed capital letters.
+         * @return Boolean
+         */
+        public static boolean hasCapitalLetters(String string, int max)
+        {
+            // Define variables
+            String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int count = 0;
+            char[] characters = string.toCharArray();
+            for(char character : characters)
+            {
+                if(allCaps.contains("" + character))
+                {
+                    count++;
+                }
+
+                if(count > max) return true;
+            }
+            return false;
+        }
+
+        /**
+         * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
+         *
+         * @param value the actual value.
+         * @param max the maximum value possible.
+         * @return ChatColor
+         */
+        public static ChatColor getColor(double value, double max)
+        {
+            ChatColor color = ChatColor.RESET;
+            if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
+            else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
+            if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
+            return color;
+        }
+    }
 }
 
 class PrayerListener implements Listener
@@ -890,7 +933,7 @@ class PrayerListener implements Listener
 
 		if(!DPlayer.Util.isPraying(player)) return;
 
-		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= ConfigUtility.getSettingInt("zones.prayer_radius"))
+		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius"))
 		{
 			DPlayer.Util.togglePraying(player, false);
 		}

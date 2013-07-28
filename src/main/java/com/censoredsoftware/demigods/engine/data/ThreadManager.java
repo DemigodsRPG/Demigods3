@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import com.censoredsoftware.demigods.engine.util.Admins;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,8 +11,7 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.AdminUtility;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 
 public class ThreadManager
 {
@@ -19,22 +19,22 @@ public class ThreadManager
 	{
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main Demigods SYNC runnable enabled...");
+		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getAsyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main Demigods ASYNC runnable enabled...");
+		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
 		if(Demigods.runningSpigot())
 		{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSpigotRunnable(), 20, 20);
-			AdminUtility.sendDebug("Special (Spigot) runnable enabled...");
+			Admins.sendDebug("Special (Spigot) runnable enabled...");
 		}
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (ConfigUtility.getSettingInt("regeneration.favor") * 20));
-		AdminUtility.sendDebug("Favor regeneration runnable enabled...");
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
+		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Enable Deity runnables
 		for(Deity deity : Demigods.getLoadedDeities())
@@ -121,7 +121,7 @@ public class ThreadManager
 		{
 			return new BukkitRunnable()
 			{
-				private double multiplier = ConfigUtility.getSettingDouble("multipliers.favor");
+				private double multiplier = Configs.getSettingDouble("multipliers.favor");
 
 				@Override
 				public void run()

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,10 +22,7 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.AdminUtility;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
-import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.collect.Lists;
 
 public class MainCommand extends DCommand
@@ -37,7 +37,7 @@ public class MainCommand extends DCommand
 	public boolean process(CommandSender sender, Command command, String[] args)
 	{
 		// Check for console first
-		if(sender instanceof ConsoleCommandSender) return MessageUtility.noConsole((ConsoleCommandSender) sender);
+		if(sender instanceof ConsoleCommandSender) return Messages.noConsole((ConsoleCommandSender) sender);
 
 		// Check args and pass onto dg_extended() if need be
 		if(args.length > 0)
@@ -50,7 +50,7 @@ public class MainCommand extends DCommand
 		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
 
 		// Check Permissions
-		if(!player.hasPermission("demigods.basic")) return MessageUtility.noPermission(player);
+		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
 		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().canUse())
 		{
@@ -64,7 +64,7 @@ public class MainCommand extends DCommand
 			return true;
 		}
 
-		MessageUtility.tagged(sender, "Documentation");
+		Messages.tagged(sender, "Documentation");
 		for(String alliance : Deity.getLoadedDeityAlliances())
 		{
 			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
@@ -92,7 +92,7 @@ public class MainCommand extends DCommand
 		if(args.length >= 5) option4 = args[4];
 
 		// Check Permissions
-		if(!player.hasPermission("demigods.basic")) return MessageUtility.noPermission(player);
+		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
 		if(category.equalsIgnoreCase("admin"))
 		{
@@ -100,14 +100,14 @@ public class MainCommand extends DCommand
 		}
 		else if(category.equalsIgnoreCase("commands"))
 		{
-			MessageUtility.tagged(sender, "Command Directory");
+			Messages.tagged(sender, "Command Directory");
 			sender.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
 		}
 		else if(category.equalsIgnoreCase("info"))
 		{
 			if(option1 == null)
 			{
-				MessageUtility.tagged(sender, "Information Directory");
+				Messages.tagged(sender, "Information Directory");
 				sender.sendMessage(ChatColor.GRAY + " /dg info characters");
 				sender.sendMessage(ChatColor.GRAY + " /dg info shrines");
 				sender.sendMessage(ChatColor.GRAY + " /dg info tributes");
@@ -119,7 +119,7 @@ public class MainCommand extends DCommand
 			}
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
-				MessageUtility.tagged(sender, "About the Plugin");
+				Messages.tagged(sender, "About the Plugin");
 				sender.sendMessage(ChatColor.WHITE + " Not to be confused with other RPG plugins that focus on skills and classes alone, " + ChatColor.GREEN + "demigods" + ChatColor.WHITE + " adds culture and conflict that will keep players coming back even after they've maxed out their levels and found all of the diamonds in a 50km radius.");
 				sender.sendMessage(" ");
 				sender.sendMessage(ChatColor.GREEN + " Demigods" + ChatColor.WHITE + " is unique in its system of rewarding players for both adventuring (tributes) and conquering (PvP) with a wide array of fun and useful skills.");
@@ -132,37 +132,37 @@ public class MainCommand extends DCommand
 			}
 			else if(option1.equalsIgnoreCase("characters"))
 			{
-				MessageUtility.tagged(sender, "Characters");
+				Messages.tagged(sender, "Characters");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
 			}
 			else if(option1.equalsIgnoreCase("shrine"))
 			{
-				MessageUtility.tagged(sender, "Shrines");
+				Messages.tagged(sender, "Shrines");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
 			}
 			else if(option1.equalsIgnoreCase("tribute"))
 			{
-				MessageUtility.tagged(sender, "Tributes");
+				Messages.tagged(sender, "Tributes");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
 			}
 			else if(option1.equalsIgnoreCase("player"))
 			{
-				MessageUtility.tagged(sender, "Players");
+				Messages.tagged(sender, "Players");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about Players.");
 			}
 			else if(option1.equalsIgnoreCase("pvp"))
 			{
-				MessageUtility.tagged(sender, "PVP");
+				Messages.tagged(sender, "PVP");
 				sender.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 			}
 			else if(option1.equalsIgnoreCase("stats"))
 			{
-				MessageUtility.tagged(sender, "Stats");
+				Messages.tagged(sender, "Stats");
 				sender.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
 			}
 			else if(option1.equalsIgnoreCase("rankings"))
 			{
-				MessageUtility.tagged(sender, "Rankings");
+				Messages.tagged(sender, "Rankings");
 				sender.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
 			}
 		}
@@ -174,7 +174,7 @@ public class MainCommand extends DCommand
 			{
 				if(args.length < 2)
 				{
-					MessageUtility.tagged(sender, alliance + " Directory");
+					Messages.tagged(sender, alliance + " Directory");
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 						sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getInfo().getName().toLowerCase());
 				}
@@ -195,7 +195,7 @@ public class MainCommand extends DCommand
 										{
 											for(String detail : ability.getInfo().getDetails())
 											{
-												StringBuilder details = new StringBuilder(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " ");
+												StringBuilder details = new StringBuilder(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " ");
 												if(ability.getInfo().getCommand() != null) details.append(ChatColor.GREEN + "/" + ability.getInfo().getCommand().toLowerCase() + ChatColor.WHITE + ": ");
 												details.append(ChatColor.WHITE + detail);
 												add(details.toString());
@@ -231,11 +231,11 @@ public class MainCommand extends DCommand
 		DCharacter character;
 		int amount;
 
-		if(!player.hasPermission("demigods.admin")) return MessageUtility.noPermission(player);
+		if(!player.hasPermission("demigods.admin")) return Messages.noPermission(player);
 
 		if(option1 == null)
 		{
-			MessageUtility.tagged(sender, "Admin Directory");
+			Messages.tagged(sender, "Admin Directory");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
 			sender.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
@@ -257,12 +257,12 @@ public class MainCommand extends DCommand
 			}
 			if(option1.equalsIgnoreCase("wand"))
 			{
-				if(!AdminUtility.wandEnabled(player))
+				if(!Admins.wandEnabled(player))
 				{
 					DataManager.saveTemp(player.getName(), "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(ConfigUtility.getSettingInt("admin.wand_tool")));
+					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
 				}
-				else if(AdminUtility.wandEnabled(player))
+				else if(Admins.wandEnabled(player))
 				{
 					DataManager.removeTemp(player.getName(), "temp_admin_wand");
 					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
@@ -296,7 +296,7 @@ public class MainCommand extends DCommand
 
 				if(option3 == null)
 				{
-					MessageUtility.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
+					Messages.tagged(sender, ChatColor.RED + toCheck.getName() + " Player Check");
 					sender.sendMessage(" Characters:");
 
 					final Set<DCharacter> chars = DPlayer.Util.getCharacters(toCheck);

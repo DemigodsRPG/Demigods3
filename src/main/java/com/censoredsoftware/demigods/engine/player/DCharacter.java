@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.*;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
@@ -21,8 +23,6 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -722,9 +722,9 @@ public class DCharacter implements Battle.Participant
 
 		public void addMaxFavor(int amount)
 		{
-			if((this.maxFavor + amount) > ConfigUtility.getSettingInt("caps.favor"))
+			if((this.maxFavor + amount) > Configs.getSettingInt("caps.favor"))
 			{
-				this.maxFavor = ConfigUtility.getSettingInt("caps.favor");
+				this.maxFavor = Configs.getSettingInt("caps.favor");
 			}
 			else
 			{
@@ -736,7 +736,7 @@ public class DCharacter implements Battle.Participant
 		public void setMaxFavor(int amount)
 		{
 			if(amount < 0) this.maxFavor = 0;
-			if(amount > ConfigUtility.getSettingInt("caps.favor")) this.maxFavor = ConfigUtility.getSettingInt("caps.favor");
+			if(amount > Configs.getSettingInt("caps.favor")) this.maxFavor = Configs.getSettingInt("caps.favor");
 			else this.maxFavor = amount;
 			Util.save(this);
 		}
@@ -830,9 +830,9 @@ public class DCharacter implements Battle.Participant
 		{
 			Meta charMeta = new Meta();
 			charMeta.initialize();
-			charMeta.setAscensions(ConfigUtility.getSettingInt("character.defaults.ascensions"));
-			charMeta.setFavor(ConfigUtility.getSettingInt("character.defaults.favor"));
-			charMeta.setMaxFavor(ConfigUtility.getSettingInt("character.defaults.max_favor"));
+			charMeta.setAscensions(Configs.getSettingInt("character.defaults.ascensions"));
+			charMeta.setFavor(Configs.getSettingInt("character.defaults.favor"));
+			charMeta.setMaxFavor(Configs.getSettingInt("character.defaults.max_favor"));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.OFFENSE));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.DEFENSE));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.PASSIVE));
@@ -970,10 +970,10 @@ public class DCharacter implements Battle.Participant
 
 			attacker.addKill();
 
-			if(killed == null && attacker == null) MessageUtility.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_1));
-			else if(killed == null && attacker != null) MessageUtility.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-			else if(killed != null && attacker == null) MessageUtility.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
-			else if(killed != null && attacker != null) MessageUtility.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			if(killed == null && attacker == null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_1));
+			else if(killed == null && attacker != null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			else if(killed != null && attacker == null) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
+			else if(killed != null && attacker != null) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 		}
 
 		// TODO Remake this.
@@ -983,8 +983,8 @@ public class DCharacter implements Battle.Participant
 
 			// TODO: Punishments.
 
-			if(!alliance.equals("Mortal")) MessageUtility.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
-			else MessageUtility.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.MORTAL_BETRAY));
+			if(!alliance.equals("Mortal")) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+			else Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.MORTAL_BETRAY));
 		}
 
 		/**
@@ -1008,7 +1008,7 @@ public class DCharacter implements Battle.Participant
 			}
 			catch(Exception e)
 			{
-				MessageUtility.severe("Could not save inventory: " + inventory.getId());
+				Messages.severe("Could not save inventory: " + inventory.getId());
 			}
 		}
 

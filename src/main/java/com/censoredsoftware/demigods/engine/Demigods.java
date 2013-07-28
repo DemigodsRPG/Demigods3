@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.engine;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
@@ -27,8 +28,7 @@ import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.EntityListener;
 import com.censoredsoftware.demigods.engine.player.InventoryListener;
 import com.censoredsoftware.demigods.engine.player.PlayerListener;
-import com.censoredsoftware.demigods.engine.util.ConfigUtility;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -76,8 +76,8 @@ public class Demigods
 		conversation = new ConversationFactory(instance);
 
 		// Setup utilities.
-		new ConfigUtility(instance, true);
-		new MessageUtility(instance);
+		new Configs(instance, true);
+		new Messages(instance);
 
 		// Define the game data.
 		Demigods.deities = new HashSet<Deity>()
@@ -117,9 +117,9 @@ public class Demigods
 		new DataManager();
 		if(!DataManager.isConnected())
 		{
-			MessageUtility.severe("Demigods was unable to connect to a Redis server.");
-			MessageUtility.severe("A Redis server is required for Demigods to run.");
-			MessageUtility.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
+			Messages.severe("Demigods was unable to connect to a Redis server.");
+			Messages.severe("A Redis server is required for Demigods to run.");
+			Messages.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
@@ -143,7 +143,7 @@ public class Demigods
 		// Finally, regenerate structures
 		Structure.Util.regenerateStructures();
 
-		if(runningSpigot()) MessageUtility.info(("Spigot found, will use extra API features."));
+		if(runningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	/**

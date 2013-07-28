@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,7 +9,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
 
 public class CommandListener implements Listener
 {
@@ -29,7 +29,7 @@ public class CommandListener implements Listener
 		{
 			if(Ability.Util.invokeAbilityCommand(player, args[0]))
 			{
-				MessageUtility.info(event.getPlayer().getName() + " used the command: /" + message);
+				Messages.info(event.getPlayer().getName() + " used the command: /" + message);
 				event.setCancelled(true);
 			}
 		}

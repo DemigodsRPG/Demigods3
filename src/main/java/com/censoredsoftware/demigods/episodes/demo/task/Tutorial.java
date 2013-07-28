@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.episodes.demo.task;
 
 import java.util.ArrayList;
 
+import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.MessageUtility;
 import com.censoredsoftware.demigods.episodes.demo.item.Book;
 
 public class Tutorial extends Task.List
@@ -68,7 +68,7 @@ class TutorialTask extends Task
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(character == null || character.getMeta().isFinishedTask(name)) return;
 
-			MessageUtility.tagged(player, "Welcome to demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
+			Messages.tagged(player, "Welcome to demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
 
 			player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
 

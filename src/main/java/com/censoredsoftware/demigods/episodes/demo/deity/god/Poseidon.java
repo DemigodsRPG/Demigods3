@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.util.UnicodeUtility;
 import com.censoredsoftware.demigods.episodes.demo.ability.offense.Reel;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.InfiniteAir;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.Swim;
@@ -34,7 +34,7 @@ public class Poseidon extends Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
 			{
-				add(ChatColor.GRAY + " " + UnicodeUtility.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
 			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
