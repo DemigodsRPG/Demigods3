@@ -17,7 +17,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.util.Configs;

@@ -70,7 +70,7 @@ public class DevelopmentCommands extends DCommand
 	{
 		Player player = (Player) sender;
 
-        StopWatches.endStopWatch(StopWatches.newStopWatch(), "test3");
+        StopWatches.end(StopWatches.start(), "test3");
 
 		return true;
 	}

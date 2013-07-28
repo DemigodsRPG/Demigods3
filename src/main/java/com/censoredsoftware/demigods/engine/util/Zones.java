@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 

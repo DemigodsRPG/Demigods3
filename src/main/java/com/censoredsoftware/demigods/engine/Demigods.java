@@ -18,7 +18,7 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Task;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;

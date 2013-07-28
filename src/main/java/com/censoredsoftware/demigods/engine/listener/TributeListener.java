@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

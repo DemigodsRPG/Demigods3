@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;

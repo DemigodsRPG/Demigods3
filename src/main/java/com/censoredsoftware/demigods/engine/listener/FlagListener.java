@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.element.structure.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure;
 import com.censoredsoftware.demigods.engine.util.StopWatches;
 import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.Bukkit;
@@ -32,13 +32,13 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockBreak(BlockBreakEvent event)
 	{
-        StopWatch stopWatch = StopWatches.newStopWatch();
+        StopWatch stopWatch = StopWatches.start();
         if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TranslationManager.Text.PROTECTED_BLOCK));
 		}
-        StopWatches.endStopWatch(stopWatch, "onBlockBreak");
+        StopWatches.end(stopWatch, "onBlockBreak");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
