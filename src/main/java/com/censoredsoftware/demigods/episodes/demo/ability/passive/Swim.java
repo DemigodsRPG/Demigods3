@@ -41,8 +41,13 @@ public class Swim extends Ability
 				Player player = event.getPlayer();
 				if(!Deity.Util.canUseDeitySilent(player, deity))
 				{
-					StopWatches.end(stopWatch, "Swim");
+					StopWatches.end(stopWatch, "Swim (can't use)");
 					return;
+				}
+
+				if(Deity.Util.canUseDeitySilent(player, deity))
+				{
+					StopWatches.end(stopWatch, "Swim (can use)");
 				}
 
 				// PHELPS SWIMMING
@@ -52,8 +57,6 @@ public class Swim extends Ability
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					player.setVelocity(victor);
 				}
-
-				StopWatches.end(stopWatch, "Swim");
 			}
 		}, null);
 	}
