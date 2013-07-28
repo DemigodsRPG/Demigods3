@@ -31,18 +31,18 @@ public class Swim extends Ability
 	{
 		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
-			@EventHandler(priority = EventPriority.HIGH)
+			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerMove(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				// PHELPS SWIMMING
-				if(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER))
+				if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
-					if(player.isSneaking()) player.setVelocity(victor);
+					player.setVelocity(victor);
 				}
 			}
 		}, null);

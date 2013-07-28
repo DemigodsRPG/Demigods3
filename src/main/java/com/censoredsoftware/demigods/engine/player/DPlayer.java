@@ -210,7 +210,7 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null /* && this.current.canUse() */) return this.current;
+		if(this.current != null && this.current.canUse()) return this.current;
 		return null;
 	}
 

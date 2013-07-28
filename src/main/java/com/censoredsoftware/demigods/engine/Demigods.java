@@ -3,15 +3,17 @@ package com.censoredsoftware.demigods.engine;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.listener.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import com.censoredsoftware.demigods.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.listener.BattleListener;
-import com.censoredsoftware.demigods.engine.command.*;
+import com.censoredsoftware.demigods.engine.command.DCommand;
+import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
+import com.censoredsoftware.demigods.engine.command.GeneralCommands;
+import com.censoredsoftware.demigods.engine.command.MainCommand;
 import com.censoredsoftware.demigods.engine.conversation.DConversation;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
@@ -22,6 +24,7 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -40,6 +43,7 @@ public class Demigods
 	protected static Set<Task.List> quests;
 	protected static Set<Structure> structures;
 	protected static Set<DConversation> conversasions;
+	protected static Listener listener;
 
 	// The engine Default Text
 	public static Translation text;
@@ -64,7 +68,7 @@ public class Demigods
 		public DConversation getConversation();
 	}
 
-	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation[] conversations) throws DemigodsStartupException
+	public Demigods(DemigodsPlugin instance, final ListedDeity[] deities, final ListedTaskSet[] taskSets, final ListedStructure[] structures, final ListedConversation[] conversations, final Listener EpisodeListener) throws DemigodsStartupException
 	{
 		// Allow static access.
 		plugin = instance;
@@ -164,6 +168,9 @@ public class Demigods
 		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
 		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
 
+		// Main Episode Listener
+		// TODO: instance.getServer().getPluginManager().registerEvents(listener, instance);
+
 		// Deities
 		for(Deity deity : getLoadedDeities())
 		{
@@ -197,7 +204,6 @@ public class Demigods
 			if(conversation.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
-
 	}
 
 	protected static void loadCommands()
