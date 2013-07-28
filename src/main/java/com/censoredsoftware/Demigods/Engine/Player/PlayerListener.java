@@ -42,7 +42,7 @@ public class PlayerListener implements Listener
 
 		if(ConfigUtility.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 	}

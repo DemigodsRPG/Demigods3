@@ -117,8 +117,8 @@ public class Demigods
 		new DataManager();
 		if(!DataManager.isConnected())
 		{
-			MessageUtility.severe("demigods was unable to connect to a Redis server.");
-			MessageUtility.severe("A Redis server is required for demigods to run.");
+			MessageUtility.severe("Demigods was unable to connect to a Redis server.");
+			MessageUtility.severe("A Redis server is required for Demigods to run.");
 			MessageUtility.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();

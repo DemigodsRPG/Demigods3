@@ -28,7 +28,7 @@ public class Prometheus extends Deity
 	{
 		{
 			add(" ");
-			add(ChatColor.AQUA + " demigods > " + ChatColor.RESET + color + name);
+			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)

@@ -19,11 +19,11 @@ public class ThreadManager
 	{
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main demigods SYNC runnable enabled...");
+		AdminUtility.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getAsyncDemigodsRunnable(), 20, 20);
-		AdminUtility.sendDebug("Main demigods ASYNC runnable enabled...");
+		AdminUtility.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
 		if(Demigods.runningSpigot())
@@ -50,7 +50,7 @@ public class ThreadManager
 	private static class Util
 	{
 		/**
-		 * Returns the main sync demigods runnable. Methods requiring the Bukkit API and a constant
+		 * Returns the main sync Demigods runnable. Methods requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.
@@ -72,7 +72,7 @@ public class ThreadManager
 		}
 
 		/**
-		 * Returns the main async demigods runnable. Methods NOT requiring the Bukkit API and a constant
+		 * Returns the main async Demigods runnable. Methods NOT requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.
