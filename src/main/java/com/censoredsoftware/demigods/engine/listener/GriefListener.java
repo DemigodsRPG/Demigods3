@@ -1,10 +1,11 @@
-package com.censoredsoftware.demigods.engine.element.structure;
+package com.censoredsoftware.demigods.engine.listener;
 
 // TODO Fix for lag.
 
 import java.util.HashSet;
 import java.util.Set;
 
+import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

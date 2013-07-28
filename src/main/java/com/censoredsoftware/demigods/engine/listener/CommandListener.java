@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.engine.command;
+package com.censoredsoftware.demigods.engine.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

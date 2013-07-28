@@ -1,5 +1,6 @@
-package com.censoredsoftware.demigods.engine.battle;
+package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.battle.Battle;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
