@@ -39,6 +39,9 @@ public class Swim extends Ability
 				StopWatch stopWatch = StopWatches.start();
 
 				Player player = event.getPlayer();
+
+				if(player.isSneaking()) return; // TODO: This should KINDA solve this issue for swimming (only when actually not swimming), but there's still an issue somewhere in canUseDeity().
+
 				if(!Deity.Util.canUseDeitySilent(player, deity))
 				{
 					StopWatches.end(stopWatch, "Swim (can't use)");
@@ -51,7 +54,7 @@ public class Swim extends Ability
 				}
 
 				// PHELPS SWIMMING
-				if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
+				if((player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
