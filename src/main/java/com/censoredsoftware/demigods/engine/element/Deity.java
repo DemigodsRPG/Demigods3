@@ -14,8 +14,8 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public abstract class Deity
 {
-	private Info info;
-	private Set<Ability> abilities;
+	private final Info info;
+	private final Set<Ability> abilities;
 
 	public Deity(Info info, Set<Ability> abilities)
 	{
@@ -59,11 +59,13 @@ public abstract class Deity
 
 	public static class Info
 	{
-		private String name, alliance, permission;
-		private ChatColor color;
-		private Set<Material> claimItems;
-		private List<String> lore;
-		private Deity.Type type;
+		private final String name;
+		private final String alliance;
+		private final String permission;
+		private final ChatColor color;
+		private final Set<Material> claimItems;
+		private final List<String> lore;
+		private final Deity.Type type;
 
 		public Info(String name, String alliance, String permission, ChatColor color, Set<Material> claimItems, List<String> lore, Deity.Type type)
 		{

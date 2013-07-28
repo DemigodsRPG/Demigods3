@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Generates;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -33,13 +31,15 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Generates;
 
 public abstract class Ability
 {
-	private Info info;
-	private Listener listener;
-	private Runnable runnable;
-	private static final int TARGETOFFSET = 5;
+	private final Info info;
+	private final Listener listener;
+	private final Runnable runnable;
+	private static final int TARGET_OFFSET = 5;
 
 	public Ability(Info info, Listener listener, Runnable runnable)
 	{
@@ -65,10 +65,15 @@ public abstract class Ability
 
 	public static class Info
 	{
-		private String deity, name, command, permission;
-		private int cost, delay, repeat;
-		private List<String> details;
-		private Devotion.Type type;
+		private final String deity;
+		private final String name;
+		private final String command;
+		private final String permission;
+		private final int cost;
+		private final int delay;
+		private final int repeat;
+		private final List<String> details;
+		private final Devotion.Type type;
 		private Material weapon;
 
 		public Info(String deity, String name, String command, String permission, int cost, int delay, int repeat, List<String> details, Devotion.Type type)
@@ -373,8 +378,7 @@ public abstract class Ability
 		 */
 		public static boolean doAbilityPreProcess(Player player, String name, int cost, Info info)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
+			// DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			return doAbilityPreProcess(player, cost); // TODO callAbilityEvent(name, character, cost, info);
 		}
 
@@ -396,7 +400,7 @@ public abstract class Ability
 
 			if(doAbilityPreProcess(player, cost)) // TODO callAbilityEvent(name, character, cost, info))
 			{
-				if(!(target instanceof LivingEntity))
+				if(target == null)
 				{
 					player.sendMessage(ChatColor.YELLOW + "No target found.");
 					return false;
@@ -502,7 +506,7 @@ public abstract class Ability
 			int ascensions = character.getMeta().getAscensions();
 			if(ascensions < 3) ascensions = 3;
 
-			int offset = (int) (TARGETOFFSET + character.getOfflinePlayer().getPlayer().getLocation().distance(target));
+			int offset = (int) (TARGET_OFFSET + character.getOfflinePlayer().getPlayer().getLocation().distance(target));
 			int adjustedOffset = offset / ascensions;
 			if(adjustedOffset < 1) adjustedOffset = 1;
 			Random random = new Random();
@@ -549,8 +553,7 @@ public abstract class Ability
 		 */
 		public static boolean isHit(Location target, Location hit)
 		{
-			Location shouldHit = target;
-			return hit.distance(shouldHit) <= 2;
+			return hit.distance(target) <= 2;
 		}
 
 		public static List<Ability> getLoadedAbilities()

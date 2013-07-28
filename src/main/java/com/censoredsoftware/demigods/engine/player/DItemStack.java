@@ -211,7 +211,7 @@ public class DItemStack
 	{
 		STANDARD(0), WRITTEN_BOOK(1);
 
-		private int id;
+		private final int id;
 
 		private ItemType(int id)
 		{

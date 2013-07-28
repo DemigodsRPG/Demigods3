@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Configs;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +22,8 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Shrine extends Structure
@@ -158,8 +158,7 @@ public class Shrine extends Structure
 		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
 		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
 		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
-		if(block.getRelative(1, 0, -1).getType().isSolid()) return false;
-		return !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
+		return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 	}
 }
 

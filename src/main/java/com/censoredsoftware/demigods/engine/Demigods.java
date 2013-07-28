@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.engine;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
@@ -29,6 +28,7 @@ import com.censoredsoftware.demigods.engine.player.EntityListener;
 import com.censoredsoftware.demigods.engine.player.InventoryListener;
 import com.censoredsoftware.demigods.engine.player.PlayerListener;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods

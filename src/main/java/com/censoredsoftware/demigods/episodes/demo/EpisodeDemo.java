@@ -28,7 +28,7 @@ public class EpisodeDemo
 		// DONATORS
 		DISCO(new DrD1sco()), OMEGA(new OmegaX17());
 
-		private Deity deity;
+		private final Deity deity;
 
 		private Deities(Deity deity)
 		{
@@ -49,7 +49,7 @@ public class EpisodeDemo
 		 */
 		Tutorial(new Tutorial());
 
-		private Task.List taskSet;
+		private final Task.List taskSet;
 
 		private Tasks(Task.List tasks)
 		{
@@ -67,7 +67,7 @@ public class EpisodeDemo
 	{
 		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
 
-		private Structure structure;
+		private final Structure structure;
 
 		private Structures(Structure structure)
 		{

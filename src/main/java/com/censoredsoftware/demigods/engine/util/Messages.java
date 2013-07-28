@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class Messages
 {
-	private static Logger log = Logger.getLogger("Minecraft");
+	private static final Logger log = Logger.getLogger("Minecraft");
 	private static Plugin plugin;
 	private static String pluginName;
 
@@ -24,8 +24,8 @@ public class Messages
 	 */
 	public Messages(Plugin instance)
 	{
-		this.plugin = instance;
-		this.pluginName = plugin.getName();
+		plugin = instance;
+		pluginName = plugin.getName();
 	}
 
 	/**

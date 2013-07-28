@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.demigods.engine.util.Admins;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -11,8 +10,10 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 
+@SuppressWarnings("deprecation")
 public class ThreadManager
 {
 	public static void startThreads(DemigodsPlugin instance)
@@ -121,7 +122,7 @@ public class ThreadManager
 		{
 			return new BukkitRunnable()
 			{
-				private double multiplier = Configs.getSettingDouble("multipliers.favor");
+				private final double multiplier = Configs.getSettingDouble("multipliers.favor");
 
 				@Override
 				public void run()

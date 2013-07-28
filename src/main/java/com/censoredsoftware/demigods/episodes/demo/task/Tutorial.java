@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.episodes.demo.task;
 
 import java.util.ArrayList;
 
-import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,34 +12,39 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.episodes.demo.item.Book;
 
 public class Tutorial extends Task.List
 {
-	private static String name = "Tutorial", permission = "demigods.tutorial";
-	private static java.util.List about = new ArrayList<String>(1)
+	private static final String name = "Tutorial";
+	private static final String permission = "demigods.tutorial";
+	private static final java.util.List about = new ArrayList<String>(1)
 	{
 		{
 			add("About."); // TODO This.
 		}
-	}, accepted = new ArrayList<String>(1)
+	};
+	private static final java.util.List accepted = new ArrayList<String>(1)
 	{
 		{
 			add("Accepted.");
 		}
-	}, complete = new ArrayList<String>(1)
+	};
+	private static final java.util.List complete = new ArrayList<String>(1)
 	{
 		{
 			add("Complete.");
 		}
-	}, failed = new ArrayList<String>(1)
+	};
+	private static final java.util.List failed = new ArrayList<String>(1)
 	{
 		{
 			add("Failed.");
 		}
 	};
-	private static Type type = Type.TUTORIAL;
-	private static java.util.List tasks = new ArrayList<Task>()
+	private static final Type type = Type.TUTORIAL;
+	private static final java.util.List tasks = new ArrayList<Task>()
 	{
 		{
 			add(new TutorialTask(name, permission, about, accepted, complete, failed, type));
@@ -55,10 +59,11 @@ public class Tutorial extends Task.List
 
 class TutorialTask extends Task
 {
-	private static String name = "Welcome to demigods!";
-	private static int order = 0;
-	private static double reward = 50.0, penalty = 0;
-	private static Listener listener = new Listener()
+	private static final String name = "Welcome to demigods!";
+	private static final int order = 0;
+	private static final double reward = 50.0;
+	private static final double penalty = 0;
+	private static final Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.MONITOR)
 		private void onPlayerJoin(PlayerJoinEvent event)

@@ -2,9 +2,6 @@ package com.censoredsoftware.demigods.engine.battle;
 
 import java.util.*;
 
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.engine.util.Spigots;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -24,6 +21,9 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Spigots;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -416,7 +416,7 @@ public class Battle
 
 			// Now change the angle
 			Location changed = target.clone();
-			changed.setYaw(180 - DLocation.Util.toDegree(Math.atan2(X, Y)));
+			changed.setYaw(180 - DLocation.Util.toDegree(Math.atan2(Y, X)));
 			changed.setPitch(90 - DLocation.Util.toDegree(Math.acos(Z)));
 			return changed;
 		}
@@ -426,8 +426,7 @@ public class Battle
 			if(reference.getBlock().getType().isSolid() || reference.getBlock().getType().equals(Material.LAVA)) return false;
 			double referenceY = reference.getY();
 			double checkingY = checking.getY();
-			if(Math.abs(referenceY - checkingY) > 5) return false;
-			return true;
+			return Math.abs(referenceY - checkingY) <= 5;
 		}
 
 		public static List<Location> getSafeRespawnPoints(final Battle battle)
@@ -447,8 +446,7 @@ public class Battle
 		{
 			if(!(entity instanceof Player) && !(entity instanceof Tameable)) return false;
 			if(entity instanceof Player && DPlayer.Util.getPlayer((Player) entity).getCurrent() == null) return false;
-			if(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null) return false;
-			return true;
+			return !(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null);
 		}
 
 		public static Participant defineParticipant(Entity entity)

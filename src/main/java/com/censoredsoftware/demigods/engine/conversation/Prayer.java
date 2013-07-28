@@ -4,13 +4,12 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.ValidatingPrompt;
@@ -35,13 +34,14 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+@SuppressWarnings("unchecked")
 public class Prayer implements DConversation
 {
-	// Define variables
-	private static org.bukkit.conversations.Conversation prayerConversation;
 
 	@Override
 	public Listener getUniqueListener()
@@ -56,8 +56,8 @@ public class Prayer implements DConversation
 	{
 		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps());
 
-		private Integer id;
-		private Required.Category category;
+		private final Integer id;
+		private final Required.Category category;
 
 		private Menu(int id, Required.Category category)
 		{
@@ -96,7 +96,7 @@ public class Prayer implements DConversation
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
 				sessionDataField.setAccessible(true);
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")));
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(DataManager.getValueTemp(player.getName(), "prayer_context"));
 			}
 			else
 			{
@@ -105,7 +105,7 @@ public class Prayer implements DConversation
 			}
 
 			// Build the conversation and begin
-			prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
+			Conversation prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
 			prayerConversation.begin();
 
 			return prayerConversation;
@@ -248,7 +248,7 @@ public class Prayer implements DConversation
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && character.getWarps().containsKey(arg2.toLowerCase())));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && character.getWarps().containsKey(arg2.toLowerCase()))); // TODO NullPointer
 		}
 
 		@Override
@@ -436,7 +436,7 @@ public class Prayer implements DConversation
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
-				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Util.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Util.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + (int) (Math.round(character.getExperience()))); // TODO: Exp isn't correct.
+				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Util.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Util.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + Math.round(character.getExperience())); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Configs.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
@@ -768,49 +768,49 @@ public class Prayer implements DConversation
 		}
 	}
 
-    public static class Util
-    {
-        /**
-         * Checks the <code>string</code> for <code>max</code> capital letters.
-         *
-         * @param string the string to check.
-         * @param max the maximum allowed capital letters.
-         * @return Boolean
-         */
-        public static boolean hasCapitalLetters(String string, int max)
-        {
-            // Define variables
-            String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            int count = 0;
-            char[] characters = string.toCharArray();
-            for(char character : characters)
-            {
-                if(allCaps.contains("" + character))
-                {
-                    count++;
-                }
+	public static class Util
+	{
+		/**
+		 * Checks the <code>string</code> for <code>max</code> capital letters.
+		 * 
+		 * @param string the string to check.
+		 * @param max the maximum allowed capital letters.
+		 * @return Boolean
+		 */
+		public static boolean hasCapitalLetters(String string, int max)
+		{
+			// Define variables
+			String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			int count = 0;
+			char[] characters = string.toCharArray();
+			for(char character : characters)
+			{
+				if(allCaps.contains("" + character))
+				{
+					count++;
+				}
 
-                if(count > max) return true;
-            }
-            return false;
-        }
+				if(count > max) return true;
+			}
+			return false;
+		}
 
-        /**
-         * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
-         *
-         * @param value the actual value.
-         * @param max the maximum value possible.
-         * @return ChatColor
-         */
-        public static ChatColor getColor(double value, double max)
-        {
-            ChatColor color = ChatColor.RESET;
-            if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
-            else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
-            if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
-            return color;
-        }
-    }
+		/**
+		 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
+		 * 
+		 * @param value the actual value.
+		 * @param max the maximum value possible.
+		 * @return ChatColor
+		 */
+		public static ChatColor getColor(double value, double max)
+		{
+			ChatColor color = ChatColor.RESET;
+			if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
+			else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
+			if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
+			return color;
+		}
+	}
 }
 
 class PrayerListener implements Listener

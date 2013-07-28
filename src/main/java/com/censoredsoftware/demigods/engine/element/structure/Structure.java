@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +17,8 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
@@ -44,7 +44,7 @@ public abstract class Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION;
+		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION
 	}
 
 	public static class BlockData
@@ -534,7 +534,8 @@ public abstract class Structure
 
 	public static class Schematic extends HashSet<Cuboid>
 	{
-		private String name, designer;
+		private final String name;
+		private final String designer;
 
 		public Schematic(String name, String designer)
 		{
@@ -563,6 +564,7 @@ public abstract class Structure
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static class Util
 	{
 		public static Save getStructureSave(Location location, boolean filter)
@@ -649,8 +651,7 @@ public abstract class Structure
 			if(isInRadiusWithFlag(location, Flag.NO_GRIEFING, true))
 			{
 				Save save = getInRadiusWithFlag(location, Flag.NO_GRIEFING, true);
-				if(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId())) return false;
-				return true;
+				return !(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId()));
 			}
 			return false;
 		}

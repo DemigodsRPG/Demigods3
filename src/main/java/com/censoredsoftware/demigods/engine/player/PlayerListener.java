@@ -15,7 +15,7 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 
 public class PlayerListener implements Listener
 {
-	private static QuitReasonHandler quitReasonFilter = new QuitReasonHandler();
+	private static final QuitReasonHandler quitReasonFilter = new QuitReasonHandler();
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)

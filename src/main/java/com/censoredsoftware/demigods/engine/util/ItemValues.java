@@ -16,7 +16,7 @@ public class ItemValues
 		if(item == null) return 0;
 
 		// Define variables
-		double multiplier = 0;
+		double multiplier = 0; // TODO this.
 
 		// Set the multiplier
 		switch(item.getType())

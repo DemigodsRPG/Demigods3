@@ -168,8 +168,7 @@ public class Storm extends Ability
 	{
 		public static boolean strikeLightning(Player player, LivingEntity target)
 		{
-			if(Battle.Util.canTarget(target)) return strikeLightning(player, target.getLocation(), true);
-			return false;
+			return Battle.Util.canTarget(target) && strikeLightning(player, target.getLocation(), true);
 		}
 
 		public static boolean strikeLightning(Player player, Location target, boolean notify)

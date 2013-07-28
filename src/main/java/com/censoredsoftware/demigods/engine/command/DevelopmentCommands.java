@@ -117,24 +117,24 @@ public class DevelopmentCommands extends DCommand
 		return false;
 	}
 
-    /**
-     * Check to see if an input string is a float.
-     *
-     * @param string The input string.
-     * @return True if the string is a float.
-     */
-    private static boolean isFloat(String string)
-    {
-        try
-        {
-            Float.parseFloat(string);
-            return true;
-        }
-        catch(Exception e)
-        {
-            return false;
-        }
-    }
+	/**
+	 * Check to see if an input string is a float.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a float.
+	 */
+	private static boolean isFloat(String string)
+	{
+		try
+		{
+			Float.parseFloat(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
 
 	private static boolean removeChar(CommandSender sender, String[] args)
 	{

@@ -82,7 +82,6 @@ public class FlagListener implements Listener
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
 					drop.remove();
-					continue;
 				}
 			}
 		}, 1);

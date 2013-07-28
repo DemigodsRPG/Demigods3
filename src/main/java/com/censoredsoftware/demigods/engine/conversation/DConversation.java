@@ -15,7 +15,7 @@ public interface DConversation
 		// NoGrief
 		PRAYER(new Prayer());
 
-		private DConversation conversationInfo;
+		private final DConversation conversationInfo;
 
 		private Required(DConversation conversationInfo)
 		{

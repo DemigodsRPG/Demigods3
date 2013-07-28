@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -11,6 +10,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 /**
@@ -32,7 +32,7 @@ public class DemigodsPlugin extends JavaPlugin
 			// Print success!
 			Messages.info("Successfully enabled.");
 		}
-		catch(DemigodsStartupException e)
+		catch(DemigodsStartupException ignored)
 		{}
 	}
 

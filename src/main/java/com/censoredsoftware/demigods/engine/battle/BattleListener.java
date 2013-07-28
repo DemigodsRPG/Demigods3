@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.battle;
 
-import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -13,6 +12,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import com.censoredsoftware.demigods.engine.util.Messages;
 
 public class BattleListener implements Listener
 {
@@ -96,10 +97,9 @@ public class BattleListener implements Listener
 	{
 		boolean to = Battle.Util.existsInRadius(toLocation);
 		boolean from = Battle.Util.existsInRadius(fromLocation);
-		boolean enter = to == true && from == false;
-		boolean exit = to == false && from == true;
+		boolean enter = to && !from;
+		boolean exit = !to && from;
 		if(enter) Battle.Util.getInRadius(toLocation).getMeta().addParticipant(participant);
-		if(exit && Battle.Util.isInBattle(participant)) return true;
-		return false;
+		return exit && Battle.Util.isInBattle(participant);
 	}
 }

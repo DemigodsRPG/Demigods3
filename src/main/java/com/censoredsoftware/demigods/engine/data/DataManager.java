@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.engine.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.censoredsoftware.demigods.engine.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,6 +15,7 @@ import redis.clients.johm.JOhm;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.google.common.collect.Maps;
 
 public class DataManager

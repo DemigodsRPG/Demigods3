@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.NoSplosion;
 
 public class OmegaX17 extends Deity

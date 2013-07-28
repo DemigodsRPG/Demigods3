@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Generates;
-import com.censoredsoftware.demigods.engine.util.Spigots;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -27,6 +24,9 @@ import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Generates;
+import com.censoredsoftware.demigods.engine.util.Spigots;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Sets;
 
 public class Discoball extends Ability
@@ -150,7 +150,7 @@ public class Discoball extends Ability
 
 	public static class Util
 	{
-		public final static void discoBall(final Player player)
+		public static void discoBall(final Player player)
 		{
 			// Set variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
@@ -176,7 +176,7 @@ public class Discoball extends Ability
 			}, 40);
 		}
 
-		public final static void balls(Player player)
+		public static void balls(Player player)
 		{
 			for(Location location : DLocation.Util.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
 			{
@@ -185,7 +185,7 @@ public class Discoball extends Ability
 
 		}
 
-		public final static void spawnBall(Location location)
+		public static void spawnBall(Location location)
 		{
 			final FallingBlock discoBall = location.getWorld().spawnFallingBlock(location, Material.GLOWSTONE, (byte) 0);
 			discoBalls.add(discoBall);
@@ -200,23 +200,23 @@ public class Discoball extends Ability
 			}, 600);
 		}
 
-		public final static void rainbow(Player disco, Player player)
+		public static void rainbow(Player disco, Player player)
 		{
 			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Generates.generateIntRange(0, 15));
 			if(Demigods.runningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 		}
 
-		public final static void playRandomNote(Location location, float volume)
+		public static void playRandomNote(Location location, float volume)
 		{
 			location.getWorld().playSound(location, Sound.NOTE_BASS_GUITAR, volume, (float) ((double) Generates.generateIntRange(5, 10) / 10.0));
 		}
 
-		public final static void sparkleSparkle(Location location)
+		public static void sparkleSparkle(Location location)
 		{
 			if(Demigods.runningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 		}
 
-		public final static void destoryNearby(Location location)
+		public static void destoryNearby(Location location)
 		{
 			location.getWorld().createExplosion(location, 2F);
 		}

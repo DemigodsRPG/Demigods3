@@ -2,9 +2,10 @@ package com.censoredsoftware.demigods.engine.language;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
+
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Unicodes;
-import org.bukkit.ChatColor;
 
 // TODO Replace with YAML.
 

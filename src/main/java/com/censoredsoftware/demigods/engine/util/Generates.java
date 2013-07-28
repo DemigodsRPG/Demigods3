@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
+import java.util.Random;
 
 public class Generates
 {
@@ -28,7 +26,7 @@ public class Generates
 
 	/**
 	 * Generates a random integer with a length of <code>length</code>.
-	 *
+	 * 
 	 * @param length the length of the generated integer.
 	 * @return Integer
 	 */

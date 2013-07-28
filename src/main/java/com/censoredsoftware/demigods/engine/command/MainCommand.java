@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Unicodes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,7 +19,10 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Unicodes;
 import com.google.common.collect.Lists;
 
 public class MainCommand extends DCommand
@@ -196,8 +196,8 @@ public class MainCommand extends DCommand
 											for(String detail : ability.getInfo().getDetails())
 											{
 												StringBuilder details = new StringBuilder(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " ");
-												if(ability.getInfo().getCommand() != null) details.append(ChatColor.GREEN + "/" + ability.getInfo().getCommand().toLowerCase() + ChatColor.WHITE + ": ");
-												details.append(ChatColor.WHITE + detail);
+												if(ability.getInfo().getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getInfo().getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
+												details.append(ChatColor.WHITE).append(detail);
 												add(details.toString());
 											}
 										}

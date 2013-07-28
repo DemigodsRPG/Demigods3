@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 
 public class Task
 {
-	private Info info;
-	private Listener listener;
+	private final Info info;
+	private final Listener listener;
 
 	public Task(Info info, Listener listener)
 	{
@@ -27,12 +27,18 @@ public class Task
 
 	public static class Info
 	{
-		private String name, quest, permission;
-		private int order;
-		private double award, penalty;
-		private java.util.List about, accepted, complete, failed;
-		private List.Type type;
-		private Subtype subtype;
+		private final String name;
+		private final String quest;
+		private final String permission;
+		private final int order;
+		private final double award;
+		private final double penalty;
+		private final java.util.List about;
+		private final java.util.List accepted;
+		private final java.util.List complete;
+		private final java.util.List failed;
+		private final List.Type type;
+		private final Subtype subtype;
 
 		public Info(String name, String quest, String permission, int order, double award, double penalty, java.util.List about, java.util.List accepted, java.util.List complete, java.util.List failed, List.Type type, Subtype subtype)
 		{
@@ -116,11 +122,16 @@ public class Task
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static class List extends ArrayList<Task>
 	{
-		private String name, permission;
-		private java.util.List about, accepted, complete, failed;
-		private Type type;
+		private final String name;
+		private final String permission;
+		private final java.util.List about;
+		private final java.util.List accepted;
+		private final java.util.List complete;
+		private final java.util.List failed;
+		private final Type type;
 
 		public List(String name, String permission, java.util.List about, java.util.List accepted, java.util.List complete, java.util.List failed, Type type, java.util.List tasks)
 		{

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.*;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
@@ -23,6 +21,8 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -503,8 +503,6 @@ public class DCharacter implements Battle.Participant
 		@CollectionSet(of = Ability.Bind.class)
 		private Set<Ability.Bind> binds;
 		@CollectionMap(key = String.class, value = Boolean.class)
-		private Map<String, Boolean> abilityData;
-		@CollectionMap(key = String.class, value = Boolean.class)
 		private Map<String, Boolean> taskData;
 		@CollectionMap(key = String.class, value = Boolean.class)
 		private Map<String, Ability.Devotion> devotionData;
@@ -512,7 +510,6 @@ public class DCharacter implements Battle.Participant
 		void initialize()
 		{
 			this.binds = Sets.newHashSet();
-			this.abilityData = new HashMap<String, Boolean>();
 			this.taskData = new HashMap<String, Boolean>();
 			this.devotionData = new HashMap<String, Ability.Devotion>();
 		}
@@ -968,12 +965,13 @@ public class DCharacter implements Battle.Participant
 			String killedAlliance = "Mortal";
 			if(killed != null) killedAlliance = killed.getAlliance();
 
-			attacker.addKill();
+			if(attacker != null)
+			{
+				attacker.addKill();
+			}
 
-			if(killed == null && attacker == null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_1));
-			else if(killed == null && attacker != null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-			else if(killed != null && attacker == null) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_1).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance));
-			else if(killed != null && attacker != null) Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			if(killed == null) Messages.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			else Messages.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 		}
 
 		// TODO Remake this.

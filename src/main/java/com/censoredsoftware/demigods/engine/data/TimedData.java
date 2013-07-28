@@ -162,16 +162,6 @@ public class TimedData
 			return JOhm.find(TimedData.class, "key", key);
 		}
 
-		public static List<TimedData> findBySubKey(String key, String subKey)
-		{
-			return JOhm.find(TimedData.class, "subKey", subKey);
-		}
-
-		public static List<TimedData> findByExpiration(Long expiration)
-		{
-			return JOhm.find(TimedData.class, "expiration", expiration);
-		}
-
 		public static void remove(String key, String subKey)
 		{
 			if(find(key, subKey) != null) find(key, subKey).delete();

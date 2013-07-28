@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.censoredsoftware.demigods.engine.util.Generates;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -14,6 +13,7 @@ import org.bukkit.block.BlockFace;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.demigods.engine.util.Generates;
 import com.google.common.collect.Sets;
 
 @Model
@@ -87,6 +87,26 @@ public class DLocation
 		return this.id;
 	}
 
+	public Double getX()
+	{
+		return this.X;
+	}
+
+	public Double getY()
+	{
+		return this.Y;
+	}
+
+	public Double getZ()
+	{
+		return this.Z;
+	}
+
+	public String getWorld()
+	{
+		return this.world;
+	}
+
 	public Integer getRegionX()
 	{
 		return this.regionX;
@@ -139,6 +159,7 @@ public class DLocation
 			return JOhm.getAll(DLocation.class);
 		}
 
+		@SuppressWarnings("unchecked")
 		public static Set<DLocation> find(String attribute, Object value)
 		{
 			return Sets.newHashSet((List) JOhm.find(DLocation.class, attribute, value));
@@ -148,7 +169,7 @@ public class DLocation
 		{
 			for(DLocation tracked : loadAll())
 			{
-				if(location.equals(tracked)) return tracked;
+				if(location.getX() == tracked.getX() && location.getY() == tracked.getY() && location.getBlockZ() == tracked.getZ() && location.getWorld().getName().equals(tracked.getWorld())) return tracked;
 			}
 			return create(location);
 		}

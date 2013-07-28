@@ -54,7 +54,6 @@ public class EntityListener implements Listener
 			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getTameable((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getTameable((LivingEntity) attacked).getOwner()))
 			{
 				event.setCancelled(true);
-				return;
 			}
 		}
 	}

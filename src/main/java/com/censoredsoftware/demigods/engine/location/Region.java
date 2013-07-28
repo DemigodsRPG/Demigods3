@@ -10,9 +10,9 @@ public class Region
 	public final static int REGION_LENGTH = 64;
 	public final static int HALF_REGION_LENGTH = REGION_LENGTH / 2;
 
-	private int x;
-	private int z;
-	private String world;
+	private final int x;
+	private final int z;
+	private final String world;
 
 	public Region(int x, int z, String world)
 	{
@@ -36,7 +36,7 @@ public class Region
 		return world;
 	}
 
-	public Location getCenter() throws Exception
+	public Location getCenter()
 	{
 		return new Location(Bukkit.getWorld(world), x, 128, z);
 	}

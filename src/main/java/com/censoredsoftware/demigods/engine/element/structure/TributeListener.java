@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.element.structure;
 
-import com.censoredsoftware.demigods.engine.util.ItemValues;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -20,6 +19,7 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.ItemValues;
 
 public class TributeListener implements Listener
 {
