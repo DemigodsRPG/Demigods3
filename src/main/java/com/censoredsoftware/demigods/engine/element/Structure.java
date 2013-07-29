@@ -284,7 +284,7 @@ public abstract class Structure
 			for(Location location : getBlockLocations(reference))
 			{
 				Structure.BlockData data = getStructureBlockData();
-				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), false);
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), true);
 			}
 		}
 
@@ -516,11 +516,13 @@ public abstract class Structure
 	{
 		private final String name;
 		private final String designer;
+		private int radius;
 
-		public Schematic(String name, String designer)
+		public Schematic(String name, String designer, int groundRadius)
 		{
 			this.name = name;
 			this.designer = designer;
+			this.radius = groundRadius;
 		}
 
 		public Set<Location> getLocations(Location reference)
@@ -531,10 +533,17 @@ public abstract class Structure
 			return locations;
 		}
 
-		public void generate(Location reference)
+		public int getGroundRadius()
 		{
+			return this.radius;
+		}
+
+		public boolean generate(Location reference)
+		{
+			if(Util.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
+			return true;
 		}
 
 		@Override
@@ -673,6 +682,54 @@ public abstract class Structure
 					}
 				}
 			};
+		}
+
+		/**
+		 * Strictly checks the <code>reference</code> location to validate if the area is safe
+		 * for automated generation.
+		 * 
+		 * @param reference the location to be checked
+		 * @param area how big of an area (in blocks) to validate
+		 * @return Boolean
+		 */
+		public static boolean canGenerateStrict(Location reference, int area)
+		{
+			Location location = reference.clone();
+			location.subtract(0, 1, 0);
+			location.add((area / 3), 0, (area / 2));
+
+			// Check ground
+			for(int i = 0; i < area; i++)
+			{
+				if(!location.getBlock().getType().isSolid()) return false;
+				location.subtract(1, 0, 0);
+			}
+
+			// Check ground adjacent
+			for(int i = 0; i < area; i++)
+			{
+				if(!location.getBlock().getType().isSolid()) return false;
+				location.subtract(0, 0, 1);
+			}
+
+			// Check ground adjacent again
+			for(int i = 0; i < area; i++)
+			{
+				if(!location.getBlock().getType().isSolid()) return false;
+				location.add(1, 0, 0);
+			}
+
+			location.add(0, 1, 0);
+
+			// Check air diagonally
+			for(int i = 0; i < area + 1; i++)
+			{
+				if(!location.getBlock().getType().isTransparent()) return false;
+				location.add(0, 1, 1);
+				location.subtract(1, 0, 0);
+			}
+
+			return true;
 		}
 
 		public static Save load(Long id)

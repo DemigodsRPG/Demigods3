@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,10 +16,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Obelisk extends Structure
 {
@@ -77,7 +78,7 @@ public class Obelisk extends Structure
 			add(new BlockData(Material.AIR, 6));
 		}
 	};
-	private final static Schematic general = new Schematic("general", "HmmmQuestionMark")
+	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
@@ -105,7 +106,7 @@ public class Obelisk extends Structure
 			add(new Cuboid(-1, 5, 1, vine4));
 		}
 	};
-	private final static Schematic desert = new Schematic("desert", "HmmmQuestionMark")
+	private final static Schematic desert = new Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
@@ -132,19 +133,27 @@ public class Obelisk extends Structure
 
 	public static enum ObeliskDesign implements Design
 	{
-		GENERAL("general"), DESERT("desert");
+		GENERAL("general", general), DESERT("desert", desert);
 
 		private final String name;
+		private final Schematic schematic;
 
-		private ObeliskDesign(String name)
+		private ObeliskDesign(String name, Schematic schematic)
 		{
 			this.name = name;
+			this.schematic = schematic;
 		}
 
 		@Override
 		public String getName()
 		{
 			return name;
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
 		}
 	}
 
@@ -203,23 +212,23 @@ public class Obelisk extends Structure
 		Save save = new Save();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
-		save.setDesign(getDesign(reference));
+		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.save();
 		if(generate) save.generate();
 		return save;
 	}
 
-	public String getDesign(Location reference)
+	public Design getDesign(Location reference)
 	{
 		switch(reference.getBlock().getBiome())
 		{
 			case BEACH:
 			case DESERT:
 			case DESERT_HILLS:
-				return ObeliskDesign.DESERT.getName();
+				return ObeliskDesign.DESERT;
 			default:
-				return ObeliskDesign.GENERAL.getName();
+				return ObeliskDesign.GENERAL;
 		}
 	}
 

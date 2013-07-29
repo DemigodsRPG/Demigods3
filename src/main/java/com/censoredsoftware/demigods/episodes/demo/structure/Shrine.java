@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,10 +16,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Shrine extends Structure
 {
@@ -68,7 +69,7 @@ public class Shrine extends Structure
 			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
-	private final static Schematic general = new Schematic("general", "_Alex")
+	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
 		{
 			// Create the main block

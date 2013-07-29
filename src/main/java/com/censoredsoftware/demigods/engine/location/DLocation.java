@@ -1,19 +1,21 @@
 package com.censoredsoftware.demigods.engine.location;
 
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.core.util.Randoms;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+
 import redis.clients.johm.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.core.util.Randoms;
+import com.google.common.collect.Sets;
 
 @Model
 public class DLocation
@@ -102,10 +104,10 @@ public class DLocation
 		return this.world;
 	}
 
-    public Region getRegion()
-    {
-        return Region.Util.getRegion(toLocation());
-    }
+	public Region getRegion()
+	{
+		return Region.Util.getRegion(toLocation());
+	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException
@@ -197,54 +199,6 @@ public class DLocation
 			double locY = chunk.getWorld().getHighestBlockYAt(reference);
 			double locZ = reference.getZ();
 			return new Location(chunk.getWorld(), locX, locY, locZ);
-		}
-
-		/**
-		 * Strictly checks the <code>reference</code> location to validate if the area is safe
-		 * for automated generation.
-		 * 
-		 * @param reference the location to be checked
-		 * @param area how big of an area (in blocks) to validate
-		 * @return Boolean
-		 */
-		public static boolean canGenerateStrict(Location reference, int area)
-		{
-			Location location = reference.clone();
-			location.subtract(0, 1, 0);
-			location.add((area / 3), 0, (area / 2));
-
-			// Check ground
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.subtract(1, 0, 0);
-			}
-
-			// Check ground adjacent
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.subtract(0, 0, 1);
-			}
-
-			// Check ground adjacent again
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.add(1, 0, 0);
-			}
-
-			location.add(0, 1, 0);
-
-			// Check air diagonally
-			for(int i = 0; i < area + 1; i++)
-			{
-				if(!location.getBlock().getType().isTransparent()) return false;
-				location.add(0, 1, 1);
-				location.subtract(1, 0, 0);
-			}
-
-			return true;
 		}
 
 		/**
