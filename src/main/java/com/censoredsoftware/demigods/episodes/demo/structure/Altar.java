@@ -546,7 +546,7 @@ class AltarListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "general";
+		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "";
 		if(Admins.useWand(player) && Altar.AltarDesign.getByName(design) != null)
 		{
 			event.setCancelled(true);
