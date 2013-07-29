@@ -540,7 +540,7 @@ public abstract class Structure
 
 		public boolean generate(Location reference)
 		{
-			if(Util.canGenerateStrict(reference, getGroundRadius())) return false;
+			if(!Util.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
 			return true;
