@@ -339,7 +339,7 @@ public abstract class Structure
 			{
 				if(exclude)
 				{
-					if(excludeCuboid) Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
+					if(excludeCuboid) return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
 					return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), Sets.newHashSet(getLocation(reference, eX, eY, eZ)));
 				}
 				return rangeLoop(reference, X, XX, Y, YY, Z, ZZ);
