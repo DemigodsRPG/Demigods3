@@ -473,9 +473,9 @@ public abstract class Structure
 			return this.id;
 		}
 
-		public void generate()
+		public boolean generate()
 		{
-			getStructure().get(this.design).generate(this.reference.toLocation());
+			return getStructure().get(this.design).generate(this.reference.toLocation());
 		}
 
 		public void save()

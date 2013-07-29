@@ -534,6 +534,7 @@ class AltarListener implements Listener
 		 */
 		boolean general = clickedBlock.getType().equals(Material.EMERALD_BLOCK);
 		boolean holy = clickedBlock.getType().equals(Material.COAL_BLOCK);
+		boolean oasis = clickedBlock.getType().equals(Material.DIAMOND_BLOCK);
 		if(Admins.useWand(player) && (general || holy))
 		{
 			event.setCancelled(true);
@@ -549,7 +550,8 @@ class AltarListener implements Listener
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
 			if(holy) save.setDesign("holy");
 			if(general) save.setDesign("general");
-			save.generate();
+			if(oasis) save.setDesign("oasis");
+			if(!save.generate()) player.sendMessage(ChatColor.RED + "Could not generate.");
 
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 			return;
