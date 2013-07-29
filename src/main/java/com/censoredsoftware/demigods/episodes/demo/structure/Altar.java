@@ -339,17 +339,17 @@ public class Altar extends Structure
 	{
 		{
 			// Enchantment Table
-			add(new Cuboid(0, 1, 0, smoothSandStone));
-			add(new Cuboid(0, 2, 0, enchantTable));
+			add(new Cuboid(0, 0, 0, smoothSandStone));
+			add(new Cuboid(0, 1, 0, enchantTable));
 
 			// Ground
-			add(new Cuboid(-3, 0, -3, 3, 0, 3, sandyGrass).exclude(-2, 0, -2, 2, 0, 2));
-			add(new Cuboid(-2, 0, -2, 2, 0, 2, grass));
+			add(new Cuboid(-3, -1, -3, 3, -1, 3, sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
+			add(new Cuboid(-2, -1, -2, 2, -1, 2, grass));
 
-			add(new Cuboid(-1, 1, -1, -1, 1, 1, sandStairWest));
-			add(new Cuboid(1, 1, -1, 1, 1, 1, sandStairEast));
-			add(new Cuboid(0, 1, -1, sandStairNorth));
-			add(new Cuboid(0, 1, 1, sandStairSouth));
+			add(new Cuboid(-1, 0, -1, -1, 0, 1, sandStairWest));
+			add(new Cuboid(1, 0, -1, 1, 0, 1, sandStairEast));
+			add(new Cuboid(0, 0, -1, sandStairNorth));
+			add(new Cuboid(0, 0, 1, sandStairSouth));
 
 			// TODO: Add grass/flower generation
 		}
