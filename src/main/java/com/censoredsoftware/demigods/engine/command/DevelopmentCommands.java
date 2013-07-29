@@ -2,10 +2,10 @@ package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.core.improve.ListedCommand;
 import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.core.util.StopWatches;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.StopWatches;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,7 +88,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-        StopWatches.end(StopWatches.start(), "test3");
+        // UNUSED
 
 		return true;
 	}

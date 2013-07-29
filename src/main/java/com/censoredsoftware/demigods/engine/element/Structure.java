@@ -2,11 +2,11 @@ package com.censoredsoftware.demigods.engine.element;
 
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.StopWatches;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.StopWatches;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
@@ -605,13 +605,16 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
-            StopWatch stopWatch = StopWatches.start();
+            StopWatch stopWatch = StopWatches.start(); // TODO
+
 			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
-            StopWatches.end(stopWatch, "partOfStructureWithFlag");
-			return false;
+
+            Demigods.message.broadcast("partOfStructureWithFlag:" + StopWatches.end(stopWatch)); // TODO
+
+            return false;
 		}
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag, boolean filter)
