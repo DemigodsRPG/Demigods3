@@ -28,6 +28,8 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
+// TODO Optimize and generalize methods.
+
 public class Altar extends Structure
 {
 	private final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
@@ -355,7 +357,7 @@ public class Altar extends Structure
 
 	public static enum AltarDesign implements Design
 	{
-		GENERAL("general", general), HOLY("holy", holy), OASIS("oasis", holy);
+		GENERAL("general", general), HOLY("holy", holy), OASIS("oasis", oasis);
 
 		private final String name;
 		private final Schematic schematic;
