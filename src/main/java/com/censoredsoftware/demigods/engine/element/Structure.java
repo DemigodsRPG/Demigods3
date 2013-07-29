@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.element;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -230,7 +229,6 @@ public abstract class Structure
 		 */
 		public Cuboid(int X, int Y, int Z, List<Structure.BlockData> blockData)
 		{
-			if(blockData.size() == 0 || blockData.size() > 10) throw new IllegalArgumentException("Incorrect block data list size.");
 			this.X = this.XX = X;
 			this.Y = this.YY = Y;
 			this.Z = this.ZZ = Z;
@@ -253,7 +251,6 @@ public abstract class Structure
 		 */
 		public Cuboid(int X, int Y, int Z, int XX, int YY, int ZZ, List<Structure.BlockData> blockData)
 		{
-			if(blockData.size() == 0 || blockData.size() > 10) throw new IllegalArgumentException("Incorrect block data list size.");
 			this.X = X;
 			this.Y = Y;
 			this.Z = Z;
@@ -316,15 +313,11 @@ public abstract class Structure
 		 */
 		public Structure.BlockData getStructureBlockData()
 		{
-			if(blockData.size() == 1) return blockData.get(0);
-			return new ArrayList<BlockData>(10)
+			for(BlockData data : blockData)
 			{
-				{
-					for(Structure.BlockData block : blockData)
-						for(int i = 0; i < block.getOdds(); i++)
-							add(block);
-				}
-			}.get(Randoms.generateIntRange(0, 9));
+				if(Randoms.generateIntRange(0, 10 - data.getOdds()) == 0) return data;
+			}
+			return blockData.get(0);
 		}
 
 		/**
