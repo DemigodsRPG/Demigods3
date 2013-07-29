@@ -24,10 +24,7 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 
 public abstract class Structure
 {
@@ -329,10 +326,7 @@ public abstract class Structure
 				}
 			});
 			if(check.isEmpty()) return getStructureBlockData();
-			for(BlockData result : check)
-			{
-				return result;
-			}
+			Lists.newArrayList(check).get(Randoms.generateIntRange(0, check.size() - 1));
 			throw new BlockDataException();
 		}
 
