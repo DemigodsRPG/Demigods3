@@ -605,15 +605,10 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
-			// StopWatch stopWatch = StopWatches.start(); // TODO
-
 			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
-
-			// Demigods.message.broadcast("partOfStructureWithFlag:" + StopWatches.end(stopWatch)); // TODO
-
 			return false;
 		}
 

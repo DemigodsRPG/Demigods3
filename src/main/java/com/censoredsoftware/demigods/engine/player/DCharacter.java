@@ -866,6 +866,14 @@ public class DCharacter implements Battle.Participant
 			return JOhm.getAll(DCharacter.class);
 		}
 
+		public static void updateUsableDeities()
+		{
+			for(DCharacter character : loadAll())
+			{
+				character.updateUseable();
+			}
+		}
+
 		public static DCharacter getCharacterByName(String name)
 		{
 			for(DCharacter loaded : loadAll())

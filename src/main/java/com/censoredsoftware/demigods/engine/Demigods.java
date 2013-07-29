@@ -45,8 +45,8 @@ public class Demigods
 
 	// The Game Data
 	protected static Map<String, Deity> deities;
-	protected static Set<Task.List> quests;
 	protected static Set<Structure> structures;
+	protected static Set<Task.List> quests;
 	protected static Set<ListedConversation> conversasions;
 
 	// The engine Default Text
@@ -122,10 +122,7 @@ public class Demigods
 		}
 
 		// Update usable characters
-		for(DCharacter character : DCharacter.Util.loadAll())
-		{
-			character.updateUseable();
-		}
+		DCharacter.Util.updateUsableDeities();
 
 		// Initialize metrics
 		try
