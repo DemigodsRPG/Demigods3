@@ -417,6 +417,9 @@ public class Altar extends Structure
 	{
 		switch(reference.getBlock().getBiome())
 		{
+			case DESERT:
+			case DESERT_HILLS:
+				return reference.clone().add(0, 1, 0);
 			default:
 				return reference.clone().add(0, 2, 0);
 		}
@@ -532,10 +535,8 @@ class AltarListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		boolean general = clickedBlock.getType().equals(Material.EMERALD_BLOCK);
-		boolean holy = clickedBlock.getType().equals(Material.COAL_BLOCK);
-		boolean oasis = clickedBlock.getType().equals(Material.DIAMOND_BLOCK);
-		if(Admins.useWand(player) && (general || holy))
+		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "general";
+		if(Admins.useWand(player) && Altar.AltarDesign.valueOf(design) != null)
 		{
 			event.setCancelled(true);
 
@@ -548,9 +549,7 @@ class AltarListener implements Listener
 
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
-			if(holy) save.setDesign("holy");
-			if(general) save.setDesign("general");
-			if(oasis) save.setDesign("oasis");
+			save.setDesign(design);
 			if(!save.generate()) player.sendMessage(ChatColor.RED + "Could not generate.");
 
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
