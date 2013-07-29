@@ -404,13 +404,11 @@ public class DPlayer
 			{
 				// Toggle on
 				togglePrayingSilent(player, true);
-				player.setSneaking(true);
 			}
 			else
 			{
 				// Toggle off
 				togglePrayingSilent(player, false);
-				player.setSneaking(false);
 
 				// Message them
 				clearChat(player);
@@ -435,6 +433,7 @@ public class DPlayer
 				Conversation prayer = Prayer.startPrayer(player);
 				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
 				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
+                player.setSneaking(true);
 			}
 			else
 			{
@@ -449,6 +448,7 @@ public class DPlayer
 				// Remove the data
 				DataManager.removeTemp(player.getName(), "prayer_conversation");
 				DataManager.removeTemp(player.getName(), "prayer_location");
+                player.setSneaking(false);
 			}
 		}
 
