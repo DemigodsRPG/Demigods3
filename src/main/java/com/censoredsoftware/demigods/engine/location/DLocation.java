@@ -35,10 +35,7 @@ public class DLocation
 	Float yaw;
 	@Indexed
 	@Attribute
-	Integer regionX;
-	@Indexed
-	@Attribute
-	Integer regionZ;
+	String region;
 
 	void setWorld(String world)
 	{
@@ -72,8 +69,7 @@ public class DLocation
 
 	void setRegion(Region region)
 	{
-		this.regionX = region.getX();
-		this.regionZ = region.getZ();
+		this.region = region.toString();
 	}
 
 	public Location toLocation() throws NullPointerException
@@ -106,15 +102,10 @@ public class DLocation
 		return this.world;
 	}
 
-	public Integer getRegionX()
-	{
-		return this.regionX;
-	}
-
-	public Integer getRegionZ()
-	{
-		return this.regionZ;
-	}
+    public Region getRegion()
+    {
+        return Region.Util.getRegion(toLocation());
+    }
 
 	@Override
 	public Object clone() throws CloneNotSupportedException

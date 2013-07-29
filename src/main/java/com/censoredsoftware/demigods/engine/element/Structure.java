@@ -351,13 +351,7 @@ public abstract class Structure
 		private Set<String> flags;
 		@Indexed
 		@Attribute
-		private Integer regionX;
-		@Indexed
-		@Attribute
-		private Integer regionZ;
-		@Indexed
-		@Attribute
-		private String regionWorld;
+		private String region;
 
 		public void setType(String type)
 		{
@@ -373,7 +367,7 @@ public abstract class Structure
 		public void setReferenceLocation(Location reference)
 		{
 			this.reference = DLocation.Util.create(reference);
-			setRegion(this.reference.getRegionX(), this.reference.getRegionZ(), reference.getWorld().getName());
+			setRegion(this.reference.getRegion());
 		}
 
 		public void setOwner(DCharacter character)
@@ -425,18 +419,9 @@ public abstract class Structure
 			return this.active;
 		}
 
-		public void setRegion(int X, int Z, String WORLD)
-		{
-			this.regionX = X;
-			this.regionZ = Z;
-			this.regionWorld = WORLD;
-			save();
-		}
-
 		public void setRegion(Region region)
 		{
-			this.regionX = region.getX();
-			this.regionZ = region.getZ();
+			this.region = region.toString();
 			save();
 		}
 
@@ -455,14 +440,9 @@ public abstract class Structure
 			save();
 		}
 
-		public int getRegionX()
+		public Region getRegion()
 		{
-			return this.regionX;
-		}
-
-		public int getRegionZ()
-		{
-			return this.regionZ;
+			return this.reference.getRegion();
 		}
 
 		public Boolean hasFlag(Structure.Flag flag)
@@ -584,14 +564,14 @@ public abstract class Structure
 				{
 					for(int x : Ranges.closed(region.getX() - Region.REGION_LENGTH, region.getX() + Region.REGION_LENGTH).asSet(Region.Util.size()))
 						for(int y : Ranges.closed(region.getZ() - Region.REGION_LENGTH, region.getZ() + Region.REGION_LENGTH).asSet(Region.Util.size()))
-							addAll(getStructuresInSingleRegion(x, y, region.getWorld()));
+							addAll(getStructuresInSingleRegion(region));
 				}
 			};
 		}
 
-		public static Set<Save> getStructuresInSingleRegion(final int X, final int Z, String world)
+		public static Set<Save> getStructuresInSingleRegion(Region region)
 		{
-			return Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionWorld", world)), Sets.intersection(Sets.newHashSet((List) JOhm.find(Save.class, "regionX", X)), Sets.newHashSet((List) JOhm.find(Save.class, "regionZ", Z))));
+			return Sets.newHashSet((List) JOhm.find(Save.class, "region", region.toString()));
 		}
 
 		public static boolean partOfStructureWithType(Location location, String type, boolean filter)
@@ -666,7 +646,7 @@ public abstract class Structure
 
 		public static Set<Save> filterForRegion(Location location, Set<Save> structures, boolean filter)
 		{
-			if(filter) return Sets.intersection(structures, getStructuresInRegionalArea(location));
+			if(filter) return Sets.intersection(getStructuresInRegionalArea(location), structures);
 			return structures;
 		}
 
