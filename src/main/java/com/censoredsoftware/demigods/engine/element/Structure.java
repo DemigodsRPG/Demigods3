@@ -558,13 +558,12 @@ public abstract class Structure
 
 		public static Set<Save> getStructuresInRegionalArea(Location location)
 		{
-			final Region region = Region.Util.getRegion(location);
+			final Region center = Region.Util.getRegion(location);
 			return new HashSet<Save>()
 			{
 				{
-					for(int x : Ranges.closed(region.getX() - Region.REGION_LENGTH, region.getX() + Region.REGION_LENGTH).asSet(Region.Util.size()))
-						for(int y : Ranges.closed(region.getZ() - Region.REGION_LENGTH, region.getZ() + Region.REGION_LENGTH).asSet(Region.Util.size()))
-							addAll(getStructuresInSingleRegion(region));
+					for(Region region : center.getSurroundingRegions())
+                        addAll(getStructuresInSingleRegion(region));
 				}
 			};
 		}
