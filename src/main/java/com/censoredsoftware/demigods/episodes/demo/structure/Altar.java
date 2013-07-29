@@ -561,7 +561,11 @@ class AltarListener implements Listener
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
 			save.setDesign(design);
-			if(!save.generate()) player.sendMessage(ChatColor.RED + "Could not generate.");
+			if(!save.generate())
+			{
+				player.sendMessage(ChatColor.RED + "Could not generate.");
+				save.remove();
+			}
 
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 			return;
