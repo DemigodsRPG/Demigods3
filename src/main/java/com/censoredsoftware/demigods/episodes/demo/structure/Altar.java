@@ -166,7 +166,7 @@ public class Altar extends Structure
 	{
 		{
 			add(new BlockData(Material.AIR, 4));
-			add(new BlockData(Material.LONG_GRASS, (byte) 2, 4, true));
+			add(new BlockData(Material.LONG_GRASS, 4, true));
 			add(new BlockData(Material.YELLOW_FLOWER, 1, true));
 			add(new BlockData(Material.RED_ROSE, 1, true));
 		}
@@ -351,17 +351,18 @@ public class Altar extends Structure
 			add(new Cuboid(0, 0, 0, smoothSandStone));
 			add(new Cuboid(0, 1, 0, enchantTable));
 
+			// PWETTY FLOWAS AND GWASS!
+			add(new Cuboid(-3, 0, -3, 3, 0, 3, prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
+
 			// Ground
 			add(new Cuboid(-3, -1, -3, 3, -1, 3, sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
 			add(new Cuboid(-2, -1, -2, 2, -1, 2, grass));
 
+			// Table
 			add(new Cuboid(-1, 0, -1, -1, 0, 1, sandStairWest));
 			add(new Cuboid(1, 0, -1, 1, 0, 1, sandStairEast));
 			add(new Cuboid(0, 0, -1, sandStairNorth));
 			add(new Cuboid(0, 0, 1, sandStairSouth));
-
-			// PWETTY FLOWAS AND GWASS!
-			add(new Cuboid(-3, 0, -3, 3, 0, 3, prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
 		}
 	};
 
