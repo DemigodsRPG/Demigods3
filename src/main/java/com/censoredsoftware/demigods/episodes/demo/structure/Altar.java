@@ -377,6 +377,15 @@ public class Altar extends Structure
 		{
 			return schematic;
 		}
+
+		public AltarDesign getByName(String name)
+		{
+			for(AltarDesign design : AltarDesign.values())
+			{
+				if(design.getName().equalsIgnoreCase(name)) return design;
+			}
+			return null;
+		}
 	}
 
 	@Override
