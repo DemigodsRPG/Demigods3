@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.util.Admins;
-import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,25 +19,22 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Altar extends Structure
 {
+	// Holy design block data
 	private final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
 	{
 		{
 			add(new BlockData(Material.ENCHANTMENT_TABLE));
-		}
-	};
-	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_BRICK, 8));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
 		}
 	};
 	private final static List<BlockData> quartz = new ArrayList<BlockData>(1)
@@ -55,18 +49,6 @@ public class Altar extends Structure
 			add(new BlockData(Material.QUARTZ_BLOCK, (byte) 2));
 		}
 	};
-	private final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.getMaterial(44), (byte) 5));
-		}
-	};
-	private final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.getMaterial(44), (byte) 13));
-		}
-	};
 	private final static List<BlockData> quartzSlabBottom = new ArrayList<BlockData>(1)
 	{
 		{
@@ -79,28 +61,10 @@ public class Altar extends Structure
 			add(new BlockData(Material.getMaterial(44), (byte) 15));
 		}
 	};
-	private final static List<BlockData> stoneBrickSpecial = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.getMaterial(98), (byte) 3));
-		}
-	};
 	private final static List<BlockData> quartzSpecial = new ArrayList<BlockData>(1)
 	{
 		{
 			add(new BlockData(Material.QUARTZ_BLOCK, (byte) 1));
-		}
-	};
-	private final static List<BlockData> spruceWood = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.getMaterial(5), (byte) 1));
-		}
-	};
-	private final static List<BlockData> spruceSlab = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.getMaterial(126), (byte) 1));
 		}
 	};
 	private final static List<BlockData> birchWood = new ArrayList<BlockData>(1)
@@ -115,6 +79,95 @@ public class Altar extends Structure
 			add(new BlockData(Material.getMaterial(126), (byte) 2));
 		}
 	};
+
+	// General design block data
+	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
+	{
+		{
+			add(new BlockData(Material.SMOOTH_BRICK, 8));
+			add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
+			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+		}
+	};
+	private final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
+	{
+		{
+			add(new BlockData(Material.getMaterial(44), (byte) 5));
+		}
+	};
+	private final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
+	{
+		{
+			add(new BlockData(Material.getMaterial(44), (byte) 13));
+		}
+	};
+
+	private final static List<BlockData> stoneBrickSpecial = new ArrayList<BlockData>(1)
+	{
+		{
+			add(new BlockData(Material.getMaterial(98), (byte) 3));
+		}
+	};
+
+	private final static List<BlockData> spruceWood = new ArrayList<BlockData>(1)
+	{
+		{
+			add(new BlockData(Material.getMaterial(5), (byte) 1));
+		}
+	};
+	private final static List<BlockData> spruceSlab = new ArrayList<BlockData>(1)
+	{
+		{
+			add(new BlockData(Material.getMaterial(126), (byte) 1));
+		}
+	};
+
+	// Oasis design block data
+	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.SAND, 2));
+			add(new BlockData(Material.GRASS, 8));
+		}
+	};
+	private final static List<BlockData> grass = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.GRASS));
+		}
+	};
+	private final static List<BlockData> sandStairNorth = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.getMaterial(128), (byte) 6));
+		}
+	};
+	private final static List<BlockData> sandStairSouth = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.getMaterial(128), (byte) 7));
+		}
+	};
+	private final static List<BlockData> sandStairEast = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.getMaterial(128), (byte) 5));
+		}
+	};
+	private final static List<BlockData> sandStairWest = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.getMaterial(128), (byte) 4));
+		}
+	};
+	private final static List<BlockData> smoothSandStone = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.SANDSTONE, (byte) 2));
+
+		}
+	};
+
 	private final static Schematic general = new Schematic("general", "_Alex")
 	{
 		{
@@ -287,22 +340,49 @@ public class Altar extends Structure
 			add(new Cuboid(-2, 1, -2, 2, 1, 2, quartzSlabBottom).exclude(0, 1, 0));
 		}
 	};
+	private final static Schematic oasis = new Schematic("holy", "_Alex")
+	{
+		{
+			// Enchantment Table
+			add(new Cuboid(0, 1, 0, smoothSandStone));
+			add(new Cuboid(0, 2, 0, enchantTable));
+
+			// Ground
+			add(new Cuboid(-3, 0, -3, 3, 0, 3, sandyGrass).exclude(-2, 0, -2, 2, 0, 2));
+			add(new Cuboid(-2, 0, -2, 2, 0, 2, grass));
+
+			add(new Cuboid(-1, 1, -1, -1, 1, 1, sandStairWest));
+			add(new Cuboid(1, 1, -1, 1, 1, 1, sandStairEast));
+			add(new Cuboid(0, 1, -1, sandStairNorth));
+			add(new Cuboid(0, 1, 1, sandStairSouth));
+
+			// TODO: Add grass/flower generation
+		}
+	};
 
 	public static enum AltarDesign implements Design
 	{
-		GENERAL("general"), HOLY("holy");
+		GENERAL("general", general), HOLY("holy", holy), OASIS("oasis", oasis);
 
 		private final String name;
+		private final Schematic schematic;
 
-		private AltarDesign(String name)
+		private AltarDesign(String name, Schematic schematic)
 		{
 			this.name = name;
+			this.schematic = schematic;
 		}
 
 		@Override
 		public String getName()
 		{
 			return name;
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
 		}
 	}
 
@@ -328,8 +408,7 @@ public class Altar extends Structure
 	@Override
 	public Schematic get(String name)
 	{
-		if(name.equals(general.toString())) return general;
-		return holy;
+		return AltarDesign.valueOf(name).getSchematic();
 	}
 
 	@Override
@@ -341,11 +420,11 @@ public class Altar extends Structure
 	@Override
 	public Location getClickableBlock(Location reference)
 	{
-        switch(reference.getBlock().getBiome())
-        {
-            default:
-                return reference.clone().add(0, 2, 0);
-        }
+		switch(reference.getBlock().getBiome())
+		{
+			default:
+				return reference.clone().add(0, 2, 0);
+		}
 	}
 
 	@Override
@@ -379,6 +458,10 @@ public class Altar extends Structure
 		{
 			case ICE_PLAINS:
 				return AltarDesign.HOLY.getName();
+			case DESERT:
+				return AltarDesign.OASIS.getName();
+			case DESERT_HILLS:
+				return AltarDesign.OASIS.getName();
 			default:
 				return AltarDesign.GENERAL.getName();
 		}
@@ -455,9 +538,8 @@ class AltarListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		boolean general = clickedBlock.getType().equals(Material.EMERALD_BLOCK);
-		boolean holy = clickedBlock.getType().equals(Material.COAL_BLOCK);
-		if(Admins.useWand(player) && (general || holy))
+		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "general";
+		if(Admins.useWand(player) && Altar.AltarDesign.valueOf(design) != null)
 		{
 			event.setCancelled(true);
 
@@ -470,8 +552,7 @@ class AltarListener implements Listener
 
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
-			if(holy) save.setDesign("holy");
-			if(general) save.setDesign("general");
+			save.setDesign(design);
 			save.generate();
 
 			player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
@@ -489,7 +570,6 @@ class AltarListener implements Listener
 				Admins.sendDebug(ChatColor.RED + "Altar at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed by " + "ADMIN WAND" + ".");
 
 				// Remove the Altar
-
 				altar.remove();
 
 				DataManager.removeTimed(player.getName(), "destroy_altar");

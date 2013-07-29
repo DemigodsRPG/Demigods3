@@ -563,7 +563,7 @@ public abstract class Structure
 			{
 				{
 					for(Region region : center.getSurroundingRegions())
-                        addAll(getStructuresInSingleRegion(region));
+						addAll(getStructuresInSingleRegion(region));
 				}
 			};
 		}
@@ -694,6 +694,8 @@ public abstract class Structure
 	public interface Design
 	{
 		public String getName();
+
+		public Schematic getSchematic();
 	}
 
 }
