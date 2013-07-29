@@ -166,7 +166,7 @@ public class Altar extends Structure
 	{
 		{
 			add(new BlockData(Material.AIR, 4));
-			add(new BlockData(Material.LONG_GRASS, 4, true));
+			add(new BlockData(Material.LONG_GRASS, (byte) 1, 4, true));
 			add(new BlockData(Material.YELLOW_FLOWER, 1, true));
 			add(new BlockData(Material.RED_ROSE, 1, true));
 		}
