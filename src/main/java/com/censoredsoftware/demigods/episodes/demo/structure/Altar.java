@@ -152,8 +152,8 @@ public class Altar extends Structure
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.SAND, 2));
-			add(new BlockData(Material.GRASS, 8));
+			add(new BlockData(Material.SAND, 8));
+			add(new BlockData(Material.GRASS, 2));
 		}
 	};
 	private final static List<BlockData> grass = new ArrayList<BlockData>()
@@ -546,7 +546,7 @@ class AltarListener implements Listener
 		/**
 		 * Handle Altars
 		 */
-		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "general";
+		String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "";
 		if(Admins.useWand(player) && Altar.AltarDesign.getByName(design) != null)
 		{
 			event.setCancelled(true);
