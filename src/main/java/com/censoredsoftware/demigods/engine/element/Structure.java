@@ -313,9 +313,9 @@ public abstract class Structure
 		 */
 		public Structure.BlockData getStructureBlockData()
 		{
-			for(BlockData data : blockData)
+			for(int i = 0; i < blockData.size(); i++)
 			{
-				if(Randoms.generateIntRange(0, 100 - data.getOdds()) == 0) return data;
+				if(Randoms.generateIntRange(0, (100 - blockData.get(i).getOdds() * (i + 1) / 3)) == 0) return blockData.get(i);
 			}
 			return blockData.get(0);
 		}
