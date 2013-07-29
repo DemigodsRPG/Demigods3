@@ -197,7 +197,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.censoredsoftware.minecraft:core</include>
+                                    <include>com.censoredsoftware.minecraft:cs-core</include>
                                     <include>org.mcstats.bukkit:metrics</include>
                                     <include>redis.clients:jedis-cs</include>
                                     <include>redis:johm-cs</include>
