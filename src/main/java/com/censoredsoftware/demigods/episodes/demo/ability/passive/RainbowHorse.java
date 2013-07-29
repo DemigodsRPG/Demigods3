@@ -16,13 +16,13 @@ public class RainbowHorse extends Ability
 	private final static String name = "Horse of a Different Color", command = null;
 	private final static int cost = 0, delay = 0, repeat = 100;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.PASSIVE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("All of you horse are belong to us.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	public RainbowHorse(String deity, String permission)
 	{

@@ -17,13 +17,13 @@ public class Swim extends Ability
     private final static String name = "Swim", command = null;
     private final static int cost = 0, delay = 0, repeat = 20;
     private static Info info;
+    private final static Devotion.Type type = Devotion.Type.PASSIVE;
     private final static List<String> details = new ArrayList<String>(1)
     {
         {
             add("Crouch while in water to swim very fast.");
         }
     };
-    private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
     public Swim(final String deity, String permission)
     {

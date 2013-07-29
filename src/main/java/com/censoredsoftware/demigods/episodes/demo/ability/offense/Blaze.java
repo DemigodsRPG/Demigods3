@@ -23,13 +23,13 @@ public class Blaze extends Ability
 	private final static String name = "Blaze", command = "blaze";
 	private final static int cost = 400, delay = 15, repeat = 0;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.OFFENSE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Ignite the ground at the target location.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	public Blaze(final String deity, String permission)
 	{

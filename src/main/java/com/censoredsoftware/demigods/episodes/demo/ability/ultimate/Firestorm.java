@@ -25,13 +25,13 @@ public class Firestorm extends Ability
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Rain down fireballs from the sky.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
 
 	public Firestorm(final String deity, String permission)
 	{

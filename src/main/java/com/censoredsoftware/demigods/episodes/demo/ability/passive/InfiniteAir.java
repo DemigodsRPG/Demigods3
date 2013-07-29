@@ -17,13 +17,13 @@ public class InfiniteAir extends Ability
 	private final static String name = "InfiniteAir", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.PASSIVE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Have infinite air when moving underwater.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	public InfiniteAir(final String deity, String permission)
 	{

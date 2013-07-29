@@ -19,13 +19,13 @@ public class Template extends Ability
 	private final static String name = "Test", command = "test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.SUPPORT;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Test your target.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.SUPPORT;
 
 	public Template(final String deity, String permission)
 	{

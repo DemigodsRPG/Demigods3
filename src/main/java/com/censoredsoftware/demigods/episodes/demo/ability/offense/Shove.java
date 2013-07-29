@@ -21,13 +21,13 @@ public class Shove extends Ability
 	private final static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
 	private final static int cost = 170, delay = 15, repeat = 0;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.DEFENSE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Shove your target away from you.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.DEFENSE;
 
 	public Shove()
 	{

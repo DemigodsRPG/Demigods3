@@ -15,17 +15,18 @@ public class NoSplosion extends Ability
 {
 	private final static String name = "No Explosion Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = new ArrayList<String>(1)
+    private static Info info;
+    private final static Devotion.Type type = Devotion.Type.PASSIVE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Take no damage from explosions.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
 
 	public NoSplosion(final String deity, String permission)
 	{
-		super(new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
+		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
 			@EventHandler(priority = EventPriority.MONITOR)
 			public void onEntityDamange(EntityDamageEvent damageEvent)

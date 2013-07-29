@@ -33,17 +33,16 @@ public class Discoball extends Ability
 	private final static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
 	private final static int cost = 30, delay = 30, repeat = 4;
 	private static Info info;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Spread the music while causing destruction.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+    private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 
-	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
-
-	protected Discoball()
+    protected Discoball()
 	{
 		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{

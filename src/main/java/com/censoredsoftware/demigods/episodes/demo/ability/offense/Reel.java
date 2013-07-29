@@ -21,14 +21,14 @@ public class Reel extends Ability
 	private final static String name = "Reel", command = "reel";
 	private final static int cost = 120, delay = 1100, repeat = 0;
 	private static Info info;
-	private final static Material weapon = Material.FISHING_ROD;
-	private final static List<String> details = new ArrayList<String>(1)
+    private final static Devotion.Type type = Devotion.Type.OFFENSE;
+    private final static Material weapon = Material.FISHING_ROD;
+    private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Use a fishing rod for a stronger attack.");
 		}
 	};
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
 
 	public Reel(final String deity, String permission)
 	{
