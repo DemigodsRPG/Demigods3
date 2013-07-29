@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +21,8 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
@@ -311,13 +315,17 @@ public abstract class Structure
 		 * 
 		 * @return A material.
 		 */
-		public Structure.BlockData getStructureBlockData()
+		public BlockData getStructureBlockData()
 		{
-			for(int i = 0; i < blockData.size(); i++)
+			final int chance = Randoms.generateIntRange(1, 100);
+			return Collections2.filter(blockData, new Predicate<BlockData>()
 			{
-				if(Randoms.generateIntRange(0, (100 - blockData.get(i).getOdds()) * (blockData.size() / (i + 1))) == 0) return blockData.get(i);
-			}
-			return blockData.get(0);
+				@Override
+				public boolean apply(@Nullable BlockData blockData)
+				{
+					return blockData.getOdds() >= chance;
+				}
+			}).iterator().next();
 		}
 
 		/**
