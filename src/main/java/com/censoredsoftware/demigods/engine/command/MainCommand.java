@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.core.improve.ListedCommand;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -11,16 +22,6 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 public class MainCommand extends ListedCommand
 {
@@ -49,7 +50,7 @@ public class MainCommand extends ListedCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Demigods.message.noPermission(player);
 
-		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().canUse())
+		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
 		{
 			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getInfo().getAlliance().toLowerCase() + " " + deity.getInfo().getName().toLowerCase());

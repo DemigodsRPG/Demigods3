@@ -1,15 +1,16 @@
 package com.censoredsoftware.demigods.engine.element;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public abstract class Deity
 {
@@ -152,7 +153,7 @@ public abstract class Deity
 		public static boolean canUseDeitySilent(Player player, String deity)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			return character != null && character.isDeity(deity) && character.isImmortal();
+			return character != null && character.isImmortal() && character.isDeity(deity);
 		}
 	}
 }

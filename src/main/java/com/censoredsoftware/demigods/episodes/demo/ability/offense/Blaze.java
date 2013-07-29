@@ -1,10 +1,8 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.offense;
 
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,16 +13,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class Blaze extends Ability
 {
 	private final static String name = "Blaze", command = "blaze";
 	private final static int cost = 400, delay = 15, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.OFFENSE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Ignite the ground at the target location.");
@@ -54,6 +55,14 @@ public class Blaze extends Ability
 				}
 			}
 		}, null);
+	}
+
+	public static class EventUtil
+	{
+		public static void callPlayerInteractEvent(PlayerInteractEvent event)
+		{
+			// TODO: Maybe.
+		}
 	}
 
 	public static class Util

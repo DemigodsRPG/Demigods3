@@ -1,17 +1,19 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.*;
+
 import redis.clients.johm.*;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.google.common.collect.Sets;
 
 @Model
 public class Pet implements Battle.Participant
@@ -107,7 +109,7 @@ public class Pet implements Battle.Participant
 			delete();
 			return null;
 		}
-		else if(!this.owner.canUse()) return null;
+		else if(!this.owner.isUsable()) return null;
 		return this.owner;
 	}
 
@@ -119,7 +121,7 @@ public class Pet implements Battle.Participant
 			delete();
 			return null;
 		}
-		else if(!this.owner.canUse()) return null;
+		else if(!this.owner.isUsable()) return null;
 		return this.owner.getDeity();
 	}
 

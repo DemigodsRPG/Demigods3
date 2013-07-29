@@ -1,5 +1,9 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
@@ -7,9 +11,6 @@ import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
@@ -61,7 +62,7 @@ public class ThreadManager
 				@Override
 				public void run()
 				{
-					// Update PVP
+					// Update online players
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
 						DPlayer.Util.getPlayer(player).updateCanPvp();

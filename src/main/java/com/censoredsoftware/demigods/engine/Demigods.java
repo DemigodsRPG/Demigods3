@@ -5,29 +5,31 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.censoredsoftware.core.improve.ListedConversation;
-import com.censoredsoftware.core.module.Configs;
-import com.censoredsoftware.core.module.Messages;
-import com.censoredsoftware.demigods.engine.conversation.Required;
-import com.censoredsoftware.demigods.engine.listener.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
+import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.module.Configs;
+import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.demigods.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.listener.BattleListener;
-import com.censoredsoftware.demigods.engine.command.*;
+import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
+import com.censoredsoftware.demigods.engine.command.GeneralCommands;
+import com.censoredsoftware.demigods.engine.command.MainCommand;
+import com.censoredsoftware.demigods.engine.conversation.Required;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.listener.*;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -35,10 +37,10 @@ public class Demigods
 	// Public Static Access
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
-    public static Messages message;
-    public static Configs config;
+	public static Messages message;
+	public static Configs config;
 
-    // Public Dependency Plugins
+	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
 
 	// The Game Data
@@ -72,16 +74,16 @@ public class Demigods
 		conversation = new ConversationFactory(instance);
 
 		// Setup utilities.
-        config = new Configs(instance, true);
-        message = new Messages(instance);
+		config = new Configs(instance, true);
+		message = new Messages(instance);
 
-        Demigods.deities = new HashMap<String, Deity>()
-        {
-            {
-                for(ListedDeity deity : deities)
-                    put(deity.getDeity().getInfo().getName(), deity.getDeity());
-            }
-        };
+		Demigods.deities = new HashMap<String, Deity>()
+		{
+			{
+				for(ListedDeity deity : deities)
+					put(deity.getDeity().getInfo().getName(), deity.getDeity());
+			}
+		};
 		Demigods.quests = new HashSet<Task.List>()
 		{
 			{
@@ -108,18 +110,24 @@ public class Demigods
 
 		Demigods.text = getTranslation();
 
-		// Initialize soft data.
+		// Initialize data
 		new DataManager();
 		if(!DataManager.isConnected())
 		{
 			message.severe("Demigods was unable to connect to a Redis server.");
 			message.severe("A Redis server is required for Demigods to run.");
-            message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
+			message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
 
-		// Initialize metrics.
+		// Update usable characters
+		for(DCharacter character : DCharacter.Util.loadAll())
+		{
+			character.updateUseable();
+		}
+
+		// Initialize metrics
 		try
 		{
 			// (new Metrics(instance)).start();
@@ -127,12 +135,12 @@ public class Demigods
 		catch(Exception ignored)
 		{}
 
-		// Finish loading the plugin based on the game data.
+		// Finish loading the plugin based on the game data
 		loadDepends(instance);
 		loadListeners(instance);
 		loadCommands(instance);
 
-		// Start game threads.
+		// Start game threads
 		ThreadManager.startThreads(instance);
 
 		// Finally, regenerate structures

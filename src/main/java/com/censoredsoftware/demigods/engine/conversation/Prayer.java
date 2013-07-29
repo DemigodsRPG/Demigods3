@@ -1,17 +1,9 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import com.censoredsoftware.core.improve.ListedConversation;
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,9 +25,18 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -372,7 +373,7 @@ public class Prayer implements ListedConversation
 
 			for(DCharacter character : DPlayer.Util.getCharacters(player))
 			{
-				if(!character.canUse()) continue;
+				if(!character.isUsable()) continue;
 				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 

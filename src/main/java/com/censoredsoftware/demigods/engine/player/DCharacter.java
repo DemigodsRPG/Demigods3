@@ -1,5 +1,21 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import redis.clients.johm.*;
+
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -10,20 +26,6 @@ import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import redis.clients.johm.*;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Model
 public class DCharacter implements Battle.Participant
@@ -61,6 +63,9 @@ public class DCharacter implements Battle.Participant
 	@Attribute
 	@Indexed
 	private Boolean immortal;
+	@Attribute
+	@Indexed
+	private Boolean usable;
 	@Reference
 	private Meta meta;
 	@Reference
@@ -372,9 +377,14 @@ public class DCharacter implements Battle.Participant
 		throw new CloneNotSupportedException();
 	}
 
-	public boolean canUse()
+	public boolean isUsable()
 	{
-		return Deity.Util.getDeity(this.deity) != null;
+		return this.usable;
+	}
+
+	public void updateUseable()
+	{
+		this.usable = Deity.Util.getDeity(this.deity) != null;
 	}
 
 	@Model

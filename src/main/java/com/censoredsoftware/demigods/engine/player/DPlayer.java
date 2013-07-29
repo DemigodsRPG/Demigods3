@@ -1,12 +1,9 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.google.common.collect.Sets;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -14,11 +11,16 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import redis.clients.johm.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.google.common.collect.Sets;
 
 @Model
 public class DPlayer
@@ -152,7 +154,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-            Demigods.message.warning("Character name too long.");
+			Demigods.message.warning("Character name too long.");
 			e.printStackTrace();
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
@@ -175,7 +177,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
-            Demigods.message.severe("There was a problem while teleporting a player to their character.");
+			Demigods.message.severe("There was a problem while teleporting a player to their character.");
 		}
 
 		// Save instances
@@ -206,7 +208,7 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null && this.current.canUse()) return this.current;
+		if(this.current != null && this.current.isUsable()) return this.current;
 		return null;
 	}
 
@@ -222,7 +224,7 @@ public class DPlayer
 			{
 				for(DCharacter character : getRawCharacters())
 				{
-					if(character != null && character.canUse()) add(character);
+					if(character != null && character.isUsable()) add(character);
 				}
 			}
 		};
@@ -235,7 +237,7 @@ public class DPlayer
 
 	public boolean canUseCurrent()
 	{
-		if(getCurrent() == null || !getCurrent().canUse())
+		if(getCurrent() == null || !getCurrent().isUsable())
 		{
 			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
 			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
