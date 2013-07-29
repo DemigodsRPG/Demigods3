@@ -1,8 +1,19 @@
 package com.censoredsoftware.demigods.engine.element;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import redis.clients.johm.*;
+
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.core.util.StopWatches;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
@@ -12,17 +23,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.time.StopWatch;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import redis.clients.johm.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public abstract class Structure
 {
@@ -605,16 +605,16 @@ public abstract class Structure
 
 		public static boolean partOfStructureWithFlag(Location location, Flag flag, boolean filter)
 		{
-            StopWatch stopWatch = StopWatches.start(); // TODO
+			// StopWatch stopWatch = StopWatches.start(); // TODO
 
 			for(Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 			{
 				if(save.getLocations().contains(location)) return true;
 			}
 
-            Demigods.message.broadcast("partOfStructureWithFlag:" + StopWatches.end(stopWatch)); // TODO
+			// Demigods.message.broadcast("partOfStructureWithFlag:" + StopWatches.end(stopWatch)); // TODO
 
-            return false;
+			return false;
 		}
 
 		public static boolean isReferenceBlockWithFlag(Location location, Flag flag, boolean filter)

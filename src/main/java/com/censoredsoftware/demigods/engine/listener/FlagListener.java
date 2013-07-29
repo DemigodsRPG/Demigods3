@@ -1,11 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.core.util.StopWatches;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -15,6 +9,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
+
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.language.TranslationManager;
 
 public class FlagListener implements Listener
 {
@@ -31,15 +30,15 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockBreak(BlockBreakEvent event)
 	{
-        StopWatch stopWatch = StopWatches.start(); // TODO
+		// StopWatch stopWatch = StopWatches.start(); // TODO
 
-        if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TranslationManager.Text.PROTECTED_BLOCK));
 		}
 
-        Demigods.message.broadcast("onBlockBreak:" + StopWatches.end(stopWatch)); // TODO
+		// Demigods.message.broadcast("onBlockBreak:" + StopWatches.end(stopWatch)); // TODO
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

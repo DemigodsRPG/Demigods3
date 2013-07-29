@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.episodes.demo.ability.passive;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,8 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.core.util.StopWatches;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 
@@ -37,7 +34,7 @@ public class Swim extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onPlayerMoveEvent(PlayerMoveEvent event)
 			{
-				StopWatch stopWatch = StopWatches.start(); // TODO
+				// StopWatch stopWatch = StopWatches.start(); // TODO
 
 				Player player = event.getPlayer();
 
@@ -51,7 +48,7 @@ public class Swim extends Ability
 					player.setVelocity(victor);
 				}
 
-				Demigods.message.broadcast("Swimming:" + StopWatches.end(stopWatch)); // TODO
+				// Demigods.message.broadcast("Swimming:" + StopWatches.end(stopWatch)); // TODO
 			}
 		}, null);
 	}
