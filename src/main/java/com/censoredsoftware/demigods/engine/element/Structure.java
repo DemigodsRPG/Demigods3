@@ -52,6 +52,7 @@ public abstract class Structure
 		private Material material;
 		private byte data;
 		private int odds;
+		private boolean physics;
 
 		/**
 		 * Constructor for BlockData with only Material given.
@@ -63,6 +64,20 @@ public abstract class Structure
 			this.material = material;
 			this.data = 0;
 			this.odds = 10;
+			this.physics = false;
+		}
+
+		/**
+		 * Constructor for BlockData with only Material given.
+		 * 
+		 * @param material Material of the block.
+		 */
+		public BlockData(Material material, boolean physics)
+		{
+			this.material = material;
+			this.data = 0;
+			this.odds = 10;
+			this.physics = physics;
 		}
 
 		/**
@@ -77,6 +92,22 @@ public abstract class Structure
 			this.material = material;
 			this.data = 10;
 			this.odds = odds;
+			this.physics = false;
+		}
+
+		/**
+		 * Constructor for BlockData with only Material given and odds given.
+		 * 
+		 * @param material Material of the block.
+		 * @param odds The odds of this object being generated.
+		 */
+		public BlockData(Material material, int odds, boolean physics)
+		{
+			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
+			this.material = material;
+			this.data = 10;
+			this.odds = odds;
+			this.physics = physics;
 		}
 
 		/**
@@ -90,6 +121,21 @@ public abstract class Structure
 			this.material = material;
 			this.data = data;
 			this.odds = 10;
+			this.physics = false;
+		}
+
+		/**
+		 * Constructor for BlockData with only Material and byte data given.
+		 * 
+		 * @param material Material of the block.
+		 * @param data Byte data of the block.
+		 */
+		public BlockData(Material material, byte data, boolean physics)
+		{
+			this.material = material;
+			this.data = data;
+			this.odds = 10;
+			this.physics = physics;
 		}
 
 		/**
@@ -105,6 +151,23 @@ public abstract class Structure
 			this.material = material;
 			this.data = data;
 			this.odds = odds;
+			this.physics = false;
+		}
+
+		/**
+		 * Constructor for BlockData with Material, byte data, and odds given.
+		 * 
+		 * @param material Material of the block.
+		 * @param data Byte data of the block.
+		 * @param odds The odds of this object being generated.
+		 */
+		public BlockData(Material material, byte data, int odds, boolean physics)
+		{
+			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
+			this.material = material;
+			this.data = data;
+			this.odds = odds;
+			this.physics = physics;
 		}
 
 		/**
@@ -135,6 +198,16 @@ public abstract class Structure
 		public int getOdds()
 		{
 			return this.odds;
+		}
+
+		/**
+		 * Get the physics boolean.
+		 * 
+		 * @return If physics should apply on generation.
+		 */
+		public boolean getPhysics()
+		{
+			return this.physics;
 		}
 	}
 
@@ -284,7 +357,7 @@ public abstract class Structure
 			for(Location location : getBlockLocations(reference))
 			{
 				Structure.BlockData data = getStructureBlockData();
-				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), true);
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
 			}
 		}
 
