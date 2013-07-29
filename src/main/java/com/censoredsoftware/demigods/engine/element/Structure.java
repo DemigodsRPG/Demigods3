@@ -87,7 +87,7 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, int odds)
 		{
-			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
+			if(odds == 0 || odds > 100) throw new IllegalArgumentException("Odds must be between 1 and 100.");
 			this.material = material;
 			this.data = 100;
 			this.odds = odds;
@@ -102,7 +102,7 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, int odds, boolean physics)
 		{
-			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
+			if(odds == 0 || odds > 100) throw new IllegalArgumentException("Odds must be between 1 and 100.");
 			this.material = material;
 			this.data = 100;
 			this.odds = odds;
@@ -146,6 +146,7 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, byte data, int odds)
 		{
+			if(odds == 0 || odds > 100) throw new IllegalArgumentException("Odds must be between 1 and 100.");
 			this.material = material;
 			this.data = data;
 			this.odds = odds;
@@ -161,6 +162,7 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, byte data, int odds, boolean physics)
 		{
+			if(odds == 0 || odds > 100) throw new IllegalArgumentException("Odds must be between 1 and 100.");
 			this.material = material;
 			this.data = data;
 			this.odds = odds;
