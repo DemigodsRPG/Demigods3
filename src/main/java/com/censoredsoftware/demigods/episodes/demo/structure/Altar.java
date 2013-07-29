@@ -152,14 +152,23 @@ public class Altar extends Structure
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.SAND, 8));
-			add(new BlockData(Material.GRASS, 2));
+			add(new BlockData(Material.SAND, 6));
+			add(new BlockData(Material.GRASS, 4));
 		}
 	};
 	private final static List<BlockData> grass = new ArrayList<BlockData>()
 	{
 		{
 			add(new BlockData(Material.GRASS));
+		}
+	};
+	private final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.AIR, 4));
+			add(new BlockData(Material.LONG_GRASS, (byte) 2, 4, true));
+			add(new BlockData(Material.YELLOW_FLOWER, 1, true));
+			add(new BlockData(Material.RED_ROSE, 1, true));
 		}
 	};
 
@@ -351,7 +360,8 @@ public class Altar extends Structure
 			add(new Cuboid(0, 0, -1, sandStairNorth));
 			add(new Cuboid(0, 0, 1, sandStairSouth));
 
-			// TODO: Add grass/flower generation
+			// PWETTY FLOWAS AND GWASS!
+			add(new Cuboid(-3, 0, -3, 3, 0, 3, prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
 		}
 	};
 
