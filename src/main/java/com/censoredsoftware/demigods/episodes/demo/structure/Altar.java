@@ -152,8 +152,8 @@ public class Altar extends Structure
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.SAND, 2));
-			add(new BlockData(Material.GRASS, 8));
+			add(new BlockData(Material.SAND, 8));
+			add(new BlockData(Material.GRASS, 2));
 		}
 	};
 	private final static List<BlockData> grass = new ArrayList<BlockData>()
