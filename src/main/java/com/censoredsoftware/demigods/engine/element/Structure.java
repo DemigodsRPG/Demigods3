@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.element;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -318,15 +319,17 @@ public abstract class Structure
 		 */
 		public BlockData getStructureBlockData()
 		{
-			final int chance = Randoms.generateIntRange(1, 100);
-			for(BlockData result : Collections2.filter(blockData, new Predicate<BlockData>()
+			final int roll = Randoms.generateIntRange(1, 100);
+			Collection<BlockData> check = Collections2.filter(blockData, new Predicate<BlockData>()
 			{
 				@Override
 				public boolean apply(@Nullable BlockData blockData)
 				{
-					return blockData.getOdds() >= chance;
+					return blockData.getOdds() >= roll;
 				}
-			}))
+			});
+			if(check.isEmpty()) return getStructureBlockData();
+			for(BlockData result : check)
 			{
 				return result;
 			}
