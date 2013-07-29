@@ -152,8 +152,8 @@ public class Altar extends Structure
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.GRASS, 50));
-			add(new BlockData(Material.SAND, 50));
+			add(new BlockData(Material.GRASS, 35));
+			add(new BlockData(Material.SAND, 65));
 		}
 	};
 	private final static List<BlockData> grass = new ArrayList<BlockData>()
@@ -165,10 +165,10 @@ public class Altar extends Structure
 	private final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.LONG_GRASS, (byte) 1, 25, true));
-			add(new BlockData(Material.AIR, 63));
-			add(new BlockData(Material.YELLOW_FLOWER, 7, true));
-			add(new BlockData(Material.RED_ROSE, 5, true));
+			add(new BlockData(Material.AIR, 55));
+			add(new BlockData(Material.LONG_GRASS, (byte) 1, 23, true));
+			add(new BlockData(Material.YELLOW_FLOWER, 13, true));
+			add(new BlockData(Material.RED_ROSE, 9, true));
 		}
 	};
 
