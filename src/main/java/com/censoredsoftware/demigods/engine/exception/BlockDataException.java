@@ -4,6 +4,6 @@ public class BlockDataException extends IllegalArgumentException
 {
 	public BlockDataException()
 	{
-		super("Something went wrong with calculating block data.");
+		super("Odds must be between 1 and 100.");
 	}
 }
