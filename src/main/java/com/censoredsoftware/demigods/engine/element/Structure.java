@@ -16,6 +16,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.exception.BlockDataException;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -318,14 +319,18 @@ public abstract class Structure
 		public BlockData getStructureBlockData()
 		{
 			final int chance = Randoms.generateIntRange(1, 100);
-			return Collections2.filter(blockData, new Predicate<BlockData>()
+			for(BlockData result : Collections2.filter(blockData, new Predicate<BlockData>()
 			{
 				@Override
 				public boolean apply(@Nullable BlockData blockData)
 				{
 					return blockData.getOdds() >= chance;
 				}
-			}).iterator().next();
+			}))
+			{
+				return result;
+			}
+			throw new BlockDataException();
 		}
 
 		/**
