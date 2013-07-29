@@ -48,8 +48,8 @@ public class Obelisk extends Structure
 	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.SMOOTH_BRICK, 9));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+			add(new BlockData(Material.SMOOTH_BRICK, 90));
+			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
 		}
 	};
 	private final static List<BlockData> redstoneBlock = new ArrayList<BlockData>(1)
@@ -67,15 +67,15 @@ public class Obelisk extends Structure
 	private final static List<BlockData> vine1 = new ArrayList<BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.VINE, (byte) 1, 4));
-			add(new BlockData(Material.AIR, 6));
+			add(new BlockData(Material.VINE, (byte) 1, 40));
+			add(new BlockData(Material.AIR, 60));
 		}
 	};
 	private final static List<BlockData> vine4 = new ArrayList<BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.VINE, (byte) 4, 4));
-			add(new BlockData(Material.AIR, 6));
+			add(new BlockData(Material.VINE, (byte) 4, 40));
+			add(new BlockData(Material.AIR, 60));
 		}
 	};
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)

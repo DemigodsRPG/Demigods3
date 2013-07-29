@@ -41,9 +41,9 @@ public class Altar extends Structure
 	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
 	{
 		{
-			add(new BlockData(Material.SMOOTH_BRICK, 8));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 1));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 1));
+			add(new BlockData(Material.SMOOTH_BRICK, 80));
+			add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
+			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
 		}
 	};
 	private final static List<BlockData> quartz = new ArrayList<BlockData>(1)
@@ -152,8 +152,8 @@ public class Altar extends Structure
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.SAND, 6));
-			add(new BlockData(Material.GRASS, 4));
+			add(new BlockData(Material.SAND, 60));
+			add(new BlockData(Material.GRASS, 40));
 		}
 	};
 	private final static List<BlockData> grass = new ArrayList<BlockData>()
@@ -165,10 +165,10 @@ public class Altar extends Structure
 	private final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.AIR, 4));
-			add(new BlockData(Material.LONG_GRASS, (byte) 1, 4, true));
-			add(new BlockData(Material.YELLOW_FLOWER, 1, true));
-			add(new BlockData(Material.RED_ROSE, 1, true));
+			add(new BlockData(Material.AIR, 40));
+			add(new BlockData(Material.LONG_GRASS, (byte) 1, 40, true));
+			add(new BlockData(Material.YELLOW_FLOWER, 10, true));
+			add(new BlockData(Material.RED_ROSE, 10, true));
 		}
 	};
 

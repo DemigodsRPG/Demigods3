@@ -62,7 +62,7 @@ public abstract class Structure
 		{
 			this.material = material;
 			this.data = 0;
-			this.odds = 10;
+			this.odds = 100;
 			this.physics = false;
 		}
 
@@ -75,7 +75,7 @@ public abstract class Structure
 		{
 			this.material = material;
 			this.data = 0;
-			this.odds = 10;
+			this.odds = 100;
 			this.physics = physics;
 		}
 
@@ -89,7 +89,7 @@ public abstract class Structure
 		{
 			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 			this.material = material;
-			this.data = 10;
+			this.data = 100;
 			this.odds = odds;
 			this.physics = false;
 		}
@@ -104,7 +104,7 @@ public abstract class Structure
 		{
 			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 			this.material = material;
-			this.data = 10;
+			this.data = 100;
 			this.odds = odds;
 			this.physics = physics;
 		}
@@ -119,7 +119,7 @@ public abstract class Structure
 		{
 			this.material = material;
 			this.data = data;
-			this.odds = 10;
+			this.odds = 100;
 			this.physics = false;
 		}
 
@@ -133,7 +133,7 @@ public abstract class Structure
 		{
 			this.material = material;
 			this.data = data;
-			this.odds = 10;
+			this.odds = 100;
 			this.physics = physics;
 		}
 
@@ -146,7 +146,6 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, byte data, int odds)
 		{
-			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 			this.material = material;
 			this.data = data;
 			this.odds = odds;
@@ -162,7 +161,6 @@ public abstract class Structure
 		 */
 		public BlockData(Material material, byte data, int odds, boolean physics)
 		{
-			if(odds == 0 || odds > 10) throw new IllegalArgumentException("Odds must be between 1 and 10.");
 			this.material = material;
 			this.data = data;
 			this.odds = odds;
@@ -315,7 +313,7 @@ public abstract class Structure
 		{
 			for(BlockData data : blockData)
 			{
-				if(Randoms.generateIntRange(0, 10 - data.getOdds()) == 0) return data;
+				if(Randoms.generateIntRange(0, 100 - data.getOdds()) == 0) return data;
 			}
 			return blockData.get(0);
 		}
