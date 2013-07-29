@@ -341,7 +341,11 @@ public class Altar extends Structure
 	@Override
 	public Location getClickableBlock(Location reference)
 	{
-		return reference.clone().add(0, 2, 0);
+        switch(reference.getBlock().getBiome())
+        {
+            default:
+                return reference.clone().add(0, 2, 0);
+        }
 	}
 
 	@Override
