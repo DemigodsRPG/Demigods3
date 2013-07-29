@@ -142,6 +142,11 @@ public class DCharacter implements Battle.Participant
 		this.meta = meta;
 	}
 
+	public void setUsable(boolean usable)
+	{
+		this.usable = usable;
+	}
+
 	public void remove()
 	{
 		for(Structure.Save structureSave : Structure.Util.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
@@ -790,6 +795,7 @@ public class DCharacter implements Battle.Participant
 			character.setName(charName);
 			character.setDeity(deity);
 			character.setImmortal(immortal);
+			character.setUsable(true);
 			character.setMaxHealth(40.0);
 			character.setHealth(40.0);
 			character.setHunger(20);
