@@ -205,7 +205,6 @@ public class Demigods
 			if(conversation.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
 		}
-
 	}
 
 	protected static void loadCommands(DemigodsPlugin instance)
