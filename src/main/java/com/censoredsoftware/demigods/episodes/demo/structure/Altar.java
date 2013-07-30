@@ -377,8 +377,8 @@ public class Altar implements StandaloneStructure
 			add(new Cuboid(-3, -2, -3, 3, -2, 3, sandStone));
 
 			// Table
-			add(new Cuboid(-1, 0, -1, -1, 0, 1, sandStairWest));
-			add(new Cuboid(1, 0, -1, 1, 0, 1, sandStairEast));
+			add(new Cuboid(-1, 0, 0, sandStairWest));
+			add(new Cuboid(1, 0, 0, sandStairEast));
 			add(new Cuboid(0, 0, -1, sandStairNorth));
 			add(new Cuboid(0, 0, 1, sandStairSouth));
 		}
