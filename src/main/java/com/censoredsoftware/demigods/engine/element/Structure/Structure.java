@@ -206,10 +206,10 @@ public interface Structure
 			return this.id;
 		}
 
-		public boolean generate()
+		public boolean generate(boolean check)
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation(), check);
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation(), check);
 			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
@@ -273,9 +273,9 @@ public interface Structure
 			return this.radius;
 		}
 
-		public boolean generate(Location reference)
+		public boolean generate(Location reference, boolean check)
 		{
-			if(!Structures.canGenerateStrict(reference, getGroundRadius())) return false;
+			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
 			return true;

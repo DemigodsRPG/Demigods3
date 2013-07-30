@@ -470,7 +470,7 @@ public class Altar implements StandaloneStructure
 		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.save();
-		if(generate) save.generate();
+		if(generate && !save.generate(true)) save.remove();
 		return save;
 	}
 
@@ -574,7 +574,7 @@ class AltarListener implements Listener
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
 			save.setDesign(design);
-			if(!save.generate())
+			if(!save.generate(true))
 			{
 				player.sendMessage(ChatColor.RED + "Could not generate.");
 				save.remove();

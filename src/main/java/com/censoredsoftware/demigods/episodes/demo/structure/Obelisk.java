@@ -217,7 +217,7 @@ public class Obelisk implements StandaloneStructure
 		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.save();
-		if(generate) save.generate();
+		if(generate && !save.generate(true)) save.remove();
 		return save;
 	}
 

@@ -110,7 +110,7 @@ public class Structures
 	{
 		for(Structure.Save save : loadAll())
 		{
-			save.generate();
+			save.generate(false);
 		}
 	}
 
