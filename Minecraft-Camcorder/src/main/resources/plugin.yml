@@ -1,0 +1,12 @@
+name: Camcorder
+main: com.censoredsoftware.camcorder.CamcorderPlugin
+version: ${project.version}
+authors: [_Alex, HmmmQuestionMark]
+commands:
+    camcorder:
+        usage: /camcorder [start|stop]
+        aliases: [cm]
+permissions:
+    camcorder.use:
+        description: The default permission for players.
+        default: op
