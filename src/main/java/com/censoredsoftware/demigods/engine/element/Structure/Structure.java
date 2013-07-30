@@ -123,7 +123,7 @@ public interface Structure
 
 		public Set<Location> getLocations()
 		{
-			if(!(getStructure() instanceof MassiveStructure)) return null;
+			if(getStructure() instanceof MassiveStructure) return null;
 			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
 			return ((StandaloneStructure) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
 		}
