@@ -370,21 +370,29 @@ public class Altar implements StandaloneStructure
 
 	public static enum AltarDesign implements Design
 	{
-		GENERAL("general", general), HOLY("holy", holy), OASIS("oasis", oasis);
+		GENERAL("general", general, new Cuboid(0, 2, 0)), HOLY("holy", holy, new Cuboid(0, 2, 0)), OASIS("oasis", oasis, new Cuboid(0, 1, 0));
 
 		private final String name;
 		private final Schematic schematic;
+		private final Cuboid clickableBlocks;
 
-		private AltarDesign(String name, Schematic schematic)
+		private AltarDesign(String name, Schematic schematic, Cuboid clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
+			this.clickableBlocks = clickableBlocks;
 		}
 
 		@Override
 		public String getName()
 		{
 			return name;
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return clickableBlocks.getBlockLocations(reference);
 		}
 
 		@Override
@@ -423,30 +431,17 @@ public class Altar implements StandaloneStructure
 	}
 
 	@Override
-	public Schematic getDesign(String name)
+	public Design getDesign(String name)
 	{
-		if(name.equals(general.toString())) return general;
-		if(name.equals(oasis.toString())) return oasis;
-		return holy;
+		if(name.equals(general.toString())) return AltarDesign.GENERAL;
+		if(name.equals(oasis.toString())) return AltarDesign.OASIS;
+		return AltarDesign.HOLY;
 	}
 
 	@Override
 	public int getRadius()
 	{
 		return Demigods.config.getSettingInt("zones.altar_radius");
-	}
-
-	@Override
-	public Location getClickableBlock(Location reference)
-	{
-		switch(reference.getBlock().getBiome())
-		{
-			case DESERT:
-			case DESERT_HILLS:
-				return reference.clone().add(0, 1, 0);
-			default:
-				return reference.clone().add(0, 2, 0);
-		}
 	}
 
 	@Override

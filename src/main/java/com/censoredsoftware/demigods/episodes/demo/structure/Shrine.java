@@ -89,6 +89,40 @@ public class Shrine implements StandaloneStructure
 		}
 	};
 
+	public static enum ShrineDesign implements Design
+	{
+		GENERAL("general", general, new Cuboid(0, 1, 0));
+
+		private final String name;
+		private final Structure.Schematic schematic;
+		private final Cuboid clickableBlocks;
+
+		private ShrineDesign(String name, Structure.Schematic schematic, Cuboid clickableBlocks)
+		{
+			this.name = name;
+			this.schematic = schematic;
+			this.clickableBlocks = clickableBlocks;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return clickableBlocks.getBlockLocations(reference);
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
+		}
+	}
+
 	@Override
 	public Set<Flag> getFlags()
 	{
@@ -109,21 +143,15 @@ public class Shrine implements StandaloneStructure
 	}
 
 	@Override
-	public Schematic getDesign(String name)
+	public Design getDesign(String name)
 	{
-		return general;
+		return ShrineDesign.GENERAL;
 	}
 
 	@Override
 	public int getRadius()
 	{
 		return Demigods.config.getSettingInt("zones.shrine_radius");
-	}
-
-	@Override
-	public Location getClickableBlock(Location reference)
-	{
-		return reference.clone().add(0, 1, 0);
 	}
 
 	@Override

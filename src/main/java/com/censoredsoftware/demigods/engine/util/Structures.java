@@ -75,7 +75,7 @@ public class Structures
 	{
 		for(Structure.Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 		{
-			if(save.getClickableBlock().equals(location)) return true;
+			if(save.getClickableBlocks().contains(location)) return true;
 		}
 		return false;
 	}

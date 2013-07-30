@@ -46,7 +46,7 @@ public class TributeListener implements Listener
 			Structure.Save save = Structures.getStructureSave(location, true);
 
 			// Return if they aren't clicking the gold block
-			if(!event.getClickedBlock().getLocation().equals(save.getClickableBlock())) return;
+			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
 
 			// Return if the player is mortal
 			if(character == null || !character.isImmortal())

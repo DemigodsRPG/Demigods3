@@ -115,16 +115,16 @@ public interface Structure
 			return this.reference.toLocation();
 		}
 
-		public Location getClickableBlock()
+		public Set<Location> getClickableBlocks()
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getClickableBlock(this.reference.toLocation());
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getClickableBlocks(this.reference.toLocation());
 			return null;
 		}
 
 		public Set<Location> getLocations()
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
 			return null;
 		}
 
@@ -208,8 +208,8 @@ public interface Structure
 
 		public boolean generate(boolean check)
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation(), check);
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation(), check);
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
 			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
@@ -296,6 +296,48 @@ public interface Structure
 		private boolean exclude;
 		private boolean excludeCuboid;
 		private List<Structure.BlockData> blockData;
+
+		/**
+		 * Constructor for a Cuboid (non-cuboid), useful for getting 1 location back.
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 */
+		public Cuboid(int X, int Y, int Z)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeCuboid = false;
+			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
+		}
+
+		/**
+		 * Constructor for a Cuboid (cuboid), useful for getting only locations back.
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 */
+		public Cuboid(int X, int Y, int Z, int XX, int YY, int ZZ)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeCuboid = false;
+			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
+		}
 
 		/**
 		 * Constructor for a Cuboid (non-cuboid).
@@ -644,6 +686,8 @@ public interface Structure
 	public interface Design
 	{
 		public String getName();
+
+		public Set<Location> getClickableBlocks(Location reference);
 
 		public Schematic getSchematic();
 	}

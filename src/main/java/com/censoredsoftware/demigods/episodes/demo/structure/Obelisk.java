@@ -135,21 +135,29 @@ public class Obelisk implements StandaloneStructure
 
 	public static enum ObeliskDesign implements Structure.Design
 	{
-		GENERAL("general", general), DESERT("desert", desert);
+		GENERAL("general", general, new Cuboid(0, 0, 2)), DESERT("desert", desert, new Cuboid(0, 0, 2));
 
 		private final String name;
 		private final Structure.Schematic schematic;
+		private final Cuboid clickableBlocks;
 
-		private ObeliskDesign(String name, Structure.Schematic schematic)
+		private ObeliskDesign(String name, Structure.Schematic schematic, Cuboid clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
+			this.clickableBlocks = clickableBlocks;
 		}
 
 		@Override
 		public String getName()
 		{
 			return name;
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return clickableBlocks.getBlockLocations(reference);
 		}
 
 		@Override
@@ -178,22 +186,16 @@ public class Obelisk implements StandaloneStructure
 	}
 
 	@Override
-	public Schematic getDesign(String name)
+	public Design getDesign(String name)
 	{
-		if(name.equals(general.toString())) return general;
-		return desert;
+		if(name.equals(general.toString())) return ObeliskDesign.GENERAL;
+		return ObeliskDesign.DESERT;
 	}
 
 	@Override
 	public int getRadius()
 	{
 		return Demigods.config.getSettingInt("zones.obelisk_radius");
-	}
-
-	@Override
-	public Location getClickableBlock(Location reference)
-	{
-		return reference.clone().add(0, 0, 2);
 	}
 
 	@Override
