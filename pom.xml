@@ -8,8 +8,12 @@
     <artifactId>Demigods</artifactId>
     <version>3.0.0-BETA</version>
 
-    <name>Demigods</name>
-    <description>Demigods for Bukkit/Spigot Minecraft Servers</description>
+    <modules>
+        <module>Minecraft-Camcorder</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
 
     <licenses>
