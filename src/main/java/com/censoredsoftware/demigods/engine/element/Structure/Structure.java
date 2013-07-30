@@ -208,7 +208,7 @@ public interface Structure
 
 		public boolean generate()
 		{
-			if(this.design == null) ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
+			if(this instanceof MassiveStructure) return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 			if(this instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
 			return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
 		}
