@@ -280,7 +280,7 @@ public interface Structure
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
-				if(drop.getLocation().distance(reference) <= (getGroundRadius() * 2)) drop.remove();
+				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
 			return true;
 		}
 
