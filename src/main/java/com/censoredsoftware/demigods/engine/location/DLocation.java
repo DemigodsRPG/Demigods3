@@ -204,8 +204,8 @@ public class DLocation
 		/**
 		 * Returns a set of blocks in a radius of <code>radius</code> at the provided <code>location</code>.
 		 * 
-		 * @param location the center location to get the blocks from.
-		 * @param radius the radius around the center block from which to get the blocks.
+		 * @param location the center location to getDesign the blocks from.
+		 * @param radius the radius around the center block from which to getDesign the blocks.
 		 * @return Set<Block>
 		 */
 		public static Set<Block> getBlocks(Location location, int radius)

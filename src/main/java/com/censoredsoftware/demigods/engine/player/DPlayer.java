@@ -18,8 +18,9 @@ import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Sets;
 
 @Model
@@ -58,7 +59,7 @@ public class DPlayer
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true);
+		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -80,7 +81,7 @@ public class DPlayer
 				@Override
 				public void run()
 				{
-					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
+					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
 					{
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.SAFE_FROM_PVP));
@@ -433,7 +434,7 @@ public class DPlayer
 				Conversation prayer = Prayer.startPrayer(player);
 				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
 				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
-                player.setSneaking(true);
+				player.setSneaking(true);
 			}
 			else
 			{
@@ -448,7 +449,7 @@ public class DPlayer
 				// Remove the data
 				DataManager.removeTemp(player.getName(), "prayer_conversation");
 				DataManager.removeTemp(player.getName(), "prayer_location");
-                player.setSneaking(false);
+				player.setSneaking(false);
 			}
 		}
 

@@ -21,9 +21,10 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -149,7 +150,7 @@ public class DCharacter implements Battle.Participant
 
 	public void remove()
 	{
-		for(Structure.Save structureSave : Structure.Util.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 		{
 			if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
 		}

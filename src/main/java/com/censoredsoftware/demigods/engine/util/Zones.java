@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class Zones
 {
@@ -21,7 +22,7 @@ public class Zones
 	{
 		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.worldguard != null) return !canWorldGuardDynamicPVPAndNotNoPvPStructure(location);
-		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
+		return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class Zones
 
 	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
-		return (!Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true)) && canWorldGuardDynamicPVP(location);
+		return (!Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true)) && canWorldGuardDynamicPVP(location);
 	}
 
 	private static boolean canWorldGuardDynamicPVP(Location location)

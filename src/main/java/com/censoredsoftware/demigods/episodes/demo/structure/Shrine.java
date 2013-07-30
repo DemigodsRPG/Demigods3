@@ -18,14 +18,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.StandaloneStructure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
-public class Shrine extends Structure
+public class Shrine implements StandaloneStructure
 {
 	private final static List<BlockData> clickBlock = new ArrayList<BlockData>(1)
 	{
@@ -107,7 +109,7 @@ public class Shrine extends Structure
 	}
 
 	@Override
-	public Schematic get(String name)
+	public Schematic getDesign(String name)
 	{
 		return general;
 	}
@@ -133,7 +135,7 @@ public class Shrine extends Structure
 	@Override
 	public Set<Save> getAll()
 	{
-		return Util.findAll("type", getStructureType());
+		return Structures.findAll("type", getStructureType());
 	}
 
 	@Override
@@ -198,11 +200,11 @@ class ShrineListener implements Listener
 			}
 		}
 
-		if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine", true))
+		if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Shrine", true))
 		{
 			event.setCancelled(true);
 
-			Structure.Save save = Structure.Util.getStructureSave(location, true);
+			Structure.Save save = Structures.getStructureSave(location, true);
 			DCharacter owner = save.getOwner();
 
 			if(DataManager.hasTimed(player.getName(), "destroy_shrine"))

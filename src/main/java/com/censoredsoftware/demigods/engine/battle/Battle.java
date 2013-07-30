@@ -1,16 +1,7 @@
 package com.censoredsoftware.demigods.engine.battle;
 
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.core.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Pet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.*;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -20,9 +11,21 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.util.Vector;
+
 import redis.clients.johm.*;
 
-import java.util.*;
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
+import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.util.Structures;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 @Model
 public class Battle
@@ -489,7 +492,7 @@ public class Battle
 		 */
 		public static boolean canTarget(Battle.Participant participant)
 		{
-			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP, true); // TODO Make this work with new PVP.
+			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structures.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP, true); // TODO Make this work with new PVP.
 		}
 
 		/**

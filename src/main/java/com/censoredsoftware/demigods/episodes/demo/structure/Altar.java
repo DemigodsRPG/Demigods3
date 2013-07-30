@@ -22,15 +22,17 @@ import org.bukkit.event.world.ChunkLoadEvent;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.StandaloneStructure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 // TODO Optimize and generalize methods.
 
-public class Altar extends Structure
+public class Altar implements StandaloneStructure
 {
 	private final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
 	{
@@ -421,7 +423,7 @@ public class Altar extends Structure
 	}
 
 	@Override
-	public Schematic get(String name)
+	public Schematic getDesign(String name)
 	{
 		if(name.equals(general.toString())) return general;
 		if(name.equals(oasis.toString())) return oasis;
@@ -456,7 +458,7 @@ public class Altar extends Structure
 	@Override
 	public Set<Save> getAll()
 	{
-		return Util.findAll("type", getStructureType());
+		return Structures.findAll("type", getStructureType());
 	}
 
 	@Override
@@ -488,7 +490,7 @@ public class Altar extends Structure
 
 	public static boolean altarNearby(Location location)
 	{
-		for(Save structureSave : Util.findAll("type", "Altar"))
+		for(Save structureSave : Structures.findAll("type", "Altar"))
 		{
 			if(structureSave.getReferenceLocation().distance(location) <= Demigods.config.getSettingInt("generation.min_blocks_between_altars")) return true;
 		}
@@ -507,7 +509,7 @@ class AltarListener implements Listener
 		final Location location = DLocation.Util.randomChunkLocation(event.getChunk());
 
 		// Check if it can generate
-		if(Structure.Util.canGenerateStrict(location, 3))
+		if(Structures.canGenerateStrict(location, 3))
 		{
 			// Return a random boolean based on the chance of Altar generation
 			if(Randoms.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
@@ -582,11 +584,11 @@ class AltarListener implements Listener
 			return;
 		}
 
-		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Altar", true))
+		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Admins.useWand(player) && Structures.partOfStructureWithType(location, "Altar", true))
 		{
 			event.setCancelled(true);
 
-			Structure.Save altar = Structure.Util.getStructureSave(location, true);
+			Structure.Save altar = Structures.getStructureSave(location, true);
 
 			if(DataManager.hasTimed(player.getName(), "destroy_altar"))
 			{

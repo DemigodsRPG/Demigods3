@@ -20,10 +20,11 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Structures;
 
 public class GriefListener implements Listener
 {
@@ -48,7 +49,7 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
+		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -61,7 +62,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
+		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -74,7 +75,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
-		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
+		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -87,7 +88,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
-		if(Structure.Util.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
+		if(Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -97,7 +98,7 @@ public class GriefListener implements Listener
 		if(event.getEntityType() != EntityType.FALLING_BLOCK || event.getBlock().getRelative(BlockFace.DOWN).equals(Material.AIR)) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
 		Location blockLocation = block.getLocation();
-		if(Structure.Util.isInRadiusWithFlag(DLocation.Util.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING, true))
+		if(Structures.isInRadiusWithFlag(DLocation.Util.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING, true))
 		{
 			// Break the block
 			event.setCancelled(true);
@@ -110,7 +111,7 @@ public class GriefListener implements Listener
 	// TODO: @EventHandler(priority = EventPriority.HIGHEST)
 	public void onLiquidMove(BlockFromToEvent event)
 	{
-		if(Structure.Util.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
+		if(Structures.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -120,7 +121,7 @@ public class GriefListener implements Listener
 		boolean out = false;
 		for(Block block : event.getBlocks())
 		{
-			if(Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING, true)) in = true;
+			if(Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING, true)) in = true;
 			else out = true;
 		}
 		if(in != out) event.setCancelled(true);
@@ -129,8 +130,8 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event)
 	{
-		boolean block = Structure.Util.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
-		boolean retract = Structure.Util.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING, true);
+		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
+		boolean retract = Structures.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(block != retract) event.setCancelled(true);
 	}
 
@@ -138,7 +139,7 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockDamage(BlockDamageEvent event)
 	{
-		Structure.Save save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
+		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
@@ -151,7 +152,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		if(Structure.Util.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
+		if(Structures.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -159,7 +160,7 @@ public class GriefListener implements Listener
 	{
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
-		Structure.Save save = Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING, true);
+		Structure.Save save = Structures.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save == null) return;
 		if(blockInventories.contains(block.getType()))
 		{

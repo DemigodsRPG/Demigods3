@@ -23,13 +23,15 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.MassiveStructurePart;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -141,7 +143,7 @@ public class Demigods
 		ThreadManager.startThreads(instance);
 
 		// Finally, regenerate structures
-		Structure.Util.regenerateStructures();
+		Structures.regenerateStructures();
 
 		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
@@ -192,7 +194,7 @@ public class Demigods
 		// Structures
 		for(Structure structure : getLoadedStructures())
 		{
-			if(structure.getUniqueListener() == null) continue;
+			if(structure instanceof MassiveStructurePart || structure.getUniqueListener() == null) continue;
 			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
 		}
 

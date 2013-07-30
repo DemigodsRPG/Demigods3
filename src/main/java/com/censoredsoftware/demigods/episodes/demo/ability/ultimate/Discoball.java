@@ -1,16 +1,9 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.core.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.element.Structure;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -24,25 +17,33 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Structures;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Sets;
 
 public class Discoball extends Ability
 {
 	private final static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
 	private final static int cost = 30, delay = 30, repeat = 4;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Spread the music while causing destruction.");
 		}
 	};
-    private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
+	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 
-    protected Discoball()
+	protected Discoball()
 	{
 		super(info = new Info(deity, name, command, permission, cost, delay, repeat, details, type), new Listener()
 		{
@@ -118,7 +119,7 @@ public class Discoball extends Ability
 				{
 					for(Player online : Bukkit.getOnlinePlayers())
 					{
-						if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structure.Util.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
+						if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structures.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
 						else if(Deity.Util.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
 					}
 				}

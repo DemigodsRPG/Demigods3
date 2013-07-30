@@ -18,127 +18,129 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.element.Structure;
+import com.censoredsoftware.demigods.engine.element.Structure.StandaloneStructure;
+import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Structures;
 import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
-public class Obelisk extends Structure
+public class Obelisk implements StandaloneStructure
 {
-	private final static List<BlockData> specialStoneBrick = new ArrayList<BlockData>(1)
+	private final static List<Structure.BlockData> specialStoneBrick = new ArrayList<Structure.BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 3));
+			add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 3));
 		}
 	};
-	private final static List<BlockData> specialSandstone = new ArrayList<BlockData>(1)
+	private final static List<Structure.BlockData> specialSandstone = new ArrayList<Structure.BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.SANDSTONE, (byte) 1));
+			add(new Structure.BlockData(Material.SANDSTONE, (byte) 1));
 		}
 	};
-	private final static List<BlockData> sandstone = new ArrayList<BlockData>(1)
+	private final static List<Structure.BlockData> sandstone = new ArrayList<Structure.BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.SANDSTONE));
+			add(new Structure.BlockData(Material.SANDSTONE));
 		}
 	};
-	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(2)
+	private final static List<Structure.BlockData> stoneBrick = new ArrayList<Structure.BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.SMOOTH_BRICK, 90));
-			add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
+			add(new Structure.BlockData(Material.SMOOTH_BRICK, 90));
+			add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
 		}
 	};
-	private final static List<BlockData> redstoneBlock = new ArrayList<BlockData>(1)
+	private final static List<Structure.BlockData> redstoneBlock = new ArrayList<Structure.BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.REDSTONE_BLOCK));
+			add(new Structure.BlockData(Material.REDSTONE_BLOCK));
 		}
 	};
-	private final static List<BlockData> redstoneLamp = new ArrayList<BlockData>(1)
+	private final static List<Structure.BlockData> redstoneLamp = new ArrayList<Structure.BlockData>(1)
 	{
 		{
-			add(new BlockData(Material.REDSTONE_LAMP_ON));
+			add(new Structure.BlockData(Material.REDSTONE_LAMP_ON));
 		}
 	};
-	private final static List<BlockData> vine1 = new ArrayList<BlockData>(2)
+	private final static List<Structure.BlockData> vine1 = new ArrayList<Structure.BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.VINE, (byte) 1, 40));
-			add(new BlockData(Material.AIR, 60));
+			add(new Structure.BlockData(Material.VINE, (byte) 1, 40));
+			add(new Structure.BlockData(Material.AIR, 60));
 		}
 	};
-	private final static List<BlockData> vine4 = new ArrayList<BlockData>(2)
+	private final static List<Structure.BlockData> vine4 = new ArrayList<Structure.BlockData>(2)
 	{
 		{
-			add(new BlockData(Material.VINE, (byte) 4, 40));
-			add(new BlockData(Material.AIR, 60));
+			add(new Structure.BlockData(Material.VINE, (byte) 4, 40));
+			add(new Structure.BlockData(Material.AIR, 60));
 		}
 	};
-	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
-	{
-		{
-			// Clickable block.
-			add(new Cuboid(0, 0, 2, specialStoneBrick));
-
-			// Everything else.
-			add(new Cuboid(0, 0, -1, 0, 2, -1, stoneBrick));
-			add(new Cuboid(0, 0, 1, 0, 2, 1, stoneBrick));
-			add(new Cuboid(1, 0, 0, 1, 2, 0, stoneBrick));
-			add(new Cuboid(-1, 0, 0, -1, 2, 0, stoneBrick));
-			add(new Cuboid(0, 4, -1, 0, 5, -1, stoneBrick));
-			add(new Cuboid(0, 4, 1, 0, 5, 1, stoneBrick));
-			add(new Cuboid(1, 4, 0, 1, 5, 0, stoneBrick));
-			add(new Cuboid(-1, 4, 0, -1, 5, 0, stoneBrick));
-			add(new Cuboid(0, 3, 0, redstoneBlock));
-			add(new Cuboid(0, 4, 0, redstoneBlock));
-			add(new Cuboid(0, 3, -1, redstoneLamp));
-			add(new Cuboid(0, 3, 1, redstoneLamp));
-			add(new Cuboid(1, 3, 0, redstoneLamp));
-			add(new Cuboid(-1, 3, 0, redstoneLamp));
-			add(new Cuboid(0, 5, 0, redstoneLamp));
-			add(new Cuboid(1, 5, -1, vine1));
-			add(new Cuboid(-1, 5, -1, vine1));
-			add(new Cuboid(1, 5, 1, vine4));
-			add(new Cuboid(-1, 5, 1, vine4));
-		}
-	};
-	private final static Schematic desert = new Schematic("desert", "HmmmQuestionMark", 3)
+	private final static Structure.Schematic general = new Structure.Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Cuboid(0, 0, 2, specialSandstone));
+			add(new Structure.Cuboid(0, 0, 2, specialStoneBrick));
 
 			// Everything else.
-			add(new Cuboid(0, 0, -1, 0, 2, -1, sandstone));
-			add(new Cuboid(0, 0, 1, 0, 2, 1, sandstone));
-			add(new Cuboid(1, 0, 0, 1, 2, 0, sandstone));
-			add(new Cuboid(-1, 0, 0, -1, 2, 0, sandstone));
-			add(new Cuboid(0, 4, -1, 0, 5, -1, sandstone));
-			add(new Cuboid(0, 4, 1, 0, 5, 1, sandstone));
-			add(new Cuboid(1, 4, 0, 1, 5, 0, sandstone));
-			add(new Cuboid(-1, 4, 0, -1, 5, 0, sandstone));
-			add(new Cuboid(0, 3, 0, redstoneBlock));
-			add(new Cuboid(0, 4, 0, redstoneBlock));
-			add(new Cuboid(0, 3, -1, redstoneLamp));
-			add(new Cuboid(0, 3, 1, redstoneLamp));
-			add(new Cuboid(1, 3, 0, redstoneLamp));
-			add(new Cuboid(-1, 3, 0, redstoneLamp));
-			add(new Cuboid(0, 5, 0, redstoneLamp));
+			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, stoneBrick));
+			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, stoneBrick));
+			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, stoneBrick));
+			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, stoneBrick));
+			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, stoneBrick));
+			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, stoneBrick));
+			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, stoneBrick));
+			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, stoneBrick));
+			add(new Structure.Cuboid(0, 3, 0, redstoneBlock));
+			add(new Structure.Cuboid(0, 4, 0, redstoneBlock));
+			add(new Structure.Cuboid(0, 3, -1, redstoneLamp));
+			add(new Structure.Cuboid(0, 3, 1, redstoneLamp));
+			add(new Structure.Cuboid(1, 3, 0, redstoneLamp));
+			add(new Structure.Cuboid(-1, 3, 0, redstoneLamp));
+			add(new Structure.Cuboid(0, 5, 0, redstoneLamp));
+			add(new Structure.Cuboid(1, 5, -1, vine1));
+			add(new Structure.Cuboid(-1, 5, -1, vine1));
+			add(new Structure.Cuboid(1, 5, 1, vine4));
+			add(new Structure.Cuboid(-1, 5, 1, vine4));
+		}
+	};
+	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
+	{
+		{
+			// Clickable block.
+			add(new Structure.Cuboid(0, 0, 2, specialSandstone));
+
+			// Everything else.
+			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, sandstone));
+			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, sandstone));
+			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, sandstone));
+			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, sandstone));
+			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, sandstone));
+			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, sandstone));
+			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, sandstone));
+			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, sandstone));
+			add(new Structure.Cuboid(0, 3, 0, redstoneBlock));
+			add(new Structure.Cuboid(0, 4, 0, redstoneBlock));
+			add(new Structure.Cuboid(0, 3, -1, redstoneLamp));
+			add(new Structure.Cuboid(0, 3, 1, redstoneLamp));
+			add(new Structure.Cuboid(1, 3, 0, redstoneLamp));
+			add(new Structure.Cuboid(-1, 3, 0, redstoneLamp));
+			add(new Structure.Cuboid(0, 5, 0, redstoneLamp));
 		}
 	};
 
-	public static enum ObeliskDesign implements Design
+	public static enum ObeliskDesign implements Structure.Design
 	{
 		GENERAL("general", general), DESERT("desert", desert);
 
 		private final String name;
-		private final Schematic schematic;
+		private final Structure.Schematic schematic;
 
-		private ObeliskDesign(String name, Schematic schematic)
+		private ObeliskDesign(String name, Structure.Schematic schematic)
 		{
 			this.name = name;
 			this.schematic = schematic;
@@ -151,7 +153,7 @@ public class Obelisk extends Structure
 		}
 
 		@Override
-		public Schematic getSchematic()
+		public Structure.Schematic getSchematic()
 		{
 			return schematic;
 		}
@@ -176,7 +178,7 @@ public class Obelisk extends Structure
 	}
 
 	@Override
-	public Schematic get(String name)
+	public Schematic getDesign(String name)
 	{
 		if(name.equals(general.toString())) return general;
 		return desert;
@@ -203,7 +205,7 @@ public class Obelisk extends Structure
 	@Override
 	public Set<Save> getAll()
 	{
-		return Util.findAll("type", getStructureType());
+		return Structures.findAll("type", getStructureType());
 	}
 
 	@Override
@@ -245,7 +247,7 @@ public class Obelisk extends Structure
 
 	public static boolean noPvPStructureNearby(Location location)
 	{
-		for(Save structureSave : Util.loadAll())
+		for(Save structureSave : Structures.loadAll())
 		{
 			if(structureSave.getStructure().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
 		}
@@ -295,11 +297,11 @@ class ObeliskListener implements Listener
 			}
 		}
 
-		if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk", true))
+		if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk", true))
 		{
 			event.setCancelled(true);
 
-			Structure.Save save = Structure.Util.getStructureSave(location, true);
+			Structure.Save save = Structures.getStructureSave(location, true);
 			// DCharacter owner = save.getOwner();
 
 			if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
