@@ -234,6 +234,9 @@ public class Prayer implements ListedConversation
 				{
 					player.sendRawMessage("  " + Demigods.text.getText(notification));
 				}
+
+				// Remove them
+				notifications.clear();
 			}
 
 			return "";
