@@ -131,7 +131,7 @@ public abstract class Deity
 
 		public static Deity getDeity(String deity)
 		{
-			return Demigods.getLoadedDeities().get(deity);
+			return Demigods.getLoadedDeities().get(deity.toLowerCase());
 		}
 
 		public static boolean canUseDeity(Player player, String deity)

@@ -148,14 +148,12 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			add(new BlockData(Material.SANDSTONE, (byte) 2));
-
 		}
 	};
 	private final static List<BlockData> sandStone = new ArrayList<BlockData>()
 	{
 		{
 			add(new BlockData(Material.SANDSTONE));
-
 		}
 	};
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
@@ -271,6 +269,7 @@ public class Altar implements StandaloneStructure
 			add(new Cuboid(-2, 1, -2, 2, 1, 2, stoneBrickSlabBottom).exclude(0, 1, 0));
 		}
 	};
+
 	private final static Schematic holy = new Schematic("holy", "HmmmQuestionMark", 3)
 	{
 		{
@@ -359,6 +358,7 @@ public class Altar implements StandaloneStructure
 			add(new Cuboid(-2, 1, -2, 2, 1, 2, quartzSlabBottom).exclude(0, 1, 0));
 		}
 	};
+
 	private final static Schematic oasis = new Schematic("oasis", "_Alex", 4)
 	{
 		{
