@@ -160,6 +160,7 @@ public class Pet implements Battle.Participant
 	{
 		public static Pet create(LivingEntity tameable, DCharacter owner)
 		{
+			if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
 			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 			Pet wrapper = new Pet();
 			wrapper.setTamable(tameable);
