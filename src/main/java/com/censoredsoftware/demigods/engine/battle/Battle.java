@@ -14,11 +14,11 @@ import org.bukkit.util.Vector;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.core.exceptions.SpigotNotFoundException;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.core.util.Spigots;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;

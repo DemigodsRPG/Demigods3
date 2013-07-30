@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import com.censoredsoftware.core.improve.ListedCommand;
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Set;
+import com.censoredsoftware.core.bukkit.ListedCommand;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Sets;
 
 public class GeneralCommands extends ListedCommand
 {

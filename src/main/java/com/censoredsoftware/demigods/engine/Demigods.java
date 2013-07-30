@@ -11,7 +11,7 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.bukkit.ListedConversation;
 import com.censoredsoftware.core.module.Configs;
 import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.demigods.DemigodsPlugin;

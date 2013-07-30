@@ -1,12 +1,9 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import com.censoredsoftware.core.improve.ListedCommand;
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.core.util.StopWatches;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -16,9 +13,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.core.bukkit.ListedCommand;
+import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends ListedCommand
 {
@@ -40,23 +40,23 @@ public class DevelopmentCommands extends ListedCommand
 		return false;
 	}
 
-    @Override
-    public List<String> processTab(CommandSender sender, Command command, final String[] args)
-    {
-        return new ArrayList<String>()
-        {
-            {
-                for(Player online : Bukkit.getOnlinePlayers())
-                {
-                    DPlayer wrapper = DPlayer.Util.getPlayer(online);
-                    if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
-                    else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName());
-                }
-            }
-        };
-    }
+	@Override
+	public List<String> processTab(CommandSender sender, Command command, final String[] args)
+	{
+		return new ArrayList<String>()
+		{
+			{
+				for(Player online : Bukkit.getOnlinePlayers())
+				{
+					DPlayer wrapper = DPlayer.Util.getPlayer(online);
+					if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
+					else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName());
+				}
+			}
+		};
+	}
 
-    private static boolean test1(CommandSender sender, final String[] args)
+	private static boolean test1(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
 
@@ -88,7 +88,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-        // UNUSED
+		// UNUSED
 
 		return true;
 	}
