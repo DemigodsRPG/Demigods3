@@ -95,7 +95,7 @@ public class FlagListener implements Listener
 		}, 1);
 
 		if(DataManager.hasTimed("explode", "structure")) return;
-		DataManager.saveTimed("explode", "structure", true, 3);
+		DataManager.saveTimed("explode", "structure", true, 2);
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
 		{
