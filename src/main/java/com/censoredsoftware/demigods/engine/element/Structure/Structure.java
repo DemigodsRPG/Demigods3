@@ -692,7 +692,7 @@ public interface Structure
 		public Schematic getSchematic();
 	}
 
-	public class BuildingBlock // TODO: Rename these to make more sense.
+	public class BuildingBlock // TODO: Rename these to make more sense. // Shouldn't this be in the episode data? - HQM
 	{
 		public final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
 		{
