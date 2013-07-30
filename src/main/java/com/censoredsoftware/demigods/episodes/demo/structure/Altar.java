@@ -403,7 +403,7 @@ public class Altar implements StandaloneStructure
 			// Tiki Torch
 			int rand1 = Randoms.generateIntRange(-3, -2);
 			int rand2 = Randoms.generateIntRange(-3, 3);
-			add(new Cuboid(-3, 1, -3, 3, 1, 3, air).exclude(0, 1, 0));
+			add(new Cuboid(-3, 1, -3, 3, 2, 3, air).exclude(0, 1, 0));
 			add(new Cuboid(rand1, 0, rand2, rand1, 1, rand2, fence)); // Fence
 			add(new Cuboid(rand1, 2, rand2, torch)); // Torch
 		}
