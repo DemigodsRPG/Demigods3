@@ -36,20 +36,21 @@ public class Swim extends Ability
 			private void onPlayerMoveEvent(PlayerMoveEvent event)
 			{
 				Player player = event.getPlayer();
+				boolean inWater = player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER);
 
-				if(!player.isSneaking() && !(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
-				{
-					DataManager.removeTemp(player.getName(), "is_swimming");
-					return;
-				}
-				else if(player.isSneaking() && DataManager.hasKeyTemp(player.getName(), "is_swimming") && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
+				if(player.isSneaking() && inWater && DataManager.hasKeyTemp(player.getName(), "is_swimming"))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					player.setVelocity(victor);
 					return;
 				}
-				else if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) && Deity.Util.canUseDeitySilent(player, deity))
+				else if(!player.isSneaking() && !inWater)
+				{
+					DataManager.removeTemp(player.getName(), "is_swimming");
+					return;
+				}
+				else if(player.isSneaking() && inWater && Deity.Util.canUseDeitySilent(player, deity))
 				{
 					DataManager.saveTemp(player.getName(), "is_swimming", true);
 					return;
