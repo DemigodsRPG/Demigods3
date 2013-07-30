@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
+import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 
@@ -34,21 +35,24 @@ public class Swim extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onPlayerMoveEvent(PlayerMoveEvent event)
 			{
-				// StopWatch stopWatch = StopWatches.start(); // TODO
-
 				Player player = event.getPlayer();
 
-				if(!player.isSneaking() || !Deity.Util.canUseDeitySilent(player, deity)) return;
-
-				// PHELPS SWIMMING
-				if((player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
+				if(!(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER) || player.isSneaking()))
+				{
+					DataManager.removeTemp(player.getName(), "is_swimming");
+				}
+				else if(DataManager.hasKeyTemp(player.getName(), "is_swimming"))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					player.setVelocity(victor);
+					return;
 				}
 
-				// Demigods.message.broadcast("Swimming:" + StopWatches.end(stopWatch)); // TODO
+				if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) && Deity.Util.canUseDeitySilent(player, deity))
+				{
+					DataManager.saveTemp(player.getName(), "is_swimming", true);
+				}
 			}
 		}, null);
 	}
