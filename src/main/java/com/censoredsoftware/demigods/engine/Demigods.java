@@ -83,7 +83,7 @@ public class Demigods
 		{
 			{
 				for(ListedDeity deity : deities)
-					put(deity.getDeity().getInfo().getName(), deity.getDeity());
+					put(deity.getDeity().getInfo().getName().toLowerCase(), deity.getDeity());
 			}
 		};
 		Demigods.quests = new HashSet<Task.List>()
@@ -124,7 +124,7 @@ public class Demigods
 		}
 
 		// Update usable characters
-		DCharacter.Util.updateUsableDeities();
+		DCharacter.Util.updateUsableCharacters();
 
 		// Initialize metrics
 		try

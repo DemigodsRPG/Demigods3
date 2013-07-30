@@ -398,9 +398,9 @@ public class DCharacter implements Battle.Participant
 	{
 		@Id
 		private Long id;
-		@Attribute
+		@Reference
 		@Indexed
-		private long owner;
+		private DCharacter owner;
 		@Reference
 		private DItemStack helmet;
 		@Reference
@@ -412,9 +412,9 @@ public class DCharacter implements Battle.Participant
 		@Array(of = DItemStack.class, length = 36)
 		private DItemStack[] items;
 
-		void setOwner(Long id)
+		void setOwner(DCharacter owner)
 		{
-			this.owner = id;
+			this.owner = owner;
 		}
 
 		void setHelmet(ItemStack helmet)
@@ -460,7 +460,7 @@ public class DCharacter implements Battle.Participant
 
 		public DCharacter getOwner()
 		{
-			return Util.load(this.owner);
+			return this.owner;
 		}
 
 		/**
@@ -814,7 +814,7 @@ public class DCharacter implements Battle.Participant
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
-			charInventory.setOwner(character.getId());
+			charInventory.setOwner(character);
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
@@ -867,7 +867,7 @@ public class DCharacter implements Battle.Participant
 			return JOhm.getAll(DCharacter.class);
 		}
 
-		public static void updateUsableDeities()
+		public static void updateUsableCharacters()
 		{
 			for(DCharacter character : loadAll())
 			{
