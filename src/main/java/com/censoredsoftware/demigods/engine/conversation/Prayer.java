@@ -25,7 +25,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.core.improve.ListedConversation;
+import com.censoredsoftware.core.bukkit.ListedConversation;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;

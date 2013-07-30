@@ -7,6 +7,7 @@
     <groupId>com.censoredsoftware.minecraft</groupId>
     <artifactId>Demigods</artifactId>
     <version>3.0.0-BETA</version>
+    <packaging>jar</packaging>
 
     <name>Demigods for Bukkit/Spigot</name>
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
