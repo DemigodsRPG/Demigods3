@@ -64,6 +64,7 @@ public class CamcorderCommand extends ListedCommand
 				CamcorderPlayback.name = args[1];
 				CamcorderPlayback.endTime = getEndTime(player, args[1]);
 				CamcorderPlayback.startPlaybackTime = System.currentTimeMillis();
+				CamcorderPlayback.player = player;
 				CamcorderPlayback.playback = (LivingEntity) target;
 				player.sendMessage(ChatColor.RED + "Playing... " + getEndTime(player, args[1]));
 				return true;
