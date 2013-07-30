@@ -37,7 +37,7 @@ public class Swim extends Ability
 			{
 				Player player = event.getPlayer();
 
-				if(!player.isSneaking() || !player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || !player.getLocation().getBlock().getType().equals(Material.WATER))
+				if(!player.isSneaking() && !(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
 				{
 					DataManager.removeTemp(player.getName(), "is_swimming");
 					return;
