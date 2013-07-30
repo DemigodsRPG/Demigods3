@@ -691,4 +691,256 @@ public interface Structure
 
 		public Schematic getSchematic();
 	}
+
+	public class BuildingBlock // TODO: Rename these to make more sense.
+	{
+		public final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.ENCHANTMENT_TABLE));
+			}
+		};
+		public final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
+		{
+			{
+				add(new BlockData(Material.SMOOTH_BRICK, 80));
+				add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
+				add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
+			}
+		};
+		public final static List<BlockData> quartz = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.QUARTZ_BLOCK));
+			}
+		};
+		public final static List<BlockData> pillarQuartz = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.QUARTZ_BLOCK, (byte) 2));
+			}
+		};
+		public final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(44), (byte) 5));
+			}
+		};
+		public final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(44), (byte) 13));
+			}
+		};
+		public final static List<BlockData> quartzSlabBottom = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(44), (byte) 7));
+			}
+		};
+		public final static List<BlockData> quartzSlabTop = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(44), (byte) 15));
+			}
+		};
+		public final static List<BlockData> stoneBrickSpecial = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(98), (byte) 3));
+			}
+		};
+		public final static List<BlockData> quartzSpecial = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.QUARTZ_BLOCK, (byte) 1));
+			}
+		};
+		public final static List<BlockData> spruceWood = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(5), (byte) 1));
+			}
+		};
+		public final static List<BlockData> spruceSlab = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(126), (byte) 1));
+			}
+		};
+		public final static List<BlockData> birchWood = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(5), (byte) 2));
+			}
+		};
+		public final static List<BlockData> birchSlab = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.getMaterial(126), (byte) 2));
+			}
+		};
+		public final static List<BlockData> sandStairNorth = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.getMaterial(128), (byte) 6));
+			}
+		};
+		public final static List<BlockData> sandStairSouth = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.getMaterial(128), (byte) 7));
+			}
+		};
+		public final static List<BlockData> sandStairEast = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.getMaterial(128), (byte) 5));
+			}
+		};
+		public final static List<BlockData> sandStairWest = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.getMaterial(128), (byte) 4));
+			}
+		};
+		public final static List<BlockData> smoothSandStone = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.SANDSTONE, (byte) 2));
+			}
+		};
+		public final static List<BlockData> sandStone = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.SANDSTONE));
+			}
+		};
+		public final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.SAND, 65));
+				add(new BlockData(Material.GRASS, 35));
+			}
+		};
+		public final static List<BlockData> grass = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.GRASS));
+			}
+		};
+		public final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.AIR, 50));
+				add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
+				add(new BlockData(Material.YELLOW_FLOWER, 9, true));
+				add(new BlockData(Material.RED_ROSE, 6, true));
+			}
+		};
+		public final static List<BlockData> water = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.WATER));
+			}
+		};
+		public final static List<BlockData> torch = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.TORCH));
+			}
+		};
+		public final static List<BlockData> fence = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.FENCE));
+			}
+		};
+		public final static List<BlockData> air = new ArrayList<BlockData>()
+		{
+			{
+				add(new BlockData(Material.AIR));
+			}
+		};
+		public final static List<Structure.BlockData> specialStoneBrick = new ArrayList<Structure.BlockData>(1)
+		{
+			{
+				add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 3));
+			}
+		};
+		public final static List<Structure.BlockData> specialSandstone = new ArrayList<Structure.BlockData>(1)
+		{
+			{
+				add(new Structure.BlockData(Material.SANDSTONE, (byte) 1));
+			}
+		};
+		public final static List<Structure.BlockData> sandstone = new ArrayList<Structure.BlockData>(1)
+		{
+			{
+				add(new Structure.BlockData(Material.SANDSTONE));
+			}
+		};
+		public final static List<Structure.BlockData> redstoneBlock = new ArrayList<Structure.BlockData>(1)
+		{
+			{
+				add(new Structure.BlockData(Material.REDSTONE_BLOCK));
+			}
+		};
+		public final static List<Structure.BlockData> redstoneLamp = new ArrayList<Structure.BlockData>(1)
+		{
+			{
+				add(new Structure.BlockData(Material.REDSTONE_LAMP_ON));
+			}
+		};
+		public final static List<Structure.BlockData> vine1 = new ArrayList<Structure.BlockData>(2)
+		{
+			{
+				add(new Structure.BlockData(Material.VINE, (byte) 1, 40));
+				add(new Structure.BlockData(Material.AIR, 60));
+			}
+		};
+		public final static List<Structure.BlockData> vine4 = new ArrayList<Structure.BlockData>(2)
+		{
+			{
+				add(new Structure.BlockData(Material.VINE, (byte) 4, 40));
+				add(new Structure.BlockData(Material.AIR, 60));
+			}
+		};
+		public final static List<BlockData> goldClickBlock = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.GOLD_BLOCK));
+			}
+		};
+		public final static List<BlockData> enderChest = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.ENDER_CHEST));
+			}
+		};
+		public final static List<BlockData> stoneBrickStairs = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.SMOOTH_STAIRS));
+			}
+		};
+		public final static List<BlockData> stoneBrickStairs1 = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 1));
+			}
+		};
+		public final static List<BlockData> stoneBrickStairs2 = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 2));
+			}
+		};
+		public final static List<BlockData> stoneBrickStairs3 = new ArrayList<BlockData>(1)
+		{
+			{
+				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
+			}
+		};
+	}
 }

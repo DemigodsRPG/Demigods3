@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -29,63 +27,21 @@ import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Shrine implements StandaloneStructure
 {
-	private final static List<BlockData> clickBlock = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.GOLD_BLOCK));
-		}
-	};
-	private final static List<BlockData> enderChest = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.ENDER_CHEST));
-		}
-	};
-	private final static List<BlockData> stoneBrick = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_BRICK));
-		}
-	};
-	private final static List<BlockData> stoneBrickStairs = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_STAIRS));
-		}
-	};
-	private final static List<BlockData> stoneBrickStairs1 = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 1));
-		}
-	};
-	private final static List<BlockData> stoneBrickStairs2 = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 2));
-		}
-	};
-	private final static List<BlockData> stoneBrickStairs3 = new ArrayList<BlockData>(1)
-	{
-		{
-			add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
-		}
-	};
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
 		{
 			// Create the main block
-			add(new Cuboid(0, 1, 0, clickBlock));
+			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.goldClickBlock));
 
 			// Create the ender chest and the block below
-			add(new Cuboid(0, 0, 0, enderChest));
-			add(new Cuboid(0, -1, 0, stoneBrick));
+			add(new Cuboid(0, 0, 0, Structure.BuildingBlock.enderChest));
+			add(new Cuboid(0, -1, 0, Structure.BuildingBlock.stoneBrick));
 
 			// Create the rest
-			add(new Cuboid(-1, 0, 0, stoneBrickStairs));
-			add(new Cuboid(1, 0, 0, stoneBrickStairs1));
-			add(new Cuboid(0, 0, -1, stoneBrickStairs2));
-			add(new Cuboid(0, 0, 1, stoneBrickStairs3));
+			add(new Cuboid(-1, 0, 0, Structure.BuildingBlock.stoneBrickStairs));
+			add(new Cuboid(1, 0, 0, Structure.BuildingBlock.stoneBrickStairs1));
+			add(new Cuboid(0, 0, -1, Structure.BuildingBlock.stoneBrickStairs2));
+			add(new Cuboid(0, 0, 1, Structure.BuildingBlock.stoneBrickStairs3));
 		}
 	};
 

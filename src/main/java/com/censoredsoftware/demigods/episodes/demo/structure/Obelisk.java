@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.episodes.demo.structure;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
@@ -29,107 +27,56 @@ import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
 
 public class Obelisk implements StandaloneStructure
 {
-	private final static List<Structure.BlockData> specialStoneBrick = new ArrayList<Structure.BlockData>(1)
-	{
-		{
-			add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 3));
-		}
-	};
-	private final static List<Structure.BlockData> specialSandstone = new ArrayList<Structure.BlockData>(1)
-	{
-		{
-			add(new Structure.BlockData(Material.SANDSTONE, (byte) 1));
-		}
-	};
-	private final static List<Structure.BlockData> sandstone = new ArrayList<Structure.BlockData>(1)
-	{
-		{
-			add(new Structure.BlockData(Material.SANDSTONE));
-		}
-	};
-	private final static List<Structure.BlockData> stoneBrick = new ArrayList<Structure.BlockData>(2)
-	{
-		{
-			add(new Structure.BlockData(Material.SMOOTH_BRICK, 90));
-			add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
-		}
-	};
-	private final static List<Structure.BlockData> redstoneBlock = new ArrayList<Structure.BlockData>(1)
-	{
-		{
-			add(new Structure.BlockData(Material.REDSTONE_BLOCK));
-		}
-	};
-	private final static List<Structure.BlockData> redstoneLamp = new ArrayList<Structure.BlockData>(1)
-	{
-		{
-			add(new Structure.BlockData(Material.REDSTONE_LAMP_ON));
-		}
-	};
-	private final static List<Structure.BlockData> vine1 = new ArrayList<Structure.BlockData>(2)
-	{
-		{
-			add(new Structure.BlockData(Material.VINE, (byte) 1, 40));
-			add(new Structure.BlockData(Material.AIR, 60));
-		}
-	};
-	private final static List<Structure.BlockData> vine4 = new ArrayList<Structure.BlockData>(2)
-	{
-		{
-			add(new Structure.BlockData(Material.VINE, (byte) 4, 40));
-			add(new Structure.BlockData(Material.AIR, 60));
-		}
-	};
 	private final static Structure.Schematic general = new Structure.Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Structure.Cuboid(0, 0, 2, specialStoneBrick));
+			add(new Structure.Cuboid(0, 0, 2, Structure.BuildingBlock.specialStoneBrick));
 
 			// Everything else.
-			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, stoneBrick));
-			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, stoneBrick));
-			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, stoneBrick));
-			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, stoneBrick));
-			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, stoneBrick));
-			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, stoneBrick));
-			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, stoneBrick));
-			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, stoneBrick));
-			add(new Structure.Cuboid(0, 3, 0, redstoneBlock));
-			add(new Structure.Cuboid(0, 4, 0, redstoneBlock));
-			add(new Structure.Cuboid(0, 3, -1, redstoneLamp));
-			add(new Structure.Cuboid(0, 3, 1, redstoneLamp));
-			add(new Structure.Cuboid(1, 3, 0, redstoneLamp));
-			add(new Structure.Cuboid(-1, 3, 0, redstoneLamp));
-			add(new Structure.Cuboid(0, 5, 0, redstoneLamp));
-			add(new Structure.Cuboid(1, 5, -1, vine1));
-			add(new Structure.Cuboid(-1, 5, -1, vine1));
-			add(new Structure.Cuboid(1, 5, 1, vine4));
-			add(new Structure.Cuboid(-1, 5, 1, vine4));
+			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Structure.Cuboid(0, 3, 0, Structure.BuildingBlock.redstoneBlock));
+			add(new Structure.Cuboid(0, 4, 0, Structure.BuildingBlock.redstoneBlock));
+			add(new Structure.Cuboid(0, 3, -1, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(0, 3, 1, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(1, 3, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(-1, 3, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(0, 5, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(1, 5, -1, Structure.BuildingBlock.vine1));
+			add(new Structure.Cuboid(-1, 5, -1, Structure.BuildingBlock.vine1));
+			add(new Structure.Cuboid(1, 5, 1, Structure.BuildingBlock.vine4));
+			add(new Structure.Cuboid(-1, 5, 1, Structure.BuildingBlock.vine4));
 		}
 	};
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Structure.Cuboid(0, 0, 2, specialSandstone));
+			add(new Structure.Cuboid(0, 0, 2, Structure.BuildingBlock.specialSandstone));
 
 			// Everything else.
-			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, sandstone));
-			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, sandstone));
-			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, sandstone));
-			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, sandstone));
-			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, sandstone));
-			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, sandstone));
-			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, sandstone));
-			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, sandstone));
-			add(new Structure.Cuboid(0, 3, 0, redstoneBlock));
-			add(new Structure.Cuboid(0, 4, 0, redstoneBlock));
-			add(new Structure.Cuboid(0, 3, -1, redstoneLamp));
-			add(new Structure.Cuboid(0, 3, 1, redstoneLamp));
-			add(new Structure.Cuboid(1, 3, 0, redstoneLamp));
-			add(new Structure.Cuboid(-1, 3, 0, redstoneLamp));
-			add(new Structure.Cuboid(0, 5, 0, redstoneLamp));
+			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, Structure.BuildingBlock.sandstone));
+			add(new Structure.Cuboid(0, 3, 0, Structure.BuildingBlock.redstoneBlock));
+			add(new Structure.Cuboid(0, 4, 0, Structure.BuildingBlock.redstoneBlock));
+			add(new Structure.Cuboid(0, 3, -1, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(0, 3, 1, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(1, 3, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(-1, 3, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Structure.Cuboid(0, 5, 0, Structure.BuildingBlock.redstoneLamp));
 		}
 	};
 

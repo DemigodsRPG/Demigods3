@@ -9,7 +9,8 @@
     <version>3.0.0-BETA</version>
     <packaging>jar</packaging>
 
-    <name>Demigods for Bukkit/Spigot</name>
+    <name>Demigods</name>
+    <description>Demigods for Bukkit/Spigot Minecraft Servers.</description>
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
 
     <licenses>
