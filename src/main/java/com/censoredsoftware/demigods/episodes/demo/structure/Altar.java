@@ -184,6 +184,18 @@ public class Altar implements StandaloneStructure
 			add(new BlockData(Material.WATER));
 		}
 	};
+	private final static List<BlockData> torch = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.TORCH));
+		}
+	};
+	private final static List<BlockData> fence = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.FENCE));
+		}
+	};
 
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{
@@ -381,6 +393,12 @@ public class Altar implements StandaloneStructure
 			add(new Cuboid(1, 0, 0, sandStairEast));
 			add(new Cuboid(0, 0, -1, sandStairNorth));
 			add(new Cuboid(0, 0, 1, sandStairSouth));
+
+			// Tiki Torch
+			int rand1 = Randoms.generateIntRange(-3, -2);
+			int rand2 = Randoms.generateIntRange(-3, -2);
+			add(new Cuboid(rand1, 0, rand2, rand1, 1, rand2, fence)); // Fence
+			add(new Cuboid(rand1, 2, rand2, torch)); // Torch
 		}
 	};
 
