@@ -123,9 +123,9 @@ public interface Structure
 
 		public Set<Location> getLocations()
 		{
-			if(getStructure() instanceof MassiveStructure) return null;
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
 			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
-			return ((StandaloneStructure) getStructure()).getDesign(this.design).getLocations(this.reference.toLocation());
+			return null;
 		}
 
 		public Structure getStructure()
@@ -208,9 +208,9 @@ public interface Structure
 
 		public boolean generate()
 		{
-			if(this instanceof MassiveStructure) return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
-			if(this instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
-			return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).generate(this.reference.toLocation());
+			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
 		public void save()
