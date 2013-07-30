@@ -124,7 +124,7 @@ public class Demigods
 		}
 
 		// Update usable characters
-		DCharacter.Util.updateUsableDeities();
+		DCharacter.Util.updateUsableCharacters();
 
 		// Initialize metrics
 		try
