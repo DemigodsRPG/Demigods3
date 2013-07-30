@@ -40,18 +40,19 @@ public class Swim extends Ability
 				if(!(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER) || player.isSneaking()))
 				{
 					DataManager.removeTemp(player.getName(), "is_swimming");
+					return;
 				}
-				else if(DataManager.hasKeyTemp(player.getName(), "is_swimming"))
+				else if(player.isSneaking() && DataManager.hasKeyTemp(player.getName(), "is_swimming"))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					player.setVelocity(victor);
 					return;
 				}
-
-				if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) && Deity.Util.canUseDeitySilent(player, deity))
+				else if(player.isSneaking() && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)) && Deity.Util.canUseDeitySilent(player, deity))
 				{
 					DataManager.saveTemp(player.getName(), "is_swimming", true);
+					return;
 				}
 			}
 		}, null);
