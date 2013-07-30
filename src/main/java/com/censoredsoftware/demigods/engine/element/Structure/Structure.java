@@ -1,9 +1,6 @@
 package com.censoredsoftware.demigods.engine.element.Structure;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 
@@ -248,7 +245,7 @@ public interface Structure
 		}
 	}
 
-	public static class Schematic extends HashSet<Cuboid>
+	public static class Schematic extends ArrayList<Cuboid>
 	{
 		private final String name;
 		private final String designer;
