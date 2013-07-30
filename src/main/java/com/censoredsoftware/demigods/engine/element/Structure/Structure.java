@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
 import redis.clients.johm.*;
@@ -278,6 +279,8 @@ public interface Structure
 			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
+			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
+				if(drop.getLocation().distance(reference) <= (getGroundRadius() * 2)) ;
 			return true;
 		}
 
