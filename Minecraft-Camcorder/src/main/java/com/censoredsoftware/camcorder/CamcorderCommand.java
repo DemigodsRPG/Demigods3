@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.improve.ListedCommand;
@@ -55,12 +57,14 @@ public class CamcorderCommand extends ListedCommand
 		{
 			if(CamcorderPlayback.playback == null)
 			{
-				player.teleport(getStartLocation(player, args[1]));
+				Entity target = player.getNearbyEntities(2, 2, 2).get(0);
+				if(target == null || !(target instanceof LivingEntity)) target = player;
+				target.teleport(getStartLocation(player, args[1]));
 				CamcorderPlayback.start = getStartLocation(player, args[1]);
 				CamcorderPlayback.name = args[1];
 				CamcorderPlayback.endTime = getEndTime(player, args[1]);
 				CamcorderPlayback.startPlaybackTime = System.currentTimeMillis();
-				CamcorderPlayback.playback = player;
+				CamcorderPlayback.playback = (LivingEntity) target;
 				player.sendMessage(ChatColor.RED + "Playing... " + getEndTime(player, args[1]));
 				return true;
 			}

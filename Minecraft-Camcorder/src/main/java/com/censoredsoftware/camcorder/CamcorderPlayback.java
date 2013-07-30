@@ -2,12 +2,14 @@ package com.censoredsoftware.camcorder;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CamcorderPlayback extends BukkitRunnable
 {
-	static Player playback;
+	static Player player;
+	static LivingEntity playback;
 
 	protected static Location start;
 	protected static String name;
@@ -28,14 +30,14 @@ public class CamcorderPlayback extends BukkitRunnable
 		if(System.currentTimeMillis() >= startPlaybackTime + endTime)
 		{
 			count = 0;
-			playback.sendMessage(ChatColor.RED + "Done.");
+			player.sendMessage(ChatColor.RED + "Done.");
 			playback = null;
 			return;
 		}
 		count++;
 		try
 		{
-			Location result = getLocation(playback, count);
+			Location result = getLocation(player, count);
 			if(result == null) return;
 			playback.teleport(result);
 		}
