@@ -37,12 +37,12 @@ public class Swim extends Ability
 			{
 				Player player = event.getPlayer();
 
-				if(!(player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER) || player.isSneaking()))
+				if(!player.isSneaking() || !player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || !player.getLocation().getBlock().getType().equals(Material.WATER))
 				{
 					DataManager.removeTemp(player.getName(), "is_swimming");
 					return;
 				}
-				else if(player.isSneaking() && DataManager.hasKeyTemp(player.getName(), "is_swimming"))
+				else if(player.isSneaking() && DataManager.hasKeyTemp(player.getName(), "is_swimming") && (player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER)))
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
