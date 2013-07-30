@@ -1,7 +1,5 @@
 package com.censoredsoftware.camcorder;
 
-import org.bukkit.event.HandlerList;
-
 import com.censoredsoftware.core.improve.CSPlugin;
 
 public class CamcorderPlugin extends CSPlugin
@@ -27,6 +25,6 @@ public class CamcorderPlugin extends CSPlugin
 	@Override
 	public void onDisable()
 	{
-		HandlerList.unregisterAll(this);
+		// TODO
 	}
 }

@@ -39,7 +39,7 @@ public class CamcorderCommand extends ListedCommand
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("stop") && CamcorderRecord.recording.equals(player))
 		{
-			CamcorderRecord.end(CamcorderRecord.startTime);
+			CamcorderRecord.end();
 			CamcorderRecord.recording = null;
 			player.sendMessage(ChatColor.RED + "Stopped recording.");
 			return true;

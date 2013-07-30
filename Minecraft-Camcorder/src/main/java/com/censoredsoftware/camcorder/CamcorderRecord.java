@@ -11,7 +11,6 @@ public class CamcorderRecord extends BukkitRunnable
 	static Player recording;
 	static String name;
 	protected static Location start;
-	protected static Long startTime;
 	protected static Integer count;
 
 	public CamcorderRecord(CamcorderPlugin plugin)
@@ -28,12 +27,9 @@ public class CamcorderRecord extends BukkitRunnable
 		if(start == null)
 		{
 			start = recording.getLocation();
-			startTime = System.currentTimeMillis();
 			recordStart(start.getX(), start.getY(), start.getZ(), start.getPitch(), start.getYaw());
 			return;
 		}
-		long time = System.currentTimeMillis() - startTime;
-		if(time % 50 != 0) return;
 		Location to = recording.getLocation();
 		double X = to.getX();
 		double Y = to.getY();
@@ -66,8 +62,8 @@ public class CamcorderRecord extends BukkitRunnable
 		plugin.saveConfig();
 	}
 
-	static void end(long time)
+	static void end()
 	{
-		plugin.getConfig().set(recording.getName() + "." + name + ".end", System.currentTimeMillis() - time);
+		plugin.getConfig().set(recording.getName() + "." + name + ".end", count * 50);
 	}
 }
