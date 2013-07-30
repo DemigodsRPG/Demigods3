@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import redis.clients.johm.*;
 
@@ -274,13 +275,22 @@ public interface Structure
 			return this.radius;
 		}
 
-		public boolean generate(Location reference, boolean check)
+		public boolean generate(final Location reference, boolean check)
 		{
 			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Cuboid cuboid : this)
 				cuboid.generate(reference);
-			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
-				if(drop.getLocation().distance(reference) <= (getGroundRadius() * 2)) ;
+
+			new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
+						if(drop.getLocation().distance(reference) <= (getGroundRadius() * 2)) ;
+				}
+			}.runTaskLater(Demigods.plugin, 40);
+
 			return true;
 		}
 
