@@ -151,6 +151,13 @@ public class Altar implements StandaloneStructure
 
 		}
 	};
+	private final static List<BlockData> sandStone = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.SANDSTONE));
+
+		}
+	};
 	private final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 	{
 		{
@@ -167,10 +174,16 @@ public class Altar implements StandaloneStructure
 	private final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
 	{
 		{
-			add(new BlockData(Material.AIR, 55));
-			add(new BlockData(Material.LONG_GRASS, (byte) 1, 23, true));
-			add(new BlockData(Material.YELLOW_FLOWER, 13, true));
-			add(new BlockData(Material.RED_ROSE, 9, true));
+			add(new BlockData(Material.AIR, 50));
+			add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
+			add(new BlockData(Material.YELLOW_FLOWER, 9, true));
+			add(new BlockData(Material.RED_ROSE, 6, true));
+		}
+	};
+	private final static List<BlockData> water = new ArrayList<BlockData>()
+	{
+		{
+			add(new BlockData(Material.WATER));
 		}
 	};
 
@@ -358,7 +371,10 @@ public class Altar implements StandaloneStructure
 
 			// Ground
 			add(new Cuboid(-3, -1, -3, 3, -1, 3, sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
-			add(new Cuboid(-2, -1, -2, 2, -1, 2, grass));
+			add(new Cuboid(-2, -1, -2, 2, -1, 2, grass).exclude(-1, -1, -1, 1, -1, 1));
+			add(new Cuboid(-1, -1, -1, 1, -1, 1, water).exclude(0, -1, 0));
+			add(new Cuboid(0, -1, 0, smoothSandStone));
+			add(new Cuboid(-3, -2, -3, 3, -2, 3, sandStone));
 
 			// Table
 			add(new Cuboid(-1, 0, -1, -1, 0, 1, sandStairWest));
