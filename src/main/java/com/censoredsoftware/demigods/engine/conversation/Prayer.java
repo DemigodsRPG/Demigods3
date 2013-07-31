@@ -430,6 +430,10 @@ public class Prayer implements ListedConversation
 			else if(message.equalsIgnoreCase("clear"))
 			{
 				// Clear them
+				for(Notification notification : character.getNotifications())
+				{
+					Notification.remove(notification);
+				}
 				character.clearNotifications();
 
 				// Send to the menu
