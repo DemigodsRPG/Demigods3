@@ -130,6 +130,7 @@ public class Shrine implements StandaloneStructure
 		save.setType(getStructureType());
 		save.setDesign("general");
 		save.addFlags(getFlags());
+		save.setActive(true);
 		save.save();
 		if(generate && !save.generate(true)) save.remove();
 		return save;
