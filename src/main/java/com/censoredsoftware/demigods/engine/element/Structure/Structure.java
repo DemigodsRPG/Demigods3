@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
@@ -38,7 +39,7 @@ public interface Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION
+		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, SLOW_GEN
 	}
 
 	@Model
@@ -211,6 +212,13 @@ public interface Structure
 			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
+		public boolean slowGenerate(boolean check)
+		{
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
+			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
+		}
+
 		public void save()
 		{
 			JOhm.save(this);
@@ -245,7 +253,7 @@ public interface Structure
 		}
 	}
 
-	public static class Schematic extends ArrayList<Cuboid>
+	public static class Schematic extends ArrayList<Selection>
 	{
 		private final String name;
 		private final String designer;
@@ -261,7 +269,7 @@ public interface Structure
 		public Set<Location> getLocations(Location reference)
 		{
 			Set<Location> locations = Sets.newHashSet();
-			for(Cuboid cuboid : this)
+			for(Selection cuboid : this)
 				locations.addAll(cuboid.getBlockLocations(reference));
 			return locations;
 		}
@@ -274,10 +282,18 @@ public interface Structure
 		public boolean generate(final Location reference, boolean check)
 		{
 			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
-			for(Cuboid cuboid : this)
+			for(Selection cuboid : this)
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
 				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
+			return true;
+		}
+
+		public boolean slowGenerate(final Location reference, boolean check)
+		{
+			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
+			for(Selection cuboid : this)
+				cuboid.slowGenerate(reference);
 			return true;
 		}
 
@@ -285,401 +301,6 @@ public interface Structure
 		public String toString()
 		{
 			return this.name;
-		}
-	}
-
-	public static class Cuboid
-	{
-		private int X, Y, Z, XX, YY, ZZ;
-		private int eX, eY, eZ, eXX, eYY, eZZ;
-		private boolean cuboid;
-		private boolean exclude;
-		private boolean excludeCuboid;
-		private List<Structure.BlockData> blockData;
-
-		/**
-		 * Constructor for a Cuboid (non-cuboid), useful for getting 1 location back.
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 */
-		public Cuboid(int X, int Y, int Z)
-		{
-			this.X = this.XX = X;
-			this.Y = this.YY = Y;
-			this.Z = this.ZZ = Z;
-			this.cuboid = false;
-			this.exclude = false;
-			this.excludeCuboid = false;
-			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
-		}
-
-		/**
-		 * Constructor for a Cuboid (cuboid), useful for getting only locations back.
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
-		 */
-		public Cuboid(int X, int Y, int Z, int XX, int YY, int ZZ)
-		{
-			this.X = X;
-			this.Y = Y;
-			this.Z = Z;
-			this.XX = XX;
-			this.YY = YY;
-			this.ZZ = ZZ;
-			this.cuboid = true;
-			this.exclude = false;
-			this.excludeCuboid = false;
-			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
-		}
-
-		/**
-		 * Constructor for a Cuboid (non-cuboid).
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 * @param blockData The BlockData objects of this schematic.
-		 */
-		public Cuboid(int X, int Y, int Z, List<Structure.BlockData> blockData)
-		{
-			this.X = this.XX = X;
-			this.Y = this.YY = Y;
-			this.Z = this.ZZ = Z;
-			this.cuboid = false;
-			this.exclude = false;
-			this.excludeCuboid = false;
-			this.blockData = blockData;
-		}
-
-		/**
-		 * Constructor for a Cuboid (cuboid).
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param blockData The BlockData objects of this schematic.
-		 */
-		public Cuboid(int X, int Y, int Z, int XX, int YY, int ZZ, List<Structure.BlockData> blockData)
-		{
-			this.X = X;
-			this.Y = Y;
-			this.Z = Z;
-			this.XX = XX;
-			this.YY = YY;
-			this.ZZ = ZZ;
-			this.cuboid = true;
-			this.exclude = false;
-			this.excludeCuboid = false;
-			this.blockData = blockData;
-		}
-
-		/**
-		 * Excluding for a Cuboid (non-cuboid).
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 * @return This schematic.
-		 */
-		public Cuboid exclude(int X, int Y, int Z)
-		{
-			this.eX = this.eXX = X;
-			this.eY = this.eYY = Y;
-			this.eZ = this.eZZ = Z;
-			this.exclude = true;
-			return this;
-		}
-
-		/**
-		 * Excluding for a Cuboid (cuboid).
-		 * 
-		 * @param X The relative X coordinate of the schematic from the reference location.
-		 * @param Y The relative Y coordinate of the schematic from the reference location.
-		 * @param Z The relative Z coordinate of the schematic from the reference location.
-		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
-		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
-		 * @return This schematic.
-		 */
-		public Cuboid exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
-		{
-			this.eX = X;
-			this.eY = Y;
-			this.eZ = Z;
-			this.eXX = XX;
-			this.eYY = YY;
-			this.eZZ = ZZ;
-			this.exclude = true;
-			this.excludeCuboid = true;
-			return this;
-		}
-
-		/**
-		 * Get the material of the object (a random material is chosen based on the configured odds).
-		 * 
-		 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.
-		 * 
-		 * @return A material.
-		 */
-		public BlockData getStructureBlockData()
-		{
-			final int roll = Randoms.generateIntRange(1, 100);
-			Collection<BlockData> check = Collections2.filter(blockData, new Predicate<BlockData>()
-			{
-				@Override
-				public boolean apply(@Nullable BlockData blockData)
-				{
-					return blockData.getOdds() >= roll;
-				}
-			});
-			if(check.isEmpty()) return getStructureBlockData();
-			return Lists.newArrayList(check).get(Randoms.generateIntRange(0, check.size() - 1));
-		}
-
-		/**
-		 * Get the block locations in this object.
-		 * 
-		 * @param reference The reference location.
-		 * @return A set of locations.
-		 */
-		public Set<Location> getBlockLocations(final Location reference)
-		{
-			if(cuboid)
-			{
-				if(exclude)
-				{
-					if(excludeCuboid) return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
-					return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), Sets.newHashSet(getLocation(reference, eX, eY, eZ)));
-				}
-				return rangeLoop(reference, X, XX, Y, YY, Z, ZZ);
-			}
-			return Sets.newHashSet(getLocation(reference, X, Y, Z));
-		}
-
-		/**
-		 * Generate this schematic.
-		 * 
-		 * @param reference The reference Location.
-		 */
-		public void generate(Location reference)
-		{
-			for(Location location : getBlockLocations(reference))
-			{
-				Structure.BlockData data = getStructureBlockData();
-				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
-			}
-		}
-
-		/**
-		 * Get a relative location, based on the <code>X</code>, <code>Y</code>, <code>Z</code> coordinates relative to the object's central location.
-		 * 
-		 * @param X Relative X coordinate.
-		 * @param Y Relative Y coordinate.
-		 * @param Z Relative Z coordinate.
-		 * @return New relative location.
-		 */
-		public Location getLocation(Location reference, int X, int Y, int Z)
-		{
-			return reference.clone().add(X, Y, Z);
-		}
-
-		/**
-		 * Get a cuboid selection as a HashSet.
-		 * 
-		 * @param reference The reference location.
-		 * @param X The relative X coordinate.
-		 * @param XX The second relative X coordinate.
-		 * @param Y The relative Y coordinate.
-		 * @param YY The second relative Y coordinate.
-		 * @param Z The relative Z coordinate.
-		 * @param ZZ The second relative Z coordinate.
-		 * @return The HashSet collection of a cuboid selection.
-		 */
-		public Set<Location> rangeLoop(final Location reference, final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
-		{
-			return new HashSet<Location>()
-			{
-				{
-					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
-						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
-							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
-								add(getLocation(reference, x, y, z));
-				}
-			};
-		}
-	}
-
-	public static class BlockData
-	{
-		private Material material;
-		private byte data;
-		private int odds;
-		private boolean physics;
-
-		/**
-		 * Constructor for BlockData with only Material given.
-		 * 
-		 * @param material Material of the block.
-		 */
-		public BlockData(Material material)
-		{
-			this.material = material;
-			this.data = 0;
-			this.odds = 100;
-			this.physics = false;
-		}
-
-		/**
-		 * Constructor for BlockData with only Material given.
-		 * 
-		 * @param material Material of the block.
-		 */
-		public BlockData(Material material, boolean physics)
-		{
-			this.material = material;
-			this.data = 0;
-			this.odds = 100;
-			this.physics = physics;
-		}
-
-		/**
-		 * Constructor for BlockData with only Material given and odds given.
-		 * 
-		 * @param material Material of the block.
-		 * @param odds The odds of this object being generated.
-		 */
-		public BlockData(Material material, int odds)
-		{
-			if(odds == 0 || odds > 100) throw new BlockDataException();
-			this.material = material;
-			this.data = 100;
-			this.odds = odds;
-			this.physics = false;
-		}
-
-		/**
-		 * Constructor for BlockData with only Material given and odds given.
-		 * 
-		 * @param material Material of the block.
-		 * @param odds The odds of this object being generated.
-		 */
-		public BlockData(Material material, int odds, boolean physics)
-		{
-			if(odds == 0 || odds > 100) throw new BlockDataException();
-			this.material = material;
-			this.data = 100;
-			this.odds = odds;
-			this.physics = physics;
-		}
-
-		/**
-		 * Constructor for BlockData with only Material and byte data given.
-		 * 
-		 * @param material Material of the block.
-		 * @param data Byte data of the block.
-		 */
-		public BlockData(Material material, byte data)
-		{
-			this.material = material;
-			this.data = data;
-			this.odds = 100;
-			this.physics = false;
-		}
-
-		/**
-		 * Constructor for BlockData with only Material and byte data given.
-		 * 
-		 * @param material Material of the block.
-		 * @param data Byte data of the block.
-		 */
-		public BlockData(Material material, byte data, boolean physics)
-		{
-			this.material = material;
-			this.data = data;
-			this.odds = 100;
-			this.physics = physics;
-		}
-
-		/**
-		 * Constructor for BlockData with Material, byte data, and odds given.
-		 * 
-		 * @param material Material of the block.
-		 * @param data Byte data of the block.
-		 * @param odds The odds of this object being generated.
-		 */
-		public BlockData(Material material, byte data, int odds)
-		{
-			if(odds == 0 || odds > 100) throw new BlockDataException();
-			this.material = material;
-			this.data = data;
-			this.odds = odds;
-			this.physics = false;
-		}
-
-		/**
-		 * Constructor for BlockData with Material, byte data, and odds given.
-		 * 
-		 * @param material Material of the block.
-		 * @param data Byte data of the block.
-		 * @param odds The odds of this object being generated.
-		 */
-		public BlockData(Material material, byte data, int odds, boolean physics)
-		{
-			if(odds == 0 || odds > 100) throw new BlockDataException();
-			this.material = material;
-			this.data = data;
-			this.odds = odds;
-			this.physics = physics;
-		}
-
-		/**
-		 * Get the Material of this object.
-		 * 
-		 * @return A Material.
-		 */
-		public Material getMaterial()
-		{
-			return this.material;
-		}
-
-		/**
-		 * Get the byte data of this object.
-		 * 
-		 * @return Byte data.
-		 */
-		public byte getData()
-		{
-			return this.data;
-		}
-
-		/**
-		 * Get the odds of this object generating.
-		 * 
-		 * @return Odds (as an integer, out of 5).
-		 */
-		public int getOdds()
-		{
-			return this.odds;
-		}
-
-		/**
-		 * Get the physics boolean.
-		 * 
-		 * @return If physics should apply on generation.
-		 */
-		public boolean getPhysics()
-		{
-			return this.physics;
 		}
 	}
 
@@ -692,255 +313,651 @@ public interface Structure
 		public Schematic getSchematic();
 	}
 
-	public class BuildingBlock // TODO: Rename these to make more sense. // Shouldn't this be in the episode data? - HQM
+	public static class Selection
 	{
-		public final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
+		private Set<RelativeBlockLocation> include;
+		private Set<RelativeBlockLocation> exclude;
+		private List<BlockData> blockData;
+
+		public Selection()
 		{
-			{
-				add(new BlockData(Material.ENCHANTMENT_TABLE));
-			}
-		};
-		public final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
+			include = Sets.newHashSet();
+			exclude = Sets.newHashSet();
+			blockData = Lists.newArrayList();
+		}
+
+		/**
+		 * Set Selection (non-cuboid), useful for getting 1 location back.
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 */
+		public Selection include(int X, int Y, int Z)
 		{
-			{
-				add(new BlockData(Material.SMOOTH_BRICK, 80));
-				add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
-				add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
-			}
-		};
-		public final static List<BlockData> quartz = new ArrayList<BlockData>(1)
+			include.add(new RelativeBlockLocation(X, Y, Z));
+			return this;
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid), useful for getting only locations back.
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 */
+		public Selection include(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
-			{
-				add(new BlockData(Material.QUARTZ_BLOCK));
-			}
-		};
-		public final static List<BlockData> pillarQuartz = new ArrayList<BlockData>(1)
+			include.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
+			return this;
+		}
+
+		/**
+		 * Excluding for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @return This schematic.
+		 */
+		public Selection exclude(int X, int Y, int Z)
 		{
-			{
-				add(new BlockData(Material.QUARTZ_BLOCK, (byte) 2));
-			}
-		};
-		public final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
+			exclude.add(new RelativeBlockLocation(X, Y, Z));
+			return this;
+		}
+
+		/**
+		 * Excluding for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @return This schematic.
+		 */
+		public Selection exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
-			{
-				add(new BlockData(Material.getMaterial(44), (byte) 5));
-			}
-		};
-		public final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
+			exclude.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(Material material)
 		{
-			{
-				add(new BlockData(Material.getMaterial(44), (byte) 13));
-			}
-		};
-		public final static List<BlockData> quartzSlabBottom = new ArrayList<BlockData>(1)
+			this.blockData = Lists.newArrayList(new BlockData(material));
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
+		 * @param data The data being set.
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(Material material, byte data)
 		{
-			{
-				add(new BlockData(Material.getMaterial(44), (byte) 7));
-			}
-		};
-		public final static List<BlockData> quartzSlabTop = new ArrayList<BlockData>(1)
+			this.blockData = Lists.newArrayList(new BlockData(material, data));
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
+		 * @param data The data being set.
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(BlockData data)
 		{
-			{
-				add(new BlockData(Material.getMaterial(44), (byte) 15));
-			}
-		};
-		public final static List<BlockData> stoneBrickSpecial = new ArrayList<BlockData>(1)
+			this.blockData = Lists.newArrayList(data);
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
+		 * @param data The data being set.
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(List<BlockData> data)
 		{
-			{
-				add(new BlockData(Material.getMaterial(98), (byte) 3));
-			}
-		};
-		public final static List<BlockData> quartzSpecial = new ArrayList<BlockData>(1)
+			this.blockData = data;
+			return this;
+		}
+
+		/**
+		 * Get the material of the object (a random material is chosen based on the configured odds).
+		 * 
+		 * @return The block data.
+		 */
+		public BlockData getBlockData()
 		{
+			if(blockData.isEmpty()) return new BlockData(Material.AIR);
+			final int roll = Randoms.generateIntRange(1, 100);
+			Collection<BlockData> check = Collections2.filter(blockData, new Predicate<BlockData>()
 			{
-				add(new BlockData(Material.QUARTZ_BLOCK, (byte) 1));
-			}
-		};
-		public final static List<BlockData> spruceWood = new ArrayList<BlockData>(1)
+				@Override
+				public boolean apply(@Nullable BlockData blockData)
+				{
+					return blockData.getOdds() >= roll;
+				}
+			});
+			if(check.isEmpty()) return getBlockData();
+			return Lists.newArrayList(check).get(Randoms.generateIntRange(0, check.size() - 1));
+		}
+
+		/**
+		 * Get the block locations in this object.
+		 * 
+		 * @param reference The reference location.
+		 * @return A set of locations.
+		 */
+		public Set<Location> getBlockLocations(final Location reference)
 		{
+			return new HashSet<Location>()
 			{
-				add(new BlockData(Material.getMaterial(5), (byte) 1));
-			}
-		};
-		public final static List<BlockData> spruceSlab = new ArrayList<BlockData>(1)
+				{
+					for(RelativeBlockLocation rbl : Sets.difference(include, exclude))
+						add(rbl.getFrom(reference));
+				}
+			};
+		}
+
+		/**
+		 * Generate this schematic.
+		 * 
+		 * @param reference The reference Location.
+		 */
+		public void generate(Location reference)
 		{
+			for(Location location : getBlockLocations(reference))
 			{
-				add(new BlockData(Material.getMaterial(126), (byte) 1));
+				BlockData data = getBlockData();
+				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
 			}
-		};
-		public final static List<BlockData> birchWood = new ArrayList<BlockData>(1)
+		}
+
+		/**
+		 * Generate this schematic.
+		 * 
+		 * @param reference The reference Location.
+		 */
+		public void slowGenerate(Location reference)
 		{
+			// TODO Figure out how to order every falling block so that they fit perfectly.
+
+			for(Location location : getBlockLocations(reference))
 			{
-				add(new BlockData(Material.getMaterial(5), (byte) 2));
+				BlockData data = getBlockData();
+				FallingBlock block = reference.getWorld().spawnFallingBlock(location.add(0, 16, 0), data.getMaterial().getId(), data.getData());
 			}
-		};
-		public final static List<BlockData> birchSlab = new ArrayList<BlockData>(1)
+		}
+
+		/**
+		 * Get a cuboid selection as a HashSet.
+		 * 
+		 * @param X The relative X coordinate.
+		 * @param XX The second relative X coordinate.
+		 * @param Y The relative Y coordinate.
+		 * @param YY The second relative Y coordinate.
+		 * @param Z The relative Z coordinate.
+		 * @param ZZ The second relative Z coordinate.
+		 * @return The HashSet collection of a cuboid selection.
+		 */
+		public Set<RelativeBlockLocation> rangeLoop(final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
 		{
+			return new HashSet<RelativeBlockLocation>()
 			{
-				add(new BlockData(Material.getMaterial(126), (byte) 2));
-			}
-		};
-		public final static List<BlockData> sandStairNorth = new ArrayList<BlockData>()
+				{
+					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
+						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
+							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
+								add(new RelativeBlockLocation(x, y, z));
+				}
+			};
+		}
+
+		public static class RelativeBlockLocation
 		{
+			int X;
+			int Y;
+			int Z;
+
+			RelativeBlockLocation(int X, int Y, int Z)
 			{
-				add(new BlockData(Material.getMaterial(128), (byte) 6));
+				this.X = X;
+				this.Y = Y;
+				this.Z = Z;
 			}
-		};
-		public final static List<BlockData> sandStairSouth = new ArrayList<BlockData>()
+
+			Location getFrom(Location location)
+			{
+				return location.clone().add(X, Y, Z);
+			}
+		}
+
+		public static class BlockData
 		{
+			private Material material;
+			private byte data;
+			private int odds;
+			private boolean physics;
+
+			/**
+			 * Constructor for BlockData with only Material given.
+			 * 
+			 * @param material Material of the block.
+			 */
+			public BlockData(Material material)
 			{
-				add(new BlockData(Material.getMaterial(128), (byte) 7));
+				this.material = material;
+				this.data = 0;
+				this.odds = 100;
+				this.physics = false;
 			}
-		};
-		public final static List<BlockData> sandStairEast = new ArrayList<BlockData>()
+
+			/**
+			 * Constructor for BlockData with only Material given.
+			 * 
+			 * @param material Material of the block.
+			 */
+			public BlockData(Material material, boolean physics)
+			{
+				this.material = material;
+				this.data = 0;
+				this.odds = 100;
+				this.physics = physics;
+			}
+
+			/**
+			 * Constructor for BlockData with only Material given and odds given.
+			 * 
+			 * @param material Material of the block.
+			 * @param odds The odds of this object being generated.
+			 */
+			public BlockData(Material material, int odds)
+			{
+				if(odds == 0 || odds > 100) throw new BlockDataException();
+				this.material = material;
+				this.data = 100;
+				this.odds = odds;
+				this.physics = false;
+			}
+
+			/**
+			 * Constructor for BlockData with only Material given and odds given.
+			 * 
+			 * @param material Material of the block.
+			 * @param odds The odds of this object being generated.
+			 */
+			public BlockData(Material material, int odds, boolean physics)
+			{
+				if(odds == 0 || odds > 100) throw new BlockDataException();
+				this.material = material;
+				this.data = 100;
+				this.odds = odds;
+				this.physics = physics;
+			}
+
+			/**
+			 * Constructor for BlockData with only Material and byte data given.
+			 * 
+			 * @param material Material of the block.
+			 * @param data Byte data of the block.
+			 */
+			public BlockData(Material material, byte data)
+			{
+				this.material = material;
+				this.data = data;
+				this.odds = 100;
+				this.physics = false;
+			}
+
+			/**
+			 * Constructor for BlockData with only Material and byte data given.
+			 * 
+			 * @param material Material of the block.
+			 * @param data Byte data of the block.
+			 */
+			public BlockData(Material material, byte data, boolean physics)
+			{
+				this.material = material;
+				this.data = data;
+				this.odds = 100;
+				this.physics = physics;
+			}
+
+			/**
+			 * Constructor for BlockData with Material, byte data, and odds given.
+			 * 
+			 * @param material Material of the block.
+			 * @param data Byte data of the block.
+			 * @param odds The odds of this object being generated.
+			 */
+			public BlockData(Material material, byte data, int odds)
+			{
+				if(odds == 0 || odds > 100) throw new BlockDataException();
+				this.material = material;
+				this.data = data;
+				this.odds = odds;
+				this.physics = false;
+			}
+
+			/**
+			 * Constructor for BlockData with Material, byte data, and odds given.
+			 * 
+			 * @param material Material of the block.
+			 * @param data Byte data of the block.
+			 * @param odds The odds of this object being generated.
+			 */
+			public BlockData(Material material, byte data, int odds, boolean physics)
+			{
+				if(odds == 0 || odds > 100) throw new BlockDataException();
+				this.material = material;
+				this.data = data;
+				this.odds = odds;
+				this.physics = physics;
+			}
+
+			/**
+			 * Get the Material of this object.
+			 * 
+			 * @return A Material.
+			 */
+			public Material getMaterial()
+			{
+				return this.material;
+			}
+
+			/**
+			 * Get the byte data of this object.
+			 * 
+			 * @return Byte data.
+			 */
+			public byte getData()
+			{
+				return this.data;
+			}
+
+			/**
+			 * Get the odds of this object generating.
+			 * 
+			 * @return Odds (as an integer, out of 5).
+			 */
+			public int getOdds()
+			{
+				return this.odds;
+			}
+
+			/**
+			 * Get the physics boolean.
+			 * 
+			 * @return If physics should apply on generation.
+			 */
+			public boolean getPhysics()
+			{
+				return this.physics;
+			}
+		}
+
+		public static class BuildingBlock // TODO: Rename these to make more sense. // Shouldn't this be in the episode data? - HQM
 		{
+			public final static List<BlockData> enchantTable = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.getMaterial(128), (byte) 5));
-			}
-		};
-		public final static List<BlockData> sandStairWest = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.ENCHANTMENT_TABLE));
+				}
+			};
+			public final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
 			{
-				add(new BlockData(Material.getMaterial(128), (byte) 4));
-			}
-		};
-		public final static List<BlockData> smoothSandStone = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.SMOOTH_BRICK, 80));
+					add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
+					add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
+				}
+			};
+			public final static List<BlockData> quartz = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.SANDSTONE, (byte) 2));
-			}
-		};
-		public final static List<BlockData> sandStone = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.QUARTZ_BLOCK));
+				}
+			};
+			public final static List<BlockData> pillarQuartz = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.SANDSTONE));
-			}
-		};
-		public final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.QUARTZ_BLOCK, (byte) 2));
+				}
+			};
+			public final static List<BlockData> stoneBrickSlabBottom = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.SAND, 65));
-				add(new BlockData(Material.GRASS, 35));
-			}
-		};
-		public final static List<BlockData> grass = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.getMaterial(44), (byte) 5));
+				}
+			};
+			public final static List<BlockData> stoneBrickSlabTop = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.GRASS));
-			}
-		};
-		public final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.getMaterial(44), (byte) 13));
+				}
+			};
+			public final static List<BlockData> quartzSlabBottom = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.AIR, 50));
-				add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
-				add(new BlockData(Material.YELLOW_FLOWER, 9, true));
-				add(new BlockData(Material.RED_ROSE, 6, true));
-			}
-		};
-		public final static List<BlockData> water = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.getMaterial(44), (byte) 7));
+				}
+			};
+			public final static List<BlockData> quartzSlabTop = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.WATER));
-			}
-		};
-		public final static List<BlockData> torch = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.getMaterial(44), (byte) 15));
+				}
+			};
+			public final static List<BlockData> stoneBrickSpecial = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.TORCH));
-			}
-		};
-		public final static List<BlockData> fence = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.getMaterial(98), (byte) 3));
+				}
+			};
+			public final static List<BlockData> quartzSpecial = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.FENCE));
-			}
-		};
-		public final static List<BlockData> air = new ArrayList<BlockData>()
-		{
+				{
+					add(new BlockData(Material.QUARTZ_BLOCK, (byte) 1));
+				}
+			};
+			public final static List<BlockData> spruceWood = new ArrayList<BlockData>(1)
 			{
-				add(new BlockData(Material.AIR));
-			}
-		};
-		public final static List<Structure.BlockData> specialStoneBrick = new ArrayList<Structure.BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(5), (byte) 1));
+				}
+			};
+			public final static List<BlockData> spruceSlab = new ArrayList<BlockData>(1)
 			{
-				add(new Structure.BlockData(Material.SMOOTH_BRICK, (byte) 3));
-			}
-		};
-		public final static List<Structure.BlockData> specialSandstone = new ArrayList<Structure.BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(126), (byte) 1));
+				}
+			};
+			public final static List<BlockData> birchWood = new ArrayList<BlockData>(1)
 			{
-				add(new Structure.BlockData(Material.SANDSTONE, (byte) 1));
-			}
-		};
-		public final static List<Structure.BlockData> sandstone = new ArrayList<Structure.BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(5), (byte) 2));
+				}
+			};
+			public final static List<BlockData> birchSlab = new ArrayList<BlockData>(1)
 			{
-				add(new Structure.BlockData(Material.SANDSTONE));
-			}
-		};
-		public final static List<Structure.BlockData> redstoneBlock = new ArrayList<Structure.BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(126), (byte) 2));
+				}
+			};
+			public final static List<BlockData> sandStairNorth = new ArrayList<BlockData>()
 			{
-				add(new Structure.BlockData(Material.REDSTONE_BLOCK));
-			}
-		};
-		public final static List<Structure.BlockData> redstoneLamp = new ArrayList<Structure.BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(128), (byte) 6));
+				}
+			};
+			public final static List<BlockData> sandStairSouth = new ArrayList<BlockData>()
 			{
-				add(new Structure.BlockData(Material.REDSTONE_LAMP_ON));
-			}
-		};
-		public final static List<Structure.BlockData> vine1 = new ArrayList<Structure.BlockData>(2)
-		{
+				{
+					add(new BlockData(Material.getMaterial(128), (byte) 7));
+				}
+			};
+			public final static List<BlockData> sandStairEast = new ArrayList<BlockData>()
 			{
-				add(new Structure.BlockData(Material.VINE, (byte) 1, 40));
-				add(new Structure.BlockData(Material.AIR, 60));
-			}
-		};
-		public final static List<Structure.BlockData> vine4 = new ArrayList<Structure.BlockData>(2)
-		{
+				{
+					add(new BlockData(Material.getMaterial(128), (byte) 5));
+				}
+			};
+			public final static List<BlockData> sandStairWest = new ArrayList<BlockData>()
 			{
-				add(new Structure.BlockData(Material.VINE, (byte) 4, 40));
-				add(new Structure.BlockData(Material.AIR, 60));
-			}
-		};
-		public final static List<BlockData> goldClickBlock = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.getMaterial(128), (byte) 4));
+				}
+			};
+			public final static List<BlockData> smoothSandStone = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.GOLD_BLOCK));
-			}
-		};
-		public final static List<BlockData> enderChest = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.SANDSTONE, (byte) 2));
+				}
+			};
+			public final static List<BlockData> sandStone = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.ENDER_CHEST));
-			}
-		};
-		public final static List<BlockData> stoneBrickStairs = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.SANDSTONE));
+				}
+			};
+			public final static List<BlockData> sandyGrass = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.SMOOTH_STAIRS));
-			}
-		};
-		public final static List<BlockData> stoneBrickStairs1 = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.SAND, 65));
+					add(new BlockData(Material.GRASS, 35));
+				}
+			};
+			public final static List<BlockData> grass = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 1));
-			}
-		};
-		public final static List<BlockData> stoneBrickStairs2 = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.GRASS));
+				}
+			};
+			public final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 2));
-			}
-		};
-		public final static List<BlockData> stoneBrickStairs3 = new ArrayList<BlockData>(1)
-		{
+				{
+					add(new BlockData(Material.AIR, 50));
+					add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
+					add(new BlockData(Material.YELLOW_FLOWER, 9, true));
+					add(new BlockData(Material.RED_ROSE, 6, true));
+				}
+			};
+			public final static List<BlockData> water = new ArrayList<BlockData>()
 			{
-				add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
-			}
-		};
+				{
+					add(new BlockData(Material.WATER));
+				}
+			};
+			public final static List<BlockData> torch = new ArrayList<BlockData>()
+			{
+				{
+					add(new BlockData(Material.TORCH));
+				}
+			};
+			public final static List<BlockData> fence = new ArrayList<BlockData>()
+			{
+				{
+					add(new BlockData(Material.FENCE));
+				}
+			};
+			public final static List<BlockData> air = new ArrayList<BlockData>()
+			{
+				{
+					add(new BlockData(Material.AIR));
+				}
+			};
+			public final static List<BlockData> specialStoneBrick = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SMOOTH_BRICK, (byte) 3));
+				}
+			};
+			public final static List<BlockData> specialSandstone = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SANDSTONE, (byte) 1));
+				}
+			};
+			public final static List<BlockData> sandstone = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SANDSTONE));
+				}
+			};
+			public final static List<BlockData> redstoneBlock = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.REDSTONE_BLOCK));
+				}
+			};
+			public final static List<BlockData> redstoneLamp = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.REDSTONE_LAMP_ON));
+				}
+			};
+			public final static List<BlockData> vine1 = new ArrayList<BlockData>(2)
+			{
+				{
+					add(new BlockData(Material.VINE, (byte) 1, 40));
+					add(new BlockData(Material.AIR, 60));
+				}
+			};
+			public final static List<BlockData> vine4 = new ArrayList<BlockData>(2)
+			{
+				{
+					add(new BlockData(Material.VINE, (byte) 4, 40));
+					add(new BlockData(Material.AIR, 60));
+				}
+			};
+			public final static List<BlockData> goldClickBlock = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.GOLD_BLOCK));
+				}
+			};
+			public final static List<BlockData> enderChest = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.ENDER_CHEST));
+				}
+			};
+			public final static List<BlockData> stoneBrickStairs = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SMOOTH_STAIRS));
+				}
+			};
+			public final static List<BlockData> stoneBrickStairs1 = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SMOOTH_STAIRS, (byte) 1));
+				}
+			};
+			public final static List<BlockData> stoneBrickStairs2 = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SMOOTH_STAIRS, (byte) 2));
+				}
+			};
+			public final static List<BlockData> stoneBrickStairs3 = new ArrayList<BlockData>(1)
+			{
+				{
+					add(new BlockData(Material.SMOOTH_STAIRS, (byte) 3));
+				}
+			};
+		}
 	}
 }

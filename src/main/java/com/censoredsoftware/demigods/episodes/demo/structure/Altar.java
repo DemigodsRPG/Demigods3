@@ -36,84 +36,83 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Cuboid(2, 3, 2, Structure.BuildingBlock.stoneBrickSlabTop));
-			add(new Cuboid(-2, 3, -2, Structure.BuildingBlock.stoneBrickSlabTop));
-			add(new Cuboid(2, 3, -2, Structure.BuildingBlock.stoneBrickSlabTop));
-			add(new Cuboid(-2, 3, 2, Structure.BuildingBlock.stoneBrickSlabTop));
-			add(new Cuboid(2, 4, 2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-2, 4, -2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(2, 4, -2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-2, 4, 2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(2, 5, 2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-2, 5, -2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(2, 5, -2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-2, 5, 2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(0, 6, 0, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-1, 5, -1, 1, 5, 1, Structure.BuildingBlock.spruceWood));
+			add(new Selection().include(2, 3, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabTop));
+			add(new Selection().include(-2, 3, -2).setBlockData(Selection.BuildingBlock.stoneBrickSlabTop));
+			add(new Selection().include(2, 3, -2).setBlockData(Selection.BuildingBlock.stoneBrickSlabTop));
+			add(new Selection().include(-2, 3, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabTop));
+			add(new Selection().include(2, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-2, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(2, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-2, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(2, 5, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-2, 5, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(2, 5, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-2, 5, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(0, 6, 0).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-1, 5, -1, 1, 5, 1).setBlockData(Selection.BuildingBlock.spruceWood));
 
 			// Create the enchantment table
-			add(new Cuboid(0, 2, 0, Structure.BuildingBlock.enchantTable));
+			add(new Selection().include(0, 2, 0).setBlockData(Selection.BuildingBlock.enchantTable));
 
 			// Create magical table stand
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
 
 			// Create outer steps
-			add(new Cuboid(3, 0, 3, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(-3, 0, -3, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(3, 0, -3, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(-3, 0, 3, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(4, 0, -2, 4, 0, 2, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(-4, 0, -2, -4, 0, 2, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(-2, 0, -4, 2, 0, -4, Structure.BuildingBlock.stoneBrickSlabBottom));
-			add(new Cuboid(-2, 0, 4, 2, 0, 4, Structure.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(3, 0, 3).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(-3, 0, -3).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(3, 0, -3).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(-3, 0, 3).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(4, 0, -2, 4, 0, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(-4, 0, -2, -4, 0, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(-2, 0, -4, 2, 0, -4).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection().include(-2, 0, 4, 2, 0, 4).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
 
 			// Create inner steps
-			add(new Cuboid(3, 0, -1, 3, 0, 1, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-1, 0, 3, 1, 0, 3, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-3, 0, -1, -3, 0, 1, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-1, 0, -3, 1, 0, -3, Structure.BuildingBlock.stoneBrick));
+			add(new Selection().include(3, 0, -1, 3, 0, 1).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-1, 0, 3, 1, 0, 3).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-3, 0, -1, -3, 0, 1).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-1, 0, -3, 1, 0, -3).setBlockData(Selection.BuildingBlock.stoneBrick));
 
 			// Create pillars
-			add(new Cuboid(3, 4, 2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(3, 4, -2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(2, 4, 3, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-2, 4, 3, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-3, 4, 2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-3, 4, -2, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(2, 4, -3, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(-2, 4, -3, Structure.BuildingBlock.spruceSlab));
-			add(new Cuboid(3, 0, 2, 3, 3, 2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(3, 0, -2, 3, 3, -2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(2, 0, 3, 2, 3, 3, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-2, 0, 3, -2, 3, 3, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-3, 0, 2, -3, 3, 2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-3, 0, -2, -3, 3, -2, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(2, 0, -3, 2, 3, -3, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-2, 0, -3, -2, 3, -3, Structure.BuildingBlock.stoneBrick));
+			add(new Selection().include(3, 4, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(3, 4, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(2, 4, 3).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-2, 4, 3).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-3, 4, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-3, 4, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(2, 4, -3).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(-2, 4, -3).setBlockData(Selection.BuildingBlock.spruceSlab));
+			add(new Selection().include(3, 0, 2, 3, 3, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(3, 0, -2, 3, 3, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(2, 0, 3, 2, 3, 3).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-2, 0, 3, -2, 3, 3).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-3, 0, 2, -3, 3, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-3, 0, -2, -3, 3, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(2, 0, -3, 2, 3, -3).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-2, 0, -3, -2, 3, -3).setBlockData(Selection.BuildingBlock.stoneBrick));
 
 			// Left beam
-			add(new Cuboid(1, 4, -2, -1, 4, -2, Structure.BuildingBlock.stoneBrick).exclude(0, 4, -2));
-			add(new Cuboid(0, 4, -2, Structure.BuildingBlock.stoneBrickSpecial));
-			add(new Cuboid(-1, 5, -2, 1, 5, -2, Structure.BuildingBlock.spruceSlab));
+			add(new Selection().include(1, 4, -2, -1, 4, -2).exclude(0, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(0, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
+			add(new Selection().include(-1, 5, -2, 1, 5, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Right beam
-			add(new Cuboid(1, 4, 2, -1, 4, 2, Structure.BuildingBlock.stoneBrick).exclude(0, 4, 2));
-			add(new Cuboid(0, 4, 2, Structure.BuildingBlock.stoneBrickSpecial));
-			add(new Cuboid(-1, 5, 2, 1, 5, 2, Structure.BuildingBlock.spruceSlab));
+			add(new Selection().include(1, 4, 2, -1, 4, 2).exclude(0, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(0, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
+			add(new Selection().include(-1, 5, 2, 1, 5, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Top beam
-			add(new Cuboid(2, 4, 1, 2, 4, -1, Structure.BuildingBlock.stoneBrick).exclude(2, 4, 0));
-			add(new Cuboid(2, 4, 0, Structure.BuildingBlock.stoneBrickSpecial));
-			add(new Cuboid(2, 5, -1, 2, 5, 1, Structure.BuildingBlock.spruceSlab));
+			add(new Selection().include(2, 4, 1, 2, 4, -1).exclude(2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
+			add(new Selection().include(2, 5, -1, 2, 5, 1).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Bottom beam
-			add(new Cuboid(-2, 4, 1, -2, 4, -1, Structure.BuildingBlock.stoneBrick).exclude(-2, 4, 0));
-			add(new Cuboid(-2, 4, 0, Structure.BuildingBlock.stoneBrickSpecial));
-			add(new Cuboid(-2, 5, -1, -2, 5, 1, Structure.BuildingBlock.spruceSlab));
+			add(new Selection().include(-2, 4, 1, -2, 4, -1).exclude(-2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection().include(-2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
+			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Create main platform
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.stoneBrick));
-			add(new Cuboid(-2, 1, -2, 2, 1, 2, Structure.BuildingBlock.stoneBrickSlabBottom).exclude(0, 1, 0));
+			add(new Selection().include(-2, 1, -2, 2, 1, 2).exclude(0, 1, 0).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
 		}
 	};
 
@@ -121,88 +120,87 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Cuboid(2, 3, 2, Structure.BuildingBlock.quartzSlabTop));
-			add(new Cuboid(-2, 3, -2, Structure.BuildingBlock.quartzSlabTop));
-			add(new Cuboid(2, 3, -2, Structure.BuildingBlock.quartzSlabTop));
-			add(new Cuboid(-2, 3, 2, Structure.BuildingBlock.quartzSlabTop));
-			add(new Cuboid(2, 4, 2, Structure.BuildingBlock.quartz));
-			add(new Cuboid(-2, 4, -2, Structure.BuildingBlock.quartz));
-			add(new Cuboid(2, 4, -2, Structure.BuildingBlock.quartz));
-			add(new Cuboid(-2, 4, 2, Structure.BuildingBlock.quartz));
-			add(new Cuboid(2, 5, 2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-2, 5, -2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(2, 5, -2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-2, 5, 2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(0, 6, 0, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-1, 5, -1, 1, 5, 1, Structure.BuildingBlock.birchWood));
+			add(new Selection().include(2, 3, 2).setBlockData(Selection.BuildingBlock.quartzSlabTop));
+			add(new Selection().include(-2, 3, -2).setBlockData(Selection.BuildingBlock.quartzSlabTop));
+			add(new Selection().include(2, 3, -2).setBlockData(Selection.BuildingBlock.quartzSlabTop));
+			add(new Selection().include(-2, 3, 2).setBlockData(Selection.BuildingBlock.quartzSlabTop));
+			add(new Selection().include(2, 4, 2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-2, 4, -2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(2, 4, -2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-2, 4, 2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(2, 5, 2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-2, 5, -2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(2, 5, -2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-2, 5, 2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(0, 6, 0).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-1, 5, -1, 1, 5, 1).setBlockData(Selection.BuildingBlock.birchWood));
 
 			// Create the enchantment table
-			add(new Cuboid(0, 2, 0, Structure.BuildingBlock.enchantTable));
+			add(new Selection().include(0, 2, 0).setBlockData(Selection.BuildingBlock.enchantTable));
 
 			// Create magical table stand
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.quartzSpecial));
+			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
 
 			// Create outer steps
-			add(new Cuboid(3, 0, 3, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(-3, 0, -3, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(3, 0, -3, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(-3, 0, 3, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(4, 0, -2, 4, 0, 2, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(-4, 0, -2, -4, 0, 2, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(-2, 0, -4, 2, 0, -4, Structure.BuildingBlock.quartzSlabBottom));
-			add(new Cuboid(-2, 0, 4, 2, 0, 4, Structure.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(3, 0, 3).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(-3, 0, -3).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(3, 0, -3).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(-3, 0, 3).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(4, 0, -2, 4, 0, 2).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(-4, 0, -2, -4, 0, 2).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(-2, 0, -4, 2, 0, -4).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection().include(-2, 0, 4, 2, 0, 4).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
 
 			// Create inner steps
-			add(new Cuboid(3, 0, -1, 3, 0, 1, Structure.BuildingBlock.quartz).exclude(3, 0, 0));
-			add(new Cuboid(-1, 0, 3, 1, 0, 3, Structure.BuildingBlock.quartz).exclude(0, 0, 3));
-			add(new Cuboid(-3, 0, -1, -3, 0, 1, Structure.BuildingBlock.quartz).exclude(-3, 0, 0));
-			add(new Cuboid(-1, 0, -3, 1, 0, -3, Structure.BuildingBlock.quartz).exclude(0, 0, -3));
-			add(new Cuboid(3, 0, 0, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(0, 0, 3, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(-3, 0, 0, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(0, 0, -3, Structure.BuildingBlock.quartzSpecial));
+			add(new Selection().include(3, 0, -1, 3, 0, 1).exclude(3, 0, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-1, 0, 3, 1, 0, 3).exclude(0, 0, 3).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-3, 0, -1, -3, 0, 1).exclude(-3, 0, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-1, 0, -3, 1, 0, -3).exclude(0, 0, -3).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(3, 0, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(0, 0, 3).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(-3, 0, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(0, 0, -3).setBlockData(Selection.BuildingBlock.quartzSpecial));
 
 			// Create pillars
-			add(new Cuboid(3, 4, 2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(3, 4, -2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(2, 4, 3, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-2, 4, 3, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-3, 4, 2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-3, 4, -2, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(2, 4, -3, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(-2, 4, -3, Structure.BuildingBlock.birchSlab));
-			add(new Cuboid(3, 0, 2, 3, 3, 2, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(3, 0, -2, 3, 3, -2, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(2, 0, 3, 2, 3, 3, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(-2, 0, 3, -2, 3, 3, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(-3, 0, 2, -3, 3, 2, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(-3, 0, -2, -3, 3, -2, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(2, 0, -3, 2, 3, -3, Structure.BuildingBlock.pillarQuartz));
-			add(new Cuboid(-2, 0, -3, -2, 3, -3, Structure.BuildingBlock.pillarQuartz));
+			add(new Selection().include(3, 4, 2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(3, 4, -2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(2, 4, 3).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-2, 4, 3).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-3, 4, 2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-3, 4, -2).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(2, 4, -3).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(-2, 4, -3).setBlockData(Selection.BuildingBlock.birchSlab));
+			add(new Selection().include(3, 0, 2, 3, 3, 2).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(3, 0, -2, 3, 3, -2).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(2, 0, 3, 2, 3, 3).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(-2, 0, 3, -2, 3, 3).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(-3, 0, 2, -3, 3, 2).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(-3, 0, -2, -3, 3, -2).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(2, 0, -3, 2, 3, -3).setBlockData(Selection.BuildingBlock.pillarQuartz));
+			add(new Selection().include(-2, 0, -3, -2, 3, -3).setBlockData(Selection.BuildingBlock.pillarQuartz));
 
 			// Left beam
-			add(new Cuboid(1, 4, -2, -1, 4, -2, Structure.BuildingBlock.quartz).exclude(0, 4, -2));
-			add(new Cuboid(0, 4, -2, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(-1, 5, -2, 1, 5, -2, Structure.BuildingBlock.birchSlab));
+			add(new Selection().include(1, 4, -2, -1, 4, -2).exclude(0, 4, -2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(0, 4, -2).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(-1, 5, -2, 1, 5, -2).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Right beam
-			add(new Cuboid(1, 4, 2, -1, 4, 2, Structure.BuildingBlock.quartz).exclude(0, 4, 2));
-			add(new Cuboid(0, 4, 2, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(-1, 5, 2, 1, 5, 2, Structure.BuildingBlock.birchSlab));
+			add(new Selection().include(1, 4, 2, -1, 4, 2).exclude(0, 4, 2).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(0, 4, 2).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(-1, 5, 2, 1, 5, 2).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Top beam
-			add(new Cuboid(2, 4, 1, 2, 4, -1, Structure.BuildingBlock.quartz).exclude(2, 4, 0));
-			add(new Cuboid(2, 4, 0, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(2, 5, -1, 2, 5, 1, Structure.BuildingBlock.birchSlab));
+			add(new Selection().include(2, 4, 1, 2, 4, -1).exclude(2, 4, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(2, 4, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(2, 5, -1, 2, 5, 1).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Bottom beam
-			add(new Cuboid(-2, 4, 1, -2, 4, -1, Structure.BuildingBlock.quartz).exclude(-2, 4, 0));
-			add(new Cuboid(-2, 4, 0, Structure.BuildingBlock.quartzSpecial));
-			add(new Cuboid(-2, 5, -1, -2, 5, 1, Structure.BuildingBlock.birchSlab));
+			add(new Selection().include(-2, 4, 1, -2, 4, -1).exclude(-2, 4, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-2, 4, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
+			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Create main platform
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.quartz));
-			add(new Cuboid(-2, 1, -2, 2, 1, 2, Structure.BuildingBlock.quartzSlabBottom).exclude(0, 1, 0));
+			add(new Selection().include(-2, 1, -2, 2, 1, 2).exclude(0, 1, 0).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
 		}
 	};
 
@@ -210,43 +208,43 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Enchantment Table
-			add(new Cuboid(0, 0, 0, Structure.BuildingBlock.smoothSandStone));
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.enchantTable));
+			add(new Selection().include(0, 0, 0).setBlockData(Selection.BuildingBlock.smoothSandStone));
+			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.enchantTable));
 
 			// PWETTY FLOWAS AND GWASS!
-			add(new Cuboid(-3, 0, -3, 3, 0, 3, Structure.BuildingBlock.prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
+			add(new Selection().include(-3, 0, -3, 3, 0, 3).exclude(-1, 0, -1, 1, 0, 1).setBlockData(Selection.BuildingBlock.prettyFlowersAndGrass));
 
 			// Ground
-			add(new Cuboid(-3, -1, -3, 3, -1, 3, Structure.BuildingBlock.sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
-			add(new Cuboid(-2, -1, -2, 2, -1, 2, Structure.BuildingBlock.grass).exclude(-1, -1, -1, 1, -1, 1));
-			add(new Cuboid(-1, -1, -1, 1, -1, 1, Structure.BuildingBlock.water).exclude(0, -1, 0));
-			add(new Cuboid(0, -1, 0, Structure.BuildingBlock.smoothSandStone));
-			add(new Cuboid(-3, -2, -3, 3, -2, 3, Structure.BuildingBlock.sandStone));
+			add(new Selection().include(-3, -1, -3, 3, -1, 3).exclude(-2, -1, -2, 2, -1, 2).setBlockData(Selection.BuildingBlock.sandyGrass));
+			add(new Selection().include(-2, -1, -2, 2, -1, 2).exclude(-1, -1, -1, 1, -1, 1).setBlockData(Selection.BuildingBlock.grass));
+			add(new Selection().include(-1, -1, -1, 1, -1, 1).exclude(0, -1, 0).setBlockData(Selection.BuildingBlock.water));
+			add(new Selection().include(0, -1, 0).setBlockData(Selection.BuildingBlock.smoothSandStone));
+			add(new Selection().include(-3, -2, -3, 3, -2, 3).setBlockData(Selection.BuildingBlock.sandStone));
 
 			// Table
-			add(new Cuboid(-1, 0, 0, Structure.BuildingBlock.sandStairWest));
-			add(new Cuboid(1, 0, 0, Structure.BuildingBlock.sandStairEast));
-			add(new Cuboid(0, 0, -1, Structure.BuildingBlock.sandStairNorth));
-			add(new Cuboid(0, 0, 1, Structure.BuildingBlock.sandStairSouth));
+			add(new Selection().include(-1, 0, 0).setBlockData(Selection.BuildingBlock.sandStairWest));
+			add(new Selection().include(1, 0, 0).setBlockData(Selection.BuildingBlock.sandStairEast));
+			add(new Selection().include(0, 0, -1).setBlockData(Selection.BuildingBlock.sandStairNorth));
+			add(new Selection().include(0, 0, 1).setBlockData(Selection.BuildingBlock.sandStairSouth));
 
 			// Tiki Torch
 			int rand1 = Randoms.generateIntRange(-3, -2);
 			int rand2 = Randoms.generateIntRange(-3, 3);
-			add(new Cuboid(-3, 1, -3, 3, 2, 3, Structure.BuildingBlock.air).exclude(0, 1, 0));
-			add(new Cuboid(rand1, 0, rand2, rand1, 1, rand2, Structure.BuildingBlock.fence)); // Fence
-			add(new Cuboid(rand1, 2, rand2, Structure.BuildingBlock.torch)); // Torch
+			add(new Selection().include(-3, 1, -3, 3, 2, 3).exclude(0, 1, 0).setBlockData(Material.AIR));
+			add(new Selection().include(rand1, 0, rand2, rand1, 1, rand2).setBlockData(Material.FENCE)); // Fence
+			add(new Selection().include(rand1, 2, rand2).setBlockData(Material.TORCH)); // Torch
 		}
 	};
 
 	public static enum AltarDesign implements Design
 	{
-		GENERAL("general", general, new Cuboid(0, 2, 0)), HOLY("holy", holy, new Cuboid(0, 2, 0)), OASIS("oasis", oasis, new Cuboid(0, 1, 0));
+		GENERAL("general", general, new Selection().include(0, 2, 0)), HOLY("holy", holy, new Selection().include(0, 2, 0)), OASIS("oasis", oasis, new Selection().include(0, 1, 0));
 
 		private final String name;
 		private final Schematic schematic;
-		private final Cuboid clickableBlocks;
+		private final Selection clickableBlocks;
 
-		private AltarDesign(String name, Schematic schematic, Cuboid clickableBlocks)
+		private AltarDesign(String name, Schematic schematic, Selection clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
@@ -334,6 +332,7 @@ public class Altar implements StandaloneStructure
 		save.setType(getStructureType());
 		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
+		save.setActive(true);
 		save.save();
 		if(generate && !save.generate(true)) save.remove();
 		return save;
@@ -443,7 +442,8 @@ class AltarListener implements Listener
 			// Generate the Altar based on the block given.
 			Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
 			save.setDesign(design);
-			if(!save.generate(true))
+			// if(!save.generate(true))
+			if(!save.slowGenerate(true))
 			{
 				player.sendMessage(ChatColor.RED + "Could not generate.");
 				save.remove();
