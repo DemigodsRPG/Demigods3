@@ -292,8 +292,10 @@ public class DPlayer
 				List<DPlayer> list = JOhm.find(DPlayer.class, "player", player.getName());
 				return list.get(0);
 			}
-			catch(Exception ignored)
-			{}
+			catch(Throwable e)
+			{
+				e.printStackTrace();
+			}
 			return create(player);
 		}
 
