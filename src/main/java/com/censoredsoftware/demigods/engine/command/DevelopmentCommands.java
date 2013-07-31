@@ -103,11 +103,11 @@ public class DevelopmentCommands extends ListedCommand
 			Notification.Util.sendNotification(character, notification2);
 			Notification.Util.sendNotification(character, notification3);
 
-			player.sendMessage(ChatColor.RED + "Failed!");
+			player.sendMessage(ChatColor.GREEN + "Sent!");
 			return true;
 		}
 
-		player.sendMessage(ChatColor.GREEN + "Sent!");
+		player.sendMessage(ChatColor.RED + "Failed!");
 
 		return true;
 	}
