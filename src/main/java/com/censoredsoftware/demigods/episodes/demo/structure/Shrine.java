@@ -31,23 +31,23 @@ public class Shrine implements StandaloneStructure
 	{
 		{
 			// Create the main block
-			add(new Cuboid(0, 1, 0, Structure.BuildingBlock.goldClickBlock));
+			add(new Cuboid().include(0, 1, 0).setBlockData(Structure.Cuboid.BuildingBlock.goldClickBlock));
 
 			// Create the ender chest and the block below
-			add(new Cuboid(0, 0, 0, Structure.BuildingBlock.enderChest));
-			add(new Cuboid(0, -1, 0, Structure.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(0, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.enderChest));
+			add(new Cuboid().include(0, -1, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
 
 			// Create the rest
-			add(new Cuboid(-1, 0, 0, Structure.BuildingBlock.stoneBrickStairs));
-			add(new Cuboid(1, 0, 0, Structure.BuildingBlock.stoneBrickStairs1));
-			add(new Cuboid(0, 0, -1, Structure.BuildingBlock.stoneBrickStairs2));
-			add(new Cuboid(0, 0, 1, Structure.BuildingBlock.stoneBrickStairs3));
+			add(new Cuboid().include(-1, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs));
+			add(new Cuboid().include(1, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs1));
+			add(new Cuboid().include(0, 0, -1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs2));
+			add(new Cuboid().include(0, 0, 1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs3));
 		}
 	};
 
 	public static enum ShrineDesign implements Design
 	{
-		GENERAL("general", general, new Cuboid(0, 1, 0));
+		GENERAL("general", general, new Cuboid().include(0, 1, 0));
 
 		private final String name;
 		private final Structure.Schematic schematic;

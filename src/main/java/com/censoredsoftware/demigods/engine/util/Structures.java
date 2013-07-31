@@ -89,7 +89,7 @@ public class Structures
 	{
 		for(Structure.Save save : filterForRegion(location, findAll("flags", flag.name()), filter))
 		{
-			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
+			if(save.getActive() && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 		}
 		return null;
 	}

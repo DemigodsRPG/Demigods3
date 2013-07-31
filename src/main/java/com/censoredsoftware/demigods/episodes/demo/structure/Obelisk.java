@@ -31,58 +31,58 @@ public class Obelisk implements StandaloneStructure
 	{
 		{
 			// Clickable block.
-			add(new Structure.Cuboid(0, 0, 2, Structure.BuildingBlock.specialStoneBrick));
+			add(new Cuboid().include(0, 0, 2).setBlockData(Structure.Cuboid.BuildingBlock.specialStoneBrick));
 
 			// Everything else.
-			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, Structure.BuildingBlock.stoneBrick));
-			add(new Structure.Cuboid(0, 3, 0, Structure.BuildingBlock.redstoneBlock));
-			add(new Structure.Cuboid(0, 4, 0, Structure.BuildingBlock.redstoneBlock));
-			add(new Structure.Cuboid(0, 3, -1, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(0, 3, 1, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(1, 3, 0, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(-1, 3, 0, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(0, 5, 0, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(1, 5, -1, Structure.BuildingBlock.vine1));
-			add(new Structure.Cuboid(-1, 5, -1, Structure.BuildingBlock.vine1));
-			add(new Structure.Cuboid(1, 5, 1, Structure.BuildingBlock.vine4));
-			add(new Structure.Cuboid(-1, 5, 1, Structure.BuildingBlock.vine4));
+			add(new Cuboid().include(0, 0, -1, 0, 2, -1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(0, 0, 1, 0, 2, 1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(1, 0, 0, 1, 2, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(-1, 0, 0, -1, 2, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(0, 4, -1, 0, 5, -1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(0, 4, 1, 0, 5, 1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(1, 4, 0, 1, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(-1, 4, 0, -1, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Cuboid().include(0, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneBlock));
+			add(new Cuboid().include(0, 4, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneBlock));
+			add(new Cuboid().include(0, 3, -1).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(0, 3, 1).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(1, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(-1, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(0, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(1, 5, -1).setBlockData(Structure.Cuboid.BuildingBlock.vine1));
+			add(new Cuboid().include(-1, 5, -1).setBlockData(Structure.Cuboid.BuildingBlock.vine1));
+			add(new Cuboid().include(1, 5, 1).setBlockData(Structure.Cuboid.BuildingBlock.vine4));
+			add(new Cuboid().include(-1, 5, 1).setBlockData(Structure.Cuboid.BuildingBlock.vine4));
 		}
 	};
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Structure.Cuboid(0, 0, 2, Structure.BuildingBlock.specialSandstone));
+			add(new Cuboid().include(0, 0, 2).setBlockData(Structure.Cuboid.BuildingBlock.specialSandstone));
 
 			// Everything else.
-			add(new Structure.Cuboid(0, 0, -1, 0, 2, -1, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(0, 0, 1, 0, 2, 1, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(1, 0, 0, 1, 2, 0, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(-1, 0, 0, -1, 2, 0, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(0, 4, -1, 0, 5, -1, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(0, 4, 1, 0, 5, 1, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(1, 4, 0, 1, 5, 0, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(-1, 4, 0, -1, 5, 0, Structure.BuildingBlock.sandstone));
-			add(new Structure.Cuboid(0, 3, 0, Structure.BuildingBlock.redstoneBlock));
-			add(new Structure.Cuboid(0, 4, 0, Structure.BuildingBlock.redstoneBlock));
-			add(new Structure.Cuboid(0, 3, -1, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(0, 3, 1, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(1, 3, 0, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(-1, 3, 0, Structure.BuildingBlock.redstoneLamp));
-			add(new Structure.Cuboid(0, 5, 0, Structure.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(0, 0, -1, 0, 2, -1).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(0, 0, 1, 0, 2, 1).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(1, 0, 0, 1, 2, 0).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(-1, 0, 0, -1, 2, 0).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(0, 4, -1, 0, 5, -1).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(0, 4, 1, 0, 5, 1).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(1, 4, 0, 1, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(-1, 4, 0, -1, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.sandstone));
+			add(new Cuboid().include(0, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneBlock));
+			add(new Cuboid().include(0, 4, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneBlock));
+			add(new Cuboid().include(0, 3, -1).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(0, 3, 1).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(1, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(-1, 3, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
+			add(new Cuboid().include(0, 5, 0).setBlockData(Structure.Cuboid.BuildingBlock.redstoneLamp));
 		}
 	};
 
 	public static enum ObeliskDesign implements Structure.Design
 	{
-		GENERAL("general", general, new Cuboid(0, 0, 2)), DESERT("desert", desert, new Cuboid(0, 0, 2));
+		GENERAL("general", general, new Cuboid().include(0, 0, 2)), DESERT("desert", desert, new Cuboid().include(0, 0, 2));
 
 		private final String name;
 		private final Structure.Schematic schematic;
