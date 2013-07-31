@@ -18,6 +18,9 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 	private long expiration;
 	@Indexed
 	@Reference
+	private DCharacter receiver;
+	@Indexed
+	@Reference
 	private DCharacter sender;
 	@Attribute
 	private String senderType;
@@ -48,6 +51,11 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 		this.sender = sender;
 	}
 
+	void setReceiver(DCharacter receiver)
+	{
+		this.receiver = receiver;
+	}
+
 	void setName(String name)
 	{
 		this.name = name;
@@ -71,6 +79,11 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 	public Danger getDanger()
 	{
 		return Danger.valueOf(this.danger);
+	}
+
+	public DCharacter getReceiver()
+	{
+		return this.receiver;
 	}
 
 	public DCharacter getSender()
@@ -120,9 +133,10 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 
 	public static class Util
 	{
-		public static Notification create(Sender sender, Danger danger, String name, String message)
+		public static Notification create(Sender sender, DCharacter receiver, Danger danger, String name, String message)
 		{
 			Notification notification = new Notification();
+			notification.setReceiver(receiver);
 			notification.setDanger(danger);
 			notification.setSenderType(sender);
 			notification.setName(name);
@@ -131,25 +145,25 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 			return notification;
 		}
 
-		public static Notification create(Sender sender, Danger danger, int minutes, String name, String message)
+		public static Notification create(Sender sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
 		{
-			Notification notification = create(sender, danger, name, message);
+			Notification notification = create(sender, receiver, danger, name, message);
 			notification.setExpiration(minutes);
 			Notification.save(notification);
 			return notification;
 		}
 
-		public static Notification create(DCharacter sender, Danger danger, String name, String message)
+		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, String name, String message)
 		{
-			Notification notification = create(Sender.CHARACTER, danger, name, message);
+			Notification notification = create(Sender.CHARACTER, receiver, danger, name, message);
 			notification.setSender(sender);
 			Notification.save(notification);
 			return notification;
 		}
 
-		public static Notification create(DCharacter sender, Danger danger, int minutes, String name, String message)
+		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
 		{
-			Notification notification = create(sender, danger, name, message);
+			Notification notification = create(sender, receiver, danger, name, message);
 			notification.setExpiration(minutes);
 			Notification.save(notification);
 			return notification;
@@ -159,7 +173,11 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 		{
 			for(Notification notification : loadAll())
 			{
-				if(notification.getExpiration() <= System.currentTimeMillis()) Notification.remove(notification);
+				if(notification.getExpiration() <= System.currentTimeMillis())
+				{
+					notification.getReceiver().removeNotification(notification);
+					Notification.remove(notification);
+				}
 			}
 		}
 

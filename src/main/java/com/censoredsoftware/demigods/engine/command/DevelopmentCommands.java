@@ -90,20 +90,18 @@ public class DevelopmentCommands extends ListedCommand
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		player.sendMessage(ChatColor.GRAY + "Sending notifications...");
+		character.clearNotifications();
 
-		// UNUSED
 		if(character != null)
 		{
-			Notification notification1 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.GOOD, 3, "Test1", "This the first notification test ever.");
-			Notification notification2 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.NEUTRAL, 100, "Test2", "This the second notification test ever.");
-			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.BAD, 1, "Test2", "This the third notification test ever.");
+			Notification notification1 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.GOOD, 3, "Test1", "This the first notification test ever.");
+			Notification notification2 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.NEUTRAL, 100, "Test2", "This the second notification test ever.");
+			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.BAD, 1, "Test2", "This the third notification test ever.");
 
 			Notification.Util.sendNotification(character, notification1);
 			Notification.Util.sendNotification(character, notification2);
 			Notification.Util.sendNotification(character, notification3);
 
-			player.sendMessage(ChatColor.GREEN + "Sent!");
 			return true;
 		}
 
