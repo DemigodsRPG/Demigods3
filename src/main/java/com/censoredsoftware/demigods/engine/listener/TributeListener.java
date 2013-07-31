@@ -28,6 +28,8 @@ public class TributeListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onTributeInteract(PlayerInteractEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+
 		// Return if the player is mortal
 		if(!DPlayer.Util.isImmortal(event.getPlayer())) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
@@ -67,6 +69,8 @@ public class TributeListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerTribute(InventoryCloseEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+
 		// Define player and character
 		Player player = (Player) event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

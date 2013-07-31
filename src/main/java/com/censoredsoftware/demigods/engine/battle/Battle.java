@@ -392,7 +392,7 @@ public class Battle
 
 		public static Set<Location> battleBorder(final Battle battle)
 		{
-			if(!Demigods.runningSpigot()) throw new SpigotNotFoundException();
+			if(!Demigods.isRunningSpigot()) throw new SpigotNotFoundException();
 			return new HashSet<Location>()
 			{
 				{

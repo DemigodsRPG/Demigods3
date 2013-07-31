@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,17 +17,21 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.google.common.collect.Sets;
 
 public class Storm extends Ability
 {
 	private final static String name = "Storm", command = "storm";
 	private final static int cost = 3700, delay = 600, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Throw all of your enemies into the sky as lightning fills the heavens.");
@@ -43,6 +45,8 @@ public class Storm extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
@@ -119,6 +123,8 @@ public class Storm extends Ability
 				@EventHandler(priority = EventPriority.HIGH)
 				public void onPlayerInteract(PlayerInteractEvent interactEvent)
 				{
+					if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 					if(!Util.isLeftClick(interactEvent)) return;
 					if(!Deity.Util.canUseDeitySilent(interactEvent.getPlayer(), deity)) return;
 

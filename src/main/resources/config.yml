@@ -11,8 +11,8 @@ language: 'English'
 ## Restrictions ##
 restrictions:
     friendly_fire: false
-    inactive_worlds:
-        #- world_nodemigods
+    disabled_worlds:
+        - world_the_end
 
 ## Generation ##
 generation:

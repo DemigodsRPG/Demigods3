@@ -154,6 +154,8 @@ class ShrineListener implements Listener
 	{
 		if(event.getClickedBlock() == null) return;
 
+		if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
+
 		// Define variables
 		Block clickedBlock = event.getClickedBlock();
 		Location location = clickedBlock.getLocation();

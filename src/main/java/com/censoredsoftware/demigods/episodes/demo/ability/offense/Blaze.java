@@ -13,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
@@ -39,6 +40,8 @@ public class Blaze extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables

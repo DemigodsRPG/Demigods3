@@ -26,7 +26,7 @@ public class ThreadManager
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
-		if(Demigods.runningSpigot())
+		if(Demigods.isRunningSpigot())
 		{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSpigotRunnable(), 20, 20);
 			Admins.sendDebug("Special (Spigot) runnable enabled...");
@@ -65,6 +65,7 @@ public class ThreadManager
 					// Update online players
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
+						if(Demigods.isDisabledWorld(player.getLocation())) continue;
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 				}

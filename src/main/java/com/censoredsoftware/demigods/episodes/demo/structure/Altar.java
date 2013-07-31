@@ -368,6 +368,8 @@ class AltarListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(final ChunkLoadEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getWorld())) return;
+
 		if(!event.isNewChunk()) return;
 
 		// Define variables
@@ -415,6 +417,8 @@ class AltarListener implements Listener
 	public void demigodsAdminWand(PlayerInteractEvent event)
 	{
 		if(event.getClickedBlock() == null) return;
+
+		if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
 
 		// Define variables
 		Block clickedBlock = event.getClickedBlock();

@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.ultimate;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -15,18 +14,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class Firestorm extends Ability
 {
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Rain down fireballs from the sky.");
@@ -40,6 +41,8 @@ public class Firestorm extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables
@@ -78,6 +81,8 @@ public class Firestorm extends Ability
 				@EventHandler(priority = EventPriority.HIGH)
 				public void onPlayerInteract(PlayerInteractEvent interactEvent)
 				{
+					if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 					if(!Util.isLeftClick(interactEvent)) return;
 
 					// Set variables

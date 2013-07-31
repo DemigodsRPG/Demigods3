@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.episodes.demo.ability;
 
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,16 +10,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class Template extends Ability
 {
 	private final static String name = "Test", command = "test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.SUPPORT;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.SUPPORT;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Test your target.");
@@ -34,6 +36,8 @@ public class Template extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
 				// Set variables

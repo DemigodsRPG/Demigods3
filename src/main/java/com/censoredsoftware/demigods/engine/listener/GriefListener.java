@@ -20,6 +20,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
@@ -49,6 +50,7 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
@@ -62,6 +64,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
@@ -75,6 +78,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
@@ -88,6 +92,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBurn(BlockBurnEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
@@ -95,6 +100,7 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(event.getEntityType() != EntityType.FALLING_BLOCK || event.getBlock().getRelative(BlockFace.DOWN).equals(Material.AIR)) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
 		Location blockLocation = block.getLocation();
@@ -108,15 +114,17 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// TODO: @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onLiquidMove(BlockFromToEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		boolean in = false;
 		boolean out = false;
 		for(Block block : event.getBlocks())
@@ -130,6 +138,7 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPistonRetract(BlockPistonRetractEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		boolean retract = Structures.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(block != retract) event.setCancelled(true);
@@ -139,6 +148,7 @@ public class GriefListener implements Listener
 	// TODO MINOR LAG - NOT SURE
 	public void onBlockDamage(BlockDamageEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING, true);
 		if(save != null)
 		{
@@ -152,12 +162,14 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(Structures.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING, true)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
 		Structure.Save save = Structures.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING, true);

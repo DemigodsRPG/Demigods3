@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.core.util.StopWatches;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
 import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,14 +11,21 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import com.censoredsoftware.core.util.StopWatches;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+
 public class PlayerListener implements Listener
 {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-        StopWatch stopWatch = StopWatches.start(); // TODO
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 
-        // Define Variables
+		StopWatch stopWatch = StopWatches.start(); // TODO
+
+		// Define Variables
 		Player player = event.getPlayer();
 		DPlayer wrapper = DPlayer.Util.getPlayer(player);
 		DCharacter character = wrapper.getCurrent();
@@ -48,12 +51,14 @@ public class PlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 
-        Demigods.message.broadcast("onPlayerJoin:" + StopWatches.end(stopWatch)); // TODO
+		Demigods.message.broadcast("onPlayerJoin:" + StopWatches.end(stopWatch)); // TODO
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+
 		// Define variables
 		Player player = event.getPlayer();
 
@@ -94,6 +99,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerRespawn(PlayerRespawnEvent event) // TODO Is this working?
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		DPlayer wrapper = DPlayer.Util.getPlayer(event.getPlayer());
 		if(wrapper.getCurrent() != null)
 		{

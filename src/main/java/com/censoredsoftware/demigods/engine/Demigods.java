@@ -7,9 +7,12 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
 import com.censoredsoftware.core.module.Configs;
@@ -32,6 +35,7 @@ import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.util.Structures;
+import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class Demigods
@@ -50,6 +54,10 @@ public class Demigods
 	protected static Set<Structure> structures;
 	protected static Set<Task.List> quests;
 	protected static Set<ListedConversation> conversasions;
+
+	// Disabled Worlds
+	protected static Set<String> disabledWorlds;
+	protected static Set<String> commands;
 
 	// The engine Default Text
 	public static Translation text;
@@ -78,6 +86,15 @@ public class Demigods
 		// Setup utilities.
 		config = new Configs(instance, true);
 		message = new Messages(instance);
+
+		if(!loadWorlds(instance))
+		{
+			message.severe("Demigods was unable to load any worlds.");
+			message.severe("At least 1 world must be enabled.");
+			message.severe("Configure at least 1 world for Demigods.");
+			instance.getServer().getPluginManager().disablePlugin(instance);
+			throw new DemigodsStartupException();
+		}
 
 		Demigods.deities = new HashMap<String, Deity>()
 		{
@@ -145,7 +162,7 @@ public class Demigods
 		// Finally, regenerate structures
 		Structures.regenerateStructures();
 
-		if(runningSpigot()) message.info(("Spigot found, will use extra API features."));
+		if(isRunningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
 
 	/**
@@ -159,17 +176,33 @@ public class Demigods
 		return new TranslationManager.English();
 	}
 
+	public static boolean loadWorlds(DemigodsPlugin instance)
+	{
+		disabledWorlds = Sets.newHashSet();
+		for(String world : config.getSettingArrayListString("restrictions.disabled_worlds"))
+		{
+			if(instance.getServer().getWorld(world) != null) disabledWorlds.add(world);
+		}
+		if(instance.getServer().getWorlds().size() == disabledWorlds.size()) return false;
+		return true;
+	}
+
 	protected static void loadListeners(DemigodsPlugin instance)
 	{
+		PluginManager register = instance.getServer().getPluginManager();
+
 		// engine
-		instance.getServer().getPluginManager().registerEvents(new BattleListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new CommandListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new EntityListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new FlagListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new GriefListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new InventoryListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new PlayerListener(), instance);
-		instance.getServer().getPluginManager().registerEvents(new TributeListener(), instance);
+		register.registerEvents(new BattleListener(), instance);
+		register.registerEvents(new CommandListener(), instance);
+		register.registerEvents(new EntityListener(), instance);
+		register.registerEvents(new FlagListener(), instance);
+		register.registerEvents(new GriefListener(), instance);
+		register.registerEvents(new InventoryListener(), instance);
+		register.registerEvents(new PlayerListener(), instance);
+		register.registerEvents(new TributeListener(), instance);
+
+		// disabled worlds
+		if(!disabledWorlds.isEmpty()) register.registerEvents(new DisabledWorldListener(), instance);
 
 		// Deities
 		for(Deity deity : getLoadedDeities().values())
@@ -177,7 +210,7 @@ public class Demigods
 			if(deity.getAbilities() == null) continue;
 			for(Ability ability : deity.getAbilities())
 			{
-				if(ability.getListener() != null) instance.getServer().getPluginManager().registerEvents(ability.getListener(), instance);
+				if(ability.getListener() != null) register.registerEvents(ability.getListener(), instance);
 			}
 		}
 
@@ -187,7 +220,7 @@ public class Demigods
 			if(quest.getTasks() == null) continue;
 			for(Task task : quest)
 			{
-				if(task.getListener() != null) instance.getServer().getPluginManager().registerEvents(task.getListener(), instance);
+				if(task.getListener() != null) register.registerEvents(task.getListener(), instance);
 			}
 		}
 
@@ -195,22 +228,31 @@ public class Demigods
 		for(Structure structure : getLoadedStructures())
 		{
 			if(structure instanceof MassiveStructurePart || structure.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(structure.getUniqueListener(), instance);
+			register.registerEvents(structure.getUniqueListener(), instance);
 		}
 
 		// Conversations
 		for(ListedConversation conversation : getLoadedConversations())
 		{
 			if(conversation.getUniqueListener() == null) continue;
-			instance.getServer().getPluginManager().registerEvents(conversation.getUniqueListener(), instance);
+			register.registerEvents(conversation.getUniqueListener(), instance);
 		}
 	}
 
 	protected static void loadCommands(DemigodsPlugin instance)
 	{
-		(new MainCommand()).register(instance, false);
-		(new GeneralCommands()).register(instance, false);
-		(new DevelopmentCommands()).register(instance, true);
+		commands = Sets.newHashSet();
+		MainCommand main = new MainCommand();
+		GeneralCommands general = new GeneralCommands();
+		DevelopmentCommands development = new DevelopmentCommands();
+		main.register(instance, false);
+		general.register(instance, false);
+		development.register(instance, true);
+		commands.addAll(main.getCommands());
+		commands.addAll(general.getCommands());
+		commands.addAll(development.getCommands());
+		commands.add("dg");
+		commands.add("demigod");
 	}
 
 	protected static void loadDepends(DemigodsPlugin instance)
@@ -240,7 +282,7 @@ public class Demigods
 		return Demigods.conversasions;
 	}
 
-	public static boolean runningSpigot()
+	public static boolean isRunningSpigot()
 	{
 		try
 		{
@@ -250,6 +292,21 @@ public class Demigods
 		catch(Throwable ignored)
 		{}
 		return false;
+	}
+
+	public static boolean isDisabledWorld(Location location)
+	{
+		return disabledWorlds.contains(location.getWorld().getName());
+	}
+
+	public static boolean isDisabledWorld(World world)
+	{
+		return disabledWorlds.contains(world.getName());
+	}
+
+	public static boolean isDemigodsCommand(String command)
+	{
+		return commands.contains(command);
 	}
 
 	@Override

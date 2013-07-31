@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.offense;
 
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,16 +12,19 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class Shove extends Ability
 {
 	private final static String deity = "Zeus", name = "Shove", command = "shove", permission = "demigods.god.zeus";
 	private final static int cost = 170, delay = 15, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.DEFENSE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.DEFENSE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Shove your target away from you.");
@@ -36,6 +38,8 @@ public class Shove extends Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				if(!Util.isLeftClick(interactEvent)) return;
 
 				// Set variables

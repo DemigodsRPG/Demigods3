@@ -1,7 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -15,11 +13,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+
 public class BattleListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
 		Entity damager = event.getDamager();
 		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
 		if(!Battle.Util.canParticipate(event.getEntity()) || !Battle.Util.canParticipate(damager)) return;
@@ -44,7 +46,7 @@ public class BattleListener implements Listener
 			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth()) event.setCancelled(Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle));
 
 			// Debug
-            Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerParticipant.getRelatedCharacter().getName() + " and " + damageeParticipant.getRelatedCharacter().getName() + "!");
+			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerParticipant.getRelatedCharacter().getName() + " and " + damageeParticipant.getRelatedCharacter().getName() + "!");
 		}
 		else
 		{
@@ -67,6 +69,7 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDamage(EntityDamageEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
 
 		Battle.Participant participant = Battle.Util.defineParticipant(event.getEntity());
@@ -79,6 +82,7 @@ public class BattleListener implements Listener
 	// TODO Doesn't work.
 	public void onBattleMove(PlayerMoveEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!Battle.Util.canParticipate(event.getPlayer())) return;
 		Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);
@@ -88,6 +92,7 @@ public class BattleListener implements Listener
 	// TODO Doesn't work.
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!Battle.Util.canParticipate(event.getPlayer())) return;
 		Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(onBattleMove(event.getTo(), event.getFrom(), participant)) event.setCancelled(true);

@@ -91,7 +91,7 @@ public class Prayer implements ListedConversation
 		{
 			Map<Object, Object> conversationContext = Maps.newHashMap();
 
-			if(!Demigods.runningSpigot())
+			if(!Demigods.isRunningSpigot())
 			{
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");

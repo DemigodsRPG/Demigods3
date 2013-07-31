@@ -23,6 +23,8 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void damageEvent(EntityDamageEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+
 		// Define variables
 		LivingEntity entity;
 		if(event.getEntityType().equals(EntityType.PLAYER)) // If it's a player
@@ -38,6 +40,8 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void damageByEntityEvent(EntityDamageByEntityEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+
 		Entity attacked = event.getEntity();
 		Entity attacker = event.getDamager();
 
@@ -63,6 +67,8 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void entityDeath(EntityDeathEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+
 		if(event.getEntity() instanceof Player)
 		{
 			Player player = (Player) event.getEntity();
@@ -106,6 +112,8 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onTame(EntityTameEvent event)
 	{
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
 		DCharacter character = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent();

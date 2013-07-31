@@ -1,23 +1,25 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.passive;
 
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
 
 public class NoSplosion extends Ability
 {
 	private final static String name = "No Explosion Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-    private static Info info;
-    private final static Devotion.Type type = Devotion.Type.PASSIVE;
-    private final static List<String> details = new ArrayList<String>(1)
+	private static Info info;
+	private final static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Take no damage from explosions.");
@@ -31,6 +33,7 @@ public class NoSplosion extends Ability
 			@EventHandler(priority = EventPriority.MONITOR)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
 			{
+				if(Demigods.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();

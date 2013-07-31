@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.episodes.demo.ability.offense;
 
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,17 +12,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 
 public class Reel extends Ability
 {
 	private final static String name = "Reel", command = "reel";
 	private final static int cost = 120, delay = 1100, repeat = 0;
 	private static Info info;
-    private final static Devotion.Type type = Devotion.Type.OFFENSE;
-    private final static Material weapon = Material.FISHING_ROD;
-    private final static List<String> details = new ArrayList<String>(1)
+	private final static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Material weapon = Material.FISHING_ROD;
+	private final static List<String> details = new ArrayList<String>(1)
 	{
 		{
 			add("Use a fishing rod for a stronger attack.");
@@ -37,6 +39,8 @@ public class Reel extends Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
 				// Set variables
 				Player player = interactEvent.getPlayer();
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
