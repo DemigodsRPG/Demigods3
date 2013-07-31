@@ -300,9 +300,16 @@ public interface Structure
 
 	public static class Selection
 	{
-		private Set<RelativeBlockLocation> include = Sets.newHashSet();
-		private Set<RelativeBlockLocation> exclude = Sets.newHashSet();
-		private List<BlockData> blockData = Lists.newArrayList();
+		private Set<RelativeBlockLocation> include;
+		private Set<RelativeBlockLocation> exclude;
+		private List<BlockData> blockData;
+
+		public Selection()
+		{
+			include = Sets.newHashSet();
+			exclude = Sets.newHashSet();
+			blockData = Lists.newArrayList();
+		}
 
 		/**
 		 * Set Selection (non-cuboid), useful for getting 1 location back.
@@ -414,11 +421,9 @@ public interface Structure
 		/**
 		 * Get the material of the object (a random material is chosen based on the configured odds).
 		 * 
-		 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.
-		 * 
-		 * @return A material.
+		 * @return The block data.
 		 */
-		public BlockData getStructureBlockData()
+		public BlockData getBlockData()
 		{
 			if(blockData.isEmpty()) return new BlockData(Material.AIR);
 			final int roll = Randoms.generateIntRange(1, 100);
@@ -430,7 +435,7 @@ public interface Structure
 					return blockData.getOdds() >= roll;
 				}
 			});
-			if(check.isEmpty()) return getStructureBlockData();
+			if(check.isEmpty()) return getBlockData();
 			return Lists.newArrayList(check).get(Randoms.generateIntRange(0, check.size() - 1));
 		}
 
@@ -460,7 +465,7 @@ public interface Structure
 		{
 			for(Location location : getBlockLocations(reference))
 			{
-				BlockData data = getStructureBlockData();
+				BlockData data = getBlockData();
 				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
 			}
 		}
@@ -476,7 +481,7 @@ public interface Structure
 
 			for(Location location : getBlockLocations(reference))
 			{
-				BlockData data = getStructureBlockData();
+				BlockData data = getBlockData();
 				FallingBlock block = reference.getWorld().spawnFallingBlock(reference, data.getMaterial().getId(), data.getData());
 			}
 		}
