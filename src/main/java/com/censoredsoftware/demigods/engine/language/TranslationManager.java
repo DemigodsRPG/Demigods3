@@ -40,7 +40,7 @@ public class TranslationManager
 					return new ArrayList<String>()
 					{
 						{
-							add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + "to remove all notifications " + Unicodes.getDash() + " or type");
+							add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + "to remove all notifications or type");
 							add(ChatColor.YELLOW + "  menu " + ChatColor.GRAY + "to return to the main menu.");
 						}
 					};
