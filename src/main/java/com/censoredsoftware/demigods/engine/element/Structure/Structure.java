@@ -102,6 +102,7 @@ public interface Structure
 		public void setOwner(DCharacter character)
 		{
 			this.owner = character;
+			save();
 		}
 
 		public void setActive(Boolean bool)
