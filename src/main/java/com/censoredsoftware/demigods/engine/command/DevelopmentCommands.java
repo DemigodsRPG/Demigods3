@@ -18,6 +18,7 @@ import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Notification;
 import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends ListedCommand
@@ -87,8 +88,23 @@ public class DevelopmentCommands extends ListedCommand
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+		player.sendMessage(ChatColor.GRAY + "Sending notifications...");
 
 		// UNUSED
+		if(character != null)
+		{
+			Notification notification1 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.GOOD, "Test1", "This the first notification test ever.");
+			Notification notification2 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.NEUTRAL, "Test2", "This the second notification test ever.");
+			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.BAD, "Test2", "This the thirdt notification test ever.");
+
+			Notification.Util.sendNotification(character, notification1);
+			Notification.Util.sendNotification(character, notification2);
+			Notification.Util.sendNotification(character, notification3);
+		}
+
+		player.sendMessage(ChatColor.GREEN + "Sent!");
 
 		return true;
 	}

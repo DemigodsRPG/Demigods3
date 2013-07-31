@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.engine.command;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,7 @@ public class GeneralCommands extends ListedCommand
 
 	private boolean check(CommandSender sender)
 	{
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
+		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character == null || !character.isImmortal())
@@ -70,10 +69,10 @@ public class GeneralCommands extends ListedCommand
 
 	private boolean owner(CommandSender sender, String[] args)
 	{
-		// Check Permissions
+		// Check permissions
 		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
 
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
+		Player player = (Player) sender;
 		if(args.length < 1)
 		{
 			player.sendMessage(ChatColor.RED + "You must select a character.");
