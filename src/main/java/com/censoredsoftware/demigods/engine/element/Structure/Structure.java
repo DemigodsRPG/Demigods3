@@ -212,6 +212,13 @@ public interface Structure
 			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
+		public boolean slowGenerate(boolean check)
+		{
+			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
+			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
+			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
+		}
+
 		public void save()
 		{
 			JOhm.save(this);
@@ -279,6 +286,14 @@ public interface Structure
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
 				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
+			return true;
+		}
+
+		public boolean slowGenerate(final Location reference, boolean check)
+		{
+			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
+			for(Selection cuboid : this)
+				cuboid.slowGenerate(reference);
 			return true;
 		}
 
@@ -482,7 +497,7 @@ public interface Structure
 			for(Location location : getBlockLocations(reference))
 			{
 				BlockData data = getBlockData();
-				FallingBlock block = reference.getWorld().spawnFallingBlock(reference, data.getMaterial().getId(), data.getData());
+				FallingBlock block = reference.getWorld().spawnFallingBlock(reference.add(0, 16, 0), data.getMaterial().getId(), data.getData());
 			}
 		}
 
@@ -516,14 +531,14 @@ public interface Structure
 			int Y;
 			int Z;
 
-			public RelativeBlockLocation(int X, int Y, int Z)
+			RelativeBlockLocation(int X, int Y, int Z)
 			{
 				this.X = X;
 				this.Y = Y;
 				this.Z = Z;
 			}
 
-			public Location getFrom(Location location)
+			Location getFrom(Location location)
 			{
 				return location.clone().add(X, Y, Z);
 			}
