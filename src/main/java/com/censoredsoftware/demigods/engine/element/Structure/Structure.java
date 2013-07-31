@@ -497,7 +497,7 @@ public interface Structure
 			for(Location location : getBlockLocations(reference))
 			{
 				BlockData data = getBlockData();
-				FallingBlock block = reference.getWorld().spawnFallingBlock(reference.add(0, 16, 0), data.getMaterial().getId(), data.getData());
+				FallingBlock block = reference.getWorld().spawnFallingBlock(location.add(0, 16, 0), data.getMaterial().getId(), data.getData());
 			}
 		}
 
