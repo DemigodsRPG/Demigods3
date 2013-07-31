@@ -26,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
+import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -35,6 +36,7 @@ import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Notification;
 import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -54,7 +56,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps());
+		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), VIEW_NOTIFICATIONS(4, new ViewNotifications());
 
 		private final Integer id;
 		private final Required.Category category;
@@ -342,6 +344,96 @@ public class Prayer implements ListedConversation
 					character.removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
+			}
+			return null;
+		}
+	}
+
+	// Warps
+	static class ViewNotifications extends ValidatingPrompt implements Required.Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.GREEN + "View Notifications";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			return character != null && character.hasNotifications();
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+
+			DPlayer.Util.clearRawChat(player);
+			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Notifications"));
+			player.sendRawMessage(" ");
+
+			for(Notification notification : character.getNotifications())
+			{
+				// Determine color
+				ChatColor color;
+				switch(notification.getDanger())
+				{
+					case GOOD:
+						color = ChatColor.GREEN;
+						break;
+					case BAD:
+						color = ChatColor.RED;
+						break;
+					case NEUTRAL:
+					default:
+						color = ChatColor.YELLOW;
+						break;
+				}
+
+				// Set expires
+				String expires = notification.hasExpiration() ? ChatColor.GRAY + " (expires in " + Times.getTimeTagged(notification.getExpiration()) + ")" : "";
+
+				// Send the notification
+				player.sendRawMessage(color + "    " + notification.getMessage() + expires);
+			}
+
+			player.sendRawMessage(" ");
+			for(String message : Demigods.text.getTextBlock(TranslationManager.Text.NOTIFICATIONS_PRAYER_FOOTER))
+			{
+				player.sendRawMessage(message);
+			}
+
+			return "";
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return message.equalsIgnoreCase("clear") || message.equalsIgnoreCase("menu");
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			// Define variables
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+
+			if(message.equalsIgnoreCase("menu"))
+			{
+				// THEY WANT THE MENU!? SOCK IT TO 'EM!
+				return new StartPrayer();
+			}
+			else if(message.equalsIgnoreCase("clear"))
+			{
+				// Clear them
+				character.clearNotifications();
+
+				// Send to the menu
+				return new StartPrayer();
 			}
 			return null;
 		}

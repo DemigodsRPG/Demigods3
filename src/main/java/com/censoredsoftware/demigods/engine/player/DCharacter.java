@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Structures;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -75,6 +77,8 @@ public class DCharacter implements Battle.Participant
 	private Map<String, DLocation> warps;
 	@CollectionMap(key = String.class, value = DLocation.class)
 	private Map<String, DLocation> invites;
+	@CollectionList(of = Notification.class)
+	private List<Notification> notifications;
 
 	void setName(String name)
 	{
@@ -146,17 +150,6 @@ public class DCharacter implements Battle.Participant
 	public void setUsable(boolean usable)
 	{
 		this.usable = usable;
-	}
-
-	public void remove()
-	{
-		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
-		{
-			if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
-		}
-		JOhm.delete(Inventory.class, getInventory().getId());
-		JOhm.delete(Meta.class, getMeta().getId());
-		JOhm.delete(DCharacter.class, getId());
 	}
 
 	public Inventory getInventory()
@@ -254,22 +247,55 @@ public class DCharacter implements Battle.Participant
 		return this.immortal;
 	}
 
+	public void addNotification(Notification notification)
+	{
+		getNotifications().add(notification);
+		Util.save(this);
+	}
+
+	public void removeNotification(Notification notification)
+	{
+		getNotifications().remove(notification);
+		Util.save(this);
+	}
+
+	public List<Notification> getNotifications()
+	{
+		if(this.notifications == null) this.notifications = Lists.newArrayList();
+		return this.notifications;
+	}
+
+	public void clearNotifications()
+	{
+		getNotifications().clear();
+	}
+
+	public boolean hasNotifications()
+	{
+		return !this.notifications.isEmpty();
+	}
+
 	public void addWarp(String name, Location location)
 	{
-		if(this.warps == null) this.warps = Maps.newHashMap();
-		this.warps.put(name.toLowerCase(), DLocation.Util.create(location));
+		getWarps().put(name.toLowerCase(), DLocation.Util.create(location));
 		Util.save(this);
 	}
 
 	public void removeWarp(String name)
 	{
-		this.warps.remove(name.toLowerCase());
+		getWarps().remove(name.toLowerCase());
 		Util.save(this);
 	}
 
 	public Map<String, DLocation> getWarps()
 	{
+		if(this.warps == null) this.warps = Maps.newHashMap();
 		return this.warps;
+	}
+
+	public void clearWarps()
+	{
+		getWarps().clear();
 	}
 
 	public boolean hasWarps()
@@ -279,20 +305,25 @@ public class DCharacter implements Battle.Participant
 
 	public void addInvite(String name, Location location)
 	{
-		if(this.invites == null) this.invites = Maps.newHashMap();
-		this.invites.put(name.toLowerCase(), DLocation.Util.create(location));
+		getInvites().put(name.toLowerCase(), DLocation.Util.create(location));
 		Util.save(this);
 	}
 
 	public void removeInvite(String name)
 	{
-		this.invites.remove(name.toLowerCase());
+		getInvites().remove(name.toLowerCase());
 		Util.save(this);
 	}
 
 	public Map<String, DLocation> getInvites()
 	{
+		if(this.invites == null) this.invites = Maps.newHashMap();
 		return this.invites;
+	}
+
+	public void clearInvites()
+	{
+		getInvites().clear();
 	}
 
 	public boolean hasInvites()
@@ -360,11 +391,6 @@ public class DCharacter implements Battle.Participant
 		Util.save(this);
 	}
 
-	public Long getId()
-	{
-		return id;
-	}
-
 	@Override
 	public void setCanPvp(boolean pvp)
 	{
@@ -391,6 +417,22 @@ public class DCharacter implements Battle.Participant
 	public void updateUseable()
 	{
 		this.usable = Deity.Util.getDeity(this.deity) != null;
+	}
+
+	public Long getId()
+	{
+		return id;
+	}
+
+	public void remove()
+	{
+		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+		{
+			if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
+		}
+		JOhm.delete(Inventory.class, getInventory().getId());
+		JOhm.delete(Meta.class, getMeta().getId());
+		JOhm.delete(DCharacter.class, getId());
 	}
 
 	@Model

@@ -6,7 +6,7 @@ softdepend: [WorldEdit, WorldGuard]
 commands:
     demigods:
         usage: /demigods [category] [subcategory]
-        aliases: [dg, demigod]
+        aliases: [demigod, dg]
         permission: demigods.basic
     deity:
         usage: /deity
@@ -29,11 +29,11 @@ commands:
     test3:
         usage: /test3
         permission: demigods.admin
-    hspawn:
-        usage: /hspawn
     soundtest:
         usage: /soundtest <sound> <pitch>
         permission: demigods.admin
+    hspawn:
+        usage: /hspawn
 permissions:
     demigods.basic:
         description: The default permission for players.

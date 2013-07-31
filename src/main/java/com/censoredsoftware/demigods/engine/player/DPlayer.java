@@ -289,13 +289,10 @@ public class DPlayer
 		{
 			try
 			{
-				List<DPlayer> list = JOhm.find(DPlayer.class, "player", player.getName());
-				return list.get(0);
+				return ((List<DPlayer>) JOhm.find(DPlayer.class, "player", player.getName())).get(0);
 			}
-			catch(Throwable e)
-			{
-				e.printStackTrace();
-			}
+			catch(Exception ignored)
+			{}
 			return create(player);
 		}
 

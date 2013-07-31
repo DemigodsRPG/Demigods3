@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.engine.language;
 
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.engine.Demigods;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.Demigods;
 
 // TODO Replace with YAML.
 
@@ -12,7 +13,7 @@ public class TranslationManager
 {
 	public static enum Text
 	{
-		PRAYER_ENDED, PRAYER_INTRO, KNELT_FOR_PRAYER, PVP_NO_PRAYER, UNSAFE_FROM_PVP, SAFE_FROM_PVP, ERROR_BIND_WEAPON_REQUIRED, DATA_RESET_KICK, ADMIN_CLEAR_DATA_STARTING, ADMIN_CLEAR_DATA_FINISHED, SUCCESS_ABILITY_BOUND, SUCCESS_ABILITY_UNBOUND, ERROR_BIND_TO_SLOT, NOTIFICATION_WARP_CREATED, NOTIFICATION_WARP_DELETED, NOTIFICATION_INVITE_SENT, ERROR_NAME_LENGTH, ERROR_CHAR_EXISTS, ERROR_ALPHA_NUMERIC, ERROR_MAX_CAPS, CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
+		NOTIFICATIONS_PRAYER_FOOTER, NOTIFICATION_RECEIVED, PRAYER_ENDED, PRAYER_INTRO, KNELT_FOR_PRAYER, PVP_NO_PRAYER, UNSAFE_FROM_PVP, SAFE_FROM_PVP, ERROR_BIND_WEAPON_REQUIRED, DATA_RESET_KICK, ADMIN_CLEAR_DATA_STARTING, ADMIN_CLEAR_DATA_FINISHED, SUCCESS_ABILITY_BOUND, SUCCESS_ABILITY_UNBOUND, ERROR_BIND_TO_SLOT, NOTIFICATION_WARP_CREATED, NOTIFICATION_WARP_DELETED, NOTIFICATION_INVITE_SENT, ERROR_NAME_LENGTH, ERROR_CHAR_EXISTS, ERROR_ALPHA_NUMERIC, ERROR_MAX_CAPS, CREATE_OBELISK, ALTAR_SPAWNED_NEAR, PROTECTED_BLOCK, ADMIN_WAND_GENERATE_ALTAR, ADMIN_WAND_GENERATE_ALTAR_COMPLETE, ADMIN_WAND_REMOVE_ALTAR, ADMIN_WAND_REMOVE_ALTAR_COMPLETE, CREATE_SHRINE_1, CREATE_SHRINE_2, ADMIN_WAND_REMOVE_SHRINE, ADMIN_WAND_REMOVE_SHRINE_COMPLETE, NO_WARP_ALTAR, CHARACTER_CREATE_COMPLETE, KILLSTREAK, MORTAL_SLAIN_1, MORTAL_SLAIN_2, DEMI_SLAIN_1, DEMI_SLAIN_2, DEMI_BETRAY, MORTAL_BETRAY, COMMAND_BLOCKED_BATTLE, NO_PVP_ZONE, WEAKER_THAN_YOU, YOU_FAILED_DEITY
 	}
 
 	public static class English implements Translation
@@ -35,6 +36,14 @@ public class TranslationManager
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
 			switch((Text) text)
 			{
+				case NOTIFICATIONS_PRAYER_FOOTER:
+					return new ArrayList<String>()
+					{
+						{
+							add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + "to remove all notifications " + Unicodes.getDash() + " or type");
+							add(ChatColor.YELLOW + "  menu " + ChatColor.GRAY + "to return to the main menu.");
+						}
+					};
 				case PRAYER_INTRO:
 					return new ArrayList<String>()
 					{
@@ -70,6 +79,8 @@ public class TranslationManager
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
 			switch((Text) text)
 			{
+				case NOTIFICATION_RECEIVED:
+					return "You have new notifications!";
 				case KNELT_FOR_PRAYER:
 					return "{player} has knelt to begin prayer.";
 				case SAFE_FROM_PVP:
