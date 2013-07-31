@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +10,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.censoredsoftware.core.util.StopWatches;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -22,8 +20,6 @@ public class PlayerListener implements Listener
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
-
-		StopWatch stopWatch = StopWatches.start(); // TODO
 
 		// Define Variables
 		Player player = event.getPlayer();
@@ -45,13 +41,20 @@ public class PlayerListener implements Listener
 			event.getPlayer().setHealth(character.getHealth());
 		}
 
+		// Demigods welcome message
 		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
 		{
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 
-		Demigods.message.broadcast("onPlayerJoin:" + StopWatches.end(stopWatch)); // TODO
+		// Notifications
+		if(character != null && character.hasNotifications())
+		{
+			int size = character.getNotifications().size();
+			player.sendMessage(size == 1 ? "You have an unread notification!" : "You have " + size + " unread notifications!");
+			player.sendMessage(ChatColor.GRAY + "Find an Altar to view your notifications.");
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
