@@ -36,12 +36,20 @@ public class TranslationManager
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
 			switch((Text) text)
 			{
+				case NOTIFICATION_RECEIVED:
+					return new ArrayList<String>()
+					{
+						{
+							add(ChatColor.GREEN + "You have a new notification!");
+							add(ChatColor.GRAY + "Find an Altar to view your notifications.");
+						}
+					};
 				case NOTIFICATIONS_PRAYER_FOOTER:
 					return new ArrayList<String>()
 					{
 						{
-							add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + "to remove all notifications or type");
-							add(ChatColor.YELLOW + "  menu " + ChatColor.GRAY + "to return to the main menu.");
+							add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + " to remove all notifications or type " + ChatColor.YELLOW + "menu");
+							add(ChatColor.GRAY + "  to return to the main menu.");
 						}
 					};
 				case PRAYER_INTRO:
@@ -79,8 +87,6 @@ public class TranslationManager
 			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
 			switch((Text) text)
 			{
-				case NOTIFICATION_RECEIVED:
-					return "You have new notifications!";
 				case KNELT_FOR_PRAYER:
 					return "{player} has knelt to begin prayer.";
 				case SAFE_FROM_PVP:

@@ -97,7 +97,7 @@ public class DevelopmentCommands extends ListedCommand
 		{
 			Notification notification1 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.GOOD, 3, "Test1", "This the first notification test ever.");
 			Notification notification2 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.NEUTRAL, 100, "Test2", "This the second notification test ever.");
-			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.BAD, 1, "Test2", "This the thirdt notification test ever.");
+			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, Notification.Danger.BAD, 1, "Test2", "This the third notification test ever.");
 
 			Notification.Util.sendNotification(character, notification1);
 			Notification.Util.sendNotification(character, notification2);

@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.engine.player;
 
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import redis.clients.johm.*;
@@ -89,14 +88,24 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 		return this.message;
 	}
 
+	public long getId()
+	{
+		return this.id;
+	}
+
 	public boolean hasExpiration()
 	{
 		return this.expiration != 0L;
 	}
 
-	public static void save(Notification character)
+	public static void save(Notification notification)
 	{
-		JOhm.save(character);
+		JOhm.save(notification);
+	}
+
+	public static void remove(Notification notification)
+	{
+		JOhm.delete(Notification.class, notification.getId());
 	}
 
 	public static DCharacter load(Long id)
@@ -146,6 +155,14 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 			return notification;
 		}
 
+		public static void updateNotifications()
+		{
+			for(Notification notification : loadAll())
+			{
+				if(notification.getExpiration() <= System.currentTimeMillis()) Notification.remove(notification);
+			}
+		}
+
 		public static void sendNotification(DCharacter character, Notification notification)
 		{
 			// Add the notification
@@ -155,7 +172,10 @@ public class Notification // TODO: This is pretty quick. Could possibly use some
 			if(character.getOfflinePlayer().isOnline())
 			{
 				Player player = character.getOfflinePlayer().getPlayer();
-				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.NOTIFICATION_RECEIVED));
+				for(String message : Demigods.text.getTextBlock(TranslationManager.Text.NOTIFICATION_RECEIVED))
+				{
+					player.sendMessage(message);
+				}
 			}
 		}
 	}

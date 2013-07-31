@@ -10,6 +10,7 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Notification;
 import com.censoredsoftware.demigods.engine.util.Admins;
 
 @SuppressWarnings("deprecation")
@@ -90,6 +91,9 @@ public class ThreadManager
 
 					// Update Timed Data
 					TimedData.Util.updateTimedData();
+
+					// Update Notifications
+					Notification.Util.updateNotifications();
 				}
 			};
 		}
