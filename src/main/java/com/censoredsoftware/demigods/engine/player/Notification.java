@@ -10,7 +10,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.language.TranslationManager;
 
 @Model
-public class Notification // TODO: This is pretty quick. Could possibly use some more methods/data. Works perfectly for now, however.
+public class Notification
 {
 	@Id
 	private Long id;
