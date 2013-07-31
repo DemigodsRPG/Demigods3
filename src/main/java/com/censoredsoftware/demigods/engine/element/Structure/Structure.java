@@ -389,18 +389,6 @@ public interface Structure
 		}
 
 		/**
-		 * Set Blockdata for a Selection (cuboid).
-		 * 
-		 * @param data The data being set.
-		 * @return This schematic.
-		 */
-		public Selection setLayer(BlockData data)
-		{
-			this.blockData = Lists.newArrayList(data);
-			return this;
-		}
-
-		/**
 		 * Get the material of the object (a random material is chosen based on the configured odds).
 		 * 
 		 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.

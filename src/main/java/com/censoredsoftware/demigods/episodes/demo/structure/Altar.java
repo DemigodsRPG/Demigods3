@@ -112,7 +112,6 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Create main platform
-			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
 			add(new Selection().include(-2, 1, -2, 2, 1, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom).exclude(0, 1, 0));
 		}
 	};
@@ -201,7 +200,6 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Create main platform
-			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(-2, 1, -2, 2, 1, 2).setBlockData(Selection.BuildingBlock.quartzSlabBottom).exclude(0, 1, 0));
 		}
 	};
