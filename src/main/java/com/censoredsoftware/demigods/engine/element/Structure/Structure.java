@@ -246,7 +246,7 @@ public interface Structure
 		}
 	}
 
-	public static class Schematic extends ArrayList<Cuboid>
+	public static class Schematic extends ArrayList<Selection>
 	{
 		private final String name;
 		private final String designer;
@@ -262,7 +262,7 @@ public interface Structure
 		public Set<Location> getLocations(Location reference)
 		{
 			Set<Location> locations = Sets.newHashSet();
-			for(Cuboid cuboid : this)
+			for(Selection cuboid : this)
 				locations.addAll(cuboid.getBlockLocations(reference));
 			return locations;
 		}
@@ -275,7 +275,7 @@ public interface Structure
 		public boolean generate(final Location reference, boolean check)
 		{
 			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
-			for(Cuboid cuboid : this)
+			for(Selection cuboid : this)
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
 				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
@@ -298,27 +298,27 @@ public interface Structure
 		public Schematic getSchematic();
 	}
 
-	public static class Cuboid
+	public static class Selection
 	{
 		private Set<RelativeBlockLocation> include = Sets.newHashSet();
 		private Set<RelativeBlockLocation> exclude = Sets.newHashSet();
 		private List<BlockData> blockData = Lists.newArrayList();
 
 		/**
-		 * Set Cuboid (non-cuboid), useful for getting 1 location back.
+		 * Set Selection (non-cuboid), useful for getting 1 location back.
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
 		 * @param Y The relative Y coordinate of the schematic from the reference location.
 		 * @param Z The relative Z coordinate of the schematic from the reference location.
 		 */
-		public Cuboid include(int X, int Y, int Z)
+		public Selection include(int X, int Y, int Z)
 		{
 			include.add(new RelativeBlockLocation(X, Y, Z));
 			return this;
 		}
 
 		/**
-		 * Constructor for a Cuboid (cuboid), useful for getting only locations back.
+		 * Constructor for a Selection (cuboid), useful for getting only locations back.
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
 		 * @param Y The relative Y coordinate of the schematic from the reference location.
@@ -327,28 +327,28 @@ public interface Structure
 		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
 		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 		 */
-		public Cuboid include(int X, int Y, int Z, int XX, int YY, int ZZ)
+		public Selection include(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
 			include.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
 			return this;
 		}
 
 		/**
-		 * Excluding for a Cuboid (non-cuboid).
+		 * Excluding for a Selection (non-cuboid).
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
 		 * @param Y The relative Y coordinate of the schematic from the reference location.
 		 * @param Z The relative Z coordinate of the schematic from the reference location.
 		 * @return This schematic.
 		 */
-		public Cuboid exclude(int X, int Y, int Z)
+		public Selection exclude(int X, int Y, int Z)
 		{
 			exclude.add(new RelativeBlockLocation(X, Y, Z));
 			return this;
 		}
 
 		/**
-		 * Excluding for a Cuboid (cuboid).
+		 * Excluding for a Selection (cuboid).
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
 		 * @param Y The relative Y coordinate of the schematic from the reference location.
@@ -358,43 +358,43 @@ public interface Structure
 		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 		 * @return This schematic.
 		 */
-		public Cuboid exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
+		public Selection exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
 			exclude.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
 			return this;
 		}
 
 		/**
-		 * Set Blockdata for a Cuboid (cuboid).
+		 * Set Blockdata for a Selection (cuboid).
 		 * 
 		 * @param data The data being set.
 		 * @return This schematic.
 		 */
-		public Cuboid setBlockData(BlockData data)
+		public Selection setBlockData(BlockData data)
 		{
 			this.blockData = Lists.newArrayList(data);
 			return this;
 		}
 
 		/**
-		 * Set Blockdata for a Cuboid (cuboid).
+		 * Set Blockdata for a Selection (cuboid).
 		 * 
 		 * @param data The data being set.
 		 * @return This schematic.
 		 */
-		public Cuboid setBlockData(List<BlockData> data)
+		public Selection setBlockData(List<BlockData> data)
 		{
 			this.blockData = data;
 			return this;
 		}
 
 		/**
-		 * Set Blockdata for a Cuboid (cuboid).
+		 * Set Blockdata for a Selection (cuboid).
 		 * 
 		 * @param data The data being set.
 		 * @return This schematic.
 		 */
-		public Cuboid setLayer(BlockData data)
+		public Selection setLayer(BlockData data)
 		{
 			this.blockData = Lists.newArrayList(data);
 			return this;

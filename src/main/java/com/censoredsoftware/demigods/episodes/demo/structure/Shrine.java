@@ -31,29 +31,29 @@ public class Shrine implements StandaloneStructure
 	{
 		{
 			// Create the main block
-			add(new Cuboid().include(0, 1, 0).setBlockData(Structure.Cuboid.BuildingBlock.goldClickBlock));
+			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.goldClickBlock));
 
 			// Create the ender chest and the block below
-			add(new Cuboid().include(0, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.enderChest));
-			add(new Cuboid().include(0, -1, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrick));
+			add(new Selection().include(0, 0, 0).setBlockData(Selection.BuildingBlock.enderChest));
+			add(new Selection().include(0, -1, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
 
 			// Create the rest
-			add(new Cuboid().include(-1, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs));
-			add(new Cuboid().include(1, 0, 0).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs1));
-			add(new Cuboid().include(0, 0, -1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs2));
-			add(new Cuboid().include(0, 0, 1).setBlockData(Structure.Cuboid.BuildingBlock.stoneBrickStairs3));
+			add(new Selection().include(-1, 0, 0).setBlockData(Selection.BuildingBlock.stoneBrickStairs));
+			add(new Selection().include(1, 0, 0).setBlockData(Selection.BuildingBlock.stoneBrickStairs1));
+			add(new Selection().include(0, 0, -1).setBlockData(Selection.BuildingBlock.stoneBrickStairs2));
+			add(new Selection().include(0, 0, 1).setBlockData(Selection.BuildingBlock.stoneBrickStairs3));
 		}
 	};
 
 	public static enum ShrineDesign implements Design
 	{
-		GENERAL("general", general, new Cuboid().include(0, 1, 0));
+		GENERAL("general", general, new Selection().include(0, 1, 0));
 
 		private final String name;
 		private final Structure.Schematic schematic;
-		private final Cuboid clickableBlocks;
+		private final Selection clickableBlocks;
 
-		private ShrineDesign(String name, Structure.Schematic schematic, Cuboid clickableBlocks)
+		private ShrineDesign(String name, Structure.Schematic schematic, Selection clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
