@@ -92,27 +92,27 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(-2, 0, -3, -2, 3, -3).setBlockData(Selection.BuildingBlock.stoneBrick));
 
 			// Left beam
-			add(new Selection().include(1, 4, -2, -1, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrick).exclude(0, 4, -2));
+			add(new Selection().include(1, 4, -2, -1, 4, -2).exclude(0, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrick));
 			add(new Selection().include(0, 4, -2).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
 			add(new Selection().include(-1, 5, -2, 1, 5, -2).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Right beam
-			add(new Selection().include(1, 4, 2, -1, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrick).exclude(0, 4, 2));
+			add(new Selection().include(1, 4, 2, -1, 4, 2).exclude(0, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrick));
 			add(new Selection().include(0, 4, 2).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
 			add(new Selection().include(-1, 5, 2, 1, 5, 2).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Top beam
-			add(new Selection().include(2, 4, 1, 2, 4, -1).setBlockData(Selection.BuildingBlock.stoneBrick).exclude(2, 4, 0));
+			add(new Selection().include(2, 4, 1, 2, 4, -1).exclude(2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
 			add(new Selection().include(2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
 			add(new Selection().include(2, 5, -1, 2, 5, 1).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Bottom beam
-			add(new Selection().include(-2, 4, 1, -2, 4, -1).setBlockData(Selection.BuildingBlock.stoneBrick).exclude(-2, 4, 0));
+			add(new Selection().include(-2, 4, 1, -2, 4, -1).exclude(-2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
 			add(new Selection().include(-2, 4, 0).setBlockData(Selection.BuildingBlock.stoneBrickSpecial));
 			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.spruceSlab));
 
 			// Create main platform
-			add(new Selection().include(-2, 1, -2, 2, 1, 2).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom).exclude(0, 1, 0));
+			add(new Selection().include(-2, 1, -2, 2, 1, 2).exclude(0, 1, 0).setBlockData(Selection.BuildingBlock.stoneBrickSlabBottom));
 		}
 	};
 
@@ -152,10 +152,10 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(-2, 0, 4, 2, 0, 4).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
 
 			// Create inner steps
-			add(new Selection().include(3, 0, -1, 3, 0, 1).setBlockData(Selection.BuildingBlock.quartz).exclude(3, 0, 0));
-			add(new Selection().include(-1, 0, 3, 1, 0, 3).setBlockData(Selection.BuildingBlock.quartz).exclude(0, 0, 3));
-			add(new Selection().include(-3, 0, -1, -3, 0, 1).setBlockData(Selection.BuildingBlock.quartz).exclude(-3, 0, 0));
-			add(new Selection().include(-1, 0, -3, 1, 0, -3).setBlockData(Selection.BuildingBlock.quartz).exclude(0, 0, -3));
+			add(new Selection().include(3, 0, -1, 3, 0, 1).exclude(3, 0, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-1, 0, 3, 1, 0, 3).exclude(0, 0, 3).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-3, 0, -1, -3, 0, 1).exclude(-3, 0, 0).setBlockData(Selection.BuildingBlock.quartz));
+			add(new Selection().include(-1, 0, -3, 1, 0, -3).exclude(0, 0, -3).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(3, 0, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(0, 0, 3).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(-3, 0, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
@@ -180,27 +180,27 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(-2, 0, -3, -2, 3, -3).setBlockData(Selection.BuildingBlock.pillarQuartz));
 
 			// Left beam
-			add(new Selection().include(1, 4, -2, -1, 4, -2).setBlockData(Selection.BuildingBlock.quartz).exclude(0, 4, -2));
+			add(new Selection().include(1, 4, -2, -1, 4, -2).exclude(0, 4, -2).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(0, 4, -2).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(-1, 5, -2, 1, 5, -2).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Right beam
-			add(new Selection().include(1, 4, 2, -1, 4, 2).setBlockData(Selection.BuildingBlock.quartz).exclude(0, 4, 2));
+			add(new Selection().include(1, 4, 2, -1, 4, 2).exclude(0, 4, 2).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(0, 4, 2).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(-1, 5, 2, 1, 5, 2).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Top beam
-			add(new Selection().include(2, 4, 1, 2, 4, -1).setBlockData(Selection.BuildingBlock.quartz).exclude(2, 4, 0));
+			add(new Selection().include(2, 4, 1, 2, 4, -1).exclude(2, 4, 0).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(2, 4, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(2, 5, -1, 2, 5, 1).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Bottom beam
-			add(new Selection().include(-2, 4, 1, -2, 4, -1).setBlockData(Selection.BuildingBlock.quartz).exclude(-2, 4, 0));
+			add(new Selection().include(-2, 4, 1, -2, 4, -1).exclude(-2, 4, 0).setBlockData(Selection.BuildingBlock.quartz));
 			add(new Selection().include(-2, 4, 0).setBlockData(Selection.BuildingBlock.quartzSpecial));
 			add(new Selection().include(-2, 5, -1, -2, 5, 1).setBlockData(Selection.BuildingBlock.birchSlab));
 
 			// Create main platform
-			add(new Selection().include(-2, 1, -2, 2, 1, 2).setBlockData(Selection.BuildingBlock.quartzSlabBottom).exclude(0, 1, 0));
+			add(new Selection().include(-2, 1, -2, 2, 1, 2).exclude(0, 1, 0).setBlockData(Selection.BuildingBlock.quartzSlabBottom));
 		}
 	};
 
@@ -212,12 +212,12 @@ public class Altar implements StandaloneStructure
 			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.enchantTable));
 
 			// PWETTY FLOWAS AND GWASS!
-			add(new Selection().include(-3, 0, -3, 3, 0, 3).setBlockData(Selection.BuildingBlock.prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
+			add(new Selection().include(-3, 0, -3, 3, 0, 3).exclude(-1, 0, -1, 1, 0, 1).setBlockData(Selection.BuildingBlock.prettyFlowersAndGrass));
 
 			// Ground
-			add(new Selection().include(-3, -1, -3, 3, -1, 3).setBlockData(Selection.BuildingBlock.sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
-			add(new Selection().include(-2, -1, -2, 2, -1, 2).setBlockData(Selection.BuildingBlock.grass).exclude(-1, -1, -1, 1, -1, 1));
-			add(new Selection().include(-1, -1, -1, 1, -1, 1).setBlockData(Selection.BuildingBlock.water).exclude(0, -1, 0));
+			add(new Selection().include(-3, -1, -3, 3, -1, 3).exclude(-2, -1, -2, 2, -1, 2).setBlockData(Selection.BuildingBlock.sandyGrass));
+			add(new Selection().include(-2, -1, -2, 2, -1, 2).exclude(-1, -1, -1, 1, -1, 1).setBlockData(Selection.BuildingBlock.grass));
+			add(new Selection().include(-1, -1, -1, 1, -1, 1).exclude(0, -1, 0).setBlockData(Selection.BuildingBlock.water));
 			add(new Selection().include(0, -1, 0).setBlockData(Selection.BuildingBlock.smoothSandStone));
 			add(new Selection().include(-3, -2, -3, 3, -2, 3).setBlockData(Selection.BuildingBlock.sandStone));
 
@@ -230,9 +230,9 @@ public class Altar implements StandaloneStructure
 			// Tiki Torch
 			int rand1 = Randoms.generateIntRange(-3, -2);
 			int rand2 = Randoms.generateIntRange(-3, 3);
-			add(new Selection().include(-3, 1, -3, 3, 2, 3).setBlockData(Selection.BuildingBlock.air).exclude(0, 1, 0));
-			add(new Selection().include(rand1, 0, rand2, rand1, 1, rand2).setBlockData(Selection.BuildingBlock.fence)); // Fence
-			add(new Selection().include(rand1, 2, rand2).setBlockData(Selection.BuildingBlock.torch)); // Torch
+			add(new Selection().include(-3, 1, -3, 3, 2, 3).exclude(0, 1, 0).setBlockData(Material.AIR));
+			add(new Selection().include(rand1, 0, rand2, rand1, 1, rand2).setBlockData(Material.FENCE)); // Fence
+			add(new Selection().include(rand1, 2, rand2).setBlockData(Material.TORCH)); // Torch
 		}
 	};
 

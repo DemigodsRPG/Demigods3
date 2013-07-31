@@ -367,6 +367,29 @@ public interface Structure
 		/**
 		 * Set Blockdata for a Selection (cuboid).
 		 * 
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(Material material)
+		{
+			this.blockData = Lists.newArrayList(new BlockData(material));
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
+		 * @param data The data being set.
+		 * @return This schematic.
+		 */
+		public Selection setBlockData(Material material, byte data)
+		{
+			this.blockData = Lists.newArrayList(new BlockData(material, data));
+			return this;
+		}
+
+		/**
+		 * Set Blockdata for a Selection (cuboid).
+		 * 
 		 * @param data The data being set.
 		 * @return This schematic.
 		 */
