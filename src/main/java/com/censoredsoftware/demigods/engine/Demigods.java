@@ -190,7 +190,7 @@ public class Demigods
 	{
 		PluginManager register = instance.getServer().getPluginManager();
 
-		// engine
+		// Engine
 		register.registerEvents(new BattleListener(), instance);
 		register.registerEvents(new CommandListener(), instance);
 		register.registerEvents(new EntityListener(), instance);
@@ -200,7 +200,7 @@ public class Demigods
 		register.registerEvents(new PlayerListener(), instance);
 		register.registerEvents(new TributeListener(), instance);
 
-		// disabled worlds
+		// Disabled worlds
 		if(!disabledWorlds.isEmpty()) register.registerEvents(new DisabledWorldListener(), instance);
 
 		// Deities
