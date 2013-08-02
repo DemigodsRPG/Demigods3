@@ -197,9 +197,9 @@
                             <goal>purge-local-repository</goal>
                         </goals>
                         <configuration>
-                            <manualIncludes>
+                            <includes>
                                 <include>com.censoredsoftware.minecraft:cs-core</include>
-                            </manualIncludes>
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
