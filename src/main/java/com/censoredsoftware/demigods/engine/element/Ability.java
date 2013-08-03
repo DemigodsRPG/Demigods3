@@ -34,6 +34,7 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public abstract class Ability
@@ -437,11 +438,15 @@ public abstract class Ability
 		 */
 		public static LivingEntity autoTarget(Player player)
 		{
+			// TODO: Test this for lag.
+
 			// Define variables
 			int range = Demigods.config.getSettingInt("caps.target_range") > 140 ? 140 : Demigods.config.getSettingInt("caps.target_range");
 			int correction = 3;
+			Location target = player.getTargetBlock(null, range).getLocation();
 			BlockIterator iterator = new BlockIterator(player, range);
 			Set<LivingEntity> entities = Sets.newHashSet();
+			List<LivingEntity> targets = Lists.newArrayList();
 
 			// Save the nearby living entities
 			for(Entity entity : player.getNearbyEntities(range, range, range))
@@ -465,11 +470,25 @@ public abstract class Ability
 						}
 						else
 						{
-							return entity;
+							targets.add(entity);
 						}
 					}
 				}
 			}
+
+			// Attempt to return the closest entity to the cursor
+			for(LivingEntity entity : targets)
+			{
+				if(entity.getLocation().distance(target) <= correction) return entity;
+			}
+
+			// If it failed to do that then just return the first entity
+			try
+			{
+				return targets.get(0);
+			}
+			catch(Exception ignored)
+			{}
 
 			return null;
 		}
@@ -505,6 +524,8 @@ public abstract class Ability
 		 */
 		public static Location adjustedAimLocation(DCharacter character, Location target)
 		{
+			// TODO: This needs major work.
+
 			int ascensions = character.getMeta().getAscensions();
 			if(ascensions < 3) ascensions = 3;
 
@@ -515,7 +536,6 @@ public abstract class Ability
 			World world = target.getWorld();
 
 			int randomInt = random.nextInt(adjustedOffset);
-
 			int sampleSpace = random.nextInt(3);
 
 			double X = target.getX();
