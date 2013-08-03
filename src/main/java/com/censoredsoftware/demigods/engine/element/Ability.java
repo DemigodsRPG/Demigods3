@@ -194,7 +194,6 @@ public abstract class Ability
 		public void setItem(ItemStack item)
 		{
 			this.item = DItemStack.Util.create(item);
-			Ability.Util.save(this);
 		}
 
 		public Long getId()
@@ -323,16 +322,6 @@ public abstract class Ability
 		public static void save(Bind bind)
 		{
 			JOhm.save(bind);
-		}
-
-		public static Bind loadBind(long id)
-		{
-			return JOhm.get(Bind.class, id);
-		}
-
-		public static Set<Bind> loadAllBind()
-		{
-			return JOhm.getAll(Bind.class);
 		}
 
 		public static void save(Devotion devotion)
