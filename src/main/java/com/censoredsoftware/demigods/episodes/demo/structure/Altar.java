@@ -354,9 +354,10 @@ public class Altar implements StandaloneStructure
 
 	public static boolean altarNearby(Location location)
 	{
+		int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
 		for(Save structureSave : Structures.findAll("type", "Altar"))
 		{
-			if(structureSave.getReferenceLocation().distance(location) <= Demigods.config.getSettingInt("generation.min_blocks_between_altars")) return true;
+			if(structureSave.getReferenceLocation().distance(location) <= distance) return true;
 		}
 		return false;
 	}
@@ -367,9 +368,7 @@ class AltarListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onChunkLoad(final ChunkLoadEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getWorld())) return;
-
-		if(!event.isNewChunk()) return;
+		if(!event.isNewChunk() || Demigods.isDisabledWorld(event.getWorld())) return;
 
 		// Define variables
 		final Location location = DLocation.Util.randomChunkLocation(event.getChunk());

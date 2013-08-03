@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BlockIterator;
 
 import redis.clients.johm.*;
 
@@ -32,6 +34,7 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
+import com.google.common.collect.Sets;
 
 public abstract class Ability
 {
@@ -445,26 +448,37 @@ public abstract class Ability
 		 */
 		public static LivingEntity autoTarget(Player player)
 		{
-			int targetRangeCap = Demigods.config.getSettingInt("caps.target_range");
-			Location targetLoc = player.getTargetBlock(null, targetRangeCap).getLocation();
+			// Define variables
+			int range = Demigods.config.getSettingInt("caps.target_range") > 140 ? 140 : Demigods.config.getSettingInt("caps.target_range");
+			int correction = 3;
+			BlockIterator iterator = new BlockIterator(player, range);
+			Set<LivingEntity> entities = Sets.newHashSet();
 
-			for(Entity entity : player.getNearbyEntities(targetRangeCap, targetRangeCap, targetRangeCap))
+			// Save the nearby living entities
+			for(Entity entity : player.getNearbyEntities(range, range, range))
 			{
-				/**
-				 * TODO FIX THIS!!!!!!!!!!!!!
-				 */
-				if(entity.getLocation().distance(targetLoc) < 3 && entity instanceof LivingEntity) // TODO: Fix this!!!!!!!
-				/**
-				 * TODO FIX THIS!!!!!!!!!!!!!
-				 */
-				{
-					if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getTameable((LivingEntity) entity) != null)
-					{
-						Pet wrapper = Pet.Util.getTameable((LivingEntity) entity);
-						if(DCharacter.Util.areAllied(DPlayer.Util.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
-					}
+				if(entity instanceof LivingEntity) entities.add((LivingEntity) entity);
+			}
 
-					return (LivingEntity) entity;
+			// Iterate through the blocks and find the target
+			while(iterator.hasNext())
+			{
+				Block block = iterator.next();
+
+				for(LivingEntity entity : entities)
+				{
+					if(entity.getLocation().distance(block.getLocation()) <= correction)
+					{
+						if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getTameable(entity) != null)
+						{
+							Pet wrapper = Pet.Util.getTameable(entity);
+							if(DCharacter.Util.areAllied(DPlayer.Util.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+						}
+						else
+						{
+							return entity;
+						}
+					}
 				}
 			}
 
