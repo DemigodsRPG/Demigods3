@@ -8,8 +8,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 
@@ -42,10 +45,43 @@ public class InventoryListener implements Listener
 		if(event.getItemDrop() != null && character.getMeta().isBound(event.getItemDrop().getItemStack())) event.setCancelled(true);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onPlayerDeathEvent(PlayerDeathEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
-		// TODO: Save hot bar
+		Player player = event.getEntity();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+		// Return if no character exists
+		if(character == null) return;
+
+		// Remove the bound items from the drops
+		for(Ability.Bind bind : character.getMeta().getBinds())
+		{
+			event.getDrops().remove(bind.getItem());
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	private void onPlayerRespawn(PlayerRespawnEvent event)
+	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		Player player = event.getPlayer();
+		final DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+		// Return if no character exists
+		if(character == null) return;
+
+		// Refresh the binds after a delay
+		BukkitRunnable runnable = new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				character.refreshBinds();
+			}
+		};
+
+		runnable.runTaskLater(Demigods.plugin, 20);
 	}
 }

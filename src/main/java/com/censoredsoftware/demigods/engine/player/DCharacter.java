@@ -419,6 +419,16 @@ public class DCharacter implements Battle.Participant
 		this.usable = Deity.Util.getDeity(this.deity) != null;
 	}
 
+	public void refreshBinds()
+	{
+		if(!getOfflinePlayer().isOnline()) return;
+		for(Ability.Bind bind : getMeta().getBinds())
+		{
+			Player player = getOfflinePlayer().getPlayer();
+			player.getInventory().setItem(bind.getSlot(), bind.getItem());
+		}
+	}
+
 	public Long getId()
 	{
 		return id;

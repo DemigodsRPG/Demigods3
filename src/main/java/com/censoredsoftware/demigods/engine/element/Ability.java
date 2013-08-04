@@ -195,6 +195,7 @@ public abstract class Ability
 		public void setItem(ItemStack item)
 		{
 			this.item = DItemStack.Util.create(item);
+			JOhm.save(this);
 		}
 
 		public Long getId()
@@ -207,9 +208,9 @@ public abstract class Ability
 			return new ItemStack(this.item.toItemStack().getType());
 		}
 
-		public DItemStack getItem()
+		public ItemStack getItem()
 		{
-			return this.item;
+			return this.item.toItemStack();
 		}
 
 		public String getAbility()
@@ -648,7 +649,7 @@ public abstract class Ability
 						// Set the item meta
 						item.setItemMeta(itemMeta);
 
-						// Set the bind item
+						// Set the bind item and slot
 						bind.setItem(item);
 
 						// Save the bind and give the item
