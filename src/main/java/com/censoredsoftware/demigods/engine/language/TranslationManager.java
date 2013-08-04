@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 
-import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
 
 // TODO Replace with YAML.
@@ -173,81 +172,5 @@ public class TranslationManager
 			throw new NullPointerException("No such translation.");
 		}
 
-	}
-
-	public static class Engrish implements Translation
-	{
-		@Override
-		public int version()
-		{
-			return 1;
-		}
-
-		@Override
-		public String translator()
-		{
-			return "Software that is Censored";
-		}
-
-		@Override
-		public String getText(Enum text)
-		{
-			if(!(text instanceof Text)) throw new NullPointerException("No such translation.");
-			Text get = (Text) text;
-			switch(get)
-			{
-				case PROTECTED_BLOCK:
-					return Unicodes.heavyHeart() + " " + "Block is protected by God!";
-				case ADMIN_WAND_GENERATE_ALTAR:
-					return Unicodes.heavyHeart() + " " + "Generate a new Altar...";
-				case ADMIN_WAND_GENERATE_ALTAR_COMPLETE:
-					return Unicodes.heavyHeart() + " " + "The creation of the Altar!";
-				case ADMIN_WAND_REMOVE_ALTAR:
-					return Unicodes.heavyHeart() + " " + "Right-click this Altar to remove it again.";
-				case ADMIN_WAND_REMOVE_ALTAR_COMPLETE:
-					return Unicodes.heavyHeart() + " " + "Removal of the Altar!";
-				case CREATE_SHRINE_1:
-					return Unicodes.heavyHeart() + " " + "{alliance} are satisfied....";
-				case CREATE_SHRINE_2:
-					return Unicodes.heavyHeart() + " " + "Create a shrine of {deity}!";
-				case ADMIN_WAND_REMOVE_SHRINE:
-					return Unicodes.heavyHeart() + " " + "Right-click this Shrine to remove it again.";
-				case ADMIN_WAND_REMOVE_SHRINE_COMPLETE:
-					return Unicodes.heavyHeart() + " " + "Removal of the Shrine!";
-				case NO_WARP_ALTAR:
-					return Unicodes.heavyHeart() + " " + "Set warp on this Altar.";
-				case CHARACTER_CREATE_COMPLETE:
-					return Unicodes.heavyHeart() + " " + "You have been accepted to the genealogy of {deity}!";
-				case KILLSTREAK:
-					return Unicodes.heavyHeart() + " " + "{character} killstreak {kills} kills.";
-				case MORTAL_SLAIN_1:
-					return ChatColor.YELLOW + Unicodes.heavyHeart() + " " + "Man" + ChatColor.GRAY + " killed by " + ChatColor.YELLOW + "another man" + ChatColor.GRAY + ".";
-				case MORTAL_SLAIN_2:
-					return ChatColor.YELLOW + Unicodes.heavyHeart() + " " + "The man" + ChatColor.GRAY + " killed by the {attackerAlliance} allies {attacker}.";
-				case DEMI_SLAIN_1:
-					return Unicodes.heavyHeart() + " " + "{killed} {killedAlliance} is killed by " + ChatColor.YELLOW + "humans" + ChatColor.GRAY + ".";
-				case DEMI_SLAIN_2:
-					return Unicodes.heavyHeart() + " " + "{killed} {attacker} {killedAlliance} {attackerAlliance} league-allies were killed.";
-				case DEMI_BETRAY:
-					return Unicodes.heavyHeart() + " " + "The vibrant performance by {attacker}, {killed} {alliance} ally.";
-				case MORTAL_BETRAY:
-					return Unicodes.heavyHeart() + " " + "Value is no longer a killer.";
-				case COMMAND_BLOCKED_BATTLE:
-					return Unicodes.heavyHeart() + " " + "Command is blocked during the battle.";
-				case NO_PVP_ZONE:
-					return Unicodes.heavyHeart() + " " + "No zone-PvP.";
-				case WEAKER_THAN_YOU:
-					return Unicodes.heavyHeart() + " " + "Also should die too weak on your hands.";
-				case YOU_FAILED_DEITY:
-					return Unicodes.heavyHeart() + " " + "{deity} has failed!";
-			}
-			return new English().getText(text);
-		}
-
-		@Override
-		public ArrayList<String> getTextBlock(Enum text)
-		{
-			return null;
-		}
 	}
 }
