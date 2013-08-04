@@ -649,7 +649,7 @@ public abstract class Ability
 						// Set the item meta
 						item.setItemMeta(itemMeta);
 
-						// Set the bind item and slot
+						// Set the bind item
 						bind.setItem(item);
 
 						// Save the bind and give the item

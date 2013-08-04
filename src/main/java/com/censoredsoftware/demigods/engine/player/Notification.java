@@ -175,8 +175,8 @@ public class Notification
 			{
 				if(notification.getExpiration() <= System.currentTimeMillis())
 				{
-					notification.getReceiver().removeNotification(notification);
 					Notification.remove(notification);
+					notification.getReceiver().removeNotification(notification);
 				}
 			}
 		}
