@@ -151,7 +151,7 @@ public class Storm extends Ability
 			boolean notify;
 			if(entity != null)
 			{
-				target = Util.autoTarget(player).getLocation();
+				target = entity.getLocation();
 				notify = true;
 				if(!Util.doAbilityPreProcess(player, entity, "lightning", cost, info)) return;
 			}
