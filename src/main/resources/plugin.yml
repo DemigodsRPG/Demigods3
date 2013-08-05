@@ -34,6 +34,9 @@ commands:
         permission: demigods.admin
     hspawn:
         usage: /hspawn
+    binds:
+        usage: /binds
+        permission: demigods.basic
 permissions:
     demigods.basic:
         description: The default permission for players.

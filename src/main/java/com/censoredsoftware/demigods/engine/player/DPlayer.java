@@ -297,6 +297,16 @@ public class DPlayer
 			return create(player);
 		}
 
+		public static DCharacter getCurrentCharacter(OfflinePlayer player)
+		{
+			return getPlayer(player).getCurrent();
+		}
+
+		public static DCharacter getCurrentCharacter(String playerName)
+		{
+			return getPlayer(Bukkit.getOfflinePlayer(playerName)).getCurrent();
+		}
+
 		/**
 		 * Returns the current alliance for <code>player</code>.
 		 * 

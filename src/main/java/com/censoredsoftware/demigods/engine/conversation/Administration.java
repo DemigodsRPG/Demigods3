@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
 
-public class NoGrief implements ListedConversation
+public class Administration implements ListedConversation
 {
 	// Define variables
 	private static Conversation conversation;
@@ -19,7 +19,7 @@ public class NoGrief implements ListedConversation
 	// TODO Everything.
 }
 
-class NoGriefListener implements Listener
+class AdministrationListener implements Listener
 {
 	// TODO Everything.
 }

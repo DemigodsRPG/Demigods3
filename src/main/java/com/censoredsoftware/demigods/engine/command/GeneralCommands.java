@@ -9,9 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
+import com.censoredsoftware.core.util.Strings;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.collect.Sets;
@@ -21,7 +23,7 @@ public class GeneralCommands extends ListedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner");
+		return Sets.newHashSet("check", "owner", "binds");
 	}
 
 	@Override
@@ -29,6 +31,7 @@ public class GeneralCommands extends ListedCommand
 	{
 		if(command.getName().equalsIgnoreCase("check")) return check(sender);
 		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);
+		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		return false;
 	}
 
@@ -82,6 +85,36 @@ public class GeneralCommands extends ListedCommand
 		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
 		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getInfo().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
+		return true;
+	}
+
+	private boolean binds(CommandSender sender)
+	{
+		// Check permissions
+		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+
+		// Define variables
+		Player player = (Player) sender;
+		DCharacter character = DPlayer.Util.getCurrentCharacter(player);
+
+		if(character != null && !character.getMeta().getBinds().isEmpty())
+		{
+			player.sendMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Currently Bound Abilities"));
+			player.sendMessage(" ");
+
+			// Get the binds and display info
+			for(Ability.Bind bind : character.getMeta().getBinds())
+			{
+				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + bind.getRawItem().getType().name().replace("_", " ").toLowerCase() + ChatColor.GRAY + ".");
+			}
+
+			player.sendMessage(" ");
+		}
+		else
+		{
+			player.sendMessage(ChatColor.RED + "You currently have no ability binds.");
+		}
+
 		return true;
 	}
 }
