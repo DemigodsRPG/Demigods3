@@ -572,7 +572,7 @@ public class DCharacter implements Battle.Participant
 
 		void initialize()
 		{
-			this.binds = Sets.newHashSet();
+			// this.binds = Sets.newHashSet();
 			this.taskData = new HashMap<String, Boolean>();
 			this.devotionData = new HashMap<String, Ability.Devotion>();
 		}
