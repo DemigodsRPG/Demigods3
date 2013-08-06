@@ -87,7 +87,13 @@ public class Prayer implements ListedConversation
 		}
 	}
 
-	public static org.bukkit.conversations.Conversation startPrayer(Player player)
+	@Override
+	public Conversation startMenu(Player player)
+	{
+		return startPrayer(player);
+	}
+
+	public static Conversation startPrayer(Player player)
 	{
 		try
 		{

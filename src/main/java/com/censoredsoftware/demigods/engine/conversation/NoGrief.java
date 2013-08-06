@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
 import org.bukkit.conversations.Conversation;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
@@ -14,6 +15,12 @@ public class NoGrief implements ListedConversation
 	public Listener getUniqueListener()
 	{
 		return new NoGriefListener();
+	}
+
+	@Override
+	public Conversation startMenu(Player player)
+	{
+		return null;
 	}
 
 	// TODO Everything.
