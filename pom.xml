@@ -30,7 +30,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <core.version>1.0.0</core.version>
-        <spigot.version>1.6.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>LATEST</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
     </properties>
