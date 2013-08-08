@@ -1,29 +1,31 @@
 package com.censoredsoftware.demigods.episodes.demo.item;
 
-import com.censoredsoftware.core.util.Items;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.censoredsoftware.core.util.Items;
 
 public enum Baetylus
 {
 	/**
 	 * A large shard of the Baetylus.
 	 */
-	LARGE_SHARD(new Shard(20.0, Sound.ANVIL_BREAK, Items.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>(1) {
-                {
-                    add("Regain full health instead of dying.");
-                }
-            }, new HashMap<Enchantment, Integer>(1) {
-                {
-                    put(Enchantment.THORNS, 3);
-                }
-            }
-    ))),
+	LARGE_SHARD(new Shard(20.0, Sound.ANVIL_BREAK, Items.create(Material.GHAST_TEAR, "Large Baetylus Shard", new ArrayList<String>(1)
+	{
+		{
+			add("Regain full health instead of dying.");
+		}
+	}, new HashMap<Enchantment, Integer>(1)
+	{
+		{
+			put(Enchantment.THORNS, 3);
+		}
+	}))),
 
 	/**
 	 * A shard of the Baetylus.

@@ -1,19 +1,21 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.johm.JOhm;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.google.common.collect.Maps;
 
 public class DataManager
 {
@@ -77,12 +79,11 @@ public class DataManager
 
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
-		{
-			player.kickPlayer(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.DATA_RESET_KICK));
-		}
+			player.kickPlayer(ChatColor.GREEN + Demigods.language.getText(Translation.Text.DATA_RESET_KICK));
 
-		// Reload the server
-		Bukkit.getServer().reload();
+		// Reload the plugin
+		Bukkit.getServer().getPluginManager().disablePlugin(Demigods.plugin);
+		Bukkit.getServer().getPluginManager().enablePlugin(Demigods.plugin);
 	}
 
 	public static boolean hasKeyTemp(String key, String subKey)

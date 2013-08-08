@@ -29,7 +29,7 @@ import redis.clients.johm.*;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DItemStack;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -614,13 +614,13 @@ public abstract class Ability
 						if(!abilityInfo.hasWeapon() && player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
 						{
 							// Slot must be empty
-							player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ERROR_BIND_TO_SLOT));
+							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_TO_SLOT));
 							return true;
 						}
 						else if(abilityInfo.hasWeapon())
 						{
 							// Weapon required
-							player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", abilityInfo.getWeapon().name().toLowerCase().replace("_", " ")).replace("{ability}", abilityName.toLowerCase()));
+							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", abilityInfo.getWeapon().name().toLowerCase().replace("_", " ")).replace("{ability}", abilityName.toLowerCase()));
 							return true;
 						}
 
@@ -657,7 +657,7 @@ public abstract class Ability
 						character.getMeta().addBind(bind);
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + (player.getInventory().getHeldItemSlot() + 1)));
+						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + (player.getInventory().getHeldItemSlot() + 1)));
 
 						return true;
 					}
@@ -671,7 +671,7 @@ public abstract class Ability
 						player.getInventory().setItem(bind.getSlot(), new ItemStack(Material.AIR));
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
+						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
 
 						return true;
 					}

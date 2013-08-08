@@ -10,7 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -18,7 +17,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Structure.StandaloneStructure;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
@@ -146,9 +145,9 @@ public class Obelisk implements StandaloneStructure
 	}
 
 	@Override
-	public Listener getUniqueListener()
+	public org.bukkit.event.Listener getUniqueListener()
 	{
-		return new ObeliskListener();
+		return new Listener();
 	}
 
 	@Override
@@ -204,73 +203,73 @@ public class Obelisk implements StandaloneStructure
 		}
 		return false;
 	}
-}
 
-class ObeliskListener implements Listener
-{
-	@EventHandler(priority = EventPriority.HIGH)
-	public void createAndRemove(PlayerInteractEvent event)
+	public static class Listener implements org.bukkit.event.Listener
 	{
-		if(event.getClickedBlock() == null) return;
-
-		if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
-
-		// Define variables
-		Block clickedBlock = event.getClickedBlock();
-		Location location = clickedBlock.getLocation();
-		Player player = event.getPlayer();
-
-		if(DPlayer.Util.isImmortal(player))
+		@EventHandler(priority = EventPriority.HIGH)
+		public void createAndRemove(PlayerInteractEvent event)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			if(event.getClickedBlock() == null) return;
 
-			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
+			if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
+
+			// Define variables
+			Block clickedBlock = event.getClickedBlock();
+			Location location = clickedBlock.getLocation();
+			Player player = event.getPlayer();
+
+			if(DPlayer.Util.isImmortal(player))
 			{
-				if(Obelisk.noPvPStructureNearby(location))
-				{
-					player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
-					return;
-				}
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				try
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getInfo().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
 				{
-					// Obelisk created!
-					Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-					Structure.Save save = EpisodeDemo.Structures.OBELISK.getStructure().createNew(location, true);
-					save.setOwner(character);
-					location.getWorld().strikeLightningEffect(location);
+					if(Obelisk.noPvPStructureNearby(location))
+					{
+						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
+						return;
+					}
 
-					player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.CREATE_OBELISK));
-				}
-				catch(Exception e)
-				{
-					// Creation of shrine failed...
-					e.printStackTrace();
+					try
+					{
+						// Obelisk created!
+						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
+						Structure.Save save = EpisodeDemo.Structures.OBELISK.getStructure().createNew(location, true);
+						save.setOwner(character);
+						location.getWorld().strikeLightningEffect(location);
+
+						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_OBELISK));
+					}
+					catch(Exception e)
+					{
+						// Creation of shrine failed...
+						e.printStackTrace();
+					}
 				}
 			}
-		}
 
-		if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk", true))
-		{
-			event.setCancelled(true);
-
-			Structure.Save save = Structures.getStructureSave(location, true);
-			// DCharacter owner = save.getOwner();
-
-			if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
+			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk", true))
 			{
-				// Remove the Obelisk
-				save.remove();
-				DataManager.removeTimed(player.getName(), "destroy_obelisk");
+				event.setCancelled(true);
 
-				// Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+				Structure.Save save = Structures.getStructureSave(location, true);
+				// DCharacter owner = save.getOwner();
 
-				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
-			}
-			else
-			{
-				DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
-				player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ADMIN_WAND_REMOVE_SHRINE));
+				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
+				{
+					// Remove the Obelisk
+					save.remove();
+					DataManager.removeTimed(player.getName(), "destroy_obelisk");
+
+					// Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+
+					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
+				}
+				else
+				{
+					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
+					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE));
+				}
 			}
 		}
 	}

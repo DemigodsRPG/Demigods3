@@ -17,7 +17,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,7 +31,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -46,9 +45,9 @@ public class Prayer implements ListedConversation
 {
 
 	@Override
-	public Listener getUniqueListener()
+	public org.bukkit.event.Listener getUniqueListener()
 	{
-		return new PrayerListener();
+		return new Listener();
 	}
 
 	/**
@@ -141,7 +140,7 @@ public class Prayer implements ListedConversation
 			DPlayer.Util.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
-			for(String message : Demigods.text.getTextBlock(TranslationManager.Text.PRAYER_INTRO))
+			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_INTRO))
 			{
 				player.sendRawMessage(message);
 			}
@@ -230,17 +229,17 @@ public class Prayer implements ListedConversation
 			}
 
 			// Display notifications if available
-			if(context.getSessionData("warp_notifications") != null && !((List<TranslationManager.Text>) context.getSessionData("warp_notifications")).isEmpty())
+			if(context.getSessionData("warp_notifications") != null && !((List<Translation.Text>) context.getSessionData("warp_notifications")).isEmpty())
 			{
 				// Grab the notifications
-				List<TranslationManager.Text> notifications = (List<TranslationManager.Text>) context.getSessionData("warp_notifications");
+				List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("warp_notifications");
 
 				player.sendRawMessage(" ");
 
 				// List them
-				for(TranslationManager.Text notification : notifications)
+				for(Translation.Text notification : notifications)
 				{
-					player.sendRawMessage("  " + Demigods.text.getText(notification));
+					player.sendRawMessage("  " + Demigods.language.getText(notification));
 				}
 
 				// Remove them
@@ -274,7 +273,7 @@ public class Prayer implements ListedConversation
 
 			// Create and save the notification list
 			context.setSessionData("warp_notifications", Lists.newArrayList());
-			List<TranslationManager.Text> notifications = (List<TranslationManager.Text>) context.getSessionData("warp_notifications");
+			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("warp_notifications");
 
 			DPlayer.Util.clearRawChat(player);
 
@@ -286,7 +285,7 @@ public class Prayer implements ListedConversation
 			if(arg0.equalsIgnoreCase("new"))
 			{
 				// Save notification
-				notifications.add(TranslationManager.Text.NOTIFICATION_WARP_CREATED);
+				notifications.add(Translation.Text.NOTIFICATION_WARP_CREATED);
 
 				// Add the warp
 				character.addWarp(arg1, player.getLocation());
@@ -297,7 +296,7 @@ public class Prayer implements ListedConversation
 			else if(arg0.equalsIgnoreCase("delete"))
 			{
 				// Save notification
-				notifications.add(TranslationManager.Text.NOTIFICATION_WARP_DELETED);
+				notifications.add(Translation.Text.NOTIFICATION_WARP_DELETED);
 
 				// Remove the warp/invite
 				if(character.getWarps().containsKey(arg1.toLowerCase()))
@@ -315,7 +314,7 @@ public class Prayer implements ListedConversation
 			else if(arg0.equalsIgnoreCase("invite"))
 			{
 				// Save notification
-				notifications.add(TranslationManager.Text.NOTIFICATION_INVITE_SENT);
+				notifications.add(Translation.Text.NOTIFICATION_INVITE_SENT);
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
@@ -408,7 +407,7 @@ public class Prayer implements ListedConversation
 			}
 
 			player.sendRawMessage(" ");
-			for(String message : Demigods.text.getTextBlock(TranslationManager.Text.NOTIFICATIONS_PRAYER_FOOTER))
+			for(String message : Demigods.language.getTextBlock(Translation.Text.NOTIFICATIONS_PRAYER_FOOTER))
 			{
 				player.sendRawMessage(message);
 			}
@@ -631,12 +630,12 @@ public class Prayer implements ListedConversation
 				else
 				{
 					// Grab the errors
-					List<TranslationManager.Text> errors = (List<TranslationManager.Text>) context.getSessionData("name_errors");
+					List<Translation.Text> errors = (List<Translation.Text>) context.getSessionData("name_errors");
 
 					// List the errors
-					for(TranslationManager.Text error : errors)
+					for(Translation.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + Demigods.text.getText(error));
+						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error));
 					}
 
 					// Ask for a new name
@@ -655,24 +654,24 @@ public class Prayer implements ListedConversation
 				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
-					List<TranslationManager.Text> errors = Lists.newArrayList();
+					List<Translation.Text> errors = Lists.newArrayList();
 
 					// Check the errors
 					if(name.length() < 4 || name.length() >= 14)
 					{
-						errors.add(TranslationManager.Text.ERROR_NAME_LENGTH);
+						errors.add(Translation.Text.ERROR_NAME_LENGTH);
 					}
 					if(!StringUtils.isAlphanumeric(name))
 					{
-						errors.add(TranslationManager.Text.ERROR_ALPHA_NUMERIC);
+						errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
 					}
 					if(Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
-						errors.add(TranslationManager.Text.ERROR_MAX_CAPS);
+						errors.add(Translation.Text.ERROR_MAX_CAPS);
 					}
 					if(DCharacter.Util.charExists(name))
 					{
-						errors.add(TranslationManager.Text.ERROR_CHAR_EXISTS);
+						errors.add(Translation.Text.ERROR_CHAR_EXISTS);
 					}
 
 					// Save the info
@@ -912,131 +911,131 @@ public class Prayer implements ListedConversation
 			return color;
 		}
 	}
-}
 
-class PrayerListener implements Listener
-{
-	@EventHandler(priority = EventPriority.HIGH)
-	public void prayerInteract(PlayerInteractEvent event)
+	public static class Listener implements org.bukkit.event.Listener
 	{
-		if(event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
-		// Define variables
-		Player player = event.getPlayer();
-
-		// First we check if the player is clicking a prayer block
-		if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION, true))
+		@EventHandler(priority = EventPriority.HIGH)
+		public void prayerInteract(PlayerInteractEvent event)
 		{
-			if(!DPlayer.Util.isPraying(player))
-			{
-				if(DPlayer.Util.getPlayer(player).canPvp())
-				{
-					for(String message : Demigods.text.getTextBlock(TranslationManager.Text.PVP_NO_PRAYER))
-					{
-						player.sendMessage(message);
-					}
-					event.setCancelled(true);
-					return;
-				}
-
-				// Toggle praying
-				DPlayer.Util.togglePraying(player, true);
-
-				// Tell nearby players that the user is praying
-				for(Entity entity : player.getNearbyEntities(20, 20, 20))
-				{
-					if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.text.getText(TranslationManager.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
-				}
-			}
-			else if(DPlayer.Util.isPraying(player))
-			{
-				// Toggle prayer to false
-				DPlayer.Util.togglePraying(player, false);
-			}
-
-			event.setCancelled(true);
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void createCharacter(InventoryCloseEvent event)
-	{
-		try
-		{
-			if(!(event.getPlayer() instanceof Player)) return;
-			Player player = (Player) event.getPlayer();
-
-			// If it isn't a confirmation chest then exit
-			if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
-
-			// Exit if this isn't for character creation
-			if(!DPlayer.Util.isPraying(player)) return;
+			if(event.getClickedBlock() == null || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 			// Define variables
-			ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
-			String chosenName = (String) prayerContext.getSessionData("chosen_name");
-			String chosenDeity = (String) prayerContext.getSessionData("chosen_deity");
-			String deityAlliance = StringUtils.capitalize(Deity.Util.getDeity(chosenDeity).getInfo().getAlliance());
+			Player player = event.getPlayer();
 
-			// Check the chest items
-			int items = 0;
-			int neededItems = Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems().size();
-
-			for(ItemStack ii : event.getInventory().getContents())
+			// First we check if the player is clicking a prayer block
+			if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION, true))
 			{
-				if(ii != null)
+				if(!DPlayer.Util.isPraying(player))
 				{
-					for(Material item : Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems())
+					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
-						if(ii.getType().equals(item))
+						for(String message : Demigods.language.getTextBlock(Translation.Text.PVP_NO_PRAYER))
 						{
-							items++;
+							player.sendMessage(message);
+						}
+						event.setCancelled(true);
+						return;
+					}
+
+					// Toggle praying
+					DPlayer.Util.togglePraying(player, true);
+
+					// Tell nearby players that the user is praying
+					for(Entity entity : player.getNearbyEntities(20, 20, 20))
+					{
+						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.language.getText(Translation.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
+					}
+				}
+				else if(DPlayer.Util.isPraying(player))
+				{
+					// Toggle prayer to false
+					DPlayer.Util.togglePraying(player, false);
+				}
+
+				event.setCancelled(true);
+			}
+		}
+
+		@EventHandler(priority = EventPriority.MONITOR)
+		public void createCharacter(InventoryCloseEvent event)
+		{
+			try
+			{
+				if(!(event.getPlayer() instanceof Player)) return;
+				Player player = (Player) event.getPlayer();
+
+				// If it isn't a confirmation chest then exit
+				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
+
+				// Exit if this isn't for character creation
+				if(!DPlayer.Util.isPraying(player)) return;
+
+				// Define variables
+				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
+				String chosenName = (String) prayerContext.getSessionData("chosen_name");
+				String chosenDeity = (String) prayerContext.getSessionData("chosen_deity");
+				String deityAlliance = StringUtils.capitalize(Deity.Util.getDeity(chosenDeity).getInfo().getAlliance());
+
+				// Check the chest items
+				int items = 0;
+				int neededItems = Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems().size();
+
+				for(ItemStack ii : event.getInventory().getContents())
+				{
+					if(ii != null)
+					{
+						for(Material item : Deity.Util.getDeity(chosenDeity).getInfo().getClaimItems())
+						{
+							if(ii.getType().equals(item))
+							{
+								items++;
+							}
 						}
 					}
 				}
+
+				// Stop their praying
+				DPlayer.Util.togglePrayingSilent(player, false);
+
+				// Clear chat and send update
+				DPlayer.Util.clearRawChat(player);
+				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
+
+				if(neededItems == items)
+				{
+					// Accepted, finish everything up!
+					DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
+
+					// Clear the prayer session
+					DPlayer.Util.clearPrayerSession(player);
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
+				}
+
+				// Clear the confirmation case
+				event.getInventory().clear();
 			}
-
-			// Stop their praying
-			DPlayer.Util.togglePrayingSilent(player, false);
-
-			// Clear chat and send update
-			DPlayer.Util.clearRawChat(player);
-			player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
-
-			if(neededItems == items)
+			catch(Exception e)
 			{
-				// Accepted, finish everything up!
-				DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
-
-				// Clear the prayer session
-				DPlayer.Util.clearPrayerSession(player);
+				// Print error for debugging
+				e.printStackTrace();
 			}
-			else
+		}
+
+		@EventHandler(priority = EventPriority.MONITOR)
+		private void onPlayerMove(PlayerMoveEvent event)
+		{
+			// Define variables
+			Player player = event.getPlayer();
+
+			if(!DPlayer.Util.isPraying(player)) return;
+
+			if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
 			{
-				player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
+				DPlayer.Util.togglePraying(player, false);
 			}
-
-			// Clear the confirmation case
-			event.getInventory().clear();
-		}
-		catch(Exception e)
-		{
-			// Print error for debugging
-			e.printStackTrace();
-		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	private void onPlayerMove(PlayerMoveEvent event)
-	{
-		// Define variables
-		Player player = event.getPlayer();
-
-		if(!DPlayer.Util.isPraying(player)) return;
-
-		if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
-		{
-			DPlayer.Util.togglePraying(player, false);
 		}
 	}
 }

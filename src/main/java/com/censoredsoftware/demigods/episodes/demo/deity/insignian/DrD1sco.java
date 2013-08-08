@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.episodes.demo.deity.insignian;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.episodes.demo.ability.ultimate.Discoball;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class DrD1sco extends Deity
 {

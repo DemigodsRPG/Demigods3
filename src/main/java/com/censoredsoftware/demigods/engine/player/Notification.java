@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 
 @Model
 public class Notification
@@ -190,7 +190,7 @@ public class Notification
 			if(character.getOfflinePlayer().isOnline())
 			{
 				Player player = character.getOfflinePlayer().getPlayer();
-				for(String message : Demigods.text.getTextBlock(TranslationManager.Text.NOTIFICATION_RECEIVED))
+				for(String message : Demigods.language.getTextBlock(Translation.Text.NOTIFICATION_RECEIVED))
 				{
 					player.sendMessage(message);
 				}

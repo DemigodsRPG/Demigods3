@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Pet;
@@ -52,7 +52,7 @@ public class EntityListener implements Listener
 			// NO PVP
 			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
-				hitting.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.NO_PVP_ZONE));
+				hitting.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.NO_PVP_ZONE));
 				event.setCancelled(true);
 				return;
 			}

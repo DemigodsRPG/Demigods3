@@ -17,7 +17,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
@@ -244,9 +244,9 @@ public class MainCommand extends ListedCommand
 		{
 			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanently"))
 			{
-				player.sendMessage(ChatColor.RED + Demigods.text.getText(TranslationManager.Text.ADMIN_CLEAR_DATA_STARTING));
+				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
 				DataManager.flushData();
-				player.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.ADMIN_CLEAR_DATA_FINISHED));
+				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
 				return true;
 			}
 			if(option1.equalsIgnoreCase("wand"))

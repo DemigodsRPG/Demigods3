@@ -19,7 +19,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Sets;
 
@@ -64,7 +64,7 @@ public class DPlayer
 		if(!canPvp() && !inNoPvpZone)
 		{
 			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.UNSAFE_FROM_PVP));
+			player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.UNSAFE_FROM_PVP));
 		}
 		else if(!inNoPvpZone)
 		{
@@ -84,7 +84,7 @@ public class DPlayer
 					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
 					{
 						setCanPvp(false);
-						player.sendMessage(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.SAFE_FROM_PVP));
+						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.SAFE_FROM_PVP));
 					}
 				}
 			}, (delay * 20));
@@ -423,7 +423,7 @@ public class DPlayer
 
 				// Message them
 				clearChat(player);
-				for(String message : Demigods.text.getTextBlock(TranslationManager.Text.PRAYER_ENDED))
+				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 				{
 					player.sendMessage(message);
 				}

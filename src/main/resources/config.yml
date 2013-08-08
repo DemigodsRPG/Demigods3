@@ -6,7 +6,7 @@ misc:
     balance_teams: true
 
 ## Language Settings ##
-language: 'English'
+language: 'english'
 
 ## Restrictions ##
 restrictions:

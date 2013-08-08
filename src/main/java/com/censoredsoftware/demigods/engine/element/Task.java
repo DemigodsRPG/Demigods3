@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.engine.element;
 
-import org.bukkit.event.Listener;
-
 import java.util.ArrayList;
+
+import org.bukkit.event.Listener;
 
 public class Task
 {

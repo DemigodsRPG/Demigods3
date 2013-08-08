@@ -23,7 +23,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Lists;
@@ -820,7 +820,7 @@ public class DCharacter implements Battle.Participant
 				online.setDisplayName(Deity.Util.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 				online.setPlayerListName(Deity.Util.getDeity(chosenDeity).getInfo().getColor() + chosenName + ChatColor.WHITE);
 
-				online.sendMessage(ChatColor.GREEN + Demigods.text.getText(TranslationManager.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
+				online.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
 				online.getWorld().strikeLightningEffect(online.getLocation());
 
 				for(int i = 0; i < 20; i++)
@@ -1042,8 +1042,8 @@ public class DCharacter implements Battle.Participant
 				attacker.addKill();
 			}
 
-			if(killed == null) Demigods.message.broadcast(Demigods.text.getText(TranslationManager.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			if(killed == null) Demigods.message.broadcast(Demigods.language.getText(Translation.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
+			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 		}
 
 		// TODO Remake this.
@@ -1053,8 +1053,8 @@ public class DCharacter implements Battle.Participant
 
 			// TODO: Punishments.
 
-			if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
-			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.text.getText(TranslationManager.Text.MORTAL_BETRAY));
+			if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
+			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.MORTAL_BETRAY));
 		}
 
 		/**

@@ -1,16 +1,17 @@
 package com.censoredsoftware.demigods.episodes.demo.deity.titan;
 
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.engine.element.Ability;
-import com.censoredsoftware.demigods.engine.element.Deity;
-import com.censoredsoftware.demigods.episodes.demo.ability.passive.Swim;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.engine.element.Ability;
+import com.censoredsoftware.demigods.engine.element.Deity;
+import com.censoredsoftware.demigods.episodes.demo.ability.passive.Swim;
 
 public class Oceanus extends Deity
 {

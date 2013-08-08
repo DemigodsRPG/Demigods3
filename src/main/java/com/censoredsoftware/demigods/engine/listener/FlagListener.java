@@ -15,7 +15,7 @@ import com.censoredsoftware.core.util.StopWatches;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.util.Structures;
 
 public class FlagListener implements Listener
@@ -27,7 +27,7 @@ public class FlagListener implements Listener
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TranslationManager.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.language.getText(Translation.Text.PROTECTED_BLOCK));
 		}
 	}
 
@@ -40,7 +40,7 @@ public class FlagListener implements Listener
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS, true))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.text.getText(TranslationManager.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.language.getText(Translation.Text.PROTECTED_BLOCK));
 		}
 
 		Demigods.message.broadcast("onBlockBreak:" + StopWatches.end(stopWatch)); // TODO

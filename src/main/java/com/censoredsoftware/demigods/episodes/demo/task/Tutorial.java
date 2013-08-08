@@ -47,7 +47,7 @@ public class Tutorial extends Task.List
 	private static final java.util.List tasks = new ArrayList<Task>()
 	{
 		{
-			add(new TutorialTask(name, permission, about, accepted, complete, failed, type));
+			add(new Task(name, permission, about, accepted, complete, failed, type));
 		}
 	};
 
@@ -55,36 +55,36 @@ public class Tutorial extends Task.List
 	{
 		super(name, permission, about, accepted, complete, failed, type, tasks);
 	}
-}
 
-class TutorialTask extends Task
-{
-	private static final String name = "Welcome to demigods!";
-	private static final int order = 0;
-	private static final double reward = 50.0;
-	private static final double penalty = 0;
-	private static final Listener listener = new Listener()
+	public static class Task extends com.censoredsoftware.demigods.engine.element.Task
 	{
-		@EventHandler(priority = EventPriority.MONITOR)
-		private void onPlayerJoin(PlayerJoinEvent event)
+		private static final String name = "Welcome to demigods!";
+		private static final int order = 0;
+		private static final double reward = 50.0;
+		private static final double penalty = 0;
+		private static final Listener listener = new Listener()
 		{
-			if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
+			@EventHandler(priority = EventPriority.MONITOR)
+			private void onPlayerJoin(PlayerJoinEvent event)
+			{
+				if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
 
-			Player player = event.getPlayer();
+				Player player = event.getPlayer();
 
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			if(character == null || character.getMeta().isFinishedTask(name)) return;
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				if(character == null || character.getMeta().isFinishedTask(name)) return;
 
-			Demigods.message.tagged(player, "Welcome to demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
+				Demigods.message.tagged(player, "Welcome to demigods, " + character.getDeity().getInfo().getColor() + character.getName() + ChatColor.RESET + "!");
 
-			player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
+				player.getInventory().setItem(player.getInventory().firstEmpty(), Book.FIRST_JOIN.getBook());
 
-			character.getMeta().finishTask(name, true);
+				character.getMeta().finishTask(name, true);
+			}
+		};
+
+		public Task(String quest, String permission, java.util.List about, java.util.List accepted, java.util.List complete, java.util.List failed, List.Type type)
+		{
+			super(new Info(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, Info.Subtype.QUEST), listener);
 		}
-	};
-
-	public TutorialTask(String quest, String permission, java.util.List about, java.util.List accepted, java.util.List complete, java.util.List failed, List.Type type)
-	{
-		super(new Info(name, quest, permission, order, reward, penalty, about, accepted, complete, failed, type, Info.Subtype.QUEST), listener);
 	}
 }

@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.engine.conversation;
 
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
 
@@ -12,9 +11,9 @@ public class NoGrief implements ListedConversation
 	private static Conversation conversation;
 
 	@Override
-	public Listener getUniqueListener()
+	public org.bukkit.event.Listener getUniqueListener()
 	{
-		return new NoGriefListener();
+		return new Listener();
 	}
 
 	@Override
@@ -24,9 +23,9 @@ public class NoGrief implements ListedConversation
 	}
 
 	// TODO Everything.
-}
 
-class NoGriefListener implements Listener
-{
-	// TODO Everything.
+	public static class Listener implements org.bukkit.event.Listener
+	{
+		// TODO Everything.
+	}
 }

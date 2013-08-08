@@ -31,7 +31,6 @@ import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.element.Task;
 import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.language.TranslationManager;
 import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.util.Structures;
@@ -60,7 +59,7 @@ public class Demigods
 	protected static Set<String> commands;
 
 	// The engine Default Text
-	public static Translation text;
+	public static Translation language;
 
 	public interface ListedDeity
 	{
@@ -86,6 +85,9 @@ public class Demigods
 		// Setup utilities.
 		config = new Configs(instance, true);
 		message = new Messages(instance);
+
+		// Setup language.
+		language = new Translation();
 
 		if(!loadWorlds(instance))
 		{
@@ -126,8 +128,6 @@ public class Demigods
 			}
 		};
 
-		Demigods.text = getTranslation();
-
 		// Initialize data
 		new DataManager();
 		if(!DataManager.isConnected())
@@ -162,17 +162,6 @@ public class Demigods
 		Structures.regenerateStructures();
 
 		if(isRunningSpigot()) message.info(("Spigot found, will use extra API features."));
-	}
-
-	/**
-	 * Get the translation involved.
-	 * 
-	 * @return The translation.
-	 */
-	public Translation getTranslation()
-	{
-		// Default to EnglishCharNames
-		return new TranslationManager.English();
 	}
 
 	public static boolean loadWorlds(DemigodsPlugin instance)
