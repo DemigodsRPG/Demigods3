@@ -103,7 +103,7 @@ public class Translation
 		{
 			super(Demigods.plugin);
 			TRANSLATION_FILE = translation + ".lang";
-			LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/lang/";
+			LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/" + TRANSLATION_FILE;
 		}
 
 		@Override
