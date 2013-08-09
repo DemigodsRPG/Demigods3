@@ -9,6 +9,7 @@ import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class Translation
 {
@@ -18,15 +19,15 @@ public class Translation
 	public Translation()
 	{
 		String language = Demigods.config.getSettingString("language").toLowerCase();
-		// if(!language.equals("english")) try
-		// {
-		translationYAML = new File(language);
-		translation = translationYAML.loadFromFile();
-		return;
-		// }
-		// catch(Throwable ignored)
-		// {}
-		// translation = Maps.newHashMap();
+		if(!language.equals("english")) try
+		{
+			translationYAML = new File(language);
+			translation = translationYAML.loadFromFile();
+			return;
+		}
+		catch(Throwable ignored)
+		{}
+		translation = Maps.newHashMap();
 	}
 
 	/**
