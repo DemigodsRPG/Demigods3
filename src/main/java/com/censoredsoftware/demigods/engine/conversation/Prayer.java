@@ -25,6 +25,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.core.bukkit.ListedConversation;
+import com.censoredsoftware.core.util.Strings;
 import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -669,7 +670,7 @@ public class Prayer implements ListedConversation
 					{
 						errors.add(Translation.Text.ERROR_MAX_CAPS);
 					}
-					if(DCharacter.Util.charExists(name))
+					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.language.getBlackList()))
 					{
 						errors.add(Translation.Text.ERROR_CHAR_EXISTS);
 					}
