@@ -635,7 +635,7 @@ public class Prayer implements ListedConversation
 					// List the errors
 					for(Translation.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error));
+						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error).replace("{maxCaps}", String.valueOf(Demigods.config.getSettingInt("character.max_caps_in_name"))));
 					}
 
 					// Ask for a new name
