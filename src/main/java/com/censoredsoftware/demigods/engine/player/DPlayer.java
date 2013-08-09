@@ -44,7 +44,6 @@ public class DPlayer
 	void setPlayer(String player)
 	{
 		this.player = player;
-		Util.save(this);
 	}
 
 	public void setCanPvp(boolean pvp)
