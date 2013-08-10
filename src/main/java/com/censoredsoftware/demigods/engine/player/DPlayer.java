@@ -107,6 +107,8 @@ public class DPlayer
 
 	public void switchCharacter(DCharacter newChar)
 	{
+		Demigods.message.broadcast("Weiner check 1"); // TODO
+
 		Player player = getOfflinePlayer().getPlayer();
 
 		if(!newChar.getOfflinePlayer().getName().equals(player.getName()))
@@ -115,13 +117,22 @@ public class DPlayer
 			return;
 		}
 
+		Demigods.message.broadcast("Weiner check 2"); // TODO
+
 		// Update the current character
-		DCharacter currChar = this.current;
+		DCharacter currChar = getCurrent();
+
+		Demigods.message.broadcast("Weiner check 3"); // TODO
+
 		if(currChar != null)
 		{
+			Demigods.message.broadcast("Weiner check 4"); // TODO
+
 			// Set to inactive and update previous
 			currChar.setActive(false);
 			this.previous = currChar;
+
+			Demigods.message.broadcast("Weiner check 5"); // TODO
 
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
@@ -133,20 +144,32 @@ public class DPlayer
 			currChar.setLocation(player.getLocation());
 			currChar.saveInventory();
 
+			Demigods.message.broadcast("Weiner check 6"); // TODO
+
 			// Disown pets
 			Pet.Util.disownPets(currChar.getName());
 
+			Demigods.message.broadcast("Weiner check 7"); // TODO
+
 			// Save it
-			DCharacter.Util.save(currChar);
+			JOhm.save(currChar);
+
+			Demigods.message.broadcast("Weiner check 8"); // TODO
 		}
+
+		Demigods.message.broadcast("Weiner check 9"); // TODO
 
 		// Set new character to active
 		newChar.setActive(true);
 		this.current = newChar;
 
+		Demigods.message.broadcast("Weiner check 10"); // TODO
+
 		// Update their inventory
 		if(Util.getCharacters(player).size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
+
+		Demigods.message.broadcast("Weiner check 11"); // TODO
 
 		// Update health, experience, and name
 		// TODO: Confirm that this covers all of the bases too.
@@ -166,8 +189,12 @@ public class DPlayer
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
 
+		Demigods.message.broadcast("Weiner check 12"); // TODO
+
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
+
+		Demigods.message.broadcast("Weiner check 13"); // TODO
 
 		// Teleport them
 		try
@@ -179,9 +206,13 @@ public class DPlayer
 			Demigods.message.severe("There was a problem while teleporting a player to their character.");
 		}
 
+		Demigods.message.broadcast("Weiner check 14"); // TODO
+
 		// Save instances
 		Util.save(this);
 		DCharacter.Util.save(newChar);
+
+		Demigods.message.broadcast("Weiner check 15"); // TODO
 	}
 
 	public Long getId()
