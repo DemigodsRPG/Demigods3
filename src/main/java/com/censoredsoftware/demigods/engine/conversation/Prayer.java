@@ -202,16 +202,16 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
-			if(character.hasWarps() || character.hasInvites())
+			if(character.getMeta().hasWarps() || character.getMeta().hasInvites())
 			{
 				player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) at this location.");
 				player.sendRawMessage(" ");
 
-				for(Map.Entry<String, DLocation> entry : character.getWarps().entrySet())
+				for(Map.Entry<String, DLocation> entry : character.getMeta().getWarps().entrySet())
 				{
 					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
 				}
-				for(Map.Entry<String, DLocation> entry : character.getInvites().entrySet())
+				for(Map.Entry<String, DLocation> entry : character.getMeta().getInvites().entrySet())
 				{
 					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
 				}
@@ -259,7 +259,7 @@ public class Prayer implements ListedConversation
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getWarps().containsKey(arg1.toLowerCase()) || character.getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && arg2 != null && character.getWarps().containsKey(arg2.toLowerCase())));
+			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && arg2 != null && character.getMeta().getWarps().containsKey(arg2.toLowerCase())));
 		}
 
 		@Override
@@ -289,7 +289,7 @@ public class Prayer implements ListedConversation
 				notifications.add(Translation.Text.NOTIFICATION_WARP_CREATED);
 
 				// Add the warp
-				character.addWarp(arg1, player.getLocation());
+				character.getMeta().addWarp(arg1, player.getLocation());
 
 				// Return to view warps
 				return new ViewWarps();
@@ -300,13 +300,13 @@ public class Prayer implements ListedConversation
 				notifications.add(Translation.Text.NOTIFICATION_WARP_DELETED);
 
 				// Remove the warp/invite
-				if(character.getWarps().containsKey(arg1.toLowerCase()))
+				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
 				{
-					character.removeWarp(arg1);
+					character.getMeta().removeWarp(arg1);
 				}
-				else if(character.getInvites().containsKey(arg1.toLowerCase()))
+				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
-					character.removeInvite(arg1);
+					character.getMeta().removeInvite(arg1);
 				}
 
 				// Return to view warps
@@ -319,10 +319,10 @@ public class Prayer implements ListedConversation
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
-				Location warp = character.getWarps().get(arg2).toLocation();
+				Location warp = character.getMeta().getWarps().get(arg2).toLocation();
 
 				// Add the invite
-				invitee.addInvite(character.getName(), warp);
+				invitee.getMeta().addInvite(character.getName(), warp);
 
 				// Message the player if they're online
 				if(invitee.getOfflinePlayer().isOnline())
@@ -340,14 +340,14 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePrayingSilent(player, false);
 
 				// Teleport and message
-				if(character.getWarps().containsKey(arg1.toLowerCase()))
+				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getWarps().get(arg1).toLocation());
+					player.teleport(character.getMeta().getWarps().get(arg1).toLocation());
 				}
-				else if(character.getInvites().containsKey(arg1.toLowerCase()))
+				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getInvites().get(arg1.toLowerCase()).toLocation());
-					character.removeInvite(arg1.toLowerCase());
+					player.teleport(character.getMeta().getInvites().get(arg1.toLowerCase()).toLocation());
+					character.getMeta().removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
 			}
@@ -368,7 +368,7 @@ public class Prayer implements ListedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			return character != null && character.hasNotifications();
+			return character != null && character.getMeta().hasNotifications();
 		}
 
 		@Override
@@ -382,7 +382,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.YELLOW + Demigods.message.chatTitle("Viewing Notifications"));
 			player.sendRawMessage(" ");
 
-			for(Notification notification : character.getNotifications())
+			for(Notification notification : character.getMeta().getNotifications())
 			{
 				// Determine color
 				ChatColor color;
@@ -436,11 +436,11 @@ public class Prayer implements ListedConversation
 			else if(message.equalsIgnoreCase("clear"))
 			{
 				// Clear them
-				for(Notification notification : character.getNotifications())
+				for(Notification notification : character.getMeta().getNotifications())
 				{
 					Notification.remove(notification);
 				}
-				character.clearNotifications();
+				character.getMeta().clearNotifications();
 
 				// Send to the menu
 				return new StartPrayer();

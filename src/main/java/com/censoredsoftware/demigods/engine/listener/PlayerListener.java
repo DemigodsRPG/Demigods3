@@ -49,9 +49,9 @@ public class PlayerListener implements Listener
 		}
 
 		// Notifications
-		if(character != null && character.hasNotifications())
+		if(character != null && character.getMeta().hasNotifications())
 		{
-			int size = character.getNotifications().size();
+			int size = character.getMeta().getNotifications().size();
 			player.sendMessage(size == 1 ? ChatColor.GREEN + "You have an unread notification!" : ChatColor.GREEN + "You have " + size + " unread notifications!");
 			player.sendMessage(ChatColor.GRAY + "Find an Altar to view your notifications.");
 		}

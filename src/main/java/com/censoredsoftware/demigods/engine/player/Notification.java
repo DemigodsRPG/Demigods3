@@ -176,7 +176,7 @@ public class Notification
 				if(notification.getExpiration() <= System.currentTimeMillis())
 				{
 					Notification.remove(notification);
-					notification.getReceiver().removeNotification(notification);
+					notification.getReceiver().getMeta().removeNotification(notification);
 				}
 			}
 		}
@@ -184,7 +184,7 @@ public class Notification
 		public static void sendNotification(DCharacter character, Notification notification)
 		{
 			// Add the notification
-			character.addNotification(notification);
+			character.getMeta().addNotification(notification);
 
 			// Message them if possible
 			if(character.getOfflinePlayer().isOnline())

@@ -71,12 +71,6 @@ public class DCharacter implements Battle.Participant
 	private Meta meta;
 	@Reference
 	private Inventory inventory;
-	@CollectionMap(key = String.class, value = DLocation.class)
-	private Map<String, DLocation> warps;
-	@CollectionMap(key = String.class, value = DLocation.class)
-	private Map<String, DLocation> invites;
-	@CollectionSet(of = Notification.class)
-	private Set<Notification> notifications;
 
 	void setName(String name)
 	{
@@ -243,90 +237,6 @@ public class DCharacter implements Battle.Participant
 	public Boolean isImmortal()
 	{
 		return this.immortal;
-	}
-
-	public void addNotification(Notification notification)
-	{
-		getNotifications().add(notification);
-		Util.save(this);
-	}
-
-	public void removeNotification(Notification notification)
-	{
-		getNotifications().remove(notification);
-		Util.save(this);
-	}
-
-	public Set<Notification> getNotifications()
-	{
-		if(this.notifications == null) this.notifications = Sets.newHashSet();
-		return this.notifications;
-	}
-
-	public void clearNotifications()
-	{
-		getNotifications().clear();
-	}
-
-	public boolean hasNotifications()
-	{
-		return !this.notifications.isEmpty();
-	}
-
-	public void addWarp(String name, Location location)
-	{
-		getWarps().put(name.toLowerCase(), DLocation.Util.create(location));
-		Util.save(this);
-	}
-
-	public void removeWarp(String name)
-	{
-		getWarps().remove(name.toLowerCase());
-		Util.save(this);
-	}
-
-	public Map<String, DLocation> getWarps()
-	{
-		if(this.warps == null) this.warps = Maps.newHashMap();
-		return this.warps;
-	}
-
-	public void clearWarps()
-	{
-		getWarps().clear();
-	}
-
-	public boolean hasWarps()
-	{
-		return !this.warps.isEmpty();
-	}
-
-	public void addInvite(String name, Location location)
-	{
-		getInvites().put(name.toLowerCase(), DLocation.Util.create(location));
-		Util.save(this);
-	}
-
-	public void removeInvite(String name)
-	{
-		getInvites().remove(name.toLowerCase());
-		Util.save(this);
-	}
-
-	public Map<String, DLocation> getInvites()
-	{
-		if(this.invites == null) this.invites = Maps.newHashMap();
-		return this.invites;
-	}
-
-	public void clearInvites()
-	{
-		getInvites().clear();
-	}
-
-	public boolean hasInvites()
-	{
-		return !this.invites.isEmpty();
 	}
 
 	/**
@@ -567,6 +477,12 @@ public class DCharacter implements Battle.Participant
 		private Map<String, Boolean> taskData;
 		@CollectionMap(key = String.class, value = Boolean.class)
 		private Map<String, Ability.Devotion> devotionData;
+		@CollectionMap(key = String.class, value = DLocation.class)
+		private Map<String, DLocation> warps;
+		@CollectionMap(key = String.class, value = DLocation.class)
+		private Map<String, DLocation> invites;
+		@CollectionSet(of = Notification.class)
+		private Set<Notification> notifications;
 
 		void initialize()
 		{
@@ -578,6 +494,90 @@ public class DCharacter implements Battle.Participant
 		public long getId()
 		{
 			return this.id;
+		}
+
+		public void addNotification(Notification notification)
+		{
+			getNotifications().add(notification);
+			Util.save(this);
+		}
+
+		public void removeNotification(Notification notification)
+		{
+			getNotifications().remove(notification);
+			Util.save(this);
+		}
+
+		public Set<Notification> getNotifications()
+		{
+			if(this.notifications == null) this.notifications = Sets.newHashSet();
+			return this.notifications;
+		}
+
+		public void clearNotifications()
+		{
+			getNotifications().clear();
+		}
+
+		public boolean hasNotifications()
+		{
+			return !this.notifications.isEmpty();
+		}
+
+		public void addWarp(String name, Location location)
+		{
+			getWarps().put(name.toLowerCase(), DLocation.Util.create(location));
+			Util.save(this);
+		}
+
+		public void removeWarp(String name)
+		{
+			getWarps().remove(name.toLowerCase());
+			Util.save(this);
+		}
+
+		public Map<String, DLocation> getWarps()
+		{
+			if(this.warps == null) this.warps = Maps.newHashMap();
+			return this.warps;
+		}
+
+		public void clearWarps()
+		{
+			getWarps().clear();
+		}
+
+		public boolean hasWarps()
+		{
+			return !this.warps.isEmpty();
+		}
+
+		public void addInvite(String name, Location location)
+		{
+			getInvites().put(name.toLowerCase(), DLocation.Util.create(location));
+			Util.save(this);
+		}
+
+		public void removeInvite(String name)
+		{
+			getInvites().remove(name.toLowerCase());
+			Util.save(this);
+		}
+
+		public Map<String, DLocation> getInvites()
+		{
+			if(this.invites == null) this.invites = Maps.newHashMap();
+			return this.invites;
+		}
+
+		public void clearInvites()
+		{
+			getInvites().clear();
+		}
+
+		public boolean hasInvites()
+		{
+			return !this.invites.isEmpty();
 		}
 
 		public void addDevotion(Ability.Devotion devotion)

@@ -90,7 +90,7 @@ public class DevelopmentCommands extends ListedCommand
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		character.clearNotifications();
+		character.getMeta().clearNotifications();
 
 		if(character != null)
 		{
