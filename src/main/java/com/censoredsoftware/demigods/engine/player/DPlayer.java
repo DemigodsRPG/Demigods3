@@ -117,7 +117,7 @@ public class DPlayer
 		}
 
 		// Update the current character
-		DCharacter currChar = getCurrent();
+		DCharacter currChar = this.current;
 		if(currChar != null)
 		{
 			// Set to inactive and update previous
