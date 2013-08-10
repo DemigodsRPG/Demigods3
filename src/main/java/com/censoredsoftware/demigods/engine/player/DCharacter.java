@@ -40,7 +40,7 @@ public class DCharacter implements Battle.Participant
 	private String name;
 	@Attribute
 	@Indexed
-	private long player;
+	private Long player;
 	@Attribute
 	private double health;
 	@Attribute
