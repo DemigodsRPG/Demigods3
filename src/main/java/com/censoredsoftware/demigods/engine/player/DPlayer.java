@@ -166,7 +166,7 @@ public class DPlayer
 		Demigods.message.broadcast("Weiner check 10"); // TODO
 
 		// Update their inventory
-		if(Util.getCharacters(player).size() == 1) newChar.saveInventory();
+		if(getCharacters().size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
 
 		Demigods.message.broadcast("Weiner check 11"); // TODO
@@ -252,17 +252,12 @@ public class DPlayer
 		return new HashSet<DCharacter>()
 		{
 			{
-				for(DCharacter character : getRawCharacters())
+				for(DCharacter character : (List<DCharacter>) JOhm.find(DCharacter.class, "player", getId()))
 				{
 					if(character != null && character.isUsable()) add(character);
 				}
 			}
 		};
-	}
-
-	private List<DCharacter> getRawCharacters()
-	{
-		return JOhm.find(DCharacter.class, "player", getId());
 	}
 
 	public boolean canUseCurrent()
