@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Structures;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -359,9 +361,6 @@ public class DCharacter implements Battle.Participant
 		@Id
 		private Long id;
 		@Reference
-		@Indexed
-		private DCharacter owner;
-		@Reference
 		private DItemStack helmet;
 		@Reference
 		private DItemStack chestplate;
@@ -369,13 +368,8 @@ public class DCharacter implements Battle.Participant
 		private DItemStack leggings;
 		@Reference
 		private DItemStack boots;
-		@Array(of = DItemStack.class, length = 36)
-		private DItemStack[] items;
-
-		void setOwner(DCharacter owner)
-		{
-			this.owner = owner;
-		}
+		@CollectionList(of = DItemStack.class)
+		private List<DItemStack> items;
 
 		void setHelmet(ItemStack helmet)
 		{
@@ -399,16 +393,16 @@ public class DCharacter implements Battle.Participant
 
 		void setItems(org.bukkit.inventory.Inventory inventory)
 		{
-			if(this.items == null) this.items = new DItemStack[36];
+			if(this.items == null) this.items = Lists.newArrayList();
 			for(int i = 0; i < 35; i++)
 			{
 				if(inventory.getItem(i) == null)
 				{
-					this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR));
+					items.add(i, DItemStack.Util.create(new ItemStack(Material.AIR)));
 				}
 				else
 				{
-					this.items[i] = DItemStack.Util.create(inventory.getItem(i));
+					items.add(i, DItemStack.Util.create(inventory.getItem(i)));
 				}
 			}
 		}
@@ -416,11 +410,6 @@ public class DCharacter implements Battle.Participant
 		public Long getId()
 		{
 			return this.id;
-		}
-
-		public DCharacter getOwner()
-		{
-			return this.owner;
 		}
 
 		/**
@@ -451,7 +440,7 @@ public class DCharacter implements Battle.Participant
 				// Set items
 				for(int i = 0; i < 35; i++)
 				{
-					if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
+					if(this.items.get(i) != null) inventory.setItem(i, this.items.get(i).toItemStack());
 				}
 			}
 
@@ -864,7 +853,6 @@ public class DCharacter implements Battle.Participant
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
-			charInventory.setOwner(character);
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
