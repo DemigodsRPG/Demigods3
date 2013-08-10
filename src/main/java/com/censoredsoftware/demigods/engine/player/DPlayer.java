@@ -21,7 +21,6 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.util.Structures;
-import com.google.common.collect.Sets;
 
 @Model
 public class DPlayer
@@ -272,18 +271,6 @@ public class DPlayer
 			return JOhm.get(DPlayer.class, id);
 		}
 
-		public static Set<DPlayer> loadAll()
-		{
-			try
-			{
-				return JOhm.getAll(DPlayer.class);
-			}
-			catch(Exception e)
-			{
-				return Sets.newHashSet();
-			}
-		}
-
 		public static DPlayer getPlayer(OfflinePlayer player)
 		{
 			try
@@ -299,11 +286,6 @@ public class DPlayer
 		public static DCharacter getCurrentCharacter(OfflinePlayer player)
 		{
 			return getPlayer(player).getCurrent();
-		}
-
-		public static DCharacter getCurrentCharacter(String playerName)
-		{
-			return getPlayer(Bukkit.getOfflinePlayer(playerName)).getCurrent();
 		}
 
 		/**
