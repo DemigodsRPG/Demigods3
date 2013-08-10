@@ -217,7 +217,7 @@ public class DPlayer
 
 		// Save instances
 		JOhm.save(this);
-		DCharacter.Util.save(newChar);
+		JOhm.save(newChar);
 
 		Demigods.message.broadcast("Weiner check 15"); // TODO
 	}
