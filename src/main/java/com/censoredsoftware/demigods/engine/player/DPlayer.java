@@ -167,6 +167,7 @@ public class DPlayer
 
 		// Update their inventory
 		if(getCharacters().size() == 1) newChar.saveInventory();
+		Demigods.message.broadcast("Weiner check 10-1"); // TODO
 		newChar.getInventory().setToPlayer(player);
 
 		Demigods.message.broadcast("Weiner check 11"); // TODO
