@@ -461,7 +461,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return DPlayer.Util.getCharacters((Player) context.getForWhom()) != null && !DPlayer.Util.getCharacters((Player) context.getForWhom()).isEmpty();
+			return DPlayer.Util.getPlayer((Player) context.getForWhom()).getCharacters() != null && !DPlayer.Util.getPlayer((Player) context.getForWhom()).getCharacters().isEmpty();
 		}
 
 		@Override
@@ -477,7 +477,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
 
-			for(DCharacter character : DPlayer.Util.getCharacters(player))
+			for(DCharacter character : DPlayer.Util.getPlayer(player).getCharacters())
 			{
 				if(!character.isUsable()) continue;
 				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getInfo().getColor() + character.getDeity().getInfo().getName() + ChatColor.GRAY + " / Fav: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");

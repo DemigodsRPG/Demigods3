@@ -48,7 +48,7 @@ public class DPlayer
 	public void setCanPvp(boolean pvp)
 	{
 		this.canPvp = pvp;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void updateCanPvp()
@@ -97,7 +97,7 @@ public class DPlayer
 	public void setLastLoginTime(Long time)
 	{
 		this.lastLoginTime = time;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public Long getLastLoginTime()
@@ -209,7 +209,7 @@ public class DPlayer
 		Demigods.message.broadcast("Weiner check 14"); // TODO
 
 		// Save instances
-		Util.save(this);
+		JOhm.save(this);
 		DCharacter.Util.save(newChar);
 
 		Demigods.message.broadcast("Weiner check 15"); // TODO
@@ -285,13 +285,8 @@ public class DPlayer
 			trackedPlayer.setPlayer(player.getName());
 			trackedPlayer.setLastLoginTime(player.getLastPlayed());
 			trackedPlayer.setCanPvp(true);
-			save(trackedPlayer);
-			return trackedPlayer;
-		}
-
-		public static void save(DPlayer trackedPlayer)
-		{
 			JOhm.save(trackedPlayer);
+			return trackedPlayer;
 		}
 
 		public static DPlayer load(Long id)
@@ -309,35 +304,6 @@ public class DPlayer
 			catch(Exception ignored)
 			{}
 			return create(player);
-		}
-
-		public static DCharacter getCurrentCharacter(OfflinePlayer player)
-		{
-			return getPlayer(player).getCurrent();
-		}
-
-		/**
-		 * Returns the current alliance for <code>player</code>.
-		 * 
-		 * @param player the player to check.
-		 * @return String
-		 */
-		public static String getCurrentAlliance(OfflinePlayer player)
-		{
-			DCharacter character = getPlayer(player).getCurrent();
-			if(character == null || !character.isImmortal()) return "Mortal";
-			return character.getAlliance();
-		}
-
-		/**
-		 * Returns a List of all of <code>player</code>'s characters.
-		 * 
-		 * @param player the player to check.
-		 * @return List the list of all character IDs.
-		 */
-		public static Set<DCharacter> getCharacters(OfflinePlayer player)
-		{
-			return getPlayer(player).getCharacters();
 		}
 
 		/**
@@ -361,7 +327,7 @@ public class DPlayer
 		 */
 		public static boolean hasCharName(OfflinePlayer player, String charName)
 		{
-			final Set<DCharacter> characters = getCharacters(player);
+			final Set<DCharacter> characters = getPlayer(player).getCharacters();
 
 			for(DCharacter character : characters)
 			{

@@ -293,7 +293,7 @@ public class MainCommand extends ListedCommand
 					Demigods.message.tagged(player, ChatColor.RED + toCheck.getName() + " Player Check");
 					player.sendMessage(" Characters:");
 
-					final Set<DCharacter> chars = DPlayer.Util.getCharacters(toCheck);
+					final Set<DCharacter> chars = DPlayer.Util.getPlayer(toCheck).getCharacters();
 
 					for(DCharacter checkingChar : chars)
 					{

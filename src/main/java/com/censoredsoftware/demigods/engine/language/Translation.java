@@ -11,6 +11,7 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+@SuppressWarnings("unchecked")
 public class Translation
 {
 	private static File translationYAML;

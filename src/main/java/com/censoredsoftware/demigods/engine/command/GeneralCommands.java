@@ -95,7 +95,7 @@ public class GeneralCommands extends ListedCommand
 
 		// Define variables
 		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getCurrentCharacter(player);
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character != null && !character.getMeta().getBinds().isEmpty())
 		{
