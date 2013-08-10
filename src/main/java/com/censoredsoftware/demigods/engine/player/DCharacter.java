@@ -68,7 +68,7 @@ public class DCharacter implements Battle.Participant
 	private Boolean immortal;
 	@Attribute
 	@Indexed
-	private Boolean usable;
+	private boolean usable;
 	@Reference
 	private Meta meta;
 	@Reference

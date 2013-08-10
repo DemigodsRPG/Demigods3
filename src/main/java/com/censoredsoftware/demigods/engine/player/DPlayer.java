@@ -259,11 +259,11 @@ public class DPlayer
 		return new HashSet<DCharacter>()
 		{
 			{
-				Set<DCharacter> characters = JOhm.getAll(DCharacter.class);
+				List<DCharacter> characters = JOhm.find(DCharacter.class, "player", getId());
 
 				for(DCharacter character : characters)
 				{
-					if(character != null && character.isUsable() && character.getOfflinePlayer().getName().equalsIgnoreCase(getOfflinePlayer().getName())) add(character);
+					if(character != null && character.isUsable()) add(character);
 				}
 			}
 		};
