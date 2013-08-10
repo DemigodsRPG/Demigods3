@@ -252,7 +252,9 @@ public class DPlayer
 		return new HashSet<DCharacter>()
 		{
 			{
-				for(DCharacter character : (List<DCharacter>) JOhm.find(DCharacter.class, "player", getId()))
+				List<DCharacter> characters = JOhm.find(DCharacter.class, "player", getId());
+
+				for(DCharacter character : characters)
 				{
 					if(character != null && character.isUsable()) add(character);
 				}
