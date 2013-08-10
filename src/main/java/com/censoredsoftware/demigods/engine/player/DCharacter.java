@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +25,6 @@ import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Structures;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -68,7 +66,7 @@ public class DCharacter implements Battle.Participant
 	private Boolean immortal;
 	@Attribute
 	@Indexed
-	private boolean usable;
+	private Boolean usable;
 	@Reference
 	private Meta meta;
 	@Reference
@@ -77,8 +75,8 @@ public class DCharacter implements Battle.Participant
 	private Map<String, DLocation> warps;
 	@CollectionMap(key = String.class, value = DLocation.class)
 	private Map<String, DLocation> invites;
-	@CollectionList(of = Notification.class)
-	private List<Notification> notifications;
+	@CollectionSet(of = Notification.class)
+	private Set<Notification> notifications;
 
 	void setName(String name)
 	{
@@ -259,9 +257,9 @@ public class DCharacter implements Battle.Participant
 		Util.save(this);
 	}
 
-	public List<Notification> getNotifications()
+	public Set<Notification> getNotifications()
 	{
-		if(this.notifications == null) this.notifications = Lists.newArrayList();
+		if(this.notifications == null) this.notifications = Sets.newHashSet();
 		return this.notifications;
 	}
 
