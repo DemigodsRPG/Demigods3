@@ -197,7 +197,7 @@
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/lang</directory>
                 <includes>
-                    <include>*.lang</include>
+                    <include>*.yml</include>
                 </includes>
             </resource>
         </resources>

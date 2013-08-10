@@ -103,7 +103,7 @@ public class Translation
 		public File(String translation)
 		{
 			super(Demigods.plugin);
-			TRANSLATION_FILE = translation + ".lang";
+			TRANSLATION_FILE = translation + ".yml";
 			LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/lang/";
 		}
 
