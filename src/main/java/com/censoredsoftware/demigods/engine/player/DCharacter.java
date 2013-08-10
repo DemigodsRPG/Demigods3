@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +25,6 @@ import com.censoredsoftware.demigods.engine.element.Structure.Structure;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.util.Structures;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -92,13 +90,13 @@ public class DCharacter implements Battle.Participant
 	public void setImmortal(boolean option)
 	{
 		this.immortal = option;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setActive(boolean option)
 	{
 		this.active = option;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void saveInventory()
@@ -259,7 +257,7 @@ public class DCharacter implements Battle.Participant
 	public void setKills(int amount)
 	{
 		this.kills = amount;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	/**
@@ -268,7 +266,7 @@ public class DCharacter implements Battle.Participant
 	public void addKill()
 	{
 		this.kills += 1;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	/**
@@ -289,7 +287,7 @@ public class DCharacter implements Battle.Participant
 	public void setDeaths(int amount)
 	{
 		this.deaths = amount;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	/**
@@ -298,7 +296,7 @@ public class DCharacter implements Battle.Participant
 	public void addDeath()
 	{
 		this.deaths += 1;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	@Override
@@ -368,8 +366,8 @@ public class DCharacter implements Battle.Participant
 		private DItemStack leggings;
 		@Reference
 		private DItemStack boots;
-		@CollectionList(of = DItemStack.class)
-		private List<DItemStack> items;
+		@Array(of = DItemStack.class, length = 36)
+		private DItemStack[] items;
 
 		void setHelmet(ItemStack helmet)
 		{
@@ -393,16 +391,16 @@ public class DCharacter implements Battle.Participant
 
 		void setItems(org.bukkit.inventory.Inventory inventory)
 		{
-			if(this.items == null) this.items = Lists.newArrayList();
+			if(this.items == null) this.items = new DItemStack[36];
 			for(int i = 0; i < 35; i++)
 			{
 				if(inventory.getItem(i) == null)
 				{
-					items.add(i, DItemStack.Util.create(new ItemStack(Material.AIR)));
+					this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR));
 				}
 				else
 				{
-					items.add(i, DItemStack.Util.create(inventory.getItem(i)));
+					this.items[i] = DItemStack.Util.create(inventory.getItem(i));
 				}
 			}
 		}
@@ -440,7 +438,7 @@ public class DCharacter implements Battle.Participant
 				// Set items
 				for(int i = 0; i < 35; i++)
 				{
-					if(this.items.get(i) != null) inventory.setItem(i, this.items.get(i).toItemStack());
+					if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
 				}
 			}
 
@@ -488,13 +486,13 @@ public class DCharacter implements Battle.Participant
 		public void addNotification(Notification notification)
 		{
 			getNotifications().add(notification);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void removeNotification(Notification notification)
 		{
 			getNotifications().remove(notification);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Set<Notification> getNotifications()
@@ -516,13 +514,13 @@ public class DCharacter implements Battle.Participant
 		public void addWarp(String name, Location location)
 		{
 			getWarps().put(name.toLowerCase(), DLocation.Util.create(location));
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void removeWarp(String name)
 		{
 			getWarps().remove(name.toLowerCase());
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Map<String, DLocation> getWarps()
@@ -544,13 +542,13 @@ public class DCharacter implements Battle.Participant
 		public void addInvite(String name, Location location)
 		{
 			getInvites().put(name.toLowerCase(), DLocation.Util.create(location));
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void removeInvite(String name)
 		{
 			getInvites().remove(name.toLowerCase());
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Map<String, DLocation> getInvites()
@@ -572,7 +570,7 @@ public class DCharacter implements Battle.Participant
 		public void addDevotion(Ability.Devotion devotion)
 		{
 			if(!this.devotionData.containsKey(devotion.getType().toString())) this.devotionData.put(devotion.getType().toString(), devotion);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Ability.Devotion getDevotion(Ability.Devotion.Type type)
@@ -704,25 +702,25 @@ public class DCharacter implements Battle.Participant
 		public void addAscension()
 		{
 			this.ascensions += 1;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void addAscensions(int amount)
 		{
 			this.ascensions += amount;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void subtractAscensions(int amount)
 		{
 			this.ascensions -= amount;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void setAscensions(int amount)
 		{
 			this.ascensions = amount;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Integer getFavor()
@@ -733,7 +731,7 @@ public class DCharacter implements Battle.Participant
 		public void setFavor(int amount)
 		{
 			this.favor = amount;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void addFavor(int amount)
@@ -746,7 +744,7 @@ public class DCharacter implements Battle.Participant
 			{
 				this.favor += amount;
 			}
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void subtractFavor(int amount)
@@ -759,7 +757,7 @@ public class DCharacter implements Battle.Participant
 			{
 				this.favor -= amount;
 			}
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public Integer getMaxFavor()
@@ -777,7 +775,7 @@ public class DCharacter implements Battle.Participant
 			{
 				this.maxFavor += amount;
 			}
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void setMaxFavor(int amount)
@@ -785,7 +783,7 @@ public class DCharacter implements Battle.Participant
 			if(amount < 0) this.maxFavor = 0;
 			if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 			else this.maxFavor = amount;
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		@Override
@@ -890,11 +888,6 @@ public class DCharacter implements Battle.Participant
 			return charMeta;
 		}
 
-		public static void save(DCharacter character)
-		{
-			JOhm.save(character);
-		}
-
 		public static DCharacter load(Long id)
 		{
 			return JOhm.get(DCharacter.class, id);
@@ -955,66 +948,6 @@ public class DCharacter implements Battle.Participant
 			return active;
 		}
 
-		public static OfflinePlayer getOwner(long charID)
-		{
-			return load(charID).getOfflinePlayer();
-		}
-
-		public static Set<DCharacter> getDeityList(String deity)
-		{
-			// Define variables
-			Set<DCharacter> deityList = Sets.newHashSet();
-			for(DCharacter character : loadAll())
-			{
-				if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
-			}
-			return deityList;
-		}
-
-		public static Set<DCharacter> getActiveDeityList(String deity)
-		{
-			// Define variables
-			Set<DCharacter> deityList = Sets.newHashSet();
-			for(DCharacter character : getAllActive())
-			{
-				if(character.getDeity().getInfo().getName().equalsIgnoreCase(deity)) deityList.add(character);
-			}
-			return deityList;
-		}
-
-		public static Set<DCharacter> getAllianceList(String alliance)
-		{
-			// Define variables
-			Set<DCharacter> allianceList = Sets.newHashSet();
-			for(DCharacter character : loadAll())
-			{
-				if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
-			}
-			return allianceList;
-		}
-
-		public static Set<DCharacter> getActiveAllianceList(String alliance)
-		{
-			// Define variables
-			Set<DCharacter> allianceList = Sets.newHashSet();
-			for(DCharacter character : getAllActive())
-			{
-				if(character.getAlliance().equalsIgnoreCase(alliance)) allianceList.add(character);
-			}
-			return allianceList;
-		}
-
-		public static Set<DCharacter> getImmortalList()
-		{
-			// Define variables
-			Set<DCharacter> immortalList = Sets.newHashSet();
-			for(DCharacter character : loadAll())
-			{
-				if(character.isImmortal()) immortalList.add(character);
-			}
-			return immortalList;
-		}
-
 		// TODO Remake this.
 		public static void onCharacterKillCharacter(DCharacter attacker, DCharacter killed)
 		{
@@ -1054,43 +987,6 @@ public class DCharacter implements Battle.Participant
 		public static boolean areAllied(DCharacter char1, DCharacter char2)
 		{
 			return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
-		}
-
-		public static void save(Inventory inventory)
-		{
-			try
-			{
-				JOhm.save(inventory);
-			}
-			catch(Exception e)
-			{
-				Demigods.message.severe("Could not save inventory: " + inventory.getId());
-			}
-		}
-
-		public static Inventory loadInventory(long id)
-		{
-			return JOhm.get(Inventory.class, id);
-		}
-
-		public static Set<Inventory> loadAllInentories()
-		{
-			return JOhm.getAll(Inventory.class);
-		}
-
-		public static Meta loadMeta(long id)
-		{
-			return JOhm.get(Meta.class, id);
-		}
-
-		public static Set<Meta> loadAllMeta()
-		{
-			return JOhm.getAll(Meta.class);
-		}
-
-		public static void save(Meta meta)
-		{
-			JOhm.save(meta);
 		}
 	}
 }
