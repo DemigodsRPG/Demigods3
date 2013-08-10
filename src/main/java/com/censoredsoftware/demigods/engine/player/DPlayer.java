@@ -110,7 +110,7 @@ public class DPlayer
 	{
 		Player player = getOfflinePlayer().getPlayer();
 
-		if(!newChar.getOfflinePlayer().equals(getOfflinePlayer()))
+		if(!newChar.getOfflinePlayer().getName().equals(player.getName()))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return;
@@ -120,6 +120,10 @@ public class DPlayer
 		DCharacter currChar = getCurrent();
 		if(currChar != null)
 		{
+			// Set to inactive and update previous
+			currChar.setActive(false);
+			this.previous = currChar;
+
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
 			currChar.setMaxHealth(player.getMaxHealth());
@@ -133,13 +137,13 @@ public class DPlayer
 			// Disown pets
 			Pet.Util.disownPets(currChar.getName());
 
-			// Set to inactive and update previous
-			currChar.setActive(false);
-			this.previous = currChar;
-
 			// Save it
 			DCharacter.Util.save(currChar);
 		}
+
+		// Set new character to active
+		newChar.setActive(true);
+		this.current = newChar;
 
 		// Update their inventory
 		if(Util.getCharacters(player).size() == 1) newChar.saveInventory();
@@ -162,10 +166,6 @@ public class DPlayer
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
-
-		// Set new character to active
-		newChar.setActive(true);
-		this.current = newChar;
 
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
