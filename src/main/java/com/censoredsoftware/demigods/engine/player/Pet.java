@@ -32,9 +32,9 @@ public class Pet implements Battle.Participant
 	@Attribute
 	@Indexed
 	private String UUID;
-	@Reference
+	@Attribute
 	@Indexed
-	private DCharacter owner;
+	private long owner;
 
 	public void save()
 	{
@@ -62,7 +62,7 @@ public class Pet implements Battle.Participant
 	public void setOwner(DCharacter owner)
 	{
 		this.animalTamer = owner.getName();
-		this.owner = owner;
+		this.owner = owner.getId();
 		save();
 	}
 
@@ -103,26 +103,27 @@ public class Pet implements Battle.Participant
 
 	public DCharacter getOwner()
 	{
-		if(this.owner == null)
+		DCharacter owner = JOhm.get(DCharacter.class, this.owner);
+		if(owner == null)
 		{
 			disownPet();
 			delete();
 			return null;
 		}
-		else if(!this.owner.isUsable()) return null;
-		return this.owner;
+		else if(!owner.isUsable()) return null;
+		return owner;
 	}
 
 	public Deity getDeity()
 	{
-		if(this.owner == null)
+		if(getOwner() == null)
 		{
 			disownPet();
 			delete();
 			return null;
 		}
-		else if(!this.owner.isUsable()) return null;
-		return this.owner.getDeity();
+		else if(!getOwner().isUsable()) return null;
+		return getOwner().getDeity();
 	}
 
 	@Override

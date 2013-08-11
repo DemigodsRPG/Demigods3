@@ -17,11 +17,11 @@ public class Notification
 	@Attribute
 	private long expiration;
 	@Indexed
-	@Reference
-	private DCharacter receiver;
+	@Attribute
+	private long receiver;
 	@Indexed
-	@Reference
-	private DCharacter sender;
+	@Attribute
+	private long sender;
 	@Attribute
 	private String senderType;
 	@Attribute
@@ -48,12 +48,12 @@ public class Notification
 
 	void setSender(DCharacter sender)
 	{
-		this.sender = sender;
+		this.sender = sender.getId();
 	}
 
 	void setReceiver(DCharacter receiver)
 	{
-		this.receiver = receiver;
+		this.receiver = receiver.getId();
 	}
 
 	void setName(String name)
@@ -83,12 +83,12 @@ public class Notification
 
 	public DCharacter getReceiver()
 	{
-		return this.receiver;
+		return JOhm.get(DCharacter.class, this.receiver);
 	}
 
 	public DCharacter getSender()
 	{
-		return this.sender;
+		return JOhm.get(DCharacter.class, this.sender);
 	}
 
 	public String getName()
