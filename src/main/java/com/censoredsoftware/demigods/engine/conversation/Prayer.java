@@ -1042,7 +1042,7 @@ public class Prayer implements ListedConversation
 
 	public static String chatTitle(String title)
 	{
-		int total = 80;
+		int total = 83;
 		String chatTitle = " " + Unicodes.rightwardArrow() + " " + title + " ";
 		for(int i = 0; i < (total - chatTitle.length()); i++)
 		{
