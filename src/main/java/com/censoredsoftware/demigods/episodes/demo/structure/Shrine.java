@@ -30,23 +30,23 @@ public class Shrine implements StandaloneStructure
 	{
 		{
 			// Create the main block
-			add(new Selection().include(0, 1, 0).setBlockData(Selection.BuildingBlock.goldClickBlock));
+			add(new Selection(0, 1, 0, Selection.BuildingBlock.goldClickBlock));
 
 			// Create the ender chest and the block below
-			add(new Selection().include(0, 0, 0).setBlockData(Selection.BuildingBlock.enderChest));
-			add(new Selection().include(0, -1, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 0, 0, Selection.BuildingBlock.enderChest));
+			add(new Selection(0, -1, 0, Selection.BuildingBlock.stoneBrick));
 
 			// Create the rest
-			add(new Selection().include(-1, 0, 0).setBlockData(Selection.BuildingBlock.stoneBrickStairs));
-			add(new Selection().include(1, 0, 0).setBlockData(Selection.BuildingBlock.stoneBrickStairs1));
-			add(new Selection().include(0, 0, -1).setBlockData(Selection.BuildingBlock.stoneBrickStairs2));
-			add(new Selection().include(0, 0, 1).setBlockData(Selection.BuildingBlock.stoneBrickStairs3));
+			add(new Selection(-1, 0, 0, Selection.BuildingBlock.stoneBrickStairs));
+			add(new Selection(1, 0, 0, Selection.BuildingBlock.stoneBrickStairs1));
+			add(new Selection(0, 0, -1, Selection.BuildingBlock.stoneBrickStairs2));
+			add(new Selection(0, 0, 1, Selection.BuildingBlock.stoneBrickStairs3));
 		}
 	};
 
 	public static enum ShrineDesign implements Design
 	{
-		GENERAL("general", general, new Selection().include(0, 1, 0));
+		GENERAL("general", general, new Selection(0, 1, 0));
 
 		private final String name;
 		private final Structure.Schematic schematic;

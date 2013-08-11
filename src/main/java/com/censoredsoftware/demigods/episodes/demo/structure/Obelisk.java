@@ -30,58 +30,58 @@ public class Obelisk implements StandaloneStructure
 	{
 		{
 			// Clickable block.
-			add(new Selection().include(0, 0, 2).setBlockData(Selection.BuildingBlock.specialStoneBrick));
+			add(new Selection(0, 0, 2, Selection.BuildingBlock.specialStoneBrick));
 
 			// Everything else.
-			add(new Selection().include(0, 0, -1, 0, 2, -1).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(0, 0, 1, 0, 2, 1).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(1, 0, 0, 1, 2, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(-1, 0, 0, -1, 2, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(0, 4, -1, 0, 5, -1).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(0, 4, 1, 0, 5, 1).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(1, 4, 0, 1, 5, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(-1, 4, 0, -1, 5, 0).setBlockData(Selection.BuildingBlock.stoneBrick));
-			add(new Selection().include(0, 3, 0).setBlockData(Selection.BuildingBlock.redstoneBlock));
-			add(new Selection().include(0, 4, 0).setBlockData(Selection.BuildingBlock.redstoneBlock));
-			add(new Selection().include(0, 3, -1).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(0, 3, 1).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(1, 3, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(-1, 3, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(0, 5, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(1, 5, -1).setBlockData(Selection.BuildingBlock.vine1));
-			add(new Selection().include(-1, 5, -1).setBlockData(Selection.BuildingBlock.vine1));
-			add(new Selection().include(1, 5, 1).setBlockData(Selection.BuildingBlock.vine4));
-			add(new Selection().include(-1, 5, 1).setBlockData(Selection.BuildingBlock.vine4));
+			add(new Selection(0, 0, -1, 0, 2, -1, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 0, 1, 0, 2, 1, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(1, 0, 0, 1, 2, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 4, -1, 0, 5, -1, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 4, 1, 0, 5, 1, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(1, 4, 0, 1, 5, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 3, 0, Selection.BuildingBlock.redstoneBlock));
+			add(new Selection(0, 4, 0, Selection.BuildingBlock.redstoneBlock));
+			add(new Selection(0, 3, -1, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 3, 1, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(1, 3, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(-1, 3, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 5, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(1, 5, -1, Selection.BuildingBlock.vine1));
+			add(new Selection(-1, 5, -1, Selection.BuildingBlock.vine1));
+			add(new Selection(1, 5, 1, Selection.BuildingBlock.vine4));
+			add(new Selection(-1, 5, 1, Selection.BuildingBlock.vine4));
 		}
 	};
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Selection().include(0, 0, 2).setBlockData(Selection.BuildingBlock.specialSandstone));
+			add(new Selection(0, 0, 2, Selection.BuildingBlock.specialSandstone));
 
 			// Everything else.
-			add(new Selection().include(0, 0, -1, 0, 2, -1).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(0, 0, 1, 0, 2, 1).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(1, 0, 0, 1, 2, 0).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(-1, 0, 0, -1, 2, 0).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(0, 4, -1, 0, 5, -1).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(0, 4, 1, 0, 5, 1).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(1, 4, 0, 1, 5, 0).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(-1, 4, 0, -1, 5, 0).setBlockData(Selection.BuildingBlock.sandstone));
-			add(new Selection().include(0, 3, 0).setBlockData(Selection.BuildingBlock.redstoneBlock));
-			add(new Selection().include(0, 4, 0).setBlockData(Selection.BuildingBlock.redstoneBlock));
-			add(new Selection().include(0, 3, -1).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(0, 3, 1).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(1, 3, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(-1, 3, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
-			add(new Selection().include(0, 5, 0).setBlockData(Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 0, -1, 0, 2, -1, Selection.BuildingBlock.sandstone));
+			add(new Selection(0, 0, 1, 0, 2, 1, Selection.BuildingBlock.sandstone));
+			add(new Selection(1, 0, 0, 1, 2, 0, Selection.BuildingBlock.sandstone));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.BuildingBlock.sandstone));
+			add(new Selection(0, 4, -1, 0, 5, -1, Selection.BuildingBlock.sandstone));
+			add(new Selection(0, 4, 1, 0, 5, 1, Selection.BuildingBlock.sandstone));
+			add(new Selection(1, 4, 0, 1, 5, 0, Selection.BuildingBlock.sandstone));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.BuildingBlock.sandstone));
+			add(new Selection(0, 3, 0, Selection.BuildingBlock.redstoneBlock));
+			add(new Selection(0, 4, 0, Selection.BuildingBlock.redstoneBlock));
+			add(new Selection(0, 3, -1, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 3, 1, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(1, 3, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(-1, 3, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 5, 0, Selection.BuildingBlock.redstoneLamp));
 		}
 	};
 
 	public static enum ObeliskDesign implements Structure.Design
 	{
-		GENERAL("general", general, new Selection().include(0, 0, 2)), DESERT("desert", desert, new Selection().include(0, 0, 2));
+		GENERAL("general", general, new Selection(0, 0, 2)), DESERT("desert", desert, new Selection(0, 0, 2));
 
 		private final String name;
 		private final Structure.Schematic schematic;

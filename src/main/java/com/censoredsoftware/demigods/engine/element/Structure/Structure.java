@@ -300,28 +300,29 @@ public interface Structure
 
 	public static class Selection
 	{
-		private Set<RelativeBlockLocation> include;
-		private Set<RelativeBlockLocation> exclude;
+		private int X, Y, Z, XX, YY, ZZ;
+		private int eX, eY, eZ, eXX, eYY, eZZ;
+		private boolean cuboid;
+		private boolean exclude;
+		private boolean excludeSelection;
 		private List<BlockData> blockData;
 
-		public Selection()
-		{
-			include = Sets.newHashSet();
-			exclude = Sets.newHashSet();
-			blockData = Lists.newArrayList();
-		}
-
 		/**
-		 * Set Selection (non-cuboid), useful for getting 1 location back.
+		 * Constructor for a Selection (non-cuboid), useful for getting 1 location back.
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
 		 * @param Y The relative Y coordinate of the schematic from the reference location.
 		 * @param Z The relative Z coordinate of the schematic from the reference location.
 		 */
-		public Selection include(int X, int Y, int Z)
+		public Selection(int X, int Y, int Z)
 		{
-			include.add(new RelativeBlockLocation(X, Y, Z));
-			return this;
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
 		}
 
 		/**
@@ -334,10 +335,150 @@ public interface Structure
 		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
 		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 		 */
-		public Selection include(int X, int Y, int Z, int XX, int YY, int ZZ)
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
-			include.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
-			return this;
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
+		}
+
+		/**
+		 * Constructor for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, Material material)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(new BlockData(material));
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(new BlockData(material));
+		}
+
+		/**
+		 * Constructor for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, BlockData blockData)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(blockData);
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, BlockData blockData)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = Lists.newArrayList(blockData);
+		}
+
+		/**
+		 * Constructor for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, List<BlockData> blockData)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = blockData;
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param blockData The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, List<BlockData> blockData)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = blockData;
 		}
 
 		/**
@@ -350,7 +491,10 @@ public interface Structure
 		 */
 		public Selection exclude(int X, int Y, int Z)
 		{
-			exclude.add(new RelativeBlockLocation(X, Y, Z));
+			this.eX = this.eXX = X;
+			this.eY = this.eYY = Y;
+			this.eZ = this.eZZ = Z;
+			this.exclude = true;
 			return this;
 		}
 
@@ -367,65 +511,26 @@ public interface Structure
 		 */
 		public Selection exclude(int X, int Y, int Z, int XX, int YY, int ZZ)
 		{
-			exclude.addAll(rangeLoop(X, XX, Y, YY, Z, ZZ));
-			return this;
-		}
-
-		/**
-		 * Set Blockdata for a Selection (cuboid).
-		 * 
-		 * @return This schematic.
-		 */
-		public Selection setBlockData(Material material)
-		{
-			this.blockData = Lists.newArrayList(new BlockData(material));
-			return this;
-		}
-
-		/**
-		 * Set Blockdata for a Selection (cuboid).
-		 * 
-		 * @param data The data being set.
-		 * @return This schematic.
-		 */
-		public Selection setBlockData(Material material, byte data)
-		{
-			this.blockData = Lists.newArrayList(new BlockData(material, data));
-			return this;
-		}
-
-		/**
-		 * Set Blockdata for a Selection (cuboid).
-		 * 
-		 * @param data The data being set.
-		 * @return This schematic.
-		 */
-		public Selection setBlockData(BlockData data)
-		{
-			this.blockData = Lists.newArrayList(data);
-			return this;
-		}
-
-		/**
-		 * Set Blockdata for a Selection (cuboid).
-		 * 
-		 * @param data The data being set.
-		 * @return This schematic.
-		 */
-		public Selection setBlockData(List<BlockData> data)
-		{
-			this.blockData = data;
+			this.eX = X;
+			this.eY = Y;
+			this.eZ = Z;
+			this.eXX = XX;
+			this.eYY = YY;
+			this.eZZ = ZZ;
+			this.exclude = true;
+			this.excludeSelection = true;
 			return this;
 		}
 
 		/**
 		 * Get the material of the object (a random material is chosen based on the configured odds).
 		 * 
-		 * @return The block data.
+		 * TODO This method needs work, I'm not sure this is the more efficient way to do what we want.
+		 * 
+		 * @return A material.
 		 */
-		public BlockData getBlockData()
+		public BlockData getStructureBlockData()
 		{
-			if(blockData.isEmpty()) return new BlockData(Material.AIR);
 			final int roll = Randoms.generateIntRange(1, 100);
 			Collection<BlockData> check = Collections2.filter(blockData, new Predicate<BlockData>()
 			{
@@ -435,7 +540,7 @@ public interface Structure
 					return blockData.getOdds() >= roll;
 				}
 			});
-			if(check.isEmpty()) return getBlockData();
+			if(check.isEmpty()) return getStructureBlockData();
 			return Lists.newArrayList(check).get(Randoms.generateIntRange(0, check.size() - 1));
 		}
 
@@ -447,13 +552,16 @@ public interface Structure
 		 */
 		public Set<Location> getBlockLocations(final Location reference)
 		{
-			return new HashSet<Location>()
+			if(cuboid)
 			{
+				if(exclude)
 				{
-					for(RelativeBlockLocation rbl : Sets.difference(include, exclude))
-						add(rbl.getFrom(reference));
+					if(excludeSelection) return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), rangeLoop(reference, eX, eXX, eY, eYY, eZ, eZZ));
+					return Sets.difference(rangeLoop(reference, X, XX, Y, YY, Z, ZZ), Sets.newHashSet(getLocation(reference, eX, eY, eZ)));
 				}
-			};
+				return rangeLoop(reference, X, XX, Y, YY, Z, ZZ);
+			}
+			return Sets.newHashSet(getLocation(reference, X, Y, Z));
 		}
 
 		/**
@@ -465,14 +573,28 @@ public interface Structure
 		{
 			for(Location location : getBlockLocations(reference))
 			{
-				BlockData data = getBlockData();
+				BlockData data = getStructureBlockData();
 				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
 			}
 		}
 
 		/**
+		 * Get a relative location, based on the <code>X</code>, <code>Y</code>, <code>Z</code> coordinates relative to the object's central location.
+		 * 
+		 * @param X Relative X coordinate.
+		 * @param Y Relative Y coordinate.
+		 * @param Z Relative Z coordinate.
+		 * @return New relative location.
+		 */
+		public Location getLocation(Location reference, int X, int Y, int Z)
+		{
+			return reference.clone().add(X, Y, Z);
+		}
+
+		/**
 		 * Get a cuboid selection as a HashSet.
 		 * 
+		 * @param reference The reference location.
 		 * @param X The relative X coordinate.
 		 * @param XX The second relative X coordinate.
 		 * @param Y The relative Y coordinate.
@@ -481,36 +603,17 @@ public interface Structure
 		 * @param ZZ The second relative Z coordinate.
 		 * @return The HashSet collection of a cuboid selection.
 		 */
-		public Set<RelativeBlockLocation> rangeLoop(final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
+		public Set<Location> rangeLoop(final Location reference, final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
 		{
-			return new HashSet<RelativeBlockLocation>()
+			return new HashSet<Location>()
 			{
 				{
 					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
 						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
 							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
-								add(new RelativeBlockLocation(x, y, z));
+								add(getLocation(reference, x, y, z));
 				}
 			};
-		}
-
-		public static class RelativeBlockLocation
-		{
-			int X;
-			int Y;
-			int Z;
-
-			RelativeBlockLocation(int X, int Y, int Z)
-			{
-				this.X = X;
-				this.Y = Y;
-				this.Z = Z;
-			}
-
-			Location getFrom(Location location)
-			{
-				return location.clone().add(X, Y, Z);
-			}
 		}
 
 		public static class BlockData
