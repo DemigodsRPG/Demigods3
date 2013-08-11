@@ -102,6 +102,7 @@ public class DCharacter implements Battle.Participant
 	public void saveInventory()
 	{
 		this.inventory = Util.createInventory(this);
+		JOhm.save(this);
 	}
 
 	public void setHealth(double health)
