@@ -12,6 +12,7 @@ import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.engine.element.Ability;
 import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.episodes.demo.ability.passive.RainbowHorse;
+import com.censoredsoftware.demigods.episodes.demo.ability.ultimate.Discoball;
 
 public class DrD1sco extends Deity
 {
@@ -41,7 +42,7 @@ public class DrD1sco extends Deity
 	private final static Set<Ability> abilities = new HashSet<Ability>(2)
 	{
 		{
-			// add(new Discoball.RainbowWalking(name, permission));
+			add(new Discoball.RainbowWalking(name, permission));
 			add(new RainbowHorse(name, permission));
 		}
 	};

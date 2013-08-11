@@ -873,7 +873,6 @@ public class DCharacter implements Battle.Participant
 		public static Inventory updateInventory(Inventory charInventory, DCharacter character)
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
-			charInventory.setCharacter(character);
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
