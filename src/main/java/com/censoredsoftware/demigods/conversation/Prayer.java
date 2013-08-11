@@ -499,7 +499,9 @@ public class Prayer implements ListedConversation
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
 			String[] splitMsg = message.split(" ");
-			return message.equalsIgnoreCase("menu") || DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg[1].equalsIgnoreCase("switch"));
+			DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
+			DCharacter character = DCharacter.Util.getCharacterByName(splitMsg[0]);
+			return message.equalsIgnoreCase("menu") || DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && !player.getCurrent().getName().equalsIgnoreCase(character.getName()));
 		}
 
 		@Override
@@ -551,8 +553,15 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(" ");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters or type " + ChatColor.YELLOW + "switch");
-				player.sendRawMessage(ChatColor.GRAY + "  to change your current character to " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + ".");
+				if(character.isActive())
+				{
+					player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters.");
+				}
+				else
+				{
+					player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters or type " + ChatColor.YELLOW + "switch");
+					player.sendRawMessage(ChatColor.GRAY + "  to change your current character to " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + ".");
+				}
 
 				return "";
 			}
@@ -560,7 +569,10 @@ public class Prayer implements ListedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String message)
 			{
-				return message.equalsIgnoreCase("back") || message.equalsIgnoreCase("switch");
+				DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
+				DCharacter character = DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString());
+
+				return message.equalsIgnoreCase("back") || (message.equalsIgnoreCase("switch") && !player.getCurrent().getName().equalsIgnoreCase(character.getName()));
 			}
 
 			@Override
