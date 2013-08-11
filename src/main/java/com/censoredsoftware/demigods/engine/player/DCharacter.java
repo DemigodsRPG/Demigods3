@@ -360,8 +360,8 @@ public class DCharacter implements Battle.Participant
 	{
 		@Id
 		private Long id;
-		@Reference
-		private DCharacter character;
+		@Attribute
+		private long character;
 		@Reference
 		private DItemStack helmet;
 		@Reference
@@ -375,7 +375,7 @@ public class DCharacter implements Battle.Participant
 
 		void setCharacter(DCharacter character)
 		{
-			this.character = character;
+			this.character = character.getId();
 		}
 
 		void setHelmet(ItemStack helmet)
