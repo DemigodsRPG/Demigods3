@@ -148,7 +148,7 @@ public class DCharacter implements Battle.Participant
 
 	public Inventory getInventory()
 	{
-		if(this.inventory == null) this.inventory = Util.createEmptyInventory();
+		if(this.inventory == null) this.inventory = Util.createEmptyInventory(this);
 		return this.inventory;
 	}
 
@@ -884,10 +884,10 @@ public class DCharacter implements Battle.Participant
 			return charInventory;
 		}
 
-		public static Inventory createEmptyInventory()
+		public static Inventory createEmptyInventory(DCharacter character)
 		{
 			Inventory charInventory = new Inventory();
-			charInventory.setCharacter(null);
+			charInventory.setCharacter(character);
 			charInventory.setHelmet(new ItemStack(Material.AIR));
 			charInventory.setChestplate(new ItemStack(Material.AIR));
 			charInventory.setLeggings(new ItemStack(Material.AIR));
