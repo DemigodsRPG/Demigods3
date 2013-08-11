@@ -36,9 +36,9 @@ public class DPlayer
 	@Attribute
 	private long lastLoginTime;
 	@Attribute
-	private Long current;
+	private long current;
 	@Attribute
-	private Long previous;
+	private long previous;
 
 	void setPlayer(String player)
 	{
@@ -207,21 +207,25 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null)
+		try
 		{
 			DCharacter current = JOhm.get(DCharacter.class, this.current);
 			if(current.isUsable()) return current;
 		}
+		catch(Exception ignored)
+		{}
 		return null;
 	}
 
 	public DCharacter getPrevious()
 	{
-		if(this.previous != null)
+		try
 		{
 			DCharacter previous = JOhm.get(DCharacter.class, this.previous);
 			if(previous.isUsable()) return previous;
 		}
+		catch(Exception ignored)
+		{}
 		return null;
 	}
 
