@@ -34,7 +34,19 @@ public class MainCommand extends ListedCommand
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		// Check for console first
+		// Commands able to be run by the console
+		if(command.getName().equals("demigods"))
+		{
+			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
+			{
+				Demigods.plugin.getServer().getPluginManager().disablePlugin(Demigods.plugin);
+				Demigods.plugin.getServer().getPluginManager().enablePlugin(Demigods.plugin);
+				sender.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.RELOAD_COMPLETE));
+				return true;
+			}
+		}
+
+		// No console below this point
 		if(sender instanceof ConsoleCommandSender) return Demigods.message.noConsole((ConsoleCommandSender) sender);
 
 		// Define Player
@@ -248,13 +260,6 @@ public class MainCommand extends ListedCommand
 				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
 				DataManager.flushData();
 				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
-				return true;
-			}
-			else if(option1.equalsIgnoreCase("reload"))
-			{
-				Demigods.plugin.getServer().getPluginManager().disablePlugin(Demigods.plugin);
-				Demigods.plugin.getServer().getPluginManager().enablePlugin(Demigods.plugin);
-				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.RELOAD_COMPLETE));
 				return true;
 			}
 			else if(option1.equalsIgnoreCase("wand"))
