@@ -856,24 +856,10 @@ public class DCharacter implements Battle.Participant
 			return character;
 		}
 
-		public static Inventory createInventory(DCharacter character)
-		{
-			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
-			Inventory charInventory = new Inventory();
-			charInventory.setCharacter(character);
-			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
-			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
-			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
-			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
-			charInventory.setItems(inventory);
-			JOhm.save(charInventory);
-			JOhm.save(character);
-			return charInventory;
-		}
-
 		public static Inventory updateInventory(Inventory charInventory, DCharacter character)
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
+			charInventory.setCharacter(character);
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
