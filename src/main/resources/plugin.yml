@@ -34,6 +34,8 @@ commands:
         permission: demigods.admin
     hspawn:
         usage: /hspawn
+    makecharacters:
+        usage: /makecharacters <howmany>
     binds:
         usage: /binds
         permission: demigods.basic

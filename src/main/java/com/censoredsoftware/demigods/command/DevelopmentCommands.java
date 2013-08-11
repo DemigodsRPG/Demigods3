@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
 import com.censoredsoftware.core.region.Region;
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -26,7 +28,7 @@ public class DevelopmentCommands extends ListedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "soundtest", "removechar");
+		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "soundtest", "makecharacters", "removechar");
 	}
 
 	@Override
@@ -38,6 +40,7 @@ public class DevelopmentCommands extends ListedCommand
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
+		else if(command.getName().equalsIgnoreCase("makecharacters")) return makeCharacters(sender, args);
 		return false;
 	}
 
@@ -151,6 +154,37 @@ public class DevelopmentCommands extends ListedCommand
 		{}
 		player.sendMessage(ChatColor.RED + "Wrong arguments, please try again.");
 		return false;
+	}
+
+	private static boolean makeCharacters(CommandSender sender, final String[] args)
+	{
+		DPlayer player = DPlayer.Util.getPlayer((Player) sender);
+
+		if(args.length != 1 || !isInt(args[0])) return false;
+
+		for(int i = 0; i < Integer.parseInt(args[0]); i++)
+			DCharacter.Util.create(player, Randoms.generateString(7), Elements.Deities.values()[Randoms.generateIntRange(0, 5)].getName());
+
+		return true;
+	}
+
+	/**
+	 * Check to see if an input string is a float.
+	 * 
+	 * @param string The input string.
+	 * @return True if the string is a float.
+	 */
+	private static boolean isInt(String string)
+	{
+		try
+		{
+			Integer.parseInt(string);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 
 	/**
