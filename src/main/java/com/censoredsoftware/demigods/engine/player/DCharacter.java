@@ -101,7 +101,8 @@ public class DCharacter implements Battle.Participant
 
 	public void saveInventory()
 	{
-		this.inventory = Util.updateInventory(inventory, this);
+		if(this.inventory == null) this.inventory = Util.createInventory(this);
+		else this.inventory = Util.updateInventory(inventory, this);
 		JOhm.save(this);
 	}
 
