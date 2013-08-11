@@ -361,6 +361,8 @@ public class DCharacter implements Battle.Participant
 		@Id
 		private Long id;
 		@Reference
+		private DCharacter character;
+		@Reference
 		private DItemStack helmet;
 		@Reference
 		private DItemStack chestplate;
@@ -370,6 +372,11 @@ public class DCharacter implements Battle.Participant
 		private DItemStack boots;
 		@Array(of = DItemStack.class, length = 36)
 		private DItemStack[] items;
+
+		void setCharacter(DCharacter character)
+		{
+			this.character = character;
+		}
 
 		void setHelmet(ItemStack helmet)
 		{
@@ -853,6 +860,7 @@ public class DCharacter implements Battle.Participant
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
+			charInventory.setCharacter(character);
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
@@ -879,6 +887,7 @@ public class DCharacter implements Battle.Participant
 		public static Inventory createEmptyInventory()
 		{
 			Inventory charInventory = new Inventory();
+			charInventory.setCharacter(null);
 			charInventory.setHelmet(new ItemStack(Material.AIR));
 			charInventory.setChestplate(new ItemStack(Material.AIR));
 			charInventory.setLeggings(new ItemStack(Material.AIR));
