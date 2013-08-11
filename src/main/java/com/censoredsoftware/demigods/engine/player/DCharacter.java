@@ -53,8 +53,8 @@ public class DCharacter implements Battle.Participant
 	private Integer kills;
 	@Attribute
 	private Integer deaths;
-	@Reference
-	private DLocation location;
+	@Attribute
+	private long location;
 	@Attribute
 	@Indexed
 	private String deity;
@@ -67,10 +67,10 @@ public class DCharacter implements Battle.Participant
 	@Attribute
 	@Indexed
 	private Boolean usable;
-	@Reference
-	private Meta meta;
-	@Reference
-	private Inventory inventory;
+	@Attribute
+	private long meta;
+	@Attribute
+	private long inventory;
 
 	void setName(String name)
 	{
@@ -101,8 +101,7 @@ public class DCharacter implements Battle.Participant
 
 	public void saveInventory()
 	{
-		if(this.inventory == null) this.inventory = Util.createInventory(this);
-		else this.inventory = Util.updateInventory(inventory, this);
+		this.inventory = Util.createInventory(this).getId();
 		JOhm.save(this);
 	}
 
@@ -133,12 +132,12 @@ public class DCharacter implements Battle.Participant
 
 	public void setLocation(Location location)
 	{
-		this.location = DLocation.Util.create(location);
+		this.location = DLocation.Util.create(location).getId();
 	}
 
 	public void setMeta(Meta meta)
 	{
-		this.meta = meta;
+		this.meta = meta.getId();
 	}
 
 	public void setUsable(boolean usable)
@@ -148,14 +147,13 @@ public class DCharacter implements Battle.Participant
 
 	public Inventory getInventory()
 	{
-		if(this.inventory == null) this.inventory = Util.createEmptyInventory(this);
-		return this.inventory;
+		if(JOhm.get(Inventory.class, this.inventory) == null) this.inventory = Util.createEmptyInventory(this).getId();
+		return JOhm.get(Inventory.class, this.inventory);
 	}
 
 	public Meta getMeta()
 	{
-		if(this.meta == null) this.meta = Util.createMeta();
-		return this.meta;
+		return JOhm.get(Meta.class, this.meta);
 	}
 
 	public OfflinePlayer getOfflinePlayer()
@@ -175,7 +173,7 @@ public class DCharacter implements Battle.Participant
 
 	public Location getLocation()
 	{
-		return this.location.toLocation();
+		return ((DLocation) JOhm.get(DLocation.class, this.location)).toLocation();
 	}
 
 	public Location getCurrentLocation()
@@ -361,41 +359,34 @@ public class DCharacter implements Battle.Participant
 		@Id
 		private Long id;
 		@Attribute
-		private long character;
-		@Reference
-		private DItemStack helmet;
-		@Reference
-		private DItemStack chestplate;
-		@Reference
-		private DItemStack leggings;
-		@Reference
-		private DItemStack boots;
+		private long helmet;
+		@Attribute
+		private long chestplate;
+		@Attribute
+		private long leggings;
+		@Attribute
+		private long boots;
 		@Array(of = DItemStack.class, length = 36)
 		private DItemStack[] items;
 
-		void setCharacter(DCharacter character)
-		{
-			this.character = character.getId();
-		}
-
 		void setHelmet(ItemStack helmet)
 		{
-			this.helmet = DItemStack.Util.create(helmet);
+			this.helmet = DItemStack.Util.create(helmet).getId();
 		}
 
 		void setChestplate(ItemStack chestplate)
 		{
-			this.chestplate = DItemStack.Util.create(chestplate);
+			this.chestplate = DItemStack.Util.create(chestplate).getId();
 		}
 
 		void setLeggings(ItemStack leggings)
 		{
-			this.leggings = DItemStack.Util.create(leggings);
+			this.leggings = DItemStack.Util.create(leggings).getId();
 		}
 
 		void setBoots(ItemStack boots)
 		{
-			this.boots = DItemStack.Util.create(boots);
+			this.boots = DItemStack.Util.create(boots).getId();
 		}
 
 		void setItems(org.bukkit.inventory.Inventory inventory)
@@ -419,6 +410,34 @@ public class DCharacter implements Battle.Participant
 			return this.id;
 		}
 
+		public ItemStack getHelmet()
+		{
+			DItemStack item = JOhm.get(DItemStack.class, this.helmet);
+			if(item != null) return item.toItemStack();
+			return null;
+		}
+
+		public ItemStack getChestplate()
+		{
+			DItemStack item = JOhm.get(DItemStack.class, this.chestplate);
+			if(item != null) return item.toItemStack();
+			return null;
+		}
+
+		public ItemStack getLeggings()
+		{
+			DItemStack item = JOhm.get(DItemStack.class, this.leggings);
+			if(item != null) return item.toItemStack();
+			return null;
+		}
+
+		public ItemStack getBoots()
+		{
+			DItemStack item = JOhm.get(DItemStack.class, this.boots);
+			if(item != null) return item.toItemStack();
+			return null;
+		}
+
 		/**
 		 * Applies this inventory to the given <code>player</code>.
 		 * 
@@ -437,10 +456,10 @@ public class DCharacter implements Battle.Participant
 			inventory.setBoots(new ItemStack(Material.AIR));
 
 			// Set the armor contents
-			if(this.helmet != null) inventory.setHelmet(this.helmet.toItemStack());
-			if(this.chestplate != null) inventory.setChestplate(this.chestplate.toItemStack());
-			if(this.leggings != null) inventory.setLeggings(this.leggings.toItemStack());
-			if(this.boots != null) inventory.setBoots(this.boots.toItemStack());
+			if(getHelmet() != null) inventory.setHelmet(getHelmet());
+			if(getChestplate() != null) inventory.setChestplate(getChestplate());
+			if(getLeggings() != null) inventory.setLeggings(getLeggings());
+			if(getBoots() != null) inventory.setBoots(getBoots());
 
 			if(this.items != null)
 			{
@@ -886,7 +905,6 @@ public class DCharacter implements Battle.Participant
 		public static Inventory createEmptyInventory(DCharacter character)
 		{
 			Inventory charInventory = new Inventory();
-			charInventory.setCharacter(character);
 			charInventory.setHelmet(new ItemStack(Material.AIR));
 			charInventory.setChestplate(new ItemStack(Material.AIR));
 			charInventory.setLeggings(new ItemStack(Material.AIR));

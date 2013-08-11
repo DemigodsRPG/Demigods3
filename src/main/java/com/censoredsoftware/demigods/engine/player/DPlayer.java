@@ -35,10 +35,10 @@ public class DPlayer
 	private Boolean canPvp;
 	@Attribute
 	private long lastLoginTime;
-	@Reference
-	private DCharacter current;
-	@Reference
-	private DCharacter previous;
+	@Attribute
+	private long current;
+	@Attribute
+	private long previous;
 
 	void setPlayer(String player)
 	{
@@ -122,7 +122,7 @@ public class DPlayer
 		{
 			// Set to inactive and update previous
 			currChar.setActive(false);
-			this.previous = currChar;
+			this.previous = currChar.getId();
 
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
@@ -143,11 +143,10 @@ public class DPlayer
 
 		// Set new character to active
 		newChar.setActive(true);
-		this.current = newChar;
+		this.current = newChar.getId();
 
 		// Update their inventory
 		if(getCharacters().size() == 1) newChar.saveInventory();
-
 		newChar.getInventory().setToPlayer(player);
 
 		// Update health, experience, and name
@@ -209,13 +208,14 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		if(this.current != null && this.current.isUsable()) return this.current;
+		DCharacter character = JOhm.get(DCharacter.class, this.current);
+		if(character != null && character.isUsable()) return character;
 		return null;
 	}
 
 	public DCharacter getPrevious()
 	{
-		return this.previous;
+		return JOhm.get(DCharacter.class, this.previous);
 	}
 
 	public Set<DCharacter> getCharacters()
