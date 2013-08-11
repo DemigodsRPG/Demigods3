@@ -5,12 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 import com.censoredsoftware.core.bukkit.CSPlugin;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.data.ThreadManager;
-import com.censoredsoftware.demigods.engine.exception.DemigodsStartupException;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.episodes.demo.EpisodeDemo;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.player.DPlayer;
 
 /**
  * Class for all plugins of demigods.
@@ -25,8 +23,8 @@ public class DemigodsPlugin extends CSPlugin
 	{
 		try
 		{
-			// Load the game engine, passing in the game data.
-			new Demigods(this, EpisodeDemo.Deities.values(), EpisodeDemo.Tasks.values(), EpisodeDemo.Structures.values(), null, EpisodeDemo.getListener());
+			// Load the game engine.
+			new Demigods(this);
 
 			// Print success!
 			Demigods.message.info("Successfully enabled.");
