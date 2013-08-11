@@ -165,6 +165,8 @@ public class DevelopmentCommands extends ListedCommand
 		for(int i = 0; i < Integer.parseInt(args[0]); i++)
 			DCharacter.Util.create(player, Randoms.generateString(7), Elements.Deities.values()[Randoms.generateIntRange(0, 5)].getName());
 
+		sender.sendMessage(args[0] + " characters created.");
+
 		return true;
 	}
 
