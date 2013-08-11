@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
 import redis.clients.johm.*;
@@ -41,10 +42,10 @@ public abstract class Ability
 {
 	private final Info info;
 	private final Listener listener;
-	private final Runnable runnable;
+	private final BukkitRunnable runnable;
 	private static final int TARGET_OFFSET = 5;
 
-	public Ability(Info info, Listener listener, Runnable runnable)
+	public Ability(Info info, Listener listener, BukkitRunnable runnable)
 	{
 		this.info = info;
 		this.listener = listener;
@@ -61,7 +62,7 @@ public abstract class Ability
 		return listener;
 	}
 
-	public Runnable getRunnable()
+	public BukkitRunnable getRunnable()
 	{
 		return runnable;
 	}
