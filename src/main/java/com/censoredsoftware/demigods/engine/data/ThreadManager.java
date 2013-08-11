@@ -1,11 +1,8 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.censoredsoftware.demigods.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -15,44 +12,39 @@ import com.censoredsoftware.demigods.engine.element.Deity;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Notification;
 import com.censoredsoftware.demigods.engine.util.Admins;
-import com.google.common.collect.Sets;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
 {
-	private static Set<BukkitTask> tasks = Sets.newHashSet();
-
 	public static void startThreads(DemigodsPlugin instance)
 	{
 		// Start sync demigods runnable
-		tasks.add(Util.startSyncDemigods());
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
-		tasks.add(Util.startAsyncDemigods());
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
 		if(Demigods.isRunningSpigot())
 		{
-			tasks.add(Util.startSpigot());
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSpigotRunnable(), 20, 20);
 			Admins.sendDebug("Special (Spigot) runnable enabled...");
 		}
 
 		// Start favor runnable
-		tasks.add(Util.startFavor());
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Demigods.config.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Enable Deity runnables
 		for(Deity deity : Demigods.getLoadedDeities().values())
 			for(Ability ability : deity.getAbilities())
-				if(ability.getRunnable() != null) tasks.add(ability.getRunnable().runTaskTimer(Demigods.plugin, ability.getInfo().getDelay(), ability.getInfo().getRepeat()));
+				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), ability.getInfo().getDelay(), ability.getInfo().getRepeat());
 	}
 
 	public static void stopThreads(DemigodsPlugin instance)
 	{
-		for(BukkitTask task : tasks)
-			task.cancel();
 		instance.getServer().getScheduler().cancelTasks(instance);
 	}
 
@@ -64,7 +56,7 @@ public class ThreadManager
 		 * 
 		 * @return the runnable to be enabled.
 		 */
-		public static BukkitTask startSyncDemigods()
+		public static BukkitRunnable getSyncDemigodsRunnable()
 		{
 			return new BukkitRunnable()
 			{
@@ -78,7 +70,7 @@ public class ThreadManager
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 				}
-			}.runTaskTimer(Demigods.plugin, 20, 20);
+			};
 		}
 
 		/**
@@ -87,7 +79,7 @@ public class ThreadManager
 		 * 
 		 * @return the runnable to be enabled.
 		 */
-		public static BukkitTask startAsyncDemigods()
+		public static BukkitRunnable getAsyncDemigodsRunnable()
 		{
 			return new BukkitRunnable()
 			{
@@ -103,7 +95,7 @@ public class ThreadManager
 					// Update Notifications
 					Notification.Util.updateNotifications();
 				}
-			}.runTaskTimerAsynchronously(Demigods.plugin, 20, 20);
+			};
 		}
 
 		/**
@@ -111,7 +103,7 @@ public class ThreadManager
 		 * 
 		 * @return the runnable to be enabled.
 		 */
-		public static BukkitTask startSpigot()
+		public static BukkitRunnable getSpigotRunnable()
 		{
 			return new BukkitRunnable()
 			{
@@ -121,7 +113,7 @@ public class ThreadManager
 					// Update Battles
 					Battle.Util.updateBattleParticles();
 				}
-			}.runTaskTimer(Demigods.plugin, 20, 20);
+			};
 		}
 
 		/**
@@ -130,7 +122,7 @@ public class ThreadManager
 		 * 
 		 * @return the runnable to be enabled.
 		 */
-		public static BukkitTask startFavor()
+		public static BukkitRunnable getFavorRunnable()
 		{
 			return new BukkitRunnable()
 			{
@@ -142,7 +134,7 @@ public class ThreadManager
 					// Update Favor
 					DPlayer.Util.updateFavor(multiplier);
 				}
-			}.runTaskTimerAsynchronously(Demigods.plugin, 20, (Demigods.config.getSettingInt("regeneration.favor") * 20));
+			};
 		}
 	}
 }
