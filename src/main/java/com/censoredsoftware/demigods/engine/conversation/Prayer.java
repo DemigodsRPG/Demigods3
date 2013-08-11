@@ -37,6 +37,7 @@ import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Notification;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Structures;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -199,7 +200,7 @@ public class Prayer implements ListedConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + chatTitle("Viewing Warps & Invites"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
 			if(character.getMeta().hasWarps() || character.getMeta().hasInvites())
@@ -379,7 +380,7 @@ public class Prayer implements ListedConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
 			DPlayer.Util.clearRawChat(player);
-			player.sendRawMessage(ChatColor.YELLOW + chatTitle("Viewing Notifications"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Notifications"));
 			player.sendRawMessage(" ");
 
 			for(Notification notification : character.getMeta().getNotifications())
@@ -472,7 +473,7 @@ public class Prayer implements ListedConversation
 
 			DPlayer.Util.clearRawChat(player);
 
-			player.sendRawMessage(ChatColor.YELLOW + chatTitle("Viewing Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents your current character.");
 			player.sendRawMessage(" ");
@@ -537,7 +538,7 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.clearRawChat(player);
 
 				// Send the player the info
-				player.sendRawMessage(ChatColor.YELLOW + chatTitle("Viewing Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Viewing Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getInfo().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
@@ -620,7 +621,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
 				if(context.getSessionData("name_errors") == null)
@@ -729,7 +730,7 @@ public class Prayer implements ListedConversation
 				Player player = (Player) context.getForWhom();
 
 				DPlayer.Util.clearRawChat(player);
-				player.sendRawMessage(ChatColor.YELLOW + chatTitle("Creating Character"));
+				player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -839,7 +840,7 @@ public class Prayer implements ListedConversation
 			DPlayer.Util.clearRawChat(player);
 
 			// Ask them if they have the items
-			player.sendRawMessage(ChatColor.YELLOW + chatTitle("Confirming Character"));
+			player.sendRawMessage(ChatColor.YELLOW + Messages.chatTitle("Confirming Character"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
@@ -1038,16 +1039,5 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePraying(player, false);
 			}
 		}
-	}
-
-	public static String chatTitle(String title)
-	{
-		int total = 86;
-		String chatTitle = " " + Unicodes.rightwardArrow() + " " + title + " ";
-		for(int i = 0; i < (total - chatTitle.length()); i++)
-		{
-			chatTitle += "-";
-		}
-		return chatTitle;
 	}
 }
