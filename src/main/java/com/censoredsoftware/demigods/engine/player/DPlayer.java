@@ -35,10 +35,10 @@ public class DPlayer
 	private Boolean canPvp;
 	@Attribute
 	private long lastLoginTime;
-	@Attribute
-	private long current;
-	@Attribute
-	private long previous;
+	@Reference
+	private DCharacter current;
+	@Reference
+	private DCharacter previous;
 
 	void setPlayer(String player)
 	{
@@ -107,6 +107,8 @@ public class DPlayer
 
 	public void switchCharacter(DCharacter newChar)
 	{
+		Demigods.message.broadcast("Weiner check 1"); // TODO
+
 		Player player = getOfflinePlayer().getPlayer();
 
 		if(!newChar.getOfflinePlayer().getName().equals(player.getName()))
@@ -115,11 +117,23 @@ public class DPlayer
 			return;
 		}
 
+		Demigods.message.broadcast("Weiner check 2"); // TODO
+
 		// Update the current character
 		DCharacter currChar = getCurrent();
 
+		Demigods.message.broadcast("Weiner check 3"); // TODO
+
 		if(currChar != null)
 		{
+			Demigods.message.broadcast("Weiner check 4"); // TODO
+
+			// Set to inactive and update previous
+			currChar.setActive(false);
+			this.previous = currChar;
+
+			Demigods.message.broadcast("Weiner check 5"); // TODO
+
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
 			currChar.setMaxHealth(player.getMaxHealth());
@@ -130,24 +144,39 @@ public class DPlayer
 			currChar.setLocation(player.getLocation());
 			currChar.saveInventory();
 
+			Demigods.message.broadcast("Weiner check 6"); // TODO
+
 			// Disown pets
 			Pet.Util.disownPets(currChar.getName());
 
-			// Set to inactive and update previous
-			currChar.setActive(false);
-			this.previous = currChar.getId();
+			Demigods.message.broadcast("Weiner check 7"); // TODO
 
 			// Save it
 			JOhm.save(currChar);
+
+			Demigods.message.broadcast("Weiner check 8"); // TODO
 		}
+
+		Demigods.message.broadcast("Weiner check 9"); // TODO
 
 		// Set new character to active
 		newChar.setActive(true);
-		this.current = newChar.getId();
+		this.current = newChar;
+
+		Demigods.message.broadcast("Weiner check 10"); // TODO
 
 		// Update their inventory
-		if(getCharacters().size() == 1) newChar.saveInventory();
+		if(getCharacters().size() == 1)
+		{
+			Demigods.message.broadcast("Weiner check 10-1"); // TODO
+
+			newChar.saveInventory();
+
+			Demigods.message.broadcast("Weiner check 10-2"); // TODO
+		}
 		newChar.getInventory().setToPlayer(player);
+
+		Demigods.message.broadcast("Weiner check 11"); // TODO
 
 		// Update health, experience, and name
 		// TODO: Confirm that this covers all of the bases too.
@@ -158,6 +187,7 @@ public class DPlayer
 		}
 		catch(Exception e)
 		{
+			Demigods.message.warning("Character name too long.");
 			e.printStackTrace();
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
@@ -166,8 +196,12 @@ public class DPlayer
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
 
+		Demigods.message.broadcast("Weiner check 12"); // TODO
+
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
+
+		Demigods.message.broadcast("Weiner check 13"); // TODO
 
 		// Teleport them
 		try
@@ -179,9 +213,13 @@ public class DPlayer
 			Demigods.message.severe("There was a problem while teleporting a player to their character.");
 		}
 
+		Demigods.message.broadcast("Weiner check 14"); // TODO
+
 		// Save instances
 		JOhm.save(this);
 		JOhm.save(newChar);
+
+		Demigods.message.broadcast("Weiner check 15"); // TODO
 	}
 
 	public Long getId()
@@ -207,26 +245,13 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		try
-		{
-			DCharacter current = JOhm.get(DCharacter.class, this.current);
-			if(current.isUsable()) return current;
-		}
-		catch(Exception ignored)
-		{}
+		if(this.current != null && this.current.isUsable()) return this.current;
 		return null;
 	}
 
 	public DCharacter getPrevious()
 	{
-		try
-		{
-			DCharacter previous = JOhm.get(DCharacter.class, this.previous);
-			if(previous.isUsable()) return previous;
-		}
-		catch(Exception ignored)
-		{}
-		return null;
+		return this.previous;
 	}
 
 	public Set<DCharacter> getCharacters()
@@ -256,6 +281,7 @@ public class DPlayer
 		{
 			return getOfflinePlayer().isOnline();
 		}
+
 	}
 
 	public static class Util
