@@ -102,6 +102,7 @@ public class DCharacter implements Battle.Participant
 	public void saveInventory()
 	{
 		this.inventory = Util.createInventory(this);
+		JOhm.save(this);
 	}
 
 	public void setHealth(double health)
@@ -137,11 +138,13 @@ public class DCharacter implements Battle.Participant
 	public void setMeta(Meta meta)
 	{
 		this.meta = meta;
+		JOhm.save(this);
 	}
 
 	public void setUsable(boolean usable)
 	{
 		this.usable = usable;
+		JOhm.save(this);
 	}
 
 	public Inventory getInventory()
