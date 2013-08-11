@@ -439,8 +439,7 @@ public class Altar implements StandaloneStructure
 				// Generate the Altar based on the block given.
 				Structure.Save save = EpisodeDemo.Structures.ALTAR.getStructure().createNew(location, false);
 				save.setDesign(design);
-				// if(!save.generate(true))
-				if(!save.slowGenerate(true))
+				if(!save.generate(true))
 				{
 					player.sendMessage(ChatColor.RED + "Could not generate.");
 					save.remove();

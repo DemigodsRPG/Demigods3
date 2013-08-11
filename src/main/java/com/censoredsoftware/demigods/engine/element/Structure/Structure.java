@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
@@ -213,13 +212,6 @@ public interface Structure
 			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
 		}
 
-		public boolean slowGenerate(boolean check)
-		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().slowGenerate(this.reference.toLocation(), check);
-			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
-		}
-
 		public void save()
 		{
 			JOhm.save(this);
@@ -287,14 +279,6 @@ public interface Structure
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
 				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
-			return true;
-		}
-
-		public boolean slowGenerate(final Location reference, boolean check)
-		{
-			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
-			for(Selection cuboid : this)
-				cuboid.slowGenerate(reference);
 			return true;
 		}
 
@@ -483,22 +467,6 @@ public interface Structure
 			{
 				BlockData data = getBlockData();
 				location.getBlock().setTypeIdAndData(data.getMaterial().getId(), data.getData(), data.getPhysics());
-			}
-		}
-
-		/**
-		 * Generate this schematic.
-		 * 
-		 * @param reference The reference Location.
-		 */
-		public void slowGenerate(Location reference)
-		{
-			// TODO Figure out how to order every falling block so that they fit perfectly.
-
-			for(Location location : getBlockLocations(reference))
-			{
-				BlockData data = getBlockData();
-				FallingBlock block = reference.getWorld().spawnFallingBlock(location.add(0, 16, 0), data.getMaterial().getId(), data.getData());
 			}
 		}
 
