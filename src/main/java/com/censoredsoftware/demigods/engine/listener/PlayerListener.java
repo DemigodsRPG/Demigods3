@@ -60,12 +60,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
-
-		// Define variables
-		Player player = event.getPlayer();
-
-		if(DPlayer.Util.isPraying(player)) DPlayer.Util.togglePraying(player, false);
+		if(!Demigods.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
