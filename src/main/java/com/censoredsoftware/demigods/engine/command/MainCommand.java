@@ -237,6 +237,7 @@ public class MainCommand extends ListedCommand
 			player.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
 			player.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
 			player.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin reload");
 			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
 		}
 
@@ -249,7 +250,14 @@ public class MainCommand extends ListedCommand
 				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
 				return true;
 			}
-			if(option1.equalsIgnoreCase("wand"))
+			else if(option1.equalsIgnoreCase("reload"))
+			{
+				Demigods.plugin.getServer().getPluginManager().disablePlugin(Demigods.plugin);
+				Demigods.plugin.getServer().getPluginManager().enablePlugin(Demigods.plugin);
+				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.RELOAD_COMPLETE));
+				return true;
+			}
+			else if(option1.equalsIgnoreCase("wand"))
 			{
 				if(!Admins.wandEnabled(player))
 				{
