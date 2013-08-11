@@ -120,10 +120,6 @@ public class DPlayer
 
 		if(currChar != null)
 		{
-			// Set to inactive and update previous
-			currChar.setActive(false);
-			this.previous = currChar;
-
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
 			currChar.setMaxHealth(player.getMaxHealth());
@@ -136,6 +132,10 @@ public class DPlayer
 
 			// Disown pets
 			Pet.Util.disownPets(currChar.getName());
+
+			// Set to inactive and update previous
+			currChar.setActive(false);
+			this.previous = currChar;
 
 			// Save it
 			JOhm.save(currChar);

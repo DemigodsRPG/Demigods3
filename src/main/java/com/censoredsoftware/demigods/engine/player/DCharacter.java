@@ -843,7 +843,7 @@ public class DCharacter implements Battle.Participant
 			character.setDeaths(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta());
-			JOhm.save(character, true);
+			JOhm.save(character);
 			return character;
 		}
 
@@ -856,7 +856,8 @@ public class DCharacter implements Battle.Participant
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
 			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
 			charInventory.setItems(inventory);
-			JOhm.save(charInventory, true);
+			JOhm.save(charInventory);
+			JOhm.save(character);
 			return charInventory;
 		}
 
@@ -867,7 +868,7 @@ public class DCharacter implements Battle.Participant
 			charInventory.setChestplate(new ItemStack(Material.AIR));
 			charInventory.setLeggings(new ItemStack(Material.AIR));
 			charInventory.setBoots(new ItemStack(Material.AIR));
-			JOhm.save(charInventory, true);
+			JOhm.save(charInventory);
 			return charInventory;
 		}
 
