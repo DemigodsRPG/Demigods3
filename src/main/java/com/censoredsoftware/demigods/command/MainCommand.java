@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
 import com.censoredsoftware.core.util.Unicodes;
@@ -39,8 +40,9 @@ public class MainCommand extends ListedCommand
 		{
 			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
 			{
-				Demigods.plugin.getServer().getPluginManager().disablePlugin(Demigods.plugin);
-				Demigods.plugin.getServer().getPluginManager().enablePlugin(Demigods.plugin);
+				PluginManager pluginManager = Demigods.plugin.getServer().getPluginManager();
+				pluginManager.disablePlugin(Demigods.plugin);
+				pluginManager.enablePlugin(Demigods.plugin);
 				sender.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.RELOAD_COMPLETE));
 				return true;
 			}
