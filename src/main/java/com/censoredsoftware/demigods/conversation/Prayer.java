@@ -403,7 +403,7 @@ public class Prayer implements ListedConversation
 				}
 
 				// Set expires
-				String expires = notification.hasExpiration() ? ChatColor.GRAY + " (expires in " + Times.getTimeTagged(notification.getExpiration()) + ")" : "";
+				String expires = notification.hasExpiration() ? ChatColor.GRAY + " (expires in " + Times.getTimeTagged(notification.getExpiration(), true) + ")" : "";
 
 				// Send the notification
 				player.sendRawMessage(color + "    " + notification.getMessage() + expires);

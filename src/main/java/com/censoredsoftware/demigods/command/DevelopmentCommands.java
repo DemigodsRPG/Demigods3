@@ -82,7 +82,7 @@ public class DevelopmentCommands extends ListedCommand
 		player.sendMessage(ChatColor.RED + "Recorded chat:");
 		for(Map.Entry<Long, String> entry : recorder.stop().entrySet())
 		{
-			player.sendMessage(Times.getTimeTagged(entry.getKey()) + " ago - " + entry.getValue());
+			player.sendMessage(Times.getTimeTagged(entry.getKey(), true) + " ago - " + entry.getValue());
 		}
 
 		return true;
