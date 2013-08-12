@@ -404,6 +404,7 @@ public class Battle
 
 		public static Location randomRespawnPoint(Battle battle)
 		{
+			// TODO THIS IS BROKEN
 			List<Location> respawnPoints = getSafeRespawnPoints(battle);
 			if(respawnPoints.size() == 0) return battle.getStartLocation();
 
@@ -419,6 +420,7 @@ public class Battle
 			changed.setYaw(180 - DLocation.Util.toDegree(Math.atan2(Y, X)));
 			changed.setPitch(90 - DLocation.Util.toDegree(Math.acos(Z)));
 			return changed;
+			// TODO THIS IS BROKEN
 		}
 
 		public static boolean isSafeLocation(Location reference, Location checking)
@@ -456,27 +458,21 @@ public class Battle
 			return Pet.Util.getTameable((LivingEntity) entity);
 		}
 
-		public static void teleportIfNeeded(Participant participant, Battle battle)
-		{
-			if(participant.getRelatedCharacter().getOfflinePlayer().isOnline() && !existsInRadius(participant.getRelatedCharacter().getOfflinePlayer().getPlayer().getLocation())) participant.getRelatedCharacter().getOfflinePlayer().getPlayer().teleport(randomRespawnPoint(battle));
-		}
-
-		public static boolean battleDeath(Participant damager, Participant damagee, Battle battle)
+		public static void battleDeath(Participant damager, Participant damagee, Battle battle)
 		{
 			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.getMeta().addKill(damager);
-			return battleDeath(damagee, battle);
+			battleDeath(damagee, battle);
 		}
 
-		public static boolean battleDeath(Participant damagee, Battle battle)
+		public static void battleDeath(Participant damagee, Battle battle)
 		{
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.getMeta().addDeath(damagee);
-			return true;
 		}
 
 		public static boolean canTarget(Entity entity)
