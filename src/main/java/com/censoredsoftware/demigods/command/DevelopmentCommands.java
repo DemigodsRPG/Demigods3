@@ -14,10 +14,10 @@ import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
-import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.conversation.ChatRecorder;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
@@ -64,14 +64,9 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Disabling all battles...");
-
-		for(Battle battle : Battle.Util.getAllActive())
-		{
-			battle.end();
-		}
-
-		player.sendMessage("All battles disabled!");
+		ChatRecorder recorder = ChatRecorder.Util.startRecording(player);
+		DataManager.saveTemp(player.getName(), "recording", recorder);
+		player.sendMessage(ChatColor.RED + "Recording chat...");
 
 		return true;
 	}
@@ -80,10 +75,13 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		Region region = DPlayer.Util.getPlayer(player).getRegion();
+		ChatRecorder recorder = (ChatRecorder) DataManager.getValueTemp(player.getName(), "recording");
 
-		player.sendMessage(ChatColor.YELLOW + "X: " + region.getX());
-		player.sendMessage(ChatColor.YELLOW + "Z: " + region.getZ());
+		player.sendMessage(ChatColor.RED + "Recorded chat:");
+		for(String string : recorder.stop())
+		{
+			player.sendMessage(string);
+		}
 
 		return true;
 	}
