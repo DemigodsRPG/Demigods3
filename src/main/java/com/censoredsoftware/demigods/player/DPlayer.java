@@ -384,12 +384,15 @@ public class DPlayer
 
 				// Send held back chat
 				Map<Long, String> messages = chatRecording.stop();
-				player.sendMessage(" ");
-				player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.entrySet().size())).build());
-				for(Map.Entry<Long, String> entry : messages.entrySet())
+				if(messages.entrySet().size() > 0)
 				{
-					String time = Times.getTimeTagged(entry.getKey(), true);
-					player.sendMessage(ChatColor.GRAY + "[" + (time.startsWith("-") ? time.substring(1) : time) + " ago]" + entry.getValue());
+					player.sendMessage(" ");
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.entrySet().size())).build());
+					for(Map.Entry<Long, String> entry : messages.entrySet())
+					{
+						String time = Times.getTimeTagged(entry.getKey(), true);
+						player.sendMessage(ChatColor.GRAY + "[" + (time.startsWith("-") ? time.substring(1) : time) + " ago]" + entry.getValue());
+					}
 				}
 			}
 		}
