@@ -29,9 +29,6 @@ commands:
     test3:
         usage: /test3
         permission: demigods.admin
-    soundtest:
-        usage: /soundtest <sound> <pitch>
-        permission: demigods.admin
     hspawn:
         usage: /hspawn
     makecharacters:

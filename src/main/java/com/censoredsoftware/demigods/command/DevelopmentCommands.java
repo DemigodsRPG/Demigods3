@@ -6,10 +6,8 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
@@ -27,7 +25,7 @@ public class DevelopmentCommands extends ListedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "soundtest", "makecharacters", "removechar");
+		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "makecharacters", "removechar");
 	}
 
 	@Override
@@ -38,7 +36,6 @@ public class DevelopmentCommands extends ListedCommand
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
-		else if(command.getName().equalsIgnoreCase("soundtest")) return soundTest(sender, args);
 		else if(command.getName().equalsIgnoreCase("makecharacters")) return makeCharacters(sender, args);
 		return false;
 	}
@@ -125,31 +122,6 @@ public class DevelopmentCommands extends ListedCommand
 		return true;
 	}
 
-	private static boolean soundTest(CommandSender sender, final String[] args)
-	{
-		if(sender instanceof ConsoleCommandSender) return false;
-		Player player = (Player) sender;
-		try
-		{
-			Sound sound = Sound.valueOf(args[0].toUpperCase());
-			if(!isFloat(args[1].toUpperCase()))
-			{
-				player.sendMessage(ChatColor.RED + "Set a pitch, ie: 1F");
-				return false;
-			}
-			else
-			{
-				player.playSound(player.getLocation(), sound, 1F, Float.parseFloat(args[1].toUpperCase()));
-				player.sendMessage(ChatColor.YELLOW + "Sound played.");
-				return true;
-			}
-		}
-		catch(Exception ignored)
-		{}
-		player.sendMessage(ChatColor.RED + "Wrong arguments, please try again.");
-		return false;
-	}
-
 	private static boolean makeCharacters(CommandSender sender, final String[] args)
 	{
 		DPlayer player = DPlayer.Util.getPlayer((Player) sender);
@@ -175,25 +147,6 @@ public class DevelopmentCommands extends ListedCommand
 		try
 		{
 			Integer.parseInt(string);
-			return true;
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Check to see if an input string is a float.
-	 * 
-	 * @param string The input string.
-	 * @return True if the string is a float.
-	 */
-	private static boolean isFloat(String string)
-	{
-		try
-		{
-			Float.parseFloat(string);
 			return true;
 		}
 		catch(Exception e)
