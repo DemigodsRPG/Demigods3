@@ -16,8 +16,6 @@ import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.structure.Obelisk;
 import com.censoredsoftware.demigods.structure.Shrine;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.task.Task;
-import com.censoredsoftware.demigods.task.Tutorial;
 
 public class Elements
 {
@@ -58,27 +56,6 @@ public class Elements
 			for(ListedDeity deity : values())
 				if(deity.getName().equalsIgnoreCase(name)) return deity.getDeity();
 			return null;
-		}
-	}
-
-	public static enum Tasks implements ListedTaskSet
-	{
-		/**
-		 * The Tutorial List.
-		 */
-		Tutorial(new Tutorial());
-
-		private final Task.List taskSet;
-
-		private Tasks(Task.List tasks)
-		{
-			this.taskSet = tasks;
-		}
-
-		@Override
-		public Task.List getTaskSet()
-		{
-			return taskSet;
 		}
 	}
 
@@ -131,11 +108,6 @@ public class Elements
 		public String getName();
 
 		public Deity getDeity();
-	}
-
-	public interface ListedTaskSet
-	{
-		public Task.List getTaskSet();
 	}
 
 	public interface ListedStructure

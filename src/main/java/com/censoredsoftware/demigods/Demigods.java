@@ -24,7 +24,6 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.structure.MassiveStructurePart;
-import com.censoredsoftware.demigods.task.Task;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -139,16 +138,6 @@ public class Demigods
 			for(Ability ability : deity.getDeity().getAbilities())
 			{
 				if(ability.getListener() != null) register.registerEvents(ability.getListener(), instance);
-			}
-		}
-
-		// Tasks
-		for(Elements.ListedTaskSet quest : Elements.Tasks.values())
-		{
-			if(quest.getTaskSet().getTasks() == null) continue;
-			for(Task task : quest.getTaskSet())
-			{
-				if(task.getListener() != null) register.registerEvents(task.getListener(), instance);
 			}
 		}
 
