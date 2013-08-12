@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.google.common.collect.Lists;
 
 public class ChatRecorder implements Listener
@@ -36,6 +37,8 @@ public class ChatRecorder implements Listener
 		{
 			lines.add(event.getFormat());
 		}
+
+		Demigods.message.broadcast("heard dat!"); // TODO
 	}
 
 	public static class Util
