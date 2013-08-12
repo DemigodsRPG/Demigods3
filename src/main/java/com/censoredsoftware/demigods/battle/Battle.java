@@ -253,6 +253,8 @@ public class Battle
 			battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
 			battle.setMaxKills(Demigods.config.getSettingInt("battles.max_kills"));
 
+			battle.initialize();
+
 			battle.setStarter(damager.getRelatedCharacter());
 			battle.addParticipant(damager);
 			battle.addParticipant(damaged);
