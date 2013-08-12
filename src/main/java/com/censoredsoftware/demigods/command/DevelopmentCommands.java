@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -16,10 +15,8 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
 import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.conversation.ChatRecorder;
-import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
@@ -66,9 +63,14 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		ChatRecorder recorder = ChatRecorder.Util.startRecording(player);
-		DataManager.saveTemp(player.getName(), "recording", recorder);
-		player.sendMessage(ChatColor.RED + "Recording chat...");
+		player.sendMessage("Disabling all battles...");
+
+		for(Battle battle : Battle.Util.getAllActive())
+		{
+			battle.end();
+		}
+
+		player.sendMessage("All battles disabled!");
 
 		return true;
 	}
@@ -77,13 +79,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		ChatRecorder recorder = (ChatRecorder) DataManager.getValueTemp(player.getName(), "recording");
-
-		player.sendMessage(ChatColor.RED + "Recorded chat:");
-		for(Map.Entry<Long, String> entry : recorder.stop().entrySet())
-		{
-			player.sendMessage(Times.getTimeTagged(entry.getKey()) + " ago - " + entry.getValue());
-		}
+		// TODO
 
 		return true;
 	}
