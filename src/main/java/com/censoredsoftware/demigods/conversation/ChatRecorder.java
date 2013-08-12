@@ -40,7 +40,7 @@ public class ChatRecorder
 				for(Map.Entry<Long, String> entry : lines.entrySet())
 				{
 					String time = Times.getTimeTagged(entry.getKey(), true);
-					player.sendMessage(ChatColor.GRAY + "[" + time + " ago]" + entry.getValue());
+					add(ChatColor.GRAY + "[" + time + " ago]" + entry.getValue());
 				}
 			}
 		};
