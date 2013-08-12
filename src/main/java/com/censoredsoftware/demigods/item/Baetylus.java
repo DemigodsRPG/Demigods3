@@ -97,4 +97,9 @@ public enum Baetylus
 			return item;
 		}
 	}
+
+	public static class Util
+	{
+		// TODO
+	}
 }
