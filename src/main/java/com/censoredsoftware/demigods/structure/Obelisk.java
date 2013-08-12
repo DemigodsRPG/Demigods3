@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,52 +28,52 @@ public class Obelisk implements StandaloneStructure
 	{
 		{
 			// Clickable block.
-			add(new Selection(0, 0, 2, org.bukkit.Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(0, 0, 2, Material.SMOOTH_BRICK, (byte) 3));
 
 			// Everything else.
-			add(new Selection(0, 0, -1, 0, 2, -1, Selection.Material.STONE_BRICK));
-			add(new Selection(0, 0, 1, 0, 2, 1, Selection.Material.STONE_BRICK));
-			add(new Selection(1, 0, 0, 1, 2, 0, Selection.Material.STONE_BRICK));
-			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.Material.STONE_BRICK));
-			add(new Selection(0, 4, -1, 0, 5, -1, Selection.Material.STONE_BRICK));
-			add(new Selection(0, 4, 1, 0, 5, 1, Selection.Material.STONE_BRICK));
-			add(new Selection(1, 4, 0, 1, 5, 0, Selection.Material.STONE_BRICK));
-			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.Material.STONE_BRICK));
-			add(new Selection(0, 3, 0, org.bukkit.Material.REDSTONE_BLOCK));
-			add(new Selection(0, 4, 0, org.bukkit.Material.REDSTONE_BLOCK));
-			add(new Selection(0, 3, -1, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(0, 3, 1, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(1, 3, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(-1, 3, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(0, 5, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(1, 5, -1, Selection.Material.VINE_1));
-			add(new Selection(-1, 5, -1, Selection.Material.VINE_1));
-			add(new Selection(1, 5, 1, Selection.Material.VINE_4));
-			add(new Selection(-1, 5, 1, Selection.Material.VINE_4));
+			add(new Selection(0, 0, -1, 0, 2, -1, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 0, 1, 0, 2, 1, Selection.Preset.STONE_BRICK));
+			add(new Selection(1, 0, 0, 1, 2, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 4, -1, 0, 5, -1, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 4, 1, 0, 5, 1, Selection.Preset.STONE_BRICK));
+			add(new Selection(1, 4, 0, 1, 5, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 3, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 4, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 5, -1, Selection.Preset.VINE_1));
+			add(new Selection(-1, 5, -1, Selection.Preset.VINE_1));
+			add(new Selection(1, 5, 1, Selection.Preset.VINE_4));
+			add(new Selection(-1, 5, 1, Selection.Preset.VINE_4));
 		}
 	};
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Clickable block.
-			add(new Selection(0, 0, 2, org.bukkit.Material.SANDSTONE, (byte) 1));
+			add(new Selection(0, 0, 2, Material.SANDSTONE, (byte) 1));
 
 			// Everything else.
-			add(new Selection(0, 0, -1, 0, 2, -1, org.bukkit.Material.SANDSTONE));
-			add(new Selection(0, 0, 1, 0, 2, 1, org.bukkit.Material.SANDSTONE));
-			add(new Selection(1, 0, 0, 1, 2, 0, org.bukkit.Material.SANDSTONE));
-			add(new Selection(-1, 0, 0, -1, 2, 0, org.bukkit.Material.SANDSTONE));
-			add(new Selection(0, 4, -1, 0, 5, -1, org.bukkit.Material.SANDSTONE));
-			add(new Selection(0, 4, 1, 0, 5, 1, org.bukkit.Material.SANDSTONE));
-			add(new Selection(1, 4, 0, 1, 5, 0, org.bukkit.Material.SANDSTONE));
-			add(new Selection(-1, 4, 0, -1, 5, 0, org.bukkit.Material.SANDSTONE));
-			add(new Selection(0, 3, 0, org.bukkit.Material.REDSTONE_BLOCK));
-			add(new Selection(0, 4, 0, org.bukkit.Material.REDSTONE_BLOCK));
-			add(new Selection(0, 3, -1, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(0, 3, 1, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(1, 3, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(-1, 3, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
-			add(new Selection(0, 5, 0, org.bukkit.Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 0, -1, 0, 2, -1, Material.SANDSTONE));
+			add(new Selection(0, 0, 1, 0, 2, 1, Material.SANDSTONE));
+			add(new Selection(1, 0, 0, 1, 2, 0, Material.SANDSTONE));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Material.SANDSTONE));
+			add(new Selection(0, 4, -1, 0, 5, -1, Material.SANDSTONE));
+			add(new Selection(0, 4, 1, 0, 5, 1, Material.SANDSTONE));
+			add(new Selection(1, 4, 0, 1, 5, 0, Material.SANDSTONE));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Material.SANDSTONE));
+			add(new Selection(0, 3, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 4, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
 
@@ -182,11 +183,11 @@ public class Obelisk implements StandaloneStructure
 
 	public static boolean validBlockConfiguration(Block block)
 	{
-		if(!block.getType().equals(org.bukkit.Material.REDSTONE_BLOCK)) return false;
-		if(!block.getRelative(1, 0, 0).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(-1, 0, 0).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, 1).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, -1).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
+		if(!block.getType().equals(Material.REDSTONE_BLOCK)) return false;
+		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
 		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 		return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 	}

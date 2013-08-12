@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,17 +28,17 @@ public class Shrine implements StandaloneStructure
 	{
 		{
 			// Create the main block
-			add(new Selection(0, 1, 0, org.bukkit.Material.GOLD_BLOCK));
+			add(new Selection(0, 1, 0, Material.GOLD_BLOCK));
 
 			// Create the ender chest and the block below
-			add(new Selection(0, 0, 0, org.bukkit.Material.ENDER_CHEST));
-			add(new Selection(0, -1, 0, org.bukkit.Material.SMOOTH_BRICK));
+			add(new Selection(0, 0, 0, Material.ENDER_CHEST));
+			add(new Selection(0, -1, 0, Material.SMOOTH_BRICK));
 
 			// Create the rest
-			add(new Selection(-1, 0, 0, org.bukkit.Material.SMOOTH_STAIRS));
-			add(new Selection(1, 0, 0, org.bukkit.Material.SMOOTH_STAIRS, (byte) 1));
-			add(new Selection(0, 0, -1, org.bukkit.Material.SMOOTH_STAIRS, (byte) 2));
-			add(new Selection(0, 0, 1, org.bukkit.Material.SMOOTH_STAIRS, (byte) 3));
+			add(new Selection(-1, 0, 0, Material.SMOOTH_STAIRS));
+			add(new Selection(1, 0, 0, Material.SMOOTH_STAIRS, (byte) 1));
+			add(new Selection(0, 0, -1, Material.SMOOTH_STAIRS, (byte) 2));
+			add(new Selection(0, 0, 1, Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
 
@@ -134,11 +135,11 @@ public class Shrine implements StandaloneStructure
 
 	public static boolean validBlockConfiguration(Block block)
 	{
-		if(!block.getType().equals(org.bukkit.Material.IRON_BLOCK)) return false;
-		if(!block.getRelative(1, 0, 0).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(-1, 0, 0).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, 1).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, -1).getType().equals(org.bukkit.Material.COBBLESTONE)) return false;
+		if(!block.getType().equals(Material.IRON_BLOCK)) return false;
+		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
+		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
 		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 		return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 	}
