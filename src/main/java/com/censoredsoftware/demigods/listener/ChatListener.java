@@ -10,7 +10,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DPlayer;
 
-public class CommandListener implements Listener
+public class ChatListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
