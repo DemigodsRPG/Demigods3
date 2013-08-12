@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
 import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DCharacter;
@@ -63,7 +65,9 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Disabling all battles...");
+		ChatRecorder recorder = ChatRecorder.Util.startRecording(player);
+		DataManager.saveTemp(player.getName(), "recording", recorder);
+		player.sendMessage(ChatColor.RED + "Recording chat...");
 
 		for(Battle battle : Battle.Util.getAllActive())
 		{

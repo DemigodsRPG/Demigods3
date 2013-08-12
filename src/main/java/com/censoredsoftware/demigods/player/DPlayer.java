@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import redis.clients.johm.*;
 
+import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Demigods;
@@ -383,10 +384,12 @@ public class DPlayer
 
 				// Send held back chat
 				Map<Long, String> messages = chatRecording.stop();
-				player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.entrySet().size()));
+				player.sendMessage(" ");
+				player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.entrySet().size())).build());
 				for(Map.Entry<Long, String> entry : messages.entrySet())
 				{
-					player.sendMessage(ChatColor.GRAY + "[" + Times.getTimeTagged(entry.getKey()) + " ago]" + entry.getValue());
+					String time = Times.getTimeTagged(entry.getKey(), true);
+					player.sendMessage(ChatColor.GRAY + "[" + (time.startsWith("-") ? time.substring(1) : time) + " ago]" + entry.getValue());
 				}
 			}
 		}
