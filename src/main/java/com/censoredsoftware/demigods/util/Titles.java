@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.core.util.Unicodes;
 
-public class Messages
+public class Titles
 {
 	/**
 	 * Returns a formatted title ready for the chat.
@@ -15,9 +15,7 @@ public class Messages
 		int total = 86;
 		String chatTitle = " " + Unicodes.rightwardArrow() + " " + title + " ";
 		for(int i = 0; i < (total - chatTitle.length()); i++)
-		{
 			chatTitle += "-";
-		}
 		return chatTitle;
 	}
 }

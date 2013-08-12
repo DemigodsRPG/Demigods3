@@ -16,7 +16,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Titles;
 import com.google.common.collect.Sets;
 
 public class GeneralCommands extends ListedCommand
@@ -100,7 +100,7 @@ public class GeneralCommands extends ListedCommand
 
 		if(character != null && !character.getMeta().getBinds().isEmpty())
 		{
-			player.sendMessage(ChatColor.YELLOW + Messages.chatTitle("Currently Bound Abilities"));
+			player.sendMessage(ChatColor.YELLOW + Titles.chatTitle("Currently Bound Abilities"));
 			player.sendMessage(" ");
 
 			// Get the binds and display info

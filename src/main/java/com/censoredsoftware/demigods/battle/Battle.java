@@ -236,7 +236,6 @@ public class Battle
 
 	public static class Util
 	{
-
 		public static Battle create(Participant damager, Participant damaged)
 		{
 			Battle battle = new Battle();
@@ -307,9 +306,7 @@ public class Battle
 		public static Battle getBattle(Participant participant)
 		{
 			for(Battle battle : getAllActive())
-			{
 				if(battle.getParticipants().contains(participant)) return battle;
-			}
 			return null;
 		}
 
@@ -342,7 +339,6 @@ public class Battle
 
 		public static Location randomRespawnPoint(Battle battle)
 		{
-			// TODO THIS IS BROKEN
 			List<Location> respawnPoints = getSafeRespawnPoints(battle);
 			if(respawnPoints.size() == 0) return battle.getStartLocation();
 
@@ -358,12 +354,11 @@ public class Battle
 			changed.setYaw(180 - DLocation.Util.toDegree(Math.atan2(Y, X)));
 			changed.setPitch(90 - DLocation.Util.toDegree(Math.acos(Z)));
 			return changed;
-			// TODO THIS IS BROKEN
 		}
 
 		public static boolean isSafeLocation(Location reference, Location checking)
 		{
-			if(reference.getBlock().getType().isSolid() || reference.getBlock().getType().equals(Material.LAVA)) return false;
+			if(checking.getBlock().getType().isSolid() || checking.getBlock().getType().equals(Material.LAVA)) return false;
 			double referenceY = reference.getY();
 			double checkingY = checking.getY();
 			return Math.abs(referenceY - checkingY) <= 5;
@@ -375,9 +370,7 @@ public class Battle
 			{
 				{
 					for(Location location : DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 20))
-					{
 						if(isSafeLocation(battle.getStartLocation(), location)) add(location);
-					}
 				}
 			};
 		}

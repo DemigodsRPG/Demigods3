@@ -25,30 +25,6 @@ public class Zones
 		return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true);
 	}
 
-	/**
-	 * Returns true if <code>to</code> is outside of a no-PVP zone.
-	 * 
-	 * @param to the location moving towards.
-	 * @param from the location leaving from.
-	 * @return true/false if leaving a no-PVP zone.
-	 */
-	public static boolean enterZoneNoPVP(Location to, Location from)
-	{
-		return !zoneNoPVP(from) && zoneNoPVP(to);
-	}
-
-	/**
-	 * Returns true if <code>to</code> is outside of a no-PVP zone.
-	 * 
-	 * @param to the location moving towards.
-	 * @param from the location leaving from.
-	 * @return true/false if leaving a no-PVP zone.
-	 */
-	public static boolean exitZoneNoPVP(Location to, Location from)
-	{
-		return enterZoneNoPVP(from, to);
-	}
-
 	private static boolean canWorldGuardDynamicPVPAndNotNoPvPStructure(Location location)
 	{
 		return (!Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP, true)) && canWorldGuardDynamicPVP(location);
@@ -58,9 +34,7 @@ public class Zones
 	{
 		ApplicableRegionSet set = Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location);
 		for(ProtectedRegion region : set)
-		{
 			if(region.getId().toLowerCase().contains("nopvp")) return false;
-		}
 		return true;
 	}
 
