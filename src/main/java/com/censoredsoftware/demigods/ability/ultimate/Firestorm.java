@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.demigods.Demigods;
@@ -20,24 +21,92 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.collect.Lists;
 
-public class Firestorm extends Ability
+public class Firestorm implements Ability
 {
-	public static Firestorm ability;
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
-
 	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Rain down fireballs from the sky.");
-		}
-	};
+	private final static List<String> details = Lists.newArrayList("Rain down fireballs from the sky.");
+	private String deity, permission;
 
-	public Firestorm(final String deity, String permission)
+	public Firestorm(String deity, String permission)
 	{
-		super(new Listener()
+		this.deity = deity;
+		this.permission = permission;
+	}
+
+	@Override
+	public String getDeity()
+	{
+		return deity;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getCommand()
+	{
+		return command;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public int getCost()
+	{
+		return cost;
+	}
+
+	@Override
+	public int getDelay()
+	{
+		return delay;
+	}
+
+	@Override
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	@Override
+	public List<String> getDetails()
+	{
+		return details;
+	}
+
+	@Override
+	public Devotion.Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Material getWeapon()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasWeapon()
+	{
+		return getWeapon() != null;
+	}
+
+	@Override
+	public Listener getListener()
+	{
+		return new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -59,27 +128,99 @@ public class Firestorm extends Ability
 					Util.firestorm(player);
 				}
 			}
-		}, null, deity, name, command, permission, cost, delay, repeat, details, type);
-		ability = this;
+		};
 	}
 
-	public static class ShootFireball extends Ability
+	@Override
+	public BukkitRunnable getRunnable()
 	{
-		public static ShootFireball ability;
+		return null;
+	}
+
+	public static class ShootFireball implements Ability
+	{
 		private final static String name = "Fireball", command = "fireball";
 		private final static int cost = 100, delay = 5, repeat = 0;
-
-		private final static List<String> details = new ArrayList<String>(1)
-		{
-			{
-				add("Shoot a fireball at the cursor's location.");
-			}
-		};
+		private final static List<String> details = Lists.newArrayList("Shoot a fireball at the cursor's location.");
 		private final static Devotion.Type type = Devotion.Type.OFFENSE;
+		private String deity, permission;
 
-		public ShootFireball(final String deity, String permission)
+		public ShootFireball(String deity, String permission)
 		{
-			super(new Listener()
+			this.deity = deity;
+			this.permission = permission;
+		}
+
+		@Override
+		public String getDeity()
+		{
+			return deity;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public String getCommand()
+		{
+			return command;
+		}
+
+		@Override
+		public String getPermission()
+		{
+			return permission;
+		}
+
+		@Override
+		public int getCost()
+		{
+			return cost;
+		}
+
+		@Override
+		public int getDelay()
+		{
+			return delay;
+		}
+
+		@Override
+		public int getRepeat()
+		{
+			return repeat;
+		}
+
+		@Override
+		public List<String> getDetails()
+		{
+			return details;
+		}
+
+		@Override
+		public Devotion.Type getType()
+		{
+			return type;
+		}
+
+		@Override
+		public Material getWeapon()
+		{
+			return null;
+		}
+
+		@Override
+		public boolean hasWeapon()
+		{
+			return getWeapon() != null;
+		}
+
+		@Override
+		public Listener getListener()
+		{
+			return new Listener()
 			{
 				@EventHandler(priority = EventPriority.HIGH)
 				public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -101,10 +242,14 @@ public class Firestorm extends Ability
 						Firestorm.Util.fireball(player);
 					}
 				}
-			}, null, deity, name, command, permission, cost, delay, repeat, details, type);
-			ability = this;
+			};
 		}
 
+		@Override
+		public BukkitRunnable getRunnable()
+		{
+			return null;
+		}
 	}
 
 	public static class Util
@@ -134,17 +279,17 @@ public class Firestorm extends Ability
 			{
 				target = Ability.Util.autoTarget(player).getLocation();
 				notify = true;
-				if(!Ability.Util.doAbilityPreProcess(player, entity, "fireball", cost, ShootFireball.ability) || entity.getEntityId() == player.getEntityId()) return;
+				if(!Ability.Util.doAbilityPreProcess(player, entity, ShootFireball.cost, ShootFireball.type) || entity.getEntityId() == player.getEntityId()) return;
 			}
 			else
 			{
 				target = Ability.Util.directTarget(player);
 				notify = false;
-				if(!Ability.Util.doAbilityPreProcess(player, "fireball", cost, ShootFireball.ability)) return;
+				if(!Ability.Util.doAbilityPreProcess(player, ShootFireball.cost, ShootFireball.type)) return;
 			}
 
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-			character.getMeta().subtractFavor(cost);
+			DCharacter.Util.setCoolDown(character, ShootFireball.name, System.currentTimeMillis() + ShootFireball.delay);
+			character.getMeta().subtractFavor(ShootFireball.cost);
 
 			if(!Ability.Util.doTargeting(player, target, notify)) return;
 
@@ -157,7 +302,7 @@ public class Firestorm extends Ability
 			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(!Ability.Util.doAbilityPreProcess(player, name, cost, Firestorm.ability)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
 
 			int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 			Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();

@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -489,8 +488,6 @@ public class DCharacter implements Battle.Participant
 		@CollectionSet(of = Ability.Bind.class)
 		private Set<Ability.Bind> binds;
 		@CollectionMap(key = String.class, value = Boolean.class)
-		private Map<String, Boolean> taskData;
-		@CollectionMap(key = String.class, value = Boolean.class)
 		private Map<String, Ability.Devotion> devotionData;
 		@CollectionMap(key = String.class, value = DLocation.class)
 		private Map<String, DLocation> warps;
@@ -502,8 +499,7 @@ public class DCharacter implements Battle.Participant
 		void initialize()
 		{
 			// this.binds = Sets.newHashSet();
-			this.taskData = new HashMap<String, Boolean>();
-			this.devotionData = new HashMap<String, Ability.Devotion>();
+			this.devotionData = Maps.newHashMap();
 		}
 
 		public long getId()
@@ -710,16 +706,6 @@ public class DCharacter implements Battle.Participant
 		{
 			this.binds.remove(bind);
 			JOhm.delete(Ability.Bind.class, bind.getId());
-		}
-
-		public boolean isFinishedTask(String taskName)
-		{
-			return taskData.containsKey(taskName) && taskData.get(taskName);
-		}
-
-		public void finishTask(String taskName, boolean option)
-		{
-			taskData.put(taskName, option);
 		}
 
 		public Integer getAscensions()

@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.deity.insignian;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,18 +11,14 @@ import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoSplosion;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.collect.Sets;
 
-public class OmegaX17 extends Deity
+public class OmegaX17 implements Deity
 {
 	private final static String name = "OmegaX17", alliance = "Insignian", permission = "demigods.insignian.omega";
 	private final static ChatColor color = ChatColor.BLACK;
-	private final static Set<Material> claimItems = new HashSet<Material>(1)
-	{
-		{
-			add(Material.TNT);
-		}
-	};
-	private final static List<String> lore = new ArrayList<String>()
+	private final static Set<Material> claimItems = Sets.newHashSet(Material.TNT);
+	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -31,22 +26,64 @@ public class OmegaX17 extends Deity
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
-			{
 				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
-			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>(1)
-	{
-		{
-			add(new NoSplosion(name, permission));
-		}
-	};
+	private final static Type type = Type.TIER1;
+	private final static Set<Ability> abilities = Sets.newHashSet((Ability) new NoSplosion(name, permission));
 
-	public OmegaX17()
+	@Override
+	public String getName()
 	{
-		super(name, alliance, permission, color, claimItems, lore, type, abilities);
+		return name;
+	}
+
+	@Override
+	public String getAlliance()
+	{
+		return alliance;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public ChatColor getColor()
+	{
+		return color;
+	}
+
+	@Override
+	public Set<Material> getClaimItems()
+	{
+		return claimItems;
+	}
+
+	@Override
+	public List<String> getLore()
+	{
+		return lore;
+	}
+
+	@Override
+	public Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Set<Ability> getAbilities()
+	{
+		return abilities;
+	}
+
+	@Override
+	public String toString()
+	{
+		return getName();
 	}
 }

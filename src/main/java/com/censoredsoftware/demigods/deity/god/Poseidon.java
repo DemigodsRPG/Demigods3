@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.deity.god;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,21 +10,16 @@ import org.bukkit.Material;
 import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Reel;
-import com.censoredsoftware.demigods.ability.passive.InfiniteAir;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.collect.Sets;
 
-public class Poseidon extends Deity
+public class Poseidon implements Deity
 {
 	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private final static ChatColor color = ChatColor.AQUA;
-	private final static Set<Material> claimItems = new HashSet<Material>(1)
-	{
-		{
-			add(Material.DIRT);
-		}
-	};
-	private final static List<String> lore = new ArrayList<String>()
+	private final static Set<Material> claimItems = Sets.newHashSet(Material.WATER_LILY);
+	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -33,24 +27,64 @@ public class Poseidon extends Deity
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
-			{
 				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
-			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>(3)
-	{
-		{
-			add(new Swim(name, permission));
-			add(new Reel(name, permission));
-			add(new InfiniteAir(name, permission));
-		}
-	};
+	private final static Type type = Type.TIER1;
+	private final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new Reel(name, permission));
 
-	public Poseidon()
+	@Override
+	public String getName()
 	{
-		super(name, alliance, permission, color, claimItems, lore, type, abilities);
+		return name;
+	}
+
+	@Override
+	public String getAlliance()
+	{
+		return alliance;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public ChatColor getColor()
+	{
+		return color;
+	}
+
+	@Override
+	public Set<Material> getClaimItems()
+	{
+		return claimItems;
+	}
+
+	@Override
+	public List<String> getLore()
+	{
+		return lore;
+	}
+
+	@Override
+	public Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Set<Ability> getAbilities()
+	{
+		return abilities;
+	}
+
+	@Override
+	public String toString()
+	{
+		return getName();
 	}
 }

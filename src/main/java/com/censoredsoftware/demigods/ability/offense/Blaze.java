@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.ability.offense;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -12,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
@@ -19,23 +19,93 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 
-public class Blaze extends Ability
+public class Blaze implements Ability
 {
 	public static Blaze ability;
 	private final static String name = "Blaze", command = "blaze";
 	private final static int cost = 400, delay = 15, repeat = 0;
 	private final static Devotion.Type type = Devotion.Type.OFFENSE;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Ignite the ground at the target location.");
-		}
-	};
+	private final static List<String> details = Lists.newArrayList("Ignite the ground at the target location.");
+	private String deity, permission;
 
-	public Blaze(final String deity, String permission)
+	public Blaze(String deity, String permission)
 	{
-		super(new Listener()
+		this.deity = deity;
+		this.permission = permission;
+	}
+
+	@Override
+	public String getDeity()
+	{
+		return deity;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getCommand()
+	{
+		return command;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public int getCost()
+	{
+		return cost;
+	}
+
+	@Override
+	public int getDelay()
+	{
+		return delay;
+	}
+
+	@Override
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	@Override
+	public List<String> getDetails()
+	{
+		return details;
+	}
+
+	@Override
+	public Devotion.Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Material getWeapon()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasWeapon()
+	{
+		return getWeapon() != null;
+	}
+
+	@Override
+	public Listener getListener()
+	{
+		return new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -57,8 +127,13 @@ public class Blaze extends Ability
 					Util.blaze(player);
 				}
 			}
-		}, null, deity, name, command, permission, cost, delay, repeat, details, type);
-		ability = this;
+		};
+	}
+
+	@Override
+	public BukkitRunnable getRunnable()
+	{
+		return null;
 	}
 
 	public static class Util
@@ -75,13 +150,13 @@ public class Blaze extends Ability
 			{
 				target = Ability.Util.autoTarget(player).getLocation();
 				notify = true;
-				if(!Ability.Util.doAbilityPreProcess(player, entity, name, cost, ability) || entity.getEntityId() == player.getEntityId()) return;
+				if(!Ability.Util.doAbilityPreProcess(player, entity, cost, type) || entity.getEntityId() == player.getEntityId()) return;
 			}
 			else
 			{
 				target = Ability.Util.directTarget(player);
 				notify = false;
-				if(!Ability.Util.doAbilityPreProcess(player, name, cost, ability)) return;
+				if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
 			}
 			int power = character.getMeta().getDevotion(type).getLevel();
 			int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));

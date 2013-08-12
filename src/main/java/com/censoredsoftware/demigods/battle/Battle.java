@@ -33,8 +33,6 @@ public class Battle
 	@Id
 	private Long Id;
 	@Reference
-	private Meta meta;
-	@Reference
 	private DLocation startLoc;
 	@Attribute
 	@Indexed
@@ -51,11 +49,19 @@ public class Battle
 	private long startTime;
 	@Attribute
 	private long deleteTime;
-
-	void setMeta(Meta meta)
-	{
-		this.meta = meta;
-	}
+	@CollectionSet(of = DCharacter.class)
+	private Set<DCharacter> involvedPlayers;
+	@CollectionSet(of = Pet.class)
+	private Set<Pet> involvedTameable;
+	@Attribute
+	private int killCounter;
+	@CollectionMap(key = DCharacter.class, value = Integer.class)
+	private Map<DCharacter, Integer> kills;
+	@CollectionMap(key = DCharacter.class, value = Integer.class)
+	private Map<DCharacter, Integer> deaths;
+	@Reference
+	@Indexed
+	private DCharacter startedBy;
 
 	public void setRange(double range)
 	{
@@ -139,11 +145,6 @@ public class Battle
 		return this.maxKills;
 	}
 
-	public Meta getMeta()
-	{
-		return this.meta;
-	}
-
 	public Location getStartLocation()
 	{
 		return this.startLoc.toLocation();
@@ -159,6 +160,68 @@ public class Battle
 		return this.deleteTime;
 	}
 
+	void setStarter(DCharacter character)
+	{
+		this.startedBy = character;
+		addParticipant(character);
+	}
+
+	void initialize()
+	{
+		this.kills = Maps.newHashMap();
+		this.deaths = Maps.newHashMap();
+		this.involvedPlayers = Sets.newHashSet();
+		this.involvedTameable = Sets.newHashSet();
+		this.killCounter = 0;
+	}
+
+	public void addParticipant(Battle.Participant participant)
+	{
+		if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
+		else this.involvedTameable.add((Pet) participant);
+		JOhm.save(this);
+	}
+
+	public void addKill(Battle.Participant participant)
+	{
+		this.killCounter += 1;
+		DCharacter character = participant.getRelatedCharacter();
+		if(this.kills.containsKey(character)) this.kills.put(character, this.kills.get(character) + 1);
+		else this.kills.put(character, 1);
+		JOhm.save(this);
+	}
+
+	public void addDeath(Battle.Participant participant)
+	{
+		DCharacter character = participant.getRelatedCharacter();
+		if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
+		else this.deaths.put(character, 1);
+		JOhm.save(this);
+	}
+
+	public DCharacter getStarter()
+	{
+		return this.startedBy;
+	}
+
+	public Set<Battle.Participant> getParticipants()
+	{
+		return new HashSet<Battle.Participant>()
+		{
+			{
+				for(DCharacter character : involvedPlayers)
+					add(character);
+				for(Pet tamable : involvedTameable)
+					add(tamable);
+			}
+		};
+	}
+
+	public int getKillCounter()
+	{
+		return this.killCounter;
+	}
+
 	public void end()
 	{
 		// Prepare for graceful delete
@@ -168,100 +231,7 @@ public class Battle
 
 	public void delete()
 	{
-		getMeta().delete();
 		JOhm.delete(Battle.class, getId());
-	}
-
-	@Model
-	public static class Meta
-	{
-		@Id
-		private Long id;
-		@CollectionSet(of = DCharacter.class)
-		private Set<DCharacter> involvedPlayers;
-		@CollectionSet(of = Pet.class)
-		private Set<Pet> involvedTameable;
-		@Attribute
-		private int killCounter;
-		@CollectionMap(key = DCharacter.class, value = Integer.class)
-		private Map<DCharacter, Integer> kills;
-		@CollectionMap(key = DCharacter.class, value = Integer.class)
-		private Map<DCharacter, Integer> deaths;
-		@Reference
-		@Indexed
-		private DCharacter startedBy;
-
-		void setStarter(DCharacter character)
-		{
-			this.startedBy = character;
-			addParticipant(character);
-		}
-
-		void initialize()
-		{
-			this.kills = Maps.newHashMap();
-			this.deaths = Maps.newHashMap();
-			this.involvedPlayers = Sets.newHashSet();
-			this.involvedTameable = Sets.newHashSet();
-			this.killCounter = 0;
-		}
-
-		public void addParticipant(Battle.Participant participant)
-		{
-			if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
-			else this.involvedTameable.add((Pet) participant);
-			JOhm.save(this);
-		}
-
-		public void addKill(Battle.Participant participant)
-		{
-			this.killCounter += 1;
-			DCharacter character = participant.getRelatedCharacter();
-			if(this.kills.containsKey(character)) this.kills.put(character, this.kills.get(character) + 1);
-			else this.kills.put(character, 1);
-			JOhm.save(this);
-		}
-
-		public void addDeath(Battle.Participant participant)
-		{
-			DCharacter character = participant.getRelatedCharacter();
-			if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
-			else this.deaths.put(character, 1);
-			JOhm.save(this);
-		}
-
-		public DCharacter getStarter()
-		{
-			return this.startedBy;
-		}
-
-		public Set<Battle.Participant> getParticipants()
-		{
-			return new HashSet<Battle.Participant>()
-			{
-				{
-					for(DCharacter character : involvedPlayers)
-						add(character);
-					for(Pet tamable : involvedTameable)
-						add(tamable);
-				}
-			};
-		}
-
-		public int getKillCounter()
-		{
-			return this.killCounter;
-		}
-
-		public long getId()
-		{
-			return this.id;
-		}
-
-		public void delete()
-		{
-			JOhm.delete(Meta.class, getId());
-		}
 	}
 
 	public static class Util
@@ -284,23 +254,11 @@ public class Battle
 			battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
 			battle.setMaxKills(Demigods.config.getSettingInt("battles.max_kills"));
 
-			Meta meta = createMeta(damager);
-			meta.addParticipant(damager);
-			meta.addParticipant(damaged);
-			battle.setMeta(meta);
+			battle.setStarter(damager.getRelatedCharacter());
+			battle.addParticipant(damager);
+			battle.addParticipant(damaged);
 			JOhm.save(battle);
 			return battle;
-		}
-
-		public static Meta createMeta(Battle.Participant participant)
-		{
-			DCharacter character = participant.getRelatedCharacter();
-
-			Meta meta = new Meta();
-			meta.initialize();
-			meta.setStarter(character);
-			JOhm.save(meta);
-			return meta;
 		}
 
 		public static Battle get(Long id)
@@ -341,7 +299,7 @@ public class Battle
 		{
 			for(Battle battle : getAllActive())
 			{
-				if(battle.getMeta().getParticipants().contains(participant)) return true;
+				if(battle.getParticipants().contains(participant)) return true;
 			}
 			return false;
 		}
@@ -350,7 +308,7 @@ public class Battle
 		{
 			for(Battle battle : getAllActive())
 			{
-				if(battle.getMeta().getParticipants().contains(participant)) return battle;
+				if(battle.getParticipants().contains(participant)) return battle;
 			}
 			return null;
 		}
@@ -442,7 +400,7 @@ public class Battle
 		{
 			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
-			battle.getMeta().addKill(damager);
+			battle.addKill(damager);
 			battleDeath(damagee, battle);
 		}
 
@@ -452,7 +410,7 @@ public class Battle
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
-			battle.getMeta().addDeath(damagee);
+			battle.addDeath(damagee);
 		}
 
 		public static boolean canTarget(Entity entity)
@@ -488,7 +446,7 @@ public class Battle
 		{
 			// Battle onTick logic
 			for(Battle battle : Battle.Util.getAllActive())
-				if(battle.getMeta().getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getMeta().getKillCounter() > battle.getMinKills()) battle.end();
+				if(battle.getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() > battle.getMinKills()) battle.end();
 
 			// Delete all inactive battles
 			for(Battle remove : Battle.Util.getAllInactive())

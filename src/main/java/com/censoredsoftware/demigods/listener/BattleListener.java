@@ -54,8 +54,8 @@ public class BattleListener implements Listener
 			Battle battle = Battle.Util.getNear(midpoint) != null ? Battle.Util.getNear(midpoint) : Battle.Util.getInRadius(midpoint);
 
 			// Add participants from this event
-			battle.getMeta().addParticipant(damageeParticipant);
-			battle.getMeta().addParticipant(damagerParticipant);
+			battle.addParticipant(damageeParticipant);
+			battle.addParticipant(damagerParticipant);
 
 			// Battle death
 			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())

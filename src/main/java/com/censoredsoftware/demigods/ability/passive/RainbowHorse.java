@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
+import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.core.util.Randoms;
@@ -13,23 +14,96 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.Pet;
 import com.google.common.collect.Lists;
 
-public class RainbowHorse extends Ability
+public class RainbowHorse implements Ability
 {
-	public static RainbowHorse ability;
 	private final static String name = "Horse of a Different Color", command = null;
 	private final static int cost = 0, delay = 0, repeat = 100;
-
 	private final static Devotion.Type type = Devotion.Type.PASSIVE;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("All of you horse are belong to us.");
-		}
-	};
+	private final static List<String> details = Lists.newArrayList("All of you horse are belong to us.");
+	private String deity, permission;
 
 	public RainbowHorse(String deity, String permission)
 	{
-		super(null, new BukkitRunnable()
+		this.deity = deity;
+		this.permission = permission;
+	}
+
+	@Override
+	public String getDeity()
+	{
+		return deity;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getCommand()
+	{
+		return command;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public int getCost()
+	{
+		return cost;
+	}
+
+	@Override
+	public int getDelay()
+	{
+		return delay;
+	}
+
+	@Override
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	@Override
+	public List<String> getDetails()
+	{
+		return details;
+	}
+
+	@Override
+	public Devotion.Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Material getWeapon()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasWeapon()
+	{
+		return getWeapon() != null;
+	}
+
+	@Override
+	public Listener getListener()
+	{
+		return null;
+	}
+
+	@Override
+	public BukkitRunnable getRunnable()
+	{
+		return new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -48,7 +122,6 @@ public class RainbowHorse extends Ability
 			{
 				return Lists.newArrayList(Horse.Color.values()).get(Randoms.generateIntRange(0, 5));
 			}
-		}, deity, name, command, permission, cost, delay, repeat, details, type);
-		ability = this;
+		};
 	}
 }

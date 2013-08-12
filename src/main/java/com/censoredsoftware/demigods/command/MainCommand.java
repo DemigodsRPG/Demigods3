@@ -77,7 +77,7 @@ public class MainCommand extends ListedCommand
 		}
 
 		Demigods.message.tagged(sender, "Documentation");
-		for(String alliance : Deity.getLoadedDeityAlliances())
+		for(String alliance : Deity.Util.getLoadedDeityAlliances())
 		{
 			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
@@ -176,7 +176,7 @@ public class MainCommand extends ListedCommand
 			}
 		}
 
-		for(String alliance : Deity.getLoadedDeityAlliances())
+		for(String alliance : Deity.Util.getLoadedDeityAlliances())
 		{
 			if(!player.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			if(category.equalsIgnoreCase(alliance))

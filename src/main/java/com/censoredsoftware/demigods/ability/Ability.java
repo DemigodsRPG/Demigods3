@@ -40,117 +40,35 @@ import com.censoredsoftware.demigods.player.Pet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-public abstract class Ability
+public interface Ability
 {
-	private final String deity;
-	private final String name;
-	private final String command;
-	private final String permission;
-	private final int cost;
-	private final int delay;
-	private final int repeat;
-	private final List<String> details;
-	private final Devotion.Type type;
-	private Material weapon;
-	private final Listener listener;
-	private final BukkitRunnable runnable;
-	private static final int TARGET_OFFSET = 5;
+	public static final int TARGET_OFFSET = 5;
 
-	public Ability(Listener listener, BukkitRunnable runnable, String deity, String name, String command, String permission, int cost, int delay, int repeat, List<String> details, Devotion.Type type)
-	{
-		this.deity = deity;
-		this.name = name;
-		this.command = command;
-		this.permission = permission;
-		this.cost = cost;
-		this.delay = delay;
-		this.repeat = repeat;
-		this.details = details;
-		this.type = type;
-		this.listener = listener;
-		this.runnable = runnable;
-	}
+	public String getDeity();
 
-	public Ability(Listener listener, BukkitRunnable runnable, String deity, String name, String command, String permission, int cost, int delay, int repeat, List<String> details, Devotion.Type type, Material weapon)
-	{
-		this.deity = deity;
-		this.name = name;
-		this.command = command;
-		this.permission = permission;
-		this.cost = cost;
-		this.delay = delay;
-		this.repeat = repeat;
-		this.details = details;
-		this.type = type;
-		this.weapon = weapon;
-		this.listener = listener;
-		this.runnable = runnable;
-	}
+	public String getName();
 
-	public String getDeity()
-	{
-		return deity;
-	}
+	public String getCommand();
 
-	public String getName()
-	{
-		return name;
-	}
+	public String getPermission();
 
-	public String getCommand()
-	{
-		return command;
-	}
+	public int getCost();
 
-	public String getPermission()
-	{
-		return permission;
-	}
+	public int getDelay();
 
-	public int getCost()
-	{
-		return cost;
-	}
+	public int getRepeat();
 
-	public int getDelay()
-	{
-		return delay;
-	}
+	public List<String> getDetails();
 
-	public int getRepeat()
-	{
-		return repeat;
-	}
+	public Devotion.Type getType();
 
-	public List<String> getDetails()
-	{
-		return details;
-	}
+	public Material getWeapon();
 
-	public Devotion.Type getType()
-	{
-		return type;
-	}
+	public boolean hasWeapon();
 
-	public Material getWeapon()
-	{
-		return weapon;
-	}
+	public Listener getListener();
 
-	public boolean hasWeapon()
-	{
-		return weapon != null;
-	}
-
-	public Listener getListener()
-	{
-		return listener;
-	}
-
-	public BukkitRunnable getRunnable()
-	{
-		return runnable;
-	}
+	public BukkitRunnable getRunnable();
 
 	@Model
 	public static class Bind
@@ -354,12 +272,10 @@ public abstract class Ability
 		 * passed all pre-process tests.
 		 * 
 		 * @param player the player doing the ability
-		 * @param name the name of the ability
 		 * @param cost the cost (in favor) of the ability
-		 * @param ability the Info object
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean doAbilityPreProcess(Player player, String name, int cost, Ability ability)
+		public static boolean doAbilityPreProcess(Player player, int cost, Devotion.Type type)
 		{
 			// DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			return doAbilityPreProcess(player, cost); // TODO callAbilityEvent(name, character, cost, info);
@@ -372,12 +288,10 @@ public abstract class Ability
 		 * 
 		 * @param player the Player doing the ability
 		 * @param target the LivingEntity being targeted
-		 * @param name the name of the ability
 		 * @param cost the cost (in favor) of the ability
-		 * @param ability the Info object
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean doAbilityPreProcess(Player player, LivingEntity target, String name, int cost, Ability ability)
+		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost, Devotion.Type type)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 

@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.deity.titan;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,18 +12,14 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.collect.Sets;
 
-public class Prometheus extends Deity
+public class Prometheus implements Deity
 {
 	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
 	private final static ChatColor color = ChatColor.GOLD;
-	private final static Set<Material> claimItems = new HashSet<Material>(1)
-	{
-		{
-			add(Material.DIRT);
-		}
-	};
-	private final static List<String> lore = new ArrayList<String>()
+	private final static Set<Material> claimItems = Sets.newHashSet(Material.FLINT);
+	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -32,24 +27,64 @@ public class Prometheus extends Deity
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
 			for(Material item : claimItems)
-			{
 				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
-			}
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
-	private final static Type type = Type.DEMO;
-	private final static Set<Ability> abilities = new HashSet<Ability>(3)
-	{
-		{
-			add(new Firestorm.ShootFireball(name, permission));
-			add(new Blaze(name, permission));
-			add(new Firestorm(name, permission));
-		}
-	};
+	private final static Type type = Type.TIER1;
+	private final static Set<Ability> abilities = Sets.newHashSet(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission));
 
-	public Prometheus()
+	@Override
+	public String getName()
 	{
-		super(name, alliance, permission, color, claimItems, lore, type, abilities);
+		return name;
+	}
+
+	@Override
+	public String getAlliance()
+	{
+		return alliance;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public ChatColor getColor()
+	{
+		return color;
+	}
+
+	@Override
+	public Set<Material> getClaimItems()
+	{
+		return claimItems;
+	}
+
+	@Override
+	public List<String> getLore()
+	{
+		return lore;
+	}
+
+	@Override
+	public Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Set<Ability> getAbilities()
+	{
+		return abilities;
+	}
+
+	@Override
+	public String toString()
+	{
+		return getName();
 	}
 }

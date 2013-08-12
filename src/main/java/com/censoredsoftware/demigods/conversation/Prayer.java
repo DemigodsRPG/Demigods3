@@ -748,7 +748,7 @@ public class Prayer implements ListedConversation
 
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 
-				for(String alliance : Deity.getLoadedDeityAlliances())
+				for(String alliance : Deity.Util.getLoadedDeityAlliances())
 				{
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 					{

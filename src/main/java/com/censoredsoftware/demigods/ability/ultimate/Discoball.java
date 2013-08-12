@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,26 +26,94 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Structures;
 import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-public class Discoball extends Ability
+public class Discoball implements Ability
 {
-	public static Discoball ability;
-	private final static String deity = "DrD1sco", name = "Discoball of Doom", command = "discoball", permission = "demigods.insignian.disco";
+	private final static String name = "Discoball of Doom", command = "discoball";
 	private final static int cost = 30, delay = 30, repeat = 4;
-
 	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-	private final static List<String> details = new ArrayList<String>(1)
-	{
-		{
-			add("Spread the music while causing destruction.");
-		}
-	};
+	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
 	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
+	private String deity, permission;
 
-	protected Discoball()
+	public Discoball(String deity, String permission)
 	{
-		super(new Listener()
+		this.deity = deity;
+		this.permission = permission;
+	}
+
+	@Override
+	public String getDeity()
+	{
+		return deity;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getCommand()
+	{
+		return command;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public int getCost()
+	{
+		return cost;
+	}
+
+	@Override
+	public int getDelay()
+	{
+		return delay;
+	}
+
+	@Override
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	@Override
+	public List<String> getDetails()
+	{
+		return details;
+	}
+
+	@Override
+	public Devotion.Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Material getWeapon()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasWeapon()
+	{
+		return getWeapon() != null;
+	}
+
+	@Override
+	public Listener getListener()
+	{
+		return new Listener()
 		{
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -83,7 +150,13 @@ public class Discoball extends Ability
 					block.remove();
 				}
 			}
-		}, new BukkitRunnable()
+		};
+	}
+
+	@Override
+	public BukkitRunnable getRunnable()
+	{
+		return new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -100,27 +173,99 @@ public class Discoball extends Ability
 					}
 				}
 			}
-		}, deity, name, command, permission, cost, delay, repeat, details, type);
-		ability = this;
+		};
 	}
 
-	public static class RainbowWalking extends Ability
+	public static class RainbowWalking implements Ability
 	{
-		public static RainbowWalking ability;
 		private final static String name = "Rainbow Walking", command = null;
 		private final static int cost = 0, delay = 0, repeat = 5;
-
-		private final static List<String> details = new ArrayList<String>(1)
-		{
-			{
-				add("Spread the disco while sneaking.");
-			}
-		};
+		private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
 		private final static Devotion.Type type = Devotion.Type.STEALTH;
+		private String deity, permission;
 
-		public RainbowWalking(final String deity, String permission)
+		public RainbowWalking(String deity, String permission)
 		{
-			super(null, new BukkitRunnable()
+			this.deity = deity;
+			this.permission = permission;
+		}
+
+		@Override
+		public String getDeity()
+		{
+			return deity;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public String getCommand()
+		{
+			return command;
+		}
+
+		@Override
+		public String getPermission()
+		{
+			return permission;
+		}
+
+		@Override
+		public int getCost()
+		{
+			return cost;
+		}
+
+		@Override
+		public int getDelay()
+		{
+			return delay;
+		}
+
+		@Override
+		public int getRepeat()
+		{
+			return repeat;
+		}
+
+		@Override
+		public List<String> getDetails()
+		{
+			return details;
+		}
+
+		@Override
+		public Devotion.Type getType()
+		{
+			return type;
+		}
+
+		@Override
+		public Material getWeapon()
+		{
+			return null;
+		}
+
+		@Override
+		public boolean hasWeapon()
+		{
+			return getWeapon() != null;
+		}
+
+		@Override
+		public Listener getListener()
+		{
+			return null;
+		}
+
+		@Override
+		public BukkitRunnable getRunnable()
+		{
+			return new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -152,8 +297,7 @@ public class Discoball extends Ability
 						Discoball.Util.playRandomNote(player.getLocation(), 0.5F);
 					}
 				}
-			}, deity, name, command, permission, cost, delay, repeat, details, type);
-			ability = this;
+			};
 		}
 	}
 
@@ -164,7 +308,7 @@ public class Discoball extends Ability
 			// Set variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(!Ability.Util.doAbilityPreProcess(player, name, cost, Discoball.ability)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, cost, Discoball.type)) return;
 			character.getMeta().subtractFavor(cost);
 			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 

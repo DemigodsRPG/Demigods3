@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.demigods.Demigods;
@@ -23,51 +23,21 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-public class Storm extends Ability
+public class Storm implements Ability
 {
-	public static Storm ability;
 	private final static String name = "Storm", command = "storm";
 	private final static int cost = 3700, delay = 600, repeat = 0;
-
 	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
-	private final static List<String> details = new ArrayList<String>(1)
+	private final static List<String> details = Lists.newArrayList("Throw all of your enemies into the sky as lightning fills the heavens.");
+	private String deity, permission;
+
+	public Storm(String deity, String permission)
 	{
-		{
-			add("Throw all of your enemies into the sky as lightning fills the heavens.");
-		}
-	};
-
-	public Storm(final String deity, String permission)
-	{
-		super(new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onPlayerInteract(PlayerInteractEvent interactEvent)
-			{
-				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
-
-				if(!Ability.Util.isLeftClick(interactEvent)) return;
-
-				// Set variables
-				Player player = interactEvent.getPlayer();
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
-				{
-					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
-
-					storm(player);
-
-					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
-					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
-				}
-			}
-		}, null, deity, name, command, permission, cost, delay, repeat, details, type);
-		ability = this;
+		this.deity = deity;
+		this.permission = permission;
 	}
 
 	public static void storm(Player player)
@@ -77,7 +47,7 @@ public class Storm extends Ability
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
-		if(!Ability.Util.doAbilityPreProcess(player, name, cost, ability)) return;
+		if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
 
 		for(Entity anEntity : player.getWorld().getEntities())
 			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
@@ -105,23 +75,219 @@ public class Storm extends Ability
 		}
 	}
 
-	public static class Lightning extends Ability
+	@Override
+	public String getDeity()
 	{
-		public static Lightning ability;
-		private final static String name = "Lighting", command = "lightning";
-		private final static int cost = 140, delay = 1000, repeat = 0;
+		return deity;
+	}
 
-		private final static List<String> details = new ArrayList<String>(1)
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getCommand()
+	{
+		return command;
+	}
+
+	@Override
+	public String getPermission()
+	{
+		return permission;
+	}
+
+	@Override
+	public int getCost()
+	{
+		return cost;
+	}
+
+	@Override
+	public int getDelay()
+	{
+		return delay;
+	}
+
+	@Override
+	public int getRepeat()
+	{
+		return repeat;
+	}
+
+	@Override
+	public List<String> getDetails()
+	{
+		return details;
+	}
+
+	@Override
+	public Devotion.Type getType()
+	{
+		return type;
+	}
+
+	@Override
+	public Material getWeapon()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasWeapon()
+	{
+		return getWeapon() != null;
+	}
+
+	@Override
+	public Listener getListener()
+	{
+		return new Listener()
 		{
+			@EventHandler(priority = EventPriority.HIGHEST)
+			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				add("Strike lightning upon your enemies.");
+				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+
+				if(!Ability.Util.isLeftClick(interactEvent)) return;
+
+				// Set variables
+				Player player = interactEvent.getPlayer();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+
+				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				{
+					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
+
+					storm(player);
+
+					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
+					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+				}
 			}
 		};
-		private final static Devotion.Type type = Devotion.Type.OFFENSE;
+	}
 
-		public Lightning(final String deity, String permission)
+	@Override
+	public BukkitRunnable getRunnable()
+	{
+		return null;
+	}
+
+	public static class Lightning implements Ability
+	{
+		private final static String name = "Lighting", command = "lightning";
+		private final static int cost = 140, delay = 1000, repeat = 0;
+		private final static List<String> details = Lists.newArrayList("Strike lightning upon your enemies.");
+		private final static Devotion.Type type = Devotion.Type.OFFENSE;
+		private String deity, permission;
+
+		public Lightning(String deity, String permission)
 		{
-			super(new Listener()
+			this.deity = deity;
+			this.permission = permission;
+		}
+
+		protected static void lightning(Player player)
+		{
+			// Define variables
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Location target;
+			LivingEntity entity = Util.autoTarget(player);
+			boolean notify;
+			if(entity != null)
+			{
+				target = entity.getLocation();
+				notify = true;
+				if(!Util.doAbilityPreProcess(player, entity, cost, type)) return;
+			}
+			else
+			{
+				target = Util.directTarget(player);
+				notify = false;
+				if(!Util.doAbilityPreProcess(player, cost, type)) return;
+			}
+
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			character.getMeta().subtractFavor(cost);
+
+			Storm.Util.strikeLightning(player, target, notify);
+		}
+
+		@Override
+		public String getDeity()
+		{
+			return deity;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public String getCommand()
+		{
+			return command;
+		}
+
+		@Override
+		public String getPermission()
+		{
+			return permission;
+		}
+
+		@Override
+		public int getCost()
+		{
+			return cost;
+		}
+
+		@Override
+		public int getDelay()
+		{
+			return delay;
+		}
+
+		@Override
+		public int getRepeat()
+		{
+			return repeat;
+		}
+
+		@Override
+		public List<String> getDetails()
+		{
+			return details;
+		}
+
+		@Override
+		public Devotion.Type getType()
+		{
+			return type;
+		}
+
+		@Override
+		public Material getWeapon()
+		{
+			return null;
+		}
+
+		@Override
+		public boolean hasWeapon()
+		{
+			return getWeapon() != null;
+		}
+
+		@Override
+		public Listener getListener()
+		{
+			return new Listener()
 			{
 				@EventHandler(priority = EventPriority.HIGH)
 				public void onPlayerInteract(PlayerInteractEvent interactEvent)
@@ -142,34 +308,13 @@ public class Storm extends Ability
 						lightning(player);
 					}
 				}
-			}, null, deity, name, command, permission, cost, delay, repeat, details, type);
-			ability = this;
+			};
 		}
 
-		protected static void lightning(Player player)
+		@Override
+		public BukkitRunnable getRunnable()
 		{
-			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			Location target;
-			LivingEntity entity = Util.autoTarget(player);
-			boolean notify;
-			if(entity != null)
-			{
-				target = entity.getLocation();
-				notify = true;
-				if(!Util.doAbilityPreProcess(player, entity, "lightning", cost, ability)) return;
-			}
-			else
-			{
-				target = Util.directTarget(player);
-				notify = false;
-				if(!Util.doAbilityPreProcess(player, "lightning", cost, ability)) return;
-			}
-
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-			character.getMeta().subtractFavor(cost);
-
-			Storm.Util.strikeLightning(player, target, notify);
+			return null;
 		}
 	}
 
