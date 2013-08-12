@@ -9,11 +9,11 @@ import org.bukkit.entity.*;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.deity.Deity;
 
 @Model
-public class Pet implements Battle.Participant
+public class Pet implements Participant
 {
 	@Id
 	private Long Id;

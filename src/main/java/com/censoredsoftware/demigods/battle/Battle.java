@@ -175,14 +175,14 @@ public class Battle
 		this.killCounter = 0;
 	}
 
-	public void addParticipant(Battle.Participant participant)
+	public void addParticipant(Participant participant)
 	{
 		if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
 		else this.involvedTameable.add((Pet) participant);
 		JOhm.save(this);
 	}
 
-	public void addKill(Battle.Participant participant)
+	public void addKill(Participant participant)
 	{
 		this.killCounter += 1;
 		DCharacter character = participant.getRelatedCharacter();
@@ -191,7 +191,7 @@ public class Battle
 		JOhm.save(this);
 	}
 
-	public void addDeath(Battle.Participant participant)
+	public void addDeath(Participant participant)
 	{
 		DCharacter character = participant.getRelatedCharacter();
 		if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
@@ -204,9 +204,9 @@ public class Battle
 		return this.startedBy;
 	}
 
-	public Set<Battle.Participant> getParticipants()
+	public Set<Participant> getParticipants()
 	{
-		return new HashSet<Battle.Participant>()
+		return new HashSet<Participant>()
 		{
 			{
 				for(DCharacter character : involvedPlayers)
@@ -424,7 +424,7 @@ public class Battle
 		 * @param participant the player to check.
 		 * @return true/false depending on if doTargeting is allowed.
 		 */
-		public static boolean canTarget(Battle.Participant participant)
+		public static boolean canTarget(Participant participant)
 		{
 			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || !Structures.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP, true); // TODO Make this work with new PVP.
 		}
@@ -452,20 +452,5 @@ public class Battle
 			for(Battle remove : Battle.Util.getAllInactive())
 				if(remove.getDeleteTime() >= System.currentTimeMillis()) remove.delete();
 		}
-	}
-
-	public interface Participant
-	{
-		public Long getId();
-
-		public void setCanPvp(boolean pvp);
-
-		public Boolean canPvp();
-
-		public Location getCurrentLocation();
-
-		public DCharacter getRelatedCharacter();
-
-		public LivingEntity getEntity();
 	}
 }

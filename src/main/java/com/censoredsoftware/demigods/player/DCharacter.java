@@ -17,7 +17,7 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
@@ -28,7 +28,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 @Model
-public class DCharacter implements Battle.Participant
+public class DCharacter implements Participant
 {
 	@Id
 	private Long id;

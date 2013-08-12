@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.battle.Participant;
 
 public class BattleListener implements Listener
 {
@@ -27,8 +28,8 @@ public class BattleListener implements Listener
 		if(!Battle.Util.canParticipate(event.getEntity()) || !Battle.Util.canParticipate(damager)) return;
 
 		// Define participants
-		Battle.Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
-		Battle.Participant damagerParticipant = Battle.Util.defineParticipant(damager);
+		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
+		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
@@ -72,7 +73,7 @@ public class BattleListener implements Listener
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
 
-		Battle.Participant participant = Battle.Util.defineParticipant(event.getEntity());
+		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
 		// Battle death
 		if(Battle.Util.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
@@ -88,7 +89,7 @@ public class BattleListener implements Listener
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		// if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		// Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		// Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		// TODO
 	}
 
@@ -98,7 +99,7 @@ public class BattleListener implements Listener
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		// if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		// Battle.Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		// Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		// TODO
 	}
 }
