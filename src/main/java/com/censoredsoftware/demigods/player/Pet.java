@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.player;
 
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,10 +9,8 @@ import org.bukkit.entity.*;
 
 import redis.clients.johm.*;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.google.common.collect.Sets;
 
 @Model
 public class Pet implements Battle.Participant
@@ -35,11 +32,6 @@ public class Pet implements Battle.Participant
 	@Attribute
 	@Indexed
 	private long owner;
-
-	public void save()
-	{
-		JOhm.save(this);
-	}
 
 	public void remove()
 	{
@@ -63,29 +55,18 @@ public class Pet implements Battle.Participant
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner.getId();
-		save();
+		JOhm.save(this);
 	}
 
 	public void setCanPvp(boolean PvP)
 	{
 		this.PvP = PvP;
-		save();
+		JOhm.save(this);
 	}
 
 	public Boolean canPvp()
 	{
 		return this.PvP;
-	}
-
-	public LivingEntity getNearbyLivingEntity(Player player)
-	{
-		int searchRadius = Demigods.config.getSettingInt("caps.target_range");
-		for(Entity pet : player.getNearbyEntities(searchRadius, searchRadius, searchRadius))
-		{
-			if(!(pet instanceof LivingEntity) || !(pet instanceof Tameable)) continue;
-			if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
-		}
-		return null;
 	}
 
 	public LivingEntity getEntity()
@@ -166,13 +147,8 @@ public class Pet implements Battle.Participant
 			Pet wrapper = new Pet();
 			wrapper.setTamable(tameable);
 			wrapper.setOwner(owner);
-			wrapper.save();
+			JOhm.save(wrapper);
 			return wrapper;
-		}
-
-		public static Pet load(Long id)
-		{
-			return JOhm.get(Pet.class, id);
 		}
 
 		public static List<Pet> findByType(EntityType type)
@@ -188,18 +164,6 @@ public class Pet implements Battle.Participant
 		public static List<Pet> findByUUID(java.util.UUID uniqueId)
 		{
 			return JOhm.find(Pet.class, "UUID", uniqueId.toString());
-		}
-
-		public static Set<Pet> loadAll()
-		{
-			try
-			{
-				return JOhm.getAll(Pet.class);
-			}
-			catch(Exception e)
-			{
-				return Sets.newHashSet();
-			}
 		}
 
 		public static Pet getTameable(LivingEntity tameable)

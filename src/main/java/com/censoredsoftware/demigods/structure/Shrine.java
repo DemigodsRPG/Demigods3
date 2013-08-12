@@ -28,17 +28,17 @@ public class Shrine implements StandaloneStructure
 	{
 		{
 			// Create the main block
-			add(new Selection(0, 1, 0, Selection.BuildingBlock.goldClickBlock));
+			add(new Selection(0, 1, 0, Material.GOLD_BLOCK));
 
 			// Create the ender chest and the block below
-			add(new Selection(0, 0, 0, Selection.BuildingBlock.enderChest));
+			add(new Selection(0, 0, 0, Material.ENDER_CHEST));
 			add(new Selection(0, -1, 0, Selection.BuildingBlock.stoneBrick));
 
 			// Create the rest
-			add(new Selection(-1, 0, 0, Selection.BuildingBlock.stoneBrickStairs));
-			add(new Selection(1, 0, 0, Selection.BuildingBlock.stoneBrickStairs1));
-			add(new Selection(0, 0, -1, Selection.BuildingBlock.stoneBrickStairs2));
-			add(new Selection(0, 0, 1, Selection.BuildingBlock.stoneBrickStairs3));
+			add(new Selection(-1, 0, 0, Material.SMOOTH_STAIRS));
+			add(new Selection(1, 0, 0, Material.SMOOTH_STAIRS, (byte) 1));
+			add(new Selection(0, 0, -1, Material.SMOOTH_STAIRS, (byte) 2));
+			add(new Selection(0, 0, 1, Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
 

@@ -60,37 +60,37 @@ public class Battle
 	public void setRange(double range)
 	{
 		this.range = range;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setActive()
 	{
 		this.active = true;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setInactive()
 	{
 		this.active = false;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setDuration(long duration)
 	{
 		this.duration = duration;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setMinKills(int kills)
 	{
 		this.minKills = kills;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public void setMaxKills(int kills)
 	{
 		this.maxKills = kills;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	void setStartLocation(Location location)
@@ -106,7 +106,7 @@ public class Battle
 	void setDeleteTime(long time)
 	{
 		this.deleteTime = time;
-		Util.save(this);
+		JOhm.save(this);
 	}
 
 	public long getId()
@@ -210,7 +210,7 @@ public class Battle
 		{
 			if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
 			else this.involvedTameable.add((Pet) participant);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void addKill(Battle.Participant participant)
@@ -219,7 +219,7 @@ public class Battle
 			DCharacter character = participant.getRelatedCharacter();
 			if(this.kills.containsKey(character)) this.kills.put(character, this.kills.get(character) + 1);
 			else this.kills.put(character, 1);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public void addDeath(Battle.Participant participant)
@@ -227,7 +227,7 @@ public class Battle
 			DCharacter character = participant.getRelatedCharacter();
 			if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
 			else this.deaths.put(character, 1);
-			Util.save(this);
+			JOhm.save(this);
 		}
 
 		public DCharacter getStarter()
@@ -288,7 +288,7 @@ public class Battle
 			meta.addParticipant(damager);
 			meta.addParticipant(damaged);
 			battle.setMeta(meta);
-			save(battle);
+			JOhm.save(battle);
 			return battle;
 		}
 
@@ -299,23 +299,8 @@ public class Battle
 			Meta meta = new Meta();
 			meta.initialize();
 			meta.setStarter(character);
-			save(meta);
-			return meta;
-		}
-
-		public static Meta loadMeta(Long id)
-		{
-			return JOhm.get(Meta.class, id);
-		}
-
-		public static Set<Meta> loadAllMeta()
-		{
-			return JOhm.getAll(Meta.class);
-		}
-
-		public static void save(Meta meta)
-		{
 			JOhm.save(meta);
+			return meta;
 		}
 
 		public static Battle get(Long id)
@@ -336,11 +321,6 @@ public class Battle
 		public static List<Battle> getAllInactive()
 		{
 			return JOhm.find(Battle.class, "active", false);
-		}
-
-		public static void save(Battle battle)
-		{
-			JOhm.save(battle);
 		}
 
 		public static boolean existsInRadius(Location location)

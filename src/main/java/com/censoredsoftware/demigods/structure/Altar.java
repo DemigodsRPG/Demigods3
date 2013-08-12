@@ -33,36 +33,36 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Selection(2, 3, 2, Selection.BuildingBlock.stoneBrickSlabTop));
-			add(new Selection(-2, 3, -2, Selection.BuildingBlock.stoneBrickSlabTop));
-			add(new Selection(2, 3, -2, Selection.BuildingBlock.stoneBrickSlabTop));
-			add(new Selection(-2, 3, 2, Selection.BuildingBlock.stoneBrickSlabTop));
+			add(new Selection(2, 3, 2, Material.STEP, (byte) 13));
+			add(new Selection(-2, 3, -2, Material.STEP, (byte) 13));
+			add(new Selection(2, 3, -2, Material.STEP, (byte) 13));
+			add(new Selection(-2, 3, 2, Material.STEP, (byte) 13));
 			add(new Selection(2, 4, 2, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(-2, 4, -2, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(2, 4, -2, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(-2, 4, 2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(2, 5, 2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-2, 5, -2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(2, 5, -2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-2, 5, 2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(0, 6, 0, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-1, 5, -1, 1, 5, 1, Selection.BuildingBlock.spruceWood));
+			add(new Selection(2, 5, 2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 5, -2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 5, -2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 5, 2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(0, 6, 0, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-1, 5, -1, 1, 5, 1, Material.WOOD, (byte) 1));
 
 			// Create the enchantment table
-			add(new Selection(0, 2, 0, Selection.BuildingBlock.enchantTable));
+			add(new Selection(0, 2, 0, Material.ENCHANTMENT_TABLE));
 
 			// Create magical table stand
 			add(new Selection(0, 1, 0, Selection.BuildingBlock.stoneBrick));
 
 			// Create outer steps
-			add(new Selection(3, 0, 3, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(-3, 0, -3, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(3, 0, -3, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(-3, 0, 3, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(4, 0, -2, 4, 0, 2, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(-4, 0, -2, -4, 0, 2, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(-2, 0, -4, 2, 0, -4, Selection.BuildingBlock.stoneBrickSlabBottom));
-			add(new Selection(-2, 0, 4, 2, 0, 4, Selection.BuildingBlock.stoneBrickSlabBottom));
+			add(new Selection(3, 0, 3, Material.STEP, (byte) 5));
+			add(new Selection(-3, 0, -3, Material.STEP, (byte) 5));
+			add(new Selection(3, 0, -3, Material.STEP, (byte) 5));
+			add(new Selection(-3, 0, 3, Material.STEP, (byte) 5));
+			add(new Selection(4, 0, -2, 4, 0, 2, Material.STEP, (byte) 5));
+			add(new Selection(-4, 0, -2, -4, 0, 2, Material.STEP, (byte) 5));
+			add(new Selection(-2, 0, -4, 2, 0, -4, Material.STEP, (byte) 5));
+			add(new Selection(-2, 0, 4, 2, 0, 4, Material.STEP, (byte) 5));
 
 			// Create inner steps
 			add(new Selection(3, 0, -1, 3, 0, 1, Selection.BuildingBlock.stoneBrick));
@@ -71,14 +71,14 @@ public class Altar implements StandaloneStructure
 			add(new Selection(-1, 0, -3, 1, 0, -3, Selection.BuildingBlock.stoneBrick));
 
 			// Create pillars
-			add(new Selection(3, 4, 2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(3, 4, -2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(2, 4, 3, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-2, 4, 3, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-3, 4, 2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-3, 4, -2, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(2, 4, -3, Selection.BuildingBlock.spruceSlab));
-			add(new Selection(-2, 4, -3, Selection.BuildingBlock.spruceSlab));
+			add(new Selection(3, 4, 2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(3, 4, -2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 4, 3, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 4, 3, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-3, 4, 2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-3, 4, -2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 4, -3, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 4, -3, Material.WOOD_STEP, (byte) 1));
 			add(new Selection(3, 0, 2, 3, 3, 2, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(3, 0, -2, 3, 3, -2, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(2, 0, 3, 2, 3, 3, Selection.BuildingBlock.stoneBrick));
@@ -90,26 +90,26 @@ public class Altar implements StandaloneStructure
 
 			// Left beam
 			add(new Selection(1, 4, -2, -1, 4, -2, Selection.BuildingBlock.stoneBrick).exclude(0, 4, -2));
-			add(new Selection(0, 4, -2, Selection.BuildingBlock.stoneBrickSpecial));
-			add(new Selection(-1, 5, -2, 1, 5, -2, Selection.BuildingBlock.spruceSlab));
+			add(new Selection(0, 4, -2, Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-1, 5, -2, 1, 5, -2, Material.WOOD_STEP, (byte) 1));
 
 			// Right beam
 			add(new Selection(1, 4, 2, -1, 4, 2, Selection.BuildingBlock.stoneBrick).exclude(0, 4, 2));
-			add(new Selection(0, 4, 2, Selection.BuildingBlock.stoneBrickSpecial));
-			add(new Selection(-1, 5, 2, 1, 5, 2, Selection.BuildingBlock.spruceSlab));
+			add(new Selection(0, 4, 2, Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-1, 5, 2, 1, 5, 2, Material.WOOD_STEP, (byte) 1));
 
 			// Top beam
 			add(new Selection(2, 4, 1, 2, 4, -1, Selection.BuildingBlock.stoneBrick).exclude(2, 4, 0));
-			add(new Selection(2, 4, 0, Selection.BuildingBlock.stoneBrickSpecial));
-			add(new Selection(2, 5, -1, 2, 5, 1, Selection.BuildingBlock.spruceSlab));
+			add(new Selection(2, 4, 0, Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(2, 5, -1, 2, 5, 1, Material.WOOD_STEP, (byte) 1));
 
 			// Bottom beam
 			add(new Selection(-2, 4, 1, -2, 4, -1, Selection.BuildingBlock.stoneBrick).exclude(-2, 4, 0));
-			add(new Selection(-2, 4, 0, Selection.BuildingBlock.stoneBrickSpecial));
-			add(new Selection(-2, 5, -1, -2, 5, 1, Selection.BuildingBlock.spruceSlab));
+			add(new Selection(-2, 4, 0, Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-2, 5, -1, -2, 5, 1, Material.WOOD_STEP, (byte) 1));
 
 			// Create main platform
-			add(new Selection(-2, 1, -2, 2, 1, 2, Selection.BuildingBlock.stoneBrickSlabBottom).exclude(0, 1, 0));
+			add(new Selection(-2, 1, -2, 2, 1, 2, Material.STEP, (byte) 5).exclude(0, 1, 0));
 		}
 	};
 
@@ -117,87 +117,87 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Selection(2, 3, 2, Selection.BuildingBlock.quartzSlabTop));
-			add(new Selection(-2, 3, -2, Selection.BuildingBlock.quartzSlabTop));
-			add(new Selection(2, 3, -2, Selection.BuildingBlock.quartzSlabTop));
-			add(new Selection(-2, 3, 2, Selection.BuildingBlock.quartzSlabTop));
-			add(new Selection(2, 4, 2, Selection.BuildingBlock.quartz));
-			add(new Selection(-2, 4, -2, Selection.BuildingBlock.quartz));
-			add(new Selection(2, 4, -2, Selection.BuildingBlock.quartz));
-			add(new Selection(-2, 4, 2, Selection.BuildingBlock.quartz));
-			add(new Selection(2, 5, 2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-2, 5, -2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(2, 5, -2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-2, 5, 2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(0, 6, 0, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-1, 5, -1, 1, 5, 1, Selection.BuildingBlock.birchWood));
+			add(new Selection(2, 3, 2, Material.STEP, (byte) 15));
+			add(new Selection(-2, 3, -2, Material.STEP, (byte) 15));
+			add(new Selection(2, 3, -2, Material.STEP, (byte) 15));
+			add(new Selection(-2, 3, 2, Material.STEP, (byte) 15));
+			add(new Selection(2, 4, 2, Material.QUARTZ_BLOCK));
+			add(new Selection(-2, 4, -2, Material.QUARTZ_BLOCK));
+			add(new Selection(2, 4, -2, Material.QUARTZ_BLOCK));
+			add(new Selection(-2, 4, 2, Material.QUARTZ_BLOCK));
+			add(new Selection(2, 5, 2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 5, -2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 5, -2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 5, 2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(0, 6, 0, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-1, 5, -1, 1, 5, 1, Material.WOOD, (byte) 2));
 
 			// Create the enchantment table
-			add(new Selection(0, 2, 0, Selection.BuildingBlock.enchantTable));
+			add(new Selection(0, 2, 0, Material.ENCHANTMENT_TABLE));
 
 			// Create magical table stand
-			add(new Selection(0, 1, 0, Selection.BuildingBlock.quartzSpecial));
+			add(new Selection(0, 1, 0, Material.QUARTZ_BLOCK, (byte) 1));
 
 			// Create outer steps
-			add(new Selection(3, 0, 3, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(-3, 0, -3, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(3, 0, -3, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(-3, 0, 3, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(4, 0, -2, 4, 0, 2, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(-4, 0, -2, -4, 0, 2, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(-2, 0, -4, 2, 0, -4, Selection.BuildingBlock.quartzSlabBottom));
-			add(new Selection(-2, 0, 4, 2, 0, 4, Selection.BuildingBlock.quartzSlabBottom));
+			add(new Selection(3, 0, 3, Material.STEP, (byte) 7));
+			add(new Selection(-3, 0, -3, Material.STEP, (byte) 7));
+			add(new Selection(3, 0, -3, Material.STEP, (byte) 7));
+			add(new Selection(-3, 0, 3, Material.STEP, (byte) 7));
+			add(new Selection(4, 0, -2, 4, 0, 2, Material.STEP, (byte) 7));
+			add(new Selection(-4, 0, -2, -4, 0, 2, Material.STEP, (byte) 7));
+			add(new Selection(-2, 0, -4, 2, 0, -4, Material.STEP, (byte) 7));
+			add(new Selection(-2, 0, 4, 2, 0, 4, Material.STEP, (byte) 7));
 
 			// Create inner steps
-			add(new Selection(3, 0, -1, 3, 0, 1, Selection.BuildingBlock.quartz).exclude(3, 0, 0));
-			add(new Selection(-1, 0, 3, 1, 0, 3, Selection.BuildingBlock.quartz).exclude(0, 0, 3));
-			add(new Selection(-3, 0, -1, -3, 0, 1, Selection.BuildingBlock.quartz).exclude(-3, 0, 0));
-			add(new Selection(-1, 0, -3, 1, 0, -3, Selection.BuildingBlock.quartz).exclude(0, 0, -3));
-			add(new Selection(3, 0, 0, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(0, 0, 3, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(-3, 0, 0, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(0, 0, -3, Selection.BuildingBlock.quartzSpecial));
+			add(new Selection(3, 0, -1, 3, 0, 1, Material.QUARTZ_BLOCK).exclude(3, 0, 0));
+			add(new Selection(-1, 0, 3, 1, 0, 3, Material.QUARTZ_BLOCK).exclude(0, 0, 3));
+			add(new Selection(-3, 0, -1, -3, 0, 1, Material.QUARTZ_BLOCK).exclude(-3, 0, 0));
+			add(new Selection(-1, 0, -3, 1, 0, -3, Material.QUARTZ_BLOCK).exclude(0, 0, -3));
+			add(new Selection(3, 0, 0, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(0, 0, 3, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-3, 0, 0, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(0, 0, -3, Material.QUARTZ_BLOCK, (byte) 1));
 
 			// Create pillars
-			add(new Selection(3, 4, 2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(3, 4, -2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(2, 4, 3, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-2, 4, 3, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-3, 4, 2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-3, 4, -2, Selection.BuildingBlock.birchSlab));
-			add(new Selection(2, 4, -3, Selection.BuildingBlock.birchSlab));
-			add(new Selection(-2, 4, -3, Selection.BuildingBlock.birchSlab));
-			add(new Selection(3, 0, 2, 3, 3, 2, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(3, 0, -2, 3, 3, -2, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(2, 0, 3, 2, 3, 3, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(-2, 0, 3, -2, 3, 3, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(-3, 0, 2, -3, 3, 2, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(-3, 0, -2, -3, 3, -2, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(2, 0, -3, 2, 3, -3, Selection.BuildingBlock.pillarQuartz));
-			add(new Selection(-2, 0, -3, -2, 3, -3, Selection.BuildingBlock.pillarQuartz));
+			add(new Selection(3, 4, 2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(3, 4, -2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 4, 3, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 4, 3, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-3, 4, 2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-3, 4, -2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 4, -3, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 4, -3, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(3, 0, 2, 3, 3, 2, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(3, 0, -2, 3, 3, -2, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(2, 0, 3, 2, 3, 3, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-2, 0, 3, -2, 3, 3, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-3, 0, 2, -3, 3, 2, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-3, 0, -2, -3, 3, -2, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(2, 0, -3, 2, 3, -3, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-2, 0, -3, -2, 3, -3, Material.QUARTZ_BLOCK, (byte) 2));
 
 			// Left beam
-			add(new Selection(1, 4, -2, -1, 4, -2, Selection.BuildingBlock.quartz).exclude(0, 4, -2));
-			add(new Selection(0, 4, -2, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(-1, 5, -2, 1, 5, -2, Selection.BuildingBlock.birchSlab));
+			add(new Selection(1, 4, -2, -1, 4, -2, Material.QUARTZ_BLOCK).exclude(0, 4, -2));
+			add(new Selection(0, 4, -2, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-1, 5, -2, 1, 5, -2, Material.WOOD_STEP, (byte) 2));
 
 			// Right beam
-			add(new Selection(1, 4, 2, -1, 4, 2, Selection.BuildingBlock.quartz).exclude(0, 4, 2));
-			add(new Selection(0, 4, 2, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(-1, 5, 2, 1, 5, 2, Selection.BuildingBlock.birchSlab));
+			add(new Selection(1, 4, 2, -1, 4, 2, Material.QUARTZ_BLOCK).exclude(0, 4, 2));
+			add(new Selection(0, 4, 2, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-1, 5, 2, 1, 5, 2, Material.WOOD_STEP, (byte) 2));
 
 			// Top beam
-			add(new Selection(2, 4, 1, 2, 4, -1, Selection.BuildingBlock.quartz).exclude(2, 4, 0));
-			add(new Selection(2, 4, 0, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(2, 5, -1, 2, 5, 1, Selection.BuildingBlock.birchSlab));
+			add(new Selection(2, 4, 1, 2, 4, -1, Material.QUARTZ_BLOCK).exclude(2, 4, 0));
+			add(new Selection(2, 4, 0, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(2, 5, -1, 2, 5, 1, Material.WOOD_STEP, (byte) 2));
 
 			// Bottom beam
-			add(new Selection(-2, 4, 1, -2, 4, -1, Selection.BuildingBlock.quartz).exclude(-2, 4, 0));
-			add(new Selection(-2, 4, 0, Selection.BuildingBlock.quartzSpecial));
-			add(new Selection(-2, 5, -1, -2, 5, 1, Selection.BuildingBlock.birchSlab));
+			add(new Selection(-2, 4, 1, -2, 4, -1, Material.QUARTZ_BLOCK).exclude(-2, 4, 0));
+			add(new Selection(-2, 4, 0, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-2, 5, -1, -2, 5, 1, Material.WOOD_STEP, (byte) 2));
 
 			// Create main platform
-			add(new Selection(-2, 1, -2, 2, 1, 2, Selection.BuildingBlock.quartzSlabBottom).exclude(0, 1, 0));
+			add(new Selection(-2, 1, -2, 2, 1, 2, Material.STEP, (byte) 7).exclude(0, 1, 0));
 		}
 	};
 
@@ -205,24 +205,24 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Enchantment Table
-			add(new Selection(0, 0, 0, Selection.BuildingBlock.smoothSandStone));
-			add(new Selection(0, 1, 0, Selection.BuildingBlock.enchantTable));
+			add(new Selection(0, 0, 0, Material.SANDSTONE, (byte) 2));
+			add(new Selection(0, 1, 0, Material.ENCHANTMENT_TABLE));
 
 			// PWETTY FLOWAS AND GWASS!
 			add(new Selection(-3, 0, -3, 3, 0, 3, Selection.BuildingBlock.prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
 
 			// Ground
 			add(new Selection(-3, -1, -3, 3, -1, 3, Selection.BuildingBlock.sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
-			add(new Selection(-2, -1, -2, 2, -1, 2, Selection.BuildingBlock.grass).exclude(-1, -1, -1, 1, -1, 1));
-			add(new Selection(-1, -1, -1, 1, -1, 1, Selection.BuildingBlock.water).exclude(0, -1, 0));
-			add(new Selection(0, -1, 0, Selection.BuildingBlock.smoothSandStone));
-			add(new Selection(-3, -2, -3, 3, -2, 3, Selection.BuildingBlock.sandStone));
+			add(new Selection(-2, -1, -2, 2, -1, 2, Material.GRASS).exclude(-1, -1, -1, 1, -1, 1));
+			add(new Selection(-1, -1, -1, 1, -1, 1, Material.WATER).exclude(0, -1, 0));
+			add(new Selection(0, -1, 0, Material.SANDSTONE, (byte) 2));
+			add(new Selection(-3, -2, -3, 3, -2, 3, Material.SANDSTONE));
 
 			// Table
-			add(new Selection(-1, 0, 0, Selection.BuildingBlock.sandStairWest));
-			add(new Selection(1, 0, 0, Selection.BuildingBlock.sandStairEast));
-			add(new Selection(0, 0, -1, Selection.BuildingBlock.sandStairNorth));
-			add(new Selection(0, 0, 1, Selection.BuildingBlock.sandStairSouth));
+			add(new Selection(-1, 0, 0, Material.SANDSTONE_STAIRS, (byte) 4));
+			add(new Selection(1, 0, 0, Material.SANDSTONE_STAIRS, (byte) 5));
+			add(new Selection(0, 0, -1, Material.SANDSTONE_STAIRS, (byte) 6));
+			add(new Selection(0, 0, 1, Material.SANDSTONE_STAIRS, (byte) 7));
 
 			// Tiki Torch
 			int rand1 = Randoms.generateIntRange(-3, -2);

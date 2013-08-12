@@ -28,7 +28,7 @@ public class Obelisk implements StandaloneStructure
 	{
 		{
 			// Clickable block.
-			add(new Selection(0, 0, 2, Selection.BuildingBlock.specialStoneBrick));
+			add(new Selection(0, 0, 2, Material.SMOOTH_BRICK, (byte) 3));
 
 			// Everything else.
 			add(new Selection(0, 0, -1, 0, 2, -1, Selection.BuildingBlock.stoneBrick));
@@ -39,13 +39,13 @@ public class Obelisk implements StandaloneStructure
 			add(new Selection(0, 4, 1, 0, 5, 1, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(1, 4, 0, 1, 5, 0, Selection.BuildingBlock.stoneBrick));
 			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(0, 3, 0, Selection.BuildingBlock.redstoneBlock));
-			add(new Selection(0, 4, 0, Selection.BuildingBlock.redstoneBlock));
-			add(new Selection(0, 3, -1, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(0, 3, 1, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(1, 3, 0, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(-1, 3, 0, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(0, 5, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 3, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 4, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 			add(new Selection(1, 5, -1, Selection.BuildingBlock.vine1));
 			add(new Selection(-1, 5, -1, Selection.BuildingBlock.vine1));
 			add(new Selection(1, 5, 1, Selection.BuildingBlock.vine4));
@@ -56,24 +56,24 @@ public class Obelisk implements StandaloneStructure
 	{
 		{
 			// Clickable block.
-			add(new Selection(0, 0, 2, Selection.BuildingBlock.specialSandstone));
+			add(new Selection(0, 0, 2, Material.SANDSTONE, (byte) 1));
 
 			// Everything else.
-			add(new Selection(0, 0, -1, 0, 2, -1, Selection.BuildingBlock.sandstone));
-			add(new Selection(0, 0, 1, 0, 2, 1, Selection.BuildingBlock.sandstone));
-			add(new Selection(1, 0, 0, 1, 2, 0, Selection.BuildingBlock.sandstone));
-			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.BuildingBlock.sandstone));
-			add(new Selection(0, 4, -1, 0, 5, -1, Selection.BuildingBlock.sandstone));
-			add(new Selection(0, 4, 1, 0, 5, 1, Selection.BuildingBlock.sandstone));
-			add(new Selection(1, 4, 0, 1, 5, 0, Selection.BuildingBlock.sandstone));
-			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.BuildingBlock.sandstone));
-			add(new Selection(0, 3, 0, Selection.BuildingBlock.redstoneBlock));
-			add(new Selection(0, 4, 0, Selection.BuildingBlock.redstoneBlock));
-			add(new Selection(0, 3, -1, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(0, 3, 1, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(1, 3, 0, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(-1, 3, 0, Selection.BuildingBlock.redstoneLamp));
-			add(new Selection(0, 5, 0, Selection.BuildingBlock.redstoneLamp));
+			add(new Selection(0, 0, -1, 0, 2, -1, Material.SANDSTONE));
+			add(new Selection(0, 0, 1, 0, 2, 1, Material.SANDSTONE));
+			add(new Selection(1, 0, 0, 1, 2, 0, Material.SANDSTONE));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Material.SANDSTONE));
+			add(new Selection(0, 4, -1, 0, 5, -1, Material.SANDSTONE));
+			add(new Selection(0, 4, 1, 0, 5, 1, Material.SANDSTONE));
+			add(new Selection(1, 4, 0, 1, 5, 0, Material.SANDSTONE));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Material.SANDSTONE));
+			add(new Selection(0, 3, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 4, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
 

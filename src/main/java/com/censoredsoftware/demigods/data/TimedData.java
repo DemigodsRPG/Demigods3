@@ -96,11 +96,6 @@ public class TimedData
 		return this.expiration;
 	}
 
-	public static void save(TimedData data)
-	{
-		JOhm.save(data);
-	}
-
 	public void delete()
 	{
 		JOhm.delete(TimedData.class, getId());
