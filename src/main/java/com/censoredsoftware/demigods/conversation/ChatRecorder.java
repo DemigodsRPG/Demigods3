@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,11 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class ChatRecorder
 {
-	private ArrayList<String> lines;
+	private Map<Long, String> lines; // Format: <System.currentTimeMillis, Message>
 	private Player player;
 	private Listener listener;
 
@@ -22,10 +22,10 @@ public class ChatRecorder
 	{
 		this.player = player;
 		this.listener = new ChatListener();
-		this.lines = Lists.newArrayList();
+		this.lines = Maps.newHashMap();
 	}
 
-	public ArrayList<String> stop()
+	public Map<Long, String> stop()
 	{
 		HandlerList.unregisterAll(this.listener);
 		return lines;
@@ -52,7 +52,7 @@ public class ChatRecorder
 		@EventHandler(priority = EventPriority.MONITOR)
 		private void onChatEvent(AsyncPlayerChatEvent event)
 		{
-			if(event.getRecipients().contains(player)) lines.add(event.getFormat());
+			if(event.getRecipients().contains(player)) lines.put(System.currentTimeMillis(), event.getFormat());
 		}
 	}
 }

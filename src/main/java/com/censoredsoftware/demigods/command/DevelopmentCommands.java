@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import com.censoredsoftware.core.bukkit.ListedCommand;
 import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -78,9 +80,9 @@ public class DevelopmentCommands extends ListedCommand
 		ChatRecorder recorder = (ChatRecorder) DataManager.getValueTemp(player.getName(), "recording");
 
 		player.sendMessage(ChatColor.RED + "Recorded chat:");
-		for(String string : recorder.stop())
+		for(Map.Entry<Long, String> entry : recorder.stop().entrySet())
 		{
-			player.sendMessage(string);
+			player.sendMessage(Times.getTimeTagged(entry.getKey()) + " ago - " + entry.getValue());
 		}
 
 		return true;
