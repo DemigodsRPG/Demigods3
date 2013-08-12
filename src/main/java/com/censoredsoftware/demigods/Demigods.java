@@ -17,6 +17,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
+import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
@@ -120,6 +121,7 @@ public class Demigods
 
 		// Engine
 		register.registerEvents(new BattleListener(), instance);
+		register.registerEvents(new ChatRecorder(), instance);
 		register.registerEvents(new CommandListener(), instance);
 		register.registerEvents(new EntityListener(), instance);
 		register.registerEvents(new FlagListener(), instance);
