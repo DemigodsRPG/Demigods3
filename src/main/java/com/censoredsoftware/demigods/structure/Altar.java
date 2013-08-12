@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -33,83 +32,83 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Selection(2, 3, 2, Material.STEP, (byte) 13));
-			add(new Selection(-2, 3, -2, Material.STEP, (byte) 13));
-			add(new Selection(2, 3, -2, Material.STEP, (byte) 13));
-			add(new Selection(-2, 3, 2, Material.STEP, (byte) 13));
-			add(new Selection(2, 4, 2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-2, 4, -2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(2, 4, -2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-2, 4, 2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(2, 5, 2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-2, 5, -2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(2, 5, -2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-2, 5, 2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(0, 6, 0, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-1, 5, -1, 1, 5, 1, Material.WOOD, (byte) 1));
+			add(new Selection(2, 3, 2, org.bukkit.Material.STEP, (byte) 13));
+			add(new Selection(-2, 3, -2, org.bukkit.Material.STEP, (byte) 13));
+			add(new Selection(2, 3, -2, org.bukkit.Material.STEP, (byte) 13));
+			add(new Selection(-2, 3, 2, org.bukkit.Material.STEP, (byte) 13));
+			add(new Selection(2, 4, 2, Selection.Material.STONE_BRICK));
+			add(new Selection(-2, 4, -2, Selection.Material.STONE_BRICK));
+			add(new Selection(2, 4, -2, Selection.Material.STONE_BRICK));
+			add(new Selection(-2, 4, 2, Selection.Material.STONE_BRICK));
+			add(new Selection(2, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(0, 6, 0, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-1, 5, -1, 1, 5, 1, org.bukkit.Material.WOOD, (byte) 1));
 
 			// Create the enchantment table
-			add(new Selection(0, 2, 0, Material.ENCHANTMENT_TABLE));
+			add(new Selection(0, 2, 0, org.bukkit.Material.ENCHANTMENT_TABLE));
 
 			// Create magical table stand
-			add(new Selection(0, 1, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 1, 0, Selection.Material.STONE_BRICK));
 
 			// Create outer steps
-			add(new Selection(3, 0, 3, Material.STEP, (byte) 5));
-			add(new Selection(-3, 0, -3, Material.STEP, (byte) 5));
-			add(new Selection(3, 0, -3, Material.STEP, (byte) 5));
-			add(new Selection(-3, 0, 3, Material.STEP, (byte) 5));
-			add(new Selection(4, 0, -2, 4, 0, 2, Material.STEP, (byte) 5));
-			add(new Selection(-4, 0, -2, -4, 0, 2, Material.STEP, (byte) 5));
-			add(new Selection(-2, 0, -4, 2, 0, -4, Material.STEP, (byte) 5));
-			add(new Selection(-2, 0, 4, 2, 0, 4, Material.STEP, (byte) 5));
+			add(new Selection(3, 0, 3, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(-3, 0, -3, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(3, 0, -3, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(-3, 0, 3, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(4, 0, -2, 4, 0, 2, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(-4, 0, -2, -4, 0, 2, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(-2, 0, -4, 2, 0, -4, org.bukkit.Material.STEP, (byte) 5));
+			add(new Selection(-2, 0, 4, 2, 0, 4, org.bukkit.Material.STEP, (byte) 5));
 
 			// Create inner steps
-			add(new Selection(3, 0, -1, 3, 0, 1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-1, 0, 3, 1, 0, 3, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-3, 0, -1, -3, 0, 1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-1, 0, -3, 1, 0, -3, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(3, 0, -1, 3, 0, 1, Selection.Material.STONE_BRICK));
+			add(new Selection(-1, 0, 3, 1, 0, 3, Selection.Material.STONE_BRICK));
+			add(new Selection(-3, 0, -1, -3, 0, 1, Selection.Material.STONE_BRICK));
+			add(new Selection(-1, 0, -3, 1, 0, -3, Selection.Material.STONE_BRICK));
 
 			// Create pillars
-			add(new Selection(3, 4, 2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(3, 4, -2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(2, 4, 3, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-2, 4, 3, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-3, 4, 2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-3, 4, -2, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(2, 4, -3, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(-2, 4, -3, Material.WOOD_STEP, (byte) 1));
-			add(new Selection(3, 0, 2, 3, 3, 2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(3, 0, -2, 3, 3, -2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(2, 0, 3, 2, 3, 3, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-2, 0, 3, -2, 3, 3, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-3, 0, 2, -3, 3, 2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-3, 0, -2, -3, 3, -2, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(2, 0, -3, 2, 3, -3, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-2, 0, -3, -2, 3, -3, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(3, 4, 2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(3, 4, -2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 4, 3, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 4, 3, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-3, 4, 2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-3, 4, -2, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 4, -3, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 4, -3, org.bukkit.Material.WOOD_STEP, (byte) 1));
+			add(new Selection(3, 0, 2, 3, 3, 2, Selection.Material.STONE_BRICK));
+			add(new Selection(3, 0, -2, 3, 3, -2, Selection.Material.STONE_BRICK));
+			add(new Selection(2, 0, 3, 2, 3, 3, Selection.Material.STONE_BRICK));
+			add(new Selection(-2, 0, 3, -2, 3, 3, Selection.Material.STONE_BRICK));
+			add(new Selection(-3, 0, 2, -3, 3, 2, Selection.Material.STONE_BRICK));
+			add(new Selection(-3, 0, -2, -3, 3, -2, Selection.Material.STONE_BRICK));
+			add(new Selection(2, 0, -3, 2, 3, -3, Selection.Material.STONE_BRICK));
+			add(new Selection(-2, 0, -3, -2, 3, -3, Selection.Material.STONE_BRICK));
 
 			// Left beam
-			add(new Selection(1, 4, -2, -1, 4, -2, Selection.BuildingBlock.stoneBrick).exclude(0, 4, -2));
-			add(new Selection(0, 4, -2, Material.SMOOTH_BRICK, (byte) 3));
-			add(new Selection(-1, 5, -2, 1, 5, -2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(1, 4, -2, -1, 4, -2, Selection.Material.STONE_BRICK).exclude(0, 4, -2));
+			add(new Selection(0, 4, -2, org.bukkit.Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-1, 5, -2, 1, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 1));
 
 			// Right beam
-			add(new Selection(1, 4, 2, -1, 4, 2, Selection.BuildingBlock.stoneBrick).exclude(0, 4, 2));
-			add(new Selection(0, 4, 2, Material.SMOOTH_BRICK, (byte) 3));
-			add(new Selection(-1, 5, 2, 1, 5, 2, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(1, 4, 2, -1, 4, 2, Selection.Material.STONE_BRICK).exclude(0, 4, 2));
+			add(new Selection(0, 4, 2, org.bukkit.Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-1, 5, 2, 1, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 1));
 
 			// Top beam
-			add(new Selection(2, 4, 1, 2, 4, -1, Selection.BuildingBlock.stoneBrick).exclude(2, 4, 0));
-			add(new Selection(2, 4, 0, Material.SMOOTH_BRICK, (byte) 3));
-			add(new Selection(2, 5, -1, 2, 5, 1, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(2, 4, 1, 2, 4, -1, Selection.Material.STONE_BRICK).exclude(2, 4, 0));
+			add(new Selection(2, 4, 0, org.bukkit.Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(2, 5, -1, 2, 5, 1, org.bukkit.Material.WOOD_STEP, (byte) 1));
 
 			// Bottom beam
-			add(new Selection(-2, 4, 1, -2, 4, -1, Selection.BuildingBlock.stoneBrick).exclude(-2, 4, 0));
-			add(new Selection(-2, 4, 0, Material.SMOOTH_BRICK, (byte) 3));
-			add(new Selection(-2, 5, -1, -2, 5, 1, Material.WOOD_STEP, (byte) 1));
+			add(new Selection(-2, 4, 1, -2, 4, -1, Selection.Material.STONE_BRICK).exclude(-2, 4, 0));
+			add(new Selection(-2, 4, 0, org.bukkit.Material.SMOOTH_BRICK, (byte) 3));
+			add(new Selection(-2, 5, -1, -2, 5, 1, org.bukkit.Material.WOOD_STEP, (byte) 1));
 
 			// Create main platform
-			add(new Selection(-2, 1, -2, 2, 1, 2, Material.STEP, (byte) 5).exclude(0, 1, 0));
+			add(new Selection(-2, 1, -2, 2, 1, 2, org.bukkit.Material.STEP, (byte) 5).exclude(0, 1, 0));
 		}
 	};
 
@@ -117,87 +116,87 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Create roof
-			add(new Selection(2, 3, 2, Material.STEP, (byte) 15));
-			add(new Selection(-2, 3, -2, Material.STEP, (byte) 15));
-			add(new Selection(2, 3, -2, Material.STEP, (byte) 15));
-			add(new Selection(-2, 3, 2, Material.STEP, (byte) 15));
-			add(new Selection(2, 4, 2, Material.QUARTZ_BLOCK));
-			add(new Selection(-2, 4, -2, Material.QUARTZ_BLOCK));
-			add(new Selection(2, 4, -2, Material.QUARTZ_BLOCK));
-			add(new Selection(-2, 4, 2, Material.QUARTZ_BLOCK));
-			add(new Selection(2, 5, 2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-2, 5, -2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(2, 5, -2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-2, 5, 2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(0, 6, 0, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-1, 5, -1, 1, 5, 1, Material.WOOD, (byte) 2));
+			add(new Selection(2, 3, 2, org.bukkit.Material.STEP, (byte) 15));
+			add(new Selection(-2, 3, -2, org.bukkit.Material.STEP, (byte) 15));
+			add(new Selection(2, 3, -2, org.bukkit.Material.STEP, (byte) 15));
+			add(new Selection(-2, 3, 2, org.bukkit.Material.STEP, (byte) 15));
+			add(new Selection(2, 4, 2, org.bukkit.Material.QUARTZ_BLOCK));
+			add(new Selection(-2, 4, -2, org.bukkit.Material.QUARTZ_BLOCK));
+			add(new Selection(2, 4, -2, org.bukkit.Material.QUARTZ_BLOCK));
+			add(new Selection(-2, 4, 2, org.bukkit.Material.QUARTZ_BLOCK));
+			add(new Selection(2, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(0, 6, 0, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-1, 5, -1, 1, 5, 1, org.bukkit.Material.WOOD, (byte) 2));
 
 			// Create the enchantment table
-			add(new Selection(0, 2, 0, Material.ENCHANTMENT_TABLE));
+			add(new Selection(0, 2, 0, org.bukkit.Material.ENCHANTMENT_TABLE));
 
 			// Create magical table stand
-			add(new Selection(0, 1, 0, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(0, 1, 0, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
 
 			// Create outer steps
-			add(new Selection(3, 0, 3, Material.STEP, (byte) 7));
-			add(new Selection(-3, 0, -3, Material.STEP, (byte) 7));
-			add(new Selection(3, 0, -3, Material.STEP, (byte) 7));
-			add(new Selection(-3, 0, 3, Material.STEP, (byte) 7));
-			add(new Selection(4, 0, -2, 4, 0, 2, Material.STEP, (byte) 7));
-			add(new Selection(-4, 0, -2, -4, 0, 2, Material.STEP, (byte) 7));
-			add(new Selection(-2, 0, -4, 2, 0, -4, Material.STEP, (byte) 7));
-			add(new Selection(-2, 0, 4, 2, 0, 4, Material.STEP, (byte) 7));
+			add(new Selection(3, 0, 3, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(-3, 0, -3, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(3, 0, -3, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(-3, 0, 3, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(4, 0, -2, 4, 0, 2, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(-4, 0, -2, -4, 0, 2, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(-2, 0, -4, 2, 0, -4, org.bukkit.Material.STEP, (byte) 7));
+			add(new Selection(-2, 0, 4, 2, 0, 4, org.bukkit.Material.STEP, (byte) 7));
 
 			// Create inner steps
-			add(new Selection(3, 0, -1, 3, 0, 1, Material.QUARTZ_BLOCK).exclude(3, 0, 0));
-			add(new Selection(-1, 0, 3, 1, 0, 3, Material.QUARTZ_BLOCK).exclude(0, 0, 3));
-			add(new Selection(-3, 0, -1, -3, 0, 1, Material.QUARTZ_BLOCK).exclude(-3, 0, 0));
-			add(new Selection(-1, 0, -3, 1, 0, -3, Material.QUARTZ_BLOCK).exclude(0, 0, -3));
-			add(new Selection(3, 0, 0, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(0, 0, 3, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(-3, 0, 0, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(0, 0, -3, Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(3, 0, -1, 3, 0, 1, org.bukkit.Material.QUARTZ_BLOCK).exclude(3, 0, 0));
+			add(new Selection(-1, 0, 3, 1, 0, 3, org.bukkit.Material.QUARTZ_BLOCK).exclude(0, 0, 3));
+			add(new Selection(-3, 0, -1, -3, 0, 1, org.bukkit.Material.QUARTZ_BLOCK).exclude(-3, 0, 0));
+			add(new Selection(-1, 0, -3, 1, 0, -3, org.bukkit.Material.QUARTZ_BLOCK).exclude(0, 0, -3));
+			add(new Selection(3, 0, 0, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(0, 0, 3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-3, 0, 0, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(0, 0, -3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
 
 			// Create pillars
-			add(new Selection(3, 4, 2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(3, 4, -2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(2, 4, 3, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-2, 4, 3, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-3, 4, 2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-3, 4, -2, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(2, 4, -3, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(-2, 4, -3, Material.WOOD_STEP, (byte) 2));
-			add(new Selection(3, 0, 2, 3, 3, 2, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(3, 0, -2, 3, 3, -2, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(2, 0, 3, 2, 3, 3, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(-2, 0, 3, -2, 3, 3, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(-3, 0, 2, -3, 3, 2, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(-3, 0, -2, -3, 3, -2, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(2, 0, -3, 2, 3, -3, Material.QUARTZ_BLOCK, (byte) 2));
-			add(new Selection(-2, 0, -3, -2, 3, -3, Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(3, 4, 2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(3, 4, -2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 4, 3, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 4, 3, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-3, 4, 2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-3, 4, -2, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 4, -3, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 4, -3, org.bukkit.Material.WOOD_STEP, (byte) 2));
+			add(new Selection(3, 0, 2, 3, 3, 2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(3, 0, -2, 3, 3, -2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(2, 0, 3, 2, 3, 3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-2, 0, 3, -2, 3, 3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-3, 0, 2, -3, 3, 2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-3, 0, -2, -3, 3, -2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(2, 0, -3, 2, 3, -3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
+			add(new Selection(-2, 0, -3, -2, 3, -3, org.bukkit.Material.QUARTZ_BLOCK, (byte) 2));
 
 			// Left beam
-			add(new Selection(1, 4, -2, -1, 4, -2, Material.QUARTZ_BLOCK).exclude(0, 4, -2));
-			add(new Selection(0, 4, -2, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(-1, 5, -2, 1, 5, -2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(1, 4, -2, -1, 4, -2, org.bukkit.Material.QUARTZ_BLOCK).exclude(0, 4, -2));
+			add(new Selection(0, 4, -2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-1, 5, -2, 1, 5, -2, org.bukkit.Material.WOOD_STEP, (byte) 2));
 
 			// Right beam
-			add(new Selection(1, 4, 2, -1, 4, 2, Material.QUARTZ_BLOCK).exclude(0, 4, 2));
-			add(new Selection(0, 4, 2, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(-1, 5, 2, 1, 5, 2, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(1, 4, 2, -1, 4, 2, org.bukkit.Material.QUARTZ_BLOCK).exclude(0, 4, 2));
+			add(new Selection(0, 4, 2, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-1, 5, 2, 1, 5, 2, org.bukkit.Material.WOOD_STEP, (byte) 2));
 
 			// Top beam
-			add(new Selection(2, 4, 1, 2, 4, -1, Material.QUARTZ_BLOCK).exclude(2, 4, 0));
-			add(new Selection(2, 4, 0, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(2, 5, -1, 2, 5, 1, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(2, 4, 1, 2, 4, -1, org.bukkit.Material.QUARTZ_BLOCK).exclude(2, 4, 0));
+			add(new Selection(2, 4, 0, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(2, 5, -1, 2, 5, 1, org.bukkit.Material.WOOD_STEP, (byte) 2));
 
 			// Bottom beam
-			add(new Selection(-2, 4, 1, -2, 4, -1, Material.QUARTZ_BLOCK).exclude(-2, 4, 0));
-			add(new Selection(-2, 4, 0, Material.QUARTZ_BLOCK, (byte) 1));
-			add(new Selection(-2, 5, -1, -2, 5, 1, Material.WOOD_STEP, (byte) 2));
+			add(new Selection(-2, 4, 1, -2, 4, -1, org.bukkit.Material.QUARTZ_BLOCK).exclude(-2, 4, 0));
+			add(new Selection(-2, 4, 0, org.bukkit.Material.QUARTZ_BLOCK, (byte) 1));
+			add(new Selection(-2, 5, -1, -2, 5, 1, org.bukkit.Material.WOOD_STEP, (byte) 2));
 
 			// Create main platform
-			add(new Selection(-2, 1, -2, 2, 1, 2, Material.STEP, (byte) 7).exclude(0, 1, 0));
+			add(new Selection(-2, 1, -2, 2, 1, 2, org.bukkit.Material.STEP, (byte) 7).exclude(0, 1, 0));
 		}
 	};
 
@@ -205,31 +204,31 @@ public class Altar implements StandaloneStructure
 	{
 		{
 			// Enchantment Table
-			add(new Selection(0, 0, 0, Material.SANDSTONE, (byte) 2));
-			add(new Selection(0, 1, 0, Material.ENCHANTMENT_TABLE));
+			add(new Selection(0, 0, 0, org.bukkit.Material.SANDSTONE, (byte) 2));
+			add(new Selection(0, 1, 0, org.bukkit.Material.ENCHANTMENT_TABLE));
 
 			// PWETTY FLOWAS AND GWASS!
-			add(new Selection(-3, 0, -3, 3, 0, 3, Selection.BuildingBlock.prettyFlowersAndGrass).exclude(-1, 0, -1, 1, 0, 1));
+			add(new Selection(-3, 0, -3, 3, 0, 3, Selection.Material.PRETTY_FLOWERS_AND_GRASS).exclude(-1, 0, -1, 1, 0, 1));
 
 			// Ground
-			add(new Selection(-3, -1, -3, 3, -1, 3, Selection.BuildingBlock.sandyGrass).exclude(-2, -1, -2, 2, -1, 2));
-			add(new Selection(-2, -1, -2, 2, -1, 2, Material.GRASS).exclude(-1, -1, -1, 1, -1, 1));
-			add(new Selection(-1, -1, -1, 1, -1, 1, Material.WATER).exclude(0, -1, 0));
-			add(new Selection(0, -1, 0, Material.SANDSTONE, (byte) 2));
-			add(new Selection(-3, -2, -3, 3, -2, 3, Material.SANDSTONE));
+			add(new Selection(-3, -1, -3, 3, -1, 3, Selection.Material.SANDY_GRASS).exclude(-2, -1, -2, 2, -1, 2));
+			add(new Selection(-2, -1, -2, 2, -1, 2, org.bukkit.Material.GRASS).exclude(-1, -1, -1, 1, -1, 1));
+			add(new Selection(-1, -1, -1, 1, -1, 1, org.bukkit.Material.WATER).exclude(0, -1, 0));
+			add(new Selection(0, -1, 0, org.bukkit.Material.SANDSTONE, (byte) 2));
+			add(new Selection(-3, -2, -3, 3, -2, 3, org.bukkit.Material.SANDSTONE));
 
 			// Table
-			add(new Selection(-1, 0, 0, Material.SANDSTONE_STAIRS, (byte) 4));
-			add(new Selection(1, 0, 0, Material.SANDSTONE_STAIRS, (byte) 5));
-			add(new Selection(0, 0, -1, Material.SANDSTONE_STAIRS, (byte) 6));
-			add(new Selection(0, 0, 1, Material.SANDSTONE_STAIRS, (byte) 7));
+			add(new Selection(-1, 0, 0, org.bukkit.Material.SANDSTONE_STAIRS, (byte) 4));
+			add(new Selection(1, 0, 0, org.bukkit.Material.SANDSTONE_STAIRS, (byte) 5));
+			add(new Selection(0, 0, -1, org.bukkit.Material.SANDSTONE_STAIRS, (byte) 6));
+			add(new Selection(0, 0, 1, org.bukkit.Material.SANDSTONE_STAIRS, (byte) 7));
 
 			// Tiki Torch
 			int rand1 = Randoms.generateIntRange(-3, -2);
 			int rand2 = Randoms.generateIntRange(-3, 3);
-			add(new Selection(-3, 1, -3, 3, 2, 3, Material.AIR).exclude(0, 1, 0));
-			add(new Selection(rand1, 0, rand2, rand1, 1, rand2, Material.FENCE)); // Fence
-			add(new Selection(rand1, 2, rand2, Material.TORCH)); // Torch
+			add(new Selection(-3, 1, -3, 3, 2, 3, org.bukkit.Material.AIR).exclude(0, 1, 0));
+			add(new Selection(rand1, 0, rand2, rand1, 1, rand2, org.bukkit.Material.FENCE)); // Fence
+			add(new Selection(rand1, 2, rand2, org.bukkit.Material.TORCH)); // Torch
 		}
 	};
 
@@ -422,13 +421,13 @@ public class Altar implements StandaloneStructure
 			/**
 			 * Handle Altars
 			 */
-			String design = clickedBlock.getType().equals(Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(Material.DIAMOND_BLOCK) ? "oasis" : "";
+			String design = clickedBlock.getType().equals(org.bukkit.Material.EMERALD_BLOCK) ? "general" : clickedBlock.getType().equals(org.bukkit.Material.GOLD_BLOCK) ? "holy" : clickedBlock.getType().equals(org.bukkit.Material.DIAMOND_BLOCK) ? "oasis" : "";
 			if(Admins.useWand(player) && Altar.AltarDesign.getByName(design) != null)
 			{
 				event.setCancelled(true);
 
 				// Remove clicked block
-				clickedBlock.setType(Material.AIR);
+				clickedBlock.setType(org.bukkit.Material.AIR);
 
 				Admins.sendDebug(ChatColor.RED + "Altar generated by ADMIN WAND at " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 

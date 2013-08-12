@@ -322,7 +322,7 @@ public interface Structure
 			this.cuboid = false;
 			this.exclude = false;
 			this.excludeSelection = false;
-			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
+			this.blockData = Lists.newArrayList(new BlockData(org.bukkit.Material.AIR));
 		}
 
 		/**
@@ -346,7 +346,7 @@ public interface Structure
 			this.cuboid = true;
 			this.exclude = false;
 			this.excludeSelection = false;
-			this.blockData = Lists.newArrayList(new BlockData(Material.AIR));
+			this.blockData = Lists.newArrayList(new BlockData(org.bukkit.Material.AIR));
 		}
 
 		/**
@@ -357,7 +357,7 @@ public interface Structure
 		 * @param Z The relative Z coordinate of the schematic from the reference location.
 		 * @param material The BlockData objects of this schematic.
 		 */
-		public Selection(int X, int Y, int Z, Material material)
+		public Selection(int X, int Y, int Z, org.bukkit.Material material)
 		{
 			this.X = this.XX = X;
 			this.Y = this.YY = Y;
@@ -379,7 +379,7 @@ public interface Structure
 		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 		 * @param material The BlockData objects of this schematic.
 		 */
-		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material)
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, org.bukkit.Material material)
 		{
 			this.X = X;
 			this.Y = Y;
@@ -401,7 +401,7 @@ public interface Structure
 		 * @param Z The relative Z coordinate of the schematic from the reference location.
 		 * @param material The BlockData objects of this schematic.
 		 */
-		public Selection(int X, int Y, int Z, Material material, byte data)
+		public Selection(int X, int Y, int Z, org.bukkit.Material material, byte data)
 		{
 			this.X = this.XX = X;
 			this.Y = this.YY = Y;
@@ -423,7 +423,7 @@ public interface Structure
 		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
 		 * @param material The BlockData objects of this schematic.
 		 */
-		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material, byte data)
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, org.bukkit.Material material, byte data)
 		{
 			this.X = X;
 			this.Y = Y;
@@ -523,6 +523,50 @@ public interface Structure
 			this.exclude = false;
 			this.excludeSelection = false;
 			this.blockData = blockData;
+		}
+
+		/**
+		 * Constructor for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param material The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, Material material)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = material.getData();
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param material The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Material material)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = material.getData();
 		}
 
 		/**
@@ -662,7 +706,7 @@ public interface Structure
 
 		public static class BlockData
 		{
-			private Material material;
+			private org.bukkit.Material material;
 			private byte data;
 			private int odds;
 			private boolean physics;
@@ -672,7 +716,7 @@ public interface Structure
 			 * 
 			 * @param material Material of the block.
 			 */
-			public BlockData(Material material)
+			public BlockData(org.bukkit.Material material)
 			{
 				this.material = material;
 				this.data = 0;
@@ -685,7 +729,7 @@ public interface Structure
 			 * 
 			 * @param material Material of the block.
 			 */
-			public BlockData(Material material, boolean physics)
+			public BlockData(org.bukkit.Material material, boolean physics)
 			{
 				this.material = material;
 				this.data = 0;
@@ -699,7 +743,7 @@ public interface Structure
 			 * @param material Material of the block.
 			 * @param odds The odds of this object being generated.
 			 */
-			public BlockData(Material material, int odds)
+			public BlockData(org.bukkit.Material material, int odds)
 			{
 				if(odds == 0 || odds > 100) throw new BlockDataException();
 				this.material = material;
@@ -714,7 +758,7 @@ public interface Structure
 			 * @param material Material of the block.
 			 * @param odds The odds of this object being generated.
 			 */
-			public BlockData(Material material, int odds, boolean physics)
+			public BlockData(org.bukkit.Material material, int odds, boolean physics)
 			{
 				if(odds == 0 || odds > 100) throw new BlockDataException();
 				this.material = material;
@@ -729,7 +773,7 @@ public interface Structure
 			 * @param material Material of the block.
 			 * @param data Byte data of the block.
 			 */
-			public BlockData(Material material, byte data)
+			public BlockData(org.bukkit.Material material, byte data)
 			{
 				this.material = material;
 				this.data = data;
@@ -743,7 +787,7 @@ public interface Structure
 			 * @param material Material of the block.
 			 * @param data Byte data of the block.
 			 */
-			public BlockData(Material material, byte data, boolean physics)
+			public BlockData(org.bukkit.Material material, byte data, boolean physics)
 			{
 				this.material = material;
 				this.data = data;
@@ -758,7 +802,7 @@ public interface Structure
 			 * @param data Byte data of the block.
 			 * @param odds The odds of this object being generated.
 			 */
-			public BlockData(Material material, byte data, int odds)
+			public BlockData(org.bukkit.Material material, byte data, int odds)
 			{
 				if(odds == 0 || odds > 100) throw new BlockDataException();
 				this.material = material;
@@ -774,7 +818,7 @@ public interface Structure
 			 * @param data Byte data of the block.
 			 * @param odds The odds of this object being generated.
 			 */
-			public BlockData(Material material, byte data, int odds, boolean physics)
+			public BlockData(org.bukkit.Material material, byte data, int odds, boolean physics)
 			{
 				if(odds == 0 || odds > 100) throw new BlockDataException();
 				this.material = material;
@@ -788,7 +832,7 @@ public interface Structure
 			 * 
 			 * @return A Material.
 			 */
-			public Material getMaterial()
+			public org.bukkit.Material getMaterial()
 			{
 				return this.material;
 			}
@@ -824,46 +868,54 @@ public interface Structure
 			}
 		}
 
-		public static class BuildingBlock // TODO: Rename these to make more sense. // Shouldn't this be in the episode data? - HQM
+		public static enum Material
 		{
-			public final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
+			STONE_BRICK(new ArrayList<BlockData>(3)
 			{
 				{
-					add(new BlockData(Material.SMOOTH_BRICK, 80));
-					add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
-					add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
+					add(new BlockData(org.bukkit.Material.SMOOTH_BRICK, 80));
+					add(new BlockData(org.bukkit.Material.SMOOTH_BRICK, (byte) 1, 10));
+					add(new BlockData(org.bukkit.Material.SMOOTH_BRICK, (byte) 2, 10));
 				}
-			};
-			public final static List<BlockData> sandyGrass = new ArrayList<BlockData>(2)
+			}), SANDY_GRASS(new ArrayList<BlockData>(2)
 			{
 				{
-					add(new BlockData(Material.SAND, 65));
-					add(new BlockData(Material.GRASS, 35));
+					add(new BlockData(org.bukkit.Material.SAND, 65));
+					add(new BlockData(org.bukkit.Material.GRASS, 35));
 				}
-			};
-			public final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>(4)
+			}), PRETTY_FLOWERS_AND_GRASS(new ArrayList<BlockData>(4)
 			{
 				{
-					add(new BlockData(Material.AIR, 50));
-					add(new BlockData(Material.LONG_GRASS, (byte) 1, 35, true));
-					add(new BlockData(Material.YELLOW_FLOWER, 9, true));
-					add(new BlockData(Material.RED_ROSE, 6, true));
+					add(new BlockData(org.bukkit.Material.AIR, 50));
+					add(new BlockData(org.bukkit.Material.LONG_GRASS, (byte) 1, 35, true));
+					add(new BlockData(org.bukkit.Material.YELLOW_FLOWER, 9, true));
+					add(new BlockData(org.bukkit.Material.RED_ROSE, 6, true));
 				}
-			};
-			public final static List<BlockData> vine1 = new ArrayList<BlockData>(2)
+			}), VINE_1(new ArrayList<BlockData>(2)
 			{
 				{
-					add(new BlockData(Material.VINE, (byte) 1, 40));
-					add(new BlockData(Material.AIR, 60));
+					add(new BlockData(org.bukkit.Material.VINE, (byte) 1, 40));
+					add(new BlockData(org.bukkit.Material.AIR, 60));
 				}
-			};
-			public final static List<BlockData> vine4 = new ArrayList<BlockData>(2)
+			}), VINE_4(new ArrayList<BlockData>(2)
 			{
 				{
-					add(new BlockData(Material.VINE, (byte) 4, 40));
-					add(new BlockData(Material.AIR, 60));
+					add(new BlockData(org.bukkit.Material.VINE, (byte) 4, 40));
+					add(new BlockData(org.bukkit.Material.AIR, 60));
 				}
-			};
+			});
+
+			private List<BlockData> data;
+
+			private Material(List<BlockData> data)
+			{
+				this.data = data;
+			}
+
+			public List<BlockData> getData()
+			{
+				return data;
+			}
 		}
 	}
 }
