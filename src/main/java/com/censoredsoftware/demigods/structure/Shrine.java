@@ -32,7 +32,7 @@ public class Shrine implements StandaloneStructure
 
 			// Create the ender chest and the block below
 			add(new Selection(0, 0, 0, Material.ENDER_CHEST));
-			add(new Selection(0, -1, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, -1, 0, Material.SMOOTH_BRICK));
 
 			// Create the rest
 			add(new Selection(-1, 0, 0, Material.SMOOTH_STAIRS));

@@ -31,14 +31,14 @@ public class Obelisk implements StandaloneStructure
 			add(new Selection(0, 0, 2, Material.SMOOTH_BRICK, (byte) 3));
 
 			// Everything else.
-			add(new Selection(0, 0, -1, 0, 2, -1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(0, 0, 1, 0, 2, 1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(1, 0, 0, 1, 2, 0, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(0, 4, -1, 0, 5, -1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(0, 4, 1, 0, 5, 1, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(1, 4, 0, 1, 5, 0, Selection.BuildingBlock.stoneBrick));
-			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.BuildingBlock.stoneBrick));
+			add(new Selection(0, 0, -1, 0, 2, -1, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 0, 1, 0, 2, 1, Selection.Preset.STONE_BRICK));
+			add(new Selection(1, 0, 0, 1, 2, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 4, -1, 0, 5, -1, Selection.Preset.STONE_BRICK));
+			add(new Selection(0, 4, 1, 0, 5, 1, Selection.Preset.STONE_BRICK));
+			add(new Selection(1, 4, 0, 1, 5, 0, Selection.Preset.STONE_BRICK));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Selection.Preset.STONE_BRICK));
 			add(new Selection(0, 3, 0, Material.REDSTONE_BLOCK));
 			add(new Selection(0, 4, 0, Material.REDSTONE_BLOCK));
 			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
@@ -46,10 +46,10 @@ public class Obelisk implements StandaloneStructure
 			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
 			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
-			add(new Selection(1, 5, -1, Selection.BuildingBlock.vine1));
-			add(new Selection(-1, 5, -1, Selection.BuildingBlock.vine1));
-			add(new Selection(1, 5, 1, Selection.BuildingBlock.vine4));
-			add(new Selection(-1, 5, 1, Selection.BuildingBlock.vine4));
+			add(new Selection(1, 5, -1, Selection.Preset.VINE_1));
+			add(new Selection(-1, 5, -1, Selection.Preset.VINE_1));
+			add(new Selection(1, 5, 1, Selection.Preset.VINE_4));
+			add(new Selection(-1, 5, 1, Selection.Preset.VINE_4));
 		}
 	};
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)

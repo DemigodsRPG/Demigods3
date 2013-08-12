@@ -526,6 +526,50 @@ public interface Structure
 		}
 
 		/**
+		 * Constructor for a Selection (non-cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param material The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, Preset material)
+		{
+			this.X = this.XX = X;
+			this.Y = this.YY = Y;
+			this.Z = this.ZZ = Z;
+			this.cuboid = false;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = material.getData();
+		}
+
+		/**
+		 * Constructor for a Selection (cuboid).
+		 * 
+		 * @param X The relative X coordinate of the schematic from the reference location.
+		 * @param Y The relative Y coordinate of the schematic from the reference location.
+		 * @param Z The relative Z coordinate of the schematic from the reference location.
+		 * @param XX The second relative X coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param YY The second relative Y coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param ZZ The second relative Z coordinate of the schematic from the reference location, creating a cuboid.
+		 * @param material The BlockData objects of this schematic.
+		 */
+		public Selection(int X, int Y, int Z, int XX, int YY, int ZZ, Preset material)
+		{
+			this.X = X;
+			this.Y = Y;
+			this.Z = Z;
+			this.XX = XX;
+			this.YY = YY;
+			this.ZZ = ZZ;
+			this.cuboid = true;
+			this.exclude = false;
+			this.excludeSelection = false;
+			this.blockData = material.getData();
+		}
+
+		/**
 		 * Excluding for a Selection (non-cuboid).
 		 * 
 		 * @param X The relative X coordinate of the schematic from the reference location.
@@ -824,24 +868,22 @@ public interface Structure
 			}
 		}
 
-		public static class BuildingBlock // TODO: Rename these to make more sense. // Shouldn't this be in the episode data? - HQM
+		public static enum Preset
 		{
-			public final static List<BlockData> stoneBrick = new ArrayList<BlockData>(3)
+			STONE_BRICK(new ArrayList<BlockData>(3)
 			{
 				{
 					add(new BlockData(Material.SMOOTH_BRICK, 80));
 					add(new BlockData(Material.SMOOTH_BRICK, (byte) 1, 10));
 					add(new BlockData(Material.SMOOTH_BRICK, (byte) 2, 10));
 				}
-			};
-			public final static List<BlockData> sandyGrass = new ArrayList<BlockData>(2)
+			}), SANDY_GRASS(new ArrayList<BlockData>(2)
 			{
 				{
 					add(new BlockData(Material.SAND, 65));
 					add(new BlockData(Material.GRASS, 35));
 				}
-			};
-			public final static List<BlockData> prettyFlowersAndGrass = new ArrayList<BlockData>(4)
+			}), PRETTY_FLOWERS_AND_GRASS(new ArrayList<BlockData>(4)
 			{
 				{
 					add(new BlockData(Material.AIR, 50));
@@ -849,21 +891,31 @@ public interface Structure
 					add(new BlockData(Material.YELLOW_FLOWER, 9, true));
 					add(new BlockData(Material.RED_ROSE, 6, true));
 				}
-			};
-			public final static List<BlockData> vine1 = new ArrayList<BlockData>(2)
+			}), VINE_1(new ArrayList<BlockData>(2)
 			{
 				{
 					add(new BlockData(Material.VINE, (byte) 1, 40));
 					add(new BlockData(Material.AIR, 60));
 				}
-			};
-			public final static List<BlockData> vine4 = new ArrayList<BlockData>(2)
+			}), VINE_4(new ArrayList<BlockData>(2)
 			{
 				{
 					add(new BlockData(Material.VINE, (byte) 4, 40));
 					add(new BlockData(Material.AIR, 60));
 				}
-			};
+			});
+
+			private List<BlockData> data;
+
+			private Preset(List<BlockData> data)
+			{
+				this.data = data;
+			}
+
+			public List<BlockData> getData()
+			{
+				return data;
+			}
 		}
 	}
 }
