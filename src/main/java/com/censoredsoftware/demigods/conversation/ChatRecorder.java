@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.conversation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,7 +18,7 @@ import com.google.common.collect.Maps;
 
 public class ChatRecorder
 {
-	private TreeMap<Long, String> lines; // Format: <System.currentTimeMillis, Message>
+	private Map<Long, String> lines; // Format: <System.currentTimeMillis, Message>
 	private Player player;
 	private Listener listener;
 
@@ -62,7 +61,7 @@ public class ChatRecorder
 		}
 	}
 
-	class ChatListener implements org.bukkit.event.Listener
+	class ChatListener implements Listener
 	{
 		@EventHandler(priority = EventPriority.MONITOR)
 		private void onChatEvent(AsyncPlayerChatEvent event)
