@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.player;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -17,7 +16,6 @@ import redis.clients.johm.*;
 
 import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
 import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -383,15 +381,14 @@ public class DPlayer
 				}
 
 				// Send held back chat
-				Map<Long, String> messages = chatRecording.stop();
-				if(messages.entrySet().size() > 0)
+				List<String> messages = chatRecording.stop();
+				if(messages.size() > 0)
 				{
 					player.sendMessage(" ");
-					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.entrySet().size())).build());
-					for(Map.Entry<Long, String> entry : messages.entrySet())
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+					for(String message : messages)
 					{
-						String time = Times.getTimeTagged(entry.getKey(), true);
-						player.sendMessage(ChatColor.GRAY + "[" + (time.startsWith("-") ? time.substring(1) : time) + " ago]" + entry.getValue());
+						player.sendMessage(message);
 					}
 				}
 			}
