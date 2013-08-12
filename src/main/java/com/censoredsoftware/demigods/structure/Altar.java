@@ -27,7 +27,7 @@ import com.censoredsoftware.demigods.util.Structures;
 
 // TODO Optimize and generalize methods.
 
-public class Altar implements StandaloneStructure
+public class Altar implements Structure
 {
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{

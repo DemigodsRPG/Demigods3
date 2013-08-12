@@ -22,7 +22,7 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
 
-public class Shrine implements StandaloneStructure
+public class Shrine implements Structure
 {
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{

@@ -22,7 +22,7 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
 
-public class Obelisk implements StandaloneStructure
+public class Obelisk implements Structure
 {
 	private final static Structure.Schematic general = new Structure.Schematic("general", "HmmmQuestionMark", 3)
 	{

@@ -26,6 +26,8 @@ public interface Structure
 {
 	public String getStructureType();
 
+	public Design getDesign(String name);
+
 	public Set<Structure.Flag> getFlags();
 
 	public Set<Save> getAll();
@@ -44,15 +46,8 @@ public interface Structure
 	@Model
 	public static class Save
 	{
-		/**
-		 * JOhm
-		 */
 		@Id
 		private Long id;
-
-		/**
-		 * Required
-		 */
 		@Indexed
 		@Attribute
 		private String type;
@@ -64,10 +59,6 @@ public interface Structure
 		@Indexed
 		@Attribute
 		private String region;
-
-		/**
-		 * Optional
-		 */
 		@Indexed
 		@Attribute
 		private String design;
@@ -77,9 +68,6 @@ public interface Structure
 		@Indexed
 		@Reference
 		private DCharacter owner;
-		@Indexed
-		@Reference
-		private MassiveStructure.Save parent;
 
 		public void setType(String type)
 		{
@@ -116,23 +104,18 @@ public interface Structure
 
 		public Set<Location> getClickableBlocks()
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getClickableBlocks(this.reference.toLocation());
-			return null;
+			return getStructure().getDesign(this.design).getClickableBlocks(this.reference.toLocation());
 		}
 
 		public Set<Location> getLocations()
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
-			return null;
+			return getStructure().getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
 		}
 
 		public Structure getStructure()
 		{
 			for(Elements.ListedStructure structure : Elements.Structures.values())
-			{
 				if(structure.getStructure().getStructureType().equalsIgnoreCase(this.type)) return structure.getStructure();
-			}
 			return null;
 		}
 
@@ -207,9 +190,7 @@ public interface Structure
 
 		public boolean generate(boolean check)
 		{
-			if(getStructure() instanceof StandaloneStructure) return ((StandaloneStructure) getStructure()).getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
-			if(getStructure() instanceof MassiveStructurePart) return ((MassiveStructurePart) getStructure()).getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
-			return ((MassiveStructure) getStructure()).generate(this.reference.toLocation());
+			return getStructure().getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
 		}
 
 		public void save()

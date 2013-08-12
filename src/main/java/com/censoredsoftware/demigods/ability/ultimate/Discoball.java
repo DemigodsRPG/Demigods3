@@ -332,10 +332,7 @@ public class Discoball implements Ability
 		public static void balls(Player player)
 		{
 			for(Location location : DLocation.Util.getCirclePoints(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY() + 30 < 256 ? player.getLocation().getBlockY() + 30 : 256, player.getLocation().getBlockZ()), 3.0, 50))
-			{
 				spawnBall(location);
-			}
-
 		}
 
 		public static void spawnBall(Location location)

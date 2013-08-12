@@ -23,7 +23,6 @@ import com.censoredsoftware.demigods.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.structure.MassiveStructurePart;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -144,7 +143,7 @@ public class Demigods
 		// Structures
 		for(Elements.ListedStructure structure : Elements.Structures.values())
 		{
-			if(structure instanceof MassiveStructurePart || structure.getStructure().getUniqueListener() == null) continue;
+			if(structure.getStructure().getUniqueListener() == null) continue;
 			register.registerEvents(structure.getStructure().getUniqueListener(), instance);
 		}
 

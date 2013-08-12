@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.player;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -184,23 +183,8 @@ public class DItemStack
 			trackedItem.setEnchantments(item);
 			trackedItem.setBookMeta(item);
 
-			save(trackedItem);
+			JOhm.save(trackedItem);
 			return trackedItem;
-		}
-
-		public static void save(DItemStack item)
-		{
-			JOhm.save(item);
-		}
-
-		public static DItemStack load(long id)
-		{
-			return JOhm.get(DItemStack.class, id);
-		}
-
-		public static Set<DItemStack> loadAll()
-		{
-			return JOhm.getAll(DItemStack.class);
 		}
 	}
 

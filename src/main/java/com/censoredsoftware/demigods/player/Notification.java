@@ -111,19 +111,9 @@ public class Notification
 		return this.expiration != 0L;
 	}
 
-	public static void save(Notification notification)
-	{
-		JOhm.save(notification);
-	}
-
 	public static void remove(Notification notification)
 	{
 		JOhm.delete(Notification.class, notification.getId());
-	}
-
-	public static DCharacter load(Long id)
-	{
-		return JOhm.get(Notification.class, id);
 	}
 
 	public static Set<Notification> loadAll()
@@ -141,7 +131,7 @@ public class Notification
 			notification.setSenderType(sender);
 			notification.setName(name);
 			notification.setMessage(message);
-			Notification.save(notification);
+			JOhm.save(notification);
 			return notification;
 		}
 
@@ -149,7 +139,7 @@ public class Notification
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
 			notification.setExpiration(minutes);
-			Notification.save(notification);
+			JOhm.save(notification);
 			return notification;
 		}
 
@@ -157,7 +147,7 @@ public class Notification
 		{
 			Notification notification = create(Sender.CHARACTER, receiver, danger, name, message);
 			notification.setSender(sender);
-			Notification.save(notification);
+			JOhm.save(notification);
 			return notification;
 		}
 
@@ -165,7 +155,7 @@ public class Notification
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
 			notification.setExpiration(minutes);
-			Notification.save(notification);
+			JOhm.save(notification);
 			return notification;
 		}
 
@@ -200,11 +190,11 @@ public class Notification
 
 	public enum Sender
 	{
-		PLUGIN, QUEST, CHARACTER;
+		PLUGIN, QUEST, CHARACTER
 	}
 
 	public enum Danger
 	{
-		GOOD, NEUTRAL, BAD;
+		GOOD, NEUTRAL, BAD
 	}
 }

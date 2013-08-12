@@ -33,7 +33,7 @@ public class ChatRecorder
 	{
 		HandlerList.unregisterAll(this.listener);
 
-		return new ArrayList<String>()
+		return new ArrayList<String>(lines.size())
 		{
 			{
 				for(Map.Entry<Long, String> entry : lines.entrySet())

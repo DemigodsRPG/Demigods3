@@ -376,9 +376,7 @@ public class DPlayer
 				// Message them
 				clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
-				{
 					player.sendMessage(message);
-				}
 
 				// Send held back chat
 				List<String> messages = chatRecording.stop();
@@ -387,9 +385,7 @@ public class DPlayer
 					player.sendMessage(" ");
 					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
 					for(String message : messages)
-					{
 						player.sendMessage(message);
-					}
 				}
 			}
 		}

@@ -100,7 +100,9 @@ public class DCharacter implements Battle.Participant
 
 	public void saveInventory()
 	{
-		this.inventory = Util.createInventory(this).getId();
+		Inventory inventory = JOhm.get(Inventory.class, this.inventory);
+		if(inventory == null) this.inventory = Util.createInventory(this).getId();
+		else this.inventory = Util.updateInventory(inventory, this).getId();
 		JOhm.save(this);
 	}
 
@@ -146,7 +148,7 @@ public class DCharacter implements Battle.Participant
 
 	public Inventory getInventory()
 	{
-		if(JOhm.get(Inventory.class, this.inventory) == null) this.inventory = Util.createEmptyInventory(this).getId();
+		if(JOhm.get(Inventory.class, this.inventory) == null) this.inventory = Util.createEmptyInventory().getId();
 		return JOhm.get(Inventory.class, this.inventory);
 	}
 
@@ -888,7 +890,7 @@ public class DCharacter implements Battle.Participant
 			return charInventory;
 		}
 
-		public static Inventory createEmptyInventory(DCharacter character)
+		public static Inventory createEmptyInventory()
 		{
 			Inventory charInventory = new Inventory();
 			charInventory.setHelmet(new ItemStack(Material.AIR));
@@ -916,11 +918,6 @@ public class DCharacter implements Battle.Participant
 			return charMeta;
 		}
 
-		public static DCharacter load(Long id)
-		{
-			return JOhm.get(DCharacter.class, id);
-		}
-
 		public static Set<DCharacter> loadAll()
 		{
 			return JOhm.getAll(DCharacter.class);
@@ -929,9 +926,7 @@ public class DCharacter implements Battle.Participant
 		public static void updateUsableCharacters()
 		{
 			for(DCharacter character : loadAll())
-			{
 				character.updateUseable();
-			}
 		}
 
 		public static DCharacter getCharacterByName(String name)
@@ -970,9 +965,7 @@ public class DCharacter implements Battle.Participant
 		{
 			Set<DCharacter> active = Sets.newHashSet();
 			for(DCharacter character : loadAll())
-			{
 				if(character.isActive()) active.add(character);
-			}
 			return active;
 		}
 

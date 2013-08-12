@@ -127,7 +127,7 @@ public class DLocation
 			trackedLocation.setYaw(yaw);
 			trackedLocation.setPitch(pitch);
 			trackedLocation.setRegion(Region.Util.getRegion((int) X, (int) Z, world));
-			save(trackedLocation);
+			JOhm.save(trackedLocation);
 			return trackedLocation;
 		}
 
@@ -136,33 +136,15 @@ public class DLocation
 			return create(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		}
 
-		public static void save(DLocation location)
-		{
-			JOhm.save(location);
-		}
-
-		public static DLocation load(long id)
-		{
-			return JOhm.get(DLocation.class, id);
-		}
-
 		public static Set<DLocation> loadAll()
 		{
 			return JOhm.getAll(DLocation.class);
 		}
 
-		@SuppressWarnings("unchecked")
-		public static Set<DLocation> find(String attribute, Object value)
-		{
-			return Sets.newHashSet((List) JOhm.find(DLocation.class, attribute, value));
-		}
-
 		public static DLocation get(Location location)
 		{
 			for(DLocation tracked : loadAll())
-			{
 				if(location.getX() == tracked.getX() && location.getY() == tracked.getY() && location.getBlockZ() == tracked.getZ() && location.getWorld().getName().equals(tracked.getWorld())) return tracked;
-			}
 			return create(location);
 		}
 
@@ -215,9 +197,7 @@ public class DLocation
 			blocks.add(location.getBlock());
 
 			for(int x = 0; x <= radius; x++)
-			{
 				blocks.add(location.add(x, 0, x).getBlock());
-			}
 
 			return blocks;
 		}
