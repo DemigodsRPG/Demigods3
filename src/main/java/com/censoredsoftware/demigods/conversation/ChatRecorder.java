@@ -19,14 +19,14 @@ public class ChatRecorder implements Listener
 
 	public void start(Player player)
 	{
-		recording = true;
-		listener = player;
-		lines = Lists.newArrayList();
+		this.recording = true;
+		this.listener = player;
+		this.lines = Lists.newArrayList();
 	}
 
 	public ArrayList<String> stop()
 	{
-		recording = false;
+		this.recording = false;
 		return lines;
 	}
 
