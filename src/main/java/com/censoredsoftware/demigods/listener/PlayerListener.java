@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.item.Book;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 
@@ -47,6 +48,9 @@ public class PlayerListener implements Listener
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
+
+		// First join book
+		if(!player.hasPlayedBefore()) player.getInventory().addItem(Book.FIRST_JOIN.getBook());
 
 		// Notifications
 		if(character != null && character.getMeta().hasNotifications())
