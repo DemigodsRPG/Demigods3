@@ -119,7 +119,7 @@ public class DataManager
 		timedData.setSubKey(subKey);
 		timedData.setData(data.toString());
 		timedData.setSeconds(seconds);
-		TimedData.save(timedData);
+		JOhm.save(timedData);
 	}
 
 	public static void removeTimed(String key, String subKey)
