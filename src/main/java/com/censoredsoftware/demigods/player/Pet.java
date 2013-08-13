@@ -215,11 +215,11 @@ public class Pet implements Participant, ConfigurationSerializable
 			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
 			Map<UUID, Pet> currentFile = loadFromFile();
 
-			for(UUID id : DataManager.devotion.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+			for(UUID id : DataManager.pets.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.pets.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
 
 			for(UUID id : currentFile.keySet())
-				if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
+				if(!DataManager.pets.keySet().contains(id)) saveFile.set(id.toString(), null);
 
 			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
 		}
