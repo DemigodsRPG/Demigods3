@@ -134,8 +134,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void saveInventory()
 	{
-		if(inventory == null) inventory = Util.createInventory(this).getId();
-		else inventory = Util.updateInventory(Util.getInventory(inventory), this).getId();
+		if(this.inventory == null) this.inventory = Util.createInventory(this).getId();
+		else this.inventory = Util.updateInventory(Util.getInventory(inventory), this).getId();
 		Util.save(this);
 	}
 
@@ -1129,7 +1129,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
 			charInventory.setItems(inventory);
 			saveInventory(charInventory);
-			save(character);
 			return charInventory;
 		}
 
@@ -1142,7 +1141,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
 			charInventory.setItems(inventory);
 			saveInventory(charInventory);
-			save(character);
 			return charInventory;
 		}
 

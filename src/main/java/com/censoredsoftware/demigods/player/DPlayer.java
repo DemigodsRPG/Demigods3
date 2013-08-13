@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
 import com.censoredsoftware.core.bukkit.ConfigFile;
+import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
@@ -436,7 +437,7 @@ public class DPlayer implements ConfigurationSerializable
 				togglePrayingSilent(player, false);
 
 				// Message them
-				Util.clearChat(player);
+				Messages.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
 
@@ -500,28 +501,6 @@ public class DPlayer implements ConfigurationSerializable
 				if(regenRate < 5) regenRate = 5;
 				character.getMeta().addFavor(regenRate);
 			}
-		}
-
-		/**
-		 * Clears the chat for <code>player</code> using .sendMessage().
-		 * 
-		 * @param player the player whose chat to clear.
-		 */
-		public static void clearChat(Player player)
-		{
-			for(int x = 0; x < 120; x++)
-				player.sendMessage(" ");
-		}
-
-		/**
-		 * Clears the chat for <code>player</code> using .sendRawMessage().
-		 * 
-		 * @param player the player whose chat to clear.
-		 */
-		public static void clearRawChat(Player player)
-		{
-			for(int x = 0; x < 120; x++)
-				player.sendRawMessage(" ");
 		}
 	}
 }
