@@ -18,7 +18,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
 import com.censoredsoftware.core.bukkit.ConfigFile;
-import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
@@ -437,7 +436,7 @@ public class DPlayer implements ConfigurationSerializable
 				togglePrayingSilent(player, false);
 
 				// Message them
-				Messages.clearChat(player);
+				Demigods.message.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
 
