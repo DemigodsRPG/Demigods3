@@ -46,8 +46,8 @@ public class DPlayer implements ConfigurationSerializable
 		this.player = player;
 		canPvp = conf.getBoolean("canPvp");
 		lastLoginTime = conf.getLong("lastLoginTime");
-		current = UUID.fromString(conf.getString("current"));
-		previous = UUID.fromString(conf.getString("previous"));
+		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
+		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class DPlayer implements ConfigurationSerializable
 			{
 				put("canPvp", canPvp);
 				put("lastLoginTime", lastLoginTime);
-				put("current", current.toString());
-				put("previous", previous.toString());
+				if(current != null) put("current", current.toString());
+				if(previous != null) put("previous", previous.toString());
 			}
 		};
 	}

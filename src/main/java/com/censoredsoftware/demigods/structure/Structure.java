@@ -69,8 +69,8 @@ public interface Structure
 			flags = Sets.newHashSet(conf.getStringList("flags"));
 			region = conf.getString("region");
 			design = conf.getString("design");
-			active = conf.getBoolean("active");
-			owner = UUID.fromString(conf.getString("owner"));
+			if(conf.getString("active") != null) active = conf.getBoolean("active");
+			if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
 		}
 
 		@Override
@@ -84,8 +84,8 @@ public interface Structure
 					put("flags", Lists.newArrayList(flags));
 					put("region", region);
 					put("design", design);
-					put("active", active);
-					put("owner", owner.toString());
+					if(active != null) put("active", active);
+					if(owner != null) put("owner", owner.toString());
 				}
 			};
 		}
@@ -180,11 +180,9 @@ public interface Structure
 		public void addFlags(Set<Structure.Flag> flags)
 		{
 			if(this.flags == null) flags = Sets.newHashSet();
-			save();
 			for(Structure.Flag flag : flags)
-			{
 				this.flags.add(flag.name());
-			}
+			save();
 		}
 
 		public Set<String> getRawFlags()
@@ -205,7 +203,7 @@ public interface Structure
 
 		public void save()
 		{
-			DataManager.structures.put(id, this);
+			DataManager.structures.put(getId(), this);
 		}
 
 		public void remove()
