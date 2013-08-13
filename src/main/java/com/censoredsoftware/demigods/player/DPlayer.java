@@ -233,6 +233,7 @@ public class DPlayer implements ConfigurationSerializable
 
 	public DCharacter getCurrent()
 	{
+		if(this.current == null) return null;
 		DCharacter character = DCharacter.Util.load(this.current);
 		if(character != null && character.isUsable()) return character;
 		return null;
@@ -240,6 +241,7 @@ public class DPlayer implements ConfigurationSerializable
 
 	public DCharacter getPrevious()
 	{
+		if(this.previous == null) return null;
 		return DCharacter.Util.load(this.previous);
 	}
 
