@@ -207,6 +207,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Location getLocation()
 	{
+		if(this.location == null) return null;
 		return DLocation.Util.load(this.location).toLocation();
 	}
 
@@ -479,6 +480,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public ItemStack getHelmet()
 		{
+			if(this.helmet == null) return null;
 			DItemStack item = DItemStack.Util.load(this.helmet);
 			if(item != null) return item.toItemStack();
 			return null;
@@ -486,6 +488,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public ItemStack getChestplate()
 		{
+			if(this.chestplate == null) return null;
 			DItemStack item = DItemStack.Util.load(this.chestplate);
 			if(item != null) return item.toItemStack();
 			return null;
@@ -493,6 +496,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public ItemStack getLeggings()
 		{
+			if(this.leggings == null) return null;
 			DItemStack item = DItemStack.Util.load(this.leggings);
 			if(item != null) return item.toItemStack();
 			return null;
@@ -500,6 +504,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public ItemStack getBoots()
 		{
+			if(this.boots == null) return null;
 			DItemStack item = DItemStack.Util.load(this.boots);
 			if(item != null) return item.toItemStack();
 			return null;
