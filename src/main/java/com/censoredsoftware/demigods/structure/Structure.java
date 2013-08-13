@@ -52,7 +52,7 @@ public interface Structure
 		private UUID id;
 		private String type;
 		private UUID referenceLocation;
-		private Set<String> flags;
+		private List<String> flags;
 		private String region;
 		private String design;
 		private Boolean active;
@@ -66,7 +66,7 @@ public interface Structure
 			this.id = id;
 			type = conf.getString("type");
 			referenceLocation = UUID.fromString(conf.getString("referenceLocation"));
-			flags = Sets.newHashSet(conf.getStringList("flags"));
+			flags = conf.getStringList("flags");
 			region = conf.getString("region");
 			design = conf.getString("design");
 			if(conf.getString("active") != null) active = conf.getBoolean("active");
@@ -81,7 +81,7 @@ public interface Structure
 				{
 					put("type", type);
 					put("referenceLocation", referenceLocation.toString());
-					put("flags", Lists.newArrayList(flags));
+					put("flags", flags);
 					put("region", region);
 					put("design", design);
 					if(active != null) put("active", active);
@@ -103,7 +103,6 @@ public interface Structure
 		public void setDesign(String name)
 		{
 			this.design = name;
-			save();
 		}
 
 		public void setReferenceLocation(Location reference)
@@ -116,7 +115,6 @@ public interface Structure
 		public void setOwner(DCharacter character)
 		{
 			this.owner = character.getId();
-			save();
 		}
 
 		public void setActive(Boolean bool)
@@ -169,7 +167,6 @@ public interface Structure
 		public void setRegion(Region region)
 		{
 			this.region = region.toString();
-			save();
 		}
 
 		public String getRegion()
@@ -179,15 +176,14 @@ public interface Structure
 
 		public void addFlags(Set<Structure.Flag> flags)
 		{
-			if(this.flags == null) flags = Sets.newHashSet();
+			if(this.flags == null) this.flags = Lists.newArrayList();
 			for(Structure.Flag flag : flags)
 				this.flags.add(flag.name());
-			save();
 		}
 
-		public Set<String> getRawFlags()
+		public List<String> getRawFlags()
 		{
-			if(this.flags == null) flags = Sets.newHashSet();
+			if(this.flags == null) flags = Lists.newArrayList();
 			return this.flags;
 		}
 
