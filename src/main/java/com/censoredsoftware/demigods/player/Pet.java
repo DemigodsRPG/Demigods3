@@ -39,10 +39,10 @@ public class Pet implements Participant, ConfigurationSerializable
 	{
 		this.id = id;
 		entityType = conf.getString("entityType");
-		animalTamer = conf.getString("animalTamer");
+		if(conf.getString("animalTamer") != null) animalTamer = conf.getString("animalTamer");
 		PvP = conf.getBoolean("PvP");
 		entityUUID = UUID.fromString(conf.getString("entityUUID"));
-		owner = UUID.fromString(conf.getString("owner"));
+		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
 	}
 
 	@Override
@@ -52,10 +52,10 @@ public class Pet implements Participant, ConfigurationSerializable
 		{
 			{
 				put("entityType", entityType);
-				put("animalTamer", animalTamer);
+				if(animalTamer != null) put("animalTamer", animalTamer);
 				put("PvP", PvP);
 				put("entityUUID", entityUUID.toString());
-				put("owner", owner.toString());
+				if(owner != null) put("owner", owner.toString());
 			}
 		};
 	}

@@ -45,12 +45,12 @@ public class DItemStack implements ConfigurationSerializable
 		byteId = (byte) conf.getInt("byteId");
 		amount = conf.getInt("amount");
 		durability = (short) conf.getInt("durability");
-		enchantments = conf.getConfigurationSection("enchantments").getValues(false);
-		name = conf.getString("name");
-		lore = conf.getStringList("lore");
-		author = conf.getString("author");
-		title = conf.getString("title");
-		pages = conf.getStringList("pages");
+		if(conf.getConfigurationSection("enchantments") != null) enchantments = conf.getConfigurationSection("enchantments").getValues(false);
+		if(conf.getString("name") != null) name = conf.getString("name");
+		if(conf.getString("lore") != null) lore = conf.getStringList("lore");
+		if(conf.getString("author") != null) author = conf.getString("author");
+		if(conf.getString("title") != null) title = conf.getString("title");
+		if(conf.getStringList("pages") != null) pages = conf.getStringList("pages");
 		type = conf.getInt("type");
 	}
 
@@ -64,11 +64,11 @@ public class DItemStack implements ConfigurationSerializable
 				put("byteId", (int) byteId);
 				put("amount", amount);
 				put("durability", (int) durability);
-				put("enchantmetns", enchantments);
-				put("lore", lore);
-				put("author", author);
-				put("title", title);
-				put("pages", pages);
+				if(enchantments != null) put("enchantmetns", enchantments);
+				if(lore != null) put("lore", lore);
+				if(author != null) put("author", author);
+				if(title != null) put("title", title);
+				if(pages != null) put("pages", pages);
 				put("type", type);
 			}
 		};

@@ -407,14 +407,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Inventory(UUID id, ConfigurationSection conf)
 		{
 			this.id = id;
-			helmet = UUID.fromString(conf.getString("helmet"));
-			chestplate = UUID.fromString(conf.getString("chestplate"));
-			leggings = UUID.fromString(conf.getString("leggings"));
-			boots = UUID.fromString(conf.getString("boots"));
-			List<String> stringItems = conf.getStringList("items");
-			items = new String[stringItems.size()];
-			for(int i = 0; i < stringItems.size(); i++)
-				items[i] = stringItems.get(i);
+			if(conf.getString("helmet") != null) helmet = UUID.fromString(conf.getString("helmet"));
+			if(conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
+			if(conf.getString("leggins") != null) leggings = UUID.fromString(conf.getString("leggings"));
+			if(conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
+			if(conf.getStringList("items") != null)
+			{
+				List<String> stringItems = conf.getStringList("items");
+				items = new String[stringItems.size()];
+				for(int i = 0; i < stringItems.size(); i++)
+					items[i] = stringItems.get(i);
+			}
 		}
 
 		@Override
@@ -423,11 +426,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return new HashMap<String, Object>()
 			{
 				{
-					put("helmet", helmet);
-					put("chestplate", chestplate);
-					put("leggings", leggings);
-					put("boots", boots);
-					put("items", Lists.newArrayList(items));
+					if(helmet != null) put("helmet", helmet);
+					if(chestplate != null) put("chestplate", chestplate);
+					if(leggings != null) put("leggings", leggings);
+					if(boots != null) put("boots", boots);
+					if(items != null) put("items", Lists.newArrayList(items));
 				}
 			};
 		}
