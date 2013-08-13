@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.DemigodsPlugin;
 import com.censoredsoftware.demigods.Elements;
@@ -36,6 +37,9 @@ public class ThreadManager
 		// Start favor runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Demigods.config.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
+
+		// Start saving runnable
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getSaveRunnable(), 20, (Demigods.config.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
 		for(Elements.ListedDeity deity : Elements.Deities.values())
@@ -74,7 +78,7 @@ public class ThreadManager
 		}
 
 		/**
-		 * Returns the main async Demigods runnable. Methods NOT requiring the Bukkit API and a constant
+		 * Returns the main asynchronous Demigods runnable. Methods NOT requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.
@@ -94,6 +98,30 @@ public class ThreadManager
 
 					// Update Notifications
 					Notification.Util.updateNotifications();
+				}
+			};
+		}
+
+		/**
+		 * Returns the runnable that handles all data saving.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getSaveRunnable()
+		{
+			return new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					// Save time for reference after saving
+					long time = System.currentTimeMillis();
+
+					// Save data
+					DataManager.save();
+
+					// Send the save message to the console
+					Demigods.message.info(Bukkit.getOnlinePlayers().length + " of " + "X" + " total players saved in " + Times.getSeconds(time) + " seconds."); // TODO: Replace X
 				}
 			};
 		}

@@ -101,10 +101,4 @@ admin:
 
 ## Data ##
 saving:
-    save_freq: 300
-
-## Redis Settings ##
-redis:
-    host: 'localhost'
-    port: 6379
-    password:
+    freq: 300
