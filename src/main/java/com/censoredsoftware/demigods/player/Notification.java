@@ -185,11 +185,11 @@ public class Notification implements ConfigurationSerializable
 			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
 			Map<UUID, Notification> currentFile = loadFromFile();
 
-			for(UUID id : DataManager.devotion.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+			for(UUID id : DataManager.notifications.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.notifications.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
 
 			for(UUID id : currentFile.keySet())
-				if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
+				if(!DataManager.notifications.keySet().contains(id)) saveFile.set(id.toString(), null);
 
 			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
 		}
