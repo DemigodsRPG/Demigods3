@@ -121,7 +121,7 @@ public class ThreadManager
 					DataManager.save();
 
 					// Send the save message to the console
-					Demigods.message.info(Bukkit.getOnlinePlayers().length + " of " + "X" + " total players saved in " + Times.getSeconds(time) + " seconds."); // TODO: Replace X
+					Demigods.message.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 		}
