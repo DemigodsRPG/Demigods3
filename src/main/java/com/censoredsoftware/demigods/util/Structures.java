@@ -224,6 +224,6 @@ public class Structures
 
 	public static Set<Structure.Save> findAll(Predicate<Structure.Save> predicate)
 	{
-		return Sets.newHashSet(Collections2.filter(loadAll(), predicate));
+		return Sets.newHashSet(Collections2.filter(DataManager.structures.values(), predicate));
 	}
 }

@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
@@ -21,19 +20,19 @@ import com.google.common.collect.Maps;
 public class DataManager
 {
 	// Files
-	private static ConfigFile itemStacksYAML;
-	private static ConfigFile locationsYAML;
-	private static ConfigFile bindsYAML;
-	private static ConfigFile devotionYAML;
-	private static ConfigFile characterMetasYAML;
-	private static ConfigFile inventoriesYAML;
-	private static ConfigFile charactersYAML;
-	private static ConfigFile notificationsYAML;
-	private static ConfigFile petsYAML;
-	private static ConfigFile playersYAML;
-	private static ConfigFile structuresYAML;
-	private static ConfigFile battlesYAML;
-	private static ConfigFile timedDataYAML;
+	private static DItemStack.File itemStacksYAML;
+	private static DLocation.File locationsYAML;
+	private static Ability.Bind.File bindsYAML;
+	private static Ability.Devotion.File devotionYAML;
+	private static DCharacter.Meta.File characterMetasYAML;
+	private static DCharacter.Inventory.File inventoriesYAML;
+	private static DCharacter.File charactersYAML;
+	private static Notification.File notificationsYAML;
+	private static Pet.File petsYAML;
+	private static DPlayer.File playersYAML;
+	private static Structure.Save.File structuresYAML;
+	private static Battle.File battlesYAML;
+	private static TimedData.File timedDataYAML;
 
 	// Data
 	public static Map<UUID, DItemStack> itemStacks;
