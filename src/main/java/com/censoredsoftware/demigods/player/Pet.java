@@ -1,37 +1,68 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.List;
+import java.util.*;
+
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
-import redis.clients.johm.*;
-
+import com.censoredsoftware.core.bukkit.ConfigFile;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
-@Model
-public class Pet implements Participant
+public class Pet implements Participant, ConfigurationSerializable
 {
-	@Id
-	private Long Id;
-	@Attribute
-	@Indexed
+	private UUID id;
 	private String entityType;
-	@Attribute
-	@Indexed
 	private String animalTamer;
-	@Attribute
-	@Indexed
 	private Boolean PvP;
-	@Attribute
-	@Indexed
-	private String UUID;
-	@Attribute
-	@Indexed
-	private long owner;
+	private UUID entityUUID;
+	private UUID owner;
+
+	public Pet()
+	{}
+
+	public Pet(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		entityType = conf.getString("entityType");
+		animalTamer = conf.getString("animalTamer");
+		PvP = conf.getBoolean("PvP");
+		entityUUID = UUID.fromString(conf.getString("entityUUID"));
+		owner = UUID.fromString(conf.getString("owner"));
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("entityType", entityType);
+				put("animalTamer", animalTamer);
+				put("PvP", PvP);
+				put("entityUUID", entityUUID.toString());
+				put("owner", owner.toString());
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	public void remove()
 	{
@@ -41,32 +72,47 @@ public class Pet implements Participant
 
 	public void delete()
 	{
-		JOhm.delete(Pet.class, this.Id);
+		DataManager.pets.remove(getId());
 	}
 
 	public void setTamable(LivingEntity tameable)
 	{
 		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 		this.entityType = tameable.getType().getName();
-		this.UUID = tameable.getUniqueId().toString();
+		this.entityUUID = tameable.getUniqueId();
 	}
 
 	public void setOwner(DCharacter owner)
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner.getId();
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setCanPvp(boolean PvP)
 	{
 		this.PvP = PvP;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public Boolean canPvp()
 	{
 		return this.PvP;
+	}
+
+	public String getEntityType()
+	{
+		return entityType;
+	}
+
+	public String getAnimalTamer()
+	{
+		return animalTamer;
+	}
+
+	public UUID getEntityUUID()
+	{
+		return entityUUID;
 	}
 
 	public LivingEntity getEntity()
@@ -76,7 +122,7 @@ public class Pet implements Participant
 			for(Entity pet : world.getLivingEntities())
 			{
 				if(!(pet instanceof Tameable)) continue;
-				if(pet.getUniqueId().toString().equals(this.UUID)) return (LivingEntity) pet;
+				if(pet.getUniqueId().equals(this.entityUUID)) return (LivingEntity) pet;
 			}
 		}
 		return null;
@@ -84,7 +130,7 @@ public class Pet implements Participant
 
 	public DCharacter getOwner()
 	{
-		DCharacter owner = JOhm.get(DCharacter.class, this.owner);
+		DCharacter owner = DCharacter.Util.load(this.owner);
 		if(owner == null)
 		{
 			disownPet();
@@ -108,9 +154,9 @@ public class Pet implements Participant
 	}
 
 	@Override
-	public Long getId()
+	public UUID getId()
 	{
-		return this.Id;
+		return this.id;
 	}
 
 	@Override
@@ -138,32 +184,104 @@ public class Pet implements Participant
 		});
 	}
 
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "pets.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public Map<UUID, Pet> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new HashMap<UUID, Pet>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new Pet(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, Pet> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.devotion.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
+	}
+
 	public static class Util
 	{
+		public static Pet load(UUID id)
+		{
+			return DataManager.pets.get(id);
+		}
+
+		public static void save(Pet pet)
+		{
+			DataManager.pets.put(pet.getId(), pet);
+		}
+
 		public static Pet create(LivingEntity tameable, DCharacter owner)
 		{
 			if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
 			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 			Pet wrapper = new Pet();
+			wrapper.generateId();
 			wrapper.setTamable(tameable);
 			wrapper.setOwner(owner);
-			JOhm.save(wrapper);
+			save(wrapper);
 			return wrapper;
 		}
 
-		public static List<Pet> findByType(EntityType type)
+		public static Set<Pet> findByType(final EntityType type)
 		{
-			return JOhm.find(Pet.class, "entityType", type.getName());
+			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			{
+				@Override
+				public boolean apply(@Nullable Pet pet)
+				{
+					return pet.getEntityType().equals(type.getName());
+				}
+			}));
 		}
 
-		public static List<Pet> findByTamer(String animalTamer)
+		public static Set<Pet> findByTamer(final String animalTamer)
 		{
-			return JOhm.find(Pet.class, "animalTamer", animalTamer);
+			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			{
+				@Override
+				public boolean apply(@Nullable Pet pet)
+				{
+					return pet.getAnimalTamer().equals(animalTamer);
+				}
+			}));
 		}
 
-		public static List<Pet> findByUUID(java.util.UUID uniqueId)
+		public static List<Pet> findByUUID(final UUID uniqueId)
 		{
-			return JOhm.find(Pet.class, "UUID", uniqueId.toString());
+			return Lists.newArrayList(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			{
+				@Override
+				public boolean apply(@Nullable Pet pet)
+				{
+					return pet.getEntityUUID().equals(uniqueId);
+				}
+			}));
 		}
 
 		public static Pet getTameable(LivingEntity tameable)

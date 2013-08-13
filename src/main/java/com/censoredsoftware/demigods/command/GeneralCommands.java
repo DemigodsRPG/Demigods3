@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.command;
 
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -104,8 +105,9 @@ public class GeneralCommands extends ListedCommand
 			player.sendMessage(" ");
 
 			// Get the binds and display info
-			for(Ability.Bind bind : character.getMeta().getBinds())
+			for(String stringBind : character.getMeta().getBinds())
 			{
+				Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
 				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + bind.getRawItem().getType().name().replace("_", " ").toLowerCase() + ChatColor.GRAY + ".");
 			}
 

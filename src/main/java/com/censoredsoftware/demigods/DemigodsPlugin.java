@@ -40,7 +40,7 @@ public class DemigodsPlugin extends CSPlugin
 	public void onDisable()
 	{
 		// Save all the data.
-		if(DataManager.isConnected()) DataManager.save();
+		DataManager.save();
 
 		// Toggle all prayer off
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -49,7 +49,6 @@ public class DemigodsPlugin extends CSPlugin
 		// Cancel all threads, callAbilityEvent calls, and connections.
 		ThreadManager.stopThreads(this);
 		HandlerList.unregisterAll(this);
-		DataManager.disconnect();
 
 		Demigods.message.info("Successfully disabled.");
 	}

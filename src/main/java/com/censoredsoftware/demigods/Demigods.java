@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.conversations.ConversationFactory;
@@ -68,14 +67,6 @@ public class Demigods
 
 		// Initialize data
 		new DataManager();
-		if(!DataManager.isConnected())
-		{
-			message.severe("Demigods was unable to connect to a Redis server.");
-			message.severe("A Redis server is required for Demigods to run.");
-			message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
-			instance.getServer().getPluginManager().disablePlugin(instance);
-			throw new DemigodsStartupException();
-		}
 
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();

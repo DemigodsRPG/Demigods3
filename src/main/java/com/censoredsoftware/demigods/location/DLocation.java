@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.location;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -10,34 +8,64 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import redis.clients.johm.*;
-
+import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.google.common.collect.Sets;
 
-@Model
-public class DLocation
+public class DLocation implements ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
-	@Indexed
+	private UUID id;
 	String world;
-	@Attribute
 	Double X;
-	@Attribute
 	Double Y;
-	@Attribute
 	Double Z;
-	@Attribute
 	Float pitch;
-	@Attribute
 	Float yaw;
-	@Indexed
-	@Attribute
 	String region;
+
+	public DLocation()
+	{}
+
+	public DLocation(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		world = conf.getString("world");
+		X = conf.getDouble("X");
+		Y = conf.getDouble("Y");
+		Z = conf.getDouble("Z");
+		pitch = Float.parseFloat(conf.getString("pitch"));
+		yaw = Float.parseFloat(conf.getString("yaw"));
+		region = conf.getString("region");
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("world", world);
+				put("X", X);
+				put("Y", Y);
+				put("Z", Z);
+				put("pitch", String.valueOf(pitch));
+				put("yaw", String.valueOf(yaw));
+				put("region", region);
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	void setWorld(String world)
 	{
@@ -79,7 +107,7 @@ public class DLocation
 		return new Location(Bukkit.getServer().getWorld(this.world), this.X, this.Y, this.Z, this.yaw, this.pitch);
 	}
 
-	public Long getId()
+	public UUID getId()
 	{
 		return this.id;
 	}
@@ -115,11 +143,67 @@ public class DLocation
 		throw new CloneNotSupportedException();
 	}
 
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "locations.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public Map<UUID, DLocation> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new HashMap<UUID, DLocation>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new DLocation(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, DLocation> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.locations.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.locations.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.locations.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
+	}
+
 	public static class Util
 	{
+		public static void save(DLocation location)
+		{
+			DataManager.locations.put(location.getId(), location);
+		}
+
+		public static void delete(UUID id)
+		{
+			DataManager.locations.remove(id);
+		}
+
+		public static DLocation load(UUID id)
+		{
+			return DataManager.locations.get(id);
+		}
+
 		public static DLocation create(String world, double X, double Y, double Z, float yaw, float pitch)
 		{
 			DLocation trackedLocation = new DLocation();
+			trackedLocation.generateId();
 			trackedLocation.setWorld(world);
 			trackedLocation.setX(X);
 			trackedLocation.setY(Y);
@@ -127,7 +211,7 @@ public class DLocation
 			trackedLocation.setYaw(yaw);
 			trackedLocation.setPitch(pitch);
 			trackedLocation.setRegion(Region.Util.getRegion((int) X, (int) Z, world));
-			JOhm.save(trackedLocation);
+			save(trackedLocation);
 			return trackedLocation;
 		}
 
@@ -138,7 +222,7 @@ public class DLocation
 
 		public static Set<DLocation> loadAll()
 		{
-			return JOhm.getAll(DLocation.class);
+			return Sets.newHashSet(DataManager.locations.values());
 		}
 
 		public static DLocation get(Location location)

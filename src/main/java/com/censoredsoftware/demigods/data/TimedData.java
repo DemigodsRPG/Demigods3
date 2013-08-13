@@ -1,32 +1,64 @@
 package com.censoredsoftware.demigods.data;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import redis.clients.johm.*;
+import javax.annotation.Nullable;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import com.censoredsoftware.core.bukkit.ConfigFile;
+import com.censoredsoftware.demigods.Demigods;
 import com.google.common.base.Objects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 
-@Model
-public class TimedData
+public class TimedData implements ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
-	@Indexed
+	private UUID id;
 	private String key;
-	@Attribute
-	@Indexed
 	private String subKey;
-	@Attribute
-	@Indexed
 	private String data;
-	@Attribute
-	@Indexed
 	private String type;
-	@Attribute
-	@Indexed
 	private long expiration;
+
+	public TimedData()
+	{}
+
+	public TimedData(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		key = conf.getString("key");
+		subKey = conf.getString("subKey");
+		data = conf.getString("data");
+		type = conf.getString("type");
+		expiration = conf.getLong("expiration");
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("key", key);
+				put("subKey", subKey);
+				put("data", data);
+				put("type", type);
+				put("expiration", expiration);
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	public void setKey(String key)
 	{
@@ -59,7 +91,7 @@ public class TimedData
 		this.expiration = System.currentTimeMillis() + (hours * 3600000);
 	}
 
-	public Long getId()
+	public UUID getId()
 	{
 		return this.id;
 	}
@@ -98,7 +130,7 @@ public class TimedData
 
 	public void delete()
 	{
-		JOhm.delete(TimedData.class, getId());
+		DataManager.timedData.remove(id);
 	}
 
 	@Override
@@ -128,16 +160,56 @@ public class TimedData
 		throw new CloneNotSupportedException();
 	}
 
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "timedData.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public Map<UUID, TimedData> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new HashMap<UUID, TimedData>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new TimedData(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, TimedData> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.timedData.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.timedData.get(id))) saveFile.createSection(id.toString(), Util.get(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.timedData.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
+	}
+
 	public static class Util
 	{
-		public static TimedData get(Long id)
+		public static TimedData get(UUID id)
 		{
-			return JOhm.get(TimedData.class, id);
+			return DataManager.timedData.get(id);
 		}
 
 		public static Set<TimedData> getAll()
 		{
-			return JOhm.getAll(TimedData.class);
+			return Sets.newHashSet(DataManager.timedData.values());
 		}
 
 		public static TimedData find(String key, String subKey)
@@ -152,9 +224,16 @@ public class TimedData
 			return null;
 		}
 
-		public static List<TimedData> findByKey(String key)
+		public static Set<TimedData> findByKey(final String key)
 		{
-			return JOhm.find(TimedData.class, "key", key);
+			return Sets.newHashSet(Collections2.filter(getAll(), new Predicate<TimedData>()
+			{
+				@Override
+				public boolean apply(@Nullable TimedData timedData)
+				{
+					return timedData.getKey().equals(key);
+				}
+			}));
 		}
 
 		public static void remove(String key, String subKey)

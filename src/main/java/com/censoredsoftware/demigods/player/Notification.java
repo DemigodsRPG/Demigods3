@@ -1,35 +1,68 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import redis.clients.johm.*;
-
+import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
+import com.google.common.collect.Sets;
 
-@Model
-public class Notification
+public class Notification implements ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
+	private UUID id;
 	private long expiration;
-	@Indexed
-	@Attribute
-	private long receiver;
-	@Indexed
-	@Attribute
-	private long sender;
-	@Attribute
+	private UUID receiver;
+	private UUID sender;
 	private String senderType;
-	@Attribute
 	private String danger;
-	@Attribute
 	private String name;
-	@Attribute
 	private String message;
+
+	public Notification()
+	{}
+
+	public Notification(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		expiration = conf.getLong("expiration");
+		receiver = UUID.fromString(conf.getString("receiver"));
+		sender = UUID.fromString(conf.getString("sender"));
+		senderType = conf.getString("senderType");
+		danger = conf.getString("danger");
+		name = conf.getString("name");
+		message = conf.getString("message");
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("expiration", expiration);
+				put("receiver", receiver.toString());
+				put("sender", sender.toString());
+				put("senderType", senderType);
+				put("danger", danger);
+				put("name", name);
+				put("message", message);
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	void setExpiration(int minutes)
 	{
@@ -83,12 +116,12 @@ public class Notification
 
 	public DCharacter getReceiver()
 	{
-		return JOhm.get(DCharacter.class, this.receiver);
+		return DCharacter.Util.load(this.receiver);
 	}
 
 	public DCharacter getSender()
 	{
-		return JOhm.get(DCharacter.class, this.sender);
+		return DCharacter.Util.load(this.sender);
 	}
 
 	public String getName()
@@ -101,7 +134,7 @@ public class Notification
 		return this.message;
 	}
 
-	public long getId()
+	public UUID getId()
 	{
 		return this.id;
 	}
@@ -113,49 +146,103 @@ public class Notification
 
 	public static void remove(Notification notification)
 	{
-		JOhm.delete(Notification.class, notification.getId());
+		DataManager.notifications.remove(notification.getId());
 	}
 
 	public static Set<Notification> loadAll()
 	{
-		return JOhm.getAll(Notification.class);
+		return Sets.newHashSet(DataManager.notifications.values());
+	}
+
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "notifications.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public Map<UUID, Notification> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new HashMap<UUID, Notification>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new Notification(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, Notification> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.devotion.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
 	}
 
 	public static class Util
 	{
+		public static void save(Notification notification)
+		{
+			DataManager.notifications.put(notification.getId(), notification);
+		}
+
+		public static Notification load(UUID id)
+		{
+			return DataManager.notifications.get(id);
+		}
+
 		public static Notification create(Sender sender, DCharacter receiver, Danger danger, String name, String message)
 		{
 			Notification notification = new Notification();
+			notification.generateId();
 			notification.setReceiver(receiver);
 			notification.setDanger(danger);
 			notification.setSenderType(sender);
 			notification.setName(name);
 			notification.setMessage(message);
-			JOhm.save(notification);
+			save(notification);
 			return notification;
 		}
 
 		public static Notification create(Sender sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
+			notification.generateId();
 			notification.setExpiration(minutes);
-			JOhm.save(notification);
+			save(notification);
 			return notification;
 		}
 
 		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, String name, String message)
 		{
 			Notification notification = create(Sender.CHARACTER, receiver, danger, name, message);
+			notification.generateId();
 			notification.setSender(sender);
-			JOhm.save(notification);
+			save(notification);
 			return notification;
 		}
 
 		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
+			notification.generateId();
 			notification.setExpiration(minutes);
-			JOhm.save(notification);
+			save(notification);
 			return notification;
 		}
 

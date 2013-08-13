@@ -3,6 +3,8 @@ package com.censoredsoftware.demigods.structure;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +23,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 
 public class Obelisk implements Structure
 {
@@ -151,13 +154,21 @@ public class Obelisk implements Structure
 	@Override
 	public Set<Save> getAll()
 	{
-		return Structures.findAll("type", getStructureType());
+		return Structures.findAll(new Predicate<Save>()
+		{
+			@Override
+			public boolean apply(@Nullable Save save)
+			{
+				return save.getType().equals(getStructureType());
+			}
+		});
 	}
 
 	@Override
 	public Save createNew(Location reference, boolean generate)
 	{
 		Save save = new Save();
+		save.generateId();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign(getDesign(reference).getName());

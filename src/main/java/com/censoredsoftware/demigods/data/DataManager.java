@@ -2,84 +2,135 @@ package com.censoredsoftware.demigods.data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.johm.JOhm;
-
+import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.*;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
 
 public class DataManager
 {
-	// The Redis DB
-	private static JedisPool jedisPool;
+	// Files
+	private static ConfigFile itemStacksYAML;
+	private static ConfigFile locationsYAML;
+	private static ConfigFile bindsYAML;
+	private static ConfigFile devotionYAML;
+	private static ConfigFile characterMetasYAML;
+	private static ConfigFile inventoriesYAML;
+	private static ConfigFile charactersYAML;
+	private static ConfigFile notificationsYAML;
+	private static ConfigFile petsYAML;
+	private static ConfigFile playersYAML;
+	private static ConfigFile structuresYAML;
+	private static ConfigFile battlesYAML;
+	private static ConfigFile timedDataYAML;
 
-	// Temp Data
+	// Data
+	public static Map<UUID, DItemStack> itemStacks;
+	public static Map<UUID, DLocation> locations;
+	public static Map<UUID, Ability.Bind> binds;
+	public static Map<UUID, Ability.Devotion> devotion;
+	public static Map<String, DPlayer> players;
+	public static Map<UUID, DCharacter> characters;
+	public static Map<UUID, Notification> notifications;
+	public static Map<UUID, Pet> pets;
+	public static Map<UUID, DCharacter.Meta> characterMetas;
+	public static Map<UUID, DCharacter.Inventory> inventories;
+	public static Map<UUID, Structure.Save> structures;
+	public static Map<UUID, Battle> battles;
+	public static Map<UUID, TimedData> timedData;
+
 	private static Map<String, HashMap<String, Object>> tempData;
 
 	public DataManager()
 	{
-		// Create Data Instances
-		jedisPool = new JedisPool(new JedisPoolConfig(), Demigods.config.getSettingString("redis.host"), Demigods.config.getSettingInt("redis.port"));
-		if(Demigods.config.isSettingSet("redis.password")) jedisPool.getResource().auth(Demigods.config.getSettingString("redis.password"));
+		itemStacksYAML = new DItemStack.File();
+		locationsYAML = new DLocation.File();
+		bindsYAML = new Ability.Bind.File();
+		devotionYAML = new Ability.Devotion.File();
+		playersYAML = new DPlayer.File();
+		charactersYAML = new DCharacter.File();
+		characterMetasYAML = new DCharacter.Meta.File();
+		inventoriesYAML = new DCharacter.Inventory.File();
+		notificationsYAML = new Notification.File();
+		petsYAML = new Pet.File();
+		structuresYAML = new Structure.Save.File();
+		battlesYAML = new Battle.File();
+		timedDataYAML = new TimedData.File();
+
+		load();
+
 		tempData = Maps.newHashMap();
-
-		// Create Persistence
-		new JOhm();
-		JOhm.setPool(jedisPool);
 	}
 
-	public static boolean isConnected()
+	public static void load()
 	{
-		try
-		{
-			jedisPool.getResource();
-			return true;
-		}
-		catch(JedisConnectionException ignored)
-		{}
-		return false;
-	}
-
-	public static void disconnect()
-	{
-		try
-		{
-			Jedis jedis = jedisPool.getResource();
-			jedis.disconnect();
-			jedisPool.returnBrokenResource(jedis);
-			jedisPool.destroy();
-		}
-		catch(Exception ignored)
-		{}
+		itemStacks = itemStacksYAML.loadFromFile();
+		locations = locationsYAML.loadFromFile();
+		binds = bindsYAML.loadFromFile();
+		devotion = devotionYAML.loadFromFile();
+		players = playersYAML.loadFromFile();
+		characters = charactersYAML.loadFromFile();
+		characterMetas = characterMetasYAML.loadFromFile();
+		inventories = inventoriesYAML.loadFromFile();
+		notifications = notificationsYAML.loadFromFile();
+		pets = petsYAML.loadFromFile();
+		structures = structuresYAML.loadFromFile();
+		battles = battlesYAML.loadFromFile();
+		timedData = timedDataYAML.loadFromFile();
 	}
 
 	public static void save()
 	{
-		Jedis jedis = jedisPool.getResource();
-		jedis.bgsave();
-		jedisPool.returnResource(jedis);
+		itemStacksYAML.saveToFile();
+		locationsYAML.saveToFile();
+		bindsYAML.saveToFile();
+		devotionYAML.saveToFile();
+		playersYAML.saveToFile();
+		charactersYAML.saveToFile();
+		characterMetasYAML.saveToFile();
+		inventoriesYAML.saveToFile();
+		notificationsYAML.saveToFile();
+		petsYAML.saveToFile();
+		structuresYAML.saveToFile();
+		battlesYAML.saveToFile();
+		timedDataYAML.saveToFile();
 	}
 
 	public static void flushData()
 	{
-		// Clear the data
-		Jedis jedis = jedisPool.getResource();
-		jedis.flushDB();
-		jedisPool.returnResource(jedis);
-		tempData.clear();
-
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
 			player.kickPlayer(ChatColor.GREEN + Demigods.language.getText(Translation.Text.DATA_RESET_KICK));
+
+		// Clear the data
+		itemStacks.clear();
+		locations.clear();
+		players.clear();
+		characters.clear();
+		characterMetas.clear();
+		inventories.clear();
+		binds.clear();
+		devotion.clear();
+		notifications.clear();
+		pets.clear();
+		structures.clear();
+		battles.clear();
+		timedData.clear();
+
+		tempData.clear();
+
+		save();
 
 		// Reload the plugin
 		Bukkit.getServer().getPluginManager().disablePlugin(Demigods.plugin);
@@ -115,11 +166,12 @@ public class DataManager
 
 		// Create and save the timed data
 		TimedData timedData = new TimedData();
+		timedData.generateId();
 		timedData.setKey(key);
 		timedData.setSubKey(subKey);
 		timedData.setData(data.toString());
 		timedData.setSeconds(seconds);
-		JOhm.save(timedData);
+		DataManager.timedData.put(timedData.getId(), timedData);
 	}
 
 	public static void removeTimed(String key, String subKey)

@@ -2,106 +2,147 @@ package com.censoredsoftware.demigods.battle;
 
 import java.util.*;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.util.Vector;
 
-import redis.clients.johm.*;
-
+import com.censoredsoftware.core.bukkit.ConfigFile;
 import com.censoredsoftware.core.exceptions.SpigotNotFoundException;
 import com.censoredsoftware.core.util.Randoms;
 import com.censoredsoftware.core.util.Spigots;
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-@Model
-public class Battle
+public class Battle implements ConfigurationSerializable
 {
-	@Id
-	private Long Id;
-	@Reference
-	private DLocation startLoc;
-	@Attribute
-	@Indexed
+	private UUID id;
+	private UUID startLoc;
 	private boolean active;
-	@Attribute
 	private double range;
-	@Attribute
 	private long duration;
-	@Attribute
 	private int minKills;
-	@Attribute
 	private int maxKills;
-	@Attribute
 	private long startTime;
-	@Attribute
 	private long deleteTime;
-	@CollectionSet(of = DCharacter.class)
-	private Set<DCharacter> involvedPlayers;
-	@CollectionSet(of = Pet.class)
-	private Set<Pet> involvedTameable;
-	@Attribute
+	private Set<String> involvedPlayers;
+	private Set<String> involvedTameable;
 	private int killCounter;
-	@CollectionMap(key = DCharacter.class, value = Integer.class)
-	private Map<DCharacter, Integer> kills;
-	@CollectionMap(key = DCharacter.class, value = Integer.class)
-	private Map<DCharacter, Integer> deaths;
-	@Reference
-	@Indexed
-	private DCharacter startedBy;
+	private Map<String, Object> kills;
+	private Map<String, Object> deaths;
+	private UUID startedBy;
+
+	public Battle()
+	{}
+
+	public Battle(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		startLoc = UUID.fromString(conf.getString("startLoc"));
+		active = conf.getBoolean("active");
+		range = conf.getDouble("range");
+		duration = conf.getLong("duration");
+		minKills = conf.getInt("minKills");
+		maxKills = conf.getInt("maxKills");
+		startTime = conf.getLong("startTime");
+		deleteTime = conf.getLong("deleteTime");
+		involvedPlayers = Sets.newHashSet(conf.getStringList("involvedPlayers"));
+		involvedTameable = Sets.newHashSet(conf.getStringList("involvedTameable"));
+		killCounter = conf.getInt("killCounter");
+		kills = conf.getConfigurationSection("kills").getValues(false);
+		deaths = conf.getConfigurationSection("deaths").getValues(false);
+		startedBy = UUID.fromString(conf.getString("startedBy"));
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("startLoc", startLoc.toString());
+				put("active", active);
+				put("range", range);
+				put("duration", duration);
+				put("minKills", minKills);
+				put("maxKills", maxKills);
+				put("startTime", startTime);
+				put("deleteTime", deleteTime);
+				put("involvedPlayers", Lists.newArrayList(involvedPlayers));
+				put("involvedTameable", Lists.newArrayList(involvedTameable));
+				put("killCounter", killCounter);
+				put("kills", kills);
+				put("deaths", deaths);
+				put("startedBy", startedBy.toString());
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	public void setRange(double range)
 	{
 		this.range = range;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setActive()
 	{
 		this.active = true;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setInactive()
 	{
 		this.active = false;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setDuration(long duration)
 	{
 		this.duration = duration;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setMinKills(int kills)
 	{
 		this.minKills = kills;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void setMaxKills(int kills)
 	{
 		this.maxKills = kills;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	void setStartLocation(Location location)
 	{
-		this.startLoc = DLocation.Util.create(location);
+		this.startLoc = DLocation.Util.create(location).getId();
 	}
 
 	void setStartTime(long time)
@@ -112,12 +153,12 @@ public class Battle
 	void setDeleteTime(long time)
 	{
 		this.deleteTime = time;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
-	public long getId()
+	public UUID getId()
 	{
-		return this.Id;
+		return this.id;
 	}
 
 	public double getRange()
@@ -147,7 +188,7 @@ public class Battle
 
 	public Location getStartLocation()
 	{
-		return this.startLoc.toLocation();
+		return DLocation.Util.load(this.startLoc).toLocation();
 	}
 
 	public long getStartTime()
@@ -162,7 +203,7 @@ public class Battle
 
 	void setStarter(DCharacter character)
 	{
-		this.startedBy = character;
+		this.startedBy = character.getId();
 		addParticipant(character);
 	}
 
@@ -177,31 +218,31 @@ public class Battle
 
 	public void addParticipant(Participant participant)
 	{
-		if(participant instanceof DCharacter) this.involvedPlayers.add((DCharacter) participant);
-		else this.involvedTameable.add((Pet) participant);
-		JOhm.save(this);
+		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
+		else this.involvedTameable.add(participant.getId().toString());
+		Util.save(this);
 	}
 
 	public void addKill(Participant participant)
 	{
 		this.killCounter += 1;
 		DCharacter character = participant.getRelatedCharacter();
-		if(this.kills.containsKey(character)) this.kills.put(character, this.kills.get(character) + 1);
-		else this.kills.put(character, 1);
-		JOhm.save(this);
+		if(this.kills.containsKey(character.getId().toString())) this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).toString()) + 1);
+		else this.kills.put(character.getId().toString(), 1);
+		Util.save(this);
 	}
 
 	public void addDeath(Participant participant)
 	{
 		DCharacter character = participant.getRelatedCharacter();
-		if(this.deaths.containsKey(character)) this.deaths.put(character, this.deaths.get(character) + 1);
-		else this.deaths.put(character, 1);
-		JOhm.save(this);
+		if(this.deaths.containsKey(character)) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
+		else this.deaths.put(character.getId().toString(), 1);
+		Util.save(this);
 	}
 
 	public DCharacter getStarter()
 	{
-		return this.startedBy;
+		return DCharacter.Util.load(this.startedBy);
 	}
 
 	public Set<Participant> getParticipants()
@@ -209,10 +250,10 @@ public class Battle
 		return new HashSet<Participant>()
 		{
 			{
-				for(DCharacter character : involvedPlayers)
-					add(character);
-				for(Pet tamable : involvedTameable)
-					add(tamable);
+				for(String character : involvedPlayers)
+					add(DCharacter.Util.load(UUID.fromString(character)));
+				for(String tamable : involvedTameable)
+					add(Pet.Util.load(UUID.fromString(tamable)));
 			}
 		};
 	}
@@ -231,14 +272,60 @@ public class Battle
 
 	public void delete()
 	{
-		JOhm.delete(Battle.class, getId());
+		DataManager.battles.remove(getId());
+	}
+
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "battles.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public Map<UUID, Battle> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new HashMap<UUID, Battle>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new Battle(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, Battle> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.battles.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.battles.get(id))) saveFile.createSection(id.toString(), Util.get(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.battles.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
 	}
 
 	public static class Util
 	{
+		public static void save(Battle battle)
+		{
+			DataManager.battles.put(battle.getId(), battle);
+		}
+
 		public static Battle create(Participant damager, Participant damaged)
 		{
 			Battle battle = new Battle();
+			battle.generateId();
 			battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 			battle.setStartTime(System.currentTimeMillis());
 
@@ -258,28 +345,42 @@ public class Battle
 			battle.setStarter(damager.getRelatedCharacter());
 			battle.addParticipant(damager);
 			battle.addParticipant(damaged);
-			JOhm.save(battle);
+			save(battle);
 			return battle;
 		}
 
-		public static Battle get(Long id)
+		public static Battle get(UUID id)
 		{
-			return JOhm.get(Battle.class, id);
+			return DataManager.battles.get(id);
 		}
 
 		public static Set<Battle> getAll()
 		{
-			return JOhm.getAll(Battle.class);
+			return Sets.newHashSet(DataManager.battles.values());
 		}
 
 		public static List<Battle> getAllActive()
 		{
-			return JOhm.find(Battle.class, "active", true);
+			return Lists.newArrayList(Collections2.filter(getAll(), new Predicate<Battle>()
+			{
+				@Override
+				public boolean apply(@Nullable Battle battle)
+				{
+					return battle.isActive();
+				}
+			}));
 		}
 
 		public static List<Battle> getAllInactive()
 		{
-			return JOhm.find(Battle.class, "active", false);
+			return Lists.newArrayList(Collections2.filter(getAll(), new Predicate<Battle>()
+			{
+				@Override
+				public boolean apply(@Nullable Battle battle)
+				{
+					return !battle.isActive();
+				}
+			}));
 		}
 
 		public static boolean existsInRadius(Location location)

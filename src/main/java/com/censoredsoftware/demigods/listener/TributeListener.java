@@ -1,5 +1,7 @@
 package com.censoredsoftware.demigods.listener;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -82,7 +84,7 @@ public class TributeListener implements Listener
 		if(!event.getInventory().getName().contains("Tribute to") || !Structures.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION, true)) return;
 
 		// Get the creator of the shrine
-		Structure.Save save = Structures.load(Long.valueOf(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
+		Structure.Save save = Structures.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;

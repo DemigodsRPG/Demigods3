@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.conversation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -209,13 +210,15 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) at this location.");
 				player.sendRawMessage(" ");
 
-				for(Map.Entry<String, DLocation> entry : character.getMeta().getWarps().entrySet())
+				for(Map.Entry<String, Object> entry : character.getMeta().getWarps().entrySet())
 				{
-					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
+					Location location = DLocation.Util.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ")");
 				}
-				for(Map.Entry<String, DLocation> entry : character.getMeta().getInvites().entrySet())
+				for(Map.Entry<String, Object> entry : character.getMeta().getInvites().entrySet())
 				{
-					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
+					Location location = DLocation.Util.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
 				}
 
 				player.sendRawMessage(" ");
@@ -321,7 +324,7 @@ public class Prayer implements ListedConversation
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
-				Location warp = character.getMeta().getWarps().get(arg2).toLocation();
+				Location warp = DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg2).toString())).toLocation();
 
 				// Add the invite
 				invitee.getMeta().addInvite(character.getName(), warp);
@@ -344,11 +347,11 @@ public class Prayer implements ListedConversation
 				// Teleport and message
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getMeta().getWarps().get(arg1).toLocation());
+					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1).toString())).toLocation());
 				}
 				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getMeta().getInvites().get(arg1.toLowerCase()).toLocation());
+					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getInvites().get(arg1.toLowerCase()).toString())).toLocation());
 					character.getMeta().removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
@@ -384,8 +387,9 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Notifications"));
 			player.sendRawMessage(" ");
 
-			for(Notification notification : character.getMeta().getNotifications())
+			for(String string : character.getMeta().getNotifications())
 			{
+				Notification notification = Notification.Util.load(UUID.fromString(string));
 				// Determine color
 				ChatColor color;
 				switch(notification.getDanger())
@@ -438,9 +442,9 @@ public class Prayer implements ListedConversation
 			else if(message.equalsIgnoreCase("clear"))
 			{
 				// Clear them
-				for(Notification notification : character.getMeta().getNotifications())
+				for(String string : character.getMeta().getNotifications())
 				{
-					Notification.remove(notification);
+					Notification.remove(Notification.Util.load(UUID.fromString(string)));
 				}
 				character.getMeta().clearNotifications();
 

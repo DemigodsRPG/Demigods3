@@ -3,6 +3,8 @@ package com.censoredsoftware.demigods.structure;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,6 +26,7 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 
 // TODO Optimize and generalize methods.
 
@@ -318,13 +321,21 @@ public class Altar implements Structure
 	@Override
 	public Set<Save> getAll()
 	{
-		return Structures.findAll("type", getStructureType());
+		return Structures.findAll(new Predicate<Save>()
+		{
+			@Override
+			public boolean apply(@Nullable Save save)
+			{
+				return save.getType().equals(getStructureType());
+			}
+		});
 	}
 
 	@Override
 	public Save createNew(Location reference, boolean generate)
 	{
 		Save save = new Save();
+		save.generateId();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
 		save.setDesign(getDesign(reference).getName());
@@ -352,7 +363,7 @@ public class Altar implements Structure
 	public static boolean altarNearby(Location location)
 	{
 		int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
-		for(Save structureSave : Structures.findAll("type", "Altar"))
+		for(Save structureSave : Elements.Structures.ALTAR.getStructure().getAll())
 		{
 			if(structureSave.getReferenceLocation().distance(location) <= distance) return true;
 		}

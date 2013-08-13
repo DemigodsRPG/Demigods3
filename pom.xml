@@ -123,28 +123,6 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>commons-pool</groupId>
-            <artifactId>commons-pool</artifactId>
-            <version>1.6</version>
-            <scope>compile</scope>
-            <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis-cs</artifactId>
-            <version>2.2.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>redis</groupId>
-            <artifactId>johm-cs</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>
@@ -193,6 +171,14 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>./data</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/data</directory>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>./lang</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/lang</directory>
@@ -217,9 +203,6 @@
                                 <includes>
                                     <include>com.censoredsoftware.minecraft:cs-core</include>
                                     <include>org.mcstats.bukkit:metrics</include>
-                                    <include>redis.clients:jedis-cs</include>
-                                    <include>redis:johm-cs</include>
-                                    <include>commons-pool:commons-pool</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
