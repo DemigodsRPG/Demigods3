@@ -115,14 +115,6 @@
             <optional>false</optional>
         </dependency>
         <dependency>
-            <groupId>com.censoredsoftware.minecraft</groupId>
-            <artifactId>cs-core</artifactId>
-            <version>${core.version}</version>
-            <scope>compile</scope>
-            <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>
@@ -201,7 +193,6 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.censoredsoftware.minecraft:cs-core</include>
                                     <include>org.mcstats.bukkit:metrics</include>
                                 </includes>
                             </artifactSet>
