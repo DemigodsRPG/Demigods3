@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -172,10 +173,10 @@ public class TimedData implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, TimedData> loadFromFile()
+		public ConcurrentHashMap<UUID, TimedData> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, TimedData>()
+			return new ConcurrentHashMap<UUID, TimedData>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

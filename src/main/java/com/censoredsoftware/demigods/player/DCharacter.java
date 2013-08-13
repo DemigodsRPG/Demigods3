@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -550,10 +551,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			}
 
 			@Override
-			public Map<UUID, Inventory> loadFromFile()
+			public ConcurrentHashMap<UUID, Inventory> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new HashMap<UUID, Inventory>()
+				return new ConcurrentHashMap<UUID, Inventory>()
 				{
 					{
 						for(String stringId : data.getKeys(false))
@@ -955,10 +956,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			}
 
 			@Override
-			public Map<UUID, Meta> loadFromFile()
+			public ConcurrentHashMap<UUID, Meta> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new HashMap<UUID, Meta>()
+				return new ConcurrentHashMap<UUID, Meta>()
 				{
 					{
 						for(String stringId : data.getKeys(false))
@@ -996,10 +997,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, DCharacter> loadFromFile()
+		public ConcurrentHashMap<UUID, DCharacter> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, DCharacter>()
+			return new ConcurrentHashMap<UUID, DCharacter>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

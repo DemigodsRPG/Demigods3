@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -196,10 +197,10 @@ public class Pet implements Participant, ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, Pet> loadFromFile()
+		public ConcurrentHashMap<UUID, Pet> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, Pet>()
+			return new ConcurrentHashMap<UUID, Pet>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

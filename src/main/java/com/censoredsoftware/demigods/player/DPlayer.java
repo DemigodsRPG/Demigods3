@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.player;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -281,10 +282,10 @@ public class DPlayer implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<String, DPlayer> loadFromFile()
+		public ConcurrentHashMap<String, DPlayer> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<String, DPlayer>()
+			return new ConcurrentHashMap<String, DPlayer>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

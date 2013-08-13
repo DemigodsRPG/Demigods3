@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.location;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -155,10 +156,10 @@ public class DLocation implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, DLocation> loadFromFile()
+		public ConcurrentHashMap<UUID, DLocation> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, DLocation>()
+			return new ConcurrentHashMap<UUID, DLocation>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

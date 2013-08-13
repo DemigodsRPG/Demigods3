@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -166,10 +167,10 @@ public class Notification implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, Notification> loadFromFile()
+		public ConcurrentHashMap<UUID, Notification> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, Notification>()
+			return new ConcurrentHashMap<UUID, Notification>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

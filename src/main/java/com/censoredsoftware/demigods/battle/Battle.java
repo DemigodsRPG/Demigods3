@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.battle;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -287,10 +288,10 @@ public class Battle implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, Battle> loadFromFile()
+		public ConcurrentHashMap<UUID, Battle> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, Battle>()
+			return new ConcurrentHashMap<UUID, Battle>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

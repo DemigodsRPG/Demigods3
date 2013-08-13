@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -213,10 +214,10 @@ public class DItemStack implements ConfigurationSerializable
 		}
 
 		@Override
-		public Map<UUID, DItemStack> loadFromFile()
+		public ConcurrentHashMap<UUID, DItemStack> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new HashMap<UUID, DItemStack>()
+			return new ConcurrentHashMap<UUID, DItemStack>()
 			{
 				{
 					for(String stringId : data.getKeys(false))

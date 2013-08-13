@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.data;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,19 +36,19 @@ public class DataManager
 	private static TimedData.File timedDataYAML;
 
 	// Data
-	public static Map<UUID, DItemStack> itemStacks;
-	public static Map<UUID, DLocation> locations;
-	public static Map<UUID, Ability.Bind> binds;
-	public static Map<UUID, Ability.Devotion> devotion;
-	public static Map<String, DPlayer> players;
-	public static Map<UUID, DCharacter> characters;
-	public static Map<UUID, Notification> notifications;
-	public static Map<UUID, Pet> pets;
-	public static Map<UUID, DCharacter.Meta> characterMetas;
-	public static Map<UUID, DCharacter.Inventory> inventories;
-	public static Map<UUID, Structure.Save> structures;
-	public static Map<UUID, Battle> battles;
-	public static Map<UUID, TimedData> timedData;
+	public static ConcurrentHashMap<UUID, DItemStack> itemStacks;
+	public static ConcurrentHashMap<UUID, DLocation> locations;
+	public static ConcurrentHashMap<UUID, Ability.Bind> binds;
+	public static ConcurrentHashMap<UUID, Ability.Devotion> devotion;
+	public static ConcurrentHashMap<String, DPlayer> players;
+	public static ConcurrentHashMap<UUID, DCharacter> characters;
+	public static ConcurrentHashMap<UUID, Notification> notifications;
+	public static ConcurrentHashMap<UUID, Pet> pets;
+	public static ConcurrentHashMap<UUID, DCharacter.Meta> characterMetas;
+	public static ConcurrentHashMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentHashMap<UUID, Structure.Save> structures;
+	public static ConcurrentHashMap<UUID, Battle> battles;
+	public static ConcurrentHashMap<UUID, TimedData> timedData;
 
 	private static Map<String, HashMap<String, Object>> tempData;
 

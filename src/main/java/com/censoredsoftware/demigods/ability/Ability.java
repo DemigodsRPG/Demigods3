@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.ability;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -172,10 +173,10 @@ public interface Ability
 			}
 
 			@Override
-			public Map<UUID, Bind> loadFromFile()
+			public ConcurrentHashMap<UUID, Bind> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new HashMap<UUID, Bind>()
+				return new ConcurrentHashMap<UUID, Bind>()
 				{
 					{
 						for(String stringId : data.getKeys(false))
@@ -300,10 +301,10 @@ public interface Ability
 			}
 
 			@Override
-			public Map<UUID, Devotion> loadFromFile()
+			public ConcurrentHashMap<UUID, Devotion> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new HashMap<UUID, Devotion>()
+				return new ConcurrentHashMap<UUID, Devotion>()
 				{
 					{
 						for(String stringId : data.getKeys(false))

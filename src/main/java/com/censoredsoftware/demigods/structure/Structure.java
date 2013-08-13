@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.structure;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nullable;
 
@@ -176,9 +177,8 @@ public interface Structure
 
 		public void addFlags(Set<Structure.Flag> flags)
 		{
-			if(this.flags == null) this.flags = Lists.newArrayList();
 			for(Structure.Flag flag : flags)
-				this.flags.add(flag.name());
+				getRawFlags().add(flag.name());
 		}
 
 		public List<String> getRawFlags()
@@ -240,10 +240,10 @@ public interface Structure
 			}
 
 			@Override
-			public Map<UUID, Save> loadFromFile()
+			public ConcurrentHashMap<UUID, Save> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new HashMap<UUID, Save>()
+				return new ConcurrentHashMap<UUID, Save>()
 				{
 					{
 						for(String stringId : data.getKeys(false))
