@@ -1,10 +1,14 @@
 package com.censoredsoftware.demigods.structure;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,15 +19,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.base.Predicate;
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Obelisk implements Structure
 {
@@ -175,7 +173,7 @@ public class Obelisk implements Structure
 		save.addFlags(getFlags());
 		save.setActive(true);
 		save.save();
-		if(generate && !save.generate(true)) save.remove();
+		if(generate) save.generate(false);
 		return save;
 	}
 
