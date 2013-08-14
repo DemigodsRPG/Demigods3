@@ -1,15 +1,14 @@
 package com.censoredsoftware.demigods.language;
 
-import java.util.*;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import com.censoredsoftware.core.bukkit.ConfigFile;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Translation

@@ -29,7 +29,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <core.version>1.0.0-SNAPSHOT</core.version>
         <spigot.version>LATEST</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
@@ -110,14 +109,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
-            <scope>compile</scope>
-            <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.censoredsoftware.minecraft</groupId>
-            <artifactId>cs-core</artifactId>
-            <version>${core.version}</version>
             <scope>compile</scope>
             <type>jar</type>
             <optional>false</optional>

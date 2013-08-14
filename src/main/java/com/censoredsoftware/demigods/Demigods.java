@@ -1,8 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import com.censoredsoftware.core.bukkit.ListedConversation;
-import com.censoredsoftware.core.module.Configs;
-import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -10,6 +7,9 @@ import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.helper.Configs;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.helper.Messages;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;

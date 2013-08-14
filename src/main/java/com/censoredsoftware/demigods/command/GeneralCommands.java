@@ -1,24 +1,23 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.Set;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Strings;
+import com.censoredsoftware.demigods.util.Titles;
+import com.censoredsoftware.demigods.util.Unicodes;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.core.bukkit.ListedCommand;
-import com.censoredsoftware.core.util.Strings;
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.conversation.Prayer;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Titles;
-import com.google.common.collect.Sets;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends ListedCommand
 {

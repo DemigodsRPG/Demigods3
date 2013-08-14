@@ -1,16 +1,16 @@
 package com.censoredsoftware.demigods.command;
 
-import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
-import com.censoredsoftware.core.bukkit.ListedCommand;
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.core.util.Unicodes;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.util.Errors;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

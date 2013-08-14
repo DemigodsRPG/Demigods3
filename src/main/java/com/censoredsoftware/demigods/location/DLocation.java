@@ -1,8 +1,10 @@
 package com.censoredsoftware.demigods.location;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,12 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import com.censoredsoftware.core.bukkit.ConfigFile;
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DLocation implements ConfigurationSerializable
 {

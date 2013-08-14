@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.ability.Template;
+import com.censoredsoftware.demigods.util.Unicodes;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.ability.Template;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class TemplateDeity implements Deity
 {

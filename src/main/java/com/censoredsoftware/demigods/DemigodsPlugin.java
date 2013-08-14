@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-
-import com.censoredsoftware.core.bukkit.CSPlugin;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.helper.CSPlugin;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 /**
  * Class for all plugins of demigods.

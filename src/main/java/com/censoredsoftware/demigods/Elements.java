@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.Prompt;
-
-import com.censoredsoftware.core.bukkit.ListedConversation;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
@@ -12,10 +8,13 @@ import com.censoredsoftware.demigods.deity.insignian.DrD1sco;
 import com.censoredsoftware.demigods.deity.insignian.OmegaX17;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Prometheus;
+import com.censoredsoftware.demigods.helper.ListedConversation;
 import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.structure.Obelisk;
 import com.censoredsoftware.demigods.structure.Shrine;
 import com.censoredsoftware.demigods.structure.Structure;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.Prompt;
 
 public class Elements
 {

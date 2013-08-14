@@ -1,22 +1,20 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import com.censoredsoftware.core.region.Region;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Structures

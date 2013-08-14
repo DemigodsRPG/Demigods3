@@ -1,10 +1,5 @@
 package com.censoredsoftware.demigods.data;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.censoredsoftware.core.util.Times;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.DemigodsPlugin;
 import com.censoredsoftware.demigods.Elements;
@@ -13,6 +8,10 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Times;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
