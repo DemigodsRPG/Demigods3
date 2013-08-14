@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods.data;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
@@ -17,6 +8,13 @@ import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
 {
@@ -36,21 +34,21 @@ public class DataManager
 	private static TimedData.File timedDataYAML;
 
 	// Data
-	public static ConcurrentHashMap<UUID, DItemStack> itemStacks;
-	public static ConcurrentHashMap<UUID, DLocation> locations;
-	public static ConcurrentHashMap<UUID, Ability.Bind> binds;
-	public static ConcurrentHashMap<UUID, Ability.Devotion> devotion;
-	public static ConcurrentHashMap<String, DPlayer> players;
-	public static ConcurrentHashMap<UUID, DCharacter> characters;
-	public static ConcurrentHashMap<UUID, Notification> notifications;
-	public static ConcurrentHashMap<UUID, Pet> pets;
-	public static ConcurrentHashMap<UUID, DCharacter.Meta> characterMetas;
-	public static ConcurrentHashMap<UUID, DCharacter.Inventory> inventories;
-	public static ConcurrentHashMap<UUID, Structure.Save> structures;
-	public static ConcurrentHashMap<UUID, Battle> battles;
-	public static ConcurrentHashMap<UUID, TimedData> timedData;
+	public static ConcurrentMap<UUID, DItemStack> itemStacks;
+	public static ConcurrentMap<UUID, DLocation> locations;
+	public static ConcurrentMap<UUID, Ability.Bind> binds;
+	public static ConcurrentMap<UUID, Ability.Devotion> devotion;
+	public static ConcurrentMap<String, DPlayer> players;
+	public static ConcurrentMap<UUID, DCharacter> characters;
+	public static ConcurrentMap<UUID, Notification> notifications;
+	public static ConcurrentMap<UUID, Pet> pets;
+	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
+	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentMap<UUID, Structure.Save> structures;
+	public static ConcurrentMap<UUID, Battle> battles;
+	public static ConcurrentMap<UUID, TimedData> timedData;
 
-	private static Map<String, HashMap<String, Object>> tempData;
+	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
 
 	public DataManager()
 	{
@@ -70,7 +68,7 @@ public class DataManager
 
 		load();
 
-		tempData = Maps.newHashMap();
+		tempData = Maps.newConcurrentMap();
 	}
 
 	public static void load()

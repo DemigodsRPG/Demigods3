@@ -1,7 +1,13 @@
 package com.censoredsoftware.demigods.listener;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.ItemValues;
+import com.censoredsoftware.demigods.util.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,14 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.ItemValues;
-import com.censoredsoftware.demigods.util.Structures;
+import java.util.UUID;
 
 public class TributeListener implements Listener
 {
@@ -41,13 +40,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structures.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION, true))
+		if(Structures.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			Structure.Save save = Structures.getStructureSave(location, true);
+			Structure.Save save = Structures.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
@@ -81,7 +80,7 @@ public class TributeListener implements Listener
 		if(character == null || !character.isImmortal()) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structures.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION, true)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structures.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		Structure.Save save = Structures.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));

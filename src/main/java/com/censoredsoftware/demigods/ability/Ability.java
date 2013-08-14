@@ -646,7 +646,7 @@ public interface Ability
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{
 					// Ensure that the deity can be used, permission allows it, etc
-					if(!Deity.Util.canUseDeity(player, ability.getDeity())) return true;
+					if(!Deity.Util.canUseDeity(character, ability.getDeity())) return true;
 					if(!player.hasPermission(ability.getPermission())) return true;
 
 					// Handle enabling the command

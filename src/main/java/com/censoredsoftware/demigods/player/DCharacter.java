@@ -10,6 +10,8 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -26,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -464,14 +467,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(this.items == null) this.items = new String[36];
 			for(int i = 0; i < 35; i++)
 			{
-				if(inventory.getItem(i) == null)
-				{
-					this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
-				}
-				else
-				{
-					this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
-				}
+				if(inventory.getItem(i) == null) this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
+				else this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
 			}
 		}
 
@@ -744,10 +741,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public Ability.Devotion getDevotion(Ability.Devotion.Type type)
 		{
-			if(this.devotionData.containsKey(type.toString()))
-			{
-				return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
-			}
+			if(this.devotionData.containsKey(type.toString())) return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
 			else
 			{
 				addDevotion(Ability.Util.createDevotion(type));
@@ -795,30 +789,21 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Ability.Bind getBind(int slot)
 		{
 			for(String bind : this.binds)
-			{
 				if(Ability.Util.loadBind(UUID.fromString(bind)).getSlot() == slot) return Ability.Util.loadBind(UUID.fromString(bind));
-			}
 			return null;
 		}
 
 		public Ability.Bind getBind(String ability)
 		{
 			for(String bind : this.binds)
-			{
 				if(Ability.Util.loadBind(UUID.fromString(bind)).getAbility().equalsIgnoreCase(ability)) return Ability.Util.loadBind(UUID.fromString(bind));
-			}
 			return null;
 		}
 
 		public Ability.Bind getBind(ItemStack item)
 		{
 			for(String bind : this.binds)
-			{
-				if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(Ability.Util.loadBind(UUID.fromString(bind)).getIdentifier()))
-				{
-					return Ability.Util.loadBind(UUID.fromString(bind));
-				}
-			}
+				if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(Ability.Util.loadBind(UUID.fromString(bind)).getIdentifier())) return Ability.Util.loadBind(UUID.fromString(bind));
 			return null;
 		}
 
@@ -895,27 +880,15 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void addFavor(int amount)
 		{
-			if((this.favor + amount) > this.maxFavor)
-			{
-				this.favor = this.maxFavor;
-			}
-			else
-			{
-				this.favor += amount;
-			}
+			if((this.favor + amount) > this.maxFavor) this.favor = this.maxFavor;
+			else this.favor += amount;
 			Util.saveMeta(this);
 		}
 
 		public void subtractFavor(int amount)
 		{
-			if((this.favor - amount) < 0)
-			{
-				this.favor = 0;
-			}
-			else
-			{
-				this.favor -= amount;
-			}
+			if((this.favor - amount) < 0) this.favor = 0;
+			else this.favor -= amount;
 			Util.saveMeta(this);
 		}
 
@@ -926,14 +899,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void addMaxFavor(int amount)
 		{
-			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor"))
-			{
-				this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-			}
-			else
-			{
-				this.maxFavor += amount;
-			}
+			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+			else this.maxFavor += amount;
 			Util.saveMeta(this);
 		}
 
@@ -1231,7 +1198,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString());
 		}
 
-		public static Set<DCharacter> getAllActive()
+		public static Set<DCharacter> getAllActive() // TODO Redo this.
 		{
 			Set<DCharacter> active = Sets.newHashSet();
 			for(DCharacter character : loadAll())
@@ -1278,6 +1245,47 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public static boolean areAllied(DCharacter char1, DCharacter char2)
 		{
 			return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
+		}
+
+		public static Collection<DCharacter> getOnlineCharactersWithDeity(final String deity)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() && character.getDeity().equals(deity);
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final String alliance)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() && character.getAlliance().equals(alliance);
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getOnlineCharacters()
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline();
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
+		{
+			return Collections2.filter(loadAll(), predicate);
 		}
 	}
 }

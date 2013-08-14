@@ -33,7 +33,7 @@ public interface Structure
 
 	public Set<Structure.Flag> getFlags();
 
-	public Set<Save> getAll();
+	public Collection<Save> getAll();
 
 	public Listener getUniqueListener();
 

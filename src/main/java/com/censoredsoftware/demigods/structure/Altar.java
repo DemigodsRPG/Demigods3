@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -317,7 +318,7 @@ public class Altar implements Structure
 	}
 
 	@Override
-	public Set<Save> getAll()
+	public Collection<Save> getAll()
 	{
 		return Structures.findAll(new Predicate<Save>()
 		{
@@ -456,11 +457,11 @@ public class Altar implements Structure
 				return;
 			}
 
-			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Admins.useWand(player) && Structures.partOfStructureWithType(location, "Altar", true))
+			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Admins.useWand(player) && Structures.partOfStructureWithType(location, "Altar"))
 			{
 				event.setCancelled(true);
 
-				Structure.Save altar = Structures.getStructureSave(location, true);
+				Structure.Save altar = Structures.getStructureRegional(location);
 
 				if(DataManager.hasTimed(player.getName(), "destroy_altar"))
 				{

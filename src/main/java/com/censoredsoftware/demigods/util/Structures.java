@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -19,9 +20,18 @@ import java.util.UUID;
 @SuppressWarnings("unchecked")
 public class Structures
 {
-	public static Structure.Save getStructureSave(Location location, boolean filter)
+	public static Structure.Save getStructureRegional(Location location)
 	{
-		for(Structure.Save save : filterForRegion(location, loadAll(), filter))
+		for(Structure.Save save : getStructuresInRegionalArea(location))
+		{
+			if(save.getLocations().contains(location)) return save;
+		}
+		return null;
+	}
+
+	public static Structure.Save getStructureSaveGlobal(Location location)
+	{
+		for(Structure.Save save : loadAll())
 		{
 			if(save.getLocations().contains(location)) return save;
 		}
@@ -40,7 +50,7 @@ public class Structures
 		};
 	}
 
-	public static Set<Structure.Save> getStructuresInSingleRegion(final Region region)
+	public static Collection<Structure.Save> getStructuresInSingleRegion(final Region region)
 	{
 		return findAll(new Predicate<Structure.Save>()
 		{
@@ -52,51 +62,47 @@ public class Structures
 		});
 	}
 
-	public static boolean partOfStructureWithType(Location location, final String type, boolean filter)
+	public static boolean partOfStructureWithType(Location location, final String type)
 	{
-		for(Structure.Save save : filterForRegion(location, findAll(new Predicate<Structure.Save>()
+		for(Structure.Save save : findRegional(location, new Predicate<Structure.Save>()
 		{
 			@Override
 			public boolean apply(@Nullable Structure.Save save)
 			{
 				return save.getType().equals(type);
 			}
-		}), filter))
+		}))
 		{
 			if(save.getLocations().contains(location)) return true;
 		}
 		return false;
 	}
 
-	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag, boolean filter)
+	public static boolean partOfStructureWithFlag(Location location, Structure.Flag flag)
 	{
-		for(Structure.Save save : filterForRegion(location, getStructuresSavesWithFlag(flag), filter))
-		{
+		for(Structure.Save save : getStructuresSavesWithFlag(location, flag))
 			if(save.getLocations().contains(location)) return true;
-		}
 		return false;
 	}
 
-	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag, boolean filter)
+	public static boolean isClickableBlockWithFlag(Location location, Structure.Flag flag)
 	{
-		for(Structure.Save save : filterForRegion(location, getStructuresSavesWithFlag(flag), filter))
+		for(Structure.Save save : getStructuresSavesWithFlag(location, flag))
 		{
 			if(save.getClickableBlocks().contains(location)) return true;
 		}
 		return false;
 	}
 
-	public static boolean isInRadiusWithFlag(Location location, Structure.Flag flag, boolean filter)
+	public static boolean isInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		return getInRadiusWithFlag(location, flag, filter) != null;
+		return getInRadiusWithFlag(location, flag) != null;
 	}
 
-	public static Structure.Save getInRadiusWithFlag(Location location, Structure.Flag flag, boolean filter)
+	public static Structure.Save getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
-		for(Structure.Save save : filterForRegion(location, getStructuresSavesWithFlag(flag), filter))
-		{
-			if(save.getActive() && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
-		}
+		for(Structure.Save save : getStructuresSavesWithFlag(flag))
+			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
 		return null;
 	}
 
@@ -104,26 +110,15 @@ public class Structures
 	{
 		Location location = player.getLocation();
 		if(Zones.zoneNoBuild(player, player.getLocation())) return true;
-		if(isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING, true))
-		{
-			Structure.Save save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING, true);
-			return !(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId()));
-		}
+		Structure.Save save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
+		if(save != null) return !(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId()));
 		return false;
 	}
 
 	public static void regenerateStructures()
 	{
 		for(Structure.Save save : loadAll())
-		{
 			save.generate(false);
-		}
-	}
-
-	public static Set<Structure.Save> filterForRegion(Location location, Set<Structure.Save> structures, boolean filter)
-	{
-		if(filter) return Sets.intersection(getStructuresInRegionalArea(location), structures);
-		return structures;
 	}
 
 	public static Set<Structure> getStructuresWithFlag(final Structure.Flag flag)
@@ -131,10 +126,15 @@ public class Structures
 		return new HashSet<Structure>()
 		{
 			{
-				for(Elements.ListedStructure structure : Elements.Structures.values())
+				for(Elements.ListedStructure structure : Collections2.filter(Sets.newHashSet(Elements.Structures.values()), new Predicate<Elements.ListedStructure>()
 				{
-					if(structure.getStructure().getFlags().contains(flag)) add(structure.getStructure());
-				}
+					@Override
+					public boolean apply(@Nullable Elements.ListedStructure lS)
+					{
+						return lS.getStructure().getFlags().contains(flag);
+					}
+				}))
+					add(structure.getStructure());
 			}
 		};
 	}
@@ -145,6 +145,24 @@ public class Structures
 		{
 			{
 				for(Structure.Save save : findAll(new Predicate<Structure.Save>()
+				{
+					@Override
+					public boolean apply(@Nullable Structure.Save save)
+					{
+						return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
+					}
+				}))
+					add(save);
+			}
+		};
+	}
+
+	public static Set<Structure.Save> getStructuresSavesWithFlag(final Location location, final Structure.Flag flag)
+	{
+		return new HashSet<Structure.Save>()
+		{
+			{
+				for(Structure.Save save : findRegional(location, new Predicate<Structure.Save>()
 				{
 					@Override
 					public boolean apply(@Nullable Structure.Save save)
@@ -215,13 +233,18 @@ public class Structures
 		return DataManager.structures.get(id);
 	}
 
-	public static Set<Structure.Save> loadAll()
+	public static Collection<Structure.Save> loadAll()
 	{
-		return Sets.newHashSet(DataManager.structures.values());
+		return DataManager.structures.values();
 	}
 
-	public static Set<Structure.Save> findAll(Predicate<Structure.Save> predicate)
+	public static Collection<Structure.Save> findAll(Predicate<Structure.Save> predicate)
 	{
-		return Sets.newHashSet(Collections2.filter(DataManager.structures.values(), predicate));
+		return Collections2.filter(DataManager.structures.values(), predicate);
+	}
+
+	public static Collection<Structure.Save> findRegional(Location location, Predicate<Structure.Save> predicate)
+	{
+		return Collections2.filter(getStructuresInRegionalArea(location), predicate);
 	}
 }

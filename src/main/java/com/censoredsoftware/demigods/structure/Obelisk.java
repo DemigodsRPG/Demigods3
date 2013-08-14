@@ -20,6 +20,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -150,7 +151,7 @@ public class Obelisk implements Structure
 	}
 
 	@Override
-	public Set<Save> getAll()
+	public Collection<Save> getAll()
 	{
 		return Structures.findAll(new Predicate<Save>()
 		{
@@ -254,11 +255,11 @@ public class Obelisk implements Structure
 				}
 			}
 
-			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk", true))
+			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
-				Structure.Save save = Structures.getStructureSave(location, true);
+				Structure.Save save = Structures.getStructureRegional(location);
 				// DCharacter owner = save.getOwner();
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))

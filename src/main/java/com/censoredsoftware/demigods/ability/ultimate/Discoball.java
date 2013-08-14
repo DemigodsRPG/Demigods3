@@ -125,7 +125,7 @@ public class Discoball implements Ability
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(character.getMeta().isBound(name))
 				{
@@ -269,11 +269,12 @@ public class Discoball implements Ability
 				@Override
 				public void run()
 				{
-					for(Player online : Bukkit.getOnlinePlayers())
+					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
-						if(Demigods.isDisabledWorld(online.getWorld())) return;
-						if(Deity.Util.canUseDeitySilent(online, "DrD1sco") && online.isSneaking() && !online.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structures.isTrespassingInNoGriefingZone(online)) doEffect(online, true);
-						else if(Deity.Util.canUseDeitySilent(online, "DrD1sco")) doEffect(online, false);
+						Player player = online.getOfflinePlayer().getPlayer();
+						if(Demigods.isDisabledWorld(player.getWorld())) return;
+						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structures.isTrespassingInNoGriefingZone(player)) doEffect(player, true);
+						else doEffect(player, false);
 					}
 				}
 

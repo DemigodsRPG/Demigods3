@@ -1,7 +1,10 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,11 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Swim implements Ability
 {
@@ -122,7 +121,7 @@ public class Swim implements Ability
 					DataManager.removeTemp(player.getName(), "is_swimming");
 					return;
 				}
-				else if(player.isSneaking() && inWater && Deity.Util.canUseDeitySilent(player, deity))
+				else if(player.isSneaking() && inWater && Deity.Util.canUseDeitySilent(player, deity)) // TODO There has to be a quicker way to do this.
 				{
 					DataManager.saveTemp(player.getName(), "is_swimming", true);
 					return;

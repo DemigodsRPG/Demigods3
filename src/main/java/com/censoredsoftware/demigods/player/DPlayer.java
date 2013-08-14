@@ -80,7 +80,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true);
+		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -102,7 +102,7 @@ public class DPlayer implements ConfigurationSerializable
 				@Override
 				public void run()
 				{
-					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
+					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
 					{
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.SAFE_FROM_PVP));
@@ -263,11 +263,7 @@ public class DPlayer implements ConfigurationSerializable
 			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
 			return false;
 		}
-		else
-		{
-			return getOfflinePlayer().isOnline();
-		}
-
+		else return getOfflinePlayer().isOnline();
 	}
 
 	public static class File extends ConfigFile
