@@ -123,6 +123,11 @@
             <optional>false</optional>
         </dependency>
         <dependency>
+            <groupId>com.censoredsoftware.minecraft</groupId>
+            <artifactId>ErrorNoise-Standard</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>

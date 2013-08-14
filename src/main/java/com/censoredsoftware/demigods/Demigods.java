@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.core.bukkit.ListedConversation;
 import com.censoredsoftware.core.module.Configs;
 import com.censoredsoftware.core.module.Messages;
@@ -23,8 +14,17 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Structures;
+import com.censoredsoftware.errornoise.ErrorNoise;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Set;
 
 public class Demigods
 {
@@ -36,6 +36,7 @@ public class Demigods
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
+	public static boolean errorNoise;
 
 	// Disabled Worlds
 	protected static Set<String> disabledWorlds;
@@ -167,6 +168,7 @@ public class Demigods
 		// WorldGuard
 		Plugin depend = instance.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
+		errorNoise = instance.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
 	}
 
 	public static boolean isRunningSpigot()

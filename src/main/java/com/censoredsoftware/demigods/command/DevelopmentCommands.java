@@ -1,9 +1,17 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
+import com.censoredsoftware.core.bukkit.ListedCommand;
+import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.util.Errors;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,14 +19,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.core.bukkit.ListedCommand;
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class DevelopmentCommands extends ListedCommand
 {
@@ -74,7 +77,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		// TODO
+		if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray("  " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
 
 		return true;
 	}
