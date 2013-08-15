@@ -23,8 +23,8 @@
     </licenses>
 
     <ciManagement>
-        <system>TeamCity</system>
-        <url>http://teamcity.censoredsoftware.com/</url>
+        <system>Jenkins</system>
+        <url>http://build.censoredsoftware.com/</url>
     </ciManagement>
 
     <properties>
@@ -68,23 +68,10 @@
         <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
     </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>censored-software</id>
-            <name>censored-software-releases</name>
-            <url>http://artifactory.censoredsoftware.com/artifactory/libs-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>censored-software</id>
-            <name>censored-software-snapshots</name>
-            <url>http://artifactory.censoredsoftware.com/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <repositories>
         <repository>
             <id>censored-software</id>
-            <url>http://repo.censoredsoftware.com</url>
+            <url>http://repo1.censoredsoftware.com</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
