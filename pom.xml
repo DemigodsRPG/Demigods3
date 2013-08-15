@@ -71,7 +71,7 @@
     <repositories>
         <repository>
             <id>censored-software</id>
-            <url>http://repo1.censoredsoftware.com</url>
+            <url>http://repo.censoredsoftware.com</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
