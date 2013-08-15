@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.deity.titan;
 
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
@@ -37,6 +38,12 @@ public class Prometheus implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return Elements.Deities.PROMETHEUS;
 	}
 
 	@Override

@@ -47,7 +47,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private UUID location;
 	private String deity;
 	private Boolean active;
-	private Boolean immortal;
 	private Boolean usable;
 	private UUID meta;
 	private UUID inventory;
@@ -70,7 +69,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		location = UUID.fromString(conf.getString("location"));
 		deity = conf.getString("deity");
 		active = conf.getBoolean("active");
-		immortal = conf.getBoolean("immortal");
 		usable = conf.getBoolean("usable");
 		meta = UUID.fromString(conf.getString("meta"));
 		inventory = UUID.fromString(conf.getString("inventory"));
@@ -94,7 +92,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				put("location", location.toString());
 				put("deity", deity);
 				put("active", active);
-				put("immortal", immortal);
 				put("usable", usable);
 				put("meta", meta.toString());
 				put("inventory", inventory.toString());
@@ -120,12 +117,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	void setPlayer(DPlayer player)
 	{
 		this.player = player.getPlayerName();
-	}
-
-	public void setImmortal(boolean option)
-	{
-		this.immortal = option;
-		Util.save(this);
 	}
 
 	public void setActive(boolean option)
@@ -274,11 +265,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public String getAlliance()
 	{
 		return getDeity().getAlliance();
-	}
-
-	public Boolean isImmortal()
-	{
-		return this.immortal;
 	}
 
 	/**
@@ -1069,7 +1055,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setPlayer(player);
 			character.setName(charName);
 			character.setDeity(deity);
-			character.setImmortal(immortal);
 			character.setUsable(true);
 			character.setMaxHealth(40.0);
 			character.setHealth(40.0);

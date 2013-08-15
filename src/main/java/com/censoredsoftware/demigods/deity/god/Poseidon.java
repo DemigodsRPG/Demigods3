@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.deity.god;
 
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Reel;
 import com.censoredsoftware.demigods.ability.passive.Swim;
@@ -37,6 +38,12 @@ public class Poseidon implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return Elements.Deities.POSEIDON;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.deity;
 
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.util.Unicodes;
@@ -35,6 +36,12 @@ public class TemplateDeity implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return null;
 	}
 
 	@Override

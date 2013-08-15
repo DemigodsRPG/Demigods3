@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.deity.insignian;
 
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
@@ -37,6 +38,12 @@ public class DrD1sco implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return Elements.Deities.DISCO;
 	}
 
 	@Override

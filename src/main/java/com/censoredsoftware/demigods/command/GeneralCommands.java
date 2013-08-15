@@ -41,7 +41,7 @@ public class GeneralCommands extends ListedCommand
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(character == null || !character.isImmortal())
+		if(character == null)
 		{
 			player.sendMessage(ChatColor.RED + "You are nothing but a mortal. You have no worthy statistics.");
 			return true;

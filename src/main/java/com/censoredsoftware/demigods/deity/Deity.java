@@ -16,6 +16,8 @@ public interface Deity
 {
 	public String getName();
 
+	public Elements.ListedDeity getListedDeity();
+
 	public String getAlliance();
 
 	public String getPermission();
@@ -76,12 +78,7 @@ public interface Deity
 			if(character == null) return false;
 			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
 			Player player = character.getOfflinePlayer().getPlayer();
-			if(!character.isImmortal())
-			{
-				player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
-				return false;
-			}
-			else if(!character.isDeity(deity))
+			if(!character.isDeity(deity))
 			{
 				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 				return false;
@@ -91,13 +88,12 @@ public interface Deity
 
 		public static boolean canUseDeitySilent(DCharacter character, String deity)
 		{
-			return character != null && character.isImmortal() && character.isDeity(deity);
+			return character != null && character.isDeity(deity);
 		}
 
 		public static boolean canUseDeitySilent(Player player, String deity)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			return canUseDeitySilent(character, deity);
+			return DPlayer.Util.getPlayer(player).getCurrentDeity().getName().equalsIgnoreCase(deity);
 		}
 	}
 }

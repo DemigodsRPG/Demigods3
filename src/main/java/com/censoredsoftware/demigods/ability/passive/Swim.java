@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.ability.passive;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
@@ -107,24 +106,18 @@ public class Swim implements Ability
 				if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
 
 				Player player = event.getPlayer();
-				boolean inWater = player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER) || player.getLocation().getBlock().getType().equals(Material.WATER);
 
-				if(player.isSneaking() && inWater && DataManager.hasKeyTemp(player.getName(), "is_swimming"))
+				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+
+				Material playerLocationMaterial = player.getLocation().getBlock().getType();
+				boolean inWater = playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER);
+				boolean isSneaking = player.isSneaking();
+
+				if(isSneaking && inWater)
 				{
 					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
 					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
 					player.setVelocity(victor);
-					return;
-				}
-				else if(!player.isSneaking() && !inWater)
-				{
-					DataManager.removeTemp(player.getName(), "is_swimming");
-					return;
-				}
-				else if(player.isSneaking() && inWater && Deity.Util.canUseDeitySilent(player, deity)) // TODO There has to be a quicker way to do this.
-				{
-					DataManager.saveTemp(player.getName(), "is_swimming", true);
-					return;
 				}
 			}
 		};

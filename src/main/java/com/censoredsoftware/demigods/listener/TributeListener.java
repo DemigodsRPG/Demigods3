@@ -52,7 +52,7 @@ public class TributeListener implements Listener
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
 
 			// Return if the player is mortal
-			if(character == null || !character.isImmortal())
+			if(character == null)
 			{
 				player.sendMessage(ChatColor.RED + "You must be immortal to use that!");
 				return;
@@ -77,7 +77,7 @@ public class TributeListener implements Listener
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		// Make sure they have a character and are immortal
-		if(character == null || !character.isImmortal()) return;
+		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
 		if(!event.getInventory().getName().contains("Tribute to") || !Structures.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;

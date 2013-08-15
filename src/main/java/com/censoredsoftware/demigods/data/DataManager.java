@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 public class DataManager
 {
 	// Files
+	private static DPlayer.File playersYAML;
 	private static DItemStack.File itemStacksYAML;
 	private static DLocation.File locationsYAML;
 	private static Ability.Bind.File bindsYAML;
@@ -28,17 +29,16 @@ public class DataManager
 	private static DCharacter.File charactersYAML;
 	private static Notification.File notificationsYAML;
 	private static Pet.File petsYAML;
-	private static DPlayer.File playersYAML;
 	private static Structure.Save.File structuresYAML;
 	private static Battle.File battlesYAML;
 	private static TimedData.File timedDataYAML;
 
 	// Data
+	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DItemStack> itemStacks;
 	public static ConcurrentMap<UUID, DLocation> locations;
 	public static ConcurrentMap<UUID, Ability.Bind> binds;
 	public static ConcurrentMap<UUID, Ability.Devotion> devotion;
-	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DCharacter> characters;
 	public static ConcurrentMap<UUID, Notification> notifications;
 	public static ConcurrentMap<UUID, Pet> pets;

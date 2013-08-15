@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.deity.god;
 
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Shove;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
@@ -38,6 +39,12 @@ public class Zeus implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return Elements.Deities.ZEUS;
 	}
 
 	@Override

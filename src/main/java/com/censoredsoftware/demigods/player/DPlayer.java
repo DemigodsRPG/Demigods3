@@ -1,9 +1,11 @@
 package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
@@ -33,6 +35,7 @@ public class DPlayer implements ConfigurationSerializable
 	private String player;
 	private Boolean canPvp;
 	private long lastLoginTime;
+	private Elements.ListedDeity currentDeity;
 	private UUID current;
 	private UUID previous;
 	private static ChatRecorder chatRecording;
@@ -193,6 +196,9 @@ public class DPlayer implements ConfigurationSerializable
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
 
+		// Set new deity
+		currentDeity = newChar.getDeity().getListedDeity();
+
 		// Teleport them
 		try
 		{
@@ -241,6 +247,11 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		if(this.previous == null) return null;
 		return DCharacter.Util.load(this.previous);
+	}
+
+	public Deity getCurrentDeity()
+	{
+		return currentDeity.getDeity();
 	}
 
 	public Set<DCharacter> getCharacters()
@@ -345,7 +356,7 @@ public class DPlayer implements ConfigurationSerializable
 		public static boolean isImmortal(OfflinePlayer player)
 		{
 			DCharacter character = getPlayer(player).getCurrent();
-			return character != null && character.isImmortal();
+			return character != null;
 		}
 
 		/**
@@ -489,7 +500,7 @@ public class DPlayer implements ConfigurationSerializable
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				if(character == null || !character.isImmortal()) continue;
+				if(character == null) continue;
 				int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 				if(regenRate < 5) regenRate = 5;
 				character.getMeta().addFavor(regenRate);
