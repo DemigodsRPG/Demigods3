@@ -110,14 +110,12 @@ public class Swim implements Ability
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
-				boolean inWater = playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER);
-				boolean isSneaking = player.isSneaking();
+				if(!playerLocationMaterial.equals(Material.STATIONARY_WATER) && !playerLocationMaterial.equals(Material.WATER)) return;
 
-				if(isSneaking && inWater)
+				if(player.isSneaking())
 				{
-					Vector direction = player.getLocation().getDirection().normalize().multiply(1.3D);
-					Vector victor = new Vector(direction.getX(), direction.getY(), direction.getZ());
-					player.setVelocity(victor);
+					Vector victor = player.getLocation().getDirection().normalize().multiply(1.3D);
+					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
 				}
 			}
 		};

@@ -64,9 +64,7 @@ public class DevelopmentCommands extends ListedCommand
 		Player player = (Player) sender;
 
 		for(Battle battle : Battle.Util.getAllActive())
-		{
 			battle.end();
-		}
 
 		player.sendMessage("All battles disabled!");
 
@@ -77,7 +75,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray("  " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
+		if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
 
 		return true;
 	}
