@@ -161,7 +161,13 @@ public class Pet implements Participant, ConfigurationSerializable
 	@Override
 	public Location getCurrentLocation()
 	{
-		return getEntity().getLocation();
+		try
+		{
+			return getEntity().getLocation();
+		}
+		catch(Exception ignored)
+		{}
+		return null;
 	}
 
 	@Override
