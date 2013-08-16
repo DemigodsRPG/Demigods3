@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
@@ -35,7 +33,7 @@ public class DPlayer implements ConfigurationSerializable
 	private String player;
 	private Boolean canPvp;
 	private long lastLoginTime;
-	private Elements.ListedDeity currentDeity;
+	private String currentDeityName;
 	private UUID current;
 	private UUID previous;
 	private static ChatRecorder chatRecording;
@@ -48,6 +46,7 @@ public class DPlayer implements ConfigurationSerializable
 		this.player = player;
 		canPvp = conf.getBoolean("canPvp");
 		lastLoginTime = conf.getLong("lastLoginTime");
+		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
 	}
@@ -60,6 +59,7 @@ public class DPlayer implements ConfigurationSerializable
 			{
 				put("canPvp", canPvp);
 				put("lastLoginTime", lastLoginTime);
+				put("currentDeityName", currentDeityName);
 				if(current != null) put("current", current.toString());
 				if(previous != null) put("previous", previous.toString());
 			}
@@ -197,7 +197,7 @@ public class DPlayer implements ConfigurationSerializable
 		Pet.Util.reownPets(player, newChar);
 
 		// Set new deity
-		currentDeity = newChar.getDeity().getListedDeity();
+		currentDeityName = newChar.getDeity().getName();
 
 		// Teleport them
 		try
@@ -249,10 +249,9 @@ public class DPlayer implements ConfigurationSerializable
 		return DCharacter.Util.load(this.previous);
 	}
 
-	public Deity getCurrentDeity()
+	public String getCurrentDeityName()
 	{
-		if(currentDeity != null) return currentDeity.getDeity();
-		return null;
+		return currentDeityName;
 	}
 
 	public Set<DCharacter> getCharacters()

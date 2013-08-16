@@ -93,8 +93,8 @@ public interface Deity
 
 		public static boolean canUseDeitySilent(Player player, String deityName)
 		{
-			Deity deity = DPlayer.Util.getPlayer(player).getCurrentDeity();
-			return deity != null && deity.getName().equalsIgnoreCase(deityName);
+			String currentDeityName = DPlayer.Util.getPlayer(player).getCurrentDeityName();
+			return currentDeityName != null && currentDeityName.equalsIgnoreCase(deityName);
 		}
 	}
 }
