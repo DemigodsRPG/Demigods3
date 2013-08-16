@@ -1,5 +1,8 @@
 package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.battle.Participant;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -13,13 +16,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.battle.Participant;
-
 public class BattleListener implements Listener
 {
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
