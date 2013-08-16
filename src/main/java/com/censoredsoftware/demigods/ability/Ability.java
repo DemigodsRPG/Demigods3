@@ -1,16 +1,28 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DItemStack;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,20 +37,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import redis.clients.johm.*;
-
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DItemStack;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Ability
 {
@@ -70,20 +70,44 @@ public interface Ability
 
 	public BukkitRunnable getRunnable();
 
-	@Model
-	public static class Bind
+	public static class Bind implements ConfigurationSerializable
 	{
-		@Id
-		private Long id;
-		@Attribute
-		@Indexed
+		private UUID id;
 		private String identifier;
-		@Attribute
 		private String ability;
-		@Attribute
 		private Integer slot;
-		@Reference
-		private DItemStack item;
+		private UUID item;
+
+		public Bind()
+		{}
+
+		public Bind(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			identifier = conf.getString("identifier");
+			ability = conf.getString("ability");
+			slot = conf.getInt("slot");
+			item = UUID.fromString(conf.getString("item"));
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			return new HashMap<String, Object>()
+			{
+				{
+					put("identifier", identifier);
+					put("ability", ability);
+					put("slot", slot);
+					put("item", item.toString());
+				}
+			};
+		}
+
+		public void generateId()
+		{
+			id = UUID.randomUUID();
+		}
 
 		void setIdentifier(String identifier)
 		{
@@ -102,23 +126,23 @@ public interface Ability
 
 		public void setItem(ItemStack item)
 		{
-			this.item = DItemStack.Util.create(item);
-			JOhm.save(this);
+			this.item = DItemStack.Util.create(item).getId();
+			Util.save(this);
 		}
 
-		public Long getId()
+		public UUID getId()
 		{
 			return this.id;
 		}
 
 		public ItemStack getRawItem()
 		{
-			return new ItemStack(this.item.toItemStack().getType());
+			return new ItemStack(DItemStack.Util.load(this.item).toItemStack().getType());
 		}
 
 		public ItemStack getItem()
 		{
-			return this.item.toItemStack();
+			return DItemStack.Util.load(this.item).toItemStack();
 		}
 
 		public String getAbility()
@@ -135,24 +159,87 @@ public interface Ability
 		{
 			return this.slot;
 		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "binds.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, Bind> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				return new ConcurrentHashMap<UUID, Bind>()
+				{
+					{
+						for(String stringId : data.getKeys(false))
+							put(UUID.fromString(stringId), new Bind(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+					}
+				};
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, Bind> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.binds.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.binds.get(id))) saveFile.createSection(id.toString(), Util.loadBind(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.binds.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
+		}
 	}
 
-	@Model
-	public static class Devotion
+	public static class Devotion implements ConfigurationSerializable
 	{
-		@Id
-		private Long Id;
-		@Attribute
-		@Indexed
+		private UUID id;
 		private String type;
-		@Attribute
 		private Integer exp;
-		@Attribute
 		private Integer level;
 
 		public enum Type
 		{
 			OFFENSE, DEFENSE, STEALTH, SUPPORT, PASSIVE, ULTIMATE
+		}
+
+		public Devotion()
+		{}
+
+		public Devotion(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			type = conf.getString("type");
+			exp = conf.getInt("exp");
+			level = conf.getInt("level");
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			return new HashMap<String, Object>()
+			{
+				{
+					put("type", type);
+					put("exp", exp);
+					put("level", level);
+				}
+			};
+		}
+
+		public void generateId()
+		{
+			id = UUID.randomUUID();
 		}
 
 		void setType(Type type)
@@ -168,6 +255,11 @@ public interface Ability
 		void setLevel(Integer level)
 		{
 			this.level = level;
+		}
+
+		public UUID getId()
+		{
+			return id;
 		}
 
 		public Type getType()
@@ -195,13 +287,59 @@ public interface Ability
 		{
 			throw new CloneNotSupportedException();
 		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "devotion.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, Devotion> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				return new ConcurrentHashMap<UUID, Devotion>()
+				{
+					{
+						for(String stringId : data.getKeys(false))
+							put(UUID.fromString(stringId), new Devotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+					}
+				};
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, Devotion> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.devotion.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.loadDevotion(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
+		}
 	}
 
 	public static class Util
 	{
+		public static void deleteBind(UUID id)
+		{
+			DataManager.binds.remove(id);
+		}
+
 		public static Bind createBind(String ability, int slot)
 		{
 			Bind bind = new Bind();
+			bind.generateId();
 			bind.setIdentifier(Randoms.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
@@ -212,6 +350,7 @@ public interface Ability
 		public static Bind createBind(String ability, int slot, ItemStack item)
 		{
 			Bind bind = new Bind();
+			bind.generateId();
 			bind.setIdentifier(Randoms.generateString(6));
 			bind.setAbility(ability);
 			bind.setSlot(slot);
@@ -223,6 +362,7 @@ public interface Ability
 		public static Devotion createDevotion(Devotion.Type type)
 		{
 			Devotion devotion = new Devotion();
+			devotion.generateId();
 			devotion.setType(type);
 			devotion.setLevel(Demigods.config.getSettingInt("character.defaults." + type.name().toLowerCase()));
 			save(devotion);
@@ -231,22 +371,22 @@ public interface Ability
 
 		public static void save(Bind bind)
 		{
-			JOhm.save(bind);
+			DataManager.binds.put(bind.getId(), bind);
 		}
 
 		public static void save(Devotion devotion)
 		{
-			JOhm.save(devotion);
+			DataManager.devotion.put(devotion.getId(), devotion);
 		}
 
-		public static Devotion loadDevotion(long id)
+		public static Bind loadBind(UUID id)
 		{
-			return JOhm.get(Devotion.class, id);
+			return DataManager.binds.get(id);
 		}
 
-		public static Set<Devotion> loadAllDevotion()
+		public static Devotion loadDevotion(UUID id)
 		{
-			return JOhm.getAll(Devotion.class);
+			return DataManager.devotion.get(id);
 		}
 
 		private static boolean doAbilityPreProcess(Player player, int cost)
@@ -506,7 +646,7 @@ public interface Ability
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{
 					// Ensure that the deity can be used, permission allows it, etc
-					if(!Deity.Util.canUseDeity(player, ability.getDeity())) return true;
+					if(!Deity.Util.canUseDeity(character, ability.getDeity())) return true;
 					if(!player.hasPermission(ability.getPermission())) return true;
 
 					// Handle enabling the command

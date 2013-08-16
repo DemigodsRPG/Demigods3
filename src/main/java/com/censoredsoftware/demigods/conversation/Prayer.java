@@ -1,9 +1,19 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,24 +34,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.core.bukkit.ListedConversation;
-import com.censoredsoftware.core.util.Strings;
-import com.censoredsoftware.core.util.Times;
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Structures;
-import com.censoredsoftware.demigods.util.Titles;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -137,10 +133,10 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Clear chat
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 
 			// Send NoGrief menu
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
 			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_INTRO))
@@ -200,7 +196,7 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
@@ -209,13 +205,15 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.LIGHT_PURPLE + "  Light purple" + ChatColor.GRAY + " represents the warp(s) at this location.");
 				player.sendRawMessage(" ");
 
-				for(Map.Entry<String, DLocation> entry : character.getMeta().getWarps().entrySet())
+				for(Map.Entry<String, Object> entry : character.getMeta().getWarps().entrySet())
 				{
-					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ")");
+					Location location = DLocation.Util.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ")");
 				}
-				for(Map.Entry<String, DLocation> entry : character.getMeta().getInvites().entrySet())
+				for(Map.Entry<String, Object> entry : character.getMeta().getInvites().entrySet())
 				{
-					player.sendRawMessage((player.getLocation().distance(entry.getValue().toLocation()) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(entry.getValue().toLocation().getWorld().getName().toLowerCase()) + ": " + Math.round(entry.getValue().toLocation().getX()) + ", " + Math.round(entry.getValue().toLocation().getY()) + ", " + Math.round(entry.getValue().toLocation().getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
+					Location location = DLocation.Util.load(UUID.fromString(entry.getValue().toString())).toLocation();
+					player.sendRawMessage((player.getLocation().distance(location) < 8 ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " (" + StringUtils.capitalize(location.getWorld().getName().toLowerCase()) + ": " + Math.round(location.getX()) + ", " + Math.round(location.getY()) + ", " + Math.round(location.getZ()) + ") " + ChatColor.GREEN + "Invited by [ALLAN!!]"); // TODO: Invited by
 				}
 
 				player.sendRawMessage(" ");
@@ -278,7 +276,7 @@ public class Prayer implements ListedConversation
 			context.setSessionData("warp_notifications", Lists.newArrayList());
 			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("warp_notifications");
 
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 
 			if(message.equalsIgnoreCase("menu"))
 			{
@@ -321,7 +319,7 @@ public class Prayer implements ListedConversation
 
 				// Define variables
 				DCharacter invitee = DCharacter.Util.charExists(arg1) ? DCharacter.Util.getCharacterByName(arg1) : DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent();
-				Location warp = character.getMeta().getWarps().get(arg2).toLocation();
+				Location warp = DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg2).toString())).toLocation();
 
 				// Add the invite
 				invitee.getMeta().addInvite(character.getName(), warp);
@@ -344,11 +342,11 @@ public class Prayer implements ListedConversation
 				// Teleport and message
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getMeta().getWarps().get(arg1).toLocation());
+					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1).toString())).toLocation());
 				}
 				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
-					player.teleport(character.getMeta().getInvites().get(arg1.toLowerCase()).toLocation());
+					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getInvites().get(arg1.toLowerCase()).toString())).toLocation());
 					character.getMeta().removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
@@ -380,12 +378,13 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Notifications"));
 			player.sendRawMessage(" ");
 
-			for(Notification notification : character.getMeta().getNotifications())
+			for(String string : character.getMeta().getNotifications())
 			{
+				Notification notification = Notification.Util.load(UUID.fromString(string));
 				// Determine color
 				ChatColor color;
 				switch(notification.getDanger())
@@ -438,9 +437,9 @@ public class Prayer implements ListedConversation
 			else if(message.equalsIgnoreCase("clear"))
 			{
 				// Clear them
-				for(Notification notification : character.getMeta().getNotifications())
+				for(String string : character.getMeta().getNotifications())
 				{
-					Notification.remove(notification);
+					Notification.remove(Notification.Util.load(UUID.fromString(string)));
 				}
 				character.getMeta().clearNotifications();
 
@@ -472,7 +471,7 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = (Player) context.getForWhom();
 
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
@@ -538,7 +537,7 @@ public class Prayer implements ListedConversation
 				String status = character.isActive() ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 
 				// Clear chat
-				DPlayer.Util.clearRawChat(player);
+				Demigods.message.clearRawChat(player);
 
 				// Send the player the info
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Character"));
@@ -610,7 +609,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public String getPromptText(ConversationContext context)
 		{
-			DPlayer.Util.clearRawChat((Player) context.getForWhom());
+			Demigods.message.clearRawChat((Player) context.getForWhom());
 			return ChatColor.AQUA + "Continue to character creation?" + ChatColor.GRAY + " (y/n)";
 		}
 
@@ -633,7 +632,7 @@ public class Prayer implements ListedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Player player = (Player) context.getForWhom();
-				DPlayer.Util.clearRawChat(player);
+				Demigods.message.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
@@ -713,7 +712,7 @@ public class Prayer implements ListedConversation
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				DPlayer.Util.clearRawChat((Player) context.getForWhom());
+				Demigods.message.clearRawChat((Player) context.getForWhom());
 				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + context.getSessionData("chosen_name") + ChatColor.GRAY + "? (y/n)";
 			}
 
@@ -742,7 +741,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				DPlayer.Util.clearRawChat(player);
+				Demigods.message.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
 				context.getForWhom().sendRawMessage(" ");
 
@@ -778,7 +777,7 @@ public class Prayer implements ListedConversation
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				DPlayer.Util.clearRawChat((Player) context.getForWhom());
+				Demigods.message.clearRawChat((Player) context.getForWhom());
 				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + StringUtils.capitalize((String) context.getSessionData("chosen_deity")) + ChatColor.GRAY + "? (y/n)";
 			}
 
@@ -798,7 +797,7 @@ public class Prayer implements ListedConversation
 					String chosenDeity = (String) context.getSessionData("chosen_deity");
 
 					// Give the player further directions
-					DPlayer.Util.clearRawChat(player);
+					Demigods.message.clearRawChat(player);
 					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
@@ -850,7 +849,7 @@ public class Prayer implements ListedConversation
 			String chosenDeity = (String) context.getSessionData("chosen_deity");
 
 			// Clear chat
-			DPlayer.Util.clearRawChat(player);
+			Demigods.message.clearRawChat(player);
 
 			// Ask them if they have the items
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Confirming Character"));
@@ -938,7 +937,7 @@ public class Prayer implements ListedConversation
 			Player player = event.getPlayer();
 
 			// First we check if the player is clicking a prayer block
-			if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION, true))
+			if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 			{
 				if(!DPlayer.Util.isPraying(player))
 				{
@@ -1013,7 +1012,7 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePrayingSilent(player, false);
 
 				// Clear chat and send update
-				DPlayer.Util.clearRawChat(player);
+				Demigods.message.clearRawChat(player);
 				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
 
 				if(neededItems == items)

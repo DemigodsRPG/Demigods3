@@ -1,13 +1,12 @@
 package com.censoredsoftware.demigods.item;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.util.Items;
+import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
-import com.censoredsoftware.core.util.Items;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
 
 public enum Book
 {

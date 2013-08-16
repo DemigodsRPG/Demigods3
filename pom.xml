@@ -23,13 +23,12 @@
     </licenses>
 
     <ciManagement>
-        <system>TeamCity</system>
-        <url>http://teamcity.censoredsoftware.com/</url>
+        <system>Jenkins</system>
+        <url>http://build.censoredsoftware.com/</url>
     </ciManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <core.version>1.0.0-SNAPSHOT</core.version>
         <spigot.version>LATEST</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8-SNAPSHOT</worldguard.version>
@@ -69,19 +68,6 @@
         <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
     </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>censored-software</id>
-            <name>censored-software-releases</name>
-            <url>http://artifactory.censoredsoftware.com/artifactory/libs-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>censored-software</id>
-            <name>censored-software-snapshots</name>
-            <url>http://artifactory.censoredsoftware.com/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <repositories>
         <repository>
             <id>censored-software</id>
@@ -116,32 +102,10 @@
         </dependency>
         <dependency>
             <groupId>com.censoredsoftware.minecraft</groupId>
-            <artifactId>cs-core</artifactId>
-            <version>${core.version}</version>
+            <artifactId>ErrorNoise-Standard</artifactId>
+            <version>1.0.3</version>
             <scope>compile</scope>
             <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>commons-pool</groupId>
-            <artifactId>commons-pool</artifactId>
-            <version>1.6</version>
-            <scope>compile</scope>
-            <type>jar</type>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis-cs</artifactId>
-            <version>2.2.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>redis</groupId>
-            <artifactId>johm-cs</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
-            <scope>compile</scope>
             <optional>false</optional>
         </dependency>
         <dependency>
@@ -193,6 +157,14 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>./data</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/data</directory>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>./lang</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/lang</directory>
@@ -215,11 +187,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.censoredsoftware.minecraft:cs-core</include>
                                     <include>org.mcstats.bukkit:metrics</include>
-                                    <include>redis.clients:jedis-cs</include>
-                                    <include>redis:johm-cs</include>
-                                    <include>commons-pool:commons-pool</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.core.util.Randoms;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.Pet;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class RainbowHorse implements Ability
 {

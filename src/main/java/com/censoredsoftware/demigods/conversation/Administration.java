@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.conversation;
 
+import com.censoredsoftware.demigods.helper.ListedConversation;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
-
-import com.censoredsoftware.core.bukkit.ListedConversation;
 
 public class Administration implements ListedConversation
 {

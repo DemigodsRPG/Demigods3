@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.util.Times;
+import com.google.common.collect.Maps;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,9 +11,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.censoredsoftware.core.util.Times;
-import com.censoredsoftware.demigods.Demigods;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ChatRecorder
 {

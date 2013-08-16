@@ -1,26 +1,29 @@
 package com.censoredsoftware.demigods.structure;
 
-import java.util.*;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Item;
-import org.bukkit.event.Listener;
-
-import redis.clients.johm.*;
-
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.core.util.Randoms;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.exception.BlockDataException;
+import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Item;
+import org.bukkit.event.Listener;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Structure
 {
@@ -30,7 +33,7 @@ public interface Structure
 
 	public Set<Structure.Flag> getFlags();
 
-	public Set<Save> getAll();
+	public Collection<Save> getAll();
 
 	public Listener getUniqueListener();
 
@@ -43,31 +46,53 @@ public interface Structure
 		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, SLOW_GEN
 	}
 
-	@Model
-	public static class Save
+	public static class Save implements ConfigurationSerializable
 	{
-		@Id
-		private Long id;
-		@Indexed
-		@Attribute
+		private UUID id;
 		private String type;
-		@Reference
-		private DLocation reference;
-		@Indexed
-		@CollectionSet(of = String.class)
-		private Set<String> flags;
-		@Indexed
-		@Attribute
+		private UUID referenceLocation;
+		private List<String> flags;
 		private String region;
-		@Indexed
-		@Attribute
 		private String design;
-		@Indexed
-		@Attribute
 		private Boolean active;
-		@Indexed
-		@Reference
-		private DCharacter owner;
+		private UUID owner;
+
+		public Save()
+		{}
+
+		public Save(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			type = conf.getString("type");
+			referenceLocation = UUID.fromString(conf.getString("referenceLocation"));
+			flags = conf.getStringList("flags");
+			region = conf.getString("region");
+			design = conf.getString("design");
+			if(conf.getString("active") != null) active = conf.getBoolean("active");
+			if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			return new HashMap<String, Object>()
+			{
+				{
+					put("type", type);
+					put("referenceLocation", referenceLocation.toString());
+					put("flags", flags);
+					put("region", region);
+					put("design", design);
+					if(active != null) put("active", active);
+					if(owner != null) put("owner", owner.toString());
+				}
+			};
+		}
+
+		public void generateId()
+		{
+			id = UUID.randomUUID();
+		}
 
 		public void setType(String type)
 		{
@@ -77,19 +102,18 @@ public interface Structure
 		public void setDesign(String name)
 		{
 			this.design = name;
-			save();
 		}
 
 		public void setReferenceLocation(Location reference)
 		{
-			this.reference = DLocation.Util.create(reference);
-			setRegion(this.reference.getRegion());
+			DLocation dLocation = DLocation.Util.create(reference);
+			this.referenceLocation = dLocation.getId();
+			setRegion(dLocation.getRegion());
 		}
 
 		public void setOwner(DCharacter character)
 		{
-			this.owner = character;
-			save();
+			this.owner = character.getId();
 		}
 
 		public void setActive(Boolean bool)
@@ -99,17 +123,17 @@ public interface Structure
 
 		public Location getReferenceLocation()
 		{
-			return this.reference.toLocation();
+			return DLocation.Util.load(this.referenceLocation).toLocation();
 		}
 
 		public Set<Location> getClickableBlocks()
 		{
-			return getStructure().getDesign(this.design).getClickableBlocks(this.reference.toLocation());
+			return getStructure().getDesign(this.design).getClickableBlocks(getReferenceLocation());
 		}
 
 		public Set<Location> getLocations()
 		{
-			return getStructure().getDesign(this.design).getSchematic().getLocations(this.reference.toLocation());
+			return getStructure().getDesign(this.design).getSchematic().getLocations(getReferenceLocation());
 		}
 
 		public Structure getStructure()
@@ -126,7 +150,12 @@ public interface Structure
 
 		public DCharacter getOwner()
 		{
-			return this.owner;
+			return DCharacter.Util.load(this.owner);
+		}
+
+		public String getType()
+		{
+			return type;
 		}
 
 		public Boolean getActive()
@@ -137,75 +166,46 @@ public interface Structure
 		public void setRegion(Region region)
 		{
 			this.region = region.toString();
-			save();
+		}
+
+		public String getRegion()
+		{
+			return region;
 		}
 
 		public void addFlags(Set<Structure.Flag> flags)
 		{
-			save();
 			for(Structure.Flag flag : flags)
-			{
-				this.flags.add(flag.name());
-			}
+				getRawFlags().add(flag.name());
 		}
 
-		public void addFlag(Structure.Flag flag)
+		public List<String> getRawFlags()
 		{
-			this.flags.add(flag.name());
-			save();
-		}
-
-		public Region getRegion()
-		{
-			return this.reference.getRegion();
-		}
-
-		public Boolean hasFlag(Structure.Flag flag)
-		{
-			return this.flags != null && this.flags.contains(flag.name());
-		}
-
-		public Set<Structure.Flag> getFlags()
-		{
-			return new HashSet<Structure.Flag>()
-			{
-				{
-					for(String flag : getRawFlags())
-					{
-						add(Structure.Flag.valueOf(flag));
-					}
-				}
-			};
-		}
-
-		public Set<String> getRawFlags()
-		{
+			if(this.flags == null) flags = Lists.newArrayList();
 			return this.flags;
 		}
 
-		public long getId()
+		public UUID getId()
 		{
 			return this.id;
 		}
 
 		public boolean generate(boolean check)
 		{
-			return getStructure().getDesign(this.design).getSchematic().generate(this.reference.toLocation(), check);
+			return getStructure().getDesign(this.design).getSchematic().generate(getReferenceLocation(), check);
 		}
 
 		public void save()
 		{
-			JOhm.save(this);
+			DataManager.structures.put(getId(), this);
 		}
 
 		public void remove()
 		{
 			for(Location location : getLocations())
-			{
 				location.getBlock().setTypeId(Material.AIR.getId());
-			}
-			JOhm.delete(DLocation.class, reference.getId());
-			JOhm.delete(Save.class, this.id);
+			DLocation.Util.delete(referenceLocation);
+			Structures.remove(id);
 		}
 
 		@Override
@@ -224,6 +224,46 @@ public interface Structure
 		public boolean equals(Object other)
 		{
 			return other != null && other instanceof Save && ((Save) other).getId() == getId();
+		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "structures.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, Save> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				return new ConcurrentHashMap<UUID, Save>()
+				{
+					{
+						for(String stringId : data.getKeys(false))
+							put(UUID.fromString(stringId), new Save(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+					}
+				};
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, Save> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.structures.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.structures.get(id))) saveFile.createSection(id.toString(), Structures.load(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.structures.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
 		}
 	}
 

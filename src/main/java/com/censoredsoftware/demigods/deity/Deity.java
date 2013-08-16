@@ -1,21 +1,22 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public interface Deity
 {
 	public String getName();
+
+	public Elements.ListedDeity getListedDeity();
 
 	public String getAlliance();
 
@@ -72,15 +73,12 @@ public interface Deity
 			return Elements.Deities.get(deity);
 		}
 
-		public static boolean canUseDeity(Player player, String deity)
+		public static boolean canUseDeity(DCharacter character, String deity)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			if(character == null || !character.isImmortal())
-			{
-				player.sendMessage(ChatColor.RED + "You can't do that, mortal!");
-				return false;
-			}
-			else if(!character.isDeity(deity))
+			if(character == null) return false;
+			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
+			Player player = character.getOfflinePlayer().getPlayer();
+			if(!character.isDeity(deity))
 			{
 				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
 				return false;
@@ -88,10 +86,15 @@ public interface Deity
 			return true;
 		}
 
-		public static boolean canUseDeitySilent(Player player, String deity)
+		public static boolean canUseDeitySilent(DCharacter character, String deity)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			return character != null && character.isImmortal() && character.isDeity(deity);
+			return character != null && character.isDeity(deity);
+		}
+
+		public static boolean canUseDeitySilent(Player player, String deityName)
+		{
+			String currentDeityName = DPlayer.Util.getPlayer(player).getCurrentDeityName();
+			return currentDeityName != null && currentDeityName.equalsIgnoreCase(deityName);
 		}
 	}
 }

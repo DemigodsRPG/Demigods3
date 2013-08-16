@@ -1,7 +1,5 @@
 package com.censoredsoftware.demigods.util;
 
-import com.censoredsoftware.core.util.Unicodes;
-
 public class Titles
 {
 	/**

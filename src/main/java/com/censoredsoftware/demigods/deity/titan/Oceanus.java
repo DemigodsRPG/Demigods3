@@ -1,17 +1,17 @@
 package com.censoredsoftware.demigods.deity.titan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import com.censoredsoftware.core.util.Unicodes;
+import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Oceanus implements Deity
 {
@@ -37,6 +37,12 @@ public class Oceanus implements Deity
 	public String getName()
 	{
 		return name;
+	}
+
+	@Override
+	public Elements.ListedDeity getListedDeity()
+	{
+		return Elements.Deities.OCEANUS;
 	}
 
 	@Override

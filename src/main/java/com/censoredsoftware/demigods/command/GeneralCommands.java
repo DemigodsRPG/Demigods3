@@ -1,23 +1,23 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Strings;
+import com.censoredsoftware.demigods.util.Titles;
+import com.censoredsoftware.demigods.util.Unicodes;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.core.bukkit.ListedCommand;
-import com.censoredsoftware.core.util.Strings;
-import com.censoredsoftware.core.util.Unicodes;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.conversation.Prayer;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Titles;
-import com.google.common.collect.Sets;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends ListedCommand
 {
@@ -41,7 +41,7 @@ public class GeneralCommands extends ListedCommand
 		Player player = (Player) sender;
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(character == null || !character.isImmortal())
+		if(character == null)
 		{
 			player.sendMessage(ChatColor.RED + "You are nothing but a mortal. You have no worthy statistics.");
 			return true;
@@ -104,8 +104,9 @@ public class GeneralCommands extends ListedCommand
 			player.sendMessage(" ");
 
 			// Get the binds and display info
-			for(Ability.Bind bind : character.getMeta().getBinds())
+			for(String stringBind : character.getMeta().getBinds())
 			{
+				Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
 				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + bind.getRawItem().getType().name().replace("_", " ").toLowerCase() + ChatColor.GRAY + ".");
 			}
 

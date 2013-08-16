@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.censoredsoftware.demigods.util.Items;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.core.util.Items;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public enum Baetylus
 {

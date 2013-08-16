@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-
-import com.censoredsoftware.core.bukkit.ListedConversation;
-import com.censoredsoftware.core.module.Configs;
-import com.censoredsoftware.core.module.Messages;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -20,12 +7,24 @@ import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.helper.Configs;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.helper.Messages;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Structures;
+import com.censoredsoftware.errornoise.ErrorNoise;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Set;
 
 public class Demigods
 {
@@ -37,6 +36,7 @@ public class Demigods
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
+	public static boolean errorNoise;
 
 	// Disabled Worlds
 	protected static Set<String> disabledWorlds;
@@ -68,14 +68,6 @@ public class Demigods
 
 		// Initialize data
 		new DataManager();
-		if(!DataManager.isConnected())
-		{
-			message.severe("Demigods was unable to connect to a Redis server.");
-			message.severe("A Redis server is required for Demigods to run.");
-			message.severe("Please install and configure a Redis server. (" + ChatColor.UNDERLINE + "http://redis.io" + ChatColor.RESET + ")");
-			instance.getServer().getPluginManager().disablePlugin(instance);
-			throw new DemigodsStartupException();
-		}
 
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();
@@ -176,6 +168,7 @@ public class Demigods
 		// WorldGuard
 		Plugin depend = instance.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
+		errorNoise = instance.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
 	}
 
 	public static boolean isRunningSpigot()

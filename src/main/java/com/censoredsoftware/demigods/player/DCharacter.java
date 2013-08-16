@@ -1,75 +1,108 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import redis.clients.johm.*;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Participant;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
-@Model
-public class DCharacter implements Participant
+public class DCharacter implements Participant, ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
-	@Indexed
+	private UUID id;
 	private String name;
-	@Attribute
-	@Indexed
-	private long player;
-	@Attribute
+	private String player;
 	private double health;
-	@Attribute
 	private double maxhealth;
-	@Attribute
 	private Integer hunger;
-	@Attribute
 	private Float experience;
-	@Attribute
 	private Integer level;
-	@Attribute
 	private Integer kills;
-	@Attribute
 	private Integer deaths;
-	@Attribute
-	private long location;
-	@Attribute
-	@Indexed
+	private UUID location;
 	private String deity;
-	@Attribute
-	@Indexed
 	private Boolean active;
-	@Attribute
-	@Indexed
-	private Boolean immortal;
-	@Attribute
-	@Indexed
 	private Boolean usable;
-	@Attribute
-	private long meta;
-	@Attribute
-	private long inventory;
+	private UUID meta;
+	private UUID inventory;
+
+	public DCharacter()
+	{}
+
+	public DCharacter(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		name = conf.getString("name");
+		player = conf.getString("player");
+		health = conf.getDouble("health");
+		maxhealth = conf.getDouble("maxhealth");
+		hunger = conf.getInt("hunger");
+		experience = Float.valueOf(conf.getString("experience"));
+		level = conf.getInt("level");
+		kills = conf.getInt("kills");
+		deaths = conf.getInt("deaths");
+		location = UUID.fromString(conf.getString("location"));
+		deity = conf.getString("deity");
+		active = conf.getBoolean("active");
+		usable = conf.getBoolean("usable");
+		meta = UUID.fromString(conf.getString("meta"));
+		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("name", name);
+				put("player", player);
+				put("health", health);
+				put("maxhealth", maxhealth);
+				put("hunger", hunger);
+				put("experience", experience);
+				put("level", level);
+				put("kills", kills);
+				put("deaths", deaths);
+				put("location", location.toString());
+				put("deity", deity);
+				put("active", active);
+				put("usable", usable);
+				put("meta", meta.toString());
+				if(inventory != null) put("inventory", inventory.toString());
+			}
+		};
+	}
+
+	void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	void setName(String name)
 	{
@@ -83,27 +116,19 @@ public class DCharacter implements Participant
 
 	void setPlayer(DPlayer player)
 	{
-		this.player = player.getId();
-	}
-
-	public void setImmortal(boolean option)
-	{
-		this.immortal = option;
-		JOhm.save(this);
+		this.player = player.getPlayerName();
 	}
 
 	public void setActive(boolean option)
 	{
 		this.active = option;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void saveInventory()
 	{
-		Inventory inventory = JOhm.get(Inventory.class, this.inventory);
-		if(inventory == null) this.inventory = Util.createInventory(this).getId();
-		else this.inventory = Util.updateInventory(inventory, this).getId();
-		JOhm.save(this);
+		this.inventory = Util.createInventory(this).getId();
+		Util.save(this);
 	}
 
 	public void setHealth(double health)
@@ -148,18 +173,18 @@ public class DCharacter implements Participant
 
 	public Inventory getInventory()
 	{
-		if(JOhm.get(Inventory.class, this.inventory) == null) this.inventory = Util.createEmptyInventory().getId();
-		return JOhm.get(Inventory.class, this.inventory);
+		if(Util.getInventory(this.inventory) == null) this.inventory = Util.createEmptyInventory().getId();
+		return Util.getInventory(this.inventory);
 	}
 
 	public Meta getMeta()
 	{
-		return JOhm.get(Meta.class, this.meta);
+		return Util.loadMeta(this.meta);
 	}
 
 	public OfflinePlayer getOfflinePlayer()
 	{
-		return DPlayer.Util.load(this.player).getOfflinePlayer();
+		return DPlayer.Util.getPlayer(this.player).getOfflinePlayer();
 	}
 
 	public String getName()
@@ -174,7 +199,8 @@ public class DCharacter implements Participant
 
 	public Location getLocation()
 	{
-		return ((DLocation) JOhm.get(DLocation.class, this.location)).toLocation();
+		if(this.location == null) return null;
+		return DLocation.Util.load(this.location).toLocation();
 	}
 
 	public Location getCurrentLocation()
@@ -193,6 +219,11 @@ public class DCharacter implements Participant
 	public LivingEntity getEntity()
 	{
 		return getOfflinePlayer().getPlayer();
+	}
+
+	public String getPlayer()
+	{
+		return player;
 	}
 
 	public Integer getLevel()
@@ -235,11 +266,6 @@ public class DCharacter implements Participant
 		return getDeity().getAlliance();
 	}
 
-	public Boolean isImmortal()
-	{
-		return this.immortal;
-	}
-
 	/**
 	 * Returns the number of total kills.
 	 * 
@@ -258,7 +284,7 @@ public class DCharacter implements Participant
 	public void setKills(int amount)
 	{
 		this.kills = amount;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	/**
@@ -267,7 +293,7 @@ public class DCharacter implements Participant
 	public void addKill()
 	{
 		this.kills += 1;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	/**
@@ -288,7 +314,7 @@ public class DCharacter implements Participant
 	public void setDeaths(int amount)
 	{
 		this.deaths = amount;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	/**
@@ -297,7 +323,7 @@ public class DCharacter implements Participant
 	public void addDeath()
 	{
 		this.deaths += 1;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	@Override
@@ -331,14 +357,15 @@ public class DCharacter implements Participant
 	public void refreshBinds()
 	{
 		if(!getOfflinePlayer().isOnline()) return;
-		for(Ability.Bind bind : getMeta().getBinds())
+		for(String stringBind : getMeta().getBinds())
 		{
 			Player player = getOfflinePlayer().getPlayer();
+			Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
 			player.getInventory().setItem(bind.getSlot(), bind.getItem());
 		}
 	}
 
-	public Long getId()
+	public UUID getId()
 	{
 		return id;
 	}
@@ -346,29 +373,59 @@ public class DCharacter implements Participant
 	public void remove()
 	{
 		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
-		{
 			if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
-		}
-		JOhm.delete(Inventory.class, getInventory().getId());
-		JOhm.delete(Meta.class, getMeta().getId());
-		JOhm.delete(DCharacter.class, getId());
+		Util.deleteInventory(getInventory().getId());
+		Util.deleteMeta(getMeta().getId());
+		Util.delete(getId());
 	}
 
-	@Model
-	public static class Inventory
+	public static class Inventory implements ConfigurationSerializable
 	{
-		@Id
-		private Long id;
-		@Attribute
-		private long helmet;
-		@Attribute
-		private long chestplate;
-		@Attribute
-		private long leggings;
-		@Attribute
-		private long boots;
-		@Array(of = DItemStack.class, length = 36)
-		private DItemStack[] items;
+		private UUID id;
+		private UUID helmet;
+		private UUID chestplate;
+		private UUID leggings;
+		private UUID boots;
+		private String[] items;
+
+		public Inventory()
+		{}
+
+		public Inventory(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			if(conf.getString("helmet") != null) helmet = UUID.fromString(conf.getString("helmet"));
+			if(conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
+			if(conf.getString("leggins") != null) leggings = UUID.fromString(conf.getString("leggings"));
+			if(conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
+			if(conf.getStringList("items") != null)
+			{
+				List<String> stringItems = conf.getStringList("items");
+				items = new String[stringItems.size()];
+				for(int i = 0; i < stringItems.size(); i++)
+					items[i] = stringItems.get(i);
+			}
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			return new HashMap<String, Object>()
+			{
+				{
+					if(helmet != null) put("helmet", helmet.toString());
+					if(chestplate != null) put("chestplate", chestplate.toString());
+					if(leggings != null) put("leggings", leggings.toString());
+					if(boots != null) put("boots", boots.toString());
+					if(items != null) put("items", Lists.newArrayList(items));
+				}
+			};
+		}
+
+		public void generateId()
+		{
+			id = UUID.randomUUID();
+		}
 
 		void setHelmet(ItemStack helmet)
 		{
@@ -392,49 +449,47 @@ public class DCharacter implements Participant
 
 		void setItems(org.bukkit.inventory.Inventory inventory)
 		{
-			if(this.items == null) this.items = new DItemStack[36];
+			if(this.items == null) this.items = new String[36];
 			for(int i = 0; i < 35; i++)
 			{
-				if(inventory.getItem(i) == null)
-				{
-					this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR));
-				}
-				else
-				{
-					this.items[i] = DItemStack.Util.create(inventory.getItem(i));
-				}
+				if(inventory.getItem(i) == null) this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
+				else this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
 			}
 		}
 
-		public Long getId()
+		public UUID getId()
 		{
 			return this.id;
 		}
 
 		public ItemStack getHelmet()
 		{
-			DItemStack item = JOhm.get(DItemStack.class, this.helmet);
+			if(this.helmet == null) return null;
+			DItemStack item = DItemStack.Util.load(this.helmet);
 			if(item != null) return item.toItemStack();
 			return null;
 		}
 
 		public ItemStack getChestplate()
 		{
-			DItemStack item = JOhm.get(DItemStack.class, this.chestplate);
+			if(this.chestplate == null) return null;
+			DItemStack item = DItemStack.Util.load(this.chestplate);
 			if(item != null) return item.toItemStack();
 			return null;
 		}
 
 		public ItemStack getLeggings()
 		{
-			DItemStack item = JOhm.get(DItemStack.class, this.leggings);
+			if(this.leggings == null) return null;
+			DItemStack item = DItemStack.Util.load(this.leggings);
 			if(item != null) return item.toItemStack();
 			return null;
 		}
 
 		public ItemStack getBoots()
 		{
-			DItemStack item = JOhm.get(DItemStack.class, this.boots);
+			if(this.boots == null) return null;
+			DItemStack item = DItemStack.Util.load(this.boots);
 			if(item != null) return item.toItemStack();
 			return null;
 		}
@@ -466,62 +521,132 @@ public class DCharacter implements Participant
 			{
 				// Set items
 				for(int i = 0; i < 35; i++)
-				{
-					if(this.items[i] != null) inventory.setItem(i, this.items[i].toItemStack());
-				}
+					if(this.items[i] != null) inventory.setItem(i, DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack());
 			}
 
 			// Delete
-			JOhm.delete(Inventory.class, id);
+			Util.deleteInventory(id);
+		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "characterInventories.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, Inventory> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				return new ConcurrentHashMap<UUID, Inventory>()
+				{
+					{
+						for(String stringId : data.getKeys(false))
+							put(UUID.fromString(stringId), new Inventory(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+					}
+				};
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, Inventory> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.inventories.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.inventories.get(id))) saveFile.createSection(id.toString(), Util.getInventory(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.inventories.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
 		}
 	}
 
-	@Model
-	public static class Meta
+	public static class Meta implements ConfigurationSerializable
 	{
-		@Id
-		private Long id;
-		@Attribute
+		private UUID id;
 		private Integer ascensions;
-		@Attribute
 		private Integer favor;
-		@Attribute
 		private Integer maxFavor;
-		@CollectionSet(of = Ability.Bind.class)
-		private Set<Ability.Bind> binds;
-		@CollectionMap(key = String.class, value = Boolean.class)
-		private Map<String, Ability.Devotion> devotionData;
-		@CollectionMap(key = String.class, value = DLocation.class)
-		private Map<String, DLocation> warps;
-		@CollectionMap(key = String.class, value = DLocation.class)
-		private Map<String, DLocation> invites;
-		@CollectionSet(of = Notification.class)
-		private Set<Notification> notifications;
+		private Set<String> binds;
+		private Set<String> notifications;
+		private Map<String, Object> devotionData;
+		private Map<String, Object> warps;
+		private Map<String, Object> invites;
+
+		public Meta()
+		{}
+
+		public Meta(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			ascensions = conf.getInt("ascensions");
+			favor = conf.getInt("favor");
+			maxFavor = conf.getInt("maxFavor");
+			binds = Sets.newHashSet(conf.getStringList("binds"));
+			notifications = Sets.newHashSet(conf.getStringList("notifications"));
+			devotionData = conf.getConfigurationSection("devotionData").getValues(false);
+			warps = conf.getConfigurationSection("warps").getValues(false);
+			invites = conf.getConfigurationSection("invites").getValues(false);
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			return new HashMap<String, Object>()
+			{
+				{
+					put("ascensions", ascensions);
+					put("favor", favor);
+					put("maxFavor", maxFavor);
+					put("binds", Lists.newArrayList(binds));
+					put("notifications", Lists.newArrayList(notifications));
+					put("devotionData", devotionData);
+					put("warps", warps);
+					put("invites", invites);
+				}
+			};
+		}
+
+		public void generateId()
+		{
+			id = UUID.randomUUID();
+		}
 
 		void initialize()
 		{
-			// this.binds = Sets.newHashSet();
+			this.binds = Sets.newHashSet();
+			this.notifications = Sets.newHashSet();
+			this.warps = Maps.newHashMap();
+			this.invites = Maps.newHashMap();
 			this.devotionData = Maps.newHashMap();
 		}
 
-		public long getId()
+		public UUID getId()
 		{
 			return this.id;
 		}
 
 		public void addNotification(Notification notification)
 		{
-			getNotifications().add(notification);
-			JOhm.save(this);
+			getNotifications().add(notification.getId().toString());
+			Util.saveMeta(this);
 		}
 
 		public void removeNotification(Notification notification)
 		{
-			getNotifications().remove(notification);
-			JOhm.save(this);
+			getNotifications().remove(notification.getId().toString());
+			Util.saveMeta(this);
 		}
 
-		public Set<Notification> getNotifications()
+		public Set<String> getNotifications()
 		{
 			if(this.notifications == null) this.notifications = Sets.newHashSet();
 			return this.notifications;
@@ -529,7 +654,7 @@ public class DCharacter implements Participant
 
 		public void clearNotifications()
 		{
-			getNotifications().clear();
+			notifications.clear();
 		}
 
 		public boolean hasNotifications()
@@ -539,17 +664,17 @@ public class DCharacter implements Participant
 
 		public void addWarp(String name, Location location)
 		{
-			getWarps().put(name.toLowerCase(), DLocation.Util.create(location));
-			JOhm.save(this);
+			warps.put(name.toLowerCase(), DLocation.Util.create(location).getId().toString());
+			Util.saveMeta(this);
 		}
 
 		public void removeWarp(String name)
 		{
 			getWarps().remove(name.toLowerCase());
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
-		public Map<String, DLocation> getWarps()
+		public Map<String, Object> getWarps()
 		{
 			if(this.warps == null) this.warps = Maps.newHashMap();
 			return this.warps;
@@ -567,17 +692,17 @@ public class DCharacter implements Participant
 
 		public void addInvite(String name, Location location)
 		{
-			getInvites().put(name.toLowerCase(), DLocation.Util.create(location));
-			JOhm.save(this);
+			getInvites().put(name.toLowerCase(), DLocation.Util.create(location).getId().toString());
+			Util.saveMeta(this);
 		}
 
 		public void removeInvite(String name)
 		{
 			getInvites().remove(name.toLowerCase());
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
-		public Map<String, DLocation> getInvites()
+		public Map<String, Object> getInvites()
 		{
 			if(this.invites == null) this.invites = Maps.newHashMap();
 			return this.invites;
@@ -585,7 +710,7 @@ public class DCharacter implements Participant
 
 		public void clearInvites()
 		{
-			getInvites().clear();
+			invites.clear();
 		}
 
 		public boolean hasInvites()
@@ -595,20 +720,17 @@ public class DCharacter implements Participant
 
 		public void addDevotion(Ability.Devotion devotion)
 		{
-			if(!this.devotionData.containsKey(devotion.getType().toString())) this.devotionData.put(devotion.getType().toString(), devotion);
-			JOhm.save(this);
+			if(!this.devotionData.containsKey(devotion.getType().toString())) this.devotionData.put(devotion.getType().toString(), devotion.getId().toString());
+			Util.saveMeta(this);
 		}
 
 		public Ability.Devotion getDevotion(Ability.Devotion.Type type)
 		{
-			if(this.devotionData.containsKey(type.toString()))
-			{
-				return this.devotionData.get(type.toString());
-			}
+			if(this.devotionData.containsKey(type.toString())) return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
 			else
 			{
 				addDevotion(Ability.Util.createDevotion(type));
-				return this.devotionData.get(type.toString());
+				return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
 			}
 		}
 
@@ -639,47 +761,38 @@ public class DCharacter implements Participant
 
 		public void addBind(Ability.Bind bind)
 		{
-			this.binds.add(bind);
+			this.binds.add(bind.getId().toString());
 		}
 
 		public Ability.Bind setBound(String ability, int slot, ItemStack item)
 		{
 			Ability.Bind bind = Ability.Util.createBind(ability, slot, item);
-			this.binds.add(bind);
+			this.binds.add(bind.getId().toString());
 			return bind;
 		}
 
 		public Ability.Bind getBind(int slot)
 		{
-			for(Ability.Bind bind : this.binds)
-			{
-				if(bind.getSlot() == slot) return bind;
-			}
+			for(String bind : this.binds)
+				if(Ability.Util.loadBind(UUID.fromString(bind)).getSlot() == slot) return Ability.Util.loadBind(UUID.fromString(bind));
 			return null;
 		}
 
 		public Ability.Bind getBind(String ability)
 		{
-			for(Ability.Bind bind : this.binds)
-			{
-				if(bind.getAbility().equalsIgnoreCase(ability)) return bind;
-			}
+			for(String bind : this.binds)
+				if(Ability.Util.loadBind(UUID.fromString(bind)).getAbility().equalsIgnoreCase(ability)) return Ability.Util.loadBind(UUID.fromString(bind));
 			return null;
 		}
 
 		public Ability.Bind getBind(ItemStack item)
 		{
-			for(Ability.Bind bind : this.binds)
-			{
-				if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(bind.getIdentifier()))
-				{
-					return bind;
-				}
-			}
+			for(String bind : this.binds)
+				if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(Ability.Util.loadBind(UUID.fromString(bind)).getIdentifier())) return Ability.Util.loadBind(UUID.fromString(bind));
 			return null;
 		}
 
-		public Set<Ability.Bind> getBinds()
+		public Set<String> getBinds()
 		{
 			return this.binds;
 		}
@@ -689,8 +802,8 @@ public class DCharacter implements Participant
 			if(isBound(ability))
 			{
 				Ability.Bind bind = getBind(ability);
-				this.binds.remove(bind);
-				JOhm.delete(Ability.Bind.class, bind.getId());
+				this.binds.remove(bind.getId().toString());
+				Ability.Util.deleteBind(bind.getId());
 			}
 		}
 
@@ -699,15 +812,15 @@ public class DCharacter implements Participant
 			if(isBound(item))
 			{
 				Ability.Bind bind = getBind(item);
-				this.binds.remove(bind);
-				JOhm.delete(Ability.Bind.class, bind.getId());
+				this.binds.remove(bind.getId().toString());
+				Ability.Util.deleteBind(bind.getId());
 			}
 		}
 
 		public void removeBind(Ability.Bind bind)
 		{
-			this.binds.remove(bind);
-			JOhm.delete(Ability.Bind.class, bind.getId());
+			this.binds.remove(bind.getId().toString());
+			Ability.Util.deleteBind(bind.getId());
 		}
 
 		public Integer getAscensions()
@@ -718,25 +831,25 @@ public class DCharacter implements Participant
 		public void addAscension()
 		{
 			this.ascensions += 1;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		public void addAscensions(int amount)
 		{
 			this.ascensions += amount;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		public void subtractAscensions(int amount)
 		{
 			this.ascensions -= amount;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		public void setAscensions(int amount)
 		{
 			this.ascensions = amount;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		public Integer getFavor()
@@ -747,33 +860,21 @@ public class DCharacter implements Participant
 		public void setFavor(int amount)
 		{
 			this.favor = amount;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		public void addFavor(int amount)
 		{
-			if((this.favor + amount) > this.maxFavor)
-			{
-				this.favor = this.maxFavor;
-			}
-			else
-			{
-				this.favor += amount;
-			}
-			JOhm.save(this);
+			if((this.favor + amount) > this.maxFavor) this.favor = this.maxFavor;
+			else this.favor += amount;
+			Util.saveMeta(this);
 		}
 
 		public void subtractFavor(int amount)
 		{
-			if((this.favor - amount) < 0)
-			{
-				this.favor = 0;
-			}
-			else
-			{
-				this.favor -= amount;
-			}
-			JOhm.save(this);
+			if((this.favor - amount) < 0) this.favor = 0;
+			else this.favor -= amount;
+			Util.saveMeta(this);
 		}
 
 		public Integer getMaxFavor()
@@ -783,15 +884,9 @@ public class DCharacter implements Participant
 
 		public void addMaxFavor(int amount)
 		{
-			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor"))
-			{
-				this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-			}
-			else
-			{
-				this.maxFavor += amount;
-			}
-			JOhm.save(this);
+			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
+			else this.maxFavor += amount;
+			Util.saveMeta(this);
 		}
 
 		public void setMaxFavor(int amount)
@@ -799,7 +894,7 @@ public class DCharacter implements Participant
 			if(amount < 0) this.maxFavor = 0;
 			if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
 			else this.maxFavor = amount;
-			JOhm.save(this);
+			Util.saveMeta(this);
 		}
 
 		@Override
@@ -807,10 +902,120 @@ public class DCharacter implements Participant
 		{
 			throw new CloneNotSupportedException();
 		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "characterMetas.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, Meta> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				return new ConcurrentHashMap<UUID, Meta>()
+				{
+					{
+						for(String stringId : data.getKeys(false))
+							put(UUID.fromString(stringId), new Meta(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+					}
+				};
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, Meta> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.characterMetas.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.characterMetas.get(id))) saveFile.createSection(id.toString(), Util.loadMeta(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.characterMetas.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
+		}
+	}
+
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "characters.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public ConcurrentHashMap<UUID, DCharacter> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new ConcurrentHashMap<UUID, DCharacter>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new DCharacter(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, DCharacter> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.characters.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.characters.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.characters.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
 	}
 
 	public static class Util
 	{
+		public static void save(DCharacter character)
+		{
+			DataManager.characters.put(character.getId(), character);
+		}
+
+		public static void saveMeta(Meta meta)
+		{
+			DataManager.characterMetas.put(meta.getId(), meta);
+		}
+
+		public static void saveInventory(Inventory inventory)
+		{
+			DataManager.inventories.put(inventory.getId(), inventory);
+		}
+
+		public static void delete(UUID id)
+		{
+			DataManager.characters.remove(id);
+		}
+
+		public static void deleteMeta(UUID id)
+		{
+			DataManager.characterMetas.remove(id);
+		}
+
+		public static void deleteInventory(UUID id)
+		{
+			DataManager.inventories.remove(id);
+		}
+
 		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
 		{
 			DCharacter character = create(player, chosenName, chosenDeity);
@@ -845,10 +1050,10 @@ public class DCharacter implements Participant
 		private static DCharacter create(final DPlayer player, final String charName, final Deity deity, final boolean immortal)
 		{
 			DCharacter character = new DCharacter();
+			character.generateId();
 			character.setPlayer(player);
 			character.setName(charName);
 			character.setDeity(deity);
-			character.setImmortal(immortal);
 			character.setUsable(true);
 			character.setMaxHealth(40.0);
 			character.setHealth(40.0);
@@ -859,7 +1064,7 @@ public class DCharacter implements Participant
 			character.setDeaths(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta());
-			JOhm.save(character);
+			save(character);
 			return character;
 		}
 
@@ -867,37 +1072,25 @@ public class DCharacter implements Participant
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
+			charInventory.generateId();
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
 			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
 			charInventory.setItems(inventory);
-			JOhm.save(charInventory);
-			JOhm.save(character);
-			return charInventory;
-		}
-
-		public static Inventory updateInventory(Inventory charInventory, DCharacter character)
-		{
-			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
-			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
-			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
-			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
-			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
-			charInventory.setItems(inventory);
-			JOhm.save(charInventory);
-			JOhm.save(character);
+			saveInventory(charInventory);
 			return charInventory;
 		}
 
 		public static Inventory createEmptyInventory()
 		{
 			Inventory charInventory = new Inventory();
+			charInventory.generateId();
 			charInventory.setHelmet(new ItemStack(Material.AIR));
 			charInventory.setChestplate(new ItemStack(Material.AIR));
 			charInventory.setLeggings(new ItemStack(Material.AIR));
 			charInventory.setBoots(new ItemStack(Material.AIR));
-			JOhm.save(charInventory);
+			saveInventory(charInventory);
 			return charInventory;
 		}
 
@@ -905,6 +1098,7 @@ public class DCharacter implements Participant
 		{
 			Meta charMeta = new Meta();
 			charMeta.initialize();
+			charMeta.generateId();
 			charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
 			charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
 			charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
@@ -914,13 +1108,34 @@ public class DCharacter implements Participant
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.STEALTH));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.SUPPORT));
 			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.ULTIMATE));
-			JOhm.save(charMeta, true);
+			saveMeta(charMeta);
 			return charMeta;
 		}
 
 		public static Set<DCharacter> loadAll()
 		{
-			return JOhm.getAll(DCharacter.class);
+			return Sets.newHashSet(DataManager.characters.values());
+		}
+
+		public static DCharacter load(UUID id)
+		{
+			return DataManager.characters.get(id);
+		}
+
+		public static Meta loadMeta(UUID id)
+		{
+			return DataManager.characterMetas.get(id);
+		}
+
+		public static Inventory getInventory(UUID id)
+		{
+			try
+			{
+				return DataManager.inventories.get(id);
+			}
+			catch(Exception ignored)
+			{}
+			return null;
 		}
 
 		public static void updateUsableCharacters()
@@ -961,7 +1176,7 @@ public class DCharacter implements Participant
 			return Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString());
 		}
 
-		public static Set<DCharacter> getAllActive()
+		public static Set<DCharacter> getAllActive() // TODO Redo this.
 		{
 			Set<DCharacter> active = Sets.newHashSet();
 			for(DCharacter character : loadAll())
@@ -1008,6 +1223,47 @@ public class DCharacter implements Participant
 		public static boolean areAllied(DCharacter char1, DCharacter char2)
 		{
 			return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
+		}
+
+		public static Collection<DCharacter> getOnlineCharactersWithDeity(final String deity)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() && character.getDeity().equals(deity);
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final String alliance)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() && character.getAlliance().equals(alliance);
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getOnlineCharacters()
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline();
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
+		{
+			return Collections2.filter(loadAll(), predicate);
 		}
 	}
 }

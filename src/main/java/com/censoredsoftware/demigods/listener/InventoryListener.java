@@ -1,5 +1,7 @@
 package com.censoredsoftware.demigods.listener;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,9 +58,9 @@ public class InventoryListener implements Listener
 		if(character == null) return;
 
 		// Remove the bound items from the drops
-		for(Ability.Bind bind : character.getMeta().getBinds())
+		for(String bind : character.getMeta().getBinds())
 		{
-			event.getDrops().remove(bind.getItem());
+			event.getDrops().remove(Ability.Util.loadBind(UUID.fromString(bind)));
 		}
 	}
 

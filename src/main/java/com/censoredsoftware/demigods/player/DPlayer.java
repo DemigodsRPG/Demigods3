@@ -1,47 +1,70 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.conversation.ChatRecorder;
+import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.Region;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import redis.clients.johm.*;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.censoredsoftware.core.bukkit.ColoredStringBuilder;
-import com.censoredsoftware.core.region.Region;
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.conversation.ChatRecorder;
-import com.censoredsoftware.demigods.conversation.Prayer;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Structures;
-
-@Model
-public class DPlayer
+public class DPlayer implements ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
-	@Indexed
 	private String player;
-	@Attribute
-	@Indexed
 	private Boolean canPvp;
-	@Attribute
 	private long lastLoginTime;
-	@Attribute
-	private long current;
-	@Attribute
-	private long previous;
+	private String currentDeityName;
+	private UUID current;
+	private UUID previous;
 	private static ChatRecorder chatRecording;
+
+	public DPlayer()
+	{}
+
+	public DPlayer(String player, ConfigurationSection conf)
+	{
+		this.player = player;
+		canPvp = conf.getBoolean("canPvp");
+		lastLoginTime = conf.getLong("lastLoginTime");
+		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
+		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
+		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("canPvp", canPvp);
+				put("lastLoginTime", lastLoginTime);
+				put("currentDeityName", currentDeityName);
+				if(current != null) put("current", current.toString());
+				if(previous != null) put("previous", previous.toString());
+			}
+		};
+	}
 
 	void setPlayer(String player)
 	{
@@ -51,7 +74,7 @@ public class DPlayer
 	public void setCanPvp(boolean pvp)
 	{
 		this.canPvp = pvp;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public void updateCanPvp()
@@ -60,7 +83,7 @@ public class DPlayer
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true);
+		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -82,7 +105,7 @@ public class DPlayer
 				@Override
 				public void run()
 				{
-					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP, true))
+					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
 					{
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.SAFE_FROM_PVP));
@@ -100,7 +123,7 @@ public class DPlayer
 	public void setLastLoginTime(Long time)
 	{
 		this.lastLoginTime = time;
-		JOhm.save(this);
+		Util.save(this);
 	}
 
 	public Long getLastLoginTime()
@@ -141,7 +164,7 @@ public class DPlayer
 			Pet.Util.disownPets(currChar.getName());
 
 			// Save it
-			JOhm.save(currChar);
+			DCharacter.Util.save(currChar);
 		}
 
 		// Set new character to active
@@ -173,6 +196,9 @@ public class DPlayer
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
 
+		// Set new deity
+		currentDeityName = newChar.getDeity().getName();
+
 		// Teleport them
 		try
 		{
@@ -184,18 +210,18 @@ public class DPlayer
 		}
 
 		// Save instances
-		JOhm.save(this);
-		JOhm.save(newChar);
-	}
-
-	public Long getId()
-	{
-		return this.id;
+		Util.save(this);
+		DCharacter.Util.save(newChar);
 	}
 
 	public Boolean canPvp()
 	{
 		return this.canPvp;
+	}
+
+	public String getPlayerName()
+	{
+		return player;
 	}
 
 	public boolean hasCurrent()
@@ -211,29 +237,33 @@ public class DPlayer
 
 	public DCharacter getCurrent()
 	{
-		DCharacter character = JOhm.get(DCharacter.class, this.current);
+		if(this.current == null) return null;
+		DCharacter character = DCharacter.Util.load(this.current);
 		if(character != null && character.isUsable()) return character;
 		return null;
 	}
 
 	public DCharacter getPrevious()
 	{
-		return JOhm.get(DCharacter.class, this.previous);
+		if(this.previous == null) return null;
+		return DCharacter.Util.load(this.previous);
+	}
+
+	public String getCurrentDeityName()
+	{
+		return currentDeityName;
 	}
 
 	public Set<DCharacter> getCharacters()
 	{
-		return new HashSet<DCharacter>()
+		return Sets.newHashSet(Collections2.filter(DCharacter.Util.loadAll(), new Predicate<DCharacter>()
 		{
+			@Override
+			public boolean apply(@Nullable DCharacter character)
 			{
-				List<DCharacter> characters = JOhm.find(DCharacter.class, "player", getId());
-
-				for(DCharacter character : characters)
-				{
-					if(character != null && character.isUsable()) add(character);
-				}
+				return character != null && character.getPlayer().equals(player) && character.isUsable();
 			}
-		};
+		}));
 	}
 
 	public boolean canUseCurrent()
@@ -244,11 +274,47 @@ public class DPlayer
 			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
 			return false;
 		}
-		else
+		else return getOfflinePlayer().isOnline();
+	}
+
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "players.yml";
+
+		public File()
 		{
-			return getOfflinePlayer().isOnline();
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
 		}
 
+		@Override
+		public ConcurrentHashMap<String, DPlayer> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new ConcurrentHashMap<String, DPlayer>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(stringId, new DPlayer(stringId, data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<String, DPlayer> currentFile = loadFromFile();
+
+			for(String id : DataManager.players.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.players.get(id))) saveFile.createSection(id, Util.getPlayer(id).serialize());
+
+			for(String id : currentFile.keySet())
+				if(!DataManager.players.keySet().contains(id)) saveFile.set(id, null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
 	}
 
 	public static class Util
@@ -259,25 +325,26 @@ public class DPlayer
 			trackedPlayer.setPlayer(player.getName());
 			trackedPlayer.setLastLoginTime(player.getLastPlayed());
 			trackedPlayer.setCanPvp(true);
-			JOhm.save(trackedPlayer);
+			Util.save(trackedPlayer);
 			return trackedPlayer;
 		}
 
-		public static DPlayer load(Long id)
+		public static void save(DPlayer player)
 		{
-			return JOhm.get(DPlayer.class, id);
+			DataManager.players.put(player.getPlayerName(), player);
 		}
 
 		public static DPlayer getPlayer(OfflinePlayer player)
 		{
-			try
-			{
-				List<DPlayer> list = JOhm.find(DPlayer.class, "player", player.getName());
-				return list.get(0);
-			}
-			catch(Exception ignored)
-			{}
-			return create(player);
+			DPlayer found = getPlayer(player.getName());
+			if(found == null) return create(player);
+			return found;
+		}
+
+		public static DPlayer getPlayer(String player)
+		{
+			if(DataManager.players.containsKey(player)) return DataManager.players.get(player);
+			return null;
 		}
 
 		/**
@@ -289,7 +356,7 @@ public class DPlayer
 		public static boolean isImmortal(OfflinePlayer player)
 		{
 			DCharacter character = getPlayer(player).getCurrent();
-			return character != null && character.isImmortal();
+			return character != null;
 		}
 
 		/**
@@ -374,7 +441,7 @@ public class DPlayer
 				togglePrayingSilent(player, false);
 
 				// Message them
-				clearChat(player);
+				Demigods.message.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
 
@@ -424,28 +491,6 @@ public class DPlayer
 		}
 
 		/**
-		 * Clears the chat for <code>player</code> using .sendMessage().
-		 * 
-		 * @param player the player whose chat to clear.
-		 */
-		public static void clearChat(Player player)
-		{
-			for(int x = 0; x < 120; x++)
-				player.sendMessage(" ");
-		}
-
-		/**
-		 * Clears the chat for <code>player</code> using .sendRawMessage().
-		 * 
-		 * @param player the player whose chat to clear.
-		 */
-		public static void clearRawChat(Player player)
-		{
-			for(int x = 0; x < 120; x++)
-				player.sendRawMessage(" ");
-		}
-
-		/**
 		 * Updates favor for all online players.
 		 * 
 		 * @param multiplier the favor multiplier.
@@ -455,7 +500,7 @@ public class DPlayer
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				if(character == null || !character.isImmortal()) continue;
+				if(character == null) continue;
 				int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
 				if(regenRate < 5) regenRate = 5;
 				character.getMeta().addFavor(regenRate);

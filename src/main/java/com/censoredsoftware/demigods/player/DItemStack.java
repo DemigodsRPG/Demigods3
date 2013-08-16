@@ -1,47 +1,82 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.google.common.collect.Maps;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import redis.clients.johm.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-@Model
-public class DItemStack
+public class DItemStack implements ConfigurationSerializable
 {
-	@Id
-	private Long id;
-	@Attribute
+	private UUID id;
 	private int typeId;
-	@Attribute
 	private byte byteId;
-	@Attribute
 	private int amount;
-	@Attribute
 	private short durability;
-	@CollectionMap(key = Integer.class, value = Integer.class)
-	@Indexed
-	private Map<Integer, Integer> enchantments; // Format: Map<ENCHANTMENT_ID, LEVEL>
-	@Attribute
+	private Map<String, Object> enchantments; // Format: Map<ENCHANTMENT_ID, LEVEL>
 	private String name;
-	@CollectionList(of = String.class)
-	@Indexed
 	private List<String> lore;
-	@Attribute
 	private String author;
-	@Attribute
 	private String title;
-	@CollectionList(of = String.class)
-	@Indexed
 	private List<String> pages;
-	@Attribute
 	private int type;
+
+	public DItemStack()
+	{}
+
+	public DItemStack(UUID id, ConfigurationSection conf)
+	{
+		this.id = id;
+		typeId = conf.getInt("typeId");
+		byteId = (byte) conf.getInt("byteId");
+		amount = conf.getInt("amount");
+		durability = (short) conf.getInt("durability");
+		if(conf.getConfigurationSection("enchantments") != null) enchantments = conf.getConfigurationSection("enchantments").getValues(false);
+		if(conf.getString("name") != null) name = conf.getString("name");
+		if(conf.getString("lore") != null) lore = conf.getStringList("lore");
+		if(conf.getString("author") != null) author = conf.getString("author");
+		if(conf.getString("title") != null) title = conf.getString("title");
+		if(conf.getStringList("pages") != null) pages = conf.getStringList("pages");
+		type = conf.getInt("type");
+	}
+
+	@Override
+	public Map<String, Object> serialize()
+	{
+		return new HashMap<String, Object>()
+		{
+			{
+				put("typeId", typeId);
+				put("byteId", (int) byteId);
+				put("amount", amount);
+				put("durability", (int) durability);
+				if(enchantments != null) put("enchantmetns", enchantments);
+				if(lore != null) put("lore", lore);
+				if(author != null) put("author", author);
+				if(title != null) put("title", title);
+				if(pages != null) put("pages", pages);
+				put("type", type);
+			}
+		};
+	}
+
+	public void generateId()
+	{
+		id = UUID.randomUUID();
+	}
 
 	void setType(ItemType type)
 	{
@@ -84,11 +119,11 @@ public class DItemStack
 		if(item.hasItemMeta() && item.getItemMeta().hasEnchants())
 		{
 			// Create the new HashMap
-			enchantments = new HashMap<Integer, Integer>();
+			enchantments = Maps.newHashMap();
 
 			for(Map.Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
 			{
-				enchantments.put(ench.getKey().getId(), ench.getValue());
+				enchantments.put(String.valueOf(ench.getKey().getId()), ench.getValue());
 			}
 		}
 	}
@@ -111,7 +146,7 @@ public class DItemStack
 		}
 	}
 
-	public Long getId()
+	public UUID getId()
 	{
 		return this.id;
 	}
@@ -143,9 +178,9 @@ public class DItemStack
 		// Apply enchantments if they exist
 		if(enchantments != null && !enchantments.isEmpty())
 		{
-			for(Map.Entry<Integer, Integer> ench : this.enchantments.entrySet())
+			for(Map.Entry<String, Object> ench : this.enchantments.entrySet())
 			{
-				item.addUnsafeEnchantment(Enchantment.getById(ench.getKey()), ench.getValue());
+				item.addUnsafeEnchantment(Enchantment.getById(Integer.parseInt(ench.getKey())), Integer.parseInt(ench.getValue().toString()));
 			}
 		}
 
@@ -166,11 +201,67 @@ public class DItemStack
 		return item;
 	}
 
+	public static class File extends ConfigFile
+	{
+		private static String SAVE_PATH;
+		private static final String SAVE_FILE = "itemStacks.yml";
+
+		public File()
+		{
+			super(Demigods.plugin);
+			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		}
+
+		@Override
+		public ConcurrentHashMap<UUID, DItemStack> loadFromFile()
+		{
+			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+			return new ConcurrentHashMap<UUID, DItemStack>()
+			{
+				{
+					for(String stringId : data.getKeys(false))
+						put(UUID.fromString(stringId), new DItemStack(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				}
+			};
+		}
+
+		@Override
+		public boolean saveToFile()
+		{
+			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+			Map<UUID, DItemStack> currentFile = loadFromFile();
+
+			for(UUID id : DataManager.itemStacks.keySet())
+				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.itemStacks.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
+
+			for(UUID id : currentFile.keySet())
+				if(!DataManager.itemStacks.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+		}
+	}
+
 	public static class Util
 	{
+		public static void save(DItemStack itemStack)
+		{
+			DataManager.itemStacks.put(itemStack.getId(), itemStack);
+		}
+
+		public static void delete(UUID id)
+		{
+			DataManager.itemStacks.remove(id);
+		}
+
+		public static DItemStack load(UUID id)
+		{
+			return DataManager.itemStacks.get(id);
+		}
+
 		public static DItemStack create(ItemStack item)
 		{
 			DItemStack trackedItem = new DItemStack();
+			trackedItem.generateId();
 			trackedItem.setTypeId(item.getTypeId());
 			trackedItem.setByteId(item.getData().getData());
 			trackedItem.setAmount(item.getAmount());
@@ -183,7 +274,7 @@ public class DItemStack
 			trackedItem.setEnchantments(item);
 			trackedItem.setBookMeta(item);
 
-			JOhm.save(trackedItem);
+			save(trackedItem);
 			return trackedItem;
 		}
 	}
