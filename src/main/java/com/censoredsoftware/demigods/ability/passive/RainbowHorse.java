@@ -109,11 +109,8 @@ public class RainbowHorse implements Ability
 			{
 				for(Pet horse : Pet.Util.findByType(EntityType.HORSE))
 				{
-					if(Demigods.isDisabledWorld(horse.getCurrentLocation().getWorld())) return;
-					if(horse.getDeity().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead())
-					{
-						((Horse) horse.getEntity()).setColor(getRandomHorseColor());
-					}
+					if(horse.getCurrentLocation() == null || Demigods.isDisabledWorld(horse.getCurrentLocation().getWorld())) return;
+					if(horse.getDeity().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead()) ((Horse) horse.getEntity()).setColor(getRandomHorseColor());
 				}
 			}
 
