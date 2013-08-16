@@ -251,7 +251,8 @@ public class DPlayer implements ConfigurationSerializable
 
 	public Deity getCurrentDeity()
 	{
-		return currentDeity.getDeity();
+		if(currentDeity != null) return currentDeity.getDeity();
+		return null;
 	}
 
 	public Set<DCharacter> getCharacters()
