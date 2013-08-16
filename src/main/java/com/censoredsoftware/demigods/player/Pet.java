@@ -126,7 +126,8 @@ public class Pet implements Participant, ConfigurationSerializable
 				if(pet.getUniqueId().equals(this.entityUUID)) return (LivingEntity) pet;
 			}
 		}
-		Errors.triggerError("Demigods", ChatColor.RED + "Could not find pet.");
+		Errors.triggerError("Demigods", ChatColor.RED + "Could not find pet.", ChatColor.GREEN + "Deleting save for pet.");
+		delete();
 		return null;
 	}
 
