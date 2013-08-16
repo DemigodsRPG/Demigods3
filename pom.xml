@@ -24,7 +24,7 @@
 
     <ciManagement>
         <system>Jenkins</system>
-        <url>http://build.censoredsoftware.com/</url>
+        <url>http://builds.censoredsoftware.com/</url>
     </ciManagement>
 
     <properties>
