@@ -23,8 +23,8 @@
     </licenses>
 
     <ciManagement>
-        <system>TeamCity</system>
-        <url>http://teamcity.censoredsoftware.com/</url>
+        <system>Jenkins</system>
+        <url>http://builds.censoredsoftware.com/</url>
     </ciManagement>
 
     <properties>
