@@ -8,12 +8,7 @@ Not to be confused with other RPG plugins that focus on skills and classes alone
 Installation
 ============
 
-To install, simply place the [Demigods.jar](http://dev.bukkit.org/server-mods/demigods/files/) in your plugins folder and run the server. That's it. Everything else is handled automatically.
-
-Upgrading from Demigods 2
-=========================
-
-It is not currently possible to upgrade from Demigods 2 to Demigods 3.  Too much has changed to allow any sort of meaningful conversion process--  it is best for your server and your players that you start over fresh.
+To install, simply place the Demigods.jar in to your plugins folder and run the server. That's it. Everything else is handled automatically.
 
 
 Features
