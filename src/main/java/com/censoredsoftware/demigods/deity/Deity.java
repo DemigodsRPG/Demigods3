@@ -91,9 +91,10 @@ public interface Deity
 			return character != null && character.isDeity(deity);
 		}
 
-		public static boolean canUseDeitySilent(Player player, String deity)
+		public static boolean canUseDeitySilent(Player player, String deityName)
 		{
-			return DPlayer.Util.getPlayer(player).getCurrentDeity().getName().equalsIgnoreCase(deity);
+			Deity deity = DPlayer.Util.getPlayer(player).getCurrentDeity();
+			return deity != null && deity.getName().equalsIgnoreCase(deityName);
 		}
 	}
 }
