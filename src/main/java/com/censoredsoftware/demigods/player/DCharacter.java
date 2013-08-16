@@ -71,7 +71,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		active = conf.getBoolean("active");
 		usable = conf.getBoolean("usable");
 		meta = UUID.fromString(conf.getString("meta"));
-		inventory = UUID.fromString(conf.getString("inventory"));
+		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				put("active", active);
 				put("usable", usable);
 				put("meta", meta.toString());
-				put("inventory", inventory.toString());
+				if(inventory != null) put("inventory", inventory.toString());
 			}
 		};
 	}
@@ -127,8 +127,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void saveInventory()
 	{
-		if(this.inventory == null) this.inventory = Util.createInventory(this).getId();
-		else this.inventory = Util.updateInventory(Util.getInventory(inventory), this).getId();
+		this.inventory = Util.createInventory(this).getId();
 		Util.save(this);
 	}
 
@@ -1074,18 +1073,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
 			charInventory.generateId();
-			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
-			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
-			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
-			if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
-			charInventory.setItems(inventory);
-			saveInventory(charInventory);
-			return charInventory;
-		}
-
-		public static Inventory updateInventory(Inventory charInventory, DCharacter character)
-		{
-			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
 			if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
 			if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
