@@ -15,10 +15,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -184,7 +181,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public OfflinePlayer getOfflinePlayer()
 	{
-		return DPlayer.Util.getPlayer(this.player).getOfflinePlayer();
+		return Bukkit.getOfflinePlayer(this.player);
 	}
 
 	public String getName()
@@ -1232,7 +1229,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(@Nullable DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline() && character.getDeity().equals(deity);
+					return character.getOfflinePlayer().isOnline() && character.getDeity().getName().equalsIgnoreCase(deity);
 				}
 			});
 		}
@@ -1244,7 +1241,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(@Nullable DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline() && character.getAlliance().equals(alliance);
+					return character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
 				}
 			});
 		}

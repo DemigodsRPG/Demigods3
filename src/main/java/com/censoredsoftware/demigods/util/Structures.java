@@ -109,7 +109,7 @@ public class Structures
 	public static boolean isTrespassingInNoGriefingZone(Player player)
 	{
 		Location location = player.getLocation();
-		if(Zones.zoneNoBuild(player, player.getLocation())) return true;
+		if(Zones.zoneNoBuild(player, location)) return true;
 		Structure.Save save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
 		if(save != null) return !(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId()));
 		return false;
