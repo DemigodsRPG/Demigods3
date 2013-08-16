@@ -413,10 +413,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return new HashMap<String, Object>()
 			{
 				{
-					if(helmet != null) put("helmet", helmet);
-					if(chestplate != null) put("chestplate", chestplate);
-					if(leggings != null) put("leggings", leggings);
-					if(boots != null) put("boots", boots);
+					if(helmet != null) put("helmet", helmet.toString());
+					if(chestplate != null) put("chestplate", chestplate.toString());
+					if(leggings != null) put("leggings", leggings.toString());
+					if(boots != null) put("boots", boots.toString());
 					if(items != null) put("items", Lists.newArrayList(items));
 				}
 			};
@@ -1129,7 +1129,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static Inventory getInventory(UUID id)
 		{
-			return DataManager.inventories.get(id);
+			try
+			{
+				return DataManager.inventories.get(id);
+			}
+			catch(Exception ignored)
+			{}
+			return null;
 		}
 
 		public static void updateUsableCharacters()
