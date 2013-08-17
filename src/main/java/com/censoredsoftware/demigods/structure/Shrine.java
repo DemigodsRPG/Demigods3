@@ -190,6 +190,10 @@ public class Shrine implements Structure
 						// Creation of shrine failed...
 						e.printStackTrace();
 					}
+					finally
+					{
+						event.setCancelled(true);
+					}
 				}
 			}
 

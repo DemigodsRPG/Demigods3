@@ -252,6 +252,10 @@ public class Obelisk implements Structure
 						// Creation of shrine failed...
 						e.printStackTrace();
 					}
+					finally
+					{
+						event.setCancelled(true);
+					}
 				}
 			}
 
