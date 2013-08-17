@@ -21,6 +21,7 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
+		if(event.isCancelled()) return;
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
 		Entity damager = event.getDamager();
 		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
