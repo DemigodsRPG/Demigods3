@@ -109,7 +109,7 @@ public class EntityListener implements Listener
 		if(character != null) Pet.Util.create(entity, DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent());
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityTarget(EntityTargetLivingEntityEvent event)
 	{
 		if(!Demigods.isDisabledWorld(event.getEntity().getLocation()) && event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
