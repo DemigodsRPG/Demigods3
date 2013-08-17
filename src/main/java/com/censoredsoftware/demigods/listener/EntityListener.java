@@ -12,10 +12,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.*;
 
 public class EntityListener implements Listener
 {
@@ -110,5 +107,11 @@ public class EntityListener implements Listener
 		AnimalTamer owner = event.getOwner();
 		DCharacter character = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent();
 		if(character != null) Pet.Util.create(entity, DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent());
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onEntityTarget(EntityTargetLivingEntityEvent event)
+	{
+		if(!Demigods.isDisabledWorld(event.getEntity().getLocation()) && event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
 	}
 }
