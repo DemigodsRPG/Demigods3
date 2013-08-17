@@ -85,8 +85,8 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.getWorld().playEffect(player.getLocation(), Effect.RECORD_PLAY, Material.RECORD_4.getId());
-		player.sendMessage(ChatColor.YELLOW + "Now playing 'Gey Lucky' by Daft Punk...");
+		player.getWorld().playEffect(player.getLocation(), Effect.RECORD_PLAY, Material.GREEN_RECORD.getId());
+		player.sendMessage(ChatColor.YELLOW + "Now playing 'DVNO' by Justice...");
 
 		return true;
 	}
