@@ -1,4 +1,4 @@
-Overview [![Build Status](https://travis-ci.org/Clashnia/Minecraft-Demigods.png?branch=master)](https://travis-ci.org/Clashnia/Minecraft-Demigods)
+Overview [![Build Status](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods.png?branch=master)](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods)
 ========
 
 This is the Github page for **Demigods**, a full RPG experience designed to create a unique team-building game for survival/PvP servers.
