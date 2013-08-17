@@ -1189,10 +1189,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			String killedAlliance = "Mortal";
 			if(killed != null) killedAlliance = killed.getAlliance();
 
-			if(attacker != null)
-			{
-				attacker.addKill();
-			}
+			if(attacker != null) attacker.addKill();
 
 			if(killed == null) Demigods.message.broadcast(Demigods.language.getText(Translation.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
 			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));

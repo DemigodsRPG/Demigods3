@@ -124,7 +124,7 @@ public class Structures
 		Location location = player.getLocation();
 		if(Zones.zoneNoBuild(player, location)) return true;
 		Structure.Save save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
-		if(save != null) return !(save.getOwner() != null && save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId()));
+		if(save != null) return save.getOwner() == null || !save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 		return false;
 	}
 
