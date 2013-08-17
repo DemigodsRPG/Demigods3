@@ -102,7 +102,10 @@ public class Structures
 	public static Structure.Save getInRadiusWithFlag(Location location, Structure.Flag flag)
 	{
 		for(Structure.Save save : getStructuresSavesWithFlag(flag))
-			if(save.getReferenceLocation().distance(location) <= save.getStructure().getRadius()) return save;
+		{
+			Location saveLocation = save.getReferenceLocation();
+			if(saveLocation.getWorld().equals(location.getWorld()) && saveLocation.distance(location) <= save.getStructure().getRadius()) return save;
+		}
 		return null;
 	}
 
