@@ -23,16 +23,9 @@ public class EntityListener implements Listener
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
-
-		// Define variables
-		LivingEntity entity;
-		if(event.getEntityType().equals(EntityType.PLAYER)) // If it's a player
+		if(event.getEntity() instanceof Player)
 		{
-			// Define entity as player and other variables
-			entity = (LivingEntity) event.getEntity();
-
-			// NO DAMAGE IN NO PVP ZONES FOR PLAYERS TODO Do we want to keep it that way?
-			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(entity))) event.setCancelled(true);
+			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(event.getEntity()))) event.setCancelled(true);
 		}
 	}
 
@@ -48,8 +41,8 @@ public class EntityListener implements Listener
 		{
 			Player hitting = (Player) attacker;
 
-			// NO PVP
-			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
+			// No PvP
+			if(!DPlayer.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
 				hitting.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.NO_PVP_ZONE));
 				event.setCancelled(true);

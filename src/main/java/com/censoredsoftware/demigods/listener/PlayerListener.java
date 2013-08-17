@@ -98,7 +98,7 @@ public class PlayerListener implements Listener
 		if(loggingOff != null) loggingOff.setLocation(event.getPlayer().getLocation());
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event) // TODO Is this working?
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
