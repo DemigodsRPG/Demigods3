@@ -340,10 +340,7 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePrayingSilent(player, false);
 
 				// Teleport and message
-				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
-				{
-					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1).toString())).toLocation());
-				}
+				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
 				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
 				{
 					player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getInvites().get(arg1.toLowerCase()).toString())).toLocation());
