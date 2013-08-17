@@ -112,6 +112,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityTarget(EntityTargetLivingEntityEvent event)
 	{
-		if(!Demigods.isDisabledWorld(event.getEntity().getLocation()) && event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
+		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
 	}
 }
