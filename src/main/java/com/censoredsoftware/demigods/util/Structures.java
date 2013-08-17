@@ -99,13 +99,23 @@ public class Structures
 		return getInRadiusWithFlag(location, flag) != null;
 	}
 
-	public static Structure.Save getInRadiusWithFlag(Location location, Structure.Flag flag)
+	public static Structure.Save getInRadiusWithFlag(final Location location, final Structure.Flag flag)
 	{
-		for(Structure.Save save : getStructuresSavesWithFlag(flag))
+		for(Structure.Save save : new HashSet<Structure.Save>()
 		{
-			Location saveLocation = save.getReferenceLocation();
-			if(saveLocation.getWorld().equals(location.getWorld()) && saveLocation.distance(location) <= save.getStructure().getRadius()) return save;
-		}
+			{
+				for(Structure.Save save : findAll(new Predicate<Structure.Save>()
+				{
+					@Override
+					public boolean apply(@Nullable Structure.Save save)
+					{
+						return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius();
+					}
+				}))
+					add(save);
+			}
+		})
+			return save;
 		return null;
 	}
 
