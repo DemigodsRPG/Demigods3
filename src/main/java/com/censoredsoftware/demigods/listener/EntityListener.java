@@ -1,5 +1,11 @@
 package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
@@ -11,16 +17,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-
 public class EntityListener implements Listener
 {
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
@@ -37,7 +36,7 @@ public class EntityListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageByEntityEvent(EntityDamageByEntityEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;

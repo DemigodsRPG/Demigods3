@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class BattleListener implements Listener
 {
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
@@ -66,7 +66,7 @@ public class BattleListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(EntityDamageEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
