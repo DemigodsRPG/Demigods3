@@ -7,13 +7,14 @@ import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
@@ -83,24 +84,9 @@ public class DevelopmentCommands extends ListedCommand
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		character.getMeta().clearNotifications();
-
-		if(character != null)
-		{
-			Notification notification1 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.GOOD, 3, "Test1", "This the first notification test ever.");
-			Notification notification2 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.NEUTRAL, 100, "Test2", "This the second notification test ever.");
-			Notification notification3 = Notification.Util.create(Notification.Sender.PLUGIN, character, Notification.Danger.BAD, 1, "Test2", "This the third notification test ever.");
-
-			Notification.Util.sendNotification(character, notification1);
-			Notification.Util.sendNotification(character, notification2);
-			Notification.Util.sendNotification(character, notification3);
-
-			return true;
-		}
-
-		player.sendMessage(ChatColor.RED + "Failed!");
+		player.getWorld().playEffect(player.getLocation(), Effect.RECORD_PLAY, Material.GREEN_RECORD.getId());
+		player.sendMessage(ChatColor.YELLOW + "Now playing 'DVNO' by Justice...");
 
 		return true;
 	}
