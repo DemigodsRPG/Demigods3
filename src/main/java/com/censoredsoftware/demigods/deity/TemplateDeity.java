@@ -1,22 +1,27 @@
 package com.censoredsoftware.demigods.deity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.util.Unicodes;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class TemplateDeity implements Deity
 {
 	private final static String name = "Template", alliance = "Test", permission = "demigods.test.test";
 	private final static ChatColor color = ChatColor.GRAY;
 	private final static Set<Material> claimItems = Sets.newHashSet(Material.BEDROCK);
+	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
 		{
@@ -66,6 +71,12 @@ public class TemplateDeity implements Deity
 	public Set<Material> getClaimItems()
 	{
 		return claimItems;
+	}
+
+	@Override
+	public Map<Material, Integer> getForsakeItems()
+	{
+		return forsakeItems;
 	}
 
 	@Override

@@ -1,16 +1,18 @@
 package com.censoredsoftware.demigods.deity;
 
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 
 public interface Deity
 {
@@ -25,6 +27,8 @@ public interface Deity
 	public ChatColor getColor();
 
 	public Set<Material> getClaimItems();
+
+	public Map<Material, Integer> getForsakeItems();
 
 	public List<String> getLore();
 

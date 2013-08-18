@@ -1,5 +1,27 @@
 package com.censoredsoftware.demigods.conversation;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -14,30 +36,6 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.ValidatingPrompt;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -54,7 +52,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), VIEW_NOTIFICATIONS(4, new ViewNotifications());
+		CONFIRM_FORSAKE(0, new ConfirmForsake()), CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), VIEW_NOTIFICATIONS(4, new ViewNotifications()), FORSAKE_CHARACTER(5, new ForsakeCurrentDeity());
 
 		private final Integer id;
 		private final Elements.Conversations.Category category;
@@ -352,7 +350,7 @@ public class Prayer implements ListedConversation
 		}
 	}
 
-	// Warps
+	// Notifications
 	static class ViewNotifications extends ValidatingPrompt implements Elements.Conversations.Category
 	{
 		@Override
@@ -478,7 +476,7 @@ public class Prayer implements ListedConversation
 			for(DCharacter character : DPlayer.Util.getPlayer(player).getCharacters())
 			{
 				if(!character.isUsable()) continue;
-				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.GRAY + " / Fav: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
+				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.GRAY + " / Fav: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
 			}
 
 			player.sendRawMessage(" ");
@@ -541,10 +539,10 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(" ");
 				player.sendRawMessage("    " + status + ChatColor.YELLOW + character.getName() + ChatColor.GRAY + " > Allied to " + character.getDeity().getColor() + character.getDeity() + ChatColor.GRAY + " of the " + ChatColor.GOLD + character.getAlliance() + "s");
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
-				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Util.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Util.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + Math.round(character.getExperience())); // TODO: Exp isn't correct.
+				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Strings.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Strings.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + Math.round(character.getExperience())); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Util.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(" ");
@@ -587,6 +585,156 @@ public class Prayer implements ListedConversation
 		}
 	}
 
+	// Deity forsaking
+	static class ForsakeCurrentDeity extends ValidatingPrompt implements Elements.Conversations.Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.DARK_RED + "Forsake Current Deity";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating");
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			Deity deity = character.getDeity();
+
+			Demigods.message.clearRawChat(player);
+			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
+			player.sendRawMessage(" ");
+			player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " is angry with your decision and demands");
+			player.sendRawMessage(ChatColor.GRAY + "  payment from you before forsaking!");
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.GRAY + "  Are you sure that you want to forsake " + deity.getColor() + deity.getName() + ChatColor.GRAY + "? " + ChatColor.GRAY + "(y/n)");
+
+			return "";
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return message.equalsIgnoreCase("y") || message.equalsIgnoreCase("n");
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			if(message.equalsIgnoreCase("n"))
+			{
+				return new StartPrayer();
+			}
+			else if(message.equalsIgnoreCase("y"))
+			{
+				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
+				return new ContinueForsaking();
+			}
+			return null;
+		}
+
+		static class ContinueForsaking extends MessagePrompt
+		{
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				// Define variables
+				Player player = (Player) context.getForWhom();
+				DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+				Deity deity = character.getDeity();
+
+				Demigods.message.clearRawChat(player);
+				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
+				player.sendRawMessage(" ");
+				player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " requires that you bring the following");
+				player.sendRawMessage(ChatColor.GRAY + "  items before forsaking:");
+				player.sendRawMessage(" ");
+				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
+				{
+					player.sendRawMessage("    " + ChatColor.GRAY + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+				}
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items return to an Altar to finish forsaking.");
+
+				// Save temporary data, end the conversation, and return
+				DataManager.saveTimed(player.getName(), "forsaking_deity", true, 600);
+				DPlayer.Util.togglePrayingSilent(player, false);
+				return "";
+			}
+
+			@Override
+			protected Prompt getNextPrompt(ConversationContext context)
+			{
+				return null;
+			}
+		}
+	}
+
+	// Forsaking confirmation
+	static class ConfirmForsake extends ValidatingPrompt implements Elements.Conversations.Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.YELLOW + "Finish Forsaking";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "forsaking_deity");
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
+
+			// Clear chat
+			Demigods.message.clearRawChat(player);
+
+			// Ask them if they have the items
+			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsaking " + deity.getName()));
+			player.sendRawMessage(" ");
+			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory? " + ChatColor.GRAY + "(y/n)");
+			player.sendRawMessage(" ");
+			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
+			{
+				player.sendRawMessage("    " + ChatColor.GRAY + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+			}
+
+			return "";
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return message.contains("y") || message.contains("n");
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			Player player = (Player) context.getForWhom();
+
+			// Open inventory
+			Inventory inv = Bukkit.getServer().createInventory(player, 9, "Place Items Here");
+			player.openInventory(inv);
+
+			return null;
+		}
+	}
+
 	// Character creation
 	static class CreateCharacter extends ValidatingPrompt implements Elements.Conversations.Category
 	{
@@ -599,8 +747,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			// TODO: Add permissions support.
-			return true;
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -619,7 +766,11 @@ public class Prayer implements ListedConversation
 		@Override
 		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.contains("y")) return new ChooseName();
+			if(message.contains("y"))
+			{
+				context.setSessionData("currently_creating", true);
+				return new ChooseName();
+			}
 			return new StartPrayer();
 		}
 
@@ -662,7 +813,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 4 || name.length() > 14 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
 					List<Translation.Text> errors = Lists.newArrayList();
@@ -676,7 +827,7 @@ public class Prayer implements ListedConversation
 					{
 						errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
 					}
-					if(Util.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
+					if(Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
 					{
 						errors.add(Translation.Text.ERROR_MAX_CAPS);
 					}
@@ -775,7 +926,8 @@ public class Prayer implements ListedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Demigods.message.clearRawChat((Player) context.getForWhom());
-				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + StringUtils.capitalize((String) context.getSessionData("chosen_deity")) + ChatColor.GRAY + "? (y/n)";
+				Deity deity = Deity.Util.getDeity((String) context.getSessionData("chosen_deity"));
+				return ChatColor.GRAY + "Are you sure you want to use " + deity.getColor() + deity.getName() + ChatColor.GRAY + "? (y/n)";
 			}
 
 			@Override
@@ -810,7 +962,7 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the conversation, and return
-					context.setSessionData("confirming_deity", true);
+					DataManager.saveTimed(player.getName(), "confirming_deity", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false);
 					return null;
 				}
@@ -835,7 +987,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return context.getSessionData("confirming_deity") != null && Boolean.parseBoolean(context.getSessionData("confirming_deity").toString());
+			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "confirming_deity");
 		}
 
 		@Override
@@ -872,54 +1024,10 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Open inventory
-			Inventory inv = Bukkit.getServer().createInventory(player, 27, "Place Your Tributes Here");
+			Inventory inv = Bukkit.getServer().createInventory(player, 9, "Place Your Tributes Here");
 			player.openInventory(inv);
 
 			return null;
-		}
-	}
-
-	public static class Util
-	{
-		/**
-		 * Checks the <code>string</code> for <code>max</code> capital letters.
-		 * 
-		 * @param string the string to check.
-		 * @param max the maximum allowed capital letters.
-		 * @return Boolean
-		 */
-		public static boolean hasCapitalLetters(String string, int max)
-		{
-			// Define variables
-			String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			int count = 0;
-			char[] characters = string.toCharArray();
-			for(char character : characters)
-			{
-				if(allCaps.contains("" + character))
-				{
-					count++;
-				}
-
-				if(count > max) return true;
-			}
-			return false;
-		}
-
-		/**
-		 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
-		 * 
-		 * @param value the actual value.
-		 * @param max the maximum value possible.
-		 * @return ChatColor
-		 */
-		public static ChatColor getColor(double value, double max)
-		{
-			ChatColor color = ChatColor.RESET;
-			if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
-			else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
-			if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
-			return color;
 		}
 	}
 
@@ -968,7 +1076,7 @@ public class Prayer implements ListedConversation
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void createCharacter(InventoryCloseEvent event)
+		public void confirmDeity(InventoryCloseEvent event)
 		{
 			try
 			{
@@ -991,13 +1099,13 @@ public class Prayer implements ListedConversation
 				int items = 0;
 				int neededItems = Deity.Util.getDeity(chosenDeity).getClaimItems().size();
 
-				for(ItemStack ii : event.getInventory().getContents())
+				for(ItemStack item : event.getInventory().getContents())
 				{
-					if(ii != null)
+					if(item != null)
 					{
-						for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
+						for(Material material : Deity.Util.getDeity(chosenDeity).getClaimItems())
 						{
-							if(ii.getType().equals(item))
+							if(item.getType().equals(material))
 							{
 								items++;
 							}
@@ -1016,6 +1124,9 @@ public class Prayer implements ListedConversation
 				{
 					// Accepted, finish everything up!
 					DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
+
+					// Remove temp data
+					DataManager.removeTemp(player.getName(), "currently_creating");
 
 					// Clear the prayer session
 					DPlayer.Util.clearPrayerSession(player);
@@ -1036,14 +1147,82 @@ public class Prayer implements ListedConversation
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
+		public void forsakeDeity(InventoryCloseEvent event)
+		{
+			try
+			{
+				if(!(event.getPlayer() instanceof Player)) return;
+				Player player = (Player) event.getPlayer();
+
+				// If it isn't a confirmation chest then exit
+				if(!event.getInventory().getName().contains("Place Items Here")) return;
+
+				// Exit if this isn't for character creation
+				if(!DPlayer.Util.isPraying(player)) return;
+
+				// Define variables
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				Deity deity = character.getDeity();
+
+				// Check the chest items
+				int items = 0;
+				int neededItems = deity.getForsakeItems().size();
+
+				for(ItemStack item : event.getInventory().getContents())
+				{
+					if(item != null)
+					{
+						for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
+						{
+							if(item.getType().equals(entry.getKey()) && item.getAmount() == entry.getValue())
+							{
+								items++;
+							}
+						}
+					}
+				}
+
+				// Stop their praying
+				DPlayer.Util.togglePrayingSilent(player, false);
+
+				// Clear chat and send update
+				Demigods.message.clearRawChat(player);
+				player.sendMessage(ChatColor.YELLOW + deity.getName() + " is debating your departure...");
+
+				if(neededItems == items)
+				{
+					// Accepted, delete the character and message the player
+					character.remove();
+					player.sendMessage(ChatColor.GREEN + "Forsaking accepted! You are now free from the will of " + deity.getName() + ".");
+
+					// Remove temp
+					DataManager.removeTemp(player.getName(), "currently_forsaking");
+
+					// Clear the prayer session
+					DPlayer.Util.clearPrayerSession(player);
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + deity.getName() + " has denied your forsaking!");
+				}
+
+				// Clear the confirmation case
+				event.getInventory().clear();
+			}
+			catch(Exception e)
+			{
+				// Print error for debugging
+				e.printStackTrace();
+			}
+		}
+
+		@EventHandler(priority = EventPriority.MONITOR)
 		private void onPlayerMove(PlayerMoveEvent event)
 		{
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(!DPlayer.Util.isPraying(player)) return;
-
-			if(event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
+			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
 			{
 				DPlayer.Util.togglePraying(player, false);
 			}

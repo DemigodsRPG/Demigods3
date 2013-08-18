@@ -1,8 +1,9 @@
 package com.censoredsoftware.demigods.util;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 
 public class Strings
 {
@@ -38,5 +39,46 @@ public class Strings
 		for(String check : collection)
 			if(StringUtils.containsIgnoreCase(string, check)) return true;
 		return false;
+	}
+
+	/**
+	 * Checks the <code>string</code> for <code>max</code> capital letters.
+	 * 
+	 * @param string the string to check.
+	 * @param max the maximum allowed capital letters.
+	 * @return Boolean
+	 */
+	public static boolean hasCapitalLetters(String string, int max)
+	{
+		// Define variables
+		String allCaps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		int count = 0;
+		char[] characters = string.toCharArray();
+		for(char character : characters)
+		{
+			if(allCaps.contains("" + character))
+			{
+				count++;
+			}
+
+			if(count > max) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns a color (red, yellow, green) based on the <code>value</code> and <code>max</code> passed in.
+	 * 
+	 * @param value the actual value.
+	 * @param max the maximum value possible.
+	 * @return ChatColor
+	 */
+	public static ChatColor getColor(double value, double max)
+	{
+		ChatColor color = ChatColor.RESET;
+		if(value < Math.ceil(0.33 * max)) color = ChatColor.RED;
+		else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
+		if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
+		return color;
 	}
 }

@@ -40,6 +40,12 @@ permissions:
     demigods.basic:
         description: The default permission for players.
         default: true
+    demigods.basic.create:
+        description: Allows the player to create a character.
+        default: true
+    demigods.basic.forsake:
+        description: Allows the player to forsake their Deity.
+        default: true
     demigods.admin:
         description: The default permission for admins.
         default: op

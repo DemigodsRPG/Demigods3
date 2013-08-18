@@ -1,24 +1,29 @@
 package com.censoredsoftware.demigods.deity.god;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Reel;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Unicodes;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class Poseidon implements Deity
 {
 	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private final static ChatColor color = ChatColor.AQUA;
 	private final static Set<Material> claimItems = Sets.newHashSet(Material.WATER_LILY);
+	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.WATER_BUCKET, 4));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
 		{
@@ -68,6 +73,12 @@ public class Poseidon implements Deity
 	public Set<Material> getClaimItems()
 	{
 		return claimItems;
+	}
+
+	@Override
+	public Map<Material, Integer> getForsakeItems()
+	{
+		return forsakeItems;
 	}
 
 	@Override
