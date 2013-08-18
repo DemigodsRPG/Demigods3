@@ -654,7 +654,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(" ");
 				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 				{
-					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 				}
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Return to an Altar after obtaining these items to finish");
@@ -677,7 +677,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public String getChatName()
 		{
-			return ChatColor.YELLOW + "Finish Forsaking";
+			return ChatColor.DARK_RED + "Finish Forsaking";
 		}
 
 		@Override
@@ -1002,7 +1002,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + Strings.beautify(item.name()));
 			}
 			return "";
 		}
@@ -1178,10 +1178,10 @@ public class Prayer implements ListedConversation
 				{
 					// Accepted, delete the character and message the player
 					character.remove();
-					player.sendMessage(ChatColor.GREEN + "Forsaking accepted! You are now free from the will of " + deity.getName() + ".");
+					player.sendMessage(ChatColor.GREEN + "You are now free from the will of " + deity.getName() + "!");
 
 					// Add potion effects for fun
-					PotionEffect potion = new PotionEffect(PotionEffectType.WEAKNESS, 60, 2);
+					PotionEffect potion = new PotionEffect(PotionEffectType.WEAKNESS, 1200, 3);
 					player.addPotionEffect(potion);
 
 					// Remove temp
