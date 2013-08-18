@@ -639,16 +639,7 @@ public class Prayer implements ListedConversation
 			else if(message.equalsIgnoreCase("y"))
 			{
 				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
-				return new ContinueForsaking();
-			}
-			return null;
-		}
 
-		static class ContinueForsaking extends ValidatingPrompt
-		{
-			@Override
-			public String getPromptText(ConversationContext context)
-			{
 				// Define variables
 				Player player = (Player) context.getForWhom();
 				DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
@@ -673,20 +664,8 @@ public class Prayer implements ListedConversation
 				// Save temporary data, end the conversation, and return
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false);
-				return "";
 			}
-
-			@Override
-			protected boolean isInputValid(ConversationContext context, String string)
-			{
-				return false;
-			}
-
-			@Override
-			protected Prompt acceptValidatedInput(ConversationContext context, String string)
-			{
-				return null;
-			}
+			return null;
 		}
 	}
 
@@ -722,7 +701,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + " " + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
 			}
 
 			return "";
@@ -1187,7 +1166,7 @@ public class Prayer implements ListedConversation
 					{
 						for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 						{
-							if(item.getType().equals(entry.getKey()) && item.getAmount() == entry.getValue())
+							if(item.getType().equals(entry.getKey()) && item.getAmount() == entry.getValue()) // TODO: Make this work with non-stackable items (e.g. water buckets)
 							{
 								items++;
 							}
