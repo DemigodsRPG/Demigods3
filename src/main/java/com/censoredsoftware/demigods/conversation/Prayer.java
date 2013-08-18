@@ -976,7 +976,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public String getChatName()
 		{
-			return ChatColor.YELLOW + "Confirm Character";
+			return ChatColor.GREEN + "Confirm Character";
 		}
 
 		@Override
