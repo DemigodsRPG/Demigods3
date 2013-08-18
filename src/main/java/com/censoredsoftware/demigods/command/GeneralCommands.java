@@ -48,8 +48,8 @@ public class GeneralCommands extends ListedCommand
 		}
 
 		// Define variables
-		int kills = character.getKills();
-		int deaths = character.getDeaths();
+		int kills = character.getKillCount();
+		int deaths = character.getDeathCount();
 		String charName = character.getName();
 		String deity = character.getDeity().getName();
 		String alliance = character.getAlliance();

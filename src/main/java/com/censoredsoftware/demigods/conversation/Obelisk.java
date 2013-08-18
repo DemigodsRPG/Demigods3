@@ -4,7 +4,7 @@ import com.censoredsoftware.demigods.helper.ListedConversation;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
 
-public class NoGrief implements ListedConversation
+public class Obelisk implements ListedConversation
 {
 	// Define variables
 	private static Conversation conversation;

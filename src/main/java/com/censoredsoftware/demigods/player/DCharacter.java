@@ -10,11 +10,13 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.primitives.Ints;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,17 +41,20 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Integer hunger;
 	private Float experience;
 	private Integer level;
-	private Integer kills;
-	private Integer deaths;
+	private Integer killCount;
+	private Integer deathCount;
 	private UUID location;
 	private String deity;
 	private Boolean active;
 	private Boolean usable;
 	private UUID meta;
 	private UUID inventory;
+	private Set<String> deaths;
 
 	public DCharacter()
-	{}
+	{
+		deaths = Sets.newHashSet();
+	}
 
 	public DCharacter(UUID id, ConfigurationSection conf)
 	{
@@ -61,14 +66,15 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		hunger = conf.getInt("hunger");
 		experience = Float.valueOf(conf.getString("experience"));
 		level = conf.getInt("level");
-		kills = conf.getInt("kills");
-		deaths = conf.getInt("deaths");
+		killCount = conf.getInt("killCount");
+		deathCount = conf.getInt("deathCount");
 		location = UUID.fromString(conf.getString("location"));
 		deity = conf.getString("deity");
 		active = conf.getBoolean("active");
 		usable = conf.getBoolean("usable");
 		meta = UUID.fromString(conf.getString("meta"));
 		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
+		if(conf.isList("deaths")) deaths = Sets.newHashSet(conf.getStringList("deaths"));
 	}
 
 	@Override
@@ -84,14 +90,15 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				put("hunger", hunger);
 				put("experience", experience);
 				put("level", level);
-				put("kills", kills);
-				put("deaths", deaths);
+				put("killCount", killCount);
+				put("deathCount", deathCount);
 				put("location", location.toString());
 				put("deity", deity);
 				put("active", active);
 				put("usable", usable);
 				put("meta", meta.toString());
 				if(inventory != null) put("inventory", inventory.toString());
+				if(deaths != null) put("deaths", Lists.newArrayList(deaths));
 			}
 		};
 	}
@@ -264,23 +271,23 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	}
 
 	/**
-	 * Returns the number of total kills.
+	 * Returns the number of total killCount.
 	 * 
 	 * @return int
 	 */
-	public int getKills()
+	public int getKillCount()
 	{
-		return this.kills;
+		return this.killCount;
 	}
 
 	/**
-	 * Sets the amount of kills to <code>amount</code>.
+	 * Sets the amount of killCount to <code>amount</code>.
 	 * 
-	 * @param amount the amount of kills to set to.
+	 * @param amount the amount of killCount to set to.
 	 */
-	public void setKills(int amount)
+	public void setKillCount(int amount)
 	{
-		this.kills = amount;
+		this.killCount = amount;
 		Util.save(this);
 	}
 
@@ -289,28 +296,28 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	 */
 	public void addKill()
 	{
-		this.kills += 1;
+		this.killCount += 1;
 		Util.save(this);
 	}
 
 	/**
-	 * Returns the number of deaths.
+	 * Returns the number of deathCount.
 	 * 
 	 * @return int
 	 */
-	public int getDeaths()
+	public int getDeathCount()
 	{
-		return this.deaths;
+		return this.deathCount;
 	}
 
 	/**
-	 * Sets the number of deaths to <code>amount</code>.
+	 * Sets the number of deathCount to <code>amount</code>.
 	 * 
-	 * @param amount the amount of deaths to set.
+	 * @param amount the amount of deathCount to set.
 	 */
-	public void setDeaths(int amount)
+	public void setDeathCount(int amount)
 	{
-		this.deaths = amount;
+		this.deathCount = amount;
 		Util.save(this);
 	}
 
@@ -319,8 +326,37 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	 */
 	public void addDeath()
 	{
-		this.deaths += 1;
+		this.deathCount += 1;
+		deaths.add(new Death(this).getId().toString());
 		Util.save(this);
+	}
+
+	/**
+	 * Adds a death.
+	 */
+	public void addDeath(DCharacter attacker)
+	{
+		this.deathCount += 1;
+		deaths.add(new Death(this, attacker).getId().toString());
+		Util.save(this);
+	}
+
+	public Collection<Death> getDeaths()
+	{
+		return Collections2.transform(deaths, new Function<String, Death>()
+		{
+			@Override
+			public Death apply(@Nullable String s)
+			{
+				try
+				{
+					return Death.Util.load(UUID.fromString(s));
+				}
+				catch(Exception ignored)
+				{}
+				return null;
+			}
+		});
 	}
 
 	@Override
@@ -1057,8 +1093,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setHunger(20);
 			character.setExperience(0);
 			character.setLevel(0);
-			character.setKills(0);
-			character.setDeaths(0);
+			character.setKillCount(0);
+			character.setDeathCount(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta());
 			save(character);
@@ -1243,6 +1279,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
+		public static Collection<DCharacter> getOnlineCharactersBelowAscension(final int ascention)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
+				}
+			});
+		}
+
 		public static Collection<DCharacter> getOnlineCharacters()
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
@@ -1258,6 +1306,38 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
 			return Collections2.filter(loadAll(), predicate);
+		}
+
+		public static int getMedianOverallOnlineAscension()
+		{
+			return median(Ints.toArray(Collections2.transform(getOnlineCharacters(), new Function<DCharacter, Integer>()
+			{
+				@Override
+				public Integer apply(@Nullable DCharacter character)
+				{
+					return character.getMeta().getAscensions();
+				}
+			})));
+		}
+
+		public static int getMedianOverallAscension()
+		{
+			return median(Ints.toArray(Collections2.transform(loadAll(), new Function<DCharacter, Integer>()
+			{
+				@Override
+				public Integer apply(@Nullable DCharacter character)
+				{
+					return character.getMeta().getAscensions();
+				}
+			})));
+		}
+
+		private static int median(int[] i)
+		{
+			Arrays.sort(i);
+			int middle = i.length / 2;
+			if(i.length % 2 == 0) return (i[middle - 1] + i[middle]) / 2;
+			else return i[middle];
 		}
 	}
 }

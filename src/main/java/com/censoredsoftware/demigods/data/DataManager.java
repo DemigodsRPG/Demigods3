@@ -31,6 +31,7 @@ public class DataManager
 	private static Pet.File petsYAML;
 	private static Structure.Save.File structuresYAML;
 	private static Battle.File battlesYAML;
+	private static Death.File deathsYAML;
 	private static TimedData.File timedDataYAML;
 
 	// Data
@@ -46,6 +47,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
 	public static ConcurrentMap<UUID, Structure.Save> structures;
 	public static ConcurrentMap<UUID, Battle> battles;
+	public static ConcurrentMap<UUID, Death> deaths;
 	public static ConcurrentMap<UUID, TimedData> timedData;
 
 	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
@@ -64,6 +66,7 @@ public class DataManager
 		petsYAML = new Pet.File();
 		structuresYAML = new Structure.Save.File();
 		battlesYAML = new Battle.File();
+		deathsYAML = new Death.File();
 		timedDataYAML = new TimedData.File();
 
 		load();
@@ -85,6 +88,7 @@ public class DataManager
 		pets = petsYAML.loadFromFile();
 		structures = structuresYAML.loadFromFile();
 		battles = battlesYAML.loadFromFile();
+		deaths = deathsYAML.loadFromFile();
 		timedData = timedDataYAML.loadFromFile();
 	}
 
@@ -102,6 +106,7 @@ public class DataManager
 		petsYAML.saveToFile();
 		structuresYAML.saveToFile();
 		battlesYAML.saveToFile();
+		deathsYAML.saveToFile();
 		timedDataYAML.saveToFile();
 	}
 
@@ -124,6 +129,7 @@ public class DataManager
 		pets.clear();
 		structures.clear();
 		battles.clear();
+		deaths.clear();
 		timedData.clear();
 
 		tempData.clear();

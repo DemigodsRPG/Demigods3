@@ -496,7 +496,11 @@ public class Battle implements ConfigurationSerializable
 			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.addKill(damager);
-			battleDeath(damagee, battle);
+			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
+			damagee.getEntity().teleport(randomRespawnPoint(battle));
+			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath(damager.getRelatedCharacter());
+			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
+			battle.addDeath(damagee);
 		}
 
 		public static void battleDeath(Participant damagee, Battle battle)
@@ -519,7 +523,7 @@ public class Battle implements ConfigurationSerializable
 		 * @param participant the player to check.
 		 * @return true/false depending on if doTargeting is allowed.
 		 */
-		public static boolean canTarget(Participant participant)
+		public static boolean canTarget(Participant participant) // TODO REDO THIS
 		{
 			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || participant.getCurrentLocation() != null && !Structures.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
 		}
