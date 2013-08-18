@@ -500,7 +500,7 @@ public class Prayer implements ListedConversation
 			String[] splitMsg = message.split(" ");
 			DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
 			DCharacter character = DCharacter.Util.getCharacterByName(splitMsg[0]);
-			return message.equalsIgnoreCase("menu") || DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && (player.getCurrent() != null && !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
+			return message.equalsIgnoreCase("menu") || DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
 		}
 
 		@Override
@@ -547,10 +547,8 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "    Health: " + ChatColor.WHITE + Strings.getColor(character.getHealth(), 20) + character.getHealth() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Hunger: " + ChatColor.WHITE + Strings.getColor(character.getHunger(), 20) + character.getHunger() + ChatColor.GRAY + " (of " + ChatColor.GREEN + 20 + ChatColor.GRAY + ")" + ChatColor.GRAY + "  |  Exp: " + ChatColor.WHITE + Math.round(character.getExperience())); // TODO: Exp isn't correct.
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
-				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
-				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				if(character.isActive())
 				{
@@ -571,7 +569,7 @@ public class Prayer implements ListedConversation
 				DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
 				DCharacter character = DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString());
 
-				return message.equalsIgnoreCase("back") || (message.equalsIgnoreCase("switch") && !player.getCurrent().getName().equalsIgnoreCase(character.getName()));
+				return message.equalsIgnoreCase("back") || (message.equalsIgnoreCase("switch") && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
 			}
 
 			@Override
