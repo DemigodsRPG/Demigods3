@@ -7,11 +7,6 @@ public interface Trigger
 {
 	public boolean evaluate();
 
-	public static enum Flag
-	{
-		DIVINITY_UNBALANCED, NEW_PLAYER_NEEDS_HELP
-	}
-
 	public interface Process
 	{
 		public void sync();
