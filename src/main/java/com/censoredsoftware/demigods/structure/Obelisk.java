@@ -250,15 +250,12 @@ public class Obelisk implements Structure
 						location.getWorld().strikeLightningEffect(location);
 
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_OBELISK));
+						event.setCancelled(true);
 					}
 					catch(Exception e)
 					{
 						// Creation of shrine failed...
 						e.printStackTrace();
-					}
-					finally
-					{
-						event.setCancelled(true);
 					}
 				}
 			}

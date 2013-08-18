@@ -184,15 +184,12 @@ public class Shrine implements Structure
 
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
+						event.setCancelled(true);
 					}
 					catch(Exception e)
 					{
 						// Creation of shrine failed...
 						e.printStackTrace();
-					}
-					finally
-					{
-						event.setCancelled(true);
 					}
 				}
 			}
