@@ -10,7 +10,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.conversations.*;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.ValidatingPrompt;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -641,7 +644,7 @@ public class Prayer implements ListedConversation
 			return null;
 		}
 
-		static class ContinueForsaking extends MessagePrompt
+		static class ContinueForsaking extends ValidatingPrompt
 		{
 			@Override
 			public String getPromptText(ConversationContext context)
@@ -654,15 +657,19 @@ public class Prayer implements ListedConversation
 				Demigods.message.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
 				player.sendRawMessage(" ");
-				player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " requires that you bring the following");
-				player.sendRawMessage(ChatColor.GRAY + "  items before forsaking:");
+				player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " requires that you bring the following items");
+				player.sendRawMessage(ChatColor.GRAY + "  before forsaking:");
 				player.sendRawMessage(" ");
 				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 				{
-					player.sendRawMessage("    " + ChatColor.GRAY + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + " " + entry.getKey().name().toLowerCase().replace("_", " ") + (entry.getValue() > 1 ? "s" : ""));
 				}
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items return to an Altar to finish forsaking.");
+				player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items return to an Altar to finish");
+				player.sendRawMessage(ChatColor.GRAY + "  forsaking.");
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
+				player.sendRawMessage(" ");
 
 				// Save temporary data, end the conversation, and return
 				DataManager.saveTimed(player.getName(), "forsaking_deity", true, 600);
@@ -671,7 +678,13 @@ public class Prayer implements ListedConversation
 			}
 
 			@Override
-			protected Prompt getNextPrompt(ConversationContext context)
+			protected boolean isInputValid(ConversationContext context, String string)
+			{
+				return false;
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String string)
 			{
 				return null;
 			}
@@ -710,7 +723,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 			{
-				player.sendRawMessage("    " + ChatColor.GRAY + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
 			}
 
 			return "";
@@ -952,7 +965,7 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(" ");
 					for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
 					{
-						player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 					}
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
@@ -1007,7 +1020,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + item.name());
 			}
 			return "";
 		}
