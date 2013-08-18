@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.trigger.fair;
+package com.censoredsoftware.demigods.trigger.balance;
 
 import com.censoredsoftware.demigods.trigger.Trigger;
 
