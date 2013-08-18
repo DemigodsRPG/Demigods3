@@ -1,19 +1,10 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,10 +27,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -56,18 +57,18 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE(0, new ConfirmForsake()), CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), FORSAKE_CHARACTER(4, new ForsakeCurrentDeity()), VIEW_NOTIFICATIONS(5, new ViewNotifications());
+		CONFIRM_FORSAKE('F', new ConfirmForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new ForsakeCurrentDeity()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
 
-		private final Integer id;
+		private final char id;
 		private final Elements.Conversations.Category category;
 
-		private Menu(int id, Elements.Conversations.Category category)
+		private Menu(char id, Elements.Conversations.Category category)
 		{
 			this.id = id;
 			this.category = category;
 		}
 
-		public Integer getId()
+		public char getId()
 		{
 			return this.id;
 		}
@@ -77,11 +78,11 @@ public class Prayer implements ListedConversation
 			return this.category;
 		}
 
-		public static Menu getFromId(int id)
+		public static Menu getFromId(char id)
 		{
 			for(Menu menu : Menu.values())
 			{
-				if(menu.getId().equals(id)) return menu;
+				if(menu.getId() == id) return menu;
 			}
 			return null;
 		}
@@ -162,7 +163,7 @@ public class Prayer implements ListedConversation
 		{
 			try
 			{
-				return Menu.getFromId(Integer.parseInt(message)) != null && Menu.getFromId(Integer.parseInt(message)).getCategory().canUse(context);
+				return Menu.getFromId(message.charAt(0)) != null && Menu.getFromId(message.charAt(0)).getCategory().canUse(context);
 			}
 			catch(Exception ignored)
 			{}
@@ -172,7 +173,7 @@ public class Prayer implements ListedConversation
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			return Menu.getFromId(Integer.parseInt(message)).getCategory();
+			return Menu.getFromId(message.charAt(0)).getCategory();
 		}
 	}
 
@@ -702,7 +703,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + " " + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + StringUtils.capitalize(entry.getKey().name().toLowerCase().replace("_", " ")) + (entry.getValue() > 1 ? "s" : ""));
 			}
 
 			return "";
@@ -883,15 +884,15 @@ public class Prayer implements ListedConversation
 
 				Demigods.message.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
-				context.getForWhom().sendRawMessage(" ");
-
+				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
+				player.sendRawMessage(" ");
 
 				for(String alliance : Deity.Util.getLoadedDeityAlliances())
 				{
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
 					{
-						if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "  " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " (" + alliance + ")");
+						if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " (" + alliance + ")");
 					}
 				}
 
