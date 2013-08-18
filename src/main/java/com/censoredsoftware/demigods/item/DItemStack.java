@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.player;
+package com.censoredsoftware.demigods.item;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
