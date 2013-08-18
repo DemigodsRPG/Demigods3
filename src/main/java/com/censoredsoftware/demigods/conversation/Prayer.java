@@ -1162,19 +1162,8 @@ public class Prayer implements ListedConversation
 				int items = 0;
 				int neededItems = deity.getForsakeItems().size();
 
-				for(ItemStack item : event.getInventory().getContents())
-				{
-					if(item != null)
-					{
-						for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-						{
-							if(item.getType().equals(entry.getKey()) && event.getInventory().containsAtLeast(item, entry.getValue())) // TODO: Make this work with non-stackable items (e.g. water buckets)
-							{
-								items++;
-							}
-						}
-					}
-				}
+				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
+					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
 
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false);
