@@ -24,6 +24,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
@@ -55,7 +57,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE(0, new ConfirmForsake()), CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), VIEW_NOTIFICATIONS(4, new ViewNotifications()), FORSAKE_CHARACTER(5, new ForsakeCurrentDeity());
+		CONFIRM_FORSAKE(0, new ConfirmForsake()), CONFIRM_CHARACTER(0, new ConfirmCharacter()), CREATE_CHARACTER(1, new CreateCharacter()), VIEW_CHARACTERS(2, new ViewCharacters()), VIEW_WARPS(3, new ViewWarps()), FORSAKE_CHARACTER(4, new ForsakeCurrentDeity()), VIEW_NOTIFICATIONS(5, new ViewNotifications());
 
 		private final Integer id;
 		private final Elements.Conversations.Category category;
@@ -601,7 +603,7 @@ public class Prayer implements ListedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating");
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -665,14 +667,13 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + entry.getValue() + " " + entry.getKey().name().toLowerCase().replace("_", " ") + (entry.getValue() > 1 ? "s" : ""));
 				}
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items return to an Altar to finish");
+				player.sendRawMessage(ChatColor.GRAY + "  Return to an Altar after obtaining these items to finish");
 				player.sendRawMessage(ChatColor.GRAY + "  forsaking.");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
-				player.sendRawMessage(" ");
 
 				// Save temporary data, end the conversation, and return
-				DataManager.saveTimed(player.getName(), "forsaking_deity", true, 600);
+				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false);
 				return "";
 			}
@@ -703,7 +704,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "forsaking_deity");
+			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -760,7 +761,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -781,7 +782,7 @@ public class Prayer implements ListedConversation
 		{
 			if(message.contains("y"))
 			{
-				context.setSessionData("currently_creating", true);
+				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_creating", true);
 				return new ChooseName();
 			}
 			return new StartPrayer();
@@ -975,7 +976,7 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the conversation, and return
-					DataManager.saveTimed(player.getName(), "confirming_deity", true, 600);
+					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false);
 					return null;
 				}
@@ -1000,7 +1001,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "confirming_deity");
+			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating");
 		}
 
 		@Override
@@ -1140,6 +1141,7 @@ public class Prayer implements ListedConversation
 
 					// Remove temp data
 					DataManager.removeTemp(player.getName(), "currently_creating");
+					DataManager.removeTimed(player.getName(), "currently_creating");
 
 					// Clear the prayer session
 					DPlayer.Util.clearPrayerSession(player);
@@ -1208,8 +1210,13 @@ public class Prayer implements ListedConversation
 					character.remove();
 					player.sendMessage(ChatColor.GREEN + "Forsaking accepted! You are now free from the will of " + deity.getName() + ".");
 
+					// Add potion effects for fun
+					PotionEffect potion = new PotionEffect(PotionEffectType.WEAKNESS, 60, 2);
+					player.addPotionEffect(potion);
+
 					// Remove temp
 					DataManager.removeTemp(player.getName(), "currently_forsaking");
+					DataManager.removeTimed(player.getName(), "currently_forsaking");
 
 					// Clear the prayer session
 					DPlayer.Util.clearPrayerSession(player);

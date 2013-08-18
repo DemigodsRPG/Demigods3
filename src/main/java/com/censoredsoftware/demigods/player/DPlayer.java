@@ -77,6 +77,12 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		this.current = null;
 		this.currentDeityName = null;
+
+		if(getOfflinePlayer().isOnline())
+		{
+			getOfflinePlayer().getPlayer().setDisplayName(getOfflinePlayer().getName());
+			getOfflinePlayer().getPlayer().setMaxHealth(20.0);
+		}
 	}
 
 	public void setCanPvp(boolean pvp)
