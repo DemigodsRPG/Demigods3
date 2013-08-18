@@ -660,6 +660,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "  forsaking.");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
+				player.sendRawMessage(" ");
 
 				// Save temporary data, end the conversation, and return
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
