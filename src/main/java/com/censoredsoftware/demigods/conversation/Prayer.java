@@ -682,7 +682,8 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			Player player = (Player) context.getForWhom();
+			return DataManager.hasKeyTemp(player.getName(), "currently_forsaking") && DataManager.hasTimed(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -979,7 +980,8 @@ public class Prayer implements ListedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating");
+			Player player = (Player) context.getForWhom();
+			return DataManager.hasKeyTemp(player.getName(), "currently_creating") && DataManager.hasTimed(player.getName(), "currently_creating");
 		}
 
 		@Override
