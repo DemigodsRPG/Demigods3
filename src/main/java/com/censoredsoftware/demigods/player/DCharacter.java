@@ -9,7 +9,6 @@ import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -1063,12 +1062,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				Player online = player.getOfflinePlayer().getPlayer();
 				online.setDisplayName(Deity.Util.getDeity(chosenDeity).getColor() + chosenName + ChatColor.WHITE);
 				online.setPlayerListName(Deity.Util.getDeity(chosenDeity).getColor() + chosenName + ChatColor.WHITE);
-
-				online.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", chosenDeity));
-				online.getWorld().strikeLightningEffect(online.getLocation());
-
-				for(int i = 0; i < 20; i++)
-					online.getWorld().spawn(online.getLocation(), ExperienceOrb.class);
 			}
 
 			// Switch to new character

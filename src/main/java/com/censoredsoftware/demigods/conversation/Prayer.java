@@ -15,6 +15,7 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.ValidatingPrompt;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -1119,6 +1120,13 @@ public class Prayer implements ListedConversation
 				{
 					// Accepted, finish everything up!
 					DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
+
+					// Message them and do cool things
+					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", Deity.Util.getDeity(chosenDeity).getName()));
+					player.getWorld().strikeLightningEffect(player.getLocation());
+
+					for(int i = 0; i < 20; i++)
+						player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
 
 					// Remove temp data
 					DataManager.removeTemp(player.getName(), "currently_creating");
