@@ -163,7 +163,8 @@ public class Prayer implements ListedConversation
 		{
 			try
 			{
-				return Menu.getFromId(message.charAt(0)) != null && Menu.getFromId(message.charAt(0)).getCategory().canUse(context);
+				Menu menu = Menu.getFromId(Character.toUpperCase(message.charAt(0)));
+				return menu != null && menu.getCategory().canUse(context);
 			}
 			catch(Exception ignored)
 			{}
@@ -173,7 +174,7 @@ public class Prayer implements ListedConversation
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			return Menu.getFromId(message.charAt(0)).getCategory();
+			return Menu.getFromId(Character.toUpperCase(message.charAt(0))).getCategory();
 		}
 	}
 
