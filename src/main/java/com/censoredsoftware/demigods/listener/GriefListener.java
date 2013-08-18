@@ -161,6 +161,20 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerInteract(final PlayerInteractEvent event)
+	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		Structure.Save save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Structures.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING) : Structures.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING);
+		if(save != null)
+		{
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
