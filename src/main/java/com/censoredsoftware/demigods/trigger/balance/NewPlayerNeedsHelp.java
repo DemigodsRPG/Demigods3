@@ -1,9 +1,11 @@
 package com.censoredsoftware.demigods.trigger.balance;
 
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
 import com.censoredsoftware.demigods.trigger.Trigger;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 
 import javax.annotation.Nullable;
@@ -25,7 +27,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(@Nullable DCharacter character)
 			{
-				return Death.Util.getRecentDeaths(character, 600).size() >= 20;
+				return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 			}
 		});
 	}
@@ -33,10 +35,21 @@ public class NewPlayerNeedsHelp implements Trigger
 	public class Process implements Trigger.Process
 	{
 		@Override
-		public void sync()
+		public void sync() // TODO Balance this.
 		{
 			if(!evaluate()) return;
-			// TODO Baetylus shards.
+			for(DCharacter character : Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(@Nullable DCharacter character)
+				{
+					return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
+				}
+			}))
+			{
+				// TODO Baetylus shards.
+				DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, 600);
+			}
 		}
 
 		@Override
