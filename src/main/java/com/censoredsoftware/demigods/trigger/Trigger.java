@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.trigger;
 
-import com.censoredsoftware.demigods.trigger.Balance.DivinityUnbalanced;
-import com.censoredsoftware.demigods.trigger.Balance.NewPlayerNeedsHelp;
+import com.censoredsoftware.demigods.trigger.fair.DivinityUnbalanced;
+import com.censoredsoftware.demigods.trigger.fair.NewPlayerNeedsHelp;
 
 public interface Trigger
 {

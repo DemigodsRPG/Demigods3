@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.trigger.Balance;
+package com.censoredsoftware.demigods.trigger.fair;
 
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
