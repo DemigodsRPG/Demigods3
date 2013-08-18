@@ -117,7 +117,9 @@ public class GriefListener implements Listener
 	public void onLiquidMove(BlockFromToEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		boolean toBlock = Structures.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		if(block != toBlock) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
