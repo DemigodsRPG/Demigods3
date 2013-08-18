@@ -107,7 +107,7 @@ public class GeneralCommands extends ListedCommand
 			for(String stringBind : character.getMeta().getBinds())
 			{
 				Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
-				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + bind.getRawItem().getType().name().replace("_", " ").toLowerCase() + ChatColor.GRAY + ".");
+				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(bind.getRawItem().getType().name()).toLowerCase() + ChatColor.GRAY + ".");
 			}
 
 			player.sendMessage(" ");

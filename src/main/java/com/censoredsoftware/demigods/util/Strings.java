@@ -46,7 +46,6 @@ public class Strings
 	 * 
 	 * @param string the string to check.
 	 * @param max the maximum allowed capital letters.
-	 * @return Boolean
 	 */
 	public static boolean hasCapitalLetters(String string, int max)
 	{
@@ -71,7 +70,6 @@ public class Strings
 	 * 
 	 * @param value the actual value.
 	 * @param max the maximum value possible.
-	 * @return ChatColor
 	 */
 	public static ChatColor getColor(double value, double max)
 	{
@@ -80,5 +78,15 @@ public class Strings
 		else if(value < Math.ceil(0.66 * max) && value > Math.ceil(0.33 * max)) color = ChatColor.YELLOW;
 		if(value > Math.ceil(0.66 * max)) color = ChatColor.GREEN;
 		return color;
+	}
+
+	/**
+	 * Automatically removes underscores and returns a capitalized version of the given <code>string</code>.
+	 * 
+	 * @param string the string the beautify.
+	 */
+	public static String beautify(String string) // TODO: Come up with a better name.
+	{
+		return StringUtils.capitalize(string.toLowerCase().replace("_", " "));
 	}
 }
