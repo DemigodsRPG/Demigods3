@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -204,11 +205,14 @@ public class Obelisk implements Structure
 
 	public static boolean noPvPStructureNearby(Location location)
 	{
-		for(Save structureSave : Structures.loadAll())
+		return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Save>()
 		{
-			if(structureSave.getStructure().getFlags().contains(Flag.NO_PVP) && structureSave.getReferenceLocation().distance(location) <= (Demigods.config.getSettingInt("altar_radius") + Demigods.config.getSettingInt("obelisk_radius") + 6)) return true;
-		}
-		return false;
+			@Override
+			public boolean apply(@Nullable Save save)
+			{
+				return save.getRawFlags().contains(Flag.NO_PVP.name());
+			}
+		});
 	}
 
 	public static class Listener implements org.bukkit.event.Listener
