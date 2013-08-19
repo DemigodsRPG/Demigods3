@@ -22,7 +22,7 @@ public class OmegaX17 implements Deity
 {
 	private final static String name = "OmegaX17", alliance = "Insignian", permission = "demigods.insignian.omega";
 	private final static ChatColor color = ChatColor.BLACK;
-	private final static Set<Material> claimItems = Sets.newHashSet(Material.TNT);
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.TNT, 3));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT_AND_STEEL, 6));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
@@ -33,8 +33,8 @@ public class OmegaX17 implements Deity
 			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
-			for(Material item : claimItems)
-				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
+			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");
@@ -74,7 +74,7 @@ public class OmegaX17 implements Deity
 	}
 
 	@Override
-	public Set<Material> getClaimItems()
+	public Map<Material, Integer> getClaimItems()
 	{
 		return claimItems;
 	}

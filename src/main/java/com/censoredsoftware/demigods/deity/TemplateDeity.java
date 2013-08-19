@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
+import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -20,7 +21,7 @@ public class TemplateDeity implements Deity
 {
 	private final static String name = "Template", alliance = "Test", permission = "demigods.test.test";
 	private final static ChatColor color = ChatColor.GRAY;
-	private final static Set<Material> claimItems = Sets.newHashSet(Material.BEDROCK);
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
@@ -29,8 +30,8 @@ public class TemplateDeity implements Deity
 			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
 			add(ChatColor.RESET + "-----------------------------------------------------");
 			add(ChatColor.YELLOW + " Claim Items:");
-			for(Material item : claimItems)
-				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(ChatColor.YELLOW + " Abilities:");
 		}
 	};
@@ -68,7 +69,7 @@ public class TemplateDeity implements Deity
 	}
 
 	@Override
-	public Set<Material> getClaimItems()
+	public Map<Material, Integer> getClaimItems()
 	{
 		return claimItems;
 	}

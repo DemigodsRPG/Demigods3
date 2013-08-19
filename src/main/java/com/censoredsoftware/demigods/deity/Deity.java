@@ -26,7 +26,7 @@ public interface Deity
 
 	public ChatColor getColor();
 
-	public Set<Material> getClaimItems();
+	public Map<Material, Integer> getClaimItems();
 
 	public Map<Material, Integer> getForsakeItems();
 

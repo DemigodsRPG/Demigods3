@@ -24,7 +24,7 @@ public class Zeus implements Deity
 {
 	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
 	private final static ChatColor color = ChatColor.YELLOW;
-	private final static Set<Material> claimItems = Sets.newHashSet(Material.FEATHER);
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 10));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
@@ -35,8 +35,8 @@ public class Zeus implements Deity
 			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
-			for(Material item : claimItems)
-				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
+			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");
@@ -76,7 +76,7 @@ public class Zeus implements Deity
 	}
 
 	@Override
-	public Set<Material> getClaimItems()
+	public Map<Material, Integer> getClaimItems()
 	{
 		return claimItems;
 	}
