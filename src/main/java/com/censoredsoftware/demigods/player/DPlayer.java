@@ -1,5 +1,21 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.Nullable;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -13,20 +29,6 @@ import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -443,30 +445,18 @@ public class DPlayer implements ConfigurationSerializable
 			if(option)
 			{
 				// Toggle on
-				togglePrayingSilent(player, true);
+				togglePrayingSilent(player, true, true);
 
-				// Record chat
-				chatRecording = ChatRecorder.Util.startRecording(player);
 			}
 			else
 			{
 				// Toggle off
-				togglePrayingSilent(player, false);
+				togglePrayingSilent(player, false, true);
 
 				// Message them
 				Demigods.message.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
-
-				// Send held back chat
-				List<String> messages = chatRecording.stop();
-				if(messages.size() > 0)
-				{
-					player.sendMessage(" ");
-					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
-					for(String message : messages)
-						player.sendMessage(message);
-				}
 			}
 		}
 
@@ -475,8 +465,9 @@ public class DPlayer implements ConfigurationSerializable
 		 * 
 		 * @param player the player the manipulate.
 		 * @param option the boolean to set to.
+		 * @param recordChat whether or not the chat should be recorded.
 		 */
-		public static void togglePrayingSilent(Player player, boolean option)
+		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)
 		{
 			if(option)
 			{
@@ -485,6 +476,12 @@ public class DPlayer implements ConfigurationSerializable
 				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
 				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
 				player.setSneaking(true);
+
+				// Record chat if enabled
+				if(recordChat)
+				{
+					chatRecording = ChatRecorder.Util.startRecording(player);
+				}
 			}
 			else
 			{
@@ -500,6 +497,20 @@ public class DPlayer implements ConfigurationSerializable
 				DataManager.removeTemp(player.getName(), "prayer_conversation");
 				DataManager.removeTemp(player.getName(), "prayer_location");
 				player.setSneaking(false);
+
+				// Handle recorded chat
+				if(recordChat)
+				{
+					// Send held back chat
+					List<String> messages = chatRecording.stop();
+					if(messages.size() > 0)
+					{
+						player.sendMessage(" ");
+						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+						for(String message : messages)
+							player.sendMessage(message);
+					}
+				}
 			}
 		}
 

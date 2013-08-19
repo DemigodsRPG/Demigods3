@@ -342,7 +342,7 @@ public class Prayer implements ListedConversation
 			else if(arg0.equalsIgnoreCase("warp"))
 			{
 				// Disable prayer
-				DPlayer.Util.togglePrayingSilent(player, false);
+				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Teleport and message
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
@@ -666,7 +666,7 @@ public class Prayer implements ListedConversation
 
 				// Save temporary data, end the conversation, and return
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
-				DPlayer.Util.togglePrayingSilent(player, false);
+				DPlayer.Util.togglePrayingSilent(player, false, true);
 			}
 			return null;
 		}
@@ -958,7 +958,7 @@ public class Prayer implements ListedConversation
 
 					// Save temporary data, end the conversation, and return
 					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
-					DPlayer.Util.togglePrayingSilent(player, false);
+					DPlayer.Util.togglePrayingSilent(player, false, true);
 					return null;
 				}
 				else
@@ -1110,7 +1110,7 @@ public class Prayer implements ListedConversation
 				}
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false);
+				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Clear chat and send update
 				Demigods.message.clearRawChat(player);
@@ -1176,7 +1176,7 @@ public class Prayer implements ListedConversation
 					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false);
+				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Clear chat and send update
 				Demigods.message.clearRawChat(player);
