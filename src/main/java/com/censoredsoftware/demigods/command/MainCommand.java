@@ -204,12 +204,13 @@ public class MainCommand extends ListedCommand
 										{
 											for(String detail : ability.getDetails())
 											{
-												StringBuilder details = new StringBuilder(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " ");
+												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " ");
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
 												add(details.toString());
 											}
 										}
+										add(" ");
 									}
 								})
 								{
@@ -219,8 +220,7 @@ public class MainCommand extends ListedCommand
 							}
 							catch(Exception e)
 							{
-								player.sendMessage(ChatColor.RED + "(ERR: 3001)  Please report this immediately.");
-								e.printStackTrace(); // DEBUG
+								e.printStackTrace();
 								return true;
 							}
 						}

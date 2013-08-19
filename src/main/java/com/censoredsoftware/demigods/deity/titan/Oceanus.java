@@ -12,6 +12,7 @@ import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -27,12 +28,16 @@ public class Oceanus implements Deity
 	{
 		{
 			add(" ");
-			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
+			add(ChatColor.RED + " Demigods > " + ChatColor.RESET + color + name);
 			add(ChatColor.RESET + "-----------------------------------------------------");
+			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
+			add(" ");
 			for(Material item : claimItems)
-				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
+			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
+			add(" ");
 		}
 	};
 	private final static Type type = Type.TIER1;
