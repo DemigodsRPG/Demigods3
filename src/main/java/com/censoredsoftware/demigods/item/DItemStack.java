@@ -1,25 +1,26 @@
 package com.censoredsoftware.demigods.item;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.google.common.collect.Maps;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DItemStack implements ConfigurationSerializable
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.*;
+
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.google.common.collect.Maps;
+
+public class DItemStack implements ConfigurationSerializable // TODO: This whole thing could be swapped out with automated JSON serialization. I just need to learn how. Also this doesn't save firework meta and I doubt I add it. I'll switch it to JSON before going through all of that.
 {
 	private UUID id;
 	private int typeId;
@@ -27,12 +28,15 @@ public class DItemStack implements ConfigurationSerializable
 	private int amount;
 	private short durability;
 	private Map<String, Object> enchantments; // Format: Map<ENCHANTMENT_ID, LEVEL>
+	private Map<String, Object> storedEnchantments; // Format: Map<ENCHANTMENT_ID, LEVEL>
 	private String name;
 	private List<String> lore;
 	private String author;
 	private String title;
 	private List<String> pages;
-	private int type;
+	private String type;
+	private String skullOwner;
+	private int leatherColor;
 
 	public DItemStack()
 	{}
@@ -40,17 +44,20 @@ public class DItemStack implements ConfigurationSerializable
 	public DItemStack(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
+		type = conf.getString("type");
 		typeId = conf.getInt("typeId");
 		byteId = (byte) conf.getInt("byteId");
 		amount = conf.getInt("amount");
 		durability = (short) conf.getInt("durability");
 		if(conf.getConfigurationSection("enchantments") != null) enchantments = conf.getConfigurationSection("enchantments").getValues(false);
+		if(conf.getConfigurationSection("storedEnchantments") != null) storedEnchantments = conf.getConfigurationSection("storedEnchantments").getValues(false);
 		if(conf.getString("name") != null) name = conf.getString("name");
 		if(conf.getString("lore") != null) lore = conf.getStringList("lore");
 		if(conf.getString("author") != null) author = conf.getString("author");
 		if(conf.getString("title") != null) title = conf.getString("title");
 		if(conf.getStringList("pages") != null) pages = conf.getStringList("pages");
-		type = conf.getInt("type");
+		if(conf.getString("skullOwner") != null) skullOwner = conf.getString("skullOwner");
+		leatherColor = conf.getInt("leatherColor");
 	}
 
 	@Override
@@ -59,16 +66,28 @@ public class DItemStack implements ConfigurationSerializable
 		return new HashMap<String, Object>()
 		{
 			{
+				// Standard
+				put("type", type);
 				put("typeId", typeId);
 				put("byteId", (int) byteId);
 				put("amount", amount);
 				put("durability", (int) durability);
-				if(enchantments != null) put("enchantmetns", enchantments);
+				if(enchantments != null) put("enchantments", enchantments);
 				if(lore != null) put("lore", lore);
+
+				// Book
 				if(author != null) put("author", author);
 				if(title != null) put("title", title);
 				if(pages != null) put("pages", pages);
-				put("type", type);
+
+				// Skull
+				if(skullOwner != null) put("skullOwner", skullOwner);
+
+				// Leather
+				if(leatherColor != 0) put("leatherColor", leatherColor);
+
+				// Enchanted book
+				if(storedEnchantments != null) put("storedEnchantments", storedEnchantments);
 			}
 		};
 	}
@@ -80,7 +99,7 @@ public class DItemStack implements ConfigurationSerializable
 
 	void setType(ItemType type)
 	{
-		this.type = type.getId();
+		this.type = type.name();
 	}
 
 	void setTypeId(int typeId)
@@ -134,21 +153,75 @@ public class DItemStack implements ConfigurationSerializable
 		if(item.getType().equals(Material.WRITTEN_BOOK))
 		{
 			// Save the type as book
-			this.type = ItemType.WRITTEN_BOOK.getId();
+			type = ItemType.WRITTEN_BOOK.name();
 
 			// Define the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
 
 			// Save the book meta
-			this.title = bookMeta.getTitle();
-			this.author = bookMeta.getAuthor();
-			this.pages = bookMeta.getPages();
+			title = bookMeta.getTitle();
+			author = bookMeta.getAuthor();
+			pages = bookMeta.getPages();
+		}
+	}
+
+	void setLeatherMeta(ItemStack item)
+	{
+		// If it's leather armor then save the color information
+		if(item.getType().equals(Material.LEATHER_HELMET) || item.getType().equals(Material.LEATHER_CHESTPLATE) || item.getType().equals(Material.LEATHER_LEGGINGS) || item.getType().equals(Material.LEATHER_BOOTS))
+		{
+			// Save the type as leather armor
+			type = ItemType.LEATHER_ARMOR.name();
+
+			// Define the book meta
+			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
+
+			// Save the meta
+			leatherColor = leatherMeta.getColor().asRGB();
+		}
+	}
+
+	void setSkullMeta(ItemStack item)
+	{
+		// If it's leather armor then save the color information
+		if(item.getType().equals(Material.SKULL) || item.getType().equals(Material.SKULL_ITEM))
+		{
+			// Save the type as a skull
+			type = ItemType.SKULL.name();
+
+			// Define the book meta
+			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+
+			// Save the meta
+			skullOwner = skullMeta.getOwner();
+		}
+	}
+
+	void setStoredEnchantments(ItemStack item)
+	{
+		// If it's leather armor then save the color information
+		if(item.getType().equals(Material.ENCHANTED_BOOK))
+		{
+			// Save the type as a skull
+			type = ItemType.ENCHANTED_BOOK.name();
+
+			// Define the book meta
+			EnchantmentStorageMeta enchantmentMeta = (EnchantmentStorageMeta) item.getItemMeta();
+
+			// Save the meta
+			if(enchantmentMeta.hasStoredEnchants())
+			{
+				for(Map.Entry<Enchantment, Integer> ench : enchantmentMeta.getStoredEnchants().entrySet())
+				{
+					storedEnchantments.put(String.valueOf(ench.getKey().getId()), ench.getValue());
+				}
+			}
 		}
 	}
 
 	public UUID getId()
 	{
-		return this.id;
+		return id;
 	}
 
 	/**
@@ -184,8 +257,7 @@ public class DItemStack implements ConfigurationSerializable
 			}
 		}
 
-		// If it's a book, apply the information
-		if(type == ItemType.WRITTEN_BOOK.getId())
+		if(ItemType.valueOf(type).equals(ItemType.WRITTEN_BOOK)) // If it's a book, apply the information
 		{
 			// Get the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
@@ -195,6 +267,37 @@ public class DItemStack implements ConfigurationSerializable
 			bookMeta.setPages(this.pages);
 
 			item.setItemMeta(bookMeta);
+		}
+		else if(ItemType.valueOf(type).equals(ItemType.SKULL)) // If it's a skull, apply the data
+		{
+			// Get the skull meta
+			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+
+			skullMeta.setOwner(skullOwner);
+
+			item.setItemMeta(skullMeta);
+		}
+		else if(ItemType.valueOf(type).equals(ItemType.LEATHER_ARMOR)) // If it's leather, apply the color
+		{
+			// Get the skull meta
+			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
+
+			leatherMeta.setColor(Color.fromRGB(leatherColor));
+
+			item.setItemMeta(leatherMeta);
+		}
+		else if(ItemType.valueOf(type).equals(ItemType.LEATHER_ARMOR)) // If it's an enchanted book, store the enchants
+		{
+			// Define the book meta
+			EnchantmentStorageMeta enchantmentMeta = (EnchantmentStorageMeta) item.getItemMeta();
+
+			// Save the meta
+			for(Map.Entry<String, Object> ench : this.storedEnchantments.entrySet())
+			{
+				enchantmentMeta.addStoredEnchant(Enchantment.getById(Integer.parseInt(ench.getKey())), Integer.parseInt(ench.getValue().toString()), true);
+			}
+
+			item.setItemMeta(enchantmentMeta);
 		}
 
 		// Return that sucka
@@ -273,7 +376,9 @@ public class DItemStack implements ConfigurationSerializable
 			}
 			trackedItem.setEnchantments(item);
 			trackedItem.setBookMeta(item);
-
+			trackedItem.setLeatherMeta(item);
+			trackedItem.setSkullMeta(item);
+			trackedItem.setStoredEnchantments(item);
 			save(trackedItem);
 			return trackedItem;
 		}
@@ -284,18 +389,6 @@ public class DItemStack implements ConfigurationSerializable
 	 */
 	public static enum ItemType
 	{
-		STANDARD(0), WRITTEN_BOOK(1);
-
-		private final int id;
-
-		private ItemType(int id)
-		{
-			this.id = id;
-		}
-
-		public int getId()
-		{
-			return this.id;
-		}
+		WRITTEN_BOOK, LEATHER_ARMOR, SKULL, ENCHANTED_BOOK;
 	}
 }
