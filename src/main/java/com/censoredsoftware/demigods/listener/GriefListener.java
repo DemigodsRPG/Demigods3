@@ -147,7 +147,7 @@ public class GriefListener implements Listener
 			}
 		});
 		Demigods.message.broadcast("PISTON:" + piston + ", BLOCKS:" + blocks); // TODO DEBUG MESSAGE
-		if(piston && !blocks || !piston && blocks) event.setCancelled(true);
+		if(piston == blocks) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -156,7 +156,7 @@ public class GriefListener implements Listener
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		boolean retract = Structures.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING);
-		if(block && !retract || !block && retract) event.setCancelled(true);
+		if(block != retract) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
