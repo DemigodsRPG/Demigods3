@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -130,14 +131,23 @@ public class GriefListener implements Listener
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
-		boolean in = false;
-		boolean out = false;
-		for(Block block : event.getBlocks())
+		boolean in = Iterables.any(event.getBlocks(), new Predicate<Block>()
 		{
-			if(Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING)) in = true;
-			else out = true;
-		}
-		if(in != out) event.setCancelled(true);
+			@Override
+			public boolean apply(@Nullable Block block)
+			{
+				return Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+			}
+		});
+		boolean out = Iterables.any(event.getBlocks(), new Predicate<Block>()
+		{
+			@Override
+			public boolean apply(@Nullable Block block)
+			{
+				return !Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+			}
+		});
+		if(in && out) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -146,7 +156,7 @@ public class GriefListener implements Listener
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
 		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		boolean retract = Structures.isInRadiusWithFlag(event.getRetractLocation(), Structure.Flag.NO_GRIEFING);
-		if(block != retract) event.setCancelled(true);
+		if(block && !retract || !block && retract) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
