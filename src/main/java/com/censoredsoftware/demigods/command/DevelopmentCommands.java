@@ -1,14 +1,11 @@
 package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
-import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Errors;
-import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -29,18 +26,16 @@ public class DevelopmentCommands extends ListedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "makecharacters", "removechar");
+		return Sets.newHashSet("test1", "test2", "test3", "hspawn");
 	}
 
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		if(command.getName().equalsIgnoreCase("removechar")) return removeChar(sender, args);
-		else if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
+		if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
-		else if(command.getName().equalsIgnoreCase("makecharacters")) return makeCharacters(sender, args);
 		return false;
 	}
 
@@ -105,59 +100,6 @@ public class DevelopmentCommands extends ListedCommand
 			horse.setPassenger(player);
 			player.sendMessage(ChatColor.YELLOW + "Teleported to spawn...");
 		}
-
-		return true;
-	}
-
-	private static boolean makeCharacters(CommandSender sender, final String[] args)
-	{
-		DPlayer player = DPlayer.Util.getPlayer((Player) sender);
-
-		if(args.length != 1 || !isInt(args[0])) return false;
-
-		for(int i = 0; i < Integer.parseInt(args[0]); i++)
-			DCharacter.Util.create(player, Randoms.generateString(7), Elements.Deities.values()[Randoms.generateIntRange(0, 5)].getName());
-
-		sender.sendMessage(args[0] + " characters created.");
-
-		return true;
-	}
-
-	/**
-	 * Check to see if an input string is a float.
-	 * 
-	 * @param string The input string.
-	 * @return True if the string is a float.
-	 */
-	private static boolean isInt(String string)
-	{
-		try
-		{
-			Integer.parseInt(string);
-			return true;
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
-	}
-
-	private static boolean removeChar(CommandSender sender, String[] args)
-	{
-		if(args.length != 1) return false;
-
-		// Define args
-		Player player = Bukkit.getOfflinePlayer(sender.getName()).getPlayer();
-		String charName = args[0];
-
-		if(DPlayer.Util.hasCharName(player, charName))
-		{
-			DCharacter character = DCharacter.Util.getCharacterByName(charName);
-			character.remove();
-
-			sender.sendMessage(ChatColor.RED + "Character removed!");
-		}
-		else sender.sendMessage(ChatColor.RED + "There was an error while removing your character.");
 
 		return true;
 	}

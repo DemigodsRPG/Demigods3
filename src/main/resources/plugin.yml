@@ -17,9 +17,6 @@ commands:
     owner:
         usage: /owner <character>
         permission: demigods.basic
-    removechar:
-        usage: /removechar <name>
-        permission: demigods.basic
     test1:
         usage: /test1
         permission: demigods.admin
@@ -31,8 +28,6 @@ commands:
         permission: demigods.admin
     hspawn:
         usage: /hspawn
-    makecharacters:
-        usage: /makecharacters <howmany>
     binds:
         usage: /binds
         permission: demigods.basic
