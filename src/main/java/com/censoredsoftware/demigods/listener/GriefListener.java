@@ -8,10 +8,13 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
@@ -20,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -175,14 +179,36 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityExplode(final EntityExplodeEvent event)
+	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
-		if(Structures.isInRadiusWithFlag(event.getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
+		if(Iterables.any(event.blockList(), new Predicate<Block>()
+		{
+			@Override
+			public boolean apply(Block block)
+			{
+				return Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+			}
+		})) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onAttemptInventoryOpen(PlayerInteractEvent event) // TODO Fix horse inventories.
+	public void onAttemptInteractEntity(PlayerInteractEntityEvent event)
+	{
+		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		Entity entity = event.getRightClicked();
+		Structure.Save save = Structures.getInRadiusWithFlag(entity.getLocation(), Structure.Flag.NO_GRIEFING);
+		if(save != null)
+		{
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter owner = save.getOwner();
+			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onAttemptInventoryOpen(PlayerInteractEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
