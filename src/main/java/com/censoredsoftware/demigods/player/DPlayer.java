@@ -183,6 +183,9 @@ public class DPlayer implements ConfigurationSerializable
 		newChar.setActive(true);
 		this.current = newChar.getId();
 
+		// Set new deity
+		currentDeityName = newChar.getDeity().getName();
+
 		// Update their inventory
 		if(getCharacters().size() == 1) newChar.saveInventory();
 		newChar.getInventory().setToPlayer(player);
@@ -197,7 +200,6 @@ public class DPlayer implements ConfigurationSerializable
 		catch(Exception e)
 		{
 			Demigods.message.warning("Character name too long.");
-			e.printStackTrace();
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
@@ -207,9 +209,6 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
-
-		// Set new deity
-		currentDeityName = newChar.getDeity().getName();
 
 		// Teleport them
 		try
