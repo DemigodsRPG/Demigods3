@@ -146,8 +146,7 @@ public class GriefListener implements Listener
 				return Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}
 		});
-		Demigods.message.broadcast("PISTON:" + piston + ", BLOCKS:" + blocks); // TODO DEBUG MESSAGE
-		if(piston == (piston ? blocks : !blocks)) event.setCancelled(true);
+		if(piston == (piston ? blocks : !blocks)) event.setCancelled(true); // Am I overthinking this?
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
