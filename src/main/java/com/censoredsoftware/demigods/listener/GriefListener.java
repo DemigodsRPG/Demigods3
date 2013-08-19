@@ -1,7 +1,5 @@
 package com.censoredsoftware.demigods.listener;
 
-// TODO Fix for lag.
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
@@ -50,7 +48,6 @@ public class GriefListener implements Listener
 	};
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO MINOR LAG - NOT SURE
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
@@ -100,7 +97,6 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO MINOR LAG
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
@@ -159,7 +155,6 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO MINOR LAG - NOT SURE
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
