@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.Nullable;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -32,6 +18,18 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -329,6 +327,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void addDeath()
 	{
 		this.deathCount += 1;
+		if(deaths == null) deaths = Sets.newHashSet();
 		deaths.add(new Death(this).getId().toString());
 		Util.save(this);
 	}
@@ -345,6 +344,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Collection<Death> getDeaths()
 	{
+		if(deaths == null) deaths = Sets.newHashSet();
 		return Collections2.transform(deaths, new Function<String, Death>()
 		{
 			@Override
