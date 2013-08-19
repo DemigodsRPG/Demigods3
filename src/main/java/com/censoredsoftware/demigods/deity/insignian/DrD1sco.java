@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -34,7 +35,7 @@ public class DrD1sco implements Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
 			for(Material item : claimItems)
-				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");
