@@ -130,7 +130,15 @@ public class GriefListener implements Listener
 	public void onPistonExtend(BlockPistonExtendEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
-		boolean in = Iterables.any(event.getBlocks(), new Predicate<Block>()
+		boolean piston = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		boolean blocks = Iterables.any(event.getBlocks(), piston ? new Predicate<Block>()
+		{
+			@Override
+			public boolean apply(Block block)
+			{
+				return !Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+			}
+		} : new Predicate<Block>()
 		{
 			@Override
 			public boolean apply(Block block)
@@ -138,16 +146,8 @@ public class GriefListener implements Listener
 				return Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}
 		});
-		boolean out = Iterables.any(event.getBlocks(), new Predicate<Block>()
-		{
-			@Override
-			public boolean apply(Block block)
-			{
-				return !Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
-			}
-		});
-		Demigods.message.broadcast("IN:" + in + ", OUT:" + out); // TODO DEBUG MESSAGE
-		if(in && out) event.setCancelled(true);
+		Demigods.message.broadcast("PISTON:" + piston + ", BLOCKS:" + blocks); // TODO DEBUG MESSAGE
+		if(piston && !blocks || !piston && blocks) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
