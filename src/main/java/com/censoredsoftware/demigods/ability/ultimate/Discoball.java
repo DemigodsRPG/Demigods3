@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Spigots;
-import com.censoredsoftware.demigods.util.Structures;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -273,7 +272,7 @@ public class Discoball implements Ability
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
 						if(Demigods.isDisabledWorld(player.getWorld())) return;
-						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Structures.isTrespassingInNoGriefingZone(player)) doEffect(player, true);
+						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Zones.zoneNoBuild(player, player.getLocation())) doEffect(player, true);
 						else doEffect(player, false);
 					}
 				}

@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -19,13 +20,7 @@ public class Zones
 	public static boolean zoneNoPVP(Location location)
 	{
 		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		if(Demigods.worldguard != null) return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || !canWorldGuardDynamicPVP(location);
-		return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
-	}
-
-	private static boolean canWorldGuardDynamicPVP(Location location)
-	{
-		return !Iterators.any(Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
+		if(Demigods.worldguard != null) return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || Iterators.any(Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
 		{
 			@Override
 			public boolean apply(ProtectedRegion region)
@@ -33,6 +28,7 @@ public class Zones
 				return region.getId().toLowerCase().contains("nopvp");
 			}
 		});
+		return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
 	}
 
 	/**
@@ -45,6 +41,9 @@ public class Zones
 	 */
 	public static boolean zoneNoBuild(Player player, Location location)
 	{
-		return !Demigods.worldguard.canBuild(player, location);
+		if(Demigods.worldguard != null && !Demigods.worldguard.canBuild(player, location)) return true;
+		Structure.Save save = Structures.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
+		if(save != null && save.getOwner() != null) return !save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
+		return false;
 	}
 }

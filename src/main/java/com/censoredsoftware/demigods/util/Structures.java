@@ -2,13 +2,11 @@ package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.Region;
-import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -132,15 +130,6 @@ public class Structures
 		catch(NoSuchElementException ignored)
 		{}
 		return null;
-	}
-
-	public static boolean isTrespassingInNoGriefingZone(Player player)
-	{
-		Location location = player.getLocation();
-		if(Zones.zoneNoBuild(player, location)) return true;
-		Structure.Save save = getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
-		if(save != null && save.getOwner() != null) return !save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
-		return false;
 	}
 
 	public static void regenerateStructures()
