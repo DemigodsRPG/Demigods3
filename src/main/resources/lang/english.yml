@@ -14,7 +14,7 @@ PRAYER_INTRO:
 PVP_NO_PRAYER:
   - '&7You cannot pray when PvP is still possible.'
   - '&7Wait a few moments and then try again when it's safe.'
-PRAYER_HELD_BACK_CHAT: '{size} messages were held back:'
+HELD_BACK_CHAT: '{size} messages were held back:'
 KNELT_FOR_PRAYER: '{player} has knelt to begin prayer.'
 UNSAFE_FROM_PVP: 'You can now PvP!'
 SAFE_FROM_PVP: 'You are now safe from PvP!'

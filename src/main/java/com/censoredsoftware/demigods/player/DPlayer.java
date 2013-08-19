@@ -446,13 +446,13 @@ public class DPlayer implements ConfigurationSerializable
 			}
 			else
 			{
+				// Toggle off
+				togglePrayingSilent(player, false, true);
+
 				// Message them
 				Demigods.message.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
-
-				// Toggle off
-				togglePrayingSilent(player, false, true);
 			}
 		}
 
@@ -486,7 +486,7 @@ public class DPlayer implements ConfigurationSerializable
 					if(messages.size() > 0)
 					{
 						player.sendMessage(" ");
-						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
 						for(String message : messages)
 							player.sendMessage(message);
 					}
