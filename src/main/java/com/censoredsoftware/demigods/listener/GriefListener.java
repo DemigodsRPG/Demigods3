@@ -147,7 +147,7 @@ public class GriefListener implements Listener
 			}
 		});
 		Demigods.message.broadcast("PISTON:" + piston + ", BLOCKS:" + blocks); // TODO DEBUG MESSAGE
-		if(piston == blocks) event.setCancelled(true);
+		if(piston == (piston ? blocks : !blocks)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
