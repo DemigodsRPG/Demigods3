@@ -7,6 +7,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Times;
 import org.bukkit.Bukkit;
@@ -72,6 +73,10 @@ public class ThreadManager
 						if(Demigods.isDisabledWorld(player.getLocation())) continue;
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
+
+					// Process Triggers
+					for(Trigger trigger : Trigger.Util.getAll())
+						trigger.process().sync();
 				}
 			};
 		}
@@ -97,6 +102,10 @@ public class ThreadManager
 
 					// Update Notifications
 					Notification.Util.updateNotifications();
+
+					// Process Triggers
+					for(Trigger trigger : Trigger.Util.getAll())
+						trigger.process().async();
 				}
 			};
 		}

@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.trigger.balance;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
@@ -7,6 +8,7 @@ import com.censoredsoftware.demigods.trigger.Trigger;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import org.bukkit.ChatColor;
 
 import javax.annotation.Nullable;
 
@@ -47,7 +49,8 @@ public class NewPlayerNeedsHelp implements Trigger
 				}
 			}))
 			{
-				// TODO Baetylus shards.
+				if(Demigods.isDisabledWorld(character.getLocation())) continue;
+				Demigods.message.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
 				DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, 600);
 			}
 		}
