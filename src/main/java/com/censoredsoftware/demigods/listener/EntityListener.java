@@ -65,7 +65,7 @@ public class EntityListener implements Listener
 
 			EntityDamageEvent damageEvent = player.getLastDamageCause();
 
-			if(damageEvent instanceof EntityDamageByEntityEvent)
+			if(damageEvent instanceof EntityDamageByEntityEvent) // TODO Replaced by battles.
 			{
 				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
 				Entity damager = damageByEvent.getDamager();
@@ -78,6 +78,7 @@ public class EntityListener implements Listener
 					else DCharacter.Util.onCharacterKillCharacter(attackChar, playerChar);
 				}
 			}
+			else playerChar.addDeath();
 		}
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
