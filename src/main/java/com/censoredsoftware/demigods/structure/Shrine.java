@@ -19,7 +19,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -121,7 +120,7 @@ public class Shrine implements Structure
 		return Structures.findAll(new Predicate<Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Save save)
+			public boolean apply(Save save)
 			{
 				return save.getType().equals(getStructureType());
 			}

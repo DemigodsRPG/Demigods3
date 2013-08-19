@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -348,7 +347,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return Collections2.transform(deaths, new Function<String, Death>()
 		{
 			@Override
-			public Death apply(@Nullable String s)
+			public Death apply(String s)
 			{
 				try
 				{
@@ -1258,7 +1257,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(@Nullable DCharacter character)
+				public boolean apply(DCharacter character)
 				{
 					return character.getOfflinePlayer().isOnline() && character.getDeity().getName().equalsIgnoreCase(deity);
 				}
@@ -1270,7 +1269,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(@Nullable DCharacter character)
+				public boolean apply(DCharacter character)
 				{
 					return character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
 				}
@@ -1282,7 +1281,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(@Nullable DCharacter character)
+				public boolean apply(DCharacter character)
 				{
 					return character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
 				}
@@ -1294,7 +1293,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(@Nullable DCharacter character)
+				public boolean apply(DCharacter character)
 				{
 					return character.getOfflinePlayer().isOnline();
 				}
@@ -1311,7 +1310,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return median(Ints.toArray(Collections2.transform(getOnlineCharacters(), new Function<DCharacter, Integer>()
 			{
 				@Override
-				public Integer apply(@Nullable DCharacter character)
+				public Integer apply(DCharacter character)
 				{
 					return character.getMeta().getAscensions();
 				}
@@ -1323,7 +1322,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return median(Ints.toArray(Collections2.transform(loadAll(), new Function<DCharacter, Integer>()
 			{
 				@Override
-				public Integer apply(@Nullable DCharacter character)
+				public Integer apply(DCharacter character)
 				{
 					return character.getMeta().getAscensions();
 				}

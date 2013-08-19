@@ -10,7 +10,6 @@ import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -23,7 +22,7 @@ public class Structures
 			return Iterables.find(getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
 			{
 				@Override
-				public boolean apply(@Nullable Structure.Save save)
+				public boolean apply(Structure.Save save)
 				{
 					return save.getLocations().contains(location);
 				}
@@ -41,7 +40,7 @@ public class Structures
 			return Iterables.find(loadAll(), new Predicate<Structure.Save>()
 			{
 				@Override
-				public boolean apply(@Nullable Structure.Save save)
+				public boolean apply(Structure.Save save)
 				{
 					return save.getLocations().contains(location);
 				}
@@ -69,7 +68,7 @@ public class Structures
 		return findAll(new Predicate<Structure.Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Structure.Save save)
+			public boolean apply(Structure.Save save)
 			{
 				return save.getRegion().equals(region.toString());
 			}
@@ -81,7 +80,7 @@ public class Structures
 		return Iterables.any(getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Structure.Save save)
+			public boolean apply(Structure.Save save)
 			{
 				return save.getType().equals(type) && save.getLocations().contains(location);
 			}
@@ -93,7 +92,7 @@ public class Structures
 		return Iterables.any(getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Structure.Save save)
+			public boolean apply(Structure.Save save)
 			{
 				return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getLocations().contains(location);
 			}
@@ -105,7 +104,7 @@ public class Structures
 		return Iterables.any(getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Structure.Save save)
+			public boolean apply(Structure.Save save)
 			{
 				return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getClickableBlocks().contains(location);
 			}
@@ -124,7 +123,7 @@ public class Structures
 			return Iterables.find(getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
 			{
 				@Override
-				public boolean apply(@Nullable Structure.Save save)
+				public boolean apply(Structure.Save save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getStructure().getRadius();
 				}
@@ -155,7 +154,7 @@ public class Structures
 		return findAll(new Predicate<Structure.Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Structure.Save save)
+			public boolean apply(Structure.Save save)
 			{
 				return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
 			}

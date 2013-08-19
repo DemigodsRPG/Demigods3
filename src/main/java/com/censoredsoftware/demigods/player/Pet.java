@@ -19,7 +19,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -262,7 +261,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(@Nullable Pet pet)
+				public boolean apply(Pet pet)
 				{
 					return pet.getEntityType().equals(type.getName());
 				}
@@ -274,7 +273,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(@Nullable Pet pet)
+				public boolean apply(Pet pet)
 				{
 					return pet.getAnimalTamer().equals(animalTamer);
 				}
@@ -286,7 +285,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Lists.newArrayList(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(@Nullable Pet pet)
+				public boolean apply(Pet pet)
 				{
 					return pet.getEntityUUID().equals(uniqueId);
 				}

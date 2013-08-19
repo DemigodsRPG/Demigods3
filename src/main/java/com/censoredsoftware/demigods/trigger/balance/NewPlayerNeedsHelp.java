@@ -10,8 +10,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 
-import javax.annotation.Nullable;
-
 public class NewPlayerNeedsHelp implements Trigger
 {
 	public static NewPlayerNeedsHelp trigger;
@@ -27,7 +25,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		return Iterables.any(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
 		{
 			@Override
-			public boolean apply(@Nullable DCharacter character)
+			public boolean apply(DCharacter character)
 			{
 				return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 			}
@@ -43,7 +41,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			for(DCharacter character : Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(@Nullable DCharacter character)
+				public boolean apply(DCharacter character)
 				{
 					return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 				}

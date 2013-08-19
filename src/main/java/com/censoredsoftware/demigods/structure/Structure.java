@@ -21,7 +21,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -644,7 +643,7 @@ public interface Structure
 			Collection<BlockData> check = Collections2.filter(blockData, new Predicate<BlockData>()
 			{
 				@Override
-				public boolean apply(@Nullable BlockData blockData)
+				public boolean apply(BlockData blockData)
 				{
 					return blockData.getOdds() >= roll;
 				}

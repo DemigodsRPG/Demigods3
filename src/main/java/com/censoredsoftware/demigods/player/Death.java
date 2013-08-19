@@ -12,7 +12,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -143,7 +142,7 @@ public class Death implements ConfigurationSerializable
 			return Sets.newHashSet(Iterables.filter(Iterables.concat(Collections2.transform(DCharacter.Util.getOnlineCharacters(), new Function<DCharacter, Collection<Death>>()
 			{
 				@Override
-				public Collection<Death> apply(@Nullable DCharacter character)
+				public Collection<Death> apply(DCharacter character)
 				{
 					try
 					{
@@ -156,7 +155,7 @@ public class Death implements ConfigurationSerializable
 			})), new Predicate<Death>()
 			{
 				@Override
-				public boolean apply(@Nullable Death death)
+				public boolean apply(Death death)
 				{
 					return death.getDeathTime() >= time;
 				}
@@ -169,7 +168,7 @@ public class Death implements ConfigurationSerializable
 			return Collections2.filter(character.getDeaths(), new Predicate<Death>()
 			{
 				@Override
-				public boolean apply(@Nullable Death death)
+				public boolean apply(Death death)
 				{
 					return death.getDeathTime() >= time;
 				}

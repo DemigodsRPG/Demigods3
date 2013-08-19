@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -134,7 +133,7 @@ public class GriefListener implements Listener
 		boolean in = Iterables.any(event.getBlocks(), new Predicate<Block>()
 		{
 			@Override
-			public boolean apply(@Nullable Block block)
+			public boolean apply(Block block)
 			{
 				return Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}
@@ -142,7 +141,7 @@ public class GriefListener implements Listener
 		boolean out = Iterables.any(event.getBlocks(), new Predicate<Block>()
 		{
 			@Override
-			public boolean apply(@Nullable Block block)
+			public boolean apply(Block block)
 			{
 				return !Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}

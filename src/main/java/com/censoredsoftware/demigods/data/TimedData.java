@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -228,7 +227,7 @@ public class TimedData implements ConfigurationSerializable
 			return Sets.newHashSet(Collections2.filter(getAll(), new Predicate<TimedData>()
 			{
 				@Override
-				public boolean apply(@Nullable TimedData timedData)
+				public boolean apply(TimedData timedData)
 				{
 					return timedData.getKey().equals(key);
 				}

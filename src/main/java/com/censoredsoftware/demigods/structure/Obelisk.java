@@ -20,7 +20,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -151,7 +150,7 @@ public class Obelisk implements Structure
 		return Structures.findAll(new Predicate<Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Save save)
+			public boolean apply(Save save)
 			{
 				return save.getType().equals(getStructureType());
 			}
@@ -202,7 +201,7 @@ public class Obelisk implements Structure
 		return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Save>()
 		{
 			@Override
-			public boolean apply(@Nullable Save save)
+			public boolean apply(Save save)
 			{
 				return save.getRawFlags().contains(Flag.NO_PVP.name());
 			}

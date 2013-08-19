@@ -30,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -363,7 +362,7 @@ public class Battle implements ConfigurationSerializable
 			return Lists.newArrayList(Collections2.filter(getAll(), new Predicate<Battle>()
 			{
 				@Override
-				public boolean apply(@Nullable Battle battle)
+				public boolean apply(Battle battle)
 				{
 					return battle.isActive();
 				}
@@ -375,7 +374,7 @@ public class Battle implements ConfigurationSerializable
 			return Lists.newArrayList(Collections2.filter(getAll(), new Predicate<Battle>()
 			{
 				@Override
-				public boolean apply(@Nullable Battle battle)
+				public boolean apply(Battle battle)
 				{
 					return !battle.isActive();
 				}
