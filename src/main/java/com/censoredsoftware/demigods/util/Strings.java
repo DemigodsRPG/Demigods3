@@ -85,7 +85,7 @@ public class Strings
 	 * 
 	 * @param string the string the beautify.
 	 */
-	public static String beautify(String string) // TODO: Come up with a better name.
+	public static String beautify(String string)
 	{
 		return StringUtils.capitalize(string.toLowerCase().replace("_", " "));
 	}

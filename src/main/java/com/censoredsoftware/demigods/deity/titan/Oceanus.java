@@ -27,12 +27,16 @@ public class Oceanus implements Deity
 	{
 		{
 			add(" ");
-			add(ChatColor.AQUA + " Demigods > " + ChatColor.RESET + color + name);
+			add(ChatColor.RED + " Demigods > " + ChatColor.RESET + color + name);
 			add(ChatColor.RESET + "-----------------------------------------------------");
+			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
+			add(" ");
 			for(Material item : claimItems)
-				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + item.name());
+			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
+			add(" ");
 		}
 	};
 	private final static Type type = Type.TIER1;
