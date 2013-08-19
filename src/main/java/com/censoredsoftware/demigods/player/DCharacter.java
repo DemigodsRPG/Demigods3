@@ -1054,17 +1054,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
 		{
-			DCharacter character = create(player, chosenName, chosenDeity);
-
-			if(player.getOfflinePlayer().isOnline())
-			{
-				Player online = player.getOfflinePlayer().getPlayer();
-				online.setDisplayName(Deity.Util.getDeity(chosenDeity).getColor() + chosenName + ChatColor.WHITE);
-				online.setPlayerListName(Deity.Util.getDeity(chosenDeity).getColor() + chosenName + ChatColor.WHITE);
-			}
-
 			// Switch to new character
-			if(switchCharacter) player.switchCharacter(character);
+			if(switchCharacter) player.switchCharacter(create(player, chosenName, chosenDeity));
 		}
 
 		public static DCharacter create(DPlayer player, String charName, String charDeity)
