@@ -30,9 +30,6 @@ public class Obelisk implements Structure
 	private final static Structure.Schematic general = new Structure.Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
-			// Clickable block.
-			add(new Selection(0, 0, 2, Material.SMOOTH_BRICK, (byte) 3));
-
 			// Everything else.
 			add(new Selection(0, 0, -1, 0, 2, -1, Selection.Preset.STONE_BRICK));
 			add(new Selection(0, 0, 1, 0, 2, 1, Selection.Preset.STONE_BRICK));
@@ -58,9 +55,6 @@ public class Obelisk implements Structure
 	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
-			// Clickable block.
-			add(new Selection(0, 0, 2, Material.SANDSTONE, (byte) 1));
-
 			// Everything else.
 			add(new Selection(0, 0, -1, 0, 2, -1, Material.SANDSTONE));
 			add(new Selection(0, 0, 1, 0, 2, 1, Material.SANDSTONE));
@@ -104,7 +98,7 @@ public class Obelisk implements Structure
 		@Override
 		public Set<Location> getClickableBlocks(Location reference)
 		{
-			return clickableBlocks.getBlockLocations(reference);
+			return getSchematic().getLocations(reference);
 		}
 
 		@Override
