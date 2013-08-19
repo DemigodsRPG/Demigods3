@@ -1259,7 +1259,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline() && character.getDeity().getName().equalsIgnoreCase(deity);
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getDeity().getName().equalsIgnoreCase(deity);
 				}
 			});
 		}
@@ -1271,7 +1271,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
 				}
 			});
 		}
@@ -1283,7 +1283,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
 				}
 			});
 		}
@@ -1295,7 +1295,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.getOfflinePlayer().isOnline();
+					return character.isActive() && character.getOfflinePlayer().isOnline();
 				}
 			});
 		}
