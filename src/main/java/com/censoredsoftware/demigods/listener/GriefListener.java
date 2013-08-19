@@ -146,6 +146,7 @@ public class GriefListener implements Listener
 				return !Structures.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}
 		});
+		Demigods.message.broadcast("IN:" + in + ", OUT:" + out); // TODO DEBUG MESSAGE
 		if(in && out) event.setCancelled(true);
 	}
 
