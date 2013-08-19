@@ -1,8 +1,9 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.util.Times;
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,21 +12,23 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.util.Times;
+import com.google.common.collect.Maps;
 
 public class ChatRecorder
 {
 	private Map<Long, String> lines; // Format: <System.currentTimeMillis, Message>
 	private Player player;
 	private Listener listener;
+	private boolean recording;
 
 	public void start(Player player)
 	{
 		this.player = player;
-		this.listener = new ChatListener();
-		this.lines = Maps.newTreeMap();
+		listener = new ChatListener();
+		lines = Maps.newTreeMap();
+		recording = true;
 	}
 
 	public List<String> stop()
@@ -46,7 +49,12 @@ public class ChatRecorder
 
 	public Listener getListener()
 	{
-		return this.listener;
+		return listener;
+	}
+
+	public boolean isRecording()
+	{
+		return recording;
 	}
 
 	public static class Util

@@ -474,13 +474,24 @@ public class DPlayer implements ConfigurationSerializable
 				player.setSneaking(true);
 
 				// Record chat if enabled
-				if(recordChat)
-				{
-					chatRecording = ChatRecorder.Util.startRecording(player);
-				}
+				if(recordChat) chatRecording = ChatRecorder.Util.startRecording(player);
 			}
 			else
 			{
+				// Handle recorded chat
+				if(chatRecording != null && chatRecording.isRecording())
+				{
+					// Send held back chat
+					List<String> messages = chatRecording.stop();
+					if(messages.size() > 0)
+					{
+						player.sendMessage(" ");
+						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+						for(String message : messages)
+							player.sendMessage(message);
+					}
+				}
+
 				// Save context and abandon the conversation
 				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
@@ -493,20 +504,6 @@ public class DPlayer implements ConfigurationSerializable
 				DataManager.removeTemp(player.getName(), "prayer_conversation");
 				DataManager.removeTemp(player.getName(), "prayer_location");
 				player.setSneaking(false);
-
-				// Handle recorded chat
-				if(recordChat)
-				{
-					// Send held back chat
-					List<String> messages = chatRecording.stop();
-					if(messages.size() > 0)
-					{
-						player.sendMessage(" ");
-						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.PRAYER_HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
-						for(String message : messages)
-							player.sendMessage(message);
-					}
-				}
 			}
 		}
 
