@@ -185,6 +185,9 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		// If it's leather armor then save the color information
 		if(item.getType().equals(Material.ENCHANTED_BOOK))
 		{
+			// Initialize the map
+			storedEnchantments = Maps.newHashMap();
+
 			// Define the book meta
 			EnchantmentStorageMeta enchantmentMeta = (EnchantmentStorageMeta) item.getItemMeta();
 
