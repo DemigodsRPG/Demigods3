@@ -2,6 +2,8 @@ package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.structure.Structure;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,9 +25,14 @@ public class Zones
 
 	private static boolean canWorldGuardDynamicPVP(Location location)
 	{
-		for(ProtectedRegion region : Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location))
-			if(region.getId().toLowerCase().contains("nopvp")) return false;
-		return true;
+		return !Iterators.any(Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
+		{
+			@Override
+			public boolean apply(ProtectedRegion region)
+			{
+				return region.getId().toLowerCase().contains("nopvp");
+			}
+		});
 	}
 
 	/**
