@@ -34,7 +34,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 	private String author;
 	private String title;
 	private List<String> pages;
-	private String type;
 	private String skullOwner;
 	private int leatherColor;
 
@@ -44,7 +43,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 	public DItemStack(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
-		type = conf.getString("type");
 		typeId = conf.getInt("typeId");
 		byteId = (byte) conf.getInt("byteId");
 		amount = conf.getInt("amount");
@@ -67,7 +65,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		{
 			{
 				// Standard
-				put("type", type);
 				put("typeId", typeId);
 				put("byteId", (int) byteId);
 				put("amount", amount);
@@ -95,11 +92,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 	public void generateId()
 	{
 		id = UUID.randomUUID();
-	}
-
-	void setType(ItemType type)
-	{
-		this.type = type.name();
 	}
 
 	void setTypeId(int typeId)
@@ -152,9 +144,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		// If it's a written book then save the book-specific information
 		if(item.getType().equals(Material.WRITTEN_BOOK))
 		{
-			// Save the type as book
-			type = ItemType.WRITTEN_BOOK.name();
-
 			// Define the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
 
@@ -170,9 +159,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		// If it's leather armor then save the color information
 		if(item.getType().equals(Material.LEATHER_HELMET) || item.getType().equals(Material.LEATHER_CHESTPLATE) || item.getType().equals(Material.LEATHER_LEGGINGS) || item.getType().equals(Material.LEATHER_BOOTS))
 		{
-			// Save the type as leather armor
-			type = ItemType.LEATHER_ARMOR.name();
-
 			// Define the book meta
 			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
 
@@ -186,9 +172,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		// If it's leather armor then save the color information
 		if(item.getType().equals(Material.SKULL) || item.getType().equals(Material.SKULL_ITEM))
 		{
-			// Save the type as a skull
-			type = ItemType.SKULL.name();
-
 			// Define the book meta
 			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 
@@ -202,9 +185,6 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		// If it's leather armor then save the color information
 		if(item.getType().equals(Material.ENCHANTED_BOOK))
 		{
-			// Save the type as a skull
-			type = ItemType.ENCHANTED_BOOK.name();
-
 			// Define the book meta
 			EnchantmentStorageMeta enchantmentMeta = (EnchantmentStorageMeta) item.getItemMeta();
 
@@ -257,7 +237,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 			}
 		}
 
-		if(ItemType.valueOf(type).equals(ItemType.WRITTEN_BOOK)) // If it's a book, apply the information
+		if(Material.getMaterial(typeId).equals(Material.WRITTEN_BOOK)) // If it's a book, apply the information
 		{
 			// Get the book meta
 			BookMeta bookMeta = (BookMeta) item.getItemMeta();
@@ -268,7 +248,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 
 			item.setItemMeta(bookMeta);
 		}
-		else if(ItemType.valueOf(type).equals(ItemType.SKULL)) // If it's a skull, apply the data
+		else if(Material.getMaterial(typeId).equals(Material.SKULL)) // If it's a skull, apply the data
 		{
 			// Get the skull meta
 			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
@@ -277,7 +257,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 
 			item.setItemMeta(skullMeta);
 		}
-		else if(ItemType.valueOf(type).equals(ItemType.LEATHER_ARMOR)) // If it's leather, apply the color
+		else if(Material.getMaterial(typeId).equals(Material.LEATHER_HELMET) || Material.getMaterial(typeId).equals(Material.LEATHER_CHESTPLATE) || Material.getMaterial(typeId).equals(Material.LEATHER_LEGGINGS) || Material.getMaterial(typeId).equals(Material.LEATHER_BOOTS)) // If it's leather, apply the color
 		{
 			// Get the skull meta
 			LeatherArmorMeta leatherMeta = (LeatherArmorMeta) item.getItemMeta();
@@ -286,7 +266,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 
 			item.setItemMeta(leatherMeta);
 		}
-		else if(ItemType.valueOf(type).equals(ItemType.LEATHER_ARMOR)) // If it's an enchanted book, store the enchants
+		else if(Material.getMaterial(typeId).equals(Material.ENCHANTED_BOOK)) // If it's an enchanted book, store the enchants
 		{
 			// Define the book meta
 			EnchantmentStorageMeta enchantmentMeta = (EnchantmentStorageMeta) item.getItemMeta();
@@ -382,13 +362,5 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 			save(trackedItem);
 			return trackedItem;
 		}
-	}
-
-	/**
-	 * The type enum.
-	 */
-	public static enum ItemType
-	{
-		WRITTEN_BOOK, LEATHER_ARMOR, SKULL, ENCHANTED_BOOK;
 	}
 }
