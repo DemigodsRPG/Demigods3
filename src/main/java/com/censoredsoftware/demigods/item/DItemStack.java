@@ -170,7 +170,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 	void setSkullMeta(ItemStack item)
 	{
 		// If it's leather armor then save the color information
-		if(item.getType().equals(Material.SKULL) || item.getType().equals(Material.SKULL_ITEM))
+		if(item.getType().equals(Material.SKULL_ITEM))
 		{
 			// Define the book meta
 			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
@@ -251,7 +251,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 
 			item.setItemMeta(bookMeta);
 		}
-		else if(Material.getMaterial(typeId).equals(Material.SKULL)) // If it's a skull, apply the data
+		else if(Material.getMaterial(typeId).equals(Material.SKULL_ITEM)) // If it's a skull, apply the data
 		{
 			// Get the skull meta
 			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
