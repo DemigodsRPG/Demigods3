@@ -945,9 +945,9 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
-					for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
+					for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
 					{
-						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + Strings.beautify(item.name()));
+						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 					}
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
@@ -1001,9 +1001,9 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
-			for(Material item : Deity.Util.getDeity(chosenDeity).getClaimItems())
+			for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + Strings.beautify(item.name()));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			}
 			return "";
 		}
@@ -1088,26 +1088,15 @@ public class Prayer implements ListedConversation
 				// Define variables
 				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
 				String chosenName = (String) prayerContext.getSessionData("chosen_name");
-				String chosenDeity = (String) prayerContext.getSessionData("chosen_deity");
-				String deityAlliance = StringUtils.capitalize(Deity.Util.getDeity(chosenDeity).getAlliance());
+				Deity deity = Deity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
+				String deityAlliance = deity.getAlliance();
 
 				// Check the chest items
 				int items = 0;
-				int neededItems = Deity.Util.getDeity(chosenDeity).getClaimItems().size();
+				int neededItems = deity.getClaimItems().size();
 
-				for(ItemStack item : event.getInventory().getContents())
-				{
-					if(item != null)
-					{
-						for(Material material : Deity.Util.getDeity(chosenDeity).getClaimItems())
-						{
-							if(item.getType().equals(material))
-							{
-								items++;
-							}
-						}
-					}
-				}
+				for(Map.Entry<Material, Integer> entry : deity.getClaimItems().entrySet())
+					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
 
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false, true);
@@ -1119,10 +1108,10 @@ public class Prayer implements ListedConversation
 				if(neededItems == items)
 				{
 					// Accepted, finish everything up!
-					DCharacter.Util.create(DPlayer.Util.getPlayer(player), chosenDeity, chosenName, true);
+					DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
 
 					// Message them and do cool things
-					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", Deity.Util.getDeity(chosenDeity).getName()));
+					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
 					player.getWorld().strikeLightningEffect(player.getLocation());
 
 					for(int i = 0; i < 20; i++)
@@ -1137,7 +1126,7 @@ public class Prayer implements ListedConversation
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + chosenDeity.toUpperCase() + "!");
+					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
 				}
 
 				// Clear the confirmation case

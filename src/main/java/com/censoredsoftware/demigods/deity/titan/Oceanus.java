@@ -22,7 +22,7 @@ public class Oceanus implements Deity
 {
 	private final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
 	private final static ChatColor color = ChatColor.DARK_AQUA;
-	private final static Set<Material> claimItems = Sets.newHashSet(Material.RAW_FISH);
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.RAW_FISH, 2, Material.FISHING_ROD, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.COOKED_FISH, 4, Material.FISHING_ROD, 1));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
@@ -33,8 +33,8 @@ public class Oceanus implements Deity
 			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
-			for(Material item : claimItems)
-				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
+			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");
@@ -74,7 +74,7 @@ public class Oceanus implements Deity
 	}
 
 	@Override
-	public Set<Material> getClaimItems()
+	public Map<Material, Integer> getClaimItems()
 	{
 		return claimItems;
 	}

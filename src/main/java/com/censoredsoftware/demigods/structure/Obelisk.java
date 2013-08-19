@@ -1,15 +1,9 @@
 package com.censoredsoftware.demigods.structure;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,9 +14,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class Obelisk implements Structure
 {
@@ -226,7 +227,7 @@ public class Obelisk implements Structure
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getClaimItems().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
 				{
 					if(Obelisk.noPvPStructureNearby(location))
 					{
@@ -258,7 +259,7 @@ public class Obelisk implements Structure
 				event.setCancelled(true);
 
 				Structure.Save save = Structures.getStructureRegional(location);
-				// DCharacter owner = save.getOwner();
+				DCharacter owner = save.getOwner();
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
 				{
@@ -266,14 +267,14 @@ public class Obelisk implements Structure
 					save.remove();
 					DataManager.removeTimed(player.getName(), "destroy_obelisk");
 
-					// Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
+					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
+					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
-					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE));
+					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK));
 				}
 			}
 		}

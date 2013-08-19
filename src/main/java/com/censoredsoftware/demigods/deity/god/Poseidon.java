@@ -23,7 +23,7 @@ public class Poseidon implements Deity
 {
 	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private final static ChatColor color = ChatColor.AQUA;
-	private final static Set<Material> claimItems = Sets.newHashSet(Material.WATER_LILY);
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.WATER_LILY, 4));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.WATER_BUCKET, 4));
 	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
 	{
@@ -34,8 +34,8 @@ public class Poseidon implements Deity
 			add(" ");
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
-			for(Material item : claimItems)
-				add(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + Strings.beautify(item.name()));
+			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
+				add(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");
@@ -75,7 +75,7 @@ public class Poseidon implements Deity
 	}
 
 	@Override
-	public Set<Material> getClaimItems()
+	public Map<Material, Integer> getClaimItems()
 	{
 		return claimItems;
 	}
