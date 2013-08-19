@@ -442,17 +442,23 @@ public class DPlayer implements ConfigurationSerializable
 			if(option)
 			{
 				// Toggle on
-				togglePrayingSilent(player, true, true);
+				togglePrayingSilent(player, true, false);
+
+				// Record chat
+				startRecording(player);
 			}
 			else
 			{
 				// Toggle off
-				togglePrayingSilent(player, false, true);
+				togglePrayingSilent(player, false, false);
 
 				// Message them
 				Demigods.message.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
+
+				// Handle recorded chat
+				stopRecording(player);
 			}
 		}
 
@@ -474,24 +480,10 @@ public class DPlayer implements ConfigurationSerializable
 				player.setSneaking(true);
 
 				// Record chat if enabled
-				if(recordChat) chatRecording = ChatRecorder.Util.startRecording(player);
+				if(recordChat) startRecording(player);
 			}
 			else
 			{
-				// Handle recorded chat
-				if(chatRecording != null && chatRecording.isRecording())
-				{
-					// Send held back chat
-					List<String> messages = chatRecording.stop();
-					if(messages.size() > 0)
-					{
-						player.sendMessage(" ");
-						player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
-						for(String message : messages)
-							player.sendMessage(message);
-					}
-				}
-
 				// Save context and abandon the conversation
 				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
@@ -504,7 +496,45 @@ public class DPlayer implements ConfigurationSerializable
 				DataManager.removeTemp(player.getName(), "prayer_conversation");
 				DataManager.removeTemp(player.getName(), "prayer_location");
 				player.setSneaking(false);
+
+				// Handle recorded chat
+				stopRecording(player);
 			}
+		}
+
+		/**
+		 * Starts recording recording the <code>player</code>'s chat.
+		 * 
+		 * @param player the player to stop recording for.
+		 */
+		public static void startRecording(Player player)
+		{
+			chatRecording = ChatRecorder.Util.startRecording(player);
+		}
+
+		/**
+		 * Stops recording and sends all messages that have been recorded thus far to the player.
+		 * 
+		 * @param player the player to stop recording for.
+		 */
+		public static List<String> stopRecording(Player player)
+		{
+			// Handle recorded chat
+			if(chatRecording != null && chatRecording.isRecording())
+			{
+				// Send held back chat
+				List<String> messages = chatRecording.stop();
+				if(messages.size() > 0)
+				{
+					player.sendMessage(" ");
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+					for(String message : messages)
+						player.sendMessage(message);
+				}
+
+				return messages;
+			}
+			return null;
 		}
 
 		/**
