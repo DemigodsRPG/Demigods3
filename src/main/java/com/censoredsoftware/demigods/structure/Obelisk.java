@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.structure;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -24,6 +10,19 @@ import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Obelisk implements Structure
 {
@@ -240,7 +239,7 @@ public class Obelisk implements Structure
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 						Structure.Save save = Elements.Structures.OBELISK.getStructure().createNew(location, true);
-						save.setOwner(character);
+						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
 						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_OBELISK));
@@ -259,7 +258,7 @@ public class Obelisk implements Structure
 				event.setCancelled(true);
 
 				Structure.Save save = Structures.getStructureRegional(location);
-				DCharacter owner = save.getOwner();
+				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
 				{

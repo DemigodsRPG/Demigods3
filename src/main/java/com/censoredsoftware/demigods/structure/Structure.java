@@ -7,7 +7,6 @@ import com.censoredsoftware.demigods.exception.BlockDataException;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.location.Region;
-import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Objects;
@@ -42,7 +41,7 @@ public interface Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, SLOW_GEN
+		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, BATTLE_WALL
 	}
 
 	public static class Save implements ConfigurationSerializable
@@ -110,9 +109,9 @@ public interface Structure
 			setRegion(dLocation.getRegion());
 		}
 
-		public void setOwner(DCharacter character)
+		public void setOwner(UUID id)
 		{
-			this.owner = character.getId();
+			this.owner = id;
 		}
 
 		public void setActive(Boolean bool)
@@ -147,9 +146,9 @@ public interface Structure
 			return this.owner != null;
 		}
 
-		public DCharacter getOwner()
+		public UUID getOwner()
 		{
-			return DCharacter.Util.load(this.owner);
+			return this.owner;
 		}
 
 		public String getType()

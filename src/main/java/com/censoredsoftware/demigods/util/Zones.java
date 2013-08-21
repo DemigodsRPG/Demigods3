@@ -43,7 +43,7 @@ public class Zones
 	{
 		if(Demigods.worldguard != null && !Demigods.worldguard.canBuild(player, location)) return true;
 		Structure.Save save = Structures.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
-		if(save != null && save.getOwner() != null) return !save.getOwner().getId().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
+		if(save != null && save.getOwner() != null) return !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 		return false;
 	}
 }

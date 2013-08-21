@@ -403,7 +403,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void remove()
 	{
 		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
-			if(structureSave.hasOwner() && structureSave.getOwner().getId().equals(getId())) structureSave.remove();
+			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());

@@ -55,7 +55,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -69,7 +69,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -83,7 +83,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -162,7 +162,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -176,7 +176,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -205,7 +205,7 @@ public class GriefListener implements Listener
 		if(save != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}
@@ -222,7 +222,7 @@ public class GriefListener implements Listener
 		if(blockInventories.contains(block.getType()))
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = save.getOwner();
+			DCharacter owner = DCharacter.Util.load(save.getOwner());
 			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
 			event.setCancelled(true);
 		}

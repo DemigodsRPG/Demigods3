@@ -58,9 +58,9 @@ public class TributeListener implements Listener
 				return;
 			}
 
-			if(save.getOwner() != null && !character.getDeity().equals(save.getOwner().getDeity()))
+			if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
 			{
-				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + save.getOwner().getDeity().getName() + " in order to tribute here.");
+				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + DCharacter.Util.load(save.getOwner()).getDeity().getName() + " in order to tribute here.");
 				return;
 			}
 			tribute(character, save);
@@ -113,7 +113,7 @@ public class TributeListener implements Listener
 		// Define the shrine owner
 		if(save.getOwner() != null)
 		{
-			DCharacter shrineOwner = save.getOwner();
+			DCharacter shrineOwner = DCharacter.Util.load(save.getOwner());
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
 			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
