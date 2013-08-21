@@ -151,7 +151,7 @@ public class Demigods
 			@Override
 			public boolean apply(Elements.Structures structure)
 			{
-				return structure.getStructure().getUniqueListener() == null;
+				return structure.getStructure().getUniqueListener() != null;
 			}
 		}))
 			register.registerEvents(structure.getStructure().getUniqueListener(), instance);
@@ -162,7 +162,7 @@ public class Demigods
 			@Override
 			public boolean apply(Elements.Conversations conversation)
 			{
-				return conversation.getConversation().getUniqueListener() == null;
+				return conversation.getConversation().getUniqueListener() != null;
 			}
 		}))
 			register.registerEvents(conversation.getConversation().getUniqueListener(), instance);
