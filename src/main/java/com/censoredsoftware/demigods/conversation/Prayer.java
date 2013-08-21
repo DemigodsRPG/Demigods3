@@ -973,11 +973,15 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = event.getPlayer();
 
+			Demigods.message.broadcast("DEBUG 1");
+
 			// First we check if the player is clicking a prayer block
 			if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 			{
+				Demigods.message.broadcast("DEBUG 2");
 				if(!DPlayer.Util.isPraying(player))
 				{
+					Demigods.message.broadcast("DEBUG 3");
 					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
 						for(String message : Demigods.language.getTextBlock(Translation.Text.PVP_NO_PRAYER))
@@ -998,6 +1002,8 @@ public class Prayer implements ListedConversation
 					// Toggle prayer to false
 					DPlayer.Util.togglePraying(player, false);
 				}
+
+				Demigods.message.broadcast("DEBUG 4");
 
 				event.setCancelled(true);
 			}
