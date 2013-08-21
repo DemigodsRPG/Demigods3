@@ -49,14 +49,11 @@ public class Death implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("deathTime", deathTime);
-				put("killed", killed.toString());
-				if(attacking != null) put("attacking", attacking.toString());
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("deathTime", deathTime);
+		map.put("killed", killed.toString());
+		if(attacking != null) map.put("attacking", attacking.toString());
+		return map;
 	}
 
 	public UUID getId()
@@ -94,13 +91,10 @@ public class Death implements ConfigurationSerializable
 		public ConcurrentHashMap<UUID, Death> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, Death>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new Death(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, Death> map = new ConcurrentHashMap<UUID, Death>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new Death(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

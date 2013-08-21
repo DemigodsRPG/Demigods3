@@ -75,27 +75,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("name", name);
-				put("player", player);
-				put("health", health);
-				put("maxhealth", maxhealth);
-				put("hunger", hunger);
-				put("experience", experience);
-				put("level", level);
-				put("killCount", killCount);
-				put("deathCount", deathCount);
-				put("location", location.toString());
-				put("deity", deity);
-				put("active", active);
-				put("usable", usable);
-				put("meta", meta.toString());
-				if(inventory != null) put("inventory", inventory.toString());
-				if(deaths != null) put("deaths", Lists.newArrayList(deaths));
-			}
-		};
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("name", name);
+		map.put("player", player);
+		map.put("health", health);
+		map.put("maxhealth", maxhealth);
+		map.put("hunger", hunger);
+		map.put("experience", experience);
+		map.put("level", level);
+		map.put("killCount", killCount);
+		map.put("deathCount", deathCount);
+		map.put("location", location.toString());
+		map.put("deity", deity);
+		map.put("active", active);
+		map.put("usable", usable);
+		map.put("meta", meta.toString());
+		if(inventory != null) map.put("inventory", inventory.toString());
+		if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
+		return map;
 	}
 
 	void generateId()
@@ -442,16 +439,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		@Override
 		public Map<String, Object> serialize()
 		{
-			return new HashMap<String, Object>()
-			{
-				{
-					if(helmet != null) put("helmet", helmet.toString());
-					if(chestplate != null) put("chestplate", chestplate.toString());
-					if(leggings != null) put("leggings", leggings.toString());
-					if(boots != null) put("boots", boots.toString());
-					if(items != null) put("items", Lists.newArrayList(items));
-				}
-			};
+			Map<String, Object> map = Maps.newHashMap();
+			if(helmet != null) map.put("helmet", helmet.toString());
+			if(chestplate != null) map.put("chestplate", chestplate.toString());
+			if(leggings != null) map.put("leggings", leggings.toString());
+			if(boots != null) map.put("boots", boots.toString());
+			if(items != null) map.put("items", Lists.newArrayList(items));
+			return map;
 		}
 
 		public void generateId()
@@ -575,13 +569,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			public ConcurrentHashMap<UUID, Inventory> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new ConcurrentHashMap<UUID, Inventory>()
-				{
-					{
-						for(String stringId : data.getKeys(false))
-							put(UUID.fromString(stringId), new Inventory(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-					}
-				};
+				ConcurrentHashMap<UUID, Inventory> map = new ConcurrentHashMap<UUID, Inventory>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new Inventory(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
 			}
 
 			@Override
@@ -632,19 +623,16 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		@Override
 		public Map<String, Object> serialize()
 		{
-			return new HashMap<String, Object>()
-			{
-				{
-					put("ascensions", ascensions);
-					put("favor", favor);
-					put("maxFavor", maxFavor);
-					put("binds", Lists.newArrayList(binds));
-					put("notifications", Lists.newArrayList(notifications));
-					put("devotionData", devotionData);
-					put("warps", warps);
-					put("invites", invites);
-				}
-			};
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("ascensions", ascensions);
+			map.put("favor", favor);
+			map.put("maxFavor", maxFavor);
+			map.put("binds", Lists.newArrayList(binds));
+			map.put("notifications", Lists.newArrayList(notifications));
+			map.put("devotionData", devotionData);
+			map.put("warps", warps);
+			map.put("invites", invites);
+			return map;
 		}
 
 		public void generateId()
@@ -950,13 +938,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			public ConcurrentHashMap<UUID, Meta> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new ConcurrentHashMap<UUID, Meta>()
-				{
-					{
-						for(String stringId : data.getKeys(false))
-							put(UUID.fromString(stringId), new Meta(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-					}
-				};
+				ConcurrentHashMap<UUID, Meta> map = new ConcurrentHashMap<UUID, Meta>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new Meta(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
 			}
 
 			@Override
@@ -991,13 +976,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public ConcurrentHashMap<UUID, DCharacter> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, DCharacter>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new DCharacter(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, DCharacter> map = new ConcurrentHashMap<UUID, DCharacter>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new DCharacter(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

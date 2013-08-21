@@ -56,17 +56,14 @@ public class DPlayer implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("canPvp", canPvp);
-				put("lastLoginTime", lastLoginTime);
-				put("lastLogoutTime", lastLogoutTime);
-				put("currentDeityName", currentDeityName);
-				if(current != null) put("current", current.toString());
-				if(previous != null) put("previous", previous.toString());
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("canPvp", canPvp);
+		map.put("lastLoginTime", lastLoginTime);
+		map.put("lastLogoutTime", lastLogoutTime);
+		map.put("currentDeityName", currentDeityName);
+		if(current != null) map.put("current", current.toString());
+		if(previous != null) map.put("previous", previous.toString());
+		return map;
 	}
 
 	void setPlayer(String player)
@@ -320,13 +317,10 @@ public class DPlayer implements ConfigurationSerializable
 		public ConcurrentHashMap<String, DPlayer> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<String, DPlayer>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(stringId, new DPlayer(stringId, data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<String, DPlayer> map = new ConcurrentHashMap<String, DPlayer>();
+			for(String stringId : data.getKeys(false))
+				map.put(stringId, new DPlayer(stringId, data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

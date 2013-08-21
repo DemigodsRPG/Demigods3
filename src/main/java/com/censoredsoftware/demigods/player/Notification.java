@@ -45,18 +45,15 @@ public class Notification implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("expiration", expiration);
-				put("receiver", receiver.toString());
-				put("sender", sender.toString());
-				put("senderType", senderType);
-				put("danger", danger);
-				put("name", name);
-				put("message", message);
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("expiration", expiration);
+		map.put("receiver", receiver.toString());
+		map.put("sender", sender.toString());
+		map.put("senderType", senderType);
+		map.put("danger", danger);
+		map.put("name", name);
+		map.put("message", message);
+		return map;
 	}
 
 	public void generateId()
@@ -169,13 +166,10 @@ public class Notification implements ConfigurationSerializable
 		public ConcurrentHashMap<UUID, Notification> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, Notification>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new Notification(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, Notification> map = new ConcurrentHashMap<UUID, Notification>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new Notification(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override
