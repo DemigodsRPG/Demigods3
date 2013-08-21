@@ -5,6 +5,8 @@ import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.helper.CSPlugin;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -40,7 +42,8 @@ public class DemigodsPlugin extends CSPlugin
 		DataManager.save();
 
 		// Toggle all prayer off
-		DPlayer.Util.stopAllPrayer();
+		for(Player player : Bukkit.getOnlinePlayers())
+			DPlayer.Util.togglePrayingSilent(player, false, false);
 
 		// Cancel all threads, callAbilityEvent calls, and connections.
 		ThreadManager.stopThreads(this);
