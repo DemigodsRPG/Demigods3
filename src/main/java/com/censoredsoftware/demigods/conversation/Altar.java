@@ -43,8 +43,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
-public class Prayer implements ListedConversation
+public class Altar implements ListedConversation
 {
+	public static Altar altar;
+	static
+	{
+		altar = new Altar();
+	}
 
 	@Override
 	public org.bukkit.event.Listener getUniqueListener()
@@ -103,12 +108,12 @@ public class Prayer implements ListedConversation
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
 				sessionDataField.setAccessible(true);
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(DataManager.getValueTemp(player.getName(), "prayer_context"));
+				if(DataManager.hasKeyTemp(player.getName(), "altar_context")) conversationContext = (Map<Object, Object>) sessionDataField.get(DataManager.getValueTemp(player.getName(), "altar_context"));
 			}
 			else
 			{
 				// Grab the context Map
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
+				if(DataManager.hasKeyTemp(player.getName(), "altar_context")) conversationContext.putAll(((ConversationContext) DataManager.getValueTemp(player.getName(), "altar_context")).getAllSessionData());
 			}
 
 			// Build the conversation and begin
@@ -327,7 +332,7 @@ public class Prayer implements ListedConversation
 			else if(arg0.equalsIgnoreCase("warp"))
 			{
 				// Disable prayer
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				DPlayer.Util.stopPrayingSilent(player);
 
 				// Teleport and message
 				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) player.teleport(DLocation.Util.load(UUID.fromString(character.getMeta().getWarps().get(arg1.toLowerCase()).toString())).toLocation());
@@ -624,7 +629,7 @@ public class Prayer implements ListedConversation
 
 				// Save temporary data, end the conversation, and return
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				DPlayer.Util.stopPrayingSilent(player);
 			}
 			return null;
 		}
@@ -896,7 +901,7 @@ public class Prayer implements ListedConversation
 
 					// Save temporary data, end the conversation, and return
 					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
-					DPlayer.Util.togglePrayingSilent(player, false, true);
+					DPlayer.Util.stopPrayingSilent(player);
 					return null;
 				}
 				else
@@ -987,7 +992,7 @@ public class Prayer implements ListedConversation
 					}
 
 					// Toggle praying
-					DPlayer.Util.togglePraying(player, true);
+					DPlayer.Util.startPraying(player, altar, true);
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
@@ -996,7 +1001,7 @@ public class Prayer implements ListedConversation
 				else if(DPlayer.Util.isPraying(player))
 				{
 					// Toggle prayer to false
-					DPlayer.Util.togglePraying(player, false);
+					DPlayer.Util.stopPraying(player);
 				}
 
 				event.setCancelled(true);
@@ -1031,7 +1036,7 @@ public class Prayer implements ListedConversation
 					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				DPlayer.Util.stopPrayingSilent(player);
 
 				// Clear chat and send update
 				Demigods.message.clearRawChat(player);
@@ -1097,7 +1102,7 @@ public class Prayer implements ListedConversation
 					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
 
 				// Stop their praying
-				DPlayer.Util.togglePrayingSilent(player, false, true);
+				DPlayer.Util.stopPrayingSilent(player);
 
 				// Clear chat and send update
 				Demigods.message.clearRawChat(player);
@@ -1141,7 +1146,7 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
+			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) DPlayer.Util.stopPraying(player);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
@@ -78,8 +77,7 @@ public class Elements
 
 	public enum Conversations implements ListedConversation.ConversationData
 	{
-		// NoGrief
-		PRAYER(new Prayer());
+		ALTAR(new com.censoredsoftware.demigods.conversation.Altar()), OBELISK(new com.censoredsoftware.demigods.conversation.Obelisk());
 
 		private final ListedConversation conversationInfo;
 
