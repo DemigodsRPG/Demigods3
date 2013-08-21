@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.deity.titan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
@@ -18,6 +10,13 @@ import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Prometheus implements Deity
 {
@@ -25,7 +24,7 @@ public class Prometheus implements Deity
 	private final static ChatColor color = ChatColor.GOLD;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
-	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
+	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");

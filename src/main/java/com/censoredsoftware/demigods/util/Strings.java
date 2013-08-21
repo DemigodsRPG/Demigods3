@@ -1,9 +1,11 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.Collection;
-
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+
+import java.util.Collection;
 
 public class Strings
 {
@@ -31,14 +33,19 @@ public class Strings
 	/**
 	 * Returns true if the <code>string</code> contains any of the strings held in the <code>collection</code>.
 	 * 
-	 * @param string the string to check.
+	 * @param check the string to check.
 	 * @param collection the collection given.
 	 */
-	public static boolean containsAnyInCollection(String string, Collection<String> collection)
+	public static boolean containsAnyInCollection(final String check, Collection<String> collection)
 	{
-		for(String check : collection)
-			if(StringUtils.containsIgnoreCase(string, check)) return true;
-		return false;
+		return Iterables.any(collection, new Predicate<String>()
+		{
+			@Override
+			public boolean apply(String string)
+			{
+				return StringUtils.containsIgnoreCase(check, string);
+			}
+		});
 	}
 
 	/**
@@ -55,11 +62,7 @@ public class Strings
 		char[] characters = string.toCharArray();
 		for(char character : characters)
 		{
-			if(allCaps.contains("" + character))
-			{
-				count++;
-			}
-
+			if(allCaps.contains("" + character)) count++;
 			if(count > max) return true;
 		}
 		return false;

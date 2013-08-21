@@ -1,10 +1,19 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,20 +37,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -82,9 +81,7 @@ public class Prayer implements ListedConversation
 		public static Menu getFromId(char id)
 		{
 			for(Menu menu : Menu.values())
-			{
 				if(menu.getId() == id) return menu;
-			}
 			return null;
 		}
 	}
@@ -144,17 +141,13 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
 			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_INTRO))
-			{
 				player.sendRawMessage(message);
-			}
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
 			player.sendRawMessage(" ");
 
 			for(Menu menu : Menu.values())
-			{
 				if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName());
-			}
 
 			return "";
 		}
@@ -244,9 +237,7 @@ public class Prayer implements ListedConversation
 
 				// List them
 				for(Translation.Text notification : notifications)
-				{
 					player.sendRawMessage("  " + Demigods.language.getText(notification));
-				}
 
 				// Remove them
 				notifications.clear();
@@ -305,14 +296,8 @@ public class Prayer implements ListedConversation
 				notifications.add(Translation.Text.NOTIFICATION_WARP_DELETED);
 
 				// Remove the warp/invite
-				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase()))
-				{
-					character.getMeta().removeWarp(arg1);
-				}
-				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase()))
-				{
-					character.getMeta().removeInvite(arg1);
-				}
+				if(character.getMeta().getWarps().containsKey(arg1.toLowerCase())) character.getMeta().removeWarp(arg1);
+				else if(character.getMeta().getInvites().containsKey(arg1.toLowerCase())) character.getMeta().removeInvite(arg1);
 
 				// Return to view warps
 				return new ViewWarps();
@@ -412,9 +397,7 @@ public class Prayer implements ListedConversation
 
 			player.sendRawMessage(" ");
 			for(String message : Demigods.language.getTextBlock(Translation.Text.NOTIFICATIONS_PRAYER_FOOTER))
-			{
 				player.sendRawMessage(message);
-			}
 
 			return "";
 		}
@@ -440,9 +423,7 @@ public class Prayer implements ListedConversation
 			{
 				// Clear them
 				for(String string : character.getMeta().getNotifications())
-				{
 					Notification.remove(Notification.Util.load(UUID.fromString(string)));
-				}
 				character.getMeta().clearNotifications();
 
 				// Send to the menu
@@ -481,10 +462,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(" ");
 
 			for(DCharacter character : DPlayer.Util.getPlayer(player).getCharacters())
-			{
-				if(!character.isUsable()) continue;
 				player.sendRawMessage((character.isActive() ? ChatColor.LIGHT_PURPLE : ChatColor.GRAY) + "    " + character.getName() + ChatColor.GRAY + " [" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.GRAY + " / Fav: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") / Asc: " + ChatColor.GREEN + character.getMeta().getAscensions() + ChatColor.GRAY + "]");
-			}
 
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "<character name> info" + ChatColor.GRAY + " for detailed information or");
@@ -511,19 +489,13 @@ public class Prayer implements ListedConversation
 			String arg0 = message.split(" ")[0];
 			String arg1 = message.split(" ").length == 2 ? message.split(" ")[1] : "";
 
-			if(message.equalsIgnoreCase("menu"))
-			{
-				return new StartPrayer();
-			}
+			if(message.equalsIgnoreCase("menu")) return new StartPrayer();
 			if(arg1.equalsIgnoreCase("info"))
 			{
 				context.setSessionData("viewing_character", arg0);
 				return new DetailedInfo();
 			}
-			else if(arg1.equalsIgnoreCase("switch"))
-			{
-				DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(arg0));
-			}
+			else if(arg1.equalsIgnoreCase("switch")) DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(arg0));
 			return null;
 		}
 
@@ -552,10 +524,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
 				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
-				if(character.isActive())
-				{
-					player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters.");
-				}
+				if(character.isActive()) player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters.");
 				else
 				{
 					player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters or type " + ChatColor.YELLOW + "switch");
@@ -577,14 +546,8 @@ public class Prayer implements ListedConversation
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.equalsIgnoreCase("back"))
-				{
-					return new ViewCharacters();
-				}
-				else if(message.equalsIgnoreCase("switch"))
-				{
-					DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
-				}
+				if(message.equalsIgnoreCase("back")) return new ViewCharacters();
+				else if(message.equalsIgnoreCase("switch")) DPlayer.Util.getPlayer((Player) context.getForWhom()).switchCharacter(DCharacter.Util.getCharacterByName(context.getSessionData("viewing_character").toString()));
 				return null;
 			}
 		}
@@ -634,10 +597,7 @@ public class Prayer implements ListedConversation
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.equalsIgnoreCase("n"))
-			{
-				return new StartPrayer();
-			}
+			if(message.equalsIgnoreCase("n")) return new StartPrayer();
 			else if(message.equalsIgnoreCase("y"))
 			{
 				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
@@ -654,9 +614,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "  before forsaking:");
 				player.sendRawMessage(" ");
 				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-				{
 					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-				}
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Return to an Altar after obtaining these items to finish");
 				player.sendRawMessage(ChatColor.GRAY + "  forsaking.");
@@ -704,9 +662,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory? " + ChatColor.GRAY + "(y/n)");
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-			{
 				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-			}
 
 			return "";
 		}
@@ -814,22 +770,10 @@ public class Prayer implements ListedConversation
 					List<Translation.Text> errors = Lists.newArrayList();
 
 					// Check the errors
-					if(name.length() < 4 || name.length() >= 14)
-					{
-						errors.add(Translation.Text.ERROR_NAME_LENGTH);
-					}
-					if(!StringUtils.isAlphanumeric(name))
-					{
-						errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
-					}
-					if(Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")))
-					{
-						errors.add(Translation.Text.ERROR_MAX_CAPS);
-					}
-					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.language.getBlackList()))
-					{
-						errors.add(Translation.Text.ERROR_CHAR_EXISTS);
-					}
+					if(name.length() < 4 || name.length() >= 14) errors.add(Translation.Text.ERROR_NAME_LENGTH);
+					if(!StringUtils.isAlphanumeric(name)) errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
+					if(Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name"))) errors.add(Translation.Text.ERROR_MAX_CAPS);
+					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.language.getBlackList())) errors.add(Translation.Text.ERROR_CHAR_EXISTS);
 
 					// Save the info
 					context.setSessionData("name_errors", errors);
@@ -891,12 +835,8 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(" ");
 
 				for(String alliance : Deity.Util.getLoadedDeityAlliances())
-				{
 					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
-					{
 						if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " (" + alliance + ")");
-					}
-				}
 
 				return "";
 			}
@@ -946,9 +886,7 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
 					for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
-					{
 						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-					}
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
 					player.sendRawMessage(ChatColor.GRAY + "  confirm your new character.");
@@ -1002,9 +940,7 @@ public class Prayer implements ListedConversation
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
-			{
 				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-			}
 			return "";
 		}
 
@@ -1045,9 +981,7 @@ public class Prayer implements ListedConversation
 					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
 						for(String message : Demigods.language.getTextBlock(Translation.Text.PVP_NO_PRAYER))
-						{
 							player.sendMessage(message);
-						}
 						event.setCancelled(true);
 						return;
 					}
@@ -1057,9 +991,7 @@ public class Prayer implements ListedConversation
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
-					{
 						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.language.getText(Translation.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
-					}
 				}
 				else if(DPlayer.Util.isPraying(player))
 				{
@@ -1209,10 +1141,7 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius"))
-			{
-				DPlayer.Util.togglePraying(player, false);
-			}
+			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
 		}
 	}
 }

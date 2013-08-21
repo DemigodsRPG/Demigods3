@@ -15,6 +15,8 @@ import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Structures;
 import com.censoredsoftware.errornoise.ErrorNoise;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
@@ -23,6 +25,7 @@ import org.bukkit.World;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.mcstats.Metrics;
 
 import java.util.Set;
 
@@ -75,7 +78,7 @@ public class Demigods
 		// Initialize metrics
 		try
 		{
-			// (new Metrics(instance)).start();
+			(new Metrics(instance)).start();
 		}
 		catch(Exception ignored)
 		{}
@@ -94,13 +97,18 @@ public class Demigods
 		if(isRunningSpigot()) message.info(("Spigot found, will use extra API features."));
 	}
 
-	public static boolean loadWorlds(DemigodsPlugin instance)
+	public static boolean loadWorlds(final DemigodsPlugin instance)
 	{
 		disabledWorlds = Sets.newHashSet();
-		for(String world : config.getSettingArrayListString("restrictions.disabled_worlds"))
+		for(String world : Collections2.filter(config.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
 		{
+			@Override
+			public boolean apply(String world)
+			{
+				return instance.getServer().getWorld(world) != null;
+			}
+		}))
 			if(instance.getServer().getWorld(world) != null) disabledWorlds.add(world);
-		}
 		if(instance.getServer().getWorlds().size() == disabledWorlds.size()) return false;
 		return true;
 	}
@@ -126,25 +134,38 @@ public class Demigods
 		for(Elements.ListedDeity deity : Elements.Deities.values())
 		{
 			if(deity.getDeity().getAbilities() == null) continue;
-			for(Ability ability : deity.getDeity().getAbilities())
+			for(Ability ability : Sets.filter(deity.getDeity().getAbilities(), new Predicate<Ability>()
 			{
-				if(ability.getListener() != null) register.registerEvents(ability.getListener(), instance);
-			}
+				@Override
+				public boolean apply(Ability ability)
+				{
+					return ability.getListener() != null;
+				}
+			}))
+				register.registerEvents(ability.getListener(), instance);
 		}
 
 		// Structures
-		for(Elements.ListedStructure structure : Elements.Structures.values())
+		for(Elements.ListedStructure structure : Sets.filter(Sets.newHashSet(Elements.Structures.values()), new Predicate<Elements.Structures>()
 		{
-			if(structure.getStructure().getUniqueListener() == null) continue;
+			@Override
+			public boolean apply(Elements.Structures structure)
+			{
+				return structure.getStructure().getUniqueListener() == null;
+			}
+		}))
 			register.registerEvents(structure.getStructure().getUniqueListener(), instance);
-		}
 
 		// Conversations
-		for(ListedConversation.ConversationData conversation : Elements.Conversations.values())
+		for(ListedConversation.ConversationData conversation : Sets.filter(Sets.newHashSet(Elements.Conversations.values()), new Predicate<Elements.Conversations>()
 		{
-			if(conversation.getConversation().getUniqueListener() == null) continue;
+			@Override
+			public boolean apply(Elements.Conversations conversation)
+			{
+				return conversation.getConversation().getUniqueListener() == null;
+			}
+		}))
 			register.registerEvents(conversation.getConversation().getUniqueListener(), instance);
-		}
 	}
 
 	protected static void loadCommands(DemigodsPlugin instance)

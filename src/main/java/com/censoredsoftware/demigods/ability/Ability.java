@@ -740,6 +740,10 @@ public interface Ability
 					}
 				}
 			}
+
+			/*
+			 * This code below MAY cause issues, it should be watched whenever something is changed.
+			 */
 			EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);
 			Bukkit.getPluginManager().callEvent(event);
 			if(amount >= 1 && !event.isCancelled())

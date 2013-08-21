@@ -20,10 +20,7 @@ public class EntityListener implements Listener
 	public static void damageEvent(EntityDamageEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
-		if(event.getEntity() instanceof Player)
-		{
-			if(!Battle.Util.canTarget(Battle.Util.defineParticipant(event.getEntity()))) event.setCancelled(true);
-		}
+		if(event.getEntity() instanceof Player && !Battle.Util.canTarget(Battle.Util.defineParticipant(event.getEntity()))) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -46,10 +43,7 @@ public class EntityListener implements Listener
 				return;
 			}
 
-			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getTameable((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getTameable((LivingEntity) attacked).getOwner()))
-			{
-				event.setCancelled(true);
-			}
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getTameable((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getTameable((LivingEntity) attacked).getOwner())) event.setCancelled(true);
 		}
 	}
 
@@ -62,23 +56,7 @@ public class EntityListener implements Listener
 		{
 			Player player = (Player) event.getEntity();
 			DCharacter playerChar = DPlayer.Util.getPlayer(player).getCurrent();
-
-			EntityDamageEvent damageEvent = player.getLastDamageCause();
-
-			if(damageEvent instanceof EntityDamageByEntityEvent) // TODO Replaced by battles.
-			{
-				EntityDamageByEntityEvent damageByEvent = (EntityDamageByEntityEvent) damageEvent;
-				Entity damager = damageByEvent.getDamager();
-
-				if(damager instanceof Player)
-				{
-					Player attacker = (Player) damager;
-					DCharacter attackChar = DPlayer.Util.getPlayer(attacker).getCurrent();
-					if(attackChar != null && playerChar != null && DCharacter.Util.areAllied(attackChar, playerChar)) DCharacter.Util.onCharacterBetrayCharacter(attackChar, playerChar);
-					else DCharacter.Util.onCharacterKillCharacter(attackChar, playerChar);
-				}
-			}
-			else playerChar.addDeath();
+			playerChar.addDeath();
 		}
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{

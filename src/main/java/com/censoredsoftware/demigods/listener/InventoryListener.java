@@ -1,7 +1,9 @@
 package com.censoredsoftware.demigods.listener;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,10 +15,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import java.util.UUID;
 
 public class InventoryListener implements Listener
 {
@@ -59,9 +58,7 @@ public class InventoryListener implements Listener
 
 		// Remove the bound items from the drops
 		for(String bind : character.getMeta().getBinds())
-		{
 			event.getDrops().remove(Ability.Util.loadBind(UUID.fromString(bind)));
-		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

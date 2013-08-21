@@ -39,7 +39,7 @@ public class Zones
 	 * @param location the location to check.
 	 * @return true/false depending on the position of the <code>player</code>.
 	 */
-	public static boolean zoneNoBuild(Player player, Location location)
+	public static boolean zoneNoBuild(Player player, Location location) // TODO BROKEN
 	{
 		if(Demigods.worldguard != null && !Demigods.worldguard.canBuild(player, location)) return true;
 		Structure.Save save = Structures.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);

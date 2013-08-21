@@ -12,11 +12,9 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Spigots;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -245,15 +243,21 @@ public class Battle implements ConfigurationSerializable
 
 	public Set<Participant> getParticipants()
 	{
-		return new HashSet<Participant>()
+		return Sets.union(Sets.newHashSet(Collections2.transform(involvedPlayers, new Function<String, Participant>()
 		{
+			@Override
+			public Participant apply(String character)
 			{
-				for(String character : involvedPlayers)
-					add(DCharacter.Util.load(UUID.fromString(character)));
-				for(String tamable : involvedTameable)
-					add(Pet.Util.load(UUID.fromString(tamable)));
+				return DCharacter.Util.load(UUID.fromString(character));
 			}
-		};
+		})), Sets.newHashSet(Collections2.transform(involvedTameable, new Function<String, Participant>()
+		{
+			@Override
+			public Participant apply(String tamable)
+			{
+				return Pet.Util.load(UUID.fromString(tamable));
+			}
+		})));
 	}
 
 	public int getKillCounter()
@@ -386,28 +390,51 @@ public class Battle implements ConfigurationSerializable
 			return getInRadius(location) != null;
 		}
 
-		public static Battle getInRadius(Location location)
+		public static Battle getInRadius(final Location location)
 		{
-			for(Battle battle : getAllActive())
+			try
 			{
-				if(battle.getStartLocation().distance(location) <= battle.getRange()) return battle;
+				return Iterators.find(getAllActive().iterator(), new Predicate<Battle>()
+				{
+					@Override
+					public boolean apply(Battle battle)
+					{
+						return battle.getStartLocation().distance(location) <= battle.getRange();
+					}
+				});
 			}
+			catch(NoSuchElementException ignored)
+			{}
 			return null;
 		}
 
-		public static boolean isInBattle(Participant participant)
+		public static boolean isInBattle(final Participant participant)
 		{
-			for(Battle battle : getAllActive())
+			return Iterators.any(getAllActive().iterator(), new Predicate<Battle>()
 			{
-				if(battle.getParticipants().contains(participant)) return true;
-			}
-			return false;
+				@Override
+				public boolean apply(Battle battle)
+				{
+					return battle.getParticipants().contains(participant);
+				}
+			});
 		}
 
-		public static Battle getBattle(Participant participant)
+		public static Battle getBattle(final Participant participant)
 		{
-			for(Battle battle : getAllActive())
-				if(battle.getParticipants().contains(participant)) return battle;
+			try
+			{
+				return Iterators.find(getAllActive().iterator(), new Predicate<Battle>()
+				{
+					@Override
+					public boolean apply(Battle battle)
+					{
+						return battle.getParticipants().contains(participant);
+					}
+				});
+			}
+			catch(NoSuchElementException ignored)
+			{}
 			return null;
 		}
 
@@ -416,28 +443,41 @@ public class Battle implements ConfigurationSerializable
 			return getNear(location) != null;
 		}
 
-		public static Battle getNear(Location location)
+		public static Battle getNear(final Location location)
 		{
-			for(Battle battle : getAllActive())
+			try
 			{
-				double distance = battle.getStartLocation().distance(location);
-				if(distance > battle.getRange() && distance <= Demigods.config.getSettingInt("battles.merge_range")) return battle;
+				return Iterators.find(getAllActive().iterator(), new Predicate<Battle>()
+				{
+					@Override
+					public boolean apply(Battle battle)
+					{
+						double distance = battle.getStartLocation().distance(location);
+						return distance > battle.getRange() && distance <= Demigods.config.getSettingInt("battles.merge_range");
+					}
+				});
 			}
+			catch(NoSuchElementException ignored)
+			{}
 			return null;
 		}
 
-		public static Set<Location> battleBorder(final Battle battle)
+		public static Collection<Location> battleBorder(final Battle battle)
 		{
 			if(!Demigods.isRunningSpigot()) throw new SpigotNotFoundException();
-			return new HashSet<Location>()
+			return Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
 			{
+				@Override
+				public Location apply(Location point)
 				{
-					for(Location point : DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120))
-						add(new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ()));
+					return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
 				}
-			};
+			});
 		}
 
+		/*
+		 * This is completely broken. TODO
+		 */
 		public static Location randomRespawnPoint(Battle battle)
 		{
 			List<Location> respawnPoints = getSafeRespawnPoints(battle);
@@ -457,6 +497,9 @@ public class Battle implements ConfigurationSerializable
 			return changed;
 		}
 
+		/*
+		 * This is completely broken. TODO
+		 */
 		public static boolean isSafeLocation(Location reference, Location checking)
 		{
 			if(checking.getBlock().getType().isSolid() || checking.getBlock().getType().equals(Material.LAVA)) return false;
@@ -467,13 +510,21 @@ public class Battle implements ConfigurationSerializable
 
 		public static List<Location> getSafeRespawnPoints(final Battle battle)
 		{
-			return new ArrayList<Location>()
+			return Lists.newArrayList(Collections2.filter(Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>()
 			{
+				@Override
+				public Location apply(Location point)
 				{
-					for(Location location : DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 20))
-						if(isSafeLocation(battle.getStartLocation(), location)) add(location);
+					return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
 				}
-			};
+			}), new Predicate<Location>()
+			{
+				@Override
+				public boolean apply(Location location)
+				{
+					return isSafeLocation(battle.getStartLocation(), location);
+				}
+			}));
 		}
 
 		public static boolean canParticipate(Entity entity)
@@ -542,13 +593,27 @@ public class Battle implements ConfigurationSerializable
 		 */
 		public static void updateBattles()
 		{
-			// Battle onTick logic
-			for(Battle battle : Battle.Util.getAllActive())
-				if(battle.getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() > battle.getMinKills()) battle.end();
+			// End all active battles that should end.
+			for(Battle battle : Collections2.filter(Battle.Util.getAllActive(), new Predicate<Battle>()
+			{
+				@Override
+				public boolean apply(Battle battle)
+				{
+					return battle.getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() > battle.getMinKills();
+				}
+			}))
+				battle.end();
 
-			// Delete all inactive battles
-			for(Battle remove : Battle.Util.getAllInactive())
-				if(remove.getDeleteTime() >= System.currentTimeMillis()) remove.delete();
+			// Delete all inactive battles that should be deleted.
+			for(Battle battle : Collections2.filter(Battle.Util.getAllInactive(), new Predicate<Battle>()
+			{
+				@Override
+				public boolean apply(Battle battle)
+				{
+					return battle.getDeleteTime() >= System.currentTimeMillis();
+				}
+			}))
+				battle.delete();
 		}
 	}
 }

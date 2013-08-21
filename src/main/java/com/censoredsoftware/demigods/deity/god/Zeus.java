@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.deity.god;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Shove;
@@ -19,6 +11,13 @@ import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Zeus implements Deity
 {
@@ -26,7 +25,7 @@ public class Zeus implements Deity
 	private final static ChatColor color = ChatColor.YELLOW;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 10));
-	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
+	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");

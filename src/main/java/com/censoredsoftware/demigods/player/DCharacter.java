@@ -7,16 +7,12 @@ import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.item.DItemStack;
-import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1165,10 +1161,21 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				character.updateUseable();
 		}
 
-		public static DCharacter getCharacterByName(String name)
+		public static DCharacter getCharacterByName(final String name)
 		{
-			for(DCharacter loaded : loadAll())
-				if(loaded.getName().equalsIgnoreCase(name)) return loaded;
+			try
+			{
+				Iterators.find(loadAll().iterator(), new Predicate<DCharacter>()
+				{
+					@Override
+					public boolean apply(DCharacter loaded)
+					{
+						return loaded.getName().equalsIgnoreCase(name);
+					}
+				});
+			}
+			catch(NoSuchElementException ignored)
+			{}
 			return null;
 		}
 
@@ -1197,37 +1204,16 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString());
 		}
 
-		public static Set<DCharacter> getAllActive() // TODO Redo this.
+		public static Set<DCharacter> getAllActive()
 		{
-			Set<DCharacter> active = Sets.newHashSet();
-			for(DCharacter character : loadAll())
-				if(character.isActive()) active.add(character);
-			return active;
-		}
-
-		// TODO Remake this.
-		public static void onCharacterKillCharacter(DCharacter attacker, DCharacter killed)
-		{
-			String attackerAlliance = "Mortal";
-			if(attacker != null) attackerAlliance = attacker.getAlliance();
-			String killedAlliance = "Mortal";
-			if(killed != null) killedAlliance = killed.getAlliance();
-
-			if(attacker != null) attacker.addKill();
-
-			if(killed == null) Demigods.message.broadcast(Demigods.language.getText(Translation.Text.MORTAL_SLAIN_2).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.DEMI_SLAIN_2).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{killedAlliance}", killedAlliance).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{attackerAlliance}", attackerAlliance));
-		}
-
-		// TODO Remake this.
-		public static void onCharacterBetrayCharacter(DCharacter attacker, DCharacter killed)
-		{
-			String alliance = attacker.getAlliance();
-
-			// TODO: Punishments.
-
-			if(!alliance.equals("Mortal")) Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.DEMI_BETRAY).replace("{killed}", ChatColor.YELLOW + killed.getName() + ChatColor.GRAY).replace("{attacker}", ChatColor.YELLOW + attacker.getName() + ChatColor.GRAY).replace("{alliance}", alliance));
-			else Demigods.message.broadcast(ChatColor.GRAY + Demigods.language.getText(Translation.Text.MORTAL_BETRAY));
+			return Sets.filter(loadAll(), new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isActive();
+				}
+			});
 		}
 
 		/**

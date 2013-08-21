@@ -1,18 +1,21 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Deity
 {
@@ -48,28 +51,33 @@ public interface Deity
 	{
 		public static Set<String> getLoadedDeityAlliances()
 		{
-			return new HashSet<String>()
+			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Elements.Deities.values()), new Function<Elements.Deities, String>()
 			{
+				@Override
+				public String apply(Elements.Deities d)
 				{
-					for(Elements.ListedDeity deity : Elements.Deities.values())
-					{
-						if(!contains(deity.getDeity().getAlliance())) add(deity.getDeity().getAlliance());
-					}
+					return d.getDeity().getAlliance();
 				}
-			};
+			}));
 		}
 
-		public static Set<Deity> getAllDeitiesInAlliance(final String alliance)
+		public static Collection<Deity> getAllDeitiesInAlliance(final String alliance)
 		{
-			return new HashSet<Deity>()
+			return Collections2.filter(Collections2.transform(Sets.newHashSet(Elements.Deities.values()), new Function<Elements.Deities, Deity>()
 			{
+				@Override
+				public Deity apply(Elements.Deities d)
 				{
-					for(Elements.ListedDeity deity : Elements.Deities.values())
-					{
-						if(deity.getDeity().getAlliance().equalsIgnoreCase(alliance)) add(deity.getDeity());
-					}
+					return d.getDeity();
 				}
-			};
+			}), new Predicate<Deity>()
+			{
+				@Override
+				public boolean apply(Deity d)
+				{
+					return d.getAlliance().equalsIgnoreCase(alliance);
+				}
+			});
 		}
 
 		public static Deity getDeity(String deity)

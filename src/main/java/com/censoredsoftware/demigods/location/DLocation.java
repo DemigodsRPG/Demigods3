@@ -4,6 +4,8 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.util.Randoms;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -224,10 +226,21 @@ public class DLocation implements ConfigurationSerializable
 			return Sets.newHashSet(DataManager.locations.values());
 		}
 
-		public static DLocation get(Location location)
+		public static DLocation get(final Location location)
 		{
-			for(DLocation tracked : loadAll())
-				if(location.getX() == tracked.getX() && location.getY() == tracked.getY() && location.getBlockZ() == tracked.getZ() && location.getWorld().getName().equals(tracked.getWorld())) return tracked;
+			try
+			{
+				return Iterators.find(loadAll().iterator(), new Predicate<DLocation>()
+				{
+					@Override
+					public boolean apply(DLocation tracked)
+					{
+						return location.getX() == tracked.getX() && location.getY() == tracked.getY() && location.getBlockZ() == tracked.getZ() && location.getWorld().getName().equals(tracked.getWorld());
+					}
+				});
+			}
+			catch(NoSuchElementException ignored)
+			{}
 			return create(location);
 		}
 

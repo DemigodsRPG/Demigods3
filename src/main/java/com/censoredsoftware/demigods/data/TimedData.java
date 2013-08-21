@@ -106,18 +106,9 @@ public class TimedData implements ConfigurationSerializable
 
 	public Object getData()
 	{
-		if(this.type.equalsIgnoreCase("string"))
-		{
-			return this.data;
-		}
-		if(this.type.equalsIgnoreCase("integer"))
-		{
-			return Integer.parseInt(this.data);
-		}
-		if(this.type.equalsIgnoreCase("boolean"))
-		{
-			return Boolean.parseBoolean(this.data);
-		}
+		if(this.type.equalsIgnoreCase("string")) return this.data;
+		if(this.type.equalsIgnoreCase("integer")) return Integer.parseInt(this.data);
+		if(this.type.equalsIgnoreCase("boolean")) return Boolean.parseBoolean(this.data);
 		return this.data;
 	}
 
@@ -244,10 +235,15 @@ public class TimedData implements ConfigurationSerializable
 		 */
 		public static void updateTimedData()
 		{
-			for(TimedData data : TimedData.Util.getAll())
+			for(TimedData data : Collections2.filter(TimedData.Util.getAll(), new Predicate<TimedData>()
 			{
-				if(data.getExpiration() <= System.currentTimeMillis()) data.delete();
-			}
+				@Override
+				public boolean apply(TimedData data)
+				{
+					return data.getExpiration() <= System.currentTimeMillis();
+				}
+			}))
+				data.delete();
 		}
 	}
 }

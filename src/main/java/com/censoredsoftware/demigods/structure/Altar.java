@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -270,9 +271,7 @@ public class Altar implements Structure
 		public static AltarDesign getByName(String name)
 		{
 			for(AltarDesign design : AltarDesign.values())
-			{
 				if(design.getName().equalsIgnoreCase(name)) return design;
-			}
 			return null;
 		}
 	}
@@ -358,14 +357,17 @@ public class Altar implements Structure
 		}
 	}
 
-	public static boolean altarNearby(Location location)
+	public static boolean altarNearby(final Location location)
 	{
-		int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
-		for(Save structureSave : Elements.Structures.ALTAR.getStructure().getAll())
+		final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
+		return Iterables.any(Elements.Structures.ALTAR.getStructure().getAll(), new Predicate<Save>()
 		{
-			if(structureSave.getReferenceLocation().distance(location) <= distance) return true;
-		}
-		return false;
+			@Override
+			public boolean apply(Save save)
+			{
+				return save.getReferenceLocation().distance(location) <= distance;
+			}
+		});
 	}
 
 	public static class Listener implements org.bukkit.event.Listener
@@ -400,15 +402,7 @@ public class Altar implements Structure
 							public void run()
 							{
 								for(Entity entity : event.getWorld().getEntities())
-								{
-									if(entity instanceof Player)
-									{
-										if(entity.getLocation().distance(location) < 400)
-										{
-											((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + Demigods.language.getText(Translation.Text.ALTAR_SPAWNED_NEAR));
-										}
-									}
-								}
+									if(entity instanceof Player && entity.getLocation().distance(location) < 400) ((Player) entity).sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + Demigods.language.getText(Translation.Text.ALTAR_SPAWNED_NEAR));
 							}
 						}, 1);
 					}

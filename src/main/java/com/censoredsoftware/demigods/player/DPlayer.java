@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -27,6 +13,19 @@ import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -380,13 +379,8 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static boolean hasCharName(OfflinePlayer player, String charName)
 		{
-			final Set<DCharacter> characters = getPlayer(player).getCharacters();
-
-			for(DCharacter character : characters)
-			{
-				if(character == null) continue;
+			for(DCharacter character : getPlayer(player).getCharacters())
 				if(character.getName().equalsIgnoreCase(charName)) return true;
-			}
 			return false;
 		}
 

@@ -24,7 +24,7 @@ public class Poseidon implements Deity
 	private final static ChatColor color = ChatColor.AQUA;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.INK_SACK, 4));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.WATER_BUCKET, 4));
-	private final static List<String> lore = new ArrayList<String>(5 + claimItems.size())
+	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");

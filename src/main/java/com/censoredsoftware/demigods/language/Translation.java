@@ -1,33 +1,32 @@
 package com.censoredsoftware.demigods.language;
 
-import java.util.*;
-
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.bukkit.ChatColor;
+
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Translation
 {
-	private static File translationYAML;
+	// private static File translationYAML;
 	private static Map<String, Object> translation;
 
 	public Translation()
 	{
-		String language = Demigods.config.getSettingString("language").toLowerCase();
-		if(!language.equals("english")) try
-		{
-			translationYAML = new File(language);
-			translation = translationYAML.loadFromFile();
-			return;
-		}
-		catch(Throwable ignored)
-		{}
+		/*
+		 * Turned off for now. TODO
+		 * String language = Demigods.config.getSettingString("language").toLowerCase();
+		 * if(!language.equals("english")) try
+		 * {
+		 * translationYAML = new File(language);
+		 * translation = translationYAML.loadFromFile();
+		 * return;
+		 * }
+		 * catch(Throwable ignored)
+		 * {}
+		 */
 		translation = Maps.newHashMap();
 	}
 
@@ -95,37 +94,40 @@ public class Translation
 		};
 	}
 
-	public static class File extends ConfigFile
-	{
-		private static String LANGUAGE_PATH;
-		private static String TRANSLATION_FILE;
-
-		public File(String translation)
-		{
-			super(Demigods.plugin);
-			TRANSLATION_FILE = translation + ".yml";
-			LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/lang/";
-		}
-
-		@Override
-		public Map<String, Object> loadFromFile()
-		{
-			final FileConfiguration data = getData(LANGUAGE_PATH, TRANSLATION_FILE);
-			return new HashMap<String, Object>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(stringId, data.get(stringId));
-				}
-			};
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			return true;
-		}
-	}
+	/*
+	 * Turned off for now TODO
+	 * public static class File extends ConfigFile
+	 * {
+	 * private static String LANGUAGE_PATH;
+	 * private static String TRANSLATION_FILE;
+	 * 
+	 * public File(String translation)
+	 * {
+	 * super(Demigods.plugin);
+	 * TRANSLATION_FILE = translation + ".yml";
+	 * LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/lang/";
+	 * }
+	 * 
+	 * @Override
+	 * public Map<String, Object> loadFromFile()
+	 * {
+	 * final FileConfiguration data = getData(LANGUAGE_PATH, TRANSLATION_FILE);
+	 * return new HashMap<String, Object>()
+	 * {
+	 * {
+	 * for(String stringId : data.getKeys(false))
+	 * put(stringId, data.get(stringId));
+	 * }
+	 * };
+	 * }
+	 * 
+	 * @Override
+	 * public boolean saveToFile()
+	 * {
+	 * return true;
+	 * }
+	 * }
+	 */
 
 	public static enum Text
 	{
