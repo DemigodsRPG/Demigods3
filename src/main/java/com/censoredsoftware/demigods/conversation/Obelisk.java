@@ -288,6 +288,7 @@ public class Obelisk implements ListedConversation
 			// First we check if the player is clicking a no grief block block
 			if(Structures.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING))
 			{
+				player.sendRawMessage(ChatColor.RED + "Obelisk.");
 				if(!DPlayer.Util.isPraying(player))
 				{
 					// Toggle praying
