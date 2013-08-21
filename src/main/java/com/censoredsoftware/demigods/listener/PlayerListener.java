@@ -1,9 +1,12 @@
 package com.censoredsoftware.demigods.listener;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.item.Book;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener
 {
@@ -58,6 +62,20 @@ public class PlayerListener implements Listener
 			player.sendMessage(size == 1 ? ChatColor.GREEN + "You have an unread notification!" : ChatColor.GREEN + "You have " + size + " unread notifications!");
 			player.sendMessage(ChatColor.GRAY + "Find an Altar to view your notifications.");
 		}
+
+		// Remove temp battle data
+		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle"))
+		{
+			DataManager.removeTemp(player.getName(), "quit_during_battle");
+			player.sendMessage(ChatColor.YELLOW + "Welcome back! You are currently in a battle.");
+		}
+
+		// Alert of losing battle due to leaving
+		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle_final"))
+		{
+			DataManager.removeTemp(player.getName(), "quit_during_battle_final");
+			player.sendMessage(ChatColor.RED + "You left the game during a battle, and have lost.");
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -69,7 +87,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
-		String name = event.getPlayer().getName();
+		final String name = event.getPlayer().getName();
 		String message = ChatColor.YELLOW + name + " has left the game.";
 		switch(Demigods.plugin.getLatestQuitReason())
 		{
@@ -93,12 +111,36 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
-		DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-		if(loggingOff != null) loggingOff.setLocation(event.getPlayer().getLocation());
+		final DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		if(loggingOff != null)
+		{
+			loggingOff.setLocation(event.getPlayer().getLocation());
+			if(Battle.Util.isInBattle(loggingOff))
+			{
+				Battle battle = Battle.Util.getBattle(loggingOff);
+				battle.addDeath(loggingOff);
+				DataManager.saveTemp(name, "quit_during_battle", true);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+				{
+					@Override
+					public void run()
+					{
+						if(!Bukkit.getOfflinePlayer(name).isOnline() && DataManager.hasKeyTemp(name, "quit_during_battle"))
+						{
+							Battle battle = Battle.Util.getBattle(loggingOff);
+							battle.removeParticipant(loggingOff);
+							DataManager.removeTemp(name, "quit_during_battle");
+							battle.sendMessage(ChatColor.YELLOW + loggingOff.getName() + " has left the battle.");
+							DataManager.saveTemp(name, "quit_during_battle_final", true);
+						}
+					}
+				}, 200);
+			}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerRespawn(PlayerRespawnEvent event) // TODO Is this working?
+	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
 		DPlayer wrapper = DPlayer.Util.getPlayer(event.getPlayer());

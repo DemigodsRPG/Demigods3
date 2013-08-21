@@ -15,10 +15,7 @@ import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -219,6 +216,13 @@ public class Battle implements ConfigurationSerializable
 		Util.save(this);
 	}
 
+	public void removeParticipant(Participant participant)
+	{
+		if(participant instanceof DCharacter) this.involvedPlayers.remove((participant.getId().toString()));
+		else this.involvedTameable.remove(participant.getId().toString());
+		Util.save(this);
+	}
+
 	public void addKill(Participant participant)
 	{
 		this.killCounter += 1;
@@ -275,6 +279,24 @@ public class Battle implements ConfigurationSerializable
 	public void delete()
 	{
 		DataManager.battles.remove(getId());
+	}
+
+	public void sendMessage(String message)
+	{
+		for(String stringId : involvedPlayers)
+		{
+			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendMessage(message);
+		}
+	}
+
+	public void sendRawMessage(String message)
+	{
+		for(String stringId : involvedPlayers)
+		{
+			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendRawMessage(message);
+		}
 	}
 
 	public static class File extends ConfigFile
@@ -599,7 +621,7 @@ public class Battle implements ConfigurationSerializable
 				@Override
 				public boolean apply(Battle battle)
 				{
-					return battle.getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() > battle.getMinKills();
+					return battle.getKillCounter() > battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() > battle.getMinKills() || battle.getParticipants().size() < 2;
 				}
 			}))
 				battle.end();
