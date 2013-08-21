@@ -30,7 +30,7 @@ public class PlayerListener implements Listener
 		DPlayer wrapper = DPlayer.Util.getPlayer(player);
 		DCharacter character = wrapper.getCurrent();
 
-		// Set their lastlogintime
+		// Set their last login-time
 		Long now = System.currentTimeMillis();
 		wrapper.setLastLoginTime(now);
 
@@ -137,6 +137,10 @@ public class PlayerListener implements Listener
 				}, 200);
 			}
 		}
+
+		// Set their last logout-time
+		Long now = System.currentTimeMillis();
+		DPlayer.Util.getPlayer(event.getPlayer()).setLastLogoutTime(now);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

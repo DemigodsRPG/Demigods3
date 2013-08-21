@@ -32,7 +32,7 @@ public class DPlayer implements ConfigurationSerializable
 {
 	private String player;
 	private Boolean canPvp;
-	private long lastLoginTime;
+	private long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
 	private UUID current;
 	private UUID previous;
@@ -45,7 +45,10 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		this.player = player;
 		canPvp = conf.getBoolean("canPvp");
-		lastLoginTime = conf.getLong("lastLoginTime");
+		if(conf.isLong("lastLoginTime")) lastLoginTime = conf.getLong("lastLoginTime");
+		else lastLoginTime = -1;
+		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
+		else lastLogoutTime = -1;
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
@@ -59,6 +62,7 @@ public class DPlayer implements ConfigurationSerializable
 			{
 				put("canPvp", canPvp);
 				put("lastLoginTime", lastLoginTime);
+				put("lastLogoutTime", lastLogoutTime);
 				put("currentDeityName", currentDeityName);
 				if(current != null) put("current", current.toString());
 				if(previous != null) put("previous", previous.toString());
@@ -141,7 +145,20 @@ public class DPlayer implements ConfigurationSerializable
 
 	public Long getLastLoginTime()
 	{
-		return this.lastLoginTime;
+		if(lastLoginTime != -1) return this.lastLoginTime;
+		return null;
+	}
+
+	public void setLastLogoutTime(Long time)
+	{
+		this.lastLogoutTime = time;
+		Util.save(this);
+	}
+
+	public Long getLastLogoutTime()
+	{
+		if(lastLogoutTime != -1) return this.lastLogoutTime;
+		return null;
 	}
 
 	public void switchCharacter(DCharacter newChar)
