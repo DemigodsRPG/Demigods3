@@ -73,18 +73,15 @@ public interface Structure
 		@Override
 		public Map<String, Object> serialize()
 		{
-			return new HashMap<String, Object>()
-			{
-				{
-					put("type", type);
-					put("referenceLocation", referenceLocation.toString());
-					put("flags", flags);
-					put("region", region);
-					put("design", design);
-					if(active != null) put("active", active);
-					if(owner != null) put("owner", owner.toString());
-				}
-			};
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("type", type);
+			map.put("referenceLocation", referenceLocation.toString());
+			map.put("flags", flags);
+			map.put("region", region);
+			map.put("design", design);
+			if(active != null) map.put("active", active);
+			if(owner != null) map.put("owner", owner.toString());
+			return map;
 		}
 
 		public void generateId()
@@ -239,13 +236,10 @@ public interface Structure
 			public ConcurrentHashMap<UUID, Save> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new ConcurrentHashMap<UUID, Save>()
-				{
-					{
-						for(String stringId : data.getKeys(false))
-							put(UUID.fromString(stringId), new Save(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-					}
-				};
+				ConcurrentHashMap<UUID, Save> map = new ConcurrentHashMap<UUID, Save>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new Save(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
 			}
 
 			@Override
@@ -712,15 +706,12 @@ public interface Structure
 		 */
 		public Set<Location> rangeLoop(final Location reference, final int X, final int XX, final int Y, final int YY, final int Z, final int ZZ)
 		{
-			return new HashSet<Location>()
-			{
-				{
-					for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
-						for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
-							for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
-								add(getLocation(reference, x, y, z));
-				}
-			};
+			Set<Location> set = new HashSet<Location>();
+			for(int x : Ranges.closed(X < XX ? X : XX, X < XX ? XX : X).asSet(DiscreteDomains.integers()))
+				for(int y : Ranges.closed(Y < YY ? Y : YY, Y < YY ? YY : Y).asSet(DiscreteDomains.integers()))
+					for(int z : Ranges.closed(Z < ZZ ? Z : ZZ, Z < ZZ ? ZZ : Z).asSet(DiscreteDomains.integers()))
+						set.add(getLocation(reference, x, y, z));
+			return set;
 		}
 
 		public static class BlockData

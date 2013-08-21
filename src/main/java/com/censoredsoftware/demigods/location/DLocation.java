@@ -49,18 +49,15 @@ public class DLocation implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("world", world);
-				put("X", X);
-				put("Y", Y);
-				put("Z", Z);
-				put("pitch", String.valueOf(pitch));
-				put("yaw", String.valueOf(yaw));
-				put("region", region);
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("world", world);
+		map.put("X", X);
+		map.put("Y", Y);
+		map.put("Z", Z);
+		map.put("pitch", String.valueOf(pitch));
+		map.put("yaw", String.valueOf(yaw));
+		map.put("region", region);
+		return map;
 	}
 
 	public void generateId()
@@ -159,13 +156,10 @@ public class DLocation implements ConfigurationSerializable
 		public ConcurrentHashMap<UUID, DLocation> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, DLocation>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new DLocation(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, DLocation> map = new ConcurrentHashMap<UUID, DLocation>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new DLocation(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override
@@ -310,17 +304,14 @@ public class DLocation implements ConfigurationSerializable
 			final double X = center.getX();
 			final double Y = center.getY();
 			final double Z = center.getZ();
-			return new ArrayList<Location>()
+			List<Location> list = new ArrayList<Location>();
+			for(int i = 0; i < points; i++)
 			{
-				{
-					for(int i = 0; i < points; i++)
-					{
-						double x = X + radius * Math.cos((2 * Math.PI * i) / points);
-						double z = Z + radius * Math.sin((2 * Math.PI * i) / points);
-						add(new Location(world, x, Y, z));
-					}
-				}
-			};
+				double x = X + radius * Math.cos((2 * Math.PI * i) / points);
+				double z = Z + radius * Math.sin((2 * Math.PI * i) / points);
+				list.add(new Location(world, x, Y, z));
+			}
+			return list;
 		}
 
 		public static float toDegree(double angle)

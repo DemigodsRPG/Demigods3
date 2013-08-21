@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.item;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.google.common.collect.Maps;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,10 +13,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.google.common.collect.Maps;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DItemStack implements ConfigurationSerializable // TODO: This whole thing could be swapped out with automated JSON serialization. I just need to learn how. Also this doesn't save firework meta and I doubt I add it. I'll switch it to JSON before going through all of that.
 {
@@ -61,32 +60,31 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				// Standard
-				put("typeId", typeId);
-				put("byteId", (int) byteId);
-				put("amount", amount);
-				put("durability", (int) durability);
-				if(enchantments != null) put("enchantments", enchantments);
-				if(lore != null) put("lore", lore);
+		Map<String, Object> map = new HashMap<String, Object>();
 
-				// Book
-				if(author != null) put("author", author);
-				if(title != null) put("title", title);
-				if(pages != null) put("pages", pages);
+		// Standard
+		map.put("typeId", typeId);
+		map.put("byteId", (int) byteId);
+		map.put("amount", amount);
+		map.put("durability", (int) durability);
+		if(enchantments != null) map.put("enchantments", enchantments);
+		if(lore != null) map.put("lore", lore);
 
-				// Skull
-				if(skullOwner != null) put("skullOwner", skullOwner);
+		// Book
+		if(author != null) map.put("author", author);
+		if(title != null) map.put("title", title);
+		if(pages != null) map.put("pages", pages);
 
-				// Leather
-				if(leatherColor != 0) put("leatherColor", leatherColor);
+		// Skull
+		if(skullOwner != null) map.put("skullOwner", skullOwner);
 
-				// Enchanted book
-				if(storedEnchantments != null) put("storedEnchantments", storedEnchantments);
-			}
-		};
+		// Leather
+		if(leatherColor != 0) map.put("leatherColor", leatherColor);
+
+		// Enchanted book
+		if(storedEnchantments != null) map.put("storedEnchantments", storedEnchantments);
+
+		return map;
 	}
 
 	public void generateId()
@@ -133,9 +131,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 			enchantments = Maps.newHashMap();
 
 			for(Map.Entry<Enchantment, Integer> ench : item.getEnchantments().entrySet())
-			{
 				enchantments.put(String.valueOf(ench.getKey().getId()), ench.getValue());
-			}
 		}
 	}
 
@@ -195,9 +191,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 			if(enchantmentMeta.hasStoredEnchants())
 			{
 				for(Map.Entry<Enchantment, Integer> ench : enchantmentMeta.getStoredEnchants().entrySet())
-				{
 					storedEnchantments.put(String.valueOf(ench.getKey().getId()), ench.getValue());
-				}
 			}
 		}
 	}
@@ -235,9 +229,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		if(enchantments != null && !enchantments.isEmpty())
 		{
 			for(Map.Entry<String, Object> ench : this.enchantments.entrySet())
-			{
 				item.addUnsafeEnchantment(Enchantment.getById(Integer.parseInt(ench.getKey())), Integer.parseInt(ench.getValue().toString()));
-			}
 		}
 
 		if(Material.getMaterial(typeId).equals(Material.WRITTEN_BOOK)) // If it's a book, apply the information
@@ -276,9 +268,7 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 
 			// Save the meta
 			for(Map.Entry<String, Object> ench : this.storedEnchantments.entrySet())
-			{
 				enchantmentMeta.addStoredEnchant(Enchantment.getById(Integer.parseInt(ench.getKey())), Integer.parseInt(ench.getValue().toString()), true);
-			}
 
 			item.setItemMeta(enchantmentMeta);
 		}
@@ -302,13 +292,10 @@ public class DItemStack implements ConfigurationSerializable // TODO: This whole
 		public ConcurrentHashMap<UUID, DItemStack> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, DItemStack>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new DItemStack(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, DItemStack> map = new ConcurrentHashMap<UUID, DItemStack>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new DItemStack(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

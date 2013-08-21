@@ -52,13 +52,10 @@ public class Structures
 	public static Set<Structure.Save> getStructuresInRegionalArea(Location location)
 	{
 		final Region center = Region.Util.getRegion(location);
-		return new HashSet<Structure.Save>()
-		{
-			{
-				for(Region region : center.getSurroundingRegions())
-					addAll(getStructuresInSingleRegion(region));
-			}
-		};
+		Set<Structure.Save> set = new HashSet<Structure.Save>();
+		for(Region region : center.getSurroundingRegions())
+			set.addAll(getStructuresInSingleRegion(region));
+		return set;
 	}
 
 	public static Collection<Structure.Save> getStructuresInSingleRegion(final Region region)

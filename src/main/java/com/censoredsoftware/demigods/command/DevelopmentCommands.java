@@ -4,11 +4,9 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
-import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -17,8 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class DevelopmentCommands extends ListedCommand
@@ -37,22 +33,6 @@ public class DevelopmentCommands extends ListedCommand
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		return false;
-	}
-
-	@Override
-	public List<String> processTab(CommandSender sender, Command command, final String[] args)
-	{
-		return new ArrayList<String>()
-		{
-			{
-				for(Player online : Bukkit.getOnlinePlayers())
-				{
-					DPlayer wrapper = DPlayer.Util.getPlayer(online);
-					if(wrapper.canUseCurrent() && wrapper.getCurrent() != null && wrapper.getCurrent().getName().toLowerCase().startsWith(args[0].toLowerCase())) add(wrapper.getCurrent().getName());
-					else if(online.getName().toLowerCase().startsWith(args[0].toLowerCase())) add(online.getName());
-				}
-			}
-		};
 	}
 
 	private static boolean test1(CommandSender sender, final String[] args)

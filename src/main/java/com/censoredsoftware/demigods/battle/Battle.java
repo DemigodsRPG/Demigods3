@@ -71,25 +71,22 @@ public class Battle implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("startLoc", startLoc.toString());
-				put("active", active);
-				put("range", range);
-				put("duration", duration);
-				put("minKills", minKills);
-				put("maxKills", maxKills);
-				put("startTime", startTime);
-				put("deleteTime", deleteTime);
-				put("involvedPlayers", Lists.newArrayList(involvedPlayers));
-				put("involvedTameable", Lists.newArrayList(involvedTameable));
-				put("killCounter", killCounter);
-				put("kills", kills);
-				put("deaths", deaths);
-				put("startedBy", startedBy.toString());
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("startLoc", startLoc.toString());
+		map.put("active", active);
+		map.put("range", range);
+		map.put("duration", duration);
+		map.put("minKills", minKills);
+		map.put("maxKills", maxKills);
+		map.put("startTime", startTime);
+		map.put("deleteTime", deleteTime);
+		map.put("involvedPlayers", Lists.newArrayList(involvedPlayers));
+		map.put("involvedTameable", Lists.newArrayList(involvedTameable));
+		map.put("killCounter", killCounter);
+		map.put("kills", kills);
+		map.put("deaths", deaths);
+		map.put("startedBy", startedBy.toString());
+		return map;
 	}
 
 	public void generateId()
@@ -314,13 +311,10 @@ public class Battle implements ConfigurationSerializable
 		public ConcurrentHashMap<UUID, Battle> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, Battle>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new Battle(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, Battle> map = new ConcurrentHashMap<UUID, Battle>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new Battle(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

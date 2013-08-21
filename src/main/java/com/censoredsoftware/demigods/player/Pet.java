@@ -47,16 +47,13 @@ public class Pet implements Participant, ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("entityType", entityType);
-				if(animalTamer != null) put("animalTamer", animalTamer);
-				put("PvP", PvP);
-				put("entityUUID", entityUUID.toString());
-				if(owner != null) put("owner", owner.toString());
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("entityType", entityType);
+		if(animalTamer != null) map.put("animalTamer", animalTamer);
+		map.put("PvP", PvP);
+		map.put("entityUUID", entityUUID.toString());
+		if(owner != null) map.put("owner", owner.toString());
+		return map;
 	}
 
 	public void generateId()
@@ -207,13 +204,10 @@ public class Pet implements Participant, ConfigurationSerializable
 		public ConcurrentHashMap<UUID, Pet> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, Pet>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new Pet(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, Pet> map = new ConcurrentHashMap<UUID, Pet>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new Pet(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override

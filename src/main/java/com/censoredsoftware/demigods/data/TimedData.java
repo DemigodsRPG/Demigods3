@@ -41,16 +41,13 @@ public class TimedData implements ConfigurationSerializable
 	@Override
 	public Map<String, Object> serialize()
 	{
-		return new HashMap<String, Object>()
-		{
-			{
-				put("key", key);
-				put("subKey", subKey);
-				put("data", data);
-				put("type", type);
-				put("expiration", expiration);
-			}
-		};
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("key", key);
+		map.put("subKey", subKey);
+		map.put("data", data);
+		map.put("type", type);
+		map.put("expiration", expiration);
+		return map;
 	}
 
 	public void generateId()
@@ -164,13 +161,10 @@ public class TimedData implements ConfigurationSerializable
 		public ConcurrentHashMap<UUID, TimedData> loadFromFile()
 		{
 			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			return new ConcurrentHashMap<UUID, TimedData>()
-			{
-				{
-					for(String stringId : data.getKeys(false))
-						put(UUID.fromString(stringId), new TimedData(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				}
-			};
+			ConcurrentHashMap<UUID, TimedData> map = new ConcurrentHashMap<UUID, TimedData>();
+			for(String stringId : data.getKeys(false))
+				map.put(UUID.fromString(stringId), new TimedData(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+			return map;
 		}
 
 		@Override
@@ -206,9 +200,7 @@ public class TimedData implements ConfigurationSerializable
 			if(findByKey(key) == null) return null;
 
 			for(TimedData data : findByKey(key))
-			{
 				if(data.getSubKey().equals(subKey)) return data;
-			}
 
 			return null;
 		}

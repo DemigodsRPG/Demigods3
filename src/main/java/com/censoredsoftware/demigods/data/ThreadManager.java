@@ -54,15 +54,11 @@ public class ThreadManager
 
 	private static class Util
 	{
-		/**
-		 * Returns the main sync Demigods runnable. Methods requiring the Bukkit API and a constant
-		 * update should go here.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getSyncDemigodsRunnable()
+		private final static BukkitRunnable sync, async, save, spigot, favor;
+
+		static
 		{
-			return new BukkitRunnable()
+			sync = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -79,17 +75,7 @@ public class ThreadManager
 						trigger.process().sync();
 				}
 			};
-		}
-
-		/**
-		 * Returns the main asynchronous Demigods runnable. Methods NOT requiring the Bukkit API and a constant
-		 * update should go here.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getAsyncDemigodsRunnable()
-		{
-			return new BukkitRunnable()
+			async = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -108,16 +94,7 @@ public class ThreadManager
 						trigger.process().async();
 				}
 			};
-		}
-
-		/**
-		 * Returns the runnable that handles all data saving.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getSaveRunnable()
-		{
-			return new BukkitRunnable()
+			save = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -132,16 +109,7 @@ public class ThreadManager
 					Demigods.message.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
-		}
-
-		/**
-		 * Returns the Spigot-only runnable. Methods requiring Spigot should be placed here.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getSpigotRunnable()
-		{
-			return new BukkitRunnable()
+			spigot = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -150,17 +118,7 @@ public class ThreadManager
 					Battle.Util.updateBattleParticles();
 				}
 			};
-		}
-
-		/**
-		 * Returns the favor regeneration runnable. This must be placed here due to varying favor
-		 * regeneration frequencies.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getFavorRunnable()
-		{
-			return new BukkitRunnable()
+			favor = new BukkitRunnable()
 			{
 				private final double multiplier = Demigods.config.getSettingDouble("multipliers.favor");
 
@@ -171,6 +129,59 @@ public class ThreadManager
 					DPlayer.Util.updateFavor(multiplier);
 				}
 			};
+		}
+
+		/**
+		 * Returns the main sync Demigods runnable. Methods requiring the Bukkit API and a constant
+		 * update should go here.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getSyncDemigodsRunnable()
+		{
+			return sync;
+		}
+
+		/**
+		 * Returns the main asynchronous Demigods runnable. Methods NOT requiring the Bukkit API and a constant
+		 * update should go here.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getAsyncDemigodsRunnable()
+		{
+			return async;
+		}
+
+		/**
+		 * Returns the runnable that handles all data saving.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getSaveRunnable()
+		{
+			return save;
+		}
+
+		/**
+		 * Returns the Spigot-only runnable. Methods requiring Spigot should be placed here.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getSpigotRunnable()
+		{
+			return spigot;
+		}
+
+		/**
+		 * Returns the favor regeneration runnable. This must be placed here due to varying favor
+		 * regeneration frequencies.
+		 * 
+		 * @return the runnable to be enabled.
+		 */
+		public static BukkitRunnable getFavorRunnable()
+		{
+			return favor;
 		}
 	}
 }

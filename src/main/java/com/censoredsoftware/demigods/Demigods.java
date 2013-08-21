@@ -176,7 +176,7 @@ public class Demigods
 		DevelopmentCommands development = new DevelopmentCommands();
 		main.register(instance, false);
 		general.register(instance, false);
-		development.register(instance, true);
+		development.register(instance, false);
 		commands.addAll(main.getCommands());
 		commands.addAll(general.getCommands());
 		commands.addAll(development.getCommands());

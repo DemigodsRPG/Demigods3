@@ -258,16 +258,13 @@ public class ColoredStringBuilder
 
 	public List<String> getCharSet(final String string, final boolean include)
 	{
-		return new ArrayList<String>()
+		List<String> list = new ArrayList<String>();
+		for(char c : string.toCharArray())
 		{
-			{
-				for(char c : string.toCharArray())
-				{
-					if(!include && c == '§') continue;
-					add("" + c);
-				}
-			}
-		};
+			if(!include && c == '§') continue;
+			list.add("" + c);
+		}
+		return list;
 	}
 
 	public static String getLastColors(String string)

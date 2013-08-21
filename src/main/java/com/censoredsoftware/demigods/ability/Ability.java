@@ -91,15 +91,12 @@ public interface Ability
 		@Override
 		public Map<String, Object> serialize()
 		{
-			return new HashMap<String, Object>()
-			{
-				{
-					put("identifier", identifier);
-					put("ability", ability);
-					put("slot", slot);
-					put("item", item.toString());
-				}
-			};
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("identifier", identifier);
+			map.put("ability", ability);
+			map.put("slot", slot);
+			map.put("item", item.toString());
+			return map;
 		}
 
 		public void generateId()
@@ -173,13 +170,10 @@ public interface Ability
 			public ConcurrentHashMap<UUID, Bind> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new ConcurrentHashMap<UUID, Bind>()
-				{
-					{
-						for(String stringId : data.getKeys(false))
-							put(UUID.fromString(stringId), new Bind(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-					}
-				};
+				ConcurrentHashMap<UUID, Bind> map = new ConcurrentHashMap<UUID, Bind>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new Bind(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
 			}
 
 			@Override
@@ -225,14 +219,11 @@ public interface Ability
 		@Override
 		public Map<String, Object> serialize()
 		{
-			return new HashMap<String, Object>()
-			{
-				{
-					put("type", type);
-					put("exp", exp);
-					put("level", level);
-				}
-			};
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("type", type);
+			map.put("exp", exp);
+			map.put("level", level);
+			return map;
 		}
 
 		public void generateId()
@@ -301,13 +292,10 @@ public interface Ability
 			public ConcurrentHashMap<UUID, Devotion> loadFromFile()
 			{
 				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				return new ConcurrentHashMap<UUID, Devotion>()
-				{
-					{
-						for(String stringId : data.getKeys(false))
-							put(UUID.fromString(stringId), new Devotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-					}
-				};
+				ConcurrentHashMap<UUID, Devotion> map = new ConcurrentHashMap<UUID, Devotion>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new Devotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
 			}
 
 			@Override
@@ -623,15 +611,10 @@ public interface Ability
 
 		public static List<Ability> getLoadedAbilities()
 		{
-			return new ArrayList<Ability>()
-			{
-				{
-					for(Elements.ListedDeity deity : Elements.Deities.values())
-					{
-						addAll(deity.getDeity().getAbilities());
-					}
-				}
-			};
+			List<Ability> list = new ArrayList<Ability>();
+			for(Elements.ListedDeity deity : Elements.Deities.values())
+				list.addAll(deity.getDeity().getAbilities());
+			return list;
 		}
 
 		public static boolean invokeAbilityCommand(Player player, String command)
@@ -673,19 +656,14 @@ public interface Ability
 						ItemMeta itemMeta = item.getItemMeta();
 						itemMeta.setDisplayName(ChatColor.RESET + abilityName);
 
-						itemMeta.setLore(new ArrayList<String>()
-						{
-							{
-								add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Consumes " + ability.getCost() + " favor per use.");
-								add("");
-								for(String detail : ability.getDetails())
-								{
-									add(ChatColor.AQUA + detail);
-								}
-								add("");
-								add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + bind.getIdentifier());
-							}
-						});
+						List<String> lore = new ArrayList<String>();
+						lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Consumes " + ability.getCost() + " favor per use.");
+						lore.add("");
+						for(String detail : ability.getDetails())
+							lore.add(ChatColor.AQUA + detail);
+						lore.add("");
+						lore.add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + bind.getIdentifier());
+						itemMeta.setLore(lore);
 
 						// Set the item meta
 						item.setItemMeta(itemMeta);

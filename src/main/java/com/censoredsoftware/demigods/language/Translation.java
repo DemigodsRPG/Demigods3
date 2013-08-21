@@ -3,9 +3,13 @@ package com.censoredsoftware.demigods.language;
 import com.censoredsoftware.demigods.Elements;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class Translation
@@ -50,48 +54,47 @@ public class Translation
 	 */
 	public List<String> getTextBlock(final Text text)
 	{
-		if(translation.containsKey(text.name()) && translation.get(text.name()) instanceof List) return new ArrayList<String>()
+		if(translation.containsKey(text.name()) && translation.get(text.name()) instanceof List)
 		{
-			{
-				for(String line : (List<String>) translation.get(text.name()))
-					add(ChatColor.translateAlternateColorCodes('&', line));
-			}
-		};
+			List<String> list = new ArrayList<String>();
+			for(String line : (List<String>) translation.get(text.name()))
+				list.add(ChatColor.translateAlternateColorCodes('&', line));
+			return list;
+		}
 		return text.englishBlock();
 	}
 
 	public Set<String> getBlackList()
 	{
-		return new HashSet<String>()
+		Set<String> set = Sets.newHashSet();
+
+		// Manual Blacklist
+		set.add("Fuck");
+		set.add("Shit");
+		set.add("Ass");
+		set.add("Dick");
+		set.add("Penis");
+		set.add("Vagina");
+		set.add("Cunt");
+		set.add("Bitch");
+		set.add("Nigger");
+		set.add("Phil");
+		set.add("Staff");
+		set.add("Server");
+		set.add("Console");
+		set.add("Disowned");
+
+		// YAML Blacklist
+		if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) set.addAll((List<String>) translation.get("BLACKLIST"));
+
+		// Deities
+		for(Elements.ListedDeity deity : Elements.Deities.values())
 		{
-			{
-				// Manual Blacklist
-				add("Fuck");
-				add("Shit");
-				add("Ass");
-				add("Dick");
-				add("Penis");
-				add("Vagina");
-				add("Cunt");
-				add("Bitch");
-				add("Nigger");
-				add("Phil");
-				add("Staff");
-				add("Server");
-				add("Console");
-				add("Disowned");
+			set.add(deity.getDeity().getName());
+			set.add(deity.getDeity().getAlliance());
+		}
 
-				// YAML Blacklist
-				if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) addAll((List<String>) translation.get("BLACKLIST"));
-
-				// Deities
-				for(Elements.ListedDeity deity : Elements.Deities.values())
-				{
-					add(deity.getDeity().getName());
-					add(deity.getDeity().getAlliance());
-				}
-			}
-		};
+		return set;
 	}
 
 	/*
