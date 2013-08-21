@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.helper.ListedCommand;
@@ -18,6 +9,14 @@ import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Titles;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends ListedCommand
 {
@@ -84,7 +83,7 @@ public class GeneralCommands extends ListedCommand
 			return true;
 		}
 		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
-		if(charToCheck.getName() == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
+		if(charToCheck == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;
 	}
