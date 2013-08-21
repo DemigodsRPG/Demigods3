@@ -1,12 +1,11 @@
 package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.conversation.Altar;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
+import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.helper.ListedConversation;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.Structure;
@@ -427,7 +426,7 @@ public class DPlayer implements ConfigurationSerializable
 		public static void clearPrayerSession(Player player)
 		{
 			DataManager.removeTemp(player.getName(), "prayer_conversation");
-			DataManager.removeTemp(player.getName(), "altar_context");
+			DataManager.removeTemp(player.getName(), "prayer_context");
 			DataManager.removeTemp(player.getName(), "prayer_location");
 		}
 
@@ -440,83 +439,78 @@ public class DPlayer implements ConfigurationSerializable
 		public static ConversationContext getPrayerContext(Player player)
 		{
 			if(!isPraying(player)) return null;
-			return (ConversationContext) DataManager.getValueTemp(player.getName(), "altar_context");
+			return (ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context");
 		}
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> and tells them.
 		 * 
 		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
 		 */
-		public static void stopPraying(Player player)
+		public static void togglePraying(Player player, boolean option)
 		{
-			// Message them
-			Demigods.message.clearRawChat(player);
-			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
-				player.sendRawMessage(message);
+			if(option)
+			{
+				// Toggle on
+				togglePrayingSilent(player, true, false);
 
-			// Toggle off
-			stopPrayingSilent(player);
+				// Record chat
+				startRecording(player);
+			}
+			else
+			{
+				// Toggle off
+				togglePrayingSilent(player, false, false);
+
+				// Message them
+				Demigods.message.clearChat(player);
+				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
+					player.sendMessage(message);
+
+				// Handle recorded chat
+				stopRecording(player);
+			}
 		}
 
 		/**
 		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
 		 * 
 		 * @param player the player the manipulate.
+		 * @param option the boolean to set to.
 		 * @param recordChat whether or not the chat should be recorded.
 		 */
-		public static void startPraying(Player player, ListedConversation menu, boolean recordChat)
+		public static void togglePrayingSilent(Player player, boolean option, boolean recordChat)
 		{
-			// Create the conversation and save it
-			if(menu instanceof Altar)
+			if(option)
 			{
-				DataManager.saveTemp(player.getName(), "prayer_conversation", menu.startMenu(player));
-				DataManager.saveTemp(player.getName(), "prayer_type", "Altar");
+				// Create the conversation and save it
+				Conversation prayer = Prayer.startPrayer(player);
+				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
+				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
+				player.setSneaking(true);
+
+				// Record chat if enabled
+				if(recordChat) startRecording(player);
 			}
-			DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
-			player.setSneaking(true);
-
-			// Record chat if enabled
-			if(recordChat) startRecording(player);
-			return;
-		}
-
-		/**
-		 * Changes prayer status for <code>player</code> to <code>option</code> silently.
-		 * 
-		 * @param player the player the manipulate.
-		 */
-		public static void stopPrayingSilent(Player player)
-		{
-			// Abandon the conversation
-			if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
+			else
 			{
-				Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_type") && DataManager.getValueTemp(player.getName(), "prayer_type").equals("Altar"))
+				// Save context and abandon the conversation
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
-					DataManager.saveTemp(player.getName(), "altar_context", prayer.getContext());
-					DataManager.removeTemp(player.getName(), "prayer_type");
+					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
+					DataManager.saveTemp(player.getName(), "prayer_context", prayer.getContext());
+					prayer.abandon();
 				}
-				prayer.abandon();
+
+				// Remove the data
+				DataManager.removeTemp(player.getName(), "prayer_conversation");
+				DataManager.removeTemp(player.getName(), "prayer_location");
+				player.setSneaking(false);
+
+				// Handle recorded chat
+				stopRecording(player);
 			}
-
-			// Remove the data
-			DataManager.removeTemp(player.getName(), "prayer_conversation");
-			DataManager.removeTemp(player.getName(), "prayer_location");
-
-			player.setSneaking(false);
-
-			// Handle recorded chat
-			stopRecording(player);
-		}
-
-		/**
-		 * Changes prayer status for all players to <code>option</code> silently.
-		 */
-		public static void stopAllPrayer()
-		{
-			for(Player player : Bukkit.getOnlinePlayers())
-				stopPrayingSilent(player);
 		}
 
 		/**
