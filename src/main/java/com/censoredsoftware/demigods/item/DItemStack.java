@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.item;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.ConfigFile;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -23,7 +24,8 @@ public class DItemStack implements ConfigurationSerializable
 	public DItemStack(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
-		item = ItemStack.deserialize(conf.getValues(true));
+		if(conf.getValues(true) != null) item = ItemStack.deserialize(conf.getValues(true));
+		else item = new ItemStack(Material.AIR);
 	}
 
 	@Override
@@ -44,6 +46,7 @@ public class DItemStack implements ConfigurationSerializable
 
 	public void setItem(ItemStack item)
 	{
+		if(item == null) item = new ItemStack(Material.AIR);
 		this.item = item;
 	}
 
