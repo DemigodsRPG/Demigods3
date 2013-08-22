@@ -124,7 +124,7 @@ public class Structures
 				}
 			});
 		}
-		catch(Exception ignored)
+		catch(NoSuchElementException ignored)
 		{}
 		return null;
 	}
