@@ -547,7 +547,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				// Set items
 				for(int i = 0; i < 35; i++)
-					if(this.items[i] != null) inventory.setItem(i, DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack());
+				{
+					if(this.items[i] != null)
+					{
+						ItemStack itemStack = DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack();
+						if(itemStack != null) inventory.setItem(i, DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack());
+					}
+				}
 			}
 
 			// Delete
