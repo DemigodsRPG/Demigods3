@@ -26,6 +26,7 @@ public class DItemStack implements ConfigurationSerializable
 		this.id = id;
 		if(conf.getValues(true) != null) item = ItemStack.deserialize(conf.getValues(true));
 		else item = new ItemStack(Material.AIR);
+		Util.save(this);
 	}
 
 	@Override
@@ -119,6 +120,7 @@ public class DItemStack implements ConfigurationSerializable
 			DItemStack trackedItem = new DItemStack();
 			trackedItem.generateId();
 			trackedItem.setItem(item);
+			save(trackedItem);
 			return trackedItem;
 		}
 	}
