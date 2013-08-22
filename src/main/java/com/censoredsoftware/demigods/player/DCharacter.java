@@ -1290,7 +1290,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		private static int median(int[] i)
 		{
-			if(i.length < 3) return 1;
+			if(i == null || i.length < 3) return 1;
 			Arrays.sort(i);
 			int middle = i.length / 2;
 			if(i.length % 2 == 0) return (i[middle - 1] + i[middle]) / 2;
