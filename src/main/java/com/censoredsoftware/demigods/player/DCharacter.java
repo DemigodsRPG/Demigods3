@@ -399,7 +399,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		private UUID chestplate;
 		private UUID leggings;
 		private UUID boots;
-		private Map<Integer, UUID> items;
+		private String[] items;
 
 		public Inventory()
 		{}
@@ -411,20 +411,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
 			if(conf.getString("leggins") != null) leggings = UUID.fromString(conf.getString("leggings"));
 			if(conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
-			if(conf.getConfigurationSection("items") != null)
+			if(conf.getStringList("items") != null)
 			{
-				items = Maps.newHashMap();
-				for(Map.Entry<String, Object> entry : conf.getConfigurationSection("items").getValues(false).entrySet())
-				{
-					try
-					{
-						items.put(Integer.parseInt(entry.getKey()), UUID.fromString(entry.getValue().toString()));
-					}
-					catch(Exception e)
-					{
-						Demigods.message.warning("Error loading item into inventory.");
-					}
-				}
+				List<String> stringItems = conf.getStringList("items");
+				items = new String[stringItems.size()];
+				for(int i = 0; i < stringItems.size(); i++)
+					items[i] = stringItems.get(i);
 			}
 		}
 
@@ -436,13 +428,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(chestplate != null) map.put("chestplate", chestplate.toString());
 			if(leggings != null) map.put("leggings", leggings.toString());
 			if(boots != null) map.put("boots", boots.toString());
-			if(items != null)
-			{
-				Map<String, Object> itemsMap = Maps.newHashMap();
-				for(Map.Entry<Integer, UUID> entry : items.entrySet())
-					itemsMap.put(String.valueOf(entry.getKey()), entry.getValue().toString());
-				map.put("items", itemsMap);
-			}
+			if(items != null) map.put("items", Lists.newArrayList(items));
 			return map;
 		}
 
@@ -473,10 +459,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		void setItems(org.bukkit.inventory.Inventory inventory)
 		{
-			if(this.items == null) items = Maps.newHashMap();
+			if(this.items == null) this.items = new String[36];
 			for(int i = 0; i < 35; i++)
 			{
-				if(inventory.getItem(i) != null) items.put(i, DItemStack.Util.create(inventory.getItem(i)).getId());
+				if(inventory.getItem(i) == null) this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
+				else this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
 			}
 		}
 
@@ -545,10 +532,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				// Set items
 				for(int i = 0; i < 35; i++)
 				{
-					if(items != null)
+					if(this.items[i] != null)
 					{
-						ItemStack itemStack = DItemStack.Util.load(items.get(i)).toItemStack();
-						if(itemStack != null) inventory.setItem(i, DItemStack.Util.load(items.get(i)).toItemStack());
+						ItemStack itemStack = DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack();
+						if(itemStack != null) inventory.setItem(i, DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack());
 					}
 				}
 			}
