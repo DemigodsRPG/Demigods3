@@ -79,6 +79,11 @@ public class GriefListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(event.getPlayer() == null)
+		{
+			event.setCancelled(true);
+			return;
+		}
 		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null)
 		{
