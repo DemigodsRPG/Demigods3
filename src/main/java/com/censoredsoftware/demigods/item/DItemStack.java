@@ -24,7 +24,6 @@ public class DItemStack implements ConfigurationSerializable
 	{
 		this.id = id;
 		if(conf.getValues(true) != null) item = ItemStack.deserialize(conf.getValues(true));
-		Util.save(this);
 	}
 
 	@Override
@@ -99,7 +98,7 @@ public class DItemStack implements ConfigurationSerializable
 	{
 		public static void save(DItemStack itemStack)
 		{
-			DataManager.itemStacks.put(UUID.randomUUID(), itemStack); // Comment
+			DataManager.itemStacks.put(itemStack.getId(), itemStack);
 		}
 
 		public static void delete(UUID id)
