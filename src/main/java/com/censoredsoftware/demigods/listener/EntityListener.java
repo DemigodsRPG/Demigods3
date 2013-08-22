@@ -56,7 +56,7 @@ public class EntityListener implements Listener
 		{
 			Player player = (Player) event.getEntity();
 			DCharacter playerChar = DPlayer.Util.getPlayer(player).getCurrent();
-			playerChar.addDeath();
+			if(playerChar != null) playerChar.addDeath();
 		}
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
