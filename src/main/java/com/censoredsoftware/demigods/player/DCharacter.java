@@ -461,10 +461,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			if(this.items == null) this.items = new String[36];
 			for(int i = 0; i < 35; i++)
-			{
-				if(inventory.getItem(i) == null) this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
-				else this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
-			}
+				if(inventory.getItem(i) != null) this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
 		}
 
 		public UUID getId()
