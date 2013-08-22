@@ -79,19 +79,7 @@ public class GriefListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(event.getPlayer() == null)
-		{
-			event.setCancelled(true);
-			return;
-		}
-		Structure.Save save = Structures.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
-		{
-			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
-			event.setCancelled(true);
-		}
+		if(Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
