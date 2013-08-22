@@ -480,7 +480,7 @@ public class Prayer implements ListedConversation
 			String[] splitMsg = message.split(" ");
 			DPlayer player = DPlayer.Util.getPlayer((Player) context.getForWhom());
 			DCharacter character = DCharacter.Util.getCharacterByName(splitMsg[0]);
-			return message.equalsIgnoreCase("menu") || DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName())));
+			return message.equalsIgnoreCase("menu") || splitMsg.length == 2 && (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && (splitMsg[1].equalsIgnoreCase("info") || (DPlayer.Util.hasCharName((Player) context.getForWhom(), splitMsg[0]) && splitMsg[1].equalsIgnoreCase("switch")) && (player.getCurrent() == null || !player.getCurrent().getName().equalsIgnoreCase(character.getName()))));
 		}
 
 		@Override

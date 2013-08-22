@@ -37,7 +37,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Float experience;
 	private Integer level;
 	private Integer killCount;
-	private Integer deathCount;
 	private UUID location;
 	private String deity;
 	private Boolean active;
@@ -62,7 +61,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		experience = Float.valueOf(conf.getString("experience"));
 		level = conf.getInt("level");
 		killCount = conf.getInt("killCount");
-		deathCount = conf.getInt("deathCount");
 		location = UUID.fromString(conf.getString("location"));
 		deity = conf.getString("deity");
 		active = conf.getBoolean("active");
@@ -84,7 +82,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("experience", experience);
 		map.put("level", level);
 		map.put("killCount", killCount);
-		map.put("deathCount", deathCount);
 		map.put("location", location.toString());
 		map.put("deity", deity);
 		map.put("active", active);
@@ -299,18 +296,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	 */
 	public int getDeathCount()
 	{
-		return this.deathCount;
-	}
-
-	/**
-	 * Sets the number of deathCount to <code>amount</code>.
-	 * 
-	 * @param amount the amount of deathCount to set.
-	 */
-	public void setDeathCount(int amount)
-	{
-		this.deathCount = amount;
-		Util.save(this);
+		return this.deaths.size();
 	}
 
 	/**
@@ -318,7 +304,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	 */
 	public void addDeath()
 	{
-		this.deathCount += 1;
 		if(deaths == null) deaths = Sets.newHashSet();
 		deaths.add(new Death(this).getId().toString());
 		Util.save(this);
@@ -329,7 +314,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	 */
 	public void addDeath(DCharacter attacker)
 	{
-		this.deathCount += 1;
 		deaths.add(new Death(this, attacker).getId().toString());
 		Util.save(this);
 	}
@@ -1066,7 +1050,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setExperience(0);
 			character.setLevel(0);
 			character.setKillCount(0);
-			character.setDeathCount(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta());
 			save(character);
