@@ -99,7 +99,7 @@ public class DItemStack implements ConfigurationSerializable
 	{
 		public static void save(DItemStack itemStack)
 		{
-			DataManager.itemStacks.put(UUID.randomUUID(), itemStack);
+			DataManager.itemStacks.put(UUID.randomUUID(), itemStack); // Comment
 		}
 
 		public static void delete(UUID id)
