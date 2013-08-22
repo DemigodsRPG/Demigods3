@@ -1136,7 +1136,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			try
 			{
-				Iterators.find(loadAll().iterator(), new Predicate<DCharacter>()
+				return Iterators.find(loadAll().iterator(), new Predicate<DCharacter>()
 				{
 					@Override
 					public boolean apply(DCharacter loaded)
