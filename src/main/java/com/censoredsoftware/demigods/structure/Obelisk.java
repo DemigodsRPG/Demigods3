@@ -183,29 +183,6 @@ public class Obelisk implements Structure
 		}
 	}
 
-	public static boolean validBlockConfiguration(Block block)
-	{
-		if(!block.getType().equals(Material.REDSTONE_BLOCK)) return false;
-		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
-		if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
-		if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
-		return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
-	}
-
-	public static boolean noPvPStructureNearby(Location location)
-	{
-		return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Save>()
-		{
-			@Override
-			public boolean apply(Save save)
-			{
-				return save.getRawFlags().contains(Flag.NO_PVP.name());
-			}
-		});
-	}
-
 	public static class Listener implements org.bukkit.event.Listener
 	{
 		@EventHandler(priority = EventPriority.HIGH)
@@ -224,9 +201,9 @@ public class Obelisk implements Structure
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Obelisk.validBlockConfiguration(event.getClickedBlock()))
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(Obelisk.noPvPStructureNearby(location))
+					if(Util.noPvPStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -274,6 +251,32 @@ public class Obelisk implements Structure
 					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK));
 				}
 			}
+		}
+	}
+
+	public static class Util
+	{
+		public static boolean validBlockConfiguration(Block block)
+		{
+			if(!block.getType().equals(Material.REDSTONE_BLOCK)) return false;
+			if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+			if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
+			if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
+			if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
+			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
+			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
+		}
+
+		public static boolean noPvPStructureNearby(Location location)
+		{
+			return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Save>()
+			{
+				@Override
+				public boolean apply(Save save)
+				{
+					return save.getRawFlags().contains(Flag.NO_PVP.name());
+				}
+			});
 		}
 	}
 }

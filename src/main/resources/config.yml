@@ -49,6 +49,7 @@ caps:
     ascension: 100
     favor: 20000
     target_range: 100
+    obelisks_per_character: 3
 
 ## Bonuses ##
 bonuses:

@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -54,6 +55,7 @@ public interface Structure
 		private String design;
 		private Boolean active;
 		private UUID owner;
+		private List<String> members;
 
 		public Save()
 		{}
@@ -68,6 +70,7 @@ public interface Structure
 			design = conf.getString("design");
 			if(conf.getString("active") != null) active = conf.getBoolean("active");
 			if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
+			if(conf.isList("members")) members = conf.getStringList("members");
 		}
 
 		@Override
@@ -81,6 +84,7 @@ public interface Structure
 			map.put("design", design);
 			if(active != null) map.put("active", active);
 			if(owner != null) map.put("owner", owner.toString());
+			if(members != null) map.put("members", members);
 			return map;
 		}
 
@@ -109,6 +113,21 @@ public interface Structure
 		public void setOwner(UUID id)
 		{
 			this.owner = id;
+		}
+
+		void setMembers(List<String> members)
+		{
+			this.members = members;
+		}
+
+		public void addMember(UUID id)
+		{
+			members.add(id.toString());
+		}
+
+		public void removeMember(UUID id)
+		{
+			members.remove(id.toString());
 		}
 
 		public void setActive(Boolean bool)
@@ -146,6 +165,23 @@ public interface Structure
 		public UUID getOwner()
 		{
 			return this.owner;
+		}
+
+		public Boolean hasMembers()
+		{
+			return this.members != null && !members.isEmpty();
+		}
+
+		public Collection<UUID> getMembers()
+		{
+			return Collections2.transform(members, new Function<String, UUID>()
+			{
+				@Override
+				public UUID apply(String s)
+				{
+					return UUID.fromString(s);
+				}
+			});
 		}
 
 		public String getType()
