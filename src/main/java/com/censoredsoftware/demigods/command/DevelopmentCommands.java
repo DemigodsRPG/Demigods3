@@ -4,9 +4,10 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Unicodes;
-import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -59,7 +60,16 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("No PVP: " + Zones.zoneNoPVP(player.getLocation()));
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+		if(character == null)
+		{
+			player.sendMessage(ChatColor.RED + "You are mortal, we do not track mortals.");
+			return true;
+		}
+
+		player.sendMessage("# of Teammates Online: " + DCharacter.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
+		player.sendMessage("# of Enemies Online: " + DCharacter.Util.getOnlineCharactersWithoutAlliance(character.getAlliance()).size());
 
 		return true;
 	}
