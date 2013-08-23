@@ -4,12 +4,11 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
@@ -60,8 +59,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.getWorld().playEffect(player.getLocation(), Effect.RECORD_PLAY, Material.GREEN_RECORD.getId());
-		player.sendMessage(ChatColor.YELLOW + "Now playing 'DVNO' by Justice...");
+		player.sendMessage("Discos: " + DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco").size());
 
 		return true;
 	}
