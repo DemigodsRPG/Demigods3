@@ -272,7 +272,7 @@ public class Discoball implements Ability
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
 						if(Demigods.isDisabledWorld(player.getWorld())) return;
-						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Zones.zoneNoBuild(player, player.getLocation())) doEffect(player, true);
+						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation())) doEffect(player, true);
 						else doEffect(player, false);
 					}
 				}
