@@ -4,9 +4,9 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
-import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Unicodes;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -59,7 +59,7 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("Discos: " + DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco").size());
+		player.sendMessage("No PVP: " + Zones.zoneNoPVP(player.getLocation()));
 
 		return true;
 	}
