@@ -271,30 +271,17 @@ public class Discoball implements Ability
 					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
-						if(Demigods.isDisabledWorld(player.getWorld())) return;
-						if(player.isSneaking() && !player.isFlying() && !Zones.zoneNoPVP(online.getLocation()) && !Zones.zoneNoBuild(player, player.getLocation())) doEffect(player, true);
-						else doEffect(player, false);
+						if(Demigods.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.zoneNoPVP(player.getLocation()) || Zones.zoneNoBuild(player, player.getLocation())) continue;
+						doEffect(player);
 					}
 				}
 
-				private void doEffect(Player player, boolean effect)
+				private void doEffect(Player player)
 				{
 					for(Entity entity : player.getNearbyEntities(30, 30, 30))
-					{
-						if(!(entity instanceof Player)) continue;
-						Player viewing = (Player) entity;
-						if(effect)
-						{
-							viewing.hidePlayer(player);
-							Discoball.Util.rainbow(player, viewing);
-						}
-						else viewing.showPlayer(player);
-					}
-					if(effect)
-					{
-						Discoball.Util.rainbow(player, player);
-						Discoball.Util.playRandomNote(player.getLocation(), 0.5F);
-					}
+						if(entity instanceof Player) Discoball.Util.rainbow(player, (Player) entity);
+					Discoball.Util.rainbow(player, player);
+					Discoball.Util.playRandomNote(player.getLocation(), 0.5F);
 				}
 			};
 		}
