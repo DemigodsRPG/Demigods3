@@ -594,7 +594,10 @@ public class Battle implements ConfigurationSerializable
 		{
 			Map<String, Integer> score = Maps.newHashMap();
 			for(Map.Entry<String, Object> entry : battle.kills.entrySet())
+			{
+				if(!battle.getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
 				score.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
+			}
 			for(Map.Entry<String, Object> entry : battle.deaths.entrySet())
 			{
 				int base = 0;
