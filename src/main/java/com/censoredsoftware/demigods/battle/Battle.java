@@ -11,7 +11,6 @@ import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.*;
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import org.bukkit.*;
@@ -604,18 +603,18 @@ public class Battle implements ConfigurationSerializable
 				if(score.containsKey(entry.getKey())) base = score.get(entry.getKey());
 				score.put(entry.getKey(), base - Integer.parseInt(entry.getValue().toString()));
 			}
-			try
+
+			int max = Collections.max(score.values());
+			for(Map.Entry<String, Integer> entry : score.entrySet()) // TODO Fix for ties.
 			{
-				ImmutableMap<String, Integer> sortedScore = ImmutableSortedMap.copyOf(score, Ordering.natural().reverse().onResultOf(Functions.forMap(score)));
-				for(String stringId : sortedScore.keySet())
+				if(Integer.parseInt(entry.getValue().toString()) == max)
 				{
-					DCharacter character = DCharacter.Util.load(UUID.fromString(stringId));
-					if(sortedScore.size() < 3) return character.getName();
+					DCharacter character = DCharacter.Util.load(UUID.fromString(entry.getKey()));
+					if(score.size() < 3) return character.getName();
 					return "The " + character.getAlliance() + "s";
 				}
 			}
-			catch(Exception ignored)
-			{}
+
 			return "Nobody";
 		}
 
