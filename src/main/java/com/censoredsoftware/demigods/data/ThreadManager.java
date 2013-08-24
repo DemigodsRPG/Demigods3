@@ -73,6 +73,9 @@ public class ThreadManager
 					// Process Triggers
 					for(Trigger trigger : Trigger.Util.getAll())
 						trigger.process().sync();
+
+					// Update Battles
+					Battle.Util.updateBattles();
 				}
 			};
 			async = new BukkitRunnable()
@@ -80,9 +83,6 @@ public class ThreadManager
 				@Override
 				public void run()
 				{
-					// Update Battles
-					Battle.Util.updateBattles();
-
 					// Update Timed Data
 					TimedData.Util.updateTimedData();
 

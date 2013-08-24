@@ -9,10 +9,9 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Spigots;
-import com.censoredsoftware.demigods.util.Structures;
+import com.censoredsoftware.demigods.util.*;
 import com.google.common.base.Function;
+import com.google.common.base.Functions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import org.bukkit.*;
@@ -268,6 +267,10 @@ public class Battle implements ConfigurationSerializable
 
 	public void end()
 	{
+		sendMessage(ChatColor.RED + "The battle now is over!"); // TODO Add more info.
+		String winner = Util.findWinner(this);
+		sendMessage(ChatColor.YELLOW + (winner.startsWith("The ") && winner.endsWith("s") ? winner + " have won the battle." : winner + " has won this duel."));
+
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
 		setInactive();
@@ -576,6 +579,36 @@ public class Battle implements ConfigurationSerializable
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
+			sendBattleStats(battle);
+		}
+
+		public static void sendBattleStats(Battle battle)
+		{
+			battle.sendMessage(Titles.chatTitleDash("Battle Stats"));
+			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) battle.getDuration() / 1000);
+			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + battle.getParticipants().size());
+			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " Kill-count: " + battle.getKillCounter() + " / " + battle.getMinKills());
+		}
+
+		public static String findWinner(Battle battle)
+		{
+			Map<String, Integer> score = Maps.newHashMap();
+			for(Map.Entry<String, Object> entry : battle.kills.entrySet())
+				score.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
+			for(Map.Entry<String, Object> entry : battle.deaths.entrySet())
+			{
+				int base = 0;
+				if(score.containsKey(entry.getKey())) base = score.get(entry.getKey());
+				score.put(entry.getKey(), base - Integer.parseInt(entry.getValue().toString()));
+			}
+			ImmutableMap<String, Integer> sortedScore = ImmutableSortedMap.copyOf(score, Ordering.natural().onResultOf(Functions.forMap(score)));
+			for(String stringId : sortedScore.keySet())
+			{
+				DCharacter character = DCharacter.Util.load(UUID.fromString(stringId));
+				if(sortedScore.size() < 3) return character.getName();
+				return "The " + character.getAlliance() + "s";
+			}
+			return "Nobody";
 		}
 
 		public static boolean canTarget(Entity entity)
