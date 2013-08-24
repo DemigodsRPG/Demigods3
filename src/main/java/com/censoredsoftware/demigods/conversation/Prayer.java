@@ -55,7 +55,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new ConfirmForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
+		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
 
 		private final char id;
 		private final Elements.Conversations.Category category;
