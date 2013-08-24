@@ -1,28 +1,16 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.conversations.ValidatingPrompt;
+import org.bukkit.conversations.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -37,10 +25,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -57,7 +55,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE('F', new ConfirmForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new ForsakeCurrentDeity()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
+		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new ConfirmForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
 
 		private final char id;
 		private final Elements.Conversations.Category category;
@@ -554,7 +552,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Deity forsaking
-	static class ForsakeCurrentDeity extends ValidatingPrompt implements Elements.Conversations.Category
+	static class Forsake extends ValidatingPrompt implements Elements.Conversations.Category
 	{
 		@Override
 		public String getChatName()
@@ -600,8 +598,6 @@ public class Prayer implements ListedConversation
 			if(message.equalsIgnoreCase("n")) return new StartPrayer();
 			else if(message.equalsIgnoreCase("y"))
 			{
-				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
-
 				// Define variables
 				Player player = (Player) context.getForWhom();
 				DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
@@ -623,6 +619,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(" ");
 
 				// Save temporary data, end the conversation, and return
+				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 			}
@@ -686,6 +683,43 @@ public class Prayer implements ListedConversation
 		}
 	}
 
+	// Forsaking cancellation
+	static class CancelForsake extends MessagePrompt implements Elements.Conversations.Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.DARK_RED + "Cancel Forsaking";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			Player player = (Player) context.getForWhom();
+			return DataManager.hasKeyTemp(player.getName(), "currently_forsaking") && DataManager.hasTimed(player.getName(), "currently_forsaking");
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
+
+			// Cancel the temp data
+			DataManager.removeTemp(player.getName(), "currently_forsaking");
+			DataManager.removeTimed(player.getName(), "currently_forsaking");
+
+			return "";
+		}
+
+		@Override
+		protected Prompt getNextPrompt(ConversationContext context)
+		{
+			return new StartPrayer();
+		}
+	}
+
 	// Character creation
 	static class CreateCharacter extends ValidatingPrompt implements Elements.Conversations.Category
 	{
@@ -717,11 +751,7 @@ public class Prayer implements ListedConversation
 		@Override
 		protected ValidatingPrompt acceptValidatedInput(ConversationContext context, String message)
 		{
-			if(message.contains("y"))
-			{
-				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_creating", true);
-				return new ChooseName();
-			}
+			if(message.contains("y")) return new ChooseName();
 			return new StartPrayer();
 		}
 
@@ -895,6 +925,7 @@ public class Prayer implements ListedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the conversation, and return
+					DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_creating", true);
 					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false, true);
 					return null;
