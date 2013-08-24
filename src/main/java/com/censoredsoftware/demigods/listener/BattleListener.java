@@ -118,7 +118,7 @@ public class BattleListener implements Listener
 			{
 				Vector vector = event.getPlayer().getLocation().toVector();
 				Vector victor = battle.getStartLocation().toVector().add(vector);
-				event.getPlayer().setVelocity(victor);
+				event.getPlayer().setVelocity(victor); // TODO Fix this.
 			};
 		}
 	}
