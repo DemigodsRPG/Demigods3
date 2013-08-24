@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.util.Vector;
 
 public class BattleListener implements Listener
 {
@@ -112,7 +113,13 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange())
+			{
+				event.getPlayer().getVelocity();
+				Vector vector = battle.getStartLocation().toVector();
+				Vector victor = event.getPlayer().getLocation().toVector().add(vector).multiply(1.3D);
+				event.getPlayer().setVelocity(victor);
+			};
 		}
 	}
 
