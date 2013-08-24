@@ -594,10 +594,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			favor = conf.getInt("favor");
 			maxFavor = conf.getInt("maxFavor");
 			notifications = Sets.newHashSet(conf.getStringList("notifications"));
-			devotionData = conf.getConfigurationSection("devotionData").getValues(false);
-			binds = conf.getConfigurationSection("binds").getValues(false);
-			warps = conf.getConfigurationSection("warps").getValues(false);
-			invites = conf.getConfigurationSection("invites").getValues(false);
+			if(conf.getConfigurationSection("devotionData") != null) devotionData = conf.getConfigurationSection("devotionData").getValues(false);
+			if(conf.getConfigurationSection("binds") != null) binds = conf.getConfigurationSection("binds").getValues(false);
+			if(conf.getConfigurationSection("warps") != null) warps = conf.getConfigurationSection("warps").getValues(false);
+			if(conf.getConfigurationSection("invites") != null) invites = conf.getConfigurationSection("invites").getValues(false);
 		}
 
 		@Override
@@ -756,6 +756,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public Map<String, Object> getBinds()
 		{
+			if(binds == null) binds = Maps.newHashMap();
 			return this.binds;
 		}
 
@@ -779,75 +780,75 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public Integer getAscensions()
 		{
-			return this.ascensions;
+			return ascensions;
 		}
 
 		public void addAscension()
 		{
-			this.ascensions += 1;
+			ascensions += 1;
 			Util.saveMeta(this);
 		}
 
 		public void addAscensions(int amount)
 		{
-			this.ascensions += amount;
+			ascensions += amount;
 			Util.saveMeta(this);
 		}
 
 		public void subtractAscensions(int amount)
 		{
-			this.ascensions -= amount;
+			ascensions -= amount;
 			Util.saveMeta(this);
 		}
 
 		public void setAscensions(int amount)
 		{
-			this.ascensions = amount;
+			ascensions = amount;
 			Util.saveMeta(this);
 		}
 
 		public Integer getFavor()
 		{
-			return this.favor;
+			return favor;
 		}
 
 		public void setFavor(int amount)
 		{
-			this.favor = amount;
+			favor = amount;
 			Util.saveMeta(this);
 		}
 
 		public void addFavor(int amount)
 		{
-			if((this.favor + amount) > this.maxFavor) this.favor = this.maxFavor;
-			else this.favor += amount;
+			if((favor + amount) > maxFavor) favor = maxFavor;
+			else favor += amount;
 			Util.saveMeta(this);
 		}
 
 		public void subtractFavor(int amount)
 		{
-			if((this.favor - amount) < 0) this.favor = 0;
-			else this.favor -= amount;
+			if((favor - amount) < 0) favor = 0;
+			else favor -= amount;
 			Util.saveMeta(this);
 		}
 
 		public Integer getMaxFavor()
 		{
-			return this.maxFavor;
+			return maxFavor;
 		}
 
 		public void addMaxFavor(int amount)
 		{
-			if((this.maxFavor + amount) > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-			else this.maxFavor += amount;
+			if((maxFavor + amount) > Demigods.config.getSettingInt("caps.favor")) maxFavor = Demigods.config.getSettingInt("caps.favor");
+			else maxFavor += amount;
 			Util.saveMeta(this);
 		}
 
 		public void setMaxFavor(int amount)
 		{
-			if(amount < 0) this.maxFavor = 0;
-			if(amount > Demigods.config.getSettingInt("caps.favor")) this.maxFavor = Demigods.config.getSettingInt("caps.favor");
-			else this.maxFavor = amount;
+			if(amount < 0) maxFavor = 0;
+			if(amount > Demigods.config.getSettingInt("caps.favor")) maxFavor = Demigods.config.getSettingInt("caps.favor");
+			else maxFavor = amount;
 			Util.saveMeta(this);
 		}
 
