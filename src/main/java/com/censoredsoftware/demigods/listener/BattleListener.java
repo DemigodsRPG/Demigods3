@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.util.Vector;
 
 public class BattleListener implements Listener
 {
@@ -114,11 +114,17 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange())
+			boolean to = DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange();
+			boolean from = DLocation.Util.distanceFlat(event.getFrom(), battle.getStartLocation()) > battle.getRange();
+			if(to && !from) DataManager.saveTemp(participant.getId().toString(), "battle_safe_location", event.getFrom());
+			if(to)
 			{
-				Vector vector = event.getPlayer().getLocation().toVector();
-				Vector victor = battle.getStartLocation().toVector().subtract(vector);
-				event.getPlayer().setVelocity(victor); // TODO Fix this.
+				if(DataManager.hasKeyTemp(participant.getId().toString(), "battle_safe_location"))
+				{
+					event.getPlayer().teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
+					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
+				}
+				else event.getPlayer().teleport(Battle.Util.randomRespawnPoint(battle));
 			};
 		}
 	}
