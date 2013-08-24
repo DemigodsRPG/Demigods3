@@ -321,6 +321,7 @@ public class DLocation implements ConfigurationSerializable
 
 		public static double distanceFlat(Location location1, Location location2)
 		{
+			if(!location1.getWorld().equals(location2.getWorld())) return 99999;
 			double Y = location1.getY();
 			Location location3 = location2.clone();
 			location3.setY(Y);
