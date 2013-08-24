@@ -115,7 +115,7 @@ public class Template implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 

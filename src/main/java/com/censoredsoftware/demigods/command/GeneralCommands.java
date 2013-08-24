@@ -1,7 +1,15 @@
 package com.censoredsoftware.demigods.command;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -9,14 +17,6 @@ import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Titles;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.Set;
-import java.util.UUID;
 
 public class GeneralCommands extends ListedCommand
 {
@@ -103,10 +103,9 @@ public class GeneralCommands extends ListedCommand
 			player.sendMessage(" ");
 
 			// Get the binds and display info
-			for(String stringBind : character.getMeta().getBinds())
+			for(Map.Entry<String, Object> entry : character.getMeta().getBinds().entrySet())
 			{
-				Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
-				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(bind.getAbility().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(bind.getRawItem().getType().name()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(bind.getRawItem().getType().name()).toLowerCase() + ChatColor.GRAY + ".");
+				player.sendMessage(ChatColor.GREEN + "    " + StringUtils.capitalize(entry.getKey().toLowerCase()) + ChatColor.GRAY + " is bound to " + (Strings.beginsWithVowel(entry.getValue().toString()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(entry.getValue().toString()).toLowerCase() + ChatColor.GRAY + ".");
 			}
 
 			player.sendMessage(" ");

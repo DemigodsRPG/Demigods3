@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.ability.offense;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,7 +13,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.collect.Lists;
 
 public class Shove implements Ability
 {
@@ -139,7 +140,7 @@ public class Shove implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 

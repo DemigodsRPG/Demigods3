@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.data;
 
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
@@ -9,13 +17,6 @@ import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
 {
@@ -23,7 +24,6 @@ public class DataManager
 	private static DPlayer.File playersYAML;
 	private static DItemStack.File itemStacksYAML;
 	private static DLocation.File locationsYAML;
-	private static Ability.Bind.File bindsYAML;
 	private static Ability.Devotion.File devotionYAML;
 	private static DCharacter.Meta.File characterMetasYAML;
 	private static DCharacter.Inventory.File inventoriesYAML;
@@ -39,7 +39,6 @@ public class DataManager
 	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DItemStack> itemStacks;
 	public static ConcurrentMap<UUID, DLocation> locations;
-	public static ConcurrentMap<UUID, Ability.Bind> binds;
 	public static ConcurrentMap<UUID, Ability.Devotion> devotion;
 	public static ConcurrentMap<UUID, DCharacter> characters;
 	public static ConcurrentMap<UUID, Notification> notifications;
@@ -57,7 +56,6 @@ public class DataManager
 	{
 		itemStacksYAML = new DItemStack.File();
 		locationsYAML = new DLocation.File();
-		bindsYAML = new Ability.Bind.File();
 		devotionYAML = new Ability.Devotion.File();
 		playersYAML = new DPlayer.File();
 		charactersYAML = new DCharacter.File();
@@ -79,7 +77,6 @@ public class DataManager
 	{
 		itemStacks = itemStacksYAML.loadFromFile();
 		locations = locationsYAML.loadFromFile();
-		binds = bindsYAML.loadFromFile();
 		devotion = devotionYAML.loadFromFile();
 		players = playersYAML.loadFromFile();
 		characters = charactersYAML.loadFromFile();
@@ -97,7 +94,6 @@ public class DataManager
 	{
 		itemStacksYAML.saveToFile();
 		locationsYAML.saveToFile();
-		bindsYAML.saveToFile();
 		devotionYAML.saveToFile();
 		playersYAML.saveToFile();
 		charactersYAML.saveToFile();
@@ -124,7 +120,6 @@ public class DataManager
 		characters.clear();
 		characterMetas.clear();
 		inventories.clear();
-		binds.clear();
 		devotion.clear();
 		notifications.clear();
 		pets.clear();

@@ -1,13 +1,8 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,8 +17,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Storm implements Ability
 {
@@ -158,7 +159,7 @@ public class Storm implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
@@ -301,7 +302,7 @@ public class Storm implements Ability
 
 					if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
-					if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+					if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 					{
 						if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 

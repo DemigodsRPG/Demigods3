@@ -1,5 +1,15 @@
 package com.censoredsoftware.demigods;
 
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.Metrics;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -19,15 +29,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.Metrics;
-
-import java.util.Set;
 
 public class Demigods
 {
@@ -123,7 +124,6 @@ public class Demigods
 		register.registerEvents(new EntityListener(), instance);
 		register.registerEvents(new FlagListener(), instance);
 		register.registerEvents(new GriefListener(), instance);
-		register.registerEvents(new InventoryListener(), instance);
 		register.registerEvents(new PlayerListener(), instance);
 		register.registerEvents(new TributeListener(), instance);
 

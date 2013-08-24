@@ -1,12 +1,9 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.google.common.collect.Lists;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +15,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.collect.Lists;
 
 public class Firestorm implements Ability
 {
@@ -120,7 +121,7 @@ public class Firestorm implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
-				if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
@@ -234,7 +235,7 @@ public class Firestorm implements Ability
 
 					if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
-					if(player.getItemInHand() != null && character.getMeta().checkBind(name, player.getItemInHand()))
+					if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 					{
 						if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 

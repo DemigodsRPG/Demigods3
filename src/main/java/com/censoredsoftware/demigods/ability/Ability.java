@@ -1,20 +1,8 @@
 package com.censoredsoftware.demigods.ability;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.item.DItemStack;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -31,12 +19,22 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public interface Ability
 {
@@ -67,131 +65,6 @@ public interface Ability
 	public Listener getListener();
 
 	public BukkitRunnable getRunnable();
-
-	public static class Bind implements ConfigurationSerializable
-	{
-		private UUID id;
-		private String identifier;
-		private String ability;
-		private Integer slot;
-		private UUID item;
-
-		public Bind()
-		{}
-
-		public Bind(UUID id, ConfigurationSection conf)
-		{
-			this.id = id;
-			identifier = conf.getString("identifier");
-			ability = conf.getString("ability");
-			slot = conf.getInt("slot");
-			item = UUID.fromString(conf.getString("item"));
-		}
-
-		@Override
-		public Map<String, Object> serialize()
-		{
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("identifier", identifier);
-			map.put("ability", ability);
-			map.put("slot", slot);
-			map.put("item", item.toString());
-			return map;
-		}
-
-		public void generateId()
-		{
-			id = UUID.randomUUID();
-		}
-
-		void setIdentifier(String identifier)
-		{
-			this.identifier = identifier;
-		}
-
-		void setAbility(String ability)
-		{
-			this.ability = ability;
-		}
-
-		void setSlot(Integer slot)
-		{
-			this.slot = slot;
-		}
-
-		public void setItem(ItemStack item)
-		{
-			this.item = DItemStack.Util.create(item).getId();
-			Util.save(this);
-		}
-
-		public UUID getId()
-		{
-			return this.id;
-		}
-
-		public ItemStack getRawItem()
-		{
-			return new ItemStack(DItemStack.Util.load(this.item).toItemStack().getType());
-		}
-
-		public ItemStack getItem()
-		{
-			return DItemStack.Util.load(this.item).toItemStack();
-		}
-
-		public String getAbility()
-		{
-			return this.ability;
-		}
-
-		public String getIdentifier()
-		{
-			return this.identifier;
-		}
-
-		public int getSlot()
-		{
-			return this.slot;
-		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "binds.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, Bind> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, Bind> map = new ConcurrentHashMap<UUID, Bind>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new Bind(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, Bind> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.binds.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.binds.get(id))) saveFile.createSection(id.toString(), Util.loadBind(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.binds.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
-		}
-	}
 
 	public static class Devotion implements ConfigurationSerializable
 	{
@@ -317,34 +190,6 @@ public interface Ability
 
 	public static class Util
 	{
-		public static void deleteBind(UUID id)
-		{
-			DataManager.binds.remove(id);
-		}
-
-		public static Bind createBind(String ability, int slot)
-		{
-			Bind bind = new Bind();
-			bind.generateId();
-			bind.setIdentifier(Randoms.generateString(6));
-			bind.setAbility(ability);
-			bind.setSlot(slot);
-			save(bind);
-			return bind;
-		}
-
-		public static Bind createBind(String ability, int slot, ItemStack item)
-		{
-			Bind bind = new Bind();
-			bind.generateId();
-			bind.setIdentifier(Randoms.generateString(6));
-			bind.setAbility(ability);
-			bind.setSlot(slot);
-			bind.setItem(item);
-			save(bind);
-			return bind;
-		}
-
 		public static Devotion createDevotion(Devotion.Type type)
 		{
 			Devotion devotion = new Devotion();
@@ -355,19 +200,9 @@ public interface Ability
 			return devotion;
 		}
 
-		public static void save(Bind bind)
-		{
-			DataManager.binds.put(bind.getId(), bind);
-		}
-
 		public static void save(Devotion devotion)
 		{
 			DataManager.devotion.put(devotion.getId(), devotion);
-		}
-
-		public static Bind loadBind(UUID id)
-		{
-			return DataManager.binds.get(id);
 		}
 
 		public static Devotion loadDevotion(UUID id)
@@ -632,62 +467,35 @@ public interface Ability
 
 					// Handle enabling the command
 					String abilityName = ability.getName();
+					ItemStack itemInHand = player.getItemInHand();
 
-					if(!character.getMeta().isBound(ability.getName()))
+					if(!character.getMeta().isBound(ability))
 					{
-						if(!ability.hasWeapon() && player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
+						if(itemInHand == null || itemInHand.getType().equals(Material.AIR))
 						{
-							// Slot must be empty
-							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_TO_SLOT));
+							// Slot must not be empty
+							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_EMPTY_SLOT));
 							return true;
 						}
-						else if(ability.hasWeapon())
+						else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
 						{
 							// Weapon required
 							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName.toLowerCase()));
 							return true;
 						}
 
-						// Create the bind
-						final Bind bind = createBind(ability.getName(), player.getInventory().getHeldItemSlot());
-
-						// Handle the item
-						ItemStack item = ability.hasWeapon() ? player.getItemInHand() : new ItemStack(Material.STICK);
-						ItemMeta itemMeta = item.getItemMeta();
-						itemMeta.setDisplayName(ChatColor.RESET + abilityName);
-
-						List<String> lore = new ArrayList<String>();
-						lore.add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Consumes " + ability.getCost() + " favor per use.");
-						lore.add("");
-						for(String detail : ability.getDetails())
-							lore.add(ChatColor.AQUA + detail);
-						lore.add("");
-						lore.add(ChatColor.BLACK + "" + ChatColor.STRIKETHROUGH + "Identifier: " + ChatColor.MAGIC + bind.getIdentifier());
-						itemMeta.setLore(lore);
-
-						// Set the item meta
-						item.setItemMeta(itemMeta);
-
-						// Set the bind item
-						bind.setItem(item);
-
-						// Save the bind and give the item
-						player.getInventory().setItemInHand(item);
-						character.getMeta().addBind(bind);
+						// Save the bind
+						character.getMeta().setBind(ability, itemInHand.getType());
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{slot}", "" + (player.getInventory().getHeldItemSlot() + 1)));
+						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", Strings.beautify(itemInHand.getType().name())));
 
 						return true;
 					}
 					else
 					{
-						// Get the bind for info
-						Bind bind = character.getMeta().getBind(abilityName);
-
-						// Remove the bind and item
-						character.getMeta().removeBind(bind);
-						player.getInventory().setItem(bind.getSlot(), new ItemStack(Material.AIR));
+						// Remove the bind
+						character.getMeta().removeBind(ability);
 
 						// Let them know
 						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));

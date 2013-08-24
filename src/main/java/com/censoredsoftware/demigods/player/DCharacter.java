@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -14,17 +26,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -365,17 +366,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.usable = Deity.Util.getDeity(this.deity) != null;
 	}
 
-	public void refreshBinds()
-	{
-		if(!getOfflinePlayer().isOnline()) return;
-		for(String stringBind : getMeta().getBinds())
-		{
-			Player player = getOfflinePlayer().getPlayer();
-			Ability.Bind bind = Ability.Util.loadBind(UUID.fromString(stringBind));
-			player.getInventory().setItem(bind.getSlot(), bind.getItem());
-		}
-	}
-
 	public UUID getId()
 	{
 		return id;
@@ -588,8 +578,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		private Integer ascensions;
 		private Integer favor;
 		private Integer maxFavor;
-		private Set<String> binds;
 		private Set<String> notifications;
+		private Map<String, Object> binds;
 		private Map<String, Object> devotionData;
 		private Map<String, Object> warps;
 		private Map<String, Object> invites;
@@ -603,9 +593,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			ascensions = conf.getInt("ascensions");
 			favor = conf.getInt("favor");
 			maxFavor = conf.getInt("maxFavor");
-			binds = Sets.newHashSet(conf.getStringList("binds"));
 			notifications = Sets.newHashSet(conf.getStringList("notifications"));
 			devotionData = conf.getConfigurationSection("devotionData").getValues(false);
+			binds = conf.getConfigurationSection("binds").getValues(false);
 			warps = conf.getConfigurationSection("warps").getValues(false);
 			invites = conf.getConfigurationSection("invites").getValues(false);
 		}
@@ -617,8 +607,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			map.put("ascensions", ascensions);
 			map.put("favor", favor);
 			map.put("maxFavor", maxFavor);
-			map.put("binds", Lists.newArrayList(binds));
 			map.put("notifications", Lists.newArrayList(notifications));
+			map.put("binds", binds);
 			map.put("devotionData", devotionData);
 			map.put("warps", warps);
 			map.put("invites", invites);
@@ -632,11 +622,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		void initialize()
 		{
-			this.binds = Sets.newHashSet();
 			this.notifications = Sets.newHashSet();
 			this.warps = Maps.newHashMap();
 			this.invites = Maps.newHashMap();
 			this.devotionData = Maps.newHashMap();
+			this.binds = Maps.newHashMap();
 		}
 
 		public UUID getId()
@@ -744,93 +734,47 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			}
 		}
 
-		public boolean checkBind(String ability, ItemStack item)
+		public boolean checkBound(String abilityName, Material material)
 		{
-			return(isBound(item) && getBind(item).getAbility().equalsIgnoreCase(ability));
+			return binds.containsKey(abilityName) && binds.get(abilityName).equals(material.name());
 		}
 
-		public boolean checkBind(String ability, int slot)
+		public boolean isBound(Ability ability)
 		{
-			return(isBound(slot) && getBind(slot).getAbility().equalsIgnoreCase(ability));
+			return binds.containsKey(ability.getName());
 		}
 
-		public boolean isBound(int slot)
+		public boolean isBound(Material material)
 		{
-			return getBind(slot) != null;
+			return binds.containsValue(material.name());
 		}
 
-		public boolean isBound(String ability)
+		public void setBind(Ability ability, Material material)
 		{
-			return getBind(ability) != null;
+			getBinds().put(ability.getName(), material.name());
 		}
 
-		public boolean isBound(ItemStack item)
-		{
-			return getBind(item) != null;
-		}
-
-		public void addBind(Ability.Bind bind)
-		{
-			this.binds.add(bind.getId().toString());
-		}
-
-		public Ability.Bind setBound(String ability, int slot, ItemStack item)
-		{
-			Ability.Bind bind = Ability.Util.createBind(ability, slot, item);
-			this.binds.add(bind.getId().toString());
-			return bind;
-		}
-
-		public Ability.Bind getBind(int slot)
-		{
-			for(String bind : this.binds)
-				if(Ability.Util.loadBind(UUID.fromString(bind)).getSlot() == slot) return Ability.Util.loadBind(UUID.fromString(bind));
-			return null;
-		}
-
-		public Ability.Bind getBind(String ability)
-		{
-			for(String bind : this.binds)
-				if(Ability.Util.loadBind(UUID.fromString(bind)).getAbility().equalsIgnoreCase(ability)) return Ability.Util.loadBind(UUID.fromString(bind));
-			return null;
-		}
-
-		public Ability.Bind getBind(ItemStack item)
-		{
-			for(String bind : this.binds)
-				if(item.hasItemMeta() && item.getItemMeta().hasLore() && item.getItemMeta().getLore().toString().contains(Ability.Util.loadBind(UUID.fromString(bind)).getIdentifier())) return Ability.Util.loadBind(UUID.fromString(bind));
-			return null;
-		}
-
-		public Set<String> getBinds()
+		public Map<String, Object> getBinds()
 		{
 			return this.binds;
 		}
 
-		public void removeBind(String ability)
+		public void removeBind(Ability ability)
 		{
-			if(isBound(ability))
-			{
-				Ability.Bind bind = getBind(ability);
-				this.binds.remove(bind.getId().toString());
-				Ability.Util.deleteBind(bind.getId());
-			}
+			binds.remove(ability.getName());
 		}
 
-		public void removeBind(ItemStack item)
+		public void removeBind(Material material)
 		{
-			if(isBound(item))
+			if(binds.containsValue(material.name()))
 			{
-				Ability.Bind bind = getBind(item);
-				this.binds.remove(bind.getId().toString());
-				Ability.Util.deleteBind(bind.getId());
+				String toRemove = null;
+				for(Map.Entry<String, Object> entry : binds.entrySet())
+				{
+					toRemove = entry.getValue().equals(material.name()) ? entry.getKey() : null;
+				}
+				binds.remove(toRemove);
 			}
-		}
-
-		public void removeBind(Ability.Bind bind)
-		{
-			this.binds.remove(bind.getId().toString());
-			Ability.Util.deleteBind(bind.getId());
 		}
 
 		public Integer getAscensions()
