@@ -31,8 +31,28 @@ public class BattleListener implements Listener
 		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
+		if(damageeParticipant.equals(damagerParticipant)) return;
+
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
+
+		if(Battle.Util.isInBattle(damageeParticipant) || Battle.Util.isInBattle(damagerParticipant))
+		{
+			// Add to existing battle
+			Battle battle = Battle.Util.isInBattle(damageeParticipant) ? Battle.Util.getBattle(damageeParticipant) : Battle.Util.getBattle(damagerParticipant);
+
+			// Add participants from this event
+			battle.addParticipant(damageeParticipant);
+			battle.addParticipant(damagerParticipant);
+
+			// Battle death
+			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
+			{
+				event.setCancelled(true);
+				Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle);
+			}
+			return;
+		}
 
 		if(!Battle.Util.existsNear(midpoint) && !Battle.Util.existsInRadius(midpoint))
 		{
@@ -84,22 +104,29 @@ public class BattleListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO Doesn't work.
 	public void onBattleMove(PlayerMoveEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
-		// if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		// Participant participant = Battle.Util.defineParticipant(event.getPlayer());
-		// TODO
+		if(!Battle.Util.canParticipate(event.getPlayer())) return;
+		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		if(Battle.Util.isInBattle(participant))
+		{
+			Battle battle = Battle.Util.getBattle(participant);
+			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	// TODO Doesn't work.
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
-		// if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		// Participant participant = Battle.Util.defineParticipant(event.getPlayer());
-		// TODO
+		if(!Battle.Util.canParticipate(event.getPlayer())) return;
+		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		if(Battle.Util.isInBattle(participant))
+		{
+			Battle battle = Battle.Util.getBattle(participant);
+			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld())) return;
+			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+		}
 	}
 }
