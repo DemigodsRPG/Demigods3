@@ -70,10 +70,30 @@ public class Obelisk implements Structure
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
+	private final static Structure.Schematic nether = new Structure.Schematic("nether", "HmmmQuestionMark", 3)
+	{
+		{
+			// Everything else.
+			add(new Selection(0, 0, -1, 0, 2, -1, Material.NETHERRACK));
+			add(new Selection(0, 0, 1, 0, 2, 1, Material.NETHERRACK));
+			add(new Selection(1, 0, 0, 1, 2, 0, Material.NETHERRACK));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Material.NETHERRACK));
+			add(new Selection(0, 4, -1, 0, 5, -1, Material.NETHERRACK));
+			add(new Selection(0, 4, 1, 0, 5, 1, Material.NETHERRACK));
+			add(new Selection(1, 4, 0, 1, 5, 0, Material.NETHERRACK));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Material.NETHERRACK));
+			add(new Selection(0, 0, 0, 0, 4, 0, Material.REDSTONE_BLOCK));
+			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
+			add(new Selection(1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(-1, 3, 0, Material.REDSTONE_LAMP_ON));
+			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
+		}
+	};
 
 	public static enum ObeliskDesign implements Structure.Design
 	{
-		GENERAL("general", general, new Selection(0, 0, 2)), DESERT("desert", desert, new Selection(0, 0, 2));
+		GENERAL("general", general, null), DESERT("desert", desert, null), NETHER("nether", nether, null);
 
 		private final String name;
 		private final Structure.Schematic schematic;
@@ -127,6 +147,7 @@ public class Obelisk implements Structure
 	public Design getDesign(String name)
 	{
 		if(name.equals(general.toString())) return ObeliskDesign.GENERAL;
+		else if(name.equals(nether.toString())) return ObeliskDesign.NETHER;
 		return ObeliskDesign.DESERT;
 	}
 
@@ -178,6 +199,8 @@ public class Obelisk implements Structure
 			case DESERT:
 			case DESERT_HILLS:
 				return ObeliskDesign.DESERT;
+			case HELL:
+				return ObeliskDesign.NETHER;
 			default:
 				return ObeliskDesign.GENERAL;
 		}

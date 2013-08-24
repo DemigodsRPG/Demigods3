@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -379,6 +380,9 @@ public class Altar implements Structure
 
 			// Define variables
 			final Location location = DLocation.Util.randomChunkLocation(event.getChunk());
+
+			// No altars in hell or heaven for now
+			if(location.getBlock().getBiome().equals(Biome.HELL) || location.getBlock().getBiome().equals(Biome.SKY)) return;
 
 			// Check if it can generate
 			if(Structures.canGenerateStrict(location, 3))

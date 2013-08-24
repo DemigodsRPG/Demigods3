@@ -42,10 +42,27 @@ public class Shrine implements Structure
 			add(new Selection(0, 0, 1, Material.SMOOTH_STAIRS, (byte) 3));
 		}
 	};
+	private final static Schematic nether = new Schematic("nether", "HmmmQuestionMark", 2)
+	{
+		{
+			// Create the main block
+			add(new Selection(0, 1, 0, Material.GOLD_BLOCK));
+
+			// Create the ender chest and the block below
+			add(new Selection(0, 0, 0, Material.ENDER_CHEST));
+			add(new Selection(0, -1, 0, Material.NETHER_BRICK));
+
+			// Create the rest
+			add(new Selection(-1, 0, 0, Material.NETHER_BRICK_STAIRS));
+			add(new Selection(1, 0, 0, Material.NETHER_BRICK_STAIRS, (byte) 1));
+			add(new Selection(0, 0, -1, Material.NETHER_BRICK_STAIRS, (byte) 2));
+			add(new Selection(0, 0, 1, Material.NETHER_BRICK_STAIRS, (byte) 3));
+		}
+	};
 
 	public static enum ShrineDesign implements Design
 	{
-		GENERAL("general", general, new Selection(0, 1, 0));
+		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
 
 		private final String name;
 		private final Structure.Schematic schematic;
@@ -99,7 +116,8 @@ public class Shrine implements Structure
 	@Override
 	public Design getDesign(String name)
 	{
-		return ShrineDesign.GENERAL;
+		if(name.equals(general.toString())) return ShrineDesign.GENERAL;
+		return ShrineDesign.NETHER;
 	}
 
 	@Override
@@ -134,12 +152,23 @@ public class Shrine implements Structure
 		save.generateId();
 		save.setReferenceLocation(reference);
 		save.setType(getStructureType());
-		save.setDesign("general");
+		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.setActive(true);
 		save.save();
 		if(generate) save.generate(false);
 		return save;
+	}
+
+	public Design getDesign(Location reference)
+	{
+		switch(reference.getBlock().getBiome())
+		{
+			case HELL:
+				return ShrineDesign.NETHER;
+			default:
+				return ShrineDesign.GENERAL;
+		}
 	}
 
 	public static boolean validBlockConfiguration(Block block)
