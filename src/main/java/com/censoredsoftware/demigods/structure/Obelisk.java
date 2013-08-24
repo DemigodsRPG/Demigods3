@@ -195,6 +195,7 @@ public class Obelisk implements Structure
 	{
 		switch(reference.getBlock().getBiome())
 		{
+			case OCEAN:
 			case BEACH:
 			case DESERT:
 			case DESERT_HILLS:
