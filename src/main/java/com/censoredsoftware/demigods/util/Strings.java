@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.util;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
-import java.util.Collection;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class Strings
 {
@@ -17,7 +18,7 @@ public class Strings
 	public static boolean beginsWithVowel(String string)
 	{
 		String[] vowels = { "a", "e", "i", "o", "u" };
-		return StringUtils.startsWithAny(string, vowels);
+		return StringUtils.startsWithAny(string.toLowerCase(), vowels);
 	}
 
 	/**
