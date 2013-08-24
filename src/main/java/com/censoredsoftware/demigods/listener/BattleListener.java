@@ -117,7 +117,7 @@ public class BattleListener implements Listener
 			if(DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange())
 			{
 				Vector vector = battle.getStartLocation().toVector();
-				Vector victor = event.getPlayer().getLocation().toVector().subtract(vector).multiply(1.1D);
+				Vector victor = event.getPlayer().getLocation().toVector().add(vector);
 				event.getPlayer().setVelocity(victor);
 			};
 		}
