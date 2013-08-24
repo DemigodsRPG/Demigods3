@@ -584,10 +584,10 @@ public class Battle implements ConfigurationSerializable
 
 		public static void sendBattleStats(Battle battle)
 		{
-			battle.sendMessage(Titles.chatTitleDash("Battle Stats"));
-			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) battle.getDuration() / 1000);
-			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + battle.getParticipants().size());
-			battle.sendMessage(ChatColor.YELLOW + " " + Unicodes.rightwardArrow() + " Kill-count: " + battle.getKillCounter() + " / " + battle.getMinKills());
+			battle.sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
+			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) battle.getDuration() / 1000 + " seconds");
+			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + battle.getParticipants().size());
+			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Kill-count: " + ChatColor.WHITE + battle.getKillCounter() + " / " + battle.getMinKills());
 		}
 
 		public static String findWinner(Battle battle)

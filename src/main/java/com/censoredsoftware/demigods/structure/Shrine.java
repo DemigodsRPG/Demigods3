@@ -144,7 +144,7 @@ public class Shrine implements Structure
 
 	public static boolean validBlockConfiguration(Block block)
 	{
-		if(!block.getType().equals(Material.IRON_BLOCK)) return false;
+		if(!block.getType().equals(Material.GOLD_BLOCK)) return false;
 		if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 		if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 		if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
