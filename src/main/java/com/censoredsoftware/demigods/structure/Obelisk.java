@@ -74,14 +74,14 @@ public class Obelisk implements Structure
 	{
 		{
 			// Everything else.
-			add(new Selection(0, 0, -1, 0, 2, -1, Material.NETHERRACK));
-			add(new Selection(0, 0, 1, 0, 2, 1, Material.NETHERRACK));
-			add(new Selection(1, 0, 0, 1, 2, 0, Material.NETHERRACK));
-			add(new Selection(-1, 0, 0, -1, 2, 0, Material.NETHERRACK));
-			add(new Selection(0, 4, -1, 0, 5, -1, Material.NETHERRACK));
-			add(new Selection(0, 4, 1, 0, 5, 1, Material.NETHERRACK));
-			add(new Selection(1, 4, 0, 1, 5, 0, Material.NETHERRACK));
-			add(new Selection(-1, 4, 0, -1, 5, 0, Material.NETHERRACK));
+			add(new Selection(0, 0, -1, 0, 2, -1, Material.NETHER_BRICK));
+			add(new Selection(0, 0, 1, 0, 2, 1, Material.NETHER_BRICK));
+			add(new Selection(1, 0, 0, 1, 2, 0, Material.NETHER_BRICK));
+			add(new Selection(-1, 0, 0, -1, 2, 0, Material.NETHER_BRICK));
+			add(new Selection(0, 4, -1, 0, 5, -1, Material.NETHER_BRICK));
+			add(new Selection(0, 4, 1, 0, 5, 1, Material.NETHER_BRICK));
+			add(new Selection(1, 4, 0, 1, 5, 0, Material.NETHER_BRICK));
+			add(new Selection(-1, 4, 0, -1, 5, 0, Material.NETHER_BRICK));
 			add(new Selection(0, 0, 0, 0, 4, 0, Material.REDSTONE_BLOCK));
 			add(new Selection(0, 3, -1, Material.REDSTONE_LAMP_ON));
 			add(new Selection(0, 3, 1, Material.REDSTONE_LAMP_ON));
