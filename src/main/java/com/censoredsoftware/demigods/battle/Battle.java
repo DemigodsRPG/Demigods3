@@ -632,7 +632,7 @@ public class Battle implements ConfigurationSerializable
 		 */
 		public static boolean canTarget(Participant participant) // TODO REDO THIS
 		{
-			return !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || participant.getCurrentLocation() != null && !Structures.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
+			return participant == null || !(participant instanceof DCharacter || participant instanceof Pet) || participant.canPvp() || participant.getCurrentLocation() != null && !Structures.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
 		}
 
 		/**
