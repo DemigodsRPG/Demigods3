@@ -477,10 +477,16 @@ public interface Ability
 							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_EMPTY_SLOT));
 							return true;
 						}
+						else if(character.getMeta().isBound(itemInHand.getType()))
+						{
+							// Material already bound
+							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_MATERIAL_BOUND));
+							return true;
+						}
 						else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
 						{
 							// Weapon required
-							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName.toLowerCase()));
+							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
 							return true;
 						}
 
@@ -488,7 +494,7 @@ public interface Ability
 						character.getMeta().setBind(ability, itemInHand.getType());
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", Strings.beautify(itemInHand.getType().name())));
+						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(itemInHand.getType().name())).toLowerCase());
 
 						return true;
 					}
