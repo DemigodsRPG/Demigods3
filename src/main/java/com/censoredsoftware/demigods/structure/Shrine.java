@@ -1,14 +1,9 @@
 package com.censoredsoftware.demigods.structure;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.base.Predicate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,9 +14,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 
 public class Shrine implements Structure
 {
@@ -220,6 +221,10 @@ public class Shrine implements Structure
 						e.printStackTrace();
 					}
 				}
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.DISABLED_MORTAL));
 			}
 
 			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Shrine"))
