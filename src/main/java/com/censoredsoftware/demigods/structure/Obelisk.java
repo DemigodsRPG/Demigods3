@@ -195,6 +195,7 @@ public class Obelisk implements Structure
 	{
 		switch(reference.getBlock().getBiome())
 		{
+			case OCEAN:
 			case BEACH:
 			case DESERT:
 			case DESERT_HILLS:
@@ -281,7 +282,7 @@ public class Obelisk implements Structure
 	{
 		public static boolean validBlockConfiguration(Block block)
 		{
-			if(!block.getType().equals(Material.REDSTONE_BLOCK)) return false;
+			if(!block.getType().equals(Material.EMERALD_BLOCK)) return false;
 			if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
 			if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
