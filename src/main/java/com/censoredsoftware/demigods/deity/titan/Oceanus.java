@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.deity.titan;
 
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
@@ -40,7 +41,7 @@ public class Oceanus implements Deity
 		}
 	};
 	private final static Type type = Type.TIER1;
-	private final static Set<Ability> abilities = Sets.newHashSet((Ability) new Swim(name, permission));
+	private final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission));
 
 	@Override
 	public String getName()
