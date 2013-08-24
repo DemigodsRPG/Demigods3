@@ -534,7 +534,12 @@ public class Battle implements ConfigurationSerializable
 			battle.addKill(damager);
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath(damager.getRelatedCharacter());
+			if(damagee instanceof DCharacter)
+			{
+				DCharacter character = (DCharacter) damagee;
+				character.getOfflinePlayer().getPlayer().setFoodLevel(20);
+				character.addDeath(damager.getRelatedCharacter());
+			}
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
 		}
