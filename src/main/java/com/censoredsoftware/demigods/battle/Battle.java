@@ -234,6 +234,7 @@ public class Battle implements ConfigurationSerializable
 		if(this.deaths.containsKey(character)) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
+		Util.sendBattleStats(this);
 	}
 
 	public DCharacter getStarter()
@@ -579,7 +580,6 @@ public class Battle implements ConfigurationSerializable
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
-			sendBattleStats(battle);
 		}
 
 		public static void sendBattleStats(Battle battle)
