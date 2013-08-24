@@ -601,7 +601,7 @@ public class Battle implements ConfigurationSerializable
 				if(score.containsKey(entry.getKey())) base = score.get(entry.getKey());
 				score.put(entry.getKey(), base - Integer.parseInt(entry.getValue().toString()));
 			}
-			ImmutableMap<String, Integer> sortedScore = ImmutableSortedMap.copyOf(score, Ordering.natural().onResultOf(Functions.forMap(score)));
+			ImmutableMap<String, Integer> sortedScore = ImmutableSortedMap.copyOf(score, Ordering.natural().reverse().onResultOf(Functions.forMap(score)));
 			for(String stringId : sortedScore.keySet())
 			{
 				DCharacter character = DCharacter.Util.load(UUID.fromString(stringId));
