@@ -571,16 +571,21 @@ public class Battle implements ConfigurationSerializable
 				score.put(entry.getKey(), base - Integer.parseInt(entry.getValue().toString()));
 			}
 
-			int max = Collections.max(score.values());
-			for(Map.Entry<String, Integer> entry : score.entrySet()) // TODO Fix for ties.
+			try
 			{
-				if(Integer.parseInt(entry.getValue().toString()) == max)
+				int max = Collections.max(score.values());
+				for(Map.Entry<String, Integer> entry : score.entrySet()) // TODO Fix for ties.
 				{
-					DCharacter character = DCharacter.Util.load(UUID.fromString(entry.getKey()));
-					if(score.size() < 3) return character.getName();
-					return "The " + character.getAlliance() + "s";
+					if(Integer.parseInt(entry.getValue().toString()) == max)
+					{
+						DCharacter character = DCharacter.Util.load(UUID.fromString(entry.getKey()));
+						if(score.size() < 3) return character.getName();
+						return "The " + character.getAlliance() + "s";
+					}
 				}
 			}
+			catch(NoSuchElementException ignored)
+			{}
 
 			return "Nobody";
 		}
