@@ -736,17 +736,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public boolean checkBound(String abilityName, Material material)
 		{
-			return binds.containsKey(abilityName) && binds.get(abilityName).equals(material.name());
+			return getBinds().containsKey(abilityName) && binds.get(abilityName).equals(material.name());
 		}
 
 		public boolean isBound(Ability ability)
 		{
-			return binds.containsKey(ability.getName());
+			return getBinds().containsKey(ability.getName());
 		}
 
 		public boolean isBound(Material material)
 		{
-			return binds.containsValue(material.name());
+			return getBinds().containsValue(material.name());
 		}
 
 		public void setBind(Ability ability, Material material)
@@ -762,19 +762,19 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void removeBind(Ability ability)
 		{
-			binds.remove(ability.getName());
+			getBinds().remove(ability.getName());
 		}
 
 		public void removeBind(Material material)
 		{
-			if(binds.containsValue(material.name()))
+			if(getBinds().containsValue(material.name()))
 			{
 				String toRemove = null;
-				for(Map.Entry<String, Object> entry : binds.entrySet())
+				for(Map.Entry<String, Object> entry : getBinds().entrySet())
 				{
 					toRemove = entry.getValue().equals(material.name()) ? entry.getKey() : null;
 				}
-				binds.remove(toRemove);
+				getBinds().remove(toRemove);
 			}
 		}
 
