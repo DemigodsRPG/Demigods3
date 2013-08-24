@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.location.DLocation;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -113,7 +114,7 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange())
+			if(DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange())
 			{
 				Vector vector = event.getPlayer().getLocation().toVector();
 				Vector victor = battle.getStartLocation().toVector().subtract(vector).multiply(1.1D);
@@ -132,7 +133,7 @@ public class BattleListener implements Listener
 		{
 			Battle battle = Battle.Util.getBattle(participant);
 			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld())) return;
-			if(event.getTo().distance(battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+			if(DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
 		}
 	}
 }

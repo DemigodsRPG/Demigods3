@@ -318,5 +318,13 @@ public class DLocation implements ConfigurationSerializable
 		{
 			return (float) Math.toDegrees(angle);
 		}
+
+		public static double distanceFlat(Location location1, Location location2)
+		{
+			double Y = location1.getY();
+			Location location3 = location2.clone();
+			location3.setY(Y);
+			return location1.distance(location3);
+		}
 	}
 }
