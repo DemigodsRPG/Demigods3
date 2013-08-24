@@ -494,7 +494,7 @@ public interface Ability
 						character.getMeta().setBind(ability, itemInHand.getType());
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + ChatColor.ITALIC + Strings.beautify(itemInHand.getType().name())).toLowerCase() + ChatColor.RESET + ChatColor.GREEN);
+						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
 
 						return true;
 					}
