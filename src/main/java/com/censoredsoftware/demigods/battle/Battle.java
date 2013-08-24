@@ -31,10 +31,6 @@ public class Battle implements ConfigurationSerializable
 	private UUID id;
 	private UUID startLoc;
 	private boolean active;
-	private double range;
-	private long duration;
-	private int minKills;
-	private int maxKills;
 	private long startTime;
 	private long deleteTime;
 	private Set<String> involvedPlayers;
@@ -52,10 +48,6 @@ public class Battle implements ConfigurationSerializable
 		this.id = id;
 		startLoc = UUID.fromString(conf.getString("startLoc"));
 		active = conf.getBoolean("active");
-		range = conf.getDouble("range");
-		duration = conf.getLong("duration");
-		minKills = conf.getInt("minKills");
-		maxKills = conf.getInt("maxKills");
 		startTime = conf.getLong("startTime");
 		deleteTime = conf.getLong("deleteTime");
 		involvedPlayers = Sets.newHashSet(conf.getStringList("involvedPlayers"));
@@ -72,10 +64,6 @@ public class Battle implements ConfigurationSerializable
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("startLoc", startLoc.toString());
 		map.put("active", active);
-		map.put("range", range);
-		map.put("duration", duration);
-		map.put("minKills", minKills);
-		map.put("maxKills", maxKills);
 		map.put("startTime", startTime);
 		map.put("deleteTime", deleteTime);
 		map.put("involvedPlayers", Lists.newArrayList(involvedPlayers));
@@ -92,12 +80,6 @@ public class Battle implements ConfigurationSerializable
 		id = UUID.randomUUID();
 	}
 
-	public void setRange(double range)
-	{
-		this.range = range;
-		Util.save(this);
-	}
-
 	public void setActive()
 	{
 		this.active = true;
@@ -107,24 +89,6 @@ public class Battle implements ConfigurationSerializable
 	public void setInactive()
 	{
 		this.active = false;
-		Util.save(this);
-	}
-
-	public void setDuration(long duration)
-	{
-		this.duration = duration;
-		Util.save(this);
-	}
-
-	public void setMinKills(int kills)
-	{
-		this.minKills = kills;
-		Util.save(this);
-	}
-
-	public void setMaxKills(int kills)
-	{
-		this.maxKills = kills;
 		Util.save(this);
 	}
 
@@ -151,7 +115,10 @@ public class Battle implements ConfigurationSerializable
 
 	public double getRange()
 	{
-		return this.range;
+		int base = Demigods.config.getSettingInt("battles.min_range");
+		int per = 5;
+		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		return base;
 	}
 
 	public boolean isActive()
@@ -161,17 +128,26 @@ public class Battle implements ConfigurationSerializable
 
 	public long getDuration()
 	{
-		return this.duration;
+		long base = Demigods.config.getSettingInt("battles.min_duration") * 1000;
+		long per = Demigods.config.getSettingInt("battles.duration_multiplier") * 1000;
+		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		return base;
 	}
 
 	public int getMinKills()
 	{
-		return this.minKills;
+		int base = Demigods.config.getSettingInt("battles.min_kills");
+		int per = 2;
+		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		return base;
 	}
 
 	public int getMaxKills()
 	{
-		return this.maxKills;
+		int base = Demigods.config.getSettingInt("battles.max_kills");
+		int per = 3;
+		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		return base;
 	}
 
 	public Location getStartLocation()
@@ -271,6 +247,9 @@ public class Battle implements ConfigurationSerializable
 		String winner = Util.findWinner(this);
 		sendMessage(ChatColor.YELLOW + (winner.startsWith("The ") && winner.endsWith("s") ? winner + " have won the battle." : winner + " has won this duel."));
 
+		for(String stringId : involvedPlayers)
+			DataManager.saveTimed(stringId, "just_finished_battle", true, 10);
+
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
 		setInactive();
@@ -349,20 +328,8 @@ public class Battle implements ConfigurationSerializable
 			battle.generateId();
 			battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 			battle.setStartTime(System.currentTimeMillis());
-
-			int default_range = Demigods.config.getSettingInt("battles.min_range");
-			double range = damager.getCurrentLocation().distance(damaged.getCurrentLocation());
-			if(range < default_range) battle.setRange(default_range);
-			else battle.setRange(range);
-
 			battle.setActive();
-
-			battle.setDuration(Demigods.config.getSettingInt("battles.min_duration") * 1000);
-			battle.setMinKills(Demigods.config.getSettingInt("battles.min_kills"));
-			battle.setMaxKills(Demigods.config.getSettingInt("battles.max_kills"));
-
 			battle.initialize();
-
 			battle.setStarter(damager.getRelatedCharacter());
 			battle.addParticipant(damager);
 			battle.addParticipant(damaged);

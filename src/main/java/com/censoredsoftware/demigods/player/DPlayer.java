@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -110,6 +111,7 @@ public class DPlayer implements ConfigurationSerializable
 		}
 		else if(canPvp() && !DataManager.hasTimed(player.getName(), "pvp_cooldown"))
 		{
+			if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 

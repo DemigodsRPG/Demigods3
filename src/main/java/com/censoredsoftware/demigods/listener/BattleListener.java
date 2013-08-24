@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -33,7 +34,15 @@ public class BattleListener implements Listener
 		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
+		// Stop battles with self
 		if(damageeParticipant.equals(damagerParticipant)) return;
+
+		// Battle cooldown
+		if(damageeParticipant instanceof DCharacter && DataManager.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle") || damagerParticipant instanceof DCharacter && DataManager.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
+		{
+			event.setCancelled(true);
+			return;
+		}
 
 		// Calculate midpoint location
 		Location midpoint = damagerParticipant.getCurrentLocation().toVector().getMidpoint(event.getEntity().getLocation().toVector()).toLocation(damagerParticipant.getCurrentLocation().getWorld());
