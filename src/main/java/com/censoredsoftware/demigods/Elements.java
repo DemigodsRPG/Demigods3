@@ -2,8 +2,10 @@ package com.censoredsoftware.demigods;
 
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
+import com.censoredsoftware.demigods.deity.titan.Iapetus;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Prometheus;
 import com.censoredsoftware.demigods.helper.ListedConversation;
@@ -19,10 +21,10 @@ public class Elements
 	public static enum Deities implements ListedDeity
 	{
 		// GODS
-		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()),
+		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()), HADES("Hades", new Hades()),
 
 		// TITANS
-		OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
+		IAPETUS("Iapetus", new Iapetus()), OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
 
 		// DONATORS
 		// DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
