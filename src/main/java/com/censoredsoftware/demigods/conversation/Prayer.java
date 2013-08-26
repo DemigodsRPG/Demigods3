@@ -872,7 +872,7 @@ public class Prayer implements ListedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String alliance)
 			{
-				return Deity.Util.getLoadedPlayableDeityAlliances().toString().toLowerCase().contains(alliance);
+				return Deity.Util.getLoadedPlayableDeityAlliances().contains(alliance);
 			}
 
 			@Override
