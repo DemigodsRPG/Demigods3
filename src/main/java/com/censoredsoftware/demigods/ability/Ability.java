@@ -1,8 +1,19 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -22,19 +33,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Ability
 {
@@ -304,54 +304,51 @@ public interface Ability
 		 */
 		public static LivingEntity autoTarget(Player player)
 		{
-			// TODO: Test this for lag.
-
 			// Define variables
 			int range = Demigods.config.getSettingInt("caps.target_range") > 140 ? 140 : Demigods.config.getSettingInt("caps.target_range");
-			int correction = 3;
+			final int correction = 3;
 			Location target = player.getTargetBlock(null, range).getLocation();
 			BlockIterator iterator = new BlockIterator(player, range);
-			Set<LivingEntity> entities = Sets.newHashSet();
-			List<LivingEntity> targets = Lists.newArrayList();
-
-			// Save the nearby living entities
-			for(Entity entity : player.getNearbyEntities(range, range, range))
-			{
-				if(entity instanceof LivingEntity) entities.add((LivingEntity) entity);
-			}
+			List<Entity> targets = Lists.newArrayList();
+			final DCharacter looking = DPlayer.Util.getPlayer(player).getCurrent();
 
 			// Iterate through the blocks and find the target
 			while(iterator.hasNext())
 			{
-				Block block = iterator.next();
+				final Block block = iterator.next();
 
-				for(LivingEntity entity : entities)
+				targets.addAll(Collections2.filter(player.getNearbyEntities(range, range, range), new Predicate<Entity>()
 				{
-					if(entity.getLocation().distance(block.getLocation()) <= correction)
+					@Override
+					public boolean apply(Entity entity)
 					{
-						if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getTameable(entity) != null)
+						if(entity instanceof LivingEntity && entity.getLocation().distance(block.getLocation()) <= correction)
 						{
-							Pet wrapper = Pet.Util.getTameable(entity);
-							if(DCharacter.Util.areAllied(DPlayer.Util.getPlayer(player).getCurrent(), wrapper.getOwner())) continue;
+							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getTameable((LivingEntity) entity) != null)
+							{
+								Pet wrapper = Pet.Util.getTameable((LivingEntity) entity);
+								if(DCharacter.Util.areAllied(looking, wrapper.getOwner())) return false;
+							}
+							else if(entity instanceof Player && DPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
+							{
+								DCharacter character = DPlayer.Util.getPlayer(((Player) entity)).getCurrent();
+								if(DCharacter.Util.areAllied(looking, character)) return false;
+							}
+							return true;
 						}
-						else
-						{
-							targets.add(entity);
-						}
+						return false;
 					}
-				}
+				}));
 			}
 
 			// Attempt to return the closest entity to the cursor
-			for(LivingEntity entity : targets)
-			{
-				if(entity.getLocation().distance(target) <= correction) return entity;
-			}
+			for(Entity entity : targets)
+				if(entity.getLocation().distance(target) <= correction) return (LivingEntity) entity;
 
 			// If it failed to do that then just return the first entity
 			try
 			{
-				return targets.get(0);
+				return (LivingEntity) targets.get(0);
 			}
 			catch(Exception ignored)
 			{}
