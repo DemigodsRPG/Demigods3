@@ -147,6 +147,18 @@ public class Structures
 		});
 	}
 
+	public static boolean noOverlapStructureNearby(Location location)
+	{
+		return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Structure.Save>()
+		{
+			@Override
+			public boolean apply(Structure.Save save)
+			{
+				return save.getRawFlags().contains(Structure.Flag.NO_OVERLAP.name());
+			}
+		});
+	}
+
 	/**
 	 * Strictly checks the <code>reference</code> location to validate if the area is safe
 	 * for automated generation.

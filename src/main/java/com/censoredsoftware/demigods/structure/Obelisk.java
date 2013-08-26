@@ -9,7 +9,6 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -227,7 +226,7 @@ public class Obelisk implements Structure
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(Util.noPvPStructureNearby(location))
+					if(Structures.noOverlapStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -289,18 +288,6 @@ public class Obelisk implements Structure
 			if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
 			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
-		}
-
-		public static boolean noPvPStructureNearby(Location location)
-		{
-			return Iterables.any(Structures.getStructuresInRegionalArea(location), new Predicate<Save>()
-			{
-				@Override
-				public boolean apply(Save save)
-				{
-					return save.getRawFlags().contains(Flag.NO_PVP.name());
-				}
-			});
 		}
 	}
 }

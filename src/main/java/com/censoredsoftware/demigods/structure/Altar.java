@@ -28,8 +28,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-// TODO Optimize and generalize methods.
-
 public class Altar implements Structure
 {
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
@@ -286,6 +284,7 @@ public class Altar implements Structure
 				add(Flag.NO_PVP);
 				add(Flag.PRAYER_LOCATION);
 				add(Flag.PROTECTED_BLOCKS);
+				add(Flag.NO_OVERLAP);
 			}
 		};
 	}

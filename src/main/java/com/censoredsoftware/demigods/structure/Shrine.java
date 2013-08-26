@@ -1,9 +1,14 @@
 package com.censoredsoftware.demigods.structure;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,15 +19,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.base.Predicate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Shrine implements Structure
 {
@@ -104,6 +103,7 @@ public class Shrine implements Structure
 				add(Flag.DELETE_WITH_OWNER);
 				add(Flag.PROTECTED_BLOCKS);
 				add(Flag.TRIBUTE_LOCATION);
+				add(Flag.NO_OVERLAP);
 			}
 		};
 	}
