@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -26,6 +14,17 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -399,7 +398,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			this.id = id;
 			if(conf.getString("helmet") != null) helmet = UUID.fromString(conf.getString("helmet"));
 			if(conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
-			if(conf.getString("leggins") != null) leggings = UUID.fromString(conf.getString("leggings"));
+			if(conf.getString("leggings") != null) leggings = UUID.fromString(conf.getString("leggings"));
 			if(conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
 			if(conf.getStringList("items") != null)
 			{
@@ -1132,6 +1131,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
+		public static Set<DCharacter> getAllUsable()
+		{
+			return Sets.filter(loadAll(), new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isUsable();
+				}
+			});
+		}
+
 		/**
 		 * Returns true if <code>char1</code> is allied with <code>char2</code> based
 		 * on their current alliances.
@@ -1207,7 +1218,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
-			return Collections2.filter(loadAll(), predicate);
+			return Collections2.filter(getAllUsable(), predicate);
 		}
 
 		public static int getMedianOverallOnlineAscension()
@@ -1224,7 +1235,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public static int getMedianOverallAscension()
 		{
-			return median(Ints.toArray(Collections2.transform(loadAll(), new Function<DCharacter, Integer>()
+			return median(Ints.toArray(Collections2.transform(getAllUsable(), new Function<DCharacter, Integer>()
 			{
 				@Override
 				public Integer apply(DCharacter character)
