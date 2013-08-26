@@ -873,7 +873,7 @@ public class Prayer implements ListedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String alliance)
 			{
-				return Deity.Util.getLoadedDeityAlliances().contains(alliance);
+				return Deity.Util.getLoadedDeityAlliances().toString().toLowerCase().contains(alliance);
 			}
 
 			@Override
@@ -890,7 +890,7 @@ public class Prayer implements ListedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Demigods.message.clearRawChat((Player) context.getForWhom());
-				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + StringUtils.capitalize(((String) context.getSessionData("chosen_alliance")).toLowerCase()) + ChatColor.GRAY + "? (y/n)";
+				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((String) context.getSessionData("chosen_alliance")).toLowerCase()) + "s" + ChatColor.GRAY + "? (y/n)";
 			}
 
 			@Override
