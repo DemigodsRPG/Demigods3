@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.deity.titan;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
+import com.censoredsoftware.demigods.ability.passive.NoFire;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
@@ -41,7 +42,7 @@ public class Prometheus implements Deity
 		}
 	};
 	private final static Type type = Type.TIER1;
-	private final static Set<Ability> abilities = Sets.newHashSet(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission));
+	private final static Set<Ability> abilities = Sets.newHashSet(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
 
 	@Override
 	public String getName()
