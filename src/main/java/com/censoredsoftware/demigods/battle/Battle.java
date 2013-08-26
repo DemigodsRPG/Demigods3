@@ -248,7 +248,7 @@ public class Battle implements ConfigurationSerializable
 		sendMessage(ChatColor.YELLOW + (winner.startsWith("The ") && winner.endsWith("s") ? winner + " have won the battle." : winner + " has won this duel."));
 
 		for(String stringId : involvedPlayers)
-			DataManager.saveTimed(stringId, "just_finished_battle", true, 10);
+			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
 
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
