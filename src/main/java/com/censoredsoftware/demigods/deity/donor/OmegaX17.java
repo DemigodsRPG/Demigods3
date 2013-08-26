@@ -1,9 +1,8 @@
-package com.censoredsoftware.demigods.deity.insignian;
+package com.censoredsoftware.demigods.deity.donor;
 
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
-import com.censoredsoftware.demigods.ability.ultimate.Discoball;
+import com.censoredsoftware.demigods.ability.passive.NoSplosion;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
@@ -18,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DrD1sco implements Deity
+public class OmegaX17 implements Deity
 {
-	private final static String name = "DrD1sco", alliance = "Insignian", permission = "demigods.insignian.disco";
-	private final static ChatColor color = ChatColor.DARK_PURPLE;
-	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
-	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
+	private final static String name = "OmegaX17", alliance = "Donor", permission = "demigods.donor.omega";
+	private final static ChatColor color = ChatColor.BLACK;
+	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.TNT, 3));
+	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT_AND_STEEL, 6));
 	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
@@ -41,7 +40,7 @@ public class DrD1sco implements Deity
 		}
 	};
 	private final static Type type = Type.TIER1;
-	private final static Set<Ability> abilities = Sets.newHashSet(new Discoball.RainbowWalking(name, permission), new RainbowHorse(name, permission));
+	private final static Set<Ability> abilities = Sets.newHashSet((Ability) new NoSplosion(name, permission));
 
 	@Override
 	public String getName()
@@ -52,7 +51,7 @@ public class DrD1sco implements Deity
 	@Override
 	public Elements.ListedDeity getListedDeity()
 	{
-		return null; // Elements.Deities.DISCO;
+		return null; // Elements.Deities.OMEGA;
 	}
 
 	@Override
