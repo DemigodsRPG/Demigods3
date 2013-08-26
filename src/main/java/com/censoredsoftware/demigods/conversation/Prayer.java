@@ -924,7 +924,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(" ");
 
 				for(Deity deity : Deity.Util.getLoadedPlayableDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
-					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.WHITE + " - " + ChatColor.RED + "Caution: Difficult" : ""));
+					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.WHITE + " - " + ChatColor.DARK_RED + "Difficult" : ""));
 
 				return "";
 			}
