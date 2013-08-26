@@ -49,6 +49,30 @@ public interface Deity
 
 	public static class Util
 	{
+		public static Collection<String> getLoadedPlayableDeityAlliances()
+		{
+			return Collections2.filter(getLoadedDeityAlliances(), new Predicate<String>()
+			{
+				@Override
+				public boolean apply(String alliance)
+				{
+					return getLoadedPlayableDeitiesInAlliance(alliance).size() > 0;
+				}
+			});
+		}
+
+		public static Collection<Deity> getLoadedPlayableDeitiesInAlliance(final String alliance)
+		{
+			return Collections2.filter(getLoadedPlayableDeitiesInAlliance(alliance), new Predicate<Deity>()
+			{
+				@Override
+				public boolean apply(Deity d)
+				{
+					return d.getFlags().contains(Flag.PLAYABLE) && d.getAlliance().equalsIgnoreCase(alliance);
+				}
+			});
+		}
+
 		public static Set<String> getLoadedDeityAlliances()
 		{
 			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Elements.Deities.values()), new Function<Elements.Deities, String>()
@@ -61,7 +85,7 @@ public interface Deity
 			}));
 		}
 
-		public static Collection<Deity> getAllDeitiesInAlliance(final String alliance)
+		public static Collection<Deity> getLoadedDeitiesInAlliance(final String alliance)
 		{
 			return Collections2.filter(Collections2.transform(Sets.newHashSet(Elements.Deities.values()), new Function<Elements.Deities, Deity>()
 			{
