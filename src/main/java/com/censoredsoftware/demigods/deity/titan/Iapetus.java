@@ -19,7 +19,7 @@ import java.util.Set;
 public class Iapetus implements Deity
 {
 	private final static String name = "Iapetus", alliance = "Titan", permission = "demigods.titan.iapetus";
-	private final static ChatColor color = ChatColor.DARK_AQUA;
+	private final static ChatColor color = ChatColor.RED;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
 	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
