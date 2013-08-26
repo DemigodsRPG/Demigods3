@@ -34,11 +34,8 @@ public class BattleListener implements Listener
 		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
-		// Stop battles with self
-		if(damageeParticipant.equals(damagerParticipant)) return;
-
-		// Battle cooldown
-		if(damageeParticipant instanceof DCharacter && DataManager.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle") || damagerParticipant instanceof DCharacter && DataManager.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
+		// Various things that should cancel the event
+		if(damageeParticipant.equals(damagerParticipant) || DCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()) || damageeParticipant instanceof DCharacter && DataManager.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle") || damagerParticipant instanceof DCharacter && DataManager.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
 		{
 			event.setCancelled(true);
 			return;
