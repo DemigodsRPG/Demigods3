@@ -1005,12 +1005,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(getCharacterByName(charName) == null)
 			{
 				// Create the Character
-				return create(player, charName, Deity.Util.getDeity(charDeity), true);
+				return create(player, charName, Deity.Util.getDeity(charDeity));
 			}
 			return null;
 		}
 
-		private static DCharacter create(final DPlayer player, final String charName, final Deity deity, final boolean immortal)
+		private static DCharacter create(final DPlayer player, final String charName, final Deity deity)
 		{
 			DCharacter character = new DCharacter();
 			character.generateId();

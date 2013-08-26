@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
@@ -49,7 +50,7 @@ public class DPlayer implements ConfigurationSerializable
 		else lastLoginTime = -1;
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
 		else lastLogoutTime = -1;
-		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
+		if(conf.getString("currentDeityName") != null && Deity.Util.getDeity(currentDeityName) != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
 	}
@@ -61,7 +62,7 @@ public class DPlayer implements ConfigurationSerializable
 		map.put("canPvp", canPvp);
 		map.put("lastLoginTime", lastLoginTime);
 		map.put("lastLogoutTime", lastLogoutTime);
-		map.put("currentDeityName", currentDeityName);
+		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());
 		return map;
