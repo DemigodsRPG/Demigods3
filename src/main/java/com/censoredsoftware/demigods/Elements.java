@@ -4,8 +4,6 @@ import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
-import com.censoredsoftware.demigods.deity.insignian.DrD1sco;
-import com.censoredsoftware.demigods.deity.insignian.OmegaX17;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Prometheus;
 import com.censoredsoftware.demigods.helper.ListedConversation;
@@ -24,10 +22,10 @@ public class Elements
 		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()),
 
 		// TITANS
-		OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus()),
+		OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
 
 		// DONATORS
-		DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
+		// DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
 
 		private final String name;
 		private final Deity deity;

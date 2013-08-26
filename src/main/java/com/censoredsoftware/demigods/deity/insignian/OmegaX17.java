@@ -51,7 +51,7 @@ public class OmegaX17 implements Deity
 	@Override
 	public Elements.ListedDeity getListedDeity()
 	{
-		return Elements.Deities.OMEGA;
+		return null; // Elements.Deities.OMEGA;
 	}
 
 	@Override

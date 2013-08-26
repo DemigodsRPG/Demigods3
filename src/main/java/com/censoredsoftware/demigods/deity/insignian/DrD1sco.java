@@ -52,7 +52,7 @@ public class DrD1sco implements Deity
 	@Override
 	public Elements.ListedDeity getListedDeity()
 	{
-		return Elements.Deities.DISCO;
+		return null; // Elements.Deities.DISCO;
 	}
 
 	@Override
