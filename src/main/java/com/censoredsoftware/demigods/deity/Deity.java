@@ -73,6 +73,30 @@ public interface Deity
 			});
 		}
 
+		public static Collection<String> getLoadedMajorPlayableDeityAlliances()
+		{
+			return Collections2.filter(getLoadedDeityAlliances(), new Predicate<String>()
+			{
+				@Override
+				public boolean apply(String alliance)
+				{
+					return getLoadedMajorPlayableDeitiesInAlliance(alliance).size() > 0;
+				}
+			});
+		}
+
+		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAlliance(final String alliance)
+		{
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
+			{
+				@Override
+				public boolean apply(Deity d)
+				{
+					return d.getFlags().contains(Flag.PLAYABLE) && d.getFlags().contains(Flag.MAJOR_DEITY) && d.getAlliance().equalsIgnoreCase(alliance);
+				}
+			});
+		}
+
 		public static Set<String> getLoadedDeityAlliances()
 		{
 			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Elements.Deities.values()), new Function<Elements.Deities, String>()

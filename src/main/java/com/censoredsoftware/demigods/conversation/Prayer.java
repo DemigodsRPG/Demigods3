@@ -863,7 +863,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(String alliance : Deity.Util.getLoadedPlayableDeityAlliances())
+				for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliances())
 					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
 
 				return "";
@@ -872,7 +872,7 @@ public class Prayer implements ListedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String alliance)
 			{
-				return Deity.Util.getLoadedPlayableDeityAlliances().contains(alliance);
+				return Deity.Util.getLoadedMajorPlayableDeityAlliances().contains(alliance);
 			}
 
 			@Override
@@ -923,7 +923,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(Deity deity : Deity.Util.getLoadedPlayableDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
+				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
 					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.WHITE + " - " + ChatColor.DARK_RED + "Difficult" : ""));
 
 				return "";
