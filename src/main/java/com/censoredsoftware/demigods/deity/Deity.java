@@ -63,7 +63,7 @@ public interface Deity
 
 		public static Collection<Deity> getLoadedPlayableDeitiesInAlliance(final String alliance)
 		{
-			return Collections2.filter(getLoadedPlayableDeitiesInAlliance(alliance), new Predicate<Deity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
 			{
 				@Override
 				public boolean apply(Deity d)
