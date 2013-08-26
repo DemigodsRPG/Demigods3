@@ -842,11 +842,71 @@ public class Prayer implements ListedConversation
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String message)
 			{
-				if(message.contains("y")) return new ChooseDeity();
+				if(message.contains("y")) return new ChooseAlliance();
 				else
 				{
 					context.setSessionData("chosen_name", null);
 					return new ChooseName();
+				}
+			}
+		}
+
+		class ChooseAlliance extends ValidatingPrompt
+		{
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				Player player = (Player) context.getForWhom();
+
+				Demigods.message.clearRawChat(player);
+				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
+				player.sendRawMessage(" ");
+
+				for(String alliance : Deity.Util.getLoadedDeityAlliances())
+					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
+
+				return "";
+			}
+
+			@Override
+			protected boolean isInputValid(ConversationContext context, String alliance)
+			{
+				return Deity.Util.getLoadedDeityAlliances().toString().toLowerCase().contains(alliance);
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String alliance)
+			{
+				context.setSessionData("chosen_alliance", alliance);
+				return new ConfirmAlliance();
+			}
+		}
+
+		class ConfirmAlliance extends ValidatingPrompt
+		{
+			@Override
+			public String getPromptText(ConversationContext context)
+			{
+				Demigods.message.clearRawChat((Player) context.getForWhom());
+				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((String) context.getSessionData("chosen_alliance")).toLowerCase()) + "s" + ChatColor.GRAY + "? (y/n)";
+			}
+
+			@Override
+			protected boolean isInputValid(ConversationContext context, String message)
+			{
+				return message.contains("y") || message.contains("n");
+			}
+
+			@Override
+			protected Prompt acceptValidatedInput(ConversationContext context, String message)
+			{
+				if(message.contains("y")) return new ChooseDeity();
+				else
+				{
+					context.setSessionData("chosen_alliance", null);
+					return new ChooseAlliance();
 				}
 			}
 		}
@@ -864,9 +924,8 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(String alliance : Deity.Util.getLoadedDeityAlliances())
-					for(Deity deity : Deity.Util.getAllDeitiesInAlliance(alliance))
-						if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " (" + alliance + ")");
+				for(Deity deity : Deity.Util.getAllDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
+					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()));
 
 				return "";
 			}

@@ -32,7 +32,7 @@ import com.google.common.collect.Sets;
 public class DPlayer implements ConfigurationSerializable
 {
 	private String player;
-	private Boolean canPvp;
+	private boolean canPvp;
 	private long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
 	private UUID current;
@@ -242,7 +242,7 @@ public class DPlayer implements ConfigurationSerializable
 		DCharacter.Util.save(newChar);
 	}
 
-	public Boolean canPvp()
+	public boolean canPvp()
 	{
 		return this.canPvp;
 	}
