@@ -39,6 +39,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Integer killCount;
 	private UUID location;
 	private String deity;
+	private Set<String> minorDeities;
 	private Boolean active;
 	private Boolean usable;
 	private UUID meta;
@@ -63,6 +64,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		killCount = conf.getInt("killCount");
 		location = UUID.fromString(conf.getString("location"));
 		deity = conf.getString("deity");
+		if(conf.isList("minorDeities")) minorDeities = Sets.newHashSet(conf.getStringList("minorDeities"));
 		active = conf.getBoolean("active");
 		usable = conf.getBoolean("usable");
 		meta = UUID.fromString(conf.getString("meta"));
@@ -84,6 +86,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("killCount", killCount);
 		map.put("location", location.toString());
 		map.put("deity", deity);
+		if(minorDeities != null) map.put("minorDeities", Lists.newArrayList(minorDeities));
 		map.put("active", active);
 		map.put("usable", usable);
 		map.put("meta", meta.toString());
@@ -105,6 +108,21 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	void setDeity(Deity deity)
 	{
 		this.deity = deity.getName();
+	}
+
+	void setMinorDeities(Set<String> set)
+	{
+		this.minorDeities = set;
+	}
+
+	public void addMinorDeity(Deity deity)
+	{
+		this.minorDeities.add(deity.getName());
+	}
+
+	public void removeMinorDeity(Deity deity)
+	{
+		this.minorDeities.remove(deity.getName());
 	}
 
 	void setPlayer(DPlayer player)
@@ -252,6 +270,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public Deity getDeity()
 	{
 		return Deity.Util.getDeity(this.deity);
+	}
+
+	public Collection<Deity> getMinorDeities()
+	{
+		return Collections2.transform(minorDeities, new Function<String, Deity>()
+		{
+			@Override
+			public Deity apply(String deity)
+			{
+				return Deity.Util.getDeity(deity);
+			}
+		});
 	}
 
 	public String getAlliance()
