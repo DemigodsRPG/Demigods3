@@ -35,13 +35,13 @@ public interface Deity
 
 	public List<String> getLore();
 
-	public Deity.Type getType();
+	public Set<Flag> getFlags();
 
 	public Set<Ability> getAbilities();
 
-	public enum Type
+	public enum Flag
 	{
-		TIER1, TIER2, TIER3
+		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY
 	}
 
 	@Override

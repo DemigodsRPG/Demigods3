@@ -40,7 +40,7 @@ public class Oceanus implements Deity
 			add(" ");
 		}
 	};
-	private final static Type type = Type.TIER1;
+	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE);
 	private final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission));
 
 	@Override
@@ -92,9 +92,9 @@ public class Oceanus implements Deity
 	}
 
 	@Override
-	public Type getType()
+	public Set<Flag> getFlags()
 	{
-		return type;
+		return flags;
 	}
 
 	@Override

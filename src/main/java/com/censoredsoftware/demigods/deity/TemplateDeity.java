@@ -38,7 +38,7 @@ public class TemplateDeity implements Deity
 			add(" ");
 		}
 	};
-	private final static Type type = Type.TIER1;
+	private final static Set<Flag> flags = Sets.newHashSet(Flag.NON_PLAYABLE);
 	private final static Set<Ability> abilities = Sets.newHashSet((Ability) new Template(name, permission));
 
 	@Override
@@ -90,9 +90,9 @@ public class TemplateDeity implements Deity
 	}
 
 	@Override
-	public Type getType()
+	public Set<Flag> getFlags()
 	{
-		return type;
+		return flags;
 	}
 
 	@Override

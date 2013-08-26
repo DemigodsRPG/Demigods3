@@ -41,7 +41,7 @@ public class Poseidon implements Deity
 			add(" ");
 		}
 	};
-	private final static Type type = Type.TIER1;
+	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE);
 	private final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission), new Reel(name, permission));
 
 	@Override
@@ -93,9 +93,9 @@ public class Poseidon implements Deity
 	}
 
 	@Override
-	public Type getType()
+	public Set<Flag> getFlags()
 	{
-		return type;
+		return flags;
 	}
 
 	@Override
