@@ -38,7 +38,7 @@ public class Hades implements Deity
 			add(" ");
 		}
 	};
-	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE);
+	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE, Flag.DIFFICULT, Flag.NO_SHRINE);
 	private final static Set<Ability> abilities = Sets.newHashSet();
 
 	@Override
