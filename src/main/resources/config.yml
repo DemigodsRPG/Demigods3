@@ -18,7 +18,6 @@ restrictions:
 generation:
     min_blocks_between_altars: 450
     altar_chance: 4.8 #percent
-    chest_chance: 0.32 #percent
 
 ## Regeneration ##
 regeneration:
@@ -33,11 +32,6 @@ zones:
     use_dynamic_pvp_zones: true
     allow_skills_anywhere: false
     pvp_area_delay_time: 10
-
-## Update Settings ##
-update:
-    auto: false
-    notify: true
 
 ## Multipliers ##
 multipliers:
@@ -73,11 +67,6 @@ character:
         max_favor: 750
         devotion: 200
         ascensions: 1
-    restrictions:
-        forbidden_names:
-            - admin
-            - op
-            - owner
 
 ## Battle Settings ##
 battles:
