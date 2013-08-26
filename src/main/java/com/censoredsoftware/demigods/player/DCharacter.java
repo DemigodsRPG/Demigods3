@@ -398,7 +398,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			this.id = id;
 			if(conf.getString("helmet") != null) helmet = UUID.fromString(conf.getString("helmet"));
 			if(conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
-			if(conf.getString("leggins") != null) leggings = UUID.fromString(conf.getString("leggings"));
+			if(conf.getString("leggings") != null) leggings = UUID.fromString(conf.getString("leggings"));
 			if(conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
 			if(conf.getStringList("items") != null)
 			{
