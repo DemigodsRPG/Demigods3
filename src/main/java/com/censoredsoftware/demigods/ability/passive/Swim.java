@@ -113,7 +113,7 @@ public class Swim implements Ability
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
 				if(!playerLocationMaterial.equals(Material.STATIONARY_WATER) && !playerLocationMaterial.equals(Material.WATER))
 				{
-					Vector victor = player.getLocation().getDirection().normalize().multiply(0.75D);
+					Vector victor = player.getLocation().getDirection().normalize().multiply(0.6D);
 					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
 					return;
 				}
