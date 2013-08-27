@@ -1,13 +1,7 @@
 package com.censoredsoftware.demigods.listener;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.ItemValues;
-import com.censoredsoftware.demigods.util.Structures;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,7 +16,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.ItemValues;
+import com.censoredsoftware.demigods.util.Structures;
 
 public class TributeListener implements Listener
 {
@@ -52,13 +54,12 @@ public class TributeListener implements Listener
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
 
 			// Return if the player is mortal
-			if(character == null)
+			if(!DPlayer.Util.getPlayer(player).hasCurrent())
 			{
-				player.sendMessage(ChatColor.RED + "You must be immortal to use that!");
+				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.DISABLED_MORTAL));
 				return;
 			}
-
-			if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
+			else if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
 			{
 				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + DCharacter.Util.load(save.getOwner()).getDeity().getName() + " in order to tribute here.");
 				return;
