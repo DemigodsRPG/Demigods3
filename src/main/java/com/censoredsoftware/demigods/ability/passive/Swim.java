@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -113,8 +115,11 @@ public class Swim implements Ability
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
 				if(!playerLocationMaterial.equals(Material.STATIONARY_WATER) && !playerLocationMaterial.equals(Material.WATER))
 				{
-					Vector victor = player.getLocation().getDirection().normalize().multiply(0.1D);
-					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
+					if(!player.hasPotionEffect(PotionEffectType.SLOW))
+					{
+						PotionEffect potion = new PotionEffect(PotionEffectType.SLOW, 6000, 3);
+						player.addPotionEffect(potion);
+					}
 					return;
 				}
 
