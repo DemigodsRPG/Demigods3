@@ -117,7 +117,7 @@ public class Swim implements Ability
 				{
 					if(!player.hasPotionEffect(PotionEffectType.SLOW))
 					{
-						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 6000, 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 6000, 0));
 					}
 					return;
 				}
