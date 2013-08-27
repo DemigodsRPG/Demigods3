@@ -117,14 +117,14 @@ public class Swim implements Ability
 				{
 					if(!player.hasPotionEffect(PotionEffectType.SLOW))
 					{
-						PotionEffect potion = new PotionEffect(PotionEffectType.SLOW, 6000, 3);
-						player.addPotionEffect(potion);
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 6000, 1));
 					}
 					return;
 				}
 
 				if(player.isSneaking())
 				{
+					player.removePotionEffect(PotionEffectType.SLOW);
 					Vector victor = player.getLocation().getDirection().normalize().multiply(1.3D);
 					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
 				}
