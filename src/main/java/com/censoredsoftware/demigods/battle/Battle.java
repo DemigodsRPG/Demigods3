@@ -253,12 +253,24 @@ public class Battle implements ConfigurationSerializable
 
 	public int getKills(Participant participant)
 	{
-		return Integer.parseInt(kills.get(participant.getId().toString()).toString());
+		try
+		{
+			return Integer.parseInt(kills.get(participant.getId().toString()).toString());
+		}
+		catch(Exception ignored)
+		{}
+		return 0;
 	}
 
 	public int getDeaths(Participant participant)
 	{
-		return Integer.parseInt(deaths.get(participant.getId().toString()).toString());
+		try
+		{
+			return Integer.parseInt(deaths.get(participant.getId().toString()).toString());
+		}
+		catch(Exception ignored)
+		{}
+		return 0;
 	}
 
 	public Map<UUID, Integer> getScores()

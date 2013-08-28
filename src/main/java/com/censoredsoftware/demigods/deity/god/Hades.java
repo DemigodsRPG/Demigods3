@@ -19,6 +19,7 @@ import java.util.Set;
 public class Hades implements Deity
 {
 	private final static String name = "Hades", alliance = "God", permission = "demigods.god.hades";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.GRAY;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ROTTEN_FLESH, 3, Material.BONE, 2));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BONE, 21));
@@ -99,6 +100,12 @@ public class Hades implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override
