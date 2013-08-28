@@ -474,7 +474,7 @@ public class DPlayer implements ConfigurationSerializable
 					player.sendMessage(message);
 
 				// Handle recorded chat
-				stopRecording(player);
+				stopRecording(player, true);
 			}
 		}
 
@@ -501,7 +501,7 @@ public class DPlayer implements ConfigurationSerializable
 			else
 			{
 				// Save context and abandon the conversation
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation") && recordChat)
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
 					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
 					DataManager.saveTemp(player.getName(), "prayer_context", prayer.getContext());
@@ -514,7 +514,7 @@ public class DPlayer implements ConfigurationSerializable
 				player.setSneaking(false);
 
 				// Handle recorded chat
-				stopRecording(player);
+				stopRecording(player, recordChat);
 			}
 		}
 
@@ -532,15 +532,16 @@ public class DPlayer implements ConfigurationSerializable
 		 * Stops recording and sends all messages that have been recorded thus far to the player.
 		 * 
 		 * @param player the player to stop recording for.
+		 * @param display if true, the chat will be sent to the player
 		 */
-		public static List<String> stopRecording(Player player)
+		public static List<String> stopRecording(Player player, boolean display)
 		{
 			// Handle recorded chat
 			if(chatRecording != null && chatRecording.isRecording())
 			{
 				// Send held back chat
 				List<String> messages = chatRecording.stop();
-				if(messages.size() > 0)
+				if(messages.size() > 0 && display)
 				{
 					player.sendMessage(" ");
 					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
