@@ -212,7 +212,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				try
 				{
-					return Util.getSavedPotion(UUID.fromString(s)).toPotionEffect();
+					PotionEffect potion = Util.getSavedPotion(UUID.fromString(s)).toPotionEffect();
+					potionEffects.remove(s);
+					DataManager.savedPotions.remove(s);
+					return potion;
 				}
 				catch(Exception ignored)
 				{}
