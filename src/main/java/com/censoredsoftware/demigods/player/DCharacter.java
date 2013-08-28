@@ -202,26 +202,30 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 	}
 
-	public Collection<PotionEffect> getPotionEffects()
+	public Set<PotionEffect> getPotionEffects()
 	{
 		if(potionEffects == null) potionEffects = Sets.newHashSet();
-		return Collections2.transform(potionEffects, new Function<String, PotionEffect>()
+
+		return new HashSet<PotionEffect>()
 		{
-			@Override
-			public PotionEffect apply(String s)
 			{
-				try
+				for(String uuid : potionEffects)
 				{
-					PotionEffect potion = Util.getSavedPotion(UUID.fromString(s)).toPotionEffect();
-					potionEffects.remove(s);
-					DataManager.savedPotions.remove(s);
-					return potion;
+					try
+					{
+						PotionEffect potion = Util.getSavedPotion(UUID.fromString(uuid)).toPotionEffect();
+						if(potion != null)
+						{
+							potionEffects.remove(uuid);
+							DataManager.savedPotions.remove(uuid);
+							add(potion);
+						}
+					}
+					catch(Exception ignored)
+					{}
 				}
-				catch(Exception ignored)
-				{}
-				return null;
 			}
-		});
+		};
 	}
 
 	public Inventory getInventory()

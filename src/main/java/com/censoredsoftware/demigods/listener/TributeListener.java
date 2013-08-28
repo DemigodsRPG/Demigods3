@@ -93,6 +93,7 @@ public class TributeListener implements Listener
 			if(item != null)
 			{
 				tributeValue += ItemValues.getTributeValue(item);
+				items += item.getAmount();
 			}
 		}
 
