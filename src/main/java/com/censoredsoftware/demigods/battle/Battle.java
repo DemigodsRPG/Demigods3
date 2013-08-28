@@ -353,6 +353,11 @@ public class Battle implements ConfigurationSerializable
 	{
 		sendMessage(ChatColor.RED + "The battle is over!");
 
+		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
+
+		for(String stringId : involvedPlayers)
+			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
+
 		Map<UUID, Integer> scores = getScores();
 		List<UUID> participants = Lists.newArrayList(scores.keySet());
 		if(participants.size() == 2)
@@ -391,11 +396,6 @@ public class Battle implements ConfigurationSerializable
 			for(DCharacter mvp : MVPs)
 				Demigods.message.broadcast(mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / Kills: " + getKills(mvp) + " / Deaths: " + getDeaths(mvp));
 		}
-
-		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
-
-		for(String stringId : involvedPlayers)
-			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
 
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
