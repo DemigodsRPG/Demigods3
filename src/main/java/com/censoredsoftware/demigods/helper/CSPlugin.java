@@ -15,7 +15,7 @@ public abstract class CSPlugin extends JavaPlugin
 
 	public static class QuitReasonHandler extends Handler
 	{
-		protected static QuitReason latestQuit = QuitReason.QUITTING;
+		protected static QuitReason latestQuit;
 
 		@Override
 		public void publish(LogRecord record)
