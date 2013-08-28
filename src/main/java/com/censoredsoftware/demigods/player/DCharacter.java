@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -28,6 +14,19 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -209,14 +208,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return new HashSet<PotionEffect>()
 		{
 			{
-				for(String uuid : potionEffects)
+				for(String stringId : potionEffects)
 				{
 					try
 					{
-						PotionEffect potion = Util.getSavedPotion(UUID.fromString(uuid)).toPotionEffect();
+						PotionEffect potion = Util.getSavedPotion(UUID.fromString(stringId)).toPotionEffect();
 						if(potion != null)
 						{
-							DataManager.savedPotions.remove(uuid);
+							DataManager.savedPotions.remove(UUID.fromString(stringId));
 							add(potion);
 						}
 					}
