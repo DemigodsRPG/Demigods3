@@ -53,6 +53,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public DCharacter()
 	{
 		deaths = Sets.newHashSet();
+		potionEffects = Sets.newHashSet();
 	}
 
 	public DCharacter(UUID id, ConfigurationSection conf)
@@ -192,9 +193,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		if(potions != null)
 		{
+			if(potionEffects == null) potionEffects = Sets.newHashSet();
+
 			for(PotionEffect potion : potions)
 			{
-				if(potionEffects == null) potionEffects = Sets.newHashSet();
 				potionEffects.add((new SavedPotion(potion)).getId().toString());
 			}
 		}
@@ -326,49 +328,28 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return getDeity().getAlliance();
 	}
 
-	/**
-	 * Returns the number of total killCount.
-	 * 
-	 * @return int
-	 */
 	public int getKillCount()
 	{
 		return this.killCount;
 	}
 
-	/**
-	 * Sets the amount of killCount to <code>amount</code>.
-	 * 
-	 * @param amount the amount of killCount to set to.
-	 */
 	public void setKillCount(int amount)
 	{
 		this.killCount = amount;
 		Util.save(this);
 	}
 
-	/**
-	 * Adds 1 kill.
-	 */
 	public void addKill()
 	{
 		this.killCount += 1;
 		Util.save(this);
 	}
 
-	/**
-	 * Returns the number of deathCount.
-	 * 
-	 * @return int
-	 */
 	public int getDeathCount()
 	{
 		return this.deaths.size();
 	}
 
-	/**
-	 * Adds a death.
-	 */
 	public void addDeath()
 	{
 		if(deaths == null) deaths = Sets.newHashSet();
@@ -376,9 +357,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Util.save(this);
 	}
 
-	/**
-	 * Adds a death.
-	 */
 	public void addDeath(DCharacter attacker)
 	{
 		deaths.add(new Death(this, attacker).getId().toString());
@@ -646,9 +624,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		private int amplifier;
 		private boolean ambience;
 
-		public SavedPotion()
-		{}
-
 		public SavedPotion(PotionEffect potion)
 		{
 			id = UUID.randomUUID();
@@ -656,6 +631,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			duration = potion.getDuration();
 			amplifier = potion.getAmplifier();
 			ambience = potion.isAmbient();
+			DataManager.savedPotions.put(id, this);
 		}
 
 		public SavedPotion(UUID id, ConfigurationSection conf)

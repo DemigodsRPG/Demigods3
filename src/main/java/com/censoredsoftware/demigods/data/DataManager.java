@@ -132,6 +132,7 @@ public class DataManager
 		battles.clear();
 		deaths.clear();
 		timedData.clear();
+		savedPotions.clear();
 
 		tempData.clear();
 
