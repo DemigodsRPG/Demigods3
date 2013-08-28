@@ -366,7 +366,7 @@ public class Battle implements ConfigurationSerializable
 			{
 				DCharacter one = DCharacter.Util.load(participants.get(0));
 				DCharacter two = DCharacter.Util.load(participants.get(1));
-				Demigods.message.broadcast(one.getDeity().getColor() + two.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
+				Demigods.message.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
 			}
 			else
 			{
