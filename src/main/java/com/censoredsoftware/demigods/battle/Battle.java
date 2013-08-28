@@ -366,14 +366,18 @@ public class Battle implements ConfigurationSerializable
 			{
 				DCharacter one = DCharacter.Util.load(participants.get(0));
 				DCharacter two = DCharacter.Util.load(participants.get(1));
+				Demigods.message.broadcast(" ");
 				Demigods.message.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
+				Demigods.message.broadcast(" ");
 			}
 			else
 			{
 				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
 				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
 				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
+				Demigods.message.broadcast(" ");
 				Demigods.message.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
+				Demigods.message.broadcast(" ");
 			}
 		}
 		else if(participants.size() > 2)
