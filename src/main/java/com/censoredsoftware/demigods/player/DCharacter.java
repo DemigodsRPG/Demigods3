@@ -216,7 +216,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 						PotionEffect potion = Util.getSavedPotion(UUID.fromString(uuid)).toPotionEffect();
 						if(potion != null)
 						{
-							potionEffects.remove(uuid);
 							DataManager.savedPotions.remove(uuid);
 							add(potion);
 						}
@@ -224,6 +223,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 					catch(Exception ignored)
 					{}
 				}
+
+				potionEffects.clear();
 			}
 		};
 	}

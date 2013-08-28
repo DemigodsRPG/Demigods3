@@ -501,7 +501,7 @@ public class DPlayer implements ConfigurationSerializable
 			else
 			{
 				// Save context and abandon the conversation
-				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
+				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation") && recordChat)
 				{
 					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
 					DataManager.saveTemp(player.getName(), "prayer_context", prayer.getContext());
