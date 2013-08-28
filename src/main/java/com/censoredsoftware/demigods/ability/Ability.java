@@ -1,19 +1,8 @@
 package com.censoredsoftware.demigods.ability;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -33,8 +22,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 
 public interface Ability
 {
@@ -70,6 +71,7 @@ public interface Ability
 	{
 		private UUID id;
 		private String type;
+		private Integer skillPoints; // TODO: This may need a better name.
 		private Integer exp;
 		private Integer level;
 
@@ -85,6 +87,7 @@ public interface Ability
 		{
 			this.id = id;
 			type = conf.getString("type");
+			skillPoints = conf.getInt("skillPoints");
 			exp = conf.getInt("exp");
 			level = conf.getInt("level");
 		}
@@ -94,6 +97,7 @@ public interface Ability
 		{
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("type", type);
+			map.put("skillPoints", skillPoints);
 			map.put("exp", exp);
 			map.put("level", level);
 			return map;
@@ -109,12 +113,17 @@ public interface Ability
 			this.type = type.toString();
 		}
 
-		void setExp(Integer exp)
+		void setSkillPoints(int skillPoints)
+		{
+			this.skillPoints = skillPoints;
+		}
+
+		void setExp(int exp)
 		{
 			this.exp = exp;
 		}
 
-		void setLevel(Integer level)
+		void setLevel(int level)
 		{
 			this.level = level;
 		}
@@ -126,22 +135,37 @@ public interface Ability
 
 		public Type getType()
 		{
-			return Type.valueOf(this.type);
+			return Type.valueOf(type);
 		}
 
-		public Integer getLevel()
+		public int getSkillPoints()
 		{
-			return this.level;
+			return skillPoints;
 		}
 
-		public Integer getExp()
+		public int getExp()
 		{
-			return this.exp;
+			return exp;
 		}
 
-		public Integer getExpGoal()
+		public int getLevel()
 		{
-			return (int) Math.ceil(500 * Math.pow(this.level + 1, 2.02)); // TODO: Will need to be tweaked and will possibly be different for each Type.
+			return level;
+		}
+
+		public void addPoints(int points)
+		{
+			this.skillPoints = getSkillPoints() + points;
+		}
+
+		public void addExp(int exp)
+		{
+			this.exp = getExp() + exp;
+		}
+
+		public void addLevels(int levels)
+		{
+			level = getLevel() + levels;
 		}
 
 		@Override
