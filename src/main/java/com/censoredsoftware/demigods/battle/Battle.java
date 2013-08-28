@@ -391,10 +391,12 @@ public class Battle implements ConfigurationSerializable
 					winningScore = score;
 				}
 			}
+			Demigods.message.broadcast(" ");
 			Demigods.message.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Demigods.message.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
 				Demigods.message.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.rightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+			Demigods.message.broadcast(" ");
 		}
 
 		// Prepare for graceful delete
