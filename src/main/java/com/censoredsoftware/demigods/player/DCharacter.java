@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -14,17 +28,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -44,6 +47,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Boolean usable;
 	private UUID meta;
 	private UUID inventory;
+	private Set<String> potionEffects;
 	private Set<String> deaths;
 
 	public DCharacter()
@@ -70,6 +74,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		meta = UUID.fromString(conf.getString("meta"));
 		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
 		if(conf.isList("deaths")) deaths = Sets.newHashSet(conf.getStringList("deaths"));
+		if(conf.isList("potionEffects")) potionEffects = Sets.newHashSet(conf.getStringList("potionEffects"));
 	}
 
 	@Override
@@ -92,6 +97,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("meta", meta.toString());
 		if(inventory != null) map.put("inventory", inventory.toString());
 		if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
+		if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
 		return map;
 	}
 
@@ -180,6 +186,36 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void setUsable(boolean usable)
 	{
 		this.usable = usable;
+	}
+
+	public void setPotionEffects(Collection<PotionEffect> potions)
+	{
+		if(potions != null)
+		{
+			for(PotionEffect potion : potions)
+			{
+
+			}
+		}
+	}
+
+	public Collection<PotionEffect> getPotionEffects()
+	{
+		if(potionEffects == null) potionEffects = Sets.newHashSet();
+		return Collections2.transform(potionEffects, new Function<String, PotionEffect>()
+		{
+			@Override
+			public PotionEffect apply(String s)
+			{
+				try
+				{
+					return Util.getSavedPotion(UUID.fromString(s)).toPotionEffect();
+				}
+				catch(Exception ignored)
+				{}
+				return null;
+			}
+		});
 	}
 
 	public Inventory getInventory()
@@ -595,6 +631,112 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 				for(UUID id : currentFile.keySet())
 					if(!DataManager.inventories.keySet().contains(id)) saveFile.set(id.toString(), null);
+
+				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
+			}
+		}
+	}
+
+	public static class SavedPotion implements ConfigurationSerializable
+	{
+		private UUID id;
+		private int type;
+		private int duration;
+		private int amplifier;
+		private boolean ambience;
+
+		public SavedPotion()
+		{}
+
+		public SavedPotion(PotionEffect potion)
+		{
+			id = UUID.randomUUID();
+			type = potion.getType().getId();
+			duration = potion.getDuration();
+			amplifier = potion.getAmplifier();
+			ambience = potion.isAmbient();
+		}
+
+		public SavedPotion(UUID id, ConfigurationSection conf)
+		{
+			this.id = id;
+			type = conf.getInt("type");
+			duration = conf.getInt("duration");
+			amplifier = conf.getInt("amplifier");
+			ambience = conf.getBoolean("ambience");
+		}
+
+		@Override
+		public Map<String, Object> serialize()
+		{
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("type", type);
+			map.put("duration", duration);
+			map.put("amplifier", amplifier);
+			map.put("ambience", ambience);
+			return map;
+		}
+
+		public PotionEffectType getType()
+		{
+			return PotionEffectType.getById(type);
+		}
+
+		public int getDuration()
+		{
+			return duration;
+		}
+
+		public int getAmplifier()
+		{
+			return amplifier;
+		}
+
+		public boolean isAmbient()
+		{
+			return ambience;
+		}
+
+		/**
+		 * Returns a built PotionEffect.
+		 */
+		public PotionEffect toPotionEffect()
+		{
+			return new PotionEffect(getType(), getDuration(), getAmplifier(), isAmbient());
+		}
+
+		public static class File extends ConfigFile
+		{
+			private static String SAVE_PATH;
+			private static final String SAVE_FILE = "savedPotions.yml";
+
+			public File()
+			{
+				super(Demigods.plugin);
+				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+			}
+
+			@Override
+			public ConcurrentHashMap<UUID, SavedPotion> loadFromFile()
+			{
+				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
+				ConcurrentHashMap<UUID, SavedPotion> map = new ConcurrentHashMap<UUID, SavedPotion>();
+				for(String stringId : data.getKeys(false))
+					map.put(UUID.fromString(stringId), new SavedPotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
+				return map;
+			}
+
+			@Override
+			public boolean saveToFile()
+			{
+				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
+				Map<UUID, SavedPotion> currentFile = loadFromFile();
+
+				for(UUID id : DataManager.savedPotions.keySet())
+					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.savedPotions.get(id))) saveFile.createSection(id.toString(), Util.getSavedPotion(id).serialize());
+
+				for(UUID id : currentFile.keySet())
+					if(!DataManager.savedPotions.keySet().contains(id)) saveFile.set(id.toString(), null);
 
 				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
 			}
@@ -1095,6 +1237,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			try
 			{
 				return DataManager.inventories.get(id);
+			}
+			catch(Exception ignored)
+			{}
+			return null;
+		}
+
+		public static SavedPotion getSavedPotion(UUID id)
+		{
+			try
+			{
+				return DataManager.savedPotions.get(id);
 			}
 			catch(Exception ignored)
 			{}

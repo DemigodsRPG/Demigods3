@@ -27,6 +27,7 @@ public class DataManager
 	private static Ability.Devotion.File devotionYAML;
 	private static DCharacter.Meta.File characterMetasYAML;
 	private static DCharacter.Inventory.File inventoriesYAML;
+	private static DCharacter.SavedPotion.File savedPotionsYAML;
 	private static DCharacter.File charactersYAML;
 	private static Notification.File notificationsYAML;
 	private static Pet.File petsYAML;
@@ -45,6 +46,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, Pet> pets;
 	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
 	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentMap<UUID, DCharacter.SavedPotion> savedPotions;
 	public static ConcurrentMap<UUID, Structure.Save> structures;
 	public static ConcurrentMap<UUID, Battle> battles;
 	public static ConcurrentMap<UUID, Death> deaths;
@@ -61,6 +63,7 @@ public class DataManager
 		charactersYAML = new DCharacter.File();
 		characterMetasYAML = new DCharacter.Meta.File();
 		inventoriesYAML = new DCharacter.Inventory.File();
+		savedPotionsYAML = new DCharacter.SavedPotion.File();
 		notificationsYAML = new Notification.File();
 		petsYAML = new Pet.File();
 		structuresYAML = new Structure.Save.File();
@@ -83,6 +86,7 @@ public class DataManager
 		characterMetas = characterMetasYAML.loadFromFile();
 		inventories = inventoriesYAML.loadFromFile();
 		notifications = notificationsYAML.loadFromFile();
+		savedPotions = savedPotionsYAML.loadFromFile();
 		pets = petsYAML.loadFromFile();
 		structures = structuresYAML.loadFromFile();
 		battles = battlesYAML.loadFromFile();

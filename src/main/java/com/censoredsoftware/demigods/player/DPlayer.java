@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.ChatRecorder;
@@ -14,19 +28,6 @@ import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -186,6 +187,7 @@ public class DPlayer implements ConfigurationSerializable
 			currChar.setLevel(player.getLevel());
 			currChar.setExperience(player.getExp());
 			currChar.setLocation(player.getLocation());
+			currChar.setPotionEffects(player.getActivePotionEffects());
 			currChar.saveInventory();
 
 			// Disown pets
@@ -222,6 +224,7 @@ public class DPlayer implements ConfigurationSerializable
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
+		player.addPotionEffects(newChar.getPotionEffects());
 
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
