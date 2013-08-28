@@ -74,8 +74,7 @@ public class BattleListener implements Listener
 				Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle);
 			}
 
-			// Debug
-			Demigods.message.broadcast(ChatColor.YELLOW + "Battle started involving " + damagerParticipant.getRelatedCharacter().getName() + " and " + damageeParticipant.getRelatedCharacter().getName() + "!");
+			battle.sendMessage(ChatColor.YELLOW + "You are now in battle!");
 		}
 		else
 		{
