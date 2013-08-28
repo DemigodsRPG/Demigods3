@@ -12,6 +12,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.Demigods;
@@ -224,7 +225,8 @@ public class DPlayer implements ConfigurationSerializable
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
-		player.getActivePotionEffects().clear();
+		for(PotionEffect potion : player.getActivePotionEffects())
+			player.removePotionEffect(potion.getType());
 		player.addPotionEffects(newChar.getPotionEffects());
 
 		// Re-own pets
