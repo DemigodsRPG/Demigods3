@@ -209,7 +209,7 @@ public class Battle implements ConfigurationSerializable
 		if(this.deaths.containsKey(character)) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
-		Util.sendBattleStats(this);
+		sendBattleStats();
 	}
 
 	public DCharacter getStarter()
@@ -236,6 +236,102 @@ public class Battle implements ConfigurationSerializable
 		})));
 	}
 
+	public Set<String> getInvolvedAlliances()
+	{
+		Set<String> alliances = Sets.newHashSet();
+		for(String alliance : Collections2.transform(involvedPlayers, new Function<String, String>()
+		{
+			@Override
+			public String apply(String stringId)
+			{
+				return DCharacter.Util.load(UUID.fromString(stringId)).getAlliance();
+			}
+		}))
+			alliances.add(alliance);
+		return alliances;
+	}
+
+	public int getKills(Participant participant)
+	{
+		return Integer.parseInt(kills.get(participant.getId().toString()).toString());
+	}
+
+	public int getDeaths(Participant participant)
+	{
+		return Integer.parseInt(deaths.get(participant.getId().toString()).toString());
+	}
+
+	public Map<UUID, Integer> getScores()
+	{
+		Map<UUID, Integer> score = Maps.newHashMap();
+		for(Map.Entry<String, Object> entry : kills.entrySet())
+		{
+			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
+			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
+		}
+		for(Map.Entry<String, Object> entry : deaths.entrySet())
+		{
+			int base = 0;
+			if(score.containsKey(UUID.fromString(entry.getKey()))) base = score.get(UUID.fromString(entry.getKey()));
+			score.put(UUID.fromString(entry.getKey()), base - Integer.parseInt(entry.getValue().toString()));
+		}
+		return score;
+	}
+
+	public int getScore(final String alliance)
+	{
+		Map<UUID, Integer> score = Maps.newHashMap();
+		for(Map.Entry<String, Object> entry : kills.entrySet())
+		{
+			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
+			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
+		}
+		for(Map.Entry<String, Object> entry : deaths.entrySet())
+		{
+			int base = 0;
+			if(score.containsKey(UUID.fromString(entry.getKey()))) base = score.get(UUID.fromString(entry.getKey()));
+			score.put(UUID.fromString(entry.getKey()), base - Integer.parseInt(entry.getValue().toString()));
+		}
+		int sum = 0;
+		for(int i : Collections2.transform(Collections2.filter(score.entrySet(), new Predicate<Map.Entry<UUID, Integer>>()
+		{
+			@Override
+			public boolean apply(Map.Entry<UUID, Integer> entry)
+			{
+				return DCharacter.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
+			}
+		}), new Function<Map.Entry<UUID, Integer>, Integer>()
+		{
+			@Override
+			public Integer apply(Map.Entry<UUID, Integer> entry)
+			{
+				return entry.getValue();
+			}
+		}))
+			sum += i;
+		return sum;
+	}
+
+	public Collection<DCharacter> getMVPs()
+	{
+		final int max = Collections.max(getScores().values());
+		return Collections2.transform(Collections2.filter(getScores().entrySet(), new Predicate<Map.Entry<UUID, Integer>>()
+		{
+			@Override
+			public boolean apply(Map.Entry<UUID, Integer> entry)
+			{
+				return entry.getValue() == max;
+			}
+		}), new Function<Map.Entry<UUID, Integer>, DCharacter>()
+		{
+			@Override
+			public DCharacter apply(Map.Entry<UUID, Integer> entry)
+			{
+				return DCharacter.Util.load(entry.getKey());
+			}
+		});
+	}
+
 	public int getKillCounter()
 	{
 		return this.killCounter;
@@ -243,9 +339,48 @@ public class Battle implements ConfigurationSerializable
 
 	public void end()
 	{
-		sendMessage(ChatColor.RED + "The battle now is over!"); // TODO Add more info.
-		String winner = Util.findWinner(this);
-		sendMessage(ChatColor.YELLOW + (winner.startsWith("The ") && winner.endsWith("s") ? winner + " have won the battle." : winner + " has won this duel."));
+		sendMessage(ChatColor.RED + "The battle is over!");
+
+		Map<UUID, Integer> scores = getScores();
+		List<UUID> participants = Lists.newArrayList(scores.keySet());
+		if(participants.size() == 2)
+		{
+			if(scores.get(participants.get(0)).equals(scores.get(participants.get(1))))
+			{
+				DCharacter one = DCharacter.Util.load(participants.get(0));
+				DCharacter two = DCharacter.Util.load(participants.get(1));
+				Demigods.message.broadcast(one.getDeity().getColor() + two.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
+			}
+			else
+			{
+				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
+				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
+				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
+				Demigods.message.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
+			}
+		}
+		else if(participants.size() > 2)
+		{
+			String winningAlliance = "";
+			int winningScore = 0;
+			Collection<DCharacter> MVPs = getMVPs();
+			boolean oneMVP = MVPs.size() == 1;
+			for(String alliance : getInvolvedAlliances())
+			{
+				int score = getScore(alliance);
+				if(getScore(alliance) > winningScore)
+				{
+					winningAlliance = alliance;
+					winningScore = score;
+				}
+			}
+			Demigods.message.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + "participants.");
+			Demigods.message.broadcast(ChatColor.GRAY + "The " + "MVP" + (oneMVP ? "" : "s") + " from this battle " + (oneMVP ? "is" : "are") + ":");
+			for(DCharacter mvp : MVPs)
+				Demigods.message.broadcast(mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / Kills: " + getKills(mvp) + " / Deaths: " + getDeaths(mvp));
+		}
+
+		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
 
 		for(String stringId : involvedPlayers)
 			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
@@ -276,6 +411,14 @@ public class Battle implements ConfigurationSerializable
 			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
 			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendRawMessage(message);
 		}
+	}
+
+	public void sendBattleStats()
+	{
+		sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
 	}
 
 	public static class File extends ConfigFile
@@ -551,48 +694,6 @@ public class Battle implements ConfigurationSerializable
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
-		}
-
-		public static void sendBattleStats(Battle battle)
-		{
-			battle.sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
-			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + battle.getParticipants().size());
-			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - battle.getStartTime()) / 1000 + " / " + (int) battle.getDuration() / 1000 + " seconds");
-			battle.sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Kill-count: " + ChatColor.WHITE + battle.getKillCounter() + " / " + battle.getMinKills());
-		}
-
-		public static String findWinner(Battle battle)
-		{
-			Map<String, Integer> score = Maps.newHashMap();
-			for(Map.Entry<String, Object> entry : battle.kills.entrySet())
-			{
-				if(!battle.getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
-				score.put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
-			}
-			for(Map.Entry<String, Object> entry : battle.deaths.entrySet())
-			{
-				int base = 0;
-				if(score.containsKey(entry.getKey())) base = score.get(entry.getKey());
-				score.put(entry.getKey(), base - Integer.parseInt(entry.getValue().toString()));
-			}
-
-			try
-			{
-				int max = Collections.max(score.values());
-				for(Map.Entry<String, Integer> entry : score.entrySet()) // TODO Fix for ties.
-				{
-					if(Integer.parseInt(entry.getValue().toString()) == max)
-					{
-						DCharacter character = DCharacter.Util.load(UUID.fromString(entry.getKey()));
-						if(score.size() < 3) return character.getName();
-						return "The " + character.getAlliance() + "s";
-					}
-				}
-			}
-			catch(NoSuchElementException ignored)
-			{}
-
-			return "Nobody";
 		}
 
 		public static boolean canTarget(Entity entity)
