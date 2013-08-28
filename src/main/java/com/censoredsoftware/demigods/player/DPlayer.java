@@ -227,7 +227,7 @@ public class DPlayer implements ConfigurationSerializable
 		player.setLevel(newChar.getLevel());
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
-		player.addPotionEffects(newChar.getPotionEffects());
+		if(newChar.getPotionEffects() != null) player.addPotionEffects(newChar.getPotionEffects());
 
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
