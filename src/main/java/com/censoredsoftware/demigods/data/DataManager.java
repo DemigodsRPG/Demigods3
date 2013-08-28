@@ -102,6 +102,7 @@ public class DataManager
 		playersYAML.saveToFile();
 		charactersYAML.saveToFile();
 		characterMetasYAML.saveToFile();
+		savedPotionsYAML.saveToFile();
 		inventoriesYAML.saveToFile();
 		notificationsYAML.saveToFile();
 		petsYAML.saveToFile();
