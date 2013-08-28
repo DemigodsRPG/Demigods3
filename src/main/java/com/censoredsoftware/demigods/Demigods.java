@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.Metrics;
-
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -17,6 +7,7 @@ import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
+import com.censoredsoftware.demigods.helper.CSPlugin;
 import com.censoredsoftware.demigods.helper.Configs;
 import com.censoredsoftware.demigods.helper.ListedConversation;
 import com.censoredsoftware.demigods.helper.Messages;
@@ -29,6 +20,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.Metrics;
+
+import java.util.Set;
 
 public class Demigods
 {
@@ -61,6 +61,9 @@ public class Demigods
 
 		// Setup language.
 		language = new Translation();
+
+		// Quit reason.
+		instance.getServer().getLogger().addHandler(new CSPlugin.QuitReasonHandler());
 
 		if(!loadWorlds(instance))
 		{

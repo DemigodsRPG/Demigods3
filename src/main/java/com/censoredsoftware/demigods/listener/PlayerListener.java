@@ -88,7 +88,7 @@ public class PlayerListener implements Listener
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final String name = event.getPlayer().getName();
-		String message = ChatColor.YELLOW + name + " has left the game.";
+		String message = ChatColor.YELLOW + name + " has quit.";
 		switch(Demigods.plugin.getLatestQuitReason())
 		{
 			case GENERIC_REASON:

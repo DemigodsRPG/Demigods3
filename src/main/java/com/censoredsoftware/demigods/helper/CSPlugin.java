@@ -9,13 +9,12 @@ public abstract class CSPlugin extends JavaPlugin
 {
 	public QuitReason getLatestQuitReason()
 	{
-		if(QuitReasonHandler.latestQuit == null) getServer().getLogger().addHandler(new QuitReasonHandler());
 		return QuitReasonHandler.latestQuit;
 	}
 
 	public static class QuitReasonHandler extends Handler
 	{
-		protected static QuitReason latestQuit;
+		protected static QuitReason latestQuit = QuitReason.QUITTING;
 
 		@Override
 		public void publish(LogRecord record)
