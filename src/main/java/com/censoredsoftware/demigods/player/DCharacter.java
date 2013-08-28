@@ -194,7 +194,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			for(PotionEffect potion : potions)
 			{
-
+				if(potionEffects == null) potionEffects = Sets.newHashSet();
+				potionEffects.add((new SavedPotion(potion)).getId().toString());
 			}
 		}
 	}
@@ -675,6 +676,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			map.put("amplifier", amplifier);
 			map.put("ambience", ambience);
 			return map;
+		}
+
+		public UUID getId()
+		{
+			return id;
 		}
 
 		public PotionEffectType getType()
