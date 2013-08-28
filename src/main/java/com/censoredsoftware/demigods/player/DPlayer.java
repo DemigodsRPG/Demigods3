@@ -224,6 +224,7 @@ public class DPlayer implements ConfigurationSerializable
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
+		player.getActivePotionEffects().clear();
 		player.addPotionEffects(newChar.getPotionEffects());
 
 		// Re-own pets
