@@ -21,6 +21,7 @@ import java.util.Set;
 public class DrD1sco implements Deity
 {
 	private final static String name = "DrD1sco", alliance = "Donor", permission = "demigods.donor.disco";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.DARK_PURPLE;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
@@ -101,6 +102,12 @@ public class DrD1sco implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override

@@ -1,8 +1,19 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -22,20 +33,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Ability
 {
@@ -413,11 +412,11 @@ public interface Ability
 		{
 			// TODO: This needs major work.
 
-			int ascensions = character.getMeta().getAscensions();
-			if(ascensions < 3) ascensions = 3;
+			int accuracy = character.getDeity().getAccuracy();
+			if(accuracy < 3) accuracy = 3;
 
 			int offset = (int) (TARGET_OFFSET + character.getOfflinePlayer().getPlayer().getLocation().distance(target));
-			int adjustedOffset = offset / ascensions;
+			int adjustedOffset = offset / accuracy;
 			if(adjustedOffset < 1) adjustedOffset = 1;
 			Random random = new Random();
 			World world = target.getWorld();

@@ -19,6 +19,7 @@ import java.util.Set;
 public class TemplateDeity implements Deity
 {
 	private final static String name = "Template", alliance = "Test", permission = "demigods.test.template";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.GRAY;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
@@ -99,6 +100,12 @@ public class TemplateDeity implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override

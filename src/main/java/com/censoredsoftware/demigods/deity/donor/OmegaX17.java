@@ -20,6 +20,7 @@ import java.util.Set;
 public class OmegaX17 implements Deity
 {
 	private final static String name = "OmegaX17", alliance = "Donor", permission = "demigods.donor.omega";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.BLACK;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.TNT, 3));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT_AND_STEEL, 6));
@@ -100,6 +101,12 @@ public class OmegaX17 implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override

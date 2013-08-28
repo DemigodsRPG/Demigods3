@@ -21,6 +21,7 @@ import java.util.Set;
 public class Oceanus implements Deity
 {
 	private final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.DARK_AQUA;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.RAW_FISH, 2, Material.FISHING_ROD, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.COOKED_FISH, 4, Material.FISHING_ROD, 1));
@@ -101,6 +102,12 @@ public class Oceanus implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override

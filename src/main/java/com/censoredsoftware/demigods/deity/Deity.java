@@ -39,6 +39,8 @@ public interface Deity
 
 	public Set<Ability> getAbilities();
 
+	public int getAccuracy();
+
 	public enum Flag
 	{
 		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK

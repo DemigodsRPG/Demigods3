@@ -22,6 +22,7 @@ import java.util.Set;
 public class Prometheus implements Deity
 {
 	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
+	private final static int accuracy = 15;
 	private final static ChatColor color = ChatColor.GOLD;
 	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
 	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
@@ -102,6 +103,12 @@ public class Prometheus implements Deity
 	public Set<Ability> getAbilities()
 	{
 		return abilities;
+	}
+
+	@Override
+	public int getAccuracy()
+	{
+		return accuracy;
 	}
 
 	@Override
