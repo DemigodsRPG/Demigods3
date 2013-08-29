@@ -119,7 +119,7 @@ public class GeneralCommands extends ListedCommand
 	private boolean leaderboard(CommandSender sender)
 	{
 		// Define variables
-		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.loadAll());
+		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
 		UUID[] ids = new UUID[characters.size()];
 		Integer[] scores = new Integer[characters.size()];
 		for(int i = 0; i < ids.length; i++)
@@ -153,14 +153,14 @@ public class GeneralCommands extends ListedCommand
 
 		// Print info
 		sender.sendMessage(ChatColor.GRAY + Titles.chatTitle("Leaderboard"));
-		sender.sendMessage(ChatColor.GRAY + "Rankings are determined by kills and deaths.");
+		sender.sendMessage("  Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
 		int length = ids.length > 10 ? 11 : ids.length + 1;
 		for(int i = 1; i < length; i++)
 		{
 			DCharacter character = DCharacter.Util.load(ids[i]);
-			sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + i + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
+			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + i + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 
 		sender.sendMessage(" ");

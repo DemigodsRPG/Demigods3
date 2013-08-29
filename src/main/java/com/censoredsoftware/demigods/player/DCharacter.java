@@ -1384,6 +1384,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
+		public static Collection<DCharacter> getUsableCharacters()
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isUsable();
+				}
+			});
+		}
+
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
 			return Collections2.filter(getAllUsable(), predicate);
