@@ -377,7 +377,10 @@ public class Altar implements Structure
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
-			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN)) return;
+			boolean percent = !Randoms.randomPercentBool(ALTAR_SPAWN);
+			Demigods.message.broadcast("" + percent);
+
+			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk() || percent) return;
 
 			count++;
 			Demigods.message.broadcast("New chunks: " + count);
