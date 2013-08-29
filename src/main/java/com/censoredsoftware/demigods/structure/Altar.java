@@ -373,9 +373,7 @@ public class Altar implements Structure
 			ALTAR_SPAWN = Demigods.config.getSettingDouble("generation.altar_chance");
 		}
 
-		int count = 0;
-
-		@EventHandler(priority = EventPriority.MONITOR)
+		// @EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
 			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN)) return;
