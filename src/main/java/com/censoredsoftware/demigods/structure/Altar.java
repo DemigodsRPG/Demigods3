@@ -345,7 +345,6 @@ public class Altar implements Structure
 		if(generate)
 		{
 			save.generate(true);
-			save.remove();
 		}
 		return save;
 	}
