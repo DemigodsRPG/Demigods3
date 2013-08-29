@@ -78,6 +78,6 @@ public class Randoms
 	{
 		if(percent <= 0.0) return false;
 		double roll = generateDoubleRange(0.0, 100.0);
-		return roll >= percent;
+		return roll <= percent;
 	}
 }
