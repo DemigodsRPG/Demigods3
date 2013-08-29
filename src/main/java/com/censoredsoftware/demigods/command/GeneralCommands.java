@@ -138,7 +138,7 @@ public class GeneralCommands extends ListedCommand
 		sender.sendMessage("    Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
-		int length = characters.size() > 10 ? 11 : characters.size() + 1;
+		int length = characters.size() > 15 ? 16 : characters.size() + 1;
 		List<Map.Entry<UUID, Integer>> list = Lists.newArrayList(scores.entrySet());
 		int count = 0;
 
