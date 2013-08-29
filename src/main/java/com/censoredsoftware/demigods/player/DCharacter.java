@@ -195,9 +195,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(potionEffects == null) potionEffects = Sets.newHashSet();
 
 			for(PotionEffect potion : potions)
-			{
 				potionEffects.add((new SavedPotion(potion)).getId().toString());
-			}
 		}
 	}
 
@@ -205,27 +203,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		if(potionEffects == null) potionEffects = Sets.newHashSet();
 
-		return new HashSet<PotionEffect>()
+		Set<PotionEffect> set = new HashSet<PotionEffect>();
+		for(String stringId : potionEffects)
 		{
+			try
 			{
-				for(String stringId : potionEffects)
+				PotionEffect potion = Util.getSavedPotion(UUID.fromString(stringId)).toPotionEffect();
+				if(potion != null)
 				{
-					try
-					{
-						PotionEffect potion = Util.getSavedPotion(UUID.fromString(stringId)).toPotionEffect();
-						if(potion != null)
-						{
-							DataManager.savedPotions.remove(UUID.fromString(stringId));
-							add(potion);
-						}
-					}
-					catch(Exception ignored)
-					{}
+					DataManager.savedPotions.remove(UUID.fromString(stringId));
+					set.add(potion);
 				}
-
-				potionEffects.clear();
 			}
-		};
+			catch(Exception ignored)
+			{}
+		}
+
+		potionEffects.clear();
+		return set;
 	}
 
 	public Inventory getInventory()

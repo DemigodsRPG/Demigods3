@@ -21,6 +21,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -698,7 +699,11 @@ public class Battle implements ConfigurationSerializable
 			if(damagee instanceof DCharacter)
 			{
 				DCharacter character = (DCharacter) damagee;
-				character.getOfflinePlayer().getPlayer().setFoodLevel(20);
+				Player player = character.getOfflinePlayer().getPlayer();
+				player.setFoodLevel(20);
+				for(PotionEffect potionEffect : player.getActivePotionEffects())
+					player.removePotionEffect(potionEffect.getType());
+				character.setPotionEffects(player.getActivePotionEffects());
 				character.addDeath(damager.getRelatedCharacter());
 			}
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
