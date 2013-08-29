@@ -365,12 +365,19 @@ public class Altar implements Structure
 
 	public static class Listener implements org.bukkit.event.Listener
 	{
+		public static double ALTAR_SPAWN;
+
+		static
+		{
+			ALTAR_SPAWN = Demigods.config.getSettingDouble("generation.altar_chance");
+		}
+
 		int count = 0;
 
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
-			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk()) return;
+			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN)) return;
 
 			count++;
 			Demigods.message.broadcast("New chunks: " + count);
@@ -447,16 +454,10 @@ public class Altar implements Structure
 		public static ConcurrentLinkedQueue<Location> locations;
 		public static ConcurrentLinkedQueue<Block> blocks;
 
-		public static double ALTAR_SPAWN;
-		public static double ALTAR_SPAWN_WATER;
-
 		static
 		{
 			locations = new ConcurrentLinkedQueue<Location>();
 			blocks = new ConcurrentLinkedQueue<Block>();
-
-			ALTAR_SPAWN = Demigods.config.getSettingDouble("generation.altar_chance");
-			ALTAR_SPAWN_WATER = Demigods.config.getSettingDouble("generation.altar_chance_water");
 		}
 
 		public static void processNewChunks()
@@ -470,12 +471,8 @@ public class Altar implements Structure
 				// No altars in hell or heaven for now
 				if(block.getBiome().equals(Biome.HELL) || block.getBiome().equals(Biome.SKY)) return;
 
-				// Return a random boolean based on the chance of Altar generation
-				if(Randoms.randomPercentBool(block.isLiquid() && !(block.getType().equals(Material.LAVA) || block.getType().equals(Material.STATIONARY_LAVA)) ? ALTAR_SPAWN_WATER : ALTAR_SPAWN))
-				{
-					// If another Altar doesn't exist nearby then make one
-					if(!altarNearby(location)) locations.add(location);
-				}
+				// If another Altar doesn't exist nearby then make one
+				if(!altarNearby(location)) locations.add(location);
 
 				blocks.remove(block);
 			}
