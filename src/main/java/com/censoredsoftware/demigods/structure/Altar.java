@@ -363,25 +363,12 @@ public class Altar implements Structure
 		}
 	}
 
-	public static boolean altarNearby(final Location location)
-	{
-		final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
-		return Iterables.any(Elements.Structures.ALTAR.getStructure().getAll(), new Predicate<Save>()
-		{
-			@Override
-			public boolean apply(Save save)
-			{
-				return save.getReferenceLocation().distance(location) <= distance;
-			}
-		});
-	}
-
 	public static class Listener implements org.bukkit.event.Listener
 	{
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
-			if(!event.isNewChunk() || Demigods.isDisabledWorld(event.getWorld())) return;
+			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk()) return;
 
 			// Add to queue
 			Util.blocks.add(DLocation.Util.randomChunkLocation(event.getChunk()).getBlock());
@@ -479,10 +466,10 @@ public class Altar implements Structure
 				if(block.getBiome().equals(Biome.HELL) || block.getBiome().equals(Biome.SKY)) return;
 
 				// Return a random boolean based on the chance of Altar generation
-				if(Randoms.randomPercentBool(location.getBlock().isLiquid() && !(location.getBlock().getType().equals(Material.LAVA) || location.getBlock().getType().equals(Material.STATIONARY_LAVA)) ? ALTAR_SPAWN_WATER : ALTAR_SPAWN))
+				if(Randoms.randomPercentBool(block.isLiquid() && !(block.getType().equals(Material.LAVA) || block.getType().equals(Material.STATIONARY_LAVA)) ? ALTAR_SPAWN_WATER : ALTAR_SPAWN))
 				{
 					// If another Altar doesn't exist nearby then make one
-					if(!Altar.altarNearby(location)) locations.add(location);
+					if(!altarNearby(location)) locations.add(location);
 				}
 
 				blocks.remove(block);
@@ -518,6 +505,19 @@ public class Altar implements Structure
 
 				locations.remove(location);
 			}
+		}
+
+		public static boolean altarNearby(final Location location)
+		{
+			final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
+			return Iterables.any(Elements.Structures.ALTAR.getStructure().getAll(), new Predicate<Save>()
+			{
+				@Override
+				public boolean apply(Save save)
+				{
+					return save.getReferenceLocation().distance(location) <= distance;
+				}
+			});
 		}
 	}
 }
