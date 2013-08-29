@@ -133,8 +133,9 @@ public class GeneralCommands extends ListedCommand
 		scores = Maps2.sortByValue(scores);
 
 		// Print info
+		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.GRAY + Titles.chatTitle("Leaderboard"));
-		sender.sendMessage("  Rankings are determined by kills and deaths.");
+		sender.sendMessage("    Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
 		int length = characters.size() > 10 ? 11 : characters.size() + 1;
