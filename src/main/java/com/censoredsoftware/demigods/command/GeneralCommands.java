@@ -149,7 +149,7 @@ public class GeneralCommands extends ListedCommand
 
 			if(count >= length) break;
 			DCharacter character = DCharacter.Util.load(entry.getKey());
-			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
+			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + (count < 10 ? ".  " : ". ") + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 
 		sender.sendMessage(" ");
