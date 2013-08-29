@@ -2,7 +2,7 @@ name: Demigods
 main: com.censoredsoftware.demigods.DemigodsPlugin
 version: ${project.version}
 authors: [_Alex, HmmmQuestionMark]
-softdepend: [WorldEdit, WorldGuard]
+softdepend: [WorldEdit, WorldGuard, Multiverse-Core]
 commands:
     demigods:
         usage: /demigods [category] [subcategory]
@@ -16,6 +16,9 @@ commands:
         permission: demigods.basic
     owner:
         usage: /owner <character>
+        permission: demigods.basic
+    leaderboard:
+        usage: /leaderboard
         permission: demigods.basic
     test1:
         usage: /test1
