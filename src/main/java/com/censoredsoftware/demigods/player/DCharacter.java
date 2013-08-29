@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -28,6 +14,19 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -70,7 +69,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		level = conf.getInt("level");
 		killCount = conf.getInt("killCount");
 		location = UUID.fromString(conf.getString("location"));
-		bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
+		if(conf.getString("bedSpawn") != null) bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
 		deity = conf.getString("deity");
 		active = conf.getBoolean("active");
 		usable = conf.getBoolean("usable");
@@ -94,7 +93,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("level", level);
 		map.put("killCount", killCount);
 		map.put("location", location.toString());
-		map.put("bedSpawn", bedSpawn.toString());
+		if(bedSpawn != null) map.put("bedSpawn", bedSpawn.toString());
 		map.put("deity", deity);
 		if(minorDeities != null) map.put("minorDeities", Lists.newArrayList(minorDeities));
 		map.put("active", active);

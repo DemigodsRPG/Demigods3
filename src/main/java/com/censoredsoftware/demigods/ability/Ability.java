@@ -70,9 +70,9 @@ public interface Ability
 	{
 		private UUID id;
 		private String type;
-		private Integer skillPoints; // TODO: This may need a better name.
-		private Integer exp;
-		private Integer level;
+		private int skillPoints; // TODO: This may need a better name.
+		private int exp;
+		private int level;
 
 		public enum Type
 		{
