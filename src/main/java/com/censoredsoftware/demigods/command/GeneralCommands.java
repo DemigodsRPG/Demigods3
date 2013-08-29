@@ -127,6 +127,7 @@ public class GeneralCommands extends ListedCommand
 		{
 			DCharacter character = characters.get(i);
 			double score = character.getDeathCount() == 0 ? 1.0 : character.getKillCount() / character.getDeathCount();
+			if(score >= 1) score = character.getKillCount();
 			if(score > 0) scores.put(character.getId(), score);
 		}
 
