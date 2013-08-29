@@ -1,8 +1,19 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -22,20 +33,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Ability
 {
@@ -71,9 +70,9 @@ public interface Ability
 	{
 		private UUID id;
 		private String type;
-		private int skillPoints; // TODO: This may need a better name.
-		private int exp;
-		private int level;
+		private Integer skillPoints; // TODO: This may need a better name.
+		private Integer exp;
+		private Integer level;
 
 		public enum Type
 		{
