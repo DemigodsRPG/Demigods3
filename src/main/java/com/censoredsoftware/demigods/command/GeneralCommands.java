@@ -17,10 +17,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class GeneralCommands extends ListedCommand
 {
@@ -138,11 +135,16 @@ public class GeneralCommands extends ListedCommand
 		sender.sendMessage(" ");
 
 		int length = characters.size() > 10 ? 11 : characters.size() + 1;
+		List<Map.Entry<UUID, Integer>> list = new ArrayList<Map.Entry<UUID, Integer>>(scores.entrySet());
 		int count = 0;
-		for(UUID uuid : scores.keySet())
+
+		for(int i = list.size() - 1; i >= 0; i--)
 		{
 			count++;
-			DCharacter character = DCharacter.Util.load(uuid);
+			Map.Entry<UUID, Integer> entry = list.get(i);
+
+			if(count > length) break;
+			DCharacter character = DCharacter.Util.load(entry.getKey());
 			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 
