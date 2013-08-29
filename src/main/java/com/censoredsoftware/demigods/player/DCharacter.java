@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -14,19 +28,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -40,6 +41,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Integer level;
 	private Integer killCount;
 	private UUID location;
+	private UUID bedSpawn;
 	private String deity;
 	private Set<String> minorDeities;
 	private Boolean active;
@@ -53,6 +55,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		deaths = Sets.newHashSet();
 		potionEffects = Sets.newHashSet();
+		minorDeities = Sets.newHashSet();
 	}
 
 	public DCharacter(UUID id, ConfigurationSection conf)
@@ -67,11 +70,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		level = conf.getInt("level");
 		killCount = conf.getInt("killCount");
 		location = UUID.fromString(conf.getString("location"));
+		bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
 		deity = conf.getString("deity");
-		if(conf.isList("minorDeities")) minorDeities = Sets.newHashSet(conf.getStringList("minorDeities"));
 		active = conf.getBoolean("active");
 		usable = conf.getBoolean("usable");
 		meta = UUID.fromString(conf.getString("meta"));
+		if(conf.isList("minorDeities")) minorDeities = Sets.newHashSet(conf.getStringList("minorDeities"));
 		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
 		if(conf.isList("deaths")) deaths = Sets.newHashSet(conf.getStringList("deaths"));
 		if(conf.isList("potionEffects")) potionEffects = Sets.newHashSet(conf.getStringList("potionEffects"));
@@ -90,6 +94,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("level", level);
 		map.put("killCount", killCount);
 		map.put("location", location.toString());
+		map.put("bedSpawn", bedSpawn.toString());
 		map.put("deity", deity);
 		if(minorDeities != null) map.put("minorDeities", Lists.newArrayList(minorDeities));
 		map.put("active", active);
@@ -178,6 +183,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.location = DLocation.Util.create(location).getId();
 	}
 
+	public void setBedSpawn(Location location)
+	{
+		this.bedSpawn = DLocation.Util.create(location).getId();
+	}
+
 	public void setMeta(Meta meta)
 	{
 		this.meta = meta.getId();
@@ -225,34 +235,40 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Inventory getInventory()
 	{
-		if(Util.getInventory(this.inventory) == null) this.inventory = Util.createEmptyInventory().getId();
-		return Util.getInventory(this.inventory);
+		if(Util.getInventory(inventory) == null) inventory = Util.createEmptyInventory().getId();
+		return Util.getInventory(inventory);
 	}
 
 	public Meta getMeta()
 	{
-		return Util.loadMeta(this.meta);
+		return Util.loadMeta(meta);
 	}
 
 	public OfflinePlayer getOfflinePlayer()
 	{
-		return Bukkit.getOfflinePlayer(this.player);
+		return Bukkit.getOfflinePlayer(player);
 	}
 
 	public String getName()
 	{
-		return this.name;
+		return name;
 	}
 
 	public Boolean isActive()
 	{
-		return this.active;
+		return active;
 	}
 
 	public Location getLocation()
 	{
-		if(this.location == null) return null;
-		return DLocation.Util.load(this.location).toLocation();
+		if(location == null) return null;
+		return DLocation.Util.load(location).toLocation();
+	}
+
+	public Location getBedSpawn()
+	{
+		if(bedSpawn == null) return null;
+		return DLocation.Util.load(bedSpawn).toLocation();
 	}
 
 	public Location getCurrentLocation()
@@ -280,27 +296,27 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Integer getLevel()
 	{
-		return this.level;
+		return level;
 	}
 
 	public Double getHealth()
 	{
-		return this.health;
+		return health;
 	}
 
 	public Double getMaxHealth()
 	{
-		return this.maxhealth;
+		return maxhealth;
 	}
 
 	public Integer getHunger()
 	{
-		return this.hunger;
+		return hunger;
 	}
 
 	public Float getExperience()
 	{
-		return this.experience;
+		return experience;
 	}
 
 	public Boolean isDeity(String deityName)
@@ -332,24 +348,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public int getKillCount()
 	{
-		return this.killCount;
+		return killCount;
 	}
 
 	public void setKillCount(int amount)
 	{
-		this.killCount = amount;
+		killCount = amount;
 		Util.save(this);
 	}
 
 	public void addKill()
 	{
-		this.killCount += 1;
+		killCount += 1;
 		Util.save(this);
 	}
 
 	public int getDeathCount()
 	{
-		return this.deaths.size();
+		return deaths.size();
 	}
 
 	public void addDeath()
@@ -404,12 +420,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public boolean isUsable()
 	{
-		return this.usable;
+		return usable;
 	}
 
 	public void updateUseable()
 	{
-		this.usable = Deity.Util.getDeity(this.deity) != null;
+		usable = Deity.Util.getDeity(this.deity) != null;
 	}
 
 	public UUID getId()
@@ -424,7 +440,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
-
 		DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
 	}
 
