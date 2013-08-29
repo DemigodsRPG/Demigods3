@@ -122,11 +122,11 @@ public class GeneralCommands extends ListedCommand
 	{
 		// Define variables
 		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
-		Map<UUID, Integer> scores = Maps.newLinkedHashMap();
+		Map<UUID, Double> scores = Maps.newLinkedHashMap();
 		for(int i = 0; i < characters.size(); i++)
 		{
 			DCharacter character = characters.get(i);
-			int score = character.getKillCount() - character.getDeathCount();
+			double score = character.getKillCount() / character.getDeathCount();
 			if(score > 0) scores.put(character.getId(), score);
 		}
 
@@ -140,13 +140,13 @@ public class GeneralCommands extends ListedCommand
 		sender.sendMessage(" ");
 
 		int length = characters.size() > 15 ? 16 : characters.size() + 1;
-		List<Map.Entry<UUID, Integer>> list = Lists.newArrayList(scores.entrySet());
+		List<Map.Entry<UUID, Double>> list = Lists.newArrayList(scores.entrySet());
 		int count = 0;
 
 		for(int i = list.size() - 1; i >= 0; i--)
 		{
 			count++;
-			Map.Entry<UUID, Integer> entry = list.get(i);
+			Map.Entry<UUID, Double> entry = list.get(i);
 
 			if(count >= length) break;
 			DCharacter character = DCharacter.Util.load(entry.getKey());
