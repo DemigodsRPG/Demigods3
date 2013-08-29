@@ -146,7 +146,7 @@ public class GeneralCommands extends ListedCommand
 			count++;
 			Map.Entry<UUID, Integer> entry = list.get(i);
 
-			if(count > length) break;
+			if(count >= length) break;
 			DCharacter character = DCharacter.Util.load(entry.getKey());
 			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
