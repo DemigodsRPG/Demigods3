@@ -17,7 +17,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends ListedCommand
 {
@@ -135,7 +138,7 @@ public class GeneralCommands extends ListedCommand
 		sender.sendMessage(" ");
 
 		int length = characters.size() > 10 ? 11 : characters.size() + 1;
-		List<Map.Entry<UUID, Integer>> list = new ArrayList<Map.Entry<UUID, Integer>>(scores.entrySet());
+		List<Map.Entry<UUID, Integer>> list = Lists.newArrayList(scores.entrySet());
 		int count = 0;
 
 		for(int i = list.size() - 1; i >= 0; i--)
