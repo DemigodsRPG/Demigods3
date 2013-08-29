@@ -476,7 +476,7 @@ public class Altar implements Structure
 				final Location location = block.getLocation();
 
 				// No altars in hell or heaven for now
-				if(location.getBlock().getBiome().equals(Biome.HELL) || location.getBlock().getBiome().equals(Biome.SKY)) return;
+				if(block.getBiome().equals(Biome.HELL) || block.getBiome().equals(Biome.SKY)) return;
 
 				// Return a random boolean based on the chance of Altar generation
 				if(Randoms.randomPercentBool(location.getBlock().isLiquid() && !(location.getBlock().getType().equals(Material.LAVA) || location.getBlock().getType().equals(Material.STATIONARY_LAVA)) ? ALTAR_SPAWN_WATER : ALTAR_SPAWN))
