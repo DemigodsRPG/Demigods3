@@ -126,7 +126,8 @@ public class GeneralCommands extends ListedCommand
 		for(int i = 0; i < characters.size(); i++)
 		{
 			DCharacter character = characters.get(i);
-			scores.put(character.getId(), character.getKillCount() - character.getDeathCount());
+			int score = character.getKillCount() - character.getDeathCount();
+			if(score > 0) scores.put(character.getId(), score);
 		}
 
 		// Sort rankings
