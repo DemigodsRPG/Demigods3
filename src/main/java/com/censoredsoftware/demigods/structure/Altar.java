@@ -365,12 +365,15 @@ public class Altar implements Structure
 
 	public static class Listener implements org.bukkit.event.Listener
 	{
+		int count = 0;
+
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
 			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk()) return;
 
-			Demigods.message.broadcast("This is a test.");
+			count++;
+			Demigods.message.broadcast("New chunks: " + count);
 
 			// Add to queue
 			Util.blocks.add(DLocation.Util.randomChunkLocation(event.getChunk()).getBlock());
