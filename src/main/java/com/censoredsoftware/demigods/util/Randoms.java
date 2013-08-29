@@ -57,6 +57,18 @@ public class Randoms
 	}
 
 	/**
+	 * Generates a double with a value between <code>min</code> and <code>max</code>.
+	 * 
+	 * @param min the minimum value of the integer.
+	 * @param max the maximum value of the integer.
+	 * @return Integer
+	 */
+	public static double generateDoubleRange(double min, double max)
+	{
+		return (max - min) * (new Random().nextDouble()) + min;
+	}
+
+	/**
 	 * Returns a boolean whose value is based on the given <code>percent</code>.
 	 * 
 	 * @param percent the percent chance for true.
@@ -65,8 +77,7 @@ public class Randoms
 	public static boolean randomPercentBool(double percent)
 	{
 		if(percent <= 0.0) return false;
-		Random rand = new Random();
-		int chance = rand.nextInt(Math.abs((int) Math.ceil(1.0 / (percent / 100.0))) + 1);
-		return chance == 1;
+		double roll = generateDoubleRange(0.0, 100.0);
+		return roll <= percent;
 	}
 }
