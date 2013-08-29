@@ -18,6 +18,7 @@ restrictions:
 generation:
     min_blocks_between_altars: 450
     altar_chance: 4.8 #percent
+    altar_chance_water: 1.2 #percent
 
 ## Regeneration ##
 regeneration:

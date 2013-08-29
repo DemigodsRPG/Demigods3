@@ -339,7 +339,11 @@ public class Altar implements Structure
 		save.addFlags(getFlags());
 		save.setActive(true);
 		save.save();
-		if(generate && !save.generate(true)) save.remove();
+		if(generate)
+		{
+			save.generate(true);
+			save.remove();
+		}
 		return save;
 	}
 
@@ -387,7 +391,7 @@ public class Altar implements Structure
 			if(Structures.canGenerateStrict(location, 3))
 			{
 				// Return a random boolean based on the chance of Altar generation
-				if(Randoms.randomPercentBool(Demigods.config.getSettingDouble("generation.altar_chance")))
+				if(Randoms.randomPercentBool(location.getBlock().isLiquid() && !(location.getBlock().getType().equals(Material.LAVA) || location.getBlock().getType().equals(Material.STATIONARY_LAVA)) ? Demigods.config.getSettingDouble("generation.altar_chance_water") : Demigods.config.getSettingDouble("generation.altar_chance")))
 				{
 					// If another Altar doesn't exist nearby then make one
 					if(!Altar.altarNearby(location))
@@ -443,11 +447,7 @@ public class Altar implements Structure
 				// Generate the Altar based on the block given.
 				Structure.Save save = Elements.Structures.ALTAR.getStructure().createNew(location, false);
 				save.setDesign(design);
-				if(!save.generate(true))
-				{
-					player.sendMessage(ChatColor.RED + "Could not generate.");
-					save.remove();
-				}
+				save.generate(true);
 
 				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
 				return;

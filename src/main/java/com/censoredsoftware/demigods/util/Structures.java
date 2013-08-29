@@ -199,7 +199,7 @@ public class Structures
 		// Check air diagonally
 		for(int i = 0; i < area + 1; i++)
 		{
-			if(!location.getBlock().getType().isTransparent()) return false;
+			if(location.getBlock().getType().isSolid()) return false;
 			location.add(0, 1, 1);
 			location.subtract(1, 0, 0);
 		}

@@ -221,9 +221,9 @@ public interface Structure
 			return this.id;
 		}
 
-		public boolean generate(boolean check)
+		public void generate(boolean check)
 		{
-			return getStructure().getDesign(this.design).getSchematic().generate(getReferenceLocation(), check);
+			getStructure().getDesign(this.design).getSchematic().generate(getReferenceLocation(), check);
 		}
 
 		public void save()
@@ -321,14 +321,12 @@ public interface Structure
 			return this.radius;
 		}
 
-		public boolean generate(final Location reference, boolean check)
+		public void generate(final Location reference, boolean check)
 		{
-			if(check && !Structures.canGenerateStrict(reference, getGroundRadius())) return false;
 			for(Selection cuboid : this)
 				cuboid.generate(reference);
 			for(Item drop : reference.getWorld().getEntitiesByClass(Item.class))
 				if(reference.distance(drop.getLocation()) <= (getGroundRadius() * 3)) drop.remove();
-			return true;
 		}
 
 		@Override
