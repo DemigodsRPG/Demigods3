@@ -370,6 +370,8 @@ public class Altar implements Structure
 		{
 			if(Demigods.isDisabledWorld(event.getWorld()) || !event.isNewChunk()) return;
 
+			Demigods.message.broadcast("This is a test.");
+
 			// Add to queue
 			Util.blocks.add(DLocation.Util.randomChunkLocation(event.getChunk()).getBlock());
 		}
