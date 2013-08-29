@@ -1,5 +1,7 @@
 package com.censoredsoftware.demigods.util;
 
+import com.censoredsoftware.demigods.Demigods;
+
 import java.util.Random;
 
 public class Randoms
@@ -78,6 +80,7 @@ public class Randoms
 	{
 		if(percent <= 0.0) return false;
 		double roll = generateDoubleRange(0.0, 100.0);
+		Demigods.message.broadcast("Roll: " + roll);
 		return roll <= percent;
 	}
 }
