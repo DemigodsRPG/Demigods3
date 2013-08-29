@@ -118,7 +118,7 @@ public class GriefListener implements Listener
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST)
 	public void onLiquidMove(BlockFromToEvent event)
 	{
 		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
