@@ -118,11 +118,13 @@ public class GriefListener implements Listener
 		}
 	}
 
-	// @EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST)
+	// TODO This is needed, but it lags the server to a halt.
 	public void onLiquidMove(BlockFromToEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
-		boolean block = Structures.isInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		Location location = event.getBlock().getLocation();
+		if(Demigods.isDisabledWorld(location) || Structures.getStructuresInRegionalArea(location) == null) return;
+		boolean block = Structures.isInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
 		boolean toBlock = Structures.isInRadiusWithFlag(event.getToBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(block != toBlock) event.setCancelled(true);
 	}
