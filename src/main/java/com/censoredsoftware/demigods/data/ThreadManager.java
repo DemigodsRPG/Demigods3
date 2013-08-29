@@ -7,6 +7,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Times;
@@ -76,6 +77,9 @@ public class ThreadManager
 
 					// Update Battles
 					Battle.Util.updateBattles();
+
+					// Update Atlars
+					Altar.Util.generateAltars();
 				}
 			};
 			async = new BukkitRunnable()
@@ -92,6 +96,9 @@ public class ThreadManager
 					// Process Triggers
 					for(Trigger trigger : Trigger.Util.getAll())
 						trigger.process().async();
+
+					// Process Atlars
+					Altar.Util.processNewChunks();
 				}
 			};
 			save = new BukkitRunnable()
