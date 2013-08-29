@@ -27,6 +27,7 @@ import org.bukkit.event.world.ChunkLoadEvent;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -469,7 +470,7 @@ public class Altar implements Structure
 				if(block.getBiome().equals(Biome.HELL) || block.getBiome().equals(Biome.SKY)) return;
 
 				// If another Altar doesn't exist nearby then make one
-				if(!altarNearby(location)) locations.add(location);
+				if(!isAltarNearby(location)) locations.add(location);
 
 				blocks.remove(block);
 			}
@@ -506,7 +507,7 @@ public class Altar implements Structure
 			}
 		}
 
-		public static boolean altarNearby(final Location location)
+		public static boolean isAltarNearby(final Location location)
 		{
 			final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
 			return Iterables.any(Elements.Structures.ALTAR.getStructure().getAll(), new Predicate<Save>()
@@ -517,6 +518,25 @@ public class Altar implements Structure
 					return save.getReferenceLocation().distance(location) <= distance;
 				}
 			});
+		}
+
+		public static Save getAltarNearby(final Location location)
+		{
+			final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
+			try
+			{
+				return Iterables.find(Elements.Structures.ALTAR.getStructure().getAll(), new Predicate<Save>()
+				{
+					@Override
+					public boolean apply(Save save)
+					{
+						return save.getReferenceLocation().distance(location) <= distance;
+					}
+				});
+			}
+			catch(NoSuchElementException ignored)
+			{}
+			return null;
 		}
 	}
 }

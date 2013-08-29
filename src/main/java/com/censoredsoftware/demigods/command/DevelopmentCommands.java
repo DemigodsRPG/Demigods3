@@ -6,6 +6,8 @@ import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Altar;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Errors;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
@@ -32,6 +34,7 @@ public class DevelopmentCommands extends ListedCommand
 		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
+		else if(command.getName().equalsIgnoreCase("nearestaltar")) return nearestAltar(sender);
 		return false;
 	}
 
@@ -88,6 +91,21 @@ public class DevelopmentCommands extends ListedCommand
 			horse.setPassenger(player);
 			player.sendMessage(ChatColor.YELLOW + "Teleported to spawn...");
 		}
+
+		return true;
+	}
+
+	private static boolean nearestAltar(CommandSender sender)
+	{
+		Player player = (Player) sender;
+
+		if(Altar.Util.isAltarNearby(player.getLocation()))
+		{
+			Structure.Save save = Altar.Util.getAltarNearby(player.getLocation());
+			player.teleport(save.getReferenceLocation().clone().add(2, 0, 0));
+			player.sendMessage(ChatColor.YELLOW + "Nearest Altar found.");
+		}
+		else player.sendMessage(ChatColor.YELLOW + "There is no alter nearby.");
 
 		return true;
 	}
