@@ -134,7 +134,7 @@ public class GeneralCommands extends ListedCommand
 
 		// Print info
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.GRAY + Titles.chatTitle("Leaderboard"));
+		sender.sendMessage(ChatColor.YELLOW + Titles.chatTitle("Leaderboard"));
 		sender.sendMessage("    Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
