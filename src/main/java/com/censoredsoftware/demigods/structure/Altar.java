@@ -342,10 +342,7 @@ public class Altar implements Structure
 		save.addFlags(getFlags());
 		save.setActive(true);
 		save.save();
-		if(generate)
-		{
-			save.generate(true);
-		}
+		if(generate) save.generate(true);
 		return save;
 	}
 
