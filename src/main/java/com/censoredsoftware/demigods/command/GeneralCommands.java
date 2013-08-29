@@ -4,10 +4,12 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Maps2;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Titles;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -120,47 +122,28 @@ public class GeneralCommands extends ListedCommand
 	{
 		// Define variables
 		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
-		UUID[] ids = new UUID[characters.size()];
-		Integer[] scores = new Integer[characters.size()];
-		for(int i = 0; i < ids.length; i++)
+		Map<UUID, Integer> scores = Maps.newLinkedHashMap();
+		for(int i = 0; i < characters.size(); i++)
 		{
 			DCharacter character = characters.get(i);
-			ids[i] = character.getId();
-			scores[i] = character.getKillCount() - character.getDeathCount();
+			scores.put(character.getId(), character.getKillCount() - character.getDeathCount());
 		}
 
 		// Sort rankings
-		for(int i = 0; i < ids.length; i++)
-		{
-			int highestIndex = i;
-			long highestRank = scores[i];
-			for(int j = i; j < ids.length; j++)
-			{
-				if(scores[j] > highestRank)
-				{
-					highestIndex = j;
-					highestRank = scores[j];
-				}
-			}
-			if(highestRank == scores[i]) continue;
-			UUID uuid = ids[i];
-			ids[i] = ids[highestIndex];
-			ids[highestIndex] = uuid;
-			int score = scores[i];
-			scores[i] = scores[highestIndex];
-			scores[highestIndex] = score;
-		}
+		scores = Maps2.sortByValue(scores);
 
 		// Print info
 		sender.sendMessage(ChatColor.GRAY + Titles.chatTitle("Leaderboard"));
 		sender.sendMessage("  Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
-		int length = ids.length > 10 ? 11 : ids.length + 1;
-		for(int i = 1; i < length; i++)
+		int length = characters.size() > 10 ? 11 : characters.size() + 1;
+		int count = 0;
+		for(UUID uuid : scores.keySet())
 		{
-			DCharacter character = DCharacter.Util.load(ids[i]);
-			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + i + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
+			count++;
+			DCharacter character = DCharacter.Util.load(uuid);
+			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayer() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 
 		sender.sendMessage(" ");
