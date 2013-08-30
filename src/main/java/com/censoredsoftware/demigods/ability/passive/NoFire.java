@@ -1,9 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,13 +10,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class NoFire implements Ability
 {
 	private final static String name = "No Fire Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("Take no damage from fire.");
 	private String deity, permission;
 
@@ -77,7 +79,7 @@ public class NoFire implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

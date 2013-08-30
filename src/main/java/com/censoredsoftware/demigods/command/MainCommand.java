@@ -248,9 +248,9 @@ public class MainCommand extends ListedCommand
 			player.sendMessage(ChatColor.GRAY + " /dg admin debug");
 			player.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
 			player.sendMessage(ChatColor.GRAY + " /dg admin remove [player|character] <name>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|devotion|ascensions] <p> <amt>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|devotion|ascensions] <p> <amt>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|devotion|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|ascensions] <p> <amt>");
+			player.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|ascensions] <p> <amt>");
 			player.sendMessage(ChatColor.GRAY + " /dg admin reload");
 			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
 		}
@@ -514,7 +514,7 @@ public class MainCommand extends ListedCommand
 			else
 			{
 				player.sendMessage(ChatColor.RED + "Invalid category selected.");
-				player.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|devotion|ascensions] <p> <amt>");
+				player.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|ascensions] <p> <amt>");
 				return true;
 			}
 		}

@@ -15,13 +15,14 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class Template implements Ability
 {
 	private final static String name = "Test", command = "test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.SUPPORT;
+	private final static Skill.Type type = Skill.Type.SUPPORT;
 	private final static List<String> details = Lists.newArrayList("Test your target.");
 	private String deity, permission;
 
@@ -80,7 +81,7 @@ public class Template implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

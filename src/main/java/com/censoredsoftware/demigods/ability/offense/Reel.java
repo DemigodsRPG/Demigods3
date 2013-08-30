@@ -17,13 +17,14 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class Reel implements Ability
 {
 	private final static String name = "Reel", command = "reel";
 	private final static int cost = 120, delay = 1100, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Skill.Type type = Skill.Type.OFFENSE;
 	private final static Material weapon = Material.FISHING_ROD;
 	private final static List<String> details = Lists.newArrayList("Use a fishing rod for a stronger attack.");
 	private String deity, permission;
@@ -83,7 +84,7 @@ public class Reel implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

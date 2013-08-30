@@ -13,13 +13,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class NoSplosion implements Ability
 {
 	private final static String name = "No Explosion Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("Take no damage from explosions.");
 	private String deity, permission;
 
@@ -78,7 +79,7 @@ public class NoSplosion implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

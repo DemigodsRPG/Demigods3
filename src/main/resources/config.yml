@@ -36,6 +36,7 @@ zones:
 multipliers:
     favor: 1.0
     exp: 1.0
+    skill_points: 1.0
 
 ## Caps ##
 caps:
@@ -46,7 +47,7 @@ caps:
 
 ## Bonuses ##
 bonuses:
-    pvp_exp: 1.5
+    mvp_skill_points: 5
 
 ## Statistics ##
 stats:
@@ -64,7 +65,7 @@ character:
         ultimate: 1
         favor: 500
         max_favor: 750
-        devotion: 200
+        skill: 200
         ascensions: 1
 
 ## Battle Settings ##

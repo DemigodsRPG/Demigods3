@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Translation;
@@ -24,7 +23,7 @@ public class DataManager
 	private static DPlayer.File playersYAML;
 	private static DItemStack.File itemStacksYAML;
 	private static DLocation.File locationsYAML;
-	private static Ability.Devotion.File devotionYAML;
+	private static Skill.File skillsYAML;
 	private static DCharacter.Meta.File characterMetasYAML;
 	private static DCharacter.Inventory.File inventoriesYAML;
 	private static DCharacter.SavedPotion.File savedPotionsYAML;
@@ -40,7 +39,7 @@ public class DataManager
 	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DItemStack> itemStacks;
 	public static ConcurrentMap<UUID, DLocation> locations;
-	public static ConcurrentMap<UUID, Ability.Devotion> devotion;
+	public static ConcurrentMap<UUID, Skill> skills;
 	public static ConcurrentMap<UUID, DCharacter> characters;
 	public static ConcurrentMap<UUID, Notification> notifications;
 	public static ConcurrentMap<UUID, Pet> pets;
@@ -58,7 +57,7 @@ public class DataManager
 	{
 		itemStacksYAML = new DItemStack.File();
 		locationsYAML = new DLocation.File();
-		devotionYAML = new Ability.Devotion.File();
+		skillsYAML = new Skill.File();
 		playersYAML = new DPlayer.File();
 		charactersYAML = new DCharacter.File();
 		characterMetasYAML = new DCharacter.Meta.File();
@@ -80,7 +79,7 @@ public class DataManager
 	{
 		itemStacks = itemStacksYAML.loadFromFile();
 		locations = locationsYAML.loadFromFile();
-		devotion = devotionYAML.loadFromFile();
+		skills = skillsYAML.loadFromFile();
 		players = playersYAML.loadFromFile();
 		characters = charactersYAML.loadFromFile();
 		characterMetas = characterMetasYAML.loadFromFile();
@@ -98,7 +97,7 @@ public class DataManager
 	{
 		itemStacksYAML.saveToFile();
 		locationsYAML.saveToFile();
-		devotionYAML.saveToFile();
+		skillsYAML.saveToFile();
 		playersYAML.saveToFile();
 		charactersYAML.saveToFile();
 		characterMetasYAML.saveToFile();
@@ -125,7 +124,7 @@ public class DataManager
 		characters.clear();
 		characterMetas.clear();
 		inventories.clear();
-		devotion.clear();
+		skills.clear();
 		notifications.clear();
 		pets.clear();
 		structures.clear();

@@ -18,13 +18,14 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class Shove implements Ability
 {
 	private final static String name = "Shove", command = "shove";
 	private final static int cost = 170, delay = 15, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.DEFENSE;
+	private final static Skill.Type type = Skill.Type.DEFENSE;
 	private final static List<String> details = Lists.newArrayList("Shove your target away from you.");
 	private String deity, permission;
 
@@ -105,7 +106,7 @@ public class Shove implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

@@ -745,12 +745,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public static class Meta implements ConfigurationSerializable
 	{
 		private UUID id;
-		private Integer ascensions;
-		private Integer favor;
-		private Integer maxFavor;
+		private int ascensions;
+		private int favor;
+		private int maxFavor;
+		private int skillPoints;
 		private Set<String> notifications;
 		private Map<String, Object> binds;
-		private Map<String, Object> devotionData;
+		private Map<String, Object> skillData;
 		private Map<String, Object> warps;
 		private Map<String, Object> invites;
 
@@ -763,8 +764,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			ascensions = conf.getInt("ascensions");
 			favor = conf.getInt("favor");
 			maxFavor = conf.getInt("maxFavor");
+			skillPoints = conf.getInt("skillPoints");
 			notifications = Sets.newHashSet(conf.getStringList("notifications"));
-			if(conf.getConfigurationSection("devotionData") != null) devotionData = conf.getConfigurationSection("devotionData").getValues(false);
+			if(conf.getConfigurationSection("skillData") != null) skillData = conf.getConfigurationSection("skillData").getValues(false);
 			if(conf.getConfigurationSection("binds") != null) binds = conf.getConfigurationSection("binds").getValues(false);
 			if(conf.getConfigurationSection("warps") != null) warps = conf.getConfigurationSection("warps").getValues(false);
 			if(conf.getConfigurationSection("invites") != null) invites = conf.getConfigurationSection("invites").getValues(false);
@@ -777,9 +779,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			map.put("ascensions", ascensions);
 			map.put("favor", favor);
 			map.put("maxFavor", maxFavor);
+			map.put("skillPoints", skillPoints);
 			map.put("notifications", Lists.newArrayList(notifications));
 			map.put("binds", binds);
-			map.put("devotionData", devotionData);
+			map.put("skillData", skillData);
 			map.put("warps", warps);
 			map.put("invites", invites);
 			return map;
@@ -795,13 +798,33 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			this.notifications = Sets.newHashSet();
 			this.warps = Maps.newHashMap();
 			this.invites = Maps.newHashMap();
-			this.devotionData = Maps.newHashMap();
+			this.skillData = Maps.newHashMap();
 			this.binds = Maps.newHashMap();
 		}
 
 		public UUID getId()
 		{
 			return this.id;
+		}
+
+		void setSkillPoints(int skillPoints)
+		{
+			this.skillPoints = skillPoints;
+		}
+
+		public int getSkillPoints()
+		{
+			return skillPoints;
+		}
+
+		public void addSkillPoints(int skillPoints)
+		{
+			setSkillPoints(getSkillPoints() + skillPoints);
+		}
+
+		public void removeSkillPoints(int skillPoints)
+		{
+			setSkillPoints(getSkillPoints() - skillPoints);
 		}
 
 		public void addNotification(Notification notification)
@@ -888,20 +911,32 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return !this.invites.isEmpty();
 		}
 
-		public void addDevotion(Ability.Devotion devotion)
+		public void addSkill(Skill skill)
 		{
-			if(!this.devotionData.containsKey(devotion.getType().toString())) this.devotionData.put(devotion.getType().toString(), devotion.getId().toString());
+			if(!this.skillData.containsKey(skill.getType().toString())) this.skillData.put(skill.getType().toString(), skill.getId().toString());
 			Util.saveMeta(this);
 		}
 
-		public Ability.Devotion getDevotion(Ability.Devotion.Type type)
+		public Skill getSkill(Skill.Type type)
 		{
-			if(this.devotionData.containsKey(type.toString())) return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
+			if(this.skillData.containsKey(type.toString())) return Skill.Util.loadSkill(UUID.fromString(this.skillData.get(type.toString()).toString()));
 			else
 			{
-				addDevotion(Ability.Util.createDevotion(type));
-				return Ability.Util.loadDevotion(UUID.fromString(this.devotionData.get(type.toString()).toString()));
+				addSkill(Skill.Util.createSkill(type));
+				return Skill.Util.loadSkill(UUID.fromString(this.skillData.get(type.toString()).toString()));
 			}
+		}
+
+		public Collection<Skill> getSkills()
+		{
+			return Collections2.transform(skillData.values(), new Function<Object, Skill>()
+			{
+				@Override
+				public Skill apply(Object obj)
+				{
+					return (Skill) obj;
+				}
+			});
 		}
 
 		public boolean checkBound(String abilityName, Material material)
@@ -1206,12 +1241,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
 			charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
 			charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.OFFENSE));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.DEFENSE));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.PASSIVE));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.STEALTH));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.SUPPORT));
-			charMeta.addDevotion(Ability.Util.createDevotion(Ability.Devotion.Type.ULTIMATE));
+			for(Skill.Type type : Skill.Type.values())
+				charMeta.addSkill(Skill.Util.createSkill(type));
 			saveMeta(charMeta);
 			return charMeta;
 		}

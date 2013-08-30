@@ -18,6 +18,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 
@@ -26,7 +27,7 @@ public class Blaze implements Ability
 	public static Blaze ability;
 	private final static String name = "Blaze", command = "blaze";
 	private final static int cost = 400, delay = 15, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.OFFENSE;
+	private final static Skill.Type type = Skill.Type.OFFENSE;
 	private final static List<String> details = Lists.newArrayList("Ignite the ground at the target location.");
 	private String deity, permission;
 
@@ -85,7 +86,7 @@ public class Blaze implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}
@@ -158,7 +159,7 @@ public class Blaze implements Ability
 				notify = false;
 				if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
 			}
-			int power = character.getMeta().getDevotion(type).getLevel();
+			int power = character.getMeta().getSkill(type).getLevel();
 			int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 			if(diameter > 12) diameter = 12;
 

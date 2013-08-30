@@ -1,21 +1,10 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,10 +25,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -56,7 +59,7 @@ public class Prayer implements ListedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_NOTIFICATIONS('5', new ViewNotifications());
+		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
 		private final Elements.Conversations.Category category;
@@ -336,6 +339,77 @@ public class Prayer implements ListedConversation
 					character.getMeta().removeInvite(arg1.toLowerCase());
 				}
 				player.sendMessage(ChatColor.GRAY + "Teleported to " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(arg1.toLowerCase()) + ChatColor.GRAY + ".");
+			}
+			return null;
+		}
+	}
+
+	// Skills
+	static class ViewSkills extends ValidatingPrompt implements Elements.Conversations.Category
+	{
+		@Override
+		public String getChatName()
+		{
+			return ChatColor.DARK_PURPLE + "View Skills";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			return DPlayer.Util.getPlayer((Player) context.getForWhom()).hasCurrent();
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			int skillPoints = character.getMeta().getSkillPoints();
+
+			Demigods.message.clearRawChat(player);
+			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Skills"));
+			player.sendRawMessage(" ");
+
+			for(Skill skill : character.getMeta().getSkills())
+			{
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredExp() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
+			}
+
+			player.sendRawMessage(" ");
+			if(skillPoints > 0)
+			{
+				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have ").green(character.getMeta().getSkillPoints() + "").gray(" skill points available.").build());
+				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  To assign your skill points, use ").yellow("assign <points> <skill>").gray(".").build());
+			}
+			else
+			{
+				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have no skill points available for assignment.").build());
+			}
+			return "";
+		}
+
+		@Override
+		protected boolean isInputValid(ConversationContext context, String message)
+		{
+			return false;
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, String message)
+		{
+			// Define variables
+			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+
+			if(message.equalsIgnoreCase("menu"))
+			{
+				// THEY WANT THE MENU!? SOCK IT TO 'EM!
+				return new StartPrayer();
+			}
+			else if(message.equalsIgnoreCase("assign"))
+			{
+				// TODO
+				return new StartPrayer();
 			}
 			return null;
 		}

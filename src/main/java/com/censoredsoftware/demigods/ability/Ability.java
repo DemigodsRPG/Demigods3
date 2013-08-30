@@ -1,14 +1,12 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,13 +23,12 @@ import org.bukkit.util.BlockIterator;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.Elements;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -57,7 +54,7 @@ public interface Ability
 
 	public List<String> getDetails();
 
-	public Devotion.Type getType();
+	public Skill.Type getType();
 
 	public Material getWeapon();
 
@@ -67,173 +64,8 @@ public interface Ability
 
 	public BukkitRunnable getRunnable();
 
-	public static class Devotion implements ConfigurationSerializable
-	{
-		private UUID id;
-		private String type;
-		private int skillPoints; // TODO: This may need a better name.
-		private int exp;
-		private int level;
-
-		public enum Type
-		{
-			OFFENSE, DEFENSE, STEALTH, SUPPORT, PASSIVE, ULTIMATE
-		}
-
-		public Devotion()
-		{}
-
-		public Devotion(UUID id, ConfigurationSection conf)
-		{
-			this.id = id;
-			type = conf.getString("type");
-			skillPoints = conf.getInt("skillPoints");
-			exp = conf.getInt("exp");
-			level = conf.getInt("level");
-		}
-
-		@Override
-		public Map<String, Object> serialize()
-		{
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("type", type);
-			map.put("skillPoints", skillPoints);
-			map.put("exp", exp);
-			map.put("level", level);
-			return map;
-		}
-
-		public void generateId()
-		{
-			id = UUID.randomUUID();
-		}
-
-		void setType(Type type)
-		{
-			this.type = type.toString();
-		}
-
-		void setSkillPoints(int skillPoints)
-		{
-			this.skillPoints = skillPoints;
-		}
-
-		void setExp(int exp)
-		{
-			this.exp = exp;
-		}
-
-		void setLevel(int level)
-		{
-			this.level = level;
-		}
-
-		public UUID getId()
-		{
-			return id;
-		}
-
-		public Type getType()
-		{
-			return Type.valueOf(type);
-		}
-
-		public int getSkillPoints()
-		{
-			return skillPoints;
-		}
-
-		public int getExp()
-		{
-			return exp;
-		}
-
-		public int getLevel()
-		{
-			return level;
-		}
-
-		public void addPoints(int points)
-		{
-			this.skillPoints = getSkillPoints() + points;
-		}
-
-		public void addExp(int exp)
-		{
-			this.exp = getExp() + exp;
-		}
-
-		public void addLevels(int levels)
-		{
-			level = getLevel() + levels;
-		}
-
-		@Override
-		public Object clone() throws CloneNotSupportedException
-		{
-			throw new CloneNotSupportedException();
-		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "devotion.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, Devotion> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, Devotion> map = new ConcurrentHashMap<UUID, Devotion>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new Devotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, Devotion> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.devotion.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.devotion.get(id))) saveFile.createSection(id.toString(), Util.loadDevotion(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.devotion.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
-		}
-	}
-
 	public static class Util
 	{
-		public static Devotion createDevotion(Devotion.Type type)
-		{
-			Devotion devotion = new Devotion();
-			devotion.generateId();
-			devotion.setType(type);
-			devotion.setLevel(Demigods.config.getSettingInt("character.defaults." + type.name().toLowerCase()));
-			save(devotion);
-			return devotion;
-		}
-
-		public static void save(Devotion devotion)
-		{
-			DataManager.devotion.put(devotion.getId(), devotion);
-		}
-
-		public static Devotion loadDevotion(UUID id)
-		{
-			return DataManager.devotion.get(id);
-		}
-
 		private static boolean doAbilityPreProcess(Player player, int cost)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
@@ -260,7 +92,7 @@ public interface Ability
 		 * @param cost the cost (in favor) of the ability
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean doAbilityPreProcess(Player player, int cost, Devotion.Type type)
+		public static boolean doAbilityPreProcess(Player player, int cost, Skill.Type type)
 		{
 			// DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			return doAbilityPreProcess(player, cost); // TODO callAbilityEvent(name, character, cost, info);
@@ -276,7 +108,7 @@ public interface Ability
 		 * @param cost the cost (in favor) of the ability
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost, Devotion.Type type)
+		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost, Skill.Type type)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
@@ -478,7 +310,7 @@ public interface Ability
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			for(final Ability ability : character.getDeity().getAbilities())
 			{
-				if(ability.getType().equals(Devotion.Type.PASSIVE)) continue;
+				if(ability.getType().equals(Skill.Type.PASSIVE)) continue;
 
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{

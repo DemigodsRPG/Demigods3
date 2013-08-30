@@ -16,13 +16,14 @@ import org.bukkit.util.Vector;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class Swim implements Ability
 {
 	private final static String name = "Swim", command = null;
 	private final static int cost = 0, delay = 0, repeat = 20;
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("Crouch while in water to swim very fast.");
 	private String deity, permission;
 
@@ -81,7 +82,7 @@ public class Swim implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

@@ -1,23 +1,25 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.google.common.collect.Lists;
 
 public class RainbowHorse implements Ability
 {
 	private final static String name = "Horse of a Different Color", command = null;
 	private final static int cost = 0, delay = 0, repeat = 100;
-	private final static Devotion.Type type = Devotion.Type.PASSIVE;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("All of you horse are belong to us.");
 	private String deity, permission;
 
@@ -76,7 +78,7 @@ public class RainbowHorse implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}

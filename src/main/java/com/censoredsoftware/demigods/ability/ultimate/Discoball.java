@@ -22,6 +22,7 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Spigots;
 import com.censoredsoftware.demigods.util.Zones;
@@ -32,7 +33,7 @@ public class Discoball implements Ability
 {
 	private final static String name = "Discoball of Doom", command = "discoball";
 	private final static int cost = 30, delay = 30, repeat = 4;
-	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static Skill.Type type = Skill.Type.ULTIMATE;
 	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
 	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 	private String deity, permission;
@@ -92,7 +93,7 @@ public class Discoball implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}
@@ -180,7 +181,7 @@ public class Discoball implements Ability
 		private final static String name = "Rainbow Walking", command = null;
 		private final static int cost = 0, delay = 0, repeat = 5;
 		private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
-		private final static Devotion.Type type = Devotion.Type.STEALTH;
+		private final static Skill.Type type = Skill.Type.STEALTH;
 		private String deity, permission;
 
 		public RainbowWalking(String deity, String permission)
@@ -238,7 +239,7 @@ public class Discoball implements Ability
 		}
 
 		@Override
-		public Devotion.Type getType()
+		public Skill.Type getType()
 		{
 			return type;
 		}

@@ -1,18 +1,8 @@
 package com.censoredsoftware.demigods.battle;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
-import com.censoredsoftware.demigods.helper.ConfigFile;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,8 +14,20 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.helper.ConfigFile;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -759,7 +761,10 @@ public class Battle implements ConfigurationSerializable
 					return battle.getKillCounter() >= battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() >= battle.getMinKills() || battle.getParticipants().size() < 2;
 				}
 			}))
+			{
 				battle.end();
+				Skill.Util.processBattle(battle);
+			}
 
 			// Delete all inactive battles that should be deleted.
 			for(Battle battle : Collections2.filter(Battle.Util.getAllInactive(), new Predicate<Battle>()

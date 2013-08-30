@@ -21,13 +21,14 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
 public class Firestorm implements Ability
 {
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
-	private final static Devotion.Type type = Devotion.Type.ULTIMATE;
+	private final static Skill.Type type = Skill.Type.ULTIMATE;
 	private final static List<String> details = Lists.newArrayList("Rain down fireballs from the sky.");
 	private String deity, permission;
 
@@ -86,7 +87,7 @@ public class Firestorm implements Ability
 	}
 
 	@Override
-	public Devotion.Type getType()
+	public Skill.Type getType()
 	{
 		return type;
 	}
@@ -142,7 +143,7 @@ public class Firestorm implements Ability
 		private final static String name = "Fireball", command = "fireball";
 		private final static int cost = 100, delay = 5, repeat = 0;
 		private final static List<String> details = Lists.newArrayList("Shoot a fireball at the cursor's location.");
-		private final static Devotion.Type type = Devotion.Type.OFFENSE;
+		private final static Skill.Type type = Skill.Type.OFFENSE;
 		private String deity, permission;
 
 		public ShootFireball(String deity, String permission)
@@ -200,7 +201,7 @@ public class Firestorm implements Ability
 		}
 
 		@Override
-		public Devotion.Type getType()
+		public Skill.Type getType()
 		{
 			return type;
 		}

@@ -1,15 +1,16 @@
 package com.censoredsoftware.demigods.language;
 
-import com.censoredsoftware.demigods.Elements;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.bukkit.ChatColor;
+
+import com.censoredsoftware.demigods.Elements;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 @SuppressWarnings("unchecked")
 public class Translation
@@ -134,7 +135,13 @@ public class Translation
 
 	public static enum Text
 	{
-		NOTIFICATIONS_PRAYER_FOOTER(new ArrayList<String>()
+		NOTIFICATION_SKILL_POINTS_RECEIVED(new ArrayList<String>()
+		{
+			{
+				add(ChatColor.GREEN + "You have earned {skillpoints} skill points for your recent battle!");
+				add(ChatColor.GRAY + "Find an Altar to distribute them.");
+			}
+		}), NOTIFICATIONS_PRAYER_FOOTER(new ArrayList<String>()
 		{
 			{
 				add(ChatColor.GRAY + "  Type " + ChatColor.RED + "clear" + ChatColor.GRAY + " to remove all notifications or type " + ChatColor.YELLOW + "menu");
