@@ -161,7 +161,7 @@ public class DPlayer implements ConfigurationSerializable
 		return null;
 	}
 
-	public void switchCharacter(DCharacter newChar)
+	public void switchCharacter(final DCharacter newChar)
 	{
 		final Player player = getOfflinePlayer().getPlayer();
 
@@ -237,7 +237,14 @@ public class DPlayer implements ConfigurationSerializable
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
 		if(newChar.getPotionEffects() != null) player.addPotionEffects(newChar.getPotionEffects());
-		if(newChar.getBedSpawn() != null) player.setBedSpawnLocation(newChar.getBedSpawn());
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				if(newChar.getBedSpawn() != null) player.setBedSpawnLocation(newChar.getBedSpawn());
+			}
+		}, 1);
 
 		// Re-own pets
 		Pet.Util.reownPets(player, newChar);
