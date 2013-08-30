@@ -947,7 +947,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public Skill apply(Object obj)
 				{
-					return (Skill) obj;
+					return Skill.Util.loadSkill(UUID.fromString(obj.toString()));
 				}
 			});
 		}
