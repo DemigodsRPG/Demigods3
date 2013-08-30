@@ -1,23 +1,20 @@
 package com.censoredsoftware.demigods.command;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.ListedCommand;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Altar;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Errors;
-import com.censoredsoftware.demigods.util.Unicodes;
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import java.util.Set;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Altar;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.google.common.collect.Sets;
 
 public class DevelopmentCommands extends ListedCommand
 {
@@ -54,7 +51,12 @@ public class DevelopmentCommands extends ListedCommand
 	{
 		Player player = (Player) sender;
 
-		if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
+		for(DCharacter character : DCharacter.Util.loadAll())
+		{
+			character.getMeta().resetSkills();
+		}
+
+		// if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
 
 		return true;
 	}

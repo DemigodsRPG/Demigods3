@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -14,19 +28,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -910,25 +911,38 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return !this.invites.isEmpty();
 		}
 
+		public void resetSkills()
+		{
+			getRawSkills().clear();
+			for(Skill.Type type : Skill.Type.values())
+				addSkill(Skill.Util.createSkill(type));
+		}
+
 		public void addSkill(Skill skill)
 		{
-			if(!this.skillData.containsKey(skill.getType().toString())) this.skillData.put(skill.getType().toString(), skill.getId().toString());
+			if(!getRawSkills().containsKey(skill.getType().toString())) getRawSkills().put(skill.getType().toString(), skill.getId().toString());
 			Util.saveMeta(this);
 		}
 
 		public Skill getSkill(Skill.Type type)
 		{
-			if(this.skillData.containsKey(type.toString())) return Skill.Util.loadSkill(UUID.fromString(this.skillData.get(type.toString()).toString()));
+			if(getRawSkills().containsKey(type.toString())) return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
 			else
 			{
 				addSkill(Skill.Util.createSkill(type));
-				return Skill.Util.loadSkill(UUID.fromString(this.skillData.get(type.toString()).toString()));
+				return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
 			}
+		}
+
+		public Map<String, Object> getRawSkills()
+		{
+			if(skillData == null) skillData = Maps.newHashMap();
+			return skillData;
 		}
 
 		public Collection<Skill> getSkills()
 		{
-			return Collections2.transform(skillData.values(), new Function<Object, Skill>()
+			return Collections2.transform(getRawSkills().values(), new Function<Object, Skill>()
 			{
 				@Override
 				public Skill apply(Object obj)
@@ -1240,8 +1254,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
 			charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
 			charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
-			for(Skill.Type type : Skill.Type.values())
-				charMeta.addSkill(Skill.Util.createSkill(type));
+			charMeta.resetSkills();
 			saveMeta(charMeta);
 			return charMeta;
 		}
