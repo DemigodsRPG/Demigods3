@@ -50,6 +50,7 @@ public class Demigods
 	// Public Static Access
 	public static DemigodsPlugin PLUGIN;
 	public static ConversationFactory CONVERSATION_FACTORY;
+	public static Translation LANGUAGE;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin WORLD_GUARD;
@@ -59,14 +60,12 @@ public class Demigods
 	protected static Set<String> DISABLED_WORLDS;
 	protected static Set<String> COMMANDS;
 
-	// The LANGUAGE
-	public static Translation LANGUAGE;
-
 	// Load what is possible to load right away.
 	static
 	{
 		// Allow static access.
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
+		LANGUAGE = new Translation();
 
 		// Initialize metrics
 		try

@@ -89,7 +89,7 @@ public class MainCommand extends WrappedCommand
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
-		sender.sendMessage(ChatColor.GRAY + " /dg COMMANDS");
+		sender.sendMessage(ChatColor.GRAY + " /dg commands");
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
@@ -113,7 +113,7 @@ public class MainCommand extends WrappedCommand
 		{
 			dg_admin(player, option1, option2, option3, option4);
 		}
-		else if(category.equalsIgnoreCase("COMMANDS"))
+		else if(category.equalsIgnoreCase("commands"))
 		{
 			Messages.tagged(player, "Command Directory");
 			player.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO

@@ -56,9 +56,7 @@ public class DevelopmentCommands extends WrappedCommand
 		Player player = (Player) sender;
 
 		for(DCharacter character : DCharacter.Util.loadAll())
-		{
 			character.getMeta().resetSkills();
-		}
 
 		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
 
