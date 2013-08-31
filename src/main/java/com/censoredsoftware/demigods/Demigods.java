@@ -22,7 +22,6 @@ import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.structure.Obelisk;
 import com.censoredsoftware.demigods.structure.Shrine;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.errornoise.ErrorNoise;
 import com.google.common.base.Function;
@@ -214,7 +213,7 @@ public class Demigods
 	private static boolean loadWorlds()
 	{
 		disabledWorlds = Sets.newHashSet();
-		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
+		for(String world : Collections2.filter(plugin.getConfig().getStringList("restrictions.disabled_worlds"), new Predicate<String>()
 		{
 			@Override
 			public boolean apply(String world)
