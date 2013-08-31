@@ -105,7 +105,7 @@ public class Demigods
 
 	private static void loadListeners()
 	{
-		PluginManager register = PLUGIN.getServer().getPluginManager();
+		PluginManager register = Bukkit.getServer().getPluginManager();
 
 		// Engine
 		for(ListedListener listener : ListedListener.values())
