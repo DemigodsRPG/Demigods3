@@ -46,7 +46,7 @@ public class DemigodsPlugin extends JavaPlugin
 		for(Player player : Bukkit.getOnlinePlayers())
 			DPlayer.Util.togglePrayingSilent(player, false, false);;
 
-		// Cancel all threads, callAbilityEvent calls, and connections.
+		// Cancel all threads, Event calls, and connections.
 		ThreadManager.stopThreads(this);
 		HandlerList.unregisterAll(this);
 
