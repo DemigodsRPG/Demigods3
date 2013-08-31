@@ -185,9 +185,6 @@ public class Demigods
 		// Allow static access.
 		conversation = new ConversationFactory(plugin);
 
-		// Update usable characters
-		DCharacter.Util.updateUsableCharacters();
-
 		// Initialize metrics
 		try
 		{
@@ -301,6 +298,10 @@ public class Demigods
 
 	static
 	{
+		// Update usable characters
+		DCharacter.Util.updateUsableCharacters();
+
+		// Check if there are no enabled worlds
 		if(!loadWorlds())
 		{
 			Messages.severe("Demigods was unable to load any worlds.");
