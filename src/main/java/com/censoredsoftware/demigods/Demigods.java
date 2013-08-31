@@ -81,8 +81,6 @@ public class Demigods
 
 		// Configure depends
 		loadDepends();
-
-		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	private static boolean loadWorlds()
@@ -179,13 +177,6 @@ public class Demigods
 
 	static
 	{
-		// Load listeners and commands
-		loadListeners();
-		loadCommands();
-
-		// Update usable characters
-		DCharacter.Util.updateUsableCharacters();
-
 		// Check if there are no enabled worlds
 		if(!loadWorlds())
 		{
@@ -193,6 +184,15 @@ public class Demigods
 			Messages.severe("Please configure at least 1 world for ");
 			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
 		}
+
+		// Load listeners and commands
+		loadListeners();
+		loadCommands();
+
+		// Update usable characters
+		DCharacter.Util.updateUsableCharacters();
+
+		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	public static class MiscUtil
