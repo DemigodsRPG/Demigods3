@@ -84,7 +84,7 @@ public class Demigods
 	}
 
 	// Load everything else.
-	protected Demigods()
+	protected static void finishLoading()
 	{
 		// Check if there are no enabled worlds
 		if(!loadWorlds())
