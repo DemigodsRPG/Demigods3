@@ -53,125 +53,6 @@ public class Demigods
 	public static WorldGuardPlugin worldguard;
 	public static boolean errorNoise;
 
-	// Deities
-	public static enum ListedDeity
-	{
-		// GODS
-		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()), HADES("Hades", new Hades()),
-
-		// TITANS
-		IAPETUS("Iapetus", new Iapetus()), OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
-
-		// DONATORS
-		// DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
-
-		private final String name;
-		private final Deity deity;
-
-		private ListedDeity(String name, Deity deity)
-		{
-			this.name = name;
-			this.deity = deity;
-		}
-
-		public String getName()
-		{
-			return name;
-		}
-
-		public Deity getDeity()
-		{
-			return deity;
-		}
-
-		public static Deity get(String name)
-		{
-			for(ListedDeity deity : values())
-				if(deity.getName().equalsIgnoreCase(name)) return deity.getDeity();
-			return null;
-		}
-	}
-
-	// Structures
-	public static enum ListedStructure
-	{
-		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
-
-		private final Structure structure;
-
-		private ListedStructure(Structure structure)
-		{
-			this.structure = structure;
-		}
-
-		public Structure getStructure()
-		{
-			return structure;
-		}
-	}
-
-	// Conversations
-	public enum ListedConversation
-	{
-		PRAYER(new Prayer());
-
-		private final WrappedConversation conversationInfo;
-
-		private ListedConversation(WrappedConversation conversationInfo)
-		{
-			this.conversationInfo = conversationInfo;
-		}
-
-		public WrappedConversation getConversation()
-		{
-			return this.conversationInfo;
-		}
-
-		// Can't touch this. Naaaaaa na-na-na.. Ba-dum, ba-dum.
-		public static interface Category extends Prompt
-		{
-			public String getChatName();
-
-			public boolean canUse(ConversationContext context);
-		}
-	}
-
-	// Listeners
-	public enum ListedListener
-	{
-		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
-
-		private Listener listener;
-
-		private ListedListener(Listener listener)
-		{
-			this.listener = listener;
-		}
-
-		public Listener getListener()
-		{
-			return listener;
-		}
-	}
-
-	// Commands
-	public enum ListedCommand
-	{
-		MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
-
-		private WrappedCommand command;
-
-		private ListedCommand(WrappedCommand command)
-		{
-			this.command = command;
-		}
-
-		public WrappedCommand getCommand()
-		{
-			return command;
-		}
-	}
-
 	// Disabled Worlds
 	protected static Set<String> disabledWorlds;
 	protected static Set<String> commands;
@@ -337,6 +218,125 @@ public class Demigods
 		public static boolean isDemigodsCommand(String command)
 		{
 			return commands.contains(command);
+		}
+	}
+
+	// Deities
+	public static enum ListedDeity
+	{
+		// GODS
+		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()), HADES("Hades", new Hades()),
+
+		// TITANS
+		IAPETUS("Iapetus", new Iapetus()), OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
+
+		// DONATORS
+		// DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
+
+		private final String name;
+		private final Deity deity;
+
+		private ListedDeity(String name, Deity deity)
+		{
+			this.name = name;
+			this.deity = deity;
+		}
+
+		public String getName()
+		{
+			return name;
+		}
+
+		public Deity getDeity()
+		{
+			return deity;
+		}
+
+		public static Deity get(String name)
+		{
+			for(ListedDeity deity : values())
+				if(deity.getName().equalsIgnoreCase(name)) return deity.getDeity();
+			return null;
+		}
+	}
+
+	// Structures
+	public static enum ListedStructure
+	{
+		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
+
+		private final Structure structure;
+
+		private ListedStructure(Structure structure)
+		{
+			this.structure = structure;
+		}
+
+		public Structure getStructure()
+		{
+			return structure;
+		}
+	}
+
+	// Conversations
+	public enum ListedConversation
+	{
+		PRAYER(new Prayer());
+
+		private final WrappedConversation conversationInfo;
+
+		private ListedConversation(WrappedConversation conversationInfo)
+		{
+			this.conversationInfo = conversationInfo;
+		}
+
+		public WrappedConversation getConversation()
+		{
+			return this.conversationInfo;
+		}
+
+		// Can't touch this. Naaaaaa na-na-na.. Ba-dum, ba-dum.
+		public static interface Category extends Prompt
+		{
+			public String getChatName();
+
+			public boolean canUse(ConversationContext context);
+		}
+	}
+
+	// Listeners
+	public enum ListedListener
+	{
+		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
+
+		private Listener listener;
+
+		private ListedListener(Listener listener)
+		{
+			this.listener = listener;
+		}
+
+		public Listener getListener()
+		{
+			return listener;
+		}
+	}
+
+	// Commands
+	public enum ListedCommand
+	{
+		MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
+
+		private WrappedCommand command;
+
+		private ListedCommand(WrappedCommand command)
+		{
+			this.command = command;
+		}
+
+		public WrappedCommand getCommand()
+		{
+			return command;
 		}
 	}
 }
