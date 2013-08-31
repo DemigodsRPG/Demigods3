@@ -75,7 +75,7 @@ public class Demigods
 		{}
 
 		// Start the data
-		DataManager.SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+		DataManager.SAVE_PATH = plugin.getDataFolder() + "/data/";
 
 		// Finish loading the plugin based on the game data
 		loadDepends();
