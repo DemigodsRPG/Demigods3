@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.language;
 
+import com.censoredsoftware.demigods.Element;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.bukkit.ChatColor;
-
-import com.censoredsoftware.demigods.Elements;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 @SuppressWarnings("unchecked")
 public class Translation
@@ -89,7 +88,7 @@ public class Translation
 		if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) set.addAll((List<String>) translation.get("BLACKLIST"));
 
 		// Deities
-		for(Elements.ListedDeity deity : Elements.Deities.values())
+		for(Element.ListedDeity deity : Element.Deity.values())
 		{
 			set.add(deity.getDeity().getName());
 			set.add(deity.getDeity().getAlliance());

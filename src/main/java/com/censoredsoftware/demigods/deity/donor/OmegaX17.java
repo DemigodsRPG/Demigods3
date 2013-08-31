@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity.donor;
 
-import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoSplosion;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -50,7 +50,7 @@ public class OmegaX17 implements Deity
 	}
 
 	@Override
-	public Elements.ListedDeity getListedDeity()
+	public Element.ListedDeity getListedDeity()
 	{
 		return null; // Elements.Deities.OMEGA;
 	}

@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity.donor;
 
-import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
@@ -51,7 +51,7 @@ public class DrD1sco implements Deity
 	}
 
 	@Override
-	public Elements.ListedDeity getListedDeity()
+	public Element.ListedDeity getListedDeity()
 	{
 		return null; // Elements.Deities.DISCO;
 	}

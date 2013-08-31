@@ -1,23 +1,8 @@
 package com.censoredsoftware.demigods.battle;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.util.Vector;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -28,6 +13,17 @@ import com.censoredsoftware.demigods.util.*;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -440,43 +436,6 @@ public class Battle implements ConfigurationSerializable
 		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
 		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
 		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "battles.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, Battle> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, Battle> map = new ConcurrentHashMap<UUID, Battle>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new Battle(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, Battle> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.battles.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.battles.get(id))) saveFile.createSection(id.toString(), Util.get(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.battles.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

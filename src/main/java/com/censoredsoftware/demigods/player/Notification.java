@@ -2,11 +2,9 @@ package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
 import com.google.common.collect.Sets;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
@@ -14,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Notification implements ConfigurationSerializable
 {
@@ -149,43 +146,6 @@ public class Notification implements ConfigurationSerializable
 	public static Set<Notification> loadAll()
 	{
 		return Sets.newHashSet(DataManager.notifications.values());
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "notifications.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, Notification> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, Notification> map = new ConcurrentHashMap<UUID, Notification>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new Notification(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, Notification> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.notifications.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.notifications.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.notifications.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

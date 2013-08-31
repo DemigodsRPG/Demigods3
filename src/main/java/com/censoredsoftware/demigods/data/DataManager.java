@@ -1,114 +1,63 @@
 package com.censoredsoftware.demigods.data;
 
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
 {
-	// Files
-	private static DPlayer.File playersYAML;
-	private static DItemStack.File itemStacksYAML;
-	private static DLocation.File locationsYAML;
-	private static Skill.File skillsYAML;
-	private static DCharacter.Meta.File characterMetasYAML;
-	private static DCharacter.Inventory.File inventoriesYAML;
-	private static DCharacter.SavedPotion.File savedPotionsYAML;
-	private static DCharacter.File charactersYAML;
-	private static Notification.File notificationsYAML;
-	private static Pet.File petsYAML;
-	private static Structure.Save.File structuresYAML;
-	private static Battle.File battlesYAML;
-	private static Death.File deathsYAML;
-	private static TimedData.File timedDataYAML;
+	// Constants
+	public static String SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
 
 	// Data
 	public static ConcurrentMap<String, DPlayer> players;
-	public static ConcurrentMap<UUID, DItemStack> itemStacks;
 	public static ConcurrentMap<UUID, DLocation> locations;
-	public static ConcurrentMap<UUID, Skill> skills;
-	public static ConcurrentMap<UUID, DCharacter> characters;
-	public static ConcurrentMap<UUID, Notification> notifications;
-	public static ConcurrentMap<UUID, Pet> pets;
-	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
-	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
-	public static ConcurrentMap<UUID, DCharacter.SavedPotion> savedPotions;
 	public static ConcurrentMap<UUID, Structure.Save> structures;
-	public static ConcurrentMap<UUID, Battle> battles;
+	public static ConcurrentMap<UUID, DCharacter> characters;
+	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
 	public static ConcurrentMap<UUID, Death> deaths;
+	public static ConcurrentMap<UUID, Skill> skills;
+	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentMap<UUID, DItemStack> itemStacks;
+	public static ConcurrentMap<UUID, DCharacter.SavedPotion> savedPotions;
+	public static ConcurrentMap<UUID, Pet> pets;
+	public static ConcurrentMap<UUID, Notification> notifications;
+	public static ConcurrentMap<UUID, Battle> battles;
 	public static ConcurrentMap<UUID, TimedData> timedData;
 
 	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
 
 	public DataManager()
 	{
-		itemStacksYAML = new DItemStack.File();
-		locationsYAML = new DLocation.File();
-		skillsYAML = new Skill.File();
-		playersYAML = new DPlayer.File();
-		charactersYAML = new DCharacter.File();
-		characterMetasYAML = new DCharacter.Meta.File();
-		inventoriesYAML = new DCharacter.Inventory.File();
-		savedPotionsYAML = new DCharacter.SavedPotion.File();
-		notificationsYAML = new Notification.File();
-		petsYAML = new Pet.File();
-		structuresYAML = new Structure.Save.File();
-		battlesYAML = new Battle.File();
-		deathsYAML = new Death.File();
-		timedDataYAML = new TimedData.File();
-
 		load();
-
 		tempData = Maps.newConcurrentMap();
 	}
 
 	public static void load()
 	{
-		itemStacks = itemStacksYAML.loadFromFile();
-		locations = locationsYAML.loadFromFile();
-		skills = skillsYAML.loadFromFile();
-		players = playersYAML.loadFromFile();
-		characters = charactersYAML.loadFromFile();
-		characterMetas = characterMetasYAML.loadFromFile();
-		inventories = inventoriesYAML.loadFromFile();
-		notifications = notificationsYAML.loadFromFile();
-		savedPotions = savedPotionsYAML.loadFromFile();
-		pets = petsYAML.loadFromFile();
-		structures = structuresYAML.loadFromFile();
-		battles = battlesYAML.loadFromFile();
-		deaths = deathsYAML.loadFromFile();
-		timedData = timedDataYAML.loadFromFile();
+		for(File file : File.values())
+			file.getConfigFile().loadToData();
 	}
 
 	public static void save()
 	{
-		itemStacksYAML.saveToFile();
-		locationsYAML.saveToFile();
-		skillsYAML.saveToFile();
-		playersYAML.saveToFile();
-		charactersYAML.saveToFile();
-		characterMetasYAML.saveToFile();
-		savedPotionsYAML.saveToFile();
-		inventoriesYAML.saveToFile();
-		notificationsYAML.saveToFile();
-		petsYAML.saveToFile();
-		structuresYAML.saveToFile();
-		battlesYAML.saveToFile();
-		deathsYAML.saveToFile();
-		timedDataYAML.saveToFile();
+		for(File file : File.values())
+			file.getConfigFile().saveToFile();
 	}
 
 	public static void flushData()
@@ -192,5 +141,624 @@ public class DataManager
 	public static Object getTimedValue(String key, String subKey)
 	{
 		return TimedData.Util.find(key, subKey).getData();
+	}
+
+	public static enum File
+	{
+		PLAYER(new ConfigFile<String, DPlayer>()
+		{
+			@Override
+			public DPlayer create(String string, ConfigurationSection conf)
+			{
+				return new DPlayer(string, conf);
+			}
+
+			@Override
+			public ConcurrentMap<String, DPlayer> getLoadedData()
+			{
+				return DataManager.players;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "players.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(String string)
+			{
+				return getLoadedData().get(string).serialize();
+			}
+
+			@Override
+			public String convertFromString(String stringId)
+			{
+				return stringId;
+			}
+
+			@Override
+			public void loadToData()
+			{
+				players = loadFromFile();
+			}
+		}), LOCATION(new ConfigFile<UUID, DLocation>()
+		{
+			@Override
+			public DLocation create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DLocation(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DLocation> getLoadedData()
+			{
+				return DataManager.locations;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "locations.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				locations = loadFromFile();
+			}
+		}), STRUCTURE(new ConfigFile<UUID, Structure.Save>()
+		{
+			@Override
+			public Structure.Save create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Structure.Save(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Structure.Save> getLoadedData()
+			{
+				return DataManager.structures;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "structures.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				structures = loadFromFile();
+			}
+		}), CHARACTER(new ConfigFile<UUID, DCharacter>()
+		{
+			@Override
+			public DCharacter create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DCharacter(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DCharacter> getLoadedData()
+			{
+				return DataManager.characters;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "characters.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				characters = loadFromFile();
+			}
+		}), CHARACTER_META(new ConfigFile<UUID, DCharacter.Meta>()
+		{
+			@Override
+			public DCharacter.Meta create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DCharacter.Meta(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DCharacter.Meta> getLoadedData()
+			{
+				return DataManager.characterMetas;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "characterMetas.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				characterMetas = loadFromFile();
+			}
+		}), DEATH(new ConfigFile<UUID, Death>()
+		{
+			@Override
+			public Death create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Death(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Death> getLoadedData()
+			{
+				return DataManager.deaths;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "deaths.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				deaths = loadFromFile();
+			}
+		}), SKILL(new ConfigFile<UUID, Skill>()
+		{
+			@Override
+			public Skill create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Skill(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Skill> getLoadedData()
+			{
+				return DataManager.skills;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "skill.yml"; // TODO This is named differently than all of the other files.
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				skills = loadFromFile();
+			}
+		}), CHARACTER_INVENTORY(new ConfigFile<UUID, DCharacter.Inventory>()
+		{
+			@Override
+			public DCharacter.Inventory create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DCharacter.Inventory(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DCharacter.Inventory> getLoadedData()
+			{
+				return DataManager.inventories;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "characterInventories.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				inventories = loadFromFile();
+			}
+		}), ITEM_STACK(new ConfigFile<UUID, DItemStack>()
+		{
+			@Override
+			public DItemStack create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DItemStack(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DItemStack> getLoadedData()
+			{
+				return DataManager.itemStacks;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "itemStacks.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				itemStacks = loadFromFile();
+			}
+		}), SAVED_POTION(new ConfigFile<UUID, DCharacter.SavedPotion>()
+		{
+			@Override
+			public DCharacter.SavedPotion create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DCharacter.SavedPotion(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DCharacter.SavedPotion> getLoadedData()
+			{
+				return DataManager.savedPotions;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "savedPotions.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				savedPotions = loadFromFile();
+			}
+		}), PET(new ConfigFile<UUID, Pet>()
+		{
+			@Override
+			public Pet create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Pet(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Pet> getLoadedData()
+			{
+				return DataManager.pets;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "pets.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				pets = loadFromFile();
+			}
+		}), NOTIFICATION(new ConfigFile<UUID, Notification>()
+		{
+			@Override
+			public Notification create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Notification(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Notification> getLoadedData()
+			{
+				return DataManager.notifications;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "notifications.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				notifications = loadFromFile();
+			}
+		}), BATTLE(new ConfigFile<UUID, Battle>()
+		{
+			@Override
+			public Battle create(UUID uuid, ConfigurationSection conf)
+			{
+				return new Battle(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, Battle> getLoadedData()
+			{
+				return DataManager.battles;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "battles.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				battles = loadFromFile();
+			}
+		}), TIMED_DATA(new ConfigFile<UUID, TimedData>()
+		{
+			@Override
+			public TimedData create(UUID uuid, ConfigurationSection conf)
+			{
+				return new TimedData(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, TimedData> getLoadedData()
+			{
+				return DataManager.timedData;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "timedData.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				timedData = loadFromFile();
+			}
+		});
+
+		private ConfigFile save;
+
+		private File(ConfigFile save)
+		{
+			this.save = save;
+		}
+
+		public ConfigFile getConfigFile()
+		{
+			return save;
+		}
 	}
 }

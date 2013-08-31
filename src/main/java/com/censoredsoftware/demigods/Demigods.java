@@ -134,7 +134,7 @@ public class Demigods
 		if(!disabledWorlds.isEmpty()) register.registerEvents(new DisabledWorldListener(), instance);
 
 		// Deities
-		for(Elements.ListedDeity deity : Elements.Deities.values())
+		for(Element.ListedDeity deity : Element.Deity.values())
 		{
 			if(deity.getDeity().getAbilities() == null) continue;
 			for(Ability ability : Sets.filter(deity.getDeity().getAbilities(), new Predicate<Ability>()
@@ -149,10 +149,10 @@ public class Demigods
 		}
 
 		// Structures
-		for(Elements.ListedStructure structure : Sets.filter(Sets.newHashSet(Elements.Structures.values()), new Predicate<Elements.Structures>()
+		for(Element.ListedStructure structure : Sets.filter(Sets.newHashSet(Element.Structure.values()), new Predicate<Element.Structure>()
 		{
 			@Override
-			public boolean apply(Elements.Structures structure)
+			public boolean apply(Element.Structure structure)
 			{
 				return structure.getStructure().getUniqueListener() != null;
 			}
@@ -160,10 +160,10 @@ public class Demigods
 			register.registerEvents(structure.getStructure().getUniqueListener(), instance);
 
 		// Conversations
-		for(ListedConversation.ConversationData conversation : Sets.filter(Sets.newHashSet(Elements.Conversations.values()), new Predicate<Elements.Conversations>()
+		for(ListedConversation.ConversationData conversation : Sets.filter(Sets.newHashSet(Element.Conversation.values()), new Predicate<Element.Conversation>()
 		{
 			@Override
-			public boolean apply(Elements.Conversations conversation)
+			public boolean apply(Element.Conversation conversation)
 			{
 				return conversation.getConversation().getUniqueListener() != null;
 			}

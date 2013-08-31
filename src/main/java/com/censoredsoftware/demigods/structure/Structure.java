@@ -1,10 +1,8 @@
 package com.censoredsoftware.demigods.structure;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.exception.BlockDataException;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.util.Randoms;
@@ -16,13 +14,11 @@ import com.google.common.collect.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public interface Structure
 {
@@ -152,7 +148,7 @@ public interface Structure
 
 		public Structure getStructure()
 		{
-			for(Elements.ListedStructure structure : Elements.Structures.values())
+			for(Element.ListedStructure structure : Element.Structure.values())
 				if(structure.getStructure().getStructureType().equalsIgnoreCase(this.type)) return structure.getStructure();
 			return null;
 		}
@@ -255,43 +251,6 @@ public interface Structure
 		public boolean equals(Object other)
 		{
 			return other != null && other instanceof Save && ((Save) other).getId() == getId();
-		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "structures.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, Save> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, Save> map = new ConcurrentHashMap<UUID, Save>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new Save(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, Save> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.structures.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.structures.get(id))) saveFile.createSection(id.toString(), Structures.load(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.structures.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
 		}
 	}
 

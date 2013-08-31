@@ -1,9 +1,15 @@
 package com.censoredsoftware.demigods.structure;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Structures;
+import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,16 +20,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Structures;
-import com.google.common.base.Predicate;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Shrine implements Structure
 {
@@ -209,7 +208,7 @@ public class Shrine implements Structure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Elements.Structures.SHRINE.getStructure().createNew(location, true);
+						Structure.Save save = Element.Structure.SHRINE.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 

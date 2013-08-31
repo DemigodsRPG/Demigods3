@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.deity.titan;
 
-import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.passive.NoFire;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
-import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Prometheus implements Deity
+public class Prometheus implements com.censoredsoftware.demigods.deity.Deity
 {
 	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
 	private final static int accuracy = 15;
@@ -52,9 +51,9 @@ public class Prometheus implements Deity
 	}
 
 	@Override
-	public Elements.ListedDeity getListedDeity()
+	public Element.ListedDeity getListedDeity()
 	{
-		return Elements.Deities.PROMETHEUS;
+		return Element.Deity.PROMETHEUS;
 	}
 
 	@Override

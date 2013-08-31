@@ -1,10 +1,23 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,24 +38,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements ListedConversation
@@ -62,9 +61,9 @@ public class Prayer implements ListedConversation
 		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
-		private final Elements.Conversations.Category category;
+		private final Element.Conversation.Category category;
 
-		private Menu(char id, Elements.Conversations.Category category)
+		private Menu(char id, Element.Conversation.Category category)
 		{
 			this.id = id;
 			this.category = category;
@@ -75,7 +74,7 @@ public class Prayer implements ListedConversation
 			return this.id;
 		}
 
-		public Elements.Conversations.Category getCategory()
+		public Element.Conversation.Category getCategory()
 		{
 			return this.category;
 		}
@@ -175,7 +174,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Warps
-	static class ViewWarps extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ViewWarps extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -345,7 +344,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Skills
-	static class ViewSkills extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ViewSkills extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -416,7 +415,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Notifications
-	static class ViewNotifications extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ViewNotifications extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -507,7 +506,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character viewing
-	static class ViewCharacters extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ViewCharacters extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -630,7 +629,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Deity forsaking
-	static class Forsake extends ValidatingPrompt implements Elements.Conversations.Category
+	static class Forsake extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -706,7 +705,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Forsaking confirmation
-	static class ConfirmForsake extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ConfirmForsake extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -762,7 +761,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Forsaking cancellation
-	static class CancelForsake extends MessagePrompt implements Elements.Conversations.Category
+	static class CancelForsake extends MessagePrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -799,7 +798,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character creation
-	static class CreateCharacter extends ValidatingPrompt implements Elements.Conversations.Category
+	static class CreateCharacter extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -1084,7 +1083,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character confirmation
-	static class ConfirmCharacter extends ValidatingPrompt implements Elements.Conversations.Category
+	static class ConfirmCharacter extends ValidatingPrompt implements Element.Conversation.Category
 	{
 		@Override
 		public String getChatName()

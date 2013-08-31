@@ -1,26 +1,24 @@
 package com.censoredsoftware.demigods.player;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.util.Errors;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Pet implements Participant, ConfigurationSerializable
 {
@@ -189,43 +187,6 @@ public class Pet implements Participant, ConfigurationSerializable
 		});
 	}
 
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "pets.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, Pet> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, Pet> map = new ConcurrentHashMap<UUID, Pet>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new Pet(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, Pet> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.pets.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.pets.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.pets.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
-	}
-
 	public static class Util
 	{
 		public static Pet load(UUID id)
@@ -250,52 +211,46 @@ public class Pet implements Participant, ConfigurationSerializable
 			return wrapper;
 		}
 
-		public static Set<Pet> findByType(final EntityType type)
+		public static Collection<Pet> findByType(final EntityType type)
 		{
-			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
 				public boolean apply(Pet pet)
 				{
 					return pet.getEntityType().equals(type.getName());
 				}
-			}));
+			});
 		}
 
-		public static Set<Pet> findByTamer(final String animalTamer)
+		public static Collection<Pet> findByTamer(final String animalTamer)
 		{
-			return Sets.newHashSet(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
 				public boolean apply(Pet pet)
 				{
 					return pet.getAnimalTamer().equals(animalTamer);
 				}
-			}));
+			});
 		}
 
-		public static List<Pet> findByUUID(final UUID uniqueId)
+		public static Collection<Pet> findByUUID(final UUID uniqueId)
 		{
-			return Lists.newArrayList(Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
 				public boolean apply(Pet pet)
 				{
 					return pet.getEntityUUID().equals(uniqueId);
 				}
-			}));
+			});
 		}
 
 		public static Pet getTameable(LivingEntity tameable)
 		{
 			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
-			try
-			{
-				return findByUUID(tameable.getUniqueId()).get(0);
-			}
-			catch(Exception ignored)
-			{}
-			return null;
+			return Iterables.getFirst(findByUUID(tameable.getUniqueId()), null);
 		}
 
 		public static void disownPets(String animalTamer)

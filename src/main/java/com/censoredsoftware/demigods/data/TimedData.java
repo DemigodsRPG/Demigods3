@@ -1,20 +1,16 @@
 package com.censoredsoftware.demigods.data;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TimedData implements ConfigurationSerializable
 {
@@ -144,43 +140,6 @@ public class TimedData implements ConfigurationSerializable
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "timedData.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, TimedData> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, TimedData> map = new ConcurrentHashMap<UUID, TimedData>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new TimedData(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, TimedData> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.timedData.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.timedData.get(id))) saveFile.createSection(id.toString(), Util.get(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.timedData.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

@@ -6,7 +6,6 @@ import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.Structure;
@@ -18,7 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
@@ -27,7 +25,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -328,43 +325,6 @@ public class DPlayer implements ConfigurationSerializable
 			return false;
 		}
 		else return getOfflinePlayer().isOnline();
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "players.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<String, DPlayer> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<String, DPlayer> map = new ConcurrentHashMap<String, DPlayer>();
-			for(String stringId : data.getKeys(false))
-				map.put(stringId, new DPlayer(stringId, data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<String, DPlayer> currentFile = loadFromFile();
-
-			for(String id : DataManager.players.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.players.get(id))) saveFile.createSection(id, Util.getPlayer(id).serialize());
-
-			for(String id : currentFile.keySet())
-				if(!DataManager.players.keySet().contains(id)) saveFile.set(id, null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

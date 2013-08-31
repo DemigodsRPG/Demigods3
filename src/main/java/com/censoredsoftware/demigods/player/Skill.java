@@ -1,20 +1,16 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.language.Translation;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Skill implements ConfigurationSerializable
 {
@@ -125,43 +121,6 @@ public class Skill implements ConfigurationSerializable
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "skill.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, Skill> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, Skill> map = new ConcurrentHashMap<UUID, Skill>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new Skill(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, Skill> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.skills.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.skills.get(id))) saveFile.createSection(id.toString(), Util.loadSkill(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.skills.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

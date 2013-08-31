@@ -1,9 +1,17 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -20,19 +28,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public interface Ability
 {
@@ -300,7 +298,7 @@ public interface Ability
 		public static List<Ability> getLoadedAbilities()
 		{
 			List<Ability> list = new ArrayList<Ability>();
-			for(Elements.ListedDeity deity : Elements.Deities.values())
+			for(Element.ListedDeity deity : Element.Deity.values())
 				list.addAll(deity.getDeity().getAbilities());
 			return list;
 		}
@@ -315,7 +313,7 @@ public interface Ability
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{
 					// Ensure that the deity can be used, permission allows it, etc
-					if(!Deity.Util.canUseDeity(character, ability.getDeity())) return true;
+					if(!com.censoredsoftware.demigods.deity.Deity.Util.canUseDeity(character, ability.getDeity())) return true;
 					if(!player.hasPermission(ability.getPermission())) return true;
 
 					// Handle enabling the command

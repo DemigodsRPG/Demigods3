@@ -1,19 +1,15 @@
 package com.censoredsoftware.demigods.player;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Death implements ConfigurationSerializable
 {
@@ -74,43 +70,6 @@ public class Death implements ConfigurationSerializable
 	public UUID getAttacking()
 	{
 		return attacking;
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "deaths.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, Death> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, Death> map = new ConcurrentHashMap<UUID, Death>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new Death(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, Death> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.deaths.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.deaths.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.deaths.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

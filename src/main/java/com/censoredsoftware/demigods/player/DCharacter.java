@@ -1,25 +1,10 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
@@ -28,6 +13,17 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.primitives.Ints;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -594,43 +590,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			// Delete
 			Util.deleteInventory(id);
 		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "characterInventories.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, Inventory> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, Inventory> map = new ConcurrentHashMap<UUID, Inventory>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new Inventory(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, Inventory> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.inventories.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.inventories.get(id))) saveFile.createSection(id.toString(), Util.getInventory(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.inventories.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
-		}
 	}
 
 	public static class SavedPotion implements ConfigurationSerializable
@@ -702,43 +661,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public PotionEffect toPotionEffect()
 		{
 			return new PotionEffect(getType(), getDuration(), getAmplifier(), isAmbient());
-		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "savedPotions.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, SavedPotion> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, SavedPotion> map = new ConcurrentHashMap<UUID, SavedPotion>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new SavedPotion(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, SavedPotion> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.savedPotions.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.savedPotions.get(id))) saveFile.createSection(id.toString(), Util.getSavedPotion(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.savedPotions.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
 		}
 	}
 
@@ -1074,80 +996,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Object clone() throws CloneNotSupportedException
 		{
 			throw new CloneNotSupportedException();
-		}
-
-		public static class File extends ConfigFile
-		{
-			private static String SAVE_PATH;
-			private static final String SAVE_FILE = "characterMetas.yml";
-
-			public File()
-			{
-				super(Demigods.plugin);
-				SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-			}
-
-			@Override
-			public ConcurrentHashMap<UUID, Meta> loadFromFile()
-			{
-				final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-				ConcurrentHashMap<UUID, Meta> map = new ConcurrentHashMap<UUID, Meta>();
-				for(String stringId : data.getKeys(false))
-					map.put(UUID.fromString(stringId), new Meta(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-				return map;
-			}
-
-			@Override
-			public boolean saveToFile()
-			{
-				FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-				Map<UUID, Meta> currentFile = loadFromFile();
-
-				for(UUID id : DataManager.characterMetas.keySet())
-					if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.characterMetas.get(id))) saveFile.createSection(id.toString(), Util.loadMeta(id).serialize());
-
-				for(UUID id : currentFile.keySet())
-					if(!DataManager.characterMetas.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-				return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-			}
-		}
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "characters.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, DCharacter> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, DCharacter> map = new ConcurrentHashMap<UUID, DCharacter>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new DCharacter(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, DCharacter> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.characters.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.characters.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.characters.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
 		}
 	}
 

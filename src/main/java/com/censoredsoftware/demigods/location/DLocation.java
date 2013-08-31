@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.location;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ConfigFile;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -14,11 +12,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DLocation implements ConfigurationSerializable
 {
@@ -139,43 +135,6 @@ public class DLocation implements ConfigurationSerializable
 	public Object clone() throws CloneNotSupportedException
 	{
 		throw new CloneNotSupportedException();
-	}
-
-	public static class File extends ConfigFile
-	{
-		private static String SAVE_PATH;
-		private static final String SAVE_FILE = "locations.yml";
-
-		public File()
-		{
-			super(Demigods.plugin);
-			SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
-		}
-
-		@Override
-		public ConcurrentHashMap<UUID, DLocation> loadFromFile()
-		{
-			final FileConfiguration data = getData(SAVE_PATH, SAVE_FILE);
-			ConcurrentHashMap<UUID, DLocation> map = new ConcurrentHashMap<UUID, DLocation>();
-			for(String stringId : data.getKeys(false))
-				map.put(UUID.fromString(stringId), new DLocation(UUID.fromString(stringId), data.getConfigurationSection(stringId)));
-			return map;
-		}
-
-		@Override
-		public boolean saveToFile()
-		{
-			FileConfiguration saveFile = getData(SAVE_PATH, SAVE_FILE);
-			Map<UUID, DLocation> currentFile = loadFromFile();
-
-			for(UUID id : DataManager.locations.keySet())
-				if(!currentFile.keySet().contains(id) || !currentFile.get(id).equals(DataManager.locations.get(id))) saveFile.createSection(id.toString(), Util.load(id).serialize());
-
-			for(UUID id : currentFile.keySet())
-				if(!DataManager.locations.keySet().contains(id)) saveFile.set(id.toString(), null);
-
-			return saveFile(SAVE_PATH, SAVE_FILE, saveFile);
-		}
 	}
 
 	public static class Util

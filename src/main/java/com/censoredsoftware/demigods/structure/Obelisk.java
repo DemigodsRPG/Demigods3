@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.structure;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Elements;
+import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
@@ -237,7 +237,7 @@ public class Obelisk implements Structure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Elements.Structures.OBELISK.getStructure().createNew(location, true);
+						Structure.Save save = Element.Structure.OBELISK.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
