@@ -26,7 +26,7 @@ import org.bukkit.World;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.mcstats.Metrics;
+import org.mcstats.MetricsLite;
 
 import java.util.Set;
 
@@ -76,7 +76,7 @@ public class Demigods
 		// Initialize metrics
 		try
 		{
-			(new Metrics(instance)).start();
+			(new MetricsLite(instance)).start();
 		}
 		catch(Exception ignored)
 		{}

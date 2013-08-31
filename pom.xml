@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>LATEST</spigot.version>
         <mcstats.version>R7</mcstats.version>
-        <worldguard.version>5.8-SNAPSHOT</worldguard.version>
+        <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
     </properties>
 
     <developers>
@@ -44,7 +44,7 @@
             <roles>
                 <role>developer</role>
             </roles>
-            <timezone>-5</timezone>
+            <timezone>-4</timezone>
         </developer>
         <developer>
             <id>HmmmQuestionMark</id>
@@ -124,7 +124,7 @@
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
+            <artifactId>metrics-lite</artifactId>
             <version>${mcstats.version}</version>
             <exclusions>
                 <exclusion>
@@ -187,7 +187,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>org.mcstats.bukkit:metrics</include>
+                                    <include>org.mcstats.bukkit:metrics-lite</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
