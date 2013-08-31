@@ -15,10 +15,13 @@ import java.util.Collection;
 public class NewPlayerNeedsHelp implements Trigger
 {
 	public static NewPlayerNeedsHelp trigger;
+	public static int focusTime, deathsNeeded;
 
 	static
 	{
 		trigger = new NewPlayerNeedsHelp();
+		focusTime = 2400;
+		deathsNeeded = 20;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(DCharacter character)
 			{
-				return Death.Util.getRecentDeaths(character, 2400).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
+				return Death.Util.getRecentDeaths(character, focusTime).size() >= deathsNeeded && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 			}
 		});
 		if(characters.isEmpty()) return;
@@ -37,7 +40,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		{
 			if(Demigods.isDisabledWorld(character.getLocation())) continue;
 			Messages.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
-			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, 600);
+			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}
 	}
 
