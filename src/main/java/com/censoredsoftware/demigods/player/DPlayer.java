@@ -11,7 +11,6 @@ import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -97,7 +96,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
+		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
 
 		if(!canPvp() && !inNoPvpZone)
 		{
@@ -121,7 +120,7 @@ public class DPlayer implements ConfigurationSerializable
 				@Override
 				public void run()
 				{
-					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
+					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
 					{
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.SAFE_FROM_PVP));

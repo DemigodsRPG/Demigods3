@@ -105,7 +105,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 		if(Altar.Util.isAltarNearby(player.getLocation()))
 		{
-			Structure.Save save = Altar.Util.getAltarNearby(player.getLocation());
+			Structure save = Altar.Util.getAltarNearby(player.getLocation());
 			player.teleport(save.getReferenceLocation().clone().add(2.0, 1.5, 0));
 			player.sendMessage(ChatColor.YELLOW + "Nearest Altar found.");
 		}

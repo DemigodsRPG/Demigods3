@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,9 +23,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Obelisk implements Structure
+public class Obelisk implements Structure.Type
 {
-	private final static Structure.Schematic general = new Structure.Schematic("general", "HmmmQuestionMark", 3)
+	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.
@@ -50,7 +49,7 @@ public class Obelisk implements Structure
 			add(new Selection(-1, 5, 1, Selection.Preset.VINE_4));
 		}
 	};
-	private final static Structure.Schematic desert = new Structure.Schematic("desert", "HmmmQuestionMark", 3)
+	private final static Schematic desert = new Schematic("desert", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.
@@ -70,7 +69,7 @@ public class Obelisk implements Structure
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
-	private final static Structure.Schematic nether = new Structure.Schematic("nether", "HmmmQuestionMark", 3)
+	private final static Schematic nether = new Schematic("nether", "HmmmQuestionMark", 3)
 	{
 		{
 			// Everything else.
@@ -91,15 +90,15 @@ public class Obelisk implements Structure
 		}
 	};
 
-	public static enum ObeliskDesign implements Structure.Design
+	public static enum ObeliskDesign implements Design
 	{
 		GENERAL("general", general, null), DESERT("desert", desert, null), NETHER("nether", nether, null);
 
 		private final String name;
-		private final Structure.Schematic schematic;
+		private final Schematic schematic;
 		private final Selection clickableBlocks;
 
-		private ObeliskDesign(String name, Structure.Schematic schematic, Selection clickableBlocks)
+		private ObeliskDesign(String name, Schematic schematic, Selection clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
@@ -119,26 +118,26 @@ public class Obelisk implements Structure
 		}
 
 		@Override
-		public Structure.Schematic getSchematic()
+		public Schematic getSchematic()
 		{
 			return schematic;
 		}
 	}
 
 	@Override
-	public Set<Flag> getFlags()
+	public Set<Structure.Flag> getFlags()
 	{
-		return new HashSet<Flag>()
+		return new HashSet<Structure.Flag>()
 		{
 			{
-				add(Flag.PROTECTED_BLOCKS);
-				add(Flag.NO_GRIEFING);
+				add(Structure.Flag.PROTECTED_BLOCKS);
+				add(Structure.Flag.NO_GRIEFING);
 			}
 		};
 	}
 
 	@Override
-	public String getStructureType()
+	public String getName()
 	{
 		return "Obelisk";
 	}
@@ -164,25 +163,25 @@ public class Obelisk implements Structure
 	}
 
 	@Override
-	public Collection<Save> getAll()
+	public Collection<Structure> getAll()
 	{
-		return Structures.findAll(new Predicate<Save>()
+		return Structure.Util.findAll(new Predicate<Structure>()
 		{
 			@Override
-			public boolean apply(Save save)
+			public boolean apply(Structure save)
 			{
-				return save.getType().equals(getStructureType());
+				return save.getTypeName().equals(getName());
 			}
 		});
 	}
 
 	@Override
-	public Save createNew(Location reference, boolean generate)
+	public Structure createNew(Location reference, boolean generate)
 	{
-		Save save = new Save();
+		Structure save = new Structure();
 		save.generateId();
 		save.setReferenceLocation(reference);
-		save.setType(getStructureType());
+		save.setType(getName());
 		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.setActive(true);
@@ -227,7 +226,7 @@ public class Obelisk implements Structure
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(Structures.noOverlapStructureNearby(location))
+					if(Structure.Util.noOverlapStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -237,7 +236,7 @@ public class Obelisk implements Structure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Demigods.ListedStructure.OBELISK.getStructure().createNew(location, true);
+						Structure save = Demigods.ListedStructure.OBELISK.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
@@ -252,11 +251,11 @@ public class Obelisk implements Structure
 				}
 			}
 
-			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Obelisk"))
+			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
-				Structure.Save save = Structures.getStructureRegional(location);
+				Structure save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))

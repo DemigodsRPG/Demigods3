@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,7 +23,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Shrine implements Structure
+public class Shrine implements Structure.Type
 {
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
@@ -66,10 +65,10 @@ public class Shrine implements Structure
 		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
 
 		private final String name;
-		private final Structure.Schematic schematic;
+		private final Schematic schematic;
 		private final Selection clickableBlocks;
 
-		private ShrineDesign(String name, Structure.Schematic schematic, Selection clickableBlocks)
+		private ShrineDesign(String name, Schematic schematic, Selection clickableBlocks)
 		{
 			this.name = name;
 			this.schematic = schematic;
@@ -96,21 +95,21 @@ public class Shrine implements Structure
 	}
 
 	@Override
-	public Set<Flag> getFlags()
+	public Set<Structure.Flag> getFlags()
 	{
-		return new HashSet<Flag>()
+		return new HashSet<Structure.Flag>()
 		{
 			{
-				add(Flag.DELETE_WITH_OWNER);
-				add(Flag.PROTECTED_BLOCKS);
-				add(Flag.TRIBUTE_LOCATION);
-				add(Flag.NO_OVERLAP);
+				add(Structure.Flag.DELETE_WITH_OWNER);
+				add(Structure.Flag.PROTECTED_BLOCKS);
+				add(Structure.Flag.TRIBUTE_LOCATION);
+				add(Structure.Flag.NO_OVERLAP);
 			}
 		};
 	}
 
 	@Override
-	public String getStructureType()
+	public String getName()
 	{
 		return "Shrine";
 	}
@@ -135,25 +134,25 @@ public class Shrine implements Structure
 	}
 
 	@Override
-	public Collection<Save> getAll()
+	public Collection<Structure> getAll()
 	{
-		return Structures.findAll(new Predicate<Save>()
+		return Structure.Util.findAll(new Predicate<Structure>()
 		{
 			@Override
-			public boolean apply(Save save)
+			public boolean apply(Structure save)
 			{
-				return save.getType().equals(getStructureType());
+				return save.getTypeName().equals(getName());
 			}
 		});
 	}
 
 	@Override
-	public Save createNew(Location reference, boolean generate)
+	public Structure createNew(Location reference, boolean generate)
 	{
-		Save save = new Save();
+		Structure save = new Structure();
 		save.generateId();
 		save.setReferenceLocation(reference);
-		save.setType(getStructureType());
+		save.setType(getName());
 		save.setDesign(getDesign(reference).getName());
 		save.addFlags(getFlags());
 		save.setActive(true);
@@ -208,7 +207,7 @@ public class Shrine implements Structure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Demigods.ListedStructure.SHRINE.getStructure().createNew(location, true);
+						Structure save = Demigods.ListedStructure.SHRINE.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
@@ -224,11 +223,11 @@ public class Shrine implements Structure
 				}
 			}
 
-			if(Admins.useWand(player) && Structures.partOfStructureWithType(location, "Shrine"))
+			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
 			{
 				event.setCancelled(true);
 
-				Structure.Save save = Structures.getStructureRegional(location);
+				Structure save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_shrine"))

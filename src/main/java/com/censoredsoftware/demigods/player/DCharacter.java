@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -431,7 +430,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void remove()
 	{
-		for(Structure.Save structureSave : Structures.getStructuresSavesWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+		for(Structure structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());

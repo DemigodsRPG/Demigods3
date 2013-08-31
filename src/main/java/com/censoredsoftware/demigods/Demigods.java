@@ -270,14 +270,14 @@ public class Demigods
 	{
 		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
 
-		private final Structure structure;
+		private final Structure.Type structure;
 
-		private ListedStructure(Structure structure)
+		private ListedStructure(Structure.Type structure)
 		{
 			this.structure = structure;
 		}
 
-		public Structure getStructure()
+		public Structure.Type getStructure()
 		{
 			return structure;
 		}

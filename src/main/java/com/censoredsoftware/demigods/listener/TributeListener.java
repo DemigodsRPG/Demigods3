@@ -9,7 +9,6 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.ItemValues;
-import com.censoredsoftware.demigods.util.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -42,13 +41,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structures.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			Structure.Save save = Structures.getStructureRegional(location);
+			Structure save = Structure.Util.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
@@ -81,10 +80,10 @@ public class TributeListener implements Listener
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structures.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
-		Structure.Save save = Structures.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
+		Structure save = Structure.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;
@@ -169,7 +168,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DCharacter character, Structure.Save save)
+	private static void tribute(DCharacter character, Structure save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

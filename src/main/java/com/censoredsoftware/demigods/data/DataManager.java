@@ -24,7 +24,7 @@ public class DataManager
 	// Data
 	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DLocation> locations;
-	public static ConcurrentMap<UUID, Structure.Save> structures;
+	public static ConcurrentMap<UUID, Structure> structures;
 	public static ConcurrentMap<UUID, DCharacter> characters;
 	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
 	public static ConcurrentMap<UUID, Death> deaths;
@@ -228,16 +228,16 @@ public class DataManager
 			{
 				locations = loadFromFile();
 			}
-		}), STRUCTURE(new ConfigFile<UUID, Structure.Save>()
+		}), STRUCTURE(new ConfigFile<UUID, Structure>()
 		{
 			@Override
-			public Structure.Save create(UUID uuid, ConfigurationSection conf)
+			public Structure create(UUID uuid, ConfigurationSection conf)
 			{
-				return new Structure.Save(uuid, conf);
+				return new Structure(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, Structure.Save> getLoadedData()
+			public ConcurrentMap<UUID, Structure> getLoadedData()
 			{
 				return DataManager.structures;
 			}

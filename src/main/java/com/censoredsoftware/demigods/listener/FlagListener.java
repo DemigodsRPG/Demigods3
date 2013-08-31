@@ -4,7 +4,6 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -21,7 +20,7 @@ public class FlagListener implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
@@ -32,7 +31,7 @@ public class FlagListener implements Listener
 	private void onBlockBreak(BlockBreakEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
@@ -43,14 +42,14 @@ public class FlagListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -59,7 +58,7 @@ public class FlagListener implements Listener
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		for(Block block : event.getBlocks())
 		{
-			if(Structures.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS))
+			if(Structure.Util.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 			{
 				event.setCancelled(true);
 				return;
@@ -71,14 +70,14 @@ public class FlagListener implements Listener
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(Structures.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
-		final Structure.Save save = Structures.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
+		final Structure save = Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()
@@ -89,7 +88,7 @@ public class FlagListener implements Listener
 				// Remove all drops from explosion zone
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 				{
-					if(drop.getLocation().distance(save.getReferenceLocation()) <= save.getStructure().getRadius()) drop.remove();
+					if(drop.getLocation().distance(save.getReferenceLocation()) <= save.getType().getRadius()) drop.remove();
 				}
 			}
 		}, 1);
