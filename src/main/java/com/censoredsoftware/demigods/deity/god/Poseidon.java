@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity.god;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Reel;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
@@ -52,9 +52,9 @@ public class Poseidon implements Deity
 	}
 
 	@Override
-	public Element.ListedDeity getListedDeity()
+	public Demigods.ListedDeity getListedDeity()
 	{
-		return Element.ListedDeity.POSEIDON;
+		return Demigods.ListedDeity.POSEIDON;
 	}
 
 	@Override

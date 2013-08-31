@@ -13,6 +13,11 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Structures
 {
+	static
+	{
+		regenerateStructures();
+	}
+
 	public static Structure.Save getStructureRegional(final Location location)
 	{
 		try

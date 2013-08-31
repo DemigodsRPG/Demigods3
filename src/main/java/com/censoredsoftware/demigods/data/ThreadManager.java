@@ -1,8 +1,6 @@
 package com.censoredsoftware.demigods.data;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.DemigodsPlugin;
-import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -20,39 +18,39 @@ import org.bukkit.scheduler.BukkitRunnable;
 @SuppressWarnings("deprecation")
 public class ThreadManager
 {
-	public static void startThreads(DemigodsPlugin instance)
+	static
 	{
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getAsyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.plugin, Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start spigot particle runnable
-		if(Demigods.isRunningSpigot())
+		if(Demigods.MiscUtil.isRunningSpigot())
 		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, Util.getSpigotRunnable(), 20, 20);
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, Util.getSpigotRunnable(), 20, 20);
 			Admins.sendDebug("Special (Spigot) runnable enabled...");
 		}
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.plugin, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.plugin, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
-		for(Element.ListedDeity deity : Element.ListedDeity.values())
+		for(Demigods.ListedDeity deity : Demigods.ListedDeity.values())
 			for(Ability ability : deity.getDeity().getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 	}
 
-	public static void stopThreads(DemigodsPlugin instance)
+	public static void stopThreads()
 	{
-		instance.getServer().getScheduler().cancelTasks(instance);
+		Demigods.plugin.getServer().getScheduler().cancelTasks(Demigods.plugin);
 	}
 
 	private static class Util
@@ -69,7 +67,7 @@ public class ThreadManager
 					// Update online players
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
-						if(Demigods.isDisabledWorld(player.getLocation())) continue;
+						if(Demigods.MiscUtil.isDisabledWorld(player.getLocation())) continue;
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 

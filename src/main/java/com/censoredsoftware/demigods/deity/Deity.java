@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -21,7 +21,7 @@ public interface Deity
 {
 	public String getName();
 
-	public Element.ListedDeity getListedDeity();
+	public Demigods.ListedDeity getListedDeity();
 
 	public String getAlliance();
 
@@ -101,10 +101,10 @@ public interface Deity
 
 		public static Set<String> getLoadedDeityAlliances()
 		{
-			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Element.ListedDeity.values()), new Function<Element.ListedDeity, String>()
+			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Demigods.ListedDeity.values()), new Function<Demigods.ListedDeity, String>()
 			{
 				@Override
-				public String apply(Element.ListedDeity d)
+				public String apply(Demigods.ListedDeity d)
 				{
 					return d.getDeity().getAlliance();
 				}
@@ -113,10 +113,10 @@ public interface Deity
 
 		public static Collection<Deity> getLoadedDeitiesInAlliance(final String alliance)
 		{
-			return Collections2.filter(Collections2.transform(Sets.newHashSet(Element.ListedDeity.values()), new Function<Element.ListedDeity, Deity>()
+			return Collections2.filter(Collections2.transform(Sets.newHashSet(Demigods.ListedDeity.values()), new Function<Demigods.ListedDeity, Deity>()
 			{
 				@Override
-				public Deity apply(Element.ListedDeity d)
+				public Deity apply(Demigods.ListedDeity d)
 				{
 					return d.getDeity();
 				}
@@ -132,7 +132,7 @@ public interface Deity
 
 		public static Deity getDeity(String deity)
 		{
-			return Element.ListedDeity.get(deity);
+			return Demigods.ListedDeity.get(deity);
 		}
 
 		public static boolean canUseDeity(DCharacter character, String deity)

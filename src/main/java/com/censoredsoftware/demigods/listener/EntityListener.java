@@ -20,14 +20,14 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageEvent(EntityDamageEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(event.getEntity() instanceof Player && !Battle.Util.canTarget(Battle.Util.defineParticipant(event.getEntity()))) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageByEntityEvent(EntityDamageByEntityEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 
 		Entity attacked = event.getEntity();
 		Entity attacker = event.getDamager();
@@ -51,7 +51,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void entityDeath(EntityDeathEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 
 		if(event.getEntity() instanceof Player)
 		{
@@ -81,7 +81,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onTame(EntityTameEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
@@ -92,7 +92,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityTarget(EntityTargetLivingEntityEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
 	}
 }

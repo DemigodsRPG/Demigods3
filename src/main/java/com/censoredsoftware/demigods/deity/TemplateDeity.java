@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.util.Strings;
@@ -49,7 +49,7 @@ public class TemplateDeity implements Deity
 	}
 
 	@Override
-	public Element.ListedDeity getListedDeity()
+	public Demigods.ListedDeity getListedDeity()
 	{
 		return null;
 	}

@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.ability;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
@@ -299,7 +298,7 @@ public interface Ability
 		public static List<Ability> getLoadedAbilities()
 		{
 			List<Ability> list = new ArrayList<Ability>();
-			for(Element.ListedDeity deity : Element.ListedDeity.values())
+			for(Demigods.ListedDeity deity : Demigods.ListedDeity.values())
 				list.addAll(deity.getDeity().getAbilities());
 			return list;
 		}

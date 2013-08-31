@@ -4,14 +4,9 @@ import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-public interface ListedConversation
+public interface WrappedConversation
 {
 	public Listener getUniqueListener();
 
 	public Conversation startMenu(Player player);
-
-	public static interface ConversationData
-	{
-		public ListedConversation getConversation();
-	}
 }

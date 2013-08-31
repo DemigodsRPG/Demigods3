@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods;
 
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
-import com.censoredsoftware.demigods.exception.DemigodsStartupException;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Messages;
 import org.bukkit.Bukkit;
@@ -21,16 +20,11 @@ public class DemigodsPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		try
-		{
-			// Load the game engine.
-			new Demigods(this);
+		// Load the game engine.
+		Demigods.plugin = this;
 
-			// Print success!
-			Messages.info("Successfully enabled.");
-		}
-		catch(DemigodsStartupException ignored)
-		{}
+		// Print success!
+		Messages.info("Successfully enabled.");
 	}
 
 	/**
@@ -47,7 +41,7 @@ public class DemigodsPlugin extends JavaPlugin
 			DPlayer.Util.togglePrayingSilent(player, false, false);;
 
 		// Cancel all threads, Event calls, and connections.
-		ThreadManager.stopThreads(this);
+		ThreadManager.stopThreads();
 		HandlerList.unregisterAll(this);
 
 		Messages.info("Successfully disabled.");

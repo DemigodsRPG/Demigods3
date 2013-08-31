@@ -38,7 +38,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		if(characters.isEmpty()) return;
 		for(DCharacter character : characters)
 		{
-			if(Demigods.isDisabledWorld(character.getLocation())) continue;
+			if(Demigods.MiscUtil.isDisabledWorld(character.getLocation())) continue;
 			Messages.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
 			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}

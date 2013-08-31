@@ -4,7 +4,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -25,8 +25,13 @@ import org.bukkit.plugin.PluginManager;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MainCommand extends ListedCommand
+public class MainCommand extends WrappedCommand
 {
+	public MainCommand()
+	{
+		super(false);
+	}
+
 	@Override
 	public Set<String> getCommands()
 	{

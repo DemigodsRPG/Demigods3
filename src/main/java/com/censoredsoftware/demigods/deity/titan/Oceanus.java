@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity.titan;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
@@ -51,9 +51,9 @@ public class Oceanus implements Deity
 	}
 
 	@Override
-	public Element.ListedDeity getListedDeity()
+	public Demigods.ListedDeity getListedDeity()
 	{
-		return Element.ListedDeity.OCEANUS;
+		return Demigods.ListedDeity.OCEANUS;
 	}
 
 	@Override

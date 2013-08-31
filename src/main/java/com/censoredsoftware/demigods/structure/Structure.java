@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.structure;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.exception.BlockDataException;
 import com.censoredsoftware.demigods.location.DLocation;
@@ -148,7 +148,7 @@ public interface Structure
 
 		public Structure getStructure()
 		{
-			for(Element.ListedStructure structure : Element.ListedStructure.values())
+			for(Demigods.ListedStructure structure : Demigods.ListedStructure.values())
 				if(structure.getStructure().getStructureType().equalsIgnoreCase(this.type)) return structure.getStructure();
 			return null;
 		}

@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.helper.WrappedConversation;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
 
-public class Administration implements ListedConversation
+public class Administration implements WrappedConversation
 {
 	// Define variables
 	private static Conversation conversation;

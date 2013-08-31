@@ -1,9 +1,13 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,14 +19,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 public class Firestorm implements Ability
 {
@@ -112,7 +111,7 @@ public class Firestorm implements Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+				if(Demigods.MiscUtil.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -226,7 +225,7 @@ public class Firestorm implements Ability
 				@EventHandler(priority = EventPriority.HIGH)
 				public void onPlayerInteract(PlayerInteractEvent interactEvent)
 				{
-					if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+					if(Demigods.MiscUtil.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
 
 					if(!Util.isLeftClick(interactEvent)) return;
 

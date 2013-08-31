@@ -573,7 +573,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static Collection<Location> battleBorder(final Battle battle)
 		{
-			if(!Demigods.isRunningSpigot()) throw new SpigotNotFoundException();
+			if(!Demigods.MiscUtil.isRunningSpigot()) throw new SpigotNotFoundException();
 			return Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
 			{
 				@Override

@@ -25,7 +25,7 @@ public class PlayerListener implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 
 		// Define variables
 		Player player = event.getPlayer();
@@ -83,7 +83,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		if(!Demigods.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
+		if(!Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -148,7 +148,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		DPlayer wrapper = DPlayer.Util.getPlayer(event.getPlayer());
 		if(wrapper.getCurrent() != null)
 		{

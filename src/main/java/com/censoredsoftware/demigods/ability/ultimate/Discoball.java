@@ -1,8 +1,17 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import java.util.List;
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Spigots;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -16,18 +25,8 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Spigots;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
 
 public class Discoball implements Ability
 {
@@ -118,7 +117,7 @@ public class Discoball implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(Demigods.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+				if(Demigods.MiscUtil.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
@@ -139,7 +138,7 @@ public class Discoball implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onBlockChange(EntityChangeBlockEvent changeEvent)
 			{
-				if(Demigods.isDisabledWorld(changeEvent.getBlock().getWorld())) return;
+				if(Demigods.MiscUtil.isDisabledWorld(changeEvent.getBlock().getWorld())) return;
 
 				if(changeEvent.getEntityType() != EntityType.FALLING_BLOCK) return;
 				changeEvent.getBlock().setType(Material.AIR);
@@ -166,7 +165,7 @@ public class Discoball implements Ability
 					if(block != null)
 					{
 						Location location = block.getLocation();
-						if(Demigods.isDisabledWorld(location.getWorld())) return;
+						if(Demigods.MiscUtil.isDisabledWorld(location.getWorld())) return;
 						Util.playRandomNote(location, 2F);
 						Util.sparkleSparkle(location);
 						Util.destoryNearby(location);
@@ -273,7 +272,7 @@ public class Discoball implements Ability
 					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
-						if(Demigods.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.zoneNoPVP(player.getLocation()) || Zones.zoneNoBuild(player, player.getLocation())) continue;
+						if(Demigods.MiscUtil.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.zoneNoPVP(player.getLocation()) || Zones.zoneNoBuild(player, player.getLocation())) continue;
 						doEffect(player);
 					}
 				}
@@ -341,7 +340,7 @@ public class Discoball implements Ability
 		public static void rainbow(Player disco, Player player)
 		{
 			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Randoms.generateIntRange(0, 15));
-			if(Demigods.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
+			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 		}
 
 		public static void playRandomNote(Location location, float volume)
@@ -351,7 +350,7 @@ public class Discoball implements Ability
 
 		public static void sparkleSparkle(Location location)
 		{
-			if(Demigods.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
+			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 		}
 
 		public static void destoryNearby(Location location)

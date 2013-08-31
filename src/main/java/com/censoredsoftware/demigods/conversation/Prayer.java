@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.conversation;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.ListedConversation;
+import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
@@ -44,7 +43,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("unchecked")
-public class Prayer implements ListedConversation
+public class Prayer implements WrappedConversation
 {
 
 	@Override
@@ -61,9 +60,9 @@ public class Prayer implements ListedConversation
 		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
-		private final Element.Conversation.Category category;
+		private final Demigods.ListedConversation.Category category;
 
-		private Menu(char id, Element.Conversation.Category category)
+		private Menu(char id, Demigods.ListedConversation.Category category)
 		{
 			this.id = id;
 			this.category = category;
@@ -74,7 +73,7 @@ public class Prayer implements ListedConversation
 			return this.id;
 		}
 
-		public Element.Conversation.Category getCategory()
+		public Demigods.ListedConversation.Category getCategory()
 		{
 			return this.category;
 		}
@@ -99,7 +98,7 @@ public class Prayer implements ListedConversation
 		{
 			Map<Object, Object> conversationContext = Maps.newHashMap();
 
-			if(!Demigods.isRunningSpigot())
+			if(!Demigods.MiscUtil.isRunningSpigot())
 			{
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");
@@ -174,7 +173,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Warps
-	static class ViewWarps extends ValidatingPrompt implements Element.Conversation.Category
+	static class ViewWarps extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -344,7 +343,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Skills
-	static class ViewSkills extends ValidatingPrompt implements Element.Conversation.Category
+	static class ViewSkills extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -415,7 +414,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Notifications
-	static class ViewNotifications extends ValidatingPrompt implements Element.Conversation.Category
+	static class ViewNotifications extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -506,7 +505,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character viewing
-	static class ViewCharacters extends ValidatingPrompt implements Element.Conversation.Category
+	static class ViewCharacters extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -629,7 +628,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Deity forsaking
-	static class Forsake extends ValidatingPrompt implements Element.Conversation.Category
+	static class Forsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -705,7 +704,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Forsaking confirmation
-	static class ConfirmForsake extends ValidatingPrompt implements Element.Conversation.Category
+	static class ConfirmForsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -761,7 +760,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Forsaking cancellation
-	static class CancelForsake extends MessagePrompt implements Element.Conversation.Category
+	static class CancelForsake extends MessagePrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -798,7 +797,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character creation
-	static class CreateCharacter extends ValidatingPrompt implements Element.Conversation.Category
+	static class CreateCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()
@@ -1083,7 +1082,7 @@ public class Prayer implements ListedConversation
 	}
 
 	// Character confirmation
-	static class ConfirmCharacter extends ValidatingPrompt implements Element.Conversation.Category
+	static class ConfirmCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
 		public String getChatName()

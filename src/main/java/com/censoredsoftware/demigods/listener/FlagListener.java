@@ -20,7 +20,7 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
@@ -31,7 +31,7 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	private void onBlockBreak(BlockBreakEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
@@ -42,21 +42,21 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonExtend(BlockPistonExtendEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		for(Block block : event.getBlocks())
 		{
 			if(Structures.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS))
@@ -70,14 +70,14 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getBlock().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		if(Structures.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		final Structure.Save save = Structures.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 

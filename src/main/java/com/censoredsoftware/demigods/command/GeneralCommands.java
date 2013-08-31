@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.command;
 
-import com.censoredsoftware.demigods.helper.ListedCommand;
+import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.*;
@@ -18,8 +18,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class GeneralCommands extends ListedCommand
+public class GeneralCommands extends WrappedCommand
 {
+	public GeneralCommands()
+	{
+		super(false);
+	}
+
 	@Override
 	public Set<String> getCommands()
 	{

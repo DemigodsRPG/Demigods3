@@ -20,9 +20,9 @@ public class ChatListener implements Listener
 		String[] args = message.split("\\s+");
 		Player player = event.getPlayer();
 
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation()))
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()))
 		{
-			if(Demigods.isDemigodsCommand(args[0]))
+			if(Demigods.MiscUtil.isDemigodsCommand(args[0]))
 			{
 				player.sendMessage("Unknown command. Type \"help\" for help.");
 				event.setCancelled(true);

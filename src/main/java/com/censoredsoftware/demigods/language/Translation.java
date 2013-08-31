@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.language;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -88,7 +88,7 @@ public class Translation
 		if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) set.addAll((List<String>) translation.get("BLACKLIST"));
 
 		// Deities
-		for(Element.ListedDeity deity : Element.ListedDeity.values())
+		for(Demigods.ListedDeity deity : Demigods.ListedDeity.values())
 		{
 			set.add(deity.getDeity().getName());
 			set.add(deity.getDeity().getAlliance());

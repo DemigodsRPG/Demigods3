@@ -1,23 +1,27 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.Set;
-
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.helper.WrappedCommand;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Altar;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.helper.ListedCommand;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Altar;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.google.common.collect.Sets;
+import java.util.Set;
 
-public class DevelopmentCommands extends ListedCommand
+public class DevelopmentCommands extends WrappedCommand
 {
+	public DevelopmentCommands()
+	{
+		super(false);
+	}
+
 	@Override
 	public Set<String> getCommands()
 	{

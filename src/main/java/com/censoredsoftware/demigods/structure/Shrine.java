@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.structure;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
@@ -192,7 +191,7 @@ public class Shrine implements Structure
 		{
 			if(event.getClickedBlock() == null) return;
 
-			if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
+			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
 
 			// Define variables
 			Block clickedBlock = event.getClickedBlock();
@@ -209,7 +208,7 @@ public class Shrine implements Structure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Element.ListedStructure.SHRINE.getStructure().createNew(location, true);
+						Structure.Save save = Demigods.ListedStructure.SHRINE.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 

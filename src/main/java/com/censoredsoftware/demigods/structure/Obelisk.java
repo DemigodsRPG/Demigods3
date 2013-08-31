@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.structure;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
@@ -215,7 +214,7 @@ public class Obelisk implements Structure
 		{
 			if(event.getClickedBlock() == null) return;
 
-			if(Demigods.isDisabledWorld(event.getPlayer().getWorld())) return;
+			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
 
 			// Define variables
 			Block clickedBlock = event.getClickedBlock();
@@ -238,7 +237,7 @@ public class Obelisk implements Structure
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Element.ListedStructure.OBELISK.getStructure().createNew(location, true);
+						Structure.Save save = Demigods.ListedStructure.OBELISK.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 

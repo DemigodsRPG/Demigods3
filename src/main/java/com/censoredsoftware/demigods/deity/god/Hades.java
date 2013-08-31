@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.deity.god;
 
-import com.censoredsoftware.demigods.Element;
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
@@ -49,9 +49,9 @@ public class Hades implements Deity
 	}
 
 	@Override
-	public Element.ListedDeity getListedDeity()
+	public Demigods.ListedDeity getListedDeity()
 	{
-		return Element.ListedDeity.HADES;
+		return Demigods.ListedDeity.HADES;
 	}
 
 	@Override

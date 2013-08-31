@@ -26,7 +26,7 @@ public class BattleListener implements Listener
 	public static void onDamageBy(EntityDamageByEntityEvent event)
 	{
 		if(event.isCancelled()) return;
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		Entity damager = event.getDamager();
 		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
 		if(!Battle.Util.canParticipate(event.getEntity()) || !Battle.Util.canParticipate(damager)) return;
@@ -110,7 +110,7 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(EntityDamageEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
@@ -126,7 +126,7 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleMove(PlayerMoveEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!Battle.Util.canParticipate(event.getPlayer())) return;
 		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(Battle.Util.isInBattle(participant))
@@ -150,7 +150,7 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleMove(PlayerTeleportEvent event)
 	{
-		if(Demigods.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		if(!Battle.Util.canParticipate(event.getPlayer())) return;
 		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
 		if(Battle.Util.isInBattle(participant))
