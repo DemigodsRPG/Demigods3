@@ -79,10 +79,8 @@ public class Demigods
 		// Start the data
 		SAVE_PATH = "plugins/Demigods/data/"; // Don't change this.
 
-		// Finish loading the PLUGIN based on the game data
+		// Configure depends
 		loadDepends();
-		loadListeners();
-		loadCommands();
 
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
@@ -181,6 +179,10 @@ public class Demigods
 
 	static
 	{
+		// Load listeners and commands
+		loadListeners();
+		loadCommands();
+
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();
 
