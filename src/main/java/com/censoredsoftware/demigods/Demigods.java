@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
@@ -194,6 +195,9 @@ public class Demigods
 		}
 		catch(Exception ignored)
 		{}
+
+		// Start the data
+		DataManager.SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
 
 		// Finish loading the plugin based on the game data
 		loadDepends();

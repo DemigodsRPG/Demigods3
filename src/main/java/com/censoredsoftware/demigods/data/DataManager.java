@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 public class DataManager
 {
 	// Constants
-	public static String SAVE_PATH = Demigods.plugin.getDataFolder() + "/data/";
+	public static String SAVE_PATH;
 
 	// Data
 	public static ConcurrentMap<String, DPlayer> players;
