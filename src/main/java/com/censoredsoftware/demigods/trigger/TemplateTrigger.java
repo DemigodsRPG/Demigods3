@@ -9,8 +9,8 @@ public class TemplateTrigger implements Trigger
 		trigger = new TemplateTrigger();
 	}
 
-	@Override
-	public boolean evaluate()
+	// Example
+	public Boolean evaluate()
 	{
 		// Condition here.
 		return false;

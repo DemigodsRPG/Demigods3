@@ -11,7 +11,7 @@ public class DivinityUnbalanced implements Trigger
 		trigger = new DivinityUnbalanced();
 	}
 
-	@Override
+	// Example
 	public boolean evaluate()
 	{
 		// Condition here.

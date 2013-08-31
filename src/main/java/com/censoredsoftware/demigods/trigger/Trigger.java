@@ -5,8 +5,6 @@ import com.censoredsoftware.demigods.trigger.balance.NewPlayerNeedsHelp;
 
 public interface Trigger
 {
-	public boolean evaluate();
-
 	public void processSync();
 
 	public void processAsync();
