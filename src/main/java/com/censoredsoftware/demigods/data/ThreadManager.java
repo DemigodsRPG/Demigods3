@@ -10,6 +10,8 @@ import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Times;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,11 +38,11 @@ public class ThreadManager
 		}
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Demigods.config.getSettingInt("regeneration.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getSaveRunnable(), 20, (Demigods.config.getSettingInt("saving.freq") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
 		for(Element.ListedDeity deity : Element.ListedDeity.values())
@@ -113,7 +115,7 @@ public class ThreadManager
 					DataManager.save();
 
 					// Send the save message to the console
-					Demigods.message.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			spigot = new BukkitRunnable()
@@ -127,7 +129,7 @@ public class ThreadManager
 			};
 			favor = new BukkitRunnable()
 			{
-				private final double multiplier = Demigods.config.getSettingDouble("multipliers.favor");
+				private final double multiplier = Configs.getSettingDouble("multipliers.favor");
 
 				@Override
 				public void run()

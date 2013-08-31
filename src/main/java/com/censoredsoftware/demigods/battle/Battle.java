@@ -114,7 +114,7 @@ public class Battle implements ConfigurationSerializable
 
 	public double getRange()
 	{
-		int base = Demigods.config.getSettingInt("battles.min_range");
+		int base = Configs.getSettingInt("battles.min_range");
 		int per = 5;
 		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
 		return base;
@@ -127,15 +127,15 @@ public class Battle implements ConfigurationSerializable
 
 	public long getDuration()
 	{
-		long base = Demigods.config.getSettingInt("battles.min_duration") * 1000;
-		long per = Demigods.config.getSettingInt("battles.duration_multiplier") * 1000;
+		long base = Configs.getSettingInt("battles.min_duration") * 1000;
+		long per = Configs.getSettingInt("battles.duration_multiplier") * 1000;
 		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
 		return base;
 	}
 
 	public int getMinKills()
 	{
-		int base = Demigods.config.getSettingInt("battles.min_kills");
+		int base = Configs.getSettingInt("battles.min_kills");
 		int per = 2;
 		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
 		return base;
@@ -143,7 +143,7 @@ public class Battle implements ConfigurationSerializable
 
 	public int getMaxKills()
 	{
-		int base = Demigods.config.getSettingInt("battles.max_kills");
+		int base = Configs.getSettingInt("battles.max_kills");
 		int per = 3;
 		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
 		return base;
@@ -365,18 +365,18 @@ public class Battle implements ConfigurationSerializable
 			{
 				DCharacter one = DCharacter.Util.load(participants.get(0));
 				DCharacter two = DCharacter.Util.load(participants.get(1));
-				Demigods.message.broadcast(" ");
-				Demigods.message.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
-				Demigods.message.broadcast(" ");
+				Messages.broadcast(" ");
+				Messages.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
+				Messages.broadcast(" ");
 			}
 			else
 			{
 				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
 				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
 				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
-				Demigods.message.broadcast(" ");
-				Demigods.message.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
-				Demigods.message.broadcast(" ");
+				Messages.broadcast(" ");
+				Messages.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
+				Messages.broadcast(" ");
 			}
 		}
 		else if(participants.size() > 2)
@@ -394,12 +394,12 @@ public class Battle implements ConfigurationSerializable
 					winningScore = score;
 				}
 			}
-			Demigods.message.broadcast(" ");
-			Demigods.message.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
-			Demigods.message.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
+			Messages.broadcast(" ");
+			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
+			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
-				Demigods.message.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.rightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
-			Demigods.message.broadcast(" ");
+				Messages.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.rightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+			Messages.broadcast(" ");
 		}
 
 		// Prepare for graceful delete
@@ -562,7 +562,7 @@ public class Battle implements ConfigurationSerializable
 					public boolean apply(Battle battle)
 					{
 						double distance = battle.getStartLocation().distance(location);
-						return distance > battle.getRange() && distance <= Demigods.config.getSettingInt("battles.merge_range");
+						return distance > battle.getRange() && distance <= Configs.getSettingInt("battles.merge_range");
 					}
 				});
 			}

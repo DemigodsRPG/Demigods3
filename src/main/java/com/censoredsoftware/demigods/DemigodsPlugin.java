@@ -3,16 +3,17 @@ package com.censoredsoftware.demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
-import com.censoredsoftware.demigods.helper.CSPlugin;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Class for all plugins of demigods.
  */
-public class DemigodsPlugin extends CSPlugin
+public class DemigodsPlugin extends JavaPlugin
 {
 	/**
 	 * The Bukkit enable method.
@@ -26,7 +27,7 @@ public class DemigodsPlugin extends CSPlugin
 			new Demigods(this);
 
 			// Print success!
-			Demigods.message.info("Successfully enabled.");
+			Messages.info("Successfully enabled.");
 		}
 		catch(DemigodsStartupException ignored)
 		{}
@@ -49,6 +50,6 @@ public class DemigodsPlugin extends CSPlugin
 		ThreadManager.stopThreads(this);
 		HandlerList.unregisterAll(this);
 
-		Demigods.message.info("Successfully disabled.");
+		Messages.info("Successfully disabled.");
 	}
 }

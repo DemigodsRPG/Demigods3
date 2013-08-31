@@ -7,13 +7,13 @@ import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.exception.DemigodsStartupException;
-import com.censoredsoftware.demigods.helper.CSPlugin;
-import com.censoredsoftware.demigods.helper.Configs;
 import com.censoredsoftware.demigods.helper.ListedConversation;
-import com.censoredsoftware.demigods.helper.Messages;
+import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Structures;
 import com.censoredsoftware.errornoise.ErrorNoise;
 import com.google.common.base.Predicate;
@@ -35,8 +35,6 @@ public class Demigods
 	// Public Static Access
 	public static DemigodsPlugin plugin;
 	public static ConversationFactory conversation;
-	public static Messages message;
-	public static Configs config;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin worldguard;
@@ -55,20 +53,16 @@ public class Demigods
 		plugin = instance;
 		conversation = new ConversationFactory(instance);
 
-		// Setup utilities.
-		config = new Configs(instance, true);
-		message = new Messages(instance);
-
 		// Setup language.
 		language = new Translation();
 
 		// Quit reason.
-		instance.getServer().getLogger().addHandler(new CSPlugin.QuitReasonHandler());
+		instance.getServer().getLogger().addHandler(new QuitReasonHandler());
 
 		if(!loadWorlds(instance))
 		{
-			message.severe("Demigods was unable to load any worlds.");
-			message.severe("Please configure at least 1 world for Demigods.");
+			Messages.severe("Demigods was unable to load any worlds.");
+			Messages.severe("Please configure at least 1 world for Demigods.");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			throw new DemigodsStartupException();
 		}
@@ -98,13 +92,13 @@ public class Demigods
 		// Finally, regenerate structures
 		Structures.regenerateStructures();
 
-		if(isRunningSpigot()) message.info(("Spigot found, will use extra API features."));
+		if(isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	public static boolean loadWorlds(final DemigodsPlugin instance)
 	{
 		disabledWorlds = Sets.newHashSet();
-		for(String world : Collections2.filter(config.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
+		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
 		{
 			@Override
 			public boolean apply(String world)

@@ -21,7 +21,7 @@ public class Translation
 	{
 		/*
 		 * Turned off for now. TODO
-		 * String language = Demigods.config.getSettingString("language").toLowerCase();
+		 * String language = Configs.getSettingString("language").toLowerCase();
 		 * if(!language.equals("english")) try
 		 * {
 		 * translationYAML = new File(language);

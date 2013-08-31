@@ -3,9 +3,11 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.item.Book;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -46,7 +48,7 @@ public class PlayerListener implements Listener
 		}
 
 		// Demigods welcome message
-		if(Demigods.config.getSettingBoolean("misc.welcome_message"))
+		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
 			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
@@ -89,7 +91,7 @@ public class PlayerListener implements Listener
 	{
 		final String name = event.getPlayer().getName();
 		String message = ChatColor.YELLOW + name + " has quit.";
-		switch(Demigods.plugin.getLatestQuitReason())
+		switch(QuitReasonHandler.latestQuit)
 		{
 			case GENERIC_REASON:
 				message = ChatColor.YELLOW + name + " has either quit or crashed.";

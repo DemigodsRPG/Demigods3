@@ -1,10 +1,10 @@
-package com.censoredsoftware.demigods.helper;
+package com.censoredsoftware.demigods.util;
 
+import com.censoredsoftware.demigods.Demigods;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Logger;
 
@@ -14,18 +14,16 @@ import java.util.logging.Logger;
 public class Messages
 {
 	private static final Logger log = Logger.getLogger("Minecraft");
-	private Plugin plugin;
-	private String pluginName;
+	private static String PLUGIN_NAME;
 
 	/**
 	 * Constructor for the Messages.
 	 * 
 	 * @param instance The current instance of the Plugin running this module.
 	 */
-	public Messages(Plugin instance)
+	static
 	{
-		plugin = instance;
-		pluginName = plugin.getName();
+		PLUGIN_NAME = Demigods.plugin.getName();
 	}
 
 	/**
@@ -33,9 +31,9 @@ public class Messages
 	 * 
 	 * @param sender The CommandSender to send the message to (allows console messages).
 	 */
-	public void tagged(CommandSender sender, String msg)
+	public static void tagged(CommandSender sender, String msg)
 	{
-		sender.sendMessage(ChatColor.RED + "[" + pluginName + "] " + ChatColor.RESET + msg);
+		sender.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
 	}
 
 	/**
@@ -43,9 +41,9 @@ public class Messages
 	 * 
 	 * @param msg The message to be sent.
 	 */
-	public void info(String msg)
+	public static void info(String msg)
 	{
-		log.info("[" + pluginName + "] " + msg);
+		log.info("[" + PLUGIN_NAME + "] " + msg);
 	}
 
 	/**
@@ -53,9 +51,9 @@ public class Messages
 	 * 
 	 * @param msg The message to be sent.
 	 */
-	public void warning(String msg)
+	public static void warning(String msg)
 	{
-		log.warning("[" + pluginName + "] " + msg);
+		log.warning("[" + PLUGIN_NAME + "] " + msg);
 	}
 
 	/**
@@ -63,9 +61,9 @@ public class Messages
 	 * 
 	 * @param msg The message to be sent.
 	 */
-	public void severe(String msg)
+	public static void severe(String msg)
 	{
-		log.severe("[" + pluginName + "] " + msg);
+		log.severe("[" + PLUGIN_NAME + "] " + msg);
 	}
 
 	/**
@@ -73,9 +71,9 @@ public class Messages
 	 * 
 	 * @param msg The message to be sent.
 	 */
-	public void broadcast(String msg)
+	public static void broadcast(String msg)
 	{
-		plugin.getServer().broadcastMessage(msg);
+		Demigods.plugin.getServer().broadcastMessage(msg);
 	}
 
 	/**
@@ -84,7 +82,7 @@ public class Messages
 	 * @param sender The CommandSender being notified.
 	 * @return True.
 	 */
-	public boolean noPermission(CommandSender sender)
+	public static boolean noPermission(CommandSender sender)
 	{
 		sender.sendMessage(ChatColor.RED + "You do not have permission to do that.");
 		return true;
@@ -96,7 +94,7 @@ public class Messages
 	 * @param console The console.
 	 * @return True.
 	 */
-	public boolean noConsole(ConsoleCommandSender console)
+	public static boolean noConsole(ConsoleCommandSender console)
 	{
 		console.sendMessage("That can only be executed by a player.");
 		return true;
@@ -108,7 +106,7 @@ public class Messages
 	 * @param player The Player being notified.
 	 * @return True.
 	 */
-	public boolean noPlayer(Player player)
+	public static boolean noPlayer(Player player)
 	{
 		player.sendMessage("That can only be executed by the console.");
 		return true;
@@ -119,7 +117,7 @@ public class Messages
 	 * 
 	 * @param player the player whose chat to clear.
 	 */
-	public void clearChat(Player player)
+	public static void clearChat(Player player)
 	{
 		for(int x = 0; x < 120; x++)
 			player.sendMessage(" ");
@@ -130,7 +128,7 @@ public class Messages
 	 * 
 	 * @param player the player whose chat to clear.
 	 */
-	public void clearRawChat(Player player)
+	public static void clearRawChat(Player player)
 	{
 		for(int x = 0; x < 120; x++)
 			player.sendRawMessage(" ");

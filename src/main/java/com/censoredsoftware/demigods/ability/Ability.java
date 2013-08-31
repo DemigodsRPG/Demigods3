@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -159,7 +160,7 @@ public interface Ability
 		public static LivingEntity autoTarget(Player player)
 		{
 			// Define variables
-			int range = Demigods.config.getSettingInt("caps.target_range") > 140 ? 140 : Demigods.config.getSettingInt("caps.target_range");
+			int range = Configs.getSettingInt("caps.target_range") > 140 ? 140 : Configs.getSettingInt("caps.target_range");
 			final int correction = 3;
 			Location target = player.getTargetBlock(null, range).getLocation();
 			BlockIterator iterator = new BlockIterator(player, range);
@@ -212,7 +213,7 @@ public interface Ability
 
 		public static Location directTarget(Player player)
 		{
-			return player.getTargetBlock(null, Demigods.config.getSettingInt("caps.target_range")).getLocation();
+			return player.getTargetBlock(null, Configs.getSettingInt("caps.target_range")).getLocation();
 		}
 
 		/**

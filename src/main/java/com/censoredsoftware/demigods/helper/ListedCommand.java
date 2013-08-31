@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.Set;
@@ -19,7 +20,7 @@ public abstract class ListedCommand implements TabExecutor
 		return Lists.newArrayList();
 	}
 
-	public void register(CSPlugin plugin, boolean tab)
+	public void register(JavaPlugin plugin, boolean tab)
 	{
 		for(String command : getCommands())
 		{

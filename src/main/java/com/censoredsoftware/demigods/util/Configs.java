@@ -1,7 +1,7 @@
-package com.censoredsoftware.demigods.helper;
+package com.censoredsoftware.demigods.util;
 
+import com.censoredsoftware.demigods.Demigods;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,20 +11,17 @@ import java.util.List;
  */
 public class Configs
 {
-	private Plugin plugin;
-
 	/**
 	 * Constructor to create a new Configs for the given plugin's <code>instance</code>.
 	 * 
 	 * @param instance The demigods instance the Configs attaches to.
 	 * @param copyDefaults Boolean for copying the default config.yml found inside this demigods over the config file utilized by this library.
 	 */
-	public Configs(Plugin instance, boolean copyDefaults)
+	static
 	{
-		plugin = instance;
-		Configuration config = plugin.getConfig();
-		config.options().copyDefaults(copyDefaults);
-		plugin.saveConfig();
+		Configuration config = Demigods.plugin.getConfig();
+		config.options().copyDefaults(true);
+		Demigods.plugin.saveConfig();
 	}
 
 	/**
@@ -33,9 +30,9 @@ public class Configs
 	 * @param id The String key for the setting.
 	 * @return Integer setting.
 	 */
-	public int getSettingInt(String id)
+	public static int getSettingInt(String id)
 	{
-		if(plugin.getConfig().isInt(id)) return plugin.getConfig().getInt(id);
+		if(Demigods.plugin.getConfig().isInt(id)) return Demigods.plugin.getConfig().getInt(id);
 		else return -1;
 	}
 
@@ -45,9 +42,9 @@ public class Configs
 	 * @param id The String key for the setting.
 	 * @return String setting.
 	 */
-	public String getSettingString(String id)
+	public static String getSettingString(String id)
 	{
-		if(plugin.getConfig().isString(id)) return plugin.getConfig().getString(id);
+		if(Demigods.plugin.getConfig().isString(id)) return Demigods.plugin.getConfig().getString(id);
 		else return null;
 	}
 
@@ -57,9 +54,9 @@ public class Configs
 	 * @param id The String key for the setting.
 	 * @return Boolean setting.
 	 */
-	public boolean getSettingBoolean(String id)
+	public static boolean getSettingBoolean(String id)
 	{
-		return !plugin.getConfig().isBoolean(id) || plugin.getConfig().getBoolean(id);
+		return !Demigods.plugin.getConfig().isBoolean(id) || Demigods.plugin.getConfig().getBoolean(id);
 	}
 
 	/**
@@ -68,9 +65,9 @@ public class Configs
 	 * @param id The String key for the setting.
 	 * @return Double setting.
 	 */
-	public double getSettingDouble(String id)
+	public static double getSettingDouble(String id)
 	{
-		if(plugin.getConfig().isDouble(id)) return plugin.getConfig().getDouble(id);
+		if(Demigods.plugin.getConfig().isDouble(id)) return Demigods.plugin.getConfig().getDouble(id);
 		else return -1;
 	}
 
@@ -80,20 +77,15 @@ public class Configs
 	 * @param id The String key for the setting.
 	 * @return List<String> setting.
 	 */
-	public List<String> getSettingArrayListString(String id)
+	public static List<String> getSettingArrayListString(String id)
 	{
 		List<String> strings = new ArrayList<String>();
-		if(plugin.getConfig().isList(id))
+		if(Demigods.plugin.getConfig().isList(id))
 		{
-			for(String s : plugin.getConfig().getStringList(id))
+			for(String s : Demigods.plugin.getConfig().getStringList(id))
 				strings.add(s);
 			return strings;
 		}
-		else return null;
-	}
-
-	public boolean isSettingSet(String id)
-	{
-		return plugin.getConfig().isSet(id);
+		return null;
 	}
 }

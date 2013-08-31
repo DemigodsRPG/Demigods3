@@ -1,13 +1,9 @@
 package com.censoredsoftware.demigods.command;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.ListedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Maps2;
-import com.censoredsoftware.demigods.util.Strings;
-import com.censoredsoftware.demigods.util.Titles;
-import com.censoredsoftware.demigods.util.Unicodes;
+import com.censoredsoftware.demigods.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -64,7 +60,7 @@ public class GeneralCommands extends ListedCommand
 		ChatColor favorColor = Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
 
 		// Send the user their info via chat
-		Demigods.message.tagged(sender, "Player Check");
+		Messages.tagged(sender, "Player Check");
 
 		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
 		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
@@ -78,7 +74,7 @@ public class GeneralCommands extends ListedCommand
 	private boolean owner(CommandSender sender, String[] args)
 	{
 		// Check permissions
-		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
 
 		Player player = (Player) sender;
 		if(args.length < 1)
@@ -96,7 +92,7 @@ public class GeneralCommands extends ListedCommand
 	private boolean binds(CommandSender sender)
 	{
 		// Check permissions
-		if(!sender.hasPermission("demigods.basic")) return Demigods.message.noPermission(sender);
+		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
 
 		// Define variables
 		Player player = (Player) sender;

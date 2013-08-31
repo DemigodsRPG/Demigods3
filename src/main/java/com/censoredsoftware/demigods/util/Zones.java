@@ -19,7 +19,7 @@ public class Zones
 	 */
 	public static boolean zoneNoPVP(Location location)
 	{
-		if(Demigods.config.getSettingBoolean("zones.allow_skills_anywhere")) return false;
+		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(Demigods.worldguard != null) return Structures.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || Iterators.any(Demigods.worldguard.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
 		{
 			@Override

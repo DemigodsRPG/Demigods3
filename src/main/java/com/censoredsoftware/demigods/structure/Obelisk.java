@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import org.bukkit.ChatColor;
@@ -154,7 +155,7 @@ public class Obelisk implements Structure
 	@Override
 	public int getRadius()
 	{
-		return Demigods.config.getSettingInt("zones.obelisk_radius");
+		return Configs.getSettingInt("zones.obelisk_radius");
 	}
 
 	@Override

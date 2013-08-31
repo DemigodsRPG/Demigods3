@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.util.Configs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -130,7 +131,7 @@ public class Skill implements ConfigurationSerializable
 			Skill skill = new Skill();
 			skill.generateId();
 			skill.setType(type);
-			skill.setLevel(Demigods.config.getSettingInt("character.defaults." + type.name().toLowerCase()));
+			skill.setLevel(Configs.getSettingInt("character.defaults." + type.name().toLowerCase()));
 			save(skill);
 			return skill;
 		}
@@ -159,12 +160,12 @@ public class Skill implements ConfigurationSerializable
 				DCharacter character = participant.getRelatedCharacter();
 
 				// Define all variables used for skill point calculation
-				int mvpScore = battle.getMVPs().contains(participant) ? Demigods.config.getSettingInt("bonuses.mvp_skill_points") : 1;
+				int mvpScore = battle.getMVPs().contains(participant) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
 				int kills = battle.getKills(participant);
 				int deaths = battle.getDeaths(participant);
 
 				// Calculate skill points
-				int skillPoints = (int) Math.ceil(Demigods.config.getSettingDouble("multipliers.skill_points") * (mvpScore * (kills + 1) - (deaths / 2))); // TODO: We can tweak this as we go, as with most of the equations we use for stuff like this. It'll just take some experimenting to balance.
+				int skillPoints = (int) Math.ceil(Configs.getSettingDouble("multipliers.skill_points") * (mvpScore * (kills + 1) - (deaths / 2))); // TODO: We can tweak this as we go, as with most of the equations we use for stuff like this. It'll just take some experimenting to balance.
 
 				// Apply the points and notify the player
 				character.getMeta().addSkillPoints(skillPoints);

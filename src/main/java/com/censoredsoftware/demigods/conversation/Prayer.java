@@ -135,10 +135,10 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 
 			// Clear chat
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 
 			// Send NoGrief menu
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
 			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_INTRO))
@@ -195,7 +195,7 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Warps & Invites"));
 			player.sendRawMessage(" ");
 
@@ -273,7 +273,7 @@ public class Prayer implements ListedConversation
 			context.setSessionData("warp_notifications", Lists.newArrayList());
 			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("warp_notifications");
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 
 			if(message.equalsIgnoreCase("menu"))
 			{
@@ -366,7 +366,7 @@ public class Prayer implements ListedConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 			int skillPoints = character.getMeta().getSkillPoints();
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Skills"));
 			player.sendRawMessage(" ");
 
@@ -437,7 +437,7 @@ public class Prayer implements ListedConversation
 			Player player = (Player) context.getForWhom();
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Notifications"));
 			player.sendRawMessage(" ");
 
@@ -526,7 +526,7 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = (Player) context.getForWhom();
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Character"));
 			player.sendRawMessage(" ");
@@ -586,7 +586,7 @@ public class Prayer implements ListedConversation
 				String status = character.isActive() ? ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "(Current) " + ChatColor.RESET : ChatColor.RED + "" + ChatColor.ITALIC + "(Inactive) " + ChatColor.RESET;
 
 				// Clear chat
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 
 				// Send the player the info
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Character"));
@@ -597,7 +597,7 @@ public class Prayer implements ListedConversation
 				player.sendRawMessage(ChatColor.GRAY + "  --------------------------------------------------");
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "    Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
-				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Demigods.config.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
+				player.sendRawMessage(ChatColor.GRAY + "    Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.GRAY + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.GRAY + ") " + ChatColor.YELLOW + "+5 every " + Configs.getSettingInt("regeneration.favor") + " seconds"); // TODO: This should change with "perks" (assuming that we implement faster favor regeneration perks).
 				player.sendRawMessage(" ");
 				if(character.isActive()) player.sendRawMessage(ChatColor.GRAY + "  Type " + ChatColor.YELLOW + "back" + ChatColor.GRAY + " to return to your characters.");
 				else
@@ -652,7 +652,7 @@ public class Prayer implements ListedConversation
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 			Deity deity = character.getDeity();
 
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
 			player.sendRawMessage(" ");
 			player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " is angry with your decision and demands");
@@ -680,7 +680,7 @@ public class Prayer implements ListedConversation
 				DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
 				Deity deity = character.getDeity();
 
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage("  " + deity.getColor() + deity.getName() + ChatColor.GRAY + " requires that you bring the following items");
@@ -728,7 +728,7 @@ public class Prayer implements ListedConversation
 			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 
 			// Clear chat
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 
 			// Ask them if they have the items
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsaking " + deity.getName()));
@@ -815,7 +815,7 @@ public class Prayer implements ListedConversation
 		@Override
 		public String getPromptText(ConversationContext context)
 		{
-			Demigods.message.clearRawChat((Player) context.getForWhom());
+			Messages.clearRawChat((Player) context.getForWhom());
 			return ChatColor.AQUA + "Continue to character creation?" + ChatColor.GRAY + " (y/n)";
 		}
 
@@ -838,7 +838,7 @@ public class Prayer implements ListedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Player player = (Player) context.getForWhom();
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 
@@ -855,7 +855,7 @@ public class Prayer implements ListedConversation
 					// List the errors
 					for(Translation.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error).replace("{maxCaps}", String.valueOf(Demigods.config.getSettingInt("character.max_caps_in_name"))));
+						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error).replace("{maxCaps}", String.valueOf(Configs.getSettingInt("character.max_caps_in_name"))));
 					}
 
 					// Ask for a new name
@@ -871,7 +871,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
 				{
 					// Create the list
 					List<Translation.Text> errors = Lists.newArrayList();
@@ -879,7 +879,7 @@ public class Prayer implements ListedConversation
 					// Check the errors
 					if(name.length() < 2 || name.length() >= 13) errors.add(Translation.Text.ERROR_NAME_LENGTH);
 					if(!StringUtils.isAlphanumeric(name)) errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
-					if(Strings.hasCapitalLetters(name, Demigods.config.getSettingInt("character.max_caps_in_name"))) errors.add(Translation.Text.ERROR_MAX_CAPS);
+					if(Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name"))) errors.add(Translation.Text.ERROR_MAX_CAPS);
 					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.language.getBlackList())) errors.add(Translation.Text.ERROR_CHAR_EXISTS);
 
 					// Save the info
@@ -906,7 +906,7 @@ public class Prayer implements ListedConversation
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				Demigods.message.clearRawChat((Player) context.getForWhom());
+				Messages.clearRawChat((Player) context.getForWhom());
 				return ChatColor.GRAY + "Are you sure you want to use " + ChatColor.YELLOW + context.getSessionData("chosen_name") + ChatColor.GRAY + "? (y/n)";
 			}
 
@@ -935,7 +935,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
@@ -973,7 +973,7 @@ public class Prayer implements ListedConversation
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				Demigods.message.clearRawChat((Player) context.getForWhom());
+				Messages.clearRawChat((Player) context.getForWhom());
 				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((String) context.getSessionData("chosen_alliance")).toLowerCase()) + "s" + ChatColor.GRAY + "? (y/n)";
 			}
 
@@ -1002,7 +1002,7 @@ public class Prayer implements ListedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Creating Character"));
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
@@ -1033,7 +1033,7 @@ public class Prayer implements ListedConversation
 			@Override
 			public String getPromptText(ConversationContext context)
 			{
-				Demigods.message.clearRawChat((Player) context.getForWhom());
+				Messages.clearRawChat((Player) context.getForWhom());
 				Deity deity = Deity.Util.getDeity((String) context.getSessionData("chosen_deity"));
 				return ChatColor.GRAY + "Are you sure you want to use " + deity.getColor() + deity.getName() + ChatColor.GRAY + "? (y/n)";
 			}
@@ -1054,7 +1054,7 @@ public class Prayer implements ListedConversation
 					String chosenDeity = (String) context.getSessionData("chosen_deity");
 
 					// Give the player further directions
-					Demigods.message.clearRawChat(player);
+					Messages.clearRawChat(player);
 					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
@@ -1106,7 +1106,7 @@ public class Prayer implements ListedConversation
 			String chosenDeity = (String) context.getSessionData("chosen_deity");
 
 			// Clear chat
-			Demigods.message.clearRawChat(player);
+			Messages.clearRawChat(player);
 
 			// Ask them if they have the items
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Confirming Character"));
@@ -1208,7 +1208,7 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Clear chat and send update
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
 
 				if(neededItems == items)
@@ -1274,7 +1274,7 @@ public class Prayer implements ListedConversation
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 
 				// Clear chat and send update
-				Demigods.message.clearRawChat(player);
+				Messages.clearRawChat(player);
 				player.sendMessage(ChatColor.YELLOW + deity.getName() + " is debating your departure...");
 
 				if(neededItems == items)
@@ -1315,7 +1315,7 @@ public class Prayer implements ListedConversation
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Demigods.config.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
+			if(DPlayer.Util.isPraying(player) && event.getTo().distance((Location) DataManager.getValueTemp(player.getName(), "prayer_location")) >= Configs.getSettingInt("zones.prayer_radius")) DPlayer.Util.togglePraying(player, false);
 		}
 	}
 }

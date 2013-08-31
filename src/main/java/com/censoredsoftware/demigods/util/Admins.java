@@ -1,14 +1,12 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.data.DataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
+import java.util.ArrayList;
 
 public class Admins
 {
@@ -31,7 +29,7 @@ public class Admins
 	 */
 	public static boolean useWand(OfflinePlayer player)
 	{
-		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Demigods.config.getSettingInt("admin.wand_tool");
+		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
 	}
 
 	/**
@@ -52,7 +50,7 @@ public class Admins
 	 */
 	public static boolean consoleDebugEnabled()
 	{
-		return Demigods.config.getSettingBoolean("misc.console_debug");
+		return Configs.getSettingBoolean("misc.console_debug");
 	}
 
 	/**
@@ -63,7 +61,7 @@ public class Admins
 	public static void sendDebug(String message)
 	{
 		// Log to console
-		if(consoleDebugEnabled()) Demigods.message.info("[Debug] " + ChatColor.stripColor(message));
+		if(consoleDebugEnabled()) Messages.info("[Debug] " + ChatColor.stripColor(message));
 
 		// Log to online, debugging admins
 		for(Player player : getOnlineAdmins())

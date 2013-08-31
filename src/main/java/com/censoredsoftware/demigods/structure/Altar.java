@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
@@ -309,7 +310,7 @@ public class Altar implements Structure
 	@Override
 	public int getRadius()
 	{
-		return Demigods.config.getSettingInt("zones.altar_radius");
+		return Configs.getSettingInt("zones.altar_radius");
 	}
 
 	@Override
@@ -366,7 +367,7 @@ public class Altar implements Structure
 
 		static
 		{
-			ALTAR_SPAWN = Demigods.config.getSettingDouble("generation.altar_chance");
+			ALTAR_SPAWN = Configs.getSettingDouble("generation.altar_chance");
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
@@ -503,7 +504,7 @@ public class Altar implements Structure
 
 		public static boolean isAltarNearby(final Location location)
 		{
-			final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
+			final int distance = Configs.getSettingInt("generation.min_blocks_between_altars");
 			return Iterables.any(Element.ListedStructure.ALTAR.getStructure().getAll(), new Predicate<Save>()
 			{
 				@Override
@@ -516,7 +517,7 @@ public class Altar implements Structure
 
 		public static Save getAltarNearby(final Location location)
 		{
-			final int distance = Demigods.config.getSettingInt("generation.min_blocks_between_altars");
+			final int distance = Configs.getSettingInt("generation.min_blocks_between_altars");
 			try
 			{
 				return Iterables.find(Element.ListedStructure.ALTAR.getStructure().getAll(), new Predicate<Save>()

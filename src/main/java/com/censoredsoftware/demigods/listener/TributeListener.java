@@ -1,7 +1,15 @@
 package com.censoredsoftware.demigods.listener;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.ItemValues;
+import com.censoredsoftware.demigods.util.Structures;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,15 +24,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.ItemValues;
-import com.censoredsoftware.demigods.util.Structures;
+import java.util.UUID;
 
 public class TributeListener implements Listener
 {
@@ -101,7 +101,7 @@ public class TributeListener implements Listener
 		if(items == 0) return;
 
 		// Handle the multiplier
-		tributeValue *= Demigods.config.getSettingDouble("multipliers.favor");
+		tributeValue *= Configs.getSettingDouble("multipliers.favor");
 
 		// Get the current favor for comparison
 		int favorBefore = character.getMeta().getFavor();
@@ -117,7 +117,7 @@ public class TributeListener implements Listener
 			DCharacter shrineOwner = DCharacter.Util.load(save.getOwner());
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
-			if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
+			if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
 			{
 				// Give them some of the blessings
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
@@ -147,7 +147,7 @@ public class TributeListener implements Listener
 		}
 
 		// Handle messaging and Shrine owner updating
-		if(character.getMeta().getMaxFavor() >= Demigods.config.getSettingInt("caps.favor"))
+		if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor"))
 		{
 			// They have already met the max favor cap
 			player.sendMessage(ChatColor.YELLOW + character.getDeity().getName() + " is pleased!");

@@ -9,6 +9,8 @@ import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -111,7 +113,7 @@ public class DPlayer implements ConfigurationSerializable
 		}
 		else if(canPvp() && !DataManager.hasTimed(player.getName(), "pvp_cooldown"))
 		{
-			int delay = Demigods.config.getSettingInt("zones.pvp_area_delay_time");
+			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
@@ -224,7 +226,7 @@ public class DPlayer implements ConfigurationSerializable
 		}
 		catch(Exception e)
 		{
-			Demigods.message.warning("Character name too long.");
+			Messages.warning("Character name too long.");
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
 		player.setHealth(newChar.getHealth());
@@ -253,7 +255,7 @@ public class DPlayer implements ConfigurationSerializable
 		}
 		catch(Exception e)
 		{
-			Demigods.message.severe("There was a problem while teleporting a player to their character.");
+			Messages.severe("There was a problem while teleporting a player to their character.");
 		}
 
 		// Toggle praying
@@ -446,7 +448,7 @@ public class DPlayer implements ConfigurationSerializable
 				togglePrayingSilent(player, false, false);
 
 				// Message them
-				Demigods.message.clearChat(player);
+				Messages.clearChat(player);
 				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
 

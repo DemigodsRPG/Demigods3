@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -8,6 +7,7 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Structures;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -979,7 +979,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public void addMaxFavor(int amount)
 		{
-			if((maxFavor + amount) > Demigods.config.getSettingInt("caps.favor")) maxFavor = Demigods.config.getSettingInt("caps.favor");
+			if((maxFavor + amount) > Configs.getSettingInt("caps.favor")) maxFavor = Configs.getSettingInt("caps.favor");
 			else maxFavor += amount;
 			Util.saveMeta(this);
 		}
@@ -987,7 +987,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public void setMaxFavor(int amount)
 		{
 			if(amount < 0) maxFavor = 0;
-			if(amount > Demigods.config.getSettingInt("caps.favor")) maxFavor = Demigods.config.getSettingInt("caps.favor");
+			if(amount > Configs.getSettingInt("caps.favor")) maxFavor = Configs.getSettingInt("caps.favor");
 			else maxFavor = amount;
 			Util.saveMeta(this);
 		}
@@ -1099,9 +1099,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			Meta charMeta = new Meta();
 			charMeta.initialize();
 			charMeta.generateId();
-			charMeta.setAscensions(Demigods.config.getSettingInt("character.defaults.ascensions"));
-			charMeta.setFavor(Demigods.config.getSettingInt("character.defaults.favor"));
-			charMeta.setMaxFavor(Demigods.config.getSettingInt("character.defaults.max_favor"));
+			charMeta.setAscensions(Configs.getSettingInt("character.defaults.ascensions"));
+			charMeta.setFavor(Configs.getSettingInt("character.defaults.favor"));
+			charMeta.setMaxFavor(Configs.getSettingInt("character.defaults.max_favor"));
 			charMeta.resetSkills();
 			saveMeta(charMeta);
 			return charMeta;
