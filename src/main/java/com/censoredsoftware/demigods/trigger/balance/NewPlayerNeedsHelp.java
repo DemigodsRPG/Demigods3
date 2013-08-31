@@ -28,40 +28,31 @@ public class NewPlayerNeedsHelp implements Trigger
 			@Override
 			public boolean apply(DCharacter character)
 			{
-				return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
+				return Death.Util.getRecentDeaths(character, 2400).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 			}
 		});
 	}
 
-	public class Process implements Trigger.Process
+	@Override
+	public void processSync() // TODO Balance this.
 	{
-		@Override
-		public void sync() // TODO Balance this.
+		if(!evaluate()) return;
+		for(DCharacter character : Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
 		{
-			if(!evaluate()) return;
-			for(DCharacter character : Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
+			@Override
+			public boolean apply(DCharacter character)
 			{
-				@Override
-				public boolean apply(DCharacter character)
-				{
-					return Death.Util.getRecentDeaths(character, 600).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
-				}
-			}))
-			{
-				if(Demigods.isDisabledWorld(character.getLocation())) continue;
-				Messages.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
-				DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, 600);
+				return Death.Util.getRecentDeaths(character, 2400).size() >= 20 && !DataManager.hasTimed(character.getName(), "needsHelpTrigger");
 			}
+		}))
+		{
+			if(Demigods.isDisabledWorld(character.getLocation())) continue;
+			Messages.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
+			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, 600);
 		}
-
-		@Override
-		public void async()
-		{}
 	}
 
 	@Override
-	public Process process()
-	{
-		return new Process();
-	}
+	public void processAsync()
+	{}
 }

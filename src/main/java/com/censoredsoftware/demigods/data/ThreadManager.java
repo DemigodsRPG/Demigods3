@@ -75,7 +75,7 @@ public class ThreadManager
 
 					// Process Triggers
 					for(Trigger trigger : Trigger.Util.getAll())
-						trigger.process().sync();
+						trigger.processSync();
 
 					// Update Battles
 					Battle.Util.updateBattles();
@@ -97,7 +97,7 @@ public class ThreadManager
 
 					// Process Triggers
 					for(Trigger trigger : Trigger.Util.getAll())
-						trigger.process().async();
+						trigger.processAsync();
 
 					// Process Atlars
 					Altar.Util.processNewChunks();

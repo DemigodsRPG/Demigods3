@@ -7,14 +7,9 @@ public interface Trigger
 {
 	public boolean evaluate();
 
-	public interface Process
-	{
-		public void sync();
+	public void processSync();
 
-		public void async();
-	}
-
-	public Process process();
+	public void processAsync();
 
 	public static class Util
 	{

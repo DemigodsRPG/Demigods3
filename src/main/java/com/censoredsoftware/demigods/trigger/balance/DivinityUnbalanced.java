@@ -18,26 +18,17 @@ public class DivinityUnbalanced implements Trigger
 		return false;
 	}
 
-	public class Process implements Trigger.Process
+	@Override
+	public void processSync()
 	{
-		@Override
-		public void sync()
-		{
-			if(!evaluate()) return;
-			// Sync methods here.
-		}
-
-		@Override
-		public void async()
-		{
-			if(!evaluate()) return;
-			// Thread-safe methods here.
-		}
+		if(!evaluate()) return;
+		// Sync methods here.
 	}
 
 	@Override
-	public Process process()
+	public void processAsync()
 	{
-		return new Process();
+		if(!evaluate()) return;
+		// Thread-safe methods here.
 	}
 }
