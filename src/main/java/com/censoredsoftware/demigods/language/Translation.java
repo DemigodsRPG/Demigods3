@@ -21,10 +21,10 @@ public class Translation
 	{
 		/*
 		 * Turned off for now. TODO
-		 * String language = Configs.getSettingString("language").toLowerCase();
-		 * if(!language.equals("english")) try
+		 * String LANGUAGE = Configs.getSettingString("LANGUAGE").toLowerCase();
+		 * if(!LANGUAGE.equals("english")) try
 		 * {
-		 * translationYAML = new File(language);
+		 * translationYAML = new File(LANGUAGE);
 		 * translation = translationYAML.loadFromFile();
 		 * return;
 		 * }
@@ -35,7 +35,7 @@ public class Translation
 	}
 
 	/**
-	 * Gets a specific line of <code>language</code>.
+	 * Gets a specific line of <code>LANGUAGE</code>.
 	 * 
 	 * @param text The line we want.
 	 * @return The String value of the Text.
@@ -47,10 +47,10 @@ public class Translation
 	}
 
 	/**
-	 * Gets a List for the given <code>language</code>.
+	 * Gets a List for the given <code>LANGUAGE</code>.
 	 * 
-	 * @param text The block of language we want.
-	 * @return The ArrayList for the block of language.
+	 * @param text The block of LANGUAGE we want.
+	 * @return The ArrayList for the block of LANGUAGE.
 	 */
 	public List<String> getTextBlock(final Text text)
 	{
@@ -106,9 +106,9 @@ public class Translation
 	 * 
 	 * public File(String translation)
 	 * {
-	 * super(Demigods.plugin);
+	 * super(Demigods.PLUGIN);
 	 * TRANSLATION_FILE = translation + ".yml";
-	 * LANGUAGE_PATH = Demigods.plugin.getDataFolder() + "/lang/";
+	 * LANGUAGE_PATH = Demigods.PLUGIN.getDataFolder() + "/lang/";
 	 * }
 	 * 
 	 * @Override

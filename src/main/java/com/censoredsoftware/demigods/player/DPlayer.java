@@ -103,7 +103,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 			setCanPvp(true);
-			player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.UNSAFE_FROM_PVP));
+			player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.UNSAFE_FROM_PVP));
 		}
 		else if(!inNoPvpZone)
 		{
@@ -116,7 +116,7 @@ public class DPlayer implements ConfigurationSerializable
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -124,7 +124,7 @@ public class DPlayer implements ConfigurationSerializable
 					if(Structures.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
 					{
 						setCanPvp(false);
-						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.SAFE_FROM_PVP));
+						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.SAFE_FROM_PVP));
 					}
 				}
 			}, (delay * 20));
@@ -187,7 +187,7 @@ public class DPlayer implements ConfigurationSerializable
 			currChar.setLevel(player.getLevel());
 			currChar.setExperience(player.getExp());
 			currChar.setLocation(player.getLocation());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -236,7 +236,7 @@ public class DPlayer implements ConfigurationSerializable
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
 		if(newChar.getPotionEffects() != null) player.addPotionEffects(newChar.getPotionEffects());
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -449,7 +449,7 @@ public class DPlayer implements ConfigurationSerializable
 
 				// Message them
 				Messages.clearChat(player);
-				for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_ENDED))
+				for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.PRAYER_ENDED))
 					player.sendMessage(message);
 
 				// Handle recorded chat
@@ -468,7 +468,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			if(option)
 			{
-				// Create the conversation and save it
+				// Create the CONVERSATION_FACTORY and save it
 				Conversation prayer = Prayer.startPrayer(player);
 				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
 				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
@@ -479,7 +479,7 @@ public class DPlayer implements ConfigurationSerializable
 			}
 			else
 			{
-				// Save context and abandon the conversation
+				// Save context and abandon the CONVERSATION_FACTORY
 				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
 					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
@@ -523,7 +523,7 @@ public class DPlayer implements ConfigurationSerializable
 				if(messages.size() > 0 && display)
 				{
 					player.sendMessage(" ");
-					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.language.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
 					for(String message : messages)
 						player.sendMessage(message);
 				}

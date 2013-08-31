@@ -60,7 +60,7 @@ public class DevelopmentCommands extends WrappedCommand
 			character.getMeta().resetSkills();
 		}
 
-		// if(Demigods.errorNoise) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
+		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
 
 		return true;
 	}

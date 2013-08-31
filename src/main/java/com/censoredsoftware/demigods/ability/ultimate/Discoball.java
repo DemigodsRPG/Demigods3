@@ -306,7 +306,7 @@ public class Discoball implements Ability
 
 			player.sendMessage(ChatColor.YELLOW + "Dance!");
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -326,7 +326,7 @@ public class Discoball implements Ability
 		{
 			final FallingBlock discoBall = location.getWorld().spawnFallingBlock(location, Material.GLOWSTONE, (byte) 0);
 			discoBalls.add(discoBall);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 			{
 				@Override
 				public void run()

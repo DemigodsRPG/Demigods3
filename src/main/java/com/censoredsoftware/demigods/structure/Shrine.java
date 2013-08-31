@@ -212,8 +212,8 @@ public class Shrine implements Structure
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
-						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
-						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
+						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
+						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
 						event.setCancelled(true);
 					}
 					catch(Exception e)
@@ -239,12 +239,12 @@ public class Shrine implements Structure
 
 					Admins.sendDebug(ChatColor.RED + "Shrine of (" + owner.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
+					player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE_COMPLETE));
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_shrine", true, 5);
-					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE));
+					player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_SHRINE));
 				}
 			}
 		}

@@ -62,7 +62,7 @@ public class ChatRecorder
 		{
 			ChatRecorder recorder = new ChatRecorder();
 			recorder.start(player);
-			Demigods.plugin.getServer().getPluginManager().registerEvents(recorder.getListener(), Demigods.plugin);
+			Demigods.PLUGIN.getServer().getPluginManager().registerEvents(recorder.getListener(), Demigods.PLUGIN);
 			return recorder;
 		}
 	}

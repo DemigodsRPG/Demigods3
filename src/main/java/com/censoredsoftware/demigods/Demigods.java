@@ -5,7 +5,6 @@ import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
-import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
@@ -45,39 +44,42 @@ import java.util.Set;
 
 public class Demigods
 {
+	// Constants
+	public static String SAVE_PATH;
+
 	// Public Static Access
-	public static DemigodsPlugin plugin;
-	public static ConversationFactory conversation;
+	public static DemigodsPlugin PLUGIN;
+	public static ConversationFactory CONVERSATION_FACTORY;
 
 	// Public Dependency Plugins
-	public static WorldGuardPlugin worldguard;
-	public static boolean errorNoise;
+	public static WorldGuardPlugin WORLD_GUARD;
+	public static boolean ERROR_NOISE;
 
 	// Disabled Worlds
-	protected static Set<String> disabledWorlds;
-	protected static Set<String> commands;
+	protected static Set<String> DISABLED_WORLDS;
+	protected static Set<String> COMMANDS;
 
-	// The language
-	public static Translation language;
+	// The LANGUAGE
+	public static Translation LANGUAGE;
 
-	// Start the plugin
+	// Start the PLUGIN
 	static
 	{
 		// Allow static access.
-		conversation = new ConversationFactory(plugin);
+		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 
 		// Initialize metrics
 		try
 		{
-			(new MetricsLite(plugin)).start();
+			(new MetricsLite(PLUGIN)).start();
 		}
 		catch(Exception ignored)
 		{}
 
 		// Start the data
-		DataManager.SAVE_PATH = plugin.getDataFolder() + "/data/";
+		SAVE_PATH = PLUGIN.getDataFolder() + "/data/";
 
-		// Finish loading the plugin based on the game data
+		// Finish loading the PLUGIN based on the game data
 		loadDepends();
 		loadListeners();
 		loadCommands();
@@ -87,30 +89,30 @@ public class Demigods
 
 	private static boolean loadWorlds()
 	{
-		disabledWorlds = Sets.newHashSet();
-		for(String world : Collections2.filter(plugin.getConfig().getStringList("restrictions.disabled_worlds"), new Predicate<String>()
+		DISABLED_WORLDS = Sets.newHashSet();
+		for(String world : Collections2.filter(PLUGIN.getConfig().getStringList("restrictions.disabled_worlds"), new Predicate<String>()
 		{
 			@Override
 			public boolean apply(String world)
 			{
-				return plugin.getServer().getWorld(world) != null;
+				return PLUGIN.getServer().getWorld(world) != null;
 			}
 		}))
-			if(plugin.getServer().getWorld(world) != null) disabledWorlds.add(world);
-		if(plugin.getServer().getWorlds().size() == disabledWorlds.size()) return false;
+			if(PLUGIN.getServer().getWorld(world) != null) DISABLED_WORLDS.add(world);
+		if(PLUGIN.getServer().getWorlds().size() == DISABLED_WORLDS.size()) return false;
 		return true;
 	}
 
 	private static void loadListeners()
 	{
-		PluginManager register = plugin.getServer().getPluginManager();
+		PluginManager register = PLUGIN.getServer().getPluginManager();
 
 		// Engine
 		for(ListedListener listener : ListedListener.values())
-			register.registerEvents(listener.getListener(), plugin);
+			register.registerEvents(listener.getListener(), PLUGIN);
 
 		// Disabled worlds
-		if(!disabledWorlds.isEmpty()) register.registerEvents(new DisabledWorldListener(), plugin);
+		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new DisabledWorldListener(), PLUGIN);
 
 		// Deities
 		for(ListedDeity deity : ListedDeity.values())
@@ -124,7 +126,7 @@ public class Demigods
 					return ability.getListener() != null;
 				}
 			}))
-				register.registerEvents(ability.getListener(), plugin);
+				register.registerEvents(ability.getListener(), PLUGIN);
 		}
 
 		// Structures
@@ -136,7 +138,7 @@ public class Demigods
 				return structure.getStructure().getUniqueListener() != null;
 			}
 		}))
-			register.registerEvents(structure.getStructure().getUniqueListener(), plugin);
+			register.registerEvents(structure.getStructure().getUniqueListener(), PLUGIN);
 
 		// Conversations
 		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(ListedConversation.values()), new Function<ListedConversation, WrappedConversation>()
@@ -154,27 +156,27 @@ public class Demigods
 				return conversation.getUniqueListener() != null;
 			}
 		}))
-			register.registerEvents(conversation.getUniqueListener(), plugin);
+			register.registerEvents(conversation.getUniqueListener(), PLUGIN);
 
 		// Quit reason.
-		plugin.getServer().getLogger().addHandler(new QuitReasonHandler());
+		PLUGIN.getServer().getLogger().addHandler(new QuitReasonHandler());
 	}
 
 	private static void loadCommands()
 	{
-		commands = Sets.newHashSet();
+		COMMANDS = Sets.newHashSet();
 		for(ListedCommand command : ListedCommand.values())
-			commands.addAll(command.getCommand().getCommands());
-		commands.add("dg");
-		commands.add("demigod");
+			COMMANDS.addAll(command.getCommand().getCommands());
+		COMMANDS.add("dg");
+		COMMANDS.add("demigod");
 	}
 
 	private static void loadDepends()
 	{
 		// WorldGuard
-		Plugin depend = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
-		errorNoise = plugin.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
+		Plugin depend = PLUGIN.getServer().getPluginManager().getPlugin("WorldGuard");
+		if(depend instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) depend;
+		ERROR_NOISE = PLUGIN.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
 	}
 
 	static
@@ -187,7 +189,7 @@ public class Demigods
 		{
 			Messages.severe("Demigods was unable to load any worlds.");
 			Messages.severe("Please configure at least 1 world for ");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
+			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
 		}
 	}
 
@@ -207,17 +209,17 @@ public class Demigods
 
 		public static boolean isDisabledWorld(Location location)
 		{
-			return disabledWorlds.contains(location.getWorld().getName());
+			return DISABLED_WORLDS.contains(location.getWorld().getName());
 		}
 
 		public static boolean isDisabledWorld(World world)
 		{
-			return disabledWorlds.contains(world.getName());
+			return DISABLED_WORLDS.contains(world.getName());
 		}
 
 		public static boolean isDemigodsCommand(String command)
 		{
-			return commands.contains(command);
+			return COMMANDS.contains(command);
 		}
 	}
 

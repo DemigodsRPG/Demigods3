@@ -111,8 +111,8 @@ public class Prayer implements WrappedConversation
 				if(DataManager.hasKeyTemp(player.getName(), "prayer_context")) conversationContext.putAll(((ConversationContext) DataManager.getValueTemp(player.getName(), "prayer_context")).getAllSessionData());
 			}
 
-			// Build the conversation and begin
-			Conversation prayerConversation = Demigods.conversation.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
+			// Build the CONVERSATION_FACTORY and begin
+			Conversation prayerConversation = Demigods.CONVERSATION_FACTORY.withEscapeSequence("/exit").withLocalEcho(false).withInitialSessionData(conversationContext).withFirstPrompt(new StartPrayer()).buildConversation(player);
 			prayerConversation.begin();
 
 			return prayerConversation;
@@ -140,7 +140,7 @@ public class Prayer implements WrappedConversation
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.AQUA + " -- Prayer Menu --------------------------------------");
 			player.sendRawMessage(" ");
-			for(String message : Demigods.language.getTextBlock(Translation.Text.PRAYER_INTRO))
+			for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.PRAYER_INTRO))
 				player.sendRawMessage(message);
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.GRAY + " To begin, choose an option by entering its number in the chat:");
@@ -237,7 +237,7 @@ public class Prayer implements WrappedConversation
 
 				// List them
 				for(Translation.Text notification : notifications)
-					player.sendRawMessage("  " + Demigods.language.getText(notification));
+					player.sendRawMessage("  " + Demigods.LANGUAGE.getText(notification));
 
 				// Remove them
 				notifications.clear();
@@ -467,7 +467,7 @@ public class Prayer implements WrappedConversation
 			}
 
 			player.sendRawMessage(" ");
-			for(String message : Demigods.language.getTextBlock(Translation.Text.NOTIFICATIONS_PRAYER_FOOTER))
+			for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATIONS_PRAYER_FOOTER))
 				player.sendRawMessage(message);
 
 			return "";
@@ -694,7 +694,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
 				player.sendRawMessage(" ");
 
-				// Save temporary data, end the conversation, and return
+				// Save temporary data, end the CONVERSATION_FACTORY, and return
 				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false, true);
@@ -854,7 +854,7 @@ public class Prayer implements WrappedConversation
 					// List the errors
 					for(Translation.Text error : errors)
 					{
-						player.sendRawMessage(ChatColor.RED + "  " + Demigods.language.getText(error).replace("{maxCaps}", String.valueOf(Configs.getSettingInt("character.max_caps_in_name"))));
+						player.sendRawMessage(ChatColor.RED + "  " + Demigods.LANGUAGE.getText(error).replace("{maxCaps}", String.valueOf(Configs.getSettingInt("character.max_caps_in_name"))));
 					}
 
 					// Ask for a new name
@@ -879,7 +879,7 @@ public class Prayer implements WrappedConversation
 					if(name.length() < 2 || name.length() >= 13) errors.add(Translation.Text.ERROR_NAME_LENGTH);
 					if(!StringUtils.isAlphanumeric(name)) errors.add(Translation.Text.ERROR_ALPHA_NUMERIC);
 					if(Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name"))) errors.add(Translation.Text.ERROR_MAX_CAPS);
-					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.language.getBlackList())) errors.add(Translation.Text.ERROR_CHAR_EXISTS);
+					if(DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.LANGUAGE.getBlackList())) errors.add(Translation.Text.ERROR_CHAR_EXISTS);
 
 					// Save the info
 					context.setSessionData("name_errors", errors);
@@ -1066,7 +1066,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  Your prayer has been disabled.");
 					player.sendRawMessage(" ");
 
-					// Save temporary data, end the conversation, and return
+					// Save temporary data, end the CONVERSATION_FACTORY, and return
 					DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_creating", true);
 					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false, true);
@@ -1153,7 +1153,7 @@ public class Prayer implements WrappedConversation
 				{
 					if(DPlayer.Util.getPlayer(player).canPvp())
 					{
-						for(String message : Demigods.language.getTextBlock(Translation.Text.PVP_NO_PRAYER))
+						for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.PVP_NO_PRAYER))
 							player.sendMessage(message);
 						event.setCancelled(true);
 						return;
@@ -1164,7 +1164,7 @@ public class Prayer implements WrappedConversation
 
 					// Tell nearby players that the user is praying
 					for(Entity entity : player.getNearbyEntities(20, 20, 20))
-						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.language.getText(Translation.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
+						if(entity instanceof Player) ((Player) entity).sendMessage(ChatColor.AQUA + Demigods.LANGUAGE.getText(Translation.Text.KNELT_FOR_PRAYER).replace("{player}", ChatColor.stripColor(player.getDisplayName())));
 				}
 				else if(DPlayer.Util.isPraying(player))
 				{
@@ -1216,7 +1216,7 @@ public class Prayer implements WrappedConversation
 					DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
 
 					// Message them and do cool things
-					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
+					player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
 					player.getWorld().strikeLightningEffect(player.getLocation());
 
 					for(int i = 0; i < 20; i++)

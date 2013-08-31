@@ -46,10 +46,10 @@ public class MainCommand extends WrappedCommand
 		{
 			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
 			{
-				PluginManager pluginManager = Demigods.plugin.getServer().getPluginManager();
-				pluginManager.disablePlugin(Demigods.plugin);
-				pluginManager.enablePlugin(Demigods.plugin);
-				sender.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.RELOAD_COMPLETE));
+				PluginManager pluginManager = Demigods.PLUGIN.getServer().getPluginManager();
+				pluginManager.disablePlugin(Demigods.PLUGIN);
+				pluginManager.enablePlugin(Demigods.PLUGIN);
+				sender.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.RELOAD_COMPLETE));
 				return true;
 			}
 		}
@@ -89,7 +89,7 @@ public class MainCommand extends WrappedCommand
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
-		sender.sendMessage(ChatColor.GRAY + " /dg commands");
+		sender.sendMessage(ChatColor.GRAY + " /dg COMMANDS");
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
@@ -113,7 +113,7 @@ public class MainCommand extends WrappedCommand
 		{
 			dg_admin(player, option1, option2, option3, option4);
 		}
-		else if(category.equalsIgnoreCase("commands"))
+		else if(category.equalsIgnoreCase("COMMANDS"))
 		{
 			Messages.tagged(player, "Command Directory");
 			player.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
@@ -265,9 +265,9 @@ public class MainCommand extends WrappedCommand
 		{
 			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanently"))
 			{
-				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
+				player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
 				DataManager.flushData();
-				player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
+				player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
 				return true;
 			}
 			else if(option1.equalsIgnoreCase("wand"))

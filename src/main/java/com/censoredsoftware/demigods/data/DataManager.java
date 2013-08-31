@@ -21,9 +21,6 @@ import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
 {
-	// Constants
-	public static String SAVE_PATH;
-
 	// Data
 	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DLocation> locations;
@@ -64,7 +61,7 @@ public class DataManager
 	{
 		// Kick everyone
 		for(Player player : Bukkit.getOnlinePlayers())
-			player.kickPlayer(ChatColor.GREEN + Demigods.language.getText(Translation.Text.DATA_RESET_KICK));
+			player.kickPlayer(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.DATA_RESET_KICK));
 
 		// Clear the data
 		itemStacks.clear();
@@ -86,9 +83,9 @@ public class DataManager
 
 		save();
 
-		// Reload the plugin
-		Bukkit.getServer().getPluginManager().disablePlugin(Demigods.plugin);
-		Bukkit.getServer().getPluginManager().enablePlugin(Demigods.plugin);
+		// Reload the PLUGIN
+		Bukkit.getServer().getPluginManager().disablePlugin(Demigods.PLUGIN);
+		Bukkit.getServer().getPluginManager().enablePlugin(Demigods.PLUGIN);
 	}
 
 	public static boolean hasKeyTemp(String key, String subKey)
@@ -162,7 +159,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -205,7 +202,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -248,7 +245,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -291,7 +288,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -334,7 +331,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -377,7 +374,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -420,7 +417,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -463,7 +460,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -506,7 +503,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -549,7 +546,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -592,7 +589,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -635,7 +632,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -678,7 +675,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override
@@ -721,7 +718,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return SAVE_PATH;
+				return Demigods.SAVE_PATH;
 			}
 
 			@Override

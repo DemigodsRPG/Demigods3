@@ -221,7 +221,7 @@ public class Notification implements ConfigurationSerializable
 			if(character.getOfflinePlayer().isOnline())
 			{
 				Player player = character.getOfflinePlayer().getPlayer();
-				for(String message : Demigods.language.getTextBlock(Translation.Text.NOTIFICATION_RECEIVED))
+				for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_RECEIVED))
 				{
 					player.sendMessage(message);
 				}

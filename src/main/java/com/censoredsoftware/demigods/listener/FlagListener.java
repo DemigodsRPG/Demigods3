@@ -24,7 +24,7 @@ public class FlagListener implements Listener
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.language.getText(Translation.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
 		}
 	}
 
@@ -35,7 +35,7 @@ public class FlagListener implements Listener
 		if(Structures.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.language.getText(Translation.Text.PROTECTED_BLOCK));
+			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
 		}
 	}
 
@@ -81,7 +81,7 @@ public class FlagListener implements Listener
 		final Structure.Save save = Structures.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()
 		{
 			@Override
 			public void run()
@@ -97,7 +97,7 @@ public class FlagListener implements Listener
 		if(DataManager.hasTimed("explode", "structure")) return;
 		DataManager.saveTimed("explode", "structure", true, 2);
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()
 		{
 			@Override
 			public void run()

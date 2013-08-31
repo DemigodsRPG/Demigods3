@@ -81,7 +81,7 @@ public abstract class ConfigFile<ID, DATA extends ConfigurationSerializable>
 			if(!dataFile.exists())
 			{
 				(new File(path)).mkdir();
-				Demigods.plugin.saveResource(path.replace(Demigods.plugin.getDataFolder() + "/", "") + resource, false);
+				Demigods.PLUGIN.saveResource(path.replace(Demigods.PLUGIN.getDataFolder() + "/", "") + resource, false);
 			}
 		}
 

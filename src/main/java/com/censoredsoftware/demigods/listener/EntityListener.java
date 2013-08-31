@@ -39,7 +39,7 @@ public class EntityListener implements Listener
 			// No PvP
 			if(!DPlayer.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
-				hitting.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.NO_PVP_ZONE));
+				hitting.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.NO_PVP_ZONE));
 				event.setCancelled(true);
 				return;
 			}

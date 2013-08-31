@@ -172,7 +172,7 @@ public class Skill implements ConfigurationSerializable
 
 				if(character.getOfflinePlayer().isOnline())
 				{
-					for(String string : Demigods.language.getTextBlock(Translation.Text.NOTIFICATION_SKILL_POINTS_RECEIVED))
+					for(String string : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_SKILL_POINTS_RECEIVED))
 						character.getOfflinePlayer().getPlayer().sendMessage(string.replace("{skillpoints}", "" + skillPoints));
 				}
 			}

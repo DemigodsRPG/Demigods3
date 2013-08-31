@@ -23,7 +23,7 @@ public class Messages
 	 */
 	static
 	{
-		PLUGIN_NAME = Demigods.plugin.getName();
+		PLUGIN_NAME = Demigods.PLUGIN.getName();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Messages
 	 */
 	public static void broadcast(String msg)
 	{
-		Demigods.plugin.getServer().broadcastMessage(msg);
+		Demigods.PLUGIN.getServer().broadcastMessage(msg);
 	}
 
 	/**

@@ -50,7 +50,7 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.plugin.getDescription().getVersion());
+			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.PLUGIN.getDescription().getVersion());
 			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
 		}
 
@@ -122,7 +122,7 @@ public class PlayerListener implements Listener
 				Battle battle = Battle.Util.getBattle(loggingOff);
 				battle.addDeath(loggingOff);
 				DataManager.saveTemp(name, "quit_during_battle", true);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.plugin, new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 				{
 					@Override
 					public void run()

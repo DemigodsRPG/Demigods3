@@ -7,6 +7,6 @@ public class Errors
 {
 	public static void triggerError(String... message)
 	{
-		ErrorNoise.API.triggerError(Demigods.plugin, message);
+		ErrorNoise.API.triggerError(Demigods.PLUGIN, message);
 	}
 }

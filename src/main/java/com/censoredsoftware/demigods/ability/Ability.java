@@ -325,19 +325,19 @@ public interface Ability
 						if(itemInHand == null || itemInHand.getType().equals(Material.AIR))
 						{
 							// Slot must not be empty
-							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_EMPTY_SLOT));
+							player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ERROR_EMPTY_SLOT));
 							return true;
 						}
 						else if(character.getMeta().isBound(itemInHand.getType()))
 						{
 							// Material already bound
-							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_MATERIAL_BOUND));
+							player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ERROR_MATERIAL_BOUND));
 							return true;
 						}
 						else if(ability.hasWeapon() && !itemInHand.getType().equals(ability.getWeapon()))
 						{
 							// Weapon required
-							player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
+							player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ERROR_BIND_WEAPON_REQUIRED).replace("{weapon}", Strings.beautify(ability.getWeapon().name()).toLowerCase()).replace("{ability}", abilityName));
 							return true;
 						}
 
@@ -345,7 +345,7 @@ public interface Ability
 						character.getMeta().setBind(ability, itemInHand.getType());
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
+						player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.SUCCESS_ABILITY_BOUND).replace("{ability}", StringUtils.capitalize(abilityName)).replace("{material}", (Strings.beginsWithVowel(itemInHand.getType().name()) ? "an " : "a ") + Strings.beautify(itemInHand.getType().name()).toLowerCase()));
 
 						return true;
 					}
@@ -355,7 +355,7 @@ public interface Ability
 						character.getMeta().removeBind(ability);
 
 						// Let them know
-						player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
+						player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.SUCCESS_ABILITY_UNBOUND).replace("{ability}", StringUtils.capitalize(abilityName)));
 
 						return true;
 					}

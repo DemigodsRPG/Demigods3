@@ -241,7 +241,7 @@ public class Obelisk implements Structure
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
-						player.sendMessage(ChatColor.GRAY + Demigods.language.getText(Translation.Text.CREATE_OBELISK));
+						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.CREATE_OBELISK));
 						event.setCancelled(true);
 					}
 					catch(Exception e)
@@ -267,12 +267,12 @@ public class Obelisk implements Structure
 
 					Admins.sendDebug(ChatColor.RED + "Obelisk owned by (" + owner.getName() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ() + " removed.");
 
-					player.sendMessage(ChatColor.GREEN + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
+					player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK_COMPLETE));
 				}
 				else
 				{
 					DataManager.saveTimed(player.getName(), "destroy_obelisk", true, 5);
-					player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK));
+					player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_REMOVE_OBELISK));
 				}
 			}
 		}

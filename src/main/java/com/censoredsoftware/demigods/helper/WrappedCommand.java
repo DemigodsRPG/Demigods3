@@ -15,8 +15,8 @@ public abstract class WrappedCommand implements TabExecutor
 	{
 		for(String command : getCommands())
 		{
-			Demigods.plugin.getCommand(command).setExecutor(this);
-			if(tab) Demigods.plugin.getCommand(command).setTabCompleter(this);
+			Demigods.PLUGIN.getCommand(command).setExecutor(this);
+			if(tab) Demigods.PLUGIN.getCommand(command).setTabCompleter(this);
 		}
 	}
 

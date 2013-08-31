@@ -56,7 +56,7 @@ public class TributeListener implements Listener
 			// Return if the player is mortal
 			if(!DPlayer.Util.getPlayer(player).hasCurrent())
 			{
-				player.sendMessage(ChatColor.RED + Demigods.language.getText(Translation.Text.DISABLED_MORTAL));
+				player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
 				return;
 			}
 			else if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
