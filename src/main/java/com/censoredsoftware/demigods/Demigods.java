@@ -184,13 +184,6 @@ public class Demigods
 		// Allow static access.
 		conversation = new ConversationFactory(plugin);
 
-		if(!loadWorlds())
-		{
-			Messages.severe("Demigods was unable to load any worlds.");
-			Messages.severe("Please configure at least 1 world for ");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-		}
-
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();
 
@@ -300,6 +293,16 @@ public class Demigods
 		Plugin depend = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) worldguard = (WorldGuardPlugin) depend;
 		errorNoise = plugin.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
+	}
+
+	static
+	{
+		if(!loadWorlds())
+		{
+			Messages.severe("Demigods was unable to load any worlds.");
+			Messages.severe("Please configure at least 1 world for ");
+			plugin.getServer().getPluginManager().disablePlugin(plugin);
+		}
 	}
 
 	public static class MiscUtil
