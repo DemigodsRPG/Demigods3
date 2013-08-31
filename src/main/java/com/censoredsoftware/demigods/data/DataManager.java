@@ -42,7 +42,7 @@ public class DataManager
 
 	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
 
-	public DataManager()
+	static
 	{
 		load();
 		tempData = Maps.newConcurrentMap();
