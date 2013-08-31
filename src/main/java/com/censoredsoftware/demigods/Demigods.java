@@ -185,9 +185,6 @@ public class Demigods
 		// Allow static access.
 		conversation = new ConversationFactory(plugin);
 
-		// Quit reason.
-		plugin.getServer().getLogger().addHandler(new QuitReasonHandler());
-
 		if(!loadWorlds())
 		{
 			Messages.severe("Demigods was unable to load any worlds.");
@@ -284,6 +281,9 @@ public class Demigods
 			}
 		}))
 			register.registerEvents(conversation.getUniqueListener(), plugin);
+
+		// Quit reason.
+		plugin.getServer().getLogger().addHandler(new QuitReasonHandler());
 	}
 
 	private static void loadCommands()
