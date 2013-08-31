@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Shove;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
 import com.censoredsoftware.demigods.ability.ultimate.Storm;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Zeus implements com.censoredsoftware.demigods.deity.Deity
+public class Zeus implements Deity
 {
 	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
 	private final static int accuracy = 15;
@@ -53,7 +54,7 @@ public class Zeus implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.ZEUS;
+		return Element.ListedDeity.ZEUS;
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public class Translation
 		if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) set.addAll((List<String>) translation.get("BLACKLIST"));
 
 		// Deities
-		for(Element.ListedDeity deity : Element.Deity.values())
+		for(Element.ListedDeity deity : Element.ListedDeity.values())
 		{
 			set.add(deity.getDeity().getName());
 			set.add(deity.getDeity().getAlliance());

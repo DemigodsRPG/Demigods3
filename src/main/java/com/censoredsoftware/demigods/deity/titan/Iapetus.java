@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.deity.titan;
 
 import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Iapetus implements com.censoredsoftware.demigods.deity.Deity
+public class Iapetus implements Deity
 {
 	private final static String name = "Iapetus", alliance = "Titan", permission = "demigods.titan.iapetus";
 	private final static int accuracy = 15;
@@ -50,7 +51,7 @@ public class Iapetus implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.IAPETUS;
+		return Element.ListedDeity.IAPETUS;
 	}
 
 	@Override

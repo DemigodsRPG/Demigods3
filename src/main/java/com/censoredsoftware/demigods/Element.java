@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods;
 
 import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
@@ -11,12 +12,13 @@ import com.censoredsoftware.demigods.helper.ListedConversation;
 import com.censoredsoftware.demigods.structure.Altar;
 import com.censoredsoftware.demigods.structure.Obelisk;
 import com.censoredsoftware.demigods.structure.Shrine;
+import com.censoredsoftware.demigods.structure.Structure;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 
 public class Element
 {
-	public static enum Deity implements ListedDeity
+	public static enum ListedDeity
 	{
 		// GODS
 		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()), HADES("Hades", new Hades()),
@@ -30,25 +32,23 @@ public class Element
 		private final String name;
 		private final com.censoredsoftware.demigods.deity.Deity deity;
 
-		private Deity(String name, com.censoredsoftware.demigods.deity.Deity deity)
+		private ListedDeity(String name, com.censoredsoftware.demigods.deity.Deity deity)
 		{
 			this.name = name;
 			this.deity = deity;
 		}
 
-		@Override
 		public String getName()
 		{
 			return name;
 		}
 
-		@Override
-		public com.censoredsoftware.demigods.deity.Deity getDeity()
+		public Deity getDeity()
 		{
 			return deity;
 		}
 
-		public static com.censoredsoftware.demigods.deity.Deity get(String name)
+		public static Deity get(String name)
 		{
 			for(ListedDeity deity : values())
 				if(deity.getName().equalsIgnoreCase(name)) return deity.getDeity();
@@ -56,19 +56,18 @@ public class Element
 		}
 	}
 
-	public static enum Structure implements ListedStructure
+	public static enum ListedStructure
 	{
 		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
 
 		private final com.censoredsoftware.demigods.structure.Structure structure;
 
-		private Structure(com.censoredsoftware.demigods.structure.Structure structure)
+		private ListedStructure(Structure structure)
 		{
 			this.structure = structure;
 		}
 
-		@Override
-		public com.censoredsoftware.demigods.structure.Structure getStructure()
+		public Structure getStructure()
 		{
 			return structure;
 		}
@@ -97,17 +96,5 @@ public class Element
 
 			public boolean canUse(ConversationContext context);
 		}
-	}
-
-	public interface ListedDeity
-	{
-		public String getName();
-
-		public com.censoredsoftware.demigods.deity.Deity getDeity();
-	}
-
-	public interface ListedStructure
-	{
-		public com.censoredsoftware.demigods.structure.Structure getStructure();
 	}
 }

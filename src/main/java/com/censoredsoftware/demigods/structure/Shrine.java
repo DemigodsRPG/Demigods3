@@ -208,7 +208,7 @@ public class Shrine implements Structure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure.Save save = Element.Structure.SHRINE.getStructure().createNew(location, true);
+						Structure.Save save = Element.ListedStructure.SHRINE.getStructure().createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 

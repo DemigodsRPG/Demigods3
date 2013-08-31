@@ -298,7 +298,7 @@ public interface Ability
 		public static List<Ability> getLoadedAbilities()
 		{
 			List<Ability> list = new ArrayList<Ability>();
-			for(Element.ListedDeity deity : Element.Deity.values())
+			for(Element.ListedDeity deity : Element.ListedDeity.values())
 				list.addAll(deity.getDeity().getAbilities());
 			return list;
 		}

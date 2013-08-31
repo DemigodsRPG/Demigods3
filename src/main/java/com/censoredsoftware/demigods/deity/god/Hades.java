@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.deity.god;
 
 import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Hades implements com.censoredsoftware.demigods.deity.Deity
+public class Hades implements Deity
 {
 	private final static String name = "Hades", alliance = "God", permission = "demigods.god.hades";
 	private final static int accuracy = 15;
@@ -50,7 +51,7 @@ public class Hades implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.HADES;
+		return Element.ListedDeity.HADES;
 	}
 
 	@Override

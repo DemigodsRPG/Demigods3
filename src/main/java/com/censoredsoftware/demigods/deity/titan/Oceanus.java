@@ -4,6 +4,7 @@ import com.censoredsoftware.demigods.Element;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Oceanus implements com.censoredsoftware.demigods.deity.Deity
+public class Oceanus implements Deity
 {
 	private final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
 	private final static int accuracy = 15;
@@ -52,7 +53,7 @@ public class Oceanus implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.OCEANUS;
+		return Element.ListedDeity.OCEANUS;
 	}
 
 	@Override

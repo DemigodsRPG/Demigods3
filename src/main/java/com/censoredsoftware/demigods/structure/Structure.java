@@ -148,7 +148,7 @@ public interface Structure
 
 		public Structure getStructure()
 		{
-			for(Element.ListedStructure structure : Element.Structure.values())
+			for(Element.ListedStructure structure : Element.ListedStructure.values())
 				if(structure.getStructure().getStructureType().equalsIgnoreCase(this.type)) return structure.getStructure();
 			return null;
 		}

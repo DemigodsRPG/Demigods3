@@ -101,10 +101,10 @@ public interface Deity
 
 		public static Set<String> getLoadedDeityAlliances()
 		{
-			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Element.Deity.values()), new Function<Element.Deity, String>()
+			return Sets.newHashSet(Collections2.transform(Sets.newHashSet(Element.ListedDeity.values()), new Function<Element.ListedDeity, String>()
 			{
 				@Override
-				public String apply(Element.Deity d)
+				public String apply(Element.ListedDeity d)
 				{
 					return d.getDeity().getAlliance();
 				}
@@ -113,10 +113,10 @@ public interface Deity
 
 		public static Collection<Deity> getLoadedDeitiesInAlliance(final String alliance)
 		{
-			return Collections2.filter(Collections2.transform(Sets.newHashSet(Element.Deity.values()), new Function<Element.Deity, Deity>()
+			return Collections2.filter(Collections2.transform(Sets.newHashSet(Element.ListedDeity.values()), new Function<Element.ListedDeity, Deity>()
 			{
 				@Override
-				public Deity apply(Element.Deity d)
+				public Deity apply(Element.ListedDeity d)
 				{
 					return d.getDeity();
 				}
@@ -132,7 +132,7 @@ public interface Deity
 
 		public static Deity getDeity(String deity)
 		{
-			return Element.Deity.get(deity);
+			return Element.ListedDeity.get(deity);
 		}
 
 		public static boolean canUseDeity(DCharacter character, String deity)

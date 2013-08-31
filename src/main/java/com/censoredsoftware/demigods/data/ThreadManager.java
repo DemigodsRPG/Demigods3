@@ -43,7 +43,7 @@ public class ThreadManager
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, Util.getSaveRunnable(), 20, (Demigods.config.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
-		for(Element.ListedDeity deity : Element.Deity.values())
+		for(Element.ListedDeity deity : Element.ListedDeity.values())
 			for(Ability ability : deity.getDeity().getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.plugin, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 	}

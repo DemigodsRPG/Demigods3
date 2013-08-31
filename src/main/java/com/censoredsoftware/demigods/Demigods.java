@@ -134,7 +134,7 @@ public class Demigods
 		if(!disabledWorlds.isEmpty()) register.registerEvents(new DisabledWorldListener(), instance);
 
 		// Deities
-		for(Element.ListedDeity deity : Element.Deity.values())
+		for(Element.ListedDeity deity : Element.ListedDeity.values())
 		{
 			if(deity.getDeity().getAbilities() == null) continue;
 			for(Ability ability : Sets.filter(deity.getDeity().getAbilities(), new Predicate<Ability>()
@@ -149,10 +149,10 @@ public class Demigods
 		}
 
 		// Structures
-		for(Element.ListedStructure structure : Sets.filter(Sets.newHashSet(Element.Structure.values()), new Predicate<Element.Structure>()
+		for(Element.ListedStructure structure : Sets.filter(Sets.newHashSet(Element.ListedStructure.values()), new Predicate<Element.ListedStructure>()
 		{
 			@Override
-			public boolean apply(Element.Structure structure)
+			public boolean apply(Element.ListedStructure structure)
 			{
 				return structure.getStructure().getUniqueListener() != null;
 			}

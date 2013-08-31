@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.passive.NoFire;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Prometheus implements com.censoredsoftware.demigods.deity.Deity
+public class Prometheus implements Deity
 {
 	private final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
 	private final static int accuracy = 15;
@@ -53,7 +54,7 @@ public class Prometheus implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.PROMETHEUS;
+		return Element.ListedDeity.PROMETHEUS;
 	}
 
 	@Override

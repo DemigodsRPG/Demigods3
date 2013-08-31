@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Reel;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Strings;
 import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Poseidon implements com.censoredsoftware.demigods.deity.Deity
+public class Poseidon implements Deity
 {
 	private final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
 	private final static int accuracy = 15;
@@ -53,7 +54,7 @@ public class Poseidon implements com.censoredsoftware.demigods.deity.Deity
 	@Override
 	public Element.ListedDeity getListedDeity()
 	{
-		return Element.Deity.POSEIDON;
+		return Element.ListedDeity.POSEIDON;
 	}
 
 	@Override
