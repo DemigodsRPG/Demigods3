@@ -159,7 +159,7 @@ public class Demigods
 			register.registerEvents(conversation.getUniqueListener(), PLUGIN);
 
 		// Quit reason.
-		PLUGIN.getServer().getLogger().addHandler(new QuitReasonHandler());
+		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
 	}
 
 	private static void loadCommands()
@@ -174,9 +174,9 @@ public class Demigods
 	private static void loadDepends()
 	{
 		// WorldGuard
-		Plugin depend = PLUGIN.getServer().getPluginManager().getPlugin("WorldGuard");
+		Plugin depend = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) depend;
-		ERROR_NOISE = PLUGIN.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
+		ERROR_NOISE = Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
 	}
 
 	static
