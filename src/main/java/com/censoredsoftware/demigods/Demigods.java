@@ -62,7 +62,7 @@ public class Demigods
 	// The LANGUAGE
 	public static Translation LANGUAGE;
 
-	// Start the PLUGIN
+	// Load what is possible to load right away.
 	static
 	{
 		// Allow static access.
@@ -81,6 +81,27 @@ public class Demigods
 
 		// Configure depends
 		loadDepends();
+	}
+
+	// Load everything else.
+	protected Demigods()
+	{
+		// Check if there are no enabled worlds
+		if(!loadWorlds())
+		{
+			Messages.severe("Demigods was unable to load any worlds.");
+			Messages.severe("Please configure at least 1 world for ");
+			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
+		}
+
+		// Load listeners and commands
+		loadListeners();
+		loadCommands();
+
+		// Update usable characters
+		DCharacter.Util.updateUsableCharacters();
+
+		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	private static boolean loadWorlds()
@@ -173,26 +194,6 @@ public class Demigods
 		Plugin depend = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) depend;
 		ERROR_NOISE = Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
-	}
-
-	static
-	{
-		// Check if there are no enabled worlds
-		if(!loadWorlds())
-		{
-			Messages.severe("Demigods was unable to load any worlds.");
-			Messages.severe("Please configure at least 1 world for ");
-			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
-		}
-
-		// Load listeners and commands
-		loadListeners();
-		loadCommands();
-
-		// Update usable characters
-		DCharacter.Util.updateUsableCharacters();
-
-		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
 	public static class MiscUtil
