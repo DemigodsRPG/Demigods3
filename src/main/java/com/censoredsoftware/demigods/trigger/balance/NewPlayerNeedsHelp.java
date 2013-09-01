@@ -27,6 +27,7 @@ public class NewPlayerNeedsHelp implements Trigger
 	@Override
 	public void processSync() // TODO Balance this.
 	{
+		Messages.broadcast("Test.");
 		Collection<DCharacter> characters = Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(DCharacter.Util.getMedianOverallAscension()), new Predicate<DCharacter>()
 		{
 			@Override
