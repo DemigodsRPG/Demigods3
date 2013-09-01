@@ -19,7 +19,7 @@ public class DemigodsChatEvent extends Event implements Cancellable
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancel = false;
 	private String message;
-	private final Set<Player> recipients;
+	private Set<Player> recipients;
 
 	public DemigodsChatEvent(String message)
 	{
@@ -65,6 +65,11 @@ public class DemigodsChatEvent extends Event implements Cancellable
 	public Set<Player> getRecipients()
 	{
 		return recipients;
+	}
+
+	public void setRecipients(Set<Player> recipients)
+	{
+		this.recipients = recipients;
 	}
 
 	@Override

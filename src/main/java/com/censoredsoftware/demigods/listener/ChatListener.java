@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class ChatListener implements Listener
 {
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
 		String message = event.getMessage();
 		message = message.substring(1);
