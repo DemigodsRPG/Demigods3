@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -43,8 +44,11 @@ public class PlayerListener implements Listener
 			ChatColor color = character.getDeity().getColor();
 			player.setDisplayName(color + name + ChatColor.RESET);
 			player.setPlayerListName(color + name + ChatColor.RESET);
-			event.getPlayer().setMaxHealth(character.getMaxHealth());
-			event.getPlayer().setHealth(character.getHealth());
+			if(character.isAlive())
+			{
+				event.getPlayer().setMaxHealth(character.getMaxHealth());
+				event.getPlayer().setHealth(character.getHealth());
+			}
 		}
 
 		// Demigods welcome message
@@ -86,7 +90,7 @@ public class PlayerListener implements Listener
 		if(!Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final String name = event.getPlayer().getName();
@@ -155,6 +159,14 @@ public class PlayerListener implements Listener
 			double maxhealth = wrapper.getCurrent().getMaxHealth();
 			event.getPlayer().setMaxHealth(maxhealth);
 			event.getPlayer().setHealth(maxhealth);
+			wrapper.getCurrent().setAlive(true);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerDeath(PlayerDeathEvent event)
+	{
+		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
+		if(character != null) character.setAlive(false);
 	}
 }

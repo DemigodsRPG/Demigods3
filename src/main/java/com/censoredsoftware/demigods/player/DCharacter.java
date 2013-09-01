@@ -30,6 +30,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private UUID id;
 	private String name;
 	private String player;
+	private Boolean alive;
 	private double health;
 	private double maxhealth;
 	private Integer hunger;
@@ -59,6 +60,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.id = id;
 		name = conf.getString("name");
 		player = conf.getString("player");
+		if(conf.isBoolean("alive")) alive = conf.getBoolean("alive");
 		health = conf.getDouble("health");
 		maxhealth = conf.getDouble("maxhealth");
 		hunger = conf.getInt("hunger");
@@ -83,6 +85,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("name", name);
 		map.put("player", player);
+		if(alive != null) map.put("alive", alive);
 		map.put("health", health);
 		map.put("maxhealth", maxhealth);
 		map.put("hunger", hunger);
@@ -147,6 +150,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		this.inventory = Util.createInventory(this).getId();
 		Util.save(this);
+	}
+
+	public void setAlive(boolean alive)
+	{
+		this.active = alive;
 	}
 
 	public void setHealth(double health)
@@ -293,6 +301,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public Integer getLevel()
 	{
 		return level;
+	}
+
+	public Boolean isAlive()
+	{
+		return alive;
 	}
 
 	public Double getHealth()
