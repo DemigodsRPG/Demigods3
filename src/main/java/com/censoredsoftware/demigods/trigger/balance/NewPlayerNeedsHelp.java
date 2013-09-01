@@ -5,7 +5,6 @@ import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
 import com.censoredsoftware.demigods.trigger.Trigger;
-import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.bukkit.ChatColor;
@@ -26,7 +25,7 @@ public class NewPlayerNeedsHelp implements Trigger
 	}
 
 	@Override
-	public void processSync() // TODO Balance this.
+	public void processSync()
 	{
 		Collection<DCharacter> characters = Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(noobAscensions), new Predicate<DCharacter>()
 		{
@@ -40,7 +39,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		for(DCharacter character : characters)
 		{
 			if(Demigods.MiscUtil.isDisabledWorld(character.getLocation())) continue;
-			Messages.broadcast(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");// TODO Baetylus shards.
+			character.sendAllianceMessage(ChatColor.YELLOW + "Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
 			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}
 	}

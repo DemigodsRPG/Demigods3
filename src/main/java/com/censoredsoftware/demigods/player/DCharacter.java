@@ -438,6 +438,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
 	}
 
+	public void sendAllianceMessage(String message)
+	{
+		for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()))
+			character.getOfflinePlayer().getPlayer().sendMessage(message);
+	}
+
 	public static class Inventory implements ConfigurationSerializable
 	{
 		private UUID id;
