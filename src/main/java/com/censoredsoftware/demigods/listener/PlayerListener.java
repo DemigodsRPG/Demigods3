@@ -156,11 +156,11 @@ public class PlayerListener implements Listener
 		DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(character != null)
 		{
+			character.setAlive(true);
+			DCharacter.Util.save(character);
 			double maxhealth = character.getMaxHealth();
 			event.getPlayer().setMaxHealth(maxhealth);
 			event.getPlayer().setHealth(maxhealth);
-			character.setAlive(true);
-			DCharacter.Util.save(character);
 		}
 	}
 
