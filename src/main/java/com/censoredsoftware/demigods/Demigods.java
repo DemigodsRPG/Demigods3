@@ -188,8 +188,12 @@ public class Demigods
 		COMMANDS = Sets.newHashSet();
 		for(ListedCommand command : ListedCommand.values())
 			COMMANDS.addAll(command.getCommand().getCommands());
-		COMMANDS.add("dg");
 		COMMANDS.add("demigod");
+		COMMANDS.add("dg");
+		COMMANDS.add("c");
+		COMMANDS.add("o");
+		COMMANDS.add("l");
+		COMMANDS.add("a");
 	}
 
 	private static void loadDepends()

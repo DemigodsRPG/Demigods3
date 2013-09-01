@@ -210,7 +210,7 @@ public class MainCommand extends WrappedCommand
 										{
 											for(String detail : ability.getDetails())
 											{
-												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Unicodes.rightwardArrow() + " ");
+												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Unicodes.getRightwardArrow() + " ");
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
 												add(details.toString());

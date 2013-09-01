@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -442,6 +443,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()))
 			character.getOfflinePlayer().getPlayer().sendMessage(message);
+	}
+
+	public void chatWithAlliance(String message)
+	{
+		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Unicodes.getMail() + " " + getDeity().getColor() + name + ": " + ChatColor.RESET + message);
 	}
 
 	public static class Inventory implements ConfigurationSerializable

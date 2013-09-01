@@ -1,9 +1,12 @@
 package com.censoredsoftware.demigods.command;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
+import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -28,7 +31,7 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard");
+		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance");
 	}
 
 	@Override
@@ -36,6 +39,7 @@ public class GeneralCommands extends WrappedCommand
 	{
 		if(command.getName().equalsIgnoreCase("check")) return check(sender);
 		else if(command.getName().equalsIgnoreCase("owner")) return owner(sender, args);
+		else if(command.getName().equalsIgnoreCase("alliance")) return alliance(sender, args);
 		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
 		return false;
@@ -67,11 +71,11 @@ public class GeneralCommands extends WrappedCommand
 		// Send the user their info via chat
 		Messages.tagged(sender, "Player Check");
 
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.rightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
+		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
+		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
+		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
 
 		return true;
 	}
@@ -91,6 +95,24 @@ public class GeneralCommands extends WrappedCommand
 		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
 		if(charToCheck == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
+		return true;
+	}
+
+	private boolean alliance(CommandSender sender, String[] args)
+	{
+		// Check permissions
+		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
+
+		Player player = (Player) sender;
+		if(args.length < 1) return false;
+
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		if(character == null)
+		{
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
+			return true;
+		}
+		else character.chatWithAlliance(Joiner.on(" ").join(args));
 		return true;
 	}
 

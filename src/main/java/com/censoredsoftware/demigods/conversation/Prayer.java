@@ -371,7 +371,7 @@ public class Prayer implements WrappedConversation
 
 			for(Skill skill : character.getMeta().getSkills())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredExp() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredExp() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
 			}
 
 			player.sendRawMessage(" ");
@@ -686,7 +686,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.GRAY + "  before forsaking:");
 				player.sendRawMessage(" ");
 				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  Return to an Altar after obtaining these items to finish");
 				player.sendRawMessage(ChatColor.GRAY + "  forsaking.");
@@ -735,7 +735,7 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory? " + ChatColor.GRAY + "(y/n)");
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 
 			return "";
 		}
@@ -941,7 +941,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(" ");
 
 				for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliances())
-					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
+					player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
 
 				return "";
 			}
@@ -1008,7 +1008,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(" ");
 
 				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
-					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.GRAY + " - " + ChatColor.DARK_RED + "Difficult" : ""));
+					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.GRAY + " - " + ChatColor.DARK_RED + "Difficult" : ""));
 
 				return "";
 			}
@@ -1058,7 +1058,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
 					for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
-						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+						player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
 					player.sendRawMessage(ChatColor.GRAY + "  confirm your new character.");
@@ -1113,7 +1113,7 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
 			for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
-				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.rightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+				player.sendRawMessage(ChatColor.GRAY + "    " + Unicodes.getRightwardArrow() + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			return "";
 		}
 

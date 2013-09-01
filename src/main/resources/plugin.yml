@@ -13,12 +13,19 @@ commands:
         permission: demigods.basic
     check:
         usage: /check
+        aliases: [c]
         permission: demigods.basic
     owner:
         usage: /owner <character>
+        aliases: [o]
         permission: demigods.basic
     leaderboard:
         usage: /leaderboard
+        aliases: [l]
+        permission: demigods.basic
+    alliance:
+        usage: /alliance
+        aliases: [a]
         permission: demigods.basic
     test1:
         usage: /test1

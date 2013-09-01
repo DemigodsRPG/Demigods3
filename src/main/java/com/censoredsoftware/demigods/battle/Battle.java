@@ -398,7 +398,7 @@ public class Battle implements ConfigurationSerializable
 			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
-				Messages.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.rightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+				Messages.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.getRightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
 			Messages.broadcast(" ");
 		}
 
@@ -433,9 +433,9 @@ public class Battle implements ConfigurationSerializable
 	public void sendBattleStats()
 	{
 		sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.rightwardArrow() + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
+		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
 	}
 
 	public static class Util

@@ -58,7 +58,7 @@ public class DevelopmentCommands extends WrappedCommand
 		for(DCharacter character : DCharacter.Util.loadAll())
 			character.getMeta().resetSkills();
 
-		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.rightwardArrow() + " ").red("Test error.").build());
+		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
 
 		return true;
 	}

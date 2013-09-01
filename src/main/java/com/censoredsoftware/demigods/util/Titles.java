@@ -11,7 +11,7 @@ public class Titles
 	public static String chatTitle(String title)
 	{
 		int total = 86;
-		String chatTitle = " " + Unicodes.rightwardArrow() + " " + title + " ";
+		String chatTitle = " " + Unicodes.getRightwardArrow() + " " + title + " ";
 		for(int i = 0; i < (total - chatTitle.length()); i++)
 			chatTitle += "-";
 		return chatTitle;
