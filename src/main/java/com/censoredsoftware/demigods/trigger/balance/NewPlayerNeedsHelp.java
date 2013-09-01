@@ -40,7 +40,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		for(DCharacter character : characters)
 		{
 			if(Demigods.MiscUtil.isDisabledWorld(character.getLocation())) continue;
-			character.sendAllianceMessage(ChatColor.YELLOW + " " + Unicodes.getCaution() + " Hey, " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
+			character.sendAllianceMessage(ChatColor.YELLOW + " " + Unicodes.getCaution() + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
 			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}
 	}
