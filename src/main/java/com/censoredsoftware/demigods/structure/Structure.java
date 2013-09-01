@@ -31,6 +31,11 @@ public class Structure implements ConfigurationSerializable
 	private UUID owner;
 	private List<String> members;
 
+	static
+	{
+		Util.regenerateStructures();
+	}
+
 	public Structure()
 	{}
 
@@ -923,11 +928,6 @@ public class Structure implements ConfigurationSerializable
 
 	public static class Util
 	{
-		static
-		{
-			regenerateStructures();
-		}
-
 		public static Structure getStructureRegional(final Location location)
 		{
 			try
