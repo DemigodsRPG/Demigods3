@@ -84,7 +84,7 @@ public class Demigods
 		if(!loadWorlds())
 		{
 			Messages.severe("Demigods was unable to load any worlds.");
-			Messages.severe("Please configure at least 1 world for ");
+			Messages.severe("Please enable at least 1 world.");
 			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
 		}
 
