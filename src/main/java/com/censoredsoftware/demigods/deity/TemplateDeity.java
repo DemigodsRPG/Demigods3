@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.deity;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -16,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TemplateDeity implements Deity
+public class TemplateDeity
 {
-	private final static String name = "Template", alliance = "Test", permission = "demigods.test.template";
-	private final static int accuracy = 15;
-	private final static ChatColor color = ChatColor.GRAY;
-	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
-	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
-	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
+	public final static String name = "Template", alliance = "Test", permission = "demigods.test.template";
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static ChatColor color = ChatColor.GRAY;
+	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
+	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));
+	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -39,78 +38,6 @@ public class TemplateDeity implements Deity
 			add(" ");
 		}
 	};
-	private final static Set<Flag> flags = Sets.newHashSet(Flag.NON_PLAYABLE);
-	private final static Set<Ability> abilities = Sets.newHashSet((Ability) new Template(name, permission));
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public Demigods.ListedDeity getListedDeity()
-	{
-		return null;
-	}
-
-	@Override
-	public String getAlliance()
-	{
-		return alliance;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public ChatColor getColor()
-	{
-		return color;
-	}
-
-	@Override
-	public Map<Material, Integer> getClaimItems()
-	{
-		return claimItems;
-	}
-
-	@Override
-	public Map<Material, Integer> getForsakeItems()
-	{
-		return forsakeItems;
-	}
-
-	@Override
-	public List<String> getLore()
-	{
-		return lore;
-	}
-
-	@Override
-	public Set<Flag> getFlags()
-	{
-		return flags;
-	}
-
-	@Override
-	public Set<Ability> getAbilities()
-	{
-		return abilities;
-	}
-
-	@Override
-	public int getAccuracy()
-	{
-		return accuracy;
-	}
-
-	@Override
-	public String toString()
-	{
-		return getName();
-	}
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.NON_PLAYABLE);
+	public final static Set<Ability> abilities = Sets.newHashSet((Ability) new Template(name, permission));
 }

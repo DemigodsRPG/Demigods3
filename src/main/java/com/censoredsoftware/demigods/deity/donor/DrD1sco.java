@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.deity.donor;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
@@ -18,14 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DrD1sco implements Deity
+public class DrD1sco
 {
-	private final static String name = "DrD1sco", alliance = "Donor", permission = "demigods.donor.disco";
-	private final static int accuracy = 15;
-	private final static ChatColor color = ChatColor.DARK_PURPLE;
-	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
-	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
-	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
+	public final static String name = "DrD1sco", alliance = "Donor", permission = "demigods.donor.disco";
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static ChatColor color = ChatColor.DARK_PURPLE;
+	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));
+	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.NOTE_BLOCK, 4));
+	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -41,78 +40,6 @@ public class DrD1sco implements Deity
 			add(" ");
 		}
 	};
-	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE);
-	private final static Set<Ability> abilities = Sets.newHashSet(new Discoball.RainbowWalking(name, permission), new RainbowHorse(name, permission));
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public Demigods.ListedDeity getListedDeity()
-	{
-		return null; // Demigods..Deities.DISCO;
-	}
-
-	@Override
-	public String getAlliance()
-	{
-		return alliance;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public ChatColor getColor()
-	{
-		return color;
-	}
-
-	@Override
-	public Map<Material, Integer> getClaimItems()
-	{
-		return claimItems;
-	}
-
-	@Override
-	public Map<Material, Integer> getForsakeItems()
-	{
-		return forsakeItems;
-	}
-
-	@Override
-	public List<String> getLore()
-	{
-		return lore;
-	}
-
-	@Override
-	public Set<Flag> getFlags()
-	{
-		return flags;
-	}
-
-	@Override
-	public Set<Ability> getAbilities()
-	{
-		return abilities;
-	}
-
-	@Override
-	public int getAccuracy()
-	{
-		return accuracy;
-	}
-
-	@Override
-	public String toString()
-	{
-		return getName();
-	}
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
+	public final static Set<Ability> abilities = Sets.newHashSet(new Discoball.RainbowWalking(name, permission), new RainbowHorse(name, permission));
 }

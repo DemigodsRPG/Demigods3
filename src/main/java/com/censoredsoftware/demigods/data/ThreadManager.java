@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.data;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.structure.Altar;
@@ -43,8 +44,8 @@ public class ThreadManager
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
-		for(Demigods.ListedDeity deity : Demigods.ListedDeity.values())
-			for(Ability ability : deity.getDeity().getAbilities())
+		for(Deity deity : Deity.values())
+			for(Ability ability : deity.getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 	}
 

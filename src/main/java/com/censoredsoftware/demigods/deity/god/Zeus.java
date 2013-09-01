@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.deity.god;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Shove;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
@@ -19,14 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Zeus implements Deity
+public class Zeus
 {
-	private final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
-	private final static int accuracy = 15;
-	private final static ChatColor color = ChatColor.YELLOW;
-	private final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));
-	private final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 10));
-	private final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
+	public final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static ChatColor color = ChatColor.YELLOW;
+	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));
+	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 10));
+	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
 			add(" ");
@@ -42,78 +41,6 @@ public class Zeus implements Deity
 			add(" ");
 		}
 	};
-	private final static Set<Flag> flags = Sets.newHashSet(Flag.MAJOR_DEITY, Flag.PLAYABLE);
-	private final static Set<Ability> abilities = Sets.newHashSet(new NoFall(name, permission), new Shove(name, permission), new Storm.Lightning(name, permission), new Storm(name, permission));
-
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public Demigods.ListedDeity getListedDeity()
-	{
-		return Demigods.ListedDeity.ZEUS;
-	}
-
-	@Override
-	public String getAlliance()
-	{
-		return alliance;
-	}
-
-	@Override
-	public String getPermission()
-	{
-		return permission;
-	}
-
-	@Override
-	public ChatColor getColor()
-	{
-		return color;
-	}
-
-	@Override
-	public Map<Material, Integer> getClaimItems()
-	{
-		return claimItems;
-	}
-
-	@Override
-	public Map<Material, Integer> getForsakeItems()
-	{
-		return forsakeItems;
-	}
-
-	@Override
-	public List<String> getLore()
-	{
-		return lore;
-	}
-
-	@Override
-	public Set<Flag> getFlags()
-	{
-		return flags;
-	}
-
-	@Override
-	public Set<Ability> getAbilities()
-	{
-		return abilities;
-	}
-
-	@Override
-	public int getAccuracy()
-	{
-		return accuracy;
-	}
-
-	@Override
-	public String toString()
-	{
-		return getName();
-	}
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
+	public final static Set<Ability> abilities = Sets.newHashSet(new NoFall(name, permission), new Shove(name, permission), new Storm.Lightning(name, permission), new Storm(name, permission));
 }

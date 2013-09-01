@@ -6,13 +6,6 @@ import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.ThreadManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.deity.god.Hades;
-import com.censoredsoftware.demigods.deity.god.Poseidon;
-import com.censoredsoftware.demigods.deity.god.Zeus;
-import com.censoredsoftware.demigods.deity.titan.Iapetus;
-import com.censoredsoftware.demigods.deity.titan.Oceanus;
-import com.censoredsoftware.demigods.deity.titan.Prometheus;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
@@ -135,20 +128,9 @@ public class Demigods
 		// Disabled worlds
 		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new DisabledWorldListener(), PLUGIN);
 
-		// Deities
-		for(ListedDeity deity : ListedDeity.values())
-		{
-			if(deity.getDeity().getAbilities() == null) continue;
-			for(Ability ability : Sets.filter(deity.getDeity().getAbilities(), new Predicate<Ability>()
-			{
-				@Override
-				public boolean apply(Ability ability)
-				{
-					return ability.getListener() != null;
-				}
-			}))
-				register.registerEvents(ability.getListener(), PLUGIN);
-		}
+		// Abilities
+		for(Ability ability : Ability.Util.getLoadedAbilities())
+			register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
 		for(ListedStructure structure : Sets.filter(Sets.newHashSet(ListedStructure.values()), new Predicate<ListedStructure>()
@@ -231,45 +213,6 @@ public class Demigods
 		public static boolean isDemigodsCommand(String command)
 		{
 			return COMMANDS.contains(command);
-		}
-	}
-
-	// Deities
-	public static enum ListedDeity
-	{
-		// GODS
-		ZEUS("Zeus", new Zeus()), POSEIDON("Poseidon", new Poseidon()), HADES("Hades", new Hades()),
-
-		// TITANS
-		IAPETUS("Iapetus", new Iapetus()), OCEANUS("Oceanus", new Oceanus()), PROMETHEUS("Prometheus", new Prometheus());
-
-		// DONATORS
-		// DISCO("DrD1sco", new DrD1sco()), OMEGA("OmegaX17", new OmegaX17());
-
-		private final String name;
-		private final Deity deity;
-
-		private ListedDeity(String name, Deity deity)
-		{
-			this.name = name;
-			this.deity = deity;
-		}
-
-		public String getName()
-		{
-			return name;
-		}
-
-		public Deity getDeity()
-		{
-			return deity;
-		}
-
-		public static Deity get(String name)
-		{
-			for(ListedDeity deity : values())
-				if(deity.getName().equalsIgnoreCase(name)) return deity.getDeity();
-			return null;
 		}
 	}
 
