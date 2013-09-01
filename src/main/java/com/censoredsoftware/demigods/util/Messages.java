@@ -1,6 +1,8 @@
 package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DemigodsChatEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -73,7 +75,9 @@ public class Messages
 	 */
 	public static void broadcast(String msg)
 	{
-		Demigods.PLUGIN.getServer().broadcastMessage(msg);
+		DemigodsChatEvent chatEvent = new DemigodsChatEvent(msg);
+		Bukkit.getPluginManager().callEvent(chatEvent);
+		if(!chatEvent.isCancelled()) Demigods.PLUGIN.getServer().broadcastMessage(msg);
 	}
 
 	/**

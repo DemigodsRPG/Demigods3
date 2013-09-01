@@ -17,15 +17,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
@@ -444,9 +440,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void sendAllianceMessage(String message)
 	{
-		AllianceChatEvent allianceChatEvent = new AllianceChatEvent(getOfflinePlayer().getPlayer(), message, DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()));
-		Bukkit.getPluginManager().callEvent(allianceChatEvent);
-		if(!allianceChatEvent.isCancelled()) for(Player player : allianceChatEvent.getRecipients())
+		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()));
+		Bukkit.getPluginManager().callEvent(chatEvent);
+		if(!chatEvent.isCancelled()) for(Player player : chatEvent.getRecipients())
 			player.sendMessage(message);
 	}
 
@@ -1012,66 +1008,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Object clone() throws CloneNotSupportedException
 		{
 			throw new CloneNotSupportedException();
-		}
-	}
-
-	public static class AllianceChatEvent extends PlayerEvent implements Cancellable
-	{
-		private static final HandlerList handlers = new HandlerList();
-		private boolean cancel = false;
-		private String message;
-		private final Set<Player> recipients;
-
-		public AllianceChatEvent(final Player player, String message, Collection<DCharacter> recipients)
-		{
-			super(player);
-			this.message = message;
-			this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DCharacter, Player>()
-			{
-				@Override
-				public Player apply(DCharacter character)
-				{
-					return character.getOfflinePlayer().isOnline() ? character.getOfflinePlayer().getPlayer() : null;
-				}
-			}), new Predicate<Player>()
-			{
-				@Override
-				public boolean apply(@Nullable Player player)
-				{
-					return player != null;
-				}
-			}));
-		}
-
-		public boolean isCancelled()
-		{
-			return cancel;
-		}
-
-		public void setCancelled(boolean cancel)
-		{
-			this.cancel = cancel;
-		}
-
-		public String getMessage()
-		{
-			return message;
-		}
-
-		public Set<Player> getRecipients()
-		{
-			return recipients;
-		}
-
-		@Override
-		public HandlerList getHandlers()
-		{
-			return handlers;
-		}
-
-		public static HandlerList getHandlerList()
-		{
-			return handlers;
 		}
 	}
 

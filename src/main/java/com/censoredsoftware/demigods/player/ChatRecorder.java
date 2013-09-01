@@ -76,7 +76,7 @@ public class ChatRecorder
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
-		private void onAllianceChatEvent(DCharacter.AllianceChatEvent event)
+		private void onAllianceChatEvent(DemigodsChatEvent event)
 		{
 			if(event.getRecipients().contains(player)) lines.put(System.currentTimeMillis(), event.getMessage());
 		}
