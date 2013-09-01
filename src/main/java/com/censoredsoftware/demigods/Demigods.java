@@ -201,7 +201,7 @@ public class Demigods
 		// WorldGuard
 		Plugin depend = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 		if(depend instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) depend;
-		ERROR_NOISE = Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
+		ERROR_NOISE = Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") != null && Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
 	}
 
 	public static class MiscUtil
