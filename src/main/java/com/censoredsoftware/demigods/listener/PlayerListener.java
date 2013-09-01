@@ -153,13 +153,13 @@ public class PlayerListener implements Listener
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
-		DPlayer wrapper = DPlayer.Util.getPlayer(event.getPlayer());
-		if(wrapper.getCurrent() != null)
+		DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		if(character != null)
 		{
-			double maxhealth = wrapper.getCurrent().getMaxHealth();
+			character.setAlive(true);
+			double maxhealth = character.getMaxHealth();
 			event.getPlayer().setMaxHealth(maxhealth);
 			event.getPlayer().setHealth(maxhealth);
-			wrapper.getCurrent().setAlive(true);
 		}
 	}
 
