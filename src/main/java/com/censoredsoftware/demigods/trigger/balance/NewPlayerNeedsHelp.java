@@ -21,7 +21,7 @@ public class NewPlayerNeedsHelp implements Trigger
 	{
 		trigger = new NewPlayerNeedsHelp();
 		focusTime = 2400;
-		deathsNeeded = 20;
+		deathsNeeded = 2;
 	}
 
 	@Override
