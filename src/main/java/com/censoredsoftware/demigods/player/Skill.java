@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.util.Configs;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class Skill implements ConfigurationSerializable
 {
@@ -110,12 +111,12 @@ public class Skill implements ConfigurationSerializable
 
 	public int getRequiredExp()
 	{
-		return (int) (exp + Math.pow(level + 1, 1.2));
+		return getRequiredExp(level + 1);
 	}
 
 	public int getRequiredExp(int level)
 	{
-		return (int) (exp + Math.pow(level, 1.2));
+		return (int) Math.ceil(exp + (level * Math.pow(level, 1.2)));
 	}
 
 	@Override

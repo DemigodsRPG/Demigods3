@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -13,24 +25,13 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
 	private UUID id;
 	private String name;
 	private String player;
-	private Boolean alive;
+	private boolean alive;
 	private double health;
 	private double maxhealth;
 	private Integer hunger;
@@ -41,8 +42,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private UUID bedSpawn;
 	private String deity;
 	private Set<String> minorDeities;
-	private Boolean active;
-	private Boolean usable;
+	private boolean active;
+	private boolean usable;
 	private UUID meta;
 	private UUID inventory;
 	private Set<String> potionEffects;
@@ -85,7 +86,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Map<String, Object> map = Maps.newHashMap();
 		map.put("name", name);
 		map.put("player", player);
-		if(alive != null) map.put("alive", alive);
+		map.put("alive", alive);
 		map.put("health", health);
 		map.put("maxhealth", maxhealth);
 		map.put("hunger", hunger);
@@ -259,7 +260,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return name;
 	}
 
-	public Boolean isActive()
+	public boolean isActive()
 	{
 		return active;
 	}
@@ -304,7 +305,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return level;
 	}
 
-	public Boolean isAlive()
+	public boolean isAlive()
 	{
 		return alive;
 	}
@@ -329,7 +330,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return experience;
 	}
 
-	public Boolean isDeity(String deityName)
+	public boolean isDeity(String deityName)
 	{
 		return getDeity().getName().equalsIgnoreCase(deityName);
 	}
@@ -757,7 +758,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return this.id;
 		}
 
-		void setSkillPoints(int skillPoints)
+		public void setSkillPoints(int skillPoints)
 		{
 			this.skillPoints = skillPoints;
 		}
@@ -772,7 +773,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			setSkillPoints(getSkillPoints() + skillPoints);
 		}
 
-		public void removeSkillPoints(int skillPoints)
+		public void subtractSkillPoints(int skillPoints)
 		{
 			setSkillPoints(getSkillPoints() - skillPoints);
 		}
@@ -1018,6 +1019,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(amount > Configs.getSettingInt("caps.favor")) maxFavor = Configs.getSettingInt("caps.favor");
 			else maxFavor = amount;
 			Util.saveMeta(this);
+		}
+
+		public void subtractMaxFavor(int amount)
+		{
+			setMaxFavor(getMaxFavor() - amount);
 		}
 
 		@Override
@@ -1312,11 +1318,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(DCharacter character)
-				{
-					return character.isActive() && character.getOfflinePlayer().isOnline();
-				}
-			});
+				public boolean apply(DCharacter character) {
+                    return character.isActive() && character.getOfflinePlayer().isOnline();
+                }
+            });
 		}
 
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
