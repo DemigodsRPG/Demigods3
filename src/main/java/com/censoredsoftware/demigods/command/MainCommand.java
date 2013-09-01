@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.command;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -12,18 +24,8 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -60,10 +62,10 @@ public class MainCommand extends WrappedCommand
 		// Define Player
 		Player player = (Player) sender;
 
-		// Check args and pass onto dg_extended() if need be
-		if(args.length > 0)
+		// Check args and pass onto appropriate method
+		if(args.length > 0 && args[0].equalsIgnoreCase("admin"))
 		{
-			dg_extended(player, args);
+			dg_admin(player, args);
 			return true;
 		}
 
@@ -100,20 +102,13 @@ public class MainCommand extends WrappedCommand
 	{
 		// Define args
 		String category = args[0];
-		String option1 = null, option2 = null, option3 = null, option4 = null;
+		String option1 = null;
 		if(args.length >= 2) option1 = args[1];
-		if(args.length >= 3) option2 = args[2];
-		if(args.length >= 4) option3 = args[3];
-		if(args.length >= 5) option4 = args[4];
 
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
-		if(category.equalsIgnoreCase("admin"))
-		{
-			dg_admin(player, option1, option2, option3, option4);
-		}
-		else if(category.equalsIgnoreCase("commands"))
+		if(category.equalsIgnoreCase("commands"))
 		{
 			Messages.tagged(player, "Command Directory");
 			player.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
@@ -239,291 +234,439 @@ public class MainCommand extends WrappedCommand
 		return true;
 	}
 
-	private static boolean dg_admin(Player player, String option1, String option2, String option3, String option4)
+	private static boolean dg_admin(Player sender, String[] args)
 	{
-		Player toEdit;
-		DCharacter character;
-		int amount;
+		if(!sender.hasPermission("demigods.admin")) return Messages.noPermission(sender);
 
-		if(!player.hasPermission("demigods.admin")) return Messages.noPermission(player);
-
-		if(option1 == null)
+		// Display main admin options menu
+		if(args.length < 2)
 		{
-			Messages.tagged(player, "Admin Directory");
-			player.sendMessage(ChatColor.GRAY + " /dg admin wand");
-			player.sendMessage(ChatColor.GRAY + " /dg admin debug");
-			player.sendMessage(ChatColor.GRAY + " /dg admin check <p> <char>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin remove [player|character] <name>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin set [maxfavor|favor|ascensions] <p> <amt>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin add [maxfavor|favor|ascensions] <p> <amt>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin sub [maxfavor|favor|ascensions] <p> <amt>");
-			player.sendMessage(ChatColor.GRAY + " /dg admin reload");
-			player.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
+			Messages.tagged(sender, "Admin Directory");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin wand");
+			sender.sendMessage(ChatColor.GRAY + " /dg admin debug");
+			for(AdminCommands command : AdminCommands.values())
+			{
+				sender.sendMessage(ChatColor.GRAY + " " + command.getCommand().getName());
+			}
+			sender.sendMessage(ChatColor.DARK_RED + " /dg admin clear data yesdoitforsurepermanently");
+			return true;
 		}
 
-		if(option1 != null)
+		// Handle automatic commands
+		for(AdminCommands command : AdminCommands.values())
 		{
-			if(option1.equalsIgnoreCase("clear") && option2 != null && option2.equalsIgnoreCase("data") && option3 != null && option3.equalsIgnoreCase("yesdoitforsurepermanently"))
+			if(args[1].equalsIgnoreCase(command.getCommand().getRootCommand())) return command.getCommand().doCommand(sender, args);
+		}
+
+		// Handle manual commands
+		if(args[1].equalsIgnoreCase("wand"))
+		{
+			if(!Admins.wandEnabled(sender))
 			{
-				player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
-				DataManager.flushData();
-				player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
+				DataManager.saveTemp(sender.getName(), "temp_admin_wand", true);
+				sender.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
+			}
+			else if(Admins.wandEnabled(sender))
+			{
+				DataManager.removeTemp(sender.getName(), "temp_admin_wand");
+				sender.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
+			}
+			return true;
+		}
+		else if(args[1].equalsIgnoreCase("debug"))
+		{
+			if(!DataManager.hasKeyTemp(sender.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DataManager.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			{
+				DataManager.saveTemp(sender.getName(), "temp_admin_debug", true);
+				sender.sendMessage(ChatColor.RED + "You have enabled debugging.");
+			}
+			else if(DataManager.hasKeyTemp(sender.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(sender.getName(), "temp_admin_debug").toString()))
+			{
+				DataManager.removeTemp(sender.getName(), "temp_admin_debug");
+				sender.sendMessage(ChatColor.RED + "You have disabled debugging.");
+			}
+		}
+		else if(args[1].equalsIgnoreCase("clear") && args[1].equalsIgnoreCase("data") && args[2].equalsIgnoreCase("yesdoitforsurepermanently"))
+		{
+			sender.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_STARTING));
+			DataManager.flushData();
+			sender.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_CLEAR_DATA_FINISHED));
+			return true;
+		}
+
+		return true;
+	}
+
+	static class doCheck implements AdminCommand
+	{
+		@Override
+		public String getName()
+		{
+			return "/dg admin check [player|character] <name>";
+		}
+
+		@Override
+		public String getRootCommand()
+		{
+			return "check";
+		}
+
+		@Override
+		public boolean doCommand(Player sender, String[] args)
+		{
+			if(args.length < 4)
+			{
+				// Not enough parameters, return
+				sender.sendMessage(ChatColor.RED + "You didn't specify enough parameters.");
 				return true;
 			}
-			else if(option1.equalsIgnoreCase("wand"))
+
+			// Define variables
+			DCharacter character = null;
+
+			if(args[2].equalsIgnoreCase("player"))
 			{
-				if(!Admins.wandEnabled(player))
-				{
-					DataManager.saveTemp(player.getName(), "temp_admin_wand", true);
-					player.sendMessage(ChatColor.RED + "Your admin wand has been enabled for " + Material.getMaterial(Configs.getSettingInt("admin.wand_tool")));
-				}
-				else if(Admins.wandEnabled(player))
-				{
-					DataManager.removeTemp(player.getName(), "temp_admin_wand");
-					player.sendMessage(ChatColor.RED + "You have disabled your admin wand.");
-				}
+				character = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3])).getCurrent();
+			}
+			else if(args[2].equalsIgnoreCase("character"))
+			{
+				character = DCharacter.Util.getCharacterByName(args[3]);
+			}
+
+			// Display the information
+			if(character != null)
+			{
+				Messages.tagged(sender, "Character Information");
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Name: " + character.getDeity().getColor() + character.getName());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Deity: " + character.getDeity().getColor() + character.getDeity().getName());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Alliance: " + ChatColor.WHITE + character.getAlliance());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Favor: " + Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor()) + character.getMeta().getFavor() + ChatColor.WHITE + " (of " + ChatColor.GREEN + character.getMeta().getMaxFavor() + ChatColor.WHITE + ")");
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + character.getMeta().getAscensions());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Available Skill Points: " + ChatColor.GREEN + character.getMeta().getSkillPoints());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Owner: " + ChatColor.WHITE + character.getPlayer() + " (" + (character.getOfflinePlayer().isOnline() ? ChatColor.GREEN + "online" : ChatColor.RED + "offline") + ChatColor.WHITE + ")");
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Active? " + (character.isActive() ? ChatColor.GREEN : ChatColor.RED) + Strings.beautify("" + character.isActive()));
+				sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Usable? " + (character.isUsable() ? ChatColor.GREEN : ChatColor.RED) + Strings.beautify("" + character.isUsable()));
+				sender.sendMessage(" ");
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "No character found.");
+			}
+
+			return true;
+		}
+	}
+
+	static class doRemove implements AdminCommand
+	{
+		@Override
+		public String getName()
+		{
+			return "/dg admin remove <player/character>";
+		}
+
+		@Override
+		public String getRootCommand()
+		{
+			return "remove";
+		}
+
+		@Override
+		public boolean doCommand(Player sender, String[] args)
+		{
+			// TODO
+			return true;
+		}
+	}
+
+	static class doSet implements AdminCommand
+	{
+		@Override
+		public String getName()
+		{
+			return "/dg admin set [fav|maxfav|asc|sp] <character> <amt>";
+		}
+
+		@Override
+		public String getRootCommand()
+		{
+			return "set";
+		}
+
+		@Override
+		public boolean doCommand(Player sender, String[] args)
+		{
+			if(args.length < 5)
+			{
+				// Not enough parameters, return
+				sender.sendMessage(ChatColor.RED + "You didn't specify enough parameters.");
 				return true;
 			}
-			else if(option1.equalsIgnoreCase("debug"))
+
+			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Player owner = character.getOfflinePlayer().getPlayer();
+			int amount = Integer.parseInt(args[4]);
+			String updatedValue = null;
+
+			if(character != null)
 			{
-				if(!DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") || !Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString()))
+				if(args[2].equalsIgnoreCase("fav"))
 				{
-					DataManager.saveTemp(player.getName(), "temp_admin_debug", true);
-					player.sendMessage(ChatColor.RED + "You have enabled debugging.");
-				}
-				else if(DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString()))
-				{
-					DataManager.removeTemp(player.getName(), "temp_admin_debug");
-					player.sendMessage(ChatColor.RED + "You have disabled debugging.");
-				}
-			}
-			else if(option1.equalsIgnoreCase("check"))
-			{
-				if(option2 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You need to specify a player.");
-					player.sendMessage("/dg admin check <p>");
-					return true;
-				}
-
-				// Define variables
-				Player toCheck = Bukkit.getPlayer(option2);
-
-				if(option3 == null)
-				{
-					Messages.tagged(player, ChatColor.RED + toCheck.getName() + " Player Check");
-					player.sendMessage(" Characters:");
-
-					final Set<DCharacter> chars = DPlayer.Util.getPlayer(toCheck).getCharacters();
-
-					for(DCharacter checkingChar : chars)
-					{
-						player.sendMessage(ChatColor.GRAY + "   (#: " + checkingChar.getId() + ") Name: " + checkingChar.getName() + " / Deity: " + checkingChar.getDeity());
-					}
-				}
-				else
-				{
-					// TODO: Display specific character information when called for.
-				}
-			}
-			else if(option1.equalsIgnoreCase("remove"))
-			{
-				if(option2 == null || option3 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You need to be more specific with what you want to remove.");
-					return true;
-				}
-				else
-				{
-					if(option2.equalsIgnoreCase("player"))
-					{
-						// TODO: Full player data removal
-					}
-					else if(option2.equalsIgnoreCase("character"))
-					{
-						DCharacter removing = DCharacter.Util.getCharacterByName(option3);
-						String removingName = removing.getName();
-
-						// Remove the data
-						removing.remove();
-
-						player.sendMessage(ChatColor.RED + "Character \"" + removingName + "\" removed.");
-					}
-				}
-			}
-			else if(option1.equalsIgnoreCase("set"))
-			{
-				if(option2 == null || option3 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You need to specify a player and amount.");
-					return true;
-				}
-				else
-				{
-					// Define variables
-					toEdit = Bukkit.getPlayer(option3);
-					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
-					amount = Integer.parseInt(option4);
-				}
-
-				if(option2.equalsIgnoreCase("maxfavor"))
-				{
-					// Set the favor
-					character.getMeta().setMaxFavor(amount);
-
-					player.sendMessage(ChatColor.GREEN + "Max favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-				else if(option2.equalsIgnoreCase("favor"))
-				{
-					// Set the favor
+					// Update the amount
 					character.getMeta().setFavor(amount);
 
-					player.sendMessage(ChatColor.GREEN + "Favor set to " + amount + " for " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character's favor has been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
+					// Set what was updated
+					updatedValue = "favor";
 				}
-				else if(option2.equalsIgnoreCase("ascensions"))
+				else if(args[2].equalsIgnoreCase("maxfav"))
 				{
-					// Set the ascensions
+					// Update the amount
+					character.getMeta().setMaxFavor(amount);
+
+					// Set what was updated
+					updatedValue = "max favor";
+				}
+				else if(args[2].equalsIgnoreCase("asc"))
+				{
+					// Update the amount
 					character.getMeta().setAscensions(amount);
 
-					player.sendMessage(ChatColor.GREEN + "Ascensions set to " + amount + " for " + toEdit.getName() + "'s current character.");
+					// Set what was updated
+					updatedValue = "ascensions";
+				}
+				else if(args[2].equalsIgnoreCase("sp"))
+				{
+					// Update the amount
+					character.getMeta().setSkillPoints(amount);
 
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character's Ascensions have been set to " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-			}
-			else if(option1.equalsIgnoreCase("add"))
-			{
-				if(option2 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You need to be more specific.");
-					return true;
-				}
-				else if(option3 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You must select a player and amount.");
-					return true;
+					// Set what was updated
+					updatedValue = "skill points";
 				}
 				else
 				{
-					// Define variables
-					toEdit = Bukkit.getPlayer(option3);
-					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
-					amount = Integer.parseInt(option4);
+					// Nothing was edited
+					owner.sendMessage(ChatColor.RED + "Invalid value to update specified.");
 				}
 
-				if(option2.equalsIgnoreCase("maxfavor"))
+				// Message the administrator to confirm
+				sender.sendMessage(ChatColor.GREEN + Strings.beautify(updatedValue) + " updated for " + character.getName() + ".");
+
+				// Message the edited player
+				if(character.getOfflinePlayer().isOnline())
 				{
-					// Set the favor
-					character.getMeta().setMaxFavor(character.getMeta().getMaxFavor() + amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " added to " + toEdit.getName() + "'s current character's max favor.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character's max favor has been increased by " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-				else if(option2.equalsIgnoreCase("favor"))
-				{
-					// Set the favor
-					character.getMeta().addFavor(amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " favor added to " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " favor.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-				else if(option2.equalsIgnoreCase("ascensions"))
-				{
-					// Set the ascensions
-					character.getMeta().addAscensions(amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) added to " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.GREEN + "Your current character has been given " + amount + " Ascensions.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-			}
-			else if(option1.equalsIgnoreCase("sub"))
-			{
-				if(option2 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You need to be more specific.");
-					return true;
-				}
-				else if(option3 == null)
-				{
-					player.sendMessage(ChatColor.RED + "You must select a player and amount.");
-					return true;
-				}
-				else
-				{
-					// Define variables
-					toEdit = Bukkit.getPlayer(option3);
-					character = DPlayer.Util.getPlayer(toEdit).getCurrent();
-					amount = Integer.parseInt(option4);
-				}
-
-				if(option2.equalsIgnoreCase("maxfavor"))
-				{
-					// Set the favor
-					character.getMeta().subtractFavor(amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " removed from " + toEdit.getName() + "'s current character's max favor.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.RED + "Your current character's max favor has been reduced by " + amount + ".");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-				if(option2.equalsIgnoreCase("favor"))
-				{
-					// Set the favor
-					character.getMeta().subtractFavor(amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " favor removed from " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " favor removed.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
-				}
-				else if(option2.equalsIgnoreCase("ascensions"))
-				{
-					// Set the ascensions
-					character.getMeta().subtractAscensions(amount);
-
-					player.sendMessage(ChatColor.GREEN + "" + amount + " Ascension(s) removed from " + toEdit.getName() + "'s current character.");
-
-					// Tell who was edited
-					toEdit.sendMessage(ChatColor.RED + "Your current character has had " + amount + " Ascension(s) removed.");
-					toEdit.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + player.getName() + ".");
-					return true;
+					owner.sendMessage(ChatColor.GREEN + "Your character's (" + character.getName() + ") " + updatedValue + " has been set to " + amount + ".");
+					owner.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
 				}
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + "Invalid category selected.");
-				player.sendMessage("/dg admin [set|add|sub] [maxfavor|favor|ascensions] <p> <amt>");
+				sender.sendMessage(ChatColor.RED + "No character could be found.");
+			}
+
+			return true;
+		}
+	}
+
+	static class doAdd implements AdminCommand
+	{
+		@Override
+		public String getName()
+		{
+			return "/dg admin add [fav|maxfav|asc|sp] <character> <amt>";
+		}
+
+		@Override
+		public String getRootCommand()
+		{
+			return "add";
+		}
+
+		@Override
+		public boolean doCommand(Player sender, String[] args)
+		{
+			if(args.length < 5)
+			{
+				// Not enough parameters, return
+				sender.sendMessage(ChatColor.RED + "You didn't specify enough parameters.");
 				return true;
 			}
+
+			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Player owner = character.getOfflinePlayer().getPlayer();
+			int amount = Integer.parseInt(args[4]);
+			String updatedValue = null;
+
+			if(character != null)
+			{
+				if(args[2].equalsIgnoreCase("fav"))
+				{
+					// Update the amount
+					character.getMeta().addFavor(amount);
+
+					// Set what was updated
+					updatedValue = "favor";
+				}
+				else if(args[2].equalsIgnoreCase("maxfav"))
+				{
+					// Update the amount
+					character.getMeta().addMaxFavor(amount);
+
+					// Set what was updated
+					updatedValue = "max favor";
+				}
+				else if(args[2].equalsIgnoreCase("asc"))
+				{
+					// Update the amount
+					character.getMeta().addAscensions(amount);
+
+					// Set what was updated
+					updatedValue = "ascensions";
+				}
+				else if(args[2].equalsIgnoreCase("sp"))
+				{
+					// Update the amount
+					character.getMeta().addSkillPoints(amount);
+
+					// Set what was updated
+					updatedValue = "skill points";
+				}
+				else
+				{
+					// Nothing was edited
+					owner.sendMessage(ChatColor.RED + "Invalid value to update specified.");
+				}
+
+				// Message the administrator to confirm
+				sender.sendMessage(ChatColor.GREEN + Strings.beautify(updatedValue) + " updated for " + character.getName() + ".");
+
+				// Message them
+				if(character.getOfflinePlayer().isOnline())
+				{
+					owner.sendMessage(ChatColor.GREEN + "Your character's (" + character.getName() + ") " + updatedValue + " has been increased to " + amount + ".");
+					owner.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+				}
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "No character could be found.");
+			}
+
+			return true;
 		}
-		return true;
+	}
+
+	static class doSub implements AdminCommand
+	{
+		@Override
+		public String getName()
+		{
+			return "/dg admin sub [fav|maxfav|asc|sp] <character> <amt>";
+		}
+
+		@Override
+		public String getRootCommand()
+		{
+			return "sub";
+		}
+
+		@Override
+		public boolean doCommand(Player sender, String[] args)
+		{
+			if(args.length < 5)
+			{
+				// Not enough parameters, return
+				sender.sendMessage(ChatColor.RED + "You didn't specify enough parameters.");
+				return true;
+			}
+
+			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Player owner = character.getOfflinePlayer().getPlayer();
+			int amount = Integer.parseInt(args[4]);
+			String updatedValue = null;
+
+			if(character != null)
+			{
+				if(args[2].equalsIgnoreCase("fav"))
+				{
+					// Update the amount
+					character.getMeta().subtractFavor(amount);
+
+					// Set what was updated
+					updatedValue = "favor";
+				}
+				else if(args[2].equalsIgnoreCase("maxfav"))
+				{
+					// Update the amount
+					character.getMeta().subtractMaxFavor(amount);
+
+					// Set what was updated
+					updatedValue = "max favor";
+				}
+				else if(args[2].equalsIgnoreCase("asc"))
+				{
+					// Update the amount
+					character.getMeta().subtractAscensions(amount);
+
+					// Set what was updated
+					updatedValue = "ascensions";
+				}
+				else if(args[2].equalsIgnoreCase("sp"))
+				{
+					// Update the amount
+					character.getMeta().subtractSkillPoints(amount);
+
+					// Set what was updated
+					updatedValue = "skill points";
+				}
+				else
+				{
+					// Nothing was edited
+					owner.sendMessage(ChatColor.RED + "Invalid value to update specified.");
+				}
+
+				// Message the administrator to confirm
+				sender.sendMessage(ChatColor.GREEN + Strings.beautify(updatedValue) + " updated for " + character.getName() + ".");
+
+				// Message them
+				if(character.getOfflinePlayer().isOnline())
+				{
+					owner.sendMessage(ChatColor.GREEN + "Your character's (" + character.getName() + ") " + updatedValue + " has been decreased to " + amount + ".");
+					owner.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "This was performed by " + sender.getName() + ".");
+				}
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + "No character could be found.");
+			}
+
+			return true;
+		}
+	}
+
+	public enum AdminCommands
+	{
+		CHECK(new doCheck()), REMOVE(new doRemove()), SET(new doSet()), ADD(new doAdd()), SUBTRACT(new doSub());
+
+		private AdminCommand command;
+
+		private AdminCommands(AdminCommand command)
+		{
+			this.command = command;
+		}
+
+		public AdminCommand getCommand()
+		{
+			return this.command;
+		}
+	}
+
+	interface AdminCommand
+	{
+		public String getName();
+
+		public String getRootCommand();
+
+		public boolean doCommand(Player sender, String[] args);
 	}
 }

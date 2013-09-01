@@ -1,14 +1,15 @@
 package com.censoredsoftware.demigods.util;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.player.DemigodsChatEvent;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Logger;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DemigodsChatEvent;
 
 /**
  * Module to handle all common messages sent to players or the console.
@@ -31,11 +32,16 @@ public class Messages
 	/**
 	 * Sends the message <code>msg</code> as a tagged message to the <code>sender</code>.
 	 * 
-	 * @param sender The CommandSender to send the message to (allows console messages).
+	 * @param sender The CommandSender/Player to send the message to (allows console messages).
 	 */
 	public static void tagged(CommandSender sender, String msg)
 	{
 		sender.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
+	}
+
+	public static void tagged(Player player, String msg)
+	{
+		player.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
 	}
 
 	/**
