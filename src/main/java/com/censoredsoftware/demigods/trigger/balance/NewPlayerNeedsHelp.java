@@ -21,7 +21,7 @@ public class NewPlayerNeedsHelp implements Trigger
 	{
 		trigger = new NewPlayerNeedsHelp();
 		focusTime = 2400;
-		deathsNeeded = 2;
+		deathsNeeded = 7;
 		noobAscensions = 3;
 	}
 
