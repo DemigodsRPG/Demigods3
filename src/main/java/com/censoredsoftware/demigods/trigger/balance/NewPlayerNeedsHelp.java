@@ -15,19 +15,20 @@ import java.util.Collection;
 public class NewPlayerNeedsHelp implements Trigger
 {
 	public static NewPlayerNeedsHelp trigger;
-	public static int focusTime, deathsNeeded;
+	public static int focusTime, deathsNeeded, noobAscensions;
 
 	static
 	{
 		trigger = new NewPlayerNeedsHelp();
 		focusTime = 2400;
 		deathsNeeded = 2;
+		noobAscensions = 3;
 	}
 
 	@Override
 	public void processSync() // TODO Balance this.
 	{
-		Collection<DCharacter> characters = Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(3), new Predicate<DCharacter>()
+		Collection<DCharacter> characters = Collections2.filter(DCharacter.Util.getOnlineCharactersBelowAscension(noobAscensions), new Predicate<DCharacter>()
 		{
 			@Override
 			public boolean apply(DCharacter character)

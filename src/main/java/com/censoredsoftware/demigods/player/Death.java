@@ -59,7 +59,7 @@ public class Death implements ConfigurationSerializable
 
 	public long getDeathTime()
 	{
-		return getDeathTime();
+		return this.deathTime;
 	}
 
 	public UUID getKilled()
