@@ -154,7 +154,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void setAlive(boolean alive)
 	{
-		this.active = alive;
+		this.alive = alive;
+		Util.save(this);
 	}
 
 	public void setHealth(double health)

@@ -157,7 +157,6 @@ public class PlayerListener implements Listener
 		if(character != null)
 		{
 			character.setAlive(true);
-			DCharacter.Util.save(character);
 			double maxhealth = character.getMaxHealth();
 			event.getPlayer().setMaxHealth(maxhealth);
 			event.getPlayer().setHealth(maxhealth);
@@ -168,10 +167,6 @@ public class PlayerListener implements Listener
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
 		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
-		if(character != null)
-		{
-			character.setAlive(false);
-			DCharacter.Util.save(character);
-		}
+		if(character != null) character.setAlive(false);
 	}
 }
