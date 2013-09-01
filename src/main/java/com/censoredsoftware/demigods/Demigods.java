@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods;
 
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.MetricsLite;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -24,18 +37,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.MetricsLite;
-
-import java.util.Set;
 
 public class Demigods
 {
@@ -130,7 +131,7 @@ public class Demigods
 
 		// Abilities
 		for(Ability ability : Ability.Util.getLoadedAbilities())
-			register.registerEvents(ability.getListener(), PLUGIN);
+			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
 		for(ListedStructure structure : Sets.filter(Sets.newHashSet(ListedStructure.values()), new Predicate<ListedStructure>()
@@ -141,7 +142,7 @@ public class Demigods
 				return structure.getStructure().getUniqueListener() != null;
 			}
 		}))
-			register.registerEvents(structure.getStructure().getUniqueListener(), PLUGIN);
+			if(structure.getStructure().getUniqueListener() != null) register.registerEvents(structure.getStructure().getUniqueListener(), PLUGIN);
 
 		// Conversations
 		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(ListedConversation.values()), new Function<ListedConversation, WrappedConversation>()
@@ -159,7 +160,7 @@ public class Demigods
 				return conversation.getUniqueListener() != null;
 			}
 		}))
-			register.registerEvents(conversation.getUniqueListener(), PLUGIN);
+			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), PLUGIN);
 
 		// Quit reason.
 		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
