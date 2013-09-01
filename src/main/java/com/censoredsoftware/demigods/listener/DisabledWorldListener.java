@@ -19,6 +19,7 @@ public class DisabledWorldListener implements Listener
 		Set<Player> modified = event.getRecipients();
 		for(Player player : event.getRecipients())
 			if(Demigods.MiscUtil.isDisabledWorld(player.getLocation())) modified.remove(player);
+		if(modified.size() < 1) event.setCancelled(true);
 		event.setRecipients(modified);
 	}
 }
