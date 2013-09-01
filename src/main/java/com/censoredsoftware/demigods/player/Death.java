@@ -1,15 +1,16 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import com.censoredsoftware.demigods.data.DataManager;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.*;
 
 public class Death implements ConfigurationSerializable
 {
@@ -19,16 +20,16 @@ public class Death implements ConfigurationSerializable
 
 	public Death(DCharacter killed)
 	{
-		this.deathTime = System.currentTimeMillis();
-		this.id = UUID.randomUUID();
+		deathTime = System.currentTimeMillis();
+		id = UUID.randomUUID();
 		this.killed = killed.getId();
 		Util.save(this);
 	}
 
 	public Death(DCharacter killed, DCharacter attacking)
 	{
-		this.deathTime = System.currentTimeMillis();
-		this.id = UUID.randomUUID();
+		deathTime = System.currentTimeMillis();
+		id = UUID.randomUUID();
 		this.killed = killed.getId();
 		this.attacking = attacking.getId();
 		Util.save(this);
@@ -37,9 +38,9 @@ public class Death implements ConfigurationSerializable
 	public Death(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
-		this.deathTime = conf.getLong("deathTime");
-		this.killed = UUID.fromString(conf.getString("killed"));
-		if(conf.isString("attacking")) this.attacking = UUID.fromString(conf.getString("attacking"));
+		deathTime = conf.getLong("deathTime");
+		killed = UUID.fromString(conf.getString("killed"));
+		if(conf.isString("attacking")) attacking = UUID.fromString(conf.getString("attacking"));
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class Death implements ConfigurationSerializable
 
 	public long getDeathTime()
 	{
-		return this.deathTime;
+		return deathTime;
 	}
 
 	public UUID getKilled()
