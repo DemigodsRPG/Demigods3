@@ -31,11 +31,6 @@ public class Structure implements ConfigurationSerializable
 	private UUID owner;
 	private List<String> members;
 
-	static
-	{
-		Util.regenerateStructures();
-	}
-
 	public Structure()
 	{}
 
