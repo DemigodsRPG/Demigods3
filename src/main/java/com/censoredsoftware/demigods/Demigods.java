@@ -77,9 +77,6 @@ public class Demigods
 		catch(Exception ignored)
 		{}
 
-		// Start the data
-		SAVE_PATH = "plugins/Demigods/data/"; // Don't change this.
-
 		// Configure depends
 		loadDepends();
 	}
@@ -87,6 +84,9 @@ public class Demigods
 	// Load everything else.
 	protected static void finishLoading()
 	{
+		// Start the data
+		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+
 		// Check if there are no enabled worlds
 		if(!loadWorlds())
 		{
