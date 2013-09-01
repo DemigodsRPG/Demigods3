@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.battle;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -398,7 +399,7 @@ public class Battle implements ConfigurationSerializable
 			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
-				Messages.broadcast(" " + ChatColor.DARK_GRAY + Unicodes.getRightwardArrow() + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
 			Messages.broadcast(" ");
 		}
 
@@ -433,9 +434,9 @@ public class Battle implements ConfigurationSerializable
 	public void sendBattleStats()
 	{
 		sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
-		sendMessage(ChatColor.YELLOW + "  " + Unicodes.getRightwardArrow() + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
+		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
+		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
+		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
 	}
 
 	public static class Util

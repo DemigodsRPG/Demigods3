@@ -2,10 +2,14 @@ package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.*;
+import com.censoredsoftware.demigods.util.Maps2;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Strings;
+import com.censoredsoftware.demigods.util.Titles;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -71,11 +75,11 @@ public class GeneralCommands extends WrappedCommand
 		// Send the user their info via chat
 		Messages.tagged(sender, "Player Check");
 
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Character: " + deityColor + charName);
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
-		sender.sendMessage(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Character: " + deityColor + charName);
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Deity: " + deityColor + deity + ChatColor.WHITE + " of the " + ChatColor.GOLD + StringUtils.capitalize(alliance) + "s");
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
 
 		return true;
 	}

@@ -5,10 +5,10 @@ import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.item.DItemStack;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -448,7 +448,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void chatWithAlliance(String message)
 	{
-		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Unicodes.getMail() + " " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
+		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Symbol.WRITING_HAND + " " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
 	}
 
 	public static class Inventory implements ConfigurationSerializable

@@ -6,8 +6,8 @@ import com.censoredsoftware.demigods.ability.offense.Shove;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
 import com.censoredsoftware.demigods.ability.ultimate.Storm;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
-import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -36,7 +36,7 @@ public class Zeus implements Deity
 			add(ChatColor.YELLOW + " Claim Items:");
 			add(" ");
 			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
-				add(ChatColor.GRAY + " " + Unicodes.getRightwardArrow() + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+				add(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			add(" ");
 			add(ChatColor.YELLOW + " Abilities:");
 			add(" ");

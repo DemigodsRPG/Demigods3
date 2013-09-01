@@ -5,13 +5,13 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -210,7 +210,7 @@ public class MainCommand extends WrappedCommand
 										{
 											for(String detail : ability.getDetails())
 											{
-												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Unicodes.getRightwardArrow() + " ");
+												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Symbol.RIGHTWARD_ARROW + " ");
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
 												add(details.toString());

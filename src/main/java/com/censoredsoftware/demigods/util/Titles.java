@@ -1,5 +1,7 @@
 package com.censoredsoftware.demigods.util;
 
+import com.censoredsoftware.demigods.language.Symbol;
+
 public class Titles
 {
 	/**
@@ -11,7 +13,7 @@ public class Titles
 	public static String chatTitle(String title)
 	{
 		int total = 86;
-		String chatTitle = " " + Unicodes.getRightwardArrow() + " " + title + " ";
+		String chatTitle = " " + Symbol.RIGHTWARD_ARROW + " " + title + " ";
 		for(int i = 0; i < (total - chatTitle.length()); i++)
 			chatTitle += "-";
 		return chatTitle;

@@ -2,10 +2,10 @@ package com.censoredsoftware.demigods.trigger.balance;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
 import com.censoredsoftware.demigods.trigger.Trigger;
-import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.bukkit.ChatColor;
@@ -40,7 +40,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		for(DCharacter character : characters)
 		{
 			if(Demigods.MiscUtil.isDisabledWorld(character.getLocation())) continue;
-			character.sendAllianceMessage(ChatColor.YELLOW + " " + Unicodes.getCaution() + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
+			character.sendAllianceMessage(ChatColor.YELLOW + " " + Symbol.CAUTION + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
 			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}
 	}

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.command;
 
-import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
+import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Altar;
@@ -43,10 +43,8 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		for(Battle battle : Battle.Util.getAllActive())
-			battle.end();
-
-		player.sendMessage("All battles disabled!");
+		for(Symbol symbol : Symbol.values())
+			player.sendMessage(symbol.name() + ": " + symbol);
 
 		return true;
 	}
@@ -75,7 +73,7 @@ public class DevelopmentCommands extends WrappedCommand
 			return true;
 		}
 
-		player.sendMessage("# of Teammates Online: " + DCharacter.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
+		player.sendMessage("# of " + character.getAlliance() + "s Online: " + DCharacter.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
 		player.sendMessage("# of Enemies Online: " + DCharacter.Util.getOnlineCharactersWithoutAlliance(character.getAlliance()).size());
 
 		return true;
