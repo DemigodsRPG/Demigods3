@@ -1078,6 +1078,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			DCharacter character = new DCharacter();
 			character.generateId();
+			character.setAlive(true);
 			character.setPlayer(player);
 			character.setName(charName);
 			character.setDeity(deity);
