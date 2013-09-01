@@ -41,14 +41,9 @@ public class DataManager
 
 	static
 	{
-		load();
-		tempData = Maps.newConcurrentMap();
-	}
-
-	public static void load()
-	{
 		for(File file : File.values())
 			file.getConfigFile().loadToData();
+		tempData = Maps.newConcurrentMap();
 	}
 
 	public static void save()

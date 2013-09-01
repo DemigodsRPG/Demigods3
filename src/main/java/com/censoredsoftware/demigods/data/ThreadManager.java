@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 @SuppressWarnings("deprecation")
 public class ThreadManager
 {
-	static
+	public static void startThreads()
 	{
 		// Start sync demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, Util.getSyncDemigodsRunnable(), 20, 20);

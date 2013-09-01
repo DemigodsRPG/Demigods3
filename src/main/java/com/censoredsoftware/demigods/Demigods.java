@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
@@ -100,6 +101,9 @@ public class Demigods
 
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();
+
+		// Start threads
+		ThreadManager.startThreads();
 
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
