@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -440,7 +441,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void sendAllianceMessage(String message)
 	{
-		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()));
+		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, DCharacter.Util.getOnlineCharactersWithAlliance(getAlliance()));
 		Bukkit.getPluginManager().callEvent(chatEvent);
 		if(!chatEvent.isCancelled()) for(Player player : chatEvent.getRecipients())
 			player.sendMessage(message);
@@ -449,6 +450,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void chatWithAlliance(String message)
 	{
 		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Symbol.WRITING_HAND + " " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
+		Messages.info("[" + getAlliance() + "]" + name + ": " + message);
 	}
 
 	public static class Inventory implements ConfigurationSerializable
