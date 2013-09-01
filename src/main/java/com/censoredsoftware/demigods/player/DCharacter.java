@@ -447,7 +447,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void chatWithAlliance(String message)
 	{
-		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Unicodes.getMail() + " " + getDeity().getColor() + name + ": " + ChatColor.RESET + message);
+		sendAllianceMessage(ChatColor.DARK_AQUA + " " + Unicodes.getMail() + " " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
 	}
 
 	public static class Inventory implements ConfigurationSerializable
