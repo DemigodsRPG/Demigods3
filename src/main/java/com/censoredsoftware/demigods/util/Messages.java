@@ -32,16 +32,11 @@ public class Messages
 	/**
 	 * Sends the message <code>msg</code> as a tagged message to the <code>sender</code>.
 	 * 
-	 * @param sender The CommandSender/Player to send the message to (allows console messages).
+	 * @param sender The CommandSender to send the message to (allows console messages).
 	 */
 	public static void tagged(CommandSender sender, String msg)
 	{
 		sender.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
-	}
-
-	public static void tagged(Player player, String msg)
-	{
-		player.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
 	}
 
 	/**
