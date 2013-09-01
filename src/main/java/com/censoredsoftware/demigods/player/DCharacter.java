@@ -12,17 +12,20 @@ import com.censoredsoftware.demigods.util.Unicodes;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import com.google.common.primitives.Ints;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
@@ -441,8 +444,10 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void sendAllianceMessage(String message)
 	{
-		for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()))
-			character.getOfflinePlayer().getPlayer().sendMessage(message);
+		AllianceChatEvent allianceChatEvent = new AllianceChatEvent(getOfflinePlayer().getPlayer(), message, DCharacter.Util.getOnlineCharactersWithAlliance(getDeity().getAlliance()));
+		Bukkit.getPluginManager().callEvent(allianceChatEvent);
+		if(!allianceChatEvent.isCancelled()) for(Player player : allianceChatEvent.getRecipients())
+			player.sendMessage(message);
 	}
 
 	public void chatWithAlliance(String message)
@@ -1010,6 +1015,66 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 	}
 
+	public static class AllianceChatEvent extends PlayerEvent implements Cancellable
+	{
+		private static final HandlerList handlers = new HandlerList();
+		private boolean cancel = false;
+		private String message;
+		private final Set<Player> recipients;
+
+		public AllianceChatEvent(final Player player, String message, Collection<DCharacter> recipients)
+		{
+			super(player);
+			this.message = message;
+			this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DCharacter, Player>()
+			{
+				@Override
+				public Player apply(DCharacter character)
+				{
+					return character.getOfflinePlayer().isOnline() ? character.getOfflinePlayer().getPlayer() : null;
+				}
+			}), new Predicate<Player>()
+			{
+				@Override
+				public boolean apply(@Nullable Player player)
+				{
+					return player != null;
+				}
+			}));
+		}
+
+		public boolean isCancelled()
+		{
+			return cancel;
+		}
+
+		public void setCancelled(boolean cancel)
+		{
+			this.cancel = cancel;
+		}
+
+		public String getMessage()
+		{
+			return message;
+		}
+
+		public Set<Player> getRecipients()
+		{
+			return recipients;
+		}
+
+		@Override
+		public HandlerList getHandlers()
+		{
+			return handlers;
+		}
+
+		public static HandlerList getHandlerList()
+		{
+			return handlers;
+		}
+	}
+
 	public static class Util
 	{
 		public static void save(DCharacter character)
@@ -1211,7 +1276,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive();
+					return character.isUsable() && character.isActive();
 				}
 			});
 		}
@@ -1301,54 +1366,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getUsableCharacters()
-		{
-			return getCharactersWithPredicate(new Predicate<DCharacter>()
-			{
-				@Override
-				public boolean apply(DCharacter character)
-				{
-					return character.isUsable();
-				}
-			});
-		}
-
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
 			return Collections2.filter(getAllUsable(), predicate);
-		}
-
-		public static int getMedianOverallOnlineAscension()
-		{
-			return median(Ints.toArray(Collections2.transform(getOnlineCharacters(), new Function<DCharacter, Integer>()
-			{
-				@Override
-				public Integer apply(DCharacter character)
-				{
-					return character.getMeta().getAscensions();
-				}
-			})));
-		}
-
-		public static int getMedianOverallAscension()
-		{
-			return median(Ints.toArray(Collections2.transform(getAllUsable(), new Function<DCharacter, Integer>()
-			{
-				@Override
-				public Integer apply(DCharacter character)
-				{
-					return character.getMeta().getAscensions();
-				}
-			})));
-		}
-
-		private static int median(int[] i)
-		{
-			if(i == null || i.length < 3) return 1;
-			Arrays.sort(i);
-			int middle = i.length / 2;
-			if(i.length % 2 == 0) return (i[middle - 1] + i[middle]) / 2;
-			else return i[middle];
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.conversation;
+package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.util.Times;
@@ -73,6 +73,12 @@ public class ChatRecorder
 		private void onChatEvent(AsyncPlayerChatEvent event)
 		{
 			if(event.getRecipients().contains(player)) lines.put(System.currentTimeMillis(), event.getFormat());
+		}
+
+		@EventHandler(priority = EventPriority.MONITOR)
+		private void onAllianceChatEvent(DCharacter.AllianceChatEvent event)
+		{
+			if(event.getRecipients().contains(player)) lines.put(System.currentTimeMillis(), event.getMessage());
 		}
 	}
 }

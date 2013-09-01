@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.conversation.ChatRecorder;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
