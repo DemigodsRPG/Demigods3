@@ -19,7 +19,7 @@ import java.util.List;
 public class NoDrown implements Ability
 {
 	private final static String name = "No Drown Damage", command = null;
-	private final static int cost = 0, delay = 0, repeat = 20;
+	private final static int cost = 0, delay = 0, repeat = 1;
 	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("You cannot drown.");
 	private String deity, permission;
