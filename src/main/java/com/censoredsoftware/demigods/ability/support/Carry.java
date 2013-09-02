@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -107,11 +106,11 @@ public class Carry implements Ability
 			@EventHandler(priority = EventPriority.MONITOR)
 			private void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
+				if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld()) || !(event.getRightClicked() instanceof Player)) return;
 				Player player = event.getPlayer();
-				Entity clicked = event.getRightClicked();
+				Player clicked = (Player) event.getRightClicked();
 
-				if(clicked instanceof Player && Deity.Util.canUseDeitySilent(((Player) clicked), deity))
+				if(Deity.Util.canUseDeitySilent(clicked, deity) && clicked.getItemInHand().getType().equals(Material.LEASH))
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 					DCharacter clickedChar = DPlayer.Util.getPlayer((Player) clicked).getCurrent();
@@ -127,7 +126,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				if(Demigods.MiscUtil.isDisabledWorld(player.getWorld())) return;
 
-				if(!player.getInventory().getItemInHand().getType().equals(Material.LEASH) && Deity.Util.canUseDeitySilent(player, deity) && player.getPassenger() != null) player.getPassenger().leaveVehicle();
+				if(!player.getItemInHand().getType().equals(Material.LEASH) && Deity.Util.canUseDeitySilent(player, deity) && player.getPassenger() != null) player.getPassenger().leaveVehicle();
 			}
 		};
 	}
