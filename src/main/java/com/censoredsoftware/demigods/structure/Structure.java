@@ -285,7 +285,7 @@ public class Structure implements ConfigurationSerializable
 					@Override
 					public boolean apply(Design design)
 					{
-						return design.getName().equals(name);
+						return design.getName().equalsIgnoreCase(name);
 					}
 				});
 			}
