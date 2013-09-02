@@ -59,9 +59,10 @@ public enum Deity
 	private List<String> lore;
 	private Set<Flag> flags;
 	private Set<Ability> abilities;
-	private int accuracy, favorRegen, maxFavor, maxHealth;
+	private int accuracy, favorRegen, maxFavor;
+	private double maxHealth;
 
-	private Deity(String name, String alliance, String permission, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, List<String> lore, Set<Flag> flags, Set<Ability> abilities, int accuracy, int favorRegen, int maxFavor, int maxHealth)
+	private Deity(String name, String alliance, String permission, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, List<String> lore, Set<Flag> flags, Set<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth)
 	{
 		this.name = name;
 		this.alliance = alliance;
@@ -144,7 +145,7 @@ public enum Deity
 		return maxFavor;
 	}
 
-	public int getMaxHealth()
+	public double getMaxHealth()
 	{
 		return maxHealth;
 	}

@@ -179,7 +179,6 @@ public class DPlayer implements ConfigurationSerializable
 
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
-			currChar.setMaxHealth(player.getMaxHealth());
 			currChar.setHealth(player.getHealth());
 			currChar.setHunger(player.getFoodLevel());
 			currChar.setLevel(player.getLevel());

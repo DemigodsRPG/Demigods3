@@ -20,7 +20,7 @@ import java.util.Set;
 public class Hades
 {
 	public final static String name = "Hades", alliance = "God", permission = "demigods.god.hades";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
 	public final static ChatColor color = ChatColor.GRAY;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ROTTEN_FLESH, 3, Material.BONE, 2));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BONE, 21));

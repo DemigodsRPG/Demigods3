@@ -31,7 +31,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private String player;
 	private boolean alive;
 	private double health;
-	private double maxhealth;
 	private Integer hunger;
 	private Float experience;
 	private Integer level;
@@ -61,7 +60,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		player = conf.getString("player");
 		if(conf.isBoolean("alive")) alive = conf.getBoolean("alive");
 		health = conf.getDouble("health");
-		maxhealth = conf.getDouble("maxhealth");
 		hunger = conf.getInt("hunger");
 		experience = Float.valueOf(conf.getString("experience"));
 		level = conf.getInt("level");
@@ -86,7 +84,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		map.put("player", player);
 		map.put("alive", alive);
 		map.put("health", health);
-		map.put("maxhealth", maxhealth);
 		map.put("hunger", hunger);
 		map.put("experience", experience);
 		map.put("level", level);
@@ -160,11 +157,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void setHealth(double health)
 	{
 		this.health = health;
-	}
-
-	public void setMaxHealth(double maxhealth)
-	{
-		this.maxhealth = maxhealth;
 	}
 
 	public void setHunger(int hunger)
@@ -315,7 +307,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Double getMaxHealth()
 	{
-		return maxhealth;
+		return getDeity().getMaxHealth();
 	}
 
 	public Integer getHunger()
@@ -1017,7 +1009,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setDeity(deity);
 			character.setMinorDeities(new HashSet<String>());
 			character.setUsable(true);
-			character.setMaxHealth(40.0);
 			character.setHealth(40.0);
 			character.setHunger(20);
 			character.setExperience(0);
