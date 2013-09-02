@@ -683,7 +683,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static boolean canTarget(Entity entity)
 		{
-			return canParticipate(entity) && canTarget(defineParticipant(entity));
+			return !canParticipate(entity) || (canParticipate(entity) && canTarget(defineParticipant(entity)));
 		}
 
 		/**
