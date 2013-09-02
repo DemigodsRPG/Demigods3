@@ -121,6 +121,7 @@ public class DPlayer implements ConfigurationSerializable
 				{
 					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
 					{
+						if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 						setCanPvp(false);
 						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.SAFE_FROM_PVP));
 					}
