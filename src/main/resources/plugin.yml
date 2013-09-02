@@ -61,17 +61,14 @@ permissions:
     demigods.bypass.pvpareacooldown:
         description: Bypass the wait for leaving/entering PVP zones.
         default: false
-    demigods.god:
-        default: true
-    demigods.titan:
-        default: true
-    demigods.insignian:
-        default: false
     demigods.god.zeus:
         description: Allows the player to use Zeus.
         default: true
     demigods.god.poseidon:
         description: Allows the player to use Poseidon.
+        default: true
+    demigods.god.hades:
+        description: Allows the player to use Hades.
         default: true
     demigods.titan.oceanus:
         description: Allows the player to use Oceanus.
@@ -79,15 +76,15 @@ permissions:
     demigods.titan.prometheus:
         description: Allows the player to use Prometheus.
         default: true
-    demigods.insignian.disco:
-        description: Disco.
+    demigods.titan.iapetus:
+        description: Allows the player to use Iapetus.
+        default: true
+    demigods.fate.clotho:
+        description: Allows the player to use Clotho.
         default: false
-    demigods.tutorial:
-        description: Allows the player to participate in the Tutorial quest.
-        default: true
-    demigods.shrine:
-        default: true
-    demigods.altar:
-        default: true
-    demigods.update:
-        default: op
+    demigods.fate.lachesis:
+        description: Allows the player to use Lachesis.
+        default: false
+    demigods.fate.atropos:
+        description: Allows the player to use Atropos.
+        default: false

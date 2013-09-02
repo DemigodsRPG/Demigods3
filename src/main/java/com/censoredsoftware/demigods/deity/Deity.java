@@ -1,6 +1,9 @@
 package com.censoredsoftware.demigods.deity;
 
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.fate.Atropos;
+import com.censoredsoftware.demigods.deity.fate.Clotho;
+import com.censoredsoftware.demigods.deity.fate.Lachesis;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
@@ -51,7 +54,19 @@ public enum Deity
 	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
 
 	// Iapetus
-	IAPETUS(Iapetus.name, Iapetus.alliance, Iapetus.permission, Iapetus.color, Iapetus.claimItems, Iapetus.forsakeItems, Iapetus.lore, Iapetus.flags, Iapetus.abilities, Iapetus.accuracy, Iapetus.favorRegen, Iapetus.maxFavor, Iapetus.maxHealth);
+	IAPETUS(Iapetus.name, Iapetus.alliance, Iapetus.permission, Iapetus.color, Iapetus.claimItems, Iapetus.forsakeItems, Iapetus.lore, Iapetus.flags, Iapetus.abilities, Iapetus.accuracy, Iapetus.favorRegen, Iapetus.maxFavor, Iapetus.maxHealth),
+
+	/**
+	 * Fates (Admin Deities)
+	 */
+	// Clotho
+	CLOTHO(Clotho.name, Clotho.alliance, Clotho.permission, Clotho.color, Clotho.claimItems, Clotho.forsakeItems, Clotho.lore, Clotho.flags, Clotho.abilities, Clotho.accuracy, Clotho.favorRegen, Clotho.maxFavor, Clotho.maxHealth),
+
+	// Lachesis
+	LACHESIS(Lachesis.name, Lachesis.alliance, Lachesis.permission, Lachesis.color, Lachesis.claimItems, Lachesis.forsakeItems, Lachesis.lore, Lachesis.flags, Lachesis.abilities, Lachesis.accuracy, Lachesis.favorRegen, Lachesis.maxFavor, Lachesis.maxHealth),
+
+	// Atropos
+	ATROPOS(Atropos.name, Atropos.alliance, Atropos.permission, Atropos.color, Atropos.claimItems, Atropos.forsakeItems, Atropos.lore, Atropos.flags, Atropos.abilities, Atropos.accuracy, Atropos.favorRegen, Atropos.maxFavor, Atropos.maxHealth);
 
 	private String name, alliance, permission;
 	private ChatColor color;
@@ -152,7 +167,7 @@ public enum Deity
 
 	public enum Flag
 	{
-		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK
+		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK, ADMIN
 	}
 
 	public static class Util
