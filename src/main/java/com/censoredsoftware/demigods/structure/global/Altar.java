@@ -153,8 +153,8 @@ public class Altar
 	{
 		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
 
-		private final Schematic schematic;
-		private final Selection clickableBlocks;
+		private Schematic schematic;
+		private Selection clickableBlocks;
 
 		private AltarDesign(Schematic schematic, Selection clickableBlocks)
 		{
