@@ -1,23 +1,10 @@
 package com.censoredsoftware.demigods.conversation;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.WrappedConversation;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,10 +25,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.WrappedConversation;
+import com.censoredsoftware.demigods.language.Symbol;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -372,7 +373,7 @@ public class Prayer implements WrappedConversation
 
 			for(Skill skill : character.getMeta().getSkills())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredExp() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
+				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
 			}
 
 			player.sendRawMessage(" ");
@@ -391,24 +392,41 @@ public class Prayer implements WrappedConversation
 		@Override
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
-			return false;
+			String[] splitMsg = message.split(" ");
+			return message.equalsIgnoreCase("menu") || splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(Skill.Type.valueOf(splitMsg[2])) != null;
 		}
 
 		@Override
 		protected Prompt acceptValidatedInput(ConversationContext context, String message)
 		{
 			// Define variables
-			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
+			Player player = (Player) context.getForWhom();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			String[] splitMsg = message.split(" ");
 
 			if(message.equalsIgnoreCase("menu"))
 			{
 				// THEY WANT THE MENU!? SOCK IT TO 'EM!
 				return new StartPrayer();
 			}
-			else if(message.equalsIgnoreCase("assign"))
+			else if(splitMsg[0].equalsIgnoreCase("assign"))
 			{
-				// TODO
-				return new StartPrayer();
+				// Define the points and skill to use
+				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(splitMsg[2]));
+				int points = Integer.valueOf(splitMsg[1]);
+
+				if(character.getMeta().getSkillPoints() >= points)
+				{
+					// Apply the points and notify
+					skill.addPoints(points);
+				}
+				else
+				{
+					// They don't have enough points
+					player.sendRawMessage(" ");
+					player.sendRawMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ERROR_NOT_ENOUGH_SKILL_POINTS));
+					player.sendRawMessage(" ");
+				}
 			}
 			return null;
 		}
