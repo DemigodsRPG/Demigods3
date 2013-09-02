@@ -68,6 +68,11 @@ public class MainCommand extends WrappedCommand
 			dg_admin(player, args);
 			return true;
 		}
+		else if(args.length > 0)
+		{
+			dg_extended(player, args);
+			return true;
+		}
 
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
