@@ -10,7 +10,10 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Titles;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -703,7 +706,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			for(Battle battle : Battle.Util.getAllActive())
 				for(Location point : Battle.Util.battleBorder(battle))
-					Spigots.playParticle(point, Effect.MOBSPAWNER_FLAMES, 0, 6, 0, 1F, 10, (int) (battle.getRange() * 2.5));
+					point.getWorld().playEffect(point, Effect.MOBSPAWNER_FLAMES, 0, (int) (battle.getRange() * 2.5));
 		}
 
 		/**

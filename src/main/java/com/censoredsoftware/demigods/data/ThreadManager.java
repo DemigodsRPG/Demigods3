@@ -29,13 +29,6 @@ public class ThreadManager
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
-		// Start spigot particle runnable
-		if(Demigods.MiscUtil.isRunningSpigot())
-		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, Util.getSpigotRunnable(), 20, 20);
-			Admins.sendDebug("Special (Spigot) runnable enabled...");
-		}
-
 		// Start favor runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
@@ -56,7 +49,7 @@ public class ThreadManager
 
 	private static class Util
 	{
-		private final static BukkitRunnable sync, async, save, spigot, favor;
+		private final static BukkitRunnable sync, async, save, favor;
 
 		static
 		{
@@ -78,6 +71,9 @@ public class ThreadManager
 
 					// Update Battles
 					Battle.Util.updateBattles();
+
+					// Update Battle Particles
+					Battle.Util.updateBattleParticles();
 
 					// Update Atlars
 					Altar.Util.generateAltars();
@@ -115,15 +111,6 @@ public class ThreadManager
 
 					// Send the save message to the console
 					Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
-				}
-			};
-			spigot = new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					// Update Battles
-					Battle.Util.updateBattleParticles();
 				}
 			};
 			favor = new BukkitRunnable()
@@ -169,16 +156,6 @@ public class ThreadManager
 		public static BukkitRunnable getSaveRunnable()
 		{
 			return save;
-		}
-
-		/**
-		 * Returns the Spigot-only runnable. Methods requiring Spigot should be placed here.
-		 * 
-		 * @return the runnable to be enabled.
-		 */
-		public static BukkitRunnable getSpigotRunnable()
-		{
-			return spigot;
 		}
 
 		/**
