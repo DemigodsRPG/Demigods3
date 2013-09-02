@@ -20,7 +20,7 @@ import java.util.Set;
 public class Hades
 {
 	public final static String name = "Hades", alliance = "God", permission = "demigods.god.hades";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.GRAY;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ROTTEN_FLESH, 3, Material.BONE, 2));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BONE, 21));
@@ -40,6 +40,6 @@ public class Hades
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.DIFFICULT, Deity.Flag.NO_SHRINE, Deity.Flag.NO_OBELISK);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static Set<Ability> abilities = Sets.newHashSet(new NoZombie(name, permission), new Swarm(name, permission));
 }

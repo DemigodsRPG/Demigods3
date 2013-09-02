@@ -105,7 +105,7 @@ public class NoZombie implements Ability
 	{
 		return new Listener()
 		{
-			@EventHandler(priority = EventPriority.MONITOR)
+			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageByEntityEvent damageEvent)
 			{
 				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;

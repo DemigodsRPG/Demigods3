@@ -21,7 +21,7 @@ import java.util.Set;
 public class Prometheus
 {
 	public final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
 	public final static ChatColor color = ChatColor.GOLD;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));

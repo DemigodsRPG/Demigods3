@@ -21,7 +21,7 @@ import java.util.Set;
 public class Zeus
 {
 	public final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
 	public final static ChatColor color = ChatColor.YELLOW;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 10));

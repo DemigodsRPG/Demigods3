@@ -18,7 +18,7 @@ import java.util.Set;
 public class Iapetus
 {
 	public final static String name = "Iapetus", alliance = "Titan", permission = "demigods.titan.iapetus";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
@@ -38,6 +38,6 @@ public class Iapetus
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.DIFFICULT, Deity.Flag.NO_SHRINE, Deity.Flag.NO_OBELISK);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static Set<Ability> abilities = Sets.newHashSet();
 }

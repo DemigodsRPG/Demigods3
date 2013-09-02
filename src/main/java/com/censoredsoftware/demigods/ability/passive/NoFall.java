@@ -100,7 +100,7 @@ public class NoFall implements Ability
 	{
 		return new Listener()
 		{
-			@EventHandler(priority = EventPriority.MONITOR)
+			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
 			{
 				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;

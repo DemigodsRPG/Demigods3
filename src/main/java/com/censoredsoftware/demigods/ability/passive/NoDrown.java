@@ -1,16 +1,20 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
-
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
 
 public class NoDrown implements Ability
 {
@@ -95,7 +99,22 @@ public class NoDrown implements Ability
 	@Override
 	public Listener getListener()
 	{
-		return null;
+		return new Listener()
+		{
+			@EventHandler(priority = EventPriority.HIGHEST)
+			public void onEntityDamange(EntityDamageEvent damageEvent)
+			{
+				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
+				if(damageEvent.getEntity() instanceof Player)
+				{
+					Player player = (Player) damageEvent.getEntity();
+					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+
+					// If the player receives falling damage, cancel it
+					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.DROWNING) damageEvent.setCancelled(true);
+				}
+			}
+		};
 	}
 
 	@Override
@@ -109,7 +128,7 @@ public class NoDrown implements Ability
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
 				{
 					Player player = character.getOfflinePlayer().getPlayer();
-					player.setRemainingAir(player.getMaximumAir());
+					player.setRemainingAir(0);
 				}
 			}
 		};
