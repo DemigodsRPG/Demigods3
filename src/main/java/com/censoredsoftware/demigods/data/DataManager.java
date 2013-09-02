@@ -31,7 +31,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, Skill> skills;
 	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
 	public static ConcurrentMap<UUID, DItemStack> itemStacks;
-	public static ConcurrentMap<UUID, DCharacter.SavedPotion> savedPotions;
+	public static ConcurrentMap<UUID, SavedPotion> savedPotions;
 	public static ConcurrentMap<UUID, Pet> pets;
 	public static ConcurrentMap<UUID, Notification> notifications;
 	public static ConcurrentMap<UUID, Battle> battles;
@@ -524,16 +524,16 @@ public class DataManager
 			{
 				itemStacks = loadFromFile();
 			}
-		}), SAVED_POTION(new ConfigFile<UUID, DCharacter.SavedPotion>()
+		}), SAVED_POTION(new ConfigFile<UUID, SavedPotion>()
 		{
 			@Override
-			public DCharacter.SavedPotion create(UUID uuid, ConfigurationSection conf)
+			public SavedPotion create(UUID uuid, ConfigurationSection conf)
 			{
-				return new DCharacter.SavedPotion(uuid, conf);
+				return new SavedPotion(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, DCharacter.SavedPotion> getLoadedData()
+			public ConcurrentMap<UUID, SavedPotion> getLoadedData()
 			{
 				return DataManager.savedPotions;
 			}
