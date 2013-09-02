@@ -6,7 +6,7 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.Altar;
+import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;

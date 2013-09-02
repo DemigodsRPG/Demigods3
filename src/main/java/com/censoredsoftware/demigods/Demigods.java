@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.MetricsLite;
-
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -25,9 +12,6 @@ import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.structure.Altar;
-import com.censoredsoftware.demigods.structure.Obelisk;
-import com.censoredsoftware.demigods.structure.Shrine;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
@@ -37,6 +21,18 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.MetricsLite;
+
+import java.util.Set;
 
 public class Demigods
 {
@@ -131,18 +127,18 @@ public class Demigods
 
 		// Abilities
 		for(Ability ability : Ability.Util.getLoadedAbilities())
-			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
+			register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
-		for(ListedStructure structure : Sets.filter(Sets.newHashSet(ListedStructure.values()), new Predicate<ListedStructure>()
+		for(Structure.Type structure : Sets.filter(Sets.newHashSet(Structure.Type.values()), new Predicate<Structure.Type>()
 		{
 			@Override
-			public boolean apply(ListedStructure structure)
+			public boolean apply(Structure.Type structure)
 			{
-				return structure.getStructure().getUniqueListener() != null;
+				return structure.getUniqueListener() != null;
 			}
 		}))
-			if(structure.getStructure().getUniqueListener() != null) register.registerEvents(structure.getStructure().getUniqueListener(), PLUGIN);
+			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), PLUGIN);
 
 		// Conversations
 		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(ListedConversation.values()), new Function<ListedConversation, WrappedConversation>()
@@ -214,24 +210,6 @@ public class Demigods
 		public static boolean isDemigodsCommand(String command)
 		{
 			return COMMANDS.contains(command);
-		}
-	}
-
-	// Structures
-	public static enum ListedStructure
-	{
-		ALTAR(new Altar()), SHRINE(new Shrine()), OBELISK(new Obelisk());
-
-		private final Structure.Type structure;
-
-		private ListedStructure(Structure.Type structure)
-		{
-			this.structure = structure;
-		}
-
-		public Structure.Type getStructure()
-		{
-			return structure;
 		}
 	}
 

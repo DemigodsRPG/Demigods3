@@ -101,7 +101,7 @@ public class FlagListener implements Listener
 			@Override
 			public void run()
 			{
-				save.generate(false);
+				save.generate();
 			}
 		}, 30);
 	}
