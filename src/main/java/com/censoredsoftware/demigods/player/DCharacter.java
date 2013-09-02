@@ -1009,7 +1009,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setDeity(deity);
 			character.setMinorDeities(new HashSet<String>());
 			character.setUsable(true);
-			character.setHealth(40.0);
+			character.setHealth(deity.getMaxHealth());
 			character.setHunger(20);
 			character.setExperience(0);
 			character.setLevel(0);

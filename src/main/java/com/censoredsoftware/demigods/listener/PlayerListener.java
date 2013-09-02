@@ -47,7 +47,7 @@ public class PlayerListener implements Listener
 			if(character.isAlive())
 			{
 				event.getPlayer().setMaxHealth(character.getMaxHealth());
-				event.getPlayer().setHealth(character.getHealth());
+				event.getPlayer().setHealth(character.getHealth() >= character.getMaxHealth() ? character.getMaxHealth() : character.getHealth());
 			}
 		}
 

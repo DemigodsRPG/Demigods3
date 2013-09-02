@@ -179,7 +179,7 @@ public class DPlayer implements ConfigurationSerializable
 
 			// Set the values
 			// TODO: Confirm that this covers all of the bases.
-			currChar.setHealth(player.getHealth());
+			currChar.setHealth(player.getHealth() >= currChar.getMaxHealth() ? currChar.getMaxHealth() : player.getHealth());
 			currChar.setHunger(player.getFoodLevel());
 			currChar.setLevel(player.getLevel());
 			currChar.setExperience(player.getExp());
@@ -226,7 +226,7 @@ public class DPlayer implements ConfigurationSerializable
 			Messages.warning("Character name too long.");
 		}
 		player.setMaxHealth(newChar.getMaxHealth());
-		player.setHealth(newChar.getHealth());
+		player.setHealth(newChar.getHealth() >= newChar.getMaxHealth() ? newChar.getMaxHealth() : newChar.getHealth());
 		player.setFoodLevel(newChar.getHunger());
 		player.setExp(newChar.getExperience());
 		player.setLevel(newChar.getLevel());
