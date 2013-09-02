@@ -140,7 +140,7 @@ public class NoZombie implements Ability
 				{
 					Player player = character.getOfflinePlayer().getPlayer();
 					for(Entity entity : player.getNearbyEntities(15, 15, 15))
-						if(entity instanceof Zombie && ((Zombie) entity).getTarget().equals(player)) ((Zombie) entity).setTarget(null);
+						if(entity instanceof Zombie && ((Zombie) entity).getTarget() != null && ((Zombie) entity).getTarget().equals(player)) ((Zombie) entity).setTarget(null);
 				}
 			}
 		};
