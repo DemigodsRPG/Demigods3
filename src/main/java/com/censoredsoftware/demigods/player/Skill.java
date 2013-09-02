@@ -18,7 +18,7 @@ public class Skill implements ConfigurationSerializable
 {
 	private UUID id;
 	private String type;
-	private int exp;
+	private int points;
 	private int level;
 
 	public enum Type
@@ -33,7 +33,7 @@ public class Skill implements ConfigurationSerializable
 	{
 		this.id = id;
 		type = conf.getString("type");
-		exp = conf.getInt("exp");
+		points = conf.getInt("points");
 		level = conf.getInt("level");
 	}
 
@@ -42,7 +42,7 @@ public class Skill implements ConfigurationSerializable
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("type", type);
-		map.put("exp", exp);
+		map.put("points", points);
 		map.put("level", level);
 		return map;
 	}
@@ -57,9 +57,9 @@ public class Skill implements ConfigurationSerializable
 		this.type = type.toString();
 	}
 
-	void setExp(int exp)
+	void setPoints(int points)
 	{
-		this.exp = exp;
+		this.points = points;
 	}
 
 	void setLevel(int level)
@@ -77,9 +77,9 @@ public class Skill implements ConfigurationSerializable
 		return Type.valueOf(type);
 	}
 
-	public int getExp()
+	public int getPoints()
 	{
-		return exp;
+		return points;
 	}
 
 	public int getLevel()
@@ -87,13 +87,18 @@ public class Skill implements ConfigurationSerializable
 		return (level > 0) ? level : 1;
 	}
 
-	public boolean addExp(int exp)
+	public void addLevels(int levels)
 	{
-		// Set the exp
-		setExp(getExp() + exp);
+		setLevel(getLevel() + levels);
+	}
 
-		// If the exp has passed the requirement, level them
-		if(getExp() > getRequiredExp()) // TODO: This will break in the event that someone applies enough exp to level multiple times
+	public boolean addPoints(int exp)
+	{
+		// Set the points
+		setPoints(getPoints() + exp);
+
+		// If the points has passed the requirement, level them
+		if(getPoints() > getRequiredPoints()) // TODO: This will break in the event that someone applies enough points to level multiple times
 		{
 			// Add a level
 			addLevels(1);
@@ -104,19 +109,14 @@ public class Skill implements ConfigurationSerializable
 		return false;
 	}
 
-	public void addLevels(int levels)
+	public int getRequiredPoints()
 	{
-		setLevel(getLevel() + levels);
+		return getRequiredPoints(level + 1);
 	}
 
-	public int getRequiredExp()
+	public int getRequiredPoints(int level)
 	{
-		return getRequiredExp(level + 1);
-	}
-
-	public int getRequiredExp(int level)
-	{
-		return (int) Math.ceil(exp + (level * Math.pow(level, 1.2)));
+		return (int) Math.ceil(points + (level * Math.pow(level, 1.2)) + 5);
 	}
 
 	@Override
