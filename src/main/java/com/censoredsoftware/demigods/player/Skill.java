@@ -92,16 +92,19 @@ public class Skill implements ConfigurationSerializable
 		setLevel(getLevel() + levels);
 	}
 
-	public boolean addPoints(int exp)
+	public boolean addPoints(int points)
 	{
 		// Set the points
-		setPoints(getPoints() + exp);
+		setPoints(getPoints() + points);
 
 		// If the points has passed the requirement, level them
-		if(getPoints() > getRequiredPoints()) // TODO: This will break in the event that someone applies enough points to level multiple times
+		if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1)) // TODO: This will break in the event that someone applies enough points to level multiple times
 		{
 			// Add a level
 			addLevels(1);
+
+			// Reset points
+			setPoints(0);
 
 			// Return true for leveling
 			return true;
@@ -111,12 +114,12 @@ public class Skill implements ConfigurationSerializable
 
 	public int getRequiredPoints()
 	{
-		return getRequiredPoints(level + 1);
+		return getRequiredPointsForLevel(getLevel() + 1) - getPoints();
 	}
 
-	public int getRequiredPoints(int level)
+	public int getRequiredPointsForLevel(int level)
 	{
-		return (int) Math.ceil(points + (level * Math.pow(level, 1.2)) + 5);
+		return (int) Math.ceil((level * Math.pow(level, 1.4)) + 5);
 	}
 
 	@Override
