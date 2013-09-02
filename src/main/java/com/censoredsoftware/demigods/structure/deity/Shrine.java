@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.structure.deity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -12,19 +26,6 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.google.common.base.Function;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Shrine
 {
@@ -88,8 +89,8 @@ public class Shrine
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
-						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.CREATE_SHRINE_1).replace("{alliance}", "" + ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY));
-						player.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.CREATE_SHRINE_2).replace("{deity}", "" + ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
+						for(String string : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_SHRINE_CREATED))
+							player.sendMessage(string.replace("{alliance}", ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY).replace("{deity}", ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
 						event.setCancelled(true);
 					}
 					catch(Exception e)

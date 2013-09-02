@@ -370,6 +370,8 @@ public class Prayer implements WrappedConversation
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Viewing Skills"));
 			player.sendRawMessage(" ");
+			player.sendRawMessage("  " + Demigods.LANGUAGE.getText(Translation.Text.DIRECTIONS_MAIN_MENU_PRAYER));
+			player.sendRawMessage(" ");
 
 			for(Skill skill : character.getMeta().getSkills())
 			{
@@ -386,6 +388,23 @@ public class Prayer implements WrappedConversation
 			{
 				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have no skill points available for assignment.").build());
 			}
+
+			// Display notifications if available
+			if(context.getSessionData("skill_notifications") != null && !((List<Translation.Text>) context.getSessionData("skill_notifications")).isEmpty())
+			{
+				// Grab the notifications
+				List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("skill_notifications");
+
+				player.sendRawMessage(" ");
+
+				// List them
+				for(Translation.Text notification : notifications)
+					player.sendRawMessage("  " + Demigods.LANGUAGE.getText(notification));
+
+				// Remove them
+				notifications.clear();
+			}
+
 			return "";
 		}
 
@@ -393,7 +412,16 @@ public class Prayer implements WrappedConversation
 		protected boolean isInputValid(ConversationContext context, String message)
 		{
 			String[] splitMsg = message.split(" ");
-			return message.equalsIgnoreCase("menu") || splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(Skill.Type.valueOf(splitMsg[2])) != null;
+
+			try
+			{
+				Skill.Type skill = Skill.Type.valueOf(splitMsg[2].toUpperCase());
+				return message.equalsIgnoreCase("menu") || splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null;
+			}
+			catch(Exception ignored)
+			{
+				return false;
+			}
 		}
 
 		@Override
@@ -404,6 +432,10 @@ public class Prayer implements WrappedConversation
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			String[] splitMsg = message.split(" ");
 
+			// Create and save the notifications
+			context.setSessionData("skill_notifications", Lists.newArrayList());
+			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("skill_notifications");
+
 			if(message.equalsIgnoreCase("menu"))
 			{
 				// THEY WANT THE MENU!? SOCK IT TO 'EM!
@@ -412,23 +444,26 @@ public class Prayer implements WrappedConversation
 			else if(splitMsg[0].equalsIgnoreCase("assign"))
 			{
 				// Define the points and skill to use
-				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(splitMsg[2]));
+				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(splitMsg[2].toUpperCase()));
 				int points = Integer.valueOf(splitMsg[1]);
 
 				if(character.getMeta().getSkillPoints() >= points)
 				{
 					// Apply the points and notify
 					skill.addPoints(points);
+					character.getMeta().subtractSkillPoints(points);
+
+					// Save the notification
+					notifications.add(Translation.Text.NOTIFICATION_SKILL_POINTS_ASSIGNED);
 				}
 				else
 				{
-					// They don't have enough points
-					player.sendRawMessage(" ");
-					player.sendRawMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.ERROR_NOT_ENOUGH_SKILL_POINTS));
-					player.sendRawMessage(" ");
+					// They don't have enough points, save the notification
+					notifications.add(Translation.Text.ERROR_NOT_ENOUGH_SKILL_POINTS);
 				}
 			}
-			return null;
+
+			return new ViewSkills();
 		}
 	}
 

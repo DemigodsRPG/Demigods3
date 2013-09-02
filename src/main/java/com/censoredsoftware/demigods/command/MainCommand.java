@@ -405,12 +405,13 @@ public class MainCommand extends WrappedCommand
 			}
 
 			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
-			Player owner = character.getOfflinePlayer().getPlayer();
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
 			if(character != null)
 			{
+				Player owner = character.getOfflinePlayer().getPlayer();
+
 				if(args[2].equalsIgnoreCase("fav"))
 				{
 					// Update the amount
@@ -493,12 +494,13 @@ public class MainCommand extends WrappedCommand
 			}
 
 			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
-			Player owner = character.getOfflinePlayer().getPlayer();
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
 			if(character != null)
 			{
+				Player owner = character.getOfflinePlayer().getPlayer();
+
 				if(args[2].equalsIgnoreCase("fav"))
 				{
 					// Update the amount
@@ -581,12 +583,13 @@ public class MainCommand extends WrappedCommand
 			}
 
 			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
-			Player owner = character.getOfflinePlayer().getPlayer();
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
 			if(character != null)
 			{
+				Player owner = character.getOfflinePlayer().getPlayer();
+
 				if(args[2].equalsIgnoreCase("fav"))
 				{
 					// Update the amount
