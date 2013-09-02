@@ -126,7 +126,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				if(Demigods.MiscUtil.isDisabledWorld(player.getWorld())) return;
 
-				if(!player.getItemInHand().getType().equals(Material.LEASH) && Deity.Util.canUseDeitySilent(player, deity) && player.getPassenger() != null) player.getPassenger().leaveVehicle();
+				if(!player.getInventory().getItem(event.getNewSlot()).getType().equals(Material.LEASH) && Deity.Util.canUseDeitySilent(player, deity) && player.getPassenger() != null) player.getPassenger().leaveVehicle();
 			}
 		};
 	}
