@@ -110,7 +110,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				Player clicked = (Player) event.getRightClicked();
 
-				if(Deity.Util.canUseDeitySilent(clicked, deity) && clicked.getItemInHand().getType().equals(Material.LEASH))
+				if(Deity.Util.canUseDeitySilent(clicked, deity) && clicked.getItemInHand().getType().equals(Material.LEASH) && clicked.getPassenger() == null)
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
