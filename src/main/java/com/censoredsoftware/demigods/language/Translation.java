@@ -139,7 +139,7 @@ public class Translation
 		{
 			{
 				add(ChatColor.GREEN + "You have earned {skillpoints} skill points for your recent battle!");
-				add(ChatColor.GRAY + "Find an Altar to distribute them.");
+				add(ChatColor.GRAY + "" + ChatColor.ITALIC + "Find an Altar to distribute them.");
 			}
 		}), NOTIFICATIONS_PRAYER_FOOTER(new ArrayList<String>()
 		{
