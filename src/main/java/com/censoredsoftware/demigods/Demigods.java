@@ -95,6 +95,9 @@ public class Demigods
 		// Start threads
 		ThreadManager.startThreads();
 
+		// Regenerate structures
+		Structure.Util.regenerateStructures();
+
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
