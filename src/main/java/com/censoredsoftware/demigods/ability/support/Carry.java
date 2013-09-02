@@ -113,7 +113,7 @@ public class Carry implements Ability
 				if(Deity.Util.canUseDeitySilent(clicked, deity) && clicked.getItemInHand().getType().equals(Material.LEASH))
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-					DCharacter clickedChar = DPlayer.Util.getPlayer((Player) clicked).getCurrent();
+					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
 					if(character == null || clickedChar == null || !DCharacter.Util.areAllied(character, clickedChar)) return;
 
 					clicked.setPassenger(player);
@@ -121,7 +121,7 @@ public class Carry implements Ability
 			}
 
 			@EventHandler(priority = EventPriority.HIGHEST)
-			private void onPlayerBuck(PlayerItemHeldEvent event)
+			private void onPlayerItemHeld(PlayerItemHeldEvent event)
 			{
 				Player player = event.getPlayer();
 				if(Demigods.MiscUtil.isDisabledWorld(player.getWorld())) return;
