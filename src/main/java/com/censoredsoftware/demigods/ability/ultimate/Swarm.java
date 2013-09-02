@@ -10,7 +10,6 @@ import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Spigots;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,13 +60,9 @@ public class Swarm implements Ability
 				Player otherPlayer = (Player) entity;
 				DCharacter otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
 				if(otherPlayer.equals(player)) continue;
-				if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
-				{
-					Util.spawnZombie(player, otherPlayer);
-					continue;
-				}
+				if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar)) Util.spawnZombie(player, otherPlayer);
 			}
-			if(entity instanceof LivingEntity)
+			else if(entity instanceof LivingEntity)
 			{
 				LivingEntity livingEntity = (LivingEntity) entity;
 				Util.spawnZombie(player, livingEntity);
@@ -189,32 +184,14 @@ public class Swarm implements Ability
 	{
 		public static boolean spawnZombie(Player player, LivingEntity target)
 		{
-			return Battle.Util.canTarget(target) && spawnZombie(player, target.getLocation(), true);
-		}
-
-		public static boolean spawnZombie(Player player, Location target, boolean notify)
-		{
-			// Set variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-
 			if(!player.getWorld().equals(target.getWorld())) return false;
-			Location toHit = Ability.Util.adjustedAimLocation(character, target);
 
+			Location toHit = target.getLocation();
+			if(Battle.Util.canTarget(target)) return false;
 			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(toHit, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
-
-			for(Entity entity : toHit.getBlock().getChunk().getEntities())
-			{
-				if(entity instanceof LivingEntity)
-				{
-					LivingEntity livingEntity = (LivingEntity) entity;
-					if(Battle.Util.canTarget(livingEntity)) continue;
-					Zombie zombie = (Zombie) toHit.getWorld().spawnEntity(toHit, EntityType.ZOMBIE);
-					zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
-					zombie.setTarget(livingEntity);
-				}
-			}
-
-			if(!Ability.Util.isHit(target, toHit) && notify) player.sendMessage(ChatColor.RED + "Missed...");
+			Zombie zombie = (Zombie) toHit.getWorld().spawnEntity(toHit, EntityType.ZOMBIE);
+			zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
+			zombie.setTarget(target);
 
 			return true;
 		}
