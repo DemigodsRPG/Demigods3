@@ -52,8 +52,8 @@ public class Demigods
 	protected static Set<String> DISABLED_WORLDS;
 	protected static Set<String> COMMANDS;
 
-	// Load what is possible to load right away.
-	static
+	// Load everything.
+	protected static void load()
 	{
 		// Allow static access.
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
@@ -69,11 +69,7 @@ public class Demigods
 
 		// Configure depends
 		loadDepends();
-	}
 
-	// Load everything else.
-	protected static void finishLoading()
-	{
 		// Start the data
 		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
