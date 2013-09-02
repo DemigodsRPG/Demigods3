@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.deity.god;
 
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.ability.passive.NoZombie;
 import com.censoredsoftware.demigods.ability.ultimate.Swarm;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -40,5 +41,5 @@ public class Hades
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.DIFFICULT, Deity.Flag.NO_SHRINE, Deity.Flag.NO_OBELISK);
-	public final static Set<Ability> abilities = Sets.newHashSet((Ability) new Swarm(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet(new NoZombie(name, permission), new Swarm(name, permission));
 }
