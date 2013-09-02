@@ -94,22 +94,30 @@ public class Skill implements ConfigurationSerializable
 
 	public boolean addPoints(int points)
 	{
-		// Set the points
-		setPoints(getPoints() + points);
+		// Set variable to check leveling later
+		boolean didLevel = false;
 
-		// If the points has passed the requirement, level them
-		if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1)) // TODO: This will break in the event that someone applies enough points to level multiple times
+		// Add points 1 at a time
+		for(int i = 0; i < points; i++) // TODO: This is inefficient but it gets the job done easily. :)
 		{
-			// Add a level
-			addLevels(1);
+			// Adding 1 point at a time
+			addPoints(1);
 
-			// Reset points
-			setPoints(0);
+			if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1))
+			{
+				// Add a level
+				addLevels(1);
 
-			// Return true for leveling
-			return true;
+				// Reset points
+				setPoints(0);
+
+				// Return true for leveling
+				didLevel = true;
+			}
 		}
-		return false;
+
+		// Return if they leveled or not
+		return didLevel;
 	}
 
 	public int getRequiredPoints()
