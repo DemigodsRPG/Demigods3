@@ -89,9 +89,7 @@ public class Altar
 		@EventHandler(priority = EventPriority.HIGHEST)
 		public void demigodsAdminWand(PlayerInteractEvent event)
 		{
-			if(event.getClickedBlock() == null) return;
-
-			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
+			if(event.getClickedBlock() == null || Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
 
 			// Define variables
 			Block clickedBlock = event.getClickedBlock();
