@@ -126,10 +126,7 @@ public class NoDrown implements Ability
 			public void run()
 			{
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
-				{
-					Player player = character.getOfflinePlayer().getPlayer();
-					player.setRemainingAir(0);
-				}
+					character.getOfflinePlayer().getPlayer().setRemainingAir(0);
 			}
 		};
 	}
