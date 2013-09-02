@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.deity.Obelisk;
 import com.censoredsoftware.demigods.structure.deity.Shrine;
 import com.censoredsoftware.demigods.structure.global.Altar;
+import com.censoredsoftware.demigods.util.Errors;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -199,7 +200,9 @@ public class Structure implements ConfigurationSerializable
 
 	public void generate()
 	{
-		getType().getDesign(this.design).getSchematic().generate(getReferenceLocation());
+		Type.Design design = getType().getDesign(this.design);
+		if(design != null) design.getSchematic().generate(getReferenceLocation());
+		else Errors.triggerError("Could not generate structure.");
 	}
 
 	public void save()
