@@ -122,7 +122,7 @@ public class Swim implements Ability
 				if(player.isSneaking())
 				{
 					player.removePotionEffect(PotionEffectType.SLOW);
-					Vector victor = (player.getPassenger() == null && player.getLocation().getDirection().getY() < 0 ? player.getLocation().getDirection() : player.getLocation().getDirection().clone().setY(0)).normalize().multiply(1.3D);
+					Vector victor = (player.getPassenger() != null && player.getLocation().getDirection().getY() > 0 ? player.getLocation().getDirection().clone().setY(0) : player.getLocation().getDirection()).normalize().multiply(1.3D);
 					player.setVelocity(new Vector(victor.getX(), victor.getY(), victor.getZ()));
 				}
 			}
