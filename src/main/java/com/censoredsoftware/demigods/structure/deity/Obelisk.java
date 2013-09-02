@@ -202,7 +202,7 @@ public class Obelisk
 		}
 	};
 
-	private static enum ObeliskDesign implements Structure.Type.Design
+	public static enum ObeliskDesign implements Structure.Type.Design
 	{
 		GENERAL("general", general), DESERT("desert", desert), NETHER("nether", nether);
 

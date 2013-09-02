@@ -351,7 +351,7 @@ public class Altar
 		}
 	};
 
-	private static enum AltarDesign implements Structure.Type.Design
+	public static enum AltarDesign implements Structure.Type.Design
 	{
 		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
 

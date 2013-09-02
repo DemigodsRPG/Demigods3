@@ -163,7 +163,7 @@ public class Shrine
 		}
 	};
 
-	private static enum ShrineDesign implements Structure.Type.Design
+	public static enum ShrineDesign implements Structure.Type.Design
 	{
 		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
 
