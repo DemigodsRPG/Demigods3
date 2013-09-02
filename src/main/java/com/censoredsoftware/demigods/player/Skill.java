@@ -101,7 +101,7 @@ public class Skill implements ConfigurationSerializable
 		for(int i = 0; i < points; i++) // TODO: This is inefficient but it gets the job done easily. :)
 		{
 			// Adding 1 point at a time
-			addPoints(1);
+			points++;
 
 			if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1))
 			{
