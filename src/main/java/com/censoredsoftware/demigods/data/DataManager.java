@@ -44,6 +44,9 @@ public class DataManager
 		for(File file : File.values())
 			file.getConfigFile().loadToData();
 		tempData = Maps.newConcurrentMap();
+
+		// Regenerate structures
+		Structure.Util.regenerateStructures();
 	}
 
 	public static void save()

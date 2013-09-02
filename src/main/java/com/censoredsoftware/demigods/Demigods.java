@@ -95,9 +95,6 @@ public class Demigods
 		// Start threads
 		ThreadManager.startThreads();
 
-		// Regenerate structures
-		Structure.Util.regenerateStructures();
-
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
 
@@ -130,7 +127,7 @@ public class Demigods
 
 		// Abilities
 		for(Ability ability : Ability.Util.getLoadedAbilities())
-			register.registerEvents(ability.getListener(), PLUGIN);
+			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
 		for(Structure.Type structure : Sets.filter(Sets.newHashSet(Structure.Type.values()), new Predicate<Structure.Type>()
