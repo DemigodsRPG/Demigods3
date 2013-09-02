@@ -149,45 +149,6 @@ public class Altar
 	};
 	public static final int radius = Configs.getSettingInt("zones.altar_radius");
 
-	private static enum AltarDesign implements Structure.Type.Design
-	{
-		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
-
-		private Schematic schematic;
-		private Selection clickableBlocks;
-
-		private AltarDesign(Schematic schematic, Selection clickableBlocks)
-		{
-			this.schematic = schematic;
-			this.clickableBlocks = clickableBlocks;
-		}
-
-		@Override
-		public String getName()
-		{
-			return schematic.getName();
-		}
-
-		@Override
-		public Set<Location> getClickableBlocks(Location reference)
-		{
-			return clickableBlocks.getBlockLocations(reference);
-		}
-
-		@Override
-		public Schematic getSchematic()
-		{
-			return schematic;
-		}
-
-		public static AltarDesign getByName(String name)
-		{
-			for(AltarDesign design : AltarDesign.values())
-				if(design.getName().equalsIgnoreCase(name)) return design;
-			return null;
-		}
-	}
-
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{
 		{
@@ -389,6 +350,45 @@ public class Altar
 			add(new Selection(rand1, 2, rand2, Material.TORCH)); // Torch
 		}
 	};
+
+	private static enum AltarDesign implements Structure.Type.Design
+	{
+		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
+
+		private Schematic schematic;
+		private Selection clickableBlocks;
+
+		private AltarDesign(Schematic schematic, Selection clickableBlocks)
+		{
+			this.schematic = schematic;
+			this.clickableBlocks = clickableBlocks;
+		}
+
+		@Override
+		public String getName()
+		{
+			return schematic.getName();
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return clickableBlocks.getBlockLocations(reference);
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
+		}
+
+		public static AltarDesign getByName(String name)
+		{
+			for(AltarDesign design : AltarDesign.values())
+				if(design.getName().equalsIgnoreCase(name)) return design;
+			return null;
+		}
+	}
 
 	public static class Util
 	{

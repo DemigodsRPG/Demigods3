@@ -128,40 +128,6 @@ public class Shrine
 	};
 	public static final int radius = Configs.getSettingInt("zones.shrine_radius");
 
-	private static enum ShrineDesign implements Structure.Type.Design
-	{
-		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
-
-		private final String name;
-		private final Schematic schematic;
-		private final Selection clickableBlocks;
-
-		private ShrineDesign(String name, Schematic schematic, Selection clickableBlocks)
-		{
-			this.name = name;
-			this.schematic = schematic;
-			this.clickableBlocks = clickableBlocks;
-		}
-
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-
-		@Override
-		public Set<Location> getClickableBlocks(Location reference)
-		{
-			return clickableBlocks.getBlockLocations(reference);
-		}
-
-		@Override
-		public Schematic getSchematic()
-		{
-			return schematic;
-		}
-	}
-
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
 		{
@@ -196,6 +162,40 @@ public class Shrine
 			add(new Selection(0, 0, 1, Material.NETHER_BRICK_STAIRS, (byte) 3));
 		}
 	};
+
+	private static enum ShrineDesign implements Structure.Type.Design
+	{
+		GENERAL("general", general, new Selection(0, 1, 0)), NETHER("nether", nether, new Selection(0, 1, 0));
+
+		private final String name;
+		private final Schematic schematic;
+		private final Selection clickableBlocks;
+
+		private ShrineDesign(String name, Schematic schematic, Selection clickableBlocks)
+		{
+			this.name = name;
+			this.schematic = schematic;
+			this.clickableBlocks = clickableBlocks;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return clickableBlocks.getBlockLocations(reference);
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
+		}
+	}
 
 	public static class Util
 	{

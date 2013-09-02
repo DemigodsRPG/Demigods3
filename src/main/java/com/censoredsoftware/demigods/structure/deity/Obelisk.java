@@ -137,38 +137,6 @@ public class Obelisk
 	};
 	public static final int radius = Configs.getSettingInt("zones.obelisk_radius");
 
-	private static enum ObeliskDesign implements Structure.Type.Design
-	{
-		GENERAL("general", general), DESERT("desert", desert), NETHER("nether", nether);
-
-		private final String name;
-		private final Schematic schematic;
-
-		private ObeliskDesign(String name, Schematic schematic)
-		{
-			this.name = name;
-			this.schematic = schematic;
-		}
-
-		@Override
-		public String getName()
-		{
-			return name;
-		}
-
-		@Override
-		public Set<Location> getClickableBlocks(Location reference)
-		{
-			return getSchematic().getLocations(reference);
-		}
-
-		@Override
-		public Schematic getSchematic()
-		{
-			return schematic;
-		}
-	}
-
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
 		{
@@ -233,6 +201,38 @@ public class Obelisk
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
+
+	private static enum ObeliskDesign implements Structure.Type.Design
+	{
+		GENERAL("general", general), DESERT("desert", desert), NETHER("nether", nether);
+
+		private final String name;
+		private final Schematic schematic;
+
+		private ObeliskDesign(String name, Schematic schematic)
+		{
+			this.name = name;
+			this.schematic = schematic;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
+		@Override
+		public Set<Location> getClickableBlocks(Location reference)
+		{
+			return getSchematic().getLocations(reference);
+		}
+
+		@Override
+		public Schematic getSchematic()
+		{
+			return schematic;
+		}
+	}
 
 	public static class Util
 	{
