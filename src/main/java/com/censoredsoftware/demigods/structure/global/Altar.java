@@ -38,7 +38,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Altar
 {
 	public static final String name = "Altar";
-	public static final Structure.Type.Design[] designs = AltarDesign.values();
 	public static final Function<Location, Structure.Type.Design> getDesign = new Function<Location, Structure.Type.Design>()
 	{
 		@Override

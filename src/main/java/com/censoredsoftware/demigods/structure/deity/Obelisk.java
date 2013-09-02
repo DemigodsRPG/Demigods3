@@ -30,7 +30,6 @@ import java.util.Set;
 public class Obelisk
 {
 	public static final String name = "Obelisk";
-	public static final Structure.Type.Design[] designs = ObeliskDesign.values();
 	public static final Function<Location, Structure.Type.Design> getDesign = new Function<Location, Structure.Type.Design>()
 	{
 		@Override

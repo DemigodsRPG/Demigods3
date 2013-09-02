@@ -29,7 +29,6 @@ import java.util.Set;
 public class Shrine
 {
 	public static final String name = "Shrine";
-	public static final Structure.Type.Design[] designs = ShrineDesign.values();
 	public static final Function<Location, Structure.Type.Design> getDesign = new Function<Location, Structure.Type.Design>()
 	{
 		@Override

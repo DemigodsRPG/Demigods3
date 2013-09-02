@@ -244,13 +244,13 @@ public class Structure implements ConfigurationSerializable
 		 * General
 		 */
 		// Altar
-		ALTAR(Altar.name, Altar.designs, Altar.getDesign, Altar.createNew, Altar.flags, Altar.listener, Altar.radius),
+		ALTAR(Altar.name, Altar.AltarDesign.values(), Altar.getDesign, Altar.createNew, Altar.flags, Altar.listener, Altar.radius),
 
 		// Obelisk
-		OBELISK(Obelisk.name, Obelisk.designs, Obelisk.getDesign, Obelisk.createNew, Obelisk.flags, Obelisk.listener, Obelisk.radius),
+		OBELISK(Obelisk.name, Obelisk.ObeliskDesign.values(), Obelisk.getDesign, Obelisk.createNew, Obelisk.flags, Obelisk.listener, Obelisk.radius),
 
 		// Shrine
-		SHRINE(Shrine.name, Shrine.designs, Shrine.getDesign, Shrine.createNew, Shrine.flags, Shrine.listener, Shrine.radius);
+		SHRINE(Shrine.name, Shrine.ShrineDesign.values(), Shrine.getDesign, Shrine.createNew, Shrine.flags, Shrine.listener, Shrine.radius);
 
 		private String name;
 		private Design[] designs;
