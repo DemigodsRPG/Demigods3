@@ -19,7 +19,7 @@ import java.util.Set;
 public class Lachesis
 {
 	public final static String name = "Lachesis", alliance = "Fate", permission = "demigods.fate.atropos";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 0;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 2;
 	public final static ChatColor color = ChatColor.DARK_GRAY;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));
