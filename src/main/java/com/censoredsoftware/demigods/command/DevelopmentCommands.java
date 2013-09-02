@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.command;
 
+import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
-import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
@@ -44,8 +44,8 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		for(Symbol symbol : Symbol.values())
-			player.sendMessage(symbol.name() + ": " + symbol);
+		for(Battle battle : Battle.Util.getAllActive())
+			battle.end();
 
 		return true;
 	}
