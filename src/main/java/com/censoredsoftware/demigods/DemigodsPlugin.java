@@ -22,7 +22,7 @@ public class DemigodsPlugin extends JavaPlugin
 	{
 		// Load the game engine.
 		Demigods.PLUGIN = this;
-		Demigods.load();
+		Demigods.finishLoading();
 
 		// Print success!
 		Messages.info("Successfully enabled.");

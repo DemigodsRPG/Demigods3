@@ -52,8 +52,8 @@ public class Demigods
 	protected static Set<String> DISABLED_WORLDS;
 	protected static Set<String> COMMANDS;
 
-	// Load everything.
-	protected static void load()
+	// Load what is possible to load right away.
+	static
 	{
 		// Allow static access.
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
@@ -69,7 +69,11 @@ public class Demigods
 
 		// Configure depends
 		loadDepends();
+	}
 
+	// Load everything else.
+	protected static void finishLoading()
+	{
 		// Start the data
 		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
@@ -90,6 +94,9 @@ public class Demigods
 
 		// Start threads
 		ThreadManager.startThreads();
+
+		// Regenerate structures
+		Structure.Util.regenerateStructures();
 
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 	}
