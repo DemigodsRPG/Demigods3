@@ -922,9 +922,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String name)
 			{
-				Player player = (Player) context.getForWhom();
-
-				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DCharacter.Util.charExists(name))
+				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DCharacter.Util.charExists(name) || Strings.containsAnyInCollection(name, Demigods.LANGUAGE.getBlackList()))
 				{
 					// Create the list
 					List<Translation.Text> errors = Lists.newArrayList();
