@@ -351,10 +351,6 @@ public class Battle implements ConfigurationSerializable
 
 	public void end()
 	{
-		sendMessage(ChatColor.RED + "The battle is over!");
-
-		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
-
 		for(String stringId : involvedPlayers)
 			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
 
@@ -402,6 +398,9 @@ public class Battle implements ConfigurationSerializable
 				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
 			Messages.broadcast(" ");
 		}
+
+		// Remind of cooldown
+		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
 
 		// Prepare for graceful delete
 		setDeleteTime(System.currentTimeMillis() + 3000L);
