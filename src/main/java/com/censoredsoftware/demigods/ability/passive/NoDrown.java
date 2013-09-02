@@ -126,7 +126,10 @@ public class NoDrown implements Ability
 			public void run()
 			{
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
+				{
+					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
 					character.getOfflinePlayer().getPlayer().setRemainingAir(0);
+				}
 			}
 		};
 	}

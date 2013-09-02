@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.deity.titan;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
+import com.censoredsoftware.demigods.ability.support.Carry;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -41,5 +42,5 @@ public class Oceanus
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission), new Carry(name, permission));
 }
