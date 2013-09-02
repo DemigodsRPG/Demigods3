@@ -89,9 +89,10 @@ public class Structure implements ConfigurationSerializable
 	public void setOwner(UUID id)
 	{
 		this.owner = id;
+		addMember(id);
 	}
 
-	void setMembers(List<String> members)
+	public void setMembers(List<String> members)
 	{
 		this.members = members;
 	}

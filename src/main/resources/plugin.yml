@@ -36,6 +36,8 @@ commands:
     test3:
         usage: /test3
         permission: demigods.admin
+    obelisk:
+        usage: /obelisk <ADD|REMOVE> <PLAYER|CHARACTER> <player|character>
     hspawn:
         usage: /hspawn
     nearestaltar:

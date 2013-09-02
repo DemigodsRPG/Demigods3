@@ -12,6 +12,7 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 public class DemigodsChatEvent extends Event implements Cancellable
@@ -24,7 +25,7 @@ public class DemigodsChatEvent extends Event implements Cancellable
 	public DemigodsChatEvent(String message)
 	{
 		this.message = message;
-		this.recipients = Sets.newHashSet(Bukkit.getServer().getOnlinePlayers());
+		this.recipients = Collections.synchronizedSet(Sets.newHashSet(Bukkit.getServer().getOnlinePlayers()));
 	}
 
 	public DemigodsChatEvent(String message, Collection<DCharacter> recipients)

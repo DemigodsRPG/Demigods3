@@ -25,7 +25,7 @@ public class DevelopmentCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "nearestaltar");
+		return Sets.newHashSet("test1", "test2", "test3", "hspawn", "nearestaltar", "obelisk");
 	}
 
 	@Override
@@ -36,6 +36,7 @@ public class DevelopmentCommands extends WrappedCommand
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		else if(command.getName().equalsIgnoreCase("nearestaltar")) return nearestAltar(sender);
+		else if(command.getName().equalsIgnoreCase("obelisk")) return obelisk(sender, args);
 		return false;
 	}
 
@@ -108,6 +109,15 @@ public class DevelopmentCommands extends WrappedCommand
 			player.sendMessage(ChatColor.YELLOW + "Nearest Altar found.");
 		}
 		else player.sendMessage(ChatColor.YELLOW + "There is no alter nearby.");
+
+		return true;
+	}
+
+	private static boolean obelisk(CommandSender sender, final String[] args)
+	{
+		Player player = (Player) sender;
+
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		return true;
 	}

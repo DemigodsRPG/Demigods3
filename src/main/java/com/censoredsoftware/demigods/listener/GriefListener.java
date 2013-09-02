@@ -24,8 +24,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class GriefListener implements Listener
 {
@@ -51,11 +53,11 @@ public class GriefListener implements Listener
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -65,11 +67,11 @@ public class GriefListener implements Listener
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -84,11 +86,11 @@ public class GriefListener implements Listener
 			return;
 		}
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -154,11 +156,11 @@ public class GriefListener implements Listener
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -168,11 +170,11 @@ public class GriefListener implements Listener
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		Structure save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING) : Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -197,11 +199,11 @@ public class GriefListener implements Listener
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		Entity entity = event.getRightClicked();
 		Structure save = Structure.Util.getInRadiusWithFlag(entity.getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null)
+		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -213,12 +215,12 @@ public class GriefListener implements Listener
 		if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		Block block = event.getClickedBlock();
 		Structure save = Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save == null) return;
+		if(save == null || !save.hasMembers()) return;
 		if(blockInventories.contains(block.getType()))
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			DCharacter owner = DCharacter.Util.load(save.getOwner());
-			if(character != null && owner != null && character.getId().equals(owner.getId())) return;
+			Collection<UUID> members = save.getMembers();
+			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}

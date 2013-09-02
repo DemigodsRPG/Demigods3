@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.structure.deity;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -27,6 +13,20 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.google.common.base.Function;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Obelisk
 {
@@ -55,7 +55,9 @@ public class Obelisk
 		@Override
 		public Structure apply(Structure.Type.Design design)
 		{
-			return new Structure();
+			Structure save = new Structure();
+			save.setMembers(new ArrayList<String>());
+			return save;
 		}
 	};
 	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
