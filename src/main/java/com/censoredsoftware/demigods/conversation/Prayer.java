@@ -924,7 +924,7 @@ public class Prayer implements WrappedConversation
 			{
 				Player player = (Player) context.getForWhom();
 
-				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DPlayer.Util.hasCharName(player, name))
+				if(name.length() < 2 || name.length() > 13 || !StringUtils.isAlphanumeric(name) || Strings.hasCapitalLetters(name, Configs.getSettingInt("character.max_caps_in_name")) || DCharacter.Util.charExists(name))
 				{
 					// Create the list
 					List<Translation.Text> errors = Lists.newArrayList();

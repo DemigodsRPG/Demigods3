@@ -163,7 +163,7 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		final Player player = getOfflinePlayer().getPlayer();
 
-		if(newChar.getPlayer() != null && this.player != null && !newChar.getPlayer().equals(this.player))
+		if(!newChar.getPlayer().equals(this.player))
 		{
 			player.sendMessage(ChatColor.RED + "You can't do that.");
 			return;
