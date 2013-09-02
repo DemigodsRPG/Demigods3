@@ -20,6 +20,16 @@ public class Schematic extends ArrayList<Selection>
 		this.radius = groundRadius;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+
+	public String getDesigner()
+	{
+		return designer;
+	}
+
 	public Set<Location> getLocations(Location reference)
 	{
 		Set<Location> locations = Sets.newHashSet();

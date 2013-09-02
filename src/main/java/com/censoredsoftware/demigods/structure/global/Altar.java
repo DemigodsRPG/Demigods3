@@ -116,6 +116,7 @@ public class Altar
 				// Generate the Altar based on the block given.
 				Structure save = Structure.Type.ALTAR.createNew(location, false);
 				save.setDesign(design);
+				save.save();
 				save.generate();
 
 				player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.ADMIN_WAND_GENERATE_ALTAR_COMPLETE));
@@ -152,15 +153,13 @@ public class Altar
 
 	private static enum AltarDesign implements Structure.Type.Design
 	{
-		GENERAL("general", general, new Selection(0, 2, 0)), HOLY("holy", holy, new Selection(0, 2, 0)), OASIS("oasis", oasis, new Selection(0, 1, 0));
+		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
 
-		private final String name;
 		private final Schematic schematic;
 		private final Selection clickableBlocks;
 
-		private AltarDesign(String name, Schematic schematic, Selection clickableBlocks)
+		private AltarDesign(Schematic schematic, Selection clickableBlocks)
 		{
-			this.name = name;
 			this.schematic = schematic;
 			this.clickableBlocks = clickableBlocks;
 		}
@@ -168,7 +167,7 @@ public class Altar
 		@Override
 		public String getName()
 		{
-			return name;
+			return schematic.getName();
 		}
 
 		@Override

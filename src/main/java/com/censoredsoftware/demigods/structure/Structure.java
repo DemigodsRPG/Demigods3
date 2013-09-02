@@ -6,7 +6,6 @@ import com.censoredsoftware.demigods.location.Region;
 import com.censoredsoftware.demigods.structure.deity.Obelisk;
 import com.censoredsoftware.demigods.structure.deity.Shrine;
 import com.censoredsoftware.demigods.structure.global.Altar;
-import com.censoredsoftware.demigods.util.Errors;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -114,17 +113,17 @@ public class Structure implements ConfigurationSerializable
 
 	public Location getReferenceLocation()
 	{
-		return DLocation.Util.load(this.referenceLocation).toLocation();
+		return DLocation.Util.load(referenceLocation).toLocation();
 	}
 
 	public Set<Location> getClickableBlocks()
 	{
-		return getType().getDesign(this.design).getClickableBlocks(getReferenceLocation());
+		return getType().getDesign(design).getClickableBlocks(getReferenceLocation());
 	}
 
 	public Set<Location> getLocations()
 	{
-		return getType().getDesign(this.design).getSchematic().getLocations(getReferenceLocation());
+		return getType().getDesign(design).getSchematic().getLocations(getReferenceLocation());
 	}
 
 	public Type getType()
@@ -200,9 +199,7 @@ public class Structure implements ConfigurationSerializable
 
 	public void generate()
 	{
-		Type.Design design = getType().getDesign(this.design);
-		if(design != null) design.getSchematic().generate(getReferenceLocation());
-		else Errors.triggerError("Could not generate structure.");
+		getType().getDesign(design).getSchematic().generate(getReferenceLocation());
 	}
 
 	public void save()
