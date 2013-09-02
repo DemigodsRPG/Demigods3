@@ -390,7 +390,7 @@ public class MainCommand extends WrappedCommand
 		@Override
 		public String getName()
 		{
-			return "/dg admin set [fav|maxfav|asc|sp] <character> <amt>";
+			return "/dg admin set [fav|maxfav|sp] <character> <amt>";
 		}
 
 		@Override
@@ -433,14 +433,6 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "max favor";
 				}
-				else if(args[2].equalsIgnoreCase("asc"))
-				{
-					// Update the amount
-					character.getMeta().setAscensions(amount);
-
-					// Set what was updated
-					updatedValue = "ascensions";
-				}
 				else if(args[2].equalsIgnoreCase("sp"))
 				{
 					// Update the amount
@@ -479,7 +471,7 @@ public class MainCommand extends WrappedCommand
 		@Override
 		public String getName()
 		{
-			return "/dg admin add [fav|maxfav|asc|sp] <character> <amt>";
+			return "/dg admin add [fav|maxfav|sp] <character> <amt>";
 		}
 
 		@Override
@@ -522,14 +514,6 @@ public class MainCommand extends WrappedCommand
 					// Set what was updated
 					updatedValue = "max favor";
 				}
-				else if(args[2].equalsIgnoreCase("asc"))
-				{
-					// Update the amount
-					character.getMeta().addAscensions(amount);
-
-					// Set what was updated
-					updatedValue = "ascensions";
-				}
 				else if(args[2].equalsIgnoreCase("sp"))
 				{
 					// Update the amount
@@ -568,7 +552,7 @@ public class MainCommand extends WrappedCommand
 		@Override
 		public String getName()
 		{
-			return "/dg admin sub [fav|maxfav|asc|sp] <character> <amt>";
+			return "/dg admin sub [fav|maxfav|sp] <character> <amt>";
 		}
 
 		@Override
@@ -610,14 +594,6 @@ public class MainCommand extends WrappedCommand
 
 					// Set what was updated
 					updatedValue = "max favor";
-				}
-				else if(args[2].equalsIgnoreCase("asc"))
-				{
-					// Update the amount
-					character.getMeta().subtractAscensions(amount);
-
-					// Set what was updated
-					updatedValue = "ascensions";
 				}
 				else if(args[2].equalsIgnoreCase("sp"))
 				{

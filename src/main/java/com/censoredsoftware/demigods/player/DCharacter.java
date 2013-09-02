@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -13,16 +24,6 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -614,7 +615,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public static class Meta implements ConfigurationSerializable
 	{
 		private UUID id;
-		private int ascensions;
 		private int favor;
 		private int maxFavor;
 		private int skillPoints;
@@ -630,7 +630,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Meta(UUID id, ConfigurationSection conf)
 		{
 			this.id = id;
-			ascensions = conf.getInt("ascensions");
 			favor = conf.getInt("favor");
 			maxFavor = conf.getInt("maxFavor");
 			skillPoints = conf.getInt("skillPoints");
@@ -645,7 +644,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Map<String, Object> serialize()
 		{
 			Map<String, Object> map = Maps.newHashMap();
-			map.put("ascensions", ascensions);
 			map.put("favor", favor);
 			map.put("maxFavor", maxFavor);
 			map.put("skillPoints", skillPoints);
@@ -865,33 +863,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			}
 		}
 
-		public Integer getAscensions()
+		public int getAscensions()
 		{
-			return ascensions;
-		}
-
-		public void addAscension()
-		{
-			ascensions += 1;
-			Util.saveMeta(this);
-		}
-
-		public void addAscensions(int amount)
-		{
-			ascensions += amount;
-			Util.saveMeta(this);
-		}
-
-		public void subtractAscensions(int amount)
-		{
-			ascensions -= amount;
-			Util.saveMeta(this);
-		}
-
-		public void setAscensions(int amount)
-		{
-			ascensions = amount;
-			Util.saveMeta(this);
+			return 1; // TODO
 		}
 
 		public Integer getFavor()
@@ -1051,7 +1025,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			Meta charMeta = new Meta();
 			charMeta.initialize();
 			charMeta.generateId();
-			charMeta.setAscensions(Configs.getSettingInt("character.defaults.ascensions"));
 			charMeta.setFavor(Configs.getSettingInt("character.defaults.favor"));
 			charMeta.setMaxFavor(Configs.getSettingInt("character.defaults.max_favor"));
 			charMeta.resetSkills();

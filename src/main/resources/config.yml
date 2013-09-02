@@ -35,12 +35,11 @@ zones:
 ## Multipliers ##
 multipliers:
     favor: 1.0
-    exp: 1.0
     skill_points: 1.0
 
 ## Caps ##
 caps:
-    ascension: 100
+    skills: 100
     favor: 20000
     target_range: 100
     obelisks_per_character: 3
@@ -65,8 +64,6 @@ character:
         ultimate: 1
         favor: 500
         max_favor: 750
-        skill: 200
-        ascensions: 1
 
 ## Battle Settings ##
 battles:

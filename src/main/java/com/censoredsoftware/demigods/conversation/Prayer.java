@@ -375,7 +375,7 @@ public class Prayer implements WrappedConversation
 
 			for(Skill skill : character.getMeta().getSkills())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " until level " + ChatColor.YELLOW + (skill.getLevel() + 1) + ChatColor.GRAY + ")"); // TODO: Add more detail.
+				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.AQUA + Strings.beautify(skill.getType().name()) + ChatColor.GRAY + " (" + (skill.getLevel() >= Configs.getSettingInt("caps.skills") ? ChatColor.GREEN + "Level 50" : "Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1)) + ChatColor.GRAY + ")");
 			}
 
 			player.sendRawMessage(" ");
@@ -387,6 +387,7 @@ public class Prayer implements WrappedConversation
 			else
 			{
 				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have no skill points available for assignment.").build());
+				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  Battle to earn some!").build());
 			}
 
 			// Display notifications if available
@@ -415,8 +416,10 @@ public class Prayer implements WrappedConversation
 
 			try
 			{
+				if(message.equalsIgnoreCase("menu")) return true;
+
 				Skill.Type skill = Skill.Type.valueOf(splitMsg[2].toUpperCase());
-				return message.equalsIgnoreCase("menu") || splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null;
+				return splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null;
 			}
 			catch(Exception ignored)
 			{
