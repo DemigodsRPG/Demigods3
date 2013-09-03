@@ -1,16 +1,5 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -25,6 +14,16 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -156,7 +155,7 @@ public class GeneralCommands extends WrappedCommand
 		for(int i = 0; i < characters.size(); i++)
 		{
 			DCharacter character = characters.get(i);
-			double score = character.getDeathCount() == 0 ? character.getKillCount() / 1.0 : character.getKillCount() / character.getDeathCount();
+			double score = character.getKillCount() * (character.getDeathCount() == 0 ? character.getKillCount() / 1.0 : character.getKillCount() / character.getDeathCount());
 			if(score > 0) scores.put(character.getId(), score);
 		}
 
