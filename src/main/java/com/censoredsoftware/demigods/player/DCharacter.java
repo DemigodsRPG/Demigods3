@@ -793,6 +793,30 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				if(type.isDefault()) addSkill(Skill.Util.createSkill(type));
 		}
 
+		public void cleanSkills()
+		{
+			List<String> toRemove = Lists.newArrayList();
+
+			// Locate obselete skills
+			for(String skillName : getRawSkills().keySet())
+			{
+				try
+				{
+					// Attempt to find the value of the skillname
+					Skill.Type.valueOf(skillName.toUpperCase());
+				}
+				catch(Exception ignored)
+				{
+					// There was an error. Catch it and remove the skill.
+					toRemove.add(skillName);
+				}
+			}
+
+			// Remove the obsolete skills
+			for(String skillName : toRemove)
+				getRawSkills().remove(skillName);
+		}
+
 		public void addSkill(Skill skill)
 		{
 			if(!getRawSkills().containsKey(skill.getType().toString())) getRawSkills().put(skill.getType().toString(), skill.getId().toString());
@@ -801,19 +825,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public Skill getSkill(Skill.Type type)
 		{
-			if(getRawSkills().containsKey(type.toString()))
-			{
-				try
-				{
-					// Attempt to return the skill
-					return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
-				}
-				catch(Exception ignored)
-				{
-					// If there's an error with grabbing the skill then it's likely non-existent, so just remove it
-					getRawSkills().remove(type.toString());
-				}
-			}
+			if(getRawSkills().containsKey(type.toString())) return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
 			return null;
 		}
 

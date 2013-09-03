@@ -1,12 +1,11 @@
 package com.censoredsoftware.demigods;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Messages;
 
@@ -25,6 +24,10 @@ public class DemigodsPlugin extends JavaPlugin
 		Demigods.PLUGIN = this;
 		Demigods.finishLoading();
 
+		// Handle online characters
+		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+			character.getMeta().cleanSkills();
+
 		// Print success!
 		Messages.info("Successfully enabled.");
 	}
@@ -38,9 +41,9 @@ public class DemigodsPlugin extends JavaPlugin
 		// Save all the data.
 		DataManager.save();
 
-		// Toggle all prayer off
-		for(Player player : Bukkit.getOnlinePlayers())
-			DPlayer.Util.togglePrayingSilent(player, false, false);
+		// Handle online characters
+		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+			DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
 
 		// Cancel all threads, Event calls, and connections.
 		ThreadManager.stopThreads();
