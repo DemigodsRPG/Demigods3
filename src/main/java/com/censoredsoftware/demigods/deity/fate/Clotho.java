@@ -4,6 +4,7 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.AlwaysInvisible;
 import com.censoredsoftware.demigods.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.ability.passive.Swim;
+import com.censoredsoftware.demigods.ability.support.Carry;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -42,5 +43,5 @@ public class Clotho
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission), new Carry(name, permission, false));
 }

@@ -25,11 +25,13 @@ public class Carry implements Ability
 	private final static Skill.Type type = Skill.Type.SUPPORT;
 	private final static List<String> details = Lists.newArrayList("Hold a leash to carry other players on your shoulders.");
 	private String deity, permission;
+	private boolean needsLead;
 
-	public Carry(final String deity, String permission)
+	public Carry(final String deity, String permission, boolean needsLead)
 	{
 		this.deity = deity;
 		this.permission = permission;
+		this.needsLead = needsLead;
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				Player clicked = (Player) event.getRightClicked();
 
-				if(Deity.Util.canUseDeitySilent(clicked, deity) && clicked.getItemInHand().getType().equals(Material.LEASH) && clicked.getPassenger() == null)
+				if(Deity.Util.canUseDeitySilent(clicked, deity) && (!needsLead || clicked.getItemInHand().getType().equals(Material.LEASH)) && clicked.getPassenger() == null)
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
@@ -126,7 +128,10 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				if(Demigods.MiscUtil.isDisabledWorld(player.getWorld())) return;
 
-				if(player.getInventory().getItem(event.getNewSlot()) != null && !player.getInventory().getItem(event.getNewSlot()).getType().equals(Material.LEASH) && Deity.Util.canUseDeitySilent(player, deity) && player.getPassenger() != null) player.getPassenger().leaveVehicle();
+				if(!Deity.Util.canUseDeitySilent(player, deity) || player.getPassenger() == null) return;
+
+				if(needsLead && player.getInventory().getItem(event.getNewSlot()) != null && !player.getInventory().getItem(event.getNewSlot()).getType().equals(Material.LEASH)) player.getPassenger().leaveVehicle();
+				else if(player.getInventory().getItem(event.getNewSlot()) != null) player.getPassenger().leaveVehicle();
 			}
 		};
 	}

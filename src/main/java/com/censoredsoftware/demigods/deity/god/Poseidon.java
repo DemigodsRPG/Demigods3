@@ -43,5 +43,5 @@ public class Poseidon
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission), new Reel(name, permission), new Carry(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet(new Swim(name, permission), new NoDrown(name, permission), new Reel(name, permission), new Carry(name, permission, true));
 }
