@@ -1205,7 +1205,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 					if(character.isActive() && character.getOfflinePlayer().isOnline())
 					{
 						for(Ability abilityToCheck : character.getDeity().getAbilities())
-							return abilityToCheck.getName().equalsIgnoreCase(abilityName);
+							if(abilityToCheck.getName().equalsIgnoreCase(abilityName)) return true;
 					}
 					return false;
 				}
