@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.deity.fate;
 
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.ability.passive.AlwaysInvisible;
 import com.censoredsoftware.demigods.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -41,5 +42,5 @@ public class Clotho
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new Swim(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission));
 }
