@@ -41,6 +41,6 @@ public class Lachesis
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_OBELISK, Deity.Flag.NO_SHRINE);
 	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Discoball.RainbowWalking(name, permission));
 }
