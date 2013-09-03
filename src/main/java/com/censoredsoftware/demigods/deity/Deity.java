@@ -48,13 +48,13 @@ public enum Deity
 	 * Titans
 	 */
 	// Ankhiale
-	PROMETHEUS(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
+	ANKHAILE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
 
 	// Oceanus
 	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
 
 	// Menoitios
-	IAPETUS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
+	MENOITIOS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
 
 	/**
 	 * Fates (Admin Deities)
