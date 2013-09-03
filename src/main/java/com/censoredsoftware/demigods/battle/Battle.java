@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.battle;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
@@ -642,7 +643,7 @@ public class Battle implements ConfigurationSerializable
 		public static boolean canParticipate(Entity entity)
 		{
 			if(!(entity instanceof Player) && !(entity instanceof Tameable)) return false;
-			if(entity instanceof Player && DPlayer.Util.getPlayer((Player) entity).getCurrent() == null) return false;
+			if(entity instanceof Player && (DPlayer.Util.getPlayer((Player) entity).getCurrent() == null || DPlayer.Util.getPlayer((Player) entity).getCurrent().getDeity().getFlags().contains(Deity.Flag.NO_BATTLE))) return false;
 			return !(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null);
 		}
 
