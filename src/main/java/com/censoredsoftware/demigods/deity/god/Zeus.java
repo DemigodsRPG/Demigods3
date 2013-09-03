@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.deity.god;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.ability.offense.Shove;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
+import com.censoredsoftware.demigods.ability.support.Shove;
 import com.censoredsoftware.demigods.ability.ultimate.Storm;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;

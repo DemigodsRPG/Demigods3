@@ -1,10 +1,23 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.helper.WrappedConversation;
+import com.censoredsoftware.demigods.language.Symbol;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Notification;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.*;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,24 +38,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.helper.WrappedConversation;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -995,7 +994,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliances())
+				for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms(player))
 					player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
 
 				return "";
@@ -1004,7 +1003,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, final String alliance)
 			{
-				return Iterables.any(Deity.Util.getLoadedMajorPlayableDeityAlliances(), new Predicate<String>()
+				return Iterables.any(Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms((Player) context.getForWhom()), new Predicate<String>()
 				{
 					@Override
 					public boolean apply(String loadedAlliance)
@@ -1062,7 +1061,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAlliance((String) context.getSessionData("chosen_alliance")))
+				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((String) context.getSessionData("chosen_alliance"), player))
 					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(deity.getName()) + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.GRAY + " - " + ChatColor.DARK_RED + "Difficult" : ""));
 
 				return "";
@@ -1071,7 +1070,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String deityName)
 			{
-				return Deity.Util.getDeity(deityName) != null;
+				return Deity.Util.getDeity(deityName) != null && ((Player) context.getForWhom()).hasPermission(Deity.Util.getDeity(deityName).getPermission());
 			}
 
 			@Override

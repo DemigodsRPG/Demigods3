@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.ability.offense;
+package com.censoredsoftware.demigods.ability.support;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
@@ -24,7 +24,7 @@ public class Shove implements Ability
 {
 	private final static String name = "Shove", command = "shove";
 	private final static int cost = 170, delay = 15, repeat = 0;
-	private final static Skill.Type type = Skill.Type.DEFENSE;
+	private final static Skill.Type type = Skill.Type.SUPPORT;
 	private final static List<String> details = Lists.newArrayList("Shove your target away from you.");
 	private String deity, permission;
 

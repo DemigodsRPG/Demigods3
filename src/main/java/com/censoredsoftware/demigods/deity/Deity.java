@@ -196,6 +196,30 @@ public enum Deity
 			});
 		}
 
+		public static Collection<String> getLoadedMajorPlayableDeityAlliancesWithPerms(final Player player)
+		{
+			return Collections2.filter(getLoadedDeityAlliances(), new Predicate<String>()
+			{
+				@Override
+				public boolean apply(String alliance)
+				{
+					return getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player).size() > 0;
+				}
+			});
+		}
+
+		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final String alliance, final Player player)
+		{
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
+			{
+				@Override
+				public boolean apply(Deity d)
+				{
+					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Flag.PLAYABLE) && d.getFlags().contains(Flag.MAJOR_DEITY) && d.getAlliance().equalsIgnoreCase(alliance);
+				}
+			});
+		}
+
 		public static Collection<String> getLoadedMajorPlayableDeityAlliances()
 		{
 			return Collections2.filter(getLoadedDeityAlliances(), new Predicate<String>()
