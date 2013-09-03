@@ -801,12 +801,20 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public Skill getSkill(Skill.Type type)
 		{
-			if(getRawSkills().containsKey(type.toString())) return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
-			else
+			if(getRawSkills().containsKey(type.toString()))
 			{
-				addSkill(Skill.Util.createSkill(type));
-				return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
+				try
+				{
+					// Attempt to return the skill
+					return Skill.Util.loadSkill(UUID.fromString(getRawSkills().get(type.toString()).toString()));
+				}
+				catch(Exception ignored)
+				{
+					// If there's an error with grabbing the skill then it's likely non-existent, so just remove it
+					getRawSkills().remove(type.toString());
+				}
 			}
+			return null;
 		}
 
 		public Map<String, Object> getRawSkills()

@@ -1,13 +1,14 @@
 package com.censoredsoftware.demigods;
 
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.data.ThreadManager;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Messages;
 
 /**
  * Class for all plugins of demigods.
@@ -39,7 +40,7 @@ public class DemigodsPlugin extends JavaPlugin
 
 		// Toggle all prayer off
 		for(Player player : Bukkit.getOnlinePlayers())
-			DPlayer.Util.togglePrayingSilent(player, false, false);;
+			DPlayer.Util.togglePrayingSilent(player, false, false);
 
 		// Cancel all threads, Event calls, and connections.
 		ThreadManager.stopThreads();
