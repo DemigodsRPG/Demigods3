@@ -1,10 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +13,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class Swim implements Ability
 {
@@ -115,7 +116,7 @@ public class Swim implements Ability
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
 				if(!playerLocationMaterial.equals(Material.STATIONARY_WATER) && !playerLocationMaterial.equals(Material.WATER))
 				{
-					if(!player.hasPotionEffect(PotionEffectType.SLOW)) player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 6000, 0));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 0));
 					return;
 				}
 
