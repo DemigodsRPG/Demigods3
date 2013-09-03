@@ -1,10 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class NoFire implements Ability
 {
@@ -110,7 +111,11 @@ public class NoFire implements Ability
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives falling damage, cancel it
-					if(damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE) || damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK)) damageEvent.setCancelled(true);
+					if(damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE) || damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK))
+					{
+						damageEvent.setCancelled(true);
+						player.setFireTicks(0);
+					}
 				}
 			}
 		};
