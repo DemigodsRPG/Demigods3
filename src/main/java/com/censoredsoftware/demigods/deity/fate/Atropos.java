@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.deity.fate;
 
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.AlwaysInvisible;
-import com.censoredsoftware.demigods.ability.passive.InvisibleHorse;
 import com.censoredsoftware.demigods.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.ability.support.Carry;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
@@ -44,5 +43,5 @@ public class Atropos
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new InvisibleHorse(name, permission), new Firestorm.ShootFireball(name, permission), new Carry(name, permission, false));
+	public final static Set<Ability> abilities = Sets.newHashSet(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Firestorm.ShootFireball(name, permission), new Carry(name, permission, false));
 }
