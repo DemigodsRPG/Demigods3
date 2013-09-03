@@ -1,9 +1,14 @@
 package com.censoredsoftware.demigods.data;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.structure.global.Altar;
@@ -12,9 +17,6 @@ import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Times;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
@@ -30,7 +32,7 @@ public class ThreadManager
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
@@ -115,13 +117,11 @@ public class ThreadManager
 			};
 			favor = new BukkitRunnable()
 			{
-				private final double multiplier = Configs.getSettingDouble("multipliers.favor");
-
 				@Override
 				public void run()
 				{
 					// Update Favor
-					DPlayer.Util.updateFavor(multiplier);
+					DCharacter.Util.updateFavor();
 				}
 			};
 		}

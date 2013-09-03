@@ -402,6 +402,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		});
 	}
 
+	public int getFavorRegen()
+	{
+		int favorRegenSkill = getMeta().getSkill(Skill.Type.FAVOR_REGEN) != null ? 2 * getMeta().getSkill(Skill.Type.FAVOR_REGEN).getLevel() : 0;
+		int regenRate = (int) Math.ceil(Configs.getSettingDouble("multipliers.favor") * getDeity().getFavorRegen() + favorRegenSkill);
+		if(regenRate < 30) regenRate = 30;
+		return regenRate;
+	}
+
 	@Override
 	public void setCanPvp(boolean pvp)
 	{
@@ -782,7 +790,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			getRawSkills().clear();
 			for(Skill.Type type : Skill.Type.values())
-				addSkill(Skill.Util.createSkill(type));
+				if(type.isDefault()) addSkill(Skill.Util.createSkill(type));
 		}
 
 		public void addSkill(Skill skill)
@@ -1218,6 +1226,18 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
 			return Collections2.filter(getAllUsable(), predicate);
+		}
+
+		/**
+		 * Updates favor for all online characters.
+		 */
+		public static void updateFavor()
+		{
+			for(Player player : Bukkit.getOnlinePlayers())
+			{
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				if(character != null) character.getMeta().addFavor(character.getFavorRegen());
+			}
 		}
 	}
 }

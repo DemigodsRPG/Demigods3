@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -13,18 +26,6 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -528,23 +529,6 @@ public class DPlayer implements ConfigurationSerializable
 				return messages;
 			}
 			return null;
-		}
-
-		/**
-		 * Updates favor for all online players.
-		 * 
-		 * @param multiplier the favor multiplier.
-		 */
-		public static void updateFavor(double multiplier)
-		{
-			for(Player player : Bukkit.getOnlinePlayers())
-			{
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				if(character == null) continue;
-				int regenRate = (int) Math.ceil(multiplier * character.getMeta().getAscensions());
-				if(regenRate < 30) regenRate = 30;
-				character.getMeta().addFavor(regenRate);
-			}
 		}
 	}
 }

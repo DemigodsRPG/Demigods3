@@ -23,7 +23,19 @@ public class Skill implements ConfigurationSerializable
 
 	public enum Type
 	{
-		OFFENSE, DEFENSE, STEALTH, SUPPORT, PASSIVE, ULTIMATE
+		OFFENSE(true), DEFENSE(true), STEALTH(true), SUPPORT(true), PASSIVE(true), ULTIMATE(true), FAVOR_REGEN(false);
+
+		private boolean isDefault;
+
+		private Type(boolean isDefault)
+		{
+			this.isDefault = isDefault;
+		}
+
+		public boolean isDefault()
+		{
+			return isDefault;
+		}
 	}
 
 	public Skill()
@@ -127,7 +139,19 @@ public class Skill implements ConfigurationSerializable
 
 	public int getRequiredPointsForLevel(int level)
 	{
-		return (int) Math.ceil((level * Math.pow(level, 1.4)) + 5);
+		switch(getType())
+		{
+			case ULTIMATE:
+			case PASSIVE:
+			case STEALTH:
+			case OFFENSE:
+			case DEFENSE:
+			case SUPPORT:
+			case FAVOR_REGEN:
+				return (int) Math.ceil((level * Math.pow(level, 1.4)) + 5);
+		}
+
+		return -1;
 	}
 
 	@Override
@@ -143,7 +167,7 @@ public class Skill implements ConfigurationSerializable
 			Skill skill = new Skill();
 			skill.generateId();
 			skill.setType(type);
-			skill.setLevel(Configs.getSettingInt("character.defaults." + type.name().toLowerCase()));
+			skill.setLevel(1);
 			save(skill);
 			return skill;
 		}

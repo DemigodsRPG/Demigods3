@@ -20,7 +20,7 @@ generation:
     altar_chance: 4.8 #percent
 
 ## Regeneration ##
-regeneration:
+regeneration_rates:
     favor: 20
 
 ## Zones ##
@@ -56,12 +56,6 @@ stats:
 character:
     max_caps_in_name: 3
     defaults:
-        offense: 1
-        defense: 1
-        stealth: 1
-        support: 1
-        passive: 1
-        ultimate: 1
         favor: 500
         max_favor: 750
 
