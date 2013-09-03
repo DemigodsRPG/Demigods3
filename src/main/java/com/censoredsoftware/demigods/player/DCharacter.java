@@ -456,7 +456,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void chatWithAlliance(String message)
 	{
-		sendAllianceMessage(ChatColor.YELLOW + "" + Symbol.L_PHI + " " + ChatColor.RESET + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
+		sendAllianceMessage(ChatColor.GRAY + "" + Symbol.L_PHI + ": " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
 		Messages.info("[" + getAlliance() + "]" + name + ": " + message);
 	}
 
