@@ -171,7 +171,7 @@ public class Structure implements ConfigurationSerializable
 		return this.active;
 	}
 
-	public void setRegion(Region region)
+	private void setRegion(Region region)
 	{
 		this.region = region.toString();
 	}
