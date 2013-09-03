@@ -113,6 +113,7 @@ public class AlwaysInvisible implements Ability
 				{
 					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
+					player.removePotionEffect(PotionEffectType.INVISIBILITY);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 120, 1));
 				}
 			}

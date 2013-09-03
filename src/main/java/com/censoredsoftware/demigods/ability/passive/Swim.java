@@ -137,6 +137,7 @@ public class Swim implements Ability
 				{
 					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
+					player.removePotionEffect(PotionEffectType.SLOW);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 0));
 				}
 			}
