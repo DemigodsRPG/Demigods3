@@ -25,7 +25,7 @@ public class DemigodsPlugin extends JavaPlugin
 		Demigods.finishLoading();
 
 		// Handle online characters
-		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+		for(DCharacter character : DCharacter.Util.loadAll())
 			character.getMeta().cleanSkills();
 
 		// Print success!
