@@ -404,7 +404,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public int getFavorRegen()
 	{
-		int favorRegenSkill = getMeta().getSkill(Skill.Type.FAVOR_REGEN) != null ? 2 * getMeta().getSkill(Skill.Type.FAVOR_REGEN).getLevel() : 0;
+		int favorRegenSkill = getMeta().getSkill(Skill.Type.FAVOR) != null ? 2 * getMeta().getSkill(Skill.Type.FAVOR).getLevel() : 0;
 		int regenRate = (int) Math.ceil(Configs.getSettingDouble("multipliers.favor") * getDeity().getFavorRegen() + favorRegenSkill);
 		if(regenRate < 30) regenRate = 30;
 		return regenRate;

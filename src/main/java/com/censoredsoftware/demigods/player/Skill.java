@@ -23,7 +23,7 @@ public class Skill implements ConfigurationSerializable
 
 	public enum Type
 	{
-		OFFENSE(true), DEFENSE(true), STEALTH(true), SUPPORT(true), PASSIVE(true), ULTIMATE(true), FAVOR_REGEN(false);
+		OFFENSE(true), DEFENSE(true), STEALTH(true), SUPPORT(true), PASSIVE(true), ULTIMATE(true), FAVOR(false);
 
 		private boolean isDefault;
 
@@ -147,7 +147,7 @@ public class Skill implements ConfigurationSerializable
 			case OFFENSE:
 			case DEFENSE:
 			case SUPPORT:
-			case FAVOR_REGEN:
+			case FAVOR:
 				return (int) Math.ceil((level * Math.pow(level, 1.4)) + 5);
 		}
 
