@@ -284,7 +284,13 @@ public enum Deity
 
 		public static Deity getDeity(String deity)
 		{
-			return Deity.valueOf(deity.toUpperCase());
+			try
+			{
+				return Deity.valueOf(deity.toUpperCase());
+			}
+			catch(IllegalArgumentException ignored)
+			{}
+			return null;
 		}
 
 		public static boolean canUseDeity(DCharacter character, String deity)
