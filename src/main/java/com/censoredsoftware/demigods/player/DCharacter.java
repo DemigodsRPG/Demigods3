@@ -431,6 +431,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		try
 		{
 			usable = Deity.Util.getDeity(this.deity) != null;
+			return;
 		}
 		catch(IllegalArgumentException ignored)
 		{}
