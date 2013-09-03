@@ -116,8 +116,7 @@ public class Swim implements Ability
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
 				if(!(playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER)))
 				{
-					player.removePotionEffect(PotionEffectType.SLOW);
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 0));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 960, 0));
 				}
 
 				if(player.isSneaking())
