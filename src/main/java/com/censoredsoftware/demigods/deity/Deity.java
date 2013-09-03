@@ -7,9 +7,9 @@ import com.censoredsoftware.demigods.deity.fate.Lachesis;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
-import com.censoredsoftware.demigods.deity.titan.Iapetus;
+import com.censoredsoftware.demigods.deity.titan.Ankhiale;
+import com.censoredsoftware.demigods.deity.titan.Menoitios;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
-import com.censoredsoftware.demigods.deity.titan.Prometheus;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.google.common.base.Function;
@@ -47,14 +47,14 @@ public enum Deity
 	/**
 	 * Titans
 	 */
-	// Prometheus
-	PROMETHEUS(Prometheus.name, Prometheus.alliance, Prometheus.permission, Prometheus.color, Prometheus.claimItems, Prometheus.forsakeItems, Prometheus.lore, Prometheus.flags, Prometheus.abilities, Prometheus.accuracy, Prometheus.favorRegen, Prometheus.maxFavor, Prometheus.maxHealth),
+	// Ankhiale
+	PROMETHEUS(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
 
 	// Oceanus
 	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
 
-	// Iapetus
-	IAPETUS(Iapetus.name, Iapetus.alliance, Iapetus.permission, Iapetus.color, Iapetus.claimItems, Iapetus.forsakeItems, Iapetus.lore, Iapetus.flags, Iapetus.abilities, Iapetus.accuracy, Iapetus.favorRegen, Iapetus.maxFavor, Iapetus.maxHealth),
+	// Menoitios
+	IAPETUS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
 
 	/**
 	 * Fates (Admin Deities)

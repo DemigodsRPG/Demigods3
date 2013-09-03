@@ -1,9 +1,6 @@
 package com.censoredsoftware.demigods.deity.titan;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.ability.offense.Blaze;
-import com.censoredsoftware.demigods.ability.passive.NoFire;
-import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -18,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Prometheus
+public class Menoitios
 {
-	public final static String name = "Prometheus", alliance = "Titan", permission = "demigods.titan.protmetheus";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
-	public final static ChatColor color = ChatColor.GOLD;
-	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
-	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
+	public final static String name = "Menoitios", alliance = "Titan", permission = "demigods.titan.menoitios";
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
+	public final static ChatColor color = ChatColor.RED;
+	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
+	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
 	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
 	{
 		{
@@ -42,5 +39,5 @@ public class Prometheus
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static Set<Ability> abilities = Sets.newHashSet(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
+	public final static Set<Ability> abilities = Sets.newHashSet();
 }
