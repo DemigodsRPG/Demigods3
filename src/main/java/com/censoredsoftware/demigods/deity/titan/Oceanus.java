@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class Oceanus
 {
-	public final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus";
+	public final static String name = "Oceanus", alliance = "Titan", permission = "demigods.titan.oceanus", shortDescription = ChatColor.GRAY + "The Titan of the oceans.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.DARK_AQUA;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.RAW_FISH, 2, Material.FISHING_ROD, 1));

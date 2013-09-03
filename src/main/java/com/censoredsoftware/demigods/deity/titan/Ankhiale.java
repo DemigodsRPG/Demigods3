@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class Ankhiale
 {
-	public final static String name = "Ankhiale", alliance = "Titan", permission = "demigods.titan.ankhiale";
+	public final static String name = "Ankhiale", alliance = "Titan", permission = "demigods.titan.ankhiale", shortDescription = ChatColor.GRAY + "The Titan of first fire.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
 	public final static ChatColor color = ChatColor.GOLD;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));

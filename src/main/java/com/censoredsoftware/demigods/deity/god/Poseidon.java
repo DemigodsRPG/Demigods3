@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class Poseidon
 {
-	public final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon";
+	public final static String name = "Poseidon", alliance = "God", permission = "demigods.god.poseidon", shortDescription = ChatColor.GRAY + "The God of the oceans.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.AQUA;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.INK_SACK, 4));

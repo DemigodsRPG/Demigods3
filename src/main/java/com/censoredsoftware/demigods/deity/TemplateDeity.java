@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class TemplateDeity
 {
-	public final static String name = "Template", alliance = "Test", permission = "demigods.test.template";
+	public final static String name = "Template", alliance = "Test", permission = "demigods.test.template", shortDescription = ChatColor.GRAY + "The deity of testing.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.GRAY;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));

@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class Clotho
 {
-	public final static String name = "Clotho", alliance = "Fate", permission = "demigods.fate.clotho";
+	public final static String name = "Clotho", alliance = "Fate", permission = "demigods.fate.clotho", shortDescription = ChatColor.GRAY + "The one who sows.";
 	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2;
 	public final static ChatColor color = ChatColor.WHITE;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));

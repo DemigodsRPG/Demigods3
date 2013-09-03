@@ -30,54 +30,55 @@ public enum Deity
 	/**
 	 * Template
 	 */
-	TEMPLATE(TemplateDeity.name, TemplateDeity.alliance, TemplateDeity.permission, TemplateDeity.color, TemplateDeity.claimItems, TemplateDeity.forsakeItems, TemplateDeity.lore, TemplateDeity.flags, TemplateDeity.abilities, TemplateDeity.accuracy, TemplateDeity.favorRegen, TemplateDeity.maxFavor, TemplateDeity.maxHealth),
+	TEMPLATE(TemplateDeity.name, TemplateDeity.alliance, TemplateDeity.permission, TemplateDeity.color, TemplateDeity.claimItems, TemplateDeity.forsakeItems, TemplateDeity.shortDescription, TemplateDeity.lore, TemplateDeity.flags, TemplateDeity.abilities, TemplateDeity.accuracy, TemplateDeity.favorRegen, TemplateDeity.maxFavor, TemplateDeity.maxHealth),
 
 	/**
 	 * Gods
 	 */
 	// Zeus
-	ZEUS(Zeus.name, Zeus.alliance, Zeus.permission, Zeus.color, Zeus.claimItems, Zeus.forsakeItems, Zeus.lore, Zeus.flags, Zeus.abilities, Zeus.accuracy, Zeus.favorRegen, Zeus.maxFavor, Zeus.maxHealth),
+	ZEUS(Zeus.name, Zeus.alliance, Zeus.permission, Zeus.color, Zeus.claimItems, Zeus.forsakeItems, Zeus.shortDescription, Zeus.lore, Zeus.flags, Zeus.abilities, Zeus.accuracy, Zeus.favorRegen, Zeus.maxFavor, Zeus.maxHealth),
 
 	// Poseidon
-	POSEIDON(Poseidon.name, Poseidon.alliance, Poseidon.permission, Poseidon.color, Poseidon.claimItems, Poseidon.forsakeItems, Poseidon.lore, Poseidon.flags, Poseidon.abilities, Poseidon.accuracy, Poseidon.favorRegen, Poseidon.maxFavor, Poseidon.maxHealth),
+	POSEIDON(Poseidon.name, Poseidon.alliance, Poseidon.permission, Poseidon.color, Poseidon.claimItems, Poseidon.forsakeItems, Poseidon.shortDescription, Poseidon.lore, Poseidon.flags, Poseidon.abilities, Poseidon.accuracy, Poseidon.favorRegen, Poseidon.maxFavor, Poseidon.maxHealth),
 
 	// Hades
-	HADES(Hades.name, Hades.alliance, Hades.permission, Hades.color, Hades.claimItems, Hades.forsakeItems, Hades.lore, Hades.flags, Hades.abilities, Hades.accuracy, Hades.favorRegen, Hades.maxFavor, Hades.maxHealth),
+	HADES(Hades.name, Hades.alliance, Hades.permission, Hades.color, Hades.claimItems, Hades.forsakeItems, Hades.shortDescription, Hades.lore, Hades.flags, Hades.abilities, Hades.accuracy, Hades.favorRegen, Hades.maxFavor, Hades.maxHealth),
 
 	/**
 	 * Titans
 	 */
 	// Ankhiale
-	ANKHIALE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
+	ANKHIALE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.shortDescription, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
 
 	// Oceanus
-	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
+	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.shortDescription, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
 
 	// Menoitios
-	MENOITIOS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
+	MENOITIOS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.shortDescription, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
 
 	/**
 	 * Fates (Admin Deities)
 	 */
 	// Clotho
-	CLOTHO(Clotho.name, Clotho.alliance, Clotho.permission, Clotho.color, Clotho.claimItems, Clotho.forsakeItems, Clotho.lore, Clotho.flags, Clotho.abilities, Clotho.accuracy, Clotho.favorRegen, Clotho.maxFavor, Clotho.maxHealth),
+	CLOTHO(Clotho.name, Clotho.alliance, Clotho.permission, Clotho.color, Clotho.claimItems, Clotho.forsakeItems, Clotho.shortDescription, Clotho.lore, Clotho.flags, Clotho.abilities, Clotho.accuracy, Clotho.favorRegen, Clotho.maxFavor, Clotho.maxHealth),
 
 	// Lachesis
-	LACHESIS(Lachesis.name, Lachesis.alliance, Lachesis.permission, Lachesis.color, Lachesis.claimItems, Lachesis.forsakeItems, Lachesis.lore, Lachesis.flags, Lachesis.abilities, Lachesis.accuracy, Lachesis.favorRegen, Lachesis.maxFavor, Lachesis.maxHealth),
+	LACHESIS(Lachesis.name, Lachesis.alliance, Lachesis.permission, Lachesis.color, Lachesis.claimItems, Lachesis.forsakeItems, Lachesis.shortDescription, Lachesis.lore, Lachesis.flags, Lachesis.abilities, Lachesis.accuracy, Lachesis.favorRegen, Lachesis.maxFavor, Lachesis.maxHealth),
 
 	// Atropos
-	ATROPOS(Atropos.name, Atropos.alliance, Atropos.permission, Atropos.color, Atropos.claimItems, Atropos.forsakeItems, Atropos.lore, Atropos.flags, Atropos.abilities, Atropos.accuracy, Atropos.favorRegen, Atropos.maxFavor, Atropos.maxHealth);
+	ATROPOS(Atropos.name, Atropos.alliance, Atropos.permission, Atropos.color, Atropos.claimItems, Atropos.forsakeItems, Atropos.shortDescription, Atropos.lore, Atropos.flags, Atropos.abilities, Atropos.accuracy, Atropos.favorRegen, Atropos.maxFavor, Atropos.maxHealth);
 
 	private String name, alliance, permission;
 	private ChatColor color;
 	private Map<Material, Integer> claimItems, forsakeItems;
+	private String shortDescription;
 	private List<String> lore;
 	private Set<Flag> flags;
 	private Set<Ability> abilities;
 	private int accuracy, favorRegen, maxFavor;
 	private double maxHealth;
 
-	private Deity(String name, String alliance, String permission, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, List<String> lore, Set<Flag> flags, Set<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth)
+	private Deity(String name, String alliance, String permission, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, Set<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth)
 	{
 		this.name = name;
 		this.alliance = alliance;
@@ -85,6 +86,7 @@ public enum Deity
 		this.color = color;
 		this.claimItems = claimItems;
 		this.forsakeItems = forsakeItems;
+		this.shortDescription = shortDescription;
 		this.lore = lore;
 		this.flags = flags;
 		this.abilities = abilities;
@@ -128,6 +130,11 @@ public enum Deity
 	public Map<Material, Integer> getForsakeItems()
 	{
 		return forsakeItems;
+	}
+
+	public String getShortDescription()
+	{
+		return shortDescription;
 	}
 
 	public List<String> getLore()

@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class DrD1sco
 {
-	public final static String name = "DrD1sco", alliance = "Donor", permission = "demigods.donor.disco";
+	public final static String name = "DrD1sco", alliance = "Donor", permission = "demigods.donor.disco", shortDescription = ChatColor.BLUE + "The donor of dance.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.DARK_PURPLE;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.JUKEBOX, 2));

@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class Atropos
 {
-	public final static String name = "Atropos", alliance = "Fate", permission = "demigods.fate.atropos";
+	public final static String name = "Atropos", alliance = "Fate", permission = "demigods.fate.atropos", shortDescription = ChatColor.GRAY + "The one who cuts the string.";
 	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2;
 	public final static ChatColor color = ChatColor.DARK_RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));

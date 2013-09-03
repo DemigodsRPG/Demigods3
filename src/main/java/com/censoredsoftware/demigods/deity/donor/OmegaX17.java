@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class OmegaX17
 {
-	public final static String name = "OmegaX17", alliance = "Donor", permission = "demigods.donor.omega";
+	public final static String name = "OmegaX17", alliance = "Donor", permission = "demigods.donor.omega", shortDescription = ChatColor.RED + "The donor of explosions.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.BLACK;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.TNT, 3));
