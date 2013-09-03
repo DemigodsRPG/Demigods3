@@ -428,7 +428,13 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void updateUseable()
 	{
-		usable = Deity.Util.getDeity(this.deity) != null;
+		try
+		{
+			usable = Deity.Util.getDeity(this.deity) != null;
+		}
+		catch(IllegalArgumentException ignored)
+		{}
+		usable = false;
 	}
 
 	public UUID getId()
