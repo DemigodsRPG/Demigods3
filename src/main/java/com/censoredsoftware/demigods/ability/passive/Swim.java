@@ -16,6 +16,7 @@ import org.bukkit.util.Vector;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
@@ -114,13 +115,7 @@ public class Swim implements Ability
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
-				if(!playerLocationMaterial.equals(Material.STATIONARY_WATER) && !playerLocationMaterial.equals(Material.WATER))
-				{
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 0));
-					return;
-				}
-
-				if(player.isSneaking())
+				if(player.isSneaking() && (playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER)))
 				{
 					player.removePotionEffect(PotionEffectType.SLOW);
 					Vector victor = (player.getPassenger() != null && player.getLocation().getDirection().getY() > 0 ? player.getLocation().getDirection().clone().setY(0) : player.getLocation().getDirection()).normalize().multiply(1.3D);
@@ -133,6 +128,18 @@ public class Swim implements Ability
 	@Override
 	public BukkitRunnable getRunnable()
 	{
-		return null;
+		return new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
+				{
+					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
+					Player player = character.getOfflinePlayer().getPlayer();
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 0));
+				}
+			}
+		};
 	}
 }

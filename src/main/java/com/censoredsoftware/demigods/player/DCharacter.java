@@ -1195,6 +1195,23 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
+		public static Collection<DCharacter> getOnlineCharactersWithAbility(final String abilityName)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					if(character.isActive() && character.getOfflinePlayer().isOnline())
+					{
+						for(Ability abilityToCheck : character.getDeity().getAbilities())
+							return abilityToCheck.getName().equalsIgnoreCase(abilityName);
+					}
+					return false;
+				}
+			});
+		}
+
 		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final String alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()

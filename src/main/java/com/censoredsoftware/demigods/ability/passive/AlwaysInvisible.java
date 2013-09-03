@@ -1,10 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -12,7 +9,11 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class AlwaysInvisible implements Ability
 {
@@ -108,11 +109,10 @@ public class AlwaysInvisible implements Ability
 			@Override
 			public void run()
 			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
 				{
 					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
-					player.removePotionEffect(PotionEffectType.INVISIBILITY);
 					player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 120, 1));
 				}
 			}
