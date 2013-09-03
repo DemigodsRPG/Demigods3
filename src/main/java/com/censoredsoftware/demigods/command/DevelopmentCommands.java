@@ -1,18 +1,23 @@
 package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.global.Altar;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand
@@ -113,12 +118,84 @@ public class DevelopmentCommands extends WrappedCommand
 		return true;
 	}
 
+	/**
+	 * Temp command while testing obelisks.
+	 */
 	private static boolean obelisk(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
 
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		if(args.length != 3)
+		{
+			player.sendMessage(ChatColor.RED + "Not enough arguments.");
+			return false;
+		}
+
+		Structure obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		if(obelisk != null)
+		{
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			if(!obelisk.getOwner().equals(character.getId()))
+			{
+				player.sendMessage(ChatColor.RED + "You don't control this Obelisk.");
+				return true;
+			}
+
+			DCharacter workWith = obeliskGetCharacter(args[1], args[2]);
+
+			if(workWith == null)
+			{
+				player.sendMessage(ChatColor.RED + "Character/Player (" + args[2] + ") not found.");
+				return true;
+			}
+
+			if(!DCharacter.Util.areAllied(workWith, character))
+			{
+				player.sendMessage(ChatColor.RED + "You are not allied with " + workWith.getDeity().getColor() + character.getName() + ChatColor.RED + ".");
+				return true;
+			}
+
+			if(args[0].equalsIgnoreCase("add"))
+			{
+				if(!obelisk.getMembers().contains(workWith.getId()))
+				{
+					obelisk.addMember(workWith.getId());
+					player.sendMessage(workWith.getDeity().getColor() + workWith.getName() + ChatColor.YELLOW + " has been added to the Obelisk!");
+				}
+				else player.sendMessage(ChatColor.RED + "Already a member.");
+			}
+			else if(args[0].equalsIgnoreCase("remove"))
+			{
+				if(obelisk.getMembers().contains(workWith.getId()))
+				{
+					obelisk.removeMember(workWith.getId());
+					player.sendMessage(workWith.getDeity().getColor() + workWith.getName() + ChatColor.YELLOW + " has been removed from the Obelisk!");
+				}
+				else player.sendMessage(ChatColor.RED + "Not a member.");
+			}
+		}
+		else player.sendMessage(ChatColor.RED + "No Obelisk found.");
 
 		return true;
+	}
+
+	private static DCharacter obeliskGetCharacter(String type, final String name)
+	{
+		if(type.equalsIgnoreCase("character")) return DCharacter.Util.getCharacterByName(name);
+		if(!type.equalsIgnoreCase("player")) return null;
+		try
+		{
+			return DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(Iterators.find(DataManager.players.keySet().iterator(), new Predicate<String>()
+			{
+				@Override
+				public boolean apply(String playerName)
+				{
+					return playerName.equalsIgnoreCase(name);
+				}
+			}))).getCurrent();
+		}
+		catch(NoSuchElementException ignored)
+		{}
+		return null;
 	}
 }
