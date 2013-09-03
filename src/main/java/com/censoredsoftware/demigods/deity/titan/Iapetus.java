@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Menoitios
+public class Iapetus
 {
-	public final static String name = "Menoitios", alliance = "Titan", permission = "demigods.titan.menoitios", shortDescription = ChatColor.GRAY + "The titan of anger and mortality.";
+	public final static String name = "Iapetus", alliance = "Titan", permission = "demigods.titan.iapetus", shortDescription = ChatColor.GRAY + "The titan of mortality.";
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));

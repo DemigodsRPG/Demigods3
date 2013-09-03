@@ -7,9 +7,9 @@ import com.censoredsoftware.demigods.deity.fate.Lachesis;
 import com.censoredsoftware.demigods.deity.god.Hades;
 import com.censoredsoftware.demigods.deity.god.Poseidon;
 import com.censoredsoftware.demigods.deity.god.Zeus;
-import com.censoredsoftware.demigods.deity.titan.Ankhiale;
-import com.censoredsoftware.demigods.deity.titan.Menoitios;
+import com.censoredsoftware.demigods.deity.titan.Iapetus;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
+import com.censoredsoftware.demigods.deity.titan.Perses;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.google.common.base.Function;
@@ -47,14 +47,14 @@ public enum Deity
 	/**
 	 * Titans
 	 */
-	// Ankhiale
-	ANKHIALE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.shortDescription, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
+	// Perses
+	PERSES(Perses.name, Perses.alliance, Perses.permission, Perses.color, Perses.claimItems, Perses.forsakeItems, Perses.shortDescription, Perses.lore, Perses.flags, Perses.abilities, Perses.accuracy, Perses.favorRegen, Perses.maxFavor, Perses.maxHealth),
 
 	// Oceanus
 	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.shortDescription, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
 
-	// Menoitios
-	MENOITIOS(Menoitios.name, Menoitios.alliance, Menoitios.permission, Menoitios.color, Menoitios.claimItems, Menoitios.forsakeItems, Menoitios.shortDescription, Menoitios.lore, Menoitios.flags, Menoitios.abilities, Menoitios.accuracy, Menoitios.favorRegen, Menoitios.maxFavor, Menoitios.maxHealth),
+	// Iapetus
+	IAPETUS(Iapetus.name, Iapetus.alliance, Iapetus.permission, Iapetus.color, Iapetus.claimItems, Iapetus.forsakeItems, Iapetus.shortDescription, Iapetus.lore, Iapetus.flags, Iapetus.abilities, Iapetus.accuracy, Iapetus.favorRegen, Iapetus.maxFavor, Iapetus.maxHealth),
 
 	/**
 	 * Fates (Admin Deities)
