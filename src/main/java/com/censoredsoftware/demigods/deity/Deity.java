@@ -48,7 +48,7 @@ public enum Deity
 	 * Titans
 	 */
 	// Ankhiale
-	ANKHAILE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
+	ANKHIALE(Ankhiale.name, Ankhiale.alliance, Ankhiale.permission, Ankhiale.color, Ankhiale.claimItems, Ankhiale.forsakeItems, Ankhiale.lore, Ankhiale.flags, Ankhiale.abilities, Ankhiale.accuracy, Ankhiale.favorRegen, Ankhiale.maxFavor, Ankhiale.maxHealth),
 
 	// Oceanus
 	OCEANUS(Oceanus.name, Oceanus.alliance, Oceanus.permission, Oceanus.color, Oceanus.claimItems, Oceanus.forsakeItems, Oceanus.lore, Oceanus.flags, Oceanus.abilities, Oceanus.accuracy, Oceanus.favorRegen, Oceanus.maxFavor, Oceanus.maxHealth),
