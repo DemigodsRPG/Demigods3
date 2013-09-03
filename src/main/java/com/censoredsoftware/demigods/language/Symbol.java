@@ -3,10 +3,10 @@ package com.censoredsoftware.demigods.language;
 public enum Symbol
 {
 	// Misc
-	BLACK_SQUARE("⬛"), HEAVY_HEART("❤"), DASH("―"), CAUTION("⚠"), MAIL("✉"), DEATH("☠"), WATCH("⌚"), HOURGLASS("⌛"), KEYBOARD("⌨"),
+	BLACK_SQUARE("⬛"), HEAVY_HEART("❤"), DASH("―"), CAUTION("⚠"), MAIL("✉"), DEATH("☠"), WATCH("⌚"), HOURGLASS("⌛"), POINT_OF_INTEREST("⌘"),
 
 	// Misc cont.
-	POINT_OF_INTEREST("⌘"), SUN("☀"), CLOUD("☁"), UNCHECKED_BOX("☐"), CHECKED_BOX("☑"), X_BOX("☒"), COFFEE("☕"), NO_ENTRY("⛔"), WHITE_FLAG("⚐"), BLACK_FLAG("⚑"), FIST("✊"), HAND("✋"),
+	SUN("☀"), CLOUD("☁"), UNCHECKED_BOX("☐"), CHECKED_BOX("☑"), X_BOX("☒"), COFFEE("☕"), NO_ENTRY("⛔"), WHITE_FLAG("⚐"), BLACK_FLAG("⚑"),
 
 	// Math
 	ONE_THIRD("⅓"), TWO_THIRDS("⅔"), ONE_FIFTH("⅕"), TWO_FIFTHS("⅖"), THREE_FIFTHS("⅗"), FOUR_FIFTHS("⅘"),
