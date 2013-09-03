@@ -118,9 +118,8 @@ public class InvisibleHorse implements Ability
 					LivingEntity horseEntity = horse.getEntity();
 					if(horse.getDeity().getName().equals(deity) && horseEntity != null && !horseEntity.isDead() && horseEntity.getPassenger() != null && horseEntity.getPassenger() instanceof Player)
 					{
-						Player passenger = (Player) horseEntity.getPassenger();
-						DCharacter current = DPlayer.Util.getPlayer(passenger).getCurrent();
-						if(current != null && current.getDeity().equals(deity)) potionEffect(horseEntity);
+						DCharacter current = DPlayer.Util.getPlayer((Player) horseEntity.getPassenger()).getCurrent();
+						if(current != null && current.getDeity().getName().equals(deity)) potionEffect(horseEntity);
 
 					}
 				}
