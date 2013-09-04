@@ -7,7 +7,9 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.global.Altar;
+import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -59,8 +61,19 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		for(DCharacter character : DCharacter.Util.loadAll())
-			character.getMeta().resetSkills();
+		Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
+
+		for(Structure save : Collections2.filter(Structure.Util.loadAll(), new Predicate<Structure>()
+		{
+			@Override
+			public boolean apply(Structure structure)
+			{
+				return !structure.getType().equals(Structure.Type.ALTAR);
+			}
+		}))
+			save.remove();
+
+		Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
 
 		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
 
