@@ -39,7 +39,7 @@ multipliers:
 
 ## Caps ##
 caps:
-    skills: 100
+    skills: 50
     favor: 20000
     target_range: 100
     obelisks_per_character: 3

@@ -17,6 +17,7 @@ import com.censoredsoftware.demigods.util.Configs;
 public class Skill implements ConfigurationSerializable
 {
 	private UUID id;
+	private UUID character;
 	private String type;
 	private int points;
 	private int level;
@@ -44,6 +45,7 @@ public class Skill implements ConfigurationSerializable
 	public Skill(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
+		character = UUID.fromString(conf.getString("character"));
 		type = conf.getString("type");
 		points = conf.getInt("points");
 		level = conf.getInt("level");
@@ -56,6 +58,7 @@ public class Skill implements ConfigurationSerializable
 		map.put("type", type);
 		map.put("points", points);
 		map.put("level", level);
+		map.put("character", character.toString());
 		return map;
 	}
 
@@ -79,6 +82,16 @@ public class Skill implements ConfigurationSerializable
 		this.level = level;
 	}
 
+	void setCharacter(DCharacter character)
+	{
+		this.character = character.getId();
+	}
+
+	public DCharacter getCharacter()
+	{
+		return DCharacter.Util.load(character);
+	}
+
 	public UUID getId()
 	{
 		return id;
@@ -94,6 +107,11 @@ public class Skill implements ConfigurationSerializable
 		return points;
 	}
 
+	public boolean hasMetCap()
+	{
+		return getLevel() >= getCharacter().getMeta().getIndividualSkillCap();
+	}
+
 	public int getLevel()
 	{
 		return (level > 0) ? level : 1;
@@ -104,11 +122,8 @@ public class Skill implements ConfigurationSerializable
 		setLevel(getLevel() + levels);
 	}
 
-	public boolean addPoints(int points)
+	public void addPoints(int points)
 	{
-		// Set variable to check leveling later
-		boolean didLevel = false;
-
 		// Add points 1 at a time
 		for(int i = 0; i < points; i++) // TODO: This is inefficient but it gets the job done easily. :)
 		{
@@ -117,19 +132,21 @@ public class Skill implements ConfigurationSerializable
 
 			if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1))
 			{
-				// Add a level
-				addLevels(1);
+				if(getLevel() + 1 >= getCharacter().getMeta().getIndividualSkillCap())
+				{
+					// If they've met the max level cap then stop the addition
+					return;
+				}
+				else
+				{
+					// Add a level
+					addLevels(1);
 
-				// Reset points
-				setPoints(0);
-
-				// Return true for leveling
-				didLevel = true;
+					// Reset points
+					setPoints(0);
+				}
 			}
 		}
-
-		// Return if they leveled or not
-		return didLevel;
 	}
 
 	public int getRequiredPoints()
@@ -162,10 +179,11 @@ public class Skill implements ConfigurationSerializable
 
 	public static class Util
 	{
-		public static Skill createSkill(Skill.Type type)
+		public static Skill createSkill(DCharacter character, Skill.Type type)
 		{
 			Skill skill = new Skill();
 			skill.generateId();
+			skill.setCharacter(character);
 			skill.setType(type);
 			skill.setLevel(1);
 			save(skill);

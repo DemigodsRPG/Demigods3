@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -13,16 +24,6 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -616,6 +617,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public static class Meta implements ConfigurationSerializable
 	{
 		private UUID id;
+		private UUID character;
 		private int favor;
 		private int maxFavor;
 		private int skillPoints;
@@ -635,6 +637,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			maxFavor = conf.getInt("maxFavor");
 			skillPoints = conf.getInt("skillPoints");
 			notifications = Sets.newHashSet(conf.getStringList("notifications"));
+			character = UUID.fromString(conf.getString("character"));
 			if(conf.getConfigurationSection("skillData") != null) skillData = conf.getConfigurationSection("skillData").getValues(false);
 			if(conf.getConfigurationSection("binds") != null) binds = conf.getConfigurationSection("binds").getValues(false);
 			if(conf.getConfigurationSection("warps") != null) warps = conf.getConfigurationSection("warps").getValues(false);
@@ -645,6 +648,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public Map<String, Object> serialize()
 		{
 			Map<String, Object> map = Maps.newHashMap();
+			map.put("character", character.toString());
 			map.put("favor", favor);
 			map.put("maxFavor", maxFavor);
 			map.put("skillPoints", skillPoints);
@@ -661,18 +665,28 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			id = UUID.randomUUID();
 		}
 
+		void setCharacter(DCharacter character)
+		{
+			this.character = character.getId();
+		}
+
 		void initialize()
 		{
-			this.notifications = Sets.newHashSet();
-			this.warps = Maps.newHashMap();
-			this.invites = Maps.newHashMap();
-			this.skillData = Maps.newHashMap();
-			this.binds = Maps.newHashMap();
+			notifications = Sets.newHashSet();
+			warps = Maps.newHashMap();
+			invites = Maps.newHashMap();
+			skillData = Maps.newHashMap();
+			binds = Maps.newHashMap();
 		}
 
 		public UUID getId()
 		{
-			return this.id;
+			return id;
+		}
+
+		public DCharacter getCharacter()
+		{
+			return DCharacter.Util.load(character);
 		}
 
 		public void setSkillPoints(int skillPoints)
@@ -720,7 +734,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public boolean hasNotifications()
 		{
-			return !this.notifications.isEmpty();
+			return !notifications.isEmpty();
 		}
 
 		public void addWarp(String name, Location location)
@@ -783,7 +797,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		{
 			getRawSkills().clear();
 			for(Skill.Type type : Skill.Type.values())
-				if(type.isDefault()) addSkill(Skill.Util.createSkill(type));
+				if(type.isDefault()) addSkill(Skill.Util.createSkill(getCharacter(), type));
 		}
 
 		public void cleanSkills()
@@ -884,9 +898,28 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			}
 		}
 
+		public int getIndividualSkillCap()
+		{
+			int total = 0;
+			for(Skill skill : getSkills())
+				total += skill.getLevel();
+			return getOverallSkillCap() - total;
+		}
+
+		public int getOverallSkillCap()
+		{
+			// TODO: I'm setting this up like this so it can be manipulated later on on an individual basis.
+			return Configs.getSettingInt("caps.skills");
+		}
+
 		public int getAscensions()
 		{
-			return 1; // TODO
+			int total = 0;
+
+			for(Skill skill : getSkills())
+				total += skill.getLevel();
+
+			return (int) Math.ceil(total / getSkills().size());
 		}
 
 		public Integer getFavor()
@@ -1016,7 +1049,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setLevel(0);
 			character.setKillCount(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
-			character.setMeta(Util.createMeta());
+			character.setMeta(Util.createMeta(character));
 			save(character);
 			return character;
 		}
@@ -1047,10 +1080,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return charInventory;
 		}
 
-		public static Meta createMeta()
+		public static Meta createMeta(DCharacter character)
 		{
 			Meta charMeta = new Meta();
 			charMeta.initialize();
+			charMeta.setCharacter(character);
 			charMeta.generateId();
 			charMeta.setFavor(Configs.getSettingInt("character.defaults.favor"));
 			charMeta.setMaxFavor(Configs.getSettingInt("character.defaults.max_favor"));
