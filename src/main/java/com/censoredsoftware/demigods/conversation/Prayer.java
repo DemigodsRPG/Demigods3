@@ -1061,12 +1061,12 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
-				player.sendRawMessage(ChatColor.GRAY + "  A " + ChatColor.RED + "red" + ChatColor.GRAY + " name represents a difficult Deity to please.");
-				player.sendRawMessage(" ");
 
 				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((String) context.getSessionData("chosen_alliance"), player))
-					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
+					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.DARK_RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
 
+				player.sendRawMessage(" ");
+				player.sendRawMessage(ChatColor.GRAY + "  A " + ChatColor.DARK_RED + "dark red" + ChatColor.GRAY + " name represents a difficult Deity to please.");
 				return "";
 			}
 
