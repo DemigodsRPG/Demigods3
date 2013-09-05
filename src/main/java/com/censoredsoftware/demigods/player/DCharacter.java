@@ -443,7 +443,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
-		DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
+		if(DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
 	}
 
 	public void sendAllianceMessage(String message)
