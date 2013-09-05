@@ -49,7 +49,7 @@ public class Swarm implements Ability
 
 		if(targets == null || targets.isEmpty()) return false;
 
-		player.sendMessage(ChatColor.GREEN + "Swarming " + targets.size() + " targets.");
+		player.sendMessage(ChatColor.DARK_GREEN + "Swarming " + targets.size() + " targets.");
 
 		for(LivingEntity entity : targets)
 			Util.spawnZombie(entity);
