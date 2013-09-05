@@ -765,7 +765,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + ")";
+			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + " remaining)";
 		}
 
 		@Override
@@ -1140,7 +1140,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + ")";
+			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + " remaining)";
 		}
 
 		@Override
