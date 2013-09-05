@@ -212,6 +212,7 @@ public class MainCommand extends WrappedCommand
 												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Symbol.RIGHTWARD_ARROW + " ");
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
+												if(ability.getCost() > 0) details.append(ChatColor.GRAY).append(" / ").append(ChatColor.WHITE).append("Cost: ").append(ability.getCost());
 												add(details.toString());
 											}
 										}
