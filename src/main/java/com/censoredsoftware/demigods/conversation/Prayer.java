@@ -1283,7 +1283,8 @@ public class Prayer implements WrappedConversation
 				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
 				final String chosenName = (String) prayerContext.getSessionData("chosen_name");
 				final Deity deity = Deity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
-				String deityAlliance = deity.getAlliance();
+				final String deityName = deity.getName();
+				final ChatColor deityColor = deity.getColor();
 
 				// Check the chest items
 				int items = 0;
@@ -1297,7 +1298,7 @@ public class Prayer implements WrappedConversation
 
 				// Clear chat and send update
 				Messages.clearRawChat(player);
-				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
+				player.sendMessage(deityColor + deityName + " is pondering your offerings...");
 
 				// Finalize stuff for delay
 				final int finalItems = items;
@@ -1333,7 +1334,7 @@ public class Prayer implements WrappedConversation
 								player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
 
 								// Message them and do cool things
-								player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
+								player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deityName).replace("{color}", deityColor.toString()));
 								player.getWorld().strikeLightningEffect(player.getLocation());
 
 								// Fancy particles
@@ -1352,7 +1353,7 @@ public class Prayer implements WrappedConversation
 							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 0.4F, 2F);
 							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 1F, 2F);
 
-							player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
+							player.sendMessage(ChatColor.RED + deityName + " has rejected you due to your insufficient tribute.");
 						}
 
 						// Clear the prayer session

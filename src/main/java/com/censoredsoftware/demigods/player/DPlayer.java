@@ -468,7 +468,7 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			if(option)
 			{
-				// Create the CONVERSATION_FACTORY and save it
+				// Create the conversation and save it
 				Conversation prayer = Prayer.startPrayer(player);
 				DataManager.saveTemp(player.getName(), "prayer_conversation", prayer);
 				DataManager.saveTemp(player.getName(), "prayer_location", player.getLocation());
@@ -479,7 +479,7 @@ public class DPlayer implements ConfigurationSerializable
 			}
 			else
 			{
-				// Save context and abandon the CONVERSATION_FACTORY
+				// Save context and abandon the conversation
 				if(DataManager.hasKeyTemp(player.getName(), "prayer_conversation"))
 				{
 					Conversation prayer = (Conversation) DataManager.getValueTemp(player.getName(), "prayer_conversation");
