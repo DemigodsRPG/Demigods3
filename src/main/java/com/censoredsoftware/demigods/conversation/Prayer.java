@@ -1,27 +1,5 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -40,6 +18,27 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -1303,7 +1302,7 @@ public class Prayer implements WrappedConversation
 				final int finalItems = items;
 
 				// Play scary sound
-				player.playSound(player.getLocation(), Sound.AMBIENCE_CAVE, 1F, 1F);
+				player.playSound(player.getLocation(), Sound.AMBIENCE_CAVE, 0.6F, 1F);
 
 				// Delay for dramatic effect
 				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
@@ -1313,6 +1312,9 @@ public class Prayer implements WrappedConversation
 					{
 						if(neededItems == finalItems)
 						{
+							// Play acceptance sound
+							player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
+
 							// Accepted, finish everything up!
 							DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
 
@@ -1330,7 +1332,16 @@ public class Prayer implements WrappedConversation
 							// Clear the prayer session
 							DPlayer.Util.clearPrayerSession(player);
 						}
-						else player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
+						else
+						{
+							// Play denial sound
+							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 0.7F, 2F);
+							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 2F, 2F);
+							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 0.4F, 2F);
+							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 1F, 2F);
+
+							player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
+						}
 
 						// Clear the prayer session
 						DPlayer.Util.clearPrayerSession(player);
