@@ -155,7 +155,7 @@ public class GeneralCommands extends WrappedCommand
 		for(int i = 0; i < characters.size(); i++)
 		{
 			DCharacter character = characters.get(i);
-			double score = character.getKillCount() * (character.getDeathCount() == 0 ? character.getKillCount() / 1.0 : character.getKillCount() / character.getDeathCount());
+			double score = character.getKillCount() - character.getDeathCount();
 			if(score > 0) scores.put(character.getId(), score);
 		}
 
