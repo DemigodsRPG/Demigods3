@@ -143,7 +143,7 @@ public class Reel implements Ability
 			int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
 			LivingEntity target = Ability.Util.autoTarget(player);
 
-			if(!Ability.Util.doAbilityPreProcess(player, target, cost, type)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, target, cost)) return;
 			character.getMeta().subtractFavor(cost);
 			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 

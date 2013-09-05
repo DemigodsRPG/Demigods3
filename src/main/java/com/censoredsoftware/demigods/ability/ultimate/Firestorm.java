@@ -279,13 +279,13 @@ public class Firestorm implements Ability
 			{
 				target = Ability.Util.autoTarget(player).getLocation();
 				notify = true;
-				if(!Ability.Util.doAbilityPreProcess(player, entity, ShootFireball.cost, ShootFireball.type) || entity.getEntityId() == player.getEntityId()) return;
+				if(!Ability.Util.doAbilityPreProcess(player, entity, ShootFireball.cost) || entity.getEntityId() == player.getEntityId()) return;
 			}
 			else
 			{
 				target = Ability.Util.directTarget(player);
 				notify = false;
-				if(!Ability.Util.doAbilityPreProcess(player, ShootFireball.cost, ShootFireball.type)) return;
+				if(!Ability.Util.doAbilityPreProcess(player, ShootFireball.cost)) return;
 			}
 
 			DCharacter.Util.setCoolDown(character, ShootFireball.name, System.currentTimeMillis() + ShootFireball.delay);
@@ -302,7 +302,7 @@ public class Firestorm implements Ability
 			// Define variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 
 			int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
 			Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();

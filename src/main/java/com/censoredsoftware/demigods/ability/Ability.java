@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -29,9 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public interface Ability
 {
@@ -65,7 +64,7 @@ public interface Ability
 
 	public static class Util
 	{
-		private static boolean doAbilityPreProcess(Player player, int cost)
+		public static boolean doAbilityPreProcess(Player player, int cost)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
@@ -84,21 +83,6 @@ public interface Ability
 
 		/**
 		 * Returns true if the ability for <code>player</code>, called <code>name</code>,
-		 * with a cost of <code>cost</code>, that is Type <code>type</code>, has
-		 * passed all pre-process tests.
-		 * 
-		 * @param player the player doing the ability
-		 * @param cost the cost (in favor) of the ability
-		 * @return true/false depending on if all pre-process tests have passed
-		 */
-		public static boolean doAbilityPreProcess(Player player, int cost, Skill.Type type)
-		{
-			// DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-			return doAbilityPreProcess(player, cost); // TODO callAbilityEvent(name, character, cost, info);
-		}
-
-		/**
-		 * Returns true if the ability for <code>player</code>, called <code>name</code>,
 		 * with a cost of <code>cost</code>, that is Type <code>type</code>, that
 		 * is doTargeting the LivingEntity <code>target</code>, has passed all pre-process tests.
 		 * 
@@ -107,11 +91,11 @@ public interface Ability
 		 * @param cost the cost (in favor) of the ability
 		 * @return true/false depending on if all pre-process tests have passed
 		 */
-		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost, Skill.Type type)
+		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(doAbilityPreProcess(player, cost)) // TODO callAbilityEvent(name, character, cost, info))
+			if(doAbilityPreProcess(player, cost))
 			{
 				if(target == null)
 				{
@@ -133,10 +117,39 @@ public interface Ability
 					Pet attacked = Pet.Util.getTameable(target);
 					if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) return false;
 				}
-				// TODO Bukkit.getServer().getPluginManager().callEvent(new AbilityTargetEvent(character, target, info));
 				return true;
 			}
 			return false;
+		}
+
+		public static Set<LivingEntity> doAbilityPreProcess(Player player, Collection<Entity> targets, int cost)
+		{
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+
+			Set<LivingEntity> set = Sets.newHashSet();
+
+			if(doAbilityPreProcess(player, cost))
+			{
+				for(Entity target : targets)
+				{
+					if(target == null) continue;
+					if(!(target instanceof LivingEntity)) continue;
+					else if(Battle.Util.canParticipate(target) && !Battle.Util.canTarget(Battle.Util.defineParticipant(target))) continue;
+					else if(target instanceof Player)
+					{
+						DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
+						if(attacked != null && DCharacter.Util.areAllied(character, attacked)) continue;
+					}
+					else if(target instanceof Tameable)
+					{
+						Pet attacked = Pet.Util.getTameable((LivingEntity) target);
+						if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) continue;
+					}
+					set.add((LivingEntity) target);
+				}
+			}
+			if(set.isEmpty()) player.sendMessage(ChatColor.YELLOW + "No target found.");
+			return set;
 		}
 
 		/**

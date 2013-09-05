@@ -47,7 +47,7 @@ public class Storm implements Ability
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
-		if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
+		if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 
 		for(Entity anEntity : player.getWorld().getEntities())
 			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
@@ -203,13 +203,13 @@ public class Storm implements Ability
 			{
 				target = entity.getLocation();
 				notify = true;
-				if(!Util.doAbilityPreProcess(player, entity, cost, type)) return;
+				if(!Util.doAbilityPreProcess(player, entity, cost)) return;
 			}
 			else
 			{
 				target = Util.directTarget(player);
 				notify = false;
-				if(!Util.doAbilityPreProcess(player, cost, type)) return;
+				if(!Util.doAbilityPreProcess(player, cost)) return;
 			}
 
 			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);

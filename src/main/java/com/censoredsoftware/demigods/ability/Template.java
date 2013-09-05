@@ -140,7 +140,7 @@ public class Template implements Ability
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			LivingEntity target = Ability.Util.autoTarget(player);
 
-			if(!Ability.Util.doAbilityPreProcess(player, target, cost, type)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, target, cost)) return;
 			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 

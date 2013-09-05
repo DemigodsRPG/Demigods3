@@ -295,7 +295,7 @@ public class Discoball implements Ability
 			// Set variables
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-			if(!Ability.Util.doAbilityPreProcess(player, cost, Discoball.type)) return;
+			if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 			character.getMeta().subtractFavor(cost);
 			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 

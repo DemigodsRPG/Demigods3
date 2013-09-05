@@ -150,13 +150,13 @@ public class Blaze implements Ability
 			{
 				target = Ability.Util.autoTarget(player).getLocation();
 				notify = true;
-				if(!Ability.Util.doAbilityPreProcess(player, entity, cost, type) || entity.getEntityId() == player.getEntityId()) return;
+				if(!Ability.Util.doAbilityPreProcess(player, entity, cost) || entity.getEntityId() == player.getEntityId()) return;
 			}
 			else
 			{
 				target = Ability.Util.directTarget(player);
 				notify = false;
-				if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
+				if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 			}
 			int power = character.getMeta().getSkill(type).getLevel();
 			int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));

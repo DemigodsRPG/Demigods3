@@ -43,7 +43,7 @@ public class Shove implements Ability
 		double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 		LivingEntity target = Util.autoTarget(player);
 
-		if(!Util.doAbilityPreProcess(player, target, cost, type)) return;
+		if(!Util.doAbilityPreProcess(player, target, cost)) return;
 		DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 

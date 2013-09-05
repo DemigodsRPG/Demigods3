@@ -13,7 +13,10 @@ import com.google.common.collect.Sets;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,7 +24,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.Set;
@@ -43,30 +45,12 @@ public class Swarm implements Ability
 	public static void swarm(Player player)
 	{
 		// Define variables
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-		Set<Entity> entitySet = Sets.newHashSet();
-		Vector playerLocation = player.getLocation().toVector();
+		Set<LivingEntity> targets = Ability.Util.doAbilityPreProcess(player, player.getNearbyEntities(50, 50, 50), cost);
 
-		for(Entity anEntity : player.getWorld().getEntities())
-			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
+		if(targets == null || targets.isEmpty()) return;
 
-		if(entitySet.isEmpty() || !Ability.Util.doAbilityPreProcess(player, cost, type)) return;
-
-		for(Entity entity : entitySet)
-		{
-			if(entity instanceof Player)
-			{
-				Player otherPlayer = (Player) entity;
-				DCharacter otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
-				if(otherPlayer.equals(player)) continue;
-				if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar)) Util.spawnZombie(player, otherPlayer);
-			}
-			else if(entity instanceof LivingEntity)
-			{
-				LivingEntity livingEntity = (LivingEntity) entity;
-				Util.spawnZombie(player, livingEntity);
-			}
-		}
+		for(LivingEntity entity : targets)
+			Util.spawnZombie(player, entity);
 	}
 
 	@Override
