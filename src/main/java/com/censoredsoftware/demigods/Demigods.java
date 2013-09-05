@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods;
 
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.MetricsLite;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -20,17 +32,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.MetricsLite;
-
-import java.util.Set;
 
 public class Demigods
 {
@@ -222,7 +223,7 @@ public class Demigods
 		// Can't touch this. Naaaaaa na-na-na.. Ba-dum, ba-dum.
 		public static interface Category extends Prompt
 		{
-			public String getChatName();
+			public String getChatName(ConversationContext context);
 
 			public boolean canUse(ConversationContext context);
 		}

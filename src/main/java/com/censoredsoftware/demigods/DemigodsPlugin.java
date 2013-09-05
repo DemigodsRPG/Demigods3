@@ -1,12 +1,13 @@
 package com.censoredsoftware.demigods;
 
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Messages;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Class for all plugins of demigods.
@@ -41,7 +42,11 @@ public class DemigodsPlugin extends JavaPlugin
 
 		// Handle online characters
 		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+		{
+			// Toggle prayer off and clear the session
 			DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
+			DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
+		}
 
 		// Cancel all threads, Event calls, and connections.
 		ThreadManager.stopThreads();
