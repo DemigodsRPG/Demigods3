@@ -1,30 +1,5 @@
 package com.censoredsoftware.demigods.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -43,6 +18,30 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -1234,12 +1233,12 @@ public class Prayer implements WrappedConversation
 		}
 
 		@EventHandler(priority = EventPriority.MONITOR)
-		public void confirmDeity(InventoryCloseEvent event)
+		public void confirmDeity(final InventoryCloseEvent event)
 		{
 			try
 			{
 				if(!(event.getPlayer() instanceof Player)) return;
-				Player player = (Player) event.getPlayer();
+				final Player player = (Player) event.getPlayer();
 
 				// If it isn't a confirmation chest then exit
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
@@ -1249,16 +1248,16 @@ public class Prayer implements WrappedConversation
 
 				// Define variables
 				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
-				String chosenName = (String) prayerContext.getSessionData("chosen_name");
-				Deity deity = Deity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
+				final String chosenName = (String) prayerContext.getSessionData("chosen_name");
+				final Deity deity = Deity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
 				String deityAlliance = deity.getAlliance();
 
 				// Check the chest items
 				int items = 0;
-				int neededItems = deity.getClaimItems().size();
+				final int neededItems = deity.getClaimItems().size();
 
 				for(Map.Entry<Material, Integer> entry : deity.getClaimItems().entrySet())
-					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
+					if(event.getInventory().contains(entry.getKey(), entry.getValue())) items++;
 
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false, true);
@@ -1267,32 +1266,39 @@ public class Prayer implements WrappedConversation
 				Messages.clearRawChat(player);
 				player.sendMessage(ChatColor.YELLOW + "The " + deityAlliance + "s are pondering your offerings...");
 
-				if(neededItems == items)
+				// Finalize stuff for delay
+				final int finalItems = items;
+
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 				{
-					// Accepted, finish everything up!
-					DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
+					@Override
+					public void run()
+					{
+						if(neededItems == finalItems)
+						{
+							// Accepted, finish everything up!
+							DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
 
-					// Message them and do cool things
-					player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
-					player.getWorld().strikeLightningEffect(player.getLocation());
+							// Message them and do cool things
+							player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
+							player.getWorld().strikeLightningEffect(player.getLocation());
 
-					for(int i = 0; i < 20; i++)
-						player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+							for(int i = 0; i < 20; i++)
+								player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
 
-					// Remove temp data
-					DataManager.removeTemp(player.getName(), "currently_creating");
-					DataManager.removeTimed(player.getName(), "currently_creating");
+							// Remove temp data
+							DataManager.removeTemp(player.getName(), "currently_creating");
+							DataManager.removeTimed(player.getName(), "currently_creating");
 
-					// Clear the prayer session
-					DPlayer.Util.clearPrayerSession(player);
-				}
-				else
-				{
-					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
-				}
+							// Clear the prayer session
+							DPlayer.Util.clearPrayerSession(player);
+						}
+						else player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
 
-				// Clear the confirmation case
-				event.getInventory().clear();
+						// Clear the confirmation case
+						event.getInventory().clear();
+					}
+				}, 40);
 			}
 			catch(Exception e)
 			{
@@ -1324,7 +1330,7 @@ public class Prayer implements WrappedConversation
 				int neededItems = deity.getForsakeItems().size();
 
 				for(Map.Entry<Material, Integer> entry : deity.getForsakeItems().entrySet())
-					if(event.getInventory().containsAtLeast(new ItemStack(entry.getKey()), entry.getValue())) items++;
+					if(event.getInventory().contains(entry.getKey(), entry.getValue())) items++;
 
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false, true);
