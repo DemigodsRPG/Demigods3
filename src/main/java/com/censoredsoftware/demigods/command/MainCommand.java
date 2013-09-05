@@ -212,16 +212,14 @@ public class MainCommand extends WrappedCommand
 												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Symbol.RIGHTWARD_ARROW + " ");
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
-												if(ability.getCost() > 0) details.append(ChatColor.GRAY).append(" / ").append(ChatColor.WHITE).append("Cost: ").append(ability.getCost());
 												add(details.toString());
+												if(ability.getCost() > 0) add("     " + ChatColor.GRAY + Symbol.CLOCKWISE_OPEN_CIRCLE_ARROW + ChatColor.WHITE + "Favor cost: " + ability.getCost());
 											}
 										}
 										add(" ");
 									}
 								})
-								{
 									player.sendMessage(toPrint);
-								}
 								return true;
 							}
 							catch(Exception e)
