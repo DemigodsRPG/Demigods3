@@ -27,7 +27,7 @@ public class Zones
 	 * @param location the location to check.
 	 * @return true/false depending on if it's a no-PVP zone or not.
 	 */
-	public static boolean zoneNoPVP(Location location)
+	public static boolean inNoPvpZone(Location location)
 	{
 		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
 		if(WORLD_GUARD != null) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || Iterators.any(WORLD_GUARD.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
@@ -49,7 +49,7 @@ public class Zones
 	 * @param location the location to check.
 	 * @return true/false depending on the position of the <code>player</code>.
 	 */
-	public static boolean zoneNoBuild(Player player, Location location) // TODO BROKEN
+	public static boolean inNoBuildZone(Player player, Location location) // TODO BROKEN
 	{
 		if(WORLD_GUARD != null && !WORLD_GUARD.canBuild(player, location)) return true;
 		Structure save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);

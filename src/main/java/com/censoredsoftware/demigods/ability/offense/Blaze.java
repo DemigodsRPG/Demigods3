@@ -174,7 +174,7 @@ public class Blaze implements Ability
 					for(int Z = -diameter / 2; Z <= diameter / 2; Z++)
 					{
 						Block block = target.getWorld().getBlockAt(target.getBlockX() + X, target.getBlockY() + Y, target.getBlockZ() + Z);
-						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !Zones.zoneNoBuild(player, block.getLocation()))) block.setType(Material.FIRE);
+						if((block.getType() == Material.AIR) || (((block.getType() == Material.SNOW)) && !Zones.inNoBuildZone(player, block.getLocation()))) block.setType(Material.FIRE);
 					}
 				}
 			}

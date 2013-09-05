@@ -391,8 +391,8 @@ public class Altar
 
 	public static class Util
 	{
-		public static ConcurrentLinkedQueue<Location> locations = new ConcurrentLinkedQueue<Location>();
-		public static ConcurrentLinkedQueue<Block> blocks = new ConcurrentLinkedQueue<Block>();
+		private static ConcurrentLinkedQueue<Location> locations = new ConcurrentLinkedQueue<Location>();
+		private static ConcurrentLinkedQueue<Block> blocks = new ConcurrentLinkedQueue<Block>();
 
 		public static void processNewChunks()
 		{

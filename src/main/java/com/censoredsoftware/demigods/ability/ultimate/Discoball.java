@@ -272,7 +272,7 @@ public class Discoball implements Ability
 					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
-						if(Demigods.MiscUtil.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.zoneNoPVP(player.getLocation()) || Zones.zoneNoBuild(player, player.getLocation())) continue;
+						if(Demigods.MiscUtil.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.inNoPvpZone(player.getLocation()) || Zones.inNoBuildZone(player, player.getLocation())) continue;
 						doEffect(player);
 					}
 				}

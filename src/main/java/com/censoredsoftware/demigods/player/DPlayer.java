@@ -96,7 +96,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Zones.zoneNoPVP(player.getLocation());
+		final boolean inNoPvpZone = Zones.inNoPvpZone(player.getLocation());
 
 		if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 
