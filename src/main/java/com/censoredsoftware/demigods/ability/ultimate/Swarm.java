@@ -168,7 +168,7 @@ public class Swarm implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityTargetEntity(EntityTargetLivingEntityEvent targetEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(targetEvent.getEntity().getWorld()) || (targetEvent.getTarget() instanceof Player)) return;
+				if(Demigods.MiscUtil.isDisabledWorld(targetEvent.getEntity().getWorld()) || !(targetEvent.getTarget() instanceof Player)) return;
 				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
 			}
 		};
