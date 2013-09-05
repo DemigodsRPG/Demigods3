@@ -1270,7 +1270,8 @@ public class Prayer implements WrappedConversation
 			try
 			{
 				if(!(event.getPlayer() instanceof Player)) return;
-				final Player player = (Player) event.getPlayer();
+				Player player = (Player) event.getPlayer();
+				final OfflinePlayer offlinePlayer = player;
 
 				// If it isn't a confirmation chest then exit
 				if(!event.getInventory().getName().contains("Place Your Tributes Here")) return;
@@ -1312,28 +1313,39 @@ public class Prayer implements WrappedConversation
 					{
 						if(neededItems == finalItems)
 						{
-							// Play acceptance sound
-							player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
-
 							// Accepted, finish everything up!
-							DCharacter.Util.create(DPlayer.Util.getPlayer(player), deity.getName(), chosenName, true);
-
-							// Message them and do cool things
-							player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
-							player.getWorld().strikeLightningEffect(player.getLocation());
-
-							for(int i = 0; i < 20; i++)
-								player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+							DCharacter.Util.create(DPlayer.Util.getPlayer(offlinePlayer), deity.getName(), chosenName, true);
 
 							// Remove temp data
-							DataManager.removeTemp(player.getName(), "currently_creating");
-							DataManager.removeTimed(player.getName(), "currently_creating");
+							DataManager.removeTemp(offlinePlayer.getName(), "currently_creating");
+							DataManager.removeTimed(offlinePlayer.getName(), "currently_creating");
 
 							// Clear the prayer session
-							DPlayer.Util.clearPrayerSession(player);
+							DPlayer.Util.clearPrayerSession(offlinePlayer);
+
+							// If the player is online, let them know
+							if(offlinePlayer.isOnline())
+							{
+								// Redefine player
+								Player player = offlinePlayer.getPlayer();
+
+								// Play acceptance sound
+								player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
+
+								// Message them and do cool things
+								player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deity.getName()));
+								player.getWorld().strikeLightningEffect(player.getLocation());
+
+								// Fancy particles
+								for(int i = 0; i < 20; i++)
+									player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+							}
 						}
-						else
+						else if(offlinePlayer.isOnline())
 						{
+							// Redefine player
+							Player player = offlinePlayer.getPlayer();
+
 							// Play denial sound
 							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 0.7F, 2F);
 							player.playSound(player.getLocation(), Sound.ENDERMAN_SCREAM, 2F, 2F);
@@ -1344,7 +1356,7 @@ public class Prayer implements WrappedConversation
 						}
 
 						// Clear the prayer session
-						DPlayer.Util.clearPrayerSession(player);
+						DPlayer.Util.clearPrayerSession(offlinePlayer);
 
 						// Clear the confirmation case
 						event.getInventory().clear();

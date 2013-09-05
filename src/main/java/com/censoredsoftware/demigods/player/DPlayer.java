@@ -405,7 +405,7 @@ public class DPlayer implements ConfigurationSerializable
 		 * 
 		 * @param player the player to clean.
 		 */
-		public static void clearPrayerSession(Player player)
+		public static void clearPrayerSession(OfflinePlayer player)
 		{
 			DataManager.removeTemp(player.getName(), "prayer_conversation");
 			DataManager.removeTemp(player.getName(), "prayer_context");
