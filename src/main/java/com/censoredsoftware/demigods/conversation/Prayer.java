@@ -1360,7 +1360,7 @@ public class Prayer implements WrappedConversation
 						// Clear the confirmation case
 						event.getInventory().clear();
 					}
-				}, 40);
+				}, 80); // 4 seconds
 			}
 			catch(Exception e)
 			{
