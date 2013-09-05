@@ -437,23 +437,17 @@ public class DPlayer implements ConfigurationSerializable
 			if(option)
 			{
 				// Toggle on
-				togglePrayingSilent(player, true, false);
-
-				// Record chat
-				startRecording(player);
+				togglePrayingSilent(player, true, true);
 			}
 			else
 			{
-				// Toggle off
-				togglePrayingSilent(player, false, false);
-
 				// Message them
-				Messages.clearChat(player);
+				Messages.clearRawChat(player);
 				for(String message : Demigods.LANGUAGE.getTextBlock(Translation.Text.PRAYER_ENDED))
-					player.sendMessage(message);
+					player.sendRawMessage(message);
 
-				// Handle recorded chat
-				stopRecording(player, true);
+				// Toggle off
+				togglePrayingSilent(player, false, true);
 			}
 		}
 

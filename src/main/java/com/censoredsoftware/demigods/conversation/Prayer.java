@@ -1293,11 +1293,12 @@ public class Prayer implements WrappedConversation
 				for(Map.Entry<Material, Integer> entry : deity.getClaimItems().entrySet())
 					if(event.getInventory().contains(entry.getKey(), entry.getValue())) items++;
 
+				// Clear chat and send update
+				Messages.clearRawChat(player);
+
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 
-				// Clear chat and send update
-				Messages.clearRawChat(player);
 				player.sendMessage(deityColor + deityName + " is pondering your offerings...");
 
 				// Finalize stuff for delay
@@ -1320,9 +1321,6 @@ public class Prayer implements WrappedConversation
 							// Remove temp data
 							DataManager.removeTemp(offlinePlayer.getName(), "currently_creating");
 							DataManager.removeTimed(offlinePlayer.getName(), "currently_creating");
-
-							// Clear the prayer session
-							DPlayer.Util.clearPrayerSession(offlinePlayer);
 
 							// If the player is online, let them know
 							if(offlinePlayer.isOnline())
