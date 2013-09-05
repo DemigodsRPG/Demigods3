@@ -412,6 +412,7 @@ public class DPlayer implements ConfigurationSerializable
 			DataManager.removeTemp(player.getName(), "prayer_location");
 			DataManager.removeTimed(player.getName(), "currently_creating");
 			DataManager.removeTimed(player.getName(), "currently_forsaking");
+
 		}
 
 		/**
