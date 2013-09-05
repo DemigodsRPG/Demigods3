@@ -139,6 +139,7 @@ public interface Ability
 					{
 						DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
 						if(attacked != null && DCharacter.Util.areAllied(character, attacked)) continue;
+						if(Battle.Util.isInBattle(character) && !Battle.Util.isInBattle(attacked)) continue;
 					}
 					else if(target instanceof Tameable)
 					{
