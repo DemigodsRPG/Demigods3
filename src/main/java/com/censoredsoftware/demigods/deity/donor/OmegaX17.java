@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
@@ -40,5 +41,5 @@ public class OmegaX17
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
-	public final static Set<Ability> abilities = Sets.newHashSet((Ability) new NoSplosion(name, permission));
+	public final static List<Ability> abilities = Lists.newArrayList((Ability) new NoSplosion(name, permission));
 }

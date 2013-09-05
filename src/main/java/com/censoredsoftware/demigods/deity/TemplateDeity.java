@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
@@ -39,5 +40,5 @@ public class TemplateDeity
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.NON_PLAYABLE);
-	public final static Set<Ability> abilities = Sets.newHashSet((Ability) new Template(name, permission));
+	public final static List<Ability> abilities = Lists.newArrayList((Ability) new Template(name, permission));
 }
