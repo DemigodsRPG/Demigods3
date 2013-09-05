@@ -65,13 +65,6 @@ public class BattleListener implements Listener
 			// Add participants from this event
 			battle.addParticipant(damageeParticipant);
 			battle.addParticipant(damagerParticipant);
-
-			// Battle death
-			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
-			{
-				event.setCancelled(true);
-				Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle);
-			}
 			return;
 		}
 
@@ -97,21 +90,14 @@ public class BattleListener implements Listener
 			// Add participants from this event
 			battle.addParticipant(damageeParticipant);
 			battle.addParticipant(damagerParticipant);
-
-			// Battle death
-			if(event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
-			{
-				event.setCancelled(true);
-				Battle.Util.battleDeath(damagerParticipant, damageeParticipant, battle);
-			}
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDamage(EntityDamageEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
-		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
+		if(!Battle.Util.canParticipate(event.getEntity())) return;
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
