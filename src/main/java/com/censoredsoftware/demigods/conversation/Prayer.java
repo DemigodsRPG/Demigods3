@@ -1,5 +1,31 @@
 package com.censoredsoftware.demigods.conversation;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
@@ -18,30 +44,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -58,7 +60,7 @@ public class Prayer implements WrappedConversation
 	 */
 	public enum Menu
 	{
-		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
+		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CANCEL_CREATE_CHARACTER('X', new CancelCreateCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
 		private final Demigods.ListedConversation.Category category;
@@ -148,7 +150,7 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(" ");
 
 			for(Menu menu : Menu.values())
-				if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName());
+				if(menu.getCategory().canUse(context)) player.sendRawMessage(ChatColor.GRAY + "   [" + menu.getId() + ".] " + menu.getCategory().getChatName(context));
 
 			return "";
 		}
@@ -177,7 +179,7 @@ public class Prayer implements WrappedConversation
 	static class ViewWarps extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.LIGHT_PURPLE + "View Warps " + ChatColor.GRAY + "(& Invites)";
 		}
@@ -347,7 +349,7 @@ public class Prayer implements WrappedConversation
 	static class ViewSkills extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.DARK_PURPLE + "View Skills";
 		}
@@ -473,7 +475,7 @@ public class Prayer implements WrappedConversation
 	static class ViewNotifications extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.GREEN + "View Notifications";
 		}
@@ -564,7 +566,7 @@ public class Prayer implements WrappedConversation
 	static class ViewCharacters extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.YELLOW + "View Characters";
 		}
@@ -687,7 +689,7 @@ public class Prayer implements WrappedConversation
 	static class Forsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.DARK_RED + "Forsake Current Deity";
 		}
@@ -696,7 +698,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return character != null && ((Player) context.getForWhom()).hasPermission("demigods.basic.forsake") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -751,7 +753,6 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(" ");
 
 				// Save temporary data, end the CONVERSATION_FACTORY, and return
-				DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_forsaking", true);
 				DataManager.saveTimed(player.getName(), "currently_forsaking", true, 600);
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 			}
@@ -763,16 +764,16 @@ public class Prayer implements WrappedConversation
 	static class ConfirmForsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.DARK_RED + "Finish Forsaking";
+			return ChatColor.DARK_RED + "Finish Forsaking " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_forsaking"), true) + ")";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasKeyTemp(player.getName(), "currently_forsaking") && DataManager.hasTimed(player.getName(), "currently_forsaking");
+			return DataManager.hasTimed(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -819,7 +820,7 @@ public class Prayer implements WrappedConversation
 	static class CancelForsake extends MessagePrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.DARK_RED + "Cancel Forsaking";
 		}
@@ -828,7 +829,7 @@ public class Prayer implements WrappedConversation
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasKeyTemp(player.getName(), "currently_forsaking") && DataManager.hasTimed(player.getName(), "currently_forsaking");
+			return DataManager.hasTimed(player.getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -836,10 +837,8 @@ public class Prayer implements WrappedConversation
 		{
 			// Define variables
 			Player player = (Player) context.getForWhom();
-			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 
 			// Cancel the temp data
-			DataManager.removeTemp(player.getName(), "currently_forsaking");
 			DataManager.removeTimed(player.getName(), "currently_forsaking");
 
 			return "";
@@ -856,7 +855,7 @@ public class Prayer implements WrappedConversation
 	static class CreateCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
 			return ChatColor.GREEN + "Create Character";
 		}
@@ -864,7 +863,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasKeyTemp(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
 		}
 
 		@Override
@@ -1123,7 +1122,6 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(" ");
 
 					// Save temporary data, end the CONVERSATION_FACTORY, and return
-					DataManager.saveTemp(((Player) context.getForWhom()).getName(), "currently_creating", true);
 					DataManager.saveTimed(player.getName(), "currently_creating", true, 600);
 					DPlayer.Util.togglePrayingSilent(player, false, true);
 					return null;
@@ -1141,16 +1139,16 @@ public class Prayer implements WrappedConversation
 	static class ConfirmCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
 	{
 		@Override
-		public String getChatName()
+		public String getChatName(ConversationContext context)
 		{
-			return ChatColor.GREEN + "Confirm Character";
+			return ChatColor.GREEN + "Confirm Character " + ChatColor.GRAY + "(" + Times.getTimeTagged(DataManager.getTimedExpiration(((Player) context.getForWhom()).getName(), "currently_creating"), true) + ")";
 		}
 
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
 			Player player = (Player) context.getForWhom();
-			return DataManager.hasKeyTemp(player.getName(), "currently_creating") && DataManager.hasTimed(player.getName(), "currently_creating");
+			return DataManager.hasTimed(player.getName(), "currently_creating");
 		}
 
 		@Override
@@ -1189,6 +1187,41 @@ public class Prayer implements WrappedConversation
 			player.openInventory(inv);
 
 			return null;
+		}
+	}
+
+	// Character creation cancellation
+	static class CancelCreateCharacter extends MessagePrompt implements Demigods.ListedConversation.Category
+	{
+		@Override
+		public String getChatName(ConversationContext context)
+		{
+			return ChatColor.DARK_RED + "Cancel Character Creation";
+		}
+
+		@Override
+		public boolean canUse(ConversationContext context)
+		{
+			Player player = (Player) context.getForWhom();
+			return DataManager.hasTimed(player.getName(), "currently_creating");
+		}
+
+		@Override
+		public String getPromptText(ConversationContext context)
+		{
+			// Define variables
+			Player player = (Player) context.getForWhom();
+
+			// Cancel the temp data
+			DataManager.removeTimed(player.getName(), "currently_creating");
+
+			return "";
+		}
+
+		@Override
+		protected Prompt getNextPrompt(ConversationContext context)
+		{
+			return new StartPrayer();
 		}
 	}
 
@@ -1294,6 +1327,13 @@ public class Prayer implements WrappedConversation
 							DPlayer.Util.clearPrayerSession(player);
 						}
 						else player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
+					// Clear the prayer session
+					DPlayer.Util.clearPrayerSession(player);
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + "You have been denied entry into the lineage of " + deity.getName() + "!");
+				}
 
 						// Clear the confirmation case
 						event.getInventory().clear();
@@ -1348,10 +1388,6 @@ public class Prayer implements WrappedConversation
 					// Add potion effects for fun
 					PotionEffect potion = new PotionEffect(PotionEffectType.WEAKNESS, 1200, 3);
 					player.addPotionEffect(potion);
-
-					// Remove temp
-					DataManager.removeTemp(player.getName(), "currently_forsaking");
-					DataManager.removeTimed(player.getName(), "currently_forsaking");
 
 					// Clear the prayer session
 					DPlayer.Util.clearPrayerSession(player);
