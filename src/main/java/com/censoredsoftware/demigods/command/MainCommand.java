@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.ArrayList;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -26,6 +14,17 @@ import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -182,7 +181,7 @@ public class MainCommand extends WrappedCommand
 			}
 		}
 
-		for(String alliance : Deity.Util.getLoadedPlayableDeityAlliances())
+		for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms(player))
 		{
 			if(!player.hasPermission("demigods." + alliance.toLowerCase())) continue;
 			if(category.equalsIgnoreCase(alliance))
@@ -195,7 +194,7 @@ public class MainCommand extends WrappedCommand
 				}
 				else
 				{
-					for(final Deity deity : Deity.Util.getLoadedPlayableDeitiesInAlliance(alliance))
+					for(final Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player))
 					{
 						assert option1 != null;
 						if(option1.equalsIgnoreCase(deity.getName()))
