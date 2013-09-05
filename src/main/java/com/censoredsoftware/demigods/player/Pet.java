@@ -272,7 +272,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		public static void reownPets(AnimalTamer tamer, DCharacter character)
 		{
 			for(Pet wrapper : findByTamer(character.getName()))
-				((Tameable) wrapper.getEntity()).setOwner(tamer);
+				if(wrapper.getEntity() != null) ((Tameable) wrapper.getEntity()).setOwner(tamer);
 		}
 	}
 }
