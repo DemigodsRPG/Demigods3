@@ -355,7 +355,7 @@ public class MainCommand extends WrappedCommand
 			}
 			else
 			{
-				sender.sendMessage(ChatColor.RED + "No character found.");
+				sender.sendMessage(ChatColor.RED + "No player found with that name.");
 			}
 
 			return true;
@@ -367,7 +367,7 @@ public class MainCommand extends WrappedCommand
 		@Override
 		public String getName()
 		{
-			return "/dg admin remove <player/character>";
+			return "/dg admin remove [player|character] <name>";
 		}
 
 		@Override
@@ -379,7 +379,54 @@ public class MainCommand extends WrappedCommand
 		@Override
 		public boolean doCommand(Player sender, String[] args)
 		{
-			// TODO
+			if(args.length < 4)
+			{
+				// Not enough parameters, return
+				sender.sendMessage(ChatColor.RED + "You didn't specify enough parameters.");
+				return true;
+			}
+
+			if(args[2].equalsIgnoreCase("player"))
+			{
+				// Define the player
+				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
+
+				// Remove their data if not null
+				if(player != null)
+				{
+					// TODO: Implement a method to remove DPlayers and call it here.
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.RED + "No player found with that name.");
+				}
+			}
+			else if(args[2].equalsIgnoreCase("character"))
+			{
+				// Define the character
+				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+
+				// Remove their data if not null
+				if(character != null)
+				{
+					// Kick the player first if they're online
+					if(character.getOfflinePlayer().isOnline() && DPlayer.Util.getPlayer(character.getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(character.getName()))
+					{
+						character.getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your active character has been deleted.");
+					}
+
+					// Remove them
+					character.remove();
+
+					// Send success message
+					sender.sendMessage(ChatColor.RED + character.getName() + " has been removed successfully!");
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.RED + "No player found with that name.");
+				}
+			}
+
 			return true;
 		}
 	}
