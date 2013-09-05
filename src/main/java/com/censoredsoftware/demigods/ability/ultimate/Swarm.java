@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.ability.ultimate;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -10,6 +9,7 @@ import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Spigots;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,15 +42,19 @@ public class Swarm implements Ability
 		this.permission = permission;
 	}
 
-	public static void swarm(Player player)
+	public static boolean swarm(Player player)
 	{
 		// Define variables
 		Set<LivingEntity> targets = Ability.Util.doAbilityPreProcess(player, player.getNearbyEntities(50, 50, 50), cost);
 
-		if(targets == null || targets.isEmpty()) return;
+		if(targets == null || targets.isEmpty()) return false;
+
+		player.sendMessage(ChatColor.GREEN + "Swarming " + targets.size() + " targets.");
 
 		for(LivingEntity entity : targets)
-			Util.spawnZombie(player, entity);
+			Util.spawnZombie(entity);
+
+		return true;
 	}
 
 	@Override
@@ -141,10 +145,11 @@ public class Swarm implements Ability
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
-					swarm(player);
-
-					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
-					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+					if(swarm(player))
+					{
+						int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
+						DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+					}
 				}
 			}
 		};
@@ -158,14 +163,11 @@ public class Swarm implements Ability
 
 	public static class Util
 	{
-		public static boolean spawnZombie(Player player, LivingEntity target)
+		public static boolean spawnZombie(LivingEntity target)
 		{
-			if(!player.getWorld().equals(target.getWorld())) return false;
-
-			Location toHit = target.getLocation();
-			if(Battle.Util.canTarget(target)) return false;
-			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(toHit, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
-			Zombie zombie = (Zombie) toHit.getWorld().spawnEntity(toHit, EntityType.ZOMBIE);
+			Location spawnLocation = target.getLocation().clone();
+			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
+			Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
 			zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
 			zombie.setTarget(target);
 
