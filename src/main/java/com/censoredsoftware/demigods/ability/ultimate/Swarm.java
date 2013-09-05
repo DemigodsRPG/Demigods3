@@ -17,7 +17,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -163,13 +162,6 @@ public class Swarm implements Ability
 					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
 					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
-			}
-
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityTargetEntity(EntityTargetLivingEntityEvent targetEvent)
-			{
-				if(Demigods.MiscUtil.isDisabledWorld(targetEvent.getEntity().getWorld()) || !(targetEvent.getTarget() instanceof Player)) return;
-				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
 			}
 		};
 	}
