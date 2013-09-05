@@ -213,7 +213,7 @@ public class MainCommand extends WrappedCommand
 												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
 												details.append(ChatColor.WHITE).append(detail);
 												add(details.toString());
-												if(ability.getCost() > 0) add("     " + ChatColor.GRAY + Symbol.CLOCKWISE_OPEN_CIRCLE_ARROW + ChatColor.WHITE + "Favor cost: " + ability.getCost());
+												if(ability.getCost() > 0) add("      " + ChatColor.GRAY + Symbol.BLACK_SQUARE + ChatColor.WHITE + " Favor cost: " + ability.getCost());
 											}
 										}
 										add(" ");
