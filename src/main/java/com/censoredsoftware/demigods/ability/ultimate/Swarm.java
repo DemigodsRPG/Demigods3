@@ -52,7 +52,7 @@ public class Swarm implements Ability
 		player.sendMessage(ChatColor.DARK_GREEN + "Swarming " + targets.size() + " targets.");
 
 		for(LivingEntity entity : targets)
-			Util.spawnZombie(entity);
+			Util.spawnZombie(player.getDisplayName(), entity);
 
 		return true;
 	}
@@ -163,14 +163,15 @@ public class Swarm implements Ability
 
 	public static class Util
 	{
-		public static boolean spawnZombie(LivingEntity target)
+		public static boolean spawnZombie(String playerName, LivingEntity target)
 		{
 			Location spawnLocation = target.getLocation().clone();
 			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
 			Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
 			zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999, 1, false), new PotionEffect(PotionEffectType.JUMP, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
+			zombie.setCustomName(playerName + "'s Minion");
+			zombie.setCustomNameVisible(true);
 			zombie.setTarget(target);
-
 			return true;
 		}
 	}
