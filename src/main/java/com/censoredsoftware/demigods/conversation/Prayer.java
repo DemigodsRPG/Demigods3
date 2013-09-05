@@ -19,10 +19,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
@@ -1300,6 +1297,10 @@ public class Prayer implements WrappedConversation
 				// Finalize stuff for delay
 				final int finalItems = items;
 
+				// Play scary sound
+				player.playSound(player.getLocation(), Sound.AMBIENCE_CAVE, 1F, 1F);
+
+				// Delay for dramatic effect
 				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 				{
 					@Override

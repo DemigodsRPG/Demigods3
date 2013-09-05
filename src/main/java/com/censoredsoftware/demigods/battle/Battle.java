@@ -642,7 +642,12 @@ public class Battle implements ConfigurationSerializable
 
 		public static boolean canParticipate(Entity entity)
 		{
-			return !(!(entity instanceof Player) && !(entity instanceof Tameable)) && !(entity instanceof Player && (DPlayer.Util.getPlayer((Player) entity).getCurrent() == null || DPlayer.Util.getPlayer((Player) entity).getCurrent().getDeity().getFlags().contains(Deity.Flag.NO_BATTLE))) && !(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null);
+			if(entity instanceof Player)
+			{
+				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
+			}
+			return entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) != null;
 		}
 
 		public static Participant defineParticipant(Entity entity)

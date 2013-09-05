@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.deity.titan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.passive.NoFire;
@@ -18,11 +10,18 @@ import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Perses
 {
 	public final static String name = "Perses", alliance = "Titan", permission = "demigods.titan.perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 10;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30;
 	public final static ChatColor color = ChatColor.GOLD;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
