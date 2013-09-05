@@ -187,7 +187,7 @@ public interface Ability
 							else if(entity instanceof Player && DPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
 							{
 								DCharacter character = DPlayer.Util.getPlayer(((Player) entity)).getCurrent();
-								if(DCharacter.Util.areAllied(looking, character)) return false;
+								if(DCharacter.Util.areAllied(looking, character) || ((Player) entity).getGameMode().equals(GameMode.CREATIVE)) return false;
 							}
 							return true;
 						}

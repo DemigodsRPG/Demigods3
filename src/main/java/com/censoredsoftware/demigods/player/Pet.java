@@ -25,7 +25,7 @@ public class Pet implements Participant, ConfigurationSerializable
 	private UUID id;
 	private String entityType;
 	private String animalTamer;
-	private Boolean PvP;
+	private boolean PvP;
 	private UUID entityUUID;
 	private UUID owner;
 
@@ -90,7 +90,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		Util.save(this);
 	}
 
-	public Boolean canPvp()
+	public boolean canPvp()
 	{
 		return this.PvP;
 	}

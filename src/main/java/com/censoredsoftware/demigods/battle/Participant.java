@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.battle;
 
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.player.DCharacter;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
-import com.censoredsoftware.demigods.player.DCharacter;
+import java.util.UUID;
 
 public interface Participant
 {
@@ -13,7 +12,7 @@ public interface Participant
 
 	public void setCanPvp(boolean pvp);
 
-	public Boolean canPvp();
+	public boolean canPvp();
 
 	public Location getCurrentLocation();
 

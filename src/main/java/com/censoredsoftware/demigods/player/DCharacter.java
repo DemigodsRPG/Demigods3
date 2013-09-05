@@ -416,7 +416,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	}
 
 	@Override
-	public Boolean canPvp()
+	public boolean canPvp()
 	{
 		return DPlayer.Util.getPlayer(getOfflinePlayer()).canPvp();
 	}
