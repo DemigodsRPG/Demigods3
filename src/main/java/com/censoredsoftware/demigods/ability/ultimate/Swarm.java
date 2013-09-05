@@ -47,10 +47,10 @@ public class Swarm implements Ability
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
-		if(!Ability.Util.doAbilityPreProcess(player, cost, type)) return;
-
 		for(Entity anEntity : player.getWorld().getEntities())
 			if(anEntity.getLocation().toVector().isInSphere(playerLocation, 50.0)) entitySet.add(anEntity);
+
+		if(entitySet.isEmpty() || !Ability.Util.doAbilityPreProcess(player, cost, type)) return;
 
 		for(Entity entity : entitySet)
 		{

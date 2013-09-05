@@ -288,7 +288,7 @@ public enum Deity
 			{
 				return Deity.valueOf(deity.toUpperCase());
 			}
-			catch(IllegalArgumentException ignored)
+			catch(Exception ignored)
 			{}
 			return null;
 		}
