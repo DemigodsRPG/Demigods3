@@ -40,9 +40,9 @@ public class Demigods
 	public static String SAVE_PATH;
 
 	// Public Static Access
-	public static DemigodsPlugin PLUGIN;
-	public static ConversationFactory CONVERSATION_FACTORY;
-	public static Translation LANGUAGE;
+	public static final DemigodsPlugin PLUGIN;
+	public static final ConversationFactory CONVERSATION_FACTORY;
+	public static final Translation LANGUAGE;
 
 	// Public Dependency Plugins
 	public static WorldGuardPlugin WORLD_GUARD;
@@ -56,6 +56,7 @@ public class Demigods
 	static
 	{
 		// Allow static access.
+		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 		LANGUAGE = new Translation();
 
@@ -72,7 +73,7 @@ public class Demigods
 	}
 
 	// Load everything else.
-	protected static void finishLoading()
+	protected static void load()
 	{
 		// Start the data
 		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
@@ -113,8 +114,7 @@ public class Demigods
 			}
 		}))
 			if(PLUGIN.getServer().getWorld(world) != null) DISABLED_WORLDS.add(world);
-		if(PLUGIN.getServer().getWorlds().size() == DISABLED_WORLDS.size()) return false;
-		return true;
+		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
 	}
 
 	private static void loadListeners()

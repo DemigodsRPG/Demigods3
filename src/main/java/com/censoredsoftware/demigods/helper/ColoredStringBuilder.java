@@ -15,7 +15,7 @@ public class ColoredStringBuilder
 	 */
 	private Set<ChatColor> currentFormatting;
 	private StringBuilder builder;
-	private static final Set<Character> FORMATTING_CHARS = Sets.newHashSet('k', 'l', 'm', 'n', 'o', 'r');
+	private static final Set<String> FORMATTING_CHARS = Sets.newHashSet("k", "l", "m", "n", "o", "r");
 
 	/**
 	 * Constructor
@@ -238,9 +238,9 @@ public class ColoredStringBuilder
 		hasList.removeAll(FORMATTING_CHARS);
 
 		List<String> leftOvers = hasList;
-		if(leftOvers.contains(color.getChar())) leftOvers.remove(color.getChar());
+		if(leftOvers.contains(String.valueOf(color.getChar()))) leftOvers.remove(color.getChar());
 
-		if(hasList.contains(color.getChar())) return leftOvers.size() == 0;
+		if(hasList.contains(String.valueOf(color.getChar()))) return leftOvers.size() == 0;
 		return false;
 	}
 
@@ -252,8 +252,7 @@ public class ColoredStringBuilder
 		List<String> leftOvers = hasList;
 		leftOvers.removeAll(currentFormatting);
 
-		if(hasList.containsAll(currentFormatting)) return leftOvers.size() == 0;
-		return false;
+		return hasList.containsAll(currentFormatting) && leftOvers.size() == 0;
 	}
 
 	public List<String> getCharSet(final String string, final boolean include)

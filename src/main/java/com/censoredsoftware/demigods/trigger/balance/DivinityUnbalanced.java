@@ -4,12 +4,7 @@ import com.censoredsoftware.demigods.trigger.Trigger;
 
 public class DivinityUnbalanced implements Trigger
 {
-	public static DivinityUnbalanced trigger;
-
-	static
-	{
-		trigger = new DivinityUnbalanced();
-	}
+	public static final DivinityUnbalanced trigger = new DivinityUnbalanced();
 
 	// Example
 	public boolean evaluate()

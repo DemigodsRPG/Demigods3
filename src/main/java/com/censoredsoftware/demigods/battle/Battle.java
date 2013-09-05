@@ -210,7 +210,7 @@ public class Battle implements ConfigurationSerializable
 	public void addDeath(Participant participant)
 	{
 		DCharacter character = participant.getRelatedCharacter();
-		if(this.deaths.containsKey(character)) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
+		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
 		sendBattleStats();
@@ -642,9 +642,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static boolean canParticipate(Entity entity)
 		{
-			if(!(entity instanceof Player) && !(entity instanceof Tameable)) return false;
-			if(entity instanceof Player && (DPlayer.Util.getPlayer((Player) entity).getCurrent() == null || DPlayer.Util.getPlayer((Player) entity).getCurrent().getDeity().getFlags().contains(Deity.Flag.NO_BATTLE))) return false;
-			return !(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null);
+			return !(!(entity instanceof Player) && !(entity instanceof Tameable)) && !(entity instanceof Player && (DPlayer.Util.getPlayer((Player) entity).getCurrent() == null || DPlayer.Util.getPlayer((Player) entity).getCurrent().getDeity().getFlags().contains(Deity.Flag.NO_BATTLE))) && !(entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) == null);
 		}
 
 		public static Participant defineParticipant(Entity entity)

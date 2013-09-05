@@ -106,7 +106,7 @@ public class GriefListener implements Listener
 	public void onBlockFall(EntityChangeBlockEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getBlock().getLocation())) return;
-		if(event.getEntityType() != EntityType.FALLING_BLOCK || event.getBlock().getRelative(BlockFace.DOWN).equals(Material.AIR)) return;
+		if(event.getEntityType() != EntityType.FALLING_BLOCK || event.getBlock().getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) return;
 		FallingBlock block = (FallingBlock) event.getEntity();
 		Location blockLocation = block.getLocation();
 		if(Structure.Util.isInRadiusWithFlag(DLocation.Util.getFloorBelowLocation(block.getLocation()), Structure.Flag.NO_GRIEFING))

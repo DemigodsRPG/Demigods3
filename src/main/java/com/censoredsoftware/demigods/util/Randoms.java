@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class Randoms
 {
+	private static final Random random = new Random();
+
 	/**
 	 * Generates a random string with a length of <code>length</code>.
 	 * 
@@ -15,7 +17,6 @@ public class Randoms
 		// Set allowed characters - Create new string to fill - Generate the string - Return string
 		char[] chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
 		for(int i = 0; i < length; i++)
 		{
 			char c = chars[random.nextInt(chars.length)];
@@ -35,7 +36,6 @@ public class Randoms
 		// Set allowed characters - Create new string to fill - Generate the string - Return string
 		char[] chars = "0123456789".toCharArray();
 		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
 		for(int i = 0; i < length; i++)
 		{
 			char c = chars[random.nextInt(chars.length)];
@@ -53,7 +53,7 @@ public class Randoms
 	 */
 	public static int generateIntRange(int min, int max)
 	{
-		return new Random().nextInt(max - min + 1) + min;
+		return random.nextInt(max - min + 1) + min;
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class Randoms
 	 */
 	public static double generateDoubleRange(double min, double max)
 	{
-		return (max - min) * (new Random().nextDouble()) + min;
+		return (max - min) * random.nextDouble() + min;
 	}
 
 	/**

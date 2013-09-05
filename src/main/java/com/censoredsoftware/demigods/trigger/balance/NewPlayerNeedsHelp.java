@@ -14,12 +14,11 @@ import java.util.Collection;
 
 public class NewPlayerNeedsHelp implements Trigger
 {
-	public static NewPlayerNeedsHelp trigger;
+	public static final NewPlayerNeedsHelp trigger = new NewPlayerNeedsHelp();
 	public static int focusTime, deathsNeeded, noobAscensions;
 
 	static
 	{
-		trigger = new NewPlayerNeedsHelp();
 		focusTime = 2400;
 		deathsNeeded = 7;
 		noobAscensions = 3;
