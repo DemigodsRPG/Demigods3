@@ -13,12 +13,13 @@ import org.bukkit.plugin.Plugin;
 
 public class Zones
 {
-	static WorldGuardPlugin WORLD_GUARD;
+	private static final WorldGuardPlugin WORLD_GUARD;
 
 	static
 	{
 		Plugin worldGuard = Bukkit.getPluginManager().getPlugin("WorldGuard");
 		if(worldGuard instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) worldGuard;
+		else WORLD_GUARD = null;
 	}
 
 	/**
