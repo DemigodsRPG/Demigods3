@@ -3,12 +3,10 @@ package com.censoredsoftware.demigods.player;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.util.Errors;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -120,7 +118,6 @@ public class Pet implements Participant, ConfigurationSerializable
 				if(pet.getUniqueId().equals(this.entityUUID)) return (LivingEntity) pet;
 			}
 		}
-		Errors.triggerError("Demigods", ChatColor.RED + "Could not find pet.", ChatColor.GREEN + "Deleting save for pet.");
 		delete();
 		return null;
 	}

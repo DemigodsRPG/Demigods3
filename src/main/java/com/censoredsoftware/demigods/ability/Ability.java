@@ -154,10 +154,10 @@ public interface Ability
 		}
 
 		/**
-		 * Returns true if the callAbilityEvent <code>callAbilityEvent</code> is caused by a left click.
+		 * Returns true if the event <code>event</code> is caused by a left click.
 		 * 
-		 * @param event the interact callAbilityEvent
-		 * @return true/false depending on if the callAbilityEvent is caused by a left click or not
+		 * @param event the interact event
+		 * @return true/false depending on if the event is caused by a left click or not
 		 */
 		public static boolean isLeftClick(PlayerInteractEvent event)
 		{
@@ -168,7 +168,7 @@ public interface Ability
 		/**
 		 * Returns the LivingEntity that <code>player</code> is doTargeting.
 		 * 
-		 * @param player the interact callAbilityEvent
+		 * @param player the player
 		 * @return the targeted LivingEntity
 		 */
 		public static LivingEntity autoTarget(Player player)
