@@ -1,7 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.conversation.Prayer;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.location.Region;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -13,19 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.conversation.Prayer;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.Region;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Messages;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -96,7 +96,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Define variables
 		final Player player = getOfflinePlayer().getPlayer();
-		final boolean inNoPvpZone = Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP);
+		final boolean inNoPvpZone = Zones.zoneNoPVP(player.getLocation());
 
 		if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 
