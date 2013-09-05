@@ -15,12 +15,11 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.errornoise.ErrorNoise;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -28,7 +27,6 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.mcstats.MetricsLite;
 
@@ -44,13 +42,9 @@ public class Demigods
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
 
-	// Public Dependency Plugins
-	public static WorldGuardPlugin WORLD_GUARD;
-	public static boolean ERROR_NOISE;
-
 	// Disabled Worlds
-	protected static Set<String> DISABLED_WORLDS;
-	protected static Set<String> COMMANDS;
+	protected static ImmutableSet<String> DISABLED_WORLDS;
+	protected static ImmutableSet<String> COMMANDS;
 
 	// Load what is possible to load right away.
 	static
@@ -67,9 +61,6 @@ public class Demigods
 		}
 		catch(Exception ignored)
 		{}
-
-		// Configure depends
-		loadDepends();
 	}
 
 	// Load everything else.
@@ -100,11 +91,12 @@ public class Demigods
 		Structure.Util.regenerateStructures();
 
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+		else Messages.warning(("Without Spigot, some features may not work."));
 	}
 
 	private static boolean loadWorlds()
 	{
-		DISABLED_WORLDS = Sets.newHashSet();
+		Set<String> disabledWorlds = Sets.newHashSet();
 		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
 		{
 			@Override
@@ -113,7 +105,8 @@ public class Demigods
 				return PLUGIN.getServer().getWorld(world) != null;
 			}
 		}))
-			if(PLUGIN.getServer().getWorld(world) != null) DISABLED_WORLDS.add(world);
+			if(PLUGIN.getServer().getWorld(world) != null) disabledWorlds.add(world);
+		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
 		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
 	}
 
@@ -167,23 +160,16 @@ public class Demigods
 
 	private static void loadCommands()
 	{
-		COMMANDS = Sets.newHashSet();
+		Set<String> commands = Sets.newHashSet();
 		for(ListedCommand command : ListedCommand.values())
-			COMMANDS.addAll(command.getCommand().getCommands());
-		COMMANDS.add("demigod");
-		COMMANDS.add("dg");
-		COMMANDS.add("c");
-		COMMANDS.add("o");
-		COMMANDS.add("l");
-		COMMANDS.add("a");
-	}
-
-	private static void loadDepends()
-	{
-		// WorldGuard
-		Plugin depend = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		if(depend instanceof WorldGuardPlugin) WORLD_GUARD = (WorldGuardPlugin) depend;
-		ERROR_NOISE = Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") != null && Bukkit.getServer().getPluginManager().getPlugin("ErrorNoise") instanceof ErrorNoise;
+			commands.addAll(command.getCommand().getCommands());
+		commands.add("demigod");
+		commands.add("dg");
+		commands.add("c");
+		commands.add("o");
+		commands.add("l");
+		commands.add("a");
+		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 
 	public static class MiscUtil
