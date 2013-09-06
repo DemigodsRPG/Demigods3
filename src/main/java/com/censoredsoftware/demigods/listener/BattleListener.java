@@ -120,6 +120,12 @@ public class BattleListener implements Listener
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
+		if(participant instanceof DCharacter && DataManager.hasTimed(participant.getId().toString(), "just_finished_battle"))
+		{
+			event.setCancelled(true);
+			return;
+		}
+
 		// Battle death
 		if(Battle.Util.isInBattle(participant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
 		{
