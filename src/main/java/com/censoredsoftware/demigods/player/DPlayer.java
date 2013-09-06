@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -14,18 +27,6 @@ import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -142,22 +143,20 @@ public class DPlayer implements ConfigurationSerializable
 		Util.save(this);
 	}
 
-	public Long getLastLoginTime()
+	public long getLastLoginTime()
 	{
-		if(lastLoginTime != -1) return this.lastLoginTime;
-		return null;
+		return this.lastLoginTime;
 	}
 
-	public void setLastLogoutTime(Long time)
+	public void setLastLogoutTime(long time)
 	{
 		this.lastLogoutTime = time;
 		Util.save(this);
 	}
 
-	public Long getLastLogoutTime()
+	public long getLastLogoutTime()
 	{
-		if(lastLogoutTime != -1) return this.lastLogoutTime;
-		return null;
+		return this.lastLogoutTime;
 	}
 
 	public void switchCharacter(final DCharacter newChar)
