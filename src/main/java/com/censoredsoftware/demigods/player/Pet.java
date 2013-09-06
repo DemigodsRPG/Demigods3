@@ -72,7 +72,6 @@ public class Pet implements Participant, ConfigurationSerializable
 
 	public void setPet(LivingEntity tameable)
 	{
-		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 		this.entityType = tameable.getType().getName();
 		this.entityUUID = tameable.getUniqueId();
 	}
