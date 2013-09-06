@@ -108,7 +108,7 @@ public class BattleListener implements Listener
 		if(damager instanceof LivingEntity) for(Pet pet : damageeParticipant.getRelatedCharacter().getPets())
 		{
 			LivingEntity entity = pet.getEntity();
-			if(entity != null) ((Monster) entity).setTarget((LivingEntity) damager);
+			if(entity != null && entity instanceof Monster) ((Monster) entity).setTarget((LivingEntity) damager);
 		}
 	}
 
