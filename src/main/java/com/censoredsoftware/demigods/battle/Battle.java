@@ -724,7 +724,7 @@ public class Battle implements ConfigurationSerializable
 				@Override
 				public boolean apply(Battle battle)
 				{
-					return battle.getKillCounter() >= battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() >= battle.getMinKills() || battle.getParticipants().size() < 2;
+					return battle.getKillCounter() >= battle.getMaxKills() || battle.getStartTime() + battle.getDuration() <= System.currentTimeMillis() && battle.getKillCounter() >= battle.getMinKills() || battle.getParticipants().size() < 2 || battle.getInvolvedAlliances().size() < 2;
 				}
 			}))
 			{
