@@ -255,9 +255,6 @@ public class DPlayer implements ConfigurationSerializable
 			Messages.severe("There was a problem while teleporting a player to their character.");
 		}
 
-		// Toggle praying
-		Util.togglePraying(player, false);
-
 		// Save instances
 		Util.save(this);
 		DCharacter.Util.save(newChar);

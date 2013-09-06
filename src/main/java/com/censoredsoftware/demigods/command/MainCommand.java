@@ -340,7 +340,7 @@ public class MainCommand extends WrappedCommand
 					{
 						sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Characters:");
 						for(DCharacter character : player.getCharacters())
-							sender.sendMessage(ChatColor.GRAY + "   - " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + " (" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.RESET + ")");
+							sender.sendMessage(ChatColor.GRAY + "   - " + ChatColor.WHITE + character.getName() + ChatColor.RESET + " (" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.RESET + ")");
 					}
 				}
 				else
