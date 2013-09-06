@@ -1153,7 +1153,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 					}
 				});
 			}
-			catch(NoSuchElementException ignored)
+			catch(Exception ignored)
 			{}
 			return null;
 		}
