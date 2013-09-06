@@ -1,5 +1,16 @@
 package com.censoredsoftware.demigods.player;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -13,16 +24,6 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -227,6 +228,25 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		potionEffects.clear();
 		return set;
+	}
+
+	public Collection<SavedPotion> getRawPotionEffects()
+	{
+		if(potionEffects == null) potionEffects = Sets.newHashSet();
+		return Collections2.transform(potionEffects, new Function<String, SavedPotion>()
+		{
+			@Override
+			public SavedPotion apply(String s)
+			{
+				try
+				{
+					return DataManager.savedPotions.get(UUID.fromString(s));
+				}
+				catch(Exception ignored)
+				{}
+				return null;
+			}
+		});
 	}
 
 	public Inventory getInventory()
@@ -443,8 +463,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void remove()
 	{
+		// Kick the player first if they're online
+		if(getOfflinePlayer().isOnline() && DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(getName()))
+		{
+			getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your active character has been deleted.");
+		}
+
+		// Remove the data
 		for(Structure structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
+		for(SavedPotion potion : getRawPotionEffects())
+			DataManager.savedPotions.remove(potion.getId());
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());

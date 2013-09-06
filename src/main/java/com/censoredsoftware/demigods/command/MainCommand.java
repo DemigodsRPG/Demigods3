@@ -411,7 +411,11 @@ public class MainCommand extends WrappedCommand
 				// Remove their data if not null
 				if(player != null)
 				{
-					// TODO: Implement a method to remove DPlayers and call it here.
+					// Remove them
+					player.remove();
+
+					// Send success message
+					sender.sendMessage(ChatColor.RED + player.getPlayerName() + " has been removed successfully!");
 				}
 				else
 				{
@@ -426,12 +430,6 @@ public class MainCommand extends WrappedCommand
 				// Remove their data if not null
 				if(character != null)
 				{
-					// Kick the player first if they're online
-					if(character.getOfflinePlayer().isOnline() && DPlayer.Util.getPlayer(character.getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(character.getName()))
-					{
-						character.getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your active character has been deleted.");
-					}
-
 					// Remove them
 					character.remove();
 

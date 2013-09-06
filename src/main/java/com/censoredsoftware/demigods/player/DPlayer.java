@@ -323,6 +323,19 @@ public class DPlayer implements ConfigurationSerializable
 		else return getOfflinePlayer().isOnline();
 	}
 
+	public void remove()
+	{
+		// First we need to kick the player if they're online
+		if(getOfflinePlayer().isOnline()) getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save is being cleared.");
+
+		// Remove characters
+		for(DCharacter character : getCharacters())
+			character.remove();
+
+		// Now we clear the DPlayer save itself
+		Util.delete(getPlayerName());
+	}
+
 	public static class Util
 	{
 		public static DPlayer create(OfflinePlayer player)
@@ -338,6 +351,11 @@ public class DPlayer implements ConfigurationSerializable
 		public static void save(DPlayer player)
 		{
 			DataManager.players.put(player.getPlayerName(), player);
+		}
+
+		public static void delete(String playerName)
+		{
+			DataManager.players.remove(playerName);
 		}
 
 		public static DPlayer getPlayer(OfflinePlayer player)
