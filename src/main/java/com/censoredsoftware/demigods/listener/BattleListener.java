@@ -6,12 +6,10 @@ import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.Pet;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -90,6 +88,13 @@ public class BattleListener implements Listener
 			// Add participants from this event
 			battle.addParticipant(damageeParticipant);
 			battle.addParticipant(damagerParticipant);
+		}
+
+		// Pets
+		if(damager instanceof LivingEntity) for(Pet pet : damageeParticipant.getRelatedCharacter().getPets())
+		{
+			LivingEntity entity = pet.getEntity();
+			if(entity != null) ((Monster) entity).setTarget((LivingEntity) damager);
 		}
 	}
 

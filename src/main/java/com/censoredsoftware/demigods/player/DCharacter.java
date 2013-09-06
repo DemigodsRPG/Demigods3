@@ -436,6 +436,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return id;
 	}
 
+	public Collection<Pet> getPets()
+	{
+		return Pet.Util.findByOwner(id);
+	}
+
 	public void remove()
 	{
 		for(Structure structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))

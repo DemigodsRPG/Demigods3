@@ -44,7 +44,7 @@ public class EntityListener implements Listener
 				return;
 			}
 
-			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getTameable((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getTameable((LivingEntity) attacked).getOwner())) event.setCancelled(true);
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getPet((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getPet((LivingEntity) attacked).getOwner())) event.setCancelled(true);
 		}
 	}
 
@@ -62,7 +62,7 @@ public class EntityListener implements Listener
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
 		{
 			LivingEntity entity = event.getEntity();
-			Pet wrapper = Pet.Util.getTameable(entity);
+			Pet wrapper = Pet.Util.getPet(entity);
 			if(wrapper == null) return;
 			DCharacter owner = wrapper.getOwner();
 			if(owner == null) return;

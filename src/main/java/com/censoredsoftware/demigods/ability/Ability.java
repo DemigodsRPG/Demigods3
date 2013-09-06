@@ -114,7 +114,7 @@ public interface Ability
 				}
 				else if(target instanceof Tameable)
 				{
-					Pet attacked = Pet.Util.getTameable(target);
+					Pet attacked = Pet.Util.getPet(target);
 					if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) return false;
 				}
 				return true;
@@ -143,7 +143,7 @@ public interface Ability
 					}
 					else if(target instanceof Tameable)
 					{
-						Pet attacked = Pet.Util.getTameable((LivingEntity) target);
+						Pet attacked = Pet.Util.getPet((LivingEntity) target);
 						if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) continue;
 					}
 					set.add((LivingEntity) target);
@@ -193,9 +193,9 @@ public interface Ability
 					{
 						if(entity instanceof LivingEntity && entity.getLocation().distance(block.getLocation()) <= correction)
 						{
-							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getTameable((LivingEntity) entity) != null)
+							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getPet((LivingEntity) entity) != null)
 							{
-								Pet wrapper = Pet.Util.getTameable((LivingEntity) entity);
+								Pet wrapper = Pet.Util.getPet((LivingEntity) entity);
 								if(DCharacter.Util.areAllied(looking, wrapper.getOwner())) return false;
 							}
 							else if(entity instanceof Player && DPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
@@ -393,7 +393,7 @@ public interface Ability
 					}
 					else if(target instanceof Tameable && ((Tameable) target).isTamed())
 					{
-						Pet wrapper = Pet.Util.getTameable(target);
+						Pet wrapper = Pet.Util.getPet(target);
 						if(wrapper != null && DCharacter.Util.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
 					}
 				}

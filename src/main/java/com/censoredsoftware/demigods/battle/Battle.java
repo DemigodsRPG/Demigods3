@@ -647,14 +647,14 @@ public class Battle implements ConfigurationSerializable
 				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
-			return entity instanceof Tameable && Pet.Util.getTameable((LivingEntity) entity) != null;
+			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null;
 		}
 
 		public static Participant defineParticipant(Entity entity)
 		{
 			if(!canParticipate(entity)) return null;
 			if(entity instanceof Player) return DPlayer.Util.getPlayer((Player) entity).getCurrent();
-			return Pet.Util.getTameable((LivingEntity) entity);
+			return Pet.Util.getPet((LivingEntity) entity);
 		}
 
 		public static void battleDeath(Participant damager, Participant damagee, Battle battle)

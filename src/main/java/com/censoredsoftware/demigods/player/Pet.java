@@ -23,7 +23,7 @@ public class Pet implements Participant, ConfigurationSerializable
 	private UUID id;
 	private String entityType;
 	private String animalTamer;
-	private boolean PvP;
+	private boolean PvP, tameable;
 	private UUID entityUUID;
 	private UUID owner;
 
@@ -36,6 +36,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		entityType = conf.getString("entityType");
 		if(conf.getString("animalTamer") != null) animalTamer = conf.getString("animalTamer");
 		PvP = conf.getBoolean("PvP");
+		tameable = conf.getBoolean("tameable");
 		entityUUID = UUID.fromString(conf.getString("entityUUID"));
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
 	}
@@ -47,6 +48,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		map.put("entityType", entityType);
 		if(animalTamer != null) map.put("animalTamer", animalTamer);
 		map.put("PvP", PvP);
+		map.put("tamable", tameable);
 		map.put("entityUUID", entityUUID.toString());
 		if(owner != null) map.put("owner", owner.toString());
 		return map;
@@ -68,7 +70,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		DataManager.pets.remove(getId());
 	}
 
-	public void setTamable(LivingEntity tameable)
+	public void setPet(LivingEntity tameable)
 	{
 		if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 		this.entityType = tameable.getType().getName();
@@ -88,9 +90,19 @@ public class Pet implements Participant, ConfigurationSerializable
 		Util.save(this);
 	}
 
+	public void setTameable(boolean tameable)
+	{
+		this.tameable = tameable;
+	}
+
 	public boolean canPvp()
 	{
 		return this.PvP;
+	}
+
+	public boolean isTameable()
+	{
+		return this.tameable;
 	}
 
 	public String getEntityType()
@@ -114,7 +126,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		{
 			for(Entity pet : world.getLivingEntities())
 			{
-				if(!(pet instanceof Tameable)) continue;
+				if(!(pet instanceof LivingEntity)) continue;
 				if(pet.getUniqueId().equals(this.entityUUID)) return (LivingEntity) pet;
 			}
 		}
@@ -173,8 +185,9 @@ public class Pet implements Participant, ConfigurationSerializable
 
 	public void disownPet()
 	{
-		if(this.getEntity() == null) return;
-		((Tameable) this.getEntity()).setOwner(new AnimalTamer()
+		LivingEntity entity = this.getEntity();
+		if(entity == null || !(entity instanceof Tameable)) return;
+		((Tameable) entity).setOwner(new AnimalTamer()
 		{
 			@Override
 			public String getName()
@@ -196,13 +209,13 @@ public class Pet implements Participant, ConfigurationSerializable
 			DataManager.pets.put(pet.getId(), pet);
 		}
 
-		public static Pet create(LivingEntity tameable, DCharacter owner)
+		public static Pet create(LivingEntity pet, DCharacter owner)
 		{
 			if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
-			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
 			Pet wrapper = new Pet();
 			wrapper.generateId();
-			wrapper.setTamable(tameable);
+			wrapper.setPet(pet);
+			wrapper.setTameable(pet instanceof Tameable);
 			wrapper.setOwner(owner);
 			save(wrapper);
 			return wrapper;
@@ -227,7 +240,7 @@ public class Pet implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(Pet pet)
 				{
-					return pet.getAnimalTamer().equals(animalTamer);
+					return pet.isTameable() && pet.getAnimalTamer().equals(animalTamer);
 				}
 			});
 		}
@@ -244,9 +257,20 @@ public class Pet implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Pet getTameable(LivingEntity tameable)
+		public static Collection<Pet> findByOwner(final UUID ownerId)
 		{
-			if(!(tameable instanceof Tameable)) throw new IllegalArgumentException("LivingEntity not tamable.");
+			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
+			{
+				@Override
+				public boolean apply(Pet pet)
+				{
+					return pet.getOwner().getId().equals(ownerId);
+				}
+			});
+		}
+
+		public static Pet getPet(LivingEntity tameable)
+		{
 			return Iterables.getFirst(findByUUID(tameable.getUniqueId()), null);
 		}
 
