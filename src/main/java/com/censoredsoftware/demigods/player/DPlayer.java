@@ -326,6 +326,7 @@ public class DPlayer implements ConfigurationSerializable
 
 	public void applyMortalInventory()
 	{
+		if(getMortalInventory() == null) mortalInventory = DCharacter.Util.createEmptyInventory().getId();
 		getMortalInventory().setToPlayer(getOfflinePlayer().getPlayer());
 		mortalInventory = null;
 	}
