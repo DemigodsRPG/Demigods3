@@ -4,6 +4,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Messages;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,7 +25,7 @@ public class ChatListener implements Listener
 		{
 			if(Demigods.MiscUtil.isDemigodsCommand(args[0]))
 			{
-				player.sendMessage("Unknown command. Type \"help\" for help.");
+				player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 				event.setCancelled(true);
 			}
 			return;

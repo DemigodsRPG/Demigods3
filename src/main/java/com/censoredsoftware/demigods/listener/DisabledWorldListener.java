@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.DemigodsChatEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

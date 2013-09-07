@@ -1,7 +1,19 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.item.DItemStack;
+import com.censoredsoftware.demigods.language.Symbol;
+import com.censoredsoftware.demigods.listener.DemigodsChatEvent;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -11,19 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Participant;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.item.DItemStack;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Messages;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {

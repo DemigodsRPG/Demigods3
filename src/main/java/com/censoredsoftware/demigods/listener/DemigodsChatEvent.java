@@ -1,5 +1,6 @@
-package com.censoredsoftware.demigods.player;
+package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

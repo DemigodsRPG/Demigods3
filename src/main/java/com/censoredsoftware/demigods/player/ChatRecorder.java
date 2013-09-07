@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.listener.DemigodsChatEvent;
 import com.censoredsoftware.demigods.util.Times;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
