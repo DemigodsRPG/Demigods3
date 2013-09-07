@@ -15,8 +15,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
@@ -113,7 +113,7 @@ public class Reel implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -121,7 +121,7 @@ public class Reel implements Ability
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					Util.reel(player);
 				}
@@ -140,13 +140,13 @@ public class Reel implements Ability
 		public static void reel(Player player)
 		{
 			// Set variables
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
 			LivingEntity target = Ability.Util.autoTarget(player);
 
 			if(!Ability.Util.doAbilityPreProcess(player, target, cost)) return;
 			character.getMeta().subtractFavor(cost);
-			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;
 

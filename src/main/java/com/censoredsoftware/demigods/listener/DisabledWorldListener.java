@@ -10,7 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 
 public class DisabledWorldListener implements Listener
 {
@@ -31,8 +32,8 @@ public class DisabledWorldListener implements Listener
 	{
 		// Only continue if the player is a character
 		Player player = event.getPlayer();
-		PlayerSave playerSave = PlayerSave.Util.getPlayer(player);
-		final com.censoredsoftware.demigods.player.Character character = playerSave.getCurrent();
+		DPlayer playerSave = DPlayer.Util.getPlayer(player);
+		final DCharacter character = playerSave.getCurrent();
 
 		if(playerSave.getCurrent() == null) return;
 

@@ -28,7 +28,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 
-public class Character implements Participant, ConfigurationSerializable
+public class DCharacter implements Participant, ConfigurationSerializable
 {
 	private UUID id;
 	private String name;
@@ -50,14 +50,14 @@ public class Character implements Participant, ConfigurationSerializable
 	private Set<String> potionEffects;
 	private Set<String> deaths;
 
-	public Character()
+	public DCharacter()
 	{
 		deaths = Sets.newHashSet();
 		potionEffects = Sets.newHashSet();
 		minorDeities = Sets.newHashSet();
 	}
 
-	public Character(UUID id, ConfigurationSection conf)
+	public DCharacter(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
 		name = conf.getString("name");
@@ -135,7 +135,7 @@ public class Character implements Participant, ConfigurationSerializable
 		this.minorDeities.remove(deity.getName());
 	}
 
-	void setPlayer(PlayerSave player)
+	void setPlayer(DPlayer player)
 	{
 		this.player = player.getPlayerName();
 	}
@@ -297,7 +297,7 @@ public class Character implements Participant, ConfigurationSerializable
 	}
 
 	@Override
-	public Character getRelatedCharacter()
+	public DCharacter getRelatedCharacter()
 	{
 		return this;
 	}
@@ -399,7 +399,7 @@ public class Character implements Participant, ConfigurationSerializable
 		Util.save(this);
 	}
 
-	public void addDeath(Character attacker)
+	public void addDeath(DCharacter attacker)
 	{
 		deaths.add(new Death(this, attacker).getId().toString());
 		Util.save(this);
@@ -435,13 +435,13 @@ public class Character implements Participant, ConfigurationSerializable
 	@Override
 	public void setCanPvp(boolean pvp)
 	{
-		PlayerSave.Util.getPlayer(getOfflinePlayer()).setCanPvp(pvp);
+		DPlayer.Util.getPlayer(getOfflinePlayer()).setCanPvp(pvp);
 	}
 
 	@Override
 	public boolean canPvp()
 	{
-		return PlayerSave.Util.getPlayer(getOfflinePlayer()).canPvp();
+		return DPlayer.Util.getPlayer(getOfflinePlayer()).canPvp();
 	}
 
 	public boolean isUsable()
@@ -467,7 +467,7 @@ public class Character implements Participant, ConfigurationSerializable
 	public void remove()
 	{
 		// Kick the player first if they're online
-		if(getOfflinePlayer().isOnline() && PlayerSave.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(getName()))
+		if(getOfflinePlayer().isOnline() && DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(getName()))
 		{
 			getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your active character has been deleted.");
 		}
@@ -480,12 +480,12 @@ public class Character implements Participant, ConfigurationSerializable
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
-		if(PlayerSave.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(name)) PlayerSave.Util.getPlayer(getOfflinePlayer()).resetCurrent();
+		if(DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
 	}
 
 	public void sendAllianceMessage(String message)
 	{
-		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, Character.Util.getOnlineCharactersWithAlliance(getAlliance()));
+		DemigodsChatEvent chatEvent = new DemigodsChatEvent(message, DCharacter.Util.getOnlineCharactersWithAlliance(getAlliance()));
 		Bukkit.getPluginManager().callEvent(chatEvent);
 		if(!chatEvent.isCancelled()) for(Player player : chatEvent.getRecipients())
 			player.sendMessage(message);
@@ -500,7 +500,7 @@ public class Character implements Participant, ConfigurationSerializable
 	public void applyToPlayer(final Player player)
 	{
 		// Define variables
-		PlayerSave playerSave = PlayerSave.Util.getPlayer(player);
+		DPlayer playerSave = DPlayer.Util.getPlayer(player);
 
 		// Update their inventory
 		if(playerSave.getCharacters().size() == 1) saveInventory();
@@ -738,7 +738,7 @@ public class Character implements Participant, ConfigurationSerializable
 			id = UUID.randomUUID();
 		}
 
-		void setCharacter(Character character)
+		void setCharacter(DCharacter character)
 		{
 			this.character = character.getId();
 		}
@@ -757,9 +757,9 @@ public class Character implements Participant, ConfigurationSerializable
 			return id;
 		}
 
-		public Character getCharacter()
+		public DCharacter getCharacter()
 		{
-			return Character.Util.load(character);
+			return DCharacter.Util.load(character);
 		}
 
 		public void setSkillPoints(int skillPoints)
@@ -1060,7 +1060,7 @@ public class Character implements Participant, ConfigurationSerializable
 
 	public static class Util
 	{
-		public static void save(Character character)
+		public static void save(DCharacter character)
 		{
 			DataManager.characters.put(character.getId(), character);
 		}
@@ -1090,25 +1090,25 @@ public class Character implements Participant, ConfigurationSerializable
 			DataManager.inventories.remove(id);
 		}
 
-		public static void create(PlayerSave player, String chosenDeity, String chosenName, boolean switchCharacter)
+		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
 		{
 			// Switch to new character
 			if(switchCharacter) player.switchCharacter(create(player, chosenName, chosenDeity));
 		}
 
-		public static Character create(PlayerSave player, String charName, String charDeity)
+		public static DCharacter create(DPlayer player, String charName, String charDeity)
 		{
 			if(getCharacterByName(charName) == null)
 			{
-				// Create the Character
+				// Create the DCharacter
 				return create(player, charName, Deity.Util.getDeity(charDeity));
 			}
 			return null;
 		}
 
-		private static Character create(final PlayerSave player, final String charName, final Deity deity)
+		private static DCharacter create(final DPlayer player, final String charName, final Deity deity)
 		{
-			Character character = new Character();
+			DCharacter character = new DCharacter();
 			character.generateId();
 			character.setAlive(true);
 			character.setPlayer(player);
@@ -1127,7 +1127,7 @@ public class Character implements Participant, ConfigurationSerializable
 			return character;
 		}
 
-		public static Inventory createInventory(Character character)
+		public static Inventory createInventory(DCharacter character)
 		{
 			PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
 			Inventory charInventory = new Inventory();
@@ -1153,7 +1153,7 @@ public class Character implements Participant, ConfigurationSerializable
 			return charInventory;
 		}
 
-		public static Meta createMeta(Character character)
+		public static Meta createMeta(DCharacter character)
 		{
 			Meta charMeta = new Meta();
 			charMeta.initialize();
@@ -1166,12 +1166,12 @@ public class Character implements Participant, ConfigurationSerializable
 			return charMeta;
 		}
 
-		public static Set<Character> loadAll()
+		public static Set<DCharacter> loadAll()
 		{
 			return Sets.newHashSet(DataManager.characters.values());
 		}
 
-		public static Character load(UUID id)
+		public static DCharacter load(UUID id)
 		{
 			return DataManager.characters.get(id);
 		}
@@ -1205,18 +1205,18 @@ public class Character implements Participant, ConfigurationSerializable
 
 		public static void updateUsableCharacters()
 		{
-			for(Character character : loadAll())
+			for(DCharacter character : loadAll())
 				character.updateUseable();
 		}
 
-		public static Character getCharacterByName(final String name)
+		public static DCharacter getCharacterByName(final String name)
 		{
 			try
 			{
-				return Iterators.find(loadAll().iterator(), new Predicate<Character>()
+				return Iterators.find(loadAll().iterator(), new Predicate<DCharacter>()
 				{
 					@Override
-					public boolean apply(Character loaded)
+					public boolean apply(DCharacter loaded)
 					{
 						return loaded.getName().equalsIgnoreCase(name);
 					}
@@ -1232,7 +1232,7 @@ public class Character implements Participant, ConfigurationSerializable
 			return getCharacterByName(name) != null;
 		}
 
-		public static boolean isCooledDown(Character player, String ability, boolean sendMsg)
+		public static boolean isCooledDown(DCharacter player, String ability, boolean sendMsg)
 		{
 			if(DataManager.hasKeyTemp(player.getName(), ability + "_cooldown") && Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString()) > System.currentTimeMillis())
 			{
@@ -1242,34 +1242,34 @@ public class Character implements Participant, ConfigurationSerializable
 			else return true;
 		}
 
-		public static void setCoolDown(Character player, String ability, long cooldown)
+		public static void setCoolDown(DCharacter player, String ability, long cooldown)
 		{
 			DataManager.saveTemp(player.getName(), ability + "_cooldown", cooldown);
 		}
 
-		public static long getCoolDown(Character player, String ability)
+		public static long getCoolDown(DCharacter player, String ability)
 		{
 			return Long.parseLong(DataManager.getValueTemp(player.getName(), ability + "_cooldown").toString());
 		}
 
-		public static Set<Character> getAllActive()
+		public static Set<DCharacter> getAllActive()
 		{
-			return Sets.filter(loadAll(), new Predicate<Character>()
+			return Sets.filter(loadAll(), new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isUsable() && character.isActive();
 				}
 			});
 		}
 
-		public static Set<Character> getAllUsable()
+		public static Set<DCharacter> getAllUsable()
 		{
-			return Sets.filter(loadAll(), new Predicate<Character>()
+			return Sets.filter(loadAll(), new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isUsable();
 				}
@@ -1284,29 +1284,29 @@ public class Character implements Participant, ConfigurationSerializable
 		 * @param char2 the second character to check.
 		 * @return boolean
 		 */
-		public static boolean areAllied(Character char1, Character char2)
+		public static boolean areAllied(DCharacter char1, DCharacter char2)
 		{
 			return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
 		}
 
-		public static Collection<Character> getOnlineCharactersWithDeity(final String deity)
+		public static Collection<DCharacter> getOnlineCharactersWithDeity(final String deity)
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getDeity().getName().equalsIgnoreCase(deity);
 				}
 			});
 		}
 
-		public static Collection<Character> getOnlineCharactersWithAbility(final String abilityName)
+		public static Collection<DCharacter> getOnlineCharactersWithAbility(final String abilityName)
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					if(character.isActive() && character.getOfflinePlayer().isOnline())
 					{
@@ -1318,55 +1318,55 @@ public class Character implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<Character> getOnlineCharactersWithAlliance(final String alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final String alliance)
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
 				}
 			});
 		}
 
-		public static Collection<Character> getOnlineCharactersWithoutAlliance(final String alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final String alliance)
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline() && !character.getAlliance().equalsIgnoreCase(alliance);
 				}
 			});
 		}
 
-		public static Collection<Character> getOnlineCharactersBelowAscension(final int ascention)
+		public static Collection<DCharacter> getOnlineCharactersBelowAscension(final int ascention)
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
 				}
 			});
 		}
 
-		public static Collection<Character> getOnlineCharacters()
+		public static Collection<DCharacter> getOnlineCharacters()
 		{
-			return getCharactersWithPredicate(new Predicate<Character>()
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
-				public boolean apply(Character character)
+				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline();
 				}
 			});
 		}
 
-		public static Collection<Character> getCharactersWithPredicate(Predicate<Character> predicate)
+		public static Collection<DCharacter> getCharactersWithPredicate(Predicate<DCharacter> predicate)
 		{
 			return Collections2.filter(getAllUsable(), predicate);
 		}
@@ -1378,7 +1378,7 @@ public class Character implements Participant, ConfigurationSerializable
 		{
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				if(character != null) character.getMeta().addFavor(character.getFavorRegen());
 			}
 		}

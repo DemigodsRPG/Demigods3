@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Messages;
 
 public class ChatListener implements Listener
@@ -33,7 +33,7 @@ public class ChatListener implements Listener
 		}
 
 		// Return if a character doesn't exist
-		if(PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent() == null) return;
+		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() == null) return;
 
 		// Process the command
 		try

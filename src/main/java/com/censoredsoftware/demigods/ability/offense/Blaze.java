@@ -16,8 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
@@ -117,13 +117,13 @@ public class Blaze implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					Util.blaze(player);
 				}
@@ -143,7 +143,7 @@ public class Blaze implements Ability
 		public static void blaze(Player player)
 		{
 			// Define variables
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			Location target;
 			LivingEntity entity = Ability.Util.autoTarget(player);
 			boolean notify;
@@ -163,7 +163,7 @@ public class Blaze implements Ability
 			int diameter = (int) Math.ceil(1.43 * Math.pow(power, 0.1527));
 			if(diameter > 12) diameter = 12;
 
-			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 
 			if(!Ability.Util.doTargeting(player, target, notify)) return;

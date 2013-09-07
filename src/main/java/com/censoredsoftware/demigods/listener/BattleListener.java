@@ -16,7 +16,7 @@ import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Pet;
 
 public class BattleListener implements Listener
@@ -35,18 +35,18 @@ public class BattleListener implements Listener
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Various things that should cancel the event
-		if(damageeParticipant.equals(damagerParticipant) || Character.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()))
+		if(damageeParticipant.equals(damagerParticipant) || DCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()))
 		{
 			event.setCancelled(true);
 			return;
 		}
-		if(damageeParticipant instanceof Character && DataManager.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle"))
+		if(damageeParticipant instanceof DCharacter && DataManager.hasTimed(damageeParticipant.getId().toString(), "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "That player is in cooldown from a recent battle.");
 			event.setCancelled(true);
 			return;
 		}
-		if(damagerParticipant instanceof Character && DataManager.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
+		if(damagerParticipant instanceof DCharacter && DataManager.hasTimed(damagerParticipant.getId().toString(), "just_finished_battle"))
 		{
 			((Player) damager).sendMessage(ChatColor.YELLOW + "You are still in cooldown from a recent battle.");
 			event.setCancelled(true);
@@ -121,7 +121,7 @@ public class BattleListener implements Listener
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
-		if(participant instanceof com.censoredsoftware.demigods.player.Character && DataManager.hasTimed(participant.getId().toString(), "just_finished_battle"))
+		if(participant instanceof DCharacter && DataManager.hasTimed(participant.getId().toString(), "just_finished_battle"))
 		{
 			event.setCancelled(true);
 			return;

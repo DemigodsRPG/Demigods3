@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
@@ -126,7 +126,7 @@ public class NoDrown implements Ability
 			@Override
 			public void run()
 			{
-				for(Character character : com.censoredsoftware.demigods.player.Character.Util.getOnlineCharactersWithDeity(deity))
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
 				{
 					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
 					character.getOfflinePlayer().getPlayer().setRemainingAir(0);

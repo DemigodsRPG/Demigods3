@@ -18,7 +18,7 @@ public class Death implements ConfigurationSerializable
 	private long deathTime;
 	private UUID killed, attacking;
 
-	public Death(Character killed)
+	public Death(DCharacter killed)
 	{
 		deathTime = System.currentTimeMillis();
 		id = UUID.randomUUID();
@@ -26,7 +26,7 @@ public class Death implements ConfigurationSerializable
 		Util.save(this);
 	}
 
-	public Death(Character killed, Character attacking)
+	public Death(DCharacter killed, DCharacter attacking)
 	{
 		deathTime = System.currentTimeMillis();
 		id = UUID.randomUUID();
@@ -93,10 +93,10 @@ public class Death implements ConfigurationSerializable
 		public static Set<Death> getRecentDeaths(int seconds)
 		{
 			final long time = System.currentTimeMillis() - (seconds * 1000);
-			return Sets.newHashSet(Iterables.filter(Iterables.concat(Collections2.transform(Character.Util.getOnlineCharacters(), new Function<Character, Collection<Death>>()
+			return Sets.newHashSet(Iterables.filter(Iterables.concat(Collections2.transform(DCharacter.Util.getOnlineCharacters(), new Function<DCharacter, Collection<Death>>()
 			{
 				@Override
-				public Collection<Death> apply(Character character)
+				public Collection<Death> apply(DCharacter character)
 				{
 					try
 					{
@@ -116,7 +116,7 @@ public class Death implements ConfigurationSerializable
 			}));
 		}
 
-		public static Collection<Death> getRecentDeaths(Character character, int seconds)
+		public static Collection<Death> getRecentDeaths(DCharacter character, int seconds)
 		{
 			final long time = System.currentTimeMillis() - (seconds * 1000);
 			return Collections2.filter(character.getDeaths(), new Predicate<Death>()

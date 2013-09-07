@@ -77,7 +77,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		this.entityUUID = tameable.getUniqueId();
 	}
 
-	public void setOwner(Character owner)
+	public void setOwner(DCharacter owner)
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner.getId();
@@ -134,9 +134,9 @@ public class Pet implements Participant, ConfigurationSerializable
 		return null;
 	}
 
-	public Character getOwner()
+	public DCharacter getOwner()
 	{
-		Character owner = Character.Util.load(this.owner);
+		DCharacter owner = DCharacter.Util.load(this.owner);
 		if(owner == null)
 		{
 			disownPet();
@@ -178,7 +178,7 @@ public class Pet implements Participant, ConfigurationSerializable
 	}
 
 	@Override
-	public Character getRelatedCharacter()
+	public DCharacter getRelatedCharacter()
 	{
 		return getOwner();
 	}
@@ -209,7 +209,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			DataManager.pets.put(pet.getId(), pet);
 		}
 
-		public static Pet create(LivingEntity pet, Character owner)
+		public static Pet create(LivingEntity pet, DCharacter owner)
 		{
 			if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
 			Pet wrapper = new Pet();
@@ -290,7 +290,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			}
 		}
 
-		public static void reownPets(AnimalTamer tamer, Character character)
+		public static void reownPets(AnimalTamer tamer, DCharacter character)
 		{
 			for(Pet wrapper : findByTamer(character.getName()))
 				if(wrapper.getEntity() != null) ((Tameable) wrapper.getEntity()).setOwner(tamer);

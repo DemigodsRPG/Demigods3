@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Messages;
@@ -85,7 +85,7 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 		if(character == null)
 		{
@@ -93,8 +93,8 @@ public class DevelopmentCommands extends WrappedCommand
 			return true;
 		}
 
-		player.sendMessage("# of " + character.getAlliance() + "s Online: " + Character.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
-		player.sendMessage("# of Enemies Online: " + Character.Util.getOnlineCharactersWithoutAlliance(character.getAlliance()).size());
+		player.sendMessage("# of " + character.getAlliance() + "s Online: " + DCharacter.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
+		player.sendMessage("# of Enemies Online: " + DCharacter.Util.getOnlineCharactersWithoutAlliance(character.getAlliance()).size());
 
 		return true;
 	}
@@ -148,14 +148,14 @@ public class DevelopmentCommands extends WrappedCommand
 		Structure obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
 		if(obelisk != null)
 		{
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			if(!obelisk.getOwner().equals(character.getId()))
 			{
 				player.sendMessage(ChatColor.RED + "You don't control this Obelisk.");
 				return true;
 			}
 
-			Character workWith = obeliskGetCharacter(args[1], args[2]);
+			DCharacter workWith = obeliskGetCharacter(args[1], args[2]);
 
 			if(workWith == null)
 			{
@@ -163,7 +163,7 @@ public class DevelopmentCommands extends WrappedCommand
 				return true;
 			}
 
-			if(!Character.Util.areAllied(workWith, character))
+			if(!DCharacter.Util.areAllied(workWith, character))
 			{
 				player.sendMessage(ChatColor.RED + "You are not allied with " + workWith.getDeity().getColor() + character.getName() + ChatColor.RED + ".");
 				return true;
@@ -193,13 +193,13 @@ public class DevelopmentCommands extends WrappedCommand
 		return true;
 	}
 
-	private static Character obeliskGetCharacter(String type, final String name)
+	private static DCharacter obeliskGetCharacter(String type, final String name)
 	{
-		if(type.equalsIgnoreCase("character")) return com.censoredsoftware.demigods.player.Character.Util.getCharacterByName(name);
+		if(type.equalsIgnoreCase("character")) return DCharacter.Util.getCharacterByName(name);
 		if(!type.equalsIgnoreCase("player")) return null;
 		try
 		{
-			return PlayerSave.Util.getPlayer(Bukkit.getOfflinePlayer(Iterators.find(DataManager.players.keySet().iterator(), new Predicate<String>()
+			return DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(Iterators.find(DataManager.players.keySet().iterator(), new Predicate<String>()
 			{
 				@Override
 				public boolean apply(String playerName)

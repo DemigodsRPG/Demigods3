@@ -11,9 +11,9 @@ import org.bukkit.event.entity.*;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.PlayerSave;
 import com.censoredsoftware.demigods.util.Messages;
 
 public class EntityListener implements Listener
@@ -38,14 +38,14 @@ public class EntityListener implements Listener
 			Player hitting = (Player) attacker;
 
 			// No PvP
-			if(!PlayerSave.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
+			if(!DPlayer.Util.getPlayer(hitting).canPvp() || !Battle.Util.canTarget(Battle.Util.defineParticipant(attacked)))
 			{
 				hitting.sendMessage(ChatColor.GRAY + Demigods.LANGUAGE.getText(Translation.Text.NO_PVP_ZONE));
 				event.setCancelled(true);
 				return;
 			}
 
-			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getPet((LivingEntity) attacked) != null && PlayerSave.Util.getPlayer(hitting).getCurrent() != null && Character.Util.areAllied(PlayerSave.Util.getPlayer(hitting).getCurrent(), Pet.Util.getPet((LivingEntity) attacked).getOwner())) event.setCancelled(true);
+			if(attacked instanceof Tameable && ((Tameable) attacked).isTamed() && Pet.Util.getPet((LivingEntity) attacked) != null && DPlayer.Util.getPlayer(hitting).getCurrent() != null && DCharacter.Util.areAllied(DPlayer.Util.getPlayer(hitting).getCurrent(), Pet.Util.getPet((LivingEntity) attacked).getOwner())) event.setCancelled(true);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class EntityListener implements Listener
 		if(event.getEntity() instanceof Player)
 		{
 			Player player = (Player) event.getEntity();
-			Character playerChar = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter playerChar = DPlayer.Util.getPlayer(player).getCurrent();
 			if(playerChar != null) playerChar.addDeath();
 		}
 		else if(event.getEntity() instanceof Tameable && ((Tameable) event.getEntity()).isTamed())
@@ -65,12 +65,12 @@ public class EntityListener implements Listener
 			LivingEntity entity = event.getEntity();
 			Pet wrapper = Pet.Util.getPet(entity);
 			if(wrapper == null) return;
-			Character owner = wrapper.getOwner();
+			DCharacter owner = wrapper.getOwner();
 			if(owner == null) return;
 			String damagerMessage = "";
 			if(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent && ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager() instanceof Player)
 			{
-				Character damager = PlayerSave.Util.getPlayer((Player) ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).getCurrent();
+				DCharacter damager = DPlayer.Util.getPlayer((Player) ((EntityDamageByEntityEvent) entity.getLastDamageCause()).getDamager()).getCurrent();
 				if(damager != null) damagerMessage = " by " + damager.getDeity().getColor() + damager.getName();
 			}
 			if(entity.getCustomName() != null) Messages.broadcast(owner.getDeity().getColor() + owner.getName() + "'s " + ChatColor.YELLOW + entity.getType().getName().replace("Entity", "").toLowerCase() + ", " + owner.getDeity().getColor() + entity.getCustomName() + ChatColor.YELLOW + ", was slain" + damagerMessage + ChatColor.YELLOW + ".");
@@ -86,14 +86,14 @@ public class EntityListener implements Listener
 
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
-		com.censoredsoftware.demigods.player.Character character = PlayerSave.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent();
-		if(character != null) Pet.Util.create(entity, PlayerSave.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent());
+		DCharacter character = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent();
+		if(character != null) Pet.Util.create(entity, DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent());
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityTarget(EntityTargetLivingEntityEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
-		if(event.getTarget() instanceof Player && !PlayerSave.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
+		if(event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
 	}
 }

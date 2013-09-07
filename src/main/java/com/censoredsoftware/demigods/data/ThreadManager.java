@@ -8,8 +8,9 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.player.PlayerSave;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Admins;
@@ -63,7 +64,7 @@ public class ThreadManager
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
 						if(Demigods.MiscUtil.isDisabledWorld(player.getLocation())) continue;
-						PlayerSave.Util.getPlayer(player).updateCanPvp();
+						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 
 					// Process Triggers
@@ -120,7 +121,7 @@ public class ThreadManager
 				public void run()
 				{
 					// Update Favor
-					com.censoredsoftware.demigods.player.Character.Util.updateFavor();
+					DCharacter.Util.updateFavor();
 				}
 			};
 		}

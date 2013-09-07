@@ -5,6 +5,8 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
+import com.censoredsoftware.demigods.player.DCharacter;
+
 public interface Participant
 {
 	public UUID getId();
@@ -15,7 +17,7 @@ public interface Participant
 
 	public Location getCurrentLocation();
 
-	public com.censoredsoftware.demigods.player.Character getRelatedCharacter();
+	public DCharacter getRelatedCharacter();
 
 	public LivingEntity getEntity();
 }

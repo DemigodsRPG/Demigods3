@@ -14,8 +14,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
@@ -115,9 +115,9 @@ public class Carry implements Ability
 
 				if(Deity.Util.canUseDeitySilent(clicked, deity) && (!needsLead || clicked.getItemInHand().getType().equals(Material.LEASH)) && clicked.getPassenger() == null)
 				{
-					Character character = PlayerSave.Util.getPlayer(player).getCurrent();
-					Character clickedChar = PlayerSave.Util.getPlayer(clicked).getCurrent();
-					if(character == null || clickedChar == null || !com.censoredsoftware.demigods.player.Character.Util.areAllied(character, clickedChar)) return;
+					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
+					if(character == null || clickedChar == null || !DCharacter.Util.areAllied(character, clickedChar)) return;
 
 					clicked.setPassenger(player);
 				}

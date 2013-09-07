@@ -17,9 +17,9 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.PlayerSave;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
@@ -175,7 +175,7 @@ public class Battle implements ConfigurationSerializable
 		return this.deleteTime;
 	}
 
-	void setStarter(Character character)
+	void setStarter(DCharacter character)
 	{
 		this.startedBy = character.getId();
 		addParticipant(character);
@@ -183,14 +183,14 @@ public class Battle implements ConfigurationSerializable
 
 	public void addParticipant(Participant participant)
 	{
-		if(participant instanceof Character) this.involvedPlayers.add((participant.getId().toString()));
+		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
 		else this.involvedTameable.add(participant.getId().toString());
 		Util.save(this);
 	}
 
 	public void removeParticipant(Participant participant)
 	{
-		if(participant instanceof Character) this.involvedPlayers.remove((participant.getId().toString()));
+		if(participant instanceof DCharacter) this.involvedPlayers.remove((participant.getId().toString()));
 		else this.involvedTameable.remove(participant.getId().toString());
 		Util.save(this);
 	}
@@ -198,7 +198,7 @@ public class Battle implements ConfigurationSerializable
 	public void addKill(Participant participant)
 	{
 		this.killCounter += 1;
-		Character character = participant.getRelatedCharacter();
+		DCharacter character = participant.getRelatedCharacter();
 		if(this.kills.containsKey(character.getId().toString())) this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).toString()) + 1);
 		else this.kills.put(character.getId().toString(), 1);
 		Util.save(this);
@@ -206,16 +206,16 @@ public class Battle implements ConfigurationSerializable
 
 	public void addDeath(Participant participant)
 	{
-		Character character = participant.getRelatedCharacter();
+		DCharacter character = participant.getRelatedCharacter();
 		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
 		sendBattleStats();
 	}
 
-	public Character getStarter()
+	public DCharacter getStarter()
 	{
-		return Character.Util.load(this.startedBy);
+		return DCharacter.Util.load(this.startedBy);
 	}
 
 	public Set<Participant> getParticipants()
@@ -225,7 +225,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public Participant apply(String character)
 			{
-				return Character.Util.load(UUID.fromString(character));
+				return DCharacter.Util.load(UUID.fromString(character));
 			}
 		})), Sets.newHashSet(Collections2.transform(involvedTameable, new Function<String, Participant>()
 		{
@@ -245,7 +245,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public String apply(String stringId)
 			{
-				return Character.Util.load(UUID.fromString(stringId)).getAlliance();
+				return DCharacter.Util.load(UUID.fromString(stringId)).getAlliance();
 			}
 		}))
 			alliances.add(alliance);
@@ -279,7 +279,7 @@ public class Battle implements ConfigurationSerializable
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
 		{
-			if(!getParticipants().contains(Character.Util.load(UUID.fromString(entry.getKey())))) continue;
+			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
 			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
 		}
 		for(Map.Entry<String, Object> entry : deaths.entrySet())
@@ -296,7 +296,7 @@ public class Battle implements ConfigurationSerializable
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
 		{
-			if(!getParticipants().contains(Character.Util.load(UUID.fromString(entry.getKey())))) continue;
+			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
 			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
 		}
 		for(Map.Entry<String, Object> entry : deaths.entrySet())
@@ -311,7 +311,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public boolean apply(Map.Entry<UUID, Integer> entry)
 			{
-				return Character.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
+				return DCharacter.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
 			}
 		}), new Function<Map.Entry<UUID, Integer>, Integer>()
 		{
@@ -325,7 +325,7 @@ public class Battle implements ConfigurationSerializable
 		return sum;
 	}
 
-	public Collection<Character> getMVPs()
+	public Collection<DCharacter> getMVPs()
 	{
 		final int max = Collections.max(getScores().values());
 		return Collections2.transform(Collections2.filter(getScores().entrySet(), new Predicate<Map.Entry<UUID, Integer>>()
@@ -335,12 +335,12 @@ public class Battle implements ConfigurationSerializable
 			{
 				return entry.getValue() == max;
 			}
-		}), new Function<Map.Entry<UUID, Integer>, Character>()
+		}), new Function<Map.Entry<UUID, Integer>, DCharacter>()
 		{
 			@Override
-			public Character apply(Map.Entry<UUID, Integer> entry)
+			public DCharacter apply(Map.Entry<UUID, Integer> entry)
 			{
-				return Character.Util.load(entry.getKey());
+				return DCharacter.Util.load(entry.getKey());
 			}
 		});
 	}
@@ -361,8 +361,8 @@ public class Battle implements ConfigurationSerializable
 		{
 			if(scores.get(participants.get(0)).equals(scores.get(participants.get(1))))
 			{
-				Character one = Character.Util.load(participants.get(0));
-				Character two = Character.Util.load(participants.get(1));
+				DCharacter one = DCharacter.Util.load(participants.get(0));
+				DCharacter two = DCharacter.Util.load(participants.get(1));
 				Messages.broadcast(" ");
 				Messages.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
 				Messages.broadcast(" ");
@@ -370,8 +370,8 @@ public class Battle implements ConfigurationSerializable
 			else
 			{
 				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
-				Character winner = Character.Util.load(participants.get(winnerIndex));
-				Character loser = Character.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
+				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
+				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
 				Messages.broadcast(" ");
 				Messages.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
 				Messages.broadcast(" ");
@@ -381,7 +381,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			String winningAlliance = "";
 			int winningScore = 0;
-			Collection<Character> MVPs = getMVPs();
+			Collection<DCharacter> MVPs = getMVPs();
 			boolean oneMVP = MVPs.size() == 1;
 			for(String alliance : getInvolvedAlliances())
 			{
@@ -395,7 +395,7 @@ public class Battle implements ConfigurationSerializable
 			Messages.broadcast(" ");
 			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
-			for(Character mvp : MVPs)
+			for(DCharacter mvp : MVPs)
 				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
 			Messages.broadcast(" ");
 		}
@@ -417,7 +417,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		for(String stringId : involvedPlayers)
 		{
-			OfflinePlayer offlinePlayer = Character.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
 			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendMessage(message);
 		}
 	}
@@ -426,7 +426,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		for(String stringId : involvedPlayers)
 		{
-			OfflinePlayer offlinePlayer = Character.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
 			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendRawMessage(message);
 		}
 	}
@@ -640,7 +640,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			if(entity instanceof Player)
 			{
-				Character character = PlayerSave.Util.getPlayer((Player) entity).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
 			return entity instanceof LivingEntity && Pet.Util.getPet((LivingEntity) entity) != null;
@@ -649,20 +649,20 @@ public class Battle implements ConfigurationSerializable
 		public static Participant defineParticipant(Entity entity)
 		{
 			if(!canParticipate(entity)) return null;
-			if(entity instanceof Player) return PlayerSave.Util.getPlayer((Player) entity).getCurrent();
+			if(entity instanceof Player) return DPlayer.Util.getPlayer((Player) entity).getCurrent();
 			return Pet.Util.getPet((LivingEntity) entity);
 		}
 
 		public static void battleDeath(Participant damager, Participant damagee, Battle battle)
 		{
-			if(damager instanceof Character) ((Character) damager).addKill();
+			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.addKill(damager);
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof Character)
+			if(damagee instanceof DCharacter)
 			{
-				Character character = (Character) damagee;
+				DCharacter character = (DCharacter) damagee;
 				Player player = character.getOfflinePlayer().getPlayer();
 				player.setFoodLevel(20);
 				for(PotionEffect potionEffect : player.getActivePotionEffects())
@@ -678,7 +678,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof Character) ((com.censoredsoftware.demigods.player.Character) damagee).addDeath();
+			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
 		}

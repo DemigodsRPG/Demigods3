@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -55,7 +55,7 @@ public class Zones
 	{
 		if(WORLD_GUARD != null && !WORLD_GUARD.canBuild(player, location)) return true;
 		Structure save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
-		if(save != null && save.getOwner() != null) return !save.getOwner().equals(PlayerSave.Util.getPlayer(player).getCurrent().getId());
+		if(save != null && save.getOwner() != null) return !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 		return false;
 	}
 }

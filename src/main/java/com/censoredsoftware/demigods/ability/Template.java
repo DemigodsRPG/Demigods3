@@ -13,8 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 
@@ -112,13 +112,13 @@ public class Template implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!Character.Util.isCooledDown(character, name, false)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 					Util.test(player);
 				}
@@ -138,11 +138,11 @@ public class Template implements Ability
 		public static void test(Player player)
 		{
 			// Define variables
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			LivingEntity target = Ability.Util.autoTarget(player);
 
 			if(!Ability.Util.doAbilityPreProcess(player, target, cost)) return;
-			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 
 			if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;

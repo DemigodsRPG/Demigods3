@@ -21,8 +21,8 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -44,7 +44,7 @@ public class Storm implements Ability
 	public static void storm(Player player)
 	{
 		// Define variables
-		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 		Set<Entity> entitySet = Sets.newHashSet();
 		Vector playerLocation = player.getLocation().toVector();
 
@@ -58,9 +58,9 @@ public class Storm implements Ability
 			if(entity instanceof Player)
 			{
 				Player otherPlayer = (Player) entity;
-				Character otherChar = PlayerSave.Util.getPlayer(otherPlayer).getCurrent();
+				DCharacter otherChar = DPlayer.Util.getPlayer(otherPlayer).getCurrent();
 				if(otherPlayer.equals(player)) continue;
-				if(otherChar != null && !Character.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
+				if(otherChar != null && !DCharacter.Util.areAllied(character, otherChar) && !otherPlayer.equals(player))
 				{
 					Util.strikeLightning(player, otherPlayer);
 					Util.strikeLightning(player, otherPlayer);
@@ -156,18 +156,18 @@ public class Storm implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!Character.Util.isCooledDown(character, name, true)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
 					storm(player);
 
 					int cooldownMultiplier = (int) (delay * ((double) character.getMeta().getAscensions() / 100));
-					Character.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
+					DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + cooldownMultiplier * 1000);
 				}
 			}
 		};
@@ -196,7 +196,7 @@ public class Storm implements Ability
 		protected static void lightning(Player player)
 		{
 			// Define variables
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			Location target;
 			LivingEntity entity = Util.autoTarget(player);
 			boolean notify;
@@ -213,7 +213,7 @@ public class Storm implements Ability
 				if(!Util.doAbilityPreProcess(player, cost)) return;
 			}
 
-			Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 			character.getMeta().subtractFavor(cost);
 
 			Storm.Util.strikeLightning(player, target, notify);
@@ -299,13 +299,13 @@ public class Storm implements Ability
 
 					// Set variables
 					Player player = interactEvent.getPlayer();
-					Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 					if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 					if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 					{
-						if(!Character.Util.isCooledDown(character, name, false)) return;
+						if(!DCharacter.Util.isCooledDown(character, name, false)) return;
 
 						lightning(player);
 					}
@@ -330,7 +330,7 @@ public class Storm implements Ability
 		public static boolean strikeLightning(Player player, Location target, boolean notify)
 		{
 			// Set variables
-			com.censoredsoftware.demigods.player.Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!player.getWorld().equals(target.getWorld())) return false;
 			Location toHit = Ability.Util.adjustedAimLocation(character, target);

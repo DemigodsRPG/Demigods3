@@ -20,8 +20,8 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Spigots;
@@ -122,7 +122,7 @@ public class Discoball implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -130,7 +130,7 @@ public class Discoball implements Ability
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!Character.Util.isCooledDown(character, name, true)) return;
+					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
 					Util.discoBall(player);
 				}
@@ -270,7 +270,7 @@ public class Discoball implements Ability
 				@Override
 				public void run()
 				{
-					for(Character online : Character.Util.getOnlineCharactersWithDeity("DrD1sco"))
+					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
 						if(Demigods.MiscUtil.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.inNoPvpZone(player.getLocation()) || Zones.inNoBuildZone(player, player.getLocation())) continue;
@@ -294,14 +294,14 @@ public class Discoball implements Ability
 		public static void discoBall(final Player player)
 		{
 			// Set variables
-			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
 			if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 			character.getMeta().subtractFavor(cost);
-			Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			// Cooldown
-			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
+			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
 
 			balls(player);
 

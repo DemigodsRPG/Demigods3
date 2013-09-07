@@ -12,7 +12,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -31,13 +31,13 @@ public class DemigodsChatEvent extends Event implements Cancellable
 		this.recipients = Collections.synchronizedSet(Sets.newHashSet(Bukkit.getServer().getOnlinePlayers()));
 	}
 
-	public DemigodsChatEvent(String message, Collection<Character> recipients)
+	public DemigodsChatEvent(String message, Collection<DCharacter> recipients)
 	{
 		this.message = message;
-		this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<Character, Player>()
+		this.recipients = Sets.newHashSet(Collections2.filter(Collections2.transform(recipients, new Function<DCharacter, Player>()
 		{
 			@Override
-			public Player apply(com.censoredsoftware.demigods.player.Character character)
+			public Player apply(DCharacter character)
 			{
 				return character.getOfflinePlayer().isOnline() ? character.getOfflinePlayer().getPlayer() : null;
 			}

@@ -24,8 +24,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.Character;
-import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -56,7 +56,7 @@ public class GriefListener implements Listener
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -70,7 +70,7 @@ public class GriefListener implements Listener
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -89,7 +89,7 @@ public class GriefListener implements Listener
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -159,7 +159,7 @@ public class GriefListener implements Listener
 		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -173,7 +173,7 @@ public class GriefListener implements Listener
 		Structure save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING) : Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -202,7 +202,7 @@ public class GriefListener implements Listener
 		Structure save = Structure.Util.getInRadiusWithFlag(entity.getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
@@ -219,7 +219,7 @@ public class GriefListener implements Listener
 		if(save == null || !save.hasMembers()) return;
 		if(blockInventories.contains(block.getType()))
 		{
-			com.censoredsoftware.demigods.player.Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && !members.contains(character.getId())) return;
 			event.setCancelled(true);
