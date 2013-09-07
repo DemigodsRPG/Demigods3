@@ -44,6 +44,7 @@ public class DisabledWorldListener implements Listener
 			character.applyToPlayer(player);
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
+		// Entering a disabled world
 		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
 			dPlayer.setToMortal();
