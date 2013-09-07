@@ -69,6 +69,6 @@ public class DisabledWorldListener implements Listener
 					player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 				}
 			}
-		}, 10);
+		}, 60); // Let's see if it even tries at all.
 	}
 }
