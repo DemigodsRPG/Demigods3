@@ -65,6 +65,7 @@ public class DisabledWorldListener implements Listener
 			player.setPlayerListName(character.getDeity().getColor() + character.getName());
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
+		// Entering a disabled world
 		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
 			character.setHealth(player.getHealth() >= character.getMaxHealth() ? character.getMaxHealth() : player.getHealth());
