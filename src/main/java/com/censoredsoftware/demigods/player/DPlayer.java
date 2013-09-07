@@ -277,15 +277,20 @@ public class DPlayer implements ConfigurationSerializable
 		return player;
 	}
 
-	public boolean hasCurrent()
+	public String getCurrentDeityName()
 	{
-		return getCurrent() != null;
+		return currentDeityName;
 	}
 
 	public Region getRegion()
 	{
 		if(getOfflinePlayer().isOnline()) return Region.Util.getRegion(getOfflinePlayer().getPlayer().getLocation());
 		return Region.Util.getRegion(getCurrent().getLocation());
+	}
+
+	public boolean hasCurrent()
+	{
+		return getCurrent() != null;
 	}
 
 	public DCharacter getCurrent()
@@ -300,11 +305,6 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		if(this.previous == null) return null;
 		return DCharacter.Util.load(this.previous);
-	}
-
-	public String getCurrentDeityName()
-	{
-		return currentDeityName;
 	}
 
 	public Set<DCharacter> getCharacters()
@@ -345,7 +345,7 @@ public class DPlayer implements ConfigurationSerializable
 	public void remove()
 	{
 		// First we need to kick the player if they're online
-		if(getOfflinePlayer().isOnline()) getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save is being cleared.");
+		if(getOfflinePlayer().isOnline()) getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save has been cleared.");
 
 		// Remove characters
 		for(DCharacter character : getCharacters())
