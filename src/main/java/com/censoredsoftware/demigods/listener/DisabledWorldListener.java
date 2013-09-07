@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.listener;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.potion.PotionEffect;
 
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 
 public class DisabledWorldListener implements Listener
 {
@@ -41,50 +40,13 @@ public class DisabledWorldListener implements Listener
 		// Leaving a disabled world
 		if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
-			dPlayer.setDisabledWorldInventory(player);
-			player.setDisplayName(character.getDeity().getColor() + character.getName());
-			try
-			{
-				player.setPlayerListName(character.getDeity().getColor() + character.getName());
-			}
-			catch(Exception e)
-			{
-				Messages.warning("Character name too long.");
-			}
-			player.setMaxHealth(character.getMaxHealth());
-			player.setHealth(character.getHealth() >= character.getMaxHealth() ? character.getMaxHealth() : character.getHealth());
-			player.setFoodLevel(character.getHunger());
-			player.setExp(character.getExperience());
-			player.setLevel(character.getLevel());
-			for(PotionEffect potion : player.getActivePotionEffects())
-				player.removePotionEffect(potion.getType());
-			if(character.getPotionEffects() != null) player.addPotionEffects(character.getPotionEffects());
-			player.setBedSpawnLocation(character.getBedSpawn());
-			character.getInventory().setToPlayer(player);
-			player.setDisplayName(character.getDeity().getColor() + character.getName());
-			player.setPlayerListName(character.getDeity().getColor() + character.getName());
+			dPlayer.saveMortalInventory(player.getInventory());
+			character.applyToPlayer(player);
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
 		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
-			character.setHealth(player.getHealth() >= character.getMaxHealth() ? character.getMaxHealth() : player.getHealth());
-			character.setHunger(player.getFoodLevel());
-			character.setLevel(player.getLevel());
-			character.setExperience(player.getExp());
-			character.setLocation(player.getLocation());
-			if(player.getBedSpawnLocation() != null) character.setBedSpawn(player.getBedSpawnLocation());
-			character.setPotionEffects(player.getActivePotionEffects());
-			character.saveInventory();
-			player.setMaxHealth(20.0);
-			player.setHealth(20.0);
-			player.setFoodLevel(20);
-			player.setExp(0);
-			player.setLevel(0);
-			for(PotionEffect potion : player.getActivePotionEffects())
-				player.removePotionEffect(potion.getType());
-			dPlayer.applyDisabledWorldInventory();
-			player.setDisplayName(player.getName());
-			player.setPlayerListName(player.getName());
+			dPlayer.setToMortal();
 			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 		}
 	}

@@ -37,7 +37,7 @@ public class DPlayer implements ConfigurationSerializable
 	private String currentDeityName;
 	private UUID current;
 	private UUID previous;
-	private UUID disabledWorldInventory;
+	private UUID mortalInventory;
 	private static ChatRecorder chatRecording;
 
 	public DPlayer()
@@ -54,7 +54,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
-		if(conf.getString("disabledWorldInventory") != null) disabledWorldInventory = UUID.fromString(conf.getString("disabledWorldInventory"));
+		if(conf.getString("mortalInventory") != null) mortalInventory = UUID.fromString(conf.getString("mortalInventory"));
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());
-		if(disabledWorldInventory != null) map.put("disabledWorldInventory", disabledWorldInventory.toString());
+		if(mortalInventory != null) map.put("mortalInventory", mortalInventory.toString());
 		return map;
 	}
 
@@ -163,19 +163,72 @@ public class DPlayer implements ConfigurationSerializable
 		return this.lastLogoutTime;
 	}
 
-	public void setDisabledWorldInventory(Player player)
+	public void setToMortal()
 	{
-		PlayerInventory inventory = player.getInventory();
-		DCharacter.Inventory charInventory = new DCharacter.Inventory();
-		charInventory.generateId();
-		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
-		if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
-		if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
-		if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
-		charInventory.setItems(inventory);
-		DCharacter.Util.saveInventory(charInventory);
-		this.disabledWorldInventory = charInventory.getId();
+		Player player = getOfflinePlayer().getPlayer();
+		saveCurrentCharacter();
+		player.setMaxHealth(20.0);
+		player.setHealth(20.0);
+		player.setFoodLevel(20);
+		player.setExp(0);
+		player.setLevel(0);
+		for(PotionEffect potion : player.getActivePotionEffects())
+			player.removePotionEffect(potion.getType());
+		player.setDisplayName(player.getName());
+		player.setPlayerListName(player.getName());
+		applyMortalInventory();
+	}
+
+	public void saveMortalInventory(PlayerInventory inventory)
+	{
+		DCharacter.Inventory mortalInventory = new DCharacter.Inventory();
+		mortalInventory.generateId();
+		if(inventory.getHelmet() != null) mortalInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) mortalInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) mortalInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) mortalInventory.setBoots(inventory.getBoots());
+		mortalInventory.setItems(inventory);
+		DCharacter.Util.saveInventory(mortalInventory);
+		this.mortalInventory = mortalInventory.getId();
 		Util.save(this);
+	}
+
+	public void saveCurrentCharacter()
+	{
+		// Update the current character
+		final Player player = getOfflinePlayer().getPlayer();
+		final DCharacter character = getCurrent();
+
+		if(character != null)
+		{
+			// Set to inactive and update previous
+			character.setActive(false);
+			this.previous = character.getId();
+
+			// Set the values
+			character.setHealth(player.getHealth() >= character.getMaxHealth() ? character.getMaxHealth() : player.getHealth());
+			character.setHunger(player.getFoodLevel());
+			character.setLevel(player.getLevel());
+			character.setExperience(player.getExp());
+			character.setLocation(player.getLocation());
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+			{
+				@Override
+				public void run()
+				{
+					if(player.getBedSpawnLocation() != null) character.setBedSpawn(player.getBedSpawnLocation());
+				}
+			}, 1);
+			character.setPotionEffects(player.getActivePotionEffects());
+			character.saveInventory();
+
+			// Disown pets
+			Pet.Util.disownPets(character.getName());
+
+			// Save it
+			DCharacter.Util.save(character);
+		}
+
 	}
 
 	public void switchCharacter(final DCharacter newChar)
@@ -188,81 +241,16 @@ public class DPlayer implements ConfigurationSerializable
 			return;
 		}
 
-		// Update the current character
-		final DCharacter currChar = getCurrent();
+		// Save the current character
+		saveCurrentCharacter();
 
-		if(currChar != null)
-		{
-			// Set to inactive and update previous
-			currChar.setActive(false);
-			this.previous = currChar.getId();
-
-			// Set the values
-			// TODO: Confirm that this covers all of the bases.
-			currChar.setHealth(player.getHealth() >= currChar.getMaxHealth() ? currChar.getMaxHealth() : player.getHealth());
-			currChar.setHunger(player.getFoodLevel());
-			currChar.setLevel(player.getLevel());
-			currChar.setExperience(player.getExp());
-			currChar.setLocation(player.getLocation());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
-			{
-				@Override
-				public void run()
-				{
-					if(player.getBedSpawnLocation() != null) currChar.setBedSpawn(player.getBedSpawnLocation());
-				}
-			}, 1);
-			currChar.setPotionEffects(player.getActivePotionEffects());
-			currChar.saveInventory();
-
-			// Disown pets
-			Pet.Util.disownPets(currChar.getName());
-
-			// Save it
-			DCharacter.Util.save(currChar);
-		}
-
-		// Set new character to active
+		// Set new character to active and other info
 		newChar.setActive(true);
 		this.current = newChar.getId();
-
-		// Set new deity
 		currentDeityName = newChar.getDeity().getName();
 
-		// Update their inventory
-		if(getCharacters().size() == 1) newChar.saveInventory();
-		newChar.getInventory().setToPlayer(player);
-
-		// Update health, experience, and name
-		// TODO: Confirm that this covers all of the bases too.
-		player.setDisplayName(newChar.getDeity().getColor() + newChar.getName());
-		try
-		{
-			player.setPlayerListName(newChar.getDeity().getColor() + newChar.getName());
-		}
-		catch(Exception e)
-		{
-			Messages.warning("Character name too long.");
-		}
-		player.setMaxHealth(newChar.getMaxHealth());
-		player.setHealth(newChar.getHealth() >= newChar.getMaxHealth() ? newChar.getMaxHealth() : newChar.getHealth());
-		player.setFoodLevel(newChar.getHunger());
-		player.setExp(newChar.getExperience());
-		player.setLevel(newChar.getLevel());
-		for(PotionEffect potion : player.getActivePotionEffects())
-			player.removePotionEffect(potion.getType());
-		if(newChar.getPotionEffects() != null) player.addPotionEffects(newChar.getPotionEffects());
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
-		{
-			@Override
-			public void run()
-			{
-				if(newChar.getBedSpawn() != null) player.setBedSpawnLocation(newChar.getBedSpawn());
-			}
-		}, 1);
-
-		// Re-own pets
-		Pet.Util.reownPets(player, newChar);
+		// Apply the new character
+		newChar.applyToPlayer(player);
 
 		// Teleport them
 		try
@@ -331,15 +319,15 @@ public class DPlayer implements ConfigurationSerializable
 		}));
 	}
 
-	public void applyDisabledWorldInventory()
+	public DCharacter.Inventory getMortalInventory()
 	{
-		if(disabledWorldInventory == null) return;
-		if(getOfflinePlayer().isOnline())
-		{
-			DCharacter.Util.getInventory(disabledWorldInventory).setToPlayer(getOfflinePlayer().getPlayer());
-			disabledWorldInventory = null;
-			Util.save(this);
-		}
+		return DCharacter.Util.getInventory(mortalInventory);
+	}
+
+	public void applyMortalInventory()
+	{
+		getMortalInventory().setToPlayer(getOfflinePlayer().getPlayer());
+		mortalInventory = null;
 	}
 
 	public boolean canUseCurrent()

@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
@@ -493,6 +495,43 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		sendAllianceMessage(" " + ChatColor.GRAY + getAlliance() + "s " + ChatColor.DARK_GRAY + "" + Symbol.BLACK_FLAG + " " + getDeity().getColor() + name + ChatColor.GRAY + ": " + ChatColor.RESET + message);
 		Messages.info("[" + getAlliance() + "]" + name + ": " + message);
+	}
+
+	public void applyToPlayer(final Player player)
+	{
+		// Define variables
+		DPlayer dPlayer = DPlayer.Util.getPlayer(player);
+
+		// Update their inventory
+		if(dPlayer.getCharacters().size() == 1) saveInventory();
+		getInventory().setToPlayer(player);
+
+		// Update health, experience, and name
+		player.setDisplayName(getDeity().getColor() + getName());
+		player.setPlayerListName(getDeity().getColor() + getName());
+		player.setMaxHealth(getMaxHealth());
+		player.setHealth(getHealth() >= getMaxHealth() ? getMaxHealth() : getHealth());
+		player.setFoodLevel(getHunger());
+		player.setExp(getExperience());
+		player.setLevel(getLevel());
+		for(PotionEffect potion : player.getActivePotionEffects())
+			player.removePotionEffect(potion.getType());
+		if(getPotionEffects() != null) player.addPotionEffects(getPotionEffects());
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				if(getBedSpawn() != null) player.setBedSpawnLocation(getBedSpawn());
+			}
+		}, 1);
+
+		// Set player display name
+		player.setDisplayName(getDeity().getColor() + getName());
+		player.setPlayerListName(getDeity().getColor() + getName());
+
+		// Re-own pets
+		Pet.Util.reownPets(player, this);
 	}
 
 	public static class Inventory implements ConfigurationSerializable
