@@ -3,12 +3,14 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
 
@@ -27,30 +29,46 @@ public class DisabledWorldListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onWorldSwitch(PlayerChangedWorldEvent event)
+	public void onWorldSwitch(final PlayerChangedWorldEvent event)
 	{
 		// Only continue if the player is a character
 		Player player = event.getPlayer();
-		DPlayer dPlayer = DPlayer.Util.getPlayer(player);
-		DCharacter character = dPlayer.getCurrent();
+
 		if(!DPlayer.Util.isImmortal(player)) return;
 
-		// Leaving a disabled world
-		if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
+		// Finalize things for the delay
+		final DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		final String playerName = player.getName();
+
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 		{
-			dPlayer.setDisabledWorldInventory(player);
-			character.getInventory().setToPlayer(player);
-			player.setDisplayName(character.getDeity().getColor() + character.getName());
-			player.setPlayerListName(character.getDeity().getColor() + character.getName());
-			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
-		}
-		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
-		{
-			character.saveInventory();
-			dPlayer.applyDisabledWorldInventory();
-			player.setDisplayName(player.getName());
-			player.setPlayerListName(player.getName());
-			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
-		}
+			@Override
+			public void run()
+			{
+				if(!Bukkit.getOfflinePlayer(playerName).isOnline()) return; // Oh shit, not sure how to prevent this.
+
+				// Redefine stuff
+				Player player = Bukkit.getOfflinePlayer(playerName).getPlayer();
+				DPlayer dPlayer = DPlayer.Util.getPlayer(playerName);
+
+				// Leaving a disabled world
+				if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
+				{
+					dPlayer.setDisabledWorldInventory(player);
+					character.getInventory().setToPlayer(player);
+					player.setDisplayName(character.getDeity().getColor() + character.getName());
+					player.setPlayerListName(character.getDeity().getColor() + character.getName());
+					player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
+				}
+				else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
+				{
+					character.saveInventory();
+					dPlayer.applyDisabledWorldInventory();
+					player.setDisplayName(player.getName());
+					player.setPlayerListName(player.getName());
+					player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
+				}
+			}
+		}, 10);
 	}
 }
