@@ -117,6 +117,7 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
+		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 		final DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(loggingOff != null)
 		{
@@ -166,6 +167,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
+		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
 		if(character != null) character.setAlive(false);
 	}

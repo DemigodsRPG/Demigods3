@@ -1,18 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.conversation.Prayer;
@@ -27,6 +14,19 @@ import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -36,6 +36,7 @@ public class DPlayer implements ConfigurationSerializable
 	private String currentDeityName;
 	private UUID current;
 	private UUID previous;
+	private UUID disabledWorldInventory;
 	private static ChatRecorder chatRecording;
 
 	public DPlayer()
@@ -52,6 +53,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
+		if(conf.getString("disabledWorldInventory") != null) disabledWorldInventory = UUID.fromString(conf.getString("disabledWorldInventory"));
 	}
 
 	@Override
@@ -64,6 +66,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());
+		if(disabledWorldInventory != null) map.put("disabledWorldInventory", disabledWorldInventory.toString());
 		return map;
 	}
 
@@ -157,6 +160,21 @@ public class DPlayer implements ConfigurationSerializable
 	public long getLastLogoutTime()
 	{
 		return this.lastLogoutTime;
+	}
+
+	public void setDisabledWorldInventory(Player player)
+	{
+		PlayerInventory inventory = player.getInventory();
+		DCharacter.Inventory charInventory = new DCharacter.Inventory();
+		charInventory.generateId();
+		if(inventory.getHelmet() != null) charInventory.setHelmet(inventory.getHelmet());
+		if(inventory.getChestplate() != null) charInventory.setChestplate(inventory.getChestplate());
+		if(inventory.getLeggings() != null) charInventory.setLeggings(inventory.getLeggings());
+		if(inventory.getBoots() != null) charInventory.setBoots(inventory.getBoots());
+		charInventory.setItems(inventory);
+		DCharacter.Util.saveInventory(charInventory);
+		this.disabledWorldInventory = charInventory.getId();
+		Util.save(this);
 	}
 
 	public void switchCharacter(final DCharacter newChar)
@@ -310,6 +328,17 @@ public class DPlayer implements ConfigurationSerializable
 				return character != null && character.getPlayer().equals(player) && character.isUsable();
 			}
 		}));
+	}
+
+	public void applyDisabledWorldInventory()
+	{
+		if(disabledWorldInventory == null) return;
+		if(getOfflinePlayer().isOnline())
+		{
+			DCharacter.Util.getInventory(disabledWorldInventory).setToPlayer(getOfflinePlayer().getPlayer());
+			disabledWorldInventory = null;
+			Util.save(this);
+		}
 	}
 
 	public boolean canUseCurrent()

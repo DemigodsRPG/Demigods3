@@ -1,11 +1,15 @@
 package com.censoredsoftware.demigods.listener;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.DemigodsChatEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import java.util.Set;
 
@@ -21,5 +25,29 @@ public class DisabledWorldListener implements Listener
 			if(Demigods.MiscUtil.isDisabledWorld(player.getLocation())) modified.remove(player);
 		if(modified.size() < 1) event.setCancelled(true);
 		event.setRecipients(modified);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onWorldSwitch(PlayerChangedWorldEvent event)
+	{
+		// Only continue if the player is a character
+		Player player = event.getPlayer();
+		DPlayer dPlayer = DPlayer.Util.getPlayer(player);
+		if(!DPlayer.Util.isImmortal(player)) return;
+
+		// Leaving a disabled world
+		if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
+		{
+			DCharacter character = dPlayer.getCurrent();
+			dPlayer.applyDisabledWorldInventory();
+			player.setDisplayName(character.getDeity().getColor() + character.getName());
+			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
+		}
+		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
+		{
+			dPlayer.setDisabledWorldInventory(player);
+			player.setDisplayName(player.getName());
+			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
+		}
 	}
 }
