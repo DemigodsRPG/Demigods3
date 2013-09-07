@@ -338,7 +338,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "characterMetas.yml";
+				return "metas.yml";
 			}
 
 			@Override
@@ -424,7 +424,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "skill.yml"; // TODO This is named differently than all of the other files.
+				return "skills.yml";
 			}
 
 			@Override
@@ -467,7 +467,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "characterInventories.yml";
+				return "inventories.yml";
 			}
 
 			@Override
@@ -510,7 +510,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "itemStacks.yml";
+				return "itemstacks.yml";
 			}
 
 			@Override
@@ -553,7 +553,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "savedPotions.yml";
+				return "savedpotions.yml";
 			}
 
 			@Override
@@ -725,7 +725,7 @@ public class DataManager
 			@Override
 			public String getSaveFile()
 			{
-				return "timedData.yml";
+				return "timeddata.yml";
 			}
 
 			@Override
