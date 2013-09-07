@@ -33,20 +33,24 @@ public class DisabledWorldListener implements Listener
 		// Only continue if the player is a character
 		Player player = event.getPlayer();
 		DPlayer dPlayer = DPlayer.Util.getPlayer(player);
+		DCharacter character = dPlayer.getCurrent();
 		if(!DPlayer.Util.isImmortal(player)) return;
 
 		// Leaving a disabled world
 		if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
-			DCharacter character = dPlayer.getCurrent();
-			dPlayer.applyDisabledWorldInventory();
+			dPlayer.setDisabledWorldInventory(player);
+			character.getInventory().setToPlayer(player);
 			player.setDisplayName(character.getDeity().getColor() + character.getName());
+			player.setPlayerListName(character.getDeity().getColor() + character.getName());
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
 		else if(!Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
-			dPlayer.setDisabledWorldInventory(player);
+			character.saveInventory();
+			dPlayer.applyDisabledWorldInventory();
 			player.setDisplayName(player.getName());
+			player.setPlayerListName(player.getName());
 			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 		}
 	}
