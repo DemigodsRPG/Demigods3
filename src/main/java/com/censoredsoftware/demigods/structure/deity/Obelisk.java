@@ -1,18 +1,9 @@
 package com.censoredsoftware.demigods.structure.deity;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.BlockData;
-import com.censoredsoftware.demigods.structure.Schematic;
-import com.censoredsoftware.demigods.structure.Selection;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Configs;
-import com.google.common.base.Function;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,9 +15,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.structure.BlockData;
+import com.censoredsoftware.demigods.structure.Schematic;
+import com.censoredsoftware.demigods.structure.Selection;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Admins;
+import com.censoredsoftware.demigods.util.Configs;
+import com.google.common.base.Function;
 
 public class Obelisk
 {
@@ -81,9 +82,9 @@ public class Obelisk
 			Location location = clickedBlock.getLocation();
 			Player player = event.getPlayer();
 
-			if(DPlayer.Util.isImmortal(player))
+			if(PlayerSave.Util.isImmortal(player))
 			{
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
@@ -117,7 +118,7 @@ public class Obelisk
 				event.setCancelled(true);
 
 				Structure save = Structure.Util.getStructureRegional(location);
-				DCharacter owner = DCharacter.Util.load(save.getOwner());
+				Character owner = com.censoredsoftware.demigods.player.Character.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))
 				{

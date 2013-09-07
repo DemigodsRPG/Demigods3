@@ -1,14 +1,7 @@
 package com.censoredsoftware.demigods.listener;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.ItemValues;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,7 +16,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.ItemValues;
 
 public class TributeListener implements Listener
 {
@@ -33,13 +34,13 @@ public class TributeListener implements Listener
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 
 		// Return if the player is mortal
-		if(!DPlayer.Util.isImmortal(event.getPlayer())) return;
+		if(!PlayerSave.Util.isImmortal(event.getPlayer())) return;
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
 		// Define variables
 		Location location = event.getClickedBlock().getLocation();
 		Player player = event.getPlayer();
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
@@ -53,14 +54,14 @@ public class TributeListener implements Listener
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
 
 			// Return if the player is mortal
-			if(!DPlayer.Util.getPlayer(player).hasCurrent())
+			if(!PlayerSave.Util.getPlayer(player).hasCurrent())
 			{
 				player.sendMessage(ChatColor.RED + Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
 				return;
 			}
-			else if(save.getOwner() != null && !character.getDeity().equals(DCharacter.Util.load(save.getOwner()).getDeity()))
+			else if(save.getOwner() != null && !character.getDeity().equals(Character.Util.load(save.getOwner()).getDeity()))
 			{
-				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + DCharacter.Util.load(save.getOwner()).getDeity().getName() + " in order to tribute here.");
+				player.sendMessage(ChatColor.YELLOW + "You must be allied to " + Character.Util.load(save.getOwner()).getDeity().getName() + " in order to tribute here.");
 				return;
 			}
 			tribute(character, save);
@@ -74,7 +75,7 @@ public class TributeListener implements Listener
 
 		// Define player and character
 		Player player = (Player) event.getPlayer();
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 		// Make sure they have a character and are immortal
 		if(character == null) return;
@@ -113,7 +114,7 @@ public class TributeListener implements Listener
 		// Define the shrine owner
 		if(save.getOwner() != null)
 		{
-			DCharacter shrineOwner = DCharacter.Util.load(save.getOwner());
+			Character shrineOwner = Character.Util.load(save.getOwner());
 			OfflinePlayer shrineOwnerPlayer = shrineOwner.getOfflinePlayer();
 
 			if(character.getMeta().getMaxFavor() >= Configs.getSettingInt("caps.favor") && !player.getName().equals(shrineOwnerPlayer.getName()))
@@ -122,7 +123,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && PlayerSave.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap is now " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -137,7 +138,7 @@ public class TributeListener implements Listener
 				shrineOwner.getMeta().addMaxFavor(tributeValue / 5);
 
 				// Message them
-				if(shrineOwnerPlayer.isOnline() && DPlayer.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
+				if(shrineOwnerPlayer.isOnline() && PlayerSave.Util.getPlayer(shrineOwner.getOfflinePlayer()).getCurrent().getId().equals(shrineOwner.getId()))
 				{
 					((Player) shrineOwnerPlayer).sendMessage(ChatColor.YELLOW + "Someone just tributed at your shrine!");
 					if(shrineOwner.getMeta().getMaxFavor() > ownerFavorBefore) ((Player) shrineOwnerPlayer).sendMessage(ChatColor.GRAY + "Your favor cap has increased to " + ChatColor.GREEN + shrineOwner.getMeta().getMaxFavor() + ChatColor.GRAY + "!");
@@ -168,7 +169,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DCharacter character, Structure save)
+	private static void tribute(com.censoredsoftware.demigods.player.Character character, Structure save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		Deity shrineDeity = character.getDeity();

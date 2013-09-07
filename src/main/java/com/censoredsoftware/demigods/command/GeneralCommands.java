@@ -15,8 +15,8 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
 import com.censoredsoftware.demigods.util.Maps2;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Strings;
@@ -53,7 +53,7 @@ public class GeneralCommands extends WrappedCommand
 	private boolean check(CommandSender sender)
 	{
 		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 		if(character == null)
 		{
@@ -99,7 +99,7 @@ public class GeneralCommands extends WrappedCommand
 			player.sendMessage(ChatColor.RED + "/owner <character>");
 			return true;
 		}
-		DCharacter charToCheck = DCharacter.Util.getCharacterByName(args[0]);
+		Character charToCheck = Character.Util.getCharacterByName(args[0]);
 		if(charToCheck == null) player.sendMessage(ChatColor.RED + "That character doesn't exist.");
 		else player.sendMessage(charToCheck.getDeity().getColor() + charToCheck.getName() + ChatColor.YELLOW + " belongs to " + charToCheck.getOfflinePlayer().getName() + ".");
 		return true;
@@ -113,7 +113,7 @@ public class GeneralCommands extends WrappedCommand
 		Player player = (Player) sender;
 		if(args.length < 1) return false;
 
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 		if(character == null)
 		{
 			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
@@ -130,7 +130,7 @@ public class GeneralCommands extends WrappedCommand
 
 		// Define variables
 		Player player = (Player) sender;
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 		if(character != null && !character.getMeta().getBinds().isEmpty())
 		{
@@ -151,11 +151,11 @@ public class GeneralCommands extends WrappedCommand
 	private boolean leaderboard(CommandSender sender)
 	{
 		// Define variables
-		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
+		List<Character> characters = Lists.newArrayList(Character.Util.getAllUsable());
 		Map<UUID, Double> scores = Maps.newLinkedHashMap();
 		for(int i = 0; i < characters.size(); i++)
 		{
-			DCharacter character = characters.get(i);
+			Character character = characters.get(i);
 			double score = character.getKillCount() - character.getDeathCount();
 			if(score > 0) scores.put(character.getId(), score);
 		}
@@ -179,7 +179,7 @@ public class GeneralCommands extends WrappedCommand
 			Map.Entry<UUID, Double> entry = list.get(i);
 
 			if(count >= length) break;
-			DCharacter character = DCharacter.Util.load(entry.getKey());
+			Character character = com.censoredsoftware.demigods.player.Character.Util.load(entry.getKey());
 			sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.RESET + count + ". " + character.getDeity().getColor() + character.getName() + ChatColor.RESET + ChatColor.GRAY + " (" + character.getPlayerName() + ") " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + character.getKillCount() + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + character.getDeathCount());
 		}
 

@@ -17,20 +17,21 @@ import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
+import com.censoredsoftware.demigods.player.Character;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
 
 public class DataManager
 {
 	// Data
-	public static ConcurrentMap<String, DPlayer> players;
+	public static ConcurrentMap<String, PlayerSave> players;
 	public static ConcurrentMap<UUID, DLocation> locations;
 	public static ConcurrentMap<UUID, Structure> structures;
-	public static ConcurrentMap<UUID, DCharacter> characters;
-	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
+	public static ConcurrentMap<UUID, Character> characters;
+	public static ConcurrentMap<UUID, Character.Meta> characterMetas;
 	public static ConcurrentMap<UUID, Death> deaths;
 	public static ConcurrentMap<UUID, Skill> skills;
-	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentMap<UUID, Character.Inventory> inventories;
 	public static ConcurrentMap<UUID, DItemStack> itemStacks;
 	public static ConcurrentMap<UUID, SavedPotion> savedPotions;
 	public static ConcurrentMap<UUID, Pet> pets;
@@ -143,16 +144,16 @@ public class DataManager
 
 	public static enum File
 	{
-		PLAYER(new ConfigFile<String, DPlayer>()
+		PLAYER(new ConfigFile<String, PlayerSave>()
 		{
 			@Override
-			public DPlayer create(String string, ConfigurationSection conf)
+			public PlayerSave create(String string, ConfigurationSection conf)
 			{
-				return new DPlayer(string, conf);
+				return new PlayerSave(string, conf);
 			}
 
 			@Override
-			public ConcurrentMap<String, DPlayer> getLoadedData()
+			public ConcurrentMap<String, PlayerSave> getLoadedData()
 			{
 				return DataManager.players;
 			}
@@ -272,16 +273,16 @@ public class DataManager
 			{
 				structures = loadFromFile();
 			}
-		}), CHARACTER(new ConfigFile<UUID, DCharacter>()
+		}), CHARACTER(new ConfigFile<UUID, Character>()
 		{
 			@Override
-			public DCharacter create(UUID uuid, ConfigurationSection conf)
+			public Character create(UUID uuid, ConfigurationSection conf)
 			{
-				return new DCharacter(uuid, conf);
+				return new Character(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, DCharacter> getLoadedData()
+			public ConcurrentMap<UUID, Character> getLoadedData()
 			{
 				return DataManager.characters;
 			}
@@ -315,16 +316,16 @@ public class DataManager
 			{
 				characters = loadFromFile();
 			}
-		}), CHARACTER_META(new ConfigFile<UUID, DCharacter.Meta>()
+		}), CHARACTER_META(new ConfigFile<UUID, Character.Meta>()
 		{
 			@Override
-			public DCharacter.Meta create(UUID uuid, ConfigurationSection conf)
+			public Character.Meta create(UUID uuid, ConfigurationSection conf)
 			{
-				return new DCharacter.Meta(uuid, conf);
+				return new Character.Meta(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, DCharacter.Meta> getLoadedData()
+			public ConcurrentMap<UUID, Character.Meta> getLoadedData()
 			{
 				return DataManager.characterMetas;
 			}
@@ -444,16 +445,16 @@ public class DataManager
 			{
 				skills = loadFromFile();
 			}
-		}), CHARACTER_INVENTORY(new ConfigFile<UUID, DCharacter.Inventory>()
+		}), CHARACTER_INVENTORY(new ConfigFile<UUID, Character.Inventory>()
 		{
 			@Override
-			public DCharacter.Inventory create(UUID uuid, ConfigurationSection conf)
+			public Character.Inventory create(UUID uuid, ConfigurationSection conf)
 			{
-				return new DCharacter.Inventory(uuid, conf);
+				return new Character.Inventory(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, DCharacter.Inventory> getLoadedData()
+			public ConcurrentMap<UUID, Character.Inventory> getLoadedData()
 			{
 				return DataManager.inventories;
 			}

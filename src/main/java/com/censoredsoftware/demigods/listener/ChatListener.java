@@ -1,15 +1,16 @@
 package com.censoredsoftware.demigods.listener;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.util.Messages;
 
 public class ChatListener implements Listener
 {
@@ -32,7 +33,7 @@ public class ChatListener implements Listener
 		}
 
 		// Return if a character doesn't exist
-		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() == null) return;
+		if(PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent() == null) return;
 
 		// Process the command
 		try

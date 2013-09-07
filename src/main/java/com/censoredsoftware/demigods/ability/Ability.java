@@ -1,19 +1,7 @@
 package com.censoredsoftware.demigods.ability;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -30,7 +18,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import java.util.*;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public interface Ability
 {
@@ -66,7 +67,7 @@ public interface Ability
 	{
 		public static boolean doAbilityPreProcess(Player player, int cost)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 			if(!Battle.Util.canTarget(character))
 			{
@@ -93,7 +94,7 @@ public interface Ability
 		 */
 		public static boolean doAbilityPreProcess(Player player, LivingEntity target, int cost)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 			if(doAbilityPreProcess(player, cost))
 			{
@@ -109,13 +110,13 @@ public interface Ability
 				}
 				else if(target instanceof Player)
 				{
-					DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-					if(attacked != null && DCharacter.Util.areAllied(character, attacked)) return false;
+					Character attacked = PlayerSave.Util.getPlayer(((Player) target)).getCurrent();
+					if(attacked != null && Character.Util.areAllied(character, attacked)) return false;
 				}
 				else if(target instanceof Tameable)
 				{
 					Pet attacked = Pet.Util.getPet(target);
-					if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) return false;
+					if(attacked != null && Character.Util.areAllied(character, attacked.getOwner())) return false;
 				}
 				return true;
 			}
@@ -124,7 +125,7 @@ public interface Ability
 
 		public static Set<LivingEntity> doAbilityPreProcess(Player player, Collection<Entity> targets, int cost)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 			Set<LivingEntity> set = Sets.newHashSet();
 
@@ -137,14 +138,14 @@ public interface Ability
 					else if(Battle.Util.canParticipate(target) && !Battle.Util.canTarget(Battle.Util.defineParticipant(target))) continue;
 					else if(target instanceof Player)
 					{
-						DCharacter attacked = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-						if(attacked != null && DCharacter.Util.areAllied(character, attacked)) continue;
+						Character attacked = PlayerSave.Util.getPlayer(((Player) target)).getCurrent();
+						if(attacked != null && Character.Util.areAllied(character, attacked)) continue;
 						if(Battle.Util.isInBattle(character) && !Battle.Util.isInBattle(attacked)) continue;
 					}
 					else if(target instanceof Tameable)
 					{
 						Pet attacked = Pet.Util.getPet((LivingEntity) target);
-						if(attacked != null && DCharacter.Util.areAllied(character, attacked.getOwner())) continue;
+						if(attacked != null && Character.Util.areAllied(character, attacked.getOwner())) continue;
 					}
 					set.add((LivingEntity) target);
 				}
@@ -179,7 +180,7 @@ public interface Ability
 			Location target = player.getTargetBlock(null, range).getLocation();
 			BlockIterator iterator = new BlockIterator(player, range);
 			List<Entity> targets = Lists.newArrayList();
-			final DCharacter looking = DPlayer.Util.getPlayer(player).getCurrent();
+			final Character looking = PlayerSave.Util.getPlayer(player).getCurrent();
 
 			// Iterate through the blocks and find the target
 			while(iterator.hasNext())
@@ -196,12 +197,12 @@ public interface Ability
 							if(entity instanceof Tameable && ((Tameable) entity).isTamed() && Pet.Util.getPet((LivingEntity) entity) != null)
 							{
 								Pet wrapper = Pet.Util.getPet((LivingEntity) entity);
-								if(DCharacter.Util.areAllied(looking, wrapper.getOwner())) return false;
+								if(Character.Util.areAllied(looking, wrapper.getOwner())) return false;
 							}
-							else if(entity instanceof Player && DPlayer.Util.getPlayer(((Player) entity)).getCurrent() != null)
+							else if(entity instanceof Player && PlayerSave.Util.getPlayer(((Player) entity)).getCurrent() != null)
 							{
-								DCharacter character = DPlayer.Util.getPlayer(((Player) entity)).getCurrent();
-								if(DCharacter.Util.areAllied(looking, character) || ((Player) entity).getGameMode().equals(GameMode.CREATIVE)) return false;
+								Character character = PlayerSave.Util.getPlayer(((Player) entity)).getCurrent();
+								if(Character.Util.areAllied(looking, character) || ((Player) entity).getGameMode().equals(GameMode.CREATIVE)) return false;
 							}
 							return true;
 						}
@@ -239,7 +240,7 @@ public interface Ability
 		 */
 		public static boolean doTargeting(Player player, Location target, boolean notify)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 			Location toHit = adjustedAimLocation(character, target);
 			if(isHit(target, toHit)) return true;
 			if(notify) player.sendMessage(ChatColor.RED + "Missed..."); // TODO Better message.
@@ -254,7 +255,7 @@ public interface Ability
 		 * @param target the location the character is doTargeting at
 		 * @return the aimed at location
 		 */
-		public static Location adjustedAimLocation(DCharacter character, Location target)
+		public static Location adjustedAimLocation(Character character, Location target)
 		{
 			// TODO: This needs major work.
 
@@ -320,7 +321,7 @@ public interface Ability
 
 		public static boolean invokeAbilityCommand(Player player, String command)
 		{
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 			for(final Ability ability : character.getDeity().getAbilities())
 			{
 				if(ability.getType().equals(Skill.Type.PASSIVE)) continue;
@@ -383,18 +384,18 @@ public interface Ability
 		{
 			if(source instanceof Player)
 			{
-				DPlayer owner = DPlayer.Util.getPlayer(((Player) source));
+				PlayerSave owner = PlayerSave.Util.getPlayer(((Player) source));
 				if(owner != null)
 				{
 					if(target instanceof Player)
 					{
-						DCharacter targetChar = DPlayer.Util.getPlayer(((Player) target)).getCurrent();
-						if(targetChar != null && DCharacter.Util.areAllied(owner.getCurrent(), targetChar)) return;
+						Character targetChar = PlayerSave.Util.getPlayer(((Player) target)).getCurrent();
+						if(targetChar != null && Character.Util.areAllied(owner.getCurrent(), targetChar)) return;
 					}
 					else if(target instanceof Tameable && ((Tameable) target).isTamed())
 					{
 						Pet wrapper = Pet.Util.getPet(target);
-						if(wrapper != null && DCharacter.Util.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
+						if(wrapper != null && com.censoredsoftware.demigods.player.Character.Util.areAllied(owner.getCurrent(), wrapper.getOwner())) return;
 					}
 				}
 			}

@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.ability.support;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -18,7 +13,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class Shove implements Ability
 {
@@ -38,13 +39,13 @@ public class Shove implements Ability
 	public static void shove(Player player)
 	{
 		// Define variables
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 		int ascensions = character.getMeta().getAscensions();
 		double multiply = 0.1753 * Math.pow(ascensions, 0.322917);
 		LivingEntity target = Util.autoTarget(player);
 
 		if(!Util.doAbilityPreProcess(player, target, cost)) return;
-		DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+		Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 		character.getMeta().subtractFavor(cost);
 
 		if(!Util.doTargeting(player, target.getLocation(), true)) return;
@@ -136,13 +137,13 @@ public class Shove implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
+					if(!com.censoredsoftware.demigods.player.Character.Util.isCooledDown(character, name, false)) return;
 
 					shove(player);
 				}

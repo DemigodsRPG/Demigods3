@@ -1,11 +1,10 @@
 package com.censoredsoftware.demigods.player;
 
-import com.censoredsoftware.demigods.battle.Participant;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,10 +12,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 
 public class Pet implements Participant, ConfigurationSerializable
 {
@@ -76,7 +77,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		this.entityUUID = tameable.getUniqueId();
 	}
 
-	public void setOwner(DCharacter owner)
+	public void setOwner(Character owner)
 	{
 		this.animalTamer = owner.getName();
 		this.owner = owner.getId();
@@ -133,9 +134,9 @@ public class Pet implements Participant, ConfigurationSerializable
 		return null;
 	}
 
-	public DCharacter getOwner()
+	public Character getOwner()
 	{
-		DCharacter owner = DCharacter.Util.load(this.owner);
+		Character owner = Character.Util.load(this.owner);
 		if(owner == null)
 		{
 			disownPet();
@@ -177,7 +178,7 @@ public class Pet implements Participant, ConfigurationSerializable
 	}
 
 	@Override
-	public DCharacter getRelatedCharacter()
+	public Character getRelatedCharacter()
 	{
 		return getOwner();
 	}
@@ -208,7 +209,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			DataManager.pets.put(pet.getId(), pet);
 		}
 
-		public static Pet create(LivingEntity pet, DCharacter owner)
+		public static Pet create(LivingEntity pet, Character owner)
 		{
 			if(owner == null) throw new IllegalArgumentException("Owner cannot be null.");
 			Pet wrapper = new Pet();
@@ -289,7 +290,7 @@ public class Pet implements Participant, ConfigurationSerializable
 			}
 		}
 
-		public static void reownPets(AnimalTamer tamer, DCharacter character)
+		public static void reownPets(AnimalTamer tamer, Character character)
 		{
 			for(Pet wrapper : findByTamer(character.getName()))
 				if(wrapper.getEntity() != null) ((Tameable) wrapper.getEntity()).setOwner(tamer);

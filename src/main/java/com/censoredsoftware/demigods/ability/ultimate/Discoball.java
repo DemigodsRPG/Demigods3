@@ -1,17 +1,8 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Spigots;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -25,8 +16,18 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Spigots;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Discoball implements Ability
 {
@@ -121,7 +122,7 @@ public class Discoball implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -129,7 +130,7 @@ public class Discoball implements Ability
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
+					if(!Character.Util.isCooledDown(character, name, true)) return;
 
 					Util.discoBall(player);
 				}
@@ -269,7 +270,7 @@ public class Discoball implements Ability
 				@Override
 				public void run()
 				{
-					for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
+					for(Character online : Character.Util.getOnlineCharactersWithDeity("DrD1sco"))
 					{
 						Player player = online.getOfflinePlayer().getPlayer();
 						if(Demigods.MiscUtil.isDisabledWorld(player.getWorld()) || !player.isSneaking() || player.isFlying() || Zones.inNoPvpZone(player.getLocation()) || Zones.inNoBuildZone(player, player.getLocation())) continue;
@@ -293,14 +294,14 @@ public class Discoball implements Ability
 		public static void discoBall(final Player player)
 		{
 			// Set variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 			if(!Ability.Util.doAbilityPreProcess(player, cost)) return;
 			character.getMeta().subtractFavor(cost);
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			// Cooldown
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
+			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay * 1000);
 
 			balls(player);
 

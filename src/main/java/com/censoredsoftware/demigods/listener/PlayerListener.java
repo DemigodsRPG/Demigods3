@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.listener;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.item.Book;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,6 +13,15 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.QuitReasonHandler;
+import com.censoredsoftware.demigods.item.Book;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.util.Configs;
+
 public class PlayerListener implements Listener
 {
 	@EventHandler
@@ -30,8 +31,8 @@ public class PlayerListener implements Listener
 
 		// Define variables
 		Player player = event.getPlayer();
-		DPlayer wrapper = DPlayer.Util.getPlayer(player);
-		DCharacter character = wrapper.getCurrent();
+		PlayerSave wrapper = PlayerSave.Util.getPlayer(player);
+		Character character = wrapper.getCurrent();
 
 		// Set their last login-time
 		Long now = System.currentTimeMillis();
@@ -87,7 +88,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		if(!Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
+		if(!Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()) && PlayerSave.Util.isPraying(event.getPlayer())) PlayerSave.Util.togglePraying(event.getPlayer(), false);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -118,7 +119,7 @@ public class PlayerListener implements Listener
 		}
 		event.setQuitMessage(message);
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
-		final DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		final Character loggingOff = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(loggingOff != null)
 		{
 			loggingOff.setLocation(event.getPlayer().getLocation());
@@ -147,14 +148,14 @@ public class PlayerListener implements Listener
 
 		// Set their last logout-time
 		Long now = System.currentTimeMillis();
-		DPlayer.Util.getPlayer(event.getPlayer()).setLastLogoutTime(now);
+		PlayerSave.Util.getPlayer(event.getPlayer()).setLastLogoutTime(now);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
-		DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+		Character character = PlayerSave.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(character != null)
 		{
 			character.setAlive(true);
@@ -168,7 +169,7 @@ public class PlayerListener implements Listener
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
 		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
-		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
+		com.censoredsoftware.demigods.player.Character character = PlayerSave.Util.getPlayer(event.getEntity()).getCurrent();
 		if(character != null) character.setAlive(false);
 	}
 }

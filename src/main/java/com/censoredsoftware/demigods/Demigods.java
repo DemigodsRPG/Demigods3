@@ -23,7 +23,6 @@ import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
-import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
@@ -83,7 +82,7 @@ public class Demigods
 		loadCommands();
 
 		// Update usable characters
-		DCharacter.Util.updateUsableCharacters();
+		com.censoredsoftware.demigods.player.Character.Util.updateUsableCharacters();
 
 		// Start threads
 		ThreadManager.startThreads();

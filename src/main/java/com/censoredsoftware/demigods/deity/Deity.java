@@ -1,5 +1,14 @@
 package com.censoredsoftware.demigods.deity;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.fate.Atropos;
 import com.censoredsoftware.demigods.deity.fate.Clotho;
@@ -10,20 +19,12 @@ import com.censoredsoftware.demigods.deity.god.Zeus;
 import com.censoredsoftware.demigods.deity.titan.Iapetus;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Perses;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public enum Deity
 {
@@ -293,7 +294,7 @@ public enum Deity
 			return null;
 		}
 
-		public static boolean canUseDeity(DCharacter character, String deity)
+		public static boolean canUseDeity(Character character, String deity)
 		{
 			if(character == null) return false;
 			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
@@ -306,14 +307,14 @@ public enum Deity
 			return true;
 		}
 
-		public static boolean canUseDeitySilent(DCharacter character, String deity)
+		public static boolean canUseDeitySilent(com.censoredsoftware.demigods.player.Character character, String deity)
 		{
 			return character != null && character.isDeity(deity);
 		}
 
 		public static boolean canUseDeitySilent(Player player, String deityName)
 		{
-			String currentDeityName = DPlayer.Util.getPlayer(player).getCurrentDeityName();
+			String currentDeityName = PlayerSave.Util.getPlayer(player).getCurrentDeityName();
 			return currentDeityName != null && currentDeityName.equalsIgnoreCase(deityName);
 		}
 	}

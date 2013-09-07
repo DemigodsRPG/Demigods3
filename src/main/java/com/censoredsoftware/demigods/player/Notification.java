@@ -1,17 +1,18 @@
 package com.censoredsoftware.demigods.player;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Translation;
-import com.google.common.collect.Sets;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.language.Translation;
+import com.google.common.collect.Sets;
 
 public class Notification implements ConfigurationSerializable
 {
@@ -73,12 +74,12 @@ public class Notification implements ConfigurationSerializable
 		this.senderType = senderType.name();
 	}
 
-	void setSender(DCharacter sender)
+	void setSender(Character sender)
 	{
 		this.sender = sender.getId();
 	}
 
-	void setReceiver(DCharacter receiver)
+	void setReceiver(Character receiver)
 	{
 		this.receiver = receiver.getId();
 	}
@@ -108,14 +109,14 @@ public class Notification implements ConfigurationSerializable
 		return Danger.valueOf(this.danger);
 	}
 
-	public DCharacter getReceiver()
+	public Character getReceiver()
 	{
-		return DCharacter.Util.load(this.receiver);
+		return Character.Util.load(this.receiver);
 	}
 
-	public DCharacter getSender()
+	public Character getSender()
 	{
-		return DCharacter.Util.load(this.sender);
+		return Character.Util.load(this.sender);
 	}
 
 	public String getName()
@@ -160,7 +161,7 @@ public class Notification implements ConfigurationSerializable
 			return DataManager.notifications.get(id);
 		}
 
-		public static Notification create(Sender sender, DCharacter receiver, Danger danger, String name, String message)
+		public static Notification create(Sender sender, Character receiver, Danger danger, String name, String message)
 		{
 			Notification notification = new Notification();
 			notification.generateId();
@@ -173,7 +174,7 @@ public class Notification implements ConfigurationSerializable
 			return notification;
 		}
 
-		public static Notification create(Sender sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
+		public static Notification create(Sender sender, Character receiver, Danger danger, int minutes, String name, String message)
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
 			notification.generateId();
@@ -182,7 +183,7 @@ public class Notification implements ConfigurationSerializable
 			return notification;
 		}
 
-		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, String name, String message)
+		public static Notification create(Character sender, Character receiver, Danger danger, String name, String message)
 		{
 			Notification notification = create(Sender.CHARACTER, receiver, danger, name, message);
 			notification.generateId();
@@ -191,7 +192,7 @@ public class Notification implements ConfigurationSerializable
 			return notification;
 		}
 
-		public static Notification create(DCharacter sender, DCharacter receiver, Danger danger, int minutes, String name, String message)
+		public static Notification create(Character sender, Character receiver, Danger danger, int minutes, String name, String message)
 		{
 			Notification notification = create(sender, receiver, danger, name, message);
 			notification.generateId();
@@ -212,7 +213,7 @@ public class Notification implements ConfigurationSerializable
 			}
 		}
 
-		public static void sendNotification(DCharacter character, Notification notification)
+		public static void sendNotification(Character character, Notification notification)
 		{
 			// Add the notification
 			character.getMeta().addNotification(notification);

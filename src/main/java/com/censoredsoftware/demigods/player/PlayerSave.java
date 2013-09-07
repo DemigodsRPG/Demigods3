@@ -29,7 +29,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 
-public class DPlayer implements ConfigurationSerializable
+public class PlayerSave implements ConfigurationSerializable
 {
 	private String player;
 	private boolean canPvp;
@@ -40,10 +40,10 @@ public class DPlayer implements ConfigurationSerializable
 	private UUID mortalInventory;
 	private static ChatRecorder chatRecording;
 
-	public DPlayer()
+	public PlayerSave()
 	{}
 
-	public DPlayer(String player, ConfigurationSection conf)
+	public PlayerSave(String player, ConfigurationSection conf)
 	{
 		this.player = player;
 		canPvp = conf.getBoolean("canPvp");
@@ -181,14 +181,14 @@ public class DPlayer implements ConfigurationSerializable
 
 	public void saveMortalInventory(PlayerInventory inventory)
 	{
-		DCharacter.Inventory mortalInventory = new DCharacter.Inventory();
+		Character.Inventory mortalInventory = new Character.Inventory();
 		mortalInventory.generateId();
 		if(inventory.getHelmet() != null) mortalInventory.setHelmet(inventory.getHelmet());
 		if(inventory.getChestplate() != null) mortalInventory.setChestplate(inventory.getChestplate());
 		if(inventory.getLeggings() != null) mortalInventory.setLeggings(inventory.getLeggings());
 		if(inventory.getBoots() != null) mortalInventory.setBoots(inventory.getBoots());
 		mortalInventory.setItems(inventory);
-		DCharacter.Util.saveInventory(mortalInventory);
+		Character.Util.saveInventory(mortalInventory);
 		this.mortalInventory = mortalInventory.getId();
 		Util.save(this);
 	}
@@ -197,7 +197,7 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		// Update the current character
 		final Player player = getOfflinePlayer().getPlayer();
-		final DCharacter character = getCurrent();
+		final Character character = getCurrent();
 
 		if(character != null)
 		{
@@ -226,12 +226,12 @@ public class DPlayer implements ConfigurationSerializable
 			Pet.Util.disownPets(character.getName());
 
 			// Save it
-			DCharacter.Util.save(character);
+			Character.Util.save(character);
 		}
 
 	}
 
-	public void switchCharacter(final DCharacter newChar)
+	public void switchCharacter(final Character newChar)
 	{
 		final Player player = getOfflinePlayer().getPlayer();
 
@@ -264,7 +264,7 @@ public class DPlayer implements ConfigurationSerializable
 
 		// Save instances
 		Util.save(this);
-		DCharacter.Util.save(newChar);
+		Character.Util.save(newChar);
 	}
 
 	public boolean canPvp()
@@ -288,18 +288,18 @@ public class DPlayer implements ConfigurationSerializable
 		return Region.Util.getRegion(getCurrent().getLocation());
 	}
 
-	public DCharacter getCurrent()
+	public Character getCurrent()
 	{
 		if(this.current == null) return null;
-		DCharacter character = DCharacter.Util.load(this.current);
+		Character character = Character.Util.load(this.current);
 		if(character != null && character.isUsable()) return character;
 		return null;
 	}
 
-	public DCharacter getPrevious()
+	public Character getPrevious()
 	{
 		if(this.previous == null) return null;
-		return DCharacter.Util.load(this.previous);
+		return Character.Util.load(this.previous);
 	}
 
 	public String getCurrentDeityName()
@@ -307,26 +307,26 @@ public class DPlayer implements ConfigurationSerializable
 		return currentDeityName;
 	}
 
-	public Set<DCharacter> getCharacters()
+	public Set<Character> getCharacters()
 	{
-		return Sets.newHashSet(Collections2.filter(DCharacter.Util.loadAll(), new Predicate<DCharacter>()
+		return Sets.newHashSet(Collections2.filter(Character.Util.loadAll(), new Predicate<Character>()
 		{
 			@Override
-			public boolean apply(DCharacter character)
+			public boolean apply(Character character)
 			{
 				return character != null && character.getPlayerName().equals(player) && character.isUsable();
 			}
 		}));
 	}
 
-	public DCharacter.Inventory getMortalInventory()
+	public Character.Inventory getMortalInventory()
 	{
-		return DCharacter.Util.getInventory(mortalInventory);
+		return Character.Util.getInventory(mortalInventory);
 	}
 
 	public void applyMortalInventory()
 	{
-		if(getMortalInventory() == null) mortalInventory = DCharacter.Util.createEmptyInventory().getId();
+		if(getMortalInventory() == null) mortalInventory = Character.Util.createEmptyInventory().getId();
 		getMortalInventory().setToPlayer(getOfflinePlayer().getPlayer());
 		mortalInventory = null;
 	}
@@ -348,26 +348,26 @@ public class DPlayer implements ConfigurationSerializable
 		if(getOfflinePlayer().isOnline()) getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your player save is being cleared.");
 
 		// Remove characters
-		for(DCharacter character : getCharacters())
+		for(Character character : getCharacters())
 			character.remove();
 
-		// Now we clear the DPlayer save itself
+		// Now we clear the PlayerSave save itself
 		Util.delete(getPlayerName());
 	}
 
 	public static class Util
 	{
-		public static DPlayer create(OfflinePlayer player)
+		public static PlayerSave create(OfflinePlayer player)
 		{
-			DPlayer trackedPlayer = new DPlayer();
-			trackedPlayer.setPlayer(player.getName());
-			trackedPlayer.setLastLoginTime(player.getLastPlayed());
-			trackedPlayer.setCanPvp(true);
-			Util.save(trackedPlayer);
-			return trackedPlayer;
+			PlayerSave playerSave = new PlayerSave();
+			playerSave.setPlayer(player.getName());
+			playerSave.setLastLoginTime(player.getLastPlayed());
+			playerSave.setCanPvp(true);
+			Util.save(playerSave);
+			return playerSave;
 		}
 
-		public static void save(DPlayer player)
+		public static void save(PlayerSave player)
 		{
 			DataManager.players.put(player.getPlayerName(), player);
 		}
@@ -377,14 +377,14 @@ public class DPlayer implements ConfigurationSerializable
 			DataManager.players.remove(playerName);
 		}
 
-		public static DPlayer getPlayer(OfflinePlayer player)
+		public static PlayerSave getPlayer(OfflinePlayer player)
 		{
-			DPlayer found = getPlayer(player.getName());
+			PlayerSave found = getPlayer(player.getName());
 			if(found == null) return create(player);
 			return found;
 		}
 
-		public static DPlayer getPlayer(String player)
+		public static PlayerSave getPlayer(String player)
 		{
 			if(DataManager.players.containsKey(player)) return DataManager.players.get(player);
 			return null;
@@ -398,7 +398,7 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static boolean isImmortal(OfflinePlayer player)
 		{
-			DCharacter character = getPlayer(player).getCurrent();
+			Character character = getPlayer(player).getCurrent();
 			return character != null;
 		}
 
@@ -411,7 +411,7 @@ public class DPlayer implements ConfigurationSerializable
 		 */
 		public static boolean hasCharName(OfflinePlayer player, String charName)
 		{
-			for(DCharacter character : getPlayer(player).getCharacters())
+			for(Character character : getPlayer(player).getCharacters())
 				if(character.getName().equalsIgnoreCase(charName)) return true;
 			return false;
 		}

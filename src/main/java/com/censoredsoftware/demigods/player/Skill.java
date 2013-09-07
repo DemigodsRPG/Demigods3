@@ -82,14 +82,14 @@ public class Skill implements ConfigurationSerializable
 		this.level = level;
 	}
 
-	void setCharacter(DCharacter character)
+	void setCharacter(Character character)
 	{
 		this.character = character.getId();
 	}
 
-	public DCharacter getCharacter()
+	public Character getCharacter()
 	{
-		return DCharacter.Util.load(character);
+		return Character.Util.load(character);
 	}
 
 	public UUID getId()
@@ -179,7 +179,7 @@ public class Skill implements ConfigurationSerializable
 
 	public static class Util
 	{
-		public static Skill createSkill(DCharacter character, Skill.Type type)
+		public static Skill createSkill(Character character, Skill.Type type)
 		{
 			Skill skill = new Skill();
 			skill.generateId();
@@ -211,7 +211,7 @@ public class Skill implements ConfigurationSerializable
 				if(participant.getRelatedCharacter() == null) continue;
 
 				// Get related character
-				DCharacter character = participant.getRelatedCharacter();
+				Character character = participant.getRelatedCharacter();
 
 				// Define all variables used for skill point calculation
 				int mvpScore = battle.getMVPs().contains(participant) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;

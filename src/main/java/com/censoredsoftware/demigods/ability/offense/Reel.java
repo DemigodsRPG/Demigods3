@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.ability.offense;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,7 +12,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.Skill;
+import com.google.common.collect.Lists;
 
 public class Reel implements Ability
 {
@@ -112,7 +113,7 @@ public class Reel implements Ability
 
 				// Set variables
 				Player player = interactEvent.getPlayer();
-				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+				Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
@@ -120,7 +121,7 @@ public class Reel implements Ability
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
-					if(!DCharacter.Util.isCooledDown(character, name, false)) return;
+					if(!Character.Util.isCooledDown(character, name, false)) return;
 
 					Util.reel(player);
 				}
@@ -139,13 +140,13 @@ public class Reel implements Ability
 		public static void reel(Player player)
 		{
 			// Set variables
-			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+			Character character = PlayerSave.Util.getPlayer(player).getCurrent();
 			int damage = (int) Math.ceil(0.37286 * Math.pow(character.getMeta().getAscensions() * 100, 0.371238)); // TODO
 			LivingEntity target = Ability.Util.autoTarget(player);
 
 			if(!Ability.Util.doAbilityPreProcess(player, target, cost)) return;
 			character.getMeta().subtractFavor(cost);
-			DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
+			com.censoredsoftware.demigods.player.Character.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
 
 			if(!Ability.Util.doTargeting(player, target.getLocation(), true)) return;
 

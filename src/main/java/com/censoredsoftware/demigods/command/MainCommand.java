@@ -19,8 +19,8 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.PlayerSave;
 import com.censoredsoftware.demigods.util.*;
 import com.google.common.collect.Sets;
 
@@ -74,9 +74,9 @@ public class MainCommand extends WrappedCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
-		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
+		if(command.getName().equals("deity") && PlayerSave.Util.getPlayer(player).getCurrent() != null && PlayerSave.Util.getPlayer(player).getCurrent().isUsable())
 		{
-			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
+			Deity deity = PlayerSave.Util.getPlayer(player).getCurrent().getDeity();
 			player.chat("/dg " + deity.getAlliance().toLowerCase() + " " + deity.getName().toLowerCase());
 			return true;
 		}
@@ -325,7 +325,7 @@ public class MainCommand extends WrappedCommand
 			if(args[2].equalsIgnoreCase("player"))
 			{
 				// Define the player
-				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
+				PlayerSave player = PlayerSave.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
 
 				// Display the information
 				if(player != null)
@@ -339,7 +339,7 @@ public class MainCommand extends WrappedCommand
 					if(player.getCharacters() != null && !player.getCharacters().isEmpty())
 					{
 						sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Characters:");
-						for(DCharacter character : player.getCharacters())
+						for(Character character : player.getCharacters())
 							sender.sendMessage(ChatColor.GRAY + "   - " + ChatColor.WHITE + character.getName() + ChatColor.RESET + " (" + character.getDeity().getColor() + character.getDeity().getName() + ChatColor.RESET + ")");
 					}
 				}
@@ -351,7 +351,7 @@ public class MainCommand extends WrappedCommand
 			else if(args[2].equalsIgnoreCase("character"))
 			{
 				// Define the character
-				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+				Character character = Character.Util.getCharacterByName(args[3]);
 
 				// Display the information
 				if(character != null)
@@ -406,7 +406,7 @@ public class MainCommand extends WrappedCommand
 			if(args[2].equalsIgnoreCase("player"))
 			{
 				// Define the player
-				DPlayer player = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
+				PlayerSave player = PlayerSave.Util.getPlayer(Bukkit.getOfflinePlayer(args[3]));
 
 				// Remove their data if not null
 				if(player != null)
@@ -425,7 +425,7 @@ public class MainCommand extends WrappedCommand
 			else if(args[2].equalsIgnoreCase("character"))
 			{
 				// Define the character
-				DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+				Character character = Character.Util.getCharacterByName(args[3]);
 
 				// Remove their data if not null
 				if(character != null)
@@ -470,7 +470,7 @@ public class MainCommand extends WrappedCommand
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Character character = Character.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
@@ -551,7 +551,7 @@ public class MainCommand extends WrappedCommand
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Character character = Character.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 
@@ -632,7 +632,7 @@ public class MainCommand extends WrappedCommand
 				return true;
 			}
 
-			DCharacter character = DCharacter.Util.getCharacterByName(args[3]);
+			Character character = com.censoredsoftware.demigods.player.Character.Util.getCharacterByName(args[3]);
 			int amount = Integer.parseInt(args[4]);
 			String updatedValue = null;
 

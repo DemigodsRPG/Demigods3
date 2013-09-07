@@ -1,23 +1,7 @@
 package com.censoredsoftware.demigods.battle;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Titles;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.*;
+import java.util.*;
+
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -27,7 +11,24 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
+import com.censoredsoftware.demigods.language.Symbol;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.Character;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.player.PlayerSave;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Titles;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -44,7 +45,13 @@ public class Battle implements ConfigurationSerializable
 	private UUID startedBy;
 
 	public Battle()
-	{}
+	{
+		this.kills = Maps.newHashMap();
+		this.deaths = Maps.newHashMap();
+		this.involvedPlayers = Sets.newHashSet();
+		this.involvedTameable = Sets.newHashSet();
+		this.killCounter = 0;
+	}
 
 	public Battle(UUID id, ConfigurationSection conf)
 	{
@@ -168,31 +175,22 @@ public class Battle implements ConfigurationSerializable
 		return this.deleteTime;
 	}
 
-	void setStarter(DCharacter character)
+	void setStarter(Character character)
 	{
 		this.startedBy = character.getId();
 		addParticipant(character);
 	}
 
-	void initialize()
-	{
-		this.kills = Maps.newHashMap();
-		this.deaths = Maps.newHashMap();
-		this.involvedPlayers = Sets.newHashSet();
-		this.involvedTameable = Sets.newHashSet();
-		this.killCounter = 0;
-	}
-
 	public void addParticipant(Participant participant)
 	{
-		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
+		if(participant instanceof Character) this.involvedPlayers.add((participant.getId().toString()));
 		else this.involvedTameable.add(participant.getId().toString());
 		Util.save(this);
 	}
 
 	public void removeParticipant(Participant participant)
 	{
-		if(participant instanceof DCharacter) this.involvedPlayers.remove((participant.getId().toString()));
+		if(participant instanceof Character) this.involvedPlayers.remove((participant.getId().toString()));
 		else this.involvedTameable.remove(participant.getId().toString());
 		Util.save(this);
 	}
@@ -200,7 +198,7 @@ public class Battle implements ConfigurationSerializable
 	public void addKill(Participant participant)
 	{
 		this.killCounter += 1;
-		DCharacter character = participant.getRelatedCharacter();
+		Character character = participant.getRelatedCharacter();
 		if(this.kills.containsKey(character.getId().toString())) this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).toString()) + 1);
 		else this.kills.put(character.getId().toString(), 1);
 		Util.save(this);
@@ -208,16 +206,16 @@ public class Battle implements ConfigurationSerializable
 
 	public void addDeath(Participant participant)
 	{
-		DCharacter character = participant.getRelatedCharacter();
+		Character character = participant.getRelatedCharacter();
 		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
 		sendBattleStats();
 	}
 
-	public DCharacter getStarter()
+	public Character getStarter()
 	{
-		return DCharacter.Util.load(this.startedBy);
+		return Character.Util.load(this.startedBy);
 	}
 
 	public Set<Participant> getParticipants()
@@ -227,7 +225,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public Participant apply(String character)
 			{
-				return DCharacter.Util.load(UUID.fromString(character));
+				return Character.Util.load(UUID.fromString(character));
 			}
 		})), Sets.newHashSet(Collections2.transform(involvedTameable, new Function<String, Participant>()
 		{
@@ -247,7 +245,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public String apply(String stringId)
 			{
-				return DCharacter.Util.load(UUID.fromString(stringId)).getAlliance();
+				return Character.Util.load(UUID.fromString(stringId)).getAlliance();
 			}
 		}))
 			alliances.add(alliance);
@@ -281,7 +279,7 @@ public class Battle implements ConfigurationSerializable
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
 		{
-			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
+			if(!getParticipants().contains(Character.Util.load(UUID.fromString(entry.getKey())))) continue;
 			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
 		}
 		for(Map.Entry<String, Object> entry : deaths.entrySet())
@@ -298,7 +296,7 @@ public class Battle implements ConfigurationSerializable
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
 		{
-			if(!getParticipants().contains(DCharacter.Util.load(UUID.fromString(entry.getKey())))) continue;
+			if(!getParticipants().contains(Character.Util.load(UUID.fromString(entry.getKey())))) continue;
 			score.put(UUID.fromString(entry.getKey()), Integer.parseInt(entry.getValue().toString()));
 		}
 		for(Map.Entry<String, Object> entry : deaths.entrySet())
@@ -313,7 +311,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public boolean apply(Map.Entry<UUID, Integer> entry)
 			{
-				return DCharacter.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
+				return Character.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
 			}
 		}), new Function<Map.Entry<UUID, Integer>, Integer>()
 		{
@@ -327,7 +325,7 @@ public class Battle implements ConfigurationSerializable
 		return sum;
 	}
 
-	public Collection<DCharacter> getMVPs()
+	public Collection<Character> getMVPs()
 	{
 		final int max = Collections.max(getScores().values());
 		return Collections2.transform(Collections2.filter(getScores().entrySet(), new Predicate<Map.Entry<UUID, Integer>>()
@@ -337,12 +335,12 @@ public class Battle implements ConfigurationSerializable
 			{
 				return entry.getValue() == max;
 			}
-		}), new Function<Map.Entry<UUID, Integer>, DCharacter>()
+		}), new Function<Map.Entry<UUID, Integer>, Character>()
 		{
 			@Override
-			public DCharacter apply(Map.Entry<UUID, Integer> entry)
+			public Character apply(Map.Entry<UUID, Integer> entry)
 			{
-				return DCharacter.Util.load(entry.getKey());
+				return Character.Util.load(entry.getKey());
 			}
 		});
 	}
@@ -363,8 +361,8 @@ public class Battle implements ConfigurationSerializable
 		{
 			if(scores.get(participants.get(0)).equals(scores.get(participants.get(1))))
 			{
-				DCharacter one = DCharacter.Util.load(participants.get(0));
-				DCharacter two = DCharacter.Util.load(participants.get(1));
+				Character one = Character.Util.load(participants.get(0));
+				Character two = Character.Util.load(participants.get(1));
 				Messages.broadcast(" ");
 				Messages.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
 				Messages.broadcast(" ");
@@ -372,8 +370,8 @@ public class Battle implements ConfigurationSerializable
 			else
 			{
 				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
-				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
-				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
+				Character winner = Character.Util.load(participants.get(winnerIndex));
+				Character loser = Character.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
 				Messages.broadcast(" ");
 				Messages.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
 				Messages.broadcast(" ");
@@ -383,7 +381,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			String winningAlliance = "";
 			int winningScore = 0;
-			Collection<DCharacter> MVPs = getMVPs();
+			Collection<Character> MVPs = getMVPs();
 			boolean oneMVP = MVPs.size() == 1;
 			for(String alliance : getInvolvedAlliances())
 			{
@@ -397,7 +395,7 @@ public class Battle implements ConfigurationSerializable
 			Messages.broadcast(" ");
 			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
-			for(DCharacter mvp : MVPs)
+			for(Character mvp : MVPs)
 				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
 			Messages.broadcast(" ");
 		}
@@ -419,7 +417,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		for(String stringId : involvedPlayers)
 		{
-			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			OfflinePlayer offlinePlayer = Character.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
 			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendMessage(message);
 		}
 	}
@@ -428,7 +426,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		for(String stringId : involvedPlayers)
 		{
-			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			OfflinePlayer offlinePlayer = Character.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
 			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendRawMessage(message);
 		}
 	}
@@ -455,7 +453,6 @@ public class Battle implements ConfigurationSerializable
 			battle.setStartLocation(damager.getCurrentLocation().toVector().getMidpoint(damaged.getCurrentLocation().toVector()).toLocation(damager.getCurrentLocation().getWorld()));
 			battle.setStartTime(System.currentTimeMillis());
 			battle.setActive();
-			battle.initialize();
 			battle.setStarter(damager.getRelatedCharacter());
 			battle.addParticipant(damager);
 			battle.addParticipant(damaged);
@@ -643,7 +640,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			if(entity instanceof Player)
 			{
-				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
+				Character character = PlayerSave.Util.getPlayer((Player) entity).getCurrent();
 				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
 			return entity instanceof LivingEntity && Pet.Util.getPet((LivingEntity) entity) != null;
@@ -652,20 +649,20 @@ public class Battle implements ConfigurationSerializable
 		public static Participant defineParticipant(Entity entity)
 		{
 			if(!canParticipate(entity)) return null;
-			if(entity instanceof Player) return DPlayer.Util.getPlayer((Player) entity).getCurrent();
+			if(entity instanceof Player) return PlayerSave.Util.getPlayer((Player) entity).getCurrent();
 			return Pet.Util.getPet((LivingEntity) entity);
 		}
 
 		public static void battleDeath(Participant damager, Participant damagee, Battle battle)
 		{
-			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
+			if(damager instanceof Character) ((Character) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.addKill(damager);
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof DCharacter)
+			if(damagee instanceof Character)
 			{
-				DCharacter character = (DCharacter) damagee;
+				Character character = (Character) damagee;
 				Player player = character.getOfflinePlayer().getPlayer();
 				player.setFoodLevel(20);
 				for(PotionEffect potionEffect : player.getActivePotionEffects())
@@ -681,7 +678,7 @@ public class Battle implements ConfigurationSerializable
 		{
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
-			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
+			if(damagee instanceof Character) ((com.censoredsoftware.demigods.player.Character) damagee).addDeath();
 			if(damagee.getRelatedCharacter().getOfflinePlayer().isOnline()) damagee.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "+1 Death.");
 			battle.addDeath(damagee);
 		}
