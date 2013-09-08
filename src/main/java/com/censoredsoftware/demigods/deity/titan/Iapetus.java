@@ -1,6 +1,15 @@
 package com.censoredsoftware.demigods.deity.titan;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -8,17 +17,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Iapetus
 {
-	public final static String name = "Iapetus", alliance = "Titan", permission = "demigods.titan.iapetus", shortDescription = ChatColor.GRAY + "The Titan of mortality.";
+	public final static String name = "Iapetus", shortDescription = ChatColor.GRAY + "The Titan of mortality.";
+	public final static Alliance alliance = Alliance.TITAN;
+	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));

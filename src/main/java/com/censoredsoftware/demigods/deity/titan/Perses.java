@@ -1,9 +1,18 @@
 package com.censoredsoftware.demigods.deity.titan;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.passive.NoFire;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -11,17 +20,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Perses
 {
-	public final static String name = "Perses", alliance = "Titan", permission = "demigods.titan.perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
+	public final static String name = "Perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
+	public final static Alliance alliance = Alliance.TITAN;
+	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30;
 	public final static ChatColor color = ChatColor.GOLD;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));

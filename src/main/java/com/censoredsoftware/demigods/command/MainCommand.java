@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -77,7 +78,7 @@ public class MainCommand extends WrappedCommand
 		if(command.getName().equals("deity") && DPlayer.Util.getPlayer(player).getCurrent() != null && DPlayer.Util.getPlayer(player).getCurrent().isUsable())
 		{
 			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
-			player.chat("/dg " + deity.getAlliance().toLowerCase() + " " + deity.getName().toLowerCase());
+			player.chat("/dg " + deity.getAlliance().getName().toLowerCase() + " " + deity.getName().toLowerCase());
 			return true;
 		}
 		else if(command.getName().equals("deity"))
@@ -87,10 +88,10 @@ public class MainCommand extends WrappedCommand
 		}
 
 		Messages.tagged(sender, "Documentation");
-		for(String alliance : Deity.Util.getLoadedPlayableDeityAlliances())
+		for(Alliance alliance : Alliance.values())
 		{
-			if(!sender.hasPermission("demigods." + alliance.toLowerCase())) continue;
-			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase());
+			if(!sender.hasPermission(alliance.getPermission())) continue;
+			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
 		sender.sendMessage(ChatColor.GRAY + " /dg commands");
@@ -179,20 +180,20 @@ public class MainCommand extends WrappedCommand
 			}
 		}
 
-		for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms(player))
+		for(Alliance alliance : Alliance.values())
 		{
-			if(!player.hasPermission("demigods." + alliance.toLowerCase())) continue;
-			if(category.equalsIgnoreCase(alliance))
+			if(!player.hasPermission(alliance.getPermission())) continue;
+			if(category.equalsIgnoreCase(alliance.getName()))
 			{
 				if(args.length < 2)
 				{
 					Messages.tagged(player, alliance + " Directory");
-					for(Deity deity : Deity.Util.getLoadedPlayableDeitiesInAlliance(alliance))
-						player.sendMessage(ChatColor.GRAY + " /dg " + alliance.toLowerCase() + " " + deity.getColor() + deity.getName().toLowerCase());
+					for(Deity deity : Alliance.Util.getLoadedPlayableDeitiesInAlliance(alliance))
+						player.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase() + " " + deity.getColor() + deity.getName().toLowerCase());
 				}
 				else
 				{
-					for(final Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player))
+					for(final Deity deity : Alliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player))
 					{
 						assert option1 != null;
 						if(option1.equalsIgnoreCase(deity.getName()))

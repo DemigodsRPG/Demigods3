@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.deity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.Template;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -8,17 +16,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class TemplateDeity
 {
-	public final static String name = "Template", alliance = "Test", permission = "demigods.test.template", shortDescription = ChatColor.GRAY + "The deity of testing.";
+	public final static String name = "Template", shortDescription = ChatColor.GRAY + "The deity of testing.";
+	public final static Alliance alliance = Alliance.TEST;
+	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.GRAY;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 1));

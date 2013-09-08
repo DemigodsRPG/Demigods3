@@ -92,7 +92,7 @@ public class Translation
 		for(Deity deity : Deity.values())
 		{
 			set.add(deity.getName());
-			set.add(deity.getAlliance());
+			set.add(deity.getAlliance().getName());
 		}
 
 		return set;

@@ -1,9 +1,18 @@
 package com.censoredsoftware.demigods.deity.god;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoFall;
 import com.censoredsoftware.demigods.ability.support.Shove;
 import com.censoredsoftware.demigods.ability.ultimate.Storm;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -11,17 +20,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Zeus
 {
-	public final static String name = "Zeus", alliance = "God", permission = "demigods.god.zeus", shortDescription = ChatColor.GRAY + "The God of the sky.";
+	public final static String name = "Zeus", shortDescription = ChatColor.GRAY + "The God of the sky.";
+	public final static Alliance alliance = Alliance.GOD;
+	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30;
 	public final static ChatColor color = ChatColor.YELLOW;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FEATHER, 3));

@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
@@ -36,8 +37,6 @@ import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -993,8 +992,8 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(String alliance : Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms(player))
-					player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.toLowerCase()));
+				for(Alliance alliance : Alliance.values())
+					if(player.hasPermission(alliance.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
 
 				return "";
 			}
@@ -1002,20 +1001,20 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, final String alliance)
 			{
-				return Iterables.any(Deity.Util.getLoadedMajorPlayableDeityAlliancesWithPerms((Player) context.getForWhom()), new Predicate<String>()
+				try
 				{
-					@Override
-					public boolean apply(String loadedAlliance)
-					{
-						return loadedAlliance.equalsIgnoreCase(alliance);
-					}
-				});
+					return ((Player) context.getForWhom()).hasPermission(Alliance.valueOf(alliance.toUpperCase()).getPermission());
+				}
+				catch(Exception ignored)
+				{
+					return false;
+				}
 			}
 
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String alliance)
 			{
-				context.setSessionData("chosen_alliance", alliance);
+				context.setSessionData("chosen_alliance", Alliance.valueOf(alliance.toUpperCase()));
 				return new ConfirmAlliance();
 			}
 		}
@@ -1026,7 +1025,7 @@ public class Prayer implements WrappedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Messages.clearRawChat((Player) context.getForWhom());
-				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((String) context.getSessionData("chosen_alliance")).toLowerCase()) + "s" + ChatColor.GRAY + "? (y/n)";
+				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((Alliance) context.getSessionData("chosen_alliance")).getName()) + "s" + ChatColor.GRAY + "? (y/n)";
 			}
 
 			@Override
@@ -1060,7 +1059,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(Deity deity : Deity.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((String) context.getSessionData("chosen_alliance"), player))
+				for(Deity deity : Alliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((Alliance) context.getSessionData("chosen_alliance"), player))
 					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.DARK_RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
 
 				player.sendRawMessage(" ");

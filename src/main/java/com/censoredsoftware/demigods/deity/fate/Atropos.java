@@ -1,10 +1,19 @@
 package com.censoredsoftware.demigods.deity.fate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.AlwaysInvisible;
 import com.censoredsoftware.demigods.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.ability.support.Carry;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
@@ -12,17 +21,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Atropos
 {
-	public final static String name = "Atropos", alliance = "Fate", permission = "demigods.fate.atropos", shortDescription = ChatColor.GRAY + "The one who cuts the string.";
+	public final static String name = "Atropos", shortDescription = ChatColor.GRAY + "The one who cuts the string.";
+	public final static Alliance alliance = Alliance.FATE;
+	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2;
 	public final static ChatColor color = ChatColor.DARK_RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));

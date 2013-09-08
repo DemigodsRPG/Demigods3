@@ -16,6 +16,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -365,7 +366,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		});
 	}
 
-	public String getAlliance()
+	public Alliance getAlliance()
 	{
 		return getDeity().getAlliance();
 	}
@@ -1286,7 +1287,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		 */
 		public static boolean areAllied(DCharacter char1, DCharacter char2)
 		{
-			return char1.getAlliance().equalsIgnoreCase(char2.getAlliance());
+			return char1.getAlliance().getName().equalsIgnoreCase(char2.getAlliance().getName());
 		}
 
 		public static Collection<DCharacter> getOnlineCharactersWithDeity(final String deity)
@@ -1318,26 +1319,26 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final String alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final Alliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().equalsIgnoreCase(alliance);
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final String alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final Alliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getOfflinePlayer().isOnline() && !character.getAlliance().equalsIgnoreCase(alliance);
+					return character.isActive() && character.getOfflinePlayer().isOnline() && !character.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}

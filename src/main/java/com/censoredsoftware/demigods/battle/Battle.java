@@ -13,6 +13,7 @@ import org.bukkit.util.Vector;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -237,19 +238,17 @@ public class Battle implements ConfigurationSerializable
 		})));
 	}
 
-	public Set<String> getInvolvedAlliances()
+	public Set<Alliance> getInvolvedAlliances()
 	{
-		Set<String> alliances = Sets.newHashSet();
-		for(String alliance : Collections2.transform(involvedPlayers, new Function<String, String>()
+		return new HashSet<Alliance>()
 		{
-			@Override
-			public String apply(String stringId)
 			{
-				return DCharacter.Util.load(UUID.fromString(stringId)).getAlliance();
+				for(Participant participant : getParticipants())
+				{
+					if(participant.getRelatedCharacter() != null) add(participant.getRelatedCharacter().getAlliance());
+				}
 			}
-		}))
-			alliances.add(alliance);
-		return alliances;
+		};
 	}
 
 	public int getKills(Participant participant)
@@ -291,7 +290,7 @@ public class Battle implements ConfigurationSerializable
 		return score;
 	}
 
-	public int getScore(final String alliance)
+	public int getScore(final Alliance alliance)
 	{
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
@@ -311,7 +310,7 @@ public class Battle implements ConfigurationSerializable
 			@Override
 			public boolean apply(Map.Entry<UUID, Integer> entry)
 			{
-				return DCharacter.Util.load(entry.getKey()).getAlliance().equalsIgnoreCase(alliance);
+				return DCharacter.Util.load(entry.getKey()).getAlliance().getName().equalsIgnoreCase(alliance.getName());
 			}
 		}), new Function<Map.Entry<UUID, Integer>, Integer>()
 		{
@@ -379,11 +378,11 @@ public class Battle implements ConfigurationSerializable
 		}
 		else if(participants.size() > 2)
 		{
-			String winningAlliance = "";
+			Alliance winningAlliance = null;
 			int winningScore = 0;
 			Collection<DCharacter> MVPs = getMVPs();
 			boolean oneMVP = MVPs.size() == 1;
-			for(String alliance : getInvolvedAlliances())
+			for(Alliance alliance : getInvolvedAlliances())
 			{
 				int score = getScore(alliance);
 				if(getScore(alliance) > winningScore)
@@ -393,7 +392,7 @@ public class Battle implements ConfigurationSerializable
 				}
 			}
 			Messages.broadcast(" ");
-			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
+			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
 				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
