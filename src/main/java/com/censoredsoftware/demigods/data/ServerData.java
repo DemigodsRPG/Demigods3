@@ -147,9 +147,9 @@ public class ServerData implements ConfigurationSerializable
 			return Sets.newHashSet(Collections2.filter(getAll(), new Predicate<ServerData>()
 			{
 				@Override
-				public boolean apply(ServerData timedData)
+				public boolean apply(ServerData serverData)
 				{
-					return timedData.getKey().equals(key);
+					return serverData.getKey().equals(key);
 				}
 			}));
 		}
