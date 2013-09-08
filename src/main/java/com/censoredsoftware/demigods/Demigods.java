@@ -170,6 +170,7 @@ public class Demigods
 		commands.add("o");
 		commands.add("l");
 		commands.add("a");
+		commands.add("v");
 		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 

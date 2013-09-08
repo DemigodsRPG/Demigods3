@@ -1,239 +1,366 @@
 package com.censoredsoftware.demigods.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.data.ServerData;
 
 public class ItemValues
 {
+	private static String dataKey = "tributeTracking";
+
 	/**
-	 * Returns the value of the passed in <code>item</code>.
+	 * Returns all saved tribute data.
 	 * 
-	 * @param item the ItemStack to be checked.
-	 * @return int the value of the ItemStack.
+	 * @return a Map of all tribute data.
 	 */
-	public static int getTributeValue(ItemStack item)
+	public static Map<Material, Integer> getTributesMap()
 	{
-		// Return if null
-		if(item == null) return 0;
+		return new HashMap<Material, Integer>()
+		{
+			{
+				for(ServerData data : ServerData.Util.findByKey(dataKey))
+				{
+					put(Material.getMaterial(data.getSubKey().toString().toUpperCase()), Integer.valueOf(data.getData().toString()));
+				}
+			}
+		};
+	}
 
-		// Define variables
-		double multiplier = 0; // TODO this.
+	/**
+	 * Returns all saved tribute data.
+	 * 
+	 * @return a Map of all tribute data.
+	 */
+	public static Map<Material, Integer> getTributeValuesMap()
+	{
+		return new HashMap<Material, Integer>()
+		{
+			{
+				for(ServerData data : ServerData.Util.findByKey(dataKey))
+				{
+					Material material = Material.getMaterial(data.getSubKey().toString().toUpperCase());
+					put(material, getValue(material));
+				}
+			}
+		};
+	}
 
-		// Set the multiplier
-		switch(item.getType())
+	/**
+	 * Returns the total number of tributes for the entire server.
+	 * 
+	 * @return the total server tributes.
+	 */
+	public static int getTotalTributes()
+	{
+		int total = 1;
+		for(ServerData data : ServerData.Util.findByKey(dataKey))
+			total += Integer.parseInt(data.getData().toString());
+		return total;
+	}
+
+	/**
+	 * Returns the number of tributes for the <code>material</code>.
+	 * 
+	 * @param material the material to check.
+	 * @return the total number of tributes.
+	 */
+	public static int getTributes(Material material)
+	{
+		if(DataManager.hasServerData(dataKey, material.name())) return Integer.parseInt(ServerData.Util.find(dataKey, material.name()).getData().toString());
+		else return 1;
+	}
+
+	/**
+	 * Saves the <code>item</code> amount into the server tribute stats.
+	 * 
+	 * @param item the item whose amount to save.
+	 */
+	public static void saveTribute(ItemStack item)
+	{
+		if(DataManager.hasServerData(dataKey, item.getType().name()))
+		{
+			ServerData data = ServerData.Util.find(dataKey, item.getType().name());
+			data.setData(Integer.parseInt(data.getData().toString()) + item.getAmount());
+		}
+		else
+		{
+			DataManager.saveServerData(dataKey, item.getType().name(), item.getAmount());
+		}
+	}
+
+	/**
+	 * Returns the value for a <code>material</code>.
+	 */
+	public static int getValue(Material material)
+	{
+		return getValue(new ItemStack(material));
+	}
+
+	/**
+	 * Returns the value for the <code>item</code> based on current tribute stats.
+	 * 
+	 * @param item the item whose value to calculate.
+	 * @return the value of the item.
+	 */
+	public static int getValue(ItemStack item)
+	{
+		// Define values for reference
+		double baseValue = getBaseTributeValue(item.getType());
+		int totalItemTributes = getTributes(item.getType());
+
+		// Calculate multiplier
+		double multiplier = ((getTotalTributes() / totalItemTributes) * item.getAmount());
+		if(multiplier < baseValue) multiplier = baseValue;
+
+		// Return the value
+		return (int) multiplier * item.getAmount();
+	}
+
+	/**
+	 * Called when actually tributing the <code>item</code>.
+	 * 
+	 * @param item the item to process.
+	 * @return the value of the item.
+	 */
+	public static int processTribute(ItemStack item)
+	{
+		// Grab the value before
+		int value = getValue(item);
+
+		// Save the tribute to be used in calculations later
+		saveTribute(item);
+
+		// Return the value
+		return value;
+	}
+
+	/**
+	 * Returns the base value of the <code>material</code>.
+	 * 
+	 * @param material the material whose value to return.
+	 * @return the base value of the item.
+	 */
+	public static double getBaseTributeValue(Material material)
+	{
+		// TODO: THIS SHIT.
+
+		double value;
+		switch(material)
 		{
 			case ENDER_PORTAL_FRAME:
-				multiplier = 23.0;
+				value = 23.0;
 				break;
 			case CAULDRON_ITEM:
-				multiplier = 84.0;
+				value = 84.0;
 				break;
 			case LAVA_BUCKET:
-				multiplier = 36.5;
+				value = 36.5;
 				break;
 			case MILK_BUCKET:
-				multiplier = 36.5;
+				value = 36.5;
 				break;
 			case WATER_BUCKET:
-				multiplier = 36.5;
+				value = 36.5;
 				break;
 			case NETHER_WARTS:
-				multiplier = 13.2;
+				value = 13.2;
 				break;
 			case NETHER_STAR:
-				multiplier = 820.0;
+				value = 820.0;
 				break;
 			case BEACON:
-				multiplier = 885.3;
+				value = 885.3;
 				break;
 			case SADDLE:
-				multiplier = 5.3;
+				value = 5.3;
 				break;
 			case EYE_OF_ENDER:
-				multiplier = 18.0;
+				value = 18.0;
 				break;
 			case STONE:
-				multiplier = 0.5;
+				value = 0.5;
 				break;
 			case COBBLESTONE:
-				multiplier = 0.3;
+				value = 0.3;
 				break;
 			case LOG:
-				multiplier = item.getAmount();
+				value = 1.0;
 				break;
 			case WOOD:
-				multiplier = 0.23;
+				value = 0.23;
 				break;
 			case STICK:
-				multiplier = 0.11;
+				value = 0.11;
 				break;
 			case GLASS:
-				multiplier = 1.5;
+				value = 1.5;
 				break;
 			case LAPIS_BLOCK:
-				multiplier = 85.0;
+				value = 85.0;
 				break;
 			case SANDSTONE:
-				multiplier = 0.9;
+				value = 0.9;
 				break;
 			case GOLD_BLOCK:
-				multiplier = 170;
+				value = 170;
 				break;
 			case IRON_BLOCK:
-				multiplier = 120;
+				value = 120;
 				break;
 			case BRICK:
-				multiplier = 10;
+				value = 10;
 				break;
 			case TNT:
-				multiplier = 10;
+				value = 10;
 				break;
 			case MOSSY_COBBLESTONE:
-				multiplier = 10;
+				value = 10;
 				break;
 			case OBSIDIAN:
-				multiplier = 10;
+				value = 10;
 				break;
 			case DIAMOND_BLOCK:
-				multiplier = 300;
+				value = 150;
 				break;
 			case CACTUS:
-				multiplier = 1.7;
+				value = 1.7;
 				break;
 			case YELLOW_FLOWER:
-				multiplier = 0.1;
+				value = 0.1;
 				break;
 			case SEEDS:
-				multiplier = 0.3;
+				value = 0.3;
 				break;
 			case PUMPKIN:
-				multiplier = 0.7;
+				value = 3;
 				break;
 			case CAKE:
-				multiplier = 22;
+				value = 6;
 				break;
 			case APPLE:
-				multiplier = 5;
+				value = 5;
 				break;
 			case CARROT:
-				multiplier = 1.7;
+				value = 1.7;
 				break;
 			case POTATO:
-				multiplier = 1.7;
+				value = 1.7;
 				break;
 			case COAL:
-				multiplier = 2.5;
+				value = 2.5;
 				break;
 			case DIAMOND:
-				multiplier = 30;
+				value = 15;
 				break;
 			case IRON_ORE:
-				multiplier = 7;
+				value = 7;
 				break;
 			case GOLD_ORE:
-				multiplier = 13;
+				value = 13;
 				break;
 			case IRON_INGOT:
-				multiplier = 12;
+				value = 12;
 				break;
 			case GOLD_INGOT:
-				multiplier = 18;
+				value = 18;
 				break;
 			case STRING:
-				multiplier = 2.4;
+				value = 2.4;
 				break;
 			case WHEAT:
-				multiplier = 0.6;
+				value = 0.6;
 				break;
 			case BREAD:
-				multiplier = 2;
+				value = 3;
 				break;
 			case RAW_FISH:
-				multiplier = 2.4;
-				break;
 			case PORK:
-				multiplier = 2.4;
+				value = 2.5;
 				break;
 			case COOKED_FISH:
-				multiplier = 3.4;
-				break;
 			case GRILLED_PORK:
-				multiplier = 3.4;
+				value = 4;
 				break;
 			case GOLDEN_APPLE:
-				multiplier = 190;
+				value = 100;
 				break;
 			case GOLD_RECORD:
-				multiplier = 60;
+				value = 60;
 				break;
 			case GREEN_RECORD:
-				multiplier = 60;
+				value = 60;
 				break;
 			case GLOWSTONE:
-				multiplier = 1.7;
+				value = 1.7;
 				break;
 			case REDSTONE:
-				multiplier = 3.3;
+				value = 3.3;
 				break;
 			case REDSTONE_BLOCK:
-				multiplier = 27.9;
+				value = 27.9;
 				break;
 			case EGG:
-				multiplier = 0.3;
+				value = 0.3;
 				break;
 			case SUGAR:
-				multiplier = 1.2;
+				value = 1.2;
 				break;
 			case BONE:
-				multiplier = 3;
+				value = 3;
 				break;
 			case ENDER_PEARL:
-				multiplier = 1.7;
+				value = 1.7;
 				break;
 			case SULPHUR:
-				multiplier = 1.2;
+				value = 1.2;
 				break;
 			case COCOA:
-				multiplier = 0.6;
+				value = 0.6;
 				break;
 			case ROTTEN_FLESH:
-				multiplier = 3;
+				value = 3;
 				break;
 			case RAW_CHICKEN:
-				multiplier = 2;
+				value = 2;
 				break;
 			case COOKED_CHICKEN:
-				multiplier = 2.6;
+				value = 2.6;
 				break;
 			case RAW_BEEF:
-				multiplier = 2;
+				value = 2;
 				break;
 			case COOKED_BEEF:
-				multiplier = 2.7;
+				value = 2.7;
 				break;
 			case MELON:
-				multiplier = 0.8;
+				value = 0.8;
 				break;
 			case COOKIE:
-				multiplier = 0.45;
+				value = 0.45;
 				break;
 			case VINE:
-				multiplier = 1.2;
+				value = 1.2;
 				break;
 			case EMERALD:
-				multiplier = 7;
+				value = 7;
 				break;
 			case EMERALD_BLOCK:
-				multiplier = 70;
+				value = 70;
 				break;
 			case DRAGON_EGG:
-				multiplier = 10000;
+				value = 10000;
 				break;
 			default:
-				multiplier = 0.1;
+				value = 0.1;
 				break;
 		}
 
 		// Multiply and return
-		return (int) (Math.ceil(item.getAmount() * multiplier));
+		return value;
 	}
 }

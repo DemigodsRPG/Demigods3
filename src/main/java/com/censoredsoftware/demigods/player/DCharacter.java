@@ -981,7 +981,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public int getOverallSkillCap()
 		{
-			// TODO: I'm setting this up like this so it can be manipulated later on on an individual basis.
+			// This is done this way so it can easily be manipulated later
 			return Configs.getSettingInt("caps.skills");
 		}
 

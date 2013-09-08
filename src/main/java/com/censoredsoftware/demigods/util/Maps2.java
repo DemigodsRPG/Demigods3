@@ -2,9 +2,11 @@ package com.censoredsoftware.demigods.util;
 
 import java.util.*;
 
+import com.google.common.collect.Lists;
+
 public class Maps2
 {
-	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map)
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, boolean reverse)
 	{
 		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<K, V>>()
@@ -14,6 +16,8 @@ public class Maps2
 				return (o1.getValue()).compareTo(o2.getValue());
 			}
 		});
+
+		if(reverse) list = Lists.reverse(list);
 
 		Map<K, V> result = new LinkedHashMap<K, V>();
 		for(Map.Entry<K, V> entry : list)

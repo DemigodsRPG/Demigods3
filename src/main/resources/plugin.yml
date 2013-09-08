@@ -37,13 +37,17 @@ commands:
         usage: /test3
         permission: demigods.admin
     obelisk:
-        usage: /obelisk <ADD|REMOVE> <PLAYER|CHARACTER> <player|character>
+        usage: /obelisk <add|remove> <player|character> <name>
     hspawn:
         usage: /hspawn
     nearestaltar:
         usage: /nearestaltar
     binds:
         usage: /binds
+        permission: demigods.basic
+    values:
+        usage: /values
+        aliases: [v]
         permission: demigods.basic
 permissions:
     demigods.basic:

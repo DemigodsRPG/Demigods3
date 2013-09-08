@@ -125,7 +125,7 @@ public class Skill implements ConfigurationSerializable
 	public void addPoints(int points)
 	{
 		// Add points 1 at a time
-		for(int i = 0; i < points; i++) // TODO: This is inefficient but it gets the job done easily. :)
+		for(int i = 0; i < points; i++)
 		{
 			// Adding 1 point at a time
 			this.points++;

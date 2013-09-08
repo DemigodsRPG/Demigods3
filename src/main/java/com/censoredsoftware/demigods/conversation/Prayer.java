@@ -1300,7 +1300,7 @@ public class Prayer implements WrappedConversation
 				// Stop their praying
 				DPlayer.Util.togglePrayingSilent(player, false, true);
 
-				player.sendMessage(deityColor + deityName + " is pondering your offerings...");
+				player.sendMessage(deityColor + deityName + ChatColor.GRAY + " is pondering your offerings...");
 
 				// Finalize stuff for delay
 				final int finalItems = items;
@@ -1333,7 +1333,7 @@ public class Prayer implements WrappedConversation
 								player.playSound(player.getLocation(), Sound.ENDERDRAGON_DEATH, 1F, 1F);
 
 								// Message them and do cool things
-								player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deityName).replace("{color}", deityColor.toString()));
+								player.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.CHARACTER_CREATE_COMPLETE).replace("{deity}", deityName));
 								player.getWorld().strikeLightningEffect(player.getLocation());
 
 								// Fancy particles

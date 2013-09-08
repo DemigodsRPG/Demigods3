@@ -93,7 +93,7 @@ public class Shrine
 						location.getWorld().strikeLightningEffect(location);
 
 						for(String string : Demigods.LANGUAGE.getTextBlock(Translation.Text.NOTIFICATION_SHRINE_CREATED))
-							player.sendMessage(string.replace("{alliance}", ChatColor.YELLOW + character.getAlliance() + "s" + ChatColor.GRAY).replace("{deity}", ChatColor.YELLOW + character.getDeity().getName() + ChatColor.GRAY));
+							player.sendMessage(string.replace("{alliance}", character.getAlliance() + "s").replace("{deity}", character.getDeity().getName()));
 						event.setCancelled(true);
 					}
 					catch(Exception e)

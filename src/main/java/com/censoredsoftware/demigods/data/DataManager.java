@@ -37,7 +37,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, Notification> notifications;
 	public static ConcurrentMap<UUID, Battle> battles;
 	public static ConcurrentMap<UUID, TimedData> timedData;
-
+	public static ConcurrentMap<UUID, ServerData> serverData;
 	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
 
 	static
@@ -74,8 +74,8 @@ public class DataManager
 		deaths.clear();
 		timedData.clear();
 		savedPotions.clear();
-
 		tempData.clear();
+		serverData.clear();
 
 		save();
 
@@ -84,6 +84,9 @@ public class DataManager
 		Bukkit.getServer().getPluginManager().enablePlugin(Demigods.PLUGIN);
 	}
 
+	/*
+	 * Temporary data
+	 */
 	public static boolean hasKeyTemp(String key, String subKey)
 	{
 		return tempData.containsKey(key) && tempData.get(key).containsKey(subKey);
@@ -106,6 +109,9 @@ public class DataManager
 		if(tempData.containsKey(key) && tempData.get(key).containsKey(subKey)) tempData.get(key).remove(subKey);
 	}
 
+	/*
+	 * Timed data
+	 */
 	public static void saveTimed(String key, String subKey, Object data, Integer seconds)
 	{
 		// Remove the data if it exists already
@@ -139,6 +145,38 @@ public class DataManager
 	public static long getTimedExpiration(String key, String subKey)
 	{
 		return TimedData.Util.find(key, subKey).getExpiration();
+	}
+
+	/*
+	 * Server data
+	 */
+	public static void saveServerData(String key, String subKey, Object data)
+	{
+		// Remove the data if it exists already
+		ServerData.Util.remove(key, subKey);
+
+		// Create and save the timed data
+		ServerData serverData = new ServerData();
+		serverData.generateId();
+		serverData.setKey(key);
+		serverData.setSubKey(subKey);
+		serverData.setData(data.toString());
+		DataManager.serverData.put(serverData.getId(), serverData);
+	}
+
+	public static void removeServerData(String key, String subKey)
+	{
+		ServerData.Util.remove(key, subKey);
+	}
+
+	public static boolean hasServerData(String key, String subKey)
+	{
+		return ServerData.Util.find(key, subKey) != null;
+	}
+
+	public static Object getServerDataValue(String key, String subKey)
+	{
+		return ServerData.Util.find(key, subKey).getData();
 	}
 
 	public static enum File
@@ -744,6 +782,49 @@ public class DataManager
 			public void loadToData()
 			{
 				timedData = loadFromFile();
+			}
+		}), SERVER_DATA(new ConfigFile<UUID, ServerData>()
+		{
+			@Override
+			public ServerData create(UUID uuid, ConfigurationSection conf)
+			{
+				return new ServerData(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, ServerData> getLoadedData()
+			{
+				return DataManager.serverData;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return Demigods.SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "serverdata.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				serverData = loadFromFile();
 			}
 		});
 

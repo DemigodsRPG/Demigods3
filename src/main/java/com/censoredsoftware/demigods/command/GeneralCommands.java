@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,10 +18,7 @@ import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Maps2;
-import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.demigods.util.Strings;
-import com.censoredsoftware.demigods.util.Titles;
+import com.censoredsoftware.demigods.util.*;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -36,7 +34,7 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance");
+		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values");
 	}
 
 	@Override
@@ -47,6 +45,7 @@ public class GeneralCommands extends WrappedCommand
 		else if(command.getName().equalsIgnoreCase("alliance")) return alliance(sender, args);
 		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
+		else if(command.getName().equalsIgnoreCase("values")) return values(sender);
 		return false;
 	}
 
@@ -161,12 +160,12 @@ public class GeneralCommands extends WrappedCommand
 		}
 
 		// Sort rankings
-		scores = Maps2.sortByValue(scores);
+		scores = Maps2.sortByValue(scores, false);
 
 		// Print info
+		Messages.tagged(sender, "Leaderboard");
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.YELLOW + Titles.chatTitle("Leaderboard"));
-		sender.sendMessage("    Rankings are determined by kills and deaths.");
+		sender.sendMessage(ChatColor.GRAY + "    Rankings are determined by kills and deaths.");
 		sender.sendMessage(" ");
 
 		int length = characters.size() > 15 ? 16 : characters.size() + 1;
@@ -184,6 +183,39 @@ public class GeneralCommands extends WrappedCommand
 		}
 
 		sender.sendMessage(" ");
+		return true;
+	}
+
+	private boolean values(CommandSender sender)
+	{
+		// Define variables
+		Player player = (Player) sender;
+		int count = 0;
+
+		// Send header
+		Messages.tagged(sender, "Current High Value Tributes");
+		sender.sendMessage(" ");
+
+		for(Map.Entry<Material, Integer> entry : Maps2.sortByValue(ItemValues.getTributeValuesMap(), true).entrySet())
+		{
+			// Handle count
+			if(count >= 10) break;
+			count++;
+
+			// Display value
+			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + Strings.beautify(entry.getKey().name()) + ChatColor.GRAY + " (currently worth " + ChatColor.GREEN + entry.getValue() + ChatColor.GRAY + " per item)");
+		}
+
+		sender.sendMessage(" ");
+		sender.sendMessage(ChatColor.ITALIC + "Values are constantly changing based on how players");
+		sender.sendMessage(ChatColor.ITALIC + "tribute, so check back often!");
+
+		if(player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
+		{
+			sender.sendMessage(" ");
+			sender.sendMessage(ChatColor.GRAY + "The items in your hand are worth " + ChatColor.GREEN + ItemValues.getValue(player.getItemInHand()) + ChatColor.GRAY + ".");
+		}
+
 		return true;
 	}
 }
