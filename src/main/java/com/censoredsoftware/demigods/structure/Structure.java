@@ -100,6 +100,7 @@ public class Structure implements ConfigurationSerializable
 	public void addMember(UUID id)
 	{
 		members.add(id.toString());
+		save();
 	}
 
 	public void removeMember(UUID id)
