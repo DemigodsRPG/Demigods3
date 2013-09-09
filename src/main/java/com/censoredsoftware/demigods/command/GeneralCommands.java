@@ -34,7 +34,7 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values", "whoiswho");
+		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values", "names");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class GeneralCommands extends WrappedCommand
 		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
 		else if(command.getName().equalsIgnoreCase("values")) return values(sender);
-		else if(command.getName().equalsIgnoreCase("whoiswho")) return whoiswho(sender);
+		else if(command.getName().equalsIgnoreCase("names")) return names(sender);
 		return false;
 	}
 
@@ -220,10 +220,10 @@ public class GeneralCommands extends WrappedCommand
 		return true;
 	}
 
-	private boolean whoiswho(CommandSender sender)
+	private boolean names(CommandSender sender)
 	{
 		// Print info
-		Messages.tagged(sender, "Who is who?");
+		Messages.tagged(sender, "Online Player Names");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.GRAY + "    Characters and their player names are listed below.");
 		sender.sendMessage(" ");

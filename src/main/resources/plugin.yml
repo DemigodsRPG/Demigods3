@@ -27,9 +27,9 @@ commands:
         usage: /alliance
         aliases: [a]
         permission: demigods.basic
-    whoiswho:
-        usage: /whoiswho
-        aliases: [w]
+    names:
+        usage: /names
+        aliases: [n]
         permission: demigods.basic
     test1:
         usage: /test1
