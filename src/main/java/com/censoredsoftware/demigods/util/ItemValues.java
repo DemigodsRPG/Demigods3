@@ -250,7 +250,7 @@ public class ItemValues
 				value = 0.9;
 				break;
 			case GOLD_BLOCK:
-				value = 163;
+				value = 144;
 				break;
 			case IRON_BLOCK:
 				value = 110;
@@ -268,7 +268,7 @@ public class ItemValues
 				value = 10;
 				break;
 			case DIAMOND_BLOCK:
-				value = 150;
+				value = 180;
 				break;
 			case CACTUS:
 				value = 1.7;
@@ -296,7 +296,7 @@ public class ItemValues
 				value = 2.5;
 				break;
 			case DIAMOND:
-				value = 15;
+				value = 20;
 				break;
 			case IRON_ORE:
 				value = 7;
@@ -308,7 +308,7 @@ public class ItemValues
 				value = 12;
 				break;
 			case GOLD_INGOT:
-				value = 18;
+				value = 16;
 				break;
 			case GOLD_NUGGET:
 				value = 2;
