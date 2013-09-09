@@ -3,9 +3,11 @@ package com.censoredsoftware.demigods.ability.passive;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -132,6 +134,24 @@ public class Swim implements Ability
 	@Override
 	public BukkitRunnable getRunnable()
 	{
-		return null;
+		return new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
+				{
+					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
+					Player player = character.getOfflinePlayer().getPlayer();
+					potionEffect(player);
+				}
+			}
+
+			private void potionEffect(LivingEntity entity)
+			{
+				entity.removePotionEffect(PotionEffectType.SLOW);
+				entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1));
+			}
+		};
 	}
 }

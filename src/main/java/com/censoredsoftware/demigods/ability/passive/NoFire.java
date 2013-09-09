@@ -1,20 +1,20 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
 
 public class NoFire implements Ability
 {
@@ -99,31 +99,31 @@ public class NoFire implements Ability
 	@Override
 	public Listener getListener()
 	{
-		return new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityDamange(EntityDamageEvent damageEvent)
-			{
-				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
-				if(damageEvent.getEntity() instanceof Player)
-				{
-					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-					// If the player receives falling damage, cancel it
-					if(damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE) || damageEvent.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK))
-					{
-						damageEvent.setCancelled(true);
-						player.setFireTicks(0);
-					}
-				}
-			}
-		};
+		return null;
 	}
 
 	@Override
 	public BukkitRunnable getRunnable()
 	{
-		return null;
+		return new BukkitRunnable()
+		{
+			@Override
+			public void run()
+			{
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
+				{
+					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
+					Player player = character.getOfflinePlayer().getPlayer();
+					potionEffect(player);
+					if(player.isInsideVehicle() && player.getVehicle().getType().equals(EntityType.HORSE)) potionEffect((LivingEntity) player.getVehicle());
+				}
+			}
+
+			private void potionEffect(LivingEntity entity)
+			{
+				entity.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+				entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 120, 1));
+			}
+		};
 	}
 }
