@@ -23,7 +23,7 @@ public class ItemValues
 			if(!DataManager.hasServerData(dataKey, material.name()))
 			{
 				// Fill it with random data
-				DataManager.saveServerData(dataKey, material.name(), Randoms.generateIntRange(1, 15));
+				DataManager.saveServerData(dataKey, material.name(), Randoms.generateIntRange(10, 20));
 			}
 		}
 	}
