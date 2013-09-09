@@ -26,7 +26,6 @@ import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.ItemValues;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -91,9 +90,6 @@ public class Demigods
 
 		// Regenerate structures
 		Structure.Util.regenerateStructures();
-
-		// Initialize tribute tracking
-		ItemValues.initializeTributeTracking();
 
 		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 		else Messages.warning(("Without Spigot, some features may not work."));

@@ -14,20 +14,6 @@ public class ItemValues
 	private static String dataKey = "tributeTracking";
 
 	/**
-	 * Initialized the tribute map with some base data. This prevents fresh data from being out of whack.
-	 */
-	public static void initializeTributeTracking()
-	{
-		for(Material material : Material.values())
-		{
-			if(!DataManager.hasServerData(dataKey, material.name()))
-			{
-				DataManager.saveServerData(dataKey, material.name(), 1);
-			}
-		}
-	}
-
-	/**
 	 * Returns all saved tribute data.
 	 * 
 	 * @return a Map of all tribute data.
@@ -71,7 +57,7 @@ public class ItemValues
 	 */
 	public static int getTotalTributes()
 	{
-		int total = 1;
+		int total = Material.values().length;
 		for(ServerData data : ServerData.Util.findByKey(dataKey))
 			total += Integer.parseInt(data.getData().toString());
 		return total;
@@ -161,16 +147,16 @@ public class ItemValues
 	 */
 	public static double getBaseTributeValue(Material material)
 	{
-		// TODO: THIS SHIT.
+		// TODO: BALANCE THIS SHIT.
 
 		double value;
 		switch(material)
 		{
 			case ENDER_PORTAL_FRAME:
-				value = 23.0;
+				value = 23;
 				break;
 			case CAULDRON_ITEM:
-				value = 84.0;
+				value = 84;
 				break;
 			case LAVA_BUCKET:
 				value = 36.5;
@@ -185,16 +171,16 @@ public class ItemValues
 				value = 13.2;
 				break;
 			case NETHER_STAR:
-				value = 820.0;
+				value = 350;
 				break;
 			case BEACON:
-				value = 885.3;
+				value = 385;
 				break;
 			case SADDLE:
 				value = 5.3;
 				break;
 			case EYE_OF_ENDER:
-				value = 18.0;
+				value = 18;
 				break;
 			case STONE:
 				value = 0.5;
@@ -203,7 +189,7 @@ public class ItemValues
 				value = 0.3;
 				break;
 			case LOG:
-				value = 1.0;
+				value = 1;
 				break;
 			case WOOD:
 				value = 0.23;
@@ -215,16 +201,16 @@ public class ItemValues
 				value = 1.5;
 				break;
 			case LAPIS_BLOCK:
-				value = 85.0;
+				value = 85;
 				break;
 			case SANDSTONE:
 				value = 0.9;
 				break;
 			case GOLD_BLOCK:
-				value = 170;
+				value = 163;
 				break;
 			case IRON_BLOCK:
-				value = 120;
+				value = 110;
 				break;
 			case BRICK:
 				value = 10;
@@ -254,14 +240,12 @@ public class ItemValues
 				value = 3;
 				break;
 			case CAKE:
-				value = 6;
+				value = 15;
 				break;
 			case APPLE:
-				value = 5;
+				value = 3;
 				break;
 			case CARROT:
-				value = 1.7;
-				break;
 			case POTATO:
 				value = 1.7;
 				break;
@@ -283,6 +267,9 @@ public class ItemValues
 			case GOLD_INGOT:
 				value = 18;
 				break;
+			case GOLD_NUGGET:
+				value = 2;
+				break;
 			case STRING:
 				value = 2.4;
 				break;
@@ -301,7 +288,10 @@ public class ItemValues
 				value = 4;
 				break;
 			case GOLDEN_APPLE:
-				value = 100;
+				value = 148;
+				break;
+			case GOLDEN_CARROT:
+				value = 17;
 				break;
 			case GOLD_RECORD:
 				value = 60;
@@ -316,7 +306,7 @@ public class ItemValues
 				value = 3.3;
 				break;
 			case REDSTONE_BLOCK:
-				value = 27.9;
+				value = 27.7;
 				break;
 			case EGG:
 				value = 0.3;
@@ -361,20 +351,20 @@ public class ItemValues
 				value = 1.2;
 				break;
 			case EMERALD:
-				value = 7;
+				value = 17;
 				break;
 			case EMERALD_BLOCK:
-				value = 70;
+				value = 153;
 				break;
 			case DRAGON_EGG:
-				value = 10000;
+				value = 1000;
 				break;
 			default:
 				value = 0.1;
 				break;
 		}
 
-		// Multiply and return
+		// Return
 		return value;
 	}
 }
