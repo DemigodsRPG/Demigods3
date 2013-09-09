@@ -14,6 +14,20 @@ public class ItemValues
 	private static String dataKey = "tributeTracking";
 
 	/**
+	 * Initialized the tribute map with some base data. This prevents fresh data from being out of whack.
+	 */
+	public static void initializeTributeTracking()
+	{
+		for(Material material : Material.values())
+		{
+			if(!DataManager.hasServerData(dataKey, material.name()))
+			{
+				DataManager.saveServerData(dataKey, material.name(), 1);
+			}
+		}
+	}
+
+	/**
 	 * Returns all saved tribute data.
 	 * 
 	 * @return a Map of all tribute data.
@@ -57,7 +71,7 @@ public class ItemValues
 	 */
 	public static int getTotalTributes()
 	{
-		int total = Material.values().length;
+		int total = 0;
 		for(ServerData data : ServerData.Util.findByKey(dataKey))
 			total += Integer.parseInt(data.getData().toString());
 		return total;
