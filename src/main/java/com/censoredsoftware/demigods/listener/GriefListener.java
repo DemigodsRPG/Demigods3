@@ -1,10 +1,12 @@
 package com.censoredsoftware.demigods.listener;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,13 +24,10 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class GriefListener implements Listener
 {
@@ -58,7 +57,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -72,7 +71,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -91,7 +90,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -161,7 +160,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -175,7 +174,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -204,7 +203,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
@@ -221,7 +220,7 @@ public class GriefListener implements Listener
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
-			if(character != null && !members.contains(character.getId())) return;
+			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
 	}
