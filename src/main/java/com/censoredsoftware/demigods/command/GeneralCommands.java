@@ -232,12 +232,17 @@ public class GeneralCommands extends WrappedCommand
 		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + " is owned by " + ChatColor.WHITE + character.getPlayerName() + ChatColor.GRAY + ".");
 
+		Set<Player> mortals = DPlayer.Util.getOnlineMortals();
+
 		sender.sendMessage(" ");
+
+		if(mortals.isEmpty()) return true;
+
 		sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.UNDERLINE + "Mortals:");
 		sender.sendMessage(" ");
 
 		// Mortals
-		for(Player mortal : DPlayer.Util.getOnlineMortals())
+		for(Player mortal : mortals)
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + mortal.getDisplayName() + ".");
 
 		return true;
