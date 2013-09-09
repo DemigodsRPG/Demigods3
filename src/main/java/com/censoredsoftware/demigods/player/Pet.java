@@ -228,7 +228,7 @@ public class Pet implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(@Nullable Pet pet)
 				{
-					return pet != null && pet.getEntityType().equals(type.getName());
+					return pet != null && pet.getEntityType() != null && pet.getEntityType().equals(type.getName());
 				}
 			});
 		}
