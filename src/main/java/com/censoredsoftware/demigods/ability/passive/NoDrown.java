@@ -1,21 +1,19 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.google.common.collect.Lists;
+import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
 
 public class NoDrown implements Ability
 {
@@ -100,22 +98,7 @@ public class NoDrown implements Ability
 	@Override
 	public Listener getListener()
 	{
-		return new Listener()
-		{
-			@EventHandler(priority = EventPriority.HIGHEST)
-			public void onEntityDamange(EntityDamageEvent damageEvent)
-			{
-				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
-				if(damageEvent.getEntity() instanceof Player)
-				{
-					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
-
-					// If the player receives falling damage, cancel it
-					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.DROWNING) damageEvent.setCancelled(true);
-				}
-			}
-		};
+		return null;
 	}
 
 	@Override
@@ -126,11 +109,18 @@ public class NoDrown implements Ability
 			@Override
 			public void run()
 			{
-				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithDeity(deity))
+				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
 				{
 					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
-					character.getOfflinePlayer().getPlayer().setRemainingAir(0);
+					Player player = character.getOfflinePlayer().getPlayer();
+					potionEffect(player);
 				}
+			}
+
+			private void potionEffect(LivingEntity entity)
+			{
+				entity.removePotionEffect(PotionEffectType.WATER_BREATHING);
+				entity.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 1));
 			}
 		};
 	}
