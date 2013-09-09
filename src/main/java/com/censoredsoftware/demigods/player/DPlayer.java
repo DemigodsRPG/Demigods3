@@ -398,7 +398,7 @@ public class DPlayer implements ConfigurationSerializable
 		public static boolean isImmortal(OfflinePlayer player)
 		{
 			DCharacter character = getPlayer(player).getCurrent();
-			return character != null;
+			return character != null && character.isUsable() && character.isActive();
 		}
 
 		public static Set<Player> getOnlineMortals()
@@ -409,7 +409,7 @@ public class DPlayer implements ConfigurationSerializable
 				public boolean apply(Player player)
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-					return character != null && !character.isUsable() && !character.isActive();
+					return character == null || character.isUsable() || character.isActive();
 				}
 			});
 		}
