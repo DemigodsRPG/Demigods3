@@ -245,6 +245,8 @@ public class GeneralCommands extends WrappedCommand
 		for(Player mortal : mortals)
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + mortal.getDisplayName() + ".");
 
+		sender.sendMessage(" ");
+
 		return true;
 	}
 }

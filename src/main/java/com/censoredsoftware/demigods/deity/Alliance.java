@@ -1,13 +1,12 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.Collection;
-
-import org.bukkit.entity.Player;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public enum Alliance
 {
@@ -19,7 +18,12 @@ public enum Alliance
 	/**
 	 * Main Alliances
 	 */
-	GOD("God", "demigods.alliance.god", "A short description of the Gods."), TITAN("Titan", "demigods.alliance.titan", "A short description of the Titans."), FATE("Fate", "demigods.alliance.fate", "A short description of the Fates."), DONOR("Donor", "demigods.alliance.donor", "A short description of the Donors.");
+	GOD("God", "demigods.alliance.god", "A short description of the Gods."), TITAN("Titan", "demigods.alliance.titan", "A short description of the Titans."),
+
+	/**
+	 * Special Alliances
+	 */
+	FATE("Fate", "demigods.alliance.fate", "A short description of the Fates."), DONOR("Donor", "demigods.alliance.donor", "A short description of the Donors.");
 
 	private String name, permission, shortDescription;
 

@@ -1,14 +1,8 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.donor.DrD1sco;
+import com.censoredsoftware.demigods.deity.donor.OmegaX17;
 import com.censoredsoftware.demigods.deity.fate.Atropos;
 import com.censoredsoftware.demigods.deity.fate.Clotho;
 import com.censoredsoftware.demigods.deity.fate.Lachesis;
@@ -20,6 +14,13 @@ import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Perses;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public enum Deity
 {
@@ -62,7 +63,16 @@ public enum Deity
 	LACHESIS(Lachesis.name, Lachesis.permission, Lachesis.alliance, Lachesis.color, Lachesis.claimItems, Lachesis.forsakeItems, Lachesis.shortDescription, Lachesis.lore, Lachesis.flags, Lachesis.abilities, Lachesis.accuracy, Lachesis.favorRegen, Lachesis.maxFavor, Lachesis.maxHealth),
 
 	// Atropos
-	ATROPOS(Atropos.name, Atropos.permission, Atropos.alliance, Atropos.color, Atropos.claimItems, Atropos.forsakeItems, Atropos.shortDescription, Atropos.lore, Atropos.flags, Atropos.abilities, Atropos.accuracy, Atropos.favorRegen, Atropos.maxFavor, Atropos.maxHealth);
+	ATROPOS(Atropos.name, Atropos.permission, Atropos.alliance, Atropos.color, Atropos.claimItems, Atropos.forsakeItems, Atropos.shortDescription, Atropos.lore, Atropos.flags, Atropos.abilities, Atropos.accuracy, Atropos.favorRegen, Atropos.maxFavor, Atropos.maxHealth),
+
+	/**
+	 * Donors
+	 */
+	// OmegaX17
+	OMEGAX17(OmegaX17.name, OmegaX17.permission, OmegaX17.alliance, OmegaX17.color, OmegaX17.claimItems, OmegaX17.forsakeItems, OmegaX17.shortDescription, OmegaX17.lore, OmegaX17.flags, OmegaX17.abilities, OmegaX17.accuracy, OmegaX17.favorRegen, OmegaX17.maxFavor, OmegaX17.maxHealth),
+
+	// DrD1sco
+	DRD1SCO(DrD1sco.name, DrD1sco.permission, DrD1sco.alliance, DrD1sco.color, DrD1sco.claimItems, DrD1sco.forsakeItems, DrD1sco.shortDescription, DrD1sco.lore, DrD1sco.flags, DrD1sco.abilities, DrD1sco.accuracy, DrD1sco.favorRegen, DrD1sco.maxFavor, DrD1sco.maxHealth);
 
 	private String name, permission;
 	private Alliance alliance;
