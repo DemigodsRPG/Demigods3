@@ -1,10 +1,11 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.censoredsoftware.demigods.battle.Participant;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,12 +13,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
-import com.censoredsoftware.demigods.battle.Participant;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Pet implements Participant, ConfigurationSerializable
 {
@@ -226,9 +226,9 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(Pet pet)
+				public boolean apply(@Nullable Pet pet)
 				{
-					return pet.getEntityType().equals(type.getName());
+					return pet != null && pet.getEntityType().equals(type.getName());
 				}
 			});
 		}
