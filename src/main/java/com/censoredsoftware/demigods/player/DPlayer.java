@@ -408,7 +408,8 @@ public class DPlayer implements ConfigurationSerializable
 				@Override
 				public boolean apply(Player player)
 				{
-					return !DPlayer.Util.isImmortal(player);
+					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+					return character != null && character.isUsable() && character.isActive();
 				}
 			});
 		}

@@ -13,7 +13,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -229,20 +228,13 @@ public class GeneralCommands extends WrappedCommand
 		sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.UNDERLINE + "Immortals:");
 		sender.sendMessage(" ");
 
-		Set<Player> mortals = DPlayer.Util.getOnlineMortals();
-
 		// Characters
 		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
-		{
-			if(Demigods.MiscUtil.isDisabledWorld(character.getCurrentLocation()))
-			{
-				mortals.add(Bukkit.getOfflinePlayer(character.getPlayerName()).getPlayer());
-				continue;
-			}
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + " is owned by " + ChatColor.WHITE + character.getPlayerName() + ChatColor.GRAY + ".");
-		}
 
 		sender.sendMessage(" ");
+
+		Set<Player> mortals = DPlayer.Util.getOnlineMortals();
 
 		if(mortals.isEmpty()) return true;
 
