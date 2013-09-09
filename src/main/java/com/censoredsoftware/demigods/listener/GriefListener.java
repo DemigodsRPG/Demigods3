@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.bukkit.Location;
@@ -182,15 +183,23 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
-		if(Iterables.any(event.blockList(), new Predicate<Block>()
+		try
 		{
-			@Override
-			public boolean apply(Block block)
+			if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+			if(Iterables.any(event.blockList(), new Predicate<Block>()
 			{
-				return Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
-			}
-		})) event.setCancelled(true);
+				@Override
+				public boolean apply(Block block)
+				{
+					return Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+				}
+			})) event.setCancelled(true);
+		}
+		catch(Exception e)
+		{
+			Messages.warning("Error on entity explode, grief listener.");
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
