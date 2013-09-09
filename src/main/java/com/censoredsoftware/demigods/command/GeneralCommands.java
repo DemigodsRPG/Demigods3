@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
@@ -24,6 +12,17 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -35,7 +34,7 @@ public class GeneralCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values");
+		return Sets.newHashSet("check", "owner", "binds", "leaderboard", "alliance", "values", "whoiswho");
 	}
 
 	@Override
@@ -47,6 +46,7 @@ public class GeneralCommands extends WrappedCommand
 		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
 		else if(command.getName().equalsIgnoreCase("values")) return values(sender);
+		else if(command.getName().equalsIgnoreCase("whoiswho")) return whoiswho(sender);
 		return false;
 	}
 
@@ -216,6 +216,27 @@ public class GeneralCommands extends WrappedCommand
 			sender.sendMessage(" ");
 			sender.sendMessage(ChatColor.GRAY + "The items in your hand are worth " + ChatColor.GREEN + ItemValues.getValue(player.getItemInHand()) + ChatColor.GRAY + ".");
 		}
+
+		return true;
+	}
+
+	private boolean whoiswho(CommandSender sender)
+	{
+		// Print info
+		Messages.tagged(sender, "Who is who?");
+		sender.sendMessage(" ");
+		sender.sendMessage(ChatColor.GRAY + "    Characters and their player names are listed below.");
+		sender.sendMessage(" ");
+
+		// Characters
+		for(DCharacter character : DCharacter.Util.getOnlineCharacters())
+			sender.sendMessage(character.getDeity().getColor() + character.getName() + ChatColor.GRAY + " is owned by " + ChatColor.WHITE + character.getPlayerName() + ChatColor.GRAY + ".");
+
+		sender.sendMessage(" ");
+
+		// Mortals
+		for(Player mortal : DPlayer.Util.getOnlineMortals())
+			sender.sendMessage(ChatColor.WHITE + mortal.getDisplayName() + " is Mortal.");
 
 		return true;
 	}

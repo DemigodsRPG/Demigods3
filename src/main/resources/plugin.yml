@@ -27,6 +27,10 @@ commands:
         usage: /alliance
         aliases: [a]
         permission: demigods.basic
+    whoiswho:
+        usage: /whoiswho
+        aliases: [w]
+        permission: demigods.basic
     test1:
         usage: /test1
         permission: demigods.admin
