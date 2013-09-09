@@ -225,7 +225,7 @@ public class GeneralCommands extends WrappedCommand
 		// Print info
 		Messages.tagged(sender, "Online Player Names");
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.UNDERLINE + "    Immortals:");
+		sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.UNDERLINE + "Immortals:");
 		sender.sendMessage(" ");
 
 		// Characters
@@ -233,7 +233,7 @@ public class GeneralCommands extends WrappedCommand
 			sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + character.getDeity().getColor() + character.getName() + ChatColor.GRAY + " is owned by " + ChatColor.WHITE + character.getPlayerName() + ChatColor.GRAY + ".");
 
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.UNDERLINE + "    Mortals:");
+		sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.UNDERLINE + "Mortals:");
 		sender.sendMessage(" ");
 
 		// Mortals
