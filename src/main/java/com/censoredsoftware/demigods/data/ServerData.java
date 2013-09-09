@@ -90,7 +90,7 @@ public class ServerData implements ConfigurationSerializable
 
 	public void delete()
 	{
-		DataManager.timedData.remove(id);
+		DataManager.serverData.remove(id);
 	}
 
 	@Override

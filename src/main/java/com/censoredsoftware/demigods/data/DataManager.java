@@ -38,6 +38,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, Battle> battles;
 	public static ConcurrentMap<UUID, TimedData> timedData;
 	public static ConcurrentMap<UUID, ServerData> serverData;
+	public static ConcurrentMap<UUID, TributeData> tributeData;
 	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
 
 	static
@@ -825,6 +826,49 @@ public class DataManager
 			public void loadToData()
 			{
 				serverData = loadFromFile();
+			}
+		}), TRIBUTE_DATA(new ConfigFile<UUID, TributeData>()
+		{
+			@Override
+			public TributeData create(UUID uuid, ConfigurationSection conf)
+			{
+				return new TributeData(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, TributeData> getLoadedData()
+			{
+				return DataManager.tributeData;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return Demigods.SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "tributedata.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				tributeData = loadFromFile();
 			}
 		});
 

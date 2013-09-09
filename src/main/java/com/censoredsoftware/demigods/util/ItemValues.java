@@ -6,13 +6,10 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.data.ServerData;
+import com.censoredsoftware.demigods.data.TributeData;
 
 public class ItemValues
 {
-	private static String dataKey = "tributeTracking";
-
 	/**
 	 * Initialized the tribute map with some base data. This prevents fresh data from being out of whack.
 	 */
@@ -20,34 +17,15 @@ public class ItemValues
 	{
 		for(Material material : Material.values())
 		{
-			if(!DataManager.hasServerData(dataKey, material.name()))
-			{
-				// Fill it with random data
-				DataManager.saveServerData(dataKey, material.name(), Randoms.generateIntRange(10, 64));
-			}
+			// Fill it with random data
+
+			String category = getCategory(material);
+			if(TributeData.Util.find(category, material) != null) TributeData.Util.save(category, material, Randoms.generateIntRange(10, 64));
 		}
 	}
 
 	/**
-	 * Returns all saved tribute data.
-	 * 
-	 * @return a Map of all tribute data.
-	 */
-	public static Map<Material, Integer> getTributesMap()
-	{
-		return new HashMap<Material, Integer>()
-		{
-			{
-				for(ServerData data : ServerData.Util.findByKey(dataKey))
-				{
-					put(Material.getMaterial(data.getSubKey().toString().toUpperCase()), Integer.valueOf(data.getData().toString()));
-				}
-			}
-		};
-	}
-
-	/**
-	 * Returns all saved tribute data.
+	 * Returns all saved tribute data with attached current value.
 	 * 
 	 * @return a Map of all tribute data.
 	 */
@@ -56,10 +34,9 @@ public class ItemValues
 		return new HashMap<Material, Integer>()
 		{
 			{
-				for(ServerData data : ServerData.Util.findByKey(dataKey))
+				for(TributeData data : TributeData.Util.getAll())
 				{
-					Material material = Material.getMaterial(data.getSubKey().toString().toUpperCase());
-					put(material, getValue(material));
+					put(data.getMaterial(), getValue(data.getMaterial()));
 				}
 			}
 		};
@@ -72,9 +49,9 @@ public class ItemValues
 	 */
 	public static int getTotalTributes()
 	{
-		int total = 0;
-		for(ServerData data : ServerData.Util.findByKey(dataKey))
-			total += Integer.parseInt(data.getData().toString());
+		int total = 1;
+		for(TributeData data : TributeData.Util.getAll())
+			total += data.getAmount();
 		return total;
 	}
 
@@ -86,8 +63,23 @@ public class ItemValues
 	 */
 	public static int getTributes(Material material)
 	{
-		if(DataManager.hasServerData(dataKey, material.name())) return Integer.parseInt(ServerData.Util.find(dataKey, material.name()).getData().toString());
+		TributeData data = TributeData.Util.find(getCategory(material), material);
+		if(data != null) return data.getAmount();
 		else return 1;
+	}
+
+	/**
+	 * Returns the number of tributes for the <code>category</code>.
+	 * 
+	 * @param category the category to check.
+	 * @return the total number of tributes.
+	 */
+	public static int getTributesForCategory(String category)
+	{
+		int total = 1;
+		for(TributeData data : TributeData.Util.findByCategory(category))
+			total += data.getAmount();
+		return total;
 	}
 
 	/**
@@ -97,14 +89,15 @@ public class ItemValues
 	 */
 	public static void saveTribute(ItemStack item)
 	{
-		if(DataManager.hasServerData(dataKey, item.getType().name()))
+		TributeData data = TributeData.Util.find(getCategory(item.getType()), item.getType());
+
+		if(data != null)
 		{
-			ServerData data = ServerData.Util.find(dataKey, item.getType().name());
-			data.setData(Integer.parseInt(data.getData().toString()) + item.getAmount());
+			data.setAmount(data.getAmount() + item.getAmount());
 		}
 		else
 		{
-			DataManager.saveServerData(dataKey, item.getType().name(), item.getAmount());
+			TributeData.Util.save(getCategory(item.getType()), item.getType(), item.getAmount());
 		}
 	}
 
@@ -125,15 +118,50 @@ public class ItemValues
 	public static int getValue(ItemStack item)
 	{
 		// Define values for reference
+		int categoryTributes = getTributesForCategory(getCategory(item.getType()));
 		double baseValue = getBaseTributeValue(item.getType());
 		int totalItemTributes = getTributes(item.getType());
 
-		// Calculate multiplier
-		double multiplier = ((getTotalTributes() / totalItemTributes) * item.getAmount());
+		// Calculate value
+		double multiplier = categoryTributes / totalItemTributes;
 		if(multiplier < baseValue) multiplier = baseValue;
 
 		// Return the value
-		return (int) multiplier * item.getAmount();
+		return (int) Math.ceil(multiplier * item.getAmount());
+	}
+
+	/**
+	 * Returns the category of the <code>material</code>.
+	 * 
+	 * @param material the material whose category to check
+	 * @return the category
+	 */
+	public static String getCategory(Material material)
+	{
+		switch(material)
+		{
+			case DIAMOND:
+			case EMERALD:
+			case GOLD_INGOT:
+			case IRON_INGOT:
+				return "clean_ore";
+			case DIAMOND_ORE:
+			case IRON_ORE:
+			case GOLD_ORE:
+			case LAPIS_ORE:
+				return "raw_ore";
+			case DIRT:
+			case GRASS:
+			case STONE:
+			case COBBLESTONE:
+			case SAND:
+			case SANDSTONE:
+			case WOOD:
+			case LOG:
+				return "building_block";
+			default:
+				return "default";
+		}
 	}
 
 	/**
