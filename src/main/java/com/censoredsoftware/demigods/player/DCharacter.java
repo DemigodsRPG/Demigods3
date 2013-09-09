@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
@@ -28,6 +16,17 @@ import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -502,6 +501,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		// Define variables
 		DPlayer playerSave = DPlayer.Util.getPlayer(player);
+
+		// Set character to active
+		setActive(true);
 
 		// Update their inventory
 		if(playerSave.getCharacters().size() == 1) saveInventory();
@@ -1343,14 +1345,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersBelowAscension(final int ascention)
+		public static Collection<DCharacter> getOnlineCharactersBelowAscension(final int ascension)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascention;
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getMeta().getAscensions() < ascension;
 				}
 			});
 		}

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.listener;
 
-import java.util.Set;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.player.DPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,9 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
+import java.util.Set;
 
 public class DisabledWorldListener implements Listener
 {
@@ -33,7 +31,6 @@ public class DisabledWorldListener implements Listener
 		// Only continue if the player is a character
 		Player player = event.getPlayer();
 		DPlayer playerSave = DPlayer.Util.getPlayer(player);
-		final DCharacter character = playerSave.getCurrent();
 
 		if(playerSave.getCurrent() == null) return;
 
@@ -41,7 +38,7 @@ public class DisabledWorldListener implements Listener
 		if(Demigods.MiscUtil.isDisabledWorld(event.getFrom()) && !Demigods.MiscUtil.isDisabledWorld(player.getWorld()))
 		{
 			playerSave.saveMortalInventory(player.getInventory());
-			character.applyToPlayer(player);
+			playerSave.getCurrent().applyToPlayer(player);
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
 		// Entering a disabled world
