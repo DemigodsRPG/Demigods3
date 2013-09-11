@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Messages;
 
 public class ButtSword implements DivineItem.Item
 {
@@ -46,11 +48,21 @@ public class ButtSword implements DivineItem.Item
 		{
 			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
 
-			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getPlayer().getItemInHand().equals(ButtSword.this.getItem()))
+			// Define variables
+			Player player = event.getPlayer();
+
+			// If they right clicked a block with the item in hand, do stuff
+			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.getItemInHand().equals(ButtSword.this.getItem()))
 			{
-				// They right clicked a block with the item in hand, do stuff
-				Location location = event.getClickedBlock().getLocation();
-				location.getWorld().spawnEntity(location, EntityType.EGG);
+				Location refLoc = event.getClickedBlock().getLocation();
+				Location newLoc = refLoc.clone().add(0, 20, 0);
+
+				// Make eggs fall... why? Just cause.
+				for(int i = 0; i < 100; i++)
+					refLoc.getWorld().spawnEntity(newLoc, EntityType.EGG);
+
+				// Let everyone know what a perve the user is!
+				Messages.broadcast(player.getDisplayName() + ChatColor.AQUA + " just smacked your butt!");
 			}
 		}
 	}
