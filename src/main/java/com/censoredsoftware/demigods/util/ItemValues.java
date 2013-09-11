@@ -18,9 +18,8 @@ public class ItemValues
 		for(Material material : Material.values())
 		{
 			// Fill it with random data
-
 			String category = getCategory(material);
-			if(TributeData.Util.find(category, material) != null) TributeData.Util.save(category, material, Randoms.generateIntRange(10, 64));
+			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, Randoms.generateIntRange(10, 64));
 		}
 	}
 
