@@ -40,7 +40,7 @@ public class BookOfPrayer implements DivineItem.Item
 		ShapelessRecipe recipe = new ShapelessRecipe(getItem());
 		recipe.addIngredient(1, Material.NETHER_STAR);
 		recipe.addIngredient(2, Material.BOOK);
-		return null;
+		return recipe;
 	}
 
 	@Override

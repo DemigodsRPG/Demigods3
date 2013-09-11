@@ -1,5 +1,10 @@
 package com.censoredsoftware.demigods.util;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -8,11 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class Items
 {
@@ -86,5 +86,26 @@ public class Items
 		{
 			inventory.setItem((new Random().nextInt(inventory.getSize() - 1) + 1), item);
 		}
+	}
+
+	/**
+	 * Checks to see if two items are equal ignoring durability.
+	 * 
+	 * @param item1 the first item to check with.
+	 * @param item2 the second item to check with.
+	 * @return true if the items are equal.
+	 */
+	public static boolean areEqual(ItemStack item1, ItemStack item2)
+	{
+		// Clone the items
+		ItemStack newItem1 = item1.clone();
+		ItemStack newItem2 = item2.clone();
+
+		// Set durabilities
+		newItem1.setDurability(Short.parseShort("1"));
+		newItem2.setDurability(Short.parseShort("1"));
+
+		// Return the boolean
+		return newItem1.equals(newItem2);
 	}
 }

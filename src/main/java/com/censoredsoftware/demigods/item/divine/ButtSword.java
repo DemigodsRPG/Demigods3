@@ -52,7 +52,7 @@ public class ButtSword implements DivineItem.Item
 			Player player = event.getPlayer();
 
 			// If they right clicked a block with the item in hand, do stuff
-			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && player.getItemInHand().equals(ButtSword.this.getItem()))
+			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Items.areEqual(player.getItemInHand(), ButtSword.this.getItem()))
 			{
 				Location refLoc = event.getClickedBlock().getLocation();
 				Location newLoc = refLoc.clone().add(0, 20, 0);

@@ -54,7 +54,7 @@ public class DeathBow implements DivineItem.Item
 			if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
 
 			// If they right clicked a block with the item in hand, do stuff
-			if(event.getBow().equals(DeathBow.this.getItem()))
+			if(Items.areEqual(event.getBow(), DeathBow.this.getItem()))
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
 
