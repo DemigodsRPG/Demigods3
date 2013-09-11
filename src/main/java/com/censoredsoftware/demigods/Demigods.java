@@ -21,6 +21,7 @@ import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
+import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
@@ -158,6 +159,13 @@ public class Demigods
 			}
 		}))
 			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), PLUGIN);
+
+		// Special Items
+		for(DivineItem divineItem : DivineItem.values())
+		{
+			if(divineItem.getSpecialItem().getUniqueListener() != null) register.registerEvents(divineItem.getSpecialItem().getUniqueListener(), PLUGIN);
+			if(divineItem.getSpecialItem().getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getSpecialItem().getRecipe());
+		}
 
 		// Quit reason.
 		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
