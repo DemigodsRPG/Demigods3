@@ -17,7 +17,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.item.Book;
+import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Configs;
@@ -60,7 +60,7 @@ public class PlayerListener implements Listener
 		}
 
 		// First join book
-		if(!player.hasPlayedBefore()) player.getInventory().addItem(Book.FIRST_JOIN.getBook());
+		if(!player.hasPlayedBefore()) player.getInventory().addItem(DivineItem.WELCOME_BOOK.getSpecialItem().getItem());
 
 		// Notifications
 		if(character != null && character.getMeta().hasNotifications())
@@ -74,7 +74,7 @@ public class PlayerListener implements Listener
 		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle"))
 		{
 			DataManager.removeTemp(player.getName(), "quit_during_battle");
-			player.sendMessage(ChatColor.YELLOW + "Welcome back! You are currently in a battle.");
+			player.sendMessage(ChatColor.YELLOW + "WelcomeBook back! You are currently in a battle.");
 		}
 
 		// Alert of losing battle due to leaving

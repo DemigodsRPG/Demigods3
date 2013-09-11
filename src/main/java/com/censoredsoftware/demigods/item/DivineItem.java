@@ -6,10 +6,11 @@ import org.bukkit.inventory.Recipe;
 
 import com.censoredsoftware.demigods.item.divine.ButtSword;
 import com.censoredsoftware.demigods.item.divine.DeathBow;
+import com.censoredsoftware.demigods.item.divine.book.WelcomeBook;
 
 public enum DivineItem
 {
-	BUTT_SWORD(new ButtSword()), DEATH_BOW(new DeathBow());
+	WELCOME_BOOK(new WelcomeBook()), BUTT_SWORD(new ButtSword()), DEATH_BOW(new DeathBow());
 
 	private final Item item;
 

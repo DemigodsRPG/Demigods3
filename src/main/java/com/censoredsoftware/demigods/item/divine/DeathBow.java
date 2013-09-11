@@ -1,5 +1,7 @@
 package com.censoredsoftware.demigods.item.divine;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -20,7 +22,12 @@ public class DeathBow implements DivineItem.Item
 	@Override
 	public ItemStack getItem()
 	{
-		return Items.create(Material.BOW, ChatColor.BOLD + "" + ChatColor.DARK_RED + "The Bow of Death", null, null); // Terrible name, this is just another test
+		return Items.create(Material.BOW, ChatColor.BOLD + "" + ChatColor.DARK_RED + "The Bow of Five Arrows", new ArrayList<String>()
+		{
+			{
+				add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Take your target out 5 times faster!");
+			}
+		}, null);
 	}
 
 	@Override
