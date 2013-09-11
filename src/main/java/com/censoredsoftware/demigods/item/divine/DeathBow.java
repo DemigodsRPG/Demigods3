@@ -22,10 +22,10 @@ public class DeathBow implements DivineItem.Item
 	@Override
 	public ItemStack getItem()
 	{
-		return Items.create(Material.BOW, ChatColor.BOLD + "" + ChatColor.DARK_RED + "The Bow of Five Arrows", new ArrayList<String>()
+		return Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + "The Bow of Five Arrows", new ArrayList<String>()
 		{
 			{
-				add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Take your target out 5 times faster!");
+				add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Take your target out 5 times faster!");
 			}
 		}, null);
 	}
@@ -57,11 +57,11 @@ public class DeathBow implements DivineItem.Item
 			if(Items.areEqual(event.getBow(), DeathBow.this.getItem()))
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
-
+				startArrow.setVelocity(startArrow.getVelocity().multiply(.5));
 				for(int i = 0; i < 5; i++)
 				{
 					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.ARROW);
-					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(i * .85));
+					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(.9 / i));
 				}
 			}
 		}

@@ -23,7 +23,7 @@ public class ButtSword implements DivineItem.Item
 	@Override
 	public ItemStack getItem()
 	{
-		return Items.create(Material.DIAMOND_SWORD, ChatColor.BOLD + "" + ChatColor.LIGHT_PURPLE + "The Butt Sword", null, null);
+		return Items.create(Material.DIAMOND_SWORD, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "The Butt Sword", null, null);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class ButtSword implements DivineItem.Item
 					refLoc.getWorld().spawnEntity(newLoc, EntityType.EGG);
 
 				// Let everyone know what a perve the user is!
-				Messages.broadcast(player.getDisplayName() + ChatColor.AQUA + " just smacked your butt!");
+				Messages.broadcast(player.getDisplayName() + ChatColor.WHITE + " just smacked your butt!");
 			}
 		}
 	}

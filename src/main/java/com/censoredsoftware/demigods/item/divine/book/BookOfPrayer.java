@@ -24,12 +24,12 @@ public class BookOfPrayer implements DivineItem.Item
 	@Override
 	public ItemStack getItem()
 	{
-		return Items.create(Material.BOOK, ChatColor.AQUA + "Book of Prayer", new ArrayList<String>()
+		return Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + "Book of Prayer", new ArrayList<String>()
 		{
 			{
-				add(ChatColor.ITALIC + "" + ChatColor.DARK_PURPLE + "Right click to teleport to the nearest Altar.");
+				add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Right click to teleport to the nearest Altar.");
 				add(" ");
-				add(ChatColor.ITALIC + "" + ChatColor.RED + "Consumed on use.");
+				add(ChatColor.RED + "Consumed on use.");
 			}
 		}, null);
 	}
