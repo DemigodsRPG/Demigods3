@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.helper.QuitReasonHandler;
+import com.censoredsoftware.demigods.item.DivineItem;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Configs;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,15 +20,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Configs;
 
 public class PlayerListener implements Listener
 {
@@ -44,7 +43,7 @@ public class PlayerListener implements Listener
 			String name = character.getName();
 			ChatColor color = character.getDeity().getColor();
 			player.setDisplayName(color + name + ChatColor.RESET);
-			player.setPlayerListName(color + name + ChatColor.RESET);
+			player.setPlayerListName(color + name);
 			if(character.isAlive())
 			{
 				event.getPlayer().setMaxHealth(character.getMaxHealth());
