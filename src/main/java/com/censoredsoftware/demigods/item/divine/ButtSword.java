@@ -1,5 +1,9 @@
 package com.censoredsoftware.demigods.item.divine;
 
+import com.censoredsoftware.demigods.item.DivineItem;
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,11 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
-
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.util.Items;
-import com.censoredsoftware.demigods.util.Messages;
 
 public class ButtSword implements DivineItem.Item
 {
@@ -46,7 +45,7 @@ public class ButtSword implements DivineItem.Item
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onPlayerInteract(PlayerInteractEvent event)
 		{
-			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 			// Define variables
 			Player player = event.getPlayer();

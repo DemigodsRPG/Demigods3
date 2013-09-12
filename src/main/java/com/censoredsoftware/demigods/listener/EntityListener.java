@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
@@ -8,27 +16,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Messages;
-
 public class EntityListener implements Listener
 {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageEvent(EntityDamageEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		if(event.getEntity() instanceof Player && !Battle.Util.canTarget(Battle.Util.defineParticipant(event.getEntity()))) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public static void damageByEntityEvent(EntityDamageByEntityEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 		Entity attacked = event.getEntity();
 		Entity attacker = event.getDamager();
@@ -52,7 +52,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public static void entityDeath(EntityDeathEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 		if(event.getEntity() instanceof Player)
 		{
@@ -82,7 +82,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onTame(EntityTameEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
@@ -93,7 +93,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityTarget(EntityTargetLivingEntityEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		if(event.getTarget() instanceof Player && !DPlayer.Util.getPlayer(((Player) event.getTarget())).canPvp()) event.setCancelled(true);
 	}
 }

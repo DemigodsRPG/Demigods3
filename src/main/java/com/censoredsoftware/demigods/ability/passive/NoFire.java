@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -112,7 +112,7 @@ public class NoFire implements Ability
 			{
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
 				{
-					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
+					if(Zones.inNoDemigodsZone(character.getOfflinePlayer().getPlayer().getLocation())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
 					potionEffect(player);
 					if(player.isInsideVehicle() && player.getVehicle().getType().equals(EntityType.HORSE)) potionEffect((LivingEntity) player.getVehicle());

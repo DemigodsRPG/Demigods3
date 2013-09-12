@@ -1,17 +1,16 @@
 package com.censoredsoftware.demigods.trigger.balance;
 
-import java.util.Collection;
-
-import org.bukkit.ChatColor;
-
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Death;
 import com.censoredsoftware.demigods.trigger.Trigger;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import org.bukkit.ChatColor;
+
+import java.util.Collection;
 
 public class NewPlayerNeedsHelp implements Trigger
 {
@@ -39,7 +38,7 @@ public class NewPlayerNeedsHelp implements Trigger
 		if(characters.isEmpty()) return;
 		for(DCharacter character : characters)
 		{
-			if(Demigods.MiscUtil.isDisabledWorld(character.getLocation())) continue;
+			if(Zones.inNoDemigodsZone(character.getLocation())) continue;
 			character.sendAllianceMessage(ChatColor.YELLOW + " " + Symbol.CAUTION + " " + character.getDeity().getColor() + character.getName() + ChatColor.YELLOW + " needs help!");
 			DataManager.saveTimed(character.getName(), "needsHelpTrigger", true, focusTime);
 		}

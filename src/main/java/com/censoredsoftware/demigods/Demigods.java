@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods;
 
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
-import org.mcstats.MetricsLite;
-
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
@@ -34,6 +22,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
+import org.mcstats.MetricsLite;
+
+import java.util.Set;
 
 public class Demigods
 {
@@ -45,9 +42,9 @@ public class Demigods
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
 
-	// Disabled Worlds
-	protected static ImmutableSet<String> DISABLED_WORLDS;
-	protected static ImmutableSet<String> COMMANDS;
+	// Disabled Stuff
+	public static ImmutableSet<String> DISABLED_WORLDS;
+	public static ImmutableSet<String> COMMANDS;
 
 	// Load what is possible to load right away.
 	static
@@ -125,7 +122,7 @@ public class Demigods
 			register.registerEvents(listener.getListener(), PLUGIN);
 
 		// Disabled worlds
-		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new DisabledWorldListener(), PLUGIN);
+		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new ZoneListener(), PLUGIN);
 
 		// Abilities
 		for(Ability ability : Ability.Util.getLoadedAbilities())
@@ -198,16 +195,6 @@ public class Demigods
 			catch(Throwable ignored)
 			{}
 			return false;
-		}
-
-		public static boolean isDisabledWorld(Location location)
-		{
-			return DISABLED_WORLDS.contains(location.getWorld().getName());
-		}
-
-		public static boolean isDisabledWorld(World world)
-		{
-			return DISABLED_WORLDS.contains(world.getName());
 		}
 
 		public static boolean isDemigodsCommand(String command)

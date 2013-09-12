@@ -1,7 +1,12 @@
 package com.censoredsoftware.demigods.ability.support;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,13 +16,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Carry implements Ability
 {
@@ -109,7 +108,7 @@ public class Carry implements Ability
 			@EventHandler(priority = EventPriority.MONITOR)
 			private void onPlayerInteractEntityEvent(PlayerInteractEntityEvent event)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld()) || !(event.getRightClicked() instanceof Player)) return;
+				if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || !(event.getRightClicked() instanceof Player)) return;
 				Player player = event.getPlayer();
 				Player clicked = (Player) event.getRightClicked();
 
@@ -127,7 +126,7 @@ public class Carry implements Ability
 			private void onPlayerItemHeld(PlayerItemHeldEvent event)
 			{
 				Player player = event.getPlayer();
-				if(Demigods.MiscUtil.isDisabledWorld(player.getWorld())) return;
+				if(Zones.inNoDemigodsZone(player.getLocation())) return;
 
 				if(!Deity.Util.canUseDeitySilent(player, deity) || player.getPassenger() == null) return;
 

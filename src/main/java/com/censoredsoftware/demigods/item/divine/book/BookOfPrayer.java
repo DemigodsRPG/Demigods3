@@ -1,7 +1,10 @@
 package com.censoredsoftware.demigods.item.divine.book;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.item.DivineItem;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.global.Altar;
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,11 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.structure.global.Altar;
-import com.censoredsoftware.demigods.util.Items;
+import java.util.ArrayList;
 
 public class BookOfPrayer implements DivineItem.Item
 {
@@ -54,7 +53,7 @@ public class BookOfPrayer implements DivineItem.Item
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onRightClick(PlayerInteractEvent event)
 		{
-			if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 			// Define variables
 			Player player = event.getPlayer();

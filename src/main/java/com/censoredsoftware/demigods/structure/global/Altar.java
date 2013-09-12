@@ -11,6 +11,7 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -79,7 +80,7 @@ public class Altar
 		@EventHandler(priority = EventPriority.MONITOR)
 		public void onChunkLoad(final ChunkLoadEvent event)
 		{
-			if(Demigods.MiscUtil.isDisabledWorld(event.getWorld()) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN)) return;
+			if(Zones.inNoDemigodsZone(DLocation.Util.randomChunkLocation(event.getChunk())) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN)) return;
 
 			// Add to queue
 			Util.blocks.add(DLocation.Util.randomChunkLocation(event.getChunk()).getBlock());
@@ -88,7 +89,7 @@ public class Altar
 		@EventHandler(priority = EventPriority.HIGHEST)
 		public void demigodsAdminWand(PlayerInteractEvent event)
 		{
-			if(event.getClickedBlock() == null || Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
+			if(event.getClickedBlock() == null || Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 			// Define variables
 			Block clickedBlock = event.getClickedBlock();

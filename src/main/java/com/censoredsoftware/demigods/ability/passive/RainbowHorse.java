@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -110,7 +110,7 @@ public class RainbowHorse implements Ability
 			{
 				for(Pet horse : Pet.Util.findByType(EntityType.HORSE))
 				{
-					if(horse.getCurrentLocation() == null || Demigods.MiscUtil.isDisabledWorld(horse.getCurrentLocation().getWorld())) return;
+					if(horse.getCurrentLocation() == null || Zones.inNoDemigodsZone(horse.getCurrentLocation())) return;
 					if(horse.getDeity().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead()) ((Horse) horse.getEntity()).setColor(getRandomHorseColor());
 				}
 			}

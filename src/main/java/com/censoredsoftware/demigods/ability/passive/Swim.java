@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -108,7 +108,7 @@ public class Swim implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			private void onPlayerMoveEvent(PlayerMoveEvent event)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getWorld())) return;
+				if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 				Player player = event.getPlayer();
 
@@ -141,7 +141,7 @@ public class Swim implements Ability
 			{
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
 				{
-					if(Demigods.MiscUtil.isDisabledWorld(character.getOfflinePlayer().getPlayer().getWorld())) continue;
+					if(Zones.inNoDemigodsZone(character.getOfflinePlayer().getPlayer().getLocation())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
 					potionEffect(player);
 				}

@@ -1,7 +1,12 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,13 +18,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class NoZombie implements Ability
 {
@@ -109,7 +108,7 @@ public class NoZombie implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageByEntityEvent damageEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
+				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
@@ -123,7 +122,7 @@ public class NoZombie implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityTargetEntity(EntityTargetLivingEntityEvent targetEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(targetEvent.getEntity().getWorld()) || !(targetEvent.getTarget() instanceof Player)) return;
+				if(Zones.inNoDemigodsZone(targetEvent.getEntity().getLocation()) || !(targetEvent.getTarget() instanceof Player)) return;
 				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
 			}
 		};

@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -104,7 +104,7 @@ public class NoDamage implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamange(EntityDamageEvent damageEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
+				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
@@ -118,7 +118,7 @@ public class NoDamage implements Ability
 			@EventHandler(priority = EventPriority.HIGHEST)
 			public void onEntityDamageByEntity(EntityDamageByEntityEvent damageEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(damageEvent.getEntity().getWorld())) return;
+				if(Zones.inNoDemigodsZone(damageEvent.getEntity().getLocation())) return;
 				if(damageEvent.getDamager() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getDamager();

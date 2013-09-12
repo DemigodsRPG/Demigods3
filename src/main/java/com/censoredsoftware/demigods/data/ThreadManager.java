@@ -1,9 +1,5 @@
 package com.censoredsoftware.demigods.data;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
@@ -13,10 +9,10 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Messages;
-import com.censoredsoftware.demigods.util.Times;
+import com.censoredsoftware.demigods.util.*;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
@@ -63,7 +59,7 @@ public class ThreadManager
 					// Update online players
 					for(Player player : Bukkit.getOnlinePlayers())
 					{
-						if(Demigods.MiscUtil.isDisabledWorld(player.getLocation())) continue;
+						if(Zones.inNoDemigodsZone(player.getLocation())) continue;
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 

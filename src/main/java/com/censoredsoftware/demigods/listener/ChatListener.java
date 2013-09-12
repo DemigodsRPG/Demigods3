@@ -1,16 +1,16 @@
 package com.censoredsoftware.demigods.listener;
 
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
 
 public class ChatListener implements Listener
 {
@@ -22,7 +22,7 @@ public class ChatListener implements Listener
 		String[] args = message.split("\\s+");
 		Player player = event.getPlayer();
 
-		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()))
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()))
 		{
 			if(Demigods.MiscUtil.isDemigodsCommand(args[0]))
 			{

@@ -1,7 +1,12 @@
 package com.censoredsoftware.demigods.ability.offense;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,14 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class Blaze implements Ability
 {
@@ -111,7 +109,7 @@ public class Blaze implements Ability
 			@EventHandler(priority = EventPriority.HIGH)
 			public void onPlayerInteract(PlayerInteractEvent interactEvent)
 			{
-				if(Demigods.MiscUtil.isDisabledWorld(interactEvent.getPlayer().getWorld())) return;
+				if(Zones.inNoDemigodsZone(interactEvent.getPlayer().getLocation())) return;
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 

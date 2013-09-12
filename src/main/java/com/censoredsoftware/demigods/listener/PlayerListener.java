@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public class PlayerListener implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 		// Define variables
 		Player player = event.getPlayer();
@@ -87,7 +88,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event)
 	{
-		if(!Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
+		if(!Zones.inNoDemigodsZone(event.getPlayer().getLocation()) && DPlayer.Util.isPraying(event.getPlayer())) DPlayer.Util.togglePraying(event.getPlayer(), false);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -117,7 +118,7 @@ public class PlayerListener implements Listener
 				break;
 		}
 		event.setQuitMessage(message);
-		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 		final DCharacter loggingOff = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(loggingOff != null)
 		{
@@ -153,7 +154,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getPlayer().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 		DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 		if(character != null)
 		{
@@ -167,7 +168,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
-		if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		DCharacter character = DPlayer.Util.getPlayer(event.getEntity()).getCurrent();
 		if(character != null) character.setAlive(false);
 	}

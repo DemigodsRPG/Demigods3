@@ -1,7 +1,8 @@
 package com.censoredsoftware.demigods.item.divine;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.item.DivineItem;
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -13,9 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.util.Items;
+import java.util.ArrayList;
 
 public class DeathBow implements DivineItem.Item
 {
@@ -51,7 +50,7 @@ public class DeathBow implements DivineItem.Item
 		private void onEntityShootBow(EntityShootBowEvent event)
 		{
 			// Return for disabled world
-			if(Demigods.MiscUtil.isDisabledWorld(event.getEntity().getLocation())) return;
+			if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 			// If they right clicked a block with the item in hand, do stuff
 			if(Items.areEqual(event.getBow(), DeathBow.this.getItem()))
