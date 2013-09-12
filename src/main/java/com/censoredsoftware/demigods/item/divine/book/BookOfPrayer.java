@@ -61,18 +61,18 @@ public class BookOfPrayer implements DivineItem.Item
 
 			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(BookOfPrayer.this.getItem()))
 			{
-				// Find and teleport to the nearest Altar
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{
+					// Find the nearest Altar and teleport
 					Structure save = Altar.Util.getAltarNearby(player.getLocation());
 					player.teleport(save.getReferenceLocation().clone().add(2.0, 1.5, 0));
 					player.sendMessage(ChatColor.YELLOW + "Teleporting to the nearest Altar...");
 					player.getWorld().strikeLightningEffect(player.getLocation());
+
+					// Consume the book
+					player.getInventory().setItemInHand(new ItemStack(Material.AIR));
 				}
 				else player.sendMessage(ChatColor.YELLOW + "No Altar found!");
-
-				// Consume the book either way
-				player.getInventory().setItemInHand(new ItemStack(Material.AIR));
 			}
 		}
 	}
