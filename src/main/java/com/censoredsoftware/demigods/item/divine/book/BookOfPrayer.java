@@ -72,7 +72,7 @@ public class BookOfPrayer implements DivineItem.Item
 				else player.sendMessage(ChatColor.YELLOW + "No Altar found!");
 
 				// Consume the book either way
-				player.getInventory().remove(player.getInventory().getHeldItemSlot());
+				player.getInventory().setItemInHand(new ItemStack(Material.AIR));
 			}
 		}
 	}
