@@ -42,7 +42,7 @@ public class PlayerListener implements Listener
 		{
 			String name = character.getName();
 			ChatColor color = character.getDeity().getColor();
-			player.setDisplayName(color + name + ChatColor.RESET);
+			player.setDisplayName(color + name);
 			player.setPlayerListName(color + name);
 			if(character.isAlive())
 			{
