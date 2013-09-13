@@ -787,7 +787,7 @@ public class Battle implements ConfigurationSerializable
 			Score participants = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Participants"));
 			participants.setScore(battle.getParticipants().size());
 
-			Score points = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Duration (seconds)"));
+			Score points = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Duration"));
 			points.setScore((int) (System.currentTimeMillis() - battle.getStartTime()) / 1000);
 
 			player.setScoreboard(scoreboard);
