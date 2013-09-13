@@ -69,6 +69,9 @@ permissions:
     demigods.bypass.pvpareacooldown:
         description: Bypass the wait for leaving/entering PVP zones.
         default: false
+    demigods.alliance.test:
+        description: Allows the player to join the Test alliance.
+        default: op
     demigods.alliance.god:
         description: Allows the player to join the God alliance.
         default: true
