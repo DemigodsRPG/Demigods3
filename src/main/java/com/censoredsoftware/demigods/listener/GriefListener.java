@@ -12,10 +12,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -169,22 +169,25 @@ public class GriefListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityInteract(final EntityInteractEvent event)
+	public void onPlayerInteract(final PlayerInteractEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		if(!event.getEntityType().equals(EntityType.PLAYER))
-		{
-			event.setCancelled(true);
-			return;
-		}
-		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
+		Structure save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING) : Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING);
 		if(save != null && save.hasMembers())
 		{
-			DCharacter character = DPlayer.Util.getPlayer((Player) event.getEntity()).getCurrent();
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getMembers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onEntityInteract(final EntityInteractEvent event)
+	{
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
+		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
+		if(save != null && event.getEntity() instanceof Arrow) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
