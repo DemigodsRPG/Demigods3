@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -44,6 +45,7 @@ public class Battle implements ConfigurationSerializable
 	private Set<String> involvedPlayers;
 	private Set<String> involvedTameable;
 	private int killCounter;
+	private int runnableId;
 	private Map<String, Object> kills;
 	private Map<String, Object> deaths;
 	private UUID startedBy;
@@ -67,6 +69,7 @@ public class Battle implements ConfigurationSerializable
 		involvedPlayers = Sets.newHashSet(conf.getStringList("involvedPlayers"));
 		involvedTameable = Sets.newHashSet(conf.getStringList("involvedTameable"));
 		killCounter = conf.getInt("killCounter");
+		runnableId = conf.getInt("runnableId");
 		kills = conf.getConfigurationSection("kills").getValues(false);
 		deaths = conf.getConfigurationSection("deaths").getValues(false);
 		startedBy = UUID.fromString(conf.getString("startedBy"));
@@ -83,6 +86,7 @@ public class Battle implements ConfigurationSerializable
 		map.put("involvedPlayers", Lists.newArrayList(involvedPlayers));
 		map.put("involvedTameable", Lists.newArrayList(involvedTameable));
 		map.put("killCounter", killCounter);
+		map.put("runnableId", runnableId);
 		map.put("kills", kills);
 		map.put("deaths", deaths);
 		map.put("startedBy", startedBy.toString());
@@ -214,7 +218,6 @@ public class Battle implements ConfigurationSerializable
 		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
-		updateScoreboards();
 	}
 
 	public DCharacter getStarter()
@@ -421,17 +424,31 @@ public class Battle implements ConfigurationSerializable
 		}
 	}
 
-	public void updateScoreboards()
+	public void startScoreboardRunnable()
 	{
-		for(String stringId : involvedPlayers)
+		final Battle battle = this;
+
+		runnableId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, new BukkitRunnable()
 		{
-			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
-			if(offlinePlayer.isOnline()) Util.updateScoreboard(offlinePlayer.getPlayer(), this);
-		}
+			@Override
+			public void run()
+			{
+				// TODO: This loop could cause some lag
+				for(String stringId : involvedPlayers)
+				{
+					OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+					if(offlinePlayer.isOnline()) Util.updateScoreboard(offlinePlayer.getPlayer(), battle);
+				}
+			}
+		}, 20, 20);
 	}
 
 	public void resetScoreboards()
 	{
+		// Cancel the runnable
+		Bukkit.getScheduler().cancelTask(runnableId);
+
+		// Clear the scoreboards
 		for(String stringId : involvedPlayers)
 		{
 			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
@@ -456,6 +473,7 @@ public class Battle implements ConfigurationSerializable
 			battle.setStarter(damager.getRelatedCharacter());
 			battle.addParticipant(damager);
 			battle.addParticipant(damaged);
+			battle.startScoreboardRunnable();
 			save(battle);
 			return battle;
 		}
@@ -752,7 +770,7 @@ public class Battle implements ConfigurationSerializable
 			Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
 			// Define objective
-			Objective info = scoreboard.registerNewObjective("battle_info_" + battle.getId(), "dummy");
+			Objective info = scoreboard.registerNewObjective("battle_info" + battle.getId(), "dummy");
 			info.setDisplaySlot(DisplaySlot.SIDEBAR);
 			info.setDisplayName(ChatColor.AQUA + "Current Battle");
 
