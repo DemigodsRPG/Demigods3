@@ -57,10 +57,10 @@ public class DeathBow implements DivineItem.Item
 			if(Items.areEqual(event.getBow(), DeathBow.this.getItem()))
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
-				startArrow.setVelocity(startArrow.getVelocity().multiply(.5));
-				for(int i = 1; i < 6; i++)
+				startArrow.setVelocity(startArrow.getVelocity().multiply(.8));
+				for(int i = 1; i < 5; i++)
 				{
-					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.ARROW);
+					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.WITHER_SKULL);
 					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(.9 / i));
 				}
 			}
