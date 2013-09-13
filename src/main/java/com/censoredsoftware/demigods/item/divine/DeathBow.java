@@ -1,8 +1,7 @@
 package com.censoredsoftware.demigods.item.divine;
 
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.util.Items;
-import com.censoredsoftware.demigods.util.Zones;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -14,7 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.demigods.item.DivineItem;
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 
 public class DeathBow implements DivineItem.Item
 {
@@ -57,7 +58,7 @@ public class DeathBow implements DivineItem.Item
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
 				startArrow.setVelocity(startArrow.getVelocity().multiply(.5));
-				for(int i = 0; i < 5; i++)
+				for(int i = 1; i < 6; i++)
 				{
 					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.ARROW);
 					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(.9 / i));
