@@ -770,7 +770,7 @@ public class Battle implements ConfigurationSerializable
 			Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
 			// Define objective
-			Objective info = scoreboard.registerNewObjective("battle_info" + battle.getId(), "dummy");
+			Objective info = scoreboard.registerNewObjective("battle_info", "dummy");
 			info.setDisplaySlot(DisplaySlot.SIDEBAR);
 			info.setDisplayName(ChatColor.AQUA + "Current Battle");
 
