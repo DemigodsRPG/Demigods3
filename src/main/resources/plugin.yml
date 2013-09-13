@@ -71,7 +71,7 @@ permissions:
         default: false
     demigods.alliance.test:
         description: Allows the player to join the Test alliance.
-        default: op
+        default: false
     demigods.alliance.god:
         description: Allows the player to join the God alliance.
         default: true

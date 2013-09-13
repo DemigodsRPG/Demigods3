@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -67,12 +68,18 @@ public class GeneralCommands extends WrappedCommand
 		String charName = character.getName();
 		String deity = character.getDeity().getName();
 		Alliance alliance = character.getAlliance();
+
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();
 		int ascensions = character.getMeta().getAscensions();
 		int skillPoints = character.getMeta().getSkillPoints();
 		ChatColor deityColor = character.getDeity().getColor();
 		ChatColor favorColor = Strings.getColor(character.getMeta().getFavor(), character.getMeta().getMaxFavor());
+
+		// Set player status
+		String status = ChatColor.YELLOW + "Ready.";
+		if(!character.canPvp()) status = ChatColor.DARK_AQUA + "Safe.";
+		else if(Battle.Util.isInBattle(character)) status = ChatColor.GOLD + "In battle.";
 
 		// Send the user their info via chat
 		Messages.tagged(sender, "Player Check");
@@ -83,6 +90,7 @@ public class GeneralCommands extends WrappedCommand
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Available Skill Points: " + ChatColor.GREEN + skillPoints);
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Status: " + status);
 
 		return true;
 	}
