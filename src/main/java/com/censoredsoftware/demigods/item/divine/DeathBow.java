@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -60,7 +61,7 @@ public class DeathBow implements DivineItem.Item
 				startArrow.setVelocity(startArrow.getVelocity().multiply(.8));
 				for(int i = 1; i < 5; i++)
 				{
-					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.WITHER_SKULL);
+					WitherSkull spawnedArrow = (WitherSkull) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.WITHER_SKULL);
 					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(.9 / i));
 				}
 			}
