@@ -9,6 +9,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import com.censoredsoftware.demigods.Demigods;
@@ -26,7 +30,6 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Titles;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -211,7 +214,7 @@ public class Battle implements ConfigurationSerializable
 		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
 		Util.save(this);
-		sendBattleStats();
+		updateScoreboards();
 	}
 
 	public DCharacter getStarter()
@@ -362,18 +365,14 @@ public class Battle implements ConfigurationSerializable
 			{
 				DCharacter one = DCharacter.Util.load(participants.get(0));
 				DCharacter two = DCharacter.Util.load(participants.get(1));
-				Messages.broadcast(" ");
 				Messages.broadcast(one.getDeity().getColor() + one.getName() + ChatColor.GRAY + " and " + two.getDeity().getColor() + two.getName() + ChatColor.GRAY + " just tied in a duel.");
-				Messages.broadcast(" ");
 			}
 			else
 			{
 				int winnerIndex = scores.get(participants.get(0)) > scores.get(participants.get(1)) ? 0 : 1;
 				DCharacter winner = DCharacter.Util.load(participants.get(winnerIndex));
 				DCharacter loser = DCharacter.Util.load(participants.get(winnerIndex == 0 ? 1 : 0));
-				Messages.broadcast(" ");
 				Messages.broadcast(winner.getDeity().getColor() + winner.getName() + ChatColor.GRAY + " just won in a duel against " + loser.getDeity().getColor() + loser.getName() + ChatColor.GRAY + ".");
-				Messages.broadcast(" ");
 			}
 		}
 		else if(participants.size() > 2)
@@ -391,13 +390,14 @@ public class Battle implements ConfigurationSerializable
 					winningScore = score;
 				}
 			}
-			Messages.broadcast(" ");
-			Messages.broadcast(ChatColor.YELLOW + "The " + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
+			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
 			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 			for(DCharacter mvp : MVPs)
 				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
-			Messages.broadcast(" ");
 		}
+
+		// Reset scoreboards
+		resetScoreboards();
 
 		// Remind of cooldown
 		sendMessage(ChatColor.YELLOW + "You are safe for 60 seconds.");
@@ -421,21 +421,22 @@ public class Battle implements ConfigurationSerializable
 		}
 	}
 
-	public void sendRawMessage(String message)
+	public void updateScoreboards()
 	{
 		for(String stringId : involvedPlayers)
 		{
 			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
-			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().sendRawMessage(message);
+			if(offlinePlayer.isOnline()) Util.updateScoreboard(offlinePlayer.getPlayer(), this);
 		}
 	}
 
-	public void sendBattleStats()
+	public void resetScoreboards()
 	{
-		sendMessage(ChatColor.DARK_AQUA + Titles.chatTitle("Battle Stats"));
-		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " # of Participants: " + ChatColor.WHITE + getParticipants().size());
-		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " Duration: " + ChatColor.WHITE + (int) (System.currentTimeMillis() - getStartTime()) / 1000 + " / " + (int) getDuration() / 1000 + " seconds");
-		sendMessage(ChatColor.YELLOW + "  " + Symbol.RIGHTWARD_ARROW + " Kill-count: " + ChatColor.WHITE + getKillCounter() + " / " + getMinKills());
+		for(String stringId : involvedPlayers)
+		{
+			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
+			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().setScoreboard(null);
+		}
 	}
 
 	public static class Util
@@ -737,6 +738,41 @@ public class Battle implements ConfigurationSerializable
 				}
 			}))
 				battle.delete();
+		}
+
+		/**
+		 * Updates the scoreboard for the given <code>player</code> with information from the <code>battle</code>.
+		 * 
+		 * @param player the player to give the scoreboard to.
+		 * @param battle the battle to grab stats from.
+		 */
+		public static void updateScoreboard(Player player, Battle battle)
+		{
+			// Define variables
+			Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+
+			// Define objective
+			Objective info = scoreboard.registerNewObjective("battle_info_" + battle.getId(), "dummy");
+			info.setDisplaySlot(DisplaySlot.SIDEBAR);
+			info.setDisplayName(ChatColor.AQUA + "Current Battle");
+
+			// Add the information
+			Score kills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Total Kills"));
+			kills.setScore(battle.getKillCounter());
+
+			for(Alliance alliance : battle.getInvolvedAlliances())
+			{
+				Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + alliance.getName() + " Kills"));
+				allianceKills.setScore(battle.getScore(alliance));
+			}
+
+			Score participants = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Participants"));
+			participants.setScore(battle.getParticipants().size());
+
+			Score points = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Duration (seconds)"));
+			points.setScore((int) (System.currentTimeMillis() - battle.getStartTime()) / 1000);
+
+			player.setScoreboard(scoreboard);
 		}
 	}
 }
