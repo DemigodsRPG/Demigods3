@@ -80,7 +80,7 @@ permissions:
         default: true
     demigods.alliance.fate:
         description: Allows the player to join the Fate alliance.
-        default: false
+        default: op
     demigods.alliance.god.zeus:
         description: Allows the player to use Zeus.
         default: true
@@ -101,10 +101,10 @@ permissions:
         default: true
     demigods.alliance.fate.clotho:
         description: Allows the player to use Clotho.
-        default: false
+        default: op
     demigods.alliance.fate.lachesis:
         description: Allows the player to use Lachesis.
-        default: false
+        default: op
     demigods.alliance.fate.atropos:
         description: Allows the player to use Atropos.
-        default: false
+        default: op
