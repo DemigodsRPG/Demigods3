@@ -452,7 +452,7 @@ public class Battle implements ConfigurationSerializable
 		for(String stringId : involvedPlayers)
 		{
 			OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
-			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().setScoreboard(null);
+			if(offlinePlayer.isOnline()) offlinePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 		}
 	}
 
