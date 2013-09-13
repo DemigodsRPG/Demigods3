@@ -772,15 +772,18 @@ public class Battle implements ConfigurationSerializable
 			// Define objective
 			Objective info = scoreboard.registerNewObjective("battle_info", "dummy");
 			info.setDisplaySlot(DisplaySlot.SIDEBAR);
-			info.setDisplayName(ChatColor.AQUA + "Current Battle");
+			info.setDisplayName(ChatColor.AQUA + "Current Battle Stats");
 
 			// Add the information
 			Score kills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Total Kills"));
 			kills.setScore(battle.getKillCounter());
 
+			Score neededKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kills Needed"));
+			neededKills.setScore(battle.getMinKills());
+
 			for(Alliance alliance : battle.getInvolvedAlliances())
 			{
-				Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + alliance.getName() + " Kills"));
+				Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.YELLOW + alliance.getName() + ChatColor.GRAY + " Score"));
 				allianceKills.setScore(battle.getScore(alliance));
 			}
 
