@@ -97,6 +97,15 @@ public class Items
 	 */
 	public static boolean areEqual(ItemStack item1, ItemStack item2)
 	{
-		return item1.getAmount() == item2.getAmount() && item1.getType().equals(item2.getType()) && item1.getData().equals(item2.getData()) && item1.getItemMeta().equals(item2.getItemMeta()) && item1.getEnchantments().equals(item2.getEnchantments());
+		// Clone the items
+		ItemStack newItem1 = item1.clone();
+		ItemStack newItem2 = item2.clone();
+
+		// Set durabilities
+		newItem1.setDurability(Short.parseShort("1"));
+		newItem2.setDurability(Short.parseShort("1"));
+
+		// Return the boolean
+		return newItem1.equals(newItem2);
 	}
 }
