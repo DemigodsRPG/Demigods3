@@ -12,10 +12,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -185,9 +185,8 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityInteract(final EntityInteractEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		Structure save = Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING);
-		if(save != null && event.getEntity() instanceof Arrow) event.setCancelled(true);
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation()) || !(event.getEntity() instanceof Projectile) || Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING) == null) return;
+		event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
