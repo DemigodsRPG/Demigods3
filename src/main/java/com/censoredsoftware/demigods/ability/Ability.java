@@ -324,8 +324,6 @@ public interface Ability
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 			for(final Ability ability : character.getDeity().getAbilities())
 			{
-				if(ability.getType().equals(Skill.Type.PASSIVE)) continue;
-
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{
 					// Ensure that the deity can be used, permission allows it, etc

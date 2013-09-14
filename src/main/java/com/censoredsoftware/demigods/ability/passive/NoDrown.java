@@ -1,10 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,13 +10,16 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 
 public class NoDrown implements Ability
 {
 	private final static String name = "No Drown Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 1;
-	private final static Skill.Type type = Skill.Type.PASSIVE;
 	private final static List<String> details = Lists.newArrayList("You cannot drown.");
 	private String deity, permission;
 
@@ -80,7 +80,7 @@ public class NoDrown implements Ability
 	@Override
 	public Skill.Type getType()
 	{
-		return type;
+		return null;
 	}
 
 	@Override

@@ -1,17 +1,8 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Spigots;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -25,8 +16,18 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Spigots;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Discoball implements Ability
 {
@@ -180,7 +181,6 @@ public class Discoball implements Ability
 		private final static String name = "Rainbow Walking", command = null;
 		private final static int cost = 0, delay = 0, repeat = 5;
 		private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
-		private final static Skill.Type type = Skill.Type.STEALTH;
 		private String deity, permission;
 
 		public RainbowWalking(String deity, String permission)
@@ -240,7 +240,7 @@ public class Discoball implements Ability
 		@Override
 		public Skill.Type getType()
 		{
-			return type;
+			return null;
 		}
 
 		@Override
