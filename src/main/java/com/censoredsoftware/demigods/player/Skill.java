@@ -214,12 +214,12 @@ public class Skill implements ConfigurationSerializable
 				DCharacter character = participant.getRelatedCharacter();
 
 				// Define all variables used for skill point calculation
-				int mvpScore = battle.getMVPs().contains(participant) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
+				int mvpBonus = battle.getMVPs().contains(participant) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
 				int kills = battle.getKills(participant);
 				int deaths = battle.getDeaths(participant);
 
 				// Calculate skill points
-				int skillPoints = (int) Math.ceil(Configs.getSettingDouble("multipliers.skill_points") * (mvpScore * (kills + 1) - (deaths / 2))); // TODO: We can tweak this as we go, as with most of the equations we use for stuff like this. It'll just take some experimenting to balance.
+				int skillPoints = (int) Math.ceil(Configs.getSettingDouble("multipliers.skill_points") * ((kills + 1) - (deaths / 2))) + mvpBonus;
 
 				// Apply the points and notify the player
 				character.getMeta().addSkillPoints(skillPoints);
