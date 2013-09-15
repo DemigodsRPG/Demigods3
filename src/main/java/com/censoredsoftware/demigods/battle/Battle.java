@@ -251,7 +251,7 @@ public class Battle implements ConfigurationSerializable
 			{
 				for(Participant participant : getParticipants())
 				{
-					if(participant.getRelatedCharacter() != null) add(participant.getRelatedCharacter().getAlliance());
+					if(participant.getRelatedCharacter() != null && participant.getRelatedCharacter().getAlliance() != null /* TODO: Investigate the null in this. I've added a check to prevent the exception but I'm not sure why the .getAlliance() method would return null. */) add(participant.getRelatedCharacter().getAlliance());
 				}
 			}
 		};
