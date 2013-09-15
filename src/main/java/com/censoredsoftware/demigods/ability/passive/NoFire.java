@@ -13,7 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 
@@ -76,12 +75,6 @@ public class NoFire implements Ability
 	public List<String> getDetails()
 	{
 		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return null;
 	}
 
 	@Override

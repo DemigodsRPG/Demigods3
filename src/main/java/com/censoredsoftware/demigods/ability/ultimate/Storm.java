@@ -1,14 +1,8 @@
 package com.censoredsoftware.demigods.ability.ultimate;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,14 +17,19 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Storm implements Ability
 {
 	private final static String name = "Storm", command = "storm";
 	private final static int cost = 3700, delay = 600, repeat = 0;
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
 	private final static List<String> details = Lists.newArrayList("Throw all of your enemies into the sky as lightning fills the heavens.");
 	private String deity, permission;
 
@@ -124,12 +123,6 @@ public class Storm implements Ability
 	}
 
 	@Override
-	public Skill.Type getType()
-	{
-		return type;
-	}
-
-	@Override
 	public Material getWeapon()
 	{
 		return null;
@@ -183,7 +176,6 @@ public class Storm implements Ability
 		private final static String name = "Lighting", command = "lightning";
 		private final static int cost = 140, delay = 1000, repeat = 0;
 		private final static List<String> details = Lists.newArrayList("Strike lightning upon your enemies.");
-		private final static Skill.Type type = Skill.Type.OFFENSE;
 		private String deity, permission;
 
 		public Lightning(String deity, String permission)
@@ -264,12 +256,6 @@ public class Storm implements Ability
 		public List<String> getDetails()
 		{
 			return details;
-		}
-
-		@Override
-		public Skill.Type getType()
-		{
-			return type;
 		}
 
 		@Override

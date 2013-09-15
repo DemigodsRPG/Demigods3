@@ -108,3 +108,18 @@ permissions:
     demigods.alliance.fate.atropos:
         description: Allows the player to use Atropos.
         default: op
+    demigods.skill.offense:
+        description: Allows the player to obtain the Offense skill type.
+        default: true
+    demigods.skill.defense:
+        description: Allows the player to obtain the Defense skill type.
+        default: true
+    demigods.skill.support:
+        description: Allows the player to obtain the Support skill type.
+        default: true
+    demigods.skill.ultimate:
+        description: Allows the player to obtain the Ultimate skill type.
+        default: true
+    demigods.skill.favorregen:
+        description: Allows the player to obtain the Favor Regeneration skill type.
+        default: true

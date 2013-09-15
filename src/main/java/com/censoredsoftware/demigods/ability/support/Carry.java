@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.ability.support;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,13 +11,17 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Carry implements Ability
 {
 	private final static String name = "Carry", command = null;
 	private final static int cost = 0, delay = 0, repeat = 20;
-	private final static Skill.Type type = Skill.Type.SUPPORT;
 	private final static List<String> details = Lists.newArrayList("Hold a leash to carry other players on your shoulders.");
 	private String deity, permission;
 	private boolean needsLead;
@@ -80,12 +79,6 @@ public class Carry implements Ability
 	public List<String> getDetails()
 	{
 		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
 	}
 
 	@Override

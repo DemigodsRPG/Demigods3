@@ -25,7 +25,6 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.base.Predicate;
@@ -52,8 +51,6 @@ public interface Ability
 	public int getRepeat();
 
 	public List<String> getDetails();
-
-	public Skill.Type getType();
 
 	public Material getWeapon();
 

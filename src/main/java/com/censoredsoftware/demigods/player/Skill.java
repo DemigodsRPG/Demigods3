@@ -24,13 +24,34 @@ public class Skill implements ConfigurationSerializable
 
 	public enum Type
 	{
-		OFFENSE(true), DEFENSE(true), SUPPORT(true), ULTIMATE(true), FAVOR(true);
+		OFFENSE("Offense", "Offensive power.", "demigods.skill.offense", true), DEFENSE("Defense", "Defensive power.", "demigods.skill.defense", true), SUPPORT("Support", "Support power.", "demigods.skill.support", true), ULTIMATE("Ultimate", "Ultimate power.", "demigods.skill.ultimate", true), FAVOR_REGEN("Favor Regeneration", "Favor regeneration bonus.", "demigods.skill.favorregen", true);
 
+		private String name;
+		private String description;
+		private String permission;
 		private boolean isDefault;
 
-		private Type(boolean isDefault)
+		private Type(String name, String description, String permission, boolean isDefault)
 		{
+			this.name = name;
+			this.description = description;
+			this.permission = permission;
 			this.isDefault = isDefault;
+		}
+
+		public String getName()
+		{
+			return name;
+		}
+
+		public String getDescription()
+		{
+			return description;
+		}
+
+		public String getPermission()
+		{
+			return permission;
 		}
 
 		public boolean isDefault()
@@ -132,19 +153,14 @@ public class Skill implements ConfigurationSerializable
 
 			if(getPoints() >= getRequiredPointsForLevel(getLevel() + 1))
 			{
-				if(getLevel() + 1 >= getCharacter().getMeta().getIndividualSkillCap())
-				{
-					// If they've met the max level cap then stop the addition
-					return;
-				}
-				else
-				{
-					// Add a level
-					addLevels(1);
+				// If they've met the max level cap then stop the addition
+				if(getLevel() + 1 >= getCharacter().getMeta().getIndividualSkillCap()) return;
 
-					// Reset points
-					setPoints(0);
-				}
+				// Add a level
+				addLevels(1);
+
+				// Reset points
+				setPoints(0);
 			}
 		}
 	}
@@ -162,7 +178,7 @@ public class Skill implements ConfigurationSerializable
 			case DEFENSE:
 			case SUPPORT:
 			case ULTIMATE:
-			case FAVOR:
+			case FAVOR_REGEN:
 				return (int) Math.ceil((level * Math.pow(level, 1.4)) + 5);
 		}
 

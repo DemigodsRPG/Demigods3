@@ -22,7 +22,6 @@ import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.util.Randoms;
 import com.censoredsoftware.demigods.util.Spigots;
 import com.censoredsoftware.demigods.util.Zones;
@@ -33,7 +32,6 @@ public class Discoball implements Ability
 {
 	private final static String name = "Discoball of Doom", command = "discoball";
 	private final static int cost = 30, delay = 30, repeat = 4;
-	private final static Skill.Type type = Skill.Type.ULTIMATE;
 	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
 	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 	private String deity, permission;
@@ -90,12 +88,6 @@ public class Discoball implements Ability
 	public List<String> getDetails()
 	{
 		return details;
-	}
-
-	@Override
-	public Skill.Type getType()
-	{
-		return type;
 	}
 
 	@Override
@@ -235,12 +227,6 @@ public class Discoball implements Ability
 		public List<String> getDetails()
 		{
 			return details;
-		}
-
-		@Override
-		public Skill.Type getType()
-		{
-			return null;
 		}
 
 		@Override

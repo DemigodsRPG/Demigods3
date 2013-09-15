@@ -94,7 +94,6 @@ public class MainCommand extends WrappedCommand
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
 		}
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
-		sender.sendMessage(ChatColor.GRAY + " /dg commands");
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.WHITE + " Use " + ChatColor.YELLOW + "/check" + ChatColor.WHITE + " to see your player information.");
@@ -111,24 +110,43 @@ public class MainCommand extends WrappedCommand
 		// Check Permissions
 		if(!player.hasPermission("demigods.basic")) return Messages.noPermission(player);
 
-		if(category.equalsIgnoreCase("commands"))
-		{
-			Messages.tagged(player, "Command Directory");
-			player.sendMessage(ChatColor.GRAY + " There's nothing here..."); // TODO
-		}
-		else if(category.equalsIgnoreCase("info"))
+		if(category.equalsIgnoreCase("info"))
 		{
 			if(option1 == null)
 			{
 				Messages.tagged(player, "Information Directory");
 				player.sendMessage(ChatColor.GRAY + " /dg info characters");
 				player.sendMessage(ChatColor.GRAY + " /dg info shrines");
-				player.sendMessage(ChatColor.GRAY + " /dg info tributes");
+				player.sendMessage(ChatColor.GRAY + " /dg info obelisks");
 				player.sendMessage(ChatColor.GRAY + " /dg info players");
 				player.sendMessage(ChatColor.GRAY + " /dg info pvp");
-				player.sendMessage(ChatColor.GRAY + " /dg info stats");
-				player.sendMessage(ChatColor.GRAY + " /dg info rankings");
+				player.sendMessage(ChatColor.GRAY + " /dg info skills");
 				player.sendMessage(ChatColor.GRAY + " /dg info demigods");
+			}
+			else if(option1.equalsIgnoreCase("characters"))
+			{
+				Messages.tagged(player, "Characters");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
+			}
+			else if(option1.equalsIgnoreCase("shrine"))
+			{
+				Messages.tagged(player, "Shrines");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
+			}
+			else if(option1.equalsIgnoreCase("player"))
+			{
+				Messages.tagged(player, "Players");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Players.");
+			}
+			else if(option1.equalsIgnoreCase("skills"))
+			{
+				Messages.tagged(player, "Skills");
+				player.sendMessage(ChatColor.GRAY + " This is some info about Skills.");
+			}
+			else if(option1.equalsIgnoreCase("pvp"))
+			{
+				Messages.tagged(player, "PVP");
+				player.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
 			}
 			else if(option1.equalsIgnoreCase("demigods"))
 			{
@@ -143,41 +161,8 @@ public class MainCommand extends WrappedCommand
 				player.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "demigodsrpg.com");
 				player.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "github.com/CensoredSoftware/Minecraft-Demigods");
 			}
-			else if(option1.equalsIgnoreCase("characters"))
-			{
-				Messages.tagged(player, "Characters");
-				player.sendMessage(ChatColor.GRAY + " This is some info about Characters.");
-			}
-			else if(option1.equalsIgnoreCase("shrine"))
-			{
-				Messages.tagged(player, "Shrines");
-				player.sendMessage(ChatColor.GRAY + " This is some info about Shrines.");
-			}
-			else if(option1.equalsIgnoreCase("tribute"))
-			{
-				Messages.tagged(player, "Tributes");
-				player.sendMessage(ChatColor.GRAY + " This is some info about Tributes.");
-			}
-			else if(option1.equalsIgnoreCase("player"))
-			{
-				Messages.tagged(player, "Players");
-				player.sendMessage(ChatColor.GRAY + " This is some info about Players.");
-			}
-			else if(option1.equalsIgnoreCase("pvp"))
-			{
-				Messages.tagged(player, "PVP");
-				player.sendMessage(ChatColor.GRAY + " This is some info about PVP.");
-			}
-			else if(option1.equalsIgnoreCase("stats"))
-			{
-				Messages.tagged(player, "Stats");
-				player.sendMessage(ChatColor.GRAY + " Read some server-wide stats for Demigods.");
-			}
-			else if(option1.equalsIgnoreCase("rankings"))
-			{
-				Messages.tagged(player, "Rankings");
-				player.sendMessage(ChatColor.GRAY + " This is some ranking info about Demigods.");
-			}
+
+			return true;
 		}
 
 		for(Alliance alliance : Alliance.values())
@@ -233,6 +218,7 @@ public class MainCommand extends WrappedCommand
 				}
 			}
 		}
+
 		return true;
 	}
 
