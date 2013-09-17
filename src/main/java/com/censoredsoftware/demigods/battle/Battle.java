@@ -436,7 +436,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		final Battle battle = this;
 
-		runnableId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, new BukkitRunnable()
+		runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new BukkitRunnable()
 		{
 			@Override
 			public void run()
