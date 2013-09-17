@@ -16,6 +16,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -171,6 +172,7 @@ public class DPlayer implements ConfigurationSerializable
 		player.setFoodLevel(20);
 		player.setExp(0);
 		player.setLevel(0);
+		player.setGameMode(GameMode.SURVIVAL);
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
 		player.setDisplayName(player.getName());
@@ -218,6 +220,7 @@ public class DPlayer implements ConfigurationSerializable
 					if(player.getBedSpawnLocation() != null) character.setBedSpawn(player.getBedSpawnLocation());
 				}
 			}, 1);
+			character.setGameMode(player.getGameMode());
 			character.setPotionEffects(player.getActivePotionEffects());
 			character.saveInventory();
 

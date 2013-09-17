@@ -24,6 +24,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -666,7 +667,7 @@ public class Battle implements ConfigurationSerializable
 				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
-			return entity instanceof LivingEntity && Pet.Util.getPet((LivingEntity) entity) != null;
+			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null;
 		}
 
 		public static Participant defineParticipant(Entity entity)
