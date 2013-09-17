@@ -3,7 +3,6 @@ package com.censoredsoftware.demigods.util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.event.entity.EntityTeleportEvent;
 
 public class Vehicles
@@ -15,10 +14,11 @@ public class Vehicles
 		if(event.isCancelled()) return;
 		if(entity.isInsideVehicle())
 		{
-			Vehicle vehicle = (Vehicle) entity.getVehicle();
+			Entity vehicle = entity.getVehicle();
 			vehicle.eject();
 			vehicle.teleport(to);
 			entity.teleport(to);
+			vehicle.setPassenger(entity);
 		}
 		else entity.teleport(to);
 	}
