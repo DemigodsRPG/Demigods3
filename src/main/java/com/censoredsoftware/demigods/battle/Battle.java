@@ -1,21 +1,5 @@
 package com.censoredsoftware.demigods.battle;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.util.Vector;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Alliance;
@@ -34,6 +18,22 @@ import com.censoredsoftware.demigods.util.Randoms;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.Vector;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class Battle implements ConfigurationSerializable
 {
@@ -249,10 +249,15 @@ public class Battle implements ConfigurationSerializable
 		return new HashSet<Alliance>()
 		{
 			{
-				for(Participant participant : getParticipants())
+				for(Participant participant : Collections2.filter(getParticipants(), new Predicate<Participant>()
 				{
-					if(participant.getRelatedCharacter() != null && participant.getRelatedCharacter().getAlliance() != null /* TODO: Investigate the null in this. I've added a check to prevent the exception but I'm not sure why the .getAlliance() method would return null. */) add(participant.getRelatedCharacter().getAlliance());
-				}
+					@Override
+					public boolean apply(@Nullable Participant participant)
+					{
+						return participant != null && participant.getRelatedCharacter() != null && participant.getRelatedCharacter().getAlliance() != null /* TODO: Investigate the null in this. I've added a check to prevent the exception but I'm not sure why the .getAlliance() method would return null. */;
+					}
+				}))
+					add(participant.getRelatedCharacter().getAlliance());
 			}
 		};
 	}
