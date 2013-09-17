@@ -20,6 +20,14 @@ public class Vehicles
 			entity.teleport(to);
 			vehicle.setPassenger(entity);
 		}
+		else if(entity.getPassenger() != null)
+		{
+			Entity passenger = entity.getPassenger();
+			entity.eject();
+			entity.teleport(to);
+			passenger.teleport(to);
+			entity.setPassenger(passenger);
+		}
 		else entity.teleport(to);
 	}
 }

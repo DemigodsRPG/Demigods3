@@ -15,6 +15,7 @@ import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Randoms;
+import com.censoredsoftware.demigods.util.Vehicles;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
@@ -683,7 +684,7 @@ public class Battle implements ConfigurationSerializable
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.addKill(damager);
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
-			damagee.getEntity().teleport(randomRespawnPoint(battle));
+			Vehicles.teleport(damagee.getEntity(), randomRespawnPoint(battle));
 			if(damagee instanceof DCharacter)
 			{
 				DCharacter character = (DCharacter) damagee;
