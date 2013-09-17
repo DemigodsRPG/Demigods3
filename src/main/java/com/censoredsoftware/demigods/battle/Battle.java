@@ -32,7 +32,6 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class Battle implements ConfigurationSerializable
@@ -44,6 +43,7 @@ public class Battle implements ConfigurationSerializable
 	private long deleteTime;
 	private Set<String> involvedPlayers;
 	private Set<String> involvedTameable;
+	private Set<String> involvedAlliances;
 	private int killCounter;
 	private int runnableId;
 	private Map<String, Object> kills;
@@ -56,6 +56,7 @@ public class Battle implements ConfigurationSerializable
 		this.deaths = Maps.newHashMap();
 		this.involvedPlayers = Sets.newHashSet();
 		this.involvedTameable = Sets.newHashSet();
+		this.involvedAlliances = Sets.newHashSet();
 		this.killCounter = 0;
 	}
 
@@ -68,6 +69,7 @@ public class Battle implements ConfigurationSerializable
 		deleteTime = conf.getLong("deleteTime");
 		involvedPlayers = Sets.newHashSet(conf.getStringList("involvedPlayers"));
 		involvedTameable = Sets.newHashSet(conf.getStringList("involvedTameable"));
+		involvedAlliances = Sets.newHashSet(conf.getStringList("involvedAlliances"));
 		killCounter = conf.getInt("killCounter");
 		runnableId = conf.getInt("runnableId");
 		kills = conf.getConfigurationSection("kills").getValues(false);
@@ -85,6 +87,7 @@ public class Battle implements ConfigurationSerializable
 		map.put("deleteTime", deleteTime);
 		map.put("involvedPlayers", Lists.newArrayList(involvedPlayers));
 		map.put("involvedTameable", Lists.newArrayList(involvedTameable));
+		map.put("involvedAlliances", Lists.newArrayList(involvedAlliances));
 		map.put("killCounter", killCounter);
 		map.put("runnableId", runnableId);
 		map.put("kills", kills);
@@ -193,6 +196,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
 		else this.involvedTameable.add(participant.getId().toString());
+		involvedAlliances.add(participant.getRelatedCharacter().getAlliance().name());
 		Util.save(this);
 	}
 
@@ -222,7 +226,7 @@ public class Battle implements ConfigurationSerializable
 
 	public DCharacter getStarter()
 	{
-		return DCharacter.Util.load(this.startedBy);
+		return DCharacter.Util.load(startedBy);
 	}
 
 	public Set<Participant> getParticipants()
@@ -244,22 +248,16 @@ public class Battle implements ConfigurationSerializable
 		})));
 	}
 
-	public Set<Alliance> getInvolvedAlliances()
+	public Collection<Alliance> getInvolvedAlliances()
 	{
-		return new HashSet<Alliance>()
+		return Collections2.transform(involvedAlliances, new Function<String, Alliance>()
 		{
+			@Override
+			public Alliance apply(String allianceName)
 			{
-				for(Participant participant : Collections2.filter(getParticipants(), new Predicate<Participant>()
-				{
-					@Override
-					public boolean apply(@Nullable Participant participant)
-					{
-						return participant != null && participant.getRelatedCharacter() != null && participant.getRelatedCharacter().getAlliance() != null /* TODO: Investigate the null in this. I've added a check to prevent the exception but I'm not sure why the .getAlliance() method would return null. */;
-					}
-				}))
-					add(participant.getRelatedCharacter().getAlliance());
+				return Alliance.valueOf(allianceName);
 			}
-		};
+		});
 	}
 
 	public int getKills(Participant participant)
