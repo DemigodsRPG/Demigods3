@@ -358,7 +358,7 @@ public class Battle implements ConfigurationSerializable
 		return this.killCounter;
 	}
 
-	public void end()
+	public void end() // TODO Make this specify that it was a pet that won/lost a duel
 	{
 		for(String stringId : involvedPlayers)
 			DataManager.saveTimed(stringId, "just_finished_battle", true, 60);
