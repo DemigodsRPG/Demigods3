@@ -44,7 +44,6 @@ public class Battle implements ConfigurationSerializable
 	private long deleteTime;
 	private Set<String> involvedPlayers;
 	private Set<String> involvedTameable;
-	private Set<String> involvedAlliances;
 	private int killCounter;
 	private int runnableId;
 	private Map<String, Object> kills;
@@ -57,7 +56,6 @@ public class Battle implements ConfigurationSerializable
 		this.deaths = Maps.newHashMap();
 		this.involvedPlayers = Sets.newHashSet();
 		this.involvedTameable = Sets.newHashSet();
-		this.involvedAlliances = Sets.newHashSet();
 		this.killCounter = 0;
 	}
 
@@ -70,7 +68,6 @@ public class Battle implements ConfigurationSerializable
 		deleteTime = conf.getLong("deleteTime");
 		involvedPlayers = Sets.newHashSet(conf.getStringList("involvedPlayers"));
 		involvedTameable = Sets.newHashSet(conf.getStringList("involvedTameable"));
-		involvedAlliances = Sets.newHashSet(conf.getStringList("involvedAlliances"));
 		killCounter = conf.getInt("killCounter");
 		runnableId = conf.getInt("runnableId");
 		kills = conf.getConfigurationSection("kills").getValues(false);
@@ -88,7 +85,6 @@ public class Battle implements ConfigurationSerializable
 		map.put("deleteTime", deleteTime);
 		map.put("involvedPlayers", Lists.newArrayList(involvedPlayers));
 		map.put("involvedTameable", Lists.newArrayList(involvedTameable));
-		map.put("involvedAlliances", Lists.newArrayList(involvedAlliances));
 		map.put("killCounter", killCounter);
 		map.put("runnableId", runnableId);
 		map.put("kills", kills);
@@ -197,7 +193,6 @@ public class Battle implements ConfigurationSerializable
 	{
 		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
 		else this.involvedTameable.add(participant.getId().toString());
-		involvedAlliances.add(participant.getRelatedCharacter().getAlliance().name());
 		Util.save(this);
 	}
 
@@ -258,14 +253,13 @@ public class Battle implements ConfigurationSerializable
 
 	public Collection<Alliance> getInvolvedAlliances()
 	{
-		return Collections2.transform(involvedAlliances, new Function<String, Alliance>()
+		return new HashSet<Alliance>()
 		{
-			@Override
-			public Alliance apply(String allianceName)
 			{
-				return Alliance.valueOf(allianceName);
+				for(Participant participant : getParticipants())
+					add(participant.getRelatedCharacter().getAlliance());
 			}
-		});
+		};
 	}
 
 	public int getKills(Participant participant)
