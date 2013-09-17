@@ -29,10 +29,18 @@ public class BattleListener implements Listener
 		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		Entity damager = event.getDamager();
 		if(damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
-		if(!Battle.Util.canParticipate(event.getEntity()) || !Battle.Util.canParticipate(damager)) return;
+		if(!Battle.Util.canParticipate(event.getEntity())) return;
 
-		// Define participants
 		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
+
+		// Early battle death (prevents being killed by mobs)
+		if(!Battle.Util.canParticipate(damager) && Battle.Util.isInBattle(damageeParticipant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
+		{
+			event.setCancelled(true);
+			Battle.Util.battleDeath(damageeParticipant, Battle.Util.getBattle(damageeParticipant));
+			return;
+		}
+
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Various things that should cancel the event
