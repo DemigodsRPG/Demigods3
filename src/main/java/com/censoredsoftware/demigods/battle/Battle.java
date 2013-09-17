@@ -253,13 +253,10 @@ public class Battle implements ConfigurationSerializable
 
 	public Collection<Alliance> getInvolvedAlliances()
 	{
-		return new HashSet<Alliance>()
-		{
-			{
-				for(Participant participant : getParticipants())
-					add(participant.getRelatedCharacter().getAlliance());
-			}
-		};
+		Set<Alliance> set = Sets.newHashSet();
+		for(Participant participant : getParticipants())
+			set.add(participant.getRelatedCharacter().getAlliance());
+		return set;
 	}
 
 	public int getKills(Participant participant)

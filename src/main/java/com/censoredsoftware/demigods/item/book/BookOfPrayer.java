@@ -1,6 +1,5 @@
-package com.censoredsoftware.demigods.item.divine.book;
+package com.censoredsoftware.demigods.item.book;
 
-import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Items;
@@ -10,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,37 +18,24 @@ import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.ArrayList;
 
-public class BookOfPrayer implements DivineItem.Item
+public class BookOfPrayer
 {
-	@Override
-	public ItemStack getItem()
+	public final static ItemStack book = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + "Book of Prayer", new ArrayList<String>()
 	{
-		return Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + "Book of Prayer", new ArrayList<String>()
 		{
-			{
-				add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Right click to teleport to the nearest Altar.");
-				add(" ");
-				add(ChatColor.RED + "Consumed on use.");
-			}
-		}, null);
-	}
-
-	@Override
-	public Recipe getRecipe()
+			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Right click to teleport to the nearest Altar.");
+			add(" ");
+			add(ChatColor.RED + "Consumed on use.");
+		}
+	}, null);
+	public final static Recipe recipe = new ShapelessRecipe(book)
 	{
-		ShapelessRecipe recipe = new ShapelessRecipe(getItem());
-		recipe.addIngredient(1, Material.NETHER_STAR);
-		recipe.addIngredient(2, Material.BOOK);
-		return recipe;
-	}
-
-	@Override
-	public Listener getUniqueListener()
-	{
-		return new Listener();
-	}
-
-	class Listener implements org.bukkit.event.Listener
+		{
+			addIngredient(1, Material.NETHER_STAR);
+			addIngredient(2, Material.BOOK);
+		}
+	};
+	public final static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onRightClick(PlayerInteractEvent event)
@@ -58,7 +45,7 @@ public class BookOfPrayer implements DivineItem.Item
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(BookOfPrayer.this.getItem()))
+			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(book))
 			{
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{
@@ -74,5 +61,5 @@ public class BookOfPrayer implements DivineItem.Item
 				else player.sendMessage(ChatColor.YELLOW + "No Altar found!");
 			}
 		}
-	}
+	};
 }

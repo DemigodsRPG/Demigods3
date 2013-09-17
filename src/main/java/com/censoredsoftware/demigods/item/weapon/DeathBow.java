@@ -1,51 +1,37 @@
-package com.censoredsoftware.demigods.item.divine;
+package com.censoredsoftware.demigods.item.weapon;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.demigods.item.DivineItem;
-import com.censoredsoftware.demigods.util.Items;
-import com.censoredsoftware.demigods.util.Zones;
+import java.util.ArrayList;
 
-public class DeathBow implements DivineItem.Item
+public class DeathBow
 {
-	@Override
-	public ItemStack getItem()
+	public final static ItemStack deathBow = Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + "The Bow of Five Arrows", new ArrayList<String>()
 	{
-		return Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + "The Bow of Five Arrows", new ArrayList<String>()
 		{
-			{
-				add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Take your target out 5 times faster!");
-			}
-		}, null);
-	}
-
-	@Override
-	public Recipe getRecipe()
+			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Take your target out 5 times faster!");
+		}
+	}, null);
+	public final static Recipe recipe = new ShapedRecipe(deathBow)
 	{
-		ShapedRecipe recipe = new ShapedRecipe(getItem());
-		recipe.shape("A  ", " A ", "  A");
-		recipe.setIngredient('A', Material.BOW);
-		return recipe;
-	}
-
-	@Override
-	public Listener getUniqueListener()
-	{
-		return new Listener();
-	}
-
-	class Listener implements org.bukkit.event.Listener
+		{
+			shape("A  ", " A ", "  A");
+			setIngredient('A', Material.BOW);
+		}
+	};
+	public final static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onEntityShootBow(EntityShootBowEvent event)
@@ -54,7 +40,7 @@ public class DeathBow implements DivineItem.Item
 			if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 			// If they right clicked a block with the item in hand, do stuff
-			if(Items.areEqual(event.getBow(), DeathBow.this.getItem()))
+			if(Items.areEqual(event.getBow(), deathBow))
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
 				startArrow.setVelocity(startArrow.getVelocity().multiply(.8));
@@ -65,5 +51,5 @@ public class DeathBow implements DivineItem.Item
 				}
 			}
 		}
-	}
+	};
 }

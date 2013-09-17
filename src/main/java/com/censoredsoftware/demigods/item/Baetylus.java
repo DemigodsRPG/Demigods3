@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// TODO Convert these over to the new item stuff.
+
 public enum Baetylus
 {
 	/**

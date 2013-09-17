@@ -1,7 +1,18 @@
 package com.censoredsoftware.demigods.ability;
 
-import java.util.*;
-
+import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.battle.Battle;
+import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Configs;
+import com.censoredsoftware.demigods.util.Strings;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -18,19 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.player.Pet;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Strings;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 public interface Ability
 {
@@ -395,7 +394,7 @@ public interface Ability
 				}
 			}
 
-			/*
+			/**
 			 * This code below MAY cause issues, it should be watched whenever something is changed.
 			 */
 			EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(source, target, cause, amount);

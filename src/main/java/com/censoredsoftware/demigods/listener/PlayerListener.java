@@ -60,7 +60,7 @@ public class PlayerListener implements Listener
 		}
 
 		// First join book
-		if(!player.hasPlayedBefore()) player.getInventory().addItem(DivineItem.WELCOME_BOOK.getSpecialItem().getItem());
+		if(!player.hasPlayedBefore()) player.getInventory().addItem(DivineItem.WELCOME_BOOK.getItem());
 
 		// Notifications
 		if(character != null && character.getMeta().hasNotifications())

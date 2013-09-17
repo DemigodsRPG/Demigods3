@@ -1,6 +1,5 @@
-package com.censoredsoftware.demigods.item.divine;
+package com.censoredsoftware.demigods.item.weapon;
 
-import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.util.Items;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Zones;
@@ -11,36 +10,24 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-public class ButtSword implements DivineItem.Item
+public class ButtSword
 {
-	@Override
-	public ItemStack getItem()
+	public final static ItemStack buttSword = Items.create(Material.DIAMOND_SWORD, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "The Butt Sword", null, null);
+	public final static Recipe recipe = new ShapedRecipe(buttSword)
 	{
-		return Items.create(Material.DIAMOND_SWORD, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "The Butt Sword", null, null);
-	}
-
-	@Override
-	public Recipe getRecipe()
-	{
-		ShapedRecipe recipe = new ShapedRecipe(getItem());
-		recipe.shape("AAA", "AAA", "AAA");
-		recipe.setIngredient('A', Material.DIAMOND_SWORD);
-		return recipe;
-	}
-
-	@Override
-	public Listener getUniqueListener()
-	{
-		return new Listener();
-	}
-
-	class Listener implements org.bukkit.event.Listener
+		{
+			shape("AAA", "AAA", "AAA");
+			setIngredient('A', Material.DIAMOND_SWORD);
+		}
+	};
+	public final static Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onPlayerInteract(PlayerInteractEvent event)
@@ -51,7 +38,7 @@ public class ButtSword implements DivineItem.Item
 			Player player = event.getPlayer();
 
 			// If they right clicked a block with the item in hand, do stuff
-			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Items.areEqual(player.getItemInHand(), ButtSword.this.getItem()))
+			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Items.areEqual(player.getItemInHand(), buttSword))
 			{
 				Location refLoc = event.getClickedBlock().getLocation();
 				Location newLoc = refLoc.clone().add(0, 20, 0);
@@ -60,9 +47,9 @@ public class ButtSword implements DivineItem.Item
 				for(int i = 0; i < 100; i++)
 					refLoc.getWorld().spawnEntity(newLoc, EntityType.EGG);
 
-				// Let everyone know what a perve the user is!
+				// Let everyone know what a perv the user is!
 				Messages.broadcast(player.getDisplayName() + ChatColor.WHITE + " just smacked your butt!");
 			}
 		}
-	}
+	};
 }

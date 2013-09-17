@@ -1,36 +1,48 @@
 package com.censoredsoftware.demigods.item;
 
+import com.censoredsoftware.demigods.item.book.BookOfPrayer;
+import com.censoredsoftware.demigods.item.book.WelcomeBook;
+import com.censoredsoftware.demigods.item.weapon.ButtSword;
+import com.censoredsoftware.demigods.item.weapon.DeathBow;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import com.censoredsoftware.demigods.item.divine.ButtSword;
-import com.censoredsoftware.demigods.item.divine.DeathBow;
-import com.censoredsoftware.demigods.item.divine.book.BookOfPrayer;
-import com.censoredsoftware.demigods.item.divine.book.WelcomeBook;
-
 public enum DivineItem
 {
-	BOOK_OF_PRAYER(new BookOfPrayer()), WELCOME_BOOK(new WelcomeBook()), BUTT_SWORD(new ButtSword()), DEATH_BOW(new DeathBow());
+	/**
+	 * Books
+	 */
+	BOOK_OF_PRAYER(BookOfPrayer.book, BookOfPrayer.recipe, BookOfPrayer.listener), WELCOME_BOOK(WelcomeBook.book, null, null),
 
-	private final Item item;
+	/**
+	 * Weapons
+	 */
+	BUTT_SWORD(ButtSword.buttSword, ButtSword.recipe, ButtSword.listener), DEATH_BOW(DeathBow.deathBow, DeathBow.recipe, DeathBow.listener);
 
-	private DivineItem(Item item)
+	private final ItemStack item;
+	private final Recipe recipe;
+	private final Listener listener;
+
+	private DivineItem(ItemStack item, Recipe recipe, Listener listener)
 	{
 		this.item = item;
+		this.recipe = recipe;
+		this.listener = listener;
 	}
 
-	public Item getSpecialItem()
+	public ItemStack getItem()
 	{
 		return item;
 	}
 
-	public static interface Item
+	public Recipe getRecipe()
 	{
-		public ItemStack getItem();
+		return recipe;
+	}
 
-		public Recipe getRecipe();
-
-		public Listener getUniqueListener();
+	public Listener getUniqueListener()
+	{
+		return listener;
 	}
 }

@@ -160,8 +160,8 @@ public class Demigods
 		// Special Items
 		for(DivineItem divineItem : DivineItem.values())
 		{
-			if(divineItem.getSpecialItem().getUniqueListener() != null) register.registerEvents(divineItem.getSpecialItem().getUniqueListener(), PLUGIN);
-			if(divineItem.getSpecialItem().getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getSpecialItem().getRecipe());
+			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), PLUGIN);
+			if(divineItem.getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getRecipe());
 		}
 
 		// Quit reason.
