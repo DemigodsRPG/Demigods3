@@ -396,10 +396,13 @@ public class Battle implements ConfigurationSerializable
 					winningScore = score;
 				}
 			}
-			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
-			Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
-			for(DCharacter mvp : MVPs)
-				Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+			if(winningAlliance != null)
+			{
+				Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
+				Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
+				for(DCharacter mvp : MVPs)
+					Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
+			}
 		}
 
 		// Reset scoreboards
