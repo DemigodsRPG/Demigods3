@@ -45,7 +45,6 @@ public class DeathBow
 			{
 				Arrow startArrow = (Arrow) event.getProjectile();
 				startArrow.setVelocity(startArrow.getVelocity().multiply(.8));
-				startArrow.setPassenger(event.getEntity()); // TODO: For shits and giggles
 				for(int i = 1; i < 5; i++)
 				{
 					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.ARROW);
