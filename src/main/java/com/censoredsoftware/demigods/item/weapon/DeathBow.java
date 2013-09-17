@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.item.weapon;
 
-import com.censoredsoftware.demigods.util.Items;
-import com.censoredsoftware.demigods.util.Zones;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -14,7 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 
 public class DeathBow
 {
@@ -47,6 +48,7 @@ public class DeathBow
 				for(int i = 1; i < 5; i++)
 				{
 					Arrow spawnedArrow = (Arrow) event.getEntity().getWorld().spawnEntity(startArrow.getLocation(), EntityType.ARROW);
+					spawnedArrow.setShooter(event.getEntity());
 					spawnedArrow.setVelocity(startArrow.getVelocity().multiply(.9 / i));
 				}
 			}
