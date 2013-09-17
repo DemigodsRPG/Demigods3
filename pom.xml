@@ -126,6 +126,10 @@
                     <artifactId>worldedit</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>commandbook</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>com.nijikokun</groupId>
                     <artifactId>iconomy</artifactId>
                 </exclusion>
