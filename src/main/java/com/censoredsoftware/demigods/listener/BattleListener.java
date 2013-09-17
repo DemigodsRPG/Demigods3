@@ -40,6 +40,7 @@ public class BattleListener implements Listener
 			Battle.Util.battleDeath(damageeParticipant, Battle.Util.getBattle(damageeParticipant));
 			return;
 		}
+		else if(!Battle.Util.canParticipate(damager)) return;
 
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
