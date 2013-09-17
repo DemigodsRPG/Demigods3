@@ -15,8 +15,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 public class BattleListener implements Listener
 {
@@ -137,33 +138,43 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleMove(PlayerMoveEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		onMoveEvent(event.getPlayer(), event.getTo(), event.getFrom());
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBattleVehicleMove(VehicleMoveEvent event)
+	{
+		onMoveEvent(event.getVehicle(), event.getTo(), event.getFrom());
+	}
+
+	private static void onMoveEvent(Entity entity, Location to, Location from)
+	{
+		if(!Battle.Util.canParticipate(entity)) return;
+		Participant participant = Battle.Util.defineParticipant(entity);
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			boolean to = DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange();
-			boolean from = DLocation.Util.distanceFlat(event.getFrom(), battle.getStartLocation()) > battle.getRange();
-			if(to && !from) DataManager.saveTemp(participant.getId().toString(), "battle_safe_location", event.getFrom());
-			if(to)
+			boolean toBool = DLocation.Util.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
+			boolean fromBool = DLocation.Util.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
+			if(toBool && !fromBool) DataManager.saveTemp(participant.getId().toString(), "battle_safe_location", from);
+			if(toBool)
 			{
 				if(DataManager.hasKeyTemp(participant.getId().toString(), "battle_safe_location"))
 				{
-					event.getPlayer().teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
+					entity.teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
 					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
 				}
-				else event.getPlayer().teleport(Battle.Util.randomRespawnPoint(battle));
+				else entity.teleport(Battle.Util.randomRespawnPoint(battle));
 			};
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBattleMove(PlayerTeleportEvent event)
+	public void onBattleMove(EntityTeleportEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
-		if(!Battle.Util.canParticipate(event.getPlayer())) return;
-		Participant participant = Battle.Util.defineParticipant(event.getPlayer());
+		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
+		if(!Battle.Util.canParticipate(event.getEntity())) return;
+		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
