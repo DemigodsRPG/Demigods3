@@ -29,7 +29,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>LATEST</spigot.version>
+        <spigot.version>1.6.2-R1.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
     </properties>
@@ -134,12 +134,6 @@
             </exclusions>
             <scope>compile</scope>
             <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
