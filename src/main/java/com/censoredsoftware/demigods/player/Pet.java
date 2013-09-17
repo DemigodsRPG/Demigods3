@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.*;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -212,9 +213,9 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(Pet pet)
+				public boolean apply(@Nullable Pet pet)
 				{
-					return pet.getEntityType().equals(type.getName());
+					return pet != null && pet.getEntityType().equals(type.getName());
 				}
 			});
 		}
@@ -224,9 +225,9 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(Pet pet)
+				public boolean apply(@Nullable Pet pet)
 				{
-					return pet.getAnimalTamer().equals(animalTamer);
+					return pet != null && pet.getAnimalTamer().equals(animalTamer);
 				}
 			});
 		}
@@ -236,9 +237,9 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(Pet pet)
+				public boolean apply(@Nullable Pet pet)
 				{
-					return pet.getEntityUUID().equals(uniqueId);
+					return pet != null && pet.getEntityUUID().equals(uniqueId);
 				}
 			});
 		}
@@ -248,9 +249,9 @@ public class Pet implements Participant, ConfigurationSerializable
 			return Collections2.filter(DataManager.pets.values(), new Predicate<Pet>()
 			{
 				@Override
-				public boolean apply(Pet pet)
+				public boolean apply(@Nullable Pet pet)
 				{
-					return pet.getOwner().getId().equals(ownerId);
+					return pet != null && pet.getOwner().getId().equals(ownerId);
 				}
 			});
 		}
