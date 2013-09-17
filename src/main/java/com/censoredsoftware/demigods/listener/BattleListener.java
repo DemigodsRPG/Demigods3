@@ -160,7 +160,7 @@ public class BattleListener implements Listener
 			if(toBool && !fromBool) DataManager.saveTemp(participant.getId().toString(), "battle_safe_location", from);
 			if(toBool)
 			{
-				if(DataManager.hasKeyTemp(participant.getId().toString(), "battle_safe_location"))
+				if(DataManager.hasKeyTemp(participant.getRelatedCharacter().getId().toString(), "battle_safe_location"))
 				{
 					entity.teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
 					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
