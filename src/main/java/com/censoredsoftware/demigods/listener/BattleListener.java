@@ -157,7 +157,7 @@ public class BattleListener implements Listener
 			Battle battle = Battle.Util.getBattle(participant);
 			boolean toBool = DLocation.Util.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
 			boolean fromBool = DLocation.Util.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
-			if(toBool && !fromBool) DataManager.saveTemp(participant.getId().toString(), "battle_safe_location", from);
+			if(toBool && !fromBool) DataManager.saveTemp((participant.getEntity().getPassenger() == null ? participant.getId().toString() : participant.getRelatedCharacter().getId().toString()), "battle_safe_location", from);
 			if(toBool)
 			{
 				if(DataManager.hasKeyTemp(participant.getRelatedCharacter().getId().toString(), "battle_safe_location"))
