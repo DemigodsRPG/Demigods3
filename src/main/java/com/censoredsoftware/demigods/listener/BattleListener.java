@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Pet;
+import com.censoredsoftware.demigods.util.Vehicles;
 import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -164,13 +165,13 @@ public class BattleListener implements Listener
 					entity.teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
 					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
 				}
-				else entity.teleport(Battle.Util.randomRespawnPoint(battle));
+				else Vehicles.teleport(entity, Battle.Util.randomRespawnPoint(battle));
 			};
 		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBattleMove(EntityTeleportEvent event)
+	public void onBattleTeleport(EntityTeleportEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		if(!Battle.Util.canParticipate(event.getEntity())) return;
@@ -178,8 +179,7 @@ public class BattleListener implements Listener
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
-			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld())) return;
-			if(DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
+			if(!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange()) event.setCancelled(true);
 		}
 	}
 }
