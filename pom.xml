@@ -70,14 +70,6 @@
 
     <repositories>
         <repository>
-            <id>censored-software</id>
-            <url>http://repo.censoredsoftware.com</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots</url>
         </repository>
