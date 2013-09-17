@@ -1,18 +1,17 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.util.Configs;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Skill implements ConfigurationSerializable
 {
@@ -222,8 +221,6 @@ public class Skill implements ConfigurationSerializable
 			// Loop through all participants and apply appropriate updates
 			for(Participant participant : battle.getParticipants())
 			{
-				if(participant.getRelatedCharacter() == null) continue;
-
 				// Get related character
 				DCharacter character = participant.getRelatedCharacter();
 

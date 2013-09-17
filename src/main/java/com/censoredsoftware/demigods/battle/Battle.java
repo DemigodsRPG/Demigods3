@@ -32,6 +32,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class Battle implements ConfigurationSerializable
@@ -231,7 +232,7 @@ public class Battle implements ConfigurationSerializable
 
 	public Set<Participant> getParticipants()
 	{
-		return Sets.union(Sets.newHashSet(Collections2.transform(involvedPlayers, new Function<String, Participant>()
+		return Sets.filter(Sets.union(Sets.newHashSet(Collections2.transform(involvedPlayers, new Function<String, Participant>()
 		{
 			@Override
 			public Participant apply(String character)
@@ -245,7 +246,14 @@ public class Battle implements ConfigurationSerializable
 			{
 				return Pet.Util.load(UUID.fromString(tamable));
 			}
-		})));
+		}))), new Predicate<Participant>()
+		{
+			@Override
+			public boolean apply(@Nullable Participant participant)
+			{
+				return participant != null && participant.getRelatedCharacter() != null;
+			}
+		});
 	}
 
 	public Collection<Alliance> getInvolvedAlliances()
