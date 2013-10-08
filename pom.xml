@@ -29,7 +29,7 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.6.2-R1.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.6.4-R0.1-SNAPSHOT</spigot.version>
         <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
     </properties>
