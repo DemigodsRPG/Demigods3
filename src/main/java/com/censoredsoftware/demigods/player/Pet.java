@@ -81,12 +81,6 @@ public class Pet implements Participant, ConfigurationSerializable
 		Util.save(this);
 	}
 
-	public void setCanPvp(boolean PvP)
-	{
-		this.PvP = PvP;
-		Util.save(this);
-	}
-
 	public boolean canPvp()
 	{
 		return this.PvP;

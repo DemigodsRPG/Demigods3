@@ -137,7 +137,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		int base = Configs.getSettingInt("battles.min_range");
 		int per = 5;
-		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		if(involvedPlayers.size() > 2) return base + (per * (involvedPlayers.size() - 2));
 		return base;
 	}
 
@@ -150,7 +150,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		long base = Configs.getSettingInt("battles.min_duration") * 1000;
 		long per = Configs.getSettingInt("battles.duration_multiplier") * 1000;
-		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		if(involvedPlayers.size() > 2) return base + (per * (involvedPlayers.size() - 2));
 		return base;
 	}
 
@@ -158,7 +158,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		int base = Configs.getSettingInt("battles.min_kills");
 		int per = 2;
-		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		if(involvedPlayers.size() > 2) return base + (per * (involvedPlayers.size() - 2));
 		return base;
 	}
 
@@ -166,7 +166,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		int base = Configs.getSettingInt("battles.max_kills");
 		int per = 3;
-		if(getParticipants().size() > 2) return base + (per * (getParticipants().size() - 2));
+		if(involvedPlayers.size() > 2) return base + (per * (involvedPlayers.size() - 2));
 		return base;
 	}
 
@@ -399,7 +399,7 @@ public class Battle implements ConfigurationSerializable
 			}
 			if(winningAlliance != null)
 			{
-				Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + getParticipants().size() + " participants.");
+				Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + winningAlliance.getName() + "s " + ChatColor.GRAY + "just won a battle involving " + involvedPlayers.size() + " participants.");
 				Messages.broadcast(ChatColor.GRAY + "The " + ChatColor.YELLOW + "MVP" + (oneMVP ? "" : "s") + ChatColor.GRAY + " from this battle " + (oneMVP ? "is" : "are") + ":");
 				for(DCharacter mvp : MVPs)
 					Messages.broadcast(" " + ChatColor.DARK_GRAY + Symbol.RIGHTWARD_ARROW + " " + mvp.getDeity().getColor() + mvp.getName() + ChatColor.GRAY + " / " + ChatColor.YELLOW + "Kills" + ChatColor.GRAY + ": " + getKills(mvp) + " / " + ChatColor.YELLOW + "Deaths" + ChatColor.GRAY + ": " + getDeaths(mvp));
@@ -668,7 +668,7 @@ public class Battle implements ConfigurationSerializable
 				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
 				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
-			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null;
+			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null && isInBattle(Pet.Util.getPet((LivingEntity) entity).getRelatedCharacter());
 		}
 
 		public static Participant defineParticipant(Entity entity)
@@ -795,7 +795,7 @@ public class Battle implements ConfigurationSerializable
 			}
 
 			Score participants = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Participants"));
-			participants.setScore(battle.getParticipants().size());
+			participants.setScore(battle.involvedPlayers.size());
 
 			Score points = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Duration"));
 			points.setScore((int) (System.currentTimeMillis() - battle.getStartTime()) / 1000);

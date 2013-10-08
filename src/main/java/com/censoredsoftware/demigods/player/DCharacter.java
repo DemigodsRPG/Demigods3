@@ -445,7 +445,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return regenRate;
 	}
 
-	@Override
 	public void setCanPvp(boolean pvp)
 	{
 		DPlayer.Util.getPlayer(getOfflinePlayer()).setCanPvp(pvp);
