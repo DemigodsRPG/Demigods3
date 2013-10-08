@@ -159,7 +159,7 @@ public class BattleListener implements Listener
 
 	private static void onMoveEvent(Entity entity, Location to, Location from)
 	{
-		if(!Battle.Util.canParticipate(entity)) return;
+		if(!Battle.Util.canParticipate(entity) || entity.isInsideVehicle()) return;
 		Participant participant = Battle.Util.defineParticipant(entity);
 		if(Battle.Util.isInBattle(participant))
 		{
