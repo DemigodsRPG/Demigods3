@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Collection;
 
@@ -69,14 +69,14 @@ public enum Alliance
 			});
 		}
 
-		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final Alliance alliance, final CommandSender sender)
+		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final Alliance alliance, final Player player)
 		{
 			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
 			{
 				@Override
 				public boolean apply(Deity d)
 				{
-					return sender.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}

@@ -1,4 +1,4 @@
-![Demigods Logo](http://www.demigodsrpg.com/demigods_logo.png)
+![Demigods Logo](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods.png?branch=master)
 
 Overview [![Build Status](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods.png?branch=master)](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods)
 ========
