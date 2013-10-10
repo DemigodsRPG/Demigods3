@@ -190,14 +190,6 @@
                     <include>*.yml</include>
                 </includes>
             </resource>
-            <!--<resource>
-                <targetPath>./lang</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/lang</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>-->
         </resources>
         <plugins>
             <plugin>
