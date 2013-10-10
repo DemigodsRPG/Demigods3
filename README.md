@@ -14,10 +14,10 @@ To install, simply place the Demigods.jar in to your plugins folder and run the 
 Contributing
 ============
 
-To contribute to Demigods, read [**CONTRIBUTING.md**] and follow the instructions.
+To contribute to Demigods, read [CONTRIBUTING.md] and follow the instructions.
 
 
 Developers
 ==========
 
-Demigods 3 is being developed by The Demigods Team, defined in [**AUTHORS.md**].
+Demigods 3 is being developed by The Demigods Team, defined in [AUTHORS.md].
