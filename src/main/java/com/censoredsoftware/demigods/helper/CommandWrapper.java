@@ -23,10 +23,10 @@ public abstract class CommandWrapper implements TabExecutor
 	public CommandWrapper(boolean tab, WrappedCommandListItem[] wrappedCommandList)
 	{
 		this.wrappedCommandList = wrappedCommandList;
-		for(WrappedCommand command : getCommands())
+		for(String commandName : getCommandNames())
 		{
-			Demigods.PLUGIN.getCommand(command.getName()).setExecutor(this);
-			if(tab) Demigods.PLUGIN.getCommand(command.getName()).setTabCompleter(this);
+			Demigods.PLUGIN.getCommand(commandName).setExecutor(this);
+			if(tab) Demigods.PLUGIN.getCommand(commandName).setTabCompleter(this);
 		}
 	}
 
@@ -82,7 +82,6 @@ public abstract class CommandWrapper implements TabExecutor
 		}
 		catch(NoSuchElementException ignored)
 		{}
-		sender.sendMessage("Something went wrong.");
 		return false;
 	}
 
@@ -105,7 +104,7 @@ public abstract class CommandWrapper implements TabExecutor
 		public boolean processCommand(CommandSender sender, final String[] args)
 		{
 			if(!shouldContinue(sender, args)) return true;
-			if(args.length < 1 || getSubCommands() == null || getSubCommands().size() < 1 || args.length > 0 && !Iterables.any(getSubCommands(), new Predicate<WrappedSubCommand>()
+			if(args.length < 1 || getSubCommands() == null || getSubCommands().isEmpty() || args.length > 0 && !Iterables.any(getSubCommands(), new Predicate<WrappedSubCommand>()
 			{
 				@Override
 				public boolean apply(WrappedSubCommand found)

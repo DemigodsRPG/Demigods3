@@ -24,11 +24,6 @@ import java.util.Set;
 
 public class DevelopmentCommands extends CommandWrapper
 {
-	public DevelopmentCommands()
-	{
-		super(false, DevelopmentCommand.values());
-	}
-
 	public static enum DevelopmentCommand implements WrappedCommandListItem
 	{
 		/**
@@ -340,6 +335,11 @@ public class DevelopmentCommands extends CommandWrapper
 		{
 			return command;
 		}
+	}
+
+	public DevelopmentCommands()
+	{
+		super(false, DevelopmentCommand.values());
 	}
 
 	private static DCharacter obeliskGetCharacter(String type, final String name)

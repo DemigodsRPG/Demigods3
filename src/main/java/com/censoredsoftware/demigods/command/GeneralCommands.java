@@ -28,11 +28,6 @@ import java.util.*;
 
 public class GeneralCommands extends CommandWrapper
 {
-	public GeneralCommands()
-	{
-		super(false, GeneralCommand.values());
-	}
-
 	public enum GeneralCommand implements WrappedCommandListItem
 	{
 		/**
@@ -633,6 +628,11 @@ public class GeneralCommands extends CommandWrapper
 		{
 			return command;
 		}
+	}
+
+	public GeneralCommands()
+	{
+		super(false, GeneralCommand.values());
 	}
 
 	private static boolean dg_admin(CommandSender sender, String[] args)
