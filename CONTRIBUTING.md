@@ -22,7 +22,7 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
 1. Submit a feature request on GitHub after searching the list for similar feature requests. It's possible somebody has already asked for this feature or provided a pull request that we're still discussing.
 
-2. Provide a clear and detailed explanation of the feature you want and why it's important to add. The feature must apply to a wide array of users of Demigods. You may also want to provide us with some advance documentation on the feature, which will help the community to better understand where it will fit.
+2. Provide a clear and detailed explanation of the feature you want and why it's important to add. You may also want to provide us with some advance documentation on the feature, which will help the community to better understand where it will fit.
 
 3. If you're a programmer, build the feature yourself.
 
