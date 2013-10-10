@@ -18,11 +18,19 @@ import java.util.Set;
 
 public abstract class CommandWrapper implements TabExecutor
 {
-	private WrappedCommandListItem[] wrappedCommandList;
+	private Collection<WrappedCommand> wrappedCommandList;
 
 	public CommandWrapper(boolean tab, WrappedCommandListItem[] wrappedCommandList)
 	{
-		this.wrappedCommandList = wrappedCommandList;
+		this.wrappedCommandList = Collections2.transform(Sets.newHashSet(wrappedCommandList), new Function<WrappedCommandListItem, WrappedCommand>()
+		{
+			@Override
+			public WrappedCommand apply(WrappedCommandListItem wrappedCommandListItem)
+			{
+				return wrappedCommandListItem.getCommand();
+			}
+		});
+
 		for(String commandName : getCommandNames())
 		{
 			Demigods.PLUGIN.getCommand(commandName).setExecutor(this);
@@ -32,14 +40,7 @@ public abstract class CommandWrapper implements TabExecutor
 
 	public Collection<WrappedCommand> getCommands()
 	{
-		return Collections2.transform(Sets.newHashSet(wrappedCommandList), new Function<WrappedCommandListItem, WrappedCommand>()
-		{
-			@Override
-			public WrappedCommand apply(WrappedCommandListItem wrappedCommandListItem)
-			{
-				return wrappedCommandListItem.getCommand();
-			}
-		});
+		return wrappedCommandList;
 	}
 
 	public Collection<String> getCommandNames()
