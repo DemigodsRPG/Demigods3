@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.player;
 
-import java.util.*;
-
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
 import com.censoredsoftware.demigods.data.DataManager;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import java.util.*;
 
 public class Death implements ConfigurationSerializable
 {

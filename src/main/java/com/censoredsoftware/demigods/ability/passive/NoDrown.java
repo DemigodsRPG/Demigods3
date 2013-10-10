@@ -1,7 +1,9 @@
 package com.censoredsoftware.demigods.ability.passive;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,10 +12,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class NoDrown implements Ability
 {

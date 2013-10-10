@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.command;
 
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
@@ -22,6 +12,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Player;
+
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand
 {

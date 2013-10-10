@@ -1,12 +1,11 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.Collection;
-
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
 
 public class Strings
 {

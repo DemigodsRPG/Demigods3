@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.item.weapon;
 
-import java.util.ArrayList;
-
+import com.censoredsoftware.demigods.util.Items;
+import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -16,8 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.demigods.util.Items;
-import com.censoredsoftware.demigods.util.Zones;
+import java.util.ArrayList;
 
 public class DeathBow
 {

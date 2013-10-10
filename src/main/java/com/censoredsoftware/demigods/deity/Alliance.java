@@ -1,13 +1,12 @@
 package com.censoredsoftware.demigods.deity;
 
-import java.util.Collection;
-
-import org.bukkit.entity.Player;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public enum Alliance
 {

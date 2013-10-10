@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.data;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.helper.ConfigFile;
@@ -19,6 +9,15 @@ import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.google.common.collect.Maps;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
 {

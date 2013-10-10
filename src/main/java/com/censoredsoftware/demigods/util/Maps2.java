@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.*;
-
 import com.google.common.collect.Lists;
+
+import java.util.*;
 
 public class Maps2
 {

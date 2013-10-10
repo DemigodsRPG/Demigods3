@@ -1,12 +1,11 @@
 package com.censoredsoftware.demigods.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.censoredsoftware.demigods.data.TributeData;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.demigods.data.TributeData;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemValues
 {
