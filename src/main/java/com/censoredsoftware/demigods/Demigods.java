@@ -3,11 +3,10 @@ package com.censoredsoftware.demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.command.GeneralCommands;
-import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.helper.CommandWrapper;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.language.Translation;
@@ -172,7 +171,7 @@ public class Demigods
 	{
 		Set<String> commands = Sets.newHashSet();
 		for(ListedCommand command : ListedCommand.values())
-			commands.addAll(command.getCommand().getCommands());
+			commands.addAll(command.getCommand().getCommandNames());
 		commands.add("demigod");
 		commands.add("dg");
 		commands.add("c");
@@ -250,16 +249,16 @@ public class Demigods
 	// Commands
 	public enum ListedCommand
 	{
-		MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
+		GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
 
-		private WrappedCommand command;
+		private CommandWrapper command;
 
-		private ListedCommand(WrappedCommand command)
+		private ListedCommand(CommandWrapper command)
 		{
 			this.command = command;
 		}
 
-		public WrappedCommand getCommand()
+		public CommandWrapper getCommand()
 		{
 			return command;
 		}
