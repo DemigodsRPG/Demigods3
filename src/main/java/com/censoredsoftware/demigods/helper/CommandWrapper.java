@@ -30,16 +30,16 @@ public abstract class CommandWrapper implements TabExecutor
 		}
 	}
 
-	public Set<WrappedCommand> getCommands()
+	public Collection<WrappedCommand> getCommands()
 	{
-		return Sets.newHashSet(Collections2.transform(Sets.newHashSet(wrappedCommandList), new Function<WrappedCommandListItem, WrappedCommand>()
+		return Collections2.transform(Sets.newHashSet(wrappedCommandList), new Function<WrappedCommandListItem, WrappedCommand>()
 		{
 			@Override
 			public WrappedCommand apply(WrappedCommandListItem wrappedCommandListItem)
 			{
 				return wrappedCommandListItem.getCommand();
 			}
-		}));
+		});
 	}
 
 	public Collection<String> getCommandNames()
