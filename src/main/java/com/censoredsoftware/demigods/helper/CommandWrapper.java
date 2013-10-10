@@ -68,6 +68,7 @@ public abstract class CommandWrapper implements TabExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
+		sender.sendMessage("BLAH 1");
 		try
 		{
 			final String commandName = command.getName();
@@ -82,6 +83,7 @@ public abstract class CommandWrapper implements TabExecutor
 		}
 		catch(NoSuchElementException ignored)
 		{}
+		sender.sendMessage("BLAH 2");
 		return false;
 	}
 
