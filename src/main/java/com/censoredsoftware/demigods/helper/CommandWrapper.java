@@ -71,7 +71,7 @@ public abstract class CommandWrapper implements TabExecutor
 		try
 		{
 			final String commandName = command.getName();
-			Iterables.find(getCommands(), new Predicate<WrappedCommand>()
+			return Iterables.find(getCommands(), new Predicate<WrappedCommand>()
 			{
 				@Override
 				public boolean apply(WrappedCommand found)
@@ -79,10 +79,10 @@ public abstract class CommandWrapper implements TabExecutor
 					return found.getName().equalsIgnoreCase(commandName);
 				}
 			}).processCommand(sender, args);
-			return true;
 		}
 		catch(NoSuchElementException ignored)
 		{}
+		sender.sendMessage("Something went wrong.");
 		return false;
 	}
 
