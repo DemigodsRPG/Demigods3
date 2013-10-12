@@ -1,13 +1,13 @@
-package com.censoredsoftware.demigods.util;
+package com.censoredsoftware.demigods.data;
 
-import com.censoredsoftware.demigods.data.TributeData;
+import com.censoredsoftware.demigods.util.Randoms;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemValues
+public class TributeManager
 {
 	/**
 	 * Initialized the tribute map with some base data. This prevents fresh data from being out of whack.

@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.listener;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.language.Translation;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ public class FlagListener implements Listener
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(StructureData.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureData.Flag.PROTECTED_BLOCKS))
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
@@ -32,7 +33,7 @@ public class FlagListener implements Listener
 	private void onBlockBreak(BlockBreakEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(StructureData.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureData.Flag.PROTECTED_BLOCKS))
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 		{
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.YELLOW + Demigods.LANGUAGE.getText(Translation.Text.PROTECTED_BLOCK));
@@ -43,14 +44,14 @@ public class FlagListener implements Listener
 	public void onBlockIgnite(BlockIgniteEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(StructureData.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureData.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(StructureData.Util.partOfStructureWithFlag(event.getBlock().getLocation(), StructureData.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getLocation(), Structure.Flag.PROTECTED_BLOCKS)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -59,7 +60,7 @@ public class FlagListener implements Listener
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
 		for(Block block : event.getBlocks())
 		{
-			if(StructureData.Util.partOfStructureWithFlag(block.getLocation(), StructureData.Flag.PROTECTED_BLOCKS))
+			if(Structure.Util.partOfStructureWithFlag(block.getLocation(), Structure.Flag.PROTECTED_BLOCKS))
 			{
 				event.setCancelled(true);
 				return;
@@ -71,14 +72,14 @@ public class FlagListener implements Listener
 	public void onBlockPistonRetract(BlockPistonRetractEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		if(StructureData.Util.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), StructureData.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
+		if(Structure.Util.partOfStructureWithFlag(event.getBlock().getRelative(event.getDirection(), 2).getLocation(), Structure.Flag.PROTECTED_BLOCKS) && event.isSticky()) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
 		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		final StructureData save = StructureData.Util.getInRadiusWithFlag(event.getLocation(), StructureData.Flag.PROTECTED_BLOCKS);
+		final StructureData save = Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()

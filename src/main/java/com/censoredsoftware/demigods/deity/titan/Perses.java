@@ -4,8 +4,9 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.offense.Blaze;
 import com.censoredsoftware.demigods.ability.passive.NoFire;
 import com.censoredsoftware.demigods.ability.ultimate.Firestorm;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class Perses
 {
 	public final static String name = "Perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
-	public final static ListedAlliance alliance = ListedAlliance.TITAN;
+	public final static Alliance alliance = ListedAlliance.TITAN;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30;
 	public final static ChatColor color = ChatColor.GOLD;
@@ -45,6 +46,6 @@ public class Perses
 			add(" ");
 		}
 	};
-	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.PLAYABLE);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
 }

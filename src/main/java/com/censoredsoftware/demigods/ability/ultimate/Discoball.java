@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.ability.ultimate;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -117,7 +117,7 @@ public class Discoball implements Ability
 
 				if(!Ability.Util.isLeftClick(interactEvent)) return;
 
-				if(!ListedDeity.Util.canUseDeitySilent(character, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{

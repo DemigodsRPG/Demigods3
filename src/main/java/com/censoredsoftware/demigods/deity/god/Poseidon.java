@@ -5,8 +5,9 @@ import com.censoredsoftware.demigods.ability.offense.Reel;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.ability.support.Carry;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -24,7 +25,7 @@ import java.util.Set;
 public class Poseidon
 {
 	public final static String name = "Poseidon", shortDescription = ChatColor.GRAY + "The God of the oceans.";
-	public final static ListedAlliance alliance = ListedAlliance.GOD;
+	public final static Alliance alliance = ListedAlliance.GOD;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 50;
 	public final static ChatColor color = ChatColor.AQUA;
@@ -46,6 +47,6 @@ public class Poseidon
 			add(" ");
 		}
 	};
-	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.PLAYABLE);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Swim(name, permission), new NoDrown(name, permission), new Reel(name, permission), new Carry(name, permission, true));
 }

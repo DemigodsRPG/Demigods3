@@ -2,13 +2,17 @@ package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.data.TributeManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.*;
+import com.censoredsoftware.demigods.util.Maps2;
+import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.util.Strings;
+import com.censoredsoftware.demigods.util.Titles;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -67,7 +71,7 @@ public class GeneralCommands extends WrappedCommand
 		int deaths = character.getDeathCount();
 		String charName = character.getName();
 		String deity = character.getDeity().getName();
-		ListedAlliance alliance = character.getAlliance();
+		Alliance alliance = character.getAlliance();
 
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();
@@ -205,7 +209,7 @@ public class GeneralCommands extends WrappedCommand
 		Messages.tagged(sender, "Current High Value Tributes");
 		sender.sendMessage(" ");
 
-		for(Map.Entry<Material, Integer> entry : Maps2.sortByValue(ItemValues.getTributeValuesMap(), true).entrySet())
+		for(Map.Entry<Material, Integer> entry : Maps2.sortByValue(TributeManager.getTributeValuesMap(), true).entrySet())
 		{
 			// Handle count
 			if(count >= 10) break;
@@ -222,7 +226,7 @@ public class GeneralCommands extends WrappedCommand
 		if(player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
 		{
 			sender.sendMessage(" ");
-			sender.sendMessage(ChatColor.GRAY + "The items in your hand are worth " + ChatColor.GREEN + ItemValues.getValue(player.getItemInHand()) + ChatColor.GRAY + ".");
+			sender.sendMessage(ChatColor.GRAY + "The items in your hand are worth " + ChatColor.GREEN + TributeManager.getValue(player.getItemInHand()) + ChatColor.GRAY + ".");
 		}
 
 		return true;

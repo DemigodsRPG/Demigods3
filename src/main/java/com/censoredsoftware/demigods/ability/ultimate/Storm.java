@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.ability.ultimate;
 
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Zones;
@@ -149,7 +149,7 @@ public class Storm implements Ability
 				Player player = interactEvent.getPlayer();
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!ListedDeity.Util.canUseDeitySilent(character, deity)) return;
+				if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{
@@ -285,7 +285,7 @@ public class Storm implements Ability
 					Player player = interactEvent.getPlayer();
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-					if(!ListedDeity.Util.canUseDeitySilent(character, deity)) return;
+					if(!Deity.Util.canUseDeitySilent(character, deity)) return;
 
 					if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 					{

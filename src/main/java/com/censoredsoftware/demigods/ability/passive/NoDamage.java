@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
@@ -100,7 +100,7 @@ public class NoDamage implements Ability
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
-					if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
+					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives damage, cancel it
 					damageEvent.setCancelled(true);
@@ -114,7 +114,7 @@ public class NoDamage implements Ability
 				if(damageEvent.getDamager() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getDamager();
-					if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
+					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives damage, cancel it
 					damageEvent.setCancelled(true);

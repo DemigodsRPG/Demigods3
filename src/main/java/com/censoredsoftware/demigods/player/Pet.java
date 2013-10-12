@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.player;
 
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -128,7 +128,7 @@ public class Pet implements Participant, ConfigurationSerializable
 		return owner;
 	}
 
-	public ListedDeity getDeity()
+	public Deity getDeity()
 	{
 		if(getOwner() == null)
 		{

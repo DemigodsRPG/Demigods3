@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.ability.support;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Zones;
@@ -104,7 +104,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				Player clicked = (Player) event.getRightClicked();
 
-				if(ListedDeity.Util.canUseDeitySilent(clicked, deity) && (!needsLead || clicked.getItemInHand().getType().equals(Material.LEASH)) && clicked.getPassenger() == null)
+				if(Deity.Util.canUseDeitySilent(clicked, deity) && (!needsLead || clicked.getItemInHand().getType().equals(Material.LEASH)) && clicked.getPassenger() == null)
 				{
 					DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 					DCharacter clickedChar = DPlayer.Util.getPlayer(clicked).getCurrent();
@@ -120,7 +120,7 @@ public class Carry implements Ability
 				Player player = event.getPlayer();
 				if(Zones.inNoDemigodsZone(player.getLocation())) return;
 
-				if(!ListedDeity.Util.canUseDeitySilent(player, deity) || player.getPassenger() == null) return;
+				if(!Deity.Util.canUseDeitySilent(player, deity) || player.getPassenger() == null) return;
 
 				if(needsLead && player.getInventory().getItem(event.getNewSlot()) != null && !player.getInventory().getItem(event.getNewSlot()).getType().equals(Material.LEASH)) player.getPassenger().leaveVehicle();
 				else if(player.getInventory().getItem(event.getNewSlot()) != null) player.getPassenger().leaveVehicle();
