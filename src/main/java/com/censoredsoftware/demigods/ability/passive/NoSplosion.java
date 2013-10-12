@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
@@ -99,7 +99,7 @@ public class NoSplosion implements Ability
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
-					if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
+					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives falling damage, cancel it
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION || damageEvent.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) damageEvent.setCancelled(true);

@@ -1,9 +1,8 @@
 package com.censoredsoftware.demigods.deity;
 
-import com.google.common.base.Function;
+import com.censoredsoftware.demigods.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -22,57 +21,52 @@ public interface Alliance
 
 	public PermissionDefault getPermissionDefault();
 
+	public boolean isPlayable();
+
 	public static class Util
 	{
-		public static Collection<ListedDeity> getLoadedPlayableDeitiesInAlliance(final ListedAlliance alliance)
+		public static Collection<Deity> getLoadedPlayableDeitiesInAlliance(final Alliance alliance)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
 			{
 				@Override
-				public boolean apply(ListedDeity d)
+				public boolean apply(Deity d)
 				{
-					return d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<ListedDeity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final ListedAlliance alliance, final Player player)
+		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final Alliance alliance, final Player player)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
 			{
 				@Override
-				public boolean apply(ListedDeity d)
+				public boolean apply(Deity d)
 				{
-					return player.hasPermission(d.getPermission()) && d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getFlags().contains(ListedDeity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<ListedDeity> getLoadedMajorPlayableDeitiesInAlliance(final ListedAlliance alliance)
+		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAlliance(final Alliance alliance)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
 			{
 				@Override
-				public boolean apply(ListedDeity d)
+				public boolean apply(Deity d)
 				{
-					return d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getFlags().contains(ListedDeity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<ListedDeity> getLoadedDeitiesInAlliance(final ListedAlliance alliance)
+		public static Collection<Deity> getLoadedDeitiesInAlliance(final Alliance alliance)
 		{
-			return Collections2.filter(Collections2.transform(Sets.newHashSet(ListedDeity.values()), new Function<ListedDeity, ListedDeity>()
+			return Collections2.filter(Demigods.MYTHOS.getDeities(), new Predicate<Deity>()
 			{
 				@Override
-				public ListedDeity apply(ListedDeity d)
-				{
-					return d;
-				}
-			}), new Predicate<ListedDeity>()
-			{
-				@Override
-				public boolean apply(ListedDeity d)
+				public boolean apply(Deity d)
 				{
 					return d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}

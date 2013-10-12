@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.structure;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.location.Region;
@@ -7,7 +8,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -123,9 +123,9 @@ public class StructureData implements ConfigurationSerializable
 		return getType().getDesign(design).getSchematic().getLocations(getReferenceLocation());
 	}
 
-	public ListedStructure getType()
+	public Structure getType()
 	{
-		for(ListedStructure structure : ListedStructure.values())
+		for(Structure structure : Demigods.MYTHOS.getStructures())
 			if(structure.getName().equalsIgnoreCase(this.type)) return structure;
 		return null;
 	}
@@ -177,9 +177,9 @@ public class StructureData implements ConfigurationSerializable
 		return region;
 	}
 
-	public void addFlags(Set<Flag> flags)
+	public void addFlags(Set<Structure.Flag> flags)
 	{
-		for(Flag flag : flags)
+		for(Structure.Flag flag : flags)
 			getRawFlags().add(flag.name());
 	}
 
@@ -230,207 +230,8 @@ public class StructureData implements ConfigurationSerializable
 		return other != null && other instanceof StructureData && ((StructureData) other).getId() == getId();
 	}
 
-	public enum Flag
-	{
-		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, NO_OVERLAP
-	}
-
 	public static class Util
 	{
-		public static StructureData getStructureRegional(final Location location)
-		{
-			try
-			{
-				return Iterables.find(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-				{
-					@Override
-					public boolean apply(StructureData save)
-					{
-						return save.getLocations().contains(location);
-					}
-				});
-			}
-			catch(NoSuchElementException ignored)
-			{}
-			return null;
-		}
-
-		public static StructureData getStructureGlobal(final Location location)
-		{
-			try
-			{
-				return Iterables.find(loadAll(), new Predicate<StructureData>()
-				{
-					@Override
-					public boolean apply(StructureData save)
-					{
-						return save.getLocations().contains(location);
-					}
-				});
-			}
-			catch(NoSuchElementException ignored)
-			{}
-			return null;
-		}
-
-		public static Set<StructureData> getStructuresInRegionalArea(Location location)
-		{
-			final Region center = Region.Util.getRegion(location);
-			Set<StructureData> set = new HashSet<StructureData>();
-			for(Region region : center.getSurroundingRegions())
-				set.addAll(getStructuresInSingleRegion(region));
-			return set;
-		}
-
-		public static Collection<StructureData> getStructuresInSingleRegion(final Region region)
-		{
-			return findAll(new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getRegion().equals(region.toString());
-				}
-			});
-		}
-
-		public static boolean partOfStructureWithType(final Location location, final String type)
-		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getTypeName().equals(type) && save.getLocations().contains(location);
-				}
-			});
-		}
-
-		public static boolean partOfStructureWithFlag(final Location location, final StructureData.Flag flag)
-		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getLocations().contains(location);
-				}
-			});
-		}
-
-		public static boolean isClickableBlockWithFlag(final Location location, final StructureData.Flag flag)
-		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getClickableBlocks().contains(location);
-				}
-			});
-		}
-
-		public static boolean isInRadiusWithFlag(Location location, StructureData.Flag flag)
-		{
-			return getInRadiusWithFlag(location, flag) != null;
-		}
-
-		public static StructureData getInRadiusWithFlag(final Location location, final StructureData.Flag flag)
-		{
-			try
-			{
-				return Iterables.find(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-				{
-					@Override
-					public boolean apply(StructureData save)
-					{
-						return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= save.getType().getRadius();
-					}
-				});
-			}
-			catch(NoSuchElementException ignored)
-			{}
-			return null;
-		}
-
-		public static void regenerateStructures()
-		{
-			for(StructureData save : loadAll())
-				save.generate();
-		}
-
-		public static Collection<StructureData> getStructureWithFlag(final StructureData.Flag flag)
-		{
-			return findAll(new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
-				}
-			});
-		}
-
-		public static boolean noOverlapStructureNearby(Location location)
-		{
-			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
-			{
-				@Override
-				public boolean apply(StructureData save)
-				{
-					return save.getRawFlags().contains(StructureData.Flag.NO_OVERLAP.name());
-				}
-			});
-		}
-
-		/**
-		 * Strictly checks the <code>reference</code> location to validate if the area is safe
-		 * for automated generation.
-		 * 
-		 * @param reference the location to be checked
-		 * @param area how big of an area (in blocks) to validate
-		 * @return Boolean
-		 */
-		public static boolean canGenerateStrict(Location reference, int area)
-		{
-			Location location = reference.clone();
-			location.subtract(0, 1, 0);
-			location.add((area / 3), 0, (area / 2));
-
-			// Check ground
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.subtract(1, 0, 0);
-			}
-
-			// Check ground adjacent
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.subtract(0, 0, 1);
-			}
-
-			// Check ground adjacent again
-			for(int i = 0; i < area; i++)
-			{
-				if(!location.getBlock().getType().isSolid()) return false;
-				location.add(1, 0, 0);
-			}
-
-			location.add(0, 1, 0);
-
-			// Check air diagonally
-			for(int i = 0; i < area + 1; i++)
-			{
-				if(location.getBlock().getType().isSolid()) return false;
-				location.add(0, 1, 1);
-				location.subtract(1, 0, 0);
-			}
-
-			return true;
-		}
-
 		public static void remove(UUID id)
 		{
 			DataManager.structures.remove(id);

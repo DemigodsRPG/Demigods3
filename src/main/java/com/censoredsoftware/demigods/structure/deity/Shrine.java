@@ -2,14 +2,11 @@ package com.censoredsoftware.demigods.structure.deity;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.ListedStructure;
-import com.censoredsoftware.demigods.structure.Schematic;
-import com.censoredsoftware.demigods.structure.Selection;
-import com.censoredsoftware.demigods.structure.StructureData;
+import com.censoredsoftware.demigods.structure.*;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Zones;
@@ -56,13 +53,13 @@ public class Shrine
 			return save;
 		}
 	};
-	public static final Set<StructureData.Flag> flags = new HashSet<StructureData.Flag>()
+	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
-			add(StructureData.Flag.DELETE_WITH_OWNER);
-			add(StructureData.Flag.PROTECTED_BLOCKS);
-			add(StructureData.Flag.TRIBUTE_LOCATION);
-			add(StructureData.Flag.NO_OVERLAP);
+			add(Structure.Flag.DELETE_WITH_OWNER);
+			add(Structure.Flag.PROTECTED_BLOCKS);
+			add(Structure.Flag.TRIBUTE_LOCATION);
+			add(Structure.Flag.NO_OVERLAP);
 		}
 	};
 	public static final Listener listener = new Listener()
@@ -83,7 +80,7 @@ public class Shrine
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_SHRINE) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_SHRINE) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
 					try
 					{
@@ -105,11 +102,11 @@ public class Shrine
 				}
 			}
 
-			if(Admins.useWand(player) && StructureData.Util.partOfStructureWithType(location, "Shrine"))
+			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
 			{
 				event.setCancelled(true);
 
-				StructureData save = StructureData.Util.getStructureRegional(location);
+				StructureData save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_shrine"))

@@ -4,12 +4,13 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.listener.DemigodsChatEvent;
 import com.censoredsoftware.demigods.location.DLocation;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
@@ -118,7 +119,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.name = name;
 	}
 
-	void setDeity(ListedDeity deity)
+	void setDeity(Deity deity)
 	{
 		this.deity = deity.getName();
 	}
@@ -128,12 +129,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.minorDeities = set;
 	}
 
-	public void addMinorDeity(ListedDeity deity)
+	public void addMinorDeity(Deity deity)
 	{
 		this.minorDeities.add(deity.getName());
 	}
 
-	public void removeMinorDeity(ListedDeity deity)
+	public void removeMinorDeity(Deity deity)
 	{
 		this.minorDeities.remove(deity.getName());
 	}
@@ -361,24 +362,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return getDeity().getName().equalsIgnoreCase(deityName);
 	}
 
-	public ListedDeity getDeity()
+	public Deity getDeity()
 	{
-		return ListedDeity.Util.getDeity(this.deity);
+		return Deity.Util.getDeity(this.deity);
 	}
 
-	public Collection<ListedDeity> getMinorDeities()
+	public Collection<Deity> getMinorDeities()
 	{
-		return Collections2.transform(minorDeities, new Function<String, ListedDeity>()
+		return Collections2.transform(minorDeities, new Function<String, Deity>()
 		{
 			@Override
-			public ListedDeity apply(String deity)
+			public Deity apply(String deity)
 			{
-				return ListedDeity.Util.getDeity(deity);
+				return Deity.Util.getDeity(deity);
 			}
 		});
 	}
 
-	public ListedAlliance getAlliance()
+	public Alliance getAlliance()
 	{
 		return getDeity().getAlliance();
 	}
@@ -463,7 +464,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void updateUseable()
 	{
-		usable = ListedDeity.Util.getDeity(this.deity) != null;
+		usable = Deity.Util.getDeity(this.deity) != null;
 	}
 
 	public UUID getId()
@@ -485,7 +486,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 
 		// Remove the data
-		for(StructureData structureSave : StructureData.Util.getStructureWithFlag(StructureData.Flag.DELETE_WITH_OWNER))
+		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(SavedPotion potion : getRawPotionEffects())
 			DataManager.savedPotions.remove(potion.getId());
@@ -1117,12 +1118,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(getCharacterByName(charName) == null)
 			{
 				// Create the DCharacter
-				return create(player, charName, ListedDeity.Util.getDeity(charDeity));
+				return create(player, charName, Deity.Util.getDeity(charDeity));
 			}
 			return null;
 		}
 
-		private static DCharacter create(final DPlayer player, final String charName, final ListedDeity deity)
+		private static DCharacter create(final DPlayer player, final String charName, final Deity deity)
 		{
 			DCharacter character = new DCharacter();
 			character.generateId();
@@ -1334,7 +1335,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final ListedAlliance alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final Alliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
@@ -1346,7 +1347,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final ListedAlliance alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final Alliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
