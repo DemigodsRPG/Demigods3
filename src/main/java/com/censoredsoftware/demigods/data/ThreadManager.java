@@ -73,8 +73,8 @@ public class ThreadManager
 					}
 
 					// Process Triggers
-					for(ListedTrigger trigger : ListedTrigger.values())
-						trigger.getTrigger().processSync();
+					for(Trigger trigger : Demigods.MYTHOS.getTriggers())
+						trigger.processSync();
 
 					// Update Battles
 					Battle.Util.updateBattles();
@@ -98,8 +98,8 @@ public class ThreadManager
 					Notification.Util.updateNotifications();
 
 					// Process Triggers
-					for(ListedTrigger trigger : ListedTrigger.values())
-						trigger.getTrigger().processAsync();
+					for(Trigger trigger : Demigods.MYTHOS.getTriggers())
+						trigger.processAsync();
 
 					// Process Atlars
 					Altar.Util.processNewChunks();

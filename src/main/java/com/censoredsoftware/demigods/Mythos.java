@@ -13,7 +13,9 @@ public interface Mythos
 {
 	public String getName();
 
-	public Set<String> getAuthors();
+	public String getDescription();
+
+	public String getAuthor();
 
 	public Set<Alliance> getAlliances();
 

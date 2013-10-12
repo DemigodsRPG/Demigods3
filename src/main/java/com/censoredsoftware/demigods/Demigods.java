@@ -149,9 +149,15 @@ public class Demigods
 			}
 
 			@Override
-			public Set<String> getAuthors()
+			public String getDescription()
 			{
-				return Sets.newHashSet("_Alex", "HmmmQuestionMark");
+				return "Greek mythology, as described by Hesiod, Homer, and other Greek bards.";
+			}
+
+			@Override
+			public String getAuthor()
+			{
+				return "_Alex and HmmmQuestionMark";
 			}
 
 			@Override
@@ -199,6 +205,10 @@ public class Demigods
 		// Engine
 		for(ListedListener listener : ListedListener.values())
 			register.registerEvents(listener.getListener(), PLUGIN);
+
+		// Mythos
+		for(Listener listener : MYTHOS.getListeners())
+			register.registerEvents(listener, PLUGIN);
 
 		// Disabled worlds
 		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new ZoneListener(), PLUGIN);
@@ -273,6 +283,18 @@ public class Demigods
 			for(Map.Entry<String, Boolean> entry : permission.getPermission().getChildren().entrySet())
 				register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
 			register.addPermission(permission.getPermission());
+		}
+
+		// Mythos
+		for(Permission permission : MYTHOS.getPermissions())
+		{
+			// catch errors to avoid any possible buggy mythos
+			try
+			{
+				register.addPermission(permission);
+			}
+			catch(Exception ignored)
+			{}
 		}
 
 		// Alliances, Deities, and Abilities
