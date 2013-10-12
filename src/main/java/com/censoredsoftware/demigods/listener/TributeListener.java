@@ -2,13 +2,14 @@ package com.censoredsoftware.demigods.listener;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.data.TributeManager;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.ItemValues;
 import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,13 +43,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(StructureData.Util.partOfStructureWithFlag(location, StructureData.Flag.TRIBUTE_LOCATION))
+		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			StructureData save = StructureData.Util.getStructureRegional(location);
+			StructureData save = Structure.Util.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
@@ -81,7 +82,7 @@ public class TributeListener implements Listener
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !StructureData.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureData.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureData save = StructureData.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
@@ -92,7 +93,7 @@ public class TributeListener implements Listener
 		{
 			if(item != null)
 			{
-				tributeValue += ItemValues.processTribute(item);
+				tributeValue += TributeManager.processTribute(item);
 				items += item.getAmount();
 			}
 		}
@@ -172,7 +173,7 @@ public class TributeListener implements Listener
 	private static void tribute(DCharacter character, StructureData save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
-		ListedDeity shrineDeity = character.getDeity();
+		Deity shrineDeity = character.getDeity();
 
 		// Open the tribute inventory
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, "Tribute to " + shrineDeity);

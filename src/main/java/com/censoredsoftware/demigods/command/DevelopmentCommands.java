@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.ListedStructure;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Messages;
@@ -145,7 +146,7 @@ public class DevelopmentCommands extends WrappedCommand
 			return false;
 		}
 
-		StructureData obelisk = StructureData.Util.getInRadiusWithFlag(player.getLocation(), StructureData.Flag.NO_GRIEFING);
+		StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
 		if(obelisk != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

@@ -6,6 +6,9 @@ import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.data.TributeManager;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.ListedAlliance;
 import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
@@ -17,9 +20,9 @@ import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.ListedStructure;
-import com.censoredsoftware.demigods.structure.StructureData;
+import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.ItemValues;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -34,6 +37,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.mcstats.MetricsLite;
 
 import java.util.HashMap;
@@ -54,12 +59,20 @@ public class Demigods
 	public static ImmutableSet<String> DISABLED_WORLDS;
 	public static ImmutableSet<String> COMMANDS;
 
+	// Mythos
+	public static Mythos MYTHOS;
+
 	// Load what is possible to load right away.
 	static
 	{
 		// Allow static access.
 		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
+
+		// Load the Mythos.
+		loadMythos();
+
+		// Language data.
 		LANGUAGE = new Translation();
 
 		// Initialize metrics
@@ -97,10 +110,10 @@ public class Demigods
 		ThreadManager.startThreads();
 
 		// Regenerate structures
-		StructureData.Util.regenerateStructures();
+		Structure.Util.regenerateStructures();
 
 		// Initialize tribute tracking
-		ItemValues.initializeTributeTracking();
+		TributeManager.initializeTributeTracking();
 
 		if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 		else Messages.warning(("Without Spigot, some features may not work."));
@@ -122,6 +135,69 @@ public class Demigods
 		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
 	}
 
+	private static void loadMythos()
+	{
+		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
+		RegisteredServiceProvider<Mythos> mythosProvider = servicesManager.getRegistration(Mythos.class);
+		if(mythosProvider != null) MYTHOS = mythosProvider.getProvider();
+		else MYTHOS = new Mythos()
+		{
+			@Override
+			public String getName()
+			{
+				return "Greek";
+			}
+
+			@Override
+			public String getDescription()
+			{
+				return "Greek mythology, as described by Hesiod, Homer, and other Greek bards.";
+			}
+
+			@Override
+			public String getAuthor()
+			{
+				return "_Alex and HmmmQuestionMark";
+			}
+
+			@Override
+			public Set<Alliance> getAlliances()
+			{
+				return Sets.newHashSet((Alliance[]) ListedAlliance.values());
+			}
+
+			@Override
+			public Set<Deity> getDeities()
+			{
+				return Sets.newHashSet((Deity[]) ListedDeity.values());
+			}
+
+			@Override
+			public Set<Structure> getStructures()
+			{
+				return Sets.newHashSet((Structure[]) ListedStructure.values());
+			}
+
+			@Override
+			public Set<Listener> getListeners()
+			{
+				return Sets.newHashSet();
+			}
+
+			@Override
+			public Set<Permission> getPermissions()
+			{
+				return Sets.newHashSet();
+			}
+
+			@Override
+			public Set<Trigger> getTriggers()
+			{
+				return Sets.newHashSet(ThreadManager.ListedTrigger.getTriggers());
+			}
+		};
+	}
+
 	private static void loadListeners()
 	{
 		PluginManager register = Bukkit.getServer().getPluginManager();
@@ -129,6 +205,10 @@ public class Demigods
 		// Engine
 		for(ListedListener listener : ListedListener.values())
 			register.registerEvents(listener.getListener(), PLUGIN);
+
+		// Mythos
+		for(Listener listener : MYTHOS.getListeners())
+			register.registerEvents(listener, PLUGIN);
 
 		// Disabled worlds
 		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new ZoneListener(), PLUGIN);
@@ -138,10 +218,10 @@ public class Demigods
 			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
-		for(ListedStructure structure : Sets.filter(Sets.newHashSet(ListedStructure.values()), new Predicate<ListedStructure>()
+		for(Structure structure : Sets.filter(MYTHOS.getStructures(), new Predicate<Structure>()
 		{
 			@Override
-			public boolean apply(ListedStructure structure)
+			public boolean apply(Structure structure)
 			{
 				return structure.getUniqueListener() != null;
 			}
@@ -189,6 +269,7 @@ public class Demigods
 		commands.add("l");
 		commands.add("a");
 		commands.add("v");
+		commands.add("n");
 		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 
@@ -204,13 +285,25 @@ public class Demigods
 			register.addPermission(permission.getPermission());
 		}
 
+		// Mythos
+		for(Permission permission : MYTHOS.getPermissions())
+		{
+			// catch errors to avoid any possible buggy mythos
+			try
+			{
+				register.addPermission(permission);
+			}
+			catch(Exception ignored)
+			{}
+		}
+
 		// Alliances, Deities, and Abilities
-		for(final ListedAlliance alliance : ListedAlliance.values())
+		for(final Alliance alliance : MYTHOS.getAlliances())
 		{
 			register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 			{
 				{
-					for(ListedDeity deity : ListedAlliance.Util.getLoadedDeitiesInAlliance(alliance))
+					for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
 					{
 						register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
 						put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));

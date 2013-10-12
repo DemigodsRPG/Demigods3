@@ -1,8 +1,11 @@
 package com.censoredsoftware.demigods.deity;
 
+import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +21,7 @@ public interface Deity
 
 	public String getName();
 
-	public ListedAlliance getAlliance();
+	public Alliance getAlliance();
 
 	public String getPermission();
 
@@ -51,11 +54,24 @@ public interface Deity
 
 	public static class Util
 	{
-		public static ListedDeity getDeity(String deity)
+		public static Deity getDeity(final String deityName)
 		{
 			try
 			{
-				return ListedDeity.valueOf(deity.toUpperCase());
+				return ListedDeity.valueOf(deityName.toUpperCase());
+			}
+			catch(Exception ignored)
+			{}
+			try
+			{
+				return Iterables.find(Demigods.MYTHOS.getDeities(), new Predicate<Deity>()
+				{
+					@Override
+					public boolean apply(Deity deity)
+					{
+						return deity.getName().equalsIgnoreCase(deityName);
+					}
+				});
 			}
 			catch(Exception ignored)
 			{}

@@ -2,8 +2,9 @@ package com.censoredsoftware.demigods.conversation;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -13,7 +14,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.StructureData;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -701,7 +702,7 @@ public class Prayer implements WrappedConversation
 			// Define variables
 			Player player = (Player) context.getForWhom();
 			DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-			ListedDeity deity = character.getDeity();
+			Deity deity = character.getDeity();
 
 			Messages.clearRawChat(player);
 			player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
@@ -729,7 +730,7 @@ public class Prayer implements WrappedConversation
 				// Define variables
 				Player player = (Player) context.getForWhom();
 				DCharacter character = DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent();
-				ListedDeity deity = character.getDeity();
+				Deity deity = character.getDeity();
 
 				Messages.clearRawChat(player);
 				player.sendRawMessage(ChatColor.YELLOW + Titles.chatTitle("Forsake Current Deity"));
@@ -775,7 +776,7 @@ public class Prayer implements WrappedConversation
 		{
 			// Define variables
 			Player player = (Player) context.getForWhom();
-			ListedDeity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
+			Deity deity = DPlayer.Util.getPlayer(player).getCurrent().getDeity();
 
 			// Clear chat
 			Messages.clearRawChat(player);
@@ -991,8 +992,8 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(ListedAlliance alliance : ListedAlliance.values())
-					if(player.hasPermission(alliance.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
+				for(Alliance alliance : Demigods.MYTHOS.getAlliances())
+					if(player.hasPermission(alliance.getPermission()) && alliance.isPlayable()) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
 
 				return "";
 			}
@@ -1058,8 +1059,8 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(ListedDeity deity : ListedAlliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((ListedAlliance) context.getSessionData("chosen_alliance"), player))
-					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(ListedDeity.Flag.DIFFICULT) ? ChatColor.DARK_RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
+				for(Deity deity : ListedAlliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((ListedAlliance) context.getSessionData("chosen_alliance"), player))
+					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.DARK_RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
 
 				player.sendRawMessage(" ");
 				player.sendRawMessage(ChatColor.GRAY + "  A " + ChatColor.DARK_RED + "dark red" + ChatColor.GRAY + " name represents a difficult Deity to please.");
@@ -1069,7 +1070,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String deityName)
 			{
-				return ListedDeity.Util.getDeity(deityName) != null && ((Player) context.getForWhom()).hasPermission(ListedDeity.Util.getDeity(deityName).getPermission());
+				return Deity.Util.getDeity(deityName) != null && ((Player) context.getForWhom()).hasPermission(Deity.Util.getDeity(deityName).getPermission());
 			}
 
 			@Override
@@ -1086,7 +1087,7 @@ public class Prayer implements WrappedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Messages.clearRawChat((Player) context.getForWhom());
-				ListedDeity deity = ListedDeity.Util.getDeity((String) context.getSessionData("chosen_deity"));
+				Deity deity = Deity.Util.getDeity((String) context.getSessionData("chosen_deity"));
 				return ChatColor.GRAY + "Are you sure you want to use " + deity.getColor() + deity.getName() + ChatColor.GRAY + "? (y/n)";
 			}
 
@@ -1110,7 +1111,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  Before you can confirm your lineage with " + ChatColor.YELLOW + StringUtils.capitalize(chosenDeity) + ChatColor.AQUA + ",");
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
-					for(Map.Entry<Material, Integer> entry : ListedDeity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
+					for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
 						player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
@@ -1164,7 +1165,7 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(" ");
 			player.sendRawMessage(ChatColor.AQUA + "  Do you have the following items in your inventory?" + ChatColor.GRAY + " (y/n)");
 			player.sendRawMessage(" ");
-			for(Map.Entry<Material, Integer> entry : ListedDeity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
+			for(Map.Entry<Material, Integer> entry : Deity.Util.getDeity(chosenDeity).getClaimItems().entrySet())
 				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
 			return "";
 		}
@@ -1234,7 +1235,7 @@ public class Prayer implements WrappedConversation
 			Player player = event.getPlayer();
 
 			// First we check if the player is clicking a prayer block
-			if(StructureData.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), StructureData.Flag.PRAYER_LOCATION))
+			if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
 			{
 				if(!DPlayer.Util.isPraying(player))
 				{
@@ -1281,7 +1282,7 @@ public class Prayer implements WrappedConversation
 				// Define variables
 				ConversationContext prayerContext = DPlayer.Util.getPrayerContext(player);
 				final String chosenName = (String) prayerContext.getSessionData("chosen_name");
-				final ListedDeity deity = ListedDeity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
+				final Deity deity = Deity.Util.getDeity((String) prayerContext.getSessionData("chosen_deity"));
 				final String deityName = deity.getName();
 				final ChatColor deityColor = deity.getColor();
 
@@ -1384,7 +1385,7 @@ public class Prayer implements WrappedConversation
 
 				// Define variables
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-				ListedDeity deity = character.getDeity();
+				Deity deity = character.getDeity();
 
 				// Check the chest items
 				int items = 0;

@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.structure.deity;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -29,10 +29,10 @@ import java.util.Set;
 public class Obelisk
 {
 	public static final String name = "Obelisk";
-	public static final Function<Location, ListedStructure.Design> getDesign = new Function<Location, ListedStructure.Design>()
+	public static final Function<Location, ListedStructure.Design> getDesign = new Function<Location, Structure.Design>()
 	{
 		@Override
-		public ListedStructure.Design apply(Location reference)
+		public Structure.Design apply(Location reference)
 		{
 			switch(reference.getBlock().getBiome())
 			{
@@ -58,11 +58,11 @@ public class Obelisk
 			return save;
 		}
 	};
-	public static final Set<StructureData.Flag> flags = new HashSet<StructureData.Flag>()
+	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
-			add(StructureData.Flag.PROTECTED_BLOCKS);
-			add(StructureData.Flag.NO_GRIEFING);
+			add(Structure.Flag.PROTECTED_BLOCKS);
+			add(Structure.Flag.NO_GRIEFING);
 		}
 	};
 	public static final Listener listener = new Listener()
@@ -83,9 +83,9 @@ public class Obelisk
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(StructureData.Util.noOverlapStructureNearby(location))
+					if(Structure.Util.noOverlapStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -110,11 +110,11 @@ public class Obelisk
 				}
 			}
 
-			if(Admins.useWand(player) && StructureData.Util.partOfStructureWithType(location, "Obelisk"))
+			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
-				StructureData save = StructureData.Util.getStructureRegional(location);
+				StructureData save = Structure.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))

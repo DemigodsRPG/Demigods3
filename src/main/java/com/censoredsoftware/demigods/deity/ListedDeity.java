@@ -72,7 +72,7 @@ public enum ListedDeity implements Deity
 	DRD1SCO(DrD1sco.name, DrD1sco.permission, DrD1sco.alliance, DrD1sco.color, DrD1sco.claimItems, DrD1sco.forsakeItems, DrD1sco.shortDescription, DrD1sco.lore, DrD1sco.flags, DrD1sco.abilities, DrD1sco.accuracy, DrD1sco.favorRegen, DrD1sco.maxFavor, DrD1sco.maxHealth);
 
 	private String name, permission;
-	private ListedAlliance alliance;
+	private Alliance alliance;
 	private ChatColor color;
 	private Map<Material, Integer> claimItems, forsakeItems;
 	private String shortDescription;
@@ -82,7 +82,7 @@ public enum ListedDeity implements Deity
 	private int accuracy, favorRegen, maxFavor;
 	private double maxHealth;
 
-	private ListedDeity(String name, String permission, ListedAlliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth)
+	private ListedDeity(String name, String permission, Alliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth)
 	{
 		this.name = name;
 		this.permission = permission;
@@ -111,7 +111,7 @@ public enum ListedDeity implements Deity
 		return name;
 	}
 
-	public ListedAlliance getAlliance()
+	public Alliance getAlliance()
 	{
 		return alliance;
 	}

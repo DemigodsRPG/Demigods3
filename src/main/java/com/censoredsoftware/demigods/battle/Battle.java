@@ -2,8 +2,8 @@ package com.censoredsoftware.demigods.battle;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
@@ -11,7 +11,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.StructureData;
+import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Randoms;
@@ -253,9 +253,9 @@ public class Battle implements ConfigurationSerializable
 		});
 	}
 
-	public Collection<ListedAlliance> getInvolvedAlliances()
+	public Collection<Alliance> getInvolvedAlliances()
 	{
-		Set<ListedAlliance> set = Sets.newHashSet();
+		Set<Alliance> set = Sets.newHashSet();
 		for(Participant participant : getParticipants())
 			set.add(participant.getRelatedCharacter().getAlliance());
 		return set;
@@ -300,7 +300,7 @@ public class Battle implements ConfigurationSerializable
 		return score;
 	}
 
-	public int getScore(final ListedAlliance alliance)
+	public int getScore(final Alliance alliance)
 	{
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
@@ -384,11 +384,11 @@ public class Battle implements ConfigurationSerializable
 		}
 		else if(participants.size() > 2)
 		{
-			ListedAlliance winningAlliance = null;
+			Alliance winningAlliance = null;
 			int winningScore = 0;
 			Collection<DCharacter> MVPs = getMVPs();
 			boolean oneMVP = MVPs.size() == 1;
-			for(ListedAlliance alliance : getInvolvedAlliances())
+			for(Alliance alliance : getInvolvedAlliances())
 			{
 				int score = getScore(alliance);
 				if(getScore(alliance) > winningScore)
@@ -666,7 +666,7 @@ public class Battle implements ConfigurationSerializable
 			if(entity instanceof Player)
 			{
 				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-				return character != null && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_BATTLE);
+				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
 			}
 			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null && isInBattle(Pet.Util.getPet((LivingEntity) entity).getRelatedCharacter());
 		}
@@ -721,7 +721,7 @@ public class Battle implements ConfigurationSerializable
 		 */
 		public static boolean canTarget(Participant participant) // TODO REDO THIS
 		{
-			return participant == null || participant.canPvp() || participant.getCurrentLocation() != null && !StructureData.Util.isInRadiusWithFlag(participant.getCurrentLocation(), StructureData.Flag.NO_PVP);
+			return participant == null || participant.canPvp() || participant.getCurrentLocation() != null && !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
 		}
 
 		/**
@@ -788,7 +788,7 @@ public class Battle implements ConfigurationSerializable
 			Score neededKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kills Needed"));
 			neededKills.setScore(battle.getMinKills());
 
-			for(ListedAlliance alliance : battle.getInvolvedAlliances())
+			for(Alliance alliance : battle.getInvolvedAlliances())
 			{
 				Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.YELLOW + alliance.getName() + ChatColor.GRAY + " Score"));
 				allianceKills.setScore(battle.getScore(alliance));

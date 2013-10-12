@@ -33,11 +33,11 @@ public enum ListedStructure implements Structure
 	private Design[] designs;
 	private Function<Location, Design> getDesign;
 	private Function<Design, StructureData> createNew;
-	private Set<StructureData.Flag> flags;
+	private Set<Structure.Flag> flags;
 	private Listener listener;
 	private int radius;
 
-	private ListedStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, Set<StructureData.Flag> flags, Listener listener, int radius)
+	private ListedStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, Set<Structure.Flag> flags, Listener listener, int radius)
 	{
 		this.name = name;
 		this.designs = designs;
@@ -71,7 +71,7 @@ public enum ListedStructure implements Structure
 		return null;
 	}
 
-	public Set<StructureData.Flag> getFlags()
+	public Set<Structure.Flag> getFlags()
 	{
 		return flags;
 	}
