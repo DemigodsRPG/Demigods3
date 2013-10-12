@@ -17,6 +17,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 @SuppressWarnings("deprecation")
 public class ThreadManager
 {
+	private static boolean SAVE_ALERT = Configs.getSettingBoolean("saving.console_alert");
+
 	public static void startThreads()
 	{
 		// Start sync demigods runnable
@@ -108,7 +110,7 @@ public class ThreadManager
 					DataManager.save();
 
 					// Send the save message to the console
-					Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
+					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
 			favor = new BukkitRunnable()

@@ -83,3 +83,4 @@ admin:
 ## Data ##
 saving:
     freq: 300
+    console_alert: true

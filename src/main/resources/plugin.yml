@@ -4,6 +4,7 @@ version: ${project.version}
 authors: [_Alex, HmmmQuestionMark]
 softdepend: [WorldEdit, WorldGuard, Multiverse-Core]
 commands:
+# Main Command
     demigods:
         usage: /demigods [category] [subcategory]
         aliases: [demigod, dg]
@@ -11,6 +12,7 @@ commands:
     deity:
         usage: /deity
         permission: demigods.basic
+# General Commands
     check:
         usage: /check
         aliases: [c]
@@ -31,6 +33,7 @@ commands:
         usage: /names
         aliases: [n]
         permission: demigods.basic
+# Development Commands
     test1:
         usage: /test1
         permission: demigods.admin
