@@ -69,9 +69,6 @@ public class Demigods
 		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 
-		// Load the Mythos.
-		loadMythos();
-
 		// Language data.
 		LANGUAGE = new Translation();
 
@@ -97,6 +94,9 @@ public class Demigods
 			Messages.severe("Please enable at least 1 world.");
 			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
 		}
+
+		// Load the Mythos.
+		loadMythos();
 
 		// Load listeners, commands, and permissions
 		loadListeners();
@@ -139,7 +139,11 @@ public class Demigods
 	{
 		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
 		RegisteredServiceProvider<Mythos> mythosProvider = servicesManager.getRegistration(Mythos.class);
-		if(mythosProvider != null) MYTHOS = mythosProvider.getProvider();
+		if(mythosProvider != null)
+		{
+			MYTHOS = mythosProvider.getProvider();
+			Messages.info("The " + MYTHOS.getName() + " mythos created by " + MYTHOS.getAuthor() + " has loaded!");
+		}
 		else MYTHOS = new Mythos()
 		{
 			@Override
@@ -280,15 +284,21 @@ public class Demigods
 		// Engine
 		for(ListedPermission permission : ListedPermission.values())
 		{
-			for(Map.Entry<String, Boolean> entry : permission.getPermission().getChildren().entrySet())
-				register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-			register.addPermission(permission.getPermission());
+			// catch errors to avoid any possible buggy permissions
+			try
+			{
+				for(Map.Entry<String, Boolean> entry : permission.getPermission().getChildren().entrySet())
+					register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
+				register.addPermission(permission.getPermission());
+			}
+			catch(Exception ignored)
+			{}
 		}
 
 		// Mythos
 		for(Permission permission : MYTHOS.getPermissions())
 		{
-			// catch errors to avoid any possible buggy mythos
+			// catch errors to avoid any possible buggy permissions
 			try
 			{
 				register.addPermission(permission);
