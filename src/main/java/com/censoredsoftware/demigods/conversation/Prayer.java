@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.conversation;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.deity.ListedAlliance;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
@@ -991,8 +992,8 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(ListedAlliance alliance : ListedAlliance.values())
-					if(player.hasPermission(alliance.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
+				for(Alliance alliance : Demigods.MYTHOS.getAlliances())
+					if(player.hasPermission(alliance.getPermission()) && alliance.isPlayable()) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
 
 				return "";
 			}

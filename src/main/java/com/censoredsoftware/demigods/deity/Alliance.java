@@ -21,6 +21,8 @@ public interface Alliance
 
 	public PermissionDefault getPermissionDefault();
 
+	public boolean isPlayable();
+
 	public static class Util
 	{
 		public static Collection<Deity> getLoadedPlayableDeitiesInAlliance(final Alliance alliance)
