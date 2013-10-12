@@ -9,7 +9,7 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.ListedStructure;
 import com.censoredsoftware.demigods.structure.Schematic;
 import com.censoredsoftware.demigods.structure.Selection;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Zones;
@@ -46,23 +46,23 @@ public class Shrine
 			}
 		}
 	};
-	public static final Function<ListedStructure.Design, Structure> createNew = new Function<ListedStructure.Design, Structure>()
+	public static final Function<ListedStructure.Design, StructureData> createNew = new Function<ListedStructure.Design, StructureData>()
 	{
 		@Override
-		public Structure apply(ListedStructure.Design design)
+		public StructureData apply(ListedStructure.Design design)
 		{
-			Structure save = new Structure();
+			StructureData save = new StructureData();
 			save.setMembers(new ArrayList<String>());
 			return save;
 		}
 	};
-	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	public static final Set<StructureData.Flag> flags = new HashSet<StructureData.Flag>()
 	{
 		{
-			add(Structure.Flag.DELETE_WITH_OWNER);
-			add(Structure.Flag.PROTECTED_BLOCKS);
-			add(Structure.Flag.TRIBUTE_LOCATION);
-			add(Structure.Flag.NO_OVERLAP);
+			add(StructureData.Flag.DELETE_WITH_OWNER);
+			add(StructureData.Flag.PROTECTED_BLOCKS);
+			add(StructureData.Flag.TRIBUTE_LOCATION);
+			add(StructureData.Flag.NO_OVERLAP);
 		}
 	};
 	public static final Listener listener = new Listener()
@@ -89,7 +89,7 @@ public class Shrine
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure save = ListedStructure.SHRINE.createNew(location, true);
+						StructureData save = ListedStructure.SHRINE.createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
@@ -105,11 +105,11 @@ public class Shrine
 				}
 			}
 
-			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Shrine"))
+			if(Admins.useWand(player) && StructureData.Util.partOfStructureWithType(location, "Shrine"))
 			{
 				event.setCancelled(true);
 
-				Structure save = Structure.Util.getStructureRegional(location);
+				StructureData save = StructureData.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_shrine"))

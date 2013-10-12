@@ -13,7 +13,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -1234,7 +1234,7 @@ public class Prayer implements WrappedConversation
 			Player player = event.getPlayer();
 
 			// First we check if the player is clicking a prayer block
-			if(Structure.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.PRAYER_LOCATION))
+			if(StructureData.Util.isClickableBlockWithFlag(event.getClickedBlock().getLocation(), StructureData.Flag.PRAYER_LOCATION))
 			{
 				if(!DPlayer.Util.isPraying(player))
 				{

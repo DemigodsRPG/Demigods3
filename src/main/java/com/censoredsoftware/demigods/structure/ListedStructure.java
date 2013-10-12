@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public enum ListedStructure
+public enum ListedStructure implements Structure
 {
 	/**
 	 * General
@@ -32,12 +32,12 @@ public enum ListedStructure
 	private String name;
 	private Design[] designs;
 	private Function<Location, Design> getDesign;
-	private Function<Design, Structure> createNew;
-	private Set<Structure.Flag> flags;
+	private Function<Design, StructureData> createNew;
+	private Set<StructureData.Flag> flags;
 	private Listener listener;
 	private int radius;
 
-	private ListedStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, Structure> createNew, Set<Structure.Flag> flags, Listener listener, int radius)
+	private ListedStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, Set<StructureData.Flag> flags, Listener listener, int radius)
 	{
 		this.name = name;
 		this.designs = designs;
@@ -71,7 +71,7 @@ public enum ListedStructure
 		return null;
 	}
 
-	public Set<Structure.Flag> getFlags()
+	public Set<StructureData.Flag> getFlags()
 	{
 		return flags;
 	}
@@ -86,22 +86,22 @@ public enum ListedStructure
 		return radius;
 	}
 
-	public Collection<Structure> getAll()
+	public Collection<StructureData> getAll()
 	{
-		return Collections2.filter(Structure.Util.loadAll(), new Predicate<Structure>()
+		return Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
 		{
 			@Override
-			public boolean apply(Structure save)
+			public boolean apply(StructureData save)
 			{
 				return save.getTypeName().equals(getName());
 			}
 		});
 	}
 
-	public Structure createNew(Location reference, boolean generate)
+	public StructureData createNew(Location reference, boolean generate)
 	{
 		Design design = getDesign.apply(reference);
-		Structure save = createNew.apply(design);
+		StructureData save = createNew.apply(design);
 
 		// All structures need these
 		save.generateId();
@@ -114,14 +114,5 @@ public enum ListedStructure
 
 		if(generate) save.generate();
 		return save;
-	}
-
-	public interface Design
-	{
-		public String getName();
-
-		public Set<Location> getClickableBlocks(Location reference);
-
-		public Schematic getSchematic();
 	}
 }

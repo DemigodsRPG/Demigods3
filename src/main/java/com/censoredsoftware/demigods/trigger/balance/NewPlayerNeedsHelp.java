@@ -14,7 +14,6 @@ import java.util.Collection;
 
 public class NewPlayerNeedsHelp implements Trigger
 {
-	public static final NewPlayerNeedsHelp trigger = new NewPlayerNeedsHelp();
 	public static int focusTime, deathsNeeded, noobAscensions;
 
 	static

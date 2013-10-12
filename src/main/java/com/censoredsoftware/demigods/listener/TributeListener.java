@@ -6,7 +6,7 @@ import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.ItemValues;
 import com.censoredsoftware.demigods.util.Zones;
@@ -42,13 +42,13 @@ public class TributeListener implements Listener
 		Player player = event.getPlayer();
 		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.TRIBUTE_LOCATION))
+		if(StructureData.Util.partOfStructureWithFlag(location, StructureData.Flag.TRIBUTE_LOCATION))
 		{
 			// Cancel the interaction
 			event.setCancelled(true);
 
 			// Define the shrine
-			Structure save = Structure.Util.getStructureRegional(location);
+			StructureData save = StructureData.Util.getStructureRegional(location);
 
 			// Return if they aren't clicking the gold block
 			if(!save.getClickableBlocks().contains(event.getClickedBlock().getLocation())) return;
@@ -81,10 +81,10 @@ public class TributeListener implements Listener
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!event.getInventory().getName().contains("Tribute to") || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") || !StructureData.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), StructureData.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
-		Structure save = Structure.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
+		StructureData save = StructureData.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
 
 		// Calculate the tribute value
 		int tributeValue = 0, items = 0;
@@ -169,7 +169,7 @@ public class TributeListener implements Listener
 		event.getInventory().clear();
 	}
 
-	private static void tribute(DCharacter character, Structure save)
+	private static void tribute(DCharacter character, StructureData save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
 		ListedDeity shrineDeity = character.getDeity();

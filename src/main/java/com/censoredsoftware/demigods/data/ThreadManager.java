@@ -9,6 +9,8 @@ import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
+import com.censoredsoftware.demigods.trigger.balance.DivinityUnbalanced;
+import com.censoredsoftware.demigods.trigger.balance.NewPlayerNeedsHelp;
 import com.censoredsoftware.demigods.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -66,8 +68,8 @@ public class ThreadManager
 					}
 
 					// Process Triggers
-					for(Trigger trigger : Trigger.Util.getAll())
-						trigger.processSync();
+					for(ListedTrigger trigger : ListedTrigger.values())
+						trigger.getTrigger().processSync();
 
 					// Update Battles
 					Battle.Util.updateBattles();
@@ -91,8 +93,8 @@ public class ThreadManager
 					Notification.Util.updateNotifications();
 
 					// Process Triggers
-					for(Trigger trigger : Trigger.Util.getAll())
-						trigger.processAsync();
+					for(ListedTrigger trigger : ListedTrigger.values())
+						trigger.getTrigger().processAsync();
 
 					// Process Atlars
 					Altar.Util.processNewChunks();
@@ -165,6 +167,27 @@ public class ThreadManager
 		public static BukkitRunnable getFavorRunnable()
 		{
 			return favor;
+		}
+	}
+
+	// Triggers
+	public enum ListedTrigger
+	{
+		/**
+		 * Balance related.
+		 */
+		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp());
+
+		private Trigger trigger;
+
+		private ListedTrigger(Trigger trigger)
+		{
+			this.trigger = trigger;
+		}
+
+		public Trigger getTrigger()
+		{
+			return trigger;
 		}
 	}
 }

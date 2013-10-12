@@ -10,7 +10,7 @@ import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.listener.DemigodsChatEvent;
 import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
@@ -485,7 +485,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 
 		// Remove the data
-		for(Structure structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+		for(StructureData structureSave : StructureData.Util.getStructureWithFlag(StructureData.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(SavedPotion potion : getRawPotionEffects())
 			DataManager.savedPotions.remove(potion.getId());

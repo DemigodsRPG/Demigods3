@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.util;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -33,7 +33,7 @@ public class Zones
 	public static boolean inNoPvpZone(Location location)
 	{
 		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		if(WORLD_GUARD != null) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || Iterators.any(WORLD_GUARD.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
+		if(WORLD_GUARD != null) return StructureData.Util.isInRadiusWithFlag(location, StructureData.Flag.NO_PVP) || Iterators.any(WORLD_GUARD.getRegionManager(location.getWorld()).getApplicableRegions(location).iterator(), new Predicate<ProtectedRegion>()
 		{
 			@Override
 			public boolean apply(ProtectedRegion region)
@@ -41,7 +41,7 @@ public class Zones
 				return region.getId().toLowerCase().contains("nopvp");
 			}
 		});
-		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
+		return StructureData.Util.isInRadiusWithFlag(location, StructureData.Flag.NO_PVP);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class Zones
 	public static boolean inNoBuildZone(Player player, Location location)
 	{
 		if(WORLD_GUARD != null && !WORLD_GUARD.canBuild(player, location)) return true;
-		Structure save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
+		StructureData save = StructureData.Util.getInRadiusWithFlag(location, StructureData.Flag.NO_GRIEFING);
 		if(save != null && save.getOwner() != null) return !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 		return false;
 	}

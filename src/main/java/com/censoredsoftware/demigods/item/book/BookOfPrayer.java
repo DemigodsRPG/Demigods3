@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.item.book;
 
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Items;
 import com.censoredsoftware.demigods.util.Zones;
@@ -50,7 +50,7 @@ public class BookOfPrayer
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{
 					// Find the nearest Altar and teleport
-					Structure save = Altar.Util.getAltarNearby(player.getLocation());
+					StructureData save = Altar.Util.getAltarNearby(player.getLocation());
 					player.teleport(save.getReferenceLocation().clone().add(2.0, 1.5, 0));
 					player.sendMessage(ChatColor.YELLOW + "Teleporting to the nearest Altar...");
 					player.getWorld().strikeLightningEffect(player.getLocation());

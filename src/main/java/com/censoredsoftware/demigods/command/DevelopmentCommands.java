@@ -6,7 +6,7 @@ import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.structure.ListedStructure;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
@@ -64,10 +64,10 @@ public class DevelopmentCommands extends WrappedCommand
 
 		Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
 
-		for(Structure save : Collections2.filter(Structure.Util.loadAll(), new Predicate<Structure>()
+		for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
 		{
 			@Override
-			public boolean apply(Structure structure)
+			public boolean apply(StructureData structure)
 			{
 				return !structure.getType().equals(ListedStructure.ALTAR);
 			}
@@ -123,7 +123,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 		if(Altar.Util.isAltarNearby(player.getLocation()))
 		{
-			Structure save = Altar.Util.getAltarNearby(player.getLocation());
+			StructureData save = Altar.Util.getAltarNearby(player.getLocation());
 			player.teleport(save.getReferenceLocation().clone().add(2.0, 1.5, 0));
 			player.sendMessage(ChatColor.YELLOW + "Nearest Altar found.");
 		}
@@ -145,7 +145,7 @@ public class DevelopmentCommands extends WrappedCommand
 			return false;
 		}
 
-		Structure obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		StructureData obelisk = StructureData.Util.getInRadiusWithFlag(player.getLocation(), StructureData.Flag.NO_GRIEFING);
 		if(obelisk != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

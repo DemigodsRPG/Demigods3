@@ -11,7 +11,7 @@ import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Pet;
 import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.censoredsoftware.demigods.util.Randoms;
@@ -721,7 +721,7 @@ public class Battle implements ConfigurationSerializable
 		 */
 		public static boolean canTarget(Participant participant) // TODO REDO THIS
 		{
-			return participant == null || participant.canPvp() || participant.getCurrentLocation() != null && !Structure.Util.isInRadiusWithFlag(participant.getCurrentLocation(), Structure.Flag.NO_PVP);
+			return participant == null || participant.canPvp() || participant.getCurrentLocation() != null && !StructureData.Util.isInRadiusWithFlag(participant.getCurrentLocation(), StructureData.Flag.NO_PVP);
 		}
 
 		/**

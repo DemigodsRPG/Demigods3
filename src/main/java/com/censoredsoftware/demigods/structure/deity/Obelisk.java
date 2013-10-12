@@ -48,21 +48,21 @@ public class Obelisk
 			}
 		}
 	};
-	public static final Function<ListedStructure.Design, Structure> createNew = new Function<ListedStructure.Design, Structure>()
+	public static final Function<ListedStructure.Design, StructureData> createNew = new Function<ListedStructure.Design, StructureData>()
 	{
 		@Override
-		public Structure apply(ListedStructure.Design design)
+		public StructureData apply(ListedStructure.Design design)
 		{
-			Structure save = new Structure();
+			StructureData save = new StructureData();
 			save.setMembers(new ArrayList<String>());
 			return save;
 		}
 	};
-	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	public static final Set<StructureData.Flag> flags = new HashSet<StructureData.Flag>()
 	{
 		{
-			add(Structure.Flag.PROTECTED_BLOCKS);
-			add(Structure.Flag.NO_GRIEFING);
+			add(StructureData.Flag.PROTECTED_BLOCKS);
+			add(StructureData.Flag.NO_GRIEFING);
 		}
 	};
 	public static final Listener listener = new Listener()
@@ -85,7 +85,7 @@ public class Obelisk
 
 				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
-					if(Structure.Util.noOverlapStructureNearby(location))
+					if(StructureData.Util.noOverlapStructureNearby(location))
 					{
 						player.sendMessage(ChatColor.YELLOW + "This location is too close to a no-pvp zone, please try again.");
 						return;
@@ -95,7 +95,7 @@ public class Obelisk
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure save = ListedStructure.OBELISK.createNew(location, true);
+						StructureData save = ListedStructure.OBELISK.createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
@@ -110,11 +110,11 @@ public class Obelisk
 				}
 			}
 
-			if(Admins.useWand(player) && Structure.Util.partOfStructureWithType(location, "Obelisk"))
+			if(Admins.useWand(player) && StructureData.Util.partOfStructureWithType(location, "Obelisk"))
 			{
 				event.setCancelled(true);
 
-				Structure save = Structure.Util.getStructureRegional(location);
+				StructureData save = StructureData.Util.getStructureRegional(location);
 				DCharacter owner = DCharacter.Util.load(save.getOwner());
 
 				if(DataManager.hasTimed(player.getName(), "destroy_obelisk"))

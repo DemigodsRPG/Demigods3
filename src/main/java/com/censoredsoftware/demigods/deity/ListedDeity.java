@@ -12,17 +12,14 @@ import com.censoredsoftware.demigods.deity.god.Zeus;
 import com.censoredsoftware.demigods.deity.titan.Iapetus;
 import com.censoredsoftware.demigods.deity.titan.Oceanus;
 import com.censoredsoftware.demigods.deity.titan.Perses;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public enum ListedDeity
+public enum ListedDeity implements Deity
 {
 	/**
 	 * Template
@@ -177,48 +174,5 @@ public enum ListedDeity
 	public double getMaxHealth()
 	{
 		return maxHealth;
-	}
-
-	public enum Flag
-	{
-		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK, NO_BATTLE
-	}
-
-	public static class Util
-	{
-		public static ListedDeity getDeity(String deity)
-		{
-			try
-			{
-				return ListedDeity.valueOf(deity.toUpperCase());
-			}
-			catch(Exception ignored)
-			{}
-			return null;
-		}
-
-		public static boolean canUseDeity(DCharacter character, String deity)
-		{
-			if(character == null) return false;
-			if(!character.getOfflinePlayer().isOnline()) return canUseDeitySilent(character, deity);
-			Player player = character.getOfflinePlayer().getPlayer();
-			if(!character.isDeity(deity))
-			{
-				player.sendMessage(ChatColor.RED + "You haven't claimed " + deity + "! You can't do that!");
-				return false;
-			}
-			return true;
-		}
-
-		public static boolean canUseDeitySilent(DCharacter character, String deity)
-		{
-			return character != null && character.isDeity(deity);
-		}
-
-		public static boolean canUseDeitySilent(Player player, String deityName)
-		{
-			String currentDeityName = DPlayer.Util.getPlayer(player).getCurrentDeityName();
-			return currentDeityName != null && currentDeityName.equalsIgnoreCase(deityName);
-		}
 	}
 }

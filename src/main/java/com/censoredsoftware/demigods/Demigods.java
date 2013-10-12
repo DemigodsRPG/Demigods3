@@ -17,7 +17,7 @@ import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.ListedStructure;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.ItemValues;
 import com.censoredsoftware.demigods.util.Messages;
@@ -97,7 +97,7 @@ public class Demigods
 		ThreadManager.startThreads();
 
 		// Regenerate structures
-		Structure.Util.regenerateStructures();
+		StructureData.Util.regenerateStructures();
 
 		// Initialize tribute tracking
 		ItemValues.initializeTributeTracking();

@@ -7,7 +7,7 @@ import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.location.DLocation;
 import com.censoredsoftware.demigods.player.*;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.StructureData;
 import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,7 +24,7 @@ public class DataManager
 	// Data
 	public static ConcurrentMap<String, DPlayer> players;
 	public static ConcurrentMap<UUID, DLocation> locations;
-	public static ConcurrentMap<UUID, Structure> structures;
+	public static ConcurrentMap<UUID, StructureData> structures;
 	public static ConcurrentMap<UUID, DCharacter> characters;
 	public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
 	public static ConcurrentMap<UUID, Death> deaths;
@@ -267,16 +267,16 @@ public class DataManager
 			{
 				locations = loadFromFile();
 			}
-		}), STRUCTURE(new ConfigFile<UUID, Structure>()
+		}), STRUCTURE(new ConfigFile<UUID, StructureData>()
 		{
 			@Override
-			public Structure create(UUID uuid, ConfigurationSection conf)
+			public StructureData create(UUID uuid, ConfigurationSection conf)
 			{
-				return new Structure(uuid, conf);
+				return new StructureData(uuid, conf);
 			}
 
 			@Override
-			public ConcurrentMap<UUID, Structure> getLoadedData()
+			public ConcurrentMap<UUID, StructureData> getLoadedData()
 			{
 				return DataManager.structures;
 			}
