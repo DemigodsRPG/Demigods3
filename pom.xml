@@ -7,7 +7,10 @@
     <groupId>com.censoredsoftware.minecraft</groupId>
     <artifactId>Demigods</artifactId>
     <version>3.0.0-BETA</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>Rome</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>Demigods</name>
     <description>Demigods for Bukkit/Spigot Minecraft Servers.</description>
