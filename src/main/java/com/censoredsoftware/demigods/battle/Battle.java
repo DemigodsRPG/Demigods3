@@ -2,8 +2,8 @@ package com.censoredsoftware.demigods.battle;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.exception.SpigotNotFoundException;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.location.DLocation;
@@ -253,9 +253,9 @@ public class Battle implements ConfigurationSerializable
 		});
 	}
 
-	public Collection<Alliance> getInvolvedAlliances()
+	public Collection<ListedAlliance> getInvolvedAlliances()
 	{
-		Set<Alliance> set = Sets.newHashSet();
+		Set<ListedAlliance> set = Sets.newHashSet();
 		for(Participant participant : getParticipants())
 			set.add(participant.getRelatedCharacter().getAlliance());
 		return set;
@@ -300,7 +300,7 @@ public class Battle implements ConfigurationSerializable
 		return score;
 	}
 
-	public int getScore(final Alliance alliance)
+	public int getScore(final ListedAlliance alliance)
 	{
 		Map<UUID, Integer> score = Maps.newHashMap();
 		for(Map.Entry<String, Object> entry : kills.entrySet())
@@ -384,11 +384,11 @@ public class Battle implements ConfigurationSerializable
 		}
 		else if(participants.size() > 2)
 		{
-			Alliance winningAlliance = null;
+			ListedAlliance winningAlliance = null;
 			int winningScore = 0;
 			Collection<DCharacter> MVPs = getMVPs();
 			boolean oneMVP = MVPs.size() == 1;
-			for(Alliance alliance : getInvolvedAlliances())
+			for(ListedAlliance alliance : getInvolvedAlliances())
 			{
 				int score = getScore(alliance);
 				if(getScore(alliance) > winningScore)
@@ -666,7 +666,7 @@ public class Battle implements ConfigurationSerializable
 			if(entity instanceof Player)
 			{
 				DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
-				return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
+				return character != null && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_BATTLE);
 			}
 			return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null && isInBattle(Pet.Util.getPet((LivingEntity) entity).getRelatedCharacter());
 		}
@@ -788,7 +788,7 @@ public class Battle implements ConfigurationSerializable
 			Score neededKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kills Needed"));
 			neededKills.setScore(battle.getMinKills());
 
-			for(Alliance alliance : battle.getInvolvedAlliances())
+			for(ListedAlliance alliance : battle.getInvolvedAlliances())
 			{
 				Score allianceKills = info.getScore(Bukkit.getOfflinePlayer(ChatColor.YELLOW + alliance.getName() + ChatColor.GRAY + " Score"));
 				allianceKills.setScore(battle.getScore(alliance));

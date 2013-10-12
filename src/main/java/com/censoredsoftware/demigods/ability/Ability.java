@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.ability;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -310,7 +310,7 @@ public interface Ability
 		public static List<Ability> getLoadedAbilities()
 		{
 			List<Ability> list = new ArrayList<Ability>();
-			for(Deity deity : Deity.values())
+			for(ListedDeity deity : ListedDeity.values())
 				list.addAll(deity.getAbilities());
 			return list;
 		}
@@ -323,7 +323,7 @@ public interface Ability
 				if(ability.getCommand() != null && ability.getCommand().equalsIgnoreCase(command))
 				{
 					// Ensure that the deity can be used, permission allows it, etc
-					if(!com.censoredsoftware.demigods.deity.Deity.Util.canUseDeity(character, ability.getDeity())) return true;
+					if(!ListedDeity.Util.canUseDeity(character, ability.getDeity())) return true;
 					if(!player.hasPermission(ability.getPermission())) return true;
 
 					// Handle enabling the command

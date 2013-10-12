@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.ability;
 
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Zones;
@@ -105,7 +105,7 @@ public class Template implements Ability
 				Player player = interactEvent.getPlayer();
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+				if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
 
 				if(player.getItemInHand() != null && character.getMeta().checkBound(name, player.getItemInHand().getType()))
 				{

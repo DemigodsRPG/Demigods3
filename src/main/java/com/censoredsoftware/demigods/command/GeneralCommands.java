@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.battle.Battle;
-import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.language.Translation;
@@ -67,7 +67,7 @@ public class GeneralCommands extends WrappedCommand
 		int deaths = character.getDeathCount();
 		String charName = character.getName();
 		String deity = character.getDeity().getName();
-		Alliance alliance = character.getAlliance();
+		ListedAlliance alliance = character.getAlliance();
 
 		int favor = character.getMeta().getFavor();
 		int maxFavor = character.getMeta().getMaxFavor();

@@ -4,8 +4,8 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Participant;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.item.DItemStack;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.listener.DemigodsChatEvent;
@@ -118,7 +118,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.name = name;
 	}
 
-	void setDeity(Deity deity)
+	void setDeity(ListedDeity deity)
 	{
 		this.deity = deity.getName();
 	}
@@ -128,12 +128,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.minorDeities = set;
 	}
 
-	public void addMinorDeity(Deity deity)
+	public void addMinorDeity(ListedDeity deity)
 	{
 		this.minorDeities.add(deity.getName());
 	}
 
-	public void removeMinorDeity(Deity deity)
+	public void removeMinorDeity(ListedDeity deity)
 	{
 		this.minorDeities.remove(deity.getName());
 	}
@@ -361,24 +361,24 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		return getDeity().getName().equalsIgnoreCase(deityName);
 	}
 
-	public Deity getDeity()
+	public ListedDeity getDeity()
 	{
-		return Deity.Util.getDeity(this.deity);
+		return ListedDeity.Util.getDeity(this.deity);
 	}
 
-	public Collection<Deity> getMinorDeities()
+	public Collection<ListedDeity> getMinorDeities()
 	{
-		return Collections2.transform(minorDeities, new Function<String, Deity>()
+		return Collections2.transform(minorDeities, new Function<String, ListedDeity>()
 		{
 			@Override
-			public Deity apply(String deity)
+			public ListedDeity apply(String deity)
 			{
-				return Deity.Util.getDeity(deity);
+				return ListedDeity.Util.getDeity(deity);
 			}
 		});
 	}
 
-	public Alliance getAlliance()
+	public ListedAlliance getAlliance()
 	{
 		return getDeity().getAlliance();
 	}
@@ -463,7 +463,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void updateUseable()
 	{
-		usable = Deity.Util.getDeity(this.deity) != null;
+		usable = ListedDeity.Util.getDeity(this.deity) != null;
 	}
 
 	public UUID getId()
@@ -1117,12 +1117,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(getCharacterByName(charName) == null)
 			{
 				// Create the DCharacter
-				return create(player, charName, Deity.Util.getDeity(charDeity));
+				return create(player, charName, ListedDeity.Util.getDeity(charDeity));
 			}
 			return null;
 		}
 
-		private static DCharacter create(final DPlayer player, final String charName, final Deity deity)
+		private static DCharacter create(final DPlayer player, final String charName, final ListedDeity deity)
 		{
 			DCharacter character = new DCharacter();
 			character.generateId();
@@ -1334,7 +1334,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final Alliance alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithAlliance(final ListedAlliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{
@@ -1346,7 +1346,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			});
 		}
 
-		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final Alliance alliance)
+		public static Collection<DCharacter> getOnlineCharactersWithoutAlliance(final ListedAlliance alliance)
 		{
 			return getCharactersWithPredicate(new Predicate<DCharacter>()
 			{

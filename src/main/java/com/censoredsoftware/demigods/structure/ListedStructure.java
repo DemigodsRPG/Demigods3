@@ -1,0 +1,127 @@
+package com.censoredsoftware.demigods.structure;
+
+import com.censoredsoftware.demigods.structure.deity.Obelisk;
+import com.censoredsoftware.demigods.structure.deity.Shrine;
+import com.censoredsoftware.demigods.structure.global.Altar;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+import org.bukkit.Location;
+import org.bukkit.event.Listener;
+
+import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+public enum ListedStructure
+{
+	/**
+	 * General
+	 */
+	// Altar
+	ALTAR(Altar.name, Altar.AltarDesign.values(), Altar.getDesign, Altar.createNew, Altar.flags, Altar.listener, Altar.radius),
+
+	// Obelisk
+	OBELISK(Obelisk.name, Obelisk.ObeliskDesign.values(), Obelisk.getDesign, Obelisk.createNew, Obelisk.flags, Obelisk.listener, Obelisk.radius),
+
+	// Shrine
+	SHRINE(Shrine.name, Shrine.ShrineDesign.values(), Shrine.getDesign, Shrine.createNew, Shrine.flags, Shrine.listener, Shrine.radius);
+
+	private String name;
+	private Design[] designs;
+	private Function<Location, Design> getDesign;
+	private Function<Design, Structure> createNew;
+	private Set<Structure.Flag> flags;
+	private Listener listener;
+	private int radius;
+
+	private ListedStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, Structure> createNew, Set<Structure.Flag> flags, Listener listener, int radius)
+	{
+		this.name = name;
+		this.designs = designs;
+		this.getDesign = getDesign;
+		this.createNew = createNew;
+		this.flags = flags;
+		this.listener = listener;
+		this.radius = radius;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public Design getDesign(final String name)
+	{
+		try
+		{
+			return Iterables.find(Sets.newHashSet(designs), new Predicate<Design>()
+			{
+				@Override
+				public boolean apply(Design design)
+				{
+					return design.getName().equalsIgnoreCase(name);
+				}
+			});
+		}
+		catch(NoSuchElementException ignored)
+		{}
+		return null;
+	}
+
+	public Set<Structure.Flag> getFlags()
+	{
+		return flags;
+	}
+
+	public Listener getUniqueListener()
+	{
+		return listener;
+	}
+
+	public int getRadius()
+	{
+		return radius;
+	}
+
+	public Collection<Structure> getAll()
+	{
+		return Collections2.filter(Structure.Util.loadAll(), new Predicate<Structure>()
+		{
+			@Override
+			public boolean apply(Structure save)
+			{
+				return save.getTypeName().equals(getName());
+			}
+		});
+	}
+
+	public Structure createNew(Location reference, boolean generate)
+	{
+		Design design = getDesign.apply(reference);
+		Structure save = createNew.apply(design);
+
+		// All structures need these
+		save.generateId();
+		save.setReferenceLocation(reference);
+		save.setType(getName());
+		save.setDesign(design.getName());
+		save.addFlags(getFlags());
+		save.setActive(true);
+		save.save();
+
+		if(generate) save.generate();
+		return save;
+	}
+
+	public interface Design
+	{
+		public String getName();
+
+		public Set<Location> getClickableBlocks(Location reference);
+
+		public Schematic getSchematic();
+	}
+}

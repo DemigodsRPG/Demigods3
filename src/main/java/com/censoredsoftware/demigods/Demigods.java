@@ -6,8 +6,8 @@ import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.ThreadManager;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
@@ -16,6 +16,7 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
+import com.censoredsoftware.demigods.structure.ListedStructure;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.ItemValues;
@@ -137,10 +138,10 @@ public class Demigods
 			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
-		for(Structure.Type structure : Sets.filter(Sets.newHashSet(Structure.Type.values()), new Predicate<Structure.Type>()
+		for(ListedStructure structure : Sets.filter(Sets.newHashSet(ListedStructure.values()), new Predicate<ListedStructure>()
 		{
 			@Override
-			public boolean apply(Structure.Type structure)
+			public boolean apply(ListedStructure structure)
 			{
 				return structure.getUniqueListener() != null;
 			}
@@ -204,12 +205,12 @@ public class Demigods
 		}
 
 		// Alliances, Deities, and Abilities
-		for(final Alliance alliance : Alliance.values())
+		for(final ListedAlliance alliance : ListedAlliance.values())
 		{
 			register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 			{
 				{
-					for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
+					for(ListedDeity deity : ListedAlliance.Util.getLoadedDeitiesInAlliance(alliance))
 					{
 						register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
 						put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));

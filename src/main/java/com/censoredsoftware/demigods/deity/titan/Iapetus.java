@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.deity.titan;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -20,7 +20,7 @@ import java.util.Set;
 public class Iapetus
 {
 	public final static String name = "Iapetus", shortDescription = ChatColor.GRAY + "The Titan of mortality.";
-	public final static Alliance alliance = Alliance.TITAN;
+	public final static ListedAlliance alliance = ListedAlliance.TITAN;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.RED;
@@ -42,6 +42,6 @@ public class Iapetus
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
+	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList();
 }

@@ -9,7 +9,7 @@ import org.bukkit.permissions.PermissionDefault;
 
 import java.util.Collection;
 
-public enum Alliance
+public enum ListedAlliance
 {
 	/**
 	 * Test Alliances
@@ -29,7 +29,7 @@ public enum Alliance
 	private String name, shortDescription, permission;
 	private PermissionDefault permissionDefault;
 
-	private Alliance(String name, String shortDescription, String permission, PermissionDefault permissionDefault)
+	private ListedAlliance(String name, String shortDescription, String permission, PermissionDefault permissionDefault)
 	{
 		this.name = name;
 		this.shortDescription = shortDescription;
@@ -65,55 +65,55 @@ public enum Alliance
 
 	public static class Util
 	{
-		public static Collection<Deity> getLoadedPlayableDeitiesInAlliance(final Alliance alliance)
+		public static Collection<ListedDeity> getLoadedPlayableDeitiesInAlliance(final ListedAlliance alliance)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
 			{
 				@Override
-				public boolean apply(Deity d)
+				public boolean apply(ListedDeity d)
 				{
-					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final Alliance alliance, final Player player)
+		public static Collection<ListedDeity> getLoadedMajorPlayableDeitiesInAllianceWithPerms(final ListedAlliance alliance, final Player player)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
 			{
 				@Override
-				public boolean apply(Deity d)
+				public boolean apply(ListedDeity d)
 				{
-					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return player.hasPermission(d.getPermission()) && d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getFlags().contains(ListedDeity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<Deity> getLoadedMajorPlayableDeitiesInAlliance(final Alliance alliance)
+		public static Collection<ListedDeity> getLoadedMajorPlayableDeitiesInAlliance(final ListedAlliance alliance)
 		{
-			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<Deity>()
+			return Collections2.filter(getLoadedDeitiesInAlliance(alliance), new Predicate<ListedDeity>()
 			{
 				@Override
-				public boolean apply(Deity d)
+				public boolean apply(ListedDeity d)
 				{
-					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(ListedDeity.Flag.PLAYABLE) && d.getFlags().contains(ListedDeity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}
 			});
 		}
 
-		public static Collection<Deity> getLoadedDeitiesInAlliance(final Alliance alliance)
+		public static Collection<ListedDeity> getLoadedDeitiesInAlliance(final ListedAlliance alliance)
 		{
-			return Collections2.filter(Collections2.transform(Sets.newHashSet(Deity.values()), new Function<Deity, Deity>()
+			return Collections2.filter(Collections2.transform(Sets.newHashSet(ListedDeity.values()), new Function<ListedDeity, ListedDeity>()
 			{
 				@Override
-				public Deity apply(Deity d)
+				public ListedDeity apply(ListedDeity d)
 				{
 					return d;
 				}
-			}), new Predicate<Deity>()
+			}), new Predicate<ListedDeity>()
 			{
 				@Override
-				public boolean apply(Deity d)
+				public boolean apply(ListedDeity d)
 				{
 					return d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
 				}

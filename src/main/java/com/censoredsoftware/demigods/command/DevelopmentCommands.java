@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
+import com.censoredsoftware.demigods.structure.ListedStructure;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Messages;
@@ -68,7 +69,7 @@ public class DevelopmentCommands extends WrappedCommand
 			@Override
 			public boolean apply(Structure structure)
 			{
-				return !structure.getType().equals(Structure.Type.ALTAR);
+				return !structure.getType().equals(ListedStructure.ALTAR);
 			}
 		}))
 			save.remove();

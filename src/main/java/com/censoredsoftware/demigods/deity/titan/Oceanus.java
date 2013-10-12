@@ -4,8 +4,8 @@ import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.NoDrown;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.ability.support.Carry;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -23,7 +23,7 @@ import java.util.Set;
 public class Oceanus
 {
 	public final static String name = "Oceanus", shortDescription = ChatColor.GRAY + "The Titan of the oceans.";
-	public final static Alliance alliance = Alliance.TITAN;
+	public final static ListedAlliance alliance = ListedAlliance.TITAN;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 50;
 	public final static ChatColor color = ChatColor.DARK_AQUA;
@@ -45,6 +45,6 @@ public class Oceanus
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
+	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Swim(name, permission), new NoDrown(name, permission), new Carry(name, permission, true));
 }

@@ -19,7 +19,7 @@ import java.util.Set;
 public class TemplateDeity
 {
 	public final static String name = "Template", shortDescription = ChatColor.GRAY + "The deity of testing.";
-	public final static Alliance alliance = Alliance.TEST;
+	public final static ListedAlliance alliance = ListedAlliance.TEST;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.GRAY;
@@ -41,6 +41,6 @@ public class TemplateDeity
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.NON_PLAYABLE);
+	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.NON_PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList((Ability) new Template(name, permission));
 }

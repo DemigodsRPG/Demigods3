@@ -3,8 +3,8 @@ package com.censoredsoftware.demigods.deity.donor;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.ability.passive.RainbowHorse;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class DrD1sco
 {
 	public final static String name = "DrD1sco", shortDescription = ChatColor.BLUE + "The donor of dance.";
-	public final static Alliance alliance = Alliance.DONOR;
+	public final static ListedAlliance alliance = ListedAlliance.DONOR;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40;
 	public final static ChatColor color = ChatColor.DARK_PURPLE;
@@ -44,6 +44,6 @@ public class DrD1sco
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
+	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.NON_PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Discoball.RainbowWalking(name, permission), new RainbowHorse(name, permission));
 }

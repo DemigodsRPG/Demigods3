@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.listener;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
@@ -172,7 +172,7 @@ public class TributeListener implements Listener
 	private static void tribute(DCharacter character, Structure save)
 	{
 		Player player = character.getOfflinePlayer().getPlayer();
-		Deity shrineDeity = character.getDeity();
+		ListedDeity shrineDeity = character.getDeity();
 
 		// Open the tribute inventory
 		Inventory ii = Bukkit.getServer().createInventory(player, 27, "Tribute to " + shrineDeity);

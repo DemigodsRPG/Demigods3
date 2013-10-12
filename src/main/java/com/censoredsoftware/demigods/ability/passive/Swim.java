@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.collect.Lists;
@@ -104,7 +104,7 @@ public class Swim implements Ability
 
 				Player player = event.getPlayer();
 
-				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+				if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
 
 				Material playerLocationMaterial = player.getLocation().getBlock().getType();
 				if(!(playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER)))

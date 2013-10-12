@@ -2,14 +2,11 @@ package com.censoredsoftware.demigods.structure.deity;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.BlockData;
-import com.censoredsoftware.demigods.structure.Schematic;
-import com.censoredsoftware.demigods.structure.Selection;
-import com.censoredsoftware.demigods.structure.Structure;
+import com.censoredsoftware.demigods.structure.*;
 import com.censoredsoftware.demigods.util.Admins;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Zones;
@@ -32,10 +29,10 @@ import java.util.Set;
 public class Obelisk
 {
 	public static final String name = "Obelisk";
-	public static final Function<Location, Structure.Type.Design> getDesign = new Function<Location, Structure.Type.Design>()
+	public static final Function<Location, ListedStructure.Design> getDesign = new Function<Location, ListedStructure.Design>()
 	{
 		@Override
-		public Structure.Type.Design apply(Location reference)
+		public ListedStructure.Design apply(Location reference)
 		{
 			switch(reference.getBlock().getBiome())
 			{
@@ -51,10 +48,10 @@ public class Obelisk
 			}
 		}
 	};
-	public static final Function<Structure.Type.Design, Structure> createNew = new Function<Structure.Type.Design, Structure>()
+	public static final Function<ListedStructure.Design, Structure> createNew = new Function<ListedStructure.Design, Structure>()
 	{
 		@Override
-		public Structure apply(Structure.Type.Design design)
+		public Structure apply(ListedStructure.Design design)
 		{
 			Structure save = new Structure();
 			save.setMembers(new ArrayList<String>());
@@ -86,7 +83,7 @@ public class Obelisk
 			{
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 
-				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(Deity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
+				if(event.getAction() == Action.RIGHT_CLICK_BLOCK && !character.getDeity().getFlags().contains(ListedDeity.Flag.NO_OBELISK) && character.getDeity().getClaimItems().keySet().contains(event.getPlayer().getItemInHand().getType()) && Util.validBlockConfiguration(event.getClickedBlock()))
 				{
 					if(Structure.Util.noOverlapStructureNearby(location))
 					{
@@ -98,7 +95,7 @@ public class Obelisk
 					{
 						// Obelisk created!
 						Admins.sendDebug(ChatColor.RED + "Obelisk created by " + character.getName() + " at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						Structure save = Structure.Type.OBELISK.createNew(location, true);
+						Structure save = ListedStructure.OBELISK.createNew(location, true);
 						save.setOwner(character.getId());
 						location.getWorld().strikeLightningEffect(location);
 
@@ -205,7 +202,7 @@ public class Obelisk
 		}
 	};
 
-	public static enum ObeliskDesign implements Structure.Type.Design
+	public static enum ObeliskDesign implements ListedStructure.Design
 	{
 		GENERAL("general", general), DESERT("desert", desert), NETHER("nether", nether);
 

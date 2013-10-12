@@ -6,8 +6,8 @@ import com.censoredsoftware.demigods.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.ability.passive.Swim;
 import com.censoredsoftware.demigods.ability.support.Carry;
 import com.censoredsoftware.demigods.ability.ultimate.Discoball;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.language.Symbol;
 import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -25,7 +25,7 @@ import java.util.Set;
 public class Clotho
 {
 	public final static String name = "Clotho", shortDescription = ChatColor.GRAY + "The one who sows.";
-	public final static Alliance alliance = Alliance.FATE;
+	public final static ListedAlliance alliance = ListedAlliance.FATE;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
 	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2;
 	public final static ChatColor color = ChatColor.WHITE;
@@ -47,6 +47,6 @@ public class Clotho
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
+	public final static Set<ListedDeity.Flag> flags = Sets.newHashSet(ListedDeity.Flag.MAJOR_DEITY, ListedDeity.Flag.PLAYABLE, ListedDeity.Flag.NO_BATTLE, ListedDeity.Flag.NO_SHRINE);
 	public final static List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission), new Carry(name, permission, false), new Discoball(name, permission));
 }

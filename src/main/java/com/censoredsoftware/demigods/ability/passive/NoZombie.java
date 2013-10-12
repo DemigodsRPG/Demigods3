@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.ability.passive;
 
 import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.deity.ListedDeity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.util.Zones;
@@ -104,7 +104,7 @@ public class NoZombie implements Ability
 				if(damageEvent.getEntity() instanceof Player)
 				{
 					Player player = (Player) damageEvent.getEntity();
-					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
+					if(!ListedDeity.Util.canUseDeitySilent(player, deity)) return;
 
 					// If the player receives zombie damage, cancel it
 					if(damageEvent.getDamager() instanceof Zombie) damageEvent.setCancelled(true);
@@ -115,7 +115,7 @@ public class NoZombie implements Ability
 			public void onEntityTargetEntity(EntityTargetLivingEntityEvent targetEvent)
 			{
 				if(Zones.inNoDemigodsZone(targetEvent.getEntity().getLocation()) || !(targetEvent.getTarget() instanceof Player)) return;
-				if(targetEvent.getEntity() instanceof Zombie && Deity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
+				if(targetEvent.getEntity() instanceof Zombie && ListedDeity.Util.canUseDeitySilent(DPlayer.Util.getPlayer((Player) targetEvent.getTarget()).getCurrent(), deity)) targetEvent.setCancelled(true);
 			}
 		};
 	}
