@@ -1,5 +1,0 @@
-name: DemigodsRome
-main: com.censoredsoftware.demigods.rome.DemigodsRomePlugin
-version: ${project.version}
-authors: [_Alex, HmmmQuestionMark]
-depend: [Demigods]
