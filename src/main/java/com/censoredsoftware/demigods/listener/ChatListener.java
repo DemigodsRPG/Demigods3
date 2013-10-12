@@ -24,7 +24,7 @@ public class ChatListener implements Listener
 
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()))
 		{
-			if(Demigods.MiscUtil.isDemigodsCommand(args[0]))
+			if(Demigods.Util.isDemigodsCommand(args[0]))
 			{
 				player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 				event.setCancelled(true);

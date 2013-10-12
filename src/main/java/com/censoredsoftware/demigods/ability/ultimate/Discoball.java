@@ -123,7 +123,7 @@ public class Discoball implements Ability
 				{
 					if(!DCharacter.Util.isCooledDown(character, name, true)) return;
 
-					Util.discoBall(player);
+					Discoball.Util.discoBall(player);
 				}
 			}
 
@@ -158,9 +158,9 @@ public class Discoball implements Ability
 					{
 						Location location = block.getLocation();
 						if(Zones.inNoDemigodsZone(location)) return;
-						Util.playRandomNote(location, 2F);
-						Util.sparkleSparkle(location);
-						Util.destoryNearby(location);
+						Discoball.Util.playRandomNote(location, 2F);
+						Discoball.Util.sparkleSparkle(location);
+						Discoball.Util.destoryNearby(location);
 					}
 				}
 			}
@@ -325,7 +325,7 @@ public class Discoball implements Ability
 		public static void rainbow(Player disco, Player player)
 		{
 			player.sendBlockChange(disco.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation(), Material.WOOL, (byte) Randoms.generateIntRange(0, 15));
-			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
+			if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(disco.getLocation(), Effect.COLOURED_DUST, 1, 0, 1, 10F, 100, 30);
 		}
 
 		public static void playRandomNote(Location location, float volume)
@@ -335,7 +335,7 @@ public class Discoball implements Ability
 
 		public static void sparkleSparkle(Location location)
 		{
-			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
+			if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(location, Effect.CRIT, 1, 1, 1, 10F, 1000, 30);
 		}
 
 		public static void destoryNearby(Location location)

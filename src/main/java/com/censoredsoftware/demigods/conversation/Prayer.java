@@ -95,7 +95,7 @@ public class Prayer implements WrappedConversation
 		{
 			Map<Object, Object> conversationContext = Maps.newHashMap();
 
-			if(!Demigods.MiscUtil.isRunningSpigot())
+			if(!Demigods.Util.isRunningSpigot())
 			{
 				// Compatibility with vanilla Bukkit
 				Field sessionDataField = ConversationContext.class.getDeclaredField("sessionData");

@@ -6,6 +6,8 @@ import com.censoredsoftware.demigods.command.GeneralCommands;
 import com.censoredsoftware.demigods.command.MainCommand;
 import com.censoredsoftware.demigods.conversation.Prayer;
 import com.censoredsoftware.demigods.data.ThreadManager;
+import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.deity.Deity;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
@@ -13,6 +15,7 @@ import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.listener.*;
 import com.censoredsoftware.demigods.player.DCharacter;
+import com.censoredsoftware.demigods.player.Skill;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.ItemValues;
@@ -27,9 +30,13 @@ import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.mcstats.MetricsLite;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Demigods
@@ -77,9 +84,10 @@ public class Demigods
 			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
 		}
 
-		// Load listeners and commands
+		// Load listeners, commands, and permissions
 		loadListeners();
 		loadCommands();
+		loadPermissions();
 
 		// Update usable characters
 		DCharacter.Util.updateUsableCharacters();
@@ -93,7 +101,7 @@ public class Demigods
 		// Initialize tribute tracking
 		ItemValues.initializeTributeTracking();
 
-		if(MiscUtil.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+		if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 		else Messages.warning(("Without Spigot, some features may not work."));
 	}
 
@@ -183,7 +191,39 @@ public class Demigods
 		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 
-	public static class MiscUtil
+	private static void loadPermissions()
+	{
+		final PluginManager register = Bukkit.getServer().getPluginManager();
+
+		// Engine
+		for(ListedPermission permission : ListedPermission.values())
+		{
+			for(Map.Entry<String, Boolean> entry : permission.getPermission().getChildren().entrySet())
+				register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
+			register.addPermission(permission.getPermission());
+		}
+
+		// Alliances, Deities, and Abilities
+		for(final Alliance alliance : Alliance.values())
+		{
+			register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
+			{
+				{
+					for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
+					{
+						register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
+						put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
+					}
+				}
+			}));
+		}
+
+		// Skill types
+		for(Skill.Type skill : Skill.Type.values())
+			register.addPermission(skill.getPermission());
+	}
+
+	public static class Util
 	{
 		public static boolean isRunningSpigot()
 		{
@@ -262,6 +302,30 @@ public class Demigods
 		public WrappedCommand getCommand()
 		{
 			return command;
+		}
+	}
+
+	// Permissions
+	public enum ListedPermission
+	{
+		BASIC(new Permission("demigods.basic", "The very basic permissions for Demigods.", PermissionDefault.TRUE, new HashMap<String, Boolean>()
+		{
+			{
+				put("demigods.basic.create", true);
+				put("demigods.basic.forsake", true);
+			}
+		})), ADMIN(new Permission("demigods.admin", "The admin permissions for Demigods.", PermissionDefault.OP)), PVP_AREA_COOLDOWN(new Permission("demigods.bypass.pvpareacooldown", "Bypass the wait for leaving/entering PVP zones.", PermissionDefault.FALSE));
+
+		private Permission permission;
+
+		private ListedPermission(Permission permission)
+		{
+			this.permission = permission;
+		}
+
+		public Permission getPermission()
+		{
+			return permission;
 		}
 	}
 }

@@ -103,13 +103,13 @@ public class Battle implements ConfigurationSerializable
 	public void setActive()
 	{
 		this.active = true;
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public void setInactive()
 	{
 		this.active = false;
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	void setStartLocation(Location location)
@@ -125,7 +125,7 @@ public class Battle implements ConfigurationSerializable
 	void setDeleteTime(long time)
 	{
 		this.deleteTime = time;
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public UUID getId()
@@ -195,14 +195,14 @@ public class Battle implements ConfigurationSerializable
 	{
 		if(participant instanceof DCharacter) this.involvedPlayers.add((participant.getId().toString()));
 		else this.involvedTameable.add(participant.getId().toString());
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public void removeParticipant(Participant participant)
 	{
 		if(participant instanceof DCharacter) this.involvedPlayers.remove((participant.getId().toString()));
 		else this.involvedTameable.remove(participant.getId().toString());
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public void addKill(Participant participant)
@@ -211,7 +211,7 @@ public class Battle implements ConfigurationSerializable
 		DCharacter character = participant.getRelatedCharacter();
 		if(this.kills.containsKey(character.getId().toString())) this.kills.put(character.getId().toString(), Integer.parseInt(this.kills.get(character.getId().toString()).toString()) + 1);
 		else this.kills.put(character.getId().toString(), 1);
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public void addDeath(Participant participant)
@@ -219,7 +219,7 @@ public class Battle implements ConfigurationSerializable
 		DCharacter character = participant.getRelatedCharacter();
 		if(this.deaths.containsKey(character.getId().toString())) this.deaths.put(character.getId().toString(), Integer.parseInt(this.deaths.get(character.getId().toString()).toString()) + 1);
 		else this.deaths.put(character.getId().toString(), 1);
-		Util.save(this);
+		Battle.Util.save(this);
 	}
 
 	public DCharacter getStarter()
@@ -444,7 +444,7 @@ public class Battle implements ConfigurationSerializable
 				for(String stringId : involvedPlayers)
 				{
 					OfflinePlayer offlinePlayer = DCharacter.Util.load(UUID.fromString(stringId)).getOfflinePlayer();
-					if(offlinePlayer.isOnline()) Util.updateScoreboard(offlinePlayer.getPlayer(), battle);
+					if(offlinePlayer.isOnline()) Battle.Util.updateScoreboard(offlinePlayer.getPlayer(), battle);
 				}
 			}
 		}, 20, 20);
@@ -598,7 +598,7 @@ public class Battle implements ConfigurationSerializable
 
 		public static Collection<Location> battleBorder(final Battle battle)
 		{
-			if(!Demigods.MiscUtil.isRunningSpigot()) throw new SpigotNotFoundException();
+			if(!Demigods.Util.isRunningSpigot()) throw new SpigotNotFoundException();
 			return Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>()
 			{
 				@Override

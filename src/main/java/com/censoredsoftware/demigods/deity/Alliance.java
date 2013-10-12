@@ -5,6 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.util.Collection;
 
@@ -13,25 +14,27 @@ public enum Alliance
 	/**
 	 * Test Alliances
 	 */
-	TEST("Test", "demigods.alliance.test", "A short description of the Tests."),
+	TEST("Test", "A short description of the Tests.", "demigods.alliance.test", PermissionDefault.FALSE),
 
 	/**
 	 * Main Alliances
 	 */
-	GOD("God", "demigods.alliance.god", "A short description of the Gods."), TITAN("Titan", "demigods.alliance.titan", "A short description of the Titans."),
+	GOD("God", "A short description of the Gods.", "demigods.alliance.god", PermissionDefault.TRUE), TITAN("Titan", "A short description of the Titans.", "demigods.alliance.titan", PermissionDefault.TRUE),
 
 	/**
 	 * Special Alliances
 	 */
-	FATE("Fate", "demigods.alliance.fate", "A short description of the Fates."), DONOR("Donor", "demigods.alliance.donor", "A short description of the Donors.");
+	FATE("Fate", "A short description of the Fates.", "demigods.alliance.fate", PermissionDefault.OP), DONOR("Donor", "A short description of the Donors.", "demigods.alliance.donor", PermissionDefault.TRUE);
 
-	private String name, permission, shortDescription;
+	private String name, shortDescription, permission;
+	private PermissionDefault permissionDefault;
 
-	private Alliance(String name, String permission, String shortDescription)
+	private Alliance(String name, String shortDescription, String permission, PermissionDefault permissionDefault)
 	{
 		this.name = name;
-		this.permission = permission;
 		this.shortDescription = shortDescription;
+		this.permission = permission;
+		this.permissionDefault = permissionDefault;
 	}
 
 	@Override
@@ -45,14 +48,19 @@ public enum Alliance
 		return name;
 	}
 
+	public String getShortDescription()
+	{
+		return shortDescription;
+	}
+
 	public String getPermission()
 	{
 		return permission;
 	}
 
-	public String getShortDescription()
+	public PermissionDefault getPermissionDefault()
 	{
-		return shortDescription;
+		return permissionDefault;
 	}
 
 	public static class Util

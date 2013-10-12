@@ -8,6 +8,8 @@ import com.censoredsoftware.demigods.language.Translation;
 import com.censoredsoftware.demigods.util.Configs;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,14 +25,14 @@ public class Skill implements ConfigurationSerializable
 
 	public enum Type
 	{
-		OFFENSE("Offense", "Offensive power.", "demigods.skill.offense", true), DEFENSE("Defense", "Defensive power.", "demigods.skill.defense", true), SUPPORT("Support", "Support power.", "demigods.skill.support", true), ULTIMATE("Ultimate", "Ultimate power.", "demigods.skill.ultimate", true), FAVOR_REGEN("Favor Regeneration", "Favor regeneration bonus.", "demigods.skill.favorregen", true);
+		OFFENSE("Offense", "Offensive power.", new Permission("demigods.skill.offense", "Allows the player to obtain the Offense skill type.", PermissionDefault.TRUE), true), DEFENSE("Defense", "Defensive power.", new Permission("demigods.skill.defense", "Allows the player to obtain the Defense skill type.", PermissionDefault.TRUE), true), SUPPORT("Support", "Support power.", new Permission("demigods.skill.support", "Allows the player to obtain the Support skill type.", PermissionDefault.TRUE), true), ULTIMATE("Ultimate", "Ultimate power.", new Permission("demigods.skill.ultimate", "Allows the player to obtain the Ultimate skill type.", PermissionDefault.TRUE), true), FAVOR_REGEN("Favor Regeneration", "Favor regeneration bonus.", new Permission("demigods.skill.favorregen", "Allows the player to obtain the Favor Regeneration skill type.", PermissionDefault.TRUE), true);
 
 		private String name;
 		private String description;
-		private String permission;
+		private Permission permission;
 		private boolean isDefault;
 
-		private Type(String name, String description, String permission, boolean isDefault)
+		private Type(String name, String description, Permission permission, boolean isDefault)
 		{
 			this.name = name;
 			this.description = description;
@@ -48,7 +50,7 @@ public class Skill implements ConfigurationSerializable
 			return description;
 		}
 
-		public String getPermission()
+		public Permission getPermission()
 		{
 			return permission;
 		}

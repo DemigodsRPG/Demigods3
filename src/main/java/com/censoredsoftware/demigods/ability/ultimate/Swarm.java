@@ -56,7 +56,7 @@ public class Swarm implements Ability
 		{
 			count++;
 			if(count > 10) break;
-			Util.spawnZombie(character, entity);
+			Swarm.Util.spawnZombie(character, entity);
 		}
 
 		return true;
@@ -165,7 +165,7 @@ public class Swarm implements Ability
 		public static boolean spawnZombie(DCharacter character, LivingEntity target)
 		{
 			Location spawnLocation = character.getCurrentLocation().clone();
-			if(Demigods.MiscUtil.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
+			if(Demigods.Util.isRunningSpigot()) Spigots.playParticle(spawnLocation, Effect.EXPLOSION_HUGE, 1, 1, 1, 1F, 5, 300);
 			Zombie zombie = (Zombie) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ZOMBIE);
 			zombie.addPotionEffects(Sets.newHashSet(new PotionEffect(PotionEffectType.SPEED, 999, 5, false), new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 999, 5, false), new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999, 1, false), new PotionEffect(PotionEffectType.JUMP, 999, 5, false), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 999, 2, false)));
 			zombie.setCustomName(character.getName() + "'s Minion");
