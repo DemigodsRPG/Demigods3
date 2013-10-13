@@ -60,7 +60,7 @@ public class Demigods
 	public static ImmutableSet<String> COMMANDS;
 
 	// Mythos
-	public static Mythos MYTHOS;
+	public static final Mythos MYTHOS;
 
 	// Load what is possible to load right away.
 	static
@@ -72,71 +72,7 @@ public class Demigods
 		// Language data.
 		LANGUAGE = new Translation();
 
-		// Initialize metrics
-		try
-		{
-			(new MetricsLite(PLUGIN)).start();
-		}
-		catch(Exception ignored)
-		{}
-	}
-
-	// Load everything else.
-	protected static void load()
-	{
-		// Start the data
-		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
-
-		// Check if there are no enabled worlds
-		if(!loadWorlds())
-		{
-			Messages.severe("Demigods was unable to load any worlds.");
-			Messages.severe("Please enable at least 1 world.");
-			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
-		}
-
 		// Load the Mythos.
-		loadMythos();
-
-		// Load listeners, commands, and permissions
-		loadListeners();
-		loadCommands();
-		loadPermissions();
-
-		// Update usable characters
-		DCharacter.Util.updateUsableCharacters();
-
-		// Start threads
-		ThreadManager.startThreads();
-
-		// Regenerate structures
-		Structure.Util.regenerateStructures();
-
-		// Initialize tribute tracking
-		TributeManager.initializeTributeTracking();
-
-		if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
-		else Messages.warning(("Without Spigot, some features may not work."));
-	}
-
-	private static boolean loadWorlds()
-	{
-		Set<String> disabledWorlds = Sets.newHashSet();
-		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
-		{
-			@Override
-			public boolean apply(String world)
-			{
-				return PLUGIN.getServer().getWorld(world) != null;
-			}
-		}))
-			if(PLUGIN.getServer().getWorld(world) != null) disabledWorlds.add(world);
-		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
-		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
-	}
-
-	private static void loadMythos()
-	{
 		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
 		RegisteredServiceProvider<Mythos> mythosProvider = servicesManager.getRegistration(Mythos.class);
 		if(mythosProvider != null)
@@ -200,6 +136,65 @@ public class Demigods
 				return Sets.newHashSet(ThreadManager.ListedTrigger.getTriggers());
 			}
 		};
+
+		// Initialize metrics
+		try
+		{
+			(new MetricsLite(PLUGIN)).start();
+		}
+		catch(Exception ignored)
+		{}
+	}
+
+	// Load everything else.
+	protected static void load()
+	{
+		// Start the data
+		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+
+		// Check if there are no enabled worlds
+		if(!loadWorlds())
+		{
+			Messages.severe("Demigods was unable to load any worlds.");
+			Messages.severe("Please enable at least 1 world.");
+			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
+		}
+
+		// Load listeners, commands, and permissions
+		loadListeners();
+		loadCommands();
+		loadPermissions();
+
+		// Update usable characters
+		DCharacter.Util.updateUsableCharacters();
+
+		// Start threads
+		ThreadManager.startThreads();
+
+		// Regenerate structures
+		Structure.Util.regenerateStructures();
+
+		// Initialize tribute tracking
+		TributeManager.initializeTributeTracking();
+
+		if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+		else Messages.warning(("Without Spigot, some features may not work."));
+	}
+
+	private static boolean loadWorlds()
+	{
+		Set<String> disabledWorlds = Sets.newHashSet();
+		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
+		{
+			@Override
+			public boolean apply(String world)
+			{
+				return PLUGIN.getServer().getWorld(world) != null;
+			}
+		}))
+			if(PLUGIN.getServer().getWorld(world) != null) disabledWorlds.add(world);
+		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
+		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
 	}
 
 	private static void loadListeners()
