@@ -26,4 +26,9 @@ public class QuitReasonHandler extends Handler
 	@Override
 	public void close() throws SecurityException
 	{}
+
+	public enum QuitReason
+	{
+		GENERIC_REASON, SPAM, END_OF_STREAM, OVERFLOW, TIMEOUT, QUITTING
+	}
 }
