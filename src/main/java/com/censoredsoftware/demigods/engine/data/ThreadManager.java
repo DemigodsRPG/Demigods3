@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.deity.Deity;

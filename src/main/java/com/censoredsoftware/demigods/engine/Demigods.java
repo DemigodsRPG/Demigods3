@@ -1,6 +1,5 @@
-package com.censoredsoftware.demigods;
+package com.censoredsoftware.demigods.engine;
 
-import com.censoredsoftware.demigods.engine.Mythos;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.engine.command.GeneralCommands;

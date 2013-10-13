@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.language;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

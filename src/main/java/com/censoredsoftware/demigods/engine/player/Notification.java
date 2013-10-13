@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.google.common.collect.Sets;

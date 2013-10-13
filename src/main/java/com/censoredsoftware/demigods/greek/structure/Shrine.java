@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.language.Translation;
@@ -13,7 +13,6 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.GreekStructure;
 import com.google.common.base.Function;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

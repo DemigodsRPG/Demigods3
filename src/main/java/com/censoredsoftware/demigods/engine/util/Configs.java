@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import org.bukkit.configuration.Configuration;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods;
+package com.censoredsoftware.demigods.engine;
 
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;

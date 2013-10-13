@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.trigger.Trigger;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
+import com.censoredsoftware.demigods.greek.structure.GreekStructure;
 import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
 import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
 import com.google.common.collect.Sets;

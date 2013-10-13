@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.deity;
 
-import com.censoredsoftware.demigods.Demigods;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.bukkit.entity.Player;
