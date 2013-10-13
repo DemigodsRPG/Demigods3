@@ -4,7 +4,7 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.data.DataManager;
 import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.deity.ListedAlliance;
+import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.helper.ColoredStringBuilder;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.language.Symbol;
@@ -58,9 +58,9 @@ public class Prayer implements WrappedConversation
 		CONFIRM_FORSAKE('F', new ConfirmForsake()), CANCEL_FORSAKE('X', new CancelForsake()), CONFIRM_CHARACTER('C', new ConfirmCharacter()), CANCEL_CREATE_CHARACTER('X', new CancelCreateCharacter()), CREATE_CHARACTER('1', new CreateCharacter()), VIEW_CHARACTERS('2', new ViewCharacters()), VIEW_WARPS('3', new ViewWarps()), FORSAKE_CHARACTER('4', new Forsake()), VIEW_SKILL_POINTS('5', new ViewSkills()), VIEW_NOTIFICATIONS('6', new ViewNotifications());
 
 		private final char id;
-		private final Demigods.ListedConversation.Category category;
+		private final Demigods.DemigodsConversation.Category category;
 
-		private Menu(char id, Demigods.ListedConversation.Category category)
+		private Menu(char id, Demigods.DemigodsConversation.Category category)
 		{
 			this.id = id;
 			this.category = category;
@@ -71,7 +71,7 @@ public class Prayer implements WrappedConversation
 			return this.id;
 		}
 
-		public Demigods.ListedConversation.Category getCategory()
+		public Demigods.DemigodsConversation.Category getCategory()
 		{
 			return this.category;
 		}
@@ -171,7 +171,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Warps
-	static class ViewWarps extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ViewWarps extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -341,7 +341,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Skills
-	static class ViewSkills extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ViewSkills extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -467,7 +467,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Notifications
-	static class ViewNotifications extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ViewNotifications extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -558,7 +558,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter viewing
-	static class ViewCharacters extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ViewCharacters extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -681,7 +681,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Deity forsaking
-	static class Forsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class Forsake extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -756,7 +756,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Forsaking confirmation
-	static class ConfirmForsake extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ConfirmForsake extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -816,7 +816,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// Forsaking cancellation
-	static class CancelForsake extends MessagePrompt implements Demigods.ListedConversation.Category
+	static class CancelForsake extends MessagePrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -851,7 +851,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter creation
-	static class CreateCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class CreateCharacter extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -1003,7 +1003,7 @@ public class Prayer implements WrappedConversation
 			{
 				try
 				{
-					return ((Player) context.getForWhom()).hasPermission(ListedAlliance.valueOf(alliance.toUpperCase()).getPermission());
+					return ((Player) context.getForWhom()).hasPermission(GreekAlliance.valueOf(alliance.toUpperCase()).getPermission());
 				}
 				catch(Exception ignored)
 				{
@@ -1014,7 +1014,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected Prompt acceptValidatedInput(ConversationContext context, String alliance)
 			{
-				context.setSessionData("chosen_alliance", ListedAlliance.valueOf(alliance.toUpperCase()));
+				context.setSessionData("chosen_alliance", GreekAlliance.valueOf(alliance.toUpperCase()));
 				return new ConfirmAlliance();
 			}
 		}
@@ -1025,7 +1025,7 @@ public class Prayer implements WrappedConversation
 			public String getPromptText(ConversationContext context)
 			{
 				Messages.clearRawChat((Player) context.getForWhom());
-				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((ListedAlliance) context.getSessionData("chosen_alliance")).getName()) + "s" + ChatColor.GRAY + "? (y/n)";
+				return ChatColor.GRAY + "Are you sure you want to join the " + ChatColor.YELLOW + StringUtils.capitalize(((GreekAlliance) context.getSessionData("chosen_alliance")).getName()) + "s" + ChatColor.GRAY + "? (y/n)";
 			}
 
 			@Override
@@ -1059,7 +1059,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose a Deity: " + ChatColor.GRAY + "(Type in the name of the Deity)");
 				player.sendRawMessage(" ");
 
-				for(Deity deity : ListedAlliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((ListedAlliance) context.getSessionData("chosen_alliance"), player))
+				for(Deity deity : GreekAlliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms((GreekAlliance) context.getSessionData("chosen_alliance"), player))
 					if(player.hasPermission(deity.getPermission())) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.DARK_RED : ChatColor.YELLOW) + StringUtils.capitalize(deity.getName()) + ChatColor.GRAY + " - " + deity.getShortDescription());
 
 				player.sendRawMessage(" ");
@@ -1135,7 +1135,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter confirmation
-	static class ConfirmCharacter extends ValidatingPrompt implements Demigods.ListedConversation.Category
+	static class ConfirmCharacter extends ValidatingPrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)
@@ -1190,7 +1190,7 @@ public class Prayer implements WrappedConversation
 	}
 
 	// DCharacter creation cancellation
-	static class CancelCreateCharacter extends MessagePrompt implements Demigods.ListedConversation.Category
+	static class CancelCreateCharacter extends MessagePrompt implements Demigods.DemigodsConversation.Category
 	{
 		@Override
 		public String getChatName(ConversationContext context)

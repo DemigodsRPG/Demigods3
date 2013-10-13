@@ -4,22 +4,15 @@ import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.censoredsoftware.demigods.player.Notification;
-import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.trigger.Trigger;
-import com.censoredsoftware.demigods.trigger.balance.DivinityUnbalanced;
-import com.censoredsoftware.demigods.trigger.balance.NewPlayerNeedsHelp;
 import com.censoredsoftware.demigods.util.*;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Collection;
 
 @SuppressWarnings("deprecation")
 public class ThreadManager
@@ -172,39 +165,6 @@ public class ThreadManager
 		public static BukkitRunnable getFavorRunnable()
 		{
 			return favor;
-		}
-	}
-
-	// Triggers
-	public enum ListedTrigger
-	{
-		/**
-		 * Balance related.
-		 */
-		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp());
-
-		private Trigger trigger;
-
-		private ListedTrigger(Trigger trigger)
-		{
-			this.trigger = trigger;
-		}
-
-		public Trigger getTrigger()
-		{
-			return trigger;
-		}
-
-		public static Collection<Trigger> getTriggers()
-		{
-			return Collections2.transform(Sets.newHashSet(values()), new Function<ListedTrigger, Trigger>()
-			{
-				@Override
-				public Trigger apply(ListedTrigger listedTrigger)
-				{
-					return listedTrigger.getTrigger();
-				}
-			});
 		}
 	}
 }

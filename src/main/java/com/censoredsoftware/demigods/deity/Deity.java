@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.deity;
 
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.ability.Ability;
+import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
 import com.google.common.base.Predicate;
@@ -58,7 +59,7 @@ public interface Deity
 		{
 			try
 			{
-				return ListedDeity.valueOf(deityName.toUpperCase());
+				return GreekDeity.valueOf(deityName.toUpperCase());
 			}
 			catch(Exception ignored)
 			{}

@@ -3,38 +3,16 @@ package com.censoredsoftware.demigods.language;
 import com.censoredsoftware.demigods.Demigods;
 import com.censoredsoftware.demigods.deity.Deity;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class Translation
 {
-	// private static File translationYAML;
-	private static Map<String, Object> translation;
-
-	public Translation()
-	{
-		/*
-		 * Turned off for now. TODO
-		 * String LANGUAGE = Configs.getSettingString("LANGUAGE").toLowerCase();
-		 * if(!LANGUAGE.equals("english")) try
-		 * {
-		 * translationYAML = new File(LANGUAGE);
-		 * translation = translationYAML.loadFromFile();
-		 * return;
-		 * }
-		 * catch(Throwable ignored)
-		 * {}
-		 */
-		translation = Maps.newHashMap();
-	}
-
 	/**
 	 * Gets a specific line of <code>LANGUAGE</code>.
 	 * 
@@ -43,7 +21,6 @@ public class Translation
 	 */
 	public String getText(Text text)
 	{
-		if(translation.containsKey(text.name())) return ChatColor.translateAlternateColorCodes('&', translation.get(text.name()).toString());
 		return text.english();
 	}
 
@@ -55,13 +32,6 @@ public class Translation
 	 */
 	public List<String> getTextBlock(final Text text)
 	{
-		if(translation.containsKey(text.name()) && translation.get(text.name()) instanceof List)
-		{
-			List<String> list = new ArrayList<String>();
-			for(String line : (List<String>) translation.get(text.name()))
-				list.add(ChatColor.translateAlternateColorCodes('&', line));
-			return list;
-		}
 		return text.englishBlock();
 	}
 
@@ -85,9 +55,6 @@ public class Translation
 		set.add("Console");
 		set.add("Disowned");
 
-		// YAML Blacklist
-		if(translation.containsKey("BLACKLIST") && translation.get("BLACKLIST") instanceof List) set.addAll((List<String>) translation.get("BLACKLIST"));
-
 		// Deities
 		for(Deity deity : Demigods.MYTHOS.getDeities())
 		{
@@ -97,41 +64,6 @@ public class Translation
 
 		return set;
 	}
-
-	/*
-	 * Turned off for now TODO
-	 * public static class File extends ConfigFile
-	 * {
-	 * private static String LANGUAGE_PATH;
-	 * private static String TRANSLATION_FILE;
-	 * 
-	 * public File(String translation)
-	 * {
-	 * super(Demigods.PLUGIN);
-	 * TRANSLATION_FILE = translation + ".yml";
-	 * LANGUAGE_PATH = Demigods.PLUGIN.getDataFolder() + "/lang/";
-	 * }
-	 * 
-	 * @Override
-	 * public Map<String, Object> loadFromFile()
-	 * {
-	 * final FileConfiguration data = getData(LANGUAGE_PATH, TRANSLATION_FILE);
-	 * return new HashMap<String, Object>()
-	 * {
-	 * {
-	 * for(String stringId : data.getKeys(false))
-	 * put(stringId, data.get(stringId));
-	 * }
-	 * };
-	 * }
-	 * 
-	 * @Override
-	 * public boolean saveToFile()
-	 * {
-	 * return true;
-	 * }
-	 * }
-	 */
 
 	public static enum Text
 	{

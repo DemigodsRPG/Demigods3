@@ -2,13 +2,13 @@ package com.censoredsoftware.demigods.command;
 
 import com.censoredsoftware.demigods.battle.Battle;
 import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.greek.GreekStructure;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.structure.ListedStructure;
 import com.censoredsoftware.demigods.structure.Structure;
 import com.censoredsoftware.demigods.structure.StructureData;
-import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -70,7 +70,7 @@ public class DevelopmentCommands extends WrappedCommand
 			@Override
 			public boolean apply(StructureData structure)
 			{
-				return !structure.getType().equals(ListedStructure.ALTAR);
+				return !structure.getType().equals(GreekStructure.ALTAR);
 			}
 		}))
 			save.remove();

@@ -9,19 +9,16 @@ import com.censoredsoftware.demigods.data.ThreadManager;
 import com.censoredsoftware.demigods.data.TributeManager;
 import com.censoredsoftware.demigods.deity.Alliance;
 import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.deity.ListedAlliance;
-import com.censoredsoftware.demigods.deity.ListedDeity;
+import com.censoredsoftware.demigods.greek.GreekMythos;
 import com.censoredsoftware.demigods.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.helper.WrappedCommand;
 import com.censoredsoftware.demigods.helper.WrappedConversation;
 import com.censoredsoftware.demigods.item.DivineItem;
 import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.listener.*;
+import com.censoredsoftware.demigods.listener.ZoneListener;
 import com.censoredsoftware.demigods.player.DCharacter;
 import com.censoredsoftware.demigods.player.Skill;
-import com.censoredsoftware.demigods.structure.ListedStructure;
 import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.trigger.Trigger;
 import com.censoredsoftware.demigods.util.Configs;
 import com.censoredsoftware.demigods.util.Messages;
 import com.google.common.base.Function;
@@ -67,10 +64,6 @@ public class Demigods
 	{
 		// Allow static access.
 		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
-		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
-
-		// Language data.
-		LANGUAGE = new Translation();
 
 		// Load the Mythos.
 		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
@@ -80,62 +73,13 @@ public class Demigods
 			MYTHOS = mythosProvider.getProvider();
 			Messages.info("The " + MYTHOS.getName() + " mythos created by " + MYTHOS.getAuthor() + " has loaded!");
 		}
-		else MYTHOS = new Mythos()
-		{
-			@Override
-			public String getName()
-			{
-				return "Greek";
-			}
+		else MYTHOS = new GreekMythos();
 
-			@Override
-			public String getDescription()
-			{
-				return "Greek mythology, as described by Hesiod, Homer, and other Greek bards.";
-			}
+		// Conversation factory static access.
+		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 
-			@Override
-			public String getAuthor()
-			{
-				return "_Alex and HmmmQuestionMark";
-			}
-
-			@Override
-			public Set<Alliance> getAlliances()
-			{
-				return Sets.newHashSet((Alliance[]) ListedAlliance.values());
-			}
-
-			@Override
-			public Set<Deity> getDeities()
-			{
-				return Sets.newHashSet((Deity[]) ListedDeity.values());
-			}
-
-			@Override
-			public Set<Structure> getStructures()
-			{
-				return Sets.newHashSet((Structure[]) ListedStructure.values());
-			}
-
-			@Override
-			public Set<Listener> getListeners()
-			{
-				return Sets.newHashSet();
-			}
-
-			@Override
-			public Set<Permission> getPermissions()
-			{
-				return Sets.newHashSet();
-			}
-
-			@Override
-			public Set<Trigger> getTriggers()
-			{
-				return Sets.newHashSet(ThreadManager.ListedTrigger.getTriggers());
-			}
-		};
+		// Language data.
+		LANGUAGE = new Translation();
 
 		// Initialize metrics
 		try
@@ -201,10 +145,6 @@ public class Demigods
 	{
 		PluginManager register = Bukkit.getServer().getPluginManager();
 
-		// Engine
-		for(ListedListener listener : ListedListener.values())
-			register.registerEvents(listener.getListener(), PLUGIN);
-
 		// Mythos
 		for(Listener listener : MYTHOS.getListeners())
 			register.registerEvents(listener, PLUGIN);
@@ -228,10 +168,10 @@ public class Demigods
 			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), PLUGIN);
 
 		// Conversations
-		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(ListedConversation.values()), new Function<ListedConversation, WrappedConversation>()
+		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(DemigodsConversation.values()), new Function<DemigodsConversation, WrappedConversation>()
 		{
 			@Override
-			public WrappedConversation apply(ListedConversation conversation)
+			public WrappedConversation apply(DemigodsConversation conversation)
 			{
 				return conversation.getConversation();
 			}
@@ -259,7 +199,7 @@ public class Demigods
 	private static void loadCommands()
 	{
 		Set<String> commands = Sets.newHashSet();
-		for(ListedCommand command : ListedCommand.values())
+		for(DemigodsCommand command : DemigodsCommand.values())
 			commands.addAll(command.getCommand().getCommands());
 		commands.add("demigod");
 		commands.add("dg");
@@ -276,26 +216,14 @@ public class Demigods
 	{
 		final PluginManager register = Bukkit.getServer().getPluginManager();
 
-		// Engine
-		for(ListedPermission permission : ListedPermission.values())
-		{
-			// catch errors to avoid any possible buggy permissions
-			try
-			{
-				for(Map.Entry<String, Boolean> entry : permission.getPermission().getChildren().entrySet())
-					register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-				register.addPermission(permission.getPermission());
-			}
-			catch(Exception ignored)
-			{}
-		}
-
 		// Mythos
 		for(Permission permission : MYTHOS.getPermissions())
 		{
 			// catch errors to avoid any possible buggy permissions
 			try
 			{
+				for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+					register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
 				register.addPermission(permission);
 			}
 			catch(Exception ignored)
@@ -343,13 +271,13 @@ public class Demigods
 	}
 
 	// Conversations
-	public enum ListedConversation
+	public enum DemigodsConversation
 	{
 		PRAYER(new Prayer());
 
 		private final WrappedConversation conversationInfo;
 
-		private ListedConversation(WrappedConversation conversationInfo)
+		private DemigodsConversation(WrappedConversation conversationInfo)
 		{
 			this.conversationInfo = conversationInfo;
 		}
@@ -368,32 +296,14 @@ public class Demigods
 		}
 	}
 
-	// Listeners
-	public enum ListedListener
-	{
-		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
-
-		private Listener listener;
-
-		private ListedListener(Listener listener)
-		{
-			this.listener = listener;
-		}
-
-		public Listener getListener()
-		{
-			return listener;
-		}
-	}
-
 	// Commands
-	public enum ListedCommand
+	public enum DemigodsCommand
 	{
 		MAIN(new MainCommand()), GENERAL(new GeneralCommands()), DEVELOPMENT(new DevelopmentCommands());
 
 		private WrappedCommand command;
 
-		private ListedCommand(WrappedCommand command)
+		private DemigodsCommand(WrappedCommand command)
 		{
 			this.command = command;
 		}
@@ -401,30 +311,6 @@ public class Demigods
 		public WrappedCommand getCommand()
 		{
 			return command;
-		}
-	}
-
-	// Permissions
-	public enum ListedPermission
-	{
-		BASIC(new Permission("demigods.basic", "The very basic permissions for Demigods.", PermissionDefault.TRUE, new HashMap<String, Boolean>()
-		{
-			{
-				put("demigods.basic.create", true);
-				put("demigods.basic.forsake", true);
-			}
-		})), ADMIN(new Permission("demigods.admin", "The admin permissions for Demigods.", PermissionDefault.OP)), PVP_AREA_COOLDOWN(new Permission("demigods.bypass.pvpareacooldown", "Bypass the wait for leaving/entering PVP zones.", PermissionDefault.FALSE));
-
-		private Permission permission;
-
-		private ListedPermission(Permission permission)
-		{
-			this.permission = permission;
-		}
-
-		public Permission getPermission()
-		{
-			return permission;
 		}
 	}
 }

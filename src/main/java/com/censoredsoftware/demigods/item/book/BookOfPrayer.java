@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.item.book;
 
+import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.censoredsoftware.demigods.structure.StructureData;
-import com.censoredsoftware.demigods.structure.global.Altar;
 import com.censoredsoftware.demigods.util.Items;
 import com.censoredsoftware.demigods.util.Zones;
 import org.bukkit.ChatColor;
