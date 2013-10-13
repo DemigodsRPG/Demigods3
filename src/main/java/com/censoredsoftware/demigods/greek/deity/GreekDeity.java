@@ -1,8 +1,8 @@
 package com.censoredsoftware.demigods.greek.deity;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.greek.deity.donor.DrD1sco;
 import com.censoredsoftware.demigods.greek.deity.donor.OmegaX17;
 import com.censoredsoftware.demigods.greek.deity.fate.Atropos;

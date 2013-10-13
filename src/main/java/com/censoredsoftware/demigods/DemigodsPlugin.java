@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods;
 
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.data.ThreadManager;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.DPlayer;
-import com.censoredsoftware.demigods.util.Messages;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 

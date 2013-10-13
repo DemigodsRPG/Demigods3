@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.deity;
 
-import com.censoredsoftware.demigods.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
 import org.bukkit.permissions.PermissionDefault;
 
 public enum GreekAlliance implements Alliance

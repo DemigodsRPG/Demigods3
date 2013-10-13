@@ -1,10 +1,10 @@
 package com.censoredsoftware.demigods.greek;
 
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.censoredsoftware.demigods.greek.structure.Obelisk;
 import com.censoredsoftware.demigods.greek.structure.Shrine;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.structure.StructureData;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.trigger;
 
-import com.censoredsoftware.demigods.trigger.Trigger;
+import com.censoredsoftware.demigods.engine.trigger.Trigger;
 
 public class DivinityUnbalanced implements Trigger
 {

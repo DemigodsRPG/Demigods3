@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Deity;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.util.Zones;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;

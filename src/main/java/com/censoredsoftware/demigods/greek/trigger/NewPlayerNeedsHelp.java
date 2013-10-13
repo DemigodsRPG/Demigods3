@@ -1,11 +1,11 @@
 package com.censoredsoftware.demigods.greek.trigger;
 
-import com.censoredsoftware.demigods.data.DataManager;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.player.DCharacter;
-import com.censoredsoftware.demigods.player.Death;
-import com.censoredsoftware.demigods.trigger.Trigger;
-import com.censoredsoftware.demigods.util.Zones;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.language.Symbol;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.Death;
+import com.censoredsoftware.demigods.engine.trigger.Trigger;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.bukkit.ChatColor;

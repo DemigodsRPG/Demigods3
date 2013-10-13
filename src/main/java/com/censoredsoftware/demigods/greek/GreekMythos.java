@@ -1,15 +1,15 @@
 package com.censoredsoftware.demigods.greek;
 
-import com.censoredsoftware.demigods.Mythos;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.engine.Mythos;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.listener.*;
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.trigger.Trigger;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
 import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
-import com.censoredsoftware.demigods.listener.*;
-import com.censoredsoftware.demigods.structure.Structure;
-import com.censoredsoftware.demigods.trigger.Trigger;
 import com.google.common.collect.Sets;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;

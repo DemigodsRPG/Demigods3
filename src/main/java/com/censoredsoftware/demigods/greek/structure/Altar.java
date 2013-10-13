@@ -1,15 +1,15 @@
 package com.censoredsoftware.demigods.greek.structure;
 
 import com.censoredsoftware.demigods.Demigods;
-import com.censoredsoftware.demigods.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.structure.*;
+import com.censoredsoftware.demigods.engine.util.Admins;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Randoms;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.GreekStructure;
-import com.censoredsoftware.demigods.language.Translation;
-import com.censoredsoftware.demigods.location.DLocation;
-import com.censoredsoftware.demigods.structure.*;
-import com.censoredsoftware.demigods.util.Admins;
-import com.censoredsoftware.demigods.util.Configs;
-import com.censoredsoftware.demigods.util.Randoms;
-import com.censoredsoftware.demigods.util.Zones;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;

@@ -1,14 +1,14 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import com.censoredsoftware.demigods.ability.Ability;
-import com.censoredsoftware.demigods.deity.Alliance;
-import com.censoredsoftware.demigods.deity.Deity;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.language.Symbol;
+import com.censoredsoftware.demigods.engine.util.Strings;
 import com.censoredsoftware.demigods.greek.ability.passive.AlwaysInvisible;
 import com.censoredsoftware.demigods.greek.ability.passive.NoDamage;
 import com.censoredsoftware.demigods.greek.ability.support.Carry;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
-import com.censoredsoftware.demigods.language.Symbol;
-import com.censoredsoftware.demigods.util.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
