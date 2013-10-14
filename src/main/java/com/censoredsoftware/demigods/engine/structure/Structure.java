@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.engine.structure;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
 
@@ -159,6 +160,18 @@ public interface Structure
 			return null;
 		}
 
+		public static Set<StructureData> getInRadiusWithFlag(final Location location, final Flag flag, final int radius)
+		{
+			return Sets.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			{
+				@Override
+				public boolean apply(StructureData save)
+				{
+					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name()) && save.getReferenceLocation().getWorld().equals(location.getWorld()) && save.getReferenceLocation().distance(location) <= radius;
+				}
+			});
+		}
+
 		public static void regenerateStructures()
 		{
 			for(StructureData save : StructureData.Util.loadAll())
@@ -187,6 +200,25 @@ public interface Structure
 					return save.getRawFlags().contains(Flag.NO_OVERLAP.name());
 				}
 			});
+		}
+
+		public static Set<StructureData> getStructureWeb(final Location start, final Flag flag, final int radius)
+		{
+			return getStructureWebRecursion(getInRadiusWithFlag(start, flag, radius), flag, radius);
+		}
+
+		private static Set<StructureData> getStructureWebRecursion(Set<StructureData> structures, final Flag flag, final int radius)
+		{
+			int notDone = structures.size();
+			Set<StructureData> working = Sets.newHashSet();
+			for(StructureData structure : structures)
+			{
+				Set<StructureData> found = getInRadiusWithFlag(structure.getReferenceLocation(), flag, radius);
+				working.addAll(found);
+				if(found.isEmpty()) notDone -= 1;
+			}
+			if(notDone != 0) getStructureWebRecursion(working, flag, radius);
+			return working;
 		}
 
 		/**

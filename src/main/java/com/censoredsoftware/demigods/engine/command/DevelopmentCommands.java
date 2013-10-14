@@ -7,11 +7,8 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.greek.structure.Altar;
-import com.censoredsoftware.demigods.greek.structure.GreekStructure;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -63,23 +60,39 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
-
-		for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
+		StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		if(obelisk != null)
 		{
-			@Override
-			public boolean apply(StructureData structure)
+			// Get all of the connected obelisks
+			for(StructureData save : Structure.Util.getStructureWeb(obelisk.getReferenceLocation(), Structure.Flag.NO_GRIEFING, 20))
 			{
-				return !structure.getType().equals(GreekStructure.ALTAR);
+				if(save == obelisk) continue;
+				player.sendMessage(save.getId().toString());
 			}
-		}))
-			save.remove();
+		}
+		else player.sendMessage(ChatColor.RED + "No Obelisk found.");
 
-		Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
+		return true;
+
+		// Player player = (Player) sender;
+
+		// Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
+
+		// for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
+		// {
+		// @Override
+		// public boolean apply(StructureData structure)
+		// {
+		// return !structure.getType().equals(GreekStructure.ALTAR);
+		// }
+		// }))
+		// save.remove();
+
+		// Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
 
 		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
 
-		return true;
+		// return true;
 	}
 
 	private static boolean test3(CommandSender sender, final String[] args)
