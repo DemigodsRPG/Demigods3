@@ -47,9 +47,10 @@ public class DemigodsPlugin extends JavaPlugin
 			DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
 		}
 
-		// Cancel all threads, Event calls, and connections.
+		// Cancel all threads, event calls, and unregister permissions.
 		ThreadManager.stopThreads();
 		HandlerList.unregisterAll(this);
+		Demigods.unloadPermissions();
 
 		Messages.info("Successfully disabled.");
 	}

@@ -250,6 +250,44 @@ public class Demigods
 			register.addPermission(skill.getPermission());
 	}
 
+	protected static void unloadPermissions()
+	{
+		final PluginManager register = Bukkit.getServer().getPluginManager();
+
+		// Mythos
+		for(Permission permission : MYTHOS.getPermissions())
+		{
+			// catch errors to avoid any possible buggy permissions
+			try
+			{
+				for(Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+					register.removePermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
+				register.removePermission(permission);
+			}
+			catch(Exception ignored)
+			{}
+		}
+
+		// Alliances, Deities, and Abilities
+		for(final Alliance alliance : MYTHOS.getAlliances())
+		{
+			register.removePermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
+			{
+				{
+					for(Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance))
+					{
+						register.removePermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
+						put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
+					}
+				}
+			}));
+		}
+
+		// Skill types
+		for(Skill.Type skill : Skill.Type.values())
+			register.removePermission(skill.getPermission());
+	}
+
 	public static class Util
 	{
 		public static boolean isRunningSpigot()
