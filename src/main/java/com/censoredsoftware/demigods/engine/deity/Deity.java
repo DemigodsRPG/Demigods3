@@ -59,12 +59,6 @@ public interface Deity
 		{
 			try
 			{
-				return GreekDeity.valueOf(deityName.toUpperCase());
-			}
-			catch(Exception ignored)
-			{}
-			try
-			{
 				return Iterables.find(Demigods.MYTHOS.getDeities(), new Predicate<Deity>()
 				{
 					@Override
@@ -73,6 +67,12 @@ public interface Deity
 						return deity.getName().equalsIgnoreCase(deityName);
 					}
 				});
+			}
+			catch(Exception ignored)
+			{}
+			try
+			{
+				return GreekDeity.valueOf(deityName.toUpperCase());
 			}
 			catch(Exception ignored)
 			{}
