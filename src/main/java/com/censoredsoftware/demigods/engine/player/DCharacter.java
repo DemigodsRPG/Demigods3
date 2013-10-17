@@ -52,6 +52,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Set<String> potionEffects;
 	private Set<String> deaths;
 
+	private static boolean LEVEL_SEPERATE_SKILLS = Demigods.MYTHOS.levelSeperateSkills();
+
 	public DCharacter()
 	{
 		deaths = Sets.newHashSet();
@@ -1004,12 +1006,16 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		public int getAscensions()
 		{
-			double total = 0.0;
+			if(LEVEL_SEPERATE_SKILLS)
+			{
+				double total = 0.0;
 
-			for(Skill skill : getSkills())
-				total += skill.getLevel();
+				for(Skill skill : getSkills())
+					total += skill.getLevel();
 
-			return (int) Math.ceil(total / getSkills().size());
+				return (int) Math.ceil(total / getSkills().size());
+			}
+			return (int) Math.ceil(getSkillPoints() / 500); // TODO Balance this.
 		}
 
 		public Integer getFavor()

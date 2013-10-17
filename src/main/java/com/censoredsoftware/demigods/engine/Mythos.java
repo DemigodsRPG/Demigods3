@@ -27,6 +27,12 @@ public abstract class Mythos
 
 	public abstract Set<Structure> getStructures();
 
+	// Default Greek Skill Leveling
+	public boolean levelSeperateSkills()
+	{
+		return true;
+	}
+
 	// Default Greek Listeners
 	public Set<Listener> getListeners()
 	{
