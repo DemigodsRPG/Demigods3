@@ -124,7 +124,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		this.deity = deity.getName();
 	}
 
-	void setMinorDeities(Set<String> set)
+	public void setMinorDeities(Set<String> set)
 	{
 		this.minorDeities = set;
 	}

@@ -11,6 +11,7 @@ import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.censoredsoftware.demigods.greek.structure.GreekStructure;
 import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
 import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
+import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
 import com.google.common.collect.Sets;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
@@ -105,7 +106,7 @@ public class GreekMythos extends Mythos
 		/**
 		 * Balance related.
 		 */
-		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp());
+		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp()), PROCESS_ALTARS(new ProcessAltars());
 
 		private Trigger trigger;
 

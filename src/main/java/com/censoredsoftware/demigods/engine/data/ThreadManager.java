@@ -93,9 +93,6 @@ public class ThreadManager
 					// Process Triggers
 					for(Trigger trigger : Demigods.MYTHOS.getTriggers())
 						trigger.processAsync();
-
-					// Process Atlars
-					Altar.Util.processNewChunks();
 				}
 			};
 			save = new BukkitRunnable()
