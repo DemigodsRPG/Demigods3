@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.helper;
 
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,8 +79,13 @@ public abstract class ConfigFile<ID, DATA extends ConfigurationSerializable>
 			File dataFile = new File(path + resource);
 			if(!dataFile.exists())
 			{
-				(new File(path)).mkdir();
-				Demigods.PLUGIN.saveResource(path.replace(Demigods.PLUGIN.getDataFolder() + "/", "") + resource, false);
+				try
+				{
+					(new File(path)).mkdirs();
+					dataFile.createNewFile();
+				}
+				catch(Exception ignored)
+				{}
 			}
 		}
 
