@@ -9,7 +9,7 @@
     <version>3.0.0-BETA</version>
 
     <name>Demigods</name>
-    <description>Demigods for Bukkit/Spigot Minecraft Servers.</description>
+    <description>Demigods RPG for Bukkit/Spigot Minecraft Servers.</description>
     <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
 
     <licenses>
@@ -177,14 +177,6 @@
                 <targetPath>.</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>./data</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/data</directory>
                 <includes>
                     <include>*.yml</include>
                 </includes>

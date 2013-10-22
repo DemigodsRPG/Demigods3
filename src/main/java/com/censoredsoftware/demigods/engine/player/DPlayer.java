@@ -46,7 +46,7 @@ public class DPlayer implements ConfigurationSerializable
 	public DPlayer(String player, ConfigurationSection conf)
 	{
 		this.player = player;
-		canPvp = conf.getBoolean("canPvp");
+		if(conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
 		if(conf.isLong("lastLoginTime")) lastLoginTime = conf.getLong("lastLoginTime");
 		else lastLoginTime = -1;
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
@@ -61,9 +61,14 @@ public class DPlayer implements ConfigurationSerializable
 	public Map<String, Object> serialize()
 	{
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("canPvp", canPvp);
-		map.put("lastLoginTime", lastLoginTime);
-		map.put("lastLogoutTime", lastLogoutTime);
+		try
+		{
+			map.put("canPvp", canPvp);
+			map.put("lastLoginTime", lastLoginTime);
+			map.put("lastLogoutTime", lastLogoutTime);
+		}
+		catch(Throwable ignored)
+		{}
 		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());

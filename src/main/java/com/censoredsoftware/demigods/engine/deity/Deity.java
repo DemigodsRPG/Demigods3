@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.deity;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
@@ -47,6 +48,8 @@ public interface Deity
 	public int getMaxFavor();
 
 	public double getMaxHealth();
+
+	public ConfigFile2 getConfig();
 
 	public enum Flag
 	{

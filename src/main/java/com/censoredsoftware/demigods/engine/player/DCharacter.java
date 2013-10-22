@@ -72,7 +72,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		experience = Float.valueOf(conf.getString("experience"));
 		level = conf.getInt("level");
 		killCount = conf.getInt("killCount");
-		location = UUID.fromString(conf.getString("location"));
+		if(conf.isString("location")) location = UUID.fromString(conf.getString("location"));
 		if(conf.getString("bedSpawn") != null) bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
 		if(conf.getString("gameMode") != null) gameMode = GameMode.SURVIVAL;
 		deity = conf.getString("deity");
@@ -89,25 +89,30 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public Map<String, Object> serialize()
 	{
 		Map<String, Object> map = Maps.newHashMap();
-		map.put("name", name);
-		map.put("player", player);
-		map.put("alive", alive);
-		map.put("health", health);
-		map.put("hunger", hunger);
-		map.put("experience", experience);
-		map.put("level", level);
-		map.put("killCount", killCount);
-		map.put("location", location.toString());
-		if(bedSpawn != null) map.put("bedSpawn", bedSpawn.toString());
-		if(gameMode != null) map.put("gameMode", gameMode.name());
-		map.put("deity", deity);
-		if(minorDeities != null) map.put("minorDeities", Lists.newArrayList(minorDeities));
-		map.put("active", active);
-		map.put("usable", usable);
-		map.put("meta", meta.toString());
-		if(inventory != null) map.put("inventory", inventory.toString());
-		if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
-		if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
+		try
+		{
+			map.put("name", name);
+			map.put("player", player);
+			map.put("alive", alive);
+			map.put("health", health);
+			map.put("hunger", hunger);
+			map.put("experience", experience);
+			map.put("level", level);
+			map.put("killCount", killCount);
+			if(location != null) map.put("location", location.toString());
+			if(bedSpawn != null) map.put("bedSpawn", bedSpawn.toString());
+			if(gameMode != null) map.put("gameMode", gameMode.name());
+			map.put("deity", deity);
+			if(minorDeities != null) map.put("minorDeities", Lists.newArrayList(minorDeities));
+			map.put("active", active);
+			map.put("usable", usable);
+			map.put("meta", meta.toString());
+			if(inventory != null) map.put("inventory", inventory.toString());
+			if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
+			if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
+		}
+		catch(Throwable ignored)
+		{}
 		return map;
 	}
 
