@@ -22,10 +22,6 @@ public class DemigodsPlugin extends JavaPlugin
 		// Load the game engine.
 		Demigods.load();
 
-		// Handle online characters
-		for(DCharacter character : DCharacter.Util.loadAll())
-			character.getMeta().cleanSkills();
-
 		// Print success!
 		Messages.info("Successfully enabled.");
 	}

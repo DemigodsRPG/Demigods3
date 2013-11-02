@@ -123,6 +123,10 @@ public class Demigods
 
 		if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
 		else Messages.warning(("Without Spigot, some features may not work."));
+
+		// Handle online characters
+		for(DCharacter character : DCharacter.Util.loadAll())
+			character.getMeta().cleanSkills();
 	}
 
 	private static boolean loadWorlds()
@@ -136,7 +140,7 @@ public class Demigods
 				return PLUGIN.getServer().getWorld(world) != null;
 			}
 		}))
-			if(PLUGIN.getServer().getWorld(world) != null) disabledWorlds.add(world);
+			disabledWorlds.add(world);
 		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
 		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
 	}
