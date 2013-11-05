@@ -209,16 +209,21 @@ public interface Structure
 
 		private static Set<StructureData> getStructureWebRecursion(Set<StructureData> structures, final Flag flag, final int radius)
 		{
-			int notDone = structures.size();
 			Set<StructureData> working = Sets.newHashSet();
 			for(StructureData structure : structures)
 			{
 				Set<StructureData> found = getInRadiusWithFlag(structure.getReferenceLocation(), flag, radius);
-				if(found.isEmpty()) notDone -= 1;
-				else working.addAll(found);
+				if(!found.isEmpty()) working.addAll(found);
 			}
-			if(notDone != 0) return getStructureWebRecursion(working, flag, radius);
-			return working;
+			working.removeAll(structures);
+			if(!working.isEmpty())
+			{
+				Set<StructureData> ready = Sets.newHashSet();
+				ready.addAll(structures);
+				ready.addAll(getStructureWebRecursion(working, flag, radius));
+				return ready;
+			}
+			return structures;
 		}
 
 		/**
