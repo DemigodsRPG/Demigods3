@@ -214,10 +214,10 @@ public interface Structure
 			for(StructureData structure : structures)
 			{
 				Set<StructureData> found = getInRadiusWithFlag(structure.getReferenceLocation(), flag, radius);
-				working.addAll(found);
 				if(found.isEmpty()) notDone -= 1;
+				else working.addAll(found);
 			}
-			if(notDone != 0) getStructureWebRecursion(working, flag, radius);
+			if(notDone != 0) return getStructureWebRecursion(working, flag, radius);
 			return working;
 		}
 
