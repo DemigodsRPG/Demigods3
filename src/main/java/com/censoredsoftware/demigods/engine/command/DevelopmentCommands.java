@@ -64,7 +64,7 @@ public class DevelopmentCommands extends WrappedCommand
 		if(obelisk != null)
 		{
 			// Get all of the connected obelisks
-			for(StructureData save : Structure.Util.getStructureWeb(obelisk.getReferenceLocation(), Structure.Flag.NO_GRIEFING, 20))
+			for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
 			{
 				if(save == obelisk) continue;
 				player.sendMessage(save.getId().toString());
