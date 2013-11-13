@@ -35,10 +35,11 @@ public class DPlayer implements ConfigurationSerializable
 	private boolean canPvp;
 	private long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
+	private int characterSlots;
 	private UUID current;
 	private UUID previous;
 	private UUID mortalInventory;
-	private static ChatRecorder chatRecording;
+	private ChatRecorder chatRecording;
 
 	public DPlayer()
 	{}
@@ -52,6 +53,8 @@ public class DPlayer implements ConfigurationSerializable
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
 		else lastLogoutTime = -1;
 		if(conf.getString("currentDeityName") != null) currentDeityName = conf.getString("currentDeityName");
+		if(conf.isInt("characterSlots")) characterSlots = conf.getInt("characterSlots");
+		else characterSlots = Configs.getSettingInt("default_character_slots");
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
 		if(conf.getString("mortalInventory") != null) mortalInventory = UUID.fromString(conf.getString("mortalInventory"));
@@ -362,6 +365,40 @@ public class DPlayer implements ConfigurationSerializable
 		Util.delete(getPlayerName());
 	}
 
+	/**
+	 * Starts recording recording the <code>player</code>'s chat.
+	 */
+	public void startRecording()
+	{
+		chatRecording = ChatRecorder.Util.startRecording(getOfflinePlayer().getPlayer());
+	}
+
+	/**
+	 * Stops recording and sends all messages that have been recorded thus far to the player.
+	 * 
+	 * @param display if true, the chat will be sent to the player
+	 */
+	public List<String> stopRecording(boolean display)
+	{
+		Player player = getOfflinePlayer().getPlayer();
+		// Handle recorded chat
+		if(chatRecording != null && chatRecording.isRecording())
+		{
+			// Send held back chat
+			List<String> messages = chatRecording.stop();
+			if(messages.size() > 0 && display)
+			{
+				player.sendMessage(" ");
+				player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+				for(String message : messages)
+					player.sendMessage(message);
+			}
+
+			return messages;
+		}
+		return null;
+	}
+
 	public static class Util
 	{
 		public static DPlayer create(OfflinePlayer player)
@@ -522,7 +559,7 @@ public class DPlayer implements ConfigurationSerializable
 				player.setSneaking(true);
 
 				// Record chat if enabled
-				if(recordChat) startRecording(player);
+				if(recordChat) DPlayer.Util.getPlayer(player).startRecording();
 			}
 			else
 			{
@@ -540,44 +577,8 @@ public class DPlayer implements ConfigurationSerializable
 				player.setSneaking(false);
 
 				// Handle recorded chat
-				stopRecording(player, recordChat);
+				DPlayer.Util.getPlayer(player).stopRecording(recordChat);
 			}
-		}
-
-		/**
-		 * Starts recording recording the <code>player</code>'s chat.
-		 * 
-		 * @param player the player to stop recording for.
-		 */
-		public static void startRecording(Player player)
-		{
-			chatRecording = ChatRecorder.Util.startRecording(player);
-		}
-
-		/**
-		 * Stops recording and sends all messages that have been recorded thus far to the player.
-		 * 
-		 * @param player the player to stop recording for.
-		 * @param display if true, the chat will be sent to the player
-		 */
-		public static List<String> stopRecording(Player player, boolean display)
-		{
-			// Handle recorded chat
-			if(chatRecording != null && chatRecording.isRecording())
-			{
-				// Send held back chat
-				List<String> messages = chatRecording.stop();
-				if(messages.size() > 0 && display)
-				{
-					player.sendMessage(" ");
-					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
-					for(String message : messages)
-						player.sendMessage(message);
-				}
-
-				return messages;
-			}
-			return null;
 		}
 	}
 }

@@ -46,6 +46,6 @@ public class Lachesis
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
 	public final static List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Carry(name, permission, false));
 }

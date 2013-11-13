@@ -208,6 +208,7 @@ public interface Structure
 			return getRecursiveStructureWeb(new ScanData(Sets.newHashSet(structure), getInRadiusWithFlag(structure.getReferenceLocation(), flag, radius)), flag, radius).getFound();
 		}
 
+		// TODO This isn't working.
 		private static ScanData getRecursiveStructureWeb(ScanData data, final Flag flag, final int radius)
 		{
 			final Set<StructureData> scanned = data.getScanned();

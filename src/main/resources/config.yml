@@ -58,6 +58,8 @@ character:
     defaults:
         favor: 500
         max_favor: 750
+    default_character_slots: 3
+    new_character_ascension_threshold: 70
 
 ## Battle Settings ##
 battles:

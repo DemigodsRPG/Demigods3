@@ -6,7 +6,7 @@
 
     <groupId>com.censoredsoftware</groupId>
     <artifactId>Demigods</artifactId>
-    <version>3.0.0-BETA</version>
+    <version>3.0.0.0</version>
 
     <name>Demigods</name>
     <description>Demigods RPG for Bukkit/Spigot Minecraft Servers.</description>

@@ -45,6 +45,6 @@ public class Hades
 			add(" ");
 		}
 	};
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
+	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new NoZombie(name, permission), new Swarm(name, permission));
 }
