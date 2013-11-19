@@ -78,7 +78,7 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(final EntityExplodeEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
+		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		final StructureData save = Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS);
 		if(save == null) return;
 

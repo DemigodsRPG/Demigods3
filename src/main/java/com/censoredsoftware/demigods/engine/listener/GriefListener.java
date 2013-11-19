@@ -5,7 +5,6 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -193,23 +192,15 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
-		try
+		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
+		if(Iterables.any(event.blockList(), new Predicate<Block>()
 		{
-			if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-			if(Iterables.any(event.blockList(), new Predicate<Block>()
+			@Override
+			public boolean apply(Block block)
 			{
-				@Override
-				public boolean apply(Block block)
-				{
-					return Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
-				}
-			})) event.setCancelled(true);
-		}
-		catch(Exception e)
-		{
-			Messages.warning("Error on entity explode, grief listener.");
-			event.setCancelled(true);
-		}
+				return Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
+			}
+		})) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
