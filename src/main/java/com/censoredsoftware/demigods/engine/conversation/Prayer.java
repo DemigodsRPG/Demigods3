@@ -862,7 +862,7 @@ public class Prayer implements WrappedConversation
 		@Override
 		public boolean canUse(ConversationContext context)
 		{
-			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking");
+			return ((Player) context.getForWhom()).hasPermission("demigods.basic.create") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_creating") && !DataManager.hasTimed(((Player) context.getForWhom()).getName(), "currently_forsaking") && DPlayer.Util.getPlayer((Player) context.getForWhom()).canMakeCharacter();
 		}
 
 		@Override

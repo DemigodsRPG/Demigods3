@@ -341,6 +341,11 @@ public class DPlayer implements ConfigurationSerializable
 		mortalInventory = null;
 	}
 
+	public boolean canMakeCharacter()
+	{
+		return getCharacters().size() < characterSlots;
+	}
+
 	public boolean canUseCurrent()
 	{
 		if(getCurrent() == null || !getCurrent().isUsable())
