@@ -171,6 +171,26 @@ public class DPlayer implements ConfigurationSerializable
 		return this.lastLogoutTime;
 	}
 
+	public void setCharacterSlots(int slots)
+	{
+		characterSlots = slots;
+	}
+
+	public void addCharacterSlot()
+	{
+		characterSlots += 1;
+	}
+
+	public void removeCharacterSlot()
+	{
+		characterSlots -= 1;
+	}
+
+	public int getCharacterSlots()
+	{
+		return characterSlots;
+	}
+
 	public void setToMortal()
 	{
 		Player player = getOfflinePlayer().getPlayer();
@@ -329,6 +349,18 @@ public class DPlayer implements ConfigurationSerializable
 		}));
 	}
 
+	public Set<DCharacter> getUsableCharacters()
+	{
+		return Sets.filter(getCharacters(), new Predicate<DCharacter>()
+		{
+			@Override
+			public boolean apply(DCharacter character)
+			{
+				return character.isUsable();
+			}
+		});
+	}
+
 	public DCharacter.Inventory getMortalInventory()
 	{
 		return DCharacter.Util.getInventory(mortalInventory);
@@ -343,7 +375,7 @@ public class DPlayer implements ConfigurationSerializable
 
 	public boolean canMakeCharacter()
 	{
-		return getCharacters().size() < characterSlots;
+		return getUsableCharacters().size() < getCharacterSlots();
 	}
 
 	public boolean canUseCurrent()
