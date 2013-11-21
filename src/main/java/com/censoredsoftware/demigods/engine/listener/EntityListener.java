@@ -33,6 +33,9 @@ public class EntityListener implements Listener
 		Entity attacked = event.getEntity();
 		Entity attacker = event.getDamager();
 
+		// Allow killing things that don't need protection
+		if(!Battle.Util.canParticipate(attacked)) return;
+
 		if(attacker instanceof Player)
 		{
 			Player hitting = (Player) attacker;
