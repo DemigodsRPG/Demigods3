@@ -32,7 +32,8 @@ import java.util.*;
 public class DPlayer implements ConfigurationSerializable
 {
 	private String player;
-	private boolean canPvp;
+    private String mortalName;
+    private boolean canPvp;
 	private long lastLoginTime, lastLogoutTime;
 	private String currentDeityName;
 	private int characterSlots;
@@ -47,7 +48,8 @@ public class DPlayer implements ConfigurationSerializable
 	public DPlayer(String player, ConfigurationSection conf)
 	{
 		this.player = player;
-		if(conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
+        if (conf.isString("mortalName")) this.mortalName = conf.getString("mortalName");
+        if(conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
 		if(conf.isLong("lastLoginTime")) lastLoginTime = conf.getLong("lastLoginTime");
 		else lastLoginTime = -1;
 		if(conf.isLong("lastLogoutTime")) lastLogoutTime = conf.getLong("lastLogoutTime");
@@ -72,7 +74,8 @@ public class DPlayer implements ConfigurationSerializable
 		}
 		catch(Throwable ignored)
 		{}
-		if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
+        if (mortalName != null) map.put("mortalName", mortalName);
+        if(currentDeityName != null) map.put("currentDeityName", currentDeityName);
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());
 		if(mortalInventory != null) map.put("mortalInventory", mortalInventory.toString());
@@ -84,7 +87,15 @@ public class DPlayer implements ConfigurationSerializable
 		this.player = player;
 	}
 
-	public void resetCurrent()
+    public void setMortalName(String name) {
+        mortalName = name;
+    }
+
+    public String getMortalName() {
+        return mortalName != null ? mortalName : player;
+    }
+
+    public void resetCurrent()
 	{
 		this.current = null;
 		this.currentDeityName = null;
@@ -203,8 +214,9 @@ public class DPlayer implements ConfigurationSerializable
 		player.setGameMode(GameMode.SURVIVAL);
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
-		player.setDisplayName(player.getName());
-		player.setPlayerListName(player.getName());
+        player.setDisplayName(getMortalName());
+        setMortalName(null);
+        player.setPlayerListName(player.getName());
 		applyMortalInventory();
 	}
 
