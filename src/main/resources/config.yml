@@ -63,6 +63,7 @@ character:
 
 ## Battle Settings ##
 battles:
+    enabled: true
     min_range: 16
     merge_range: 30
     min_duration: 30

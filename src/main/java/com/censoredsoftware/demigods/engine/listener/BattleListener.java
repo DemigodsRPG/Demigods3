@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Vehicles;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
@@ -33,7 +34,17 @@ public class BattleListener implements Listener
 
 		Participant damageeParticipant = Battle.Util.defineParticipant(event.getEntity());
 
-		// Early battle death (prevents being killed by mobs)
+        if (!Configs.getSettingBoolean("battles.enabled")) {
+            if (!Battle.Util.canParticipate(damager) && ((LivingEntity) event.getEntity()).getHealth() <= event.getDamage()) {
+                Participant damagerParticipant = Battle.Util.defineParticipant(damager);
+
+                damageeParticipant.getRelatedCharacter().addDeath(damagerParticipant.getRelatedCharacter());
+                damagerParticipant.getRelatedCharacter().addKill();
+            }
+            return;
+        }
+
+        // Early battle death (prevents being killed by mobs)
 		if(!Battle.Util.canParticipate(damager) && Battle.Util.isInBattle(damageeParticipant) && event.getDamage() >= ((LivingEntity) event.getEntity()).getHealth())
 		{
 			event.setCancelled(true);
@@ -126,8 +137,9 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onDamage(EntityDamageEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
+        if (!Configs.getSettingBoolean("battles.enabled") || Zones.inNoDemigodsZone(event.getEntity().getLocation()))
+            return;
+        if(event instanceof EntityDamageByEntityEvent || !Battle.Util.canParticipate(event.getEntity())) return;
 
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 
@@ -159,8 +171,9 @@ public class BattleListener implements Listener
 
 	private static void onMoveEvent(Entity entity, Location to, Location from)
 	{
-		if(!Battle.Util.canParticipate(entity) || entity.isInsideVehicle()) return;
-		Participant participant = Battle.Util.defineParticipant(entity);
+        if (!Configs.getSettingBoolean("battles.enabled") || !Battle.Util.canParticipate(entity) || entity.isInsideVehicle())
+            return;
+        Participant participant = Battle.Util.defineParticipant(entity);
 		if(Battle.Util.isInBattle(participant))
 		{
 			Battle battle = Battle.Util.getBattle(participant);
@@ -182,8 +195,9 @@ public class BattleListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBattleTeleport(EntityTeleportEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
-		if(!Battle.Util.canParticipate(event.getEntity())) return;
+        if (!Configs.getSettingBoolean("battles.enabled") || Zones.inNoDemigodsZone(event.getEntity().getLocation()))
+            return;
+        if(!Battle.Util.canParticipate(event.getEntity())) return;
 		Participant participant = Battle.Util.defineParticipant(event.getEntity());
 		if(Battle.Util.isInBattle(participant))
 		{
