@@ -173,8 +173,13 @@ public interface Ability
 			// Define variables
 			int range = Configs.getSettingInt("caps.target_range") > 140 ? 140 : Configs.getSettingInt("caps.target_range");
 			final int correction = 3;
-			Location target = player.getTargetBlock(null, range).getLocation();
-			BlockIterator iterator = new BlockIterator(player, range);
+            Location target = null;
+            try {
+                target = player.getTargetBlock(null, range).getLocation();
+            } catch (Throwable ignored) {
+            }
+            if (target == null) return null;
+            BlockIterator iterator = new BlockIterator(player, range);
 			List<Entity> targets = Lists.newArrayList();
 			final DCharacter looking = DPlayer.Util.getPlayer(player).getCurrent();
 
