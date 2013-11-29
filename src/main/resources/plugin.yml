@@ -34,27 +34,26 @@ commands:
         usage: /names
         aliases: [n]
         permission: demigods.basic
-# Development Commands
-    test1:
-        usage: /test1
-        permission: demigods.admin
-    test2:
-        usage: /test2
-        permission: demigods.admin
-    test3:
-        usage: /test3
-        aliases: [t3]
-        permission: demigods.admin
-    obelisk:
-        usage: /obelisk <add|remove> <player|character> <name>
-    hspawn:
-        usage: /hspawn
-    nearestaltar:
-        usage: /nearestaltar
-    binds:
-        usage: /binds
-        permission: demigods.basic
     values:
         usage: /values
         # aliases: [v]
         permission: demigods.basic
+# Development Commands
+#    test1:
+#        usage: /test1
+#        permission: demigods.admin
+#    test2:
+#        usage: /test2
+#        permission: demigods.admin
+#    test3:
+#        usage: /test3
+#        permission: demigods.admin
+    obelisk:
+        usage: /obelisk <add|remove> <player|character> <name>
+#    hspawn:
+#        usage: /hspawn
+#    nearestaltar:
+#        usage: /nearestaltar
+#    binds:
+#        usage: /binds
+#        permission: demigods.basic

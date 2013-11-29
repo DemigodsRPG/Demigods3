@@ -442,7 +442,10 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         // Set character to active
         setActive(true);
 
-        if (playerSave.getMortalInventory() != null) playerSave.setMortalName(player.getDisplayName());
+        if (playerSave.getMortalInventory() != null) {
+            playerSave.setMortalName(player.getDisplayName());
+            playerSave.setMortalListName(player.getPlayerListName());
+        }
 
         // Update their inventory
         if (playerSave.getCharacters().size() == 1) saveInventory();
