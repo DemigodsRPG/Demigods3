@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,8 +21,8 @@ public class ZoneListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDemigodsChat(DemigodsChatEvent event)
 	{
-		Set<Player> modified = event.getRecipients();
-		for(Player player : event.getRecipients())
+        Set<Player> modified = Sets.newHashSet(event.getRecipients());
+        for(Player player : event.getRecipients())
 			if(Zones.inNoDemigodsZone(player.getLocation())) modified.remove(player);
 		if(modified.size() < 1) event.setCancelled(true);
 		event.setRecipients(modified);
