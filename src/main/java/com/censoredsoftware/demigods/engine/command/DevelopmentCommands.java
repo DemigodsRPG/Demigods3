@@ -97,20 +97,19 @@ public class DevelopmentCommands extends WrappedCommand
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
-        // Player player = (Player) sender;
+        Player player = (Player) sender;
 
-        if (args.length == 0) return false;
+        if (args.length == 0) {
+            if (player.getName().equals(player.getDisplayName())) return false;
 
-        int slots;
-        try {
-            slots = Integer.parseInt(args[0]);
+            player.setDisplayName(player.getName());
+            player.sendMessage(ChatColor.YELLOW + "Name reverted back to normal.");
 
-            for (DPlayer dPlayer : DataManager.players.values())
-                dPlayer.setCharacterSlots(slots);
-
-            sender.sendMessage("All players now have 3 slots.");
-        } catch (Throwable ignored) {
+            return true;
         }
+
+        player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
+        player.sendMessage(ChatColor.YELLOW + "Name change complete.");
 
         return true;
 	}
