@@ -1,8 +1,9 @@
 name: Demigods
 main: com.censoredsoftware.demigods.engine.DemigodsPlugin
+load: POSTWORLD
 version: ${project.version}
 authors: [_Alex, HmmmQuestionMark]
-softdepend: [WorldEdit, WorldGuard, Multiverse-Core]
+softdepend: [WorldEdit, WorldGuard]
 commands:
 # Main Command
     demigods:
@@ -54,5 +55,5 @@ commands:
         permission: demigods.basic
     values:
         usage: /values
-        aliases: [v]
+        # aliases: [v]
         permission: demigods.basic

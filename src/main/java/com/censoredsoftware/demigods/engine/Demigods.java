@@ -96,13 +96,13 @@ public class Demigods
 		// Start the data
 		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
-		// Check if there are no enabled worlds
-		if(!loadWorlds())
-		{
-			Messages.severe("Demigods was unable to load any worlds.");
-			Messages.severe("Please enable at least 1 world.");
-			PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
-		}
+        // Check for world load errors
+        if (loadWorlds() > 0) {
+            Messages.severe("Demigods was unable to confirm any worlds.");
+            Messages.severe("This may be caused by misspelt world names.");
+            Messages.severe("Multi-world plugins can cause this message,");
+            Messages.severe("and in that case this may be a false alarm.");
+        }
 
 		// Load listeners, commands, and permissions
 		loadListeners();
@@ -129,21 +129,16 @@ public class Demigods
 			character.getMeta().cleanSkills();
 	}
 
-	private static boolean loadWorlds()
-	{
+    private static int loadWorlds() {
 		Set<String> disabledWorlds = Sets.newHashSet();
-		for(String world : Collections2.filter(Configs.getSettingArrayListString("restrictions.disabled_worlds"), new Predicate<String>()
-		{
-			@Override
-			public boolean apply(String world)
-			{
-				return PLUGIN.getServer().getWorld(world) != null;
-			}
-		}))
-			disabledWorlds.add(world);
-		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
-		return PLUGIN.getServer().getWorlds().size() != DISABLED_WORLDS.size();
-	}
+        int erroredWorlds = 0;
+        for (String world : Configs.getSettingList("restrictions.disabled_worlds")) {
+            disabledWorlds.add(world);
+            erroredWorlds += Bukkit.getServer().getWorld(world) == null ? 1 : 0;
+        }
+        DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
+        return erroredWorlds;
+    }
 
 	private static void loadListeners()
 	{
@@ -211,8 +206,8 @@ public class Demigods
 		commands.add("o");
 		commands.add("l");
 		commands.add("a");
-		commands.add("v");
-		commands.add("n");
+        // commands.add("v");
+        commands.add("n");
 		COMMANDS = ImmutableSet.copyOf(commands);
 	}
 
