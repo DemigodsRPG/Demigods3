@@ -97,20 +97,22 @@ public class DevelopmentCommands extends WrappedCommand
 
 	private static boolean test3(CommandSender sender, final String[] args)
 	{
-		Player player = (Player) sender;
+        // Player player = (Player) sender;
 
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+        if (args.length == 0) return false;
 
-		if(character == null)
-		{
-			player.sendMessage(ChatColor.RED + "You are mortal, we do not track mortals.");
-			return true;
-		}
+        int slots;
+        try {
+            slots = Integer.parseInt(args[0]);
 
-		player.sendMessage("# of " + character.getAlliance() + "s Online: " + DCharacter.Util.getOnlineCharactersWithAlliance(character.getAlliance()).size());
-		player.sendMessage("# of Enemies Online: " + DCharacter.Util.getOnlineCharactersWithoutAlliance(character.getAlliance()).size());
+            for (DPlayer dPlayer : DataManager.players.values())
+                dPlayer.setCharacterSlots(slots);
 
-		return true;
+            sender.sendMessage("All players now have 3 slots.");
+        } catch (Throwable ignored) {
+        }
+
+        return true;
 	}
 
 	private static boolean hspawn(CommandSender sender)
