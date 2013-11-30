@@ -123,15 +123,17 @@ public class GeneralCommands extends WrappedCommand
 		if(!sender.hasPermission("demigods.basic")) return Messages.noPermission(sender);
 
 		Player player = (Player) sender;
-		if(args.length < 1) return false;
 
-		DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
-		if(character == null)
-		{
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
-			return true;
-		}
-		else character.chatWithAlliance(Joiner.on(" ").join(args));
+        DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
+        if (character == null) {
+            player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISABLED_MORTAL));
+            return true;
+        }
+
+        if (args.length < 1) {
+            character.chatWithAlliance("...");
+            return true;
+        } else character.chatWithAlliance(Joiner.on(" ").join(args));
 		return true;
 	}
 
