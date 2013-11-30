@@ -36,7 +36,6 @@ commands:
         permission: demigods.basic
     values:
         usage: /values
-        # aliases: [v]
         permission: demigods.basic
 # Development Commands
     obelisk:
