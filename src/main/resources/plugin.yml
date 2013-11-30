@@ -36,6 +36,10 @@ commands:
         permission: demigods.basic
     values:
         usage: /values
+        # aliases: [v]
+        permission: demigods.basic
+    binds:
+        usage: /binds
         permission: demigods.basic
 # Development Commands
     obelisk:
@@ -53,6 +57,3 @@ commands:
 #        usage: /hspawn
 #    nearestaltar:
 #        usage: /nearestaltar
-#    binds:
-#        usage: /binds
-#        permission: demigods.basic
