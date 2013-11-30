@@ -28,7 +28,7 @@ public class DevelopmentCommands extends WrappedCommand {
 
     @Override
     public Set<String> getCommands() {
-        return Sets.newHashSet(/* "test1", "test2", "test3", "hspawn", "nearestaltar", */ "obelisk");
+        return Sets.newHashSet("obelisk"); // "test1", "test2", "test3", "hspawn", "nearestaltar"
     }
 
     @Override
