@@ -14,9 +14,15 @@ import java.util.Set;
 
 public class MojangIdGrabber {
     private static final String AGENT = "minecraft";
-    private static HttpProfileRepository repository = new HttpProfileRepository();
-    private static Map<String, String> knownUUIDs = Maps.newHashMap();
-    private static Set<String> fakePlayers = Sets.newHashSet();
+    private static HttpProfileRepository repository;
+    private static Map<String, String> knownUUIDs;
+    private static Set<String> fakePlayers;
+
+    public static void load() {
+        repository = new HttpProfileRepository();
+        knownUUIDs = Maps.newHashMap();
+        fakePlayers = Sets.newHashSet();
+    }
 
     /**
      * This method requires an OfflinePlayer as an extra step to prevent just passing in random String names.
