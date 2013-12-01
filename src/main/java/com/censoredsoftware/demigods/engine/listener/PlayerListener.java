@@ -17,27 +17,28 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
+    @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+        try {
+            DPlayer.Util.getPlayer(player);
+        } catch (Throwable whoops) {
+            player.kickPlayer("Error finding your Mojang Id, please try again.");
+            Messages.warning(player.getName() + " could not join the game due to a Mojang Id problem.");
+        }
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
         // Define variables
         Player player = event.getPlayer();
-        DPlayer wrapper;
-        try {
-            wrapper = DPlayer.Util.getPlayer(player);
-        } catch (Throwable whoops) {
-            player.kickPlayer("Error finding your Mojang Id, please try again.");
-            Messages.warning(player.getName() + " could not join the game due to a Mojang Id problem.");
-            return;
-        }
+        DPlayer wrapper = DPlayer.Util.getPlayer(player);
         DCharacter character = wrapper.getCurrent();
 
         // Set their last login-time
