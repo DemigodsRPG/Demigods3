@@ -69,8 +69,22 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         experience = Float.valueOf(conf.getString("experience"));
         level = conf.getInt("level");
         killCount = conf.getInt("killCount");
-        if (conf.isString("location")) location = UUID.fromString(conf.getString("location"));
-        if (conf.getString("bedSpawn") != null) bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
+        if (conf.isString("location")) {
+            location = UUID.fromString(conf.getString("location"));
+            try {
+                DLocation.Util.load(location);
+            } catch (Throwable errored) {
+                location = null;
+            }
+        }
+        if (conf.getString("bedSpawn") != null) {
+            bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
+            try {
+                DLocation.Util.load(bedSpawn);
+            } catch (Throwable errored) {
+                bedSpawn = null;
+            }
+        }
         if (conf.getString("gameMode") != null) gameMode = GameMode.SURVIVAL;
         deity = conf.getString("deity");
         active = conf.getBoolean("active");
