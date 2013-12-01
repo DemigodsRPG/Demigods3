@@ -56,8 +56,7 @@ public class BattleListener implements Listener
 		Participant damagerParticipant = Battle.Util.defineParticipant(damager);
 
 		// Various things that should cancel the event
-		if(damageeParticipant.equals(damagerParticipant) || DCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()))
-		{
+        if (damageeParticipant.equals(damagerParticipant) || DCharacter.Util.areAllied(damageeParticipant.getRelatedCharacter(), damagerParticipant.getRelatedCharacter()) || !damageeParticipant.getRelatedCharacter().canPvp() || !damagerParticipant.getRelatedCharacter().canPvp()) {
 			event.setCancelled(true);
 			return;
 		}

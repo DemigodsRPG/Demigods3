@@ -249,7 +249,6 @@ public class DPlayer implements ConfigurationSerializable {
             // Save it
             DCharacter.Util.save(character);
         }
-
     }
 
     public void switchCharacter(final DCharacter newChar) {
