@@ -186,12 +186,6 @@ public class Skill implements ConfigurationSerializable
 		return -1;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException
-	{
-		throw new CloneNotSupportedException();
-	}
-
 	public static class Util
 	{
 		public static Skill createSkill(DCharacter character, Skill.Type type)
@@ -227,8 +221,8 @@ public class Skill implements ConfigurationSerializable
 				DCharacter character = participant.getRelatedCharacter();
 
 				// Define all variables used for skill point calculation
-				int mvpBonus = battle.getMVPs().contains(participant) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
-				int kills = battle.getKills(participant);
+                int mvpBonus = battle.getMVPs().contains(participant.getRelatedCharacter()) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
+                int kills = battle.getKills(participant);
 				int deaths = battle.getDeaths(participant);
 
 				// Calculate skill points

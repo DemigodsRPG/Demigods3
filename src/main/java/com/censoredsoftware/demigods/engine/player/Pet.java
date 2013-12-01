@@ -70,8 +70,8 @@ public class Pet implements Participant, ConfigurationSerializable
 
 	public void setTamable(LivingEntity tameable)
 	{
-		this.entityType = tameable.getType().getName();
-		this.entityUUID = tameable.getUniqueId();
+        this.entityType = tameable.getType().name();
+        this.entityUUID = tameable.getUniqueId();
 	}
 
 	public void setOwner(DCharacter owner)
@@ -208,8 +208,8 @@ public class Pet implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(Pet pet)
 				{
-					return pet.getEntityType().equals(type.getName());
-				}
+                    return pet.getEntityType().equals(type.name());
+                }
 			});
 		}
 

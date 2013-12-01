@@ -3,12 +3,12 @@ package com.censoredsoftware.demigods.engine.listener;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.exception.MojangIdNotFoundException;
 import com.censoredsoftware.demigods.engine.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,8 +33,9 @@ public class PlayerListener implements Listener {
         DPlayer wrapper;
         try {
             wrapper = DPlayer.Util.getPlayer(player);
-        } catch (MojangIdNotFoundException whoops) {
+        } catch (Throwable whoops) {
             player.kickPlayer("Error finding your Mojang Id, please try again.");
+            Messages.warning(player.getName() + " could not join the game due to a Mojang Id problem.");
             return;
         }
         DCharacter character = wrapper.getCurrent();

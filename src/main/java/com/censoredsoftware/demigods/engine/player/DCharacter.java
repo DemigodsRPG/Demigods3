@@ -939,16 +939,6 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         public void subtractMaxFavor(int amount) {
             setMaxFavor(getMaxFavor() - amount);
         }
-
-        @Override
-        public Object clone() throws CloneNotSupportedException {
-            throw new CloneNotSupportedException();
-        }
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
     }
 
     public static class Util {

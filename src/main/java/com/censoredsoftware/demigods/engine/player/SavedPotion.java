@@ -13,16 +13,16 @@ import java.util.UUID;
 public class SavedPotion implements ConfigurationSerializable
 {
 	private UUID id;
-	private int type;
-	private int duration;
+    private String type;
+    private int duration;
 	private int amplifier;
 	private boolean ambience;
 
 	public SavedPotion(PotionEffect potion)
 	{
 		id = UUID.randomUUID();
-		type = potion.getType().getId();
-		duration = potion.getDuration();
+        type = potion.getType().getName();
+        duration = potion.getDuration();
 		amplifier = potion.getAmplifier();
 		ambience = potion.isAmbient();
 		DataManager.savedPotions.put(id, this);
@@ -31,8 +31,8 @@ public class SavedPotion implements ConfigurationSerializable
 	public SavedPotion(UUID id, ConfigurationSection conf)
 	{
 		this.id = id;
-		type = conf.getInt("type");
-		duration = conf.getInt("duration");
+        type = conf.getString("type");
+        duration = conf.getInt("duration");
 		amplifier = conf.getInt("amplifier");
 		ambience = conf.getBoolean("ambience");
 	}
@@ -55,8 +55,8 @@ public class SavedPotion implements ConfigurationSerializable
 
 	public PotionEffectType getType()
 	{
-		return PotionEffectType.getById(type);
-	}
+        return PotionEffectType.getByName(type);
+    }
 
 	public int getDuration()
 	{
