@@ -38,7 +38,10 @@ public class PlayerListener implements Listener
 		Long now = System.currentTimeMillis();
 		wrapper.setLastLoginTime(now);
 
-		// Set display name
+        // Check for changed usernames
+        if (!player.getName().equals(wrapper.getPlayerName())) wrapper.setPlayerName(player.getName());
+
+        // Set display name
 		if(character != null && wrapper.canUseCurrent())
 		{
 			String name = character.getName();

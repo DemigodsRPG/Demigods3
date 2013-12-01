@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,7 +31,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable {
-    private String player;
+    private UUID mojangAccount;
+    private String playerName;
     private String mortalName, mortalListName;
     private boolean canPvp;
     private long lastLoginTime, lastLogoutTime;
@@ -44,8 +46,9 @@ public class DPlayer implements ConfigurationSerializable {
     public DPlayer() {
     }
 
-    public DPlayer(String player, ConfigurationSection conf) {
-        this.player = player;
+    public DPlayer(UUID mojangAccount, ConfigurationSection conf) {
+        this.mojangAccount = mojangAccount;
+        this.playerName = conf.getString("playerName");
         if (conf.isString("mortalName")) this.mortalName = conf.getString("mortalName");
         if (conf.isString("mortalListName")) this.mortalListName = conf.getString("mortalListName");
         if (conf.isBoolean("canPvp")) canPvp = conf.getBoolean("canPvp");
@@ -80,8 +83,12 @@ public class DPlayer implements ConfigurationSerializable {
         return map;
     }
 
-    void setPlayer(String player) {
-        this.player = player;
+    public void setPlayerName(String player) {
+        this.playerName = player;
+    }
+
+    void setMojangAccount(UUID account) {
+        this.mojangAccount = account;
     }
 
     public void setMortalName(String name) {
@@ -89,7 +96,7 @@ public class DPlayer implements ConfigurationSerializable {
     }
 
     public String getMortalName() {
-        return mortalName != null ? mortalName : player;
+        return mortalName != null ? mortalName : playerName;
     }
 
     public void setMortalListName(String name) {
@@ -97,7 +104,7 @@ public class DPlayer implements ConfigurationSerializable {
     }
 
     public String getMortalListName() {
-        return mortalListName != null ? mortalListName : player;
+        return mortalListName != null ? mortalListName : playerName;
     }
 
     public void resetCurrent() {
@@ -149,7 +156,7 @@ public class DPlayer implements ConfigurationSerializable {
     }
 
     public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getOfflinePlayer(this.player);
+        return Bukkit.getOfflinePlayer(playerName);
     }
 
     public void setLastLoginTime(Long time) {
@@ -254,7 +261,7 @@ public class DPlayer implements ConfigurationSerializable {
     public void switchCharacter(final DCharacter newChar) {
         final Player player = getOfflinePlayer().getPlayer();
 
-        if (!newChar.getPlayerName().equals(this.player)) {
+        if (!newChar.getPlayerName().equals(this.playerName)) {
             player.sendMessage(ChatColor.RED + "You can't do that.");
             return;
         }
@@ -287,7 +294,11 @@ public class DPlayer implements ConfigurationSerializable {
     }
 
     public String getPlayerName() {
-        return player;
+        return playerName;
+    }
+
+    public UUID getMojangAccount() {
+        return mojangAccount;
     }
 
     public String getCurrentDeityName() {
@@ -319,7 +330,7 @@ public class DPlayer implements ConfigurationSerializable {
         return Sets.newHashSet(Collections2.filter(DCharacter.Util.loadAll(), new Predicate<DCharacter>() {
             @Override
             public boolean apply(DCharacter character) {
-                return character != null && character.getPlayerName().equals(player) && character.isUsable();
+                return character != null && character.getMojangAccount().equals(mojangAccount) && character.isUsable();
             }
         }));
     }
@@ -365,7 +376,7 @@ public class DPlayer implements ConfigurationSerializable {
             character.remove();
 
         // Now we clear the DPlayer save itself
-        Util.delete(getPlayerName());
+        Util.delete(getMojangAccount());
     }
 
     /**
@@ -399,9 +410,10 @@ public class DPlayer implements ConfigurationSerializable {
     }
 
     public static class Util {
-        public static DPlayer create(OfflinePlayer player) {
+        public static DPlayer create(Player player) {
             DPlayer playerSave = new DPlayer();
-            playerSave.setPlayer(player.getName());
+            playerSave.setMojangAccount(player.getUniqueId());
+            playerSave.setPlayerName(player.getName());
             playerSave.setLastLoginTime(player.getLastPlayed());
             playerSave.setCanPvp(true);
             Util.save(playerSave);
@@ -409,21 +421,38 @@ public class DPlayer implements ConfigurationSerializable {
         }
 
         public static void save(DPlayer player) {
-            DataManager.players.put(player.getPlayerName(), player);
+            DataManager.players.put(player.getMojangAccount(), player);
         }
 
-        public static void delete(String playerName) {
-            DataManager.players.remove(playerName);
+        public static void delete(UUID mojangAccount) {
+            DataManager.players.remove(mojangAccount);
         }
 
-        public static DPlayer getPlayer(OfflinePlayer player) {
-            DPlayer found = getPlayer(player.getName());
+        public static DPlayer getPlayer(Player player) {
+            DPlayer found = getPlayer(player.getUniqueId());
             if (found == null) return create(player);
             return found;
         }
 
-        public static DPlayer getPlayer(String player) {
-            if (DataManager.players.containsKey(player)) return DataManager.players.get(player);
+        public static DPlayer getPlayer(OfflinePlayer player) {
+            return getPlayer(player.getName());
+        }
+
+        public static DPlayer getPlayer(final String playerName) {
+            try {
+                return Iterables.find(DataManager.players.values(), new Predicate<DPlayer>() {
+                    @Override
+                    public boolean apply(DPlayer dPlayer) {
+                        return dPlayer.getPlayerName().equals(playerName);
+                    }
+                });
+            } catch (NoSuchElementException ignored) {
+            }
+            throw new NullPointerException("No such player exists currently in the Demigods data.");
+        }
+
+        public static DPlayer getPlayer(UUID mojangAccount) {
+            if (DataManager.players.containsKey(mojangAccount)) return DataManager.players.get(mojangAccount);
             return null;
         }
 
@@ -433,7 +462,7 @@ public class DPlayer implements ConfigurationSerializable {
          * @param player the player to check.
          * @return boolean
          */
-        public static boolean isImmortal(OfflinePlayer player) {
+        public static boolean isImmortal(Player player) {
             DCharacter character = getPlayer(player).getCurrent();
             return character != null && character.isUsable() && character.isActive();
         }
@@ -455,7 +484,7 @@ public class DPlayer implements ConfigurationSerializable {
          * @param charName the charName to check with.
          * @return boolean
          */
-        public static boolean hasCharName(OfflinePlayer player, String charName) {
+        public static boolean hasCharName(Player player, String charName) {
             for (DCharacter character : getPlayer(player).getCharacters())
                 if (character.getName().equalsIgnoreCase(charName)) return true;
             return false;

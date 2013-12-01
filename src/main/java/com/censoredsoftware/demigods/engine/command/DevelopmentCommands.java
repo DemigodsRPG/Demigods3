@@ -11,7 +11,6 @@ import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -183,12 +182,12 @@ public class DevelopmentCommands extends WrappedCommand {
         if (type.equalsIgnoreCase("character")) return DCharacter.Util.getCharacterByName(name);
         if (!type.equalsIgnoreCase("player")) return null;
         try {
-            return DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(Iterators.find(DataManager.players.keySet().iterator(), new Predicate<String>() {
+            return Iterators.find(DataManager.players.values().iterator(), new Predicate<DPlayer>() {
                 @Override
-                public boolean apply(String playerName) {
-                    return playerName.equalsIgnoreCase(name);
+                public boolean apply(DPlayer dPlayer) {
+                    return dPlayer.getPlayerName().equals(name);
                 }
-            }))).getCurrent();
+            }).getCurrent();
         } catch (NoSuchElementException ignored) {
         }
         return null;

@@ -32,7 +32,7 @@ import java.util.*;
 public class DCharacter implements Participant, ConfigurationSerializable {
     private UUID id;
     private String name;
-    private String player;
+    private UUID mojangAccount;
     private boolean alive;
     private double health;
     private Integer hunger;
@@ -62,7 +62,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
     public DCharacter(UUID id, ConfigurationSection conf) {
         this.id = id;
         name = conf.getString("name");
-        player = conf.getString("player");
+        mojangAccount = UUID.fromString(conf.getString("mojangAccount"));
         if (conf.isBoolean("alive")) alive = conf.getBoolean("alive");
         health = conf.getDouble("health");
         hunger = conf.getInt("hunger");
@@ -101,7 +101,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         Map<String, Object> map = Maps.newHashMap();
         try {
             map.put("name", name);
-            map.put("player", player);
+            map.put("mojangAccount", mojangAccount.toString());
             map.put("alive", alive);
             map.put("health", health);
             map.put("hunger", hunger);
@@ -148,8 +148,8 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         this.minorDeities.remove(deity.getName());
     }
 
-    void setPlayer(DPlayer player) {
-        this.player = player.getPlayerName();
+    void setMojangAccount(DPlayer player) {
+        this.mojangAccount = player.getMojangAccount();
     }
 
     public void setActive(boolean option) {
@@ -255,7 +255,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
     }
 
     public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getOfflinePlayer(player);
+        return Bukkit.getOfflinePlayer(getPlayerName());
     }
 
     public String getName() {
@@ -295,8 +295,12 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         return getOfflinePlayer().getPlayer();
     }
 
+    public UUID getMojangAccount() {
+        return mojangAccount;
+    }
+
     public String getPlayerName() {
-        return player;
+        return DPlayer.Util.getPlayer(mojangAccount).getPlayerName();
     }
 
     public Integer getLevel() {
@@ -989,7 +993,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
             DCharacter character = new DCharacter();
             character.generateId();
             character.setAlive(true);
-            character.setPlayer(player);
+            character.setMojangAccount(player);
             character.setName(charName);
             character.setDeity(deity);
             character.setMinorDeities(new HashSet<String>(0));
