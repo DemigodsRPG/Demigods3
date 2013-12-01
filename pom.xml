@@ -166,6 +166,13 @@
             <scope>compile</scope>
             <optional>false</optional>
         </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>AccountsClient</artifactId>
+            <version>latest</version>
+            <scope>compile</scope>
+            <optional>false</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -197,6 +204,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics-lite</include>
+                                    <include>com.mojang:AccountsClient</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

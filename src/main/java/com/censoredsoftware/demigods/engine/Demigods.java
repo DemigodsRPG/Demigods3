@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.helper.WrappedCommand;
 import com.censoredsoftware.demigods.engine.helper.WrappedConversation;
@@ -49,6 +50,7 @@ public class Demigods {
     // Public Static Access
     public static final DemigodsPlugin PLUGIN;
     public static final ConversationFactory CONVERSATION_FACTORY;
+    public static final MojangIdGrabber MOJANG_ID_GRABBER;
     public static final Translation LANGUAGE;
 
     // Disabled Stuff
@@ -74,6 +76,9 @@ public class Demigods {
         // Conversation factory static access.
         CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 
+        // Mojang Id Grabber static access.
+        MOJANG_ID_GRABBER = new MojangIdGrabber();
+
         // Language data.
         LANGUAGE = new Translation();
 
@@ -88,6 +93,13 @@ public class Demigods {
     protected static void load() {
         // Start the data
         SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+
+        if (!PLUGIN.getServer().getOnlineMode()) {
+            Messages.severe("Demigods might not work in offline mode.");
+            Messages.severe("We depend on Mojang's servers for ids.");
+            Messages.severe("Any player who joins and is not premium");
+            Messages.severe("may be kicked from the game.");
+        }
 
         // Check for world load errors
         if (loadWorlds() > 0) {
