@@ -71,6 +71,7 @@ public class DPlayer implements ConfigurationSerializable {
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            map.put("playerName", playerName);
             map.put("canPvp", canPvp);
             map.put("lastLoginTime", lastLoginTime);
             map.put("lastLogoutTime", lastLogoutTime);
