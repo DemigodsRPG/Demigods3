@@ -14,9 +14,9 @@ import java.util.Set;
 
 public class MojangIdGrabber {
     private static final String AGENT = "minecraft";
-    private HttpProfileRepository repository = new HttpProfileRepository();
-    private Map<String, String> knownUUIDs = Maps.newHashMap();
-    private Set<String> fakePlayers = Sets.newHashSet();
+    private static HttpProfileRepository repository = new HttpProfileRepository();
+    private static Map<String, String> knownUUIDs = Maps.newHashMap();
+    private static Set<String> fakePlayers = Sets.newHashSet();
 
     /**
      * This method requires an OfflinePlayer as an extra step to prevent just passing in random String names.
@@ -24,7 +24,7 @@ public class MojangIdGrabber {
      * @param player The offline player that we are checking the UUID of.
      * @return The Mojang UUID.
      */
-    public String getUUID(OfflinePlayer player) {
+    public static String getUUID(OfflinePlayer player) {
         // Get the player's name.
         String playerName = player.getName();
 

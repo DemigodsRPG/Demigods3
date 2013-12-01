@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.exception.MojangIdNotFoundException;
 import com.censoredsoftware.demigods.engine.helper.ColoredStringBuilder;
+import com.censoredsoftware.demigods.engine.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -413,7 +414,7 @@ public class DPlayer implements ConfigurationSerializable {
     public static class Util {
         public static DPlayer create(Player player) {
             DPlayer playerSave = new DPlayer();
-            String id = Demigods.MOJANG_ID_GRABBER.getUUID(player);
+            String id = MojangIdGrabber.getUUID(player);
             if (id == null) throw new MojangIdNotFoundException(player.getName());
             playerSave.setMojangAccount(id);
             playerSave.setPlayerName(player.getName());

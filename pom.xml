@@ -60,13 +60,6 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git://github.com/CensoredSoftware/Minecraft-Demigods.git</connection>
-        <developerConnection>scm:git:git://github.com/CensoredSoftware/Minecraft-Demigods.git</developerConnection>
-        <tag>master</tag>
-        <url>http://github.com/CensoredSoftware/Minecraft-Demigods</url>
-    </scm>
-
     <repositories>
         <repository>
             <id>md_5-releases</id>

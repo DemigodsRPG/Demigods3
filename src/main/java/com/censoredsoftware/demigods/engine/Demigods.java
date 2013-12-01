@@ -9,7 +9,6 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.helper.WrappedCommand;
 import com.censoredsoftware.demigods.engine.helper.WrappedConversation;
@@ -46,7 +45,6 @@ import java.util.Set;
 public class Demigods {
     // Constants
     public static String SAVE_PATH;
-    public static MojangIdGrabber MOJANG_ID_GRABBER;
 
     // Public Static Access
     public static final DemigodsPlugin PLUGIN;
@@ -90,9 +88,6 @@ public class Demigods {
     protected static void load() {
         // Start the data
         SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
-
-        // Mojang Id Grabber static access.
-        MOJANG_ID_GRABBER = new MojangIdGrabber();
 
         if (!PLUGIN.getServer().getOnlineMode()) {
             Messages.severe("Demigods might not work in offline mode.");
