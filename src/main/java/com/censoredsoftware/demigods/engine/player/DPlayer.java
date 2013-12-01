@@ -433,16 +433,16 @@ public class DPlayer implements ConfigurationSerializable {
         }
 
         public static DPlayer getPlayer(Player player) {
-            DPlayer found = getPlayer(player);
+            DPlayer found = getPlayer(MojangIdGrabber.getUUID(player));
             if (found == null) return create(player);
             return found;
         }
 
         public static DPlayer getPlayer(OfflinePlayer player) {
-            return getPlayer(player.getName());
+            return getPlayerFromName(player.getName());
         }
 
-        public static DPlayer getPlayer(final String playerName) {
+        public static DPlayer getPlayerFromName(final String playerName) {
             try {
                 return Iterables.find(DataManager.players.values(), new Predicate<DPlayer>() {
                     @Override
@@ -455,7 +455,7 @@ public class DPlayer implements ConfigurationSerializable {
             throw new NullPointerException("No such player exists currently in the Demigods data.");
         }
 
-        public static DPlayer getPlayer(UUID mojangAccount) {
+        public static DPlayer getPlayer(String mojangAccount) {
             if (DataManager.players.containsKey(mojangAccount)) return DataManager.players.get(mojangAccount);
             return null;
         }
