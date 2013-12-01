@@ -46,11 +46,11 @@ import java.util.Set;
 public class Demigods {
     // Constants
     public static String SAVE_PATH;
+    public static MojangIdGrabber MOJANG_ID_GRABBER;
 
     // Public Static Access
     public static final DemigodsPlugin PLUGIN;
     public static final ConversationFactory CONVERSATION_FACTORY;
-    public static final MojangIdGrabber MOJANG_ID_GRABBER;
     public static final Translation LANGUAGE;
 
     // Disabled Stuff
@@ -76,9 +76,6 @@ public class Demigods {
         // Conversation factory static access.
         CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
 
-        // Mojang Id Grabber static access.
-        MOJANG_ID_GRABBER = new MojangIdGrabber();
-
         // Language data.
         LANGUAGE = new Translation();
 
@@ -93,6 +90,9 @@ public class Demigods {
     protected static void load() {
         // Start the data
         SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+
+        // Mojang Id Grabber static access.
+        MOJANG_ID_GRABBER = new MojangIdGrabber();
 
         if (!PLUGIN.getServer().getOnlineMode()) {
             Messages.severe("Demigods might not work in offline mode.");

@@ -32,7 +32,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable {
-    private UUID mojangAccount;
+    private String mojangAccount;
     private String playerName;
     private String mortalName, mortalListName;
     private boolean canPvp;
@@ -47,7 +47,7 @@ public class DPlayer implements ConfigurationSerializable {
     public DPlayer() {
     }
 
-    public DPlayer(UUID mojangAccount, ConfigurationSection conf) {
+    public DPlayer(String mojangAccount, ConfigurationSection conf) {
         this.mojangAccount = mojangAccount;
         this.playerName = conf.getString("playerName");
         if (conf.isString("mortalName")) this.mortalName = conf.getString("mortalName");
@@ -88,7 +88,7 @@ public class DPlayer implements ConfigurationSerializable {
         this.playerName = player;
     }
 
-    void setMojangAccount(UUID account) {
+    void setMojangAccount(String account) {
         this.mojangAccount = account;
     }
 
@@ -298,7 +298,7 @@ public class DPlayer implements ConfigurationSerializable {
         return playerName;
     }
 
-    public UUID getMojangAccount() {
+    public String getMojangAccount() {
         return mojangAccount;
     }
 
@@ -413,7 +413,7 @@ public class DPlayer implements ConfigurationSerializable {
     public static class Util {
         public static DPlayer create(Player player) {
             DPlayer playerSave = new DPlayer();
-            UUID id = Demigods.MOJANG_ID_GRABBER.getUUID(player);
+            String id = Demigods.MOJANG_ID_GRABBER.getUUID(player);
             if (id == null) throw new MojangIdNotFoundException(player.getName());
             playerSave.setMojangAccount(id);
             playerSave.setPlayerName(player.getName());
@@ -427,7 +427,7 @@ public class DPlayer implements ConfigurationSerializable {
             DataManager.players.put(player.getMojangAccount(), player);
         }
 
-        public static void delete(UUID mojangAccount) {
+        public static void delete(String mojangAccount) {
             DataManager.players.remove(mojangAccount);
         }
 

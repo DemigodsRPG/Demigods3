@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class DataManager {
     // Data
-    public static ConcurrentMap<UUID, DPlayer> players;
+    public static ConcurrentMap<String, DPlayer> players;
     public static ConcurrentMap<UUID, DLocation> locations;
     public static ConcurrentMap<UUID, StructureData> structures;
     public static ConcurrentMap<UUID, DCharacter> characters;
@@ -163,14 +163,14 @@ public class DataManager {
     }
 
     public static enum File {
-        PLAYER(new ConfigFile<UUID, DPlayer>() {
+        PLAYER(new ConfigFile<String, DPlayer>() {
             @Override
-            public DPlayer create(UUID mojangAccount, ConfigurationSection conf) {
+            public DPlayer create(String mojangAccount, ConfigurationSection conf) {
                 return new DPlayer(mojangAccount, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, DPlayer> getLoadedData() {
+            public ConcurrentMap<String, DPlayer> getLoadedData() {
                 return DataManager.players;
             }
 
@@ -185,13 +185,13 @@ public class DataManager {
             }
 
             @Override
-            public Map<String, Object> serialize(UUID id) {
+            public Map<String, Object> serialize(String id) {
                 return getLoadedData().get(id).serialize();
             }
 
             @Override
-            public UUID convertFromString(String stringId) {
-                return UUID.fromString(stringId);
+            public String convertFromString(String stringId) {
+                return stringId;
             }
 
             @Override

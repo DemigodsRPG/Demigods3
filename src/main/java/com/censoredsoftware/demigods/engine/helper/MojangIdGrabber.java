@@ -11,12 +11,11 @@ import org.bukkit.OfflinePlayer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 public class MojangIdGrabber {
     private static final String AGENT = "minecraft";
     private HttpProfileRepository repository = new HttpProfileRepository();
-    private Map<String, UUID> knownUUIDs = Maps.newHashMap();
+    private Map<String, String> knownUUIDs = Maps.newHashMap();
     private Set<String> fakePlayers = Sets.newHashSet();
 
     /**
@@ -25,7 +24,7 @@ public class MojangIdGrabber {
      * @param player The offline player that we are checking the UUID of.
      * @return The Mojang UUID.
      */
-    public UUID getUUID(OfflinePlayer player) {
+    public String getUUID(OfflinePlayer player) {
         // Get the player's name.
         String playerName = player.getName();
 
@@ -40,7 +39,7 @@ public class MojangIdGrabber {
             fakePlayers.add(playerName);
             return null;
         }
-        UUID id = UUID.fromString(profile.getId());
+        String id = profile.getId();
 
         // Put the player in the known Ids map, and return the found Id.
         knownUUIDs.put(playerName, id);

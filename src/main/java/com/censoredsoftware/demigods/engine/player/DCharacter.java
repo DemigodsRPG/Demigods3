@@ -32,7 +32,7 @@ import java.util.*;
 public class DCharacter implements Participant, ConfigurationSerializable {
     private UUID id;
     private String name;
-    private UUID mojangAccount;
+    private String mojangAccount;
     private boolean alive;
     private double health;
     private Integer hunger;
@@ -62,7 +62,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
     public DCharacter(UUID id, ConfigurationSection conf) {
         this.id = id;
         name = conf.getString("name");
-        mojangAccount = UUID.fromString(conf.getString("mojangAccount"));
+        mojangAccount = conf.getString("mojangAccount");
         if (conf.isBoolean("alive")) alive = conf.getBoolean("alive");
         health = conf.getDouble("health");
         hunger = conf.getInt("hunger");
@@ -101,7 +101,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         Map<String, Object> map = Maps.newHashMap();
         try {
             map.put("name", name);
-            map.put("mojangAccount", mojangAccount.toString());
+            map.put("mojangAccount", mojangAccount);
             map.put("alive", alive);
             map.put("health", health);
             map.put("hunger", hunger);
@@ -295,7 +295,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         return getOfflinePlayer().getPlayer();
     }
 
-    public UUID getMojangAccount() {
+    public String getMojangAccount() {
         return mojangAccount;
     }
 
