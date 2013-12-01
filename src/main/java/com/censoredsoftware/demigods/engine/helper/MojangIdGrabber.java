@@ -1,25 +1,17 @@
 package com.censoredsoftware.demigods.engine.helper;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.mojang.api.profiles.HttpProfileRepository;
 import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import org.bukkit.OfflinePlayer;
 
-import java.util.Map;
-import java.util.Set;
-
 public class MojangIdGrabber {
     private static final String AGENT = "minecraft";
     private static HttpProfileRepository repository;
-    private static Map<String, String> knownUUIDs;
-    private static Set<String> fakePlayers;
 
     public static void load() {
         repository = new HttpProfileRepository();
-        knownUUIDs = Maps.newHashMap();
-        fakePlayers = Sets.newHashSet();
     }
 
     /**
@@ -33,20 +25,21 @@ public class MojangIdGrabber {
         String playerName = player.getName();
 
         // Check if we already know this Id, of if the name actually belongs to a player.
-        if (knownUUIDs.containsKey(playerName)) return knownUUIDs.get(playerName);
-        if (fakePlayers.contains(playerName)) return null;
+        if (DataManager.hasTimed(playerName, "mojangAccount"))
+            return DataManager.getTimedValue(playerName, "mojangAccount").toString();
+        if (DataManager.hasTimed(playerName, "fakePlayer")) return null;
 
         // Get the Id from Mojang.
         IdGetTask task = new IdGetTask(playerName);
         task.run();
         if (!task.getStatus()) {
-            fakePlayers.add(playerName);
+            DataManager.saveTimed(playerName, "fakePlayer", true, 60);
             return null;
         }
         String id = task.getUUID();
 
-        // Put the player in the known Ids map, and return the found Id.
-        knownUUIDs.put(playerName, id);
+        // Put the player in the known Ids, and return the found Id.
+        DataManager.saveTimedWeek(playerName, "mojangAccount", id);
         return id;
     }
 

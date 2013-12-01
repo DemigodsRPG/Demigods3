@@ -118,6 +118,23 @@ public class DataManager {
         DataManager.timedData.put(timedData.getId(), timedData);
     }
 
+    /*
+     * Timed data
+     */
+    public static void saveTimedWeek(String key, String subKey, Object data) {
+        // Remove the data if it exists already
+        TimedData.Util.remove(key, subKey);
+
+        // Create and save the timed data
+        TimedData timedData = new TimedData();
+        timedData.generateId();
+        timedData.setKey(key);
+        timedData.setSubKey(subKey);
+        timedData.setData(data.toString());
+        timedData.setHours(168);
+        DataManager.timedData.put(timedData.getId(), timedData);
+    }
+
     public static void removeTimed(String key, String subKey) {
         TimedData.Util.remove(key, subKey);
     }
