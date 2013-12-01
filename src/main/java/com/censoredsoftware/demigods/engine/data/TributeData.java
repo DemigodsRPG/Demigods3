@@ -29,8 +29,8 @@ public class TributeData implements ConfigurationSerializable
 	{
 		this.id = id;
 		category = conf.getString("category");
-		material = Material.getMaterial(conf.getString("material"));
-		amount = Integer.parseInt(conf.getString("amount"));
+        material = Material.valueOf(conf.getString("material"));
+        amount = Integer.parseInt(conf.getString("amount"));
 	}
 
 	@Override
