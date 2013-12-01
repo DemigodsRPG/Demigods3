@@ -414,9 +414,7 @@ public class DPlayer implements ConfigurationSerializable {
     public static class Util {
         public static DPlayer create(Player player) {
             DPlayer playerSave = new DPlayer();
-            String id = MojangIdGrabber.getUUID(player);
-            if (id == null) throw new MojangIdNotFoundException(player.getName());
-            playerSave.setMojangAccount(id);
+            playerSave.setMojangAccount(MojangIdGrabber.getUUID(player));
             playerSave.setPlayerName(player.getName());
             playerSave.setLastLoginTime(player.getLastPlayed());
             playerSave.setCanPvp(true);
@@ -432,14 +430,12 @@ public class DPlayer implements ConfigurationSerializable {
             DataManager.players.remove(mojangAccount);
         }
 
-        public static DPlayer getPlayer(Player player) {
-            DPlayer found = getPlayer(MojangIdGrabber.getUUID(player));
-            if (found == null) return create(player);
-            return found;
-        }
-
         public static DPlayer getPlayer(OfflinePlayer player) {
-            return getPlayerFromName(player.getName());
+            String id = MojangIdGrabber.getUUID(player);
+            if (id == null) throw new MojangIdNotFoundException(player.getName());
+            DPlayer found = getPlayer(id);
+            if (found == null) return create(player.getPlayer());
+            return found;
         }
 
         public static DPlayer getPlayerFromName(final String playerName) {

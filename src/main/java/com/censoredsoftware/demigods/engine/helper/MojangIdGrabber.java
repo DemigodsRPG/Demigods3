@@ -20,6 +20,7 @@ public class MojangIdGrabber {
 
     public static void load() {
         repository = new HttpProfileRepository();
+
         knownUUIDs = Maps.newHashMap();
         fakePlayers = Sets.newHashSet();
     }
