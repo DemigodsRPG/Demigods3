@@ -275,7 +275,7 @@ public class DPlayer implements ConfigurationSerializable {
         try {
             player.teleport(newChar.getLocation());
         } catch (Exception e) {
-            Messages.severe("There was a problem while teleporting a player to their character.");
+            Messages.warning("There was a problem while teleporting a player to their character.");
         }
 
         // Save instances
