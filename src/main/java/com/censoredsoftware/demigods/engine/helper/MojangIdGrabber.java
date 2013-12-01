@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.helper;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.api.profiles.HttpProfileRepository;
@@ -8,7 +7,6 @@ import com.mojang.api.profiles.Profile;
 import com.mojang.api.profiles.ProfileCriteria;
 import org.bukkit.OfflinePlayer;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +18,6 @@ public class MojangIdGrabber {
 
     public static void load() {
         repository = new HttpProfileRepository();
-
         knownUUIDs = Maps.newHashMap();
         fakePlayers = Sets.newHashSet();
     }
@@ -40,16 +37,43 @@ public class MojangIdGrabber {
         if (fakePlayers.contains(playerName)) return null;
 
         // Get the Id from Mojang.
-        Profile profile = Iterables.getFirst(Arrays.asList(repository.findProfilesByCriteria(new ProfileCriteria(playerName, AGENT))), null);
-        if (profile == null) {
-            // Add the name to the fake players list.
+        IdGetTask task = new IdGetTask(playerName);
+        task.run();
+        if (!task.getStatus()) {
             fakePlayers.add(playerName);
             return null;
         }
-        String id = profile.getId();
+        String id = task.getUUID();
 
         // Put the player in the known Ids map, and return the found Id.
         knownUUIDs.put(playerName, id);
         return id;
+    }
+
+    private static class IdGetTask implements Runnable {
+        private String playerName;
+        private String playerId;
+        private Boolean status;
+
+        private IdGetTask(String playerName) {
+            this.playerName = playerName;
+        }
+
+        @Override
+        public void run() {
+            Profile[] profiles = repository.findProfilesByCriteria(new ProfileCriteria(playerName, AGENT));
+            if (profiles.length == 1) {
+                playerId = profiles[0].getId();
+                status = true;
+            } else status = false;
+        }
+
+        private String getUUID() {
+            return playerId;
+        }
+
+        private Boolean getStatus() {
+            return status;
+        }
     }
 }
