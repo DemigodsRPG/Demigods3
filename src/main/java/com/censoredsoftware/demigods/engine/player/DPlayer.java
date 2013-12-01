@@ -46,6 +46,7 @@ public class DPlayer implements ConfigurationSerializable {
     private ChatRecorder chatRecording;
 
     public DPlayer() {
+        characterSlots = Configs.getSettingInt("character.default_character_slots");
     }
 
     public DPlayer(String mojangAccount, ConfigurationSection conf) {
@@ -70,8 +71,9 @@ public class DPlayer implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
+        map.put("playerName", playerName);
+        map.put("characterSlots", characterSlots);
         try {
-            map.put("playerName", playerName);
             map.put("canPvp", canPvp);
             map.put("lastLoginTime", lastLoginTime);
             map.put("lastLogoutTime", lastLogoutTime);
