@@ -32,10 +32,13 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
     public void onEnable() {
         if (!checkForCensoredLib()) return;
 
-        // handleDependentPlugins();
+        handleDependentPlugins();
 
         // Load the game engine.
-        Demigods.load();
+        if (!Demigods.load()) {
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
 
         // Print success!
         Messages.info("Successfully enabled.");
@@ -115,7 +118,5 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
                 errored.printStackTrace();
             }
         }
-
-        getPluginLoader().disablePlugin(this);
     }
 }
