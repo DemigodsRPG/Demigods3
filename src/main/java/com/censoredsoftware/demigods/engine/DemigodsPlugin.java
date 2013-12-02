@@ -21,7 +21,7 @@ import java.util.jar.JarFile;
  * Class for all plugins of demigods.
  */
 public class DemigodsPlugin extends CensoredJavaPlugin {
-    private static final String censoredLibraryVersion = "1.0.0-SHAPSHOT";
+    private static final String CENSORED_LIBRARY_VERSION = "1.0.0-SHAPSHOT";
 
     /**
      * The Bukkit enable method.
@@ -30,7 +30,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
     public void onEnable() {
         // Check for CensoredLib
         Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-        boolean result = check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(censoredLibraryVersion);
+        boolean result = check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(CENSORED_LIBRARY_VERSION);
 
         if (!result) {
             // TODO Auto-download/update.
