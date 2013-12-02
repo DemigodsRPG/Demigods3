@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine;
 
-import com.censoredsoftware.censoredlib.CensoredLib;
+import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
@@ -30,7 +30,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
     public void onEnable() {
         // Check for CensoredLib
         Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-        boolean result = check instanceof CensoredLib && check.getDescription().getVersion().equals(censoredLibraryVersion);
+        boolean result = check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(censoredLibraryVersion);
 
         if (!result) {
             // TODO Auto-download/update.

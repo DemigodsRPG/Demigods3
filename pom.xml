@@ -74,7 +74,6 @@
             <version>${censoredLib.version}</version>
             <scope>compile</scope>
             <type>jar</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -82,12 +81,13 @@
             <version>${spigot.version}</version>
             <scope>compile</scope>
             <type>jar</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>${worldguard.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
             <exclusions>
                 <exclusion>
                     <groupId>org.bukkit</groupId>
@@ -142,9 +142,6 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>compile</scope>
-            <type>jar</type>
-            <optional>false</optional>
         </dependency>
     </dependencies>
 
