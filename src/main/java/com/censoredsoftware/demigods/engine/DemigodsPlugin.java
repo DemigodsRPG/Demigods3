@@ -14,6 +14,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarFile;
 
@@ -22,26 +23,71 @@ import java.util.jar.JarFile;
  */
 public class DemigodsPlugin extends CensoredJavaPlugin {
     private static final String CENSORED_LIBRARY_VERSION = "1.0.0-SNAPSHOT";
+    private static boolean READY;
 
     /**
      * The Bukkit enable method.
      */
     @Override
     public void onEnable() {
-        // Check for CensoredLib
-        Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-        boolean result = check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(CENSORED_LIBRARY_VERSION);
+        if (!checkForCensoredLib()) return;
 
-        if (!result) {
-            // TODO Auto-download/update.
-            getLogger().severe("Demigods cannot load without CensoredLib installed.");
-            return;
+        handleDependentPlugins();
+
+        // Load the game engine.
+        READY = Demigods.load();
+
+        if (!READY) getPluginLoader().disablePlugin(this);
+
+        // Print success!
+        Messages.info("Successfully enabled.");
+    }
+
+    /**
+     * The Bukkit disable method.
+     */
+    @Override
+    public void onDisable() {
+
+        if (READY) {
+            // Save all the data.
+            DataManager.save();
+
+            // Handle online characters
+            for (DCharacter character : DCharacter.Util.getOnlineCharacters()) {
+                // Toggle prayer off and clear the session
+                DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
+                DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
+            }
         }
 
+        // Cancel all threads, event calls, and unregister permissions.
+        try {
+            ThreadManager.stopThreads();
+            HandlerList.unregisterAll(this);
+            Demigods.unloadPermissions();
+        } catch (Throwable ignored) {
+        }
+
+        Messages.info("Successfully disabled.");
+    }
+
+    private boolean checkForCensoredLib() {
+        // Check for CensoredLib
+        Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
+        if (check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(CENSORED_LIBRARY_VERSION))
+            return true;
+        // TODO Auto-download/update.
+        getLogger().severe("Demigods cannot load without CensoredLib installed.");
+        return false;
+    }
+
+    private void handleDependentPlugins() {
         // Unload all incorrectly installed plugins
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             // Not soft-depend
-            if (plugin.getDescription().getDepend().contains("Demigods")) {
+            List<String> depends = plugin.getDescription().getDepend();
+            if (depends.contains("Demigods")) {
                 getLogger().warning(plugin.getName() + " v" + plugin.getDescription().getVersion() + " was installed in the wrong directory.");
                 getLogger().warning("Please put all plugins that depend on Demigods in the correct folder.");
                 getLogger().warning("Like this: " + getDataFolder().getPath() + "/plugins/" + plugin.getName() + ".jar");
@@ -64,40 +110,14 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
             }
         });
         File[] plugins = new File[files.size()];
-        for (File file : plugins)
+        for (File file : plugins) {
             try {
                 Bukkit.getServer().getPluginManager().loadPlugin(file);
             } catch (Throwable errored) {
                 errored.printStackTrace();
             }
-
-        // Load the game engine.
-        Demigods.load();
-
-        // Print success!
-        Messages.info("Successfully enabled.");
-    }
-
-    /**
-     * The Bukkit disable method.
-     */
-    @Override
-    public void onDisable() {
-        // Save all the data.
-        DataManager.save();
-
-        // Handle online characters
-        for (DCharacter character : DCharacter.Util.getOnlineCharacters()) {
-            // Toggle prayer off and clear the session
-            DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
-            DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
         }
 
-        // Cancel all threads, event calls, and unregister permissions.
-        ThreadManager.stopThreads();
-        HandlerList.unregisterAll(this);
-        Demigods.unloadPermissions();
-
-        Messages.info("Successfully disabled.");
+        getPluginLoader().disablePlugin(this);
     }
 }

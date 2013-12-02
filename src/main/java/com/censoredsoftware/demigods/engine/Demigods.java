@@ -76,57 +76,65 @@ public class Demigods {
 
         // Language data.
         LANGUAGE = new Translation();
+    }
 
+    // Load everything else.
+    protected static boolean load() {
         // Initialize metrics
         try {
             (new MetricsLite(PLUGIN)).start();
         } catch (Exception ignored) {
         }
-    }
 
-    // Load everything else.
-    protected static void load() {
-        // Start the data
-        SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+        try {
 
-        if (!PLUGIN.getServer().getOnlineMode()) {
-            Messages.severe("Demigods might not work in offline mode.");
-            Messages.severe("We depend on Mojang's servers for ids.");
-            Messages.severe("Any player who joins and is not premium");
-            Messages.severe("may be kicked from the game.");
+            // Start the data
+            SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+
+            if (!PLUGIN.getServer().getOnlineMode()) {
+                Messages.severe("Demigods might not work in offline mode.");
+                Messages.severe("We depend on Mojang's servers for ids.");
+                Messages.severe("Any player who joins and is not premium");
+                Messages.severe("may be kicked from the game.");
+            }
+
+            // Check for world load errors
+            if (loadWorlds() > 0) {
+                Messages.severe("Demigods was unable to confirm any worlds.");
+                Messages.severe("This may be caused by misspelt world names.");
+                Messages.severe("Multi-world plugins can cause this message,");
+                Messages.severe("and in that case this may be a false alarm.");
+            }
+
+            // Load listeners, commands, and permissions
+            loadListeners();
+            loadCommands();
+            loadPermissions();
+
+            // Update usable characters
+            DCharacter.Util.updateUsableCharacters();
+
+            // Start threads
+            ThreadManager.startThreads();
+
+            // Regenerate structures
+            Structure.Util.regenerateStructures();
+
+            // Initialize tribute tracking
+            TributeManager.initializeTributeTracking();
+
+            if (Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+            else Messages.warning(("Without Spigot, some features may not work."));
+
+            // Handle online characters
+            for (DCharacter character : DCharacter.Util.loadAll())
+                character.getMeta().cleanSkills();
+        } catch (Throwable errored) {
+            errored.printStackTrace();
+            Messages.severe("Something went wrong during Demigods initialization.");
+            return false;
         }
-
-        // Check for world load errors
-        if (loadWorlds() > 0) {
-            Messages.severe("Demigods was unable to confirm any worlds.");
-            Messages.severe("This may be caused by misspelt world names.");
-            Messages.severe("Multi-world plugins can cause this message,");
-            Messages.severe("and in that case this may be a false alarm.");
-        }
-
-        // Load listeners, commands, and permissions
-        loadListeners();
-        loadCommands();
-        loadPermissions();
-
-        // Update usable characters
-        DCharacter.Util.updateUsableCharacters();
-
-        // Start threads
-        ThreadManager.startThreads();
-
-        // Regenerate structures
-        Structure.Util.regenerateStructures();
-
-        // Initialize tribute tracking
-        TributeManager.initializeTributeTracking();
-
-        if (Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
-        else Messages.warning(("Without Spigot, some features may not work."));
-
-        // Handle online characters
-        for (DCharacter character : DCharacter.Util.loadAll())
-            character.getMeta().cleanSkills();
+        return true;
     }
 
     private static int loadWorlds() {
