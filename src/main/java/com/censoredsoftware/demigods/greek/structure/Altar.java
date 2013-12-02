@@ -1,11 +1,15 @@
 package com.censoredsoftware.demigods.greek.structure;
 
+import com.censoredsoftware.censoredlib.schematic.BlockData;
+import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.censoredlib.schematic.Selection;
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.structure.*;
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -68,11 +72,11 @@ public class Altar {
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onChunkLoad(final ChunkLoadEvent event) {
-            if (Zones.inNoDemigodsZone(DLocation.Util.randomChunkLocation(event.getChunk())) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN))
+            if (Zones.inNoDemigodsZone(CLocations.randomChunkLocation(event.getChunk())) || !event.isNewChunk() || !Randoms.randomPercentBool(ALTAR_SPAWN))
                 return;
 
             // Add to queue
-            Util.blocks.add(DLocation.Util.randomChunkLocation(event.getChunk()).getBlock());
+            Util.blocks.add(CLocations.randomChunkLocation(event.getChunk()).getBlock());
         }
 
         @EventHandler(priority = EventPriority.HIGHEST)

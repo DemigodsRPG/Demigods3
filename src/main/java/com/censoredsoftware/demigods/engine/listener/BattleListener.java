@@ -4,9 +4,9 @@ import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.player.DPet;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
@@ -117,7 +117,7 @@ public class BattleListener implements Listener {
         }
 
         // Pets
-        if (damager instanceof LivingEntity) for (Pet pet : damageeParticipant.getRelatedCharacter().getPets()) {
+        if (damager instanceof LivingEntity) for (DPet pet : damageeParticipant.getRelatedCharacter().getPets()) {
             LivingEntity entity = pet.getEntity();
             if (entity != null && entity instanceof Monster) ((Monster) entity).setTarget((LivingEntity) damager);
         }
@@ -159,8 +159,8 @@ public class BattleListener implements Listener {
         Participant participant = Battle.Util.defineParticipant(entity);
         if (Battle.Util.isInBattle(participant)) {
             Battle battle = Battle.Util.getBattle(participant);
-            boolean toBool = DLocation.Util.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
-            boolean fromBool = DLocation.Util.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
+            boolean toBool = CLocations.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
+            boolean fromBool = CLocations.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
             if (toBool && !fromBool)
                 DataManager.saveTemp((participant.getEntity().getPassenger() == null ? participant.getId().toString() : participant.getRelatedCharacter().getId().toString()), "battle_safe_location", from);
             if (toBool) {
@@ -181,7 +181,7 @@ public class BattleListener implements Listener {
         Participant participant = Battle.Util.defineParticipant(event.getEntity());
         if (Battle.Util.isInBattle(participant)) {
             Battle battle = Battle.Util.getBattle(participant);
-            if (!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || DLocation.Util.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange())
+            if (!event.getTo().getWorld().equals(battle.getStartLocation().getWorld()) || CLocations.distanceFlat(event.getTo(), battle.getStartLocation()) > battle.getRange())
                 event.setCancelled(true);
         }
     }

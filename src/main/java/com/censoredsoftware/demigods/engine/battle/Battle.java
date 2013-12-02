@@ -6,12 +6,12 @@ import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPet;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Pet;
 import com.censoredsoftware.demigods.engine.player.Skill;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -106,7 +106,7 @@ public class Battle implements ConfigurationSerializable {
     }
 
     void setStartLocation(Location location) {
-        this.startLoc = DLocation.Util.create(location).getId();
+        this.startLoc = CLocations.create(location).getId();
     }
 
     void setStartTime(long time) {
@@ -155,7 +155,7 @@ public class Battle implements ConfigurationSerializable {
     }
 
     public Location getStartLocation() {
-        return DLocation.Util.load(this.startLoc).toLocation();
+        return CLocations.load(this.startLoc).toLocation();
     }
 
     public long getStartTime() {
@@ -213,7 +213,7 @@ public class Battle implements ConfigurationSerializable {
         })), Sets.newHashSet(Collections2.transform(involvedTameable, new Function<String, Participant>() {
             @Override
             public Participant apply(String tamable) {
-                return Pet.Util.load(UUID.fromString(tamable));
+                return DPet.Util.load(UUID.fromString(tamable));
             }
         }))), new Predicate<Participant>() {
             @Override
@@ -497,7 +497,7 @@ public class Battle implements ConfigurationSerializable {
 
         public static Collection<Location> battleBorder(final Battle battle) {
             if (!Demigods.Util.isRunningSpigot()) throw new SpigotNotFoundException();
-            return Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>() {
+            return Collections2.transform(CLocations.getCirclePoints(battle.getStartLocation(), battle.getRange(), 120), new Function<Location, Location>() {
                 @Override
                 public Location apply(Location point) {
                     return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
@@ -521,8 +521,8 @@ public class Battle implements ConfigurationSerializable {
 
             // Now change the angle
             Location changed = target.clone();
-            changed.setYaw(180 - DLocation.Util.toDegree(Math.atan2(Y, X)));
-            changed.setPitch(90 - DLocation.Util.toDegree(Math.acos(Z)));
+            changed.setYaw(180 - CLocations.toDegree(Math.atan2(Y, X)));
+            changed.setPitch(90 - CLocations.toDegree(Math.acos(Z)));
             return changed;
         }
 
@@ -538,7 +538,7 @@ public class Battle implements ConfigurationSerializable {
         }
 
         public static List<Location> getSafeRespawnPoints(final Battle battle) {
-            return Lists.newArrayList(Collections2.filter(Collections2.transform(DLocation.Util.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>() {
+            return Lists.newArrayList(Collections2.filter(Collections2.transform(CLocations.getCirclePoints(battle.getStartLocation(), battle.getRange() - 1.5, 100), new Function<Location, Location>() {
                 @Override
                 public Location apply(Location point) {
                     return new Location(point.getWorld(), point.getBlockX(), point.getWorld().getHighestBlockYAt(point), point.getBlockZ());
@@ -556,13 +556,13 @@ public class Battle implements ConfigurationSerializable {
                 DCharacter character = DPlayer.Util.getPlayer((Player) entity).getCurrent();
                 return character != null && !character.getDeity().getFlags().contains(Deity.Flag.NO_BATTLE);
             }
-            return entity instanceof Tameable && Pet.Util.getPet((LivingEntity) entity) != null && isInBattle(Pet.Util.getPet((LivingEntity) entity).getRelatedCharacter());
+            return entity instanceof Tameable && DPet.Util.getPet((LivingEntity) entity) != null && isInBattle(DPet.Util.getPet((LivingEntity) entity).getRelatedCharacter());
         }
 
         public static Participant defineParticipant(Entity entity) {
             if (!canParticipate(entity)) return null;
             if (entity instanceof Player) return DPlayer.Util.getPlayer((Player) entity).getCurrent();
-            return Pet.Util.getPet((LivingEntity) entity);
+            return DPet.Util.getPet((LivingEntity) entity);
         }
 
         public static void battleDeath(Participant damager, Participant damagee, Battle battle) {

@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.greek.ability.passive;
 
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.player.Pet;
+import com.censoredsoftware.demigods.engine.player.DPet;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
@@ -84,7 +84,7 @@ public class RainbowHorse implements Ability {
         return new BukkitRunnable() {
             @Override
             public void run() {
-                for (Pet horse : Pet.Util.findByType(EntityType.HORSE)) {
+                for (DPet horse : DPet.Util.findByType(EntityType.HORSE)) {
                     if (horse.getCurrentLocation() == null || Zones.inNoDemigodsZone(horse.getCurrentLocation()))
                         return;
                     if (horse.getDeity().getName().equals("DrD1sco") && horse.getEntity() != null && !horse.getEntity().isDead())

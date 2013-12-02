@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.greek.trigger;
 
-import com.censoredsoftware.demigods.engine.trigger.Trigger;
+import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class ProcessAltars implements Trigger

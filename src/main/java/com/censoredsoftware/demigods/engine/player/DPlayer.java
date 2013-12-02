@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
@@ -8,7 +9,6 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -256,7 +256,7 @@ public class DPlayer implements ConfigurationSerializable {
             character.saveInventory();
 
             // Disown pets
-            Pet.Util.disownPets(character.getName());
+            DPet.Util.disownPets(character.getName());
 
             // Save it
             DCharacter.Util.save(character);

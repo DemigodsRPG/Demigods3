@@ -1,9 +1,10 @@
 package com.censoredsoftware.demigods.engine.structure;
 
+import com.censoredsoftware.censoredlib.data.location.CLocation;
+import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.location.DLocation;
-import com.censoredsoftware.demigods.engine.location.Region;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
@@ -69,7 +70,7 @@ public class StructureData implements ConfigurationSerializable {
     }
 
     public void setReferenceLocation(Location reference) {
-        DLocation dLocation = DLocation.Util.create(reference);
+        CLocation dLocation = CLocations.create(reference);
         this.referenceLocation = dLocation.getId();
         setRegion(dLocation.getRegion());
     }
@@ -97,7 +98,7 @@ public class StructureData implements ConfigurationSerializable {
     }
 
     public Location getReferenceLocation() {
-        return DLocation.Util.load(referenceLocation).toLocation();
+        return CLocations.load(referenceLocation).toLocation();
     }
 
     public Set<Location> getClickableBlocks() {
@@ -176,7 +177,7 @@ public class StructureData implements ConfigurationSerializable {
     public void remove() {
         for (Location location : getLocations())
             location.getBlock().setType(Material.AIR);
-        DLocation.Util.delete(referenceLocation);
+        CLocations.delete(referenceLocation);
         Util.remove(id);
     }
 

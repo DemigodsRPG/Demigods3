@@ -3,13 +3,14 @@ package com.censoredsoftware.demigods.engine.data;
 import com.censoredsoftware.censoredlib.data.ServerData;
 import com.censoredsoftware.censoredlib.data.TimedData;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.censoredlib.data.location.CLocation;
+import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
 import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
 import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.*;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.google.common.collect.Maps;
@@ -26,16 +27,16 @@ import java.util.concurrent.ConcurrentMap;
 public class DataManager {
     // Data
     public static ConcurrentMap<String, DPlayer> players;
-    public static ConcurrentMap<UUID, DLocation> locations;
+    public static ConcurrentMap<UUID, CLocation> locations;
     public static ConcurrentMap<UUID, StructureData> structures;
     public static ConcurrentMap<UUID, DCharacter> characters;
     public static ConcurrentMap<UUID, DCharacter.Meta> characterMetas;
-    public static ConcurrentMap<UUID, Death> deaths;
+    public static ConcurrentMap<UUID, DDeath> deaths;
     public static ConcurrentMap<UUID, Skill> skills;
     public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
     public static ConcurrentMap<UUID, CItemStack> itemStacks;
-    public static ConcurrentMap<UUID, SavedPotion> savedPotions;
-    public static ConcurrentMap<UUID, Pet> pets;
+    public static ConcurrentMap<UUID, DSavedPotion> savedPotions;
+    public static ConcurrentMap<UUID, DPet> pets;
     public static ConcurrentMap<UUID, Notification> notifications;
     public static ConcurrentMap<UUID, Battle> battles;
     public static ConcurrentMap<UUID, TimedData> timedData;
@@ -219,14 +220,14 @@ public class DataManager {
             public void loadToData() {
                 players = loadFromFile();
             }
-        }), LOCATION(new ConfigFile<UUID, DLocation>() {
+        }), LOCATION(new ConfigFile<UUID, CLocation>() {
             @Override
-            public DLocation create(UUID uuid, ConfigurationSection conf) {
-                return new DLocation(uuid, conf);
+            public CLocation create(UUID uuid, ConfigurationSection conf) {
+                return new CLocation(uuid, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, DLocation> getLoadedData() {
+            public ConcurrentMap<UUID, CLocation> getLoadedData() {
                 return DataManager.locations;
             }
 
@@ -359,14 +360,14 @@ public class DataManager {
             public void loadToData() {
                 characterMetas = loadFromFile();
             }
-        }), DEATH(new ConfigFile<UUID, Death>() {
+        }), DEATH(new ConfigFile<UUID, DDeath>() {
             @Override
-            public Death create(UUID uuid, ConfigurationSection conf) {
-                return new Death(uuid, conf);
+            public DDeath create(UUID uuid, ConfigurationSection conf) {
+                return new DDeath(uuid, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, Death> getLoadedData() {
+            public ConcurrentMap<UUID, DDeath> getLoadedData() {
                 return DataManager.deaths;
             }
 
@@ -499,14 +500,14 @@ public class DataManager {
             public void loadToData() {
                 itemStacks = loadFromFile();
             }
-        }), SAVED_POTION(new ConfigFile<UUID, SavedPotion>() {
+        }), SAVED_POTION(new ConfigFile<UUID, DSavedPotion>() {
             @Override
-            public SavedPotion create(UUID uuid, ConfigurationSection conf) {
-                return new SavedPotion(uuid, conf);
+            public DSavedPotion create(UUID uuid, ConfigurationSection conf) {
+                return new DSavedPotion(uuid, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, SavedPotion> getLoadedData() {
+            public ConcurrentMap<UUID, DSavedPotion> getLoadedData() {
                 return DataManager.savedPotions;
             }
 
@@ -534,14 +535,14 @@ public class DataManager {
             public void loadToData() {
                 savedPotions = loadFromFile();
             }
-        }), PET(new ConfigFile<UUID, Pet>() {
+        }), PET(new ConfigFile<UUID, DPet>() {
             @Override
-            public Pet create(UUID uuid, ConfigurationSection conf) {
-                return new Pet(uuid, conf);
+            public DPet create(UUID uuid, ConfigurationSection conf) {
+                return new DPet(uuid, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, Pet> getLoadedData() {
+            public ConcurrentMap<UUID, DPet> getLoadedData() {
                 return DataManager.pets;
             }
 

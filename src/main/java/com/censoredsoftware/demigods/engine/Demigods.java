@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine;
 
+import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
@@ -42,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Demigods {
+public class Demigods extends CensoredCentralizedClass {
     // Constants
     public static String SAVE_PATH;
 
@@ -57,6 +58,12 @@ public class Demigods {
 
     // Mythos
     public static final Mythos MYTHOS;
+
+    // Instance of this class;
+    private static Demigods demigods;
+
+    private Demigods() {
+    }
 
     // Load what is possible to load right away.
     static {
@@ -87,6 +94,8 @@ public class Demigods {
         }
 
         try {
+            demigods = new Demigods();
+
             // Start the data
             SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
@@ -98,7 +107,7 @@ public class Demigods {
             }
 
             // Check for world load errors
-            if (loadWorlds() > 0) {
+            if (demigods.loadWorlds() > 0) {
                 Messages.severe("Demigods was unable to confirm any worlds.");
                 Messages.severe("This may be caused by misspelt world names.");
                 Messages.severe("Multi-world plugins can cause this message,");
@@ -106,9 +115,9 @@ public class Demigods {
             }
 
             // Load listeners, commands, and permissions
-            loadListeners();
-            loadCommands();
-            loadPermissions();
+            demigods.loadListeners();
+            demigods.loadCommands();
+            demigods.loadPermissions(true);
 
             // Update usable characters
             DCharacter.Util.updateUsableCharacters();
@@ -136,7 +145,7 @@ public class Demigods {
         return false;
     }
 
-    private static int loadWorlds() {
+    protected int loadWorlds() {
         Set<String> disabledWorlds = Sets.newHashSet();
         int erroredWorlds = 0;
         for (String world : Configs.getSettingList("restrictions.disabled_worlds")) {
@@ -147,7 +156,7 @@ public class Demigods {
         return erroredWorlds;
     }
 
-    private static void loadListeners() {
+    protected void loadListeners() {
         PluginManager register = Bukkit.getServer().getPluginManager();
 
         // Mythos
@@ -195,7 +204,7 @@ public class Demigods {
         Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
     }
 
-    private static void loadCommands() {
+    protected void loadCommands() {
         Set<String> commands = Sets.newHashSet();
         for (DemigodsCommand command : DemigodsCommand.values())
             commands.addAll(command.getCommand().getCommands());
@@ -209,66 +218,68 @@ public class Demigods {
         COMMANDS = ImmutableSet.copyOf(commands);
     }
 
-    private static void loadPermissions() {
+    protected void loadPermissions(boolean load) {
         final PluginManager register = Bukkit.getServer().getPluginManager();
 
-        // Mythos
-        for (Permission permission : MYTHOS.getPermissions()) {
-            // catch errors to avoid any possible buggy permissions
-            try {
-                for (Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-                    register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-                register.addPermission(permission);
-            } catch (Exception ignored) {
-            }
-        }
-
-        // Alliances, Deities, and Abilities
-        for (final Alliance alliance : MYTHOS.getAlliances()) {
-            register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>() {
-                {
-                    for (Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance)) {
-                        register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
-                        put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
-                    }
+        if (load) {
+            // Mythos
+            for (Permission permission : MYTHOS.getPermissions()) {
+                // catch errors to avoid any possible buggy permissions
+                try {
+                    for (Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+                        register.addPermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
+                    register.addPermission(permission);
+                } catch (Exception ignored) {
                 }
-            }));
-        }
+            }
 
-        // Skill types
-        for (Skill.Type skill : Skill.Type.values())
-            register.addPermission(skill.getPermission());
+            // Alliances, Deities, and Abilities
+            for (final Alliance alliance : MYTHOS.getAlliances()) {
+                register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>() {
+                    {
+                        for (Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance)) {
+                            register.addPermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
+                            put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
+                        }
+                    }
+                }));
+            }
+
+            // Skill types
+            for (Skill.Type skill : Skill.Type.values())
+                register.addPermission(skill.getPermission());
+        } else {
+            // Mythos
+            for (Permission permission : MYTHOS.getPermissions()) {
+                // catch errors to avoid any possible buggy permissions
+                try {
+                    for (Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
+                        register.removePermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
+                    register.removePermission(permission);
+                } catch (Exception ignored) {
+                }
+            }
+
+            // Alliances, Deities, and Abilities
+            for (final Alliance alliance : MYTHOS.getAlliances()) {
+                register.removePermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>() {
+                    {
+                        for (Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance)) {
+                            register.removePermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
+                            put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
+                        }
+                    }
+                }));
+            }
+
+            // Skill types
+            for (Skill.Type skill : Skill.Type.values())
+                register.removePermission(skill.getPermission());
+        }
     }
 
     protected static void unloadPermissions() {
-        final PluginManager register = Bukkit.getServer().getPluginManager();
-
-        // Mythos
-        for (Permission permission : MYTHOS.getPermissions()) {
-            // catch errors to avoid any possible buggy permissions
-            try {
-                for (Map.Entry<String, Boolean> entry : permission.getChildren().entrySet())
-                    register.removePermission(new Permission(entry.getKey(), entry.getValue() ? PermissionDefault.TRUE : PermissionDefault.FALSE));
-                register.removePermission(permission);
-            } catch (Exception ignored) {
-            }
-        }
-
-        // Alliances, Deities, and Abilities
-        for (final Alliance alliance : MYTHOS.getAlliances()) {
-            register.removePermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>() {
-                {
-                    for (Deity deity : Alliance.Util.getLoadedDeitiesInAlliance(alliance)) {
-                        register.removePermission(new Permission(deity.getPermission(), alliance.getPermissionDefault()));
-                        put(deity.getPermission(), alliance.getPermissionDefault().equals(PermissionDefault.TRUE));
-                    }
-                }
-            }));
-        }
-
-        // Skill types
-        for (Skill.Type skill : Skill.Type.values())
-            register.removePermission(skill.getPermission());
+        demigods.loadPermissions(false);
     }
 
     public static class Util {

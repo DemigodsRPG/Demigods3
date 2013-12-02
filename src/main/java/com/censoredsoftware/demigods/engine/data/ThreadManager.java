@@ -1,15 +1,15 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.util.Notifications;
 import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Notification;
-import com.censoredsoftware.demigods.engine.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -84,7 +84,7 @@ public class ThreadManager {
                     TimedDatas.updateTimedData();
 
                     // Update Notifications
-                    Notification.Util.updateNotifications();
+                    Notifications.updateNotifications();
 
                     // Process Triggers
                     for (Trigger trigger : Demigods.MYTHOS.getTriggers())

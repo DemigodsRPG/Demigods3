@@ -1,16 +1,18 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CItemStacks;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
-import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -73,7 +75,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         if (conf.isString("location")) {
             location = UUID.fromString(conf.getString("location"));
             try {
-                DLocation.Util.load(location);
+                CLocations.load(location);
             } catch (Throwable errored) {
                 location = null;
             }
@@ -81,7 +83,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         if (conf.getString("bedSpawn") != null) {
             bedSpawn = UUID.fromString(conf.getString("bedSpawn"));
             try {
-                DLocation.Util.load(bedSpawn);
+                CLocations.load(bedSpawn);
             } catch (Throwable errored) {
                 bedSpawn = null;
             }
@@ -185,11 +187,11 @@ public class DCharacter implements Participant, ConfigurationSerializable {
     }
 
     public void setLocation(Location location) {
-        this.location = DLocation.Util.create(location).getId();
+        this.location = CLocations.create(location).getId();
     }
 
     public void setBedSpawn(Location location) {
-        this.bedSpawn = DLocation.Util.create(location).getId();
+        this.bedSpawn = CLocations.create(location).getId();
     }
 
     public void setGameMode(GameMode gameMode) {
@@ -209,7 +211,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
             if (potionEffects == null) potionEffects = Sets.newHashSet();
 
             for (PotionEffect potion : potions)
-                potionEffects.add((new SavedPotion(potion)).getId().toString());
+                potionEffects.add((new DSavedPotion(potion)).getId().toString());
         }
     }
 
@@ -232,11 +234,11 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         return set;
     }
 
-    public Collection<SavedPotion> getRawPotionEffects() {
+    public Collection<DSavedPotion> getRawPotionEffects() {
         if (potionEffects == null) potionEffects = Sets.newHashSet();
-        return Collections2.transform(potionEffects, new Function<String, SavedPotion>() {
+        return Collections2.transform(potionEffects, new Function<String, DSavedPotion>() {
             @Override
-            public SavedPotion apply(String s) {
+            public DSavedPotion apply(String s) {
                 try {
                     return DataManager.savedPotions.get(UUID.fromString(s));
                 } catch (Exception ignored) {
@@ -246,7 +248,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         });
     }
 
-    public Inventory getInventory() {
+    public CInventory getInventory() {
         if (Util.getInventory(inventory) == null) inventory = Util.createEmptyInventory().getId();
         return Util.getInventory(inventory);
     }
@@ -269,12 +271,12 @@ public class DCharacter implements Participant, ConfigurationSerializable {
 
     public Location getLocation() {
         if (location == null) return null;
-        return DLocation.Util.load(location).toLocation();
+        return CLocations.load(location).toLocation();
     }
 
     public Location getBedSpawn() {
         if (bedSpawn == null) return null;
-        return DLocation.Util.load(bedSpawn).toLocation();
+        return CLocations.load(bedSpawn).toLocation();
     }
 
     public GameMode getGameMode() {
@@ -369,22 +371,22 @@ public class DCharacter implements Participant, ConfigurationSerializable {
 
     public void addDeath() {
         if (deaths == null) deaths = Sets.newHashSet();
-        deaths.add(new Death(this).getId().toString());
+        deaths.add(new DDeath(this).getId().toString());
         Util.save(this);
     }
 
     public void addDeath(DCharacter attacker) {
-        deaths.add(new Death(this, attacker).getId().toString());
+        deaths.add(new DDeath(this, attacker).getId().toString());
         Util.save(this);
     }
 
-    public Collection<Death> getDeaths() {
+    public Collection<DDeath> getDeaths() {
         if (deaths == null) deaths = Sets.newHashSet();
-        return Collections2.transform(deaths, new Function<String, Death>() {
+        return Collections2.transform(deaths, new Function<String, DDeath>() {
             @Override
-            public Death apply(String s) {
+            public DDeath apply(String s) {
                 try {
-                    return Death.Util.load(UUID.fromString(s));
+                    return DDeath.Util.load(UUID.fromString(s));
                 } catch (Exception ignored) {
                 }
                 return null;
@@ -420,8 +422,8 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         return id;
     }
 
-    public Collection<Pet> getPets() {
-        return Pet.Util.findByOwner(id);
+    public Collection<DPet> getPets() {
+        return DPet.Util.findByOwner(id);
     }
 
     public void remove() {
@@ -433,7 +435,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         // Remove the data
         for (StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
             if (structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
-        for (SavedPotion potion : getRawPotionEffects())
+        for (DSavedPotion potion : getRawPotionEffects())
             DataManager.savedPotions.remove(potion.getId());
         Util.deleteInventory(getInventory().getId());
         Util.deleteMeta(getMeta().getId());
@@ -494,141 +496,28 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         player.setPlayerListName(getDeity().getColor() + getName());
 
         // Re-own pets
-        Pet.Util.reownPets(player, this);
+        DPet.Util.reownPets(player, this);
     }
 
-    public static class Inventory implements ConfigurationSerializable {
-        private UUID id;
-        private UUID helmet;
-        private UUID chestplate;
-        private UUID leggings;
-        private UUID boots;
-        private String[] items;
-
+    public static class Inventory extends CInventory {
         public Inventory() {
+            super();
         }
 
         public Inventory(UUID id, ConfigurationSection conf) {
-            this.id = id;
-            if (conf.getString("helmet") != null) helmet = UUID.fromString(conf.getString("helmet"));
-            if (conf.getString("chestplate") != null) chestplate = UUID.fromString(conf.getString("chestplate"));
-            if (conf.getString("leggings") != null) leggings = UUID.fromString(conf.getString("leggings"));
-            if (conf.getString("boots") != null) boots = UUID.fromString(conf.getString("boots"));
-            if (conf.getStringList("items") != null) {
-                List<String> stringItems = conf.getStringList("items");
-                items = new String[stringItems.size()];
-                for (int i = 0; i < stringItems.size(); i++)
-                    items[i] = stringItems.get(i);
-            }
+            super(id, conf);
         }
 
-        @Override
-        public Map<String, Object> serialize() {
-            Map<String, Object> map = Maps.newHashMap();
-            if (helmet != null) map.put("helmet", helmet.toString());
-            if (chestplate != null) map.put("chestplate", chestplate.toString());
-            if (leggings != null) map.put("leggings", leggings.toString());
-            if (boots != null) map.put("boots", boots.toString());
-            if (items != null) map.put("items", Lists.newArrayList(items));
-            return map;
+        protected CItemStack create(ItemStack itemStack) {
+            return CItemStacks.create(itemStack);
         }
 
-        public void generateId() {
-            id = UUID.randomUUID();
+        protected CItemStack load(UUID itemStack) {
+            return CItemStacks.load(itemStack);
         }
 
-        void setHelmet(ItemStack helmet) {
-            this.helmet = CItemStacks.create(helmet).getId();
-        }
-
-        void setChestplate(ItemStack chestplate) {
-            this.chestplate = CItemStacks.create(chestplate).getId();
-        }
-
-        void setLeggings(ItemStack leggings) {
-            this.leggings = CItemStacks.create(leggings).getId();
-        }
-
-        void setBoots(ItemStack boots) {
-            this.boots = CItemStacks.create(boots).getId();
-        }
-
-        void setItems(org.bukkit.inventory.Inventory inventory) {
-            if (this.items == null) this.items = new String[36];
-            for (int i = 0; i < 35; i++) {
-                if (inventory.getItem(i) == null)
-                    this.items[i] = CItemStacks.create(new ItemStack(Material.AIR)).getId().toString();
-                else this.items[i] = CItemStacks.create(inventory.getItem(i)).getId().toString();
-            }
-        }
-
-        public UUID getId() {
-            return this.id;
-        }
-
-        public ItemStack getHelmet() {
-            if (this.helmet == null) return null;
-            CItemStack item = CItemStacks.load(this.helmet);
-            if (item != null) return item.toItemStack();
-            return null;
-        }
-
-        public ItemStack getChestplate() {
-            if (this.chestplate == null) return null;
-            CItemStack item = CItemStacks.load(this.chestplate);
-            if (item != null) return item.toItemStack();
-            return null;
-        }
-
-        public ItemStack getLeggings() {
-            if (this.leggings == null) return null;
-            CItemStack item = CItemStacks.load(this.leggings);
-            if (item != null) return item.toItemStack();
-            return null;
-        }
-
-        public ItemStack getBoots() {
-            if (this.boots == null) return null;
-            CItemStack item = CItemStacks.load(this.boots);
-            if (item != null) return item.toItemStack();
-            return null;
-        }
-
-        /**
-         * Applies this inventory to the given <code>player</code>.
-         *
-         * @param player the player for whom apply the inventory.
-         */
-        public void setToPlayer(Player player) {
-            // Define the inventory
-            PlayerInventory inventory = player.getInventory();
-
-            // Clear it all first
-            inventory.clear();
-            inventory.setHelmet(new ItemStack(Material.AIR));
-            inventory.setChestplate(new ItemStack(Material.AIR));
-            inventory.setLeggings(new ItemStack(Material.AIR));
-            inventory.setBoots(new ItemStack(Material.AIR));
-
-            // Set the armor contents
-            if (getHelmet() != null) inventory.setHelmet(getHelmet());
-            if (getChestplate() != null) inventory.setChestplate(getChestplate());
-            if (getLeggings() != null) inventory.setLeggings(getLeggings());
-            if (getBoots() != null) inventory.setBoots(getBoots());
-
-            if (this.items != null) {
-                // Set items
-                for (int i = 0; i < 35; i++) {
-                    if (this.items[i] != null) {
-                        ItemStack itemStack = CItemStacks.load(UUID.fromString(this.items[i])).toItemStack();
-                        if (itemStack != null)
-                            inventory.setItem(i, CItemStacks.load(UUID.fromString(this.items[i])).toItemStack());
-                    }
-                }
-            }
-
-            // Delete
-            Util.deleteInventory(id);
+        protected void delete() {
+            DataManager.inventories.remove(getId());
         }
     }
 
@@ -743,7 +632,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         }
 
         public void addWarp(String name, Location location) {
-            warps.put(name.toLowerCase(), DLocation.Util.create(location).getId().toString());
+            warps.put(name.toLowerCase(), CLocations.create(location).getId().toString());
             Util.saveMeta(this);
         }
 
@@ -766,7 +655,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         }
 
         public void addInvite(String name, Location location) {
-            getInvites().put(name.toLowerCase(), DLocation.Util.create(location).getId().toString());
+            getInvites().put(name.toLowerCase(), CLocations.create(location).getId().toString());
             Util.saveMeta(this);
         }
 
@@ -1000,7 +889,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
             return character;
         }
 
-        public static Inventory createInventory(DCharacter character) {
+        public static CInventory createInventory(DCharacter character) {
             PlayerInventory inventory = character.getOfflinePlayer().getPlayer().getInventory();
             Inventory charInventory = new Inventory();
             charInventory.generateId();
@@ -1013,7 +902,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
             return charInventory;
         }
 
-        public static Inventory createEmptyInventory() {
+        public static CInventory createEmptyInventory() {
             Inventory charInventory = new Inventory();
             charInventory.generateId();
             charInventory.setHelmet(new ItemStack(Material.AIR));
@@ -1056,7 +945,7 @@ public class DCharacter implements Participant, ConfigurationSerializable {
             return null;
         }
 
-        public static SavedPotion getSavedPotion(UUID id) {
+        public static DSavedPotion getSavedPotion(UUID id) {
             try {
                 return DataManager.savedPotions.get(id);
             } catch (Exception ignored) {
