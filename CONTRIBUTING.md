@@ -8,7 +8,7 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
 1. Always update to the most recent master release; the bug may already be resolved.
 
-2. Search for similar issues on the [Demigods forum][f], or here on the GitHub issues page; it may already be an identified problem.
+2. Search for similar issues on the [Demigods RPG forum][f], or here on the GitHub issues page; it may already be an identified problem.
 
 3. Make sure you can reproduce your problem on our test server at beta.demigodsrpg.com (accessed from Minecraft)
 
@@ -39,7 +39,7 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
 3. Code
   * Adhere to common conventions you see in the existing code.
-  * Search to see if your new functionality has been discussed on [the Demigods forum][f] or the applicable GitHub issue, and include updates as appropriate.
+  * Search to see if your new functionality has been discussed on [the Demigods RPG forum][f] or the applicable GitHub issue, and include updates as appropriate.
 
 4. Issue a Pull Request
 
@@ -59,4 +59,4 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
   The Demigods team may recommend adjustments to your code. Part of interacting with a healthy open-source community requires you to be open to learning new techniques and strategies; *don't get discouraged!* Remember: if the Demigods team suggest changes to your code, **they care enough about your work that they want to include it**, and hope that you can assist by implementing those revisions on your own.
 
-[f]: http://forum.demigodsrpg.com/category/demigods-development
+[f]: http://forum.demigodsrpg.com/category/demigods-rpg-discussion/demigods-development
