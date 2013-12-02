@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;

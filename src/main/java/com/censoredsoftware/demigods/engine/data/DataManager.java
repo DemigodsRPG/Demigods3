@@ -1,9 +1,13 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import com.censoredsoftware.censoredlib.data.ServerData;
+import com.censoredsoftware.censoredlib.data.TimedData;
+import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.helper.ConfigFile;
-import com.censoredsoftware.demigods.engine.item.DItemStack;
+import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
+import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.player.*;
@@ -29,7 +33,7 @@ public class DataManager {
     public static ConcurrentMap<UUID, Death> deaths;
     public static ConcurrentMap<UUID, Skill> skills;
     public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
-    public static ConcurrentMap<UUID, DItemStack> itemStacks;
+    public static ConcurrentMap<UUID, CItemStack> itemStacks;
     public static ConcurrentMap<UUID, SavedPotion> savedPotions;
     public static ConcurrentMap<UUID, Pet> pets;
     public static ConcurrentMap<UUID, Notification> notifications;
@@ -106,7 +110,7 @@ public class DataManager {
      */
     public static void saveTimed(String key, String subKey, Object data, Integer seconds) {
         // Remove the data if it exists already
-        TimedData.Util.remove(key, subKey);
+        TimedDatas.remove(key, subKey);
 
         // Create and save the timed data
         TimedData timedData = new TimedData();
@@ -123,7 +127,7 @@ public class DataManager {
      */
     public static void saveTimedWeek(String key, String subKey, Object data) {
         // Remove the data if it exists already
-        TimedData.Util.remove(key, subKey);
+        TimedDatas.remove(key, subKey);
 
         // Create and save the timed data
         TimedData timedData = new TimedData();
@@ -136,19 +140,19 @@ public class DataManager {
     }
 
     public static void removeTimed(String key, String subKey) {
-        TimedData.Util.remove(key, subKey);
+        TimedDatas.remove(key, subKey);
     }
 
     public static boolean hasTimed(String key, String subKey) {
-        return TimedData.Util.find(key, subKey) != null;
+        return TimedDatas.find(key, subKey) != null;
     }
 
     public static Object getTimedValue(String key, String subKey) {
-        return TimedData.Util.find(key, subKey).getData();
+        return TimedDatas.find(key, subKey).getData();
     }
 
     public static long getTimedExpiration(String key, String subKey) {
-        return TimedData.Util.find(key, subKey).getExpiration();
+        return TimedDatas.find(key, subKey).getExpiration();
     }
 
     /*
@@ -156,7 +160,7 @@ public class DataManager {
      */
     public static void saveServerData(String key, String subKey, Object data) {
         // Remove the data if it exists already
-        ServerData.Util.remove(key, subKey);
+        ServerDatas.remove(key, subKey);
 
         // Create and save the timed data
         ServerData serverData = new ServerData();
@@ -168,15 +172,15 @@ public class DataManager {
     }
 
     public static void removeServerData(String key, String subKey) {
-        ServerData.Util.remove(key, subKey);
+        ServerDatas.remove(key, subKey);
     }
 
     public static boolean hasServerData(String key, String subKey) {
-        return ServerData.Util.find(key, subKey) != null;
+        return ServerDatas.find(key, subKey) != null;
     }
 
     public static Object getServerDataValue(String key, String subKey) {
-        return ServerData.Util.find(key, subKey).getData();
+        return ServerDatas.find(key, subKey).getData();
     }
 
     public static enum File {
@@ -460,14 +464,14 @@ public class DataManager {
             public void loadToData() {
                 inventories = loadFromFile();
             }
-        }), ITEM_STACK(new ConfigFile<UUID, DItemStack>() {
+        }), ITEM_STACK(new ConfigFile<UUID, CItemStack>() {
             @Override
-            public DItemStack create(UUID uuid, ConfigurationSection conf) {
-                return new DItemStack(uuid, conf);
+            public CItemStack create(UUID uuid, ConfigurationSection conf) {
+                return new CItemStack(uuid, conf);
             }
 
             @Override
-            public ConcurrentMap<UUID, DItemStack> getLoadedData() {
+            public ConcurrentMap<UUID, CItemStack> getLoadedData() {
                 return DataManager.itemStacks;
             }
 
@@ -752,4 +756,6 @@ public class DataManager {
             return save;
         }
     }
+
+
 }

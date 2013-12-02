@@ -1,8 +1,9 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.helper.WrappedCommand;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand {
     public DevelopmentCommands() {
-        super(false);
+        super(Demigods.PLUGIN, false);
     }
 
     @Override

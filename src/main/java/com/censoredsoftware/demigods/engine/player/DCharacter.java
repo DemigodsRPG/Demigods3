@@ -1,13 +1,14 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
+import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.util.CItemStacks;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.item.DItemStack;
-import com.censoredsoftware.demigods.engine.language.Symbol;
 import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
 import com.censoredsoftware.demigods.engine.location.DLocation;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -537,27 +538,27 @@ public class DCharacter implements Participant, ConfigurationSerializable {
         }
 
         void setHelmet(ItemStack helmet) {
-            this.helmet = DItemStack.Util.create(helmet).getId();
+            this.helmet = CItemStacks.create(helmet).getId();
         }
 
         void setChestplate(ItemStack chestplate) {
-            this.chestplate = DItemStack.Util.create(chestplate).getId();
+            this.chestplate = CItemStacks.create(chestplate).getId();
         }
 
         void setLeggings(ItemStack leggings) {
-            this.leggings = DItemStack.Util.create(leggings).getId();
+            this.leggings = CItemStacks.create(leggings).getId();
         }
 
         void setBoots(ItemStack boots) {
-            this.boots = DItemStack.Util.create(boots).getId();
+            this.boots = CItemStacks.create(boots).getId();
         }
 
         void setItems(org.bukkit.inventory.Inventory inventory) {
             if (this.items == null) this.items = new String[36];
             for (int i = 0; i < 35; i++) {
                 if (inventory.getItem(i) == null)
-                    this.items[i] = DItemStack.Util.create(new ItemStack(Material.AIR)).getId().toString();
-                else this.items[i] = DItemStack.Util.create(inventory.getItem(i)).getId().toString();
+                    this.items[i] = CItemStacks.create(new ItemStack(Material.AIR)).getId().toString();
+                else this.items[i] = CItemStacks.create(inventory.getItem(i)).getId().toString();
             }
         }
 
@@ -567,28 +568,28 @@ public class DCharacter implements Participant, ConfigurationSerializable {
 
         public ItemStack getHelmet() {
             if (this.helmet == null) return null;
-            DItemStack item = DItemStack.Util.load(this.helmet);
+            CItemStack item = CItemStacks.load(this.helmet);
             if (item != null) return item.toItemStack();
             return null;
         }
 
         public ItemStack getChestplate() {
             if (this.chestplate == null) return null;
-            DItemStack item = DItemStack.Util.load(this.chestplate);
+            CItemStack item = CItemStacks.load(this.chestplate);
             if (item != null) return item.toItemStack();
             return null;
         }
 
         public ItemStack getLeggings() {
             if (this.leggings == null) return null;
-            DItemStack item = DItemStack.Util.load(this.leggings);
+            CItemStack item = CItemStacks.load(this.leggings);
             if (item != null) return item.toItemStack();
             return null;
         }
 
         public ItemStack getBoots() {
             if (this.boots == null) return null;
-            DItemStack item = DItemStack.Util.load(this.boots);
+            CItemStack item = CItemStacks.load(this.boots);
             if (item != null) return item.toItemStack();
             return null;
         }
@@ -619,9 +620,9 @@ public class DCharacter implements Participant, ConfigurationSerializable {
                 // Set items
                 for (int i = 0; i < 35; i++) {
                     if (this.items[i] != null) {
-                        ItemStack itemStack = DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack();
+                        ItemStack itemStack = CItemStacks.load(UUID.fromString(this.items[i])).toItemStack();
                         if (itemStack != null)
-                            inventory.setItem(i, DItemStack.Util.load(UUID.fromString(this.items[i])).toItemStack());
+                            inventory.setItem(i, CItemStacks.load(UUID.fromString(this.items[i])).toItemStack());
                     }
                 }
             }

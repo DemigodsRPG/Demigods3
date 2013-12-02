@@ -1,12 +1,12 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
+import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
+import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.exception.MojangIdNotFoundException;
-import com.censoredsoftware.demigods.engine.helper.ColoredStringBuilder;
-import com.censoredsoftware.demigods.engine.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.location.Region;
 import com.censoredsoftware.demigods.engine.structure.Structure;

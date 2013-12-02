@@ -1,5 +1,8 @@
 package com.censoredsoftware.demigods.engine;
 
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.engine.command.GeneralCommands;
@@ -9,10 +12,6 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.helper.MojangIdGrabber;
-import com.censoredsoftware.demigods.engine.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.engine.helper.WrappedCommand;
-import com.censoredsoftware.demigods.engine.helper.WrappedConversation;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.listener.ZoneListener;
@@ -109,9 +108,6 @@ public class Demigods {
         loadListeners();
         loadCommands();
         loadPermissions();
-
-        // Load Mojang Id Grabber
-        MojangIdGrabber.load();
 
         // Update usable characters
         DCharacter.Util.updateUsableCharacters();

@@ -28,8 +28,8 @@
 
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
         <spigot.version>1.7.2-R0.1-SNAPSHOT</spigot.version>
-        <mcstats.version>R7</mcstats.version>
         <worldguard.version>5.8.1-SNAPSHOT</worldguard.version>
     </properties>
 
@@ -65,17 +65,17 @@
             <id>md_5-releases</id>
             <url>http://repo.md-5.net/content/repositories/snapshots</url>
         </repository>
-        <repository>
-            <id>sk89q-repo</id>
-            <url>http://maven.sk89q.com/repo</url>
-        </repository>
-        <repository>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
-        </repository>
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.censoredsoftware</groupId>
+            <artifactId>CensoredLib</artifactId>
+            <version>${censoredLib.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+            <optional>false</optional>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -146,26 +146,6 @@
             <type>jar</type>
             <optional>false</optional>
         </dependency>
-        <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics-lite</artifactId>
-            <version>${mcstats.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>AccountsClient</artifactId>
-            <version>latest</version>
-            <scope>compile</scope>
-            <optional>false</optional>
-        </dependency>
     </dependencies>
 
     <build>
@@ -183,28 +163,6 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>1.7.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>org.mcstats.bukkit:metrics-lite</include>
-                                    <include>com.mojang:AccountsClient</include>
-                                    <include>com.google.code.gson:gson</include>
-                                </includes>
-                            </artifactSet>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
