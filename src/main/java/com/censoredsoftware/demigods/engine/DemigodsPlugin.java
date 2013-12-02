@@ -40,9 +40,6 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
             Demigods.load();
         } catch (DemigodsInitializationException errored) {
             READY = false;
-        }
-
-        if (!READY) {
             getPluginLoader().disablePlugin(this);
             return;
         }
