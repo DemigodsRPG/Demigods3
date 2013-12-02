@@ -34,6 +34,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
 
         if (!result) {
             // TODO Auto-download/update.
+            getLogger().severe("Demigods cannot load without CensoredLib installed.");
             return;
         }
 
