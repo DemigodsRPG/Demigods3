@@ -32,7 +32,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
     public void onEnable() {
         if (!checkForCensoredLib()) return;
 
-        handleDependentPlugins();
+        // handleDependentPlugins();
 
         // Load the game engine.
         Demigods.load();
