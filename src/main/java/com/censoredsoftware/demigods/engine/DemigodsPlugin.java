@@ -22,8 +22,8 @@ import java.util.jar.JarFile;
  * Class for all plugins of demigods.
  */
 public class DemigodsPlugin extends CensoredJavaPlugin {
-    private static final String CENSORED_LIBRARY_VERSION = "1.0.0-SNAPSHOT";
-    private static boolean READY = false;
+    private static final String CENSORED_LIBRARY_VERSION = "1.0";
+    static boolean READY = false;
 
     /**
      * The Bukkit enable method.
@@ -35,7 +35,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
         handleDependentPlugins();
 
         // Load the game engine.
-        READY = Demigods.load();
+        Demigods.load();
 
         // Print success!
         Messages.info("Successfully enabled.");
@@ -73,7 +73,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
     private boolean checkForCensoredLib() {
         // Check for CensoredLib
         Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
-        if (check instanceof CensoredLibPlugin && check.getDescription().getVersion().equals(CENSORED_LIBRARY_VERSION))
+        if (check instanceof CensoredLibPlugin && check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION))
             return true;
         // TODO Auto-download/update.
         getLogger().severe("Demigods cannot load without CensoredLib installed.");

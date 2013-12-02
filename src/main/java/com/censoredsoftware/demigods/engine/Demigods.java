@@ -79,7 +79,7 @@ public class Demigods {
     }
 
     // Load everything else.
-    protected static boolean load() {
+    protected static void load() {
         // Initialize metrics
         try {
             (new MetricsLite(PLUGIN)).start();
@@ -129,11 +129,10 @@ public class Demigods {
             for (DCharacter character : DCharacter.Util.loadAll())
                 character.getMeta().cleanSkills();
 
-            return true;
+            DemigodsPlugin.READY = true;
         } catch (Exception errored) {
             errored.printStackTrace();
         }
-        return false;
     }
 
     private static int loadWorlds() {
