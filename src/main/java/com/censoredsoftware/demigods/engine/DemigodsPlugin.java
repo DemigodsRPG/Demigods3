@@ -4,7 +4,6 @@ import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
-import com.censoredsoftware.demigods.engine.exception.DemigodsInitializationException;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -24,7 +23,7 @@ import java.util.jar.JarFile;
  */
 public class DemigodsPlugin extends CensoredJavaPlugin {
     private static final String CENSORED_LIBRARY_VERSION = "1.0.0-SNAPSHOT";
-    private static boolean READY = true;
+    private static boolean READY = false;
 
     /**
      * The Bukkit enable method.
@@ -35,14 +34,8 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
 
         handleDependentPlugins();
 
-        try {
-            // Load the game engine.
-            Demigods.load();
-        } catch (DemigodsInitializationException errored) {
-            READY = false;
-            getPluginLoader().disablePlugin(this);
-            return;
-        }
+        // Load the game engine.
+        READY = Demigods.load();
 
         // Print success!
         Messages.info("Successfully enabled.");

@@ -12,7 +12,6 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.exception.DemigodsInitializationException;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.listener.ZoneListener;
@@ -80,7 +79,7 @@ public class Demigods {
     }
 
     // Load everything else.
-    protected static void load() {
+    protected static boolean load() {
         // Initialize metrics
         try {
             (new MetricsLite(PLUGIN)).start();
@@ -88,7 +87,6 @@ public class Demigods {
         }
 
         try {
-
             // Start the data
             SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
@@ -130,11 +128,12 @@ public class Demigods {
             // Handle online characters
             for (DCharacter character : DCharacter.Util.loadAll())
                 character.getMeta().cleanSkills();
-        } catch (Throwable errored) {
+
+            return true;
+        } catch (Exception errored) {
             errored.printStackTrace();
-            Messages.severe("Something went wrong during Demigods initialization.");
-            throw new DemigodsInitializationException();
         }
+        return false;
     }
 
     private static int loadWorlds() {
