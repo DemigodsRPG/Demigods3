@@ -87,7 +87,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin {
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             // Not soft-depend
             List<String> depends = plugin.getDescription().getDepend();
-            if (depends.contains("Demigods")) {
+            if (depends != null && !depends.isEmpty() && depends.contains("Demigods")) {
                 getLogger().warning(plugin.getName() + " v" + plugin.getDescription().getVersion() + " was installed in the wrong directory.");
                 getLogger().warning("Please put all plugins that depend on Demigods in the correct folder.");
                 getLogger().warning("Like this: " + getDataFolder().getPath() + "/plugins/" + plugin.getName() + ".jar");
