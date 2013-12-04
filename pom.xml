@@ -62,6 +62,14 @@
 
     <repositories>
         <repository>
+            <id>md5-repo</id>
+            <url>http://repo.md-5.net</url>
+        </repository>
+        <repository>
+            <id>censoredsoftware-repo</id>
+            <url>http://repo.censoredsoftware.com</url>
+        </repository>
+        <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo</url>
         </repository>
