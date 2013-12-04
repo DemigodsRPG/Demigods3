@@ -7,17 +7,21 @@ import org.bukkit.potion.PotionEffect;
 
 import java.util.UUID;
 
-public class DSavedPotion extends SavedPotion {
+public class DSavedPotion extends SavedPotion
+{
 
-    public DSavedPotion(PotionEffect effect) {
-        super(effect);
-    }
+	public DSavedPotion(PotionEffect effect)
+	{
+		super(effect);
+	}
 
-    public DSavedPotion(UUID id, ConfigurationSection conf) {
-        super(id, conf);
-    }
+	public DSavedPotion(UUID id, ConfigurationSection conf)
+	{
+		super(id, conf);
+	}
 
-    protected void save() {
-        DataManager.savedPotions.put(getId(), this);
-    }
+	protected void save()
+	{
+		DataManager.savedPotions.put(getId(), this);
+	}
 }

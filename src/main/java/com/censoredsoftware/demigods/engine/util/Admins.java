@@ -8,71 +8,80 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class Admins {
-    /**
-     * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
-     *
-     * @param player the player to check.
-     * @return boolean
-     */
-    public static boolean wandEnabled(OfflinePlayer player) {
-        return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_wand").toString());
-    }
+public class Admins
+{
+	/**
+	 * Returns true if the <code>player</code> is an admin and has their admin wand enabled.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean wandEnabled(OfflinePlayer player)
+	{
+		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_wand") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_wand").toString());
+	}
 
-    /**
-     * Returns true if the <code>player</code>'s admin wand is enabled and in their hand.
-     *
-     * @param player the player to check.
-     * @return boolean
-     */
-    public static boolean useWand(OfflinePlayer player) {
-        return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
-    }
+	/**
+	 * Returns true if the <code>player</code>'s admin wand is enabled and in their hand.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean useWand(OfflinePlayer player)
+	{
+		return wandEnabled(player) && player.getPlayer().getItemInHand().getTypeId() == Configs.getSettingInt("admin.wand_tool");
+	}
 
-    /**
-     * Returns true if <code>player</code>'s demigods debugging is enabled.
-     *
-     * @param player the player to check.
-     * @return boolean
-     */
-    public static boolean playerDebugEnabled(OfflinePlayer player) {
-        return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString());
-    }
+	/**
+	 * Returns true if <code>player</code>'s demigods debugging is enabled.
+	 * 
+	 * @param player the player to check.
+	 * @return boolean
+	 */
+	public static boolean playerDebugEnabled(OfflinePlayer player)
+	{
+		return player.getPlayer().hasPermission("demigods.admin") && DataManager.hasKeyTemp(player.getName(), "temp_admin_debug") && Boolean.parseBoolean(DataManager.getValueTemp(player.getName(), "temp_admin_debug").toString());
+	}
 
-    /**
-     * Returns true if console debugging is enabled in the config.
-     *
-     * @return boolean
-     */
-    public static boolean consoleDebugEnabled() {
-        return Configs.getSettingBoolean("misc.console_debug");
-    }
+	/**
+	 * Returns true if console debugging is enabled in the config.
+	 * 
+	 * @return boolean
+	 */
+	public static boolean consoleDebugEnabled()
+	{
+		return Configs.getSettingBoolean("misc.console_debug");
+	}
 
-    /**
-     * Sends the <code>message</code> to all applicable recipients.
-     *
-     * @param message the message to send.
-     */
-    public static void sendDebug(String message) {
-        // Log to console
-        if (consoleDebugEnabled()) Messages.info("[Debug] " + ChatColor.stripColor(message));
+	/**
+	 * Sends the <code>message</code> to all applicable recipients.
+	 * 
+	 * @param message the message to send.
+	 */
+	public static void sendDebug(String message)
+	{
+		// Log to console
+		if(consoleDebugEnabled()) Messages.info("[Debug] " + ChatColor.stripColor(message));
 
-        // Log to online, debugging admins
-        for (Player player : getOnlineAdmins()) {
-            if (playerDebugEnabled(player)) player.sendMessage(ChatColor.RED + "[Debug] " + message);
-        }
-    }
+		// Log to online, debugging admins
+		for(Player player : getOnlineAdmins())
+		{
+			if(playerDebugEnabled(player)) player.sendMessage(ChatColor.RED + "[Debug] " + message);
+		}
+	}
 
-    /**
-     * Returns an ArrayList of all online admins.
-     *
-     * @return ArrayList
-     */
-    public static ArrayList<Player> getOnlineAdmins() {
-        ArrayList<Player> toReturn = new ArrayList<Player>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("demigods.admin")) toReturn.add(player);
-        }
-        return toReturn;
-    }
+	/**
+	 * Returns an ArrayList of all online admins.
+	 * 
+	 * @return ArrayList
+	 */
+	public static ArrayList<Player> getOnlineAdmins()
+	{
+		ArrayList<Player> toReturn = new ArrayList<Player>();
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(player.hasPermission("demigods.admin")) toReturn.add(player);
+		}
+		return toReturn;
+	}
 }

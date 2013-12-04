@@ -221,8 +221,8 @@ public class Skill implements ConfigurationSerializable
 				DCharacter character = participant.getRelatedCharacter();
 
 				// Define all variables used for skill point calculation
-                int mvpBonus = battle.getMVPs().contains(participant.getRelatedCharacter()) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
-                int kills = battle.getKills(participant);
+				int mvpBonus = battle.getMVPs().contains(participant.getRelatedCharacter()) ? Configs.getSettingInt("bonuses.mvp_skill_points") : 1;
+				int kills = battle.getKills(participant);
 				int deaths = battle.getDeaths(participant);
 
 				// Calculate skill points

@@ -13,65 +13,84 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
-public class DDeath extends Death {
+public class DDeath extends Death
+{
 
-    public DDeath(DCharacter killed) {
-        super(killed.getId());
-    }
+	public DDeath(DCharacter killed)
+	{
+		super(killed.getId());
+	}
 
-    public DDeath(DCharacter killed, DCharacter attacking) {
-        super(killed.getId(), attacking.getId());
-    }
+	public DDeath(DCharacter killed, DCharacter attacking)
+	{
+		super(killed.getId(), attacking.getId());
+	}
 
-    public DDeath(UUID id, ConfigurationSection conf) {
-        super(id, conf);
-    }
+	public DDeath(UUID id, ConfigurationSection conf)
+	{
+		super(id, conf);
+	}
 
-    @Override
-    protected void save() {
-        Util.save(this);
-    }
+	@Override
+	protected void save()
+	{
+		Util.save(this);
+	}
 
-    public static class Util {
-        public static DDeath load(UUID id) {
-            return DataManager.deaths.get(id);
-        }
+	public static class Util
+	{
+		public static DDeath load(UUID id)
+		{
+			return DataManager.deaths.get(id);
+		}
 
-        public static void save(DDeath death) {
-            DataManager.deaths.put(death.getId(), death);
-        }
+		public static void save(DDeath death)
+		{
+			DataManager.deaths.put(death.getId(), death);
+		}
 
-        public static void delete(UUID id) {
-            DataManager.deaths.remove(id);
-        }
+		public static void delete(UUID id)
+		{
+			DataManager.deaths.remove(id);
+		}
 
-        public static Set<DDeath> getRecentDeaths(int seconds) {
-            final long time = System.currentTimeMillis() - (seconds * 1000);
-            return Sets.newHashSet(Iterables.filter(Iterables.concat(Collections2.transform(DCharacter.Util.getOnlineCharacters(), new Function<DCharacter, Collection<DDeath>>() {
-                @Override
-                public Collection<DDeath> apply(DCharacter character) {
-                    try {
-                        return character.getDeaths();
-                    } catch (java.lang.Exception ignored) {
-                    }
-                    return null;
-                }
-            })), new Predicate<DDeath>() {
-                @Override
-                public boolean apply(DDeath death) {
-                    return death.getDeathTime() >= time;
-                }
-            }));
-        }
+		public static Set<DDeath> getRecentDeaths(int seconds)
+		{
+			final long time = System.currentTimeMillis() - (seconds * 1000);
+			return Sets.newHashSet(Iterables.filter(Iterables.concat(Collections2.transform(DCharacter.Util.getOnlineCharacters(), new Function<DCharacter, Collection<DDeath>>()
+			{
+				@Override
+				public Collection<DDeath> apply(DCharacter character)
+				{
+					try
+					{
+						return character.getDeaths();
+					}
+					catch(java.lang.Exception ignored)
+					{}
+					return null;
+				}
+			})), new Predicate<DDeath>()
+			{
+				@Override
+				public boolean apply(DDeath death)
+				{
+					return death.getDeathTime() >= time;
+				}
+			}));
+		}
 
-        public static Collection<DDeath> getRecentDeaths(DCharacter character, int seconds) {
-            final long time = System.currentTimeMillis() - (seconds * 1000);
-            return Collections2.filter(character.getDeaths(), new Predicate<DDeath>() {
-                @Override
-                public boolean apply(DDeath death) {
-                    return death.getDeathTime() >= time;
-                }
-            });
-        }
-    }
+		public static Collection<DDeath> getRecentDeaths(DCharacter character, int seconds)
+		{
+			final long time = System.currentTimeMillis() - (seconds * 1000);
+			return Collections2.filter(character.getDeaths(), new Predicate<DDeath>()
+			{
+				@Override
+				public boolean apply(DDeath death)
+				{
+					return death.getDeathTime() >= time;
+				}
+			});
+		}
+	}
 }

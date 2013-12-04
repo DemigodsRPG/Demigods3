@@ -9,51 +9,63 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.UUID;
 
-public class TimedDatas {
-    public static TimedData get(UUID id) {
-        return DataManager.timedData.get(id);
-    }
+public class TimedDatas
+{
+	public static TimedData get(UUID id)
+	{
+		return DataManager.timedData.get(id);
+	}
 
-    public static Set<TimedData> getAll() {
-        return Sets.newHashSet(DataManager.timedData.values());
-    }
+	public static Set<TimedData> getAll()
+	{
+		return Sets.newHashSet(DataManager.timedData.values());
+	}
 
-    public static TimedData find(String key, String subKey) {
-        if (findByKey(key) == null) return null;
+	public static TimedData find(String key, String subKey)
+	{
+		if(findByKey(key) == null) return null;
 
-        for (TimedData data : findByKey(key))
-            if (data.getSubKey().equals(subKey)) return data;
+		for(TimedData data : findByKey(key))
+			if(data.getSubKey().equals(subKey)) return data;
 
-        return null;
-    }
+		return null;
+	}
 
-    public static Set<TimedData> findByKey(final String key) {
-        return Sets.newHashSet(Collections2.filter(getAll(), new Predicate<TimedData>() {
-            @Override
-            public boolean apply(TimedData serverData) {
-                return serverData.getKey().equals(key);
-            }
-        }));
-    }
+	public static Set<TimedData> findByKey(final String key)
+	{
+		return Sets.newHashSet(Collections2.filter(getAll(), new Predicate<TimedData>()
+		{
+			@Override
+			public boolean apply(TimedData serverData)
+			{
+				return serverData.getKey().equals(key);
+			}
+		}));
+	}
 
-    public static void delete(TimedData data) {
-        DataManager.timedData.remove(data.getId());
-    }
+	public static void delete(TimedData data)
+	{
+		DataManager.timedData.remove(data.getId());
+	}
 
-    public static void remove(String key, String subKey) {
-        if (find(key, subKey) != null) delete(find(key, subKey));
-    }
+	public static void remove(String key, String subKey)
+	{
+		if(find(key, subKey) != null) delete(find(key, subKey));
+	}
 
-    /**
-     * Updates all timed data.
-     */
-    public static void updateTimedData() {
-        for (TimedData data : Collections2.filter(getAll(), new Predicate<TimedData>() {
-            @Override
-            public boolean apply(TimedData data) {
-                return data.getExpiration() <= System.currentTimeMillis();
-            }
-        }))
-            delete(data);
-    }
+	/**
+	 * Updates all timed data.
+	 */
+	public static void updateTimedData()
+	{
+		for(TimedData data : Collections2.filter(getAll(), new Predicate<TimedData>()
+		{
+			@Override
+			public boolean apply(TimedData data)
+			{
+				return data.getExpiration() <= System.currentTimeMillis();
+			}
+		}))
+			delete(data);
+	}
 }

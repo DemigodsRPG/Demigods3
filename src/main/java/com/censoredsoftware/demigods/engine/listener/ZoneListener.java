@@ -21,8 +21,8 @@ public class ZoneListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDemigodsChat(DemigodsChatEvent event)
 	{
-        Set<Player> modified = Sets.newHashSet(event.getRecipients());
-        for(Player player : event.getRecipients())
+		Set<Player> modified = Sets.newHashSet(event.getRecipients());
+		for(Player player : event.getRecipients())
 			if(Zones.inNoDemigodsZone(player.getLocation())) modified.remove(player);
 		if(modified.size() < 1) event.setCancelled(true);
 		event.setRecipients(modified);
@@ -52,13 +52,15 @@ public class ZoneListener implements Listener
 		}
 	}
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onWorldLoad(WorldLoadEvent event) {
-        // TODO For option to disable newly created worlds.
-    }
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onWorldLoad(WorldLoadEvent event)
+	{
+		// TODO For option to disable newly created worlds.
+	}
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onWorldLoad(WorldUnloadEvent event) {
-        // TODO For bukkit enabled worlds.
-    }
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onWorldLoad(WorldUnloadEvent event)
+	{
+		// TODO For bukkit enabled worlds.
+	}
 }
