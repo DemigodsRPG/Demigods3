@@ -491,7 +491,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	@Override
 	public boolean canPvp()
 	{
-		return DPlayer.Util.getPlayer(getOfflinePlayer()).canPvp();
+		return DPlayer.Util.getPlayerFromName(getPlayerName()).canPvp();
 	}
 
 	public boolean isUsable()
@@ -530,7 +530,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
-		if(DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayer(getOfflinePlayer()).resetCurrent();
+		if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
 	}
 
 	public void sendAllianceMessage(String message)
