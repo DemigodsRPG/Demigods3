@@ -16,7 +16,7 @@ public enum GreekAlliance implements Alliance
 	/**
 	 * Special Alliances
 	 */
-	FATE("Fate", "A short description of the Fates.", "demigods.alliance.fate", PermissionDefault.OP, true), DONOR("Donor", "A short description of the Donors.", "demigods.alliance.donor", PermissionDefault.FALSE, false);
+	FATE("Fate", "A short description of the Fates.", "demigods.alliance.fate", PermissionDefault.OP, true), DONOR("Donor", "A short description of the Donors.", "demigods.alliance.donor", PermissionDefault.FALSE, true);
 
 	private String name, shortDescription, permission;
 	private PermissionDefault permissionDefault;
