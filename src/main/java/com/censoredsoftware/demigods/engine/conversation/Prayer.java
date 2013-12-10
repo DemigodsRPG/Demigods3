@@ -1008,12 +1008,12 @@ public class Prayer implements WrappedConversation
 			{
 				try
 				{
-					return ((Player) context.getForWhom()).hasPermission(GreekAlliance.valueOf(alliance.toUpperCase()).getPermission());
+					Alliance chosen = GreekAlliance.valueOf(alliance.toUpperCase());
+					return chosen.isPlayable() && ((Player) context.getForWhom()).hasPermission(chosen.getPermission());
 				}
 				catch(Exception ignored)
-				{
-					return false;
-				}
+				{}
+				return false;
 			}
 
 			@Override
