@@ -32,7 +32,7 @@ public interface Alliance
 				@Override
 				public boolean apply(Deity d)
 				{
-					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getAlliance().equals(alliance);
 				}
 			});
 		}
@@ -44,7 +44,7 @@ public interface Alliance
 				@Override
 				public boolean apply(Deity d)
 				{
-					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return player.hasPermission(d.getPermission()) && d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().equals(alliance);
 				}
 			});
 		}
@@ -56,7 +56,7 @@ public interface Alliance
 				@Override
 				public boolean apply(Deity d)
 				{
-					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getFlags().contains(Deity.Flag.PLAYABLE) && d.getFlags().contains(Deity.Flag.MAJOR_DEITY) && d.getAlliance().equals(alliance);
 				}
 			});
 		}
@@ -68,7 +68,7 @@ public interface Alliance
 				@Override
 				public boolean apply(Deity d)
 				{
-					return d.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return d.getAlliance().equals(alliance);
 				}
 			});
 		}
