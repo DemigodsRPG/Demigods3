@@ -561,7 +561,7 @@ public class DPlayer implements ConfigurationSerializable
 				public boolean apply(DPlayer player)
 				{
 					DCharacter character = player.getCurrent();
-					return character != null && character.isUsable() && character.isActive();
+					return character == null || !character.isUsable() || !character.isActive();
 				}
 			}), new Function<DPlayer, OfflinePlayer>()
 			{
