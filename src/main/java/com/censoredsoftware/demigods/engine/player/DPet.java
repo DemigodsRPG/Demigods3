@@ -7,7 +7,6 @@ import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.EntityType;
@@ -19,13 +18,6 @@ import java.util.UUID;
 
 public class DPet extends Pet implements Participant
 {
-	private UUID id;
-	private String entityType;
-	private String animalTamer;
-	private boolean PvP;
-	private UUID entityUUID;
-	private UUID owner;
-
 	public DPet()
 	{
 		super();
@@ -46,25 +38,14 @@ public class DPet extends Pet implements Participant
 		DataManager.pets.remove(getId());
 	}
 
-	public void setTamable(LivingEntity tameable)
-	{
-		this.entityType = tameable.getType().name();
-		this.entityUUID = tameable.getUniqueId();
-	}
-
 	public void setOwner(DCharacter owner)
 	{
 		setOwnerId(owner.getPlayerName(), owner.getId());
 	}
 
-	public boolean canPvp()
-	{
-		return this.PvP;
-	}
-
 	public DCharacter getOwner()
 	{
-		DCharacter owner = DCharacter.Util.load(this.owner);
+		DCharacter owner = DCharacter.Util.load(super.getOwnerId());
 		if(owner == null)
 		{
 			disownPet();
@@ -88,40 +69,9 @@ public class DPet extends Pet implements Participant
 	}
 
 	@Override
-	public UUID getId()
-	{
-		return this.id;
-	}
-
-	@Override
-	public Location getCurrentLocation()
-	{
-		try
-		{
-			return getEntity().getLocation();
-		}
-		catch(Exception ignored)
-		{}
-		return null;
-	}
-
-	@Override
 	public DCharacter getRelatedCharacter()
 	{
 		return getOwner();
-	}
-
-	public void disownPet()
-	{
-		if(this.getEntity() == null) return;
-		((Tameable) this.getEntity()).setOwner(new AnimalTamer()
-		{
-			@Override
-			public String getName()
-			{
-				return "Disowned";
-			}
-		});
 	}
 
 	public static class Util
