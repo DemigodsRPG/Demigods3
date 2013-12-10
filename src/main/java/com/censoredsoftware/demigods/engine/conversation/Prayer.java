@@ -1075,7 +1075,7 @@ public class Prayer implements WrappedConversation
 			@Override
 			protected boolean isInputValid(ConversationContext context, String deityName)
 			{
-				return Deity.Util.getDeity(deityName) != null && ((Player) context.getForWhom()).hasPermission(Deity.Util.getDeity(deityName).getPermission());
+				return Deity.Util.getDeity(deityName) != null && Deity.Util.getDeity(deityName).getFlags().contains(Deity.Flag.PLAYABLE) && ((Player) context.getForWhom()).hasPermission(Deity.Util.getDeity(deityName).getPermission());
 			}
 
 			@Override

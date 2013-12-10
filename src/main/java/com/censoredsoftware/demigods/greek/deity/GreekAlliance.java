@@ -1,6 +1,9 @@
 package com.censoredsoftware.demigods.greek.deity;
 
 import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.bukkit.permissions.PermissionDefault;
 
 public enum GreekAlliance implements Alliance
@@ -56,6 +59,19 @@ public enum GreekAlliance implements Alliance
 
 	public boolean isPlayable()
 	{
-		return playable;
+		try
+		{
+			return playable && Iterables.any(Alliance.Util.getLoadedDeitiesInAlliance(this), new Predicate<Deity>()
+			{
+				@Override
+				public boolean apply(Deity deity)
+				{
+					return deity.getFlags().contains(Deity.Flag.PLAYABLE);
+				}
+			});
+		}
+		catch(Throwable ignored)
+		{}
+		return false;
 	}
 }
