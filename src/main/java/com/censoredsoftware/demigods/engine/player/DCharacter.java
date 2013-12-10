@@ -592,6 +592,9 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		// Re-own pets
 		DPet.Util.reownPets(player, this);
+
+		// Add to their team
+		Demigods.BOARD.getTeam(getAlliance().getName()).removePlayer(getOfflinePlayer());
 	}
 
 	public static class Inventory extends CInventory
@@ -1252,7 +1255,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return character.isActive() && character.getOfflinePlayer().isOnline() && character.getAlliance().equals(alliance);
 				}
 			});
 		}
@@ -1264,7 +1267,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				@Override
 				public boolean apply(DCharacter character)
 				{
-					return character.isActive() && character.getOfflinePlayer().isOnline() && !character.getAlliance().getName().equalsIgnoreCase(alliance.getName());
+					return character.isActive() && character.getOfflinePlayer().isOnline() && !character.getAlliance().equals(alliance);
 				}
 			});
 		}

@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Sets;
@@ -35,19 +36,22 @@ public class ZoneListener implements Listener
 		Player player = event.getPlayer();
 		DPlayer playerSave = DPlayer.Util.getPlayer(player);
 
-		if(playerSave.getCurrent() == null) return;
-
 		// Leaving a disabled world
 		if(Zones.isNoDemigodsWorld(event.getFrom()) && !Zones.isNoDemigodsWorld(player.getWorld()))
 		{
-			playerSave.saveMortalInventory(player.getInventory());
-			playerSave.getCurrent().applyToPlayer(player);
+			if(playerSave.getCurrent() != null)
+			{
+				playerSave.saveMortalInventory(player.getInventory());
+				playerSave.getCurrent().applyToPlayer(player);
+			}
+			else Demigods.BOARD.getTeam("Mortal").addPlayer(player);
 			player.sendMessage(ChatColor.YELLOW + "Demigods is enabled in this world.");
 		}
 		// Entering a disabled world
 		else if(!Zones.isNoDemigodsWorld(event.getFrom()) && Zones.isNoDemigodsWorld(player.getWorld()))
 		{
-			playerSave.setToMortal();
+			if(playerSave.getCurrent() != null) playerSave.setToMortal();
+			Demigods.BOARD.getTeam("Mortal").removePlayer(player);
 			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 		}
 	}

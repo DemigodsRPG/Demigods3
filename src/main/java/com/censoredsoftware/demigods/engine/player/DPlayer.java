@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -247,6 +248,7 @@ public class DPlayer implements ConfigurationSerializable
 		setMortalName(null);
 		setMortalListName(null);
 		applyMortalInventory();
+		Demigods.BOARD.getTeam("Mortal").addPlayer(getOfflinePlayer());
 	}
 
 	public void saveMortalInventory(PlayerInventory inventory)
@@ -296,6 +298,9 @@ public class DPlayer implements ConfigurationSerializable
 			// Disown pets
 			DPet.Util.disownPets(character.getName());
 
+			// Remove from their team
+			Demigods.BOARD.getTeam(getCurrent().getAlliance().getName()).removePlayer(getOfflinePlayer());
+
 			// Save it
 			DCharacter.Util.save(character);
 		}
@@ -315,7 +320,6 @@ public class DPlayer implements ConfigurationSerializable
 		saveCurrentCharacter();
 
 		// Set new character to active and other info
-		newChar.setActive(true);
 		this.current = newChar.getId();
 		currentDeityName = newChar.getDeity().getName();
 
@@ -547,6 +551,26 @@ public class DPlayer implements ConfigurationSerializable
 		{
 			DCharacter character = getPlayer(player).getCurrent();
 			return character != null && character.isUsable() && character.isActive();
+		}
+
+		public static Collection<OfflinePlayer> getMortals()
+		{
+			return Collections2.transform(Collections2.filter(DataManager.players.values(), new Predicate<DPlayer>()
+			{
+				@Override
+				public boolean apply(DPlayer player)
+				{
+					DCharacter character = player.getCurrent();
+					return character != null && character.isUsable() && character.isActive();
+				}
+			}), new Function<DPlayer, OfflinePlayer>()
+			{
+				@Override
+				public OfflinePlayer apply(DPlayer player)
+				{
+					return player.getOfflinePlayer();
+				}
+			});
 		}
 
 		public static Set<Player> getOnlineMortals()

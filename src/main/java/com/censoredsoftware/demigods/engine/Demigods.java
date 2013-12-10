@@ -17,6 +17,7 @@ import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.listener.ZoneListener;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.player.Skill;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
@@ -28,6 +29,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
@@ -37,6 +39,9 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
 import org.mcstats.MetricsLite;
 
 import java.util.HashMap;
@@ -47,11 +52,13 @@ public class Demigods extends CensoredCentralizedClass
 {
 	// Constants
 	public static String SAVE_PATH;
+	public static Scoreboard BOARD;
 
 	// Public Static Access
 	public static final DemigodsPlugin PLUGIN;
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
+	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
 	// Disabled Stuff
 	public static ImmutableSet<String> DISABLED_WORLDS;
@@ -87,6 +94,10 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Language data.
 		LANGUAGE = new Translation();
+
+		// Scoreboard manager.
+		SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
+		BOARD = SCOREBOARD_MANAGER.getNewScoreboard();
 	}
 
 	// Load everything else.
@@ -124,10 +135,11 @@ public class Demigods extends CensoredCentralizedClass
 				Messages.severe("and in that case this may be a false alarm.");
 			}
 
-			// Load listeners, commands, and permissions
+			// Load listeners, commands, permissions, and the scoreboard
 			demigods.loadListeners();
 			demigods.loadCommands();
 			demigods.loadPermissions(true);
+			demigods.loadScoreBoard();
 
 			// Update usable characters
 			DCharacter.Util.updateUsableCharacters();
@@ -223,6 +235,42 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Quit reason.
 		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());
+	}
+
+	protected void loadScoreBoard()
+	{
+		// Alliances
+		for(final Alliance alliance : MYTHOS.getAlliances())
+		{
+			// Register the team
+			Team team = BOARD.registerNewTeam(alliance.getName());
+
+			// Define team properties
+			team.setAllowFriendlyFire(Configs.getSettingBoolean("restrictions.friendly_fire"));
+			team.setCanSeeFriendlyInvisibles(true);
+
+			// In-use characters (including offline)
+			for(DCharacter character : DCharacter.Util.getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isActive() && character.getAlliance().equals(alliance);
+				}
+			}))
+				team.addPlayer(character.getOfflinePlayer());
+		}
+
+		// Register the Mortal alliance
+		Team mortals = BOARD.registerNewTeam("Mortal");
+
+		// Define team properties
+		mortals.setAllowFriendlyFire(Configs.getSettingBoolean("restrictions.friendly_fire"));
+		mortals.setCanSeeFriendlyInvisibles(true);
+
+		// All mortals (including offline)
+		for(OfflinePlayer mortal : DPlayer.Util.getMortals())
+			mortals.addPlayer(mortal);
 	}
 
 	protected void loadCommands()
