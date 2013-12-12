@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.util.Images;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -99,18 +100,12 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		if(args.length == 0)
-		{
-			if(player.getName().equals(player.getDisplayName())) return false;
+		player.sendMessage("  ");
 
-			player.setDisplayName(player.getName());
-			player.sendMessage(ChatColor.YELLOW + "Name reverted back to normal.");
+		for(String line : Images.getPlayerHead(player))
+			player.sendMessage(line);
 
-			return true;
-		}
-
-		player.setDisplayName(ChatColor.translateAlternateColorCodes('&', args[0]));
-		player.sendMessage(ChatColor.YELLOW + "Name change complete.");
+		player.sendMessage("  ");
 
 		return true;
 	}

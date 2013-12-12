@@ -53,7 +53,6 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	@Override
 	public void onDisable()
 	{
-
 		if(READY)
 		{
 			// Save all the data.

@@ -89,9 +89,7 @@ public class FlagListener implements Listener
 			{
 				// Remove all drops from explosion zone
 				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
-				{
 					if(drop.getLocation().distance(save.getReferenceLocation()) <= save.getType().getRadius()) drop.remove();
-				}
 			}
 		}, 1);
 
