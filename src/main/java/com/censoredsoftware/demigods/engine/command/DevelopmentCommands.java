@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -102,7 +103,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 		player.sendMessage("  ");
 
-		for(String line : Images.getPlayerHead(player))
+		for(String line : Images.getPlayerHead(args.length == 0 ? player : Bukkit.getOfflinePlayer(args[0])))
 			player.sendMessage(line);
 
 		player.sendMessage("  ");

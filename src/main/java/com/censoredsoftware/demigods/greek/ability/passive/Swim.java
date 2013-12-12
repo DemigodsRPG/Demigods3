@@ -106,13 +106,6 @@ public class Swim implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-				Material playerLocationMaterial = player.getLocation().getBlock().getType();
-				if(!(playerLocationMaterial.equals(Material.STATIONARY_WATER) || playerLocationMaterial.equals(Material.WATER)))
-				{
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 960, 0));
-					return;
-				}
-
 				if(player.isSneaking())
 				{
 					player.removePotionEffect(PotionEffectType.SLOW);
@@ -133,16 +126,17 @@ public class Swim implements Ability
 			{
 				for(DCharacter character : DCharacter.Util.getOnlineCharactersWithAbility(name))
 				{
-					if(Zones.inNoDemigodsZone(character.getOfflinePlayer().getPlayer().getLocation())) continue;
 					Player player = character.getOfflinePlayer().getPlayer();
-					potionEffect(player);
+					if(!Zones.inNoDemigodsZone(player.getLocation())) potionEffect(player);
 				}
 			}
 
 			private void potionEffect(LivingEntity entity)
 			{
+				Material locationMaterial = entity.getLocation().getBlock().getType();
+				if(locationMaterial.equals(Material.STATIONARY_WATER) || locationMaterial.equals(Material.WATER)) return;
 				entity.removePotionEffect(PotionEffectType.SLOW);
-				entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1));
+				entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 120, 1, false));
 			}
 		};
 	}
