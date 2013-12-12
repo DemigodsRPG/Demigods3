@@ -75,8 +75,6 @@ public class DevelopmentCommands extends WrappedCommand
 
 			veryImage = Images.getScaledImage(veryImage, 16, 16);
 
-			veryImage = Images.getGrayscaleImage(veryImage);
-
 			for(String wow : Images.convertImage(veryImage, Symbol.FULL_BLOCK))
 				player.sendMessage(wow);
 
@@ -95,8 +93,8 @@ public class DevelopmentCommands extends WrappedCommand
 		// if(obelisk != null)
 		// {
 		// Get all of the connected obelisks
-		//	for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
-		//	{
+		// for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
+		// {
 		// if(save == obelisk) continue;
 		// player.sendMessage(save.getId().toString());
 		// }
@@ -130,11 +128,7 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		player.sendMessage("  ");
-
 		Images.sendMapImage(player, Images.getPlayerHead(args.length == 0 ? player.getName() : (args[0])));
-
-		player.sendMessage("  ");
 
 		return true;
 	}
