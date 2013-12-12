@@ -28,7 +28,7 @@ import java.util.Set;
 public class Storm implements Ability
 {
 	private final static String name = "Storm", command = "storm";
-	private final static int cost = 3700, delay = 600, repeat = 0;
+	private final static int cost = 3700, delay = 600 * 20, repeat = 0;
 	private final static List<String> details = Lists.newArrayList("Throw all of your enemies into the sky as lightning fills the heavens.");
 	private String deity, permission;
 

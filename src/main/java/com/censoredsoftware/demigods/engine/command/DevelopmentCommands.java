@@ -128,7 +128,7 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		Images.sendMapImage(player, Images.getPlayerHead(args.length == 0 ? player.getName() : (args[0])));
+		Images.sendMapImage(player, Images.getPlayerHead(player.getName()));
 
 		return true;
 	}
