@@ -72,7 +72,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 			BufferedImage veryImage = ImageIO.read(doge);
 
-			veryImage = Images.getScaledImage(veryImage, 16, 16);
+			veryImage = Images.getScaledImage(veryImage, 128, 128);
 
 			if(player.isOp()) Images.convertImageToSchematic(veryImage).generate(player.getLocation());
 
