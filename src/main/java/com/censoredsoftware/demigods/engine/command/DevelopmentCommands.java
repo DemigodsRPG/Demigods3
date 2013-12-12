@@ -32,7 +32,7 @@ public class DevelopmentCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("obelisk"); // "test1", "test2", "test3", "hspawn", "nearestaltar"
+		return Sets.newHashSet("obelisk", "test3"); // "test1", "test2", "hspawn", "nearestaltar"
 	}
 
 	@Override
@@ -40,10 +40,10 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		// if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
 		// else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
-		// else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
+		if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		// else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		// else if(command.getName().equalsIgnoreCase("nearestaltar")) return nearestAltar(sender);
-		if(command.getName().equalsIgnoreCase("obelisk")) return obelisk(sender, args);
+		else if(command.getName().equalsIgnoreCase("obelisk")) return obelisk(sender, args);
 		return false;
 	}
 
