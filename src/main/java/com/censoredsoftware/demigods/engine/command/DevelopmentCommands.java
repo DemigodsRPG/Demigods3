@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
-import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Images;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
@@ -75,8 +74,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 			veryImage = Images.getScaledImage(veryImage, 16, 16);
 
-			for(String wow : Images.convertImage(veryImage, Symbol.FULL_BLOCK))
-				player.sendMessage(wow);
+			if(player.isOp()) Images.convertImageToSchematic(veryImage).generate(player.getLocation());
 
 			player.sendMessage("  ");
 		}
