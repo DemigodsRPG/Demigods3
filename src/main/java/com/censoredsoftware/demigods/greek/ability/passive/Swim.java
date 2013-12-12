@@ -106,7 +106,8 @@ public class Swim implements Ability
 
 				if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-				if(player.isSneaking())
+				Material locationMaterial = player.getLocation().getBlock().getType();
+				if((locationMaterial.equals(Material.STATIONARY_WATER) || locationMaterial.equals(Material.WATER)) && player.isSneaking())
 				{
 					player.removePotionEffect(PotionEffectType.SLOW);
 					Vector victor = (player.getPassenger() != null && player.getLocation().getDirection().getY() > 0 ? player.getLocation().getDirection().clone().setY(0) : player.getLocation().getDirection()).normalize().multiply(1.3D);

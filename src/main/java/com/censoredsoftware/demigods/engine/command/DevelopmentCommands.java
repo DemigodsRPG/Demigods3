@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Images;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
@@ -13,13 +14,15 @@ import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -33,15 +36,15 @@ public class DevelopmentCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("obelisk", "test3"); // "test1", "test2", "hspawn", "nearestaltar"
+		return Sets.newHashSet("obelisk", "test2", "test3"); // "test1", "hspawn", "nearestaltar"
 	}
 
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
 		// if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
-		// else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
-		if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
+		if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
+		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		// else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		// else if(command.getName().equalsIgnoreCase("nearestaltar")) return nearestAltar(sender);
 		else if(command.getName().equalsIgnoreCase("obelisk")) return obelisk(sender, args);
@@ -62,19 +65,45 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
-		if(obelisk != null)
+		try
 		{
-			// Get all of the connected obelisks
-			for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
-			{
-				if(save == obelisk) continue;
-				player.sendMessage(save.getId().toString());
-			}
+			player.sendMessage("  ");
+
+			URL doge = new URL(args[0]);
+
+			BufferedImage veryImage = ImageIO.read(doge);
+
+			veryImage = Images.getScaledImage(veryImage, 16, 16);
+
+			veryImage = Images.getGrayscaleImage(veryImage);
+
+			for(String wow : Images.convertImage(veryImage, Symbol.FULL_BLOCK))
+				player.sendMessage(wow);
+
+			player.sendMessage("  ");
 		}
-		else player.sendMessage(ChatColor.RED + "No Obelisk found.");
+		catch(Throwable suchError)
+		{
+			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
+		}
 
 		return true;
+
+		// Player player = (Player) sender;
+
+		// StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		// if(obelisk != null)
+		// {
+		// Get all of the connected obelisks
+		//	for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
+		//	{
+		// if(save == obelisk) continue;
+		// player.sendMessage(save.getId().toString());
+		// }
+		// }
+		// else player.sendMessage(ChatColor.RED + "No Obelisk found.");
+
+		// return true;
 
 		// Player player = (Player) sender;
 
@@ -103,8 +132,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 		player.sendMessage("  ");
 
-		for(String line : Images.getPlayerHead(args.length == 0 ? player : Bukkit.getOfflinePlayer(args[0])))
-			player.sendMessage(line);
+		Images.sendMapImage(player, Images.getPlayerHead(args.length == 0 ? player.getName() : (args[0])));
 
 		player.sendMessage("  ");
 
