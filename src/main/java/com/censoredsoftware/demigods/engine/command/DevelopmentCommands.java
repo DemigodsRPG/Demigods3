@@ -81,6 +81,7 @@ public class DevelopmentCommands extends WrappedCommand
 		catch(Throwable suchError)
 		{
 			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
+			suchError.printStackTrace();
 		}
 
 		return true;
