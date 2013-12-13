@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -127,7 +128,20 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		Images.sendMapImage(player, Images.getPlayerHead(player.getName()));
+		try
+		{
+			player.sendMessage("  ");
+
+			for(String wow : Images.getPlayerHead(Bukkit.getOfflinePlayer(args[0])))
+				player.sendMessage(wow);
+
+			player.sendMessage("  ");
+		}
+		catch(Throwable suchError)
+		{
+			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
+			suchError.printStackTrace();
+		}
 
 		return true;
 	}
