@@ -1408,6 +1408,11 @@ public class Prayer implements WrappedConversation
 
 				if(neededItems == items)
 				{
+                    // TODO: Look into why this is so fancy even though the player gets kicked immediately...
+
+                    // Clear the prayer session first
+                    DPlayer.Util.clearPrayerSession(player);
+
 					// Accepted, delete the character and message the player
 					character.remove();
 					player.sendMessage(ChatColor.GREEN + "You are now free from the will of " + deity.getName() + "!");
@@ -1415,9 +1420,6 @@ public class Prayer implements WrappedConversation
 					// Add potion effects for fun
 					PotionEffect potion = new PotionEffect(PotionEffectType.WEAKNESS, 1200, 3);
 					player.addPotionEffect(potion);
-
-					// Clear the prayer session
-					DPlayer.Util.clearPrayerSession(player);
 				}
 				else
 				{
