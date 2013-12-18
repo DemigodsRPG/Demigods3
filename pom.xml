@@ -84,6 +84,13 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>com.censoredsoftware</groupId>
+            <artifactId>CensoredLib-Web</artifactId>
+            <version>${censoredLib.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
@@ -166,6 +173,16 @@
                     <include>*.yml</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>./webapp</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/webapp/</directory>
+                <includes>
+                    <include>*.html</include>
+                    <include>*.js</include>
+                    <include>*.css</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -179,20 +196,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>

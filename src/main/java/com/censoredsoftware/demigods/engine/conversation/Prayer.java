@@ -1408,10 +1408,10 @@ public class Prayer implements WrappedConversation
 
 				if(neededItems == items)
 				{
-                    // TODO: Look into why this is so fancy even though the player gets kicked immediately...
+					// TODO: Look into why this is so fancy even though the player gets kicked immediately...
 
-                    // Clear the prayer session first
-                    DPlayer.Util.clearPrayerSession(player);
+					// Clear the prayer session first
+					DPlayer.Util.clearPrayerSession(player);
 
 					// Accepted, delete the character and message the player
 					character.remove();

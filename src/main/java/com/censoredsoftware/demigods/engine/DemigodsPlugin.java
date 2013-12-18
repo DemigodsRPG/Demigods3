@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
@@ -64,6 +65,13 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 				// Toggle prayer off and clear the session
 				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
 				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
+			}
+
+			// Stop panel if allowed
+			if(Configs.getSettingBoolean("panel.use") && Demigods.WEB_PANEL != null)
+			{
+				// TODO Add other related methods here as needed
+				Demigods.WEB_PANEL.stopServer();
 			}
 		}
 

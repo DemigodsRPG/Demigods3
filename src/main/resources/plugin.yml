@@ -3,7 +3,7 @@ main: com.censoredsoftware.demigods.engine.DemigodsPlugin
 load: POSTWORLD
 version: ${project.version}
 authors: [_Alex, HmmmQuestionMark]
-softdepend: [CensoredLib, WorldEdit, WorldGuard]
+softdepend: [CensoredLib, CensoredLib-Web, WorldEdit, WorldGuard]
 commands:
 # Main Command
     demigods:
