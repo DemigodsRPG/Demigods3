@@ -38,7 +38,7 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
         git checkout -b new_demigods_branch
 
 3. Code
-  * Adhere to common conventions you see in the existing code.
+  * Adhere to common conventions you see in the existing code. To make this easier we recommend using [JetBrains' IntelliJ IDEA](www.jetbrains.com/idea) and installing the [Eclipse Code Formatter](http://plugins.jetbrains.com/plugin/6546) plugin. After doing so, configure the plugin to use the [format.xml](./format.xml) file located in this repo and reformat your code **before every commit**. This will increase the chances of us accepting your pull request.
   * Search to see if your new functionality has been discussed on [the Demigods RPG forum][f] or the applicable GitHub issue, and include updates as appropriate.
 
 4. Issue a Pull Request
