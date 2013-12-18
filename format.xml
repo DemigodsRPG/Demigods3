@@ -1,10 +1,9 @@
-<!--
-    This file is meant for use with the "Eclipse Code Formatter" plugin for IntelliJ IDEA.
-    It can be found in the plugin repository located here: http://plugins.jetbrains.com/plugin/6546
-    Modifications to the Demigods plugin that are not inline with this format are far less likely to be accepted.
--->
-
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+This file is meant for use with the "Eclipse Code Formatter" plugin for IntelliJ IDEA.
+It can be found in the plugin repository located here: http://plugins.jetbrains.com/plugin/6546
+Modifications to the Demigods plugin that are not inline with this format are far less likely to be accepted.
+-->
 <profiles version="12">
 <profile kind="CodeFormatterProfile" name="Demigods" version="12">
 <setting id="org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags" value="insert"/>
