@@ -523,14 +523,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 
 		// Remove the data
-		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
+        if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
+        for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
 			DataManager.savedPotions.remove(potion.getId());
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
-		if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
 	}
 
 	public void sendAllianceMessage(String message)
