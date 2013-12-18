@@ -523,7 +523,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 
 		// Remove the data
-        if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(name)) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
+        if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(getName())) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
         for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
