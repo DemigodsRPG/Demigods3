@@ -2,8 +2,8 @@ package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.util.Images;
+import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.greek.structure.Altar;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,14 +37,14 @@ public class DevelopmentCommands extends WrappedCommand
 	@Override
 	public Set<String> getCommands()
 	{
-		return Sets.newHashSet("obelisk", "test2", "test3"); // "test1", "hspawn", "nearestaltar"
+		return Sets.newHashSet("obelisk", "test1", "test2", "test3"); // "hspawn", "nearestaltar"
 	}
 
 	@Override
 	public boolean processCommand(CommandSender sender, Command command, String[] args)
 	{
-		// if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
-		if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
+		if(command.getName().equalsIgnoreCase("test1")) return test1(sender, args);
+		else if(command.getName().equalsIgnoreCase("test2")) return test2(sender, args);
 		else if(command.getName().equalsIgnoreCase("test3")) return test3(sender, args);
 		// else if(command.getName().equalsIgnoreCase("hspawn")) return hspawn(sender);
 		// else if(command.getName().equalsIgnoreCase("nearestaltar")) return nearestAltar(sender);
@@ -55,8 +56,14 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		for(Battle battle : Battle.Util.getAllActive())
-			battle.end();
+		sender.sendMessage("WORLDGUARD: " + WorldGuards.canWorldGuard());
+
+		sender.sendMessage("PVP: " + WorldGuards.checkForFlagValue(DefaultFlag.PVP, "deny", player.getLocation()));
+
+		sender.sendMessage("DG: " + WorldGuards.checkForFlagValue(WorldGuards.getCreatedFlag("demigods"), "deny", player.getLocation()));
+
+		// for(Battle battle : Battle.Util.getAllActive())
+		// battle.end();
 
 		return true;
 	}

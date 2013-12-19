@@ -44,9 +44,9 @@ commands:
 # Development Commands
     obelisk:
         usage: /obelisk <add|remove> <player|character> <name>
-#    test1:
-#        usage: /test1
-#        permission: demigods.admin
+    test1:
+        usage: /test1
+        permission: demigods.admin
     test2:
         usage: /test2
         #permission: demigods.admin

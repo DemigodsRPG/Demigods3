@@ -516,14 +516,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void remove()
 	{
-		// Kick the player first if they're online
-		if(getOfflinePlayer().isOnline() && DPlayer.Util.getPlayer(getOfflinePlayer()).getCurrent().getName().equalsIgnoreCase(getName()))
-		{
-			getOfflinePlayer().getPlayer().kickPlayer(ChatColor.RED + "Your active character has been deleted.");
-		}
+		// Define the DPlayer
+		DPlayer dPlayer = DPlayer.Util.getPlayer(getOfflinePlayer());
+
+		// Switch the player to mortal
+		if(getOfflinePlayer().isOnline() && dPlayer.getCurrent().getName().equalsIgnoreCase(getName())) dPlayer.setToMortal();
 
 		// Remove the data
-		if(DPlayer.Util.getPlayerFromName(getPlayerName()).getCurrent().getName().equalsIgnoreCase(getName())) DPlayer.Util.getPlayerFromName(getPlayerName()).resetCurrent();
+		if(dPlayer.getCurrent().getName().equalsIgnoreCase(getName())) dPlayer.resetCurrent();
 		for(StructureData structureSave : Structure.Util.getStructureWithFlag(Structure.Flag.DELETE_WITH_OWNER))
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
