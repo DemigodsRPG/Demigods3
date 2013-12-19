@@ -48,7 +48,7 @@ public class Zones
 
 	public static boolean inNoDemigodsZone(Location location)
 	{
-		return isNoDemigodsWorld(location.getWorld()) || WorldGuards.canWorldGuard() && WorldGuards.checkForCreatedFlagValue("demigods", "deny", location);
+		return isNoDemigodsWorld(location.getWorld()); // || WorldGuards.canWorldGuard() && WorldGuards.checkForCreatedFlagValue("demigods", "deny", location);
 	}
 
 	public static boolean isNoDemigodsWorld(World world)
