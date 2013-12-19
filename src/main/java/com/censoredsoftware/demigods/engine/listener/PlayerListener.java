@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,6 +9,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.DivineItem;
 
 public class PlayerListener implements Listener
 {

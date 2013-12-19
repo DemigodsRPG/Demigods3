@@ -1,9 +1,7 @@
-package com.censoredsoftware.demigods.engine.item.book;
+package com.censoredsoftware.demigods.greek.item.book;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.structure.Altar;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,7 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class BookOfPrayer
 {

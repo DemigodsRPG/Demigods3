@@ -1,12 +1,13 @@
-package com.censoredsoftware.demigods.engine.item.book;
+package com.censoredsoftware.demigods.greek.item.book;
+
+import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 
 import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.google.common.collect.Lists;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 public class WelcomeBook
 {

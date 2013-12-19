@@ -1,8 +1,5 @@
-package com.censoredsoftware.demigods.engine.item.weapon;
+package com.censoredsoftware.demigods.greek.item.weapon;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,6 +13,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class ButtSword
 {
