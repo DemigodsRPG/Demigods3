@@ -5,8 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.censoredsoftware</groupId>
-    <artifactId>Demigods</artifactId>
+    <artifactId>Demigods-Parent</artifactId>
+    <packaging>pom</packaging>
     <version>3.0.0</version>
+    <modules>
+        <module>Demigods-Engine</module>
+        <module>Demigods-Greek</module>
+    </modules>
 
     <name>Demigods</name>
     <description>Demigods RPG for Bukkit/Spigot Minecraft Servers.</description>
@@ -96,57 +101,6 @@
     </dependencies>
 
     <build>
-        <finalName>Demigods</finalName>
         <defaultGoal>clean install</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
-        <resources>
-            <resource>
-                <targetPath>.</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/main/resources/</directory>
-                <includes>
-                    <include>*.yml</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>./webapp</targetPath>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/main/webapp/</directory>
-                <includes>
-                    <include>*.html</include>
-                    <include>*.js</include>
-                    <include>*.css</include>
-                </includes>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.4.1</version>
-                <configuration>
-                    <preparationGoals>assembly:assembly</preparationGoals>
-                    <goals>assembly:assembly</goals>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <finalName>Demigods</finalName>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>
