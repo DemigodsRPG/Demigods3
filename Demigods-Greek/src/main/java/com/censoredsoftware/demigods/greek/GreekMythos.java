@@ -31,7 +31,7 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public void onEnable()
 	{
-		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Lowest);
+		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Highest); // not really sure how Bukkit handles these, presuming the same way as EventPriority
 	}
 
 	/**
@@ -39,9 +39,7 @@ public class GreekMythos extends MythosPlugin
 	 */
 	@Override
 	public void onDisable()
-	{
-
-	}
+	{}
 
 	@Override
 	public String getTitle()
