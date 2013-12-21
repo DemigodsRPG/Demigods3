@@ -1,0 +1,59 @@
+name: Demigods
+main: com.censoredsoftware.demigods.engine.DemigodsPlugin
+load: POSTWORLD
+version: ${project.parent.version}
+authors: [_Alex, HmmmQuestionMark]
+softdepend: [CensoredLib, CensoredLib-Web, WorldEdit, WorldGuard]
+commands:
+# Main Command
+    demigods:
+        usage: /demigods [category] [subcategory]
+        aliases: [demigod, dg]
+        permission: demigods.basic
+    deity:
+        usage: /deity
+        permission: demigods.basic
+# General Commands
+    check:
+        usage: /check
+        aliases: [c]
+        permission: demigods.basic
+    owner:
+        usage: /owner <character>
+        aliases: [o]
+        permission: demigods.basic
+    leaderboard:
+        usage: /leaderboard
+        aliases: [l]
+        permission: demigods.basic
+    alliance:
+        usage: /alliance
+        aliases: [a]
+        permission: demigods.basic
+    names:
+        usage: /names
+        aliases: [n]
+        permission: demigods.basic
+    values:
+        usage: /values
+        # aliases: [v]
+        permission: demigods.basic
+    binds:
+        usage: /binds
+        permission: demigods.basic
+# Development Commands
+    obelisk:
+        usage: /obelisk <add|remove> <player|character> <name>
+    test1:
+        usage: /test1
+        permission: demigods.admin
+    test2:
+        usage: /test2
+        #permission: demigods.admin
+    test3:
+        usage: /test3
+        #permission: demigods.admin
+#    hspawn:
+#        usage: /hspawn
+#    nearestaltar:
+#        usage: /nearestaltar
