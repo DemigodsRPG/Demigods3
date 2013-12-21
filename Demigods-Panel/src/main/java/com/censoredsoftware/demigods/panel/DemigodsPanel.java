@@ -11,35 +11,35 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 public class DemigodsPanel extends JavaPlugin
 {
 	private static Server SERVER;
-    private static DemigodsPanel WEB_PANEL;
+	private static DemigodsPanel WEB_PANEL;
 
-    /**
-     * The Bukkit enable method.
-     */
-    @Override
-    public void onEnable()
-    {
-        // Start panel if allowed
-        if(Configs.getSettingBoolean("panel.use") && Bukkit.getPluginManager().getPlugin("CensoredLib-Web") != null)
-        {
-            WEB_PANEL = this;
-            runServer();
-        }
-    }
+	/**
+	 * The Bukkit enable method.
+	 */
+	@Override
+	public void onEnable()
+	{
+		// Start panel if allowed
+		if(Configs.getSettingBoolean("panel.use") && Bukkit.getPluginManager().getPlugin("CensoredLib-Web") != null)
+		{
+			WEB_PANEL = this;
+			runServer();
+		}
+	}
 
-    /**
-     * The Bukkit disable method.
-     */
-    @Override
-    public void onDisable()
-    {
-        // Stop panel if allowed
-        if(Configs.getSettingBoolean("panel.use"))
-        {
-            // TODO Add other related methods here as needed
-            stopServer();
-        }
-    }
+	/**
+	 * The Bukkit disable method.
+	 */
+	@Override
+	public void onDisable()
+	{
+		// Stop panel if allowed
+		if(Configs.getSettingBoolean("panel.use"))
+		{
+			// TODO Add other related methods here as needed
+			stopServer();
+		}
+	}
 
 	public void runServer()
 	{

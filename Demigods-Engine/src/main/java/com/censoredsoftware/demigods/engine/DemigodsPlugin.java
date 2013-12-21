@@ -121,7 +121,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		for(File file : files)
 		{
 			try
-		    {
+			{
 				Messages.info(file.getName() + " loading.");
 				Bukkit.getServer().getPluginManager().loadPlugin(file);
 			}
