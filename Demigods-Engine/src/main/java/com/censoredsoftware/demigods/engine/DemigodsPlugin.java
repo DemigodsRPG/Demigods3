@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -10,13 +18,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Class for all plugins of demigods.
@@ -34,7 +35,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	{
 		if(!checkForCensoredLib()) return;
 
-		handleDependentPlugins();
+		loadAddons();
 
 		// Load the game engine.
 		if(!Demigods.load())
@@ -90,7 +91,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		return false;
 	}
 
-	private void handleDependentPlugins()
+	private void loadAddons()
 	{
 		// Unload all incorrectly installed plugins
 		for(Plugin plugin : Bukkit.getPluginManager().getPlugins())
@@ -100,14 +101,14 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			if(depends != null && !depends.isEmpty() && depends.contains("Demigods"))
 			{
 				getLogger().warning(plugin.getName() + " v" + plugin.getDescription().getVersion() + " was installed in the wrong directory.");
-				getLogger().warning("Please put all plugins that depend on Demigods in the correct folder.");
-				getLogger().warning("Like this: " + getDataFolder().getPath() + "/plugins/" + plugin.getName() + ".jar");
+				getLogger().warning("Please put all addons for Demigods in the correct folder.");
+				getLogger().warning("Like this: " + getDataFolder().getPath() + "/addons/" + plugin.getName() + ".jar");
 				Bukkit.getPluginManager().disablePlugin(plugin);
 			}
 		}
 
 		// Load Demigods plugins
-		File pluginsFolder = new File(getDataFolder() + "/plugins");
+		File pluginsFolder = new File(getDataFolder() + "/addons");
 		if(!pluginsFolder.exists()) pluginsFolder.mkdirs();
 
 		Collection<File> files = Collections2.filter(Sets.newHashSet(pluginsFolder.listFiles()), new Predicate<File>()
@@ -118,12 +119,13 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 				return file != null && file.getName().toLowerCase().endsWith(".jar");
 			}
 		});
+
 		for(File file : files)
 		{
 			try
 			{
 				Messages.info(file.getName() + " loading.");
-				Bukkit.getServer().getPluginManager().loadPlugin(file);
+				Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().loadPlugin(file));
 			}
 			catch(Throwable errored)
 			{

@@ -36,7 +36,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
         <spigot.version>1.7.2-R0.1-SNAPSHOT</spigot.version>
-
     </properties>
 
     <developers>
@@ -67,6 +66,10 @@
     </developers>
 
     <repositories>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
         <repository>
             <id>md5-repo</id>
             <url>http://repo.md-5.net/content/repositories/snapshots/</url>
