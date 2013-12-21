@@ -36,7 +36,7 @@ public class Zones
 	public static boolean inNoPvpZone(Location location)
 	{
 		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		if(WorldGuards.canWorldGuard()) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || WorldGuards.canPVP(location);
+		if(WorldGuards.canWorldGuard()) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || !WorldGuards.canPVP(location);
 		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
 	}
 
