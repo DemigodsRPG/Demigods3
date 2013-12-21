@@ -56,7 +56,7 @@ public class Translation
 		set.add("Disowned");
 
 		// Deities
-		for(Deity deity : Demigods.MYTHOS.getDeities())
+		for(Deity deity : Demigods.mythos().getDeities())
 		{
 			set.add(deity.getName());
 			set.add(deity.getAlliance().getName());

@@ -61,7 +61,7 @@ public interface Deity
 		{
 			try
 			{
-				return Iterables.find(Demigods.MYTHOS.getDeities(), new Predicate<Deity>()
+				return Iterables.find(Demigods.mythos().getDeities(), new Predicate<Deity>()
 				{
 					@Override
 					public boolean apply(Deity deity)

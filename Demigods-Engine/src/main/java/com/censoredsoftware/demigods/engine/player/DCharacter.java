@@ -55,7 +55,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private Set<String> potionEffects;
 	private Set<String> deaths;
 
-	private static boolean LEVEL_SEPERATE_SKILLS = Demigods.MYTHOS.levelSeperateSkills();
+	private static boolean LEVEL_SEPERATE_SKILLS = Demigods.mythos().levelSeperateSkills();
 
 	public DCharacter()
 	{

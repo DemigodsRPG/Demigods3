@@ -996,7 +996,7 @@ public class Prayer implements WrappedConversation
 				player.sendRawMessage(ChatColor.AQUA + "  Please choose an Alliance: " + ChatColor.GRAY + "(Type in the name of the Alliance)");
 				player.sendRawMessage(" ");
 
-				for(Alliance alliance : Demigods.MYTHOS.getAlliances())
+				for(Alliance alliance : Demigods.mythos().getAlliances())
 					if(player.hasPermission(alliance.getPermission()) && alliance.isPlayable() && Alliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player).size() > 0) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + StringUtils.capitalize(alliance.getName().toLowerCase()));
 
 				return "";

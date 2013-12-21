@@ -91,7 +91,7 @@ public class MainCommand extends WrappedCommand
 		}
 
 		Messages.tagged(sender, "Documentation");
-		for(Alliance alliance : Demigods.MYTHOS.getAlliances())
+		for(Alliance alliance : Demigods.mythos().getAlliances())
 		{
 			if(!sender.hasPermission(alliance.getPermission())) continue;
 			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
@@ -168,7 +168,7 @@ public class MainCommand extends WrappedCommand
 			return true;
 		}
 
-		for(Alliance alliance : Demigods.MYTHOS.getAlliances())
+		for(Alliance alliance : Demigods.mythos().getAlliances())
 		{
 			if(!player.hasPermission(alliance.getPermission())) continue;
 			if(category.equalsIgnoreCase(alliance.getName()))

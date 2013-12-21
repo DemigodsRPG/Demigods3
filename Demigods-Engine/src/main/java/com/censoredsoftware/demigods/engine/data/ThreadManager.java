@@ -41,7 +41,7 @@ public class ThreadManager
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
-		for(Deity deity : Demigods.MYTHOS.getDeities())
+		for(Deity deity : Demigods.mythos().getDeities())
 			for(Ability ability : deity.getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 	}
@@ -70,7 +70,7 @@ public class ThreadManager
 					}
 
 					// Process Triggers
-					for(Trigger trigger : Demigods.MYTHOS.getTriggers())
+					for(Trigger trigger : Demigods.mythos().getTriggers())
 						trigger.processSync();
 
 					// Update Battles
@@ -92,7 +92,7 @@ public class ThreadManager
 					Notifications.updateNotifications();
 
 					// Process Triggers
-					for(Trigger trigger : Demigods.MYTHOS.getTriggers())
+					for(Trigger trigger : Demigods.mythos().getTriggers())
 						trigger.processAsync();
 				}
 			};

@@ -289,7 +289,7 @@ public class Abilities
 	public static List<Ability> getLoadedAbilities()
 	{
 		List<Ability> list = new ArrayList<Ability>();
-		for(Deity deity : Demigods.MYTHOS.getDeities())
+		for(Deity deity : Demigods.mythos().getDeities())
 			list.addAll(deity.getAbilities());
 		return list;
 	}

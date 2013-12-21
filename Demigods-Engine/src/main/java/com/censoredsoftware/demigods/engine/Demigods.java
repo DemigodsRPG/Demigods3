@@ -1,26 +1,5 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.mcstats.MetricsLite;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
@@ -51,6 +30,26 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.mcstats.MetricsLite;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -69,59 +68,21 @@ public class Demigods extends CensoredCentralizedClass
 	public static ImmutableSet<String> COMMANDS;
 
 	// Mythos
-	public static final Mythos MYTHOS;
+	public final Mythos MYTHOS;
 
 	// Instance of this class;
 	private static Demigods demigods;
 
 	private Demigods()
-	{}
+	{
+		MYTHOS = loadMythos();
+	}
 
 	// Load what is possible to load right away.
 	static
 	{
 		// Allow static access.
 		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
-
-		// Load the Mythos.
-		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
-		Collection<RegisteredServiceProvider<Mythos>> mythosProviders = servicesManager.getRegistrations(Mythos.class);
-		if(Iterables.any(mythosProviders, new Predicate<RegisteredServiceProvider<Mythos>>()
-		{
-			@Override
-			public boolean apply(RegisteredServiceProvider<Mythos> mythosProvider)
-			{
-				return mythosProvider.getProvider().isPrimary();
-			}
-		}))
-		{
-			// Decide the primary Mythos
-			Mythos reiningMythos = null;
-			int reiningPriority = 5;
-
-			Set<Mythos> workingSet = Sets.newHashSet();
-			for(RegisteredServiceProvider<Mythos> mythosProvider : mythosProviders)
-			{
-				Mythos mythos = mythosProvider.getProvider();
-				workingSet.add(mythos);
-				Messages.info("The " + mythos.getTitle() + " Mythos created by " + mythos.getAuthor() + " has loaded!");
-				if(!mythosProvider.getProvider().isPrimary()) continue;
-				if(mythosProvider.getPriority().ordinal() < reiningPriority) // not really sure how Bukkit handles priority, presuming the same way as EventPriority
-				{
-					reiningMythos = mythos;
-					reiningPriority = mythosProvider.getPriority().ordinal();
-				}
-			}
-
-			if(reiningMythos != null)
-			{
-				workingSet.remove(reiningMythos);
-				if(reiningMythos.allowSecondary() || workingSet.isEmpty()) MYTHOS = reiningMythos;
-				else MYTHOS = new MythosSet(reiningMythos, workingSet);
-			}
-			else MYTHOS = null;
-		}
-		else MYTHOS = null;
 
 		// Conversation factory static access.
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
@@ -132,6 +93,11 @@ public class Demigods extends CensoredCentralizedClass
 		// Scoreboard manager.
 		SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
 		BOARD = SCOREBOARD_MANAGER.getNewScoreboard();
+	}
+
+	public static Mythos mythos()
+	{
+		return demigods.MYTHOS;
 	}
 
 	// Load everything else.
@@ -145,18 +111,19 @@ public class Demigods extends CensoredCentralizedClass
 		catch(Exception ignored)
 		{}
 
-		if(MYTHOS == null)
-		{
-			Messages.severe("Demigods was unable to load a Mythos.");
-			Messages.severe("Please install a Mythos plugin or place");
-			Messages.severe("the default Demigods-Greek.jar into the");
-			Messages.severe("plugins/Demigods/plugins directory.");
-			return false;
-		}
-
 		try
 		{
+			// Load the Mythos.
 			demigods = new Demigods();
+
+			if(demigods.MYTHOS == null)
+			{
+				Messages.severe("Demigods was unable to load a Mythos.");
+				Messages.severe("Please install a Mythos plugin or place");
+				Messages.severe("the default Demigods-Greek.jar into the");
+				Messages.severe("plugins/Demigods/plugins directory.");
+				return false;
+			}
 
 			// Start the data
 			SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
@@ -212,6 +179,47 @@ public class Demigods extends CensoredCentralizedClass
 		return false;
 	}
 
+    protected Mythos loadMythos()
+    {
+        ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
+		Collection<RegisteredServiceProvider<Mythos>> mythosProviders = servicesManager.getRegistrations(Mythos.class);
+		if(Iterables.any(mythosProviders, new Predicate<RegisteredServiceProvider<Mythos>>()
+		{
+			@Override
+			public boolean apply(RegisteredServiceProvider<Mythos> mythosProvider)
+			{
+				return mythosProvider.getProvider().isPrimary();
+			}
+		}))
+		{
+			// Decide the primary Mythos
+			Mythos reiningMythos = null;
+			int reiningPriority = 5;
+
+			Set<Mythos> workingSet = Sets.newHashSet();
+			for(RegisteredServiceProvider<Mythos> mythosProvider : mythosProviders)
+			{
+				Mythos mythos = mythosProvider.getProvider();
+				workingSet.add(mythos);
+				Messages.info("The " + mythos.getTitle() + " Mythos created by " + mythos.getAuthor() + " has loaded!");
+				if(!mythosProvider.getProvider().isPrimary()) continue;
+				if(mythosProvider.getPriority().ordinal() < reiningPriority) // not really sure how Bukkit handles priority, presuming the same way as EventPriority
+				{
+					reiningMythos = mythos;
+					reiningPriority = mythosProvider.getPriority().ordinal();
+				}
+			}
+
+			if(reiningMythos != null)
+			{
+				workingSet.remove(reiningMythos);
+				if(reiningMythos.allowSecondary() && !workingSet.isEmpty()) reiningMythos = new MythosSet(reiningMythos, workingSet);
+				return reiningMythos;
+			}
+		}
+		return null;
+	}
+
 	protected int loadWorlds()
 	{
 		Set<String> disabledWorlds = Sets.newHashSet();
@@ -230,11 +238,11 @@ public class Demigods extends CensoredCentralizedClass
 		PluginManager register = Bukkit.getServer().getPluginManager();
 
 		// Base Game
-		if(MYTHOS.useBaseGame()) for(BaseGameListener baseGameListener : BaseGameListener.values())
+		if(mythos().useBaseGame()) for(BaseGameListener baseGameListener : BaseGameListener.values())
 			register.registerEvents(baseGameListener.getListener(), PLUGIN);
 
 		// Mythos
-		for(Listener listener : MYTHOS.getListeners())
+		for(Listener listener : mythos().getListeners())
 			register.registerEvents(listener, PLUGIN);
 
 		// Disabled worlds
@@ -245,7 +253,7 @@ public class Demigods extends CensoredCentralizedClass
 			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
 
 		// Structures
-		for(Structure structure : Collections2.filter(MYTHOS.getStructures(), new Predicate<Structure>()
+		for(Structure structure : Collections2.filter(mythos().getStructures(), new Predicate<Structure>()
 		{
 			@Override
 			public boolean apply(Structure structure)
@@ -287,7 +295,7 @@ public class Demigods extends CensoredCentralizedClass
 	protected void loadScoreBoard()
 	{
 		// Alliances
-		for(final Alliance alliance : MYTHOS.getAlliances())
+		for(final Alliance alliance : mythos().getAlliances())
 		{
 			// Register the team
 			Team team = BOARD.registerNewTeam(alliance.getName());
@@ -357,7 +365,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Mythos
-			for(Permission permission : MYTHOS.getPermissions())
+			for(Permission permission : mythos().getPermissions())
 			{
 				// catch errors to avoid any possible buggy permissions
 				try
@@ -371,7 +379,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Alliances, Deities, and Abilities
-			for(final Alliance alliance : MYTHOS.getAlliances())
+			for(final Alliance alliance : mythos().getAlliances())
 			{
 				register.addPermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 				{
@@ -407,7 +415,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Mythos
-			for(Permission permission : MYTHOS.getPermissions())
+			for(Permission permission : mythos().getPermissions())
 			{
 				// catch errors to avoid any possible buggy permissions
 				try
@@ -421,7 +429,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Alliances, Deities, and Abilities
-			for(final Alliance alliance : MYTHOS.getAlliances())
+			for(final Alliance alliance : mythos().getAlliances())
 			{
 				register.removePermission(new Permission(alliance.getPermission(), "The permission to use the " + alliance.getName() + " alliance.", alliance.getPermissionDefault(), new HashMap<String, Boolean>()
 				{

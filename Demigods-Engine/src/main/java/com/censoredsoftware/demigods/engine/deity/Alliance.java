@@ -30,7 +30,7 @@ public interface Alliance
 		{
 			try
 			{
-				return Iterables.find(Demigods.MYTHOS.getAlliances(), new Predicate<Alliance>()
+				return Iterables.find(Demigods.mythos().getAlliances(), new Predicate<Alliance>()
 				{
 					@Override
 					public boolean apply(Alliance alliance)
@@ -82,7 +82,7 @@ public interface Alliance
 
 		public static Collection<Deity> getLoadedDeitiesInAlliance(final Alliance alliance)
 		{
-			return Collections2.filter(Demigods.MYTHOS.getDeities(), new Predicate<Deity>()
+			return Collections2.filter(Demigods.mythos().getDeities(), new Predicate<Deity>()
 			{
 				@Override
 				public boolean apply(Deity d)
