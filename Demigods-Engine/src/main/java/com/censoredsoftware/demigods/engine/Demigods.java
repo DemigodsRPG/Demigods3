@@ -116,7 +116,7 @@ public class Demigods extends CensoredCentralizedClass
 			// Load the Mythos.
 			demigods = new Demigods();
 
-			if(demigods.MYTHOS == null)
+			if(mythos() == null)
 			{
 				Messages.severe("Demigods was unable to load a Mythos.");
 				Messages.severe("Please install a Mythos plugin or place");
