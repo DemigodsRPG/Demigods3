@@ -24,7 +24,6 @@ import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.panel.DemigodsWebPanel;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -57,7 +56,6 @@ public class Demigods extends CensoredCentralizedClass
 	// Constants
 	public static String SAVE_PATH;
 	public static Scoreboard BOARD;
-	public static DemigodsWebPanel WEB_PANEL;
 
 	// Public Static Access
 	public static final DemigodsPlugin PLUGIN;
@@ -203,13 +201,6 @@ public class Demigods extends CensoredCentralizedClass
 			// Handle online characters
 			for(DCharacter character : DCharacter.Util.loadAll())
 				character.getMeta().cleanSkills();
-
-			// Start panel if allowed
-			if(Configs.getSettingBoolean("panel.use") && Bukkit.getPluginManager().getPlugin("CensoredLib-Web") != null)
-			{
-				WEB_PANEL = new DemigodsWebPanel();
-				WEB_PANEL.runServer();
-			}
 
 			return DemigodsPlugin.READY = true;
 		}

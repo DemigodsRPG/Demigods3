@@ -1,0 +1,5 @@
+name: Demigods-Panel
+main: com.censoredsoftware.demigods.panel.DemigodsPanel
+version: ${project.parent.version}
+authors: [_Alex, HmmmQuestionMark]
+depend: [Demigods]

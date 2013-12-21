@@ -11,6 +11,7 @@
     <modules>
         <module>Demigods-Engine</module>
         <module>Demigods-Greek</module>
+        <module>Demigods-Panel</module>
     </modules>
 
     <name>Demigods</name>

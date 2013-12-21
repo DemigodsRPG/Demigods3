@@ -9,13 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Demigods-Engine</artifactId>
+    <artifactId>Demigods-Panel</artifactId>
 
-    <name>Demigods: Base Engine</name>
-    <description>The engine for Demigods RPG.</description>
+    <name>Demigods: Web Panel</name>
+    <description>The web panel for Demigods RPG.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.censoredsoftware</groupId>
+            <artifactId>Demigods-Engine</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 
     <build>
-        <finalName>Demigods</finalName>
+        <finalName>Demigods-Panel</finalName>
         <defaultGoal>clean install</defaultGoal>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
         <resources>
@@ -25,6 +35,16 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
                     <include>*.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>./webapp</targetPath>
+                <filtering>true</filtering>
+                <directory>../Demigods-Panel/src/main/webapp/</directory>
+                <includes>
+                    <include>*.html</include>
+                    <include>*.js</include>
+                    <include>*.css</include>
                 </includes>
             </resource>
         </resources>
@@ -53,7 +73,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <finalName>Demigods</finalName>
+                    <finalName>Demigods-Panel</finalName>
                 </configuration>
             </plugin>
         </plugins>

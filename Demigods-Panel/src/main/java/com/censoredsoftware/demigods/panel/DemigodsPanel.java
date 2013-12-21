@@ -1,16 +1,45 @@
 package com.censoredsoftware.demigods.panel;
 
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
-public class DemigodsWebPanel
+public class DemigodsPanel extends JavaPlugin
 {
 	private static Server SERVER;
+    private static DemigodsPanel WEB_PANEL;
+
+    /**
+     * The Bukkit enable method.
+     */
+    @Override
+    public void onEnable()
+    {
+        // Start panel if allowed
+        if(Configs.getSettingBoolean("panel.use") && Bukkit.getPluginManager().getPlugin("CensoredLib-Web") != null)
+        {
+            WEB_PANEL = this;
+            runServer();
+        }
+    }
+
+    /**
+     * The Bukkit disable method.
+     */
+    @Override
+    public void onDisable()
+    {
+        // Stop panel if allowed
+        if(Configs.getSettingBoolean("panel.use"))
+        {
+            // TODO Add other related methods here as needed
+            stopServer();
+        }
+    }
 
 	public void runServer()
 	{
@@ -30,7 +59,7 @@ public class DemigodsWebPanel
 
 		Messages.info("Starting web-server...");
 
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.PLUGIN, new Runnable()
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(this, new Runnable()
 		{
 			@Override
 			public void run()
@@ -54,7 +83,7 @@ public class DemigodsWebPanel
 	{
 		Messages.info("Stopping web-server...");
 
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(Demigods.PLUGIN, new Runnable()
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(this, new Runnable()
 		{
 			@Override
 			public void run()

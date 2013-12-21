@@ -6,17 +6,17 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class for all plugins of demigods.
@@ -65,13 +65,6 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 				DPlayer.Util.togglePrayingSilent(character.getOfflinePlayer().getPlayer(), false, false);
 				DPlayer.Util.clearPrayerSession(character.getOfflinePlayer().getPlayer());
 			}
-
-			// Stop panel if allowed
-			if(Configs.getSettingBoolean("panel.use") && Demigods.WEB_PANEL != null)
-			{
-				// TODO Add other related methods here as needed
-				Demigods.WEB_PANEL.stopServer();
-			}
 		}
 
 		// Cancel all threads, event calls, and unregister permissions.
@@ -117,7 +110,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		File pluginsFolder = new File(getDataFolder() + "/plugins");
 		if(!pluginsFolder.exists()) pluginsFolder.mkdirs();
 
-		Set<File> files = Sets.filter(Sets.newHashSet(pluginsFolder.listFiles()), new Predicate<File>()
+		Collection<File> files = Collections2.filter(Sets.newHashSet(pluginsFolder.listFiles()), new Predicate<File>()
 		{
 			@Override
 			public boolean apply(File file)
@@ -128,7 +121,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		for(File file : files)
 		{
 			try
-		{
+		    {
 				Messages.info(file.getName() + " loading.");
 				Bukkit.getServer().getPluginManager().loadPlugin(file);
 			}
