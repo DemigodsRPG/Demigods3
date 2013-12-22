@@ -1,5 +1,15 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
@@ -10,25 +20,10 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand
 {
@@ -75,98 +70,103 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		try
-		{
-			player.sendMessage(" Here we go! ");
+		/*
+		 * try
+		 * {
+		 * player.sendMessage(" Here we go! ");
+		 * 
+		 * URL doge = new URL(args[0]);
+		 * 
+		 * BufferedImage veryImage = ImageIO.read(doge);
+		 * 
+		 * // veryImage = Images.getScaledImage(veryImage, 128, 128);
+		 * 
+		 * final Location render = player.getLocation();
+		 * 
+		 * final String playerName = player.getName();
+		 * 
+		 * if(player.isOp())
+		 * {
+		 * final int theTask = Images.convertImageToSchematic(Demigods.PLUGIN, veryImage, 1356);
+		 * 
+		 * thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new Runnable()
+		 * {
+		 * 
+		 * @Override
+		 * public void run()
+		 * {
+		 * if(taskCount != -1 && toGen != null)
+		 * {
+		 * toGen.get(taskCount).generate(render);
+		 * Messages.info(" GENERATING: " + taskCount + " / " + toGen.size() + " left!");
+		 * taskCount--;
+		 * if(taskCount == -1)
+		 * {
+		 * toGen = null;
+		 * OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+		 * if(player.isOnline()) player.getPlayer().sendMessage(" Done! ");
+		 * Bukkit.getScheduler().cancelTask(thisTask);
+		 * }
+		 * }
+		 * else if(Images.getConvertedSchematics(theTask) != null)
+		 * {
+		 * Messages.info(" FOUND: Begin generation sequence! ");
+		 * toGen = Images.getConvertedSchematics(theTask);
+		 * taskCount = toGen.size() - 1;
+		 * Images.removeSchematicList(theTask);
+		 * }
+		 * }
+		 * }, 40, 10);
+		 * }
+		 * 
+		 * player.sendMessage(" Hold on... ");
+		 * }
+		 * catch(Throwable suchError)
+		 * {
+		 * player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
+		 * suchError.printStackTrace();
+		 * }
+		 * 
+		 * return true;
+		 * 
+		 * // Player player = (Player) sender;
+		 * 
+		 * // StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		 * // if(obelisk != null)
+		 * // {
+		 * // Get all of the connected obelisks
+		 * // for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
+		 * // {
+		 * // if(save == obelisk) continue;
+		 * // player.sendMessage(save.getId().toString());
+		 * // }
+		 * // }
+		 * // else player.sendMessage(ChatColor.RED + "No Obelisk found.");
+		 * 
+		 * // return true;
+		 * 
+		 * // Player player = (Player) sender;
+		 * 
+		 * // Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
+		 * 
+		 * // for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
+		 * // {
+		 * // @Override
+		 * // public boolean apply(StructureData structure)
+		 * // {
+		 * // return !structure.getType().equals(GreekStructure.ALTAR);
+		 * // }
+		 * // }))
+		 * // save.remove();
+		 * 
+		 * // Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
+		 * 
+		 * // if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
+		 * 
+		 * // return true;
+		 */
 
-			URL doge = new URL(args[0]);
-
-			BufferedImage veryImage = ImageIO.read(doge);
-
-			// veryImage = Images.getScaledImage(veryImage, 128, 128);
-
-			final Location render = player.getLocation();
-
-			final String playerName = player.getName();
-
-			if(player.isOp())
-			{
-				final int theTask = Images.convertImageToSchematic(Demigods.PLUGIN, veryImage, 1356);
-
-				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if(taskCount != -1 && toGen != null)
-						{
-							toGen.get(taskCount).generate(render);
-							Messages.info(" GENERATING: " + taskCount + " / " + toGen.size() + " left!");
-							taskCount--;
-							if(taskCount == -1)
-							{
-								toGen = null;
-								OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-								if(player.isOnline()) player.getPlayer().sendMessage(" Done! ");
-								Bukkit.getScheduler().cancelTask(thisTask);
-							}
-						}
-						else if(Images.getConvertedSchematics(theTask) != null)
-						{
-							Messages.info(" FOUND: Begin generation sequence! ");
-							toGen = Images.getConvertedSchematics(theTask);
-							taskCount = toGen.size() - 1;
-							Images.removeSchematicList(theTask);
-						}
-					}
-				}, 40, 10);
-			}
-
-			player.sendMessage(" Hold on... ");
-		}
-		catch(Throwable suchError)
-		{
-			player.sendMessage(ChatColor.RED + "many problems. " + suchError.getMessage());
-			suchError.printStackTrace();
-		}
-
-		return true;
-
-		// Player player = (Player) sender;
-
-		// StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
-		// if(obelisk != null)
-		// {
-		// Get all of the connected obelisks
-		// for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
-		// {
-		// if(save == obelisk) continue;
-		// player.sendMessage(save.getId().toString());
-		// }
-		// }
-		// else player.sendMessage(ChatColor.RED + "No Obelisk found.");
-
-		// return true;
-
-		// Player player = (Player) sender;
-
-		// Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
-
-		// for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
-		// {
-		// @Override
-		// public boolean apply(StructureData structure)
-		// {
-		// return !structure.getType().equals(GreekStructure.ALTAR);
-		// }
-		// }))
-		// save.remove();
-
-		// Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
-
-		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
-
-		// return true;
+        return true;
 	}
 
 	private static boolean test3(CommandSender sender, final String[] args)
