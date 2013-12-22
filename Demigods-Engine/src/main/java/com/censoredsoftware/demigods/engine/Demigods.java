@@ -165,7 +165,7 @@ public class Demigods extends CensoredCentralizedClass
 			// Initialize tribute tracking
 			TributeManager.initializeTributeTracking();
 
-			if(Util.isRunningSpigot()) Messages.info(("Spigot found, will use extra API features."));
+			if(Util.isRunningSpigot()) Messages.info(("Spigot found, extra API features enabled."));
 			else Messages.warning(("Without Spigot, some features may not work."));
 
 			// Handle online characters
