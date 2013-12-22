@@ -1,9 +1,7 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.structure.Altar;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,11 +14,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class BookOfPrayer
 {
-	public final static ItemStack book = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + "Book of Prayer", new ArrayList<String>()
+	public final static String name = "Book of Prayer";
+	public final static String description = "Teleport to the nearest Altar.";
+	public final static DivineItem.Category category = DivineItem.Category.BOOK;
+	public final static ItemStack item = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + name, new ArrayList<String>()
 	{
 		{
 			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Right click to teleport to the nearest Altar.");
@@ -28,7 +33,7 @@ public class BookOfPrayer
 			add(ChatColor.RED + "Consumed on use.");
 		}
 	}, null);
-	public final static Recipe recipe = new ShapelessRecipe(book)
+	public final static Recipe recipe = new ShapelessRecipe(item)
 	{
 		{
 			addIngredient(1, Material.NETHER_STAR);
@@ -45,7 +50,7 @@ public class BookOfPrayer
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(book))
+			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(item))
 			{
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{

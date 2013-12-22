@@ -1,13 +1,15 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import com.censoredsoftware.censoredlib.trigger.Trigger;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.structure.Structure;
+import java.util.Collection;
+
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 
-import java.util.Collection;
+import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.structure.Structure;
 
 public interface Mythos
 {
@@ -24,6 +26,8 @@ public interface Mythos
 	public abstract String[] getIncompatible();
 
 	public abstract boolean useBaseGame();
+
+	public abstract Collection<DivineItem> getDivineItems();
 
 	public abstract Collection<Alliance> getAlliances();
 

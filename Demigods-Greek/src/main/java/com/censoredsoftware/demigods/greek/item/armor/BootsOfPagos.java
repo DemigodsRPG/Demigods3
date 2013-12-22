@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,20 +14,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class BootsOfPagos
 {
-	public final static ItemStack boots = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + "Boots of Pagos", new ArrayList<String>()
+	public final static String name = "Boots of Pagos";
+	public final static String description = "Boots this cold have their advantages... and disadvantages.";
+	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
+	public final static ItemStack item = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + name, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.BLUE + "" + ChatColor.ITALIC + "Boots this cold have their advantages... and disadvantages.");
+			add(ChatColor.BLUE + "" + ChatColor.ITALIC + description);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(boots)
+	public final static Recipe recipe = new ShapedRecipe(item)
 	{
 		{
-			shape("AAA", "ABA", "AAA");
+	shape("AAA", "ABA", "AAA");
 			setIngredient('A', Material.PACKED_ICE);
 			setIngredient('B', Material.IRON_BOOTS);
 		}
@@ -42,7 +47,7 @@ public class BootsOfPagos
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && player.getInventory().getBoots().isSimilar(boots))
+			if(player.getInventory().getBoots() != null && player.getInventory().getBoots().isSimilar(item))
 			{
 				Location location = player.getLocation().subtract(0, 1, 0);
 
