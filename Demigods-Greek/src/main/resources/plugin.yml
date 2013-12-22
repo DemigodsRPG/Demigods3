@@ -1,4 +1,5 @@
 name: Demigods-Greek
+description: The Greek addon for Demigods RPG.
 main: com.censoredsoftware.demigods.greek.GreekMythos
 version: ${project.parent.version}
 authors: [_Alex, HmmmQuestionMark]
