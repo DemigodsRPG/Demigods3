@@ -1,27 +1,30 @@
 package com.censoredsoftware.demigods.engine.util;
 
+import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.google.common.base.Predicate;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Zones
 {
 	static
 	{
-		// WorldGuards.createFlag("STATE", "demigods", true, "ALL");
-		// WorldGuards.registerCreatedFlag("demigods");
-		// WorldGuards.setWhenToOverridePVP(Demigods.PLUGIN, new Predicate<EntityDamageByEntityEvent>()
-		// {
-		// @Override
-		// public boolean apply(EntityDamageByEntityEvent event)
-		// {
-		// return !Zones.inNoDemigodsZone(event.getEntity().getLocation());
-		// }
-		// });
+		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
+		WorldGuards.registerCreatedFlag("demigods");
+		WorldGuards.setWhenToOverridePVP(Demigods.PLUGIN, new Predicate<EntityDamageByEntityEvent>()
+		{
+			@Override
+			public boolean apply(EntityDamageByEntityEvent event)
+			{
+				return !Zones.inNoDemigodsZone(event.getEntity().getLocation());
+			}
+		});
 	}
 
 	/**
@@ -33,7 +36,7 @@ public class Zones
 	public static boolean inNoPvpZone(Location location)
 	{
 		if(Configs.getSettingBoolean("zones.allow_skills_anywhere")) return false;
-		// if(WorldGuards.canWorldGuard()) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || !WorldGuards.canPVP(location);
+		if(WorldGuards.canWorldGuard()) return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP) || !WorldGuards.canPVP(location);
 		return Structure.Util.isInRadiusWithFlag(location, Structure.Flag.NO_PVP);
 	}
 
@@ -47,7 +50,7 @@ public class Zones
 	 */
 	public static boolean inNoBuildZone(Player player, Location location)
 	{
-		// if(WorldGuards.canWorldGuard() && !WorldGuards.canBuild(player, location)) return true;
+		if(WorldGuards.canWorldGuard() && !WorldGuards.canBuild(player, location)) return true;
 		StructureData save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
 		return save != null && save.getOwner() != null && !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 	}
