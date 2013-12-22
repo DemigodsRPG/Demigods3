@@ -10,6 +10,7 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -90,7 +91,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 			if(player.isOp())
 			{
-				Images.convertImageToSchematic(Demigods.PLUGIN, veryImage);
+				final int theTask = Images.convertImageToSchematic(Demigods.PLUGIN, veryImage, 1356);
 
 				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new Runnable()
 				{
@@ -100,6 +101,7 @@ public class DevelopmentCommands extends WrappedCommand
 						if(taskCount != -1 && toGen != null)
 						{
 							toGen.get(taskCount).generate(render);
+							Messages.info(" GENERATING: " + taskCount + " / " + toGen.size() + " left!");
 							taskCount--;
 							if(taskCount == -1)
 							{
@@ -109,14 +111,15 @@ public class DevelopmentCommands extends WrappedCommand
 								Bukkit.getScheduler().cancelTask(thisTask);
 							}
 						}
-						else if(Images.getConvertedSchematics(thisTask) != null)
+						else if(Images.getConvertedSchematics(theTask) != null)
 						{
-							toGen = Images.getConvertedSchematics(thisTask);
+							Messages.info(" FOUND: Begin generation sequence! ");
+							toGen = Images.getConvertedSchematics(theTask);
 							taskCount = toGen.size() - 1;
-							Images.removeSchematicList(thisTask);
+							Images.removeSchematicList(theTask);
 						}
 					}
-				}, 40, 80);
+				}, 40, 10);
 			}
 
 			player.sendMessage(" Hold on... ");
