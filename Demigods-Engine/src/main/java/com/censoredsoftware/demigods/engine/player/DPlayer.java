@@ -476,7 +476,14 @@ public class DPlayer implements ConfigurationSerializable
 			if(messages.size() > 0 && display)
 			{
 				player.sendMessage(" ");
-				player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_CHAT).replace("{size}", "" + messages.size())).build());
+				if(messages.size() == 1)
+				{
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_MESSAGE)).build());
+				}
+				else
+				{
+					player.sendMessage(new ColoredStringBuilder().italic().gray(Demigods.LANGUAGE.getText(Translation.Text.HELD_BACK_MESSAGES).replace("{size}", "" + messages.size())).build());
+				}
 				for(String message : messages)
 					player.sendMessage(message);
 			}
