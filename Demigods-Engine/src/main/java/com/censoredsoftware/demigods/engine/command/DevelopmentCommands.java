@@ -9,10 +9,10 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -52,11 +52,9 @@ public class DevelopmentCommands extends WrappedCommand
 	{
 		Player player = (Player) sender;
 
-		sender.sendMessage("WORLDGUARD: " + WorldGuards.canWorldGuard());
+		sender.sendMessage("ZONES_NO_PVP: " + Zones.inNoPvpZone(player.getLocation()));
 
-		sender.sendMessage("PVP: " + WorldGuards.checkForFlagValue(DefaultFlag.PVP, "deny", player.getLocation()));
-
-		sender.sendMessage("DG: " + WorldGuards.checkForFlagValue(WorldGuards.getCreatedFlag("demigods"), "deny", player.getLocation()));
+		sender.sendMessage("WG_NO_PVP: " + !WorldGuards.canPVP(player.getLocation()));
 
 		// for(Battle battle : Battle.Util.getAllActive())
 		// battle.end();

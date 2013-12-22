@@ -90,7 +90,7 @@ public class EntityListener implements Listener
 		LivingEntity entity = event.getEntity();
 		AnimalTamer owner = event.getOwner();
 		DCharacter character = DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(owner.getName())).getCurrent();
-		if(character != null) DPet.Util.create((Tameable) entity, DPlayer.Util.getPlayerFromName(owner.getName()).getCurrent());
+		if(character != null) DPet.Util.create((Tameable) entity, DPlayer.Util.getPlayer((Player) owner).getCurrent());
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

@@ -52,8 +52,7 @@ public class Zones
 	{
 		if(WorldGuards.canWorldGuard() && !WorldGuards.canBuild(player, location)) return true;
 		StructureData save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
-		if(save != null && save.getOwner() != null) return !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
-		return false;
+		return save != null && save.getOwner() != null && !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 	}
 
 	public static boolean inNoDemigodsZone(Location location)

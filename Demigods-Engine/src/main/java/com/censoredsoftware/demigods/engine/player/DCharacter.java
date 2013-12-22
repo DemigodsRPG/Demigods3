@@ -491,7 +491,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	@Override
 	public boolean canPvp()
 	{
-		return DPlayer.Util.getPlayerFromName(getPlayerName()).canPvp();
+		return DPlayer.Util.getPlayer(getMojangAccount()).canPvp();
 	}
 
 	public boolean isUsable()
