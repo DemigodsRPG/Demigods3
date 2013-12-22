@@ -1,6 +1,7 @@
 package com.censoredsoftware.demigods.engine.command;
 
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
 import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.Demigods;
@@ -15,6 +16,8 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,6 +25,7 @@ import org.bukkit.entity.Player;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -62,13 +66,17 @@ public class DevelopmentCommands extends WrappedCommand
 		return true;
 	}
 
+	private static int thisTask = -1;
+	private static List<Schematic> toGen = null;
+	private static int taskCount = -1;
+
 	private static boolean test2(CommandSender sender, final String[] args)
 	{
 		Player player = (Player) sender;
 
 		try
 		{
-			player.sendMessage("  ");
+			player.sendMessage(" Here we go! ");
 
 			URL doge = new URL(args[0]);
 
@@ -76,9 +84,42 @@ public class DevelopmentCommands extends WrappedCommand
 
 			// veryImage = Images.getScaledImage(veryImage, 128, 128);
 
-			if(player.isOp()) Images.convertImageToSchematic(veryImage).generate(player.getLocation());
+			final Location render = player.getLocation();
 
-			player.sendMessage("  ");
+			final String playerName = player.getName();
+
+			if(player.isOp())
+			{
+				Images.convertImageToSchematic(Demigods.PLUGIN, veryImage);
+
+				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						if(taskCount != -1 && toGen != null)
+						{
+							toGen.get(taskCount).generate(render);
+							taskCount--;
+							if(taskCount == -1)
+							{
+								toGen = null;
+								OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+								if(player.isOnline()) player.getPlayer().sendMessage(" Done! ");
+								Bukkit.getScheduler().cancelTask(thisTask);
+							}
+						}
+						else if(Images.getConvertedSchematics(thisTask) != null)
+						{
+							toGen = Images.getConvertedSchematics(thisTask);
+							taskCount = toGen.size() - 1;
+							Images.removeSchematicList(thisTask);
+						}
+					}
+				}, 40, 80);
+			}
+
+			player.sendMessage(" Hold on... ");
 		}
 		catch(Throwable suchError)
 		{
