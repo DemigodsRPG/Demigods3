@@ -1,14 +1,12 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-
-import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.google.common.collect.Lists;
+import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
 
 public class WelcomeBook
 {
@@ -18,7 +16,7 @@ public class WelcomeBook
 	public final static ItemStack item = Items.createBook(ChatColor.DARK_AQUA + "Read me!", "Demigods", new ArrayList<String>(2)
 	{
 		{
-			add(new ColoredStringBuilder().black("Welcome, adventurer, to the world of ").bold().purple("Demigods RPG").removeBold().black("!").build());
+			add("This is Demigods RPG!");
 			add("Allan please add details");
 		}
 	}, Lists.newArrayList("Important information."));

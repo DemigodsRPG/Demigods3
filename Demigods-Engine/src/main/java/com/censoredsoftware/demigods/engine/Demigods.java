@@ -1,26 +1,5 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.mcstats.MetricsLite;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
@@ -52,15 +31,35 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.mcstats.MetricsLite;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
 	// Constants
-	public static String SAVE_PATH;
 	public static Scoreboard BOARD;
 
 	// Public Static Access
 	public static final DemigodsPlugin PLUGIN;
+	public static final String SAVE_PATH;
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
@@ -85,6 +84,9 @@ public class Demigods extends CensoredCentralizedClass
 	{
 		// Allow static access.
 		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
+
+		// Data folder
+		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
 		// Conversation factory static access.
 		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
@@ -126,9 +128,6 @@ public class Demigods extends CensoredCentralizedClass
 				Messages.severe("plugins/Demigods/plugins directory.");
 				return false;
 			}
-
-			// Start the data
-			SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
 
 			if(!PLUGIN.getServer().getOnlineMode())
 			{
