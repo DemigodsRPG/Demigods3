@@ -1,5 +1,27 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
@@ -22,27 +44,6 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -257,7 +258,39 @@ public class Prayer implements WrappedConversation
 			String arg1 = message.split(" ").length >= 2 ? message.split(" ")[1] : null;
 			String arg2 = message.split(" ").length >= 3 ? message.split(" ")[2] : null;
 
-			return message.equalsIgnoreCase("menu") || arg0.equalsIgnoreCase("new") && StringUtils.isAlphanumeric(arg1) && !character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || ((arg0.equalsIgnoreCase("warp") || arg0.equalsIgnoreCase("delete")) && (character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase())) || (arg0.equalsIgnoreCase("invite") && (DCharacter.Util.charExists(arg1) || Bukkit.getOfflinePlayer(arg1) != null && DPlayer.Util.getPlayer(Bukkit.getOfflinePlayer(arg1)).getCurrent() != null) && arg2 != null && character.getMeta().getWarps().containsKey(arg2.toLowerCase())));
+			// Create and save the notification list
+			context.setSessionData("warp_notifications", Lists.newArrayList());
+			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("warp_notifications");
+
+			// Check validity
+			if(message.equalsIgnoreCase("menu")) return true;
+			else if(arg0.equalsIgnoreCase("new"))
+			{
+				if(StringUtils.isAlphanumeric(arg1) && !character.getMeta().getWarps().containsKey(arg1.toLowerCase())) return true;
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_CREATING_WARP);
+			}
+			else if(arg0.equalsIgnoreCase("warp"))
+			{
+				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_WARPING);
+			}
+			else if(arg0.equalsIgnoreCase("delete"))
+			{
+				if((character.getMeta().getWarps().containsKey(arg1.toLowerCase()) || character.getMeta().getInvites().containsKey(arg1.toLowerCase()))) return true;
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_DELETING_WARP);
+			}
+			else if(arg0.equalsIgnoreCase("invite"))
+			{
+				if((DCharacter.Util.charExists(arg1) || (DPlayer.Util.getPlayerFromName(arg1) != null && DPlayer.Util.getPlayerFromName(arg1).getCurrent() != null)) && arg2 != null && character.getMeta().getWarps().containsKey(arg2.toLowerCase())) return true;
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_INVITING);
+			}
+			else
+			{
+				// Fallback notification
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_MISC);
+			}
+
+			return false;
 		}
 
 		@Override

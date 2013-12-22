@@ -1,5 +1,20 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import java.util.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
@@ -18,20 +33,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DPlayer implements ConfigurationSerializable
 {
@@ -487,7 +488,7 @@ public class DPlayer implements ConfigurationSerializable
 
 	public static class Util
 	{
-		public static DPlayer create(Player player)
+		public static DPlayer create(final OfflinePlayer player)
 		{
 			DPlayer playerSave = new DPlayer();
 			playerSave.setMojangAccount(MojangIdGrabber.getUUID(player));
@@ -508,12 +509,12 @@ public class DPlayer implements ConfigurationSerializable
 			DataManager.players.remove(mojangAccount);
 		}
 
-		public static DPlayer getPlayer(OfflinePlayer player)
+		public static DPlayer getPlayer(final OfflinePlayer player)
 		{
 			String id = MojangIdGrabber.getUUID(player);
 			if(id == null) throw new MojangIdNotFoundException(player.getName());
 			DPlayer found = getPlayer(id);
-			if(found == null) return create(player.getPlayer());
+			if(found == null) return create(player);
 			return found;
 		}
 
@@ -532,7 +533,7 @@ public class DPlayer implements ConfigurationSerializable
 			}
 			catch(NoSuchElementException ignored)
 			{}
-			throw new NullPointerException("No such player exists currently in the Demigods data.");
+			return null;
 		}
 
 		public static DPlayer getPlayer(String mojangAccount)
