@@ -49,7 +49,7 @@ public class BootsOfPagos
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && Items.areEqual(item, player.getInventory().getBoots()))
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
 			{
 				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
