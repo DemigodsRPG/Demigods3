@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.greek.deity;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -21,13 +29,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public enum GreekDeity implements Deity
 {
@@ -113,7 +114,7 @@ public enum GreekDeity implements Deity
 	@Override
 	public String toString()
 	{
-		return getName();
+		return name;
 	}
 
 	public String getName()

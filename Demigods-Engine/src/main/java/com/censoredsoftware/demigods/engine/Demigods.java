@@ -1,5 +1,26 @@
 package com.censoredsoftware.demigods.engine;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.mcstats.MetricsLite;
+
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
@@ -13,6 +34,7 @@ import com.censoredsoftware.demigods.engine.data.ThreadManager;
 import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.listener.*;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
@@ -30,26 +52,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.mcstats.MetricsLite;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -179,9 +181,9 @@ public class Demigods extends CensoredCentralizedClass
 		return false;
 	}
 
-    protected Mythos loadMythos()
-    {
-        ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
+	protected Mythos loadMythos()
+	{
+		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
 		Collection<RegisteredServiceProvider<Mythos>> mythosProviders = servicesManager.getRegistrations(Mythos.class);
 		if(Iterables.any(mythosProviders, new Predicate<RegisteredServiceProvider<Mythos>>()
 		{
@@ -281,12 +283,12 @@ public class Demigods extends CensoredCentralizedClass
 		}))
 			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), PLUGIN);
 
-		// Special Items
-		// for(DivineItem divineItem : DivineItem.values())
-		// {
-		// if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), PLUGIN);
-		// if(divineItem.getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getRecipe());
-		// }
+		// Divine Items
+		for(DivineItem divineItem : MYTHOS.getDivineItems())
+		{
+			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), PLUGIN);
+			if(divineItem.getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getRecipe());
+		}
 
 		// Quit reason.
 		Bukkit.getServer().getLogger().addHandler(new QuitReasonHandler());

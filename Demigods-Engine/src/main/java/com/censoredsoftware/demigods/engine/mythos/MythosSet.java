@@ -1,8 +1,16 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -10,17 +18,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-
-import java.util.Collection;
-import java.util.Set;
 
 public class MythosSet implements Mythos
 {
 	private final Mythos PRIMARY;
 	private final ImmutableSet<Mythos> SET;
 	private final String[] INCOMPATIBLE;
+	private final ImmutableSet<DivineItem> DIVINEITEMS;
 	private final ImmutableSet<Alliance> ALLIANCES;
 	private final ImmutableSet<Deity> DEITIES;
 	private final ImmutableSet<Structure> STRUCTURES;
@@ -43,6 +47,7 @@ public class MythosSet implements Mythos
 
 		Set<String> incompatibleSet = Sets.newHashSet();
 
+		Set<DivineItem> divineItems = Sets.newHashSet();
 		Set<Alliance> alliance = Sets.newHashSet();
 		Set<Deity> deity = Sets.newHashSet();
 		Set<Structure> structure = Sets.newHashSet();
@@ -52,9 +57,9 @@ public class MythosSet implements Mythos
 
 		for(Mythos mythos : SET)
 		{
-			for(String incomp : mythos.getIncompatible())
-				incompatibleSet.add(incomp);
+			Collections.addAll(incompatibleSet, mythos.getIncompatible());
 
+			divineItems.addAll(mythos.getDivineItems());
 			alliance.addAll(mythos.getAlliances());
 			deity.addAll(mythos.getDeities());
 			structure.addAll(mythos.getStructures());
@@ -72,6 +77,7 @@ public class MythosSet implements Mythos
 		}
 		INCOMPATIBLE = incompatibleWorking;
 
+		DIVINEITEMS = ImmutableSet.copyOf(divineItems);
 		ALLIANCES = ImmutableSet.copyOf(alliance);
 		DEITIES = ImmutableSet.copyOf(deity);
 		STRUCTURES = ImmutableSet.copyOf(structure);
@@ -120,6 +126,12 @@ public class MythosSet implements Mythos
 	public boolean useBaseGame()
 	{
 		return PRIMARY.useBaseGame();
+	}
+
+	@Override
+	public Collection<DivineItem> getDivineItems()
+	{
+		return DIVINEITEMS;
 	}
 
 	@Override

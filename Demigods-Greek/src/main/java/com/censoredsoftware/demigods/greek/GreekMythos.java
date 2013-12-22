@@ -1,13 +1,21 @@
 package com.censoredsoftware.demigods.greek;
 
+import java.util.Collection;
+
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.ServicePriority;
+
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 import com.censoredsoftware.demigods.greek.structure.GreekStructure;
 import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
 import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
@@ -15,11 +23,6 @@ import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.ServicePriority;
-
-import java.util.Collection;
 
 public class GreekMythos extends MythosPlugin
 {
@@ -81,6 +84,12 @@ public class GreekMythos extends MythosPlugin
 	public boolean useBaseGame()
 	{
 		return true;
+	}
+
+	@Override
+	public Collection<DivineItem> getDivineItems()
+	{
+		return Sets.newHashSet((DivineItem[]) GreekItem.values());
 	}
 
 	@Override

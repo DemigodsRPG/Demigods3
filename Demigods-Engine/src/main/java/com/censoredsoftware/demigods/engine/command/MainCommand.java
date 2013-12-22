@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -16,17 +28,6 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Sets;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -92,10 +93,7 @@ public class MainCommand extends WrappedCommand
 
 		Messages.tagged(sender, "Documentation");
 		for(Alliance alliance : Demigods.mythos().getAlliances())
-		{
-			if(!sender.hasPermission(alliance.getPermission())) continue;
-			sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
-		}
+			if(sender.hasPermission(alliance.getPermission())) sender.sendMessage(ChatColor.GRAY + " /dg " + alliance.getName().toLowerCase());
 		sender.sendMessage(ChatColor.GRAY + " /dg info");
 		if(player.hasPermission("demigods.admin")) sender.sendMessage(ChatColor.RED + " /dg admin");
 		sender.sendMessage(" ");
@@ -171,6 +169,7 @@ public class MainCommand extends WrappedCommand
 		for(Alliance alliance : Demigods.mythos().getAlliances())
 		{
 			if(!player.hasPermission(alliance.getPermission())) continue;
+
 			if(category.equalsIgnoreCase(alliance.getName()))
 			{
 				if(args.length < 2)

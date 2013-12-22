@@ -1,10 +1,12 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,17 +16,22 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class BootsOfPagos
 {
-	public final static ItemStack boots = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + "Boots of Pagos", new ArrayList<String>()
+	public final static String name = "Boots of Pagos";
+	public final static String description = "Boots this cold have their advantages... and disadvantages.";
+	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
+	public final static ItemStack item = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + name, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.BLUE + "" + ChatColor.ITALIC + "Boots this cold have their advantages... and disadvantages.");
+			add(ChatColor.BLUE + "" + ChatColor.ITALIC + description);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(boots)
+	public final static Recipe recipe = new ShapedRecipe(item)
 	{
 		{
 			shape("AAA", "ABA", "AAA");
@@ -42,17 +49,46 @@ public class BootsOfPagos
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && player.getInventory().getBoots().isSimilar(boots))
+			if(player.getInventory().getBoots() != null && player.getInventory().getBoots().isSimilar(item))
 			{
-				Location location = player.getLocation().subtract(0, 1, 0);
+				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
-				if(location.getBlock().isLiquid())
+				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER))
 				{
-					location.getBlock().setType(Material.ICE);
+					Location loc1 = location.getBlock().getRelative(BlockFace.NORTH).getLocation();
+					Location loc2 = location.getBlock().getRelative(BlockFace.SOUTH).getLocation();
+					Location loc3 = location.getBlock().getRelative(BlockFace.EAST).getLocation();
+					Location loc4 = location.getBlock().getRelative(BlockFace.WEST).getLocation();
+
+					player.sendBlockChange(location, Material.ICE, (byte) 0);
+					if(loc1.getBlock().isLiquid()) player.sendBlockChange(loc1, Material.ICE, (byte) 0);
+					if(loc2.getBlock().isLiquid()) player.sendBlockChange(loc2, Material.ICE, (byte) 0);
+					if(loc3.getBlock().isLiquid()) player.sendBlockChange(loc3, Material.ICE, (byte) 0);
+					if(loc4.getBlock().isLiquid()) player.sendBlockChange(loc4, Material.ICE, (byte) 0);
+
+					for(Entity entity : player.getNearbyEntities(30, 30, 30))
+					{
+						if(entity instanceof Player)
+						{
+							((Player) entity).sendBlockChange(location, Material.ICE, (byte) 0);
+							if(loc1.getBlock().isLiquid()) ((Player) entity).sendBlockChange(loc1, Material.ICE, (byte) 0);
+							if(loc2.getBlock().isLiquid()) ((Player) entity).sendBlockChange(loc2, Material.ICE, (byte) 0);
+							if(loc3.getBlock().isLiquid()) ((Player) entity).sendBlockChange(loc3, Material.ICE, (byte) 0);
+							if(loc4.getBlock().isLiquid()) ((Player) entity).sendBlockChange(loc4, Material.ICE, (byte) 0);
+						}
+					}
 				}
-				else if(!location.getBlock().isLiquid() && location.getBlock().getType() != Material.AIR && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE)
+				else if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE)
 				{
-					player.getLocation().getBlock().setType(Material.SNOW);
+                    player.sendBlockChange(location.getBlock().getRelative(BlockFace.UP).getLocation(), Material.SNOW, (byte) 0);
+
+					for(Entity entity : player.getNearbyEntities(30, 30, 30))
+					{
+						if(entity instanceof Player)
+						{
+							((Player) entity).sendBlockChange(location.getBlock().getRelative(BlockFace.UP).getLocation(), Material.SNOW, (byte) 0);
+						}
+					}
 				}
 			}
 		}
