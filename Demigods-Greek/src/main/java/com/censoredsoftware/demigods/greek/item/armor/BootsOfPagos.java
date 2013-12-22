@@ -41,7 +41,7 @@ public class BootsOfPagos
 	};
 	public final static Listener listener = new Listener()
 	{
-		@EventHandler(priority = EventPriority.HIGH)
+		@EventHandler(priority = EventPriority.NORMAL)
 		private void onPlayerMove(PlayerMoveEvent event)
 		{
 			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
@@ -49,11 +49,11 @@ public class BootsOfPagos
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && player.getInventory().getBoots().isSimilar(item))
+			if(player.getInventory().getBoots() != null && Items.areEqual(item, player.getInventory().getBoots()))
 			{
 				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
-				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER))
+				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER) && player.getLocation().getBlock().getRelative(BlockFace.NORTH).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.SOUTH).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.EAST).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.WEST).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.NORTH_EAST).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.NORTH_WEST).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.SOUTH_EAST).getType().equals(Material.AIR) && player.getLocation().getBlock().getRelative(BlockFace.SOUTH_WEST).getType().equals(Material.AIR))
 				{
 					Location loc1 = location.getBlock().getRelative(BlockFace.NORTH).getLocation();
 					Location loc2 = location.getBlock().getRelative(BlockFace.SOUTH).getLocation();
@@ -78,9 +78,9 @@ public class BootsOfPagos
 						}
 					}
 				}
-				else if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE)
+				else if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE && location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR))
 				{
-                    player.sendBlockChange(location.getBlock().getRelative(BlockFace.UP).getLocation(), Material.SNOW, (byte) 0);
+					player.sendBlockChange(location.getBlock().getRelative(BlockFace.UP).getLocation(), Material.SNOW, (byte) 0);
 
 					for(Entity entity : player.getNearbyEntities(30, 30, 30))
 					{
