@@ -1,6 +1,6 @@
 ![Demigods Logo](http://www.demigodsrpg.com/demigods_logo.png)
 
-Overview [![Build Status](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods.png?branch=master)](https://travis-ci.org/CensoredSoftware/Minecraft-Demigods)
+Overview [![Build Status](https://travis-ci.org/CensoredSoftware/Demigods.png?branch=master)](https://travis-ci.org/CensoredSoftware/Demigods)
 ========
 
 This is the GitHub page for **Demigods**, a full RPG experience designed to create a unique team-building game for survival/PvP servers.
