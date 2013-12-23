@@ -1,9 +1,11 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.Demigods;
+import java.io.File;
+import java.util.List;
+
 import org.bukkit.configuration.Configuration;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
 
 /**
  * Module to load configuration settings from any passed in PLUGIN's config.yml.
@@ -87,6 +89,13 @@ public class Configs
 		List<String> list = getSettingList(id);
 		list.add(data);
 		Demigods.PLUGIN.getConfig().set(id, list);
+
+		try
+		{
+			Demigods.PLUGIN.getConfig().save(new File(Demigods.PLUGIN.getDataFolder() + "/config.yml"));
+		}
+		catch(Exception ignored)
+		{}
 	}
 
 	public static void removeFromSettingList(String id, String data)
@@ -94,5 +103,12 @@ public class Configs
 		List<String> list = getSettingList(id);
 		list.remove(data);
 		Demigods.PLUGIN.getConfig().set(id, list);
+
+        try
+        {
+			Demigods.PLUGIN.getConfig().save(new File(Demigods.PLUGIN.getDataFolder() + "/config.yml"));
+		}
+		catch(Exception ignored)
+		{}
 	}
 }
