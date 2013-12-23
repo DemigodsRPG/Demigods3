@@ -1,29 +1,6 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.player.Notification;
-import com.censoredsoftware.censoredlib.helper.ColoredStringBuilder;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -44,6 +21,27 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -414,13 +412,13 @@ public class Prayer implements WrappedConversation
 			player.sendRawMessage(" ");
 			if(skillPoints > 0)
 			{
-				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have ").green(character.getMeta().getSkillPoints() + "").gray(" skill points available.").build());
-				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  To assign your skill points, use ").yellow("assign <points> <skill>").gray(".").build());
+				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  You currently have " + ChatColor.GREEN + character.getMeta().getSkillPoints() + "" + ChatColor.GRAY + " skill points available.");
+				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  To assign your skill points, use " + ChatColor.YELLOW + "assign <points> <skill>" + ChatColor.GRAY + ".");
 			}
 			else
 			{
-				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  You currently have no skill points available for assignment.").build());
-				player.sendRawMessage(new ColoredStringBuilder().italic().gray("  Battle to earn some!").build());
+				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  You currently have no skill points available for assignment.");
+				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  Battle to earn some!");
 			}
 
 			// Display notifications if available
