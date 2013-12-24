@@ -1,14 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.battle.Battle;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.censoredsoftware.demigods.engine.util.Zones;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,6 +9,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.battle.Battle;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
 public class PlayerListener implements Listener
 {
@@ -70,8 +72,8 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(ChatColor.GRAY + "This server is running Demigods version: " + ChatColor.YELLOW + Demigods.PLUGIN.getDescription().getVersion());
-			player.sendMessage(ChatColor.GRAY + "Type " + ChatColor.GREEN + "/dg" + ChatColor.GRAY + " for more information.");
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.RUNNING_DG_VERSION).replace("{version}", Demigods.PLUGIN.getDescription().getVersion()));
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DG_FOR_MORE_INFORMATION));
 		}
 
 		// TODO First join book
@@ -81,22 +83,22 @@ public class PlayerListener implements Listener
 		if(character != null && character.getMeta().hasNotifications())
 		{
 			int size = character.getMeta().getNotifications().size();
-			player.sendMessage(size == 1 ? ChatColor.GREEN + "You have an unread notification!" : ChatColor.GREEN + "You have " + size + " unread notifications!");
-			player.sendMessage(ChatColor.GRAY + "Find an Altar to view your notifications.");
+			player.sendMessage(size == 1 ? Demigods.LANGUAGE.getText(Translation.Text.UNREAD_NOTIFICATION) : Demigods.LANGUAGE.getText(Translation.Text.UNREAD_NOTIFICATIONS).replace("{size}", "" + size));
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.FIND_ALTAR_TO_VIEW_NOTIFICATIONS));
 		}
 
 		// Remove temp battle data
 		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle"))
 		{
 			DataManager.removeTemp(player.getName(), "quit_during_battle");
-			player.sendMessage(ChatColor.YELLOW + "WelcomeBook back! You are currently in a battle.");
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.WELCOME_BACK_IN_BATTLE));
 		}
 
 		// Alert of losing battle due to leaving
 		if(DataManager.hasKeyTemp(player.getName(), "quit_during_battle_final"))
 		{
 			DataManager.removeTemp(player.getName(), "quit_during_battle_final");
-			player.sendMessage(ChatColor.RED + "You left the game during a battle, and have lost.");
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.WELCOME_BACK_BATTLE_LOST));
 		}
 	}
 
@@ -110,26 +112,26 @@ public class PlayerListener implements Listener
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		final String name = event.getPlayer().getName();
-		String message = ChatColor.YELLOW + name + " has quit.";
+		String message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_QUITTING).replace("{name}", name);
 		switch(QuitReasonHandler.latestQuit)
 		{
 			case GENERIC_REASON:
-				message = ChatColor.YELLOW + name + " has either quit or crashed.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_GENERIC).replace("{name}", name);
 				break;
 			case SPAM:
-				message = ChatColor.YELLOW + name + " has disconnected due to spamming.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_SPAM).replace("{name}", name);
 				break;
 			case END_OF_STREAM:
-				message = ChatColor.YELLOW + name + " has lost connection.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_EOS).replace("{name}", name);
 				break;
 			case OVERFLOW:
-				message = ChatColor.YELLOW + name + " has disconnected due to overload.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_OVERFLOW).replace("{name}", name);
 				break;
 			case QUITTING:
-				message = ChatColor.YELLOW + name + " has quit.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_QUITTING).replace("{name}", name);
 				break;
 			case TIMEOUT:
-				message = ChatColor.YELLOW + name + " has disconnected due to timeout.";
+				message = Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_TIMEOUT).replace("{name}", name);
 				break;
 		}
 		event.setQuitMessage(message);
@@ -153,7 +155,7 @@ public class PlayerListener implements Listener
 							Battle battle = Battle.Util.getBattle(loggingOff);
 							battle.removeParticipant(loggingOff);
 							DataManager.removeTemp(name, "quit_during_battle");
-							battle.sendMessage(ChatColor.YELLOW + loggingOff.getName() + " has left the battle.");
+							battle.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DISCONNECT_DURING_BATTLE).replace("{name}", loggingOff.getName()));
 							DataManager.saveTemp(name, "quit_during_battle_final", true);
 						}
 					}
