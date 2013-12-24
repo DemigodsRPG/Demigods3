@@ -36,7 +36,7 @@
     <properties> <!-- It is important to keep up to date manually. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <censoredLib.version>1.0.0-SNAPSHOT</censoredLib.version>
-        <spigot.version>1.7.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.7.2-R0.2-SNAPSHOT</spigot.version>
     </properties>
 
     <developers>
