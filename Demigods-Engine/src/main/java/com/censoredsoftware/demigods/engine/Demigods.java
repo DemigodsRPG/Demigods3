@@ -31,7 +31,6 @@ import com.censoredsoftware.demigods.engine.command.GeneralCommands;
 import com.censoredsoftware.demigods.engine.command.MainCommand;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.ThreadManager;
-import com.censoredsoftware.demigods.engine.data.TributeManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
@@ -157,9 +156,6 @@ public class Demigods extends CensoredCentralizedClass
 
 			// Regenerate structures
 			Structure.Util.regenerateStructures();
-
-			// Initialize tribute tracking
-			TributeManager.initializeTributeTracking();
 
 			if(Util.isRunningSpigot()) Messages.info(("Spigot found, extra API features enabled."));
 			else Messages.warning(("Without Spigot, some features may not work."));

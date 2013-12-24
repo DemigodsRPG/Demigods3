@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +14,15 @@ public class TributeManager
 	/**
 	 * Initialized the tribute map with some base data. This prevents fresh data from being out of whack.
 	 */
+	@Deprecated
 	public static void initializeTributeTracking()
 	{
 		for(Material material : Material.values())
 		{
+			// Don't use certain materials
+			Material[] unused = { Material.AIR, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA };
+			if(Arrays.asList(unused).contains(material)) continue;
+
 			// Fill it with random data
 			String category = getCategory(material);
 			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, Randoms.generateIntRange(1, 10));
