@@ -84,7 +84,7 @@
     <dependencies>
         <dependency>
             <groupId>com.censoredsoftware</groupId>
-            <artifactId>CensoredLib</artifactId>
+            <artifactId>CensoredLib-Core</artifactId>
             <version>${censoredLib.version}</version>
             <scope>compile</scope>
             <type>jar</type>
