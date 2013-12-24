@@ -1,11 +1,12 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.censoredsoftware.censoredlib.util.Randoms;
 
 public class TributeManager
 {
@@ -18,7 +19,7 @@ public class TributeManager
 		{
 			// Fill it with random data
 			String category = getCategory(material);
-			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, Randoms.generateIntRange(10, 64));
+			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, Randoms.generateIntRange(1, 10));
 		}
 	}
 
@@ -116,16 +117,14 @@ public class TributeManager
 	public static int getValue(ItemStack item)
 	{
 		// Define values for reference
-		int categoryTributes = getTributesForCategory(getCategory(item.getType()));
 		double baseValue = getBaseTributeValue(item.getType());
 		int totalItemTributes = getTributes(item.getType());
 
-		// Calculate value
-		double multiplier = categoryTributes / totalItemTributes;
-		if(multiplier < baseValue) multiplier = baseValue;
+		// Calculate bonus
+		double bonus = getTotalTributes() * 1.7 / totalItemTributes;
 
 		// Return the value
-		return (int) Math.ceil(multiplier * item.getAmount());
+		return (int) Math.ceil(baseValue + bonus);
 	}
 
 	/**
@@ -134,6 +133,7 @@ public class TributeManager
 	 * @param material the material whose category to check
 	 * @return the category
 	 */
+	@Deprecated
 	public static String getCategory(Material material)
 	{
 		switch(material)
@@ -398,8 +398,8 @@ public class TributeManager
 				value = 153;
 				break;
 			case DRAGON_EGG:
-				value = 1000;
-				break;
+				value = 500;
+		break;
 			default:
 				value = 0.1;
 				break;
