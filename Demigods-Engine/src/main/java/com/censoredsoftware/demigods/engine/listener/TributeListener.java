@@ -83,7 +83,7 @@ public class TributeListener implements Listener
 		if(character == null) return;
 
 		// If it isn't a tribute chest then break the method
-		if(!Demigods.LANGUAGE.getText(Translation.Text.CHEST_TRIBUTE_TO).contains(event.getInventory().getName()) || !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
+		if(!event.getInventory().getName().contains("Tribute to") /* TODO make this work with translations, I'm sleepy */|| !Structure.Util.partOfStructureWithFlag(player.getTargetBlock(null, 10).getLocation(), Structure.Flag.TRIBUTE_LOCATION)) return;
 
 		// Get the creator of the shrine
 		StructureData save = StructureData.Util.load(UUID.fromString(DataManager.getValueTemp(player.getName(), character.getName()).toString()));
