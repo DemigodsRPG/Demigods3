@@ -64,14 +64,14 @@ public class Demigods extends CensoredCentralizedClass
 	public static final Translation LANGUAGE;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
-	// Disabled Stuff
-	public static ImmutableSet<String> DISABLED_WORLDS;
-	public static ImmutableSet<String> COMMANDS;
+	// Important Reference Stuff
+	private static ImmutableSet<String> DISABLED_WORLDS;
+	private static ImmutableSet<String> COMMANDS;
 
 	// Mythos
 	public final Mythos MYTHOS;
 
-	// Instance of this class;
+	// Instance of This Class
 	private static Demigods demigods;
 
 	private Demigods()
@@ -105,7 +105,7 @@ public class Demigods extends CensoredCentralizedClass
 	}
 
 	// Load everything else.
-	protected static boolean load()
+	protected static boolean init()
 	{
 		// Initialize metrics
 		try
@@ -123,9 +123,7 @@ public class Demigods extends CensoredCentralizedClass
 			if(mythos() == null)
 			{
 				Messages.severe("Demigods was unable to load a Mythos.");
-				Messages.severe("Please install a Mythos plugin or place");
-				Messages.severe("the default Demigods-Greek.jar into the");
-				Messages.severe("plugins/Demigods/plugins directory.");
+				Messages.severe("Please install a Mythos plugin or place the default Demigods-Greek.jar into the plugins\\Demigods\\addons directory.");
 				return false;
 			}
 
@@ -133,8 +131,7 @@ public class Demigods extends CensoredCentralizedClass
 			{
 				Messages.severe("Demigods might not work in offline mode.");
 				Messages.severe("We depend on Mojang's servers for ids.");
-				Messages.severe("Any player who joins and is not premium");
-				Messages.severe("may be kicked from the game.");
+				Messages.severe("Any player who joins and is not premium may be kicked from the game.");
 			}
 
 			// Check for world load errors
@@ -142,8 +139,7 @@ public class Demigods extends CensoredCentralizedClass
 			{
 				Messages.severe("Demigods was unable to confirm any worlds.");
 				Messages.severe("This may be caused by misspelt world names.");
-				Messages.severe("Multi-world plugins can cause this message,");
-				Messages.severe("and in that case this may be a false alarm.");
+				Messages.severe("Multi-world plugins can cause this message, and in that case this may be a false alarm.");
 			}
 
 			// Load listeners, commands, permissions, and the scoreboard

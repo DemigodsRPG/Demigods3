@@ -430,7 +430,7 @@ public class DPlayer implements ConfigurationSerializable
 	{
 		if(getCurrent() == null || !getCurrent().isUsable())
 		{
-			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to load!");
+			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Your current character was unable to init!");
 			getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "Please contact the server administrator immediately.");
 			return false;
 		}

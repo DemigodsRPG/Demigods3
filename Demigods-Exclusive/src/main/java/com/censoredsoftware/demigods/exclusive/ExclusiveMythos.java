@@ -4,13 +4,11 @@ import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.ServicePriority;
 
 import java.util.Collection;
 
@@ -22,7 +20,7 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public void onEnable()
 	{
-		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Highest); // not really sure how Bukkit handles these, presuming the same way as EventPriority
+		Exclusive.init();
 	}
 
 	/**
@@ -105,7 +103,7 @@ public class ExclusiveMythos extends MythosPlugin
 
 	public Collection<Listener> getListeners()
 	{
-		return ImmutableSet.of();
+		return Exclusive.inst().LISTENERS;
 	}
 
 	public Collection<Permission> getPermissions()

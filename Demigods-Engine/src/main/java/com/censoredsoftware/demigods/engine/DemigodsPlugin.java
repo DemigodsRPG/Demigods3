@@ -41,7 +41,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		loadAddons();
 
 		// Load the game engine.
-		if(!Demigods.load())
+		if(!Demigods.init())
 		{
 			getPluginLoader().disablePlugin(this);
 			return;
@@ -84,8 +84,8 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		{}
 	}
 
-    private void enableMessage()
-    {
+	private void enableMessage()
+	{
 		getLogger().info("  ");
 		getLogger().info("     ____            _           _");
 		getLogger().info("    |    \\ ___ _____|_|___ ___ _| |___");
@@ -119,9 +119,9 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		// Check for CensoredLib
 		Plugin check = Bukkit.getPluginManager().getPlugin("CensoredLib");
 		if(check instanceof CensoredLibPlugin && check.getDescription().getVersion().startsWith(CENSORED_LIBRARY_VERSION)) return true;
-        getLogger().severe("  ");
-        getLogger().severe("  ");
-        getLogger().severe("                  888        d8b   888");
+		getLogger().severe("  ");
+		getLogger().severe("  ");
+		getLogger().severe("                  888        d8b   888");
 		getLogger().severe("                  888        Y8P   888");
 		getLogger().severe("                  888              888");
 		getLogger().severe("        .d8888b   888        888   88888b.");
@@ -163,7 +163,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 				getLogger().warning(plugin.getName() + " was installed in the wrong directory.");
 				getLogger().warning("Please place all Demigods addons into the");
 				getLogger().warning(getDataFolder().getPath() + "\\addons\\ directory.");
-                getLogger().warning("i.e. " + getDataFolder().getPath() + "\\addons\\" + plugin.getName());
+				getLogger().warning("i.e. " + getDataFolder().getPath() + "\\addons\\" + plugin.getName());
 				Bukkit.getPluginManager().disablePlugin(plugin);
 			}
 		}
