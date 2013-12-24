@@ -2,19 +2,41 @@ package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.listener.ZoneListener;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import java.util.Set;
+
 public class Zones
 {
-	static
+	private static ImmutableSet<String> DISABLED_WORLDS;
+
+	public static int init()
 	{
+		// Load disabled worlds
+		Set<String> disabledWorlds = Sets.newHashSet();
+		int erroredWorlds = 0;
+		for(String world : Configs.getSettingList("restrictions.disabled_worlds"))
+		{
+			disabledWorlds.add(world);
+			erroredWorlds += Bukkit.getServer().getWorld(world) == null ? 1 : 0;
+		}
+		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
+
+		// Disabled worlds listener
+		if(!DISABLED_WORLDS.isEmpty()) Bukkit.getPluginManager().registerEvents(new ZoneListener(), Demigods.PLUGIN);
+
+		// Init WorldGuard stuff
 		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
 		WorldGuards.registerCreatedFlag("demigods");
 		WorldGuards.setWhenToOverridePVP(Demigods.PLUGIN, new Predicate<EntityDamageByEntityEvent>()
@@ -25,6 +47,8 @@ public class Zones
 				return !Zones.inNoDemigodsZone(event.getEntity().getLocation());
 			}
 		});
+
+		return erroredWorlds;
 	}
 
 	/**
@@ -62,6 +86,6 @@ public class Zones
 
 	public static boolean isNoDemigodsWorld(World world)
 	{
-		return Demigods.DISABLED_WORLDS.contains(world.getName());
+		return DISABLED_WORLDS.contains(world.getName());
 	}
 }

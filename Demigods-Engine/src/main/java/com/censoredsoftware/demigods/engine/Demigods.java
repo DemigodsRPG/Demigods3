@@ -1,10 +1,36 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
+import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
+import com.censoredsoftware.censoredlib.helper.WrappedCommand;
+import com.censoredsoftware.censoredlib.helper.WrappedConversation;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
+import com.censoredsoftware.demigods.engine.command.GeneralCommands;
+import com.censoredsoftware.demigods.engine.command.MainCommand;
+import com.censoredsoftware.demigods.engine.conversation.Prayer;
+import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.data.TributeManager;
+import com.censoredsoftware.demigods.engine.deity.Alliance;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.listener.*;
+import com.censoredsoftware.demigods.engine.mythos.Mythos;
+import com.censoredsoftware.demigods.engine.mythos.MythosSet;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Configs;
+import com.censoredsoftware.demigods.engine.util.Messages;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.ConversationContext;
@@ -21,36 +47,10 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import org.mcstats.MetricsLite;
 
-import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
-import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
-import com.censoredsoftware.censoredlib.helper.WrappedCommand;
-import com.censoredsoftware.censoredlib.helper.WrappedConversation;
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
-import com.censoredsoftware.demigods.engine.command.GeneralCommands;
-import com.censoredsoftware.demigods.engine.command.MainCommand;
-import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.ThreadManager;
-import com.censoredsoftware.demigods.engine.deity.Alliance;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.listener.*;
-import com.censoredsoftware.demigods.engine.mythos.Mythos;
-import com.censoredsoftware.demigods.engine.mythos.MythosSet;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Skill;
-import com.censoredsoftware.demigods.engine.structure.Structure;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Configs;
-import com.censoredsoftware.demigods.engine.util.Messages;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -63,10 +63,6 @@ public class Demigods extends CensoredCentralizedClass
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
-
-	// Important Reference Stuff
-	public static ImmutableSet<String> DISABLED_WORLDS;
-	private static ImmutableSet<String> COMMANDS;
 
 	// Mythos
 	public final Mythos MYTHOS;
@@ -157,6 +153,9 @@ public class Demigods extends CensoredCentralizedClass
 			// Regenerate structures
 			Structure.Util.regenerateStructures();
 
+			// Initialize tribute tracking
+			TributeManager.initializeTributeTracking();
+
 			if(Util.isRunningSpigot()) Messages.info(("Spigot found, extra API features enabled."));
 			else Messages.warning(("Without Spigot, some features may not work."));
 
@@ -218,15 +217,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	protected int loadWorlds()
 	{
-		Set<String> disabledWorlds = Sets.newHashSet();
-		int erroredWorlds = 0;
-		for(String world : Configs.getSettingList("restrictions.disabled_worlds"))
-		{
-			disabledWorlds.add(world);
-			erroredWorlds += Bukkit.getServer().getWorld(world) == null ? 1 : 0;
-		}
-		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
-		return erroredWorlds;
+		return Zones.init();
 	}
 
 	protected void loadListeners()
@@ -240,9 +231,6 @@ public class Demigods extends CensoredCentralizedClass
 		// Mythos
 		for(Listener listener : mythos().getListeners())
 			register.registerEvents(listener, PLUGIN);
-
-		// Disabled worlds
-		if(!DISABLED_WORLDS.isEmpty()) register.registerEvents(new ZoneListener(), PLUGIN);
 
 		// Abilities
 		for(Ability ability : Abilities.getLoadedAbilities())
@@ -326,17 +314,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	protected void loadCommands()
 	{
-		Set<String> commands = Sets.newHashSet();
-		for(DemigodsCommand command : DemigodsCommand.values())
-			commands.addAll(command.getCommand().getCommands());
-		commands.add("demigod");
-		commands.add("dg");
-		commands.add("c");
-		commands.add("o");
-		commands.add("l");
-		commands.add("a");
-		commands.add("n");
-		COMMANDS = ImmutableSet.copyOf(commands);
+		ChatListener.init();
 	}
 
 	protected void loadPermissions(boolean load)
@@ -462,11 +440,6 @@ public class Demigods extends CensoredCentralizedClass
 			catch(Throwable ignored)
 			{}
 			return false;
-		}
-
-		public static boolean isDemigodsCommand(String command)
-		{
-			return COMMANDS.contains(command);
 		}
 	}
 

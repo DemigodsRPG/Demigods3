@@ -5,6 +5,8 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,8 +14,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.Set;
+
 public class ChatListener implements Listener
 {
+	private static ImmutableSet<String> COMMANDS;
+
+	public static void init()
+	{
+		Set<String> commands = Sets.newHashSet();
+		for(Demigods.DemigodsCommand command : Demigods.DemigodsCommand.values())
+			commands.addAll(command.getCommand().getCommands());
+		commands.add("demigod");
+		commands.add("dg");
+		commands.add("c");
+		commands.add("o");
+		commands.add("l");
+		commands.add("a");
+		commands.add("n");
+		COMMANDS = ImmutableSet.copyOf(commands);
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event)
 	{
@@ -24,7 +45,7 @@ public class ChatListener implements Listener
 
 		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()))
 		{
-			if(Demigods.Util.isDemigodsCommand(args[0]))
+			if(COMMANDS.contains(args[0]))
 			{
 				player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 				event.setCancelled(true);
