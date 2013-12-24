@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
 import com.censoredsoftware.censoredlib.util.WorldGuards;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.google.common.base.Predicate;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class Zones
 {
@@ -58,7 +57,7 @@ public class Zones
 
 	public static boolean inNoDemigodsZone(Location location)
 	{
-		return isNoDemigodsWorld(location.getWorld()); // || WorldGuards.canWorldGuard() && WorldGuards.checkForCreatedFlagValue("demigods", "deny", location);
+		return isNoDemigodsWorld(location.getWorld()); // || WorldGuards.worldGuardEnabled() && WorldGuards.checkForCreatedFlagValue("demigods", "deny", location);
 	}
 
 	public static boolean isNoDemigodsWorld(World world)

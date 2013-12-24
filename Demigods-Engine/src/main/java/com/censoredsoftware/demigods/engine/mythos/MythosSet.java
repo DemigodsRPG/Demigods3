@@ -1,12 +1,5 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
@@ -18,6 +11,12 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 public class MythosSet implements Mythos
 {
@@ -35,12 +34,13 @@ public class MythosSet implements Mythos
 	public MythosSet(Mythos primaryMythos, Set<Mythos> mythosSet)
 	{
 		PRIMARY = primaryMythos;
+		mythosSet.add(PRIMARY);
 		SET = ImmutableSet.copyOf(Collections2.transform(mythosSet, new Function<Mythos, Mythos>()
 		{
 			@Override
 			public Mythos apply(Mythos mythos)
 			{
-				mythos.setSecondary();
+				if(!mythos.equals(PRIMARY)) mythos.setSecondary();
 				return mythos;
 			}
 		}));

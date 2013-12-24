@@ -1,4 +1,4 @@
-package com.censoredsoftware.demigods.greek;
+package com.censoredsoftware.demigods.exclusive;
 
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
@@ -7,27 +7,15 @@ import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
-import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
-import com.censoredsoftware.demigods.greek.deity.GreekDeity;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.censoredsoftware.demigods.greek.structure.GreekStructure;
-import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
-import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
-import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.ServicePriority;
 
 import java.util.Collection;
 
-public class GreekMythos extends MythosPlugin
+public class ExclusiveMythos extends MythosPlugin
 {
-	private static boolean PRIMARY = true;
-
 	/**
 	 * The Bukkit enable method.
 	 */
@@ -47,13 +35,13 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public String getTitle()
 	{
-		return "Greek";
+		return "Exclusive";
 	}
 
 	@Override
 	public String getTagline()
 	{
-		return "Greek mythology, as described by Hesiod, Homer, and other Greek bards.";
+		return "Exclusive enhancements for the official Demigods RPG server.";
 	}
 
 	@Override
@@ -65,7 +53,7 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public boolean isPrimary()
 	{
-		return PRIMARY;
+		return false;
 	}
 
 	@Override
@@ -89,25 +77,25 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public Collection<DivineItem> getDivineItems()
 	{
-		return ImmutableSet.copyOf((DivineItem[]) GreekItem.values());
+		return ImmutableSet.of();
 	}
 
 	@Override
 	public Collection<Alliance> getAlliances()
 	{
-		return ImmutableSet.copyOf((Alliance[]) GreekAlliance.values());
+		return ImmutableSet.of();
 	}
 
 	@Override
 	public Collection<Deity> getDeities()
 	{
-		return ImmutableSet.copyOf((Deity[]) GreekDeity.values());
+		return ImmutableSet.of();
 	}
 
 	@Override
 	public Collection<Structure> getStructures()
 	{
-		return ImmutableSet.copyOf((Structure[]) GreekStructure.values());
+		return ImmutableSet.of();
 	}
 
 	public boolean levelSeperateSkills()
@@ -127,41 +115,10 @@ public class GreekMythos extends MythosPlugin
 
 	public Collection<Trigger> getTriggers()
 	{
-		if(!isPrimary()) return Sets.newHashSet();
-		return Collections2.transform(Sets.newHashSet(GreekMythos.GreekTrigger.values()), new Function<GreekMythos.GreekTrigger, Trigger>()
-		{
-			@Override
-			public Trigger apply(GreekMythos.GreekTrigger listedTrigger)
-			{
-				return listedTrigger.getTrigger();
-			}
-		});
+		return ImmutableSet.of();
 	}
 
 	@Override
 	public void setSecondary()
-	{
-		PRIMARY = false;
-	}
-
-	// Triggers
-	public enum GreekTrigger
-	{
-		/**
-		 * Balance related.
-		 */
-		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp()), PROCESS_ALTARS(new ProcessAltars());
-
-		private Trigger trigger;
-
-		private GreekTrigger(Trigger trigger)
-		{
-			this.trigger = trigger;
-		}
-
-		public Trigger getTrigger()
-		{
-			return trigger;
-		}
-	}
+	{}
 }

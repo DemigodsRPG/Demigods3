@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ public class Messages
 {
 	private static final Logger log = Logger.getLogger("Minecraft");
 	private static String PLUGIN_NAME;
+	private static int LINE_SIZE;
 
 	/**
 	 * Constructor for the Messages.
@@ -26,6 +28,7 @@ public class Messages
 	static
 	{
 		PLUGIN_NAME = Demigods.PLUGIN.getName();
+		LINE_SIZE = 59 - PLUGIN_NAME.length();
 	}
 
 	/**
@@ -45,6 +48,12 @@ public class Messages
 	 */
 	public static void info(String msg)
 	{
+		if(msg.length() > LINE_SIZE)
+		{
+			for(String line : wrap(msg))
+				log.info("[" + PLUGIN_NAME + "] " + line);
+			return;
+		}
 		log.info("[" + PLUGIN_NAME + "] " + msg);
 	}
 
@@ -55,6 +64,12 @@ public class Messages
 	 */
 	public static void warning(String msg)
 	{
+		if(msg.length() > LINE_SIZE)
+		{
+			for(String line : wrap(msg))
+				log.warning("[" + PLUGIN_NAME + "] " + line);
+			return;
+		}
 		log.warning("[" + PLUGIN_NAME + "] " + msg);
 	}
 
@@ -65,7 +80,18 @@ public class Messages
 	 */
 	public static void severe(String msg)
 	{
+		if(msg.length() >= LINE_SIZE)
+		{
+			for(String line : wrap(msg))
+				log.severe("[" + PLUGIN_NAME + "] " + line);
+			return;
+		}
 		log.severe("[" + PLUGIN_NAME + "] " + msg);
+	}
+
+	public static String[] wrap(String msg)
+	{
+		return WordUtils.wrap(msg, LINE_SIZE, "/n", false).split("/n");
 	}
 
 	/**

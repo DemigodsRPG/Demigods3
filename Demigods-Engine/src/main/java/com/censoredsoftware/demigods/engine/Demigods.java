@@ -202,7 +202,9 @@ public class Demigods extends CensoredCentralizedClass
 			{
 				Mythos mythos = mythosProvider.getProvider();
 				workingSet.add(mythos);
-				Messages.info("The " + mythos.getTitle() + " Mythos created by " + mythos.getAuthor() + " has loaded!");
+				Messages.info("The " + mythos.getTitle() + " Mythos has enabled!");
+				Messages.info("-> Created by " + mythos.getAuthor() + ".");
+				Messages.info("-> " + mythos.getTagline());
 				if(!mythosProvider.getProvider().isPrimary()) continue;
 				if(mythosProvider.getPriority().ordinal() < reiningPriority) // not really sure how Bukkit handles priority, presuming the same way as EventPriority
 				{
