@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Maps2;
@@ -17,17 +29,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -209,6 +210,12 @@ public class GeneralCommands extends WrappedCommand
 		// Define variables
 		Player player = (Player) sender;
 		int count = 0;
+
+		if(TributeManager.getTributeValuesMap().isEmpty())
+		{
+			sender.sendMessage(ChatColor.RED + "There are currently no tributes on record.");
+			return true;
+		}
 
 		// Send header
 		Messages.tagged(sender, "Current High Value Tributes");

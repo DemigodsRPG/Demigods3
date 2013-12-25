@@ -7,8 +7,6 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
-
 public class TributeManager
 {
 	/**
@@ -25,7 +23,7 @@ public class TributeManager
 
 			// Fill it with random data
 			String category = getCategory(material);
-			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, Randoms.generateIntRange(1, 10));
+			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, 1);
 		}
 	}
 
@@ -79,6 +77,7 @@ public class TributeManager
 	 * @param category the category to check.
 	 * @return the total number of tributes.
 	 */
+	@Deprecated
 	public static int getTributesForCategory(String category)
 	{
 		int total = 1;
@@ -124,13 +123,14 @@ public class TributeManager
 	{
 		// Define values for reference
 		double baseValue = getBaseTributeValue(item.getType());
-		int totalItemTributes = getTributes(item.getType());
+		int totalItemTributes = getTributes(item.getType()) + 1;
+		int totalTributes = getTotalTributes() + 2;
 
 		// Calculate bonus
-		double bonus = getTotalTributes() * 1.7 / totalItemTributes;
+		double bonus = (1 / baseValue) * Math.pow(totalTributes / totalItemTributes, ((totalTributes + totalItemTributes) / (totalTributes - totalItemTributes))) / totalItemTributes;
 
 		// Return the value
-		return (int) Math.ceil(baseValue + bonus);
+		return (int) Math.ceil(item.getAmount() * bonus + baseValue);
 	}
 
 	/**
@@ -218,10 +218,10 @@ public class TributeManager
 				value = 13.2;
 				break;
 			case NETHER_STAR:
-				value = 350;
+				value = 150;
 				break;
 			case BEACON:
-				value = 385;
+				value = 150;
 				break;
 			case SADDLE:
 				value = 5.3;
@@ -230,19 +230,19 @@ public class TributeManager
 				value = 18;
 				break;
 			case STONE:
-				value = 0.5;
+				value = 1.5;
 				break;
 			case COBBLESTONE:
-				value = 0.3;
+				value = 1.3;
 				break;
 			case LOG:
 				value = 1;
 				break;
 			case WOOD:
-				value = 0.23;
+				value = 1.23;
 				break;
 			case STICK:
-				value = 0.11;
+				value = 1.11;
 				break;
 			case GLASS:
 				value = 1.5;
@@ -251,13 +251,13 @@ public class TributeManager
 				value = 85;
 				break;
 			case SANDSTONE:
-				value = 0.9;
+				value = 1.9;
 				break;
 			case GOLD_BLOCK:
-				value = 144;
+				value = 100;
 				break;
 			case IRON_BLOCK:
-				value = 110;
+				value = 120;
 				break;
 			case BRICK:
 				value = 10;
@@ -278,10 +278,10 @@ public class TributeManager
 				value = 1.7;
 				break;
 			case YELLOW_FLOWER:
-				value = 0.1;
+				value = 1.1;
 				break;
 			case SEEDS:
-				value = 0.3;
+				value = 1.3;
 				break;
 			case PUMPKIN:
 				value = 3;
@@ -321,7 +321,7 @@ public class TributeManager
 				value = 2.4;
 				break;
 			case WHEAT:
-				value = 0.6;
+				value = 1.6;
 				break;
 			case BREAD:
 				value = 3;
@@ -335,7 +335,7 @@ public class TributeManager
 				value = 4;
 				break;
 			case GOLDEN_APPLE:
-				value = 148;
+				value = 80;
 				break;
 			case GOLDEN_CARROT:
 				value = 17;
@@ -356,7 +356,7 @@ public class TributeManager
 				value = 27.7;
 				break;
 			case EGG:
-				value = 0.3;
+				value = 1.3;
 				break;
 			case SUGAR:
 				value = 1.2;
@@ -371,7 +371,7 @@ public class TributeManager
 				value = 1.2;
 				break;
 			case COCOA:
-				value = 0.6;
+				value = 1.6;
 				break;
 			case ROTTEN_FLESH:
 				value = 3;
@@ -389,10 +389,10 @@ public class TributeManager
 				value = 2.7;
 				break;
 			case MELON:
-				value = 0.8;
+				value = 1.8;
 				break;
 			case COOKIE:
-				value = 0.45;
+				value = 1.45;
 				break;
 			case VINE:
 				value = 1.2;
@@ -404,10 +404,10 @@ public class TributeManager
 				value = 153;
 				break;
 			case DRAGON_EGG:
-				value = 500;
-		break;
+				value = 200;
+				break;
 			default:
-				value = 0.1;
+				value = 1.0;
 				break;
 		}
 
