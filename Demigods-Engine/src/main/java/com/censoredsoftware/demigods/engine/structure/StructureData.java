@@ -2,7 +2,6 @@ package com.censoredsoftware.demigods.engine.structure;
 
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
-import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
@@ -12,13 +11,11 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -95,7 +92,7 @@ public class StructureData implements ConfigurationSerializable
 		float damage = (float) DataManager.getValueTemp(character.getName(), "damage " + id.toString());
 		damage++;
 		character.getOfflinePlayer().getPlayer().sendMessage("Life left: " + (getLife() - damage));
-		if(damage >= life) kill(character);
+		if(damage >= getLife()) kill(character);
 		DataManager.saveTemp(character.getName(), "damage " + id.toString(), damage);
 	}
 
@@ -106,8 +103,7 @@ public class StructureData implements ConfigurationSerializable
 		Location location = getReferenceLocation();
 		remove();
 		location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
-		location.getWorld().playEffect(location, Effect.EXPLOSION, 1);
-		location.getWorld().dropItemNaturally(location, new ItemStack(Material.valueOf("RECORD_" + Randoms.generateIntRange(3, 12))));
+		location.getWorld().createExplosion(location, 2F, false);
 	}
 
 	public void setDesign(String name)
