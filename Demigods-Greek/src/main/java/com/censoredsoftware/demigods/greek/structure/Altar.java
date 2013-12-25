@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
@@ -32,6 +33,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -63,6 +65,38 @@ public class Altar
 		public StructureData apply(GreekStructure.Design design)
 		{
 			return new StructureData();
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		{
+			return false;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		{
+			return false;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		{
+			return false;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
+		{
+			return false;
 		}
 	};
 	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
@@ -149,7 +183,7 @@ public class Altar
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.altar_radius");
-	public static final float life = -1F;
+	public static final float sanctity = -1F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{

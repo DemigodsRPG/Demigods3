@@ -11,9 +11,9 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -27,10 +27,10 @@ public class StructureData implements ConfigurationSerializable
 	private List<String> flags;
 	private String region;
 	private String design;
-	private Float life;
+	private Float corruption, sanctity;
 	private Boolean active;
 	private UUID owner;
-	private List<String> members;
+	private Map<String, Long> corruptors, sanctifiers;
 
 	public StructureData()
 	{}
@@ -43,15 +43,61 @@ public class StructureData implements ConfigurationSerializable
 		flags = conf.getStringList("flags");
 		region = conf.getString("region");
 		design = conf.getString("design");
-		try
+
+		if(conf.contains("corruption"))
 		{
-			life = Float.valueOf(conf.getString("life"));
+			try
+			{
+				corruption = Float.valueOf(conf.getString("corruption"));
+			}
+			catch(Throwable ignored)
+			{}
 		}
-		catch(Throwable ignored)
-		{}
+		if(conf.contains("sanctity"))
+		{
+			try
+			{
+				sanctity = Float.valueOf(conf.getString("sanctity"));
+			}
+			catch(Throwable ignored)
+			{}
+		}
 		if(conf.getString("active") != null) active = conf.getBoolean("active");
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
-		if(conf.isList("members")) members = conf.getStringList("members");
+        if(conf.isConfigurationSection("corruptors"))
+        {
+			corruptors = Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
+			{
+				@Override
+				public Long apply(Object o)
+				{
+					try
+					{
+						return Long.parseLong(o.toString());
+					}
+					catch(Throwable ignored)
+					{}
+					return null;
+				}
+			});
+		}
+		if(conf.isConfigurationSection("sanctifiers"))
+		{
+			sanctifiers = Maps.transformValues(conf.getConfigurationSection("sanctifiers").getValues(false), new Function<Object, Long>()
+			{
+				@Override
+				public Long apply(Object o)
+				{
+					try
+					{
+						return Long.parseLong(o.toString());
+					}
+					catch(Throwable ignored)
+					{}
+					return null;
+				}
+			});
+		}
 	}
 
 	@Override
@@ -63,10 +109,11 @@ public class StructureData implements ConfigurationSerializable
 		map.put("flags", flags);
 		map.put("region", region);
 		map.put("design", design);
-		if(life != null) map.put("life", life.toString());
+		if(sanctity != null) map.put("sanctity", sanctity.toString());
 		if(active != null) map.put("active", active);
 		if(owner != null) map.put("owner", owner.toString());
-		if(members != null) map.put("members", members);
+        if(corruptors != null && !corruptors .isEmpty()) map.put("corruptors", corruptors);
+		if(sanctifiers != null && !sanctifiers.isEmpty()) map.put("sanctifiers", sanctifiers);
 		return map;
 	}
 
@@ -80,30 +127,32 @@ public class StructureData implements ConfigurationSerializable
 		this.type = type;
 	}
 
-	public void setLife(float life)
+	public void setSanctity(float sanctity)
 	{
-		this.life = life;
+		this.sanctity = sanctity;
 	}
 
-	public void damageBy(DCharacter character)
+	public void corrupt(DCharacter character, float amount)
 	{
-		if(DCharacter.Util.areAllied(character, DataManager.characters.get(getOwner()))) return;
-		if(!DataManager.hasKeyTemp(character.getName(), "damage " + id.toString())) DataManager.saveTemp(character.getName(), "damage " + id.toString(), 1F);
-		float damage = (float) DataManager.getValueTemp(character.getName(), "damage " + id.toString());
-		damage++;
-		character.getOfflinePlayer().getPlayer().sendMessage("Life left: " + (getLife() - damage));
-		if(damage >= getLife()) kill(character);
-		DataManager.saveTemp(character.getName(), "damage " + id.toString(), damage);
+		if(getType().corrupt(this, character))
+		{
+			addCorruptor(character.getId());
+			corrupt(amount);
+			if(getCorruption() >= getSanctity() && getType().kill(this, character)) kill(character);
+        }
+	}
+
+    public void corrupt(float amount)
+    {
+        if(corruption == null || corruption < 0F) corruption = 0F;
+		corruption = corruption + amount;
+		save();
 	}
 
 	public void kill(DCharacter character)
 	{
-		character.getOfflinePlayer().getPlayer().sendMessage("You killed it!");
-		character.addKill();
-		Location location = getReferenceLocation();
+		if(getType().kill(this, character)) remove();
 		remove();
-		location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
-		location.getWorld().createExplosion(location, 2F, false);
 	}
 
 	public void setDesign(String name)
@@ -121,23 +170,55 @@ public class StructureData implements ConfigurationSerializable
 	public void setOwner(UUID id)
 	{
 		this.owner = id;
-		addMember(id);
+		addSanctifier(id);
 	}
 
-	public void setMembers(List<String> members)
+	public void sanctify(DCharacter character, float amount)
 	{
-		this.members = members;
-	}
+		if(getType().sanctify(this, character))
+        {
+			addSanctifier(character.getId());
+			sanctify(amount);
+        }
+    }
 
-	public void addMember(UUID id)
+    public void sanctify(float amount)
+    {
+        if(sanctity == null || sanctity < 0F) sanctity = 0F;
+        sanctity = sanctity + amount;
+        save();
+    }
+
+    public void setCorruptors(Map<String, Long> corruptors)
+    {
+        this.corruptors = corruptors;
+    }
+
+    public void addCorruptor(UUID id)
 	{
-		members.add(id.toString());
+		corruptors.put(id.toString(), System.currentTimeMillis());
 		save();
 	}
 
-	public void removeMember(UUID id)
+	public void removeCorruptor(UUID id)
 	{
-		members.remove(id.toString());
+		corruptors.remove(id.toString());
+	}
+
+	public void setSanctifiers(Map<String, Long> sanctifiers)
+	{
+		this.sanctifiers = sanctifiers;
+	}
+
+	public void addSanctifier(UUID id)
+	{
+		sanctifiers.put(id.toString(), System.currentTimeMillis());
+		save();
+	}
+
+	public void removeSanctifier(UUID id)
+	{
+		sanctifiers.remove(id.toString());
 	}
 
 	public void setActive(Boolean bool)
@@ -172,10 +253,16 @@ public class StructureData implements ConfigurationSerializable
 		return this.owner != null;
 	}
 
-	public Float getLife()
+    public Float getCorruption()
+    {
+        if(corruption == null || corruption <= 0F) corruption = getType().getDefSanctity();
+        return corruption;
+    }
+
+	public Float getSanctity()
 	{
-		if(life == null || life <= 0F) life = getType().getLife();
-		return life;
+		if(sanctity == null || sanctity <= 0F) sanctity = getType().getDefSanctity();
+		return sanctity;
 	}
 
 	public UUID getOwner()
@@ -185,12 +272,24 @@ public class StructureData implements ConfigurationSerializable
 
 	public Boolean hasMembers()
 	{
-		return this.members != null && !members.isEmpty();
+		return this.sanctifiers != null && !sanctifiers.isEmpty();
 	}
 
-	public Collection<UUID> getMembers()
+    public Collection<UUID> getCorruptors()
+    {
+        return Collections2.transform(corruptors.keySet(), new Function<String, UUID>()
+		{
+			@Override
+			public UUID apply(String s)
+			{
+				return UUID.fromString(s);
+			}
+		});
+	}
+
+	public Collection<UUID> getSanctifiers()
 	{
-		return Collections2.transform(members, new Function<String, UUID>()
+		return Collections2.transform(sanctifiers.keySet(), new Function<String, UUID>()
 		{
 			@Override
 			public UUID apply(String s)

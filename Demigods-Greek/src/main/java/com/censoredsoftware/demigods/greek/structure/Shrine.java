@@ -1,23 +1,8 @@
 package com.censoredsoftware.demigods.greek.structure;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
+import com.censoredsoftware.censoredlib.util.Colors;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Deity;
@@ -30,6 +15,20 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Function;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Shrine
 {
@@ -54,8 +53,56 @@ public class Shrine
 		public StructureData apply(GreekStructure.Design design)
 		{
 			StructureData save = new StructureData();
-			save.setMembers(new ArrayList<String>());
+			save.setSanctifiers(new HashMap<String, Long>());
 			return save;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(StructureData data, DCharacter character)
+		{
+			if(!DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
+			Location location = data.getReferenceLocation();
+			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3F, 0.7F);
+			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
+			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
+			return null;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(StructureData data, DCharacter character)
+		{
+			if(DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
+			Location location = data.getReferenceLocation();
+			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
+			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
+			return true;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(StructureData data, DCharacter character)
+		{
+			Location location = data.getReferenceLocation();
+			location.getWorld().strikeLightningEffect(location);
+			location.getWorld().strikeLightningEffect(character.getLocation());
+			return true;
+		}
+	};
+	public static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	{
+		@Override
+		public Boolean apply(StructureData data, DCharacter character)
+		{
+			Location location = data.getReferenceLocation();
+			location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
+			location.getWorld().createExplosion(location, 2F, false);
+			character.addKill();
+			return true;
 		}
 	};
 	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
@@ -93,7 +140,7 @@ public class Shrine
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
 						StructureData save = GreekStructure.SHRINE.createNew(location, true);
 						save.setOwner(character.getId());
-						location.getWorld().strikeLightningEffect(location);
+						GreekStructure.SHRINE.birth(save, character);
 
 						// Consume item in hand
 						ItemStack item = player.getItemInHand();
@@ -144,7 +191,7 @@ public class Shrine
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.shrine_radius");
-	public static final float life = 250F;
+	public static final float sanctity = 250F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{

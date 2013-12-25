@@ -18,7 +18,7 @@ public class NoSplosion implements Ability
 {
 	private final static String name = "No Explosion Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Take no damage from explosions.");
+	private final static List<String> details = Lists.newArrayList("Take no corrupt from explosions.");
 	private String deity, permission;
 
 	public NoSplosion(String deity, String permission)
@@ -101,7 +101,7 @@ public class NoSplosion implements Ability
 					Player player = (Player) damageEvent.getEntity();
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives falling damage, cancel it
+					// If the player receives falling corrupt, cancel it
 					if(damageEvent.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION || damageEvent.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) damageEvent.setCancelled(true);
 				}
 			}

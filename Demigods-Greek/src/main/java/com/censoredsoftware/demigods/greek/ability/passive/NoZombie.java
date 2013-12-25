@@ -106,7 +106,7 @@ public class NoZombie implements Ability
 					Player player = (Player) damageEvent.getEntity();
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives zombie damage, cancel it
+					// If the player receives zombie corrupt, cancel it
 					if(damageEvent.getDamager() instanceof Zombie) damageEvent.setCancelled(true);
 				}
 			}

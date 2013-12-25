@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.structure;
 
 import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -10,6 +11,7 @@ import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -25,7 +27,17 @@ public interface Structure
 
 	public Listener getUniqueListener();
 
-	public float getLife();
+	public boolean sanctify(StructureData data, DCharacter character);
+
+	public boolean corrupt(StructureData data, DCharacter character);
+
+	public boolean birth(StructureData data, DCharacter character);
+
+	public boolean kill(StructureData data, DCharacter character);
+
+	public float getDefSanctity();
+
+	public float getSanctityRegen();
 
 	public int getRadius();
 
@@ -40,6 +52,11 @@ public interface Structure
 		public Set<Location> getClickableBlocks(Location reference);
 
 		public Schematic getSchematic();
+	}
+
+	public interface InteractFunction<T>
+	{
+		public T apply(@Nullable StructureData data, @Nullable DCharacter character);
 	}
 
 	public enum Flag
@@ -357,6 +374,15 @@ public interface Structure
 			}
 
 			return true;
+		}
+
+        /**
+		 * Updates favor for all structures.
+		 */
+		public static void updateSanctity()
+		{
+			for(StructureData data : getStructureWithFlag(Flag.DESTRUCT_ON_BREAK))
+				data.corrupt(-1F * data.getType().getSanctityRegen());
 		}
 	}
 }

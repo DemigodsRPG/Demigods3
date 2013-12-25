@@ -59,16 +59,8 @@ public class FlagListener implements Listener
 	{
 		Location location = event.getBlock().getLocation();
 		if(event.isCancelled() || Zones.inNoDemigodsZone(location)) return;
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS))
-		{
-			event.setCancelled(true);
-			return;
-		}
-		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() != null && Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK))
-		{
-			StructureData structureData = Structure.Util.getStructureRegional(location);
-			structureData.damageBy(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent());
-		}
+		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK)) event.setCancelled(true);
+		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() != null && Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) Structure.Util.getStructureRegional(location).corrupt(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent(), 1F);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

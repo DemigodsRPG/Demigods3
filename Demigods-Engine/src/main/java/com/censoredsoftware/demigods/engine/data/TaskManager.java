@@ -10,6 +10,7 @@ import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -114,6 +115,9 @@ public class TaskManager
 				{
 					// Update Favor
 					DCharacter.Util.updateFavor();
+
+					// Update Sanctity
+					Structure.Util.updateSanctity();
 				}
 			};
 		}

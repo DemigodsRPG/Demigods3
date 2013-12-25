@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import org.bukkit.*;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
@@ -30,6 +16,18 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
+import org.bukkit.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class DevelopmentCommands extends WrappedCommand
 {
@@ -220,18 +218,18 @@ public class DevelopmentCommands extends WrappedCommand
 
 			if(args[0].equalsIgnoreCase("add"))
 			{
-				if(!obelisk.getMembers().contains(workWith.getId()))
+				if(!obelisk.getSanctifiers().contains(workWith.getId()))
 				{
-					obelisk.addMember(workWith.getId());
+					obelisk.addSanctifier(workWith.getId());
 					player.sendMessage(workWith.getDeity().getColor() + workWith.getName() + ChatColor.YELLOW + " has been added to the Obelisk!");
 				}
 				else player.sendMessage(ChatColor.RED + "Already a member.");
 			}
 			else if(args[0].equalsIgnoreCase("remove"))
 			{
-				if(obelisk.getMembers().contains(workWith.getId()))
+				if(obelisk.getSanctifiers().contains(workWith.getId()))
 				{
-					obelisk.removeMember(workWith.getId());
+					obelisk.removeSanctifier(workWith.getId());
 					player.sendMessage(workWith.getDeity().getColor() + workWith.getName() + ChatColor.YELLOW + " has been removed from the Obelisk!");
 				}
 				else player.sendMessage(ChatColor.RED + "Not a member.");

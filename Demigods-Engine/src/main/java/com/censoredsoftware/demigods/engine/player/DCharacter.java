@@ -485,6 +485,30 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		});
 	}
 
+	public Collection<StructureData> getOwnedStructures()
+	{
+		return StructureData.Util.findAll(new Predicate<StructureData>()
+		{
+			@Override
+			public boolean apply(StructureData data)
+			{
+				return data.getOwner().equals(getId());
+			}
+		});
+	}
+
+	public Collection<StructureData> getOwnedStructures(final String type)
+	{
+		return StructureData.Util.findAll(new Predicate<StructureData>()
+		{
+			@Override
+			public boolean apply(StructureData data)
+			{
+				return data.getTypeName().equals(type) && data.getOwner().equals(getId());
+			}
+		});
+	}
+
 	public int getFavorRegen()
 	{
 		int favorRegenSkill = getMeta().getSkill(Skill.Type.FAVOR_REGEN) != null ? 4 * getMeta().getSkill(Skill.Type.FAVOR_REGEN).getLevel() : 0;

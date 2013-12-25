@@ -19,7 +19,7 @@ public class NoFire implements Ability
 {
 	private final static String name = "No Fire Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Take no damage from fire.");
+	private final static List<String> details = Lists.newArrayList("Take no corrupt from fire.");
 	private String deity, permission;
 
 	public NoFire(String deity, String permission)

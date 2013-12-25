@@ -59,7 +59,7 @@ public class GriefListener implements Listener
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -68,12 +68,13 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		Location location = event.getBlock().getLocation();
+		if(Zones.inNoDemigodsZone(location) || Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) return;
+		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -92,7 +93,7 @@ public class GriefListener implements Listener
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -157,12 +158,13 @@ public class GriefListener implements Listener
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onBlockDamage(BlockDamageEvent event)
 	{
-		if(Zones.inNoDemigodsZone(event.getBlock().getLocation())) return;
-		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getBlock().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		Location location = event.getBlock().getLocation();
+		if(Zones.inNoDemigodsZone(location) || Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) return;
+		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -176,7 +178,7 @@ public class GriefListener implements Listener
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -212,7 +214,7 @@ public class GriefListener implements Listener
 		if(save != null && save.hasMembers())
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}
@@ -229,7 +231,7 @@ public class GriefListener implements Listener
 		if(blockInventories.contains(block.getType()))
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
-			Collection<UUID> members = save.getMembers();
+			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
 			event.setCancelled(true);
 		}

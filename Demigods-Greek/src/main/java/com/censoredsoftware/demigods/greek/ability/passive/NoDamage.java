@@ -19,7 +19,7 @@ public class NoDamage implements Ability
 {
 	private final static String name = "No Damage", command = null;
 	private final static int cost = 0, delay = 0, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Take no damage, give no damage.");
+	private final static List<String> details = Lists.newArrayList("Take no corrupt, give no corrupt.");
 	private String deity, permission;
 
 	public NoDamage(String deity, String permission)
@@ -102,7 +102,7 @@ public class NoDamage implements Ability
 					Player player = (Player) damageEvent.getEntity();
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives damage, cancel it
+					// If the player receives corrupt, cancel it
 					damageEvent.setCancelled(true);
 				}
 			}
@@ -116,7 +116,7 @@ public class NoDamage implements Ability
 					Player player = (Player) damageEvent.getDamager();
 					if(!Deity.Util.canUseDeitySilent(player, deity)) return;
 
-					// If the player receives damage, cancel it
+					// If the player receives corrupt, cancel it
 					damageEvent.setCancelled(true);
 				}
 			}
