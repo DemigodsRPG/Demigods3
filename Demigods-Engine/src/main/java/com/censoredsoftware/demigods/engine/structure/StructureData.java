@@ -2,19 +2,23 @@ package com.censoredsoftware.demigods.engine.structure;
 
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.location.Region;
+import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -84,13 +88,26 @@ public class StructureData implements ConfigurationSerializable
 		this.life = life;
 	}
 
-	public void damageBy(Player player)
+	public void damageBy(DCharacter character)
 	{
-		if(!DataManager.hasKeyTemp(player.getName(), "damage")) DataManager.saveTemp(player.getName(), "damage", 1F);
-		float damage = (float) DataManager.getValueTemp(player.getName(), "damage");
-		player.sendMessage("Damage! :D" + damage);
+		if(DCharacter.Util.areAllied(character, DataManager.characters.get(getOwner()))) return;
+		if(!DataManager.hasKeyTemp(character.getName(), "damage " + id.toString())) DataManager.saveTemp(character.getName(), "damage " + id.toString(), 1F);
+		float damage = (float) DataManager.getValueTemp(character.getName(), "damage " + id.toString());
+		character.getOfflinePlayer().getPlayer().sendMessage("Damage amount: " + damage);
 		damage++;
-		DataManager.saveTemp(player.getName(), "damage", damage);
+		if(damage >= life) kill(character);
+		DataManager.saveTemp(character.getName(), "damage " + id.toString(), damage);
+	}
+
+	public void kill(DCharacter character)
+	{
+		character.getOfflinePlayer().getPlayer().sendMessage("You killed it!");
+		character.addKill();
+		Location location = getReferenceLocation();
+		remove();
+		location.getWorld().playSound(location, Sound.WITHER_DEATH, 1F, 1.2F);
+		location.getWorld().playEffect(location, Effect.EXPLOSION, 1);
+		location.getWorld().dropItemNaturally(location, new ItemStack(Material.valueOf("RECORD_" + Randoms.generateIntRange(3, 12))));
 	}
 
 	public void setDesign(String name)

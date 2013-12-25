@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.engine.listener;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -66,7 +67,7 @@ public class FlagListener implements Listener
 		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK))
 		{
 			StructureData structureData = Structure.Util.getStructureRegional(location);
-			structureData.damageBy(event.getPlayer());
+			structureData.damageBy(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent());
 		}
 	}
 
@@ -103,8 +104,8 @@ public class FlagListener implements Listener
 			public void run()
 			{
 				// Remove all drops from explosion zone
-				for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
-					for(final StructureData save : saves)
+				for(final StructureData save : saves)
+					for(Item drop : event.getLocation().getWorld().getEntitiesByClass(Item.class))
 						if(drop.getLocation().distance(save.getReferenceLocation()) <= save.getType().getRadius()) drop.remove();
 			}
 		}, 1);
