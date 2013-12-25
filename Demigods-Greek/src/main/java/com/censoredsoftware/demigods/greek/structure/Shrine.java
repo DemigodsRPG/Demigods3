@@ -68,7 +68,7 @@ public class Shrine
 			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3F, 0.7F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
-			return null;
+			return true;
 		}
 	};
 	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
