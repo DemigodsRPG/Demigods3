@@ -119,7 +119,7 @@ public class DataManager
 
 	public static void removeTemp(String row, String column)
 	{
-		if(hasKeyTemp(row, column)) tempData.get(row, column);
+		if(hasKeyTemp(row, column)) tempData.remove(row, column);
 	}
 
 	/*
