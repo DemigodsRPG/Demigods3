@@ -54,6 +54,7 @@ public class Shrine
 		{
 			StructureData save = new StructureData();
 			save.setSanctifiers(new HashMap<String, Long>());
+			save.setCorruptors(new HashMap<String, Long>());
 			return save;
 		}
 	};
@@ -64,10 +65,10 @@ public class Shrine
 		{
 			if(!DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
-			location.getWorld().playSound(location, Sound.CAT_PURR, 0.3F, 0.7F);
+			location.getWorld().playSound(location, Sound.CAT_PURREOW, 0.7F, 0.9F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
-			return null;
+			return true;
 		}
 	};
 	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
@@ -79,6 +80,7 @@ public class Shrine
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
+			character.getOfflinePlayer().getPlayer().sendMessage(ChatColor.RED + "This shrine has " + (data.getSanctity() - data.getCorruption()) + " sanctity left!");
 			return true;
 		}
 	};

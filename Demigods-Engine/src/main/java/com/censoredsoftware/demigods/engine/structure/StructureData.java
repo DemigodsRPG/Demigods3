@@ -66,7 +66,7 @@ public class StructureData implements ConfigurationSerializable
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
         if(conf.isConfigurationSection("corruptors"))
         {
-			corruptors = Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
+			corruptors = Maps.newHashMap(Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
 			{
 				@Override
 				public Long apply(Object o)
@@ -79,11 +79,11 @@ public class StructureData implements ConfigurationSerializable
 					{}
 					return null;
 				}
-			});
+			}));
 		}
 		if(conf.isConfigurationSection("sanctifiers"))
 		{
-			sanctifiers = Maps.transformValues(conf.getConfigurationSection("sanctifiers").getValues(false), new Function<Object, Long>()
+			sanctifiers = Maps.newHashMap(Maps.transformValues(conf.getConfigurationSection("sanctifiers").getValues(false), new Function<Object, Long>()
 			{
 				@Override
 				public Long apply(Object o)
@@ -96,7 +96,7 @@ public class StructureData implements ConfigurationSerializable
 					{}
 					return null;
 				}
-			});
+			}));
 		}
 	}
 
@@ -152,7 +152,6 @@ public class StructureData implements ConfigurationSerializable
 	public void kill(DCharacter character)
 	{
 		if(getType().kill(this, character)) remove();
-		remove();
 	}
 
 	public void setDesign(String name)
@@ -196,6 +195,7 @@ public class StructureData implements ConfigurationSerializable
 
     public void addCorruptor(UUID id)
 	{
+		if(corruptors == null) corruptors = Maps.newHashMap();
 		corruptors.put(id.toString(), System.currentTimeMillis());
 		save();
 	}
@@ -212,6 +212,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public void addSanctifier(UUID id)
 	{
+		if(sanctifiers == null) sanctifiers = Maps.newHashMap();
 		sanctifiers.put(id.toString(), System.currentTimeMillis());
 		save();
 	}
@@ -255,7 +256,7 @@ public class StructureData implements ConfigurationSerializable
 
     public Float getCorruption()
     {
-        if(corruption == null || corruption <= 0F) corruption = getType().getDefSanctity();
+		if(corruption == null || corruption <= 0F) corruption = 0F;
         return corruption;
     }
 
