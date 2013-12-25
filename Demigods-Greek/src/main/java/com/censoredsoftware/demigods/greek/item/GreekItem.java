@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
 import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
 import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
+import com.censoredsoftware.demigods.greek.item.weapon.BowOfThree;
 
 public enum GreekItem implements DivineItem
 {
@@ -19,7 +20,8 @@ public enum GreekItem implements DivineItem
 	/**
 	 * Weapons
 	 */
-	// BUTT_SWORD(ButtSword.buttSword, ButtSword.recipe, ButtSword.listener), DEATH_BOW(DeathBow.deathBow, DeathBow.recipe, DeathBow.listener);
+	// BUTT_SWORD(ButtSword.buttSword, ButtSword.recipe, ButtSword.listener)
+	DEATH_BOW(BowOfThree.name, BowOfThree.description, BowOfThree.category, BowOfThree.item, BowOfThree.recipe, BowOfThree.listener),
 
 	/**
 	 * Armor

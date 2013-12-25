@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.greek.item.weapon;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.util.Zones;
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -16,21 +16,28 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
 
-public class DeathBow
+public class BowOfThree
 {
-	public final static ItemStack deathBow = Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + "The Bow of Five Arrows", new ArrayList<String>()
+	public final static String name = "Bow of Tría";
+	public final static String description = "Take your target out 3 times faster!";
+	public final static DivineItem.Category category = DivineItem.Category.WEAPON;
+	public final static ItemStack item = Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + name, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Take your target out 5 times faster!");
+			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + description);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(deathBow)
+	public final static Recipe recipe = new ShapedRecipe(item)
 	{
 		{
-			shape("A  ", " A ", "  A");
+			shape("ABB", " AB", "C A");
 			setIngredient('A', Material.BOW);
+			setIngredient('B', Material.ARROW);
+			setIngredient('C', Material.DIAMOND);
 		}
 	};
 	public final static Listener listener = new Listener()
@@ -42,7 +49,7 @@ public class DeathBow
 			if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
 			// If they right clicked a block with the item in hand, do stuff
-			if(Items.areEqual(event.getBow(), deathBow))
+			if(Items.areEqual(event.getBow(), item))
 			{
 				PlayerInventory inventory = null;
 				Arrow startArrow = (Arrow) event.getProjectile();
@@ -50,7 +57,7 @@ public class DeathBow
 
 				if(event.getEntity() instanceof Player) inventory = ((Player) event.getEntity()).getInventory();
 
-				for(int i = 1; i < 5; i++)
+				for(int i = 1; i < 3; i++)
 				{
 					if(inventory != null)
 					{
