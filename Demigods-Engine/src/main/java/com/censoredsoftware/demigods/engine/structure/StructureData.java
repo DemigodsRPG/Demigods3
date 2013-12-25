@@ -152,7 +152,6 @@ public class StructureData implements ConfigurationSerializable
 	public void kill(DCharacter character)
 	{
 		if(getType().kill(this, character)) remove();
-		remove();
 	}
 
 	public void setDesign(String name)
@@ -257,7 +256,7 @@ public class StructureData implements ConfigurationSerializable
 
     public Float getCorruption()
     {
-        if(corruption == null || corruption <= 0F) corruption = getType().getDefSanctity();
+		if(corruption == null || corruption <= 0F) corruption = 0F;
         return corruption;
     }
 

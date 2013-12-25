@@ -65,7 +65,7 @@ public class Shrine
 		{
 			if(!DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
-			location.getWorld().playSound(location, Sound.CAT_PURR, 0.6F, 0.8F);
+			location.getWorld().playSound(location, Sound.CAT_PURREOW, 0.7F, 0.9F);
 			MaterialData colorData = Colors.getMaterial(character.getDeity().getColor());
 			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, colorData.getItemTypeId(), colorData.getData());
 			return true;
