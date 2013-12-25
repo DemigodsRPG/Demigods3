@@ -62,7 +62,7 @@ public class StructureData implements ConfigurationSerializable
 		map.put("flags", flags);
 		map.put("region", region);
 		map.put("design", design);
-		map.put("life", life.toString());
+		if(life != null) map.put("life", life.toString());
 		if(active != null) map.put("active", active);
 		if(owner != null) map.put("owner", owner.toString());
 		if(members != null) map.put("members", members);
