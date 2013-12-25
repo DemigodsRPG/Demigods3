@@ -64,7 +64,7 @@ public class FlagListener implements Listener
 			event.setCancelled(true);
 			return;
 		}
-		if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK))
+		if(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent() != null && Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK))
 		{
 			StructureData structureData = Structure.Util.getStructureRegional(location);
 			structureData.damageBy(DPlayer.Util.getPlayer(event.getPlayer()).getCurrent());

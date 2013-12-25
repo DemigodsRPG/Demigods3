@@ -46,6 +46,7 @@ public enum GreekStructure implements Structure
 		this.flags = flags;
 		this.listener = listener;
 		this.radius = radius;
+		this.life = life;
 	}
 
 	public String getName()
