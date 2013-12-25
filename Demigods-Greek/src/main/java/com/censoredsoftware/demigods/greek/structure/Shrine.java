@@ -131,7 +131,7 @@ public class Shrine
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.shrine_radius");
-	public static final float life = Configs.getSettingFloat("zones.shrine_life");
+	public static final float life = 250F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
