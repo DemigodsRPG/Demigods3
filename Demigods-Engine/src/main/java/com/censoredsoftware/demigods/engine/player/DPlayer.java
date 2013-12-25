@@ -8,7 +8,6 @@ import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
@@ -172,7 +171,7 @@ public class DPlayer implements ConfigurationSerializable
 				@Override
 				public void run()
 				{
-					if(Structure.Util.isInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_PVP))
+					if(Zones.inNoPvpZone(player.getLocation()))
 					{
 						if(getCurrent() != null && Battle.Util.isInBattle(getCurrent())) return;
 						setCanPvp(false);
