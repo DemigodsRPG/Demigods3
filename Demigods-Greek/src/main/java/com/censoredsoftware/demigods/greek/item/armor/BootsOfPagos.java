@@ -1,11 +1,8 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,8 +17,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.censoredlib.util.Times;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Ranges;
+import com.google.common.collect.Sets;
 
 public class BootsOfPagos
 {
@@ -56,7 +58,7 @@ public class BootsOfPagos
 			{
 				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
-				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER) && surroundingSquareIsAir(player.getLocation()))
+				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER) && surroundingSquareNotLiquid(player.getLocation()))
 				{
 					sendIce(player, getSquare(location));
 
@@ -65,19 +67,22 @@ public class BootsOfPagos
 				}
 				else if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE && location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR))
 				{
-					player.sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
+					if(Times.getSeconds(System.currentTimeMillis()) % 5 == 0)
+					{
+						player.sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
 
-					for(Entity entity : player.getNearbyEntities(30, 30, 30))
-						if(entity instanceof Player) ((Player) entity).sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
+						for(Entity entity : player.getNearbyEntities(30, 30, 30))
+							if(entity instanceof Player) ((Player) entity).sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
+					}
 				}
 			}
 		}
 	};
 
-	public static boolean surroundingSquareIsAir(Location center)
+	public static boolean surroundingSquareNotLiquid(Location center)
 	{
 		for(Location location : getSquare(center))
-			if(!location.equals(center) && !location.getBlock().getType().equals(Material.AIR)) return false;
+			if(!location.equals(center) && !location.getBlock().isLiquid()) return false;
 		return true;
 	}
 
