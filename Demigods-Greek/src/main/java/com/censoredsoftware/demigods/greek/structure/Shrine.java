@@ -60,7 +60,7 @@ public class Shrine
 	{
 		{
 			add(Structure.Flag.DELETE_WITH_OWNER);
-			add(Structure.Flag.PROTECTED_BLOCKS);
+			add(Structure.Flag.DESTRUCT_ON_BREAK);
 			add(Structure.Flag.TRIBUTE_LOCATION);
 			add(Structure.Flag.NO_OVERLAP);
 		}
@@ -131,6 +131,7 @@ public class Shrine
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.shrine_radius");
+	public static final float life = Configs.getSettingFloat("zones.shrine_life");
 
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{

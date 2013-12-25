@@ -8,6 +8,7 @@ import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -75,7 +76,7 @@ public class Zones
 	public static boolean inNoBuildZone(Player player, Location location)
 	{
 		if(WorldGuards.worldGuardEnabled() && !WorldGuards.canBuild(player, location)) return true;
-		StructureData save = Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING);
+		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		return save != null && save.getOwner() != null && !save.getOwner().equals(DPlayer.Util.getPlayer(player).getCurrent().getId());
 	}
 

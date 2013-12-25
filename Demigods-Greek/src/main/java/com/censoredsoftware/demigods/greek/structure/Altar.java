@@ -149,6 +149,7 @@ public class Altar
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.altar_radius");
+	public static final float life = -1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{

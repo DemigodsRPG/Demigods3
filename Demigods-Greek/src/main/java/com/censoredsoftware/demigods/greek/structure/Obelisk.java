@@ -140,6 +140,7 @@ public class Obelisk
 		}
 	};
 	public static final int radius = Configs.getSettingInt("zones.obelisk_radius");
+	public static final float life = Configs.getSettingFloat("zones.obelisk_life");
 
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{

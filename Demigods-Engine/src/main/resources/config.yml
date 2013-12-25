@@ -27,8 +27,10 @@ regeneration_rates:
 zones:
     prayer_radius: 2
     shrine_radius: 8
+    shrine_life: 77777F
     altar_radius: 16
     obelisk_radius: 16
+    obelisk_life: 77777F
     allow_skills_anywhere: false
     pvp_area_delay_time: 10
 

@@ -37,6 +37,7 @@ public class DataManager
 	public static ConcurrentMap<UUID, DDeath> deaths;
 	public static ConcurrentMap<UUID, Skill> skills;
 	public static ConcurrentMap<UUID, DCharacter.Inventory> inventories;
+	public static ConcurrentMap<UUID, DCharacter.EnderInventory> enderInventories;
 	public static ConcurrentMap<UUID, CItemStack> itemStacks;
 	public static ConcurrentMap<UUID, DSavedPotion> savedPotions;
 	public static ConcurrentMap<UUID, DPet> pets;
@@ -80,6 +81,7 @@ public class DataManager
 		characters.clear();
 		characterMetas.clear();
 		inventories.clear();
+		enderInventories.clear();
 		skills.clear();
 		notifications.clear();
 		pets.clear();
@@ -555,6 +557,49 @@ public class DataManager
 			public void loadToData()
 			{
 				inventories = loadFromFile();
+			}
+		}), CHARACTER_ENDER_INVENTORY(new ConfigFile<UUID, DCharacter.EnderInventory>()
+		{
+			@Override
+			public DCharacter.EnderInventory create(UUID uuid, ConfigurationSection conf)
+			{
+				return new DCharacter.EnderInventory(uuid, conf);
+			}
+
+			@Override
+			public ConcurrentMap<UUID, DCharacter.EnderInventory> getLoadedData()
+			{
+				return DataManager.enderInventories;
+			}
+
+			@Override
+			public String getSavePath()
+			{
+				return Demigods.SAVE_PATH;
+			}
+
+			@Override
+			public String getSaveFile()
+			{
+				return "enderInventories.yml";
+			}
+
+			@Override
+			public Map<String, Object> serialize(UUID uuid)
+			{
+				return getLoadedData().get(uuid).serialize();
+			}
+
+			@Override
+			public UUID convertFromString(String stringId)
+			{
+				return UUID.fromString(stringId);
+			}
+
+			@Override
+			public void loadToData()
+			{
+				enderInventories = loadFromFile();
 			}
 		}), ITEM_STACK(new ConfigFile<UUID, CItemStack>()
 		{

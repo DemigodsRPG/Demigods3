@@ -41,7 +41,7 @@ public class ZoneListener implements Listener
 		{
 			if(playerSave.getCurrent() != null)
 			{
-				playerSave.saveMortalInventory(player.getInventory());
+				playerSave.saveMortalInventory(player);
 				playerSave.getCurrent().applyToPlayer(player);
 			}
 			else Demigods.BOARD.getTeam("Mortal").addPlayer(player);

@@ -13,6 +13,7 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
@@ -167,7 +168,7 @@ public class DevelopmentCommands extends WrappedCommand
 
 		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
 
-		  // return true;
+		// return true;
 	}
 
 	private static boolean test3(CommandSender sender, final String[] args)
@@ -190,7 +191,7 @@ public class DevelopmentCommands extends WrappedCommand
 			return false;
 		}
 
-		StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
+		StructureData obelisk = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(obelisk != null)
 		{
 			DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();

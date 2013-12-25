@@ -25,6 +25,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,7 +43,7 @@ public class DPlayer implements ConfigurationSerializable
 	private int characterSlots;
 	private UUID current;
 	private UUID previous;
-	private UUID mortalInventory;
+	private UUID mortalInventory, mortalEnderInventory;
 	private ChatRecorder chatRecording;
 
 	public DPlayer()
@@ -67,6 +68,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(conf.getString("current") != null) current = UUID.fromString(conf.getString("current"));
 		if(conf.getString("previous") != null) previous = UUID.fromString(conf.getString("previous"));
 		if(conf.getString("mortalInventory") != null) mortalInventory = UUID.fromString(conf.getString("mortalInventory"));
+		if(conf.getString("mortalEnderInventory") != null) mortalEnderInventory = UUID.fromString(conf.getString("mortalEnderInventory"));
 	}
 
 	@Override
@@ -89,6 +91,7 @@ public class DPlayer implements ConfigurationSerializable
 		if(current != null) map.put("current", current.toString());
 		if(previous != null) map.put("previous", previous.toString());
 		if(mortalInventory != null) map.put("mortalInventory", mortalInventory.toString());
+		if(mortalEnderInventory != null) map.put("mortalEnderInventory", mortalEnderInventory.toString());
 		return map;
 	}
 
@@ -249,9 +252,11 @@ public class DPlayer implements ConfigurationSerializable
 		Demigods.BOARD.getTeam("Mortal").addPlayer(getOfflinePlayer());
 	}
 
-	public void saveMortalInventory(PlayerInventory inventory)
+	public void saveMortalInventory(Player player)
 	{
+		// Player inventory
 		DCharacter.Inventory mortalInventory = new DCharacter.Inventory();
+		PlayerInventory inventory = player.getInventory();
 		mortalInventory.generateId();
 		if(inventory.getHelmet() != null) mortalInventory.setHelmet(inventory.getHelmet());
 		if(inventory.getChestplate() != null) mortalInventory.setChestplate(inventory.getChestplate());
@@ -260,6 +265,15 @@ public class DPlayer implements ConfigurationSerializable
 		mortalInventory.setItems(inventory);
 		DCharacter.Util.saveInventory(mortalInventory);
 		this.mortalInventory = mortalInventory.getId();
+
+		// Enderchest
+		DCharacter.EnderInventory enderInventory = new DCharacter.EnderInventory();
+		Inventory enderChest = player.getEnderChest();
+		enderInventory.generateId();
+		enderInventory.setItems(enderChest);
+		DCharacter.Util.saveInventory(enderInventory);
+		this.mortalEnderInventory = enderInventory.getId();
+
 		Util.save(this);
 	}
 
@@ -413,10 +427,16 @@ public class DPlayer implements ConfigurationSerializable
 		return DCharacter.Util.getInventory(mortalInventory);
 	}
 
+	public DCharacter.EnderInventory getMortalEnderInventory()
+	{
+		return DCharacter.Util.getEnderInventory(mortalEnderInventory);
+	}
+
 	public void applyMortalInventory()
 	{
 		if(getMortalInventory() == null) mortalInventory = DCharacter.Util.createEmptyInventory().getId();
 		getMortalInventory().setToPlayer(getOfflinePlayer().getPlayer());
+		getMortalEnderInventory().setToPlayer(getOfflinePlayer().getPlayer());
 		mortalInventory = null;
 	}
 

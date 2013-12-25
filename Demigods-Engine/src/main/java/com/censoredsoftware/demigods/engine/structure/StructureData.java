@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -25,6 +26,7 @@ public class StructureData implements ConfigurationSerializable
 	private List<String> flags;
 	private String region;
 	private String design;
+	private Float life;
 	private Boolean active;
 	private UUID owner;
 	private List<String> members;
@@ -40,6 +42,12 @@ public class StructureData implements ConfigurationSerializable
 		flags = conf.getStringList("flags");
 		region = conf.getString("region");
 		design = conf.getString("design");
+		try
+		{
+			life = Float.valueOf(conf.getString("life"));
+		}
+		catch(Throwable ignored)
+		{}
 		if(conf.getString("active") != null) active = conf.getBoolean("active");
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
 		if(conf.isList("members")) members = conf.getStringList("members");
@@ -54,6 +62,7 @@ public class StructureData implements ConfigurationSerializable
 		map.put("flags", flags);
 		map.put("region", region);
 		map.put("design", design);
+		map.put("life", life.toString());
 		if(active != null) map.put("active", active);
 		if(owner != null) map.put("owner", owner.toString());
 		if(members != null) map.put("members", members);
@@ -68,6 +77,20 @@ public class StructureData implements ConfigurationSerializable
 	public void setType(String type)
 	{
 		this.type = type;
+	}
+
+	public void setLife(float life)
+	{
+		this.life = life;
+	}
+
+	public void damageBy(Player player)
+	{
+		if(!DataManager.hasKeyTemp(player.getName(), "damage")) DataManager.saveTemp(player.getName(), "damage", 1F);
+		float damage = (float) DataManager.getValueTemp(player.getName(), "damage");
+		player.sendMessage("Damage! :D" + damage);
+		damage++;
+		DataManager.saveTemp(player.getName(), "damage", damage);
 	}
 
 	public void setDesign(String name)
@@ -134,6 +157,12 @@ public class StructureData implements ConfigurationSerializable
 	public Boolean hasOwner()
 	{
 		return this.owner != null;
+	}
+
+	public Float getLife()
+	{
+		if(life == null) life = getType().getLife();
+		return life;
 	}
 
 	public UUID getOwner()

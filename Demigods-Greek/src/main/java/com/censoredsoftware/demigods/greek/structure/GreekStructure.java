@@ -20,13 +20,13 @@ public enum GreekStructure implements Structure
 	 * General
 	 */
 	// Altar
-	ALTAR(Altar.name, Altar.AltarDesign.values(), Altar.getDesign, Altar.createNew, Altar.flags, Altar.listener, Altar.radius),
+	ALTAR(Altar.name, Altar.AltarDesign.values(), Altar.getDesign, Altar.createNew, Altar.flags, Altar.listener, Altar.radius, Altar.life),
 
 	// Obelisk
-	OBELISK(Obelisk.name, Obelisk.ObeliskDesign.values(), Obelisk.getDesign, Obelisk.createNew, Obelisk.flags, Obelisk.listener, Obelisk.radius),
+	OBELISK(Obelisk.name, Obelisk.ObeliskDesign.values(), Obelisk.getDesign, Obelisk.createNew, Obelisk.flags, Obelisk.listener, Obelisk.radius, Obelisk.life),
 
 	// Shrine
-	SHRINE(Shrine.name, Shrine.ShrineDesign.values(), Shrine.getDesign, Shrine.createNew, Shrine.flags, Shrine.listener, Shrine.radius);
+	SHRINE(Shrine.name, Shrine.ShrineDesign.values(), Shrine.getDesign, Shrine.createNew, Shrine.flags, Shrine.listener, Shrine.radius, Shrine.life);
 
 	private String name;
 	private Design[] designs;
@@ -35,8 +35,9 @@ public enum GreekStructure implements Structure
 	private Set<Structure.Flag> flags;
 	private Listener listener;
 	private int radius;
+	private float life;
 
-	private GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, Set<Structure.Flag> flags, Listener listener, int radius)
+	private GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, Set<Structure.Flag> flags, Listener listener, int radius, float life)
 	{
 		this.name = name;
 		this.designs = designs;
@@ -83,6 +84,11 @@ public enum GreekStructure implements Structure
 	public int getRadius()
 	{
 		return radius;
+	}
+
+	public float getLife()
+	{
+		return life;
 	}
 
 	public Collection<StructureData> getAll()

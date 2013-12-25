@@ -1,17 +1,6 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
+import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
 import com.censoredsoftware.censoredlib.data.player.Notification;
@@ -32,6 +21,17 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -52,7 +52,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	private boolean active;
 	private boolean usable;
 	private UUID meta;
-	private UUID inventory;
+	private UUID inventory, enderInventory;
 	private Set<String> potionEffects;
 	private Set<String> deaths;
 
@@ -107,6 +107,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		meta = UUID.fromString(conf.getString("meta"));
 		if(conf.isList("minorDeities")) minorDeities = Sets.newHashSet(conf.getStringList("minorDeities"));
 		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
+		if(conf.isString("enderInventory")) inventory = UUID.fromString(conf.getString("enderInventory"));
 		if(conf.isList("deaths")) deaths = Sets.newHashSet(conf.getStringList("deaths"));
 		if(conf.isList("potionEffects")) potionEffects = Sets.newHashSet(conf.getStringList("potionEffects"));
 	}
@@ -134,6 +135,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			map.put("usable", usable);
 			map.put("meta", meta.toString());
 			if(inventory != null) map.put("inventory", inventory.toString());
+			if(enderInventory != null) map.put("enderInventory", enderInventory.toString());
 			if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
 			if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
 		}
@@ -186,6 +188,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	public void saveInventory()
 	{
 		this.inventory = Util.createInventory(this).getId();
+		this.enderInventory = Util.createEnderInventory(this).getId();
 		Util.save(this);
 	}
 
@@ -298,6 +301,12 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		if(Util.getInventory(inventory) == null) inventory = Util.createEmptyInventory().getId();
 		return Util.getInventory(inventory);
+	}
+
+	public CEnderInventory getEnderInventory()
+	{
+		if(Util.getEnderInventory(enderInventory) == null) enderInventory = Util.createEnderInventory(this).getId();
+		return Util.getEnderInventory(enderInventory);
 	}
 
 	public Meta getMeta()
@@ -529,6 +538,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
 			DataManager.savedPotions.remove(potion.getId());
+		Util.deleteEnderInventory(getEnderInventory().getId());
 		Util.deleteInventory(getInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
@@ -565,6 +575,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		// Update their inventory
 		if(playerSave.getCharacters().size() == 1) saveInventory();
 		getInventory().setToPlayer(player);
+		getEnderInventory().setToPlayer(player);
 
 		// Update health, experience, and name
 		player.setDisplayName(getDeity().getColor() + getName());
@@ -623,6 +634,34 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		protected void delete()
 		{
 			DataManager.inventories.remove(getId());
+		}
+	}
+
+	public static class EnderInventory extends CEnderInventory
+	{
+		public EnderInventory()
+		{
+			super();
+		}
+
+		public EnderInventory(UUID id, ConfigurationSection conf)
+		{
+			super(id, conf);
+		}
+
+		protected CItemStack create(ItemStack itemStack)
+		{
+			return CItemStacks.create(itemStack);
+		}
+
+		protected CItemStack load(UUID itemStack)
+		{
+			return CItemStacks.load(itemStack);
+		}
+
+		protected void delete()
+		{
+			DataManager.enderInventories.remove(getId());
 		}
 	}
 
@@ -1006,6 +1045,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			DataManager.inventories.put(inventory.getId(), inventory);
 		}
 
+		public static void saveInventory(EnderInventory inventory)
+		{
+			DataManager.enderInventories.put(inventory.getId(), inventory);
+		}
+
 		public static void delete(UUID id)
 		{
 			DataManager.characters.remove(id);
@@ -1019,6 +1063,11 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		public static void deleteInventory(UUID id)
 		{
 			DataManager.inventories.remove(id);
+		}
+
+		public static void deleteEnderInventory(UUID id)
+		{
+			DataManager.enderInventories.remove(id);
 		}
 
 		public static void create(DPlayer player, String chosenDeity, String chosenName, boolean switchCharacter)
@@ -1084,6 +1133,16 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			return charInventory;
 		}
 
+		public static CEnderInventory createEnderInventory(DCharacter character)
+		{
+			org.bukkit.inventory.Inventory inventory = character.getOfflinePlayer().getPlayer().getEnderChest();
+			EnderInventory enderInventory = new EnderInventory();
+			enderInventory.generateId();
+			enderInventory.setItems(inventory);
+			saveInventory(enderInventory);
+			return enderInventory;
+		}
+
 		public static Meta createMeta(DCharacter character)
 		{
 			Meta charMeta = new Meta();
@@ -1117,6 +1176,17 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			try
 			{
 				return DataManager.inventories.get(id);
+			}
+			catch(Exception ignored)
+			{}
+			return null;
+		}
+
+		public static EnderInventory getEnderInventory(UUID id)
+		{
+			try
+			{
+				return DataManager.enderInventories.get(id);
 			}
 			catch(Exception ignored)
 			{}

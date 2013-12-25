@@ -1,10 +1,9 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.Demigods;
 import org.bukkit.configuration.Configuration;
 
-import com.censoredsoftware.demigods.engine.Demigods;
+import java.util.List;
 
 /**
  * Module to load configuration settings from any passed in PLUGIN's config.yml.
@@ -57,6 +56,25 @@ public class Configs
 	public static boolean getSettingBoolean(String id)
 	{
 		return !Demigods.PLUGIN.getConfig().isBoolean(id) || Demigods.PLUGIN.getConfig().getBoolean(id);
+	}
+
+	/**
+	 * Retrieve the Float setting for String <code>id</code>.
+	 * 
+	 * @param id The String key for the setting.
+	 * @return Float setting.
+	 */
+	public static float getSettingFloat(String id)
+	{
+		String floatValue = "-1F";
+		if(Demigods.PLUGIN.getConfig().isString(id)) floatValue = Demigods.PLUGIN.getConfig().getString(id);
+		try
+		{
+			return Float.valueOf(floatValue);
+		}
+		catch(Throwable ignored)
+		{}
+		return -1F;
 	}
 
 	/**

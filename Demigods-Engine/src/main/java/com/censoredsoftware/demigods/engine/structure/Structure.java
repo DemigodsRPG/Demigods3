@@ -4,6 +4,7 @@ import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Location;
@@ -24,6 +25,8 @@ public interface Structure
 
 	public Listener getUniqueListener();
 
+	public float getLife();
+
 	public int getRadius();
 
 	public Collection<StructureData> getAll();
@@ -41,7 +44,7 @@ public interface Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, NO_OVERLAP
+		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, NO_OVERLAP
 	}
 
 	public static class Util
@@ -115,6 +118,21 @@ public interface Structure
 			});
 		}
 
+		public static boolean partOfStructureWithFlag(final Location location, final Flag... flags)
+		{
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			{
+				@Override
+				public boolean apply(StructureData save)
+				{
+					if(save.getRawFlags() == null || !save.getLocations().contains(location)) return false;
+					for(Flag flag : flags)
+						if(save.getRawFlags().contains(flag.name())) return true;
+					return false;
+				}
+			});
+		}
+
 		public static boolean partOfStructureWithFlag(final Location location, final Flag flag)
 		{
 			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
@@ -144,11 +162,32 @@ public interface Structure
 			return getInRadiusWithFlag(location, flag) != null;
 		}
 
-		public static StructureData getInRadiusWithFlag(final Location location, final Flag flag)
+		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag... flags)
 		{
 			try
 			{
-				return Iterables.find(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+				return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+				{
+					@Override
+					public boolean apply(StructureData save)
+					{
+						if(save.getRawFlags() == null || !save.getLocations().contains(location) || !save.getReferenceLocation().getWorld().equals(location.getWorld()) || save.getReferenceLocation().distance(location) <= save.getType().getRadius()) return false;
+						for(Flag flag : flags)
+							if(save.getRawFlags().contains(flag.name())) return true;
+						return false;
+					}
+				});
+			}
+			catch(NoSuchElementException ignored)
+			{}
+			return null;
+		}
+
+		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag flag)
+		{
+			try
+			{
+				return Collections2.filter(getStructuresInRegionalArea(location), new Predicate<StructureData>()
 				{
 					@Override
 					public boolean apply(StructureData save)
