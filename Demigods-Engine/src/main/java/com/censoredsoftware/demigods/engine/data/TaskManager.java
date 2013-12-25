@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.censoredsoftware.censoredlib.trigger.Trigger;
+import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
-public class ThreadManager
+public class TaskManager
 {
 	private static boolean SAVE_ALERT = Configs.getSettingBoolean("saving.console_alert");
 
@@ -44,11 +44,15 @@ public class ThreadManager
 		for(Deity deity : Demigods.mythos().getDeities())
 			for(Ability ability : deity.getAbilities())
 				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
+
+		// Triggers
+		Threads.registerTriggers(Demigods.PLUGIN, Demigods.mythos().getTriggers());
 	}
 
 	public static void stopThreads()
 	{
 		Demigods.PLUGIN.getServer().getScheduler().cancelTasks(Demigods.PLUGIN);
+		Threads.stopHooker(Demigods.PLUGIN);
 	}
 
 	private static class Util
@@ -69,10 +73,6 @@ public class ThreadManager
 						DPlayer.Util.getPlayer(player).updateCanPvp();
 					}
 
-					// Process Triggers
-					for(Trigger trigger : Demigods.mythos().getTriggers())
-						trigger.processSync();
-
 					// Update Battles
 					Battle.Util.updateBattles();
 
@@ -90,10 +90,6 @@ public class ThreadManager
 
 					// Update Notifications
 					Notifications.updateNotifications();
-
-					// Process Triggers
-					for(Trigger trigger : Demigods.mythos().getTriggers())
-						trigger.processAsync();
 				}
 			};
 			save = new BukkitRunnable()

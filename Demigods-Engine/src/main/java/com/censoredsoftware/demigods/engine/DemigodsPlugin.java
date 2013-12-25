@@ -3,7 +3,7 @@ package com.censoredsoftware.demigods.engine;
 import com.censoredsoftware.censoredlib.CensoredLibPlugin;
 import com.censoredsoftware.censoredlib.helper.CensoredJavaPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Messages;
@@ -74,7 +74,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		// Cancel all threads, event calls, and unregister permissions.
 		try
 		{
-			ThreadManager.stopThreads();
+			TaskManager.stopThreads();
 			HandlerList.unregisterAll(this);
 			Demigods.unloadPermissions();
 		}

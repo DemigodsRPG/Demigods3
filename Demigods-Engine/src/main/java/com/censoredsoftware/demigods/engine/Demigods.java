@@ -1,26 +1,5 @@
 package com.censoredsoftware.demigods.engine;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.conversations.ConversationContext;
-import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.mcstats.MetricsLite;
-
 import com.censoredsoftware.censoredlib.helper.CensoredCentralizedClass;
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
@@ -30,7 +9,7 @@ import com.censoredsoftware.demigods.engine.command.DevelopmentCommands;
 import com.censoredsoftware.demigods.engine.command.GeneralCommands;
 import com.censoredsoftware.demigods.engine.command.MainCommand;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
-import com.censoredsoftware.demigods.engine.data.ThreadManager;
+import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
@@ -51,6 +30,26 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.mcstats.MetricsLite;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Demigods extends CensoredCentralizedClass
 {
@@ -148,7 +147,7 @@ public class Demigods extends CensoredCentralizedClass
 			DCharacter.Util.updateUsableCharacters();
 
 			// Start threads
-			ThreadManager.startThreads();
+			TaskManager.startThreads();
 
 			// Regenerate structures
 			Structure.Util.regenerateStructures();
