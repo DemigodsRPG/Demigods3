@@ -13,15 +13,17 @@ import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.player.*;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.google.common.collect.Maps;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class DataManager
@@ -43,13 +45,20 @@ public class DataManager
 	public static ConcurrentMap<UUID, TimedData> timedData;
 	public static ConcurrentMap<UUID, ServerData> serverData;
 	public static ConcurrentMap<UUID, TributeData> tributeData;
-	private static ConcurrentMap<String, HashMap<String, Object>> tempData;
+	private static Table<String, String, Object> tempData;
 
 	static
 	{
 		for(File file : File.values())
 			file.getConfigFile().loadToData();
-		tempData = Maps.newConcurrentMap();
+		tempData = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
+		{
+			@Override
+			public ConcurrentHashMap<String, Object> get()
+			{
+				return new ConcurrentHashMap<>();
+			}
+		});
 	}
 
 	public static void save()
@@ -92,26 +101,25 @@ public class DataManager
 	/*
 	 * Temporary data
 	 */
-	public static boolean hasKeyTemp(String key, String subKey)
+	public static boolean hasKeyTemp(String row, String column)
 	{
-		return tempData.containsKey(key) && tempData.get(key).containsKey(subKey);
+		return tempData.contains(row, column);
 	}
 
-	public static Object getValueTemp(String key, String subKey)
+	public static Object getValueTemp(String row, String column)
 	{
-		if(tempData.containsKey(key)) return tempData.get(key).get(subKey);
+		if(hasKeyTemp(row, column)) return tempData.get(row, column);
 		else return null;
 	}
 
-	public static void saveTemp(String key, String subKey, Object value)
+	public static void saveTemp(String row, String column, Object value)
 	{
-		if(!tempData.containsKey(key)) tempData.put(key, new HashMap<String, Object>());
-		tempData.get(key).put(subKey, value);
+		tempData.put(row, column, value);
 	}
 
-	public static void removeTemp(String key, String subKey)
+	public static void removeTemp(String row, String column)
 	{
-		if(tempData.containsKey(key) && tempData.get(key).containsKey(subKey)) tempData.get(key).remove(subKey);
+		if(hasKeyTemp(row, column)) tempData.get(row, column);
 	}
 
 	/*

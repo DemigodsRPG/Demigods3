@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class Messages
 {
-	private static final Logger log = Logger.getLogger("Minecraft");
+	private static final Logger LOGGER;
 	private static String PLUGIN_NAME;
 	private static int LINE_SIZE;
 
@@ -27,6 +27,7 @@ public class Messages
 	 */
 	static
 	{
+		LOGGER = Demigods.PLUGIN.getLogger();
 		PLUGIN_NAME = Demigods.PLUGIN.getName();
 		LINE_SIZE = 59 - PLUGIN_NAME.length();
 	}
@@ -51,10 +52,10 @@ public class Messages
 		if(msg.length() > LINE_SIZE)
 		{
 			for(String line : wrap(msg))
-				log.info("[" + PLUGIN_NAME + "] " + line);
+				LOGGER.info(line);
 			return;
 		}
-		log.info("[" + PLUGIN_NAME + "] " + msg);
+		LOGGER.info(msg);
 	}
 
 	/**
@@ -67,10 +68,10 @@ public class Messages
 		if(msg.length() > LINE_SIZE)
 		{
 			for(String line : wrap(msg))
-				log.warning("[" + PLUGIN_NAME + "] " + line);
+				LOGGER.warning(line);
 			return;
 		}
-		log.warning("[" + PLUGIN_NAME + "] " + msg);
+		LOGGER.warning(msg);
 	}
 
 	/**
@@ -83,10 +84,10 @@ public class Messages
 		if(msg.length() >= LINE_SIZE)
 		{
 			for(String line : wrap(msg))
-				log.severe("[" + PLUGIN_NAME + "] " + line);
+				LOGGER.severe(line);
 			return;
 		}
-		log.severe("[" + PLUGIN_NAME + "] " + msg);
+		LOGGER.severe(msg);
 	}
 
 	public static String[] wrap(String msg)
