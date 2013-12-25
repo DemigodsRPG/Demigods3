@@ -19,7 +19,6 @@ import org.bukkit.inventory.ShapedRecipe;
 
 import com.censoredsoftware.censoredlib.util.Items;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
@@ -60,9 +59,6 @@ public class BootsOfPagos
 
 				if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE && location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR))
 				{
-					Messages.broadcast("TIME (millis): " + System.currentTimeMillis());
-					Messages.broadcast("TIME mod 50 = " + System.currentTimeMillis() % 5000);
-
 					if(System.currentTimeMillis() % 4000 < 1000)
 					{
 						player.sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
