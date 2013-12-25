@@ -1,5 +1,25 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
+import java.lang.reflect.Field;
+import java.util.*;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -21,27 +41,6 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -413,7 +412,7 @@ public class Prayer implements WrappedConversation
 			if(skillPoints > 0)
 			{
 				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  You currently have " + ChatColor.GREEN + character.getMeta().getSkillPoints() + "" + ChatColor.GRAY + " skill points available.");
-				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  To assign your skill points, use " + ChatColor.YELLOW + "assign <points> <skill>" + ChatColor.GRAY + ".");
+				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  To assign your skill points, use " + ChatColor.YELLOW + "assign <amount> <skill>" + ChatColor.GRAY + ".");
 			}
 			else
 			{
@@ -445,16 +444,44 @@ public class Prayer implements WrappedConversation
 		{
 			String[] splitMsg = message.split(" ");
 
+			// Create and save the notification list
+			context.setSessionData("skill_notifications", Lists.newArrayList());
+			List<Translation.Text> notifications = (List<Translation.Text>) context.getSessionData("skill_notifications");
+
 			try
 			{
 				if(message.equalsIgnoreCase("menu")) return true;
 
-				Skill.Type skill = Skill.Type.valueOf(splitMsg[2].toUpperCase());
-				return splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length == 3 && DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null;
+				if(splitMsg[0].equalsIgnoreCase("assign") && splitMsg.length >= 3)
+				{
+					ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
+
+					// This looks funky, but it's supposed to be like this
+					input.remove(0);
+					input.remove(0);
+
+					Skill.Type skill = Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase());
+
+					if(DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null)
+					{
+						return true;
+					}
+					else
+					{
+						notifications.add(Translation.Text.NOTIFICATION_ERROR_UNOBTAINED_SKILL);
+						return false;
+					}
+				}
+				else
+				{
+					notifications.add(Translation.Text.NOTIFICATION_ERROR_SKILL_DOESNT_EXIST);
+					return false;
+				}
 			}
 			catch(Exception ignored)
 			{
-				return false;
+                notifications.add(Translation.Text.NOTIFICATION_ERROR_MISC);
+                return false;
 			}
 		}
 
@@ -477,9 +504,15 @@ public class Prayer implements WrappedConversation
 			}
 			else if(splitMsg[0].equalsIgnoreCase("assign"))
 			{
-				// Define the points and skill to use
-				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(splitMsg[2].toUpperCase()));
-				int points = Integer.valueOf(splitMsg[1]);
+                ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
+
+                int points = Integer.parseInt(input.get(1));
+
+                // Again, this looks funky, but it's supposed to be like this
+                input.remove(0);
+                input.remove(0);
+
+				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase()));
 
 				if(character.getMeta().getSkillPoints() >= points)
 				{

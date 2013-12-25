@@ -48,7 +48,7 @@ public class BootsOfPagos
 		@EventHandler(priority = EventPriority.NORMAL)
 		private void onPlayerMove(PlayerMoveEvent event)
 		{
-			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || Zones.inNoBuildZone(event.getPlayer(), event.getPlayer().getLocation())) return;
 
 			// Define variables
 			Player player = event.getPlayer();
