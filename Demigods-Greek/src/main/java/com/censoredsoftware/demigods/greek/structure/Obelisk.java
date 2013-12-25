@@ -59,6 +59,7 @@ public class Obelisk
 		{
 			StructureData save = new StructureData();
 			save.setSanctifiers(new HashMap<String, Long>());
+			save.setCorruptors(new HashMap<String, Long>());
 			return save;
 		}
 	};

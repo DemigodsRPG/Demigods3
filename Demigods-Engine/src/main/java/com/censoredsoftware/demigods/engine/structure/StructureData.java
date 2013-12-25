@@ -196,6 +196,7 @@ public class StructureData implements ConfigurationSerializable
 
     public void addCorruptor(UUID id)
 	{
+		if(corruptors == null) corruptors = Maps.newHashMap();
 		corruptors.put(id.toString(), System.currentTimeMillis());
 		save();
 	}
@@ -212,6 +213,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public void addSanctifier(UUID id)
 	{
+		if(sanctifiers == null) sanctifiers = Maps.newHashMap();
 		sanctifiers.put(id.toString(), System.currentTimeMillis());
 		save();
 	}
