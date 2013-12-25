@@ -18,8 +18,8 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
 import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.DiscreteDomains;
 import com.google.common.collect.Ranges;
@@ -58,16 +58,12 @@ public class BootsOfPagos
 			{
 				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
-				if(location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().equals(Material.STATIONARY_WATER) && surroundingSquareNotLiquid(player.getLocation()))
+				if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE && location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR))
 				{
-					sendIce(player, getSquare(location));
+					Messages.broadcast("TIME (millis): " + System.currentTimeMillis());
+					Messages.broadcast("TIME mod 50 = " + System.currentTimeMillis() % 5000);
 
-					for(Entity entity : player.getNearbyEntities(30, 30, 30))
-						if(entity instanceof Player) sendIce((Player) entity, getSquare(entity.getLocation().add(0, -1, 0)));
-				}
-				else if(!location.getBlock().isLiquid() && location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.ICE && location.getBlock().getType() != Material.PACKED_ICE && location.getBlock().getRelative(BlockFace.UP).getType().equals(Material.AIR))
-				{
-					if(Times.getSeconds(System.currentTimeMillis()) % 5 == 0)
+					if(System.currentTimeMillis() % 4000 < 1000)
 					{
 						player.sendBlockChange(location.clone().add(0, 1, 0), Material.SNOW, (byte) 0);
 
@@ -79,13 +75,6 @@ public class BootsOfPagos
 		}
 	};
 
-	public static boolean surroundingSquareNotLiquid(Location center)
-	{
-		for(Location location : getSquare(center))
-			if(!location.equals(center) && !location.getBlock().isLiquid()) return false;
-		return true;
-	}
-
 	public static Set<Location> getSquare(Location center)
 	{
 		Set<Location> set = Sets.newHashSet();
@@ -94,11 +83,5 @@ public class BootsOfPagos
 			for(int z : range)
 				set.add(center.clone().add(x, 0, z));
 		return set;
-	}
-
-	public static void sendIce(Player player, Set<Location> locations)
-	{
-		for(Location location : locations)
-			if(location.getBlock().isLiquid()) player.sendBlockChange(location, Material.ICE, (byte) 0);
 	}
 }
