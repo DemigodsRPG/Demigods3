@@ -87,13 +87,16 @@ public class StructureData implements ConfigurationSerializable
 
 	public void damageBy(DCharacter character)
 	{
-		if(DCharacter.Util.areAllied(character, DataManager.characters.get(getOwner()))) return;
-		if(!DataManager.hasKeyTemp(character.getName(), "damage " + id.toString())) DataManager.saveTemp(character.getName(), "damage " + id.toString(), 1F);
-		float damage = (float) DataManager.getValueTemp(character.getName(), "damage " + id.toString());
-		damage++;
-		character.getOfflinePlayer().getPlayer().sendMessage("Life left: " + (getLife() - damage));
-		if(damage >= getLife()) kill(character);
-		DataManager.saveTemp(character.getName(), "damage " + id.toString(), damage);
+		character.getOfflinePlayer().getPlayer().sendMessage("Life: " + getLife());
+		/*
+		 * if(DCharacter.Util.areAllied(character, DataManager.characters.get(getOwner()))) return;
+		 * if(!DataManager.hasKeyTemp(character.getName(), "damage " + id.toString())) DataManager.saveTemp(character.getName(), "damage " + id.toString(), 1F);
+		 * float damage = (float) DataManager.getValueTemp(character.getName(), "damage " + id.toString());
+		 * damage++;
+		 * character.getOfflinePlayer().getPlayer().sendMessage("Life left: " + (getLife() - damage));
+		 * if(damage >= getLife()) kill(character);
+		 * DataManager.saveTemp(character.getName(), "damage " + id.toString(), damage);
+		 */
 	}
 
 	public void kill(DCharacter character)
@@ -174,7 +177,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public Float getLife()
 	{
-		if(life == null) life = getType().getLife();
+		if(life == null || life.equals(-1F)) life = getType().getLife();
 		return life;
 	}
 
