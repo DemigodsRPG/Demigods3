@@ -66,7 +66,7 @@ public class StructureData implements ConfigurationSerializable
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
         if(conf.isConfigurationSection("corruptors"))
         {
-			corruptors = Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
+			corruptors = Maps.newHashMap(Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
 			{
 				@Override
 				public Long apply(Object o)
@@ -79,11 +79,11 @@ public class StructureData implements ConfigurationSerializable
 					{}
 					return null;
 				}
-			});
+			}));
 		}
 		if(conf.isConfigurationSection("sanctifiers"))
 		{
-			sanctifiers = Maps.transformValues(conf.getConfigurationSection("sanctifiers").getValues(false), new Function<Object, Long>()
+			sanctifiers = Maps.newHashMap(Maps.transformValues(conf.getConfigurationSection("sanctifiers").getValues(false), new Function<Object, Long>()
 			{
 				@Override
 				public Long apply(Object o)
@@ -96,7 +96,7 @@ public class StructureData implements ConfigurationSerializable
 					{}
 					return null;
 				}
-			});
+			}));
 		}
 	}
 
