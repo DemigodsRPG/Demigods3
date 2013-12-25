@@ -159,7 +159,7 @@ public interface Structure
 
 		public static boolean isInRadiusWithFlag(Location location, Flag flag)
 		{
-			return getInRadiusWithFlag(location, flag) != null;
+			return !getInRadiusWithFlag(location, flag).isEmpty();
 		}
 
 		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag... flags)
