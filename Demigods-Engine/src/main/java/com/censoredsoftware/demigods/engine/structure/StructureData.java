@@ -177,7 +177,7 @@ public class StructureData implements ConfigurationSerializable
 
 	public Float getLife()
 	{
-		if(life == null || life.equals(-1F)) life = getType().getLife();
+		if(life == null || life <= 0F) life = getType().getLife();
 		return life;
 	}
 
