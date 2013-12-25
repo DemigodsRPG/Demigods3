@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -15,20 +23,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Clotho
 {
 	public final static String name = "Clotho", shortDescription = ChatColor.GRAY + "The one who sows.";
 	public final static Alliance alliance = GreekAlliance.FATE;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
-	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2;
+	public final static int accuracy = 15, favorRegen = 999, maxFavor = 20000, maxHealth = 2, favorBank = 10000;
 	public final static ChatColor color = ChatColor.WHITE;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));

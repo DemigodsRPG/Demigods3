@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.engine.deity;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -7,13 +15,6 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public interface Deity
 {
@@ -47,6 +48,8 @@ public interface Deity
 	public int getMaxFavor();
 
 	public double getMaxHealth();
+
+	public int getFavorBank();
 
 	public ConfigFile2 getConfig();
 

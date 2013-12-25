@@ -22,6 +22,7 @@ generation:
 ## Regeneration ##
 regeneration_rates:
     favor: 3
+    favor_bank: 300
 
 ## Zones ##
 zones:

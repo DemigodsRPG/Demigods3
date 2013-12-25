@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -13,20 +21,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Perses
 {
 	public final static String name = "Perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
 	public final static Alliance alliance = GreekAlliance.TITAN;
 	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30;
+	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 30, favorBank = 10000;
 	public final static ChatColor color = ChatColor.GOLD;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.FLINT, 1));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
