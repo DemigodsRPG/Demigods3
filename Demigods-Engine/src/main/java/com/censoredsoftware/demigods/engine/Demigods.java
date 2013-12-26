@@ -25,6 +25,7 @@ import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.shaded.org.mcstats.MetricsLite;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -44,7 +45,6 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import org.mcstats.MetricsLite;
 
 import java.util.Collection;
 import java.util.HashMap;

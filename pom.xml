@@ -90,16 +90,20 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.censoredsoftware</groupId>
-            <artifactId>CensoredLib-Web</artifactId>
-            <version>${censoredLib.version}</version>
-            <scope>compile</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>2.10.3</version>
+        </dependency>
+        <!--
+            Servlet API
+            - Bukkit was stupid and they didn't add one of their depends.
+            Scala actually checks this stuff and it will give an error on
+            compile unless it can find all of the depend jars (i.e. this).
+        -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
