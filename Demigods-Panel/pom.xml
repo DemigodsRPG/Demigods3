@@ -27,7 +27,7 @@
     <build>
         <finalName>Demigods-Panel</finalName>
         <defaultGoal>clean install</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+        <sourceDirectory>${basedir}/src/main/scala/</sourceDirectory>
         <resources>
             <resource>
                 <targetPath>.</targetPath>
@@ -66,6 +66,24 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmArgs>
+                        <jvmArg>-Xms64m</jvmArg>
+                        <jvmArg>-Xmx1024m</jvmArg>
+                    </jvmArgs>
                 </configuration>
             </plugin>
             <plugin>

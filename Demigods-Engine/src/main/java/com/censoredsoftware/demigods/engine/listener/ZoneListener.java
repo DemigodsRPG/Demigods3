@@ -63,7 +63,7 @@ public class ZoneListener implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onWorldLoad(WorldUnloadEvent event)
+	public void onWorldUnload(WorldUnloadEvent event)
 	{
 		// TODO For bukkit enabled worlds.
 	}
