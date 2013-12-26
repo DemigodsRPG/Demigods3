@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.engine.deity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -15,6 +7,15 @@ import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Deity
 {
@@ -28,6 +29,10 @@ public interface Deity
 	public String getPermission();
 
 	public ChatColor getColor();
+
+	public MaterialData getMaterialData();
+
+	public Sound getSound();
 
 	public Map<Material, Integer> getClaimItems();
 
@@ -51,11 +56,46 @@ public interface Deity
 
 	public int getFavorBank();
 
+	public void updateMood();
+
 	public ConfigFile2 getConfig();
 
 	public enum Flag
 	{
 		PLAYABLE, NON_PLAYABLE, MAJOR_DEITY, MINOR_DEITY, NEUTRAL, DIFFICULT, ALTERNATE_ASCENSION_LEVELING, NO_SHRINE, NO_OBELISK, NO_BATTLE
+	}
+
+	public enum Mood
+	{
+		ECSTATIC, PLEASED, INTERESTED, CALM /* (the default) */, SAD, DEFEATED, ANGRY, ENRAGED, CONFUSED
+	}
+
+	public interface MoodPack
+	{
+		Alliance getAlliance();
+
+		public MaterialData getMaterialData();
+
+		Sound getSound();
+
+		public Map<Material, Integer> getClaimItems();
+
+		public Map<Material, Integer> getForsakeItems();
+
+		public Set<Flag> getFlags();
+
+		public List<Ability> getAbilities();
+
+		public int getAccuracy();
+
+		public int getFavorRegen();
+	}
+
+	public interface MoodManager
+	{
+		public void set(Mood mood, MoodPack moodPack);
+
+		public MoodPack get(Mood mood);
 	}
 
 	public static class Util

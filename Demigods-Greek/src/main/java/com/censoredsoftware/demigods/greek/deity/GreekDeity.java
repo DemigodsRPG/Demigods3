@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -29,8 +21,18 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
 
-public enum GreekDeity implements Deity
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public enum GreekDeity implements Deity, Deity.MoodManager
 {
 	/**
 	 * Gods
@@ -89,6 +91,9 @@ public enum GreekDeity implements Deity
 	private double maxHealth;
 	private ConfigFile2 configFile;
 
+	// Mood Manager
+	private EnumMap<Mood, MoodPack> moodPacks;
+
 	private GreekDeity(String name, String permission, Alliance alliance, ChatColor color, Map<Material, Integer> claimItems, Map<Material, Integer> forsakeItems, String shortDescription, List<String> lore, Set<Flag> flags, List<Ability> abilities, int accuracy, int favorRegen, int maxFavor, double maxHealth, int favorBank)
 	{
 		this.name = name;
@@ -136,6 +141,18 @@ public enum GreekDeity implements Deity
 	public ChatColor getColor()
 	{
 		return color;
+	}
+
+	public MaterialData getMaterialData()
+	{
+		// TODO
+		return null;
+	}
+
+	public Sound getSound()
+	{
+		// TODO
+		return null;
 	}
 
 	public Map<Material, Integer> getClaimItems()
@@ -196,6 +213,22 @@ public enum GreekDeity implements Deity
 	public ConfigFile2 getConfig()
 	{
 		return configFile;
+	}
+
+    public void updateMood()
+    {
+		// TODO
+	}
+
+	public void set(Mood mood, MoodPack moodPack)
+	{
+		// TODO
+	}
+
+	public MoodPack get(Mood mood)
+	{
+		// TODO
+		return null;
 	}
 
 	public class File extends ConfigFile2
