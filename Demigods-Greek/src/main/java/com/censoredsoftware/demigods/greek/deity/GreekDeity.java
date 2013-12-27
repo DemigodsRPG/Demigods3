@@ -30,12 +30,21 @@ import java.util.Set;
 
 public abstract class GreekDeity implements Deity, Deity.MoodManager
 {
+	/*
+	 * Gods
+	 */
 	public static final Zeus ZEUS = new Zeus();
 	public static final Poseidon POSEIDON = new Poseidon();
 
+	/*
+	 * Titans
+	 */
 	public static final Perses PERSES = new Perses();
 	public static final Oceanus OCEANUS = new Oceanus();
 
+	/*
+	 * Fates
+	 */
 	public static final Clotho CLOTHO = new Clotho();
 	public static final Lachesis LACHESIS = new Lachesis();
 	public static final Atropos ATROPOS = new Atropos();

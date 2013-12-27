@@ -106,12 +106,21 @@ public class GreekMythos extends MythosPlugin
 		return ImmutableSet.copyOf(new HashSet<Deity>()
 		{
 			{
+				/*
+				 * Gods
+				 */
 				add(GreekDeity.ZEUS);
 				add(GreekDeity.POSEIDON);
 
+				/*
+				 * Titans
+				 */
 				add(GreekDeity.PERSES);
 				add(GreekDeity.OCEANUS);
 
+				/*
+				 * Fates
+				 */
 				add(GreekDeity.CLOTHO);
 				add(GreekDeity.LACHESIS);
 				add(GreekDeity.ATROPOS);
