@@ -1,14 +1,13 @@
 package com.censoredsoftware.demigods.panel
 
 import com.censoredsoftware.demigods.engine.mythos.{Mythos, MythosPlugin}
-import java.util
 import com.censoredsoftware.censoredlib.trigger.Trigger
 import org.bukkit.permissions.Permission
 import org.bukkit.event.Listener
 import com.censoredsoftware.demigods.engine.structure.Structure
 import com.censoredsoftware.demigods.engine.deity.{Alliance, Deity}
 import com.censoredsoftware.demigods.engine.item.DivineItem
-import com.google.common.collect.Sets
+import com.google.common.collect.{ImmutableSet, ImmutableCollection}
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
 
@@ -36,21 +35,21 @@ class DemigodsPanelPlugin extends MythosPlugin
 
   override def useBaseGame(): java.lang.Boolean = Boolean.box(x = true)
 
-  override def getDivineItems: util.Collection[DivineItem] = Sets.newHashSet()
+  override def getDivineItems: ImmutableCollection[DivineItem] = ImmutableSet.of()
 
-  override def getAlliances: util.Collection[Alliance] = Sets.newHashSet()
+  override def getAlliances: ImmutableCollection[Alliance] = ImmutableSet.of()
 
-  override def getDeities: util.Collection[Deity] = Sets.newHashSet()
+  override def getDeities: ImmutableCollection[Deity] = ImmutableSet.of()
 
-  override def getStructures: util.Collection[Structure] = Sets.newHashSet()
+  override def getStructures: ImmutableCollection[Structure] = ImmutableSet.of()
 
   override def levelSeperateSkills(): java.lang.Boolean = Boolean.box(x = true)
 
-  override def getListeners: util.Collection[Listener] = Sets.newHashSet()
+  override def getListeners: ImmutableCollection[Listener] = ImmutableSet.of()
 
-  override def getPermissions: util.Collection[Permission] = Sets.newHashSet()
+  override def getPermissions: ImmutableCollection[Permission] = ImmutableSet.of()
 
-  override def getTriggers: util.Collection[Trigger] = Sets.newHashSet()
+  override def getTriggers: ImmutableCollection[Trigger] = ImmutableSet.of()
 
   override def setSecondary(): Unit =
   {}

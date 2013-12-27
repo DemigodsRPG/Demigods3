@@ -30,10 +30,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Obelisk
+public class Obelisk extends GreekStructure
 {
-	public static final String name = "Obelisk";
-	public static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, Structure.Design>()
+	private static final String name = "Obelisk";
+	private static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, Structure.Design>()
 	{
 		@Override
 		public Structure.Design apply(Location reference)
@@ -52,7 +52,7 @@ public class Obelisk
 			}
 		}
 	};
-	public static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
+	private static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
 	{
 		@Override
 		public StructureData apply(GreekStructure.Design design)
@@ -63,7 +63,7 @@ public class Obelisk
 			return save;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -76,7 +76,7 @@ public class Obelisk
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -88,7 +88,7 @@ public class Obelisk
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -99,7 +99,7 @@ public class Obelisk
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -111,14 +111,14 @@ public class Obelisk
 			return true;
 		}
 	};
-	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
 			add(Structure.Flag.DESTRUCT_ON_BREAK);
 			add(Structure.Flag.NO_GRIEFING);
 		}
 	};
-	public static final Listener listener = new Listener()
+	private static final Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		public void createAndRemove(PlayerInteractEvent event)
@@ -188,8 +188,8 @@ public class Obelisk
 			}
 		}
 	};
-	public static final int radius = Configs.getSettingInt("zones.obelisk_radius");
-	public static final float sanctity = 850F, sanctityRegen = 1F;
+	private static final int radius = Configs.getSettingInt("zones.obelisk_radius");
+	private static final float sanctity = 850F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
@@ -255,6 +255,11 @@ public class Obelisk
 			add(new Selection(0, 5, 0, Material.REDSTONE_LAMP_ON));
 		}
 	};
+
+	public Obelisk()
+	{
+		super(name, ObeliskDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+	}
 
 	public static enum ObeliskDesign implements GreekStructure.Design
 	{

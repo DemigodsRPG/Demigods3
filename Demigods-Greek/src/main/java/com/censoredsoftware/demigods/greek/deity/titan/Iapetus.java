@@ -1,25 +1,22 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
+import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
-public class Iapetus
+import java.util.*;
+
+public class Iapetus extends GreekDeity
 {
 	public final static String name = "Iapetus", shortDescription = ChatColor.GRAY + "The Titan of mortality.";
 	public final static Alliance alliance = GreekAlliance.TITAN;
@@ -46,4 +43,12 @@ public class Iapetus
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList();
+
+	// Mood Manager
+	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
+
+	public Iapetus()
+	{
+		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
 }

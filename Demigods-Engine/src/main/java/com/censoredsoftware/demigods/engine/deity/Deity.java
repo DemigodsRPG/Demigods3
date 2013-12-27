@@ -6,6 +6,7 @@ import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -70,13 +71,16 @@ public interface Deity
 		ECSTATIC, PLEASED, INTERESTED, CALM /* (the default) */, SAD, DEFEATED, ANGRY, ENRAGED, CONFUSED
 	}
 
+	public interface Pantheon
+	{
+		public ImmutableSet<? extends Deity> deities();
+	}
+
 	public interface MoodPack
 	{
-		Alliance getAlliance();
-
 		public MaterialData getMaterialData();
 
-		Sound getSound();
+		public Sound getSound();
 
 		public Map<Material, Integer> getClaimItems();
 

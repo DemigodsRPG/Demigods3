@@ -6,11 +6,10 @@ import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
-
-import java.util.Collection;
 
 public class ExclusiveMythos extends MythosPlugin
 {
@@ -73,25 +72,25 @@ public class ExclusiveMythos extends MythosPlugin
 	}
 
 	@Override
-	public Collection<DivineItem> getDivineItems()
+	public ImmutableCollection<DivineItem> getDivineItems()
 	{
 		return ImmutableSet.of();
 	}
 
 	@Override
-	public Collection<Alliance> getAlliances()
+	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ImmutableSet.of();
 	}
 
 	@Override
-	public Collection<Deity> getDeities()
+	public ImmutableCollection<Deity> getDeities()
 	{
 		return ImmutableSet.of();
 	}
 
 	@Override
-	public Collection<Structure> getStructures()
+	public ImmutableCollection<Structure> getStructures()
 	{
 		return ImmutableSet.of();
 	}
@@ -101,17 +100,17 @@ public class ExclusiveMythos extends MythosPlugin
 		return true;
 	}
 
-	public Collection<Listener> getListeners()
+	public ImmutableCollection<Listener> getListeners()
 	{
 		return Exclusive.inst().LISTENERS;
 	}
 
-	public Collection<Permission> getPermissions()
+	public ImmutableCollection<Permission> getPermissions()
 	{
 		return ImmutableSet.of();
 	}
 
-	public Collection<Trigger> getTriggers()
+	public ImmutableCollection<Trigger> getTriggers()
 	{
 		return ImmutableSet.of();
 	}

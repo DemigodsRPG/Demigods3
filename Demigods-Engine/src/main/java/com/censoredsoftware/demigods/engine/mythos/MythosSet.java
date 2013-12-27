@@ -7,14 +7,10 @@ import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -23,7 +19,7 @@ public class MythosSet implements Mythos
 	private final Mythos PRIMARY;
 	private final ImmutableSet<Mythos> SET;
 	private final String[] INCOMPATIBLE;
-	private final ImmutableSet<DivineItem> DIVINEITEMS;
+	private final ImmutableSet<DivineItem> DIVINE_ITEMS;
 	private final ImmutableSet<Alliance> ALLIANCES;
 	private final ImmutableSet<Deity> DEITIES;
 	private final ImmutableSet<Structure> STRUCTURES;
@@ -77,7 +73,7 @@ public class MythosSet implements Mythos
 		}
 		INCOMPATIBLE = incompatibleWorking;
 
-		DIVINEITEMS = ImmutableSet.copyOf(divineItems);
+		DIVINE_ITEMS = ImmutableSet.copyOf(divineItems);
 		ALLIANCES = ImmutableSet.copyOf(alliance);
 		DEITIES = ImmutableSet.copyOf(deity);
 		STRUCTURES = ImmutableSet.copyOf(structure);
@@ -129,25 +125,25 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public Collection<DivineItem> getDivineItems()
+	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return DIVINEITEMS;
+		return DIVINE_ITEMS;
 	}
 
 	@Override
-	public Collection<Alliance> getAlliances()
+	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ALLIANCES;
 	}
 
 	@Override
-	public Collection<Deity> getDeities()
+	public ImmutableCollection<Deity> getDeities()
 	{
 		return DEITIES;
 	}
 
 	@Override
-	public Collection<Structure> getStructures()
+	public ImmutableCollection<Structure> getStructures()
 	{
 		return STRUCTURES;
 	}
@@ -159,19 +155,19 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public Collection<Listener> getListeners()
+	public ImmutableCollection<Listener> getListeners()
 	{
 		return LISTENERS;
 	}
 
 	@Override
-	public Collection<Permission> getPermissions()
+	public ImmutableCollection<Permission> getPermissions()
 	{
 		return PERMISSIONS;
 	}
 
 	@Override
-	public Collection<Trigger> getTriggers()
+	public ImmutableCollection<Trigger> getTriggers()
 	{
 		return TRIGGERS;
 	}

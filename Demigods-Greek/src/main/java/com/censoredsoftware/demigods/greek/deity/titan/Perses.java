@@ -1,13 +1,5 @@
 package com.censoredsoftware.demigods.greek.deity.titan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.demigods.engine.ability.Ability;
@@ -17,12 +9,17 @@ import com.censoredsoftware.demigods.greek.ability.offense.Blaze;
 import com.censoredsoftware.demigods.greek.ability.passive.NoFire;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Firestorm;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
+import com.censoredsoftware.demigods.greek.deity.GreekDeity;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 
-public class Perses
+import java.util.*;
+
+public class Perses extends GreekDeity
 {
 	public final static String name = "Perses", shortDescription = ChatColor.GRAY + "The Titan of anger and destruction.";
 	public final static Alliance alliance = GreekAlliance.TITAN;
@@ -49,4 +46,12 @@ public class Perses
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
+
+	// Mood Manager
+	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
+
+	public Perses()
+	{
+		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+	}
 }

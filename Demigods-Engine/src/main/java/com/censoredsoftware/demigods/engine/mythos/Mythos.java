@@ -5,10 +5,9 @@ import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.google.common.collect.ImmutableCollection;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
-
-import java.util.Collection;
 
 public interface Mythos
 {
@@ -26,21 +25,21 @@ public interface Mythos
 
 	public Boolean useBaseGame();
 
-	public Collection<DivineItem> getDivineItems();
+	public ImmutableCollection<DivineItem> getDivineItems();
 
-	public Collection<Alliance> getAlliances();
+	public ImmutableCollection<Alliance> getAlliances();
 
-	public Collection<Deity> getDeities();
+	public ImmutableCollection<Deity> getDeities();
 
-	public Collection<Structure> getStructures();
+	public ImmutableCollection<Structure> getStructures();
 
 	public Boolean levelSeperateSkills();
 
-	public Collection<Listener> getListeners();
+	public ImmutableCollection<Listener> getListeners();
 
-	public Collection<Permission> getPermissions();
+	public ImmutableCollection<Permission> getPermissions();
 
-	public Collection<Trigger> getTriggers();
+	public ImmutableCollection<Trigger> getTriggers();
 
 	public void setSecondary();
 

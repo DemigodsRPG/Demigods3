@@ -39,10 +39,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Altar
+public class Altar extends GreekStructure
 {
-	public static final String name = "Altar";
-	public static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, GreekStructure.Design>()
+	private static final String name = "Altar";
+	private static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, GreekStructure.Design>()
 	{
 		@Override
 		public GreekStructure.Design apply(Location reference)
@@ -59,7 +59,7 @@ public class Altar
 			}
 		}
 	};
-	public static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
+	private static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
 	{
 		@Override
 		public StructureData apply(GreekStructure.Design design)
@@ -67,7 +67,7 @@ public class Altar
 			return new StructureData();
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
@@ -75,7 +75,7 @@ public class Altar
 			return false;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
@@ -83,7 +83,7 @@ public class Altar
 			return false;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
@@ -91,7 +91,7 @@ public class Altar
 			return false;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(@Nullable StructureData data, @Nullable DCharacter unused)
@@ -99,7 +99,7 @@ public class Altar
 			return false;
 		}
 	};
-	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
 			add(Structure.Flag.NO_PVP);
@@ -108,7 +108,7 @@ public class Altar
 			add(Structure.Flag.NO_OVERLAP);
 		}
 	};
-	public static final Listener listener = new Listener()
+	private static final Listener listener = new Listener()
 	{
 		public double ALTAR_SPAWN = Configs.getSettingDouble("generation.altar_chance");
 
@@ -182,8 +182,8 @@ public class Altar
 			}
 		}
 	};
-	public static final int radius = Configs.getSettingInt("zones.altar_radius");
-	public static final float sanctity = -1F, sanctityRegen = 1F;
+	private static final int radius = Configs.getSettingInt("zones.altar_radius");
+	private static final float sanctity = -1F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
 	{
@@ -386,6 +386,11 @@ public class Altar
 			add(new Selection(rand1, 2, rand2, Material.TORCH)); // Torch
 		}
 	};
+
+	public Altar()
+	{
+		super(name, AltarDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+	}
 
 	public static enum AltarDesign implements GreekStructure.Design
 	{

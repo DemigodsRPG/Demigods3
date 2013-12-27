@@ -15,19 +15,11 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public enum GreekStructure implements Structure
+public abstract class GreekStructure implements Structure
 {
-	/**
-	 * General
-	 */
-	// Altar
-	ALTAR(Altar.name, Altar.AltarDesign.values(), Altar.getDesign, Altar.createNew, Altar.sanctify, Altar.corrupt, Altar.birth, Altar.kill, Altar.flags, Altar.listener, Altar.radius, Altar.sanctity, Altar.sanctityRegen),
-
-	// Obelisk
-	OBELISK(Obelisk.name, Obelisk.ObeliskDesign.values(), Obelisk.getDesign, Obelisk.createNew, Obelisk.sanctify, Obelisk.corrupt, Obelisk.birth, Obelisk.kill, Obelisk.flags, Obelisk.listener, Obelisk.radius, Obelisk.sanctity, Obelisk.sanctityRegen),
-
-	// Shrine
-	SHRINE(Shrine.name, Shrine.ShrineDesign.values(), Shrine.getDesign, Shrine.createNew, Shrine.sanctify, Shrine.corrupt, Shrine.birth, Shrine.kill, Shrine.flags, Shrine.listener, Shrine.radius, Shrine.sanctity, Shrine.sanctityRegen);
+	public static final Altar ALTAR = new Altar();
+	public static final Obelisk OBELISK = new Obelisk();
+	public static final Shrine SHRINE = new Shrine();
 
 	private String name;
 	private Design[] designs;
@@ -39,7 +31,7 @@ public enum GreekStructure implements Structure
 	private int radius;
 	private float sanctity, sanctityRegen;
 
-	private GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, float sanctity, float sanctityRegen)
+	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, float sanctity, float sanctityRegen)
 	{
 		this.name = name;
 		this.designs = designs;
@@ -154,9 +146,9 @@ public enum GreekStructure implements Structure
 		return save;
 	}
 
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
 }

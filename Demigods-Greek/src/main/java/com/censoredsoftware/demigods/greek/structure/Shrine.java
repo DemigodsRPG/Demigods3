@@ -30,10 +30,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Shrine
+public class Shrine extends GreekStructure
 {
-	public static final String name = "Shrine";
-	public static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, GreekStructure.Design>()
+	private static final String name = "Shrine";
+	private static final Function<Location, GreekStructure.Design> getDesign = new Function<Location, GreekStructure.Design>()
 	{
 		@Override
 		public GreekStructure.Design apply(Location reference)
@@ -47,7 +47,7 @@ public class Shrine
 			}
 		}
 	};
-	public static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
+	private static final Function<GreekStructure.Design, StructureData> createNew = new Function<GreekStructure.Design, StructureData>()
 	{
 		@Override
 		public StructureData apply(GreekStructure.Design design)
@@ -58,7 +58,7 @@ public class Shrine
 			return save;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> sanctify = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -71,7 +71,7 @@ public class Shrine
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> corrupt = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -84,7 +84,7 @@ public class Shrine
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> birth = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -95,7 +95,7 @@ public class Shrine
 			return true;
 		}
 	};
-	public static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
+	private static final Structure.InteractFunction<Boolean> kill = new Structure.InteractFunction<Boolean>()
 	{
 		@Override
 		public Boolean apply(StructureData data, DCharacter character)
@@ -107,7 +107,7 @@ public class Shrine
 			return true;
 		}
 	};
-	public static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
+	private static final Set<Structure.Flag> flags = new HashSet<Structure.Flag>()
 	{
 		{
 			add(Structure.Flag.DELETE_WITH_OWNER);
@@ -116,7 +116,7 @@ public class Shrine
 			add(Structure.Flag.NO_OVERLAP);
 		}
 	};
-	public static final Listener listener = new Listener()
+	private static final Listener listener = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		public void createAndRemove(PlayerInteractEvent event)
@@ -192,8 +192,8 @@ public class Shrine
 			}
 		}
 	};
-	public static final int radius = Configs.getSettingInt("zones.shrine_radius");
-	public static final float sanctity = 250F, sanctityRegen = 1F;
+	private static final int radius = Configs.getSettingInt("zones.shrine_radius");
+	private static final float sanctity = 250F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
 	{
@@ -229,6 +229,11 @@ public class Shrine
 			add(new Selection(0, 0, 1, Material.NETHER_BRICK_STAIRS, (byte) 3));
 		}
 	};
+
+	public Shrine()
+	{
+		super(name, ShrineDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+	}
 
 	public static enum ShrineDesign implements GreekStructure.Design
 	{

@@ -16,13 +16,14 @@ import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
 import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.ServicePriority;
 
-import java.util.Collection;
+import java.util.HashSet;
 
 public class GreekMythos extends MythosPlugin
 {
@@ -88,27 +89,47 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
-	public Collection<DivineItem> getDivineItems()
+	public ImmutableCollection<DivineItem> getDivineItems()
 	{
 		return ImmutableSet.copyOf((DivineItem[]) GreekItem.values());
 	}
 
 	@Override
-	public Collection<Alliance> getAlliances()
+	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ImmutableSet.copyOf((Alliance[]) GreekAlliance.values());
 	}
 
 	@Override
-	public Collection<Deity> getDeities()
+	public ImmutableCollection<Deity> getDeities()
 	{
-		return ImmutableSet.copyOf((Deity[]) GreekDeity.values());
+		return ImmutableSet.copyOf(new HashSet<Deity>()
+		{
+			{
+				add(GreekDeity.ZEUS);
+				add(GreekDeity.POSEIDON);
+
+				add(GreekDeity.PERSES);
+				add(GreekDeity.OCEANUS);
+
+				add(GreekDeity.CLOTHO);
+				add(GreekDeity.LACHESIS);
+				add(GreekDeity.ATROPOS);
+			}
+		});
 	}
 
 	@Override
-	public Collection<Structure> getStructures()
+	public ImmutableCollection<Structure> getStructures()
 	{
-		return ImmutableSet.copyOf((Structure[]) GreekStructure.values());
+		return ImmutableSet.copyOf(new HashSet<Structure>()
+		{
+			{
+				add(GreekStructure.ALTAR);
+				add(GreekStructure.OBELISK);
+				add(GreekStructure.SHRINE);
+			}
+		});
 	}
 
 	public Boolean levelSeperateSkills()
@@ -116,27 +137,27 @@ public class GreekMythos extends MythosPlugin
 		return true;
 	}
 
-	public Collection<Listener> getListeners()
+	public ImmutableCollection<Listener> getListeners()
 	{
 		return ImmutableSet.of();
 	}
 
-	public Collection<Permission> getPermissions()
+	public ImmutableCollection<Permission> getPermissions()
 	{
 		return ImmutableSet.of();
 	}
 
-	public Collection<Trigger> getTriggers()
+	public ImmutableCollection<Trigger> getTriggers()
 	{
-		if(!isPrimary()) return Sets.newHashSet();
-		return Collections2.transform(Sets.newHashSet(GreekMythos.GreekTrigger.values()), new Function<GreekMythos.GreekTrigger, Trigger>()
+		if(!isPrimary()) return ImmutableSet.of();
+		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(GreekMythos.GreekTrigger.values()), new Function<GreekMythos.GreekTrigger, Trigger>()
 		{
 			@Override
 			public Trigger apply(GreekMythos.GreekTrigger listedTrigger)
 			{
 				return listedTrigger.getTrigger();
 			}
-		});
+		}));
 	}
 
 	@Override
