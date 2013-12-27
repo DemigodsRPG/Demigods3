@@ -180,6 +180,10 @@ public class MythosSet implements Mythos
 	public void setSecondary()
 	{}
 
+	@Override
+	public void lock()
+	{}
+
 	public boolean contains(final String mythosTitle)
 	{
 		return PRIMARY.getTitle().equals(mythosTitle) || Iterables.any(SET, new Predicate<Mythos>()

@@ -119,4 +119,8 @@ public class ExclusiveMythos extends MythosPlugin
 	@Override
 	public void setSecondary()
 	{}
+
+	@Override
+	public void lock()
+	{}
 }

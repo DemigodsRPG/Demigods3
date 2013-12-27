@@ -27,6 +27,7 @@ import java.util.Collection;
 public class GreekMythos extends MythosPlugin
 {
 	private static boolean PRIMARY = true;
+	private static boolean lock = false;
 
 	/**
 	 * The Bukkit enable method.
@@ -141,7 +142,14 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public void setSecondary()
 	{
+		if(lock) return;
 		PRIMARY = false;
+	}
+
+	@Override
+	public void lock()
+	{
+		lock = true;
 	}
 
 	// Triggers

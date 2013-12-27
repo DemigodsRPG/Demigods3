@@ -1,15 +1,14 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.Collection;
-
-import org.bukkit.event.Listener;
-import org.bukkit.permissions.Permission;
-
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.engine.structure.Structure;
+import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+
+import java.util.Collection;
 
 public interface Mythos
 {
@@ -44,4 +43,6 @@ public interface Mythos
 	public Collection<Trigger> getTriggers();
 
 	public void setSecondary();
+
+	public void lock();
 }

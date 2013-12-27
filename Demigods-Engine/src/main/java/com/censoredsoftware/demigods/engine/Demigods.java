@@ -205,6 +205,7 @@ public class Demigods extends CensoredCentralizedClass
 			{
 				workingSet.remove(reiningMythos);
 				if(reiningMythos.allowSecondary() && !workingSet.isEmpty()) reiningMythos = new MythosSet(reiningMythos, workingSet);
+				reiningMythos.lock();
 				return reiningMythos;
 			}
 		}
