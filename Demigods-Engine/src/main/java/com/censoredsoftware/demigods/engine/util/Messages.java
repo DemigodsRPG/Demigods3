@@ -5,6 +5,7 @@ import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -17,8 +18,8 @@ import java.util.logging.Logger;
 public class Messages
 {
 	private static final Logger LOGGER;
-	private static String PLUGIN_NAME;
-	private static int LINE_SIZE;
+	private static final String PLUGIN_NAME;
+	private static final int LINE_SIZE, IN_GAME_LINE_SIZE;
 
 	/**
 	 * Constructor for the Messages.
@@ -30,6 +31,7 @@ public class Messages
 		LOGGER = Demigods.PLUGIN.getLogger();
 		PLUGIN_NAME = Demigods.PLUGIN.getName();
 		LINE_SIZE = 59 - PLUGIN_NAME.length();
+		IN_GAME_LINE_SIZE = 54;
 	}
 
 	/**
@@ -39,6 +41,12 @@ public class Messages
 	 */
 	public static void tagged(CommandSender sender, String msg)
 	{
+		if(msg.length() + PLUGIN_NAME.length() + 3 > IN_GAME_LINE_SIZE)
+		{
+			for(String line : wrapInGame(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg))
+				sender.sendMessage(line);
+			return;
+		}
 		sender.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
 	}
 
@@ -51,7 +59,7 @@ public class Messages
 	{
 		if(msg.length() > LINE_SIZE)
 		{
-			for(String line : wrap(msg))
+			for(String line : wrapConsole(msg))
 				LOGGER.info(line);
 			return;
 		}
@@ -67,7 +75,7 @@ public class Messages
 	{
 		if(msg.length() > LINE_SIZE)
 		{
-			for(String line : wrap(msg))
+			for(String line : wrapConsole(msg))
 				LOGGER.warning(line);
 			return;
 		}
@@ -83,14 +91,14 @@ public class Messages
 	{
 		if(msg.length() >= LINE_SIZE)
 		{
-			for(String line : wrap(msg))
+			for(String line : wrapConsole(msg))
 				LOGGER.severe(line);
 			return;
 		}
 		LOGGER.severe(msg);
 	}
 
-	public static String[] wrap(String msg)
+	public static String[] wrapConsole(String msg)
 	{
 		return WordUtils.wrap(msg, LINE_SIZE, "/n", false).split("/n");
 	}
@@ -102,9 +110,25 @@ public class Messages
 	 */
 	public static void broadcast(String msg)
 	{
+		if(ChatColor.stripColor(msg).length() > IN_GAME_LINE_SIZE)
+		{
+			Server server = Demigods.PLUGIN.getServer();
+			for(String line : wrapInGame(msg))
+			{
+				DemigodsChatEvent chatEvent = new DemigodsChatEvent(line);
+				Bukkit.getPluginManager().callEvent(chatEvent);
+				if(!chatEvent.isCancelled()) server.broadcastMessage(line);
+			}
+			return;
+		}
 		DemigodsChatEvent chatEvent = new DemigodsChatEvent(msg);
 		Bukkit.getPluginManager().callEvent(chatEvent);
 		if(!chatEvent.isCancelled()) Demigods.PLUGIN.getServer().broadcastMessage(msg);
+	}
+
+	public static String[] wrapInGame(String msg)
+	{
+		return WordUtils.wrap(msg, IN_GAME_LINE_SIZE, "/n", false).split("/n");
 	}
 
 	/**
