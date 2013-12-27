@@ -64,13 +64,13 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
-	public boolean isPrimary()
+	public Boolean isPrimary()
 	{
 		return PRIMARY;
 	}
 
 	@Override
-	public boolean allowSecondary()
+	public Boolean allowSecondary()
 	{
 		return true;
 	}
@@ -82,7 +82,7 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
-	public boolean useBaseGame()
+	public Boolean useBaseGame()
 	{
 		return true;
 	}
@@ -111,7 +111,7 @@ public class GreekMythos extends MythosPlugin
 		return ImmutableSet.copyOf((Structure[]) GreekStructure.values());
 	}
 
-	public boolean levelSeperateSkills()
+	public Boolean levelSeperateSkills()
 	{
 		return true;
 	}

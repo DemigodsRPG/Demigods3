@@ -49,13 +49,13 @@ public class ExclusiveMythos extends MythosPlugin
 	}
 
 	@Override
-	public boolean isPrimary()
+	public Boolean isPrimary()
 	{
 		return false;
 	}
 
 	@Override
-	public boolean allowSecondary()
+	public Boolean allowSecondary()
 	{
 		return true;
 	}
@@ -67,7 +67,7 @@ public class ExclusiveMythos extends MythosPlugin
 	}
 
 	@Override
-	public boolean useBaseGame()
+	public Boolean useBaseGame()
 	{
 		return true;
 	}
@@ -96,7 +96,7 @@ public class ExclusiveMythos extends MythosPlugin
 		return ImmutableSet.of();
 	}
 
-	public boolean levelSeperateSkills()
+	public Boolean levelSeperateSkills()
 	{
 		return true;
 	}

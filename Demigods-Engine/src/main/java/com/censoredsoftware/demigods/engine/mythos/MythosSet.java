@@ -105,13 +105,13 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public boolean isPrimary()
+	public Boolean isPrimary()
 	{
 		return true;
 	}
 
 	@Override
-	public boolean allowSecondary()
+	public Boolean allowSecondary()
 	{
 		return PRIMARY.allowSecondary();
 	}
@@ -123,7 +123,7 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public boolean useBaseGame()
+	public Boolean useBaseGame()
 	{
 		return PRIMARY.useBaseGame();
 	}
@@ -153,7 +153,7 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
-	public boolean levelSeperateSkills()
+	public Boolean levelSeperateSkills()
 	{
 		return PRIMARY.levelSeperateSkills();
 	}

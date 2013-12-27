@@ -12,29 +12,29 @@ import java.util.Collection;
 
 public interface Mythos
 {
-	public abstract String getTitle();
+	public String getTitle();
 
-	public abstract String getTagline();
+	public String getTagline();
 
-	public abstract String getAuthor();
+	public String getAuthor();
 
-	public abstract boolean isPrimary();
+	public Boolean isPrimary();
 
-	public abstract boolean allowSecondary();
+	public Boolean allowSecondary();
 
-	public abstract String[] getIncompatible();
+	public String[] getIncompatible();
 
-	public abstract boolean useBaseGame();
+	public Boolean useBaseGame();
 
-	public abstract Collection<DivineItem> getDivineItems();
+	public Collection<DivineItem> getDivineItems();
 
-	public abstract Collection<Alliance> getAlliances();
+	public Collection<Alliance> getAlliances();
 
-	public abstract Collection<Deity> getDeities();
+	public Collection<Deity> getDeities();
 
-	public abstract Collection<Structure> getStructures();
+	public Collection<Structure> getStructures();
 
-	public boolean levelSeperateSkills();
+	public Boolean levelSeperateSkills();
 
 	public Collection<Listener> getListeners();
 
