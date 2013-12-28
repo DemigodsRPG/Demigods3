@@ -26,6 +26,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.MaterialData;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,6 +83,19 @@ public class Obelisk extends GreekStructure
 		public Boolean apply(StructureData data, DCharacter character)
 		{
 			if(DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
+			if(DataManager.characters.containsKey(data.getOwner()))
+			{
+				DPlayer dPlayer = DPlayer.Util.getPlayer(DataManager.characters.get(data.getOwner()).getOfflinePlayer());
+				long lastLogoutTime = dPlayer.getLastLogoutTime();
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.WEEK_OF_YEAR, -3);
+				long threeWeeksAgo = calendar.getTime().getTime();
+				if(!dPlayer.getOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - 1800000L || lastLogoutTime < threeWeeksAgo))
+				{
+					character.getOfflinePlayer().getPlayer().sendMessage(ChatColor.YELLOW + "This obelisk currently immune to damage.");
+					return false;
+				}
+			}
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
 			for(Location found : data.getLocations())
