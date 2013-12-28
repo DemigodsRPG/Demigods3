@@ -2,7 +2,7 @@
 
 ## Before You Start
 
-Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](https://github.com/censoredsoftware/minecraft-demigods)** project **MUST read & sign the [Electronic Demigods Contribution License Agreement](https://docs.google.com/forms/d/1itO8qfkFwVMxvS5MIxYw5V4ZxPMYA4w9Y3ddlm0f7BI/viewform)**. The Demigods team is legally prevented from accepting any pull requests from users who have not signed the CLA first.
+Anyone wishing to contribute to the **[CensoredSoftware/Demigods](https://github.com/censoredsoftware/demigods)** project **MUST read & sign the [Electronic Demigods Contribution License Agreement](https://docs.google.com/forms/d/1itO8qfkFwVMxvS5MIxYw5V4ZxPMYA4w9Y3ddlm0f7BI/viewform)**. The Demigods team is legally prevented from accepting any pull requests from users who have not signed the CLA first.
 
 ## Reporting Bugs
 
@@ -12,9 +12,9 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
 3. Make sure you can reproduce your problem on our test server at beta.demigodsrpg.com (accessed from Minecraft)
 
-4. If this is a bug or problem that **requires any kind of extended discussion -- open [a topic on the forums][f] about it**, as well as an [issue on GitHub](https://github.com/censoredsoftware/minecraft-demigods/issues) with a reproduction of the bug including workflows and screenshots.
+4. If this is a bug or problem that **requires any kind of extended discussion -- open [a topic on the forums][f] about it**, as well as an [issue on GitHub](https://github.com/censoredsoftware/demigods/issues) with a reproduction of the bug including workflows and screenshots.
 
-5. If this is a bug or problem that is clear, simple, and is unlikely to require *any* discussion -- it is OK to just open an [issue on GitHub](https://github.com/censoredsoftware/minecraft-demigods/issues). If you'd rather take matters into your own hands, fix the bug yourself.
+5. If this is a bug or problem that is clear, simple, and is unlikely to require *any* discussion -- it is OK to just open an [issue on GitHub](https://github.com/censoredsoftware/demigods/issues). If you'd rather take matters into your own hands, fix the bug yourself.
 
 6. When the bug is fixed, we will do our best to update the Demigods topic and/or GitHub issue with a resolution.
 
@@ -30,11 +30,11 @@ Anyone wishing to contribute to the **[CensoredSoftware/Minecraft-Demigods](http
 
 1. Clone the Repo:
 
-        git clone git://github.com/censoredsoftware/minecraft-demigods.git
+        git clone git://github.com/censoredsoftware/demigods.git
 
 2. Create a new Branch:
 
-        cd minecraft-demigods
+        cd demigods
         git checkout -b new_demigods_branch
 
 3. Code
