@@ -110,7 +110,7 @@ public class TributeManager
 	 */
 	public static int getValue(Material material)
 	{
-		return getValue(new ItemStack(material, 1));
+		return getValue(new ItemStack(material));
 	}
 
 	/**
@@ -127,10 +127,10 @@ public class TributeManager
 		int totalTributes = getTotalTributes() + 2;
 
 		// Calculate bonus
-		double bonus = baseValue / ((1 / totalItemTributes) * Math.pow(totalTributes / totalItemTributes, ((totalTributes - totalItemTributes) / (totalTributes + totalItemTributes))) - ((totalItemTributes / totalTributes) * totalItemTributes));
+		double bonus = (1 / baseValue) * Math.pow(totalTributes / totalItemTributes, ((totalTributes + totalItemTributes) / (totalTributes - totalItemTributes))) / totalItemTributes;
 
 		// Return the value
-		return (int) (item.getAmount() * (baseValue + bonus));
+		return (int) Math.ceil(item.getAmount() * (baseValue + bonus));
 	}
 
 	/**
@@ -230,28 +230,28 @@ public class TributeManager
 				value = 18;
 				break;
 			case STONE:
-				value = 2.5;
+				value = 1.5;
 				break;
 			case COBBLESTONE:
-				value = 2.3;
+				value = 1.3;
 				break;
 			case LOG:
-				value = 2;
+				value = 1;
 				break;
 			case WOOD:
-				value = 2.23;
+				value = 1.23;
 				break;
 			case STICK:
-				value = 2.11;
+				value = 1.11;
 				break;
 			case GLASS:
-				value = 2.5;
+				value = 1.5;
 				break;
 			case LAPIS_BLOCK:
 				value = 85;
 				break;
 			case SANDSTONE:
-				value = 2.9;
+				value = 1.9;
 				break;
 			case GOLD_BLOCK:
 				value = 100;
@@ -275,13 +275,13 @@ public class TributeManager
 				value = 180;
 				break;
 			case CACTUS:
-				value = 2.7;
+				value = 1.7;
 				break;
 			case YELLOW_FLOWER:
-				value = 2.1;
+				value = 1.1;
 				break;
 			case SEEDS:
-				value = 2.3;
+				value = 1.3;
 				break;
 			case PUMPKIN:
 				value = 3;
@@ -294,7 +294,7 @@ public class TributeManager
 				break;
 			case CARROT:
 			case POTATO:
-				value = 2.7;
+				value = 1.7;
 				break;
 			case COAL:
 				value = 2.5;
@@ -321,7 +321,7 @@ public class TributeManager
 				value = 2.4;
 				break;
 			case WHEAT:
-				value = 2.6;
+				value = 1.6;
 				break;
 			case BREAD:
 				value = 3;
@@ -347,7 +347,7 @@ public class TributeManager
 				value = 60;
 				break;
 			case GLOWSTONE:
-				value = 2.7;
+				value = 1.7;
 				break;
 			case REDSTONE:
 				value = 3.3;
@@ -356,22 +356,22 @@ public class TributeManager
 				value = 27.7;
 				break;
 			case EGG:
-				value = 2.3;
+				value = 1.3;
 				break;
 			case SUGAR:
-				value = 2.2;
+				value = 1.2;
 				break;
 			case BONE:
 				value = 3;
 				break;
 			case ENDER_PEARL:
-				value = 2.7;
+				value = 1.7;
 				break;
 			case SULPHUR:
-				value = 2.2;
+				value = 1.2;
 				break;
 			case COCOA:
-				value = 2.6;
+				value = 1.6;
 				break;
 			case ROTTEN_FLESH:
 				value = 3;
@@ -389,13 +389,13 @@ public class TributeManager
 				value = 2.7;
 				break;
 			case MELON:
-				value = 2.8;
+				value = 1.8;
 				break;
 			case COOKIE:
-				value = 2.45;
+				value = 1.45;
 				break;
 			case VINE:
-				value = 2.2;
+				value = 1.2;
 				break;
 			case EMERALD:
 				value = 17;
@@ -407,7 +407,7 @@ public class TributeManager
 				value = 200;
 				break;
 			default:
-				value = 2.0;
+				value = 1.0;
 				break;
 		}
 
