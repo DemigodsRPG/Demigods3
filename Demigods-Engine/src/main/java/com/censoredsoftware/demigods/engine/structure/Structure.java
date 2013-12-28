@@ -142,7 +142,7 @@ public interface Structure
 				@Override
 				public boolean apply(StructureData save)
 				{
-					return save.getRawFlags() != null && save.getLocations().contains(location) || save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
+					return save.getRawFlags() != null && save.getLocations().contains(location) && save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
 					{
 						@Override
 						public String apply(Flag flag)
