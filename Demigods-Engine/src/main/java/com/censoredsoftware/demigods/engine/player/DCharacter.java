@@ -1,17 +1,5 @@
 package com.censoredsoftware.demigods.engine.player;
 
-import java.util.*;
-
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -33,6 +21,17 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -686,7 +685,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		protected void delete()
 		{
-			DataManager.enderInventories.remove(getId());
+			DataManager.enderInventories.remove(this.getId());
 		}
 	}
 
@@ -1128,6 +1127,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setKillCount(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta(character));
+			character.enderInventory = createEmptyEnderInventory().getId();
 			save(character);
 			return character;
 		}
@@ -1164,6 +1164,14 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			EnderInventory enderInventory = new EnderInventory();
 			enderInventory.generateId();
 			enderInventory.setItems(inventory);
+			saveInventory(enderInventory);
+			return enderInventory;
+		}
+
+		public static CEnderInventory createEmptyEnderInventory()
+		{
+			EnderInventory enderInventory = new EnderInventory();
+			enderInventory.generateId();
 			saveInventory(enderInventory);
 			return enderInventory;
 		}
