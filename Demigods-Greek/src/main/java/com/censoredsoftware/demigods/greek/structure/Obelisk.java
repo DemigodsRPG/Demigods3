@@ -84,7 +84,8 @@ public class Obelisk extends GreekStructure
 			if(DCharacter.Util.areAllied(character, DataManager.characters.get(data.getOwner()))) return false;
 			Location location = data.getReferenceLocation();
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
-			location.getWorld().playEffect(location.clone().add(0, 1, 0), Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
+			for(Location found : data.getLocations())
+				location.getWorld().playEffect(found, Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
 			return true;
 		}
 	};
