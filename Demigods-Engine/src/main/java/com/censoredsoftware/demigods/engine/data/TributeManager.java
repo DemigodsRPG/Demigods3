@@ -130,7 +130,7 @@ public class TributeManager
 		double bonus = (1 / baseValue) * Math.pow(totalTributes / totalItemTributes, ((totalTributes + totalItemTributes) / (totalTributes - totalItemTributes))) / totalItemTributes;
 
 		// Return the value
-		return (int) Math.ceil(item.getAmount() * bonus + baseValue);
+		return (int) Math.ceil(item.getAmount() * (baseValue + bonus));
 	}
 
 	/**
