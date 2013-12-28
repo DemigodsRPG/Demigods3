@@ -87,10 +87,13 @@ public class Obelisk extends GreekStructure
 			{
 				DPlayer dPlayer = DPlayer.Util.getPlayer(DataManager.characters.get(data.getOwner()).getOfflinePlayer());
 				long lastLogoutTime = dPlayer.getLastLogoutTime();
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.WEEK_OF_YEAR, -3);
-				long threeWeeksAgo = calendar.getTime().getTime();
-				if(!dPlayer.getOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - 1800000L || lastLogoutTime < threeWeeksAgo))
+				Calendar calendarHalfHour = Calendar.getInstance();
+				calendarHalfHour.add(Calendar.MINUTE, -30);
+				long thirtyMinutesAgo = calendarHalfHour.getTime().getTime();
+				Calendar calendarWeek = Calendar.getInstance();
+				calendarWeek.add(Calendar.WEEK_OF_YEAR, -3);
+				long threeWeeksAgo = calendarWeek.getTime().getTime();
+				if(!dPlayer.getOfflinePlayer().isOnline() && lastLogoutTime != -1 && (lastLogoutTime > System.currentTimeMillis() - thirtyMinutesAgo || lastLogoutTime < threeWeeksAgo))
 				{
 					character.getOfflinePlayer().getPlayer().sendMessage(ChatColor.YELLOW + "This obelisk currently immune to damage.");
 					return false;
