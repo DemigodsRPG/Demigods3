@@ -142,8 +142,7 @@ public interface Structure
 				@Override
 				public boolean apply(StructureData save)
 				{
-					if(save.getRawFlags() == null || !save.getLocations().contains(location)) return false;
-					return save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
+					return save.getRawFlags() != null && save.getLocations().contains(location) || save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
 					{
 						@Override
 						public String apply(Flag flag)
@@ -278,74 +277,6 @@ public interface Structure
 					return save.getRawFlags().contains(Flag.NO_OVERLAP.name());
 				}
 			});
-		}
-
-		public static Set<StructureData> getStructureWeb(final StructureData structure, final Flag flag, final int radius)
-		{
-			return getRecursiveStructureWeb(new ScanData(Sets.newHashSet(structure), getInRadiusWithFlag(structure.getReferenceLocation(), flag, radius)), flag, radius).getFound();
-		}
-
-		// TODO This isn't working.
-		private static ScanData getRecursiveStructureWeb(ScanData data, final Flag flag, final int radius)
-		{
-			final Set<StructureData> scanned = data.getScanned();
-			final Set<StructureData> found = data.getFound();
-
-			final Function<StructureData, Set<StructureData>> scan = new Function<StructureData, Set<StructureData>>()
-			{
-				@Override
-				public Set<StructureData> apply(StructureData structureData)
-				{
-					found.addAll(getInRadiusWithFlag(structureData.getReferenceLocation(), flag, radius));
-					scanned.add(structureData);
-					return Sets.difference(found, scanned);
-				}
-			};
-
-			final Function<Set<StructureData>, Set<StructureData>> refine = new Function<Set<StructureData>, Set<StructureData>>()
-			{
-				@Override
-				public Set<StructureData> apply(Set<StructureData> structureDatas)
-				{
-					for(StructureData structureData : structureDatas)
-						scan.apply(structureData);
-					return Sets.difference(found, scanned);
-				}
-			};
-
-			Set<StructureData> notScanned = Sets.difference(found, scanned);
-
-			if(!notScanned.isEmpty())
-			{
-				for(StructureData scanMe : notScanned)
-					refine.apply(scan.apply(scanMe));
-
-				return getRecursiveStructureWeb(new ScanData(scanned, found), flag, radius);
-			}
-
-			return new ScanData(scanned, found);
-		}
-
-		private static class ScanData
-		{
-			Set<StructureData> scanned;
-			Set<StructureData> found;
-
-			ScanData(Set<StructureData> scanned, Set<StructureData> found)
-			{
-				this.scanned = scanned;
-				this.found = found;
-			}
-
-			Set<StructureData> getScanned()
-			{
-				return scanned;
-			}
-
-			Set<StructureData> getFound()
-			{
-				return found;
-			}
 		}
 
 		/**

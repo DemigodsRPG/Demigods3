@@ -131,42 +131,6 @@ public class DevelopmentCommands extends WrappedCommand
 		}
 
 		return true;
-
-		// Player player = (Player) sender;
-
-		// StructureData obelisk = Structure.Util.getInRadiusWithFlag(player.getLocation(), Structure.Flag.NO_GRIEFING);
-		// if(obelisk != null)
-		// {
-		// Get all of the connected obelisks
-		// for(StructureData save : Structure.Util.getStructureWeb(obelisk, Structure.Flag.NO_GRIEFING, 20))
-		// {
-		// if(save == obelisk) continue;
-		// player.sendMessage(save.getId().toString());
-		// }
-		// }
-		// else player.sendMessage(ChatColor.RED + "No Obelisk found.");
-
-		// return true;
-
-		// Player player = (Player) sender;
-
-		// Messages.broadcast(ChatColor.RED + "Removing all non-altar structures.");
-
-		// for(StructureData save : Collections2.filter(StructureData.Util.loadAll(), new Predicate<StructureData>()
-		// {
-		// @Override
-		// public boolean apply(StructureData structure)
-		// {
-		// return !structure.getType().equals(GreekStructure.ALTAR);
-		// }
-		// }))
-		// save.remove();
-
-		// Messages.broadcast(ChatColor.RED + "All non-altar structures have been removed.");
-
-		// if(Demigods.ERROR_NOISE) Errors.triggerError(ChatColor.GREEN + player.getName(), new ColoredStringBuilder().gray(" " + Unicodes.getRightwardArrow() + " ").red("Test error.").build());
-
-		// return true;
 	}
 
 	private static boolean test3(CommandSender sender, final String[] args)
