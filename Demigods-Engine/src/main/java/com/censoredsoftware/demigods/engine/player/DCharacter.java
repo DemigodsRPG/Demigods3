@@ -598,6 +598,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 		// Update their inventory
 		if(playerSave.getCharacters().size() == 1) saveInventory();
+		else player.getEnderChest().clear();
 		getInventory().setToPlayer(player);
 		getEnderInventory().setToPlayer(player);
 
@@ -1127,7 +1128,6 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			character.setKillCount(0);
 			character.setLocation(player.getOfflinePlayer().getPlayer().getLocation());
 			character.setMeta(Util.createMeta(character));
-			character.enderInventory = createEmptyEnderInventory().getId();
 			save(character);
 			return character;
 		}
