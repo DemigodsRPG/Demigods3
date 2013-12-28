@@ -1,8 +1,12 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import java.util.ArrayList;
-import java.util.Set;
-
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Ranges;
+import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,14 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.Set;
 
-public class BootsOfPagos
+public class BootsOfPagos extends GreekItem
 {
 	public final static String name = "Boots of Pagos";
 	public final static String description = "Boots this cold have their advantages... and disadvantages.";
@@ -70,6 +70,11 @@ public class BootsOfPagos
 			}
 		}
 	};
+
+	public BootsOfPagos()
+	{
+		super(name, description, category, item, recipe, listener);
+	}
 
 	public static Set<Location> getSquare(Location center)
 	{

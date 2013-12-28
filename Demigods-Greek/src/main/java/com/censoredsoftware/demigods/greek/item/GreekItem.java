@@ -1,32 +1,34 @@
 package com.censoredsoftware.demigods.greek.item;
 
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
+import com.censoredsoftware.demigods.greek.item.armor.FaultyBootsOfHermes;
+import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
+import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
+import com.censoredsoftware.demigods.greek.item.weapon.BowOfTria;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
-import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
-import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
-import com.censoredsoftware.demigods.greek.item.weapon.BowOfThree;
-
-public enum GreekItem implements DivineItem
+public abstract class GreekItem implements DivineItem
 {
 	/**
 	 * Books
 	 */
-	BOOK_OF_PRAYER(BookOfPrayer.name, BookOfPrayer.description, BookOfPrayer.category, BookOfPrayer.item, BookOfPrayer.recipe, BookOfPrayer.listener), WELCOME_BOOK(WelcomeBook.name, WelcomeBook.description, WelcomeBook.category, WelcomeBook.item, null, null),
+	public static final BookOfPrayer BOOK_OF_PRAYER = new BookOfPrayer();
+	public static final WelcomeBook WELCOME_BOOK = new WelcomeBook();
 
 	/**
 	 * Weapons
 	 */
-	// BUTT_SWORD(ButtSword.buttSword, ButtSword.recipe, ButtSword.listener)
-	DEATH_BOW(BowOfThree.name, BowOfThree.description, BowOfThree.category, BowOfThree.item, BowOfThree.recipe, BowOfThree.listener),
+	// public ButtSword BUTT_SWORD = new ButtSword();
+	public static final BowOfTria BOW_OF_TRIA = new BowOfTria();
 
 	/**
 	 * Armor
 	 */
-	BOOTS_OF_PAGOS(BootsOfPagos.name, BootsOfPagos.description, BootsOfPagos.category, BootsOfPagos.item, BootsOfPagos.recipe, BootsOfPagos.listener);
+	public static final BootsOfPagos BOOTS_OF_PAGOS = new BootsOfPagos();
+	public static final FaultyBootsOfHermes FAULTY_BOOTS_OF_HERMES = new FaultyBootsOfHermes();
 
 	private final String name;
 	private final String description;
@@ -35,7 +37,7 @@ public enum GreekItem implements DivineItem
 	private final Recipe recipe;
 	private final Listener listener;
 
-	private GreekItem(String name, String description, Category category, ItemStack item, Recipe recipe, Listener listener)
+	public GreekItem(String name, String description, Category category, ItemStack item, Recipe recipe, Listener listener)
 	{
 		this.name = name;
 		this.description = description;

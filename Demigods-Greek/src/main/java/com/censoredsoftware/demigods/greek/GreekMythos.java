@@ -91,7 +91,19 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return ImmutableSet.copyOf((DivineItem[]) GreekItem.values());
+		return ImmutableSet.copyOf(new HashSet<DivineItem>()
+		{
+			{
+				add(GreekItem.BOOK_OF_PRAYER);
+				add(GreekItem.WELCOME_BOOK);
+
+				// add(GreekItem.BUTT_SWORD);
+				add(GreekItem.BOW_OF_TRIA);
+
+				add(GreekItem.BOOTS_OF_PAGOS);
+				add(GreekItem.FAULTY_BOOTS_OF_HERMES);
+			}
+		});
 	}
 
 	@Override
