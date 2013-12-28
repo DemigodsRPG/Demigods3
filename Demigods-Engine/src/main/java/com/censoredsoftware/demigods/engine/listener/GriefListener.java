@@ -159,10 +159,11 @@ public class GriefListener implements Listener
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		Location location = event.getBlock().getLocation();
-		if(Zones.inNoDemigodsZone(location) || Structure.Util.partOfStructureWithFlag(location, Structure.Flag.DESTRUCT_ON_BREAK)) return;
+		if(Zones.inNoDemigodsZone(location)) return;
 		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
+			if(Structure.Util.partOfStructureWithFlag(location, Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getSanctifiers();
 			if(character != null && members.contains(character.getId())) return;
