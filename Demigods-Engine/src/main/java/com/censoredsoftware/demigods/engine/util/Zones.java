@@ -20,22 +20,22 @@ import java.util.Set;
 
 public class Zones
 {
-	private static ImmutableSet<String> DISABLED_WORLDS;
+	private static ImmutableSet<String> ENABLED_WORLDS;
 
 	public static int init()
 	{
 		// Load disabled worlds
-		Set<String> disabledWorlds = Sets.newHashSet();
+		Set<String> enabledWorlds = Sets.newHashSet();
 		int erroredWorlds = 0;
-		for(String world : Configs.getSettingList("restrictions.disabled_worlds"))
+		for(String world : Configs.getSettingList("restrictions.enabled_worlds"))
 		{
-			disabledWorlds.add(world);
+			enabledWorlds.add(world);
 			erroredWorlds += Bukkit.getServer().getWorld(world) == null ? 1 : 0;
 		}
-		DISABLED_WORLDS = ImmutableSet.copyOf(disabledWorlds);
+		ENABLED_WORLDS = ImmutableSet.copyOf(enabledWorlds);
 
-		// Disabled worlds listener
-		if(!DISABLED_WORLDS.isEmpty()) Bukkit.getPluginManager().registerEvents(new ZoneListener(), Demigods.PLUGIN);
+		// Zone listener (load here for consistency)
+		Bukkit.getPluginManager().registerEvents(new ZoneListener(), Demigods.PLUGIN);
 
 		// Init WorldGuard stuff
 		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
@@ -87,6 +87,6 @@ public class Zones
 
 	public static boolean isNoDemigodsWorld(World world)
 	{
-		return DISABLED_WORLDS.contains(world.getName());
+		return !ENABLED_WORLDS.contains(world.getName());
 	}
 }

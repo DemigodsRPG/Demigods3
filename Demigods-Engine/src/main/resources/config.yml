@@ -11,8 +11,9 @@ language: 'english'
 ## Restrictions ##
 restrictions:
     friendly_fire: false
-    disabled_worlds:
-        - world_the_end
+    enabled_worlds:
+        - world
+        - world_nether
 
 ## Generation ##
 generation:
