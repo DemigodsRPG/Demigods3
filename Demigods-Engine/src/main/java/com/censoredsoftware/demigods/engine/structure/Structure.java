@@ -135,6 +135,26 @@ public interface Structure
 			});
 		}
 
+		public static boolean partOfStructureWithAllFlags(final Location location, final Flag... flags)
+		{
+			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
+			{
+				@Override
+				public boolean apply(StructureData save)
+				{
+					if(save.getRawFlags() == null || !save.getLocations().contains(location)) return false;
+					return save.getRawFlags().containsAll(Collections2.transform(Sets.newHashSet(flags), new Function<Flag, String>()
+					{
+						@Override
+						public String apply(Flag flag)
+						{
+							return flag.name();
+						}
+					}));
+				}
+			});
+		}
+
 		public static boolean partOfStructureWithFlag(final Location location, final Flag... flags)
 		{
 			return Iterables.any(getStructuresInRegionalArea(location), new Predicate<StructureData>()
@@ -376,7 +396,7 @@ public interface Structure
 			return true;
 		}
 
-        /**
+		/**
 		 * Updates favor for all structures.
 		 */
 		public static void updateSanctity()
