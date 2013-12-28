@@ -5,9 +5,11 @@ import com.censoredsoftware.demigods.engine.item.DivineItem;
 import com.censoredsoftware.demigods.greek.item.GreekItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -37,10 +39,21 @@ public class FaultyBootsOfHermes extends GreekItem
 	};
 	public final static Listener listener = new Listener()
 	{
+		@EventHandler
+		public void onPlayerExpChange(PlayerExpChangeEvent event)
+		{
+			event.getPlayer().setVelocity(new Vector(0.1F, 3, 0));
+		}
+
 		@EventHandler(priority = EventPriority.NORMAL)
 		public void onPlayerVelocity(PlayerVelocityEvent event)
 		{
-			event.setVelocity(new Vector(7, 7, 7));
+			Player player = event.getPlayer();
+			Vector victor = event.getVelocity();
+
+			event.setVelocity(new Vector(victor.getX() + 1, victor.getX() + 1, victor.getX() + 1));
+
+			player.setVelocity(new Vector(7, 7, 7));
 		}
 	};
 
