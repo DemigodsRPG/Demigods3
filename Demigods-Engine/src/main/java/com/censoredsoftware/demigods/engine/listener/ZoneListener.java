@@ -10,15 +10,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.event.world.WorldUnloadEvent;
 
 import java.util.Set;
 
 public class ZoneListener implements Listener
 {
-	// TODO Special listener to prevent interactions between Demigods worlds and non-Demigods worlds.
-
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDemigodsChat(DemigodsChatEvent event)
 	{
@@ -54,17 +50,5 @@ public class ZoneListener implements Listener
 			Demigods.BOARD.getTeam("Mortal").removePlayer(player);
 			player.sendMessage(ChatColor.GRAY + "Demigods is disabled in this world.");
 		}
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onWorldLoad(WorldLoadEvent event)
-	{
-		// TODO For option to disable newly created worlds.
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onWorldUnload(WorldUnloadEvent event)
-	{
-		// TODO For bukkit enabled worlds.
 	}
 }
