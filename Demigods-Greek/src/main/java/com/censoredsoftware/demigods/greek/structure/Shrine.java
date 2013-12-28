@@ -113,7 +113,6 @@ public class Shrine extends GreekStructure
 			add(Structure.Flag.DELETE_WITH_OWNER);
 			add(Structure.Flag.DESTRUCT_ON_BREAK);
 			add(Structure.Flag.TRIBUTE_LOCATION);
-			add(Structure.Flag.NO_OVERLAP);
 		}
 	};
 	private static final Listener listener = new Listener()
