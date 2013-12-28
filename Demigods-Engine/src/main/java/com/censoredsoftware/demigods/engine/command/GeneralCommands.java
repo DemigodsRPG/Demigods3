@@ -238,7 +238,7 @@ public class GeneralCommands extends WrappedCommand
 		if(player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
 		{
 			sender.sendMessage(" ");
-			sender.sendMessage(ChatColor.GRAY + "The items in your hand are worth " + ChatColor.GREEN + TributeManager.getValue(player.getItemInHand()) + ChatColor.GRAY + ".");
+			sender.sendMessage(ChatColor.GRAY + "The " + (player.getItemInHand().getAmount() == 1 ? "items in your hand are" : "item in your hand is") + " worth " + ChatColor.GREEN + TributeManager.getValue(player.getItemInHand()) + ChatColor.GRAY + " in total.");
 		}
 
 		return true;
