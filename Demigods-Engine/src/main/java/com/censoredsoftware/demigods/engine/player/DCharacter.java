@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -21,17 +33,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -107,7 +108,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		meta = UUID.fromString(conf.getString("meta"));
 		if(conf.isList("minorDeities")) minorDeities = Sets.newHashSet(conf.getStringList("minorDeities"));
 		if(conf.isString("inventory")) inventory = UUID.fromString(conf.getString("inventory"));
-		if(conf.isString("enderInventory")) inventory = UUID.fromString(conf.getString("enderInventory"));
+		if(conf.isString("enderInventory")) enderInventory = UUID.fromString(conf.getString("enderInventory"));
 		if(conf.isList("deaths")) deaths = Sets.newHashSet(conf.getStringList("deaths"));
 		if(conf.isList("potionEffects")) potionEffects = Sets.newHashSet(conf.getStringList("potionEffects"));
 	}
@@ -562,8 +563,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(structureSave.hasOwner() && structureSave.getOwner().equals(getId())) structureSave.remove();
 		for(DSavedPotion potion : getRawPotionEffects())
 			DataManager.savedPotions.remove(potion.getId());
-		Util.deleteEnderInventory(getEnderInventory().getId());
 		Util.deleteInventory(getInventory().getId());
+		Util.deleteEnderInventory(getEnderInventory().getId());
 		Util.deleteMeta(getMeta().getId());
 		Util.delete(getId());
 	}
