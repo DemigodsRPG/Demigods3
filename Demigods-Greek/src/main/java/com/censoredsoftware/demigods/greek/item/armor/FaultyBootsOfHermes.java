@@ -43,7 +43,7 @@ public class FaultyBootsOfHermes extends GreekItem
 		@EventHandler
 		public void onPlayerExpChange(PlayerExpChangeEvent event)
 		{
-			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || Zones.inNoBuildZone(event.getPlayer(), event.getPlayer().getLocation())) return;
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
 
 			// Define variables
 			Player player = event.getPlayer();
