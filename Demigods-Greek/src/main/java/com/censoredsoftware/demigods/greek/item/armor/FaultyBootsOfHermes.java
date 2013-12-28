@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.greek.item.armor;
 
 import com.censoredsoftware.censoredlib.util.Items;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
 import com.censoredsoftware.demigods.greek.item.GreekItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -42,18 +43,32 @@ public class FaultyBootsOfHermes extends GreekItem
 		@EventHandler
 		public void onPlayerExpChange(PlayerExpChangeEvent event)
 		{
-			event.getPlayer().setVelocity(new Vector(0.1F, 3, 0));
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || Zones.inNoBuildZone(event.getPlayer(), event.getPlayer().getLocation())) return;
+
+			// Define variables
+			Player player = event.getPlayer();
+
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
+			{
+				event.getPlayer().setVelocity(new Vector(0.1F, 3, 0));
+			}
 		}
 
 		@EventHandler(priority = EventPriority.NORMAL)
 		public void onPlayerVelocity(PlayerVelocityEvent event)
 		{
+			if(Zones.inNoDemigodsZone(event.getPlayer().getLocation()) || Zones.inNoBuildZone(event.getPlayer(), event.getPlayer().getLocation())) return;
+			// Define variables
 			Player player = event.getPlayer();
-			Vector victor = event.getVelocity();
 
-			event.setVelocity(new Vector(victor.getX() + 1, victor.getX() + 1, victor.getX() + 1));
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
+			{
+				Vector victor = event.getVelocity();
 
-			player.setVelocity(new Vector(7, 7, 7));
+				event.setVelocity(new Vector(victor.getX() + 1, victor.getX() + 1, victor.getX() + 1));
+
+				player.setVelocity(new Vector(7, 7, 7));
+			}
 		}
 	};
 
