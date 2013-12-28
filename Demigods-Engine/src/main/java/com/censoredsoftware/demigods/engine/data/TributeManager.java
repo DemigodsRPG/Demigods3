@@ -110,7 +110,7 @@ public class TributeManager
 	 */
 	public static int getValue(Material material)
 	{
-		return getValue(new ItemStack(material));
+		return getValue(new ItemStack(material, 1));
 	}
 
 	/**
@@ -127,10 +127,10 @@ public class TributeManager
 		int totalTributes = getTotalTributes() + 2;
 
 		// Calculate bonus
-		double bonus = baseValue / ((1 / totalItemTributes) * Math.pow(totalTributes / totalItemTributes, ((totalTributes + totalItemTributes) / (totalTributes - totalItemTributes))) - (totalItemTributes / totalTributes * totalItemTributes));
+		double bonus = baseValue / ((1 / totalItemTributes) * Math.pow(totalTributes / totalItemTributes, ((totalTributes - totalItemTributes) / (totalTributes + totalItemTributes))) - ((totalItemTributes / totalTributes) * totalItemTributes));
 
 		// Return the value
-		return (int) Math.ceil(item.getAmount() * (baseValue + bonus));
+		return (int) (item.getAmount() * (baseValue + bonus));
 	}
 
 	/**
