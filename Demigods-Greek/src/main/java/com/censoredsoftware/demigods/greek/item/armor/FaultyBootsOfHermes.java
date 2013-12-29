@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,12 +17,21 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 
 public class FaultyBootsOfHermes extends GreekItem
 {
 	public final static String name = "Faulty Boots of Hermes";
 	public final static String description = "Walk as fast as Hermes!";
+	public final static Set<Flag> flags = new HashSet<Flag>()
+	{
+		{
+			add(Flag.UNENCHANTABLE);
+		}
+	};
 	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
 	public final static ItemStack item = Items.create(Material.LEATHER_BOOTS, ChatColor.DARK_GREEN + name, new ArrayList<String>()
 	{
@@ -74,6 +83,6 @@ public class FaultyBootsOfHermes extends GreekItem
 
 	public FaultyBootsOfHermes()
 	{
-		super(name, description, category, item, recipe, listener);
+		super(name, description, flags, category, item, recipe, listener);
 	}
 }

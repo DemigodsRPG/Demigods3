@@ -1,12 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,13 +18,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.google.common.collect.DiscreteDomains;
+import com.google.common.collect.Ranges;
+import com.google.common.collect.Sets;
 
 public class BootsOfPagos extends GreekItem
 {
 	public final static String name = "Boots of Pagos";
 	public final static String description = "Boots this cold have their advantages... and disadvantages.";
+	public final static Set<Flag> flags = new HashSet<Flag>()
+	{
+		{
+			add(Flag.UNENCHANTABLE);
+		}
+	};
 	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
 	public final static ItemStack item = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + name, new ArrayList<String>()
 	{
@@ -73,7 +81,7 @@ public class BootsOfPagos extends GreekItem
 
 	public BootsOfPagos()
 	{
-		super(name, description, category, item, recipe, listener);
+		super(name, description, flags, category, item, recipe, listener);
 	}
 
 	public static Set<Location> getSquare(Location center)
