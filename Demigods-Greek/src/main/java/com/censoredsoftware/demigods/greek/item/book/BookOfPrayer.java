@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.censoredsoftware.demigods.greek.structure.Altar;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,12 +16,23 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.ArrayList;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class BookOfPrayer extends GreekItem
 {
 	public final static String name = "Book of Prayer";
 	public final static String description = "Teleport to the nearest Altar.";
+	public final static Set<Flag> flags = new HashSet<Flag>()
+	{
+		{
+			add(Flag.UNENCHANTABLE);
+		}
+	};
 	public final static DivineItem.Category category = DivineItem.Category.BOOK;
 	public final static ItemStack item = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + name, new ArrayList<String>()
 	{
@@ -70,6 +79,6 @@ public class BookOfPrayer extends GreekItem
 
 	public BookOfPrayer()
 	{
-		super(name, description, category, item, recipe, listener);
+		super(name, description, flags, category, item, recipe, listener);
 	}
 }
