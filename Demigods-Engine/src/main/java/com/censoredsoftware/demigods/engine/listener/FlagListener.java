@@ -1,13 +1,7 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.structure.Structure;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,12 +11,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class FlagListener implements Listener
 {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onEnchantEvent(EnchantItemEvent event)
+	{
+		if(DivineItem.Util.hasFlag(event.getItem(), DivineItem.Flag.UNENCHANTABLE)) event.setCancelled(true);
+	}
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
