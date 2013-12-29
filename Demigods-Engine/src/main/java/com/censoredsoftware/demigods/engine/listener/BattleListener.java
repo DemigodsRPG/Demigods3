@@ -1,6 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -18,8 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 public class BattleListener implements Listener
 {
@@ -159,40 +156,6 @@ public class BattleListener implements Listener
 		{
 			event.setCancelled(true);
 			Battle.Util.battleDeath(participant, Battle.Util.getBattle(participant));
-		}
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBattleMove(PlayerMoveEvent event)
-	{
-		onMoveEvent(event.getPlayer(), event.getTo(), event.getFrom());
-	}
-
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBattleVehicleMove(VehicleMoveEvent event)
-	{
-		onMoveEvent(event.getVehicle(), event.getTo(), event.getFrom());
-	}
-
-	private static void onMoveEvent(Entity entity, Location to, Location from)
-	{
-		if(!Configs.getSettingBoolean("battles.enabled") || !Battle.Util.canParticipate(entity) || entity.isInsideVehicle()) return;
-		Participant participant = Battle.Util.defineParticipant(entity);
-		if(Battle.Util.isInBattle(participant))
-		{
-			Battle battle = Battle.Util.getBattle(participant);
-			boolean toBool = CLocations.distanceFlat(to, battle.getStartLocation()) > battle.getRange();
-			boolean fromBool = CLocations.distanceFlat(from, battle.getStartLocation()) > battle.getRange();
-			if(toBool && !fromBool) DataManager.saveTemp((participant.getEntity().getPassenger() == null ? participant.getId().toString() : participant.getRelatedCharacter().getId().toString()), "battle_safe_location", from);
-			if(toBool)
-			{
-				if(DataManager.hasKeyTemp(participant.getRelatedCharacter().getId().toString(), "battle_safe_location"))
-				{
-					entity.teleport((Location) DataManager.getValueTemp(participant.getId().toString(), "battle_safe_location"));
-					DataManager.removeTemp(participant.getId().toString(), "battle_safe_location");
-				}
-				else Vehicles.teleport(entity, Battle.Util.randomRespawnPoint(battle));
-			};
 		}
 	}
 

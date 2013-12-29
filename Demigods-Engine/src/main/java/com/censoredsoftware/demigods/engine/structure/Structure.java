@@ -9,6 +9,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
@@ -41,6 +42,8 @@ public interface Structure
 
 	public int getRadius();
 
+	public Predicate<CommandSender> isAllowed();
+
 	public Collection<StructureData> getAll();
 
 	public StructureData createNew(Location reference, boolean generate);
@@ -61,7 +64,7 @@ public interface Structure
 
 	public enum Flag
 	{
-		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, NO_OVERLAP
+		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, INVISIBLE_WALL, NO_OVERLAP
 	}
 
 	public static class Util
@@ -217,6 +220,25 @@ public interface Structure
 			catch(NoSuchElementException ignored)
 			{}
 			return null;
+		}
+
+		public static StructureData closestInRadiusWithFlag(final Location location, final Flag flag)
+		{
+			StructureData found = null;
+			double nearestDistance = Double.MAX_VALUE;
+			for(StructureData save : getStructuresInRegionalArea(location))
+			{
+				if(save.getRawFlags() != null && save.getRawFlags().contains(flag.name()))
+				{
+					double distance = save.getReferenceLocation().distance(location);
+					if(distance <= save.getType().getRadius() && distance < nearestDistance)
+					{
+						found = save;
+						nearestDistance = distance;
+					}
+				}
+			}
+			return found;
 		}
 
 		public static Collection<StructureData> getInRadiusWithFlag(final Location location, final Flag flag)
