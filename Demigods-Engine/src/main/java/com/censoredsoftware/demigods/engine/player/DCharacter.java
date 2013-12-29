@@ -254,7 +254,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		}
 	}
 
-	public Set<PotionEffect> getPotionEffects()
+	private Set<PotionEffect> getPotionEffects()
 	{
 		if(potionEffects == null) potionEffects = Sets.newHashSet();
 
@@ -274,7 +274,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{}
 		}
 
-		potionEffects.clear();
+		potionEffects.clear(); // METHOD MUST BE PRIVATE IF WE DO THIS HERE
 		return set;
 	}
 
