@@ -20,6 +20,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -180,6 +181,7 @@ public class GriefListener implements Listener
 		StructureData save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING), null) : Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
+			if(true) return;
 			if(Structure.Util.partOfStructureWithAllFlags(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getSanctifiers();
@@ -207,6 +209,20 @@ public class GriefListener implements Listener
 				return Structure.Util.isInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING);
 			}
 		})) event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onItemDropEvent(PlayerDropItemEvent event)
+	{
+		if(Zones.inNoDemigodsZone(event.getPlayer().getLocation())) return;
+		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
+		if(save != null && save.hasMembers())
+		{
+			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
+			Collection<UUID> members = save.getSanctifiers();
+			if(character != null && members.contains(character.getId())) return;
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
