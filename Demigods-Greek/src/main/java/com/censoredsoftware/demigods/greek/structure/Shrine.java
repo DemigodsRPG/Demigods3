@@ -15,8 +15,10 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -192,6 +194,14 @@ public class Shrine extends GreekStructure
 		}
 	};
 	private static final int radius = Configs.getSettingInt("zones.shrine_radius");
+	private static final Predicate<CommandSender> allow = new Predicate<CommandSender>()
+	{
+		@Override
+		public boolean apply(CommandSender commandSender)
+		{
+			return true; // commandSender.hasPermission("demigods.greek.shrine");
+		}
+	};
 	private static final float sanctity = 250F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 2)
@@ -231,7 +241,7 @@ public class Shrine extends GreekStructure
 
 	public Shrine()
 	{
-		super(name, ShrineDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+		super(name, ShrineDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
 
 	public static enum ShrineDesign implements GreekStructure.Design

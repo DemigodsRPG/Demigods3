@@ -24,6 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -183,6 +184,14 @@ public class Altar extends GreekStructure
 		}
 	};
 	private static final int radius = Configs.getSettingInt("zones.altar_radius");
+	private static final Predicate<CommandSender> allow = new Predicate<CommandSender>()
+	{
+		@Override
+		public boolean apply(CommandSender commandSender)
+		{
+			return true; // commandSender.hasPermission("demigods.greek.altar");
+		}
+	};
 	private static final float sanctity = -1F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "_Alex", 3)
@@ -389,7 +398,7 @@ public class Altar extends GreekStructure
 
 	public Altar()
 	{
-		super(name, AltarDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+		super(name, AltarDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
 
 	public static enum AltarDesign implements GreekStructure.Design

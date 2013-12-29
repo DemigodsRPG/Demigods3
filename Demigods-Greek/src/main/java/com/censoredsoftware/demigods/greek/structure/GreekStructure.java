@@ -9,6 +9,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 import java.util.Collection;
@@ -29,9 +30,10 @@ public abstract class GreekStructure implements Structure
 	private Set<Structure.Flag> flags;
 	private Listener listener;
 	private int radius;
+	private Predicate<CommandSender> allowed;
 	private float sanctity, sanctityRegen;
 
-	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, float sanctity, float sanctityRegen)
+	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<CommandSender> allowed, float sanctity, float sanctityRegen)
 	{
 		this.name = name;
 		this.designs = designs;
@@ -44,6 +46,7 @@ public abstract class GreekStructure implements Structure
 		this.flags = flags;
 		this.listener = listener;
 		this.radius = radius;
+		this.allowed = allowed;
 		this.sanctity = sanctity;
 		this.sanctityRegen = sanctityRegen;
 	}
@@ -84,6 +87,11 @@ public abstract class GreekStructure implements Structure
 	public int getRadius()
 	{
 		return radius;
+	}
+
+	public Predicate<CommandSender> isAllowed()
+	{
+		return allowed;
 	}
 
 	public boolean sanctify(StructureData data, DCharacter dCharacter)

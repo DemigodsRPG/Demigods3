@@ -16,8 +16,10 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -207,6 +209,14 @@ public class Obelisk extends GreekStructure
 		}
 	};
 	private static final int radius = Configs.getSettingInt("zones.obelisk_radius");
+	private static final Predicate<CommandSender> allow = new Predicate<CommandSender>()
+	{
+		@Override
+		public boolean apply(CommandSender commandSender)
+		{
+			return true; // commandSender.hasPermission("demigods.greek.obelisk");
+		}
+	};
 	private static final float sanctity = 850F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
@@ -276,7 +286,7 @@ public class Obelisk extends GreekStructure
 
 	public Obelisk()
 	{
-		super(name, ObeliskDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, sanctity, sanctityRegen);
+		super(name, ObeliskDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
 
 	public static enum ObeliskDesign implements GreekStructure.Design
