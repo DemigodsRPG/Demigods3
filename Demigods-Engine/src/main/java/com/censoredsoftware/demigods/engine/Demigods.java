@@ -152,7 +152,11 @@ public class Demigods extends CensoredCentralizedClass
 			// Regenerate structures
 			Structure.Util.regenerateStructures();
 
-			if(Util.isRunningSpigot()) Messages.info(("Spigot found, extra API features enabled."));
+			if(Util.isRunningSpigot())
+			{
+				Bukkit.getPluginManager().registerEvents(new SpigotFeatures(), PLUGIN);
+				Messages.info(("Spigot found, extra API features enabled."));
+			}
 			else Messages.warning(("Without Spigot, some features may not work."));
 
 			// Handle online characters
