@@ -1,5 +1,21 @@
 package com.censoredsoftware.demigods.greek.structure;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.MaterialData;
+
 import com.censoredsoftware.censoredlib.schematic.BlockData;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.schematic.Selection;
@@ -17,21 +33,6 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.MaterialData;
-
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Obelisk extends GreekStructure
 {
@@ -105,6 +106,9 @@ public class Obelisk extends GreekStructure
 			location.getWorld().playSound(location, Sound.WITHER_HURT, 0.4F, 1.5F);
 			for(Location found : data.getLocations())
 				location.getWorld().playEffect(found, Effect.STEP_SOUND, Material.REDSTONE_BLOCK.getId());
+
+			character.getOfflinePlayer().getPlayer().sendMessage("Corruption: " + (data.getSanctity() - data.getCorruption()));
+
 			return true;
 		}
 	};
@@ -217,7 +221,7 @@ public class Obelisk extends GreekStructure
 			return true; // commandSender.hasPermission("demigods.greek.obelisk");
 		}
 	};
-	private static final float sanctity = 850F, sanctityRegen = 1F;
+	private static final float sanctity = /* 850F */150F, sanctityRegen = 1F;
 
 	private final static Schematic general = new Schematic("general", "HmmmQuestionMark", 3)
 	{
