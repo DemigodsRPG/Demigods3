@@ -165,7 +165,6 @@ public class GriefListener implements Listener
 		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(location, Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
-			if(true) return;
 			if(Structure.Util.partOfStructureWithAllFlags(location, Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getSanctifiers();
@@ -181,7 +180,6 @@ public class GriefListener implements Listener
 		StructureData save = event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK) ? Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getClickedBlock().getLocation(), Structure.Flag.NO_GRIEFING), null) : Iterables.getFirst(Structure.Util.getInRadiusWithFlag(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save != null && save.hasMembers())
 		{
-			if(true) return;
 			if(Structure.Util.partOfStructureWithAllFlags(event.getPlayer().getLocation(), Structure.Flag.NO_GRIEFING, Structure.Flag.DESTRUCT_ON_BREAK)) return;
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getSanctifiers();
