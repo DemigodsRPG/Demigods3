@@ -448,7 +448,7 @@ public class Demigods extends CensoredCentralizedClass
 	// Listeners
 	public enum BaseGameListener
 	{
-		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), /* GRIEF(new GriefListener()), */PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
+		BATTLE(new BattleListener()), CHAT(new ChatListener()), ENTITY(new EntityListener()), FLAG(new FlagListener()), GRIEF(new GriefListener()), PLAYER(new PlayerListener()), TRIBUTE(new TributeListener());
 
 		private Listener listener;
 
