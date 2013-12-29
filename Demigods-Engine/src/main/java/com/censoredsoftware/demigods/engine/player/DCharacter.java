@@ -612,7 +612,8 @@ public class DCharacter implements Participant, ConfigurationSerializable
 		player.setLevel(getLevel());
 		for(PotionEffect potion : player.getActivePotionEffects())
 			player.removePotionEffect(potion.getType());
-		if(getPotionEffects() != null) player.addPotionEffects(getPotionEffects());
+		Set<PotionEffect> potionEffects = getPotionEffects();
+		if(!potionEffects.isEmpty()) player.addPotionEffects(potionEffects);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
 		{
 			@Override
