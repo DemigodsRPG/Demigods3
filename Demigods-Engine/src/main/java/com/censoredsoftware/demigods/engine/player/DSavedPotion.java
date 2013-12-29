@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public class DSavedPotion extends SavedPotion
 {
-
 	public DSavedPotion(PotionEffect effect)
 	{
 		super(effect);
