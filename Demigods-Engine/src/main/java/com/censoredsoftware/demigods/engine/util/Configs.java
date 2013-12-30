@@ -72,7 +72,7 @@ public class Configs
 		{
 			return Float.valueOf(floatValue);
 		}
-		catch(Throwable ignored)
+		catch(Exception ignored)
 		{}
 		return -1F;
 	}

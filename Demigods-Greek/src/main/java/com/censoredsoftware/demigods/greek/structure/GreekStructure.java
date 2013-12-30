@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.greek.structure;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -36,7 +37,7 @@ public abstract class GreekStructure implements Structure
 	public GreekStructure(String name, Design[] designs, Function<Location, Design> getDesign, Function<Design, StructureData> createNew, InteractFunction<Boolean> sanctify, InteractFunction<Boolean> corrupt, InteractFunction<Boolean> birth, InteractFunction<Boolean> kill, Set<Structure.Flag> flags, Listener listener, int radius, Predicate<CommandSender> allowed, float sanctity, float sanctityRegen)
 	{
 		this.name = name;
-		this.designs = designs;
+		this.designs = designs.clone();
 		this.getDesign = getDesign;
 		this.createNew = createNew;
 		this.sanctify = sanctify;
@@ -70,7 +71,9 @@ public abstract class GreekStructure implements Structure
 			});
 		}
 		catch(NoSuchElementException ignored)
-		{}
+		{
+			Messages.logException(ignored);
+		}
 		return null;
 	}
 

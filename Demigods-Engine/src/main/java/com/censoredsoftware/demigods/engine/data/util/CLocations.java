@@ -68,7 +68,9 @@ public class CLocations extends CLocation.Util
 			});
 		}
 		catch(NoSuchElementException ignored)
-		{}
+		{
+			// ignored
+		}
 		return create(location);
 	}
 }

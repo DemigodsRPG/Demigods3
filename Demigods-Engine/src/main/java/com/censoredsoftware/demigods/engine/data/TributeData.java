@@ -90,9 +90,9 @@ public class TributeData implements ConfigurationSerializable
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException
+	public boolean equals(Object other)
 	{
-		throw new CloneNotSupportedException();
+		return Objects.equal(this, other);
 	}
 
 	public static class Util

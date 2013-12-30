@@ -83,7 +83,7 @@ public class DPlayer implements ConfigurationSerializable
 			map.put("lastLoginTime", lastLoginTime);
 			map.put("lastLogoutTime", lastLogoutTime);
 		}
-		catch(Throwable ignored)
+		catch(Exception ignored)
 		{}
 		if(mortalName != null) map.put("mortalName", mortalName);
 		if(mortalListName != null) map.put("mortalListName", mortalListName);

@@ -1,15 +1,5 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
@@ -20,6 +10,15 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener
 {
@@ -31,7 +30,7 @@ public class PlayerListener implements Listener
 		{
 			DPlayer.Util.getPlayer(player);
 		}
-		catch(Throwable whoops)
+		catch(Exception whoops)
 		{
 			player.kickPlayer("Error finding your Mojang Id, please try again.");
 			Messages.warning(player.getName() + " could not join the game due to a Mojang Id problem.");

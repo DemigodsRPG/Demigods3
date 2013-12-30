@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.engine.item;
 
-import java.util.NoSuchElementException;
-import java.util.Set;
-
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-
 import com.censoredsoftware.censoredlib.util.Items;
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+
+import java.util.NoSuchElementException;
+import java.util.Set;
 
 public interface DivineItem
 {
@@ -57,7 +56,9 @@ public interface DivineItem
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+				// ignored
+			}
 
 			return null;
 		}

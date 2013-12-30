@@ -1,19 +1,5 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -32,6 +18,19 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -222,9 +221,9 @@ public class MainCommand extends WrappedCommand
 
 								return true;
 							}
-							catch(Exception e)
+							catch(Exception errored)
 							{
-								e.printStackTrace();
+								Messages.logException(errored);
 								return true;
 							}
 						}

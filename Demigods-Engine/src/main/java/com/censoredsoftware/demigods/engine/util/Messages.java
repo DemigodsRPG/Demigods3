@@ -50,6 +50,11 @@ public class Messages
 		sender.sendMessage(ChatColor.RED + "[" + PLUGIN_NAME + "] " + ChatColor.RESET + msg);
 	}
 
+	public static void logException(Exception exception)
+	{
+		warning(exception.getMessage());
+	}
+
 	/**
 	 * Sends the console message <code>msg</code> with "info" tag.
 	 * 

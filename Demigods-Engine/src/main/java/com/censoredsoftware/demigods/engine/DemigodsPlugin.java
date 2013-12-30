@@ -78,8 +78,10 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			HandlerList.unregisterAll(this);
 			Demigods.unloadPermissions();
 		}
-		catch(Throwable ignored)
-		{}
+		catch(Exception ignored)
+		{
+			// ignored
+		}
 
 		message("disabled");
 	}
@@ -163,9 +165,9 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 				Messages.info(file.getName() + " loading.");
 				Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().loadPlugin(file));
 			}
-			catch(Throwable errored)
+			catch(Exception errored)
 			{
-				errored.printStackTrace();
+				Messages.logException(errored);
 			}
 		}
 	}

@@ -150,7 +150,7 @@ public class Abilities
 		{
 			target = player.getTargetBlock(null, range).getLocation();
 		}
-		catch(Throwable ignored)
+		catch(Exception ignored)
 		{}
 		if(target == null) return null;
 		BlockIterator iterator = new BlockIterator(player, range);

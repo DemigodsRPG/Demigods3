@@ -50,7 +50,7 @@ public class StructureData implements ConfigurationSerializable
 			{
 				corruption = Float.valueOf(conf.getString("corruption"));
 			}
-			catch(Throwable ignored)
+			catch(Exception ignored)
 			{}
 		}
 		if(conf.contains("sanctity"))
@@ -59,13 +59,13 @@ public class StructureData implements ConfigurationSerializable
 			{
 				sanctity = Float.valueOf(conf.getString("sanctity"));
 			}
-			catch(Throwable ignored)
+			catch(Exception ignored)
 			{}
 		}
 		if(conf.getString("active") != null) active = conf.getBoolean("active");
 		if(conf.getString("owner") != null) owner = UUID.fromString(conf.getString("owner"));
-        if(conf.isConfigurationSection("corruptors"))
-        {
+		if(conf.isConfigurationSection("corruptors"))
+		{
 			corruptors = Maps.newHashMap(Maps.transformValues(conf.getConfigurationSection("corruptors").getValues(false), new Function<Object, Long>()
 			{
 				@Override
@@ -75,7 +75,7 @@ public class StructureData implements ConfigurationSerializable
 					{
 						return Long.parseLong(o.toString());
 					}
-					catch(Throwable ignored)
+					catch(Exception ignored)
 					{}
 					return null;
 				}
@@ -92,7 +92,7 @@ public class StructureData implements ConfigurationSerializable
 					{
 						return Long.parseLong(o.toString());
 					}
-					catch(Throwable ignored)
+					catch(Exception ignored)
 					{}
 					return null;
 				}
@@ -112,7 +112,7 @@ public class StructureData implements ConfigurationSerializable
 		if(sanctity != null) map.put("sanctity", sanctity.toString());
 		if(active != null) map.put("active", active);
 		if(owner != null) map.put("owner", owner.toString());
-        if(corruptors != null && !corruptors .isEmpty()) map.put("corruptors", corruptors);
+		if(corruptors != null && !corruptors.isEmpty()) map.put("corruptors", corruptors);
 		if(sanctifiers != null && !sanctifiers.isEmpty()) map.put("sanctifiers", sanctifiers);
 		return map;
 	}
@@ -139,12 +139,12 @@ public class StructureData implements ConfigurationSerializable
 			addCorruptor(character.getId());
 			corrupt(amount);
 			if(getCorruption() >= getSanctity() && getType().kill(this, character)) kill(character);
-        }
+		}
 	}
 
-    public void corrupt(float amount)
-    {
-        if(corruption == null || corruption < 0F) corruption = 0F;
+	public void corrupt(float amount)
+	{
+		if(corruption == null || corruption < 0F) corruption = 0F;
 		corruption = corruption + amount;
 		save();
 	}
@@ -175,25 +175,25 @@ public class StructureData implements ConfigurationSerializable
 	public void sanctify(DCharacter character, float amount)
 	{
 		if(getType().sanctify(this, character))
-        {
+		{
 			addSanctifier(character.getId());
 			sanctify(amount);
-        }
-    }
+		}
+	}
 
-    public void sanctify(float amount)
-    {
-        if(sanctity == null || sanctity < 0F) sanctity = 0F;
-        sanctity = sanctity + amount;
-        save();
-    }
+	public void sanctify(float amount)
+	{
+		if(sanctity == null || sanctity < 0F) sanctity = 0F;
+		sanctity = sanctity + amount;
+		save();
+	}
 
-    public void setCorruptors(Map<String, Long> corruptors)
-    {
-        this.corruptors = corruptors;
-    }
+	public void setCorruptors(Map<String, Long> corruptors)
+	{
+		this.corruptors = corruptors;
+	}
 
-    public void addCorruptor(UUID id)
+	public void addCorruptor(UUID id)
 	{
 		if(corruptors == null) corruptors = Maps.newHashMap();
 		corruptors.put(id.toString(), System.currentTimeMillis());
@@ -254,11 +254,11 @@ public class StructureData implements ConfigurationSerializable
 		return this.owner != null;
 	}
 
-    public Float getCorruption()
-    {
+	public Float getCorruption()
+	{
 		if(corruption == null || corruption <= 0F) corruption = 0F;
-        return corruption;
-    }
+		return corruption;
+	}
 
 	public Float getSanctity()
 	{
@@ -276,9 +276,9 @@ public class StructureData implements ConfigurationSerializable
 		return this.sanctifiers != null && !sanctifiers.isEmpty();
 	}
 
-    public Collection<UUID> getCorruptors()
-    {
-        return Collections2.transform(corruptors.keySet(), new Function<String, UUID>()
+	public Collection<UUID> getCorruptors()
+	{
+		return Collections2.transform(corruptors.keySet(), new Function<String, UUID>()
 		{
 			@Override
 			public UUID apply(String s)

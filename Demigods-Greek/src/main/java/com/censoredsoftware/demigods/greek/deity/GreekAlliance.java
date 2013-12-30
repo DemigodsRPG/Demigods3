@@ -70,7 +70,7 @@ public enum GreekAlliance implements Alliance
 				}
 			});
 		}
-		catch(Throwable ignored)
+		catch(Exception ignored)
 		{}
 		return false;
 	}

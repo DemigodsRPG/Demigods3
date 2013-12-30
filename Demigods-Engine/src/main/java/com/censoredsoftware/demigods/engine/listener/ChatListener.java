@@ -65,10 +65,10 @@ public class ChatListener implements Listener
 				event.setCancelled(true);
 			}
 		}
-		catch(Exception e)
+		catch(Exception errored)
 		{
 			// Not a command
-			e.printStackTrace();
+			Messages.logException(errored);
 		}
 	}
 }

@@ -39,8 +39,10 @@ public interface Alliance
 					}
 				});
 			}
-			catch(Throwable ignored)
-			{}
+			catch(Exception ignored)
+			{
+				// ignored
+			}
 			return null;
 		}
 

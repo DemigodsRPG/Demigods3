@@ -64,7 +64,7 @@ public class Demigods extends CensoredCentralizedClass
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
 	// Mythos
-	public final Mythos MYTHOS;
+	private final Mythos MYTHOS;
 
 	// Instance of This Class
 	private static Demigods demigods;
@@ -108,7 +108,9 @@ public class Demigods extends CensoredCentralizedClass
 			(new MetricsLite(PLUGIN)).start();
 		}
 		catch(Exception ignored)
-		{}
+		{
+			// ignored
+		}
 
 		try
 		{
@@ -167,7 +169,7 @@ public class Demigods extends CensoredCentralizedClass
 		}
 		catch(Exception errored)
 		{
-			errored.printStackTrace();
+			Messages.logException(errored);
 		}
 		return false;
 	}
@@ -318,7 +320,7 @@ public class Demigods extends CensoredCentralizedClass
 		ChatListener.init();
 	}
 
-	protected void loadPermissions(boolean load)
+	protected void loadPermissions(boolean load) // FIXME Much too complicated
 	{
 		final PluginManager register = Bukkit.getServer().getPluginManager();
 
@@ -336,7 +338,9 @@ public class Demigods extends CensoredCentralizedClass
 					register.addPermission(permission);
 				}
 				catch(Exception ignored)
-				{}
+				{
+					// ignored
+				}
 			}
 
 			// Mythos
@@ -350,7 +354,9 @@ public class Demigods extends CensoredCentralizedClass
 					register.addPermission(permission);
 				}
 				catch(Exception ignored)
-				{}
+				{
+                    // ignored
+				}
 			}
 
 			// Alliances, Deities, and Abilities
@@ -386,7 +392,9 @@ public class Demigods extends CensoredCentralizedClass
 					register.removePermission(permission);
 				}
 				catch(Exception ignored)
-				{}
+				{
+                    // ignored
+				}
 			}
 
 			// Mythos
@@ -400,7 +408,9 @@ public class Demigods extends CensoredCentralizedClass
 					register.removePermission(permission);
 				}
 				catch(Exception ignored)
-				{}
+				{
+                    // ignored
+                }
 			}
 
 			// Alliances, Deities, and Abilities
@@ -438,8 +448,10 @@ public class Demigods extends CensoredCentralizedClass
 				Bukkit.getServer().getWorlds().get(0).spigot();
 				return true;
 			}
-			catch(Throwable ignored)
-			{}
+			catch(Exception ignored)
+			{
+                // ignored
+			}
 			return false;
 		}
 	}

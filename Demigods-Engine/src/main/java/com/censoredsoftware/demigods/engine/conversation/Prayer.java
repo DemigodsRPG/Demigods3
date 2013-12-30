@@ -1,25 +1,5 @@
 package com.censoredsoftware.demigods.engine.conversation;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
-import org.bukkit.conversations.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.censoredlib.language.Symbol;
@@ -41,6 +21,25 @@ import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.*;
+import org.bukkit.conversations.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Prayer implements WrappedConversation
@@ -117,10 +116,15 @@ public class Prayer implements WrappedConversation
 
 			return prayerConversation;
 		}
-		catch(NoSuchFieldException ignored)
-		{}
 		catch(IllegalAccessException ignored)
-		{}
+		{
+			// ignored
+		}
+		catch(NoSuchFieldException ignored)
+		{
+            // ignored
+		}
+
 		return null;
 	}
 
@@ -161,7 +165,9 @@ public class Prayer implements WrappedConversation
 				return menu != null && menu.getCategory().canUse(context);
 			}
 			catch(Exception ignored)
-			{}
+			{
+                // ignored
+			}
 			return false;
 		}
 
@@ -478,7 +484,7 @@ public class Prayer implements WrappedConversation
 					return false;
 				}
 			}
-			catch(Exception ignored)
+			catch(Exception errored)
 			{
 				notifications.add(Translation.Text.NOTIFICATION_ERROR_MISC);
 				return false;
@@ -1075,7 +1081,9 @@ public class Prayer implements WrappedConversation
 					return chosen.isPlayable() && ((Player) context.getForWhom()).hasPermission(chosen.getPermission());
 				}
 				catch(Exception ignored)
-				{}
+				{
+                    // ignored
+				}
 				return false;
 			}
 
@@ -1430,10 +1438,10 @@ public class Prayer implements WrappedConversation
 					}
 				}, 80); // 4 seconds
 			}
-			catch(Exception e)
+			catch(Exception errored)
 			{
 				// Print error for debugging
-				e.printStackTrace();
+				Messages.logException(errored);
 			}
 		}
 
@@ -1492,10 +1500,10 @@ public class Prayer implements WrappedConversation
 				// Clear the confirmation case
 				event.getInventory().clear();
 			}
-			catch(Exception e)
+			catch(Exception errored)
 			{
 				// Print error for debugging
-				e.printStackTrace();
+				Messages.logException(errored);
 			}
 		}
 

@@ -83,7 +83,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				CLocations.load(location);
 			}
-			catch(Throwable errored)
+			catch(Exception errored)
 			{
 				location = null;
 			}
@@ -95,7 +95,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			{
 				CLocations.load(bedSpawn);
 			}
-			catch(Throwable errored)
+			catch(Exception errored)
 			{
 				bedSpawn = null;
 			}
@@ -139,7 +139,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(deaths != null) map.put("deaths", Lists.newArrayList(deaths));
 			if(potionEffects != null) map.put("potionEffects", Lists.newArrayList(potionEffects));
 		}
-		catch(Throwable ignored)
+		catch(Exception ignored)
 		{}
 		return map;
 	}

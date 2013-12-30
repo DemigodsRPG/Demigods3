@@ -118,7 +118,9 @@ public interface Deity
 				});
 			}
 			catch(Exception ignored)
-			{}
+			{
+				// ignored
+			}
 			return null;
 		}
 

@@ -268,7 +268,9 @@ public class Battle implements ConfigurationSerializable
 			return Integer.parseInt(kills.get(participant.getId().toString()).toString());
 		}
 		catch(Exception ignored)
-		{}
+		{
+			// ignored
+		}
 		return 0;
 	}
 
@@ -279,7 +281,9 @@ public class Battle implements ConfigurationSerializable
 			return Integer.parseInt(deaths.get(participant.getId().toString()).toString());
 		}
 		catch(Exception ignored)
-		{}
+		{
+			// ignored
+		}
 		return 0;
 	}
 
@@ -538,7 +542,9 @@ public class Battle implements ConfigurationSerializable
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+				// ignored
+			}
 			return null;
 		}
 
@@ -568,7 +574,9 @@ public class Battle implements ConfigurationSerializable
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+                // ignored
+            }
 			return null;
 		}
 
@@ -592,7 +600,9 @@ public class Battle implements ConfigurationSerializable
 				});
 			}
 			catch(NoSuchElementException ignored)
-			{}
+			{
+                // ignored
+            }
 			return null;
 		}
 
