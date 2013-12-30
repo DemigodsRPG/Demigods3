@@ -1,6 +1,6 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -28,8 +28,8 @@ public class Messages
 	 */
 	static
 	{
-		LOGGER = Demigods.PLUGIN.getLogger();
-		PLUGIN_NAME = Demigods.PLUGIN.getName();
+		LOGGER = DemigodsPlugin.inst().getLogger();
+		PLUGIN_NAME = DemigodsPlugin.inst().getName();
 		LINE_SIZE = 59 - PLUGIN_NAME.length();
 		IN_GAME_LINE_SIZE = 54;
 	}
@@ -117,7 +117,7 @@ public class Messages
 	{
 		if(ChatColor.stripColor(msg).length() > IN_GAME_LINE_SIZE)
 		{
-			Server server = Demigods.PLUGIN.getServer();
+			Server server = DemigodsPlugin.inst().getServer();
 			for(String line : wrapInGame(msg))
 			{
 				DemigodsChatEvent chatEvent = new DemigodsChatEvent(line);
@@ -128,7 +128,7 @@ public class Messages
 		}
 		DemigodsChatEvent chatEvent = new DemigodsChatEvent(msg);
 		Bukkit.getPluginManager().callEvent(chatEvent);
-		if(!chatEvent.isCancelled()) Demigods.PLUGIN.getServer().broadcastMessage(msg);
+		if(!chatEvent.isCancelled()) DemigodsPlugin.inst().getServer().broadcastMessage(msg);
 	}
 
 	public static String[] wrapInGame(String msg)

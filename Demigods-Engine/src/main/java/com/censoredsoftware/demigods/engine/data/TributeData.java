@@ -92,7 +92,7 @@ public class TributeData implements ConfigurationSerializable
 	@Override
 	public boolean equals(Object other)
 	{
-		return Objects.equal(this, other);
+		return other instanceof TributeData && Objects.equal(this.id, ((TributeData) other).getId());
 	}
 
 	public static class Util

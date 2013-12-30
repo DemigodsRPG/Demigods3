@@ -1,37 +1,14 @@
 package com.censoredsoftware.demigods.greek.item;
 
-import java.util.Set;
-
+import com.censoredsoftware.demigods.engine.item.DivineItem;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
-import com.censoredsoftware.demigods.greek.item.armor.FaultyBootsOfHermes;
-import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
-import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
-import com.censoredsoftware.demigods.greek.item.weapon.BowOfTria;
+import java.util.Set;
 
 public abstract class GreekItem implements DivineItem
 {
-	/**
-	 * Books
-	 */
-	public static final BookOfPrayer BOOK_OF_PRAYER = new BookOfPrayer();
-	public static final WelcomeBook WELCOME_BOOK = new WelcomeBook();
-
-	/**
-	 * Weapons
-	 */
-	public static final BowOfTria BOW_OF_TRIA = new BowOfTria();
-
-	/**
-	 * Armor
-	 */
-	public static final BootsOfPagos BOOTS_OF_PAGOS = new BootsOfPagos();
-	public static final FaultyBootsOfHermes FAULTY_BOOTS_OF_HERMES = new FaultyBootsOfHermes();
-
 	private final String name;
 	private final String description;
 	private final Set<Flag> flags;
@@ -51,7 +28,7 @@ public abstract class GreekItem implements DivineItem
 		this.listener = listener;
 	}
 
-    @Override
+	@Override
 	public String toString()
 	{
 		return name;

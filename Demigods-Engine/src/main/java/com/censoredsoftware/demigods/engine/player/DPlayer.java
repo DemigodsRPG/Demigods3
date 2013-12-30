@@ -4,6 +4,7 @@ import com.censoredsoftware.censoredlib.data.location.Region;
 import com.censoredsoftware.censoredlib.exception.MojangIdNotFoundException;
 import com.censoredsoftware.censoredlib.helper.MojangIdGrabber;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.conversation.Prayer;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -169,7 +170,7 @@ public class DPlayer implements ConfigurationSerializable
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -295,7 +296,7 @@ public class DPlayer implements ConfigurationSerializable
 			character.setLevel(player.getLevel());
 			character.setExperience(player.getExp());
 			character.setLocation(player.getLocation());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
 			{
 				@Override
 				public void run()

@@ -6,7 +6,6 @@ import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.TaskManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
@@ -24,7 +23,13 @@ import java.util.List;
 public class DemigodsPlugin extends CensoredJavaPlugin
 {
 	private static final String CENSORED_LIBRARY_VERSION = "1.0";
+	static DemigodsPlugin INST;
 	static boolean READY = false;
+
+	public static DemigodsPlugin inst()
+	{
+		return INST;
+	}
 
 	/**
 	 * The Bukkit enable method.
@@ -32,6 +37,8 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	@Override
 	public void onEnable()
 	{
+		INST = this;
+
 		if(!checkForCensoredLib())
 		{
 			getPluginLoader().disablePlugin(this);
@@ -46,6 +53,7 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			getPluginLoader().disablePlugin(this);
 			return;
 		}
+		else READY = true;
 
 		// Print success!
 		message("enabled");
@@ -137,10 +145,10 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 			List<String> depends = plugin.getDescription().getDepend();
 			if(depends != null && !depends.isEmpty() && depends.contains("Demigods"))
 			{
-				getLogger().warning(plugin.getName() + " was installed in the wrong directory.");
-				getLogger().warning("Please place all Demigods addons into the");
-				getLogger().warning(getDataFolder().getPath() + "\\addons\\ directory.");
-				getLogger().warning("i.e. " + getDataFolder().getPath() + "\\addons\\" + plugin.getName());
+				getLogger().warning(plugin.getName() + " was put in the wrong directory.");
+				getLogger().warning("Please place Demigods addons in the");
+				getLogger().warning(getDataFolder().getPath() + "\\addons\\ directory");
+				getLogger().warning("(i.e. " + getDataFolder().getPath() + "\\addons\\" + plugin.getName() + ").");
 				Bukkit.getPluginManager().disablePlugin(plugin);
 			}
 		}
@@ -162,12 +170,13 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		{
 			try
 			{
-				Messages.info(file.getName() + " loading.");
+				getLogger().info(file.getName() + " loading.");
 				Bukkit.getServer().getPluginManager().enablePlugin(Bukkit.getServer().getPluginManager().loadPlugin(file));
 			}
 			catch(Exception errored)
 			{
-				Messages.logException(errored);
+				getLogger().warning(errored.getMessage());
+				errored.printStackTrace();
 			}
 		}
 	}

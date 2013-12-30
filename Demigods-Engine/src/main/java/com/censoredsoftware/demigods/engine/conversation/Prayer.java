@@ -7,6 +7,7 @@ import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.censoredlib.util.Titles;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.data.util.Notifications;
@@ -122,7 +123,7 @@ public class Prayer implements WrappedConversation
 		}
 		catch(NoSuchFieldException ignored)
 		{
-            // ignored
+			// ignored
 		}
 
 		return null;
@@ -166,7 +167,7 @@ public class Prayer implements WrappedConversation
 			}
 			catch(Exception ignored)
 			{
-                // ignored
+				// ignored
 			}
 			return false;
 		}
@@ -1082,7 +1083,7 @@ public class Prayer implements WrappedConversation
 				}
 				catch(Exception ignored)
 				{
-                    // ignored
+					// ignored
 				}
 				return false;
 			}
@@ -1384,7 +1385,7 @@ public class Prayer implements WrappedConversation
 				player.playSound(player.getLocation(), Sound.AMBIENCE_CAVE, 0.6F, 1F);
 
 				// Delay for dramatic effect
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
 				{
 					@Override
 					public void run()

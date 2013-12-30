@@ -14,6 +14,7 @@ import com.censoredsoftware.demigods.engine.structure.StructureData;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.GreekMythos;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import org.bukkit.*;
@@ -141,9 +142,9 @@ public class Shrine extends GreekStructure
 					{
 						// Shrine created!
 						Admins.sendDebug(ChatColor.RED + "Shrine created by " + character.getName() + " (" + character.getDeity() + ") at: " + ChatColor.GRAY + "(" + location.getWorld().getName() + ") " + location.getX() + ", " + location.getY() + ", " + location.getZ());
-						StructureData save = GreekStructure.SHRINE.createNew(location, true);
+						StructureData save = GreekMythos.SHRINE.createNew(location, true);
 						save.setOwner(character.getId());
-						GreekStructure.SHRINE.birth(save, character);
+						GreekMythos.SHRINE.birth(save, character);
 
 						// Consume item in hand
 						ItemStack item = player.getItemInHand();

@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.util;
 
 import com.censoredsoftware.censoredlib.util.WorldGuards;
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.listener.ZoneListener;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -35,12 +35,12 @@ public class Zones
 		ENABLED_WORLDS = ImmutableSet.copyOf(enabledWorlds);
 
 		// Zone listener (load here for consistency)
-		Bukkit.getPluginManager().registerEvents(new ZoneListener(), Demigods.PLUGIN);
+		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.inst());
 
 		// Init WorldGuard stuff
 		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
 		WorldGuards.registerCreatedFlag("demigods");
-		WorldGuards.setWhenToOverridePVP(Demigods.PLUGIN, new Predicate<EntityDamageByEntityEvent>()
+		WorldGuards.setWhenToOverridePVP(DemigodsPlugin.inst(), new Predicate<EntityDamageByEntityEvent>()
 		{
 			@Override
 			public boolean apply(EntityDamageByEntityEvent event)

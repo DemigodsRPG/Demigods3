@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.engine.data;
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.Notifications;
@@ -27,33 +28,33 @@ public class TaskManager
 	public static void startThreads()
 	{
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, Util.getSyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getAsyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(Demigods.PLUGIN, Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
 		for(Deity deity : Demigods.mythos().getDeities())
 			for(Ability ability : deity.getAbilities())
-				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, ability.getRunnable(), ability.getDelay(), ability.getRepeat());
+				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 
 		// Triggers
-		Threads.registerTriggers(Demigods.PLUGIN, Demigods.mythos().getTriggers());
+		Threads.registerTriggers(DemigodsPlugin.inst(), Demigods.mythos().getTriggers());
 	}
 
 	public static void stopThreads()
 	{
-		Demigods.PLUGIN.getServer().getScheduler().cancelTasks(Demigods.PLUGIN);
-		Threads.stopHooker(Demigods.PLUGIN);
+		DemigodsPlugin.inst().getServer().getScheduler().cancelTasks(DemigodsPlugin.inst());
+		Threads.stopHooker(DemigodsPlugin.inst());
 	}
 
 	private static class Util

@@ -7,6 +7,7 @@ import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
 import com.censoredsoftware.demigods.engine.data.util.TimedDatas;
@@ -96,8 +97,8 @@ public class DataManager
 		save();
 
 		// Reload the PLUGIN
-		Bukkit.getServer().getPluginManager().disablePlugin(Demigods.PLUGIN);
-		Bukkit.getServer().getPluginManager().enablePlugin(Demigods.PLUGIN);
+		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.inst());
+		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.inst());
 	}
 
 	/*

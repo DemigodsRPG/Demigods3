@@ -5,6 +5,7 @@ import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
@@ -36,7 +37,7 @@ public class MainCommand extends WrappedCommand
 {
 	public MainCommand()
 	{
-		super(Demigods.PLUGIN, false);
+		super(DemigodsPlugin.inst(), false);
 	}
 
 	@Override
@@ -53,9 +54,9 @@ public class MainCommand extends WrappedCommand
 		{
 			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
 			{
-				PluginManager pluginManager = Demigods.PLUGIN.getServer().getPluginManager();
-				pluginManager.disablePlugin(Demigods.PLUGIN);
-				pluginManager.enablePlugin(Demigods.PLUGIN);
+				PluginManager pluginManager = DemigodsPlugin.inst().getServer().getPluginManager();
+				pluginManager.disablePlugin(DemigodsPlugin.inst());
+				pluginManager.enablePlugin(DemigodsPlugin.inst());
 				sender.sendMessage(ChatColor.GREEN + Demigods.LANGUAGE.getText(Translation.Text.RELOAD_COMPLETE));
 				return true;
 			}

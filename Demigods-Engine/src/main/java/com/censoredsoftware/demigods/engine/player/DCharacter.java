@@ -6,6 +6,7 @@ import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
@@ -614,7 +615,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			player.removePotionEffect(potion.getType());
 		Set<PotionEffect> potionEffects = getPotionEffects();
 		if(!potionEffects.isEmpty()) player.addPotionEffects(potionEffects);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+		Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
 		{
 			@Override
 			public void run()

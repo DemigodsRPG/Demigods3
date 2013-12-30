@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.censoredlib.helper.QuitReasonHandler;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
@@ -71,7 +72,7 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.RUNNING_DG_VERSION).replace("{version}", Demigods.PLUGIN.getDescription().getVersion()));
+			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.RUNNING_DG_VERSION).replace("{version}", DemigodsPlugin.inst().getDescription().getVersion()));
 			player.sendMessage(Demigods.LANGUAGE.getText(Translation.Text.DG_FOR_MORE_INFORMATION));
 		}
 
@@ -144,7 +145,7 @@ public class PlayerListener implements Listener
 				Battle battle = Battle.Util.getBattle(loggingOff);
 				battle.addDeath(loggingOff);
 				DataManager.saveTemp(name, "quit_during_battle", true);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
 				{
 					@Override
 					public void run()

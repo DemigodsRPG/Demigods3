@@ -1,7 +1,15 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.language.Translation;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.structure.Structure;
+import com.censoredsoftware.demigods.engine.structure.StructureData;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,15 +22,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DataManager;
-import com.censoredsoftware.demigods.engine.item.DivineItem;
-import com.censoredsoftware.demigods.engine.language.Translation;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.structure.Structure;
-import com.censoredsoftware.demigods.engine.structure.StructureData;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class FlagListener implements Listener
 {
@@ -99,7 +99,7 @@ public class FlagListener implements Listener
 		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		final List<StructureData> saves = Lists.newArrayList(Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK));
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -114,7 +114,7 @@ public class FlagListener implements Listener
 		if(DataManager.hasTimed("explode", "structure")) return;
 		DataManager.saveTimed("explode", "structure", true, 2);
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Demigods.PLUGIN, new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
 		{
 			@Override
 			public void run()

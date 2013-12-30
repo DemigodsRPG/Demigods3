@@ -4,7 +4,7 @@ import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.censoredlib.util.Images;
 import com.censoredsoftware.censoredlib.util.WorldGuards;
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
@@ -35,7 +35,7 @@ public class DevelopmentCommands extends WrappedCommand
 {
 	public DevelopmentCommands()
 	{
-		super(Demigods.PLUGIN, false);
+		super(DemigodsPlugin.inst(), false);
 	}
 
 	@Override
@@ -92,9 +92,9 @@ public class DevelopmentCommands extends WrappedCommand
 
 			if(player.isOp())
 			{
-				final int theTask = Images.convertImageToSchematic(Demigods.PLUGIN, veryImage, 1356);
+				final int theTask = Images.convertImageToSchematic(DemigodsPlugin.inst(), veryImage, 1356);
 
-				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new Runnable()
+				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), new Runnable()
 				{
 
 					@Override

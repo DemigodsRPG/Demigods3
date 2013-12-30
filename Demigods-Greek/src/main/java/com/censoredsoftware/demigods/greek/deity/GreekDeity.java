@@ -1,17 +1,10 @@
 package com.censoredsoftware.demigods.greek.deity;
 
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.greek.deity.fate.Atropos;
-import com.censoredsoftware.demigods.greek.deity.fate.Clotho;
-import com.censoredsoftware.demigods.greek.deity.fate.Lachesis;
-import com.censoredsoftware.demigods.greek.deity.god.Poseidon;
-import com.censoredsoftware.demigods.greek.deity.god.Zeus;
-import com.censoredsoftware.demigods.greek.deity.titan.Oceanus;
-import com.censoredsoftware.demigods.greek.deity.titan.Perses;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -30,25 +23,6 @@ import java.util.Set;
 
 public abstract class GreekDeity implements Deity, Deity.MoodManager
 {
-	/*
-	 * Gods
-	 */
-	public static final Zeus ZEUS = new Zeus();
-	public static final Poseidon POSEIDON = new Poseidon();
-
-	/*
-	 * Titans
-	 */
-	public static final Perses PERSES = new Perses();
-	public static final Oceanus OCEANUS = new Oceanus();
-
-	/*
-	 * Fates
-	 */
-	public static final Clotho CLOTHO = new Clotho();
-	public static final Lachesis LACHESIS = new Lachesis();
-	public static final Atropos ATROPOS = new Atropos();
-
 	private String name, permission;
 	private Alliance alliance;
 	private ChatColor color;
@@ -225,7 +199,7 @@ public abstract class GreekDeity implements Deity, Deity.MoodManager
 		@Override
 		public String getSavePath()
 		{
-			return Demigods.PLUGIN.getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
+			return DemigodsPlugin.inst().getDataFolder() + "/config/deity/" + alliance.getName().toLowerCase() + "/"; // Don't change this.
 		}
 
 		@Override

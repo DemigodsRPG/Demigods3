@@ -57,34 +57,30 @@ public class Demigods extends CensoredCentralizedClass
 	public static Scoreboard BOARD;
 
 	// Public Static Access
-	public static final DemigodsPlugin PLUGIN;
 	public static final String SAVE_PATH;
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final Translation LANGUAGE;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
 	// Mythos
-	private final Mythos MYTHOS;
+	private final Mythos enabledMythos;
 
 	// Instance of This Class
-	private static Demigods demigods;
+	private static Demigods INST;
 
 	private Demigods()
 	{
-		MYTHOS = loadMythos();
+		enabledMythos = loadMythos();
 	}
 
 	// Load what is possible to load right away.
 	static
 	{
-		// Allow static access.
-		PLUGIN = (DemigodsPlugin) Bukkit.getServer().getPluginManager().getPlugin("Demigods");
-
 		// Data folder
-		SAVE_PATH = PLUGIN.getDataFolder() + "/data/"; // Don't change this.
+		SAVE_PATH = DemigodsPlugin.inst().getDataFolder() + "/data/"; // Don't change this.
 
 		// Conversation factory static access.
-		CONVERSATION_FACTORY = new ConversationFactory(PLUGIN);
+		CONVERSATION_FACTORY = new ConversationFactory(DemigodsPlugin.inst());
 
 		// Language data.
 		LANGUAGE = new Translation();
@@ -92,11 +88,14 @@ public class Demigods extends CensoredCentralizedClass
 		// Scoreboard manager.
 		SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
 		BOARD = SCOREBOARD_MANAGER.getNewScoreboard();
+
+		// Load the Mythos.
+		INST = new Demigods();
 	}
 
 	public static Mythos mythos()
 	{
-		return demigods.MYTHOS;
+		return INST.enabledMythos;
 	}
 
 	// Load everything else.
@@ -105,7 +104,7 @@ public class Demigods extends CensoredCentralizedClass
 		// Initialize metrics
 		try
 		{
-			(new MetricsLite(PLUGIN)).start();
+			(new MetricsLite(DemigodsPlugin.inst())).start();
 		}
 		catch(Exception ignored)
 		{
@@ -114,9 +113,6 @@ public class Demigods extends CensoredCentralizedClass
 
 		try
 		{
-			// Load the Mythos.
-			demigods = new Demigods();
-
 			if(mythos() == null)
 			{
 				Messages.severe("Demigods was unable to load a Mythos.");
@@ -124,7 +120,7 @@ public class Demigods extends CensoredCentralizedClass
 				return false;
 			}
 
-			if(!PLUGIN.getServer().getOnlineMode())
+			if(!DemigodsPlugin.inst().getServer().getOnlineMode())
 			{
 				Messages.severe("Demigods might not work in offline mode.");
 				Messages.severe("We depend on Mojang's servers for ids.");
@@ -132,7 +128,7 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Check for world load errors
-			if(demigods.loadWorlds() > 0)
+			if(INST.loadWorlds() > 0)
 			{
 				Messages.severe("Demigods was unable to confirm any worlds.");
 				Messages.severe("This may be caused by misspelt world names.");
@@ -140,10 +136,10 @@ public class Demigods extends CensoredCentralizedClass
 			}
 
 			// Load listeners, commands, permissions, and the scoreboard
-			demigods.loadListeners();
-			demigods.loadCommands();
-			demigods.loadPermissions(true);
-			demigods.loadScoreboard();
+			INST.loadListeners();
+			INST.loadCommands();
+			INST.loadPermissions(true);
+			INST.loadScoreboard();
 
 			// Update usable characters
 			DCharacter.Util.updateUsableCharacters();
@@ -156,7 +152,7 @@ public class Demigods extends CensoredCentralizedClass
 
 			if(Util.isRunningSpigot())
 			{
-				Bukkit.getPluginManager().registerEvents(new SpigotFeatures(), PLUGIN);
+				Bukkit.getPluginManager().registerEvents(new SpigotFeatures(), DemigodsPlugin.inst());
 				Messages.info(("Spigot found, extra API features enabled."));
 			}
 			else Messages.warning(("Without Spigot, some features may not work."));
@@ -165,7 +161,7 @@ public class Demigods extends CensoredCentralizedClass
 			for(DCharacter character : DCharacter.Util.loadAll())
 				character.getMeta().cleanSkills();
 
-			return DemigodsPlugin.READY = true;
+			return true;
 		}
 		catch(Exception errored)
 		{
@@ -176,7 +172,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	protected Mythos loadMythos()
 	{
-		ServicesManager servicesManager = PLUGIN.getServer().getServicesManager();
+		ServicesManager servicesManager = DemigodsPlugin.inst().getServer().getServicesManager();
 		Collection<RegisteredServiceProvider<Mythos>> mythosProviders = servicesManager.getRegistrations(Mythos.class);
 		if(Iterables.any(mythosProviders, new Predicate<RegisteredServiceProvider<Mythos>>()
 		{
@@ -229,15 +225,15 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Base Game
 		if(mythos().useBaseGame()) for(BaseGameListener baseGameListener : BaseGameListener.values())
-			register.registerEvents(baseGameListener.getListener(), PLUGIN);
+			register.registerEvents(baseGameListener.getListener(), DemigodsPlugin.inst());
 
 		// Mythos
 		for(Listener listener : mythos().getListeners())
-			register.registerEvents(listener, PLUGIN);
+			register.registerEvents(listener, DemigodsPlugin.inst());
 
 		// Abilities
 		for(Ability ability : Abilities.getLoadedAbilities())
-			if(ability.getListener() != null) register.registerEvents(ability.getListener(), PLUGIN);
+			if(ability.getListener() != null) register.registerEvents(ability.getListener(), DemigodsPlugin.inst());
 
 		// Structures
 		for(Structure structure : Collections2.filter(mythos().getStructures(), new Predicate<Structure>()
@@ -248,7 +244,7 @@ public class Demigods extends CensoredCentralizedClass
 				return structure.getUniqueListener() != null;
 			}
 		}))
-			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), PLUGIN);
+			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), DemigodsPlugin.inst());
 
 		// Conversations
 		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(DemigodsConversation.values()), new Function<DemigodsConversation, WrappedConversation>()
@@ -266,13 +262,13 @@ public class Demigods extends CensoredCentralizedClass
 				return conversation.getUniqueListener() != null;
 			}
 		}))
-			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), PLUGIN);
+			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), DemigodsPlugin.inst());
 
 		// Divine Items
-		for(DivineItem divineItem : MYTHOS.getDivineItems())
+		for(DivineItem divineItem : enabledMythos.getDivineItems())
 		{
-			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), PLUGIN);
-			if(divineItem.getRecipe() != null) PLUGIN.getServer().addRecipe(divineItem.getRecipe());
+			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), DemigodsPlugin.inst());
+			if(divineItem.getRecipe() != null) DemigodsPlugin.inst().getServer().addRecipe(divineItem.getRecipe());
 		}
 
 		// Quit reason.
@@ -436,7 +432,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	protected static void unloadPermissions()
 	{
-		demigods.loadPermissions(false);
+		INST.loadPermissions(false);
 	}
 
 	public static class Util

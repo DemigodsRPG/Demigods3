@@ -5,6 +5,7 @@ import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Randoms;
 import com.censoredsoftware.censoredlib.util.Vehicles;
 import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.data.util.CLocations;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
@@ -439,7 +440,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		final Battle battle = this;
 
-		runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Demigods.PLUGIN, new BukkitRunnable()
+		runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), new BukkitRunnable()
 		{
 			@Override
 			public void run()
@@ -575,8 +576,8 @@ public class Battle implements ConfigurationSerializable
 			}
 			catch(NoSuchElementException ignored)
 			{
-                // ignored
-            }
+				// ignored
+			}
 			return null;
 		}
 
@@ -601,8 +602,8 @@ public class Battle implements ConfigurationSerializable
 			}
 			catch(NoSuchElementException ignored)
 			{
-                // ignored
-            }
+				// ignored
+			}
 			return null;
 		}
 

@@ -19,10 +19,6 @@ import java.util.Set;
 
 public abstract class GreekStructure implements Structure
 {
-	public static final Altar ALTAR = new Altar();
-	public static final Obelisk OBELISK = new Obelisk();
-	public static final Shrine SHRINE = new Shrine();
-
 	private String name;
 	private Design[] designs;
 	private Function<Location, Design> getDesign;

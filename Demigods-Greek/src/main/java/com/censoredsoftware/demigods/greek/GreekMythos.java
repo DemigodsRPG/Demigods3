@@ -8,22 +8,28 @@ import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
-import com.censoredsoftware.demigods.greek.deity.GreekDeity;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.censoredsoftware.demigods.greek.structure.GreekStructure;
-import com.censoredsoftware.demigods.greek.trigger.DivinityUnbalanced;
+import com.censoredsoftware.demigods.greek.deity.fate.Atropos;
+import com.censoredsoftware.demigods.greek.deity.fate.Clotho;
+import com.censoredsoftware.demigods.greek.deity.fate.Lachesis;
+import com.censoredsoftware.demigods.greek.deity.god.Poseidon;
+import com.censoredsoftware.demigods.greek.deity.god.Zeus;
+import com.censoredsoftware.demigods.greek.deity.titan.Oceanus;
+import com.censoredsoftware.demigods.greek.deity.titan.Perses;
+import com.censoredsoftware.demigods.greek.item.armor.BootsOfPagos;
+import com.censoredsoftware.demigods.greek.item.armor.FaultyBootsOfHermes;
+import com.censoredsoftware.demigods.greek.item.book.BookOfPrayer;
+import com.censoredsoftware.demigods.greek.item.book.WelcomeBook;
+import com.censoredsoftware.demigods.greek.item.weapon.BowOfTria;
+import com.censoredsoftware.demigods.greek.structure.Altar;
+import com.censoredsoftware.demigods.greek.structure.Obelisk;
+import com.censoredsoftware.demigods.greek.structure.Shrine;
 import com.censoredsoftware.demigods.greek.trigger.NewPlayerNeedsHelp;
 import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.ServicePriority;
-
-import java.util.HashSet;
 
 public class GreekMythos extends MythosPlugin
 {
@@ -36,7 +42,8 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public void onEnable()
 	{
-		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Highest); // not really sure how Bukkit handles these, presuming the same way as EventPriority
+		// not really sure how Bukkit handles these, presuming the same way as EventPriority
+		getServer().getServicesManager().register(Mythos.class, this, this, ServicePriority.Highest);
 	}
 
 	/**
@@ -88,22 +95,27 @@ public class GreekMythos extends MythosPlugin
 		return true;
 	}
 
+	/**
+	 * Books
+	 */
+	public static final BookOfPrayer BOOK_OF_PRAYER = new BookOfPrayer();
+	public static final WelcomeBook WELCOME_BOOK = new WelcomeBook();
+
+	/**
+	 * Weapons
+	 */
+	public static final BowOfTria BOW_OF_TRIA = new BowOfTria();
+
+	/**
+	 * Armor
+	 */
+	public static final BootsOfPagos BOOTS_OF_PAGOS = new BootsOfPagos();
+	public static final FaultyBootsOfHermes FAULTY_BOOTS_OF_HERMES = new FaultyBootsOfHermes();
+
 	@Override
 	public ImmutableCollection<DivineItem> getDivineItems()
 	{
-		return ImmutableSet.copyOf(new HashSet<DivineItem>()
-		{
-			{
-				add(GreekItem.BOOK_OF_PRAYER);
-				add(GreekItem.WELCOME_BOOK);
-
-				// add(GreekItem.BUTT_SWORD);
-				add(GreekItem.BOW_OF_TRIA);
-
-				add(GreekItem.BOOTS_OF_PAGOS);
-				add(GreekItem.FAULTY_BOOTS_OF_HERMES);
-			}
-		});
+		return ImmutableSet.of((DivineItem) BOOK_OF_PRAYER, WELCOME_BOOK, BOW_OF_TRIA, BOOTS_OF_PAGOS, FAULTY_BOOTS_OF_HERMES);
 	}
 
 	@Override
@@ -112,45 +124,39 @@ public class GreekMythos extends MythosPlugin
 		return ImmutableSet.copyOf((Alliance[]) GreekAlliance.values());
 	}
 
+	/*
+	 * Gods
+	 */
+	public static final Zeus ZEUS = new Zeus();
+	public static final Poseidon POSEIDON = new Poseidon();
+
+	/*
+	 * Titans
+	 */
+	public static final Perses PERSES = new Perses();
+	public static final Oceanus OCEANUS = new Oceanus();
+
+	/*
+	 * Fates
+	 */
+	public static final Clotho CLOTHO = new Clotho();
+	public static final Lachesis LACHESIS = new Lachesis();
+	public static final Atropos ATROPOS = new Atropos();
+
 	@Override
 	public ImmutableCollection<Deity> getDeities()
 	{
-		return ImmutableSet.copyOf(new HashSet<Deity>()
-		{
-			{
-				/*
-				 * Gods
-				 */
-				add(GreekDeity.ZEUS);
-				add(GreekDeity.POSEIDON);
-
-				/*
-				 * Titans
-				 */
-				add(GreekDeity.PERSES);
-				add(GreekDeity.OCEANUS);
-
-				/*
-				 * Fates
-				 */
-				add(GreekDeity.CLOTHO);
-				add(GreekDeity.LACHESIS);
-				add(GreekDeity.ATROPOS);
-			}
-		});
+		return ImmutableSet.of((Deity) ZEUS, POSEIDON, PERSES, OCEANUS, CLOTHO, LACHESIS, ATROPOS);
 	}
+
+	public static final Altar ALTAR = new Altar();
+	public static final Obelisk OBELISK = new Obelisk();
+	public static final Shrine SHRINE = new Shrine();
 
 	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
-		return ImmutableSet.copyOf(new HashSet<Structure>()
-		{
-			{
-				add(GreekStructure.ALTAR);
-				add(GreekStructure.OBELISK);
-				add(GreekStructure.SHRINE);
-			}
-		});
+		return ImmutableSet.of((Structure) ALTAR, OBELISK, SHRINE);
 	}
 
 	public Boolean levelSeperateSkills()
@@ -168,17 +174,14 @@ public class GreekMythos extends MythosPlugin
 		return ImmutableSet.of();
 	}
 
+	// private static final DivinityUnbalanced DIVINITY_UNBALANCED = new DivinityUnbalanced();
+	private static final NewPlayerNeedsHelp NEW_PLAYER_NEEDS_HELP = new NewPlayerNeedsHelp();
+	private static final ProcessAltars PROCESS_ALTARS = new ProcessAltars();
+
 	public ImmutableCollection<Trigger> getTriggers()
 	{
 		if(!isPrimary()) return ImmutableSet.of();
-		return ImmutableSet.copyOf(Collections2.transform(Sets.newHashSet(GreekMythos.GreekTrigger.values()), new Function<GreekMythos.GreekTrigger, Trigger>()
-		{
-			@Override
-			public Trigger apply(GreekMythos.GreekTrigger listedTrigger)
-			{
-				return listedTrigger.getTrigger();
-			}
-		}));
+		return ImmutableSet.of(/* DIVINITY_UNBALANCED, */NEW_PLAYER_NEEDS_HELP, PROCESS_ALTARS);
 	}
 
 	@Override
@@ -192,26 +195,5 @@ public class GreekMythos extends MythosPlugin
 	public void lock()
 	{
 		lock = true;
-	}
-
-	// Triggers
-	public enum GreekTrigger
-	{
-		/**
-		 * Balance related.
-		 */
-		DIVINITY_UNBALANCED(new DivinityUnbalanced()), NEW_PLAYER_NEEDS_HELP(new NewPlayerNeedsHelp()), PROCESS_ALTARS(new ProcessAltars());
-
-		private Trigger trigger;
-
-		private GreekTrigger(Trigger trigger)
-		{
-			this.trigger = trigger;
-		}
-
-		public Trigger getTrigger()
-		{
-			return trigger;
-		}
 	}
 }

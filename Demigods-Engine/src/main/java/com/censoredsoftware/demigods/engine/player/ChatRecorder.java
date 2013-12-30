@@ -1,7 +1,7 @@
 package com.censoredsoftware.demigods.engine.player;
 
 import com.censoredsoftware.censoredlib.util.Times;
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.listener.DemigodsChatEvent;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -63,7 +63,7 @@ public class ChatRecorder
 		{
 			ChatRecorder recorder = new ChatRecorder();
 			recorder.start(player);
-			Demigods.PLUGIN.getServer().getPluginManager().registerEvents(recorder.getListener(), Demigods.PLUGIN);
+			DemigodsPlugin.inst().getServer().getPluginManager().registerEvents(recorder.getListener(), DemigodsPlugin.inst());
 			return recorder;
 		}
 	}

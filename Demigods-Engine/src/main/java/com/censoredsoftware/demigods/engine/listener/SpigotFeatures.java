@@ -2,7 +2,7 @@ package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Threads;
-import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.structure.Structure;
@@ -18,7 +18,7 @@ public class SpigotFeatures implements Listener
 {
 	public SpigotFeatures()
 	{
-		Threads.registerTrigger(Demigods.PLUGIN, new Trigger()
+		Threads.registerTrigger(DemigodsPlugin.inst(), new Trigger()
 		{
 			@Override
 			public void processSync()
