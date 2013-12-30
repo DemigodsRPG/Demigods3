@@ -216,7 +216,7 @@ public class MainCommand extends WrappedCommand
 								// Abilities
 								for(Ability ability : deity.getAbilities())
 								{
-									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + ChatColor.GREEN + "/" + ability.getName() + ChatColor.GOLD + "(" + ability.getType().getName() + ")" + ChatColor.GRAY + "(" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)");
+									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + ChatColor.GREEN + "/" + ability.getCommand() + ChatColor.GOLD + " (" + ability.getType().getName() + ")" + ChatColor.GRAY + " (" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)");
 									player.sendMessage("    >" + ChatColor.ITALIC + ability.getDetails());
 								}
 
