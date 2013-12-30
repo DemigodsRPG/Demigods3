@@ -1,9 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class NoSplosion implements Ability
 {
@@ -20,6 +22,7 @@ public class NoSplosion implements Ability
 	private final static int cost = 0, delay = 0, repeat = 0;
 	private final static List<String> details = Lists.newArrayList("Take no corrupt from explosions.");
 	private String deity, permission;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 
 	public NoSplosion(String deity, String permission)
 	{
@@ -73,6 +76,12 @@ public class NoSplosion implements Ability
 	public List<String> getDetails()
 	{
 		return details;
+	}
+
+	@Override
+	public Skill.Type getType()
+	{
+		return type;
 	}
 
 	@Override

@@ -405,11 +405,11 @@ public class Prayer implements WrappedConversation
 
 			for(Skill skill : character.getMeta().getSkills())
 			{
-				player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + skill.getType().getName() + ChatColor.RESET + ChatColor.GRAY + " (" + (skill.hasMetCap() ? ChatColor.GREEN + "Max Level [" + skill.getLevel() + "]" : "Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1)) + ChatColor.GRAY + ")");
+				if(skill.getType().isLevelable()) player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + (skill.hasMetCap() ? ChatColor.GRAY + "" + ChatColor.ITALIC : ChatColor.AQUA) + skill.getType().getName() + ChatColor.RESET + ChatColor.GRAY + " (" + (skill.hasMetCap() ? ChatColor.GREEN + "Max Level [" + skill.getLevel() + "]" : "Level " + ChatColor.GREEN + skill.getLevel() + ChatColor.GRAY + ") (" + ChatColor.YELLOW + skill.getRequiredPoints() + ChatColor.GRAY + " skill points from level " + ChatColor.YELLOW + (skill.getLevel() + 1)) + ChatColor.GRAY + ")");
 			}
 
 			player.sendRawMessage(" ");
-			if(skillPoints > 0)
+			if(skillPoints > 0) // TODO Translations
 			{
 				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  You currently have " + ChatColor.GREEN + character.getMeta().getSkillPoints() + "" + ChatColor.GRAY + " skill points available.");
 				player.sendRawMessage(ChatColor.ITALIC + "" + ChatColor.GRAY + "  To assign your skill points, use " + ChatColor.YELLOW + "assign <amount> <skill>" + ChatColor.GRAY + ".");
@@ -460,9 +460,9 @@ public class Prayer implements WrappedConversation
 					input.remove(0);
 					input.remove(0);
 
-					Skill.Type skill = Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase());
+					Skill.Type skillType = Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase());
 
-					if(DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skill) != null)
+					if(DPlayer.Util.getPlayer((Player) context.getForWhom()).getCurrent().getMeta().getSkill(skillType) != null && skillType.isLevelable())
 					{
 						return true;
 					}
@@ -480,8 +480,8 @@ public class Prayer implements WrappedConversation
 			}
 			catch(Exception ignored)
 			{
-                notifications.add(Translation.Text.NOTIFICATION_ERROR_MISC);
-                return false;
+				notifications.add(Translation.Text.NOTIFICATION_ERROR_MISC);
+				return false;
 			}
 		}
 
@@ -504,13 +504,13 @@ public class Prayer implements WrappedConversation
 			}
 			else if(splitMsg[0].equalsIgnoreCase("assign"))
 			{
-                ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
+				ArrayList<String> input = new ArrayList<>(Arrays.asList(splitMsg));
 
-                int points = Integer.parseInt(input.get(1));
+				int points = Integer.parseInt(input.get(1));
 
-                // Again, this looks funky, but it's supposed to be like this
-                input.remove(0);
-                input.remove(0);
+				// Again, this looks funky, but it's supposed to be like this
+				input.remove(0);
+				input.remove(0);
 
 				Skill skill = character.getMeta().getSkill(Skill.Type.valueOf(StringUtils.join(input, "_").toUpperCase()));
 

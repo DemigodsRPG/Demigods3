@@ -1,17 +1,8 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.censoredlib.util.Randoms;
-import com.censoredsoftware.censoredlib.util.Spigots;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.data.util.CLocations;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -25,8 +16,19 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Randoms;
+import com.censoredsoftware.censoredlib.util.Spigots;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.data.util.CLocations;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Discoball implements Ability
 {
@@ -35,6 +37,7 @@ public class Discoball implements Ability
 	private final static List<String> details = Lists.newArrayList("Spread the music while causing destruction.");
 	private final static Set<FallingBlock> discoBalls = Sets.newHashSet();
 	private String deity, permission;
+	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
 	public Discoball(String deity, String permission)
 	{
@@ -88,6 +91,12 @@ public class Discoball implements Ability
 	public List<String> getDetails()
 	{
 		return details;
+	}
+
+	@Override
+	public Skill.Type getType()
+	{
+		return type;
 	}
 
 	@Override
@@ -174,6 +183,7 @@ public class Discoball implements Ability
 		private final static int cost = 0, delay = 0, repeat = 5;
 		private final static List<String> details = Lists.newArrayList("Spread the disco while sneaking.");
 		private String deity, permission;
+		private final static Skill.Type type = Skill.Type.PASSIVE;
 
 		public RainbowWalking(String deity, String permission)
 		{
@@ -227,6 +237,12 @@ public class Discoball implements Ability
 		public List<String> getDetails()
 		{
 			return details;
+		}
+
+		@Override
+		public Skill.Type getType()
+		{
+			return type;
 		}
 
 		@Override

@@ -1,19 +1,20 @@
 package com.censoredsoftware.demigods.engine.player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.battle.Participant;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.language.Translation;
 import com.censoredsoftware.demigods.engine.util.Configs;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class Skill implements ConfigurationSerializable
 {
@@ -28,35 +29,40 @@ public class Skill implements ConfigurationSerializable
 		/*
 		 * OFFENSE
 		 */
-		OFFENSE("Offense", "Offensive power.", new Permission("demigods.skill.offense", "Allows the player to obtain the Offense skill type.", PermissionDefault.TRUE), true),
+		OFFENSE("Offense", "Offensive power.", new Permission("demigods.skill.offense", "Allows the player to obtain the Offense skill type.", PermissionDefault.TRUE), true, true),
 		/*
 		 * DEFENSE
 		 */
-		DEFENSE("Defense", "Defensive power.", new Permission("demigods.skill.defense", "Allows the player to obtain the Defense skill type.", PermissionDefault.TRUE), true),
+		DEFENSE("Defense", "Defensive power.", new Permission("demigods.skill.defense", "Allows the player to obtain the Defense skill type.", PermissionDefault.TRUE), true, true),
 		/*
 		 * SUPPORT
 		 */
-		SUPPORT("Support", "Support power.", new Permission("demigods.skill.support", "Allows the player to obtain the Support skill type.", PermissionDefault.TRUE), true),
+		SUPPORT("Support", "Support power.", new Permission("demigods.skill.support", "Allows the player to obtain the Support skill type.", PermissionDefault.TRUE), true, true),
 		/*
 		 * ULTIMATE
 		 */
-		ULTIMATE("Ultimate", "Ultimate power.", new Permission("demigods.skill.ultimate", "Allows the player to obtain the Ultimate skill type.", PermissionDefault.TRUE), true),
+		ULTIMATE("Ultimate", "Ultimate power.", new Permission("demigods.skill.ultimate", "Allows the player to obtain the Ultimate skill type.", PermissionDefault.TRUE), true, true),
+		/*
+		 * PASSIVE
+		 */
+		PASSIVE("Passive", "Passive power.", new Permission("demigods.skill.passive", "Cannot be levelled.", PermissionDefault.TRUE), true, false),
 		/*
 		 * FAVOR REGEN
 		 */
-		FAVOR_REGEN("Favor Regen", "Favor regeneration bonus.", new Permission("demigods.skill.favorregen", "Allows the player to obtain the Favor Regeneration skill type.", PermissionDefault.TRUE), true);
+		FAVOR_REGEN("Favor Regen", "Favor regeneration bonus.", new Permission("demigods.skill.favorregen", "Allows the player to obtain the Favor Regeneration skill type.", PermissionDefault.TRUE), true, true);
 
 		private String name;
 		private String description;
 		private Permission permission;
-		private boolean isDefault;
+		private boolean isDefault, levelable;
 
-		private Type(String name, String description, Permission permission, boolean isDefault)
+		private Type(String name, String description, Permission permission, boolean isDefault, boolean levelable)
 		{
 			this.name = name;
 			this.description = description;
 			this.permission = permission;
 			this.isDefault = isDefault;
+			this.levelable = levelable;
 		}
 
 		public String getName()
@@ -77,6 +83,11 @@ public class Skill implements ConfigurationSerializable
 		public boolean isDefault()
 		{
 			return isDefault;
+		}
+
+		public boolean isLevelable()
+		{
+			return levelable;
 		}
 	}
 

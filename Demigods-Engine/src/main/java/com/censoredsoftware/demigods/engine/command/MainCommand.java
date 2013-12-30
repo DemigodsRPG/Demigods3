@@ -1,8 +1,10 @@
 package com.censoredsoftware.demigods.engine.command;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,6 +29,8 @@ import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 
 public class MainCommand extends WrappedCommand
@@ -160,7 +164,7 @@ public class MainCommand extends WrappedCommand
 				player.sendMessage(" ");
 				player.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
 				player.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "demigodsrpg.com");
-				player.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "github.com/CensoredSoftware/Minecraft-Demigods");
+				player.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "http://github.com/CensoredSoftware/Demigods");
 			}
 
 			return true;
@@ -187,25 +191,35 @@ public class MainCommand extends WrappedCommand
 						{
 							try
 							{
-								for(String toPrint : new ArrayList<String>()
+								Collection<String> claimItems = Collections2.transform(deity.getClaimItems().entrySet(), new Function<Map.Entry<Material, Integer>, String>()
 								{
+									@Override
+									public String apply(Map.Entry<Material, Integer> entry)
 									{
-										addAll(deity.getLore());
-										for(Ability ability : deity.getAbilities())
-										{
-											for(String detail : ability.getDetails())
-											{
-												StringBuilder details = new StringBuilder(ChatColor.GRAY + "   " + Symbol.RIGHTWARD_ARROW + " ");
-												if(ability.getCommand() != null) details.append(ChatColor.GREEN + "/").append(ability.getCommand().toLowerCase()).append(ChatColor.WHITE).append(": ");
-												details.append(ChatColor.WHITE).append(detail);
-												add(details.toString());
-												if(ability.getCost() > 0) add("      " + ChatColor.GRAY + "-" + ChatColor.WHITE + " Favor cost: " + ChatColor.RED + ability.getCost());
-											}
-										}
-										add(" ");
+										return entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : "");
 									}
-								})
-									player.sendMessage(toPrint);
+								});
+
+								// Name of the deity
+								player.sendMessage(" " + deity.getColor() + deity.getName() + ChatColor.GRAY + ": " + deity.getShortDescription() + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.RED + " (" + Symbol.CAUTION + " DIFFICULT)" : ""));
+
+								// Claim items
+								if(claimItems.size() == 1)
+								{
+									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.RESET + " requires " + ChatColor.ITALIC + StringUtils.join(claimItems, "") + ChatColor.RESET + " to claim.");
+								}
+								else
+								{
+									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.RESET + " requires " + ChatColor.ITALIC + StringUtils.join(claimItems, ChatColor.RESET + " and " + ChatColor.ITALIC) + ChatColor.RESET + " to claim.");
+								}
+
+								// Abilities
+								for(Ability ability : deity.getAbilities())
+								{
+									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + ChatColor.GREEN + "/" + ability.getName() + ChatColor.GOLD + "(" + ability.getType().getName() + ")" + ChatColor.GRAY + "(" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)");
+									player.sendMessage("    >" + ChatColor.ITALIC + ability.getDetails());
+								}
+
 								return true;
 							}
 							catch(Exception e)

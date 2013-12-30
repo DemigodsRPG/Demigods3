@@ -1,11 +1,7 @@
 package com.censoredsoftware.demigods.engine.ability;
 
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,7 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Template implements Ability
 {
@@ -23,6 +25,7 @@ public class Template implements Ability
 	private final static int cost = 170, delay = 1500, repeat = 0;
 	private final static List<String> details = Lists.newArrayList("Test your target.");
 	private String deity, permission;
+	private final static Skill.Type type = Skill.Type.OFFENSE;
 
 	public Template(String deity, String permission)
 	{
@@ -76,6 +79,12 @@ public class Template implements Ability
 	public List<String> getDetails()
 	{
 		return details;
+	}
+
+	@Override
+	public Skill.Type getType()
+	{
+		return type;
 	}
 
 	@Override

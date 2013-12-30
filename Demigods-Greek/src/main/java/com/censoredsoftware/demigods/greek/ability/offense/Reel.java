@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.offense;
 
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,7 +12,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Reel implements Ability
 {
@@ -26,6 +28,7 @@ public class Reel implements Ability
 	private final static Material weapon = Material.FISHING_ROD;
 	private final static List<String> details = Lists.newArrayList("Use a fishing rod for a stronger attack.");
 	private String deity, permission;
+	private final static Skill.Type type = Skill.Type.OFFENSE;
 
 	public Reel(String deity, String permission)
 	{
@@ -79,6 +82,12 @@ public class Reel implements Ability
 	public List<String> getDetails()
 	{
 		return details;
+	}
+
+	@Override
+	public Skill.Type getType()
+	{
+		return type;
 	}
 
 	@Override

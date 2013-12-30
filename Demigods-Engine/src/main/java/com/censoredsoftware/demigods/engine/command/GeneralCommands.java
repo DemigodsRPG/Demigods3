@@ -51,7 +51,7 @@ public class GeneralCommands extends WrappedCommand
 		else if(command.getName().equalsIgnoreCase("alliance")) return alliance(sender, args);
 		else if(command.getName().equalsIgnoreCase("binds")) return binds(sender);
 		else if(command.getName().equalsIgnoreCase("leaderboard")) return leaderboard(sender);
-		else if(command.getName().equalsIgnoreCase("values")) return values(sender);
+		else if(/* TODO: Remove "/values" before production release. It's here to lessen confusion from the switch to "/tributes". */command.getName().equalsIgnoreCase("values") || command.getName().equalsIgnoreCase("tributes")) return tributes(sender, command.getName());
 		else if(command.getName().equalsIgnoreCase("names")) return names(sender);
 		return false;
 	}
@@ -94,8 +94,8 @@ public class GeneralCommands extends WrappedCommand
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Favor: " + favorColor + favor + ChatColor.GRAY + " (of " + ChatColor.GREEN + maxFavor + ChatColor.GRAY + ")");
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Ascensions: " + ChatColor.GREEN + ascensions);
 		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Available Skill Points: " + ChatColor.GREEN + skillPoints);
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths);
-		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Status: " + status);
+		sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Kills: " + ChatColor.GREEN + kills + ChatColor.WHITE + " / Deaths: " + ChatColor.RED + deaths + ChatColor.GRAY + " (Ratio: " + (Math.round(kills / deaths * 100.0) / 100.0) + ")");
+	sender.sendMessage(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.RESET + "Status: " + status);
 
 		return true;
 	}
@@ -205,7 +205,7 @@ public class GeneralCommands extends WrappedCommand
 		return true;
 	}
 
-	private boolean values(CommandSender sender)
+	private boolean tributes(CommandSender sender, String commandName)
 	{
 		// Define variables
 		Player player = (Player) sender;
@@ -241,7 +241,15 @@ public class GeneralCommands extends WrappedCommand
 			sender.sendMessage(ChatColor.GRAY + "The " + (player.getItemInHand().getAmount() == 1 ? "item in your hand is" : "items in your hand are") + " worth " + ChatColor.GREEN + TributeManager.getValue(player.getItemInHand()) + ChatColor.GRAY + " in total.");
 		}
 
-		return true;
+		// TODO: Remove this before production release.
+		if(commandName.equalsIgnoreCase("values"))
+		{
+			sender.sendMessage(" ");
+			sender.sendMessage(ChatColor.RED + "Values will soon only be accessible with /tributes,");
+			sender.sendMessage(ChatColor.RED + "please refrain from using /values.");
+		}
+
+	return true;
 	}
 
 	private boolean names(CommandSender sender)

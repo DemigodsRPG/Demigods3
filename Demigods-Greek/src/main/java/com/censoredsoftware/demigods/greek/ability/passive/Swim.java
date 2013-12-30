@@ -1,10 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.passive;
 
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -17,7 +14,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.ability.Ability;
+import com.censoredsoftware.demigods.engine.deity.Deity;
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Swim implements Ability
 {
@@ -25,6 +27,7 @@ public class Swim implements Ability
 	private final static int cost = 0, delay = 0, repeat = 20;
 	private final static List<String> details = Lists.newArrayList("Crouch while in water to swim very fast.");
 	private String deity, permission;
+	private final static Skill.Type type = Skill.Type.PASSIVE;
 
 	public Swim(final String deity, String permission)
 	{
@@ -78,6 +81,12 @@ public class Swim implements Ability
 	public List<String> getDetails()
 	{
 		return details;
+	}
+
+	@Override
+	public Skill.Type getType()
+	{
+		return type;
 	}
 
 	@Override
