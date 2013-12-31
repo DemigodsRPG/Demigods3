@@ -4,11 +4,13 @@ import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.deity.Alliance;
 import com.censoredsoftware.demigods.engine.deity.Deity;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
+import com.censoredsoftware.demigods.engine.mythos.Mythos;
 import com.censoredsoftware.demigods.engine.mythos.MythosPlugin;
 import com.censoredsoftware.demigods.engine.structure.Structure;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
 public class ExclusiveMythos extends MythosPlugin
@@ -78,9 +80,33 @@ public class ExclusiveMythos extends MythosPlugin
 	}
 
 	@Override
+	public DivineItem getDivineItem(String itemName)
+	{
+		return Mythos.Util.getDivineItem(this, itemName);
+	}
+
+	@Override
+	public DivineItem getDivineItem(final ItemStack itemStack)
+	{
+		return Mythos.Util.getDivineItem(this, itemStack);
+	}
+
+	@Override
+	public boolean itemHasFlag(ItemStack itemStack, DivineItem.Flag flag)
+	{
+		return Mythos.Util.itemHasFlag(this, itemStack, flag);
+	}
+
+	@Override
 	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ImmutableSet.of();
+	}
+
+    @Override
+	public Alliance getAlliance(final String allianceName)
+	{
+		return Mythos.Util.getAlliance(this, allianceName);
 	}
 
 	@Override
@@ -89,10 +115,22 @@ public class ExclusiveMythos extends MythosPlugin
 		return ImmutableSet.of();
 	}
 
+    @Override
+    public Deity getDeity(final String deityName)
+    {
+		return Mythos.Util.getDeity(this, deityName);
+	}
+
 	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
 		return ImmutableSet.of();
+	}
+
+    @Override
+    public Structure getStructure(final String structureName)
+    {
+		return Mythos.Util.getStructure(this, structureName);
 	}
 
 	public Boolean levelSeperateSkills()
