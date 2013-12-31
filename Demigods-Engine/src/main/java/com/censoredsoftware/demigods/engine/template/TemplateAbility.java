@@ -1,5 +1,13 @@
 package com.censoredsoftware.demigods.engine.template;
 
+import java.util.List;
+
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.material.MaterialData;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.DPlayer;
 import com.censoredsoftware.demigods.engine.data.Skill;
@@ -7,21 +15,14 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.util.Abilities;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.material.MaterialData;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
 
 public class TemplateAbility implements Ability
 {
-	private final static String name = "Test", command = "test";
-	private final static int cost = 170, delay = 1500, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Test your target.");
-	private String deity;
-	private final static Skill.Type type = Skill.Type.OFFENSE;
+	private static final String NAME = "Test", COMMAND = "test";
+	private static final int COST = 170, DELAY = 1500, REPEAT = 0;
+	private static final List<String> DETAILS = Lists.newArrayList("Test your target.");
+	private static final Skill.Type TYPE = Skill.Type.OFFENSE;
+	private final String deity;
 
 	public TemplateAbility(String deity)
 	{
@@ -37,43 +38,43 @@ public class TemplateAbility implements Ability
 	@Override
 	public String getName()
 	{
-		return name;
+		return NAME;
 	}
 
 	@Override
 	public String getCommand()
 	{
-		return command;
+		return COMMAND;
 	}
 
 	@Override
 	public int getCost()
 	{
-		return cost;
+		return COST;
 	}
 
 	@Override
 	public int getDelay()
 	{
-		return delay;
+		return DELAY;
 	}
 
 	@Override
 	public int getRepeat()
 	{
-		return repeat;
+		return REPEAT;
 	}
 
 	@Override
 	public List<String> getDetails()
 	{
-		return details;
+		return DETAILS;
 	}
 
 	@Override
 	public Skill.Type getType()
 	{
-		return type;
+		return TYPE;
 	}
 
 	@Override
@@ -100,9 +101,9 @@ public class TemplateAbility implements Ability
 				DCharacter character = DPlayer.Util.getPlayer(player).getCurrent();
 				LivingEntity target = Abilities.autoTarget(player);
 
-				if(!Abilities.preProcessAbility(player, target, cost)) return false;
-				DCharacter.Util.setCoolDown(character, name, System.currentTimeMillis() + delay);
-				character.getMeta().subtractFavor(cost);
+				if(!Abilities.preProcessAbility(player, target, COST)) return false;
+				DCharacter.Util.setCoolDown(character, NAME, System.currentTimeMillis() + DELAY);
+				character.getMeta().subtractFavor(COST);
 
 				if(!Abilities.target(player, target.getLocation(), true)) return false;
 

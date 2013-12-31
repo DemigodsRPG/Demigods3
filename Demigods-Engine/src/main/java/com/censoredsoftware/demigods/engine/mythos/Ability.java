@@ -1,38 +1,39 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.google.common.base.Predicate;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.material.MaterialData;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.google.common.base.Predicate;
 
 public interface Ability
 {
-	public String getDeity();
+	String getDeity();
 
-	public String getName();
+	String getName();
 
-	public String getCommand();
+	String getCommand();
 
-	public int getCost();
+	int getCost();
 
-	public int getDelay();
+	int getDelay();
 
-	public int getRepeat();
+	int getRepeat();
 
-	public List<String> getDetails();
+	List<String> getDetails();
 
-	public Skill.Type getType();
+	Skill.Type getType();
 
-	public MaterialData getWeapon();
+	MaterialData getWeapon();
 
-	public boolean hasWeapon();
+	boolean hasWeapon();
 
-	public Predicate<Player> getActionPredicate();
+	Predicate<Player> getActionPredicate();
 
-	public Listener getListener();
+	Listener getListener();
 
-	public Runnable getRunnable();
+	Runnable getRunnable();
 }

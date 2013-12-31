@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.weapon;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -18,28 +18,29 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 
 public class BowOfTria extends GreekItem
 {
-	public final static String name = "Bow of Tría";
-	public final static String description = "Take your target out 3 times faster!";
-	public final static Set<Flag> flags = new HashSet<Flag>()
+	public static final String NAME = "Bow of Tría";
+	public static final String DESCRIPTION = "Take your target out 3 times faster!";
+	public static final Set<Flag> FLAGS = new HashSet<Flag>()
 	{
 		{
 			add(Flag.UNENCHANTABLE);
 		}
 	};
-	public final static DivineItem.Category category = DivineItem.Category.WEAPON;
-	public final static ItemStack item = Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + name, new ArrayList<String>()
+	public static final DivineItem.Category CATEGORY = DivineItem.Category.WEAPON;
+	public static final ItemStack ITEM = Items.create(Material.BOW, ChatColor.DARK_RED + "" + ChatColor.BOLD + NAME, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + description);
+			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + DESCRIPTION);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(item)
+	public static final Recipe RECIPE = new ShapedRecipe(ITEM)
 	{
 		{
 			shape("ABB", " AB", "C A");
@@ -48,7 +49,7 @@ public class BowOfTria extends GreekItem
 			setIngredient('C', Material.DIAMOND);
 		}
 	};
-	public final static Listener listener = new Listener()
+	public static final Listener LISTENER = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onEntityShootBow(EntityShootBowEvent event)
@@ -56,8 +57,8 @@ public class BowOfTria extends GreekItem
 			// Return for disabled world
 			if(Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 
-			// If they right clicked a block with the item in hand, do stuff
-			if(Items.areEqual(event.getBow(), item))
+			// If they right clicked a block with the ITEM in hand, do stuff
+			if(Items.areEqual(event.getBow(), ITEM))
 			{
 				PlayerInventory inventory = null;
 				Arrow startArrow = (Arrow) event.getProjectile();
@@ -83,7 +84,7 @@ public class BowOfTria extends GreekItem
 
 	private BowOfTria()
 	{
-		super(name, description, flags, category, item, recipe, listener);
+		super(NAME, DESCRIPTION, FLAGS, CATEGORY, ITEM, RECIPE, LISTENER);
 	}
 
 	private static final DivineItem INST = new BowOfTria();

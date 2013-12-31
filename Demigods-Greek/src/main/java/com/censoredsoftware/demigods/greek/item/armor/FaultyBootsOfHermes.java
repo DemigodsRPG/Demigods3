@@ -1,9 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,28 +17,29 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 
 public class FaultyBootsOfHermes extends GreekItem
 {
-	public final static String name = "Faulty Boots of Hermes";
-	public final static String description = "Walk as fast as Hermes!";
-	public final static Set<Flag> flags = new HashSet<Flag>()
+	public static final String NAME = "Faulty Boots of Hermes";
+	public static final String DESCRIPTION = "Walk as fast as Hermes!";
+	public static final Set<Flag> FLAGS = new HashSet<Flag>()
 	{
 		{
 			add(Flag.UNENCHANTABLE);
 		}
 	};
-	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
-	public final static ItemStack item = Items.create(Material.LEATHER_BOOTS, ChatColor.DARK_GREEN + name, new ArrayList<String>()
+	public static final DivineItem.Category CATEGORY = DivineItem.Category.ARMOR;
+	public static final ItemStack ITEM = Items.create(Material.LEATHER_BOOTS, ChatColor.DARK_GREEN + NAME, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.BLUE + "" + ChatColor.ITALIC + description);
+			add(ChatColor.BLUE + "" + ChatColor.ITALIC + DESCRIPTION);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(item)
+	public static final Recipe RECIPE = new ShapedRecipe(ITEM)
 	{
 		{
 			shape("AAA", "ABA", "AAA");
@@ -46,7 +47,7 @@ public class FaultyBootsOfHermes extends GreekItem
 			setIngredient('B', Material.LEATHER_BOOTS);
 		}
 	};
-	public final static Listener listener = new Listener()
+	public static final Listener LISTENER = new Listener()
 	{
 		@EventHandler
 		public void onPlayerExpChange(PlayerExpChangeEvent event)
@@ -56,7 +57,7 @@ public class FaultyBootsOfHermes extends GreekItem
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(ITEM, player.getInventory().getBoots()))
 			{
 				event.getPlayer().setVelocity(new Vector(0.1F, 3, 0));
 			}
@@ -69,7 +70,7 @@ public class FaultyBootsOfHermes extends GreekItem
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(ITEM, player.getInventory().getBoots()))
 			{
 				Vector victor = event.getVelocity();
 
@@ -82,7 +83,7 @@ public class FaultyBootsOfHermes extends GreekItem
 
 	private FaultyBootsOfHermes()
 	{
-		super(name, description, flags, category, item, recipe, listener);
+		super(NAME, DESCRIPTION, FLAGS, CATEGORY, ITEM, RECIPE, LISTENER);
 	}
 
 	private static final DivineItem INST = new FaultyBootsOfHermes();

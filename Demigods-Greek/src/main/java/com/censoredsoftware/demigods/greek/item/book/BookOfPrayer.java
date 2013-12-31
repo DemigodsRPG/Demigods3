@@ -1,11 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.book;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.data.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.censoredsoftware.demigods.greek.structure.Altar;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,22 +16,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
+import com.censoredsoftware.demigods.greek.structure.Altar;
 
 public class BookOfPrayer extends GreekItem
 {
-	public final static String name = "Book of Prayer";
-	public final static String description = "Teleport to the nearest Altar.";
-	public final static Set<Flag> flags = new HashSet<Flag>()
+	public static final String NAME = "Book of Prayer";
+	public static final String DESCRIPTION = "Teleport to the nearest Altar.";
+	public static final Set<Flag> FLAGS = new HashSet<Flag>()
 	{
 		{
 			add(Flag.UNENCHANTABLE);
 		}
 	};
-	public final static DivineItem.Category category = DivineItem.Category.BOOK;
-	public final static ItemStack item = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + name, new ArrayList<String>()
+	public static final DivineItem.Category CATEGORY = DivineItem.Category.BOOK;
+	public static final ItemStack ITEM = Items.create(Material.BOOK, ChatColor.AQUA + "" + ChatColor.BOLD + NAME, new ArrayList<String>()
 	{
 		{
 			add(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + "Right click to teleport to the nearest Altar.");
@@ -41,14 +42,14 @@ public class BookOfPrayer extends GreekItem
 			add(ChatColor.RED + "Consumed on use.");
 		}
 	}, null);
-	public final static Recipe recipe = new ShapelessRecipe(item)
+	public static final Recipe RECIPE = new ShapelessRecipe(ITEM)
 	{
 		{
 			addIngredient(1, Material.NETHER_STAR);
 			addIngredient(2, Material.BOOK);
 		}
 	};
-	public final static Listener listener = new Listener()
+	public static final Listener LISTENER = new Listener()
 	{
 		@EventHandler(priority = EventPriority.HIGH)
 		private void onRightClick(PlayerInteractEvent event)
@@ -58,7 +59,7 @@ public class BookOfPrayer extends GreekItem
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(item))
+			if(event.getAction().equals(Action.RIGHT_CLICK_AIR) && player.getItemInHand().equals(ITEM))
 			{
 				if(Altar.Util.isAltarNearby(player.getLocation()))
 				{
@@ -78,7 +79,7 @@ public class BookOfPrayer extends GreekItem
 
 	private BookOfPrayer()
 	{
-		super(name, description, flags, category, item, recipe, listener);
+		super(NAME, DESCRIPTION, FLAGS, CATEGORY, ITEM, RECIPE, LISTENER);
 	}
 
 	private static final DivineItem INST = new BookOfPrayer();

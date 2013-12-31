@@ -1,62 +1,63 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.google.common.collect.ImmutableSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.helper.ConfigFile2;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.google.common.collect.ImmutableSet;
 
 public interface Deity
 {
 	@Override
-	public String toString();
+	String toString();
 
-	public String getName();
+	String getName();
 
-	public Alliance getAlliance();
+	Alliance getAlliance();
 
-	public String getPermission();
+	String getPermission();
 
-	public ChatColor getColor();
+	ChatColor getColor();
 
-	public MaterialData getMaterialData();
+	MaterialData getMaterialData();
 
-	public Sound getSound();
+	Sound getSound();
 
-	public Map<Material, Integer> getClaimItems();
+	Map<Material, Integer> getClaimItems();
 
-	public Map<Material, Integer> getForsakeItems();
+	Map<Material, Integer> getForsakeItems();
 
-	public String getShortDescription();
+	String getShortDescription();
 
-	public List<String> getLore();
+	List<String> getLore();
 
-	public Set<Flag> getFlags();
+	Set<Flag> getFlags();
 
-	public List<Ability> getAbilities();
+	List<Ability> getAbilities();
 
-	public int getAccuracy();
+	int getAccuracy();
 
-	public int getFavorRegen();
+	int getFavorRegen();
 
-	public int getMaxFavor();
+	int getMaxFavor();
 
-	public double getMaxHealth();
+	double getMaxHealth();
 
-	public int getFavorBank();
+	int getFavorBank();
 
-	public void updateMood();
+	void updateMood();
 
-	public ConfigFile2 getConfig();
+	ConfigFile2 getConfig();
 
 	public enum Flag
 	{
@@ -75,28 +76,28 @@ public interface Deity
 
 	public interface MoodPack
 	{
-		public MaterialData getMaterialData();
+		MaterialData getMaterialData();
 
-		public Sound getSound();
+		Sound getSound();
 
-		public Map<Material, Integer> getClaimItems();
+		Map<Material, Integer> getClaimItems();
 
-		public Map<Material, Integer> getForsakeItems();
+		Map<Material, Integer> getForsakeItems();
 
-		public Set<Flag> getFlags();
+		Set<Flag> getFlags();
 
-		public List<Ability> getAbilities();
+		List<Ability> getAbilities();
 
-		public int getAccuracy();
+		int getAccuracy();
 
-		public int getFavorRegen();
+		int getFavorRegen();
 	}
 
 	public interface MoodManager
 	{
-		public void set(Mood mood, MoodPack moodPack);
+		void set(Mood mood, MoodPack moodPack);
 
-		public MoodPack get(Mood mood);
+		MoodPack get(Mood mood);
 	}
 
 	public static class Util

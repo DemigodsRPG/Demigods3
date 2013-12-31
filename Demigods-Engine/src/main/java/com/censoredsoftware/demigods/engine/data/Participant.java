@@ -1,19 +1,19 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
-import java.util.UUID;
-
 public interface Participant
 {
-	public UUID getId();
+	UUID getId();
 
-	public boolean canPvp();
+	boolean canPvp();
 
-	public Location getCurrentLocation();
+	Location getCurrentLocation();
 
-	public DCharacter getRelatedCharacter();
+	DCharacter getRelatedCharacter();
 
-	public LivingEntity getEntity();
+	LivingEntity getEntity();
 }

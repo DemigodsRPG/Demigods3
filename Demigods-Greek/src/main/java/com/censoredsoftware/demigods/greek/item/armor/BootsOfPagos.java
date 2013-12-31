@@ -1,12 +1,9 @@
 package com.censoredsoftware.demigods.greek.item.armor;
 
-import com.censoredsoftware.censoredlib.util.Items;
-import com.censoredsoftware.demigods.engine.mythos.DivineItem;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.censoredsoftware.demigods.greek.item.GreekItem;
-import com.google.common.collect.DiscreteDomains;
-import com.google.common.collect.Ranges;
-import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,28 +18,29 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import com.censoredsoftware.censoredlib.util.Items;
+import com.censoredsoftware.demigods.engine.mythos.DivineItem;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.censoredsoftware.demigods.greek.item.GreekItem;
 
 public class BootsOfPagos extends GreekItem
 {
-	public final static String name = "Boots of Pagos";
-	public final static String description = "Boots this cold have their advantages... and disadvantages.";
-	public final static Set<Flag> flags = new HashSet<Flag>()
+	public static final String NAME = "Boots of Pagos";
+	public static final String DESCRIPTION = "Boots this cold have their advantages... and disadvantages.";
+	public static final Set<Flag> FLAGS = new HashSet<Flag>()
 	{
 		{
 			add(Flag.UNENCHANTABLE);
 		}
 	};
-	public final static DivineItem.Category category = DivineItem.Category.ARMOR;
-	public final static ItemStack item = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + name, new ArrayList<String>()
+	public static final DivineItem.Category CATEGORY = DivineItem.Category.ARMOR;
+	public static final ItemStack ITEM = Items.create(Material.IRON_BOOTS, ChatColor.AQUA + NAME, new ArrayList<String>()
 	{
 		{
-			add(ChatColor.BLUE + "" + ChatColor.ITALIC + description);
+			add(ChatColor.BLUE + "" + ChatColor.ITALIC + DESCRIPTION);
 		}
 	}, null);
-	public final static Recipe recipe = new ShapedRecipe(item)
+	public static final Recipe RECIPE = new ShapedRecipe(ITEM)
 	{
 		{
 			shape("AAA", "ABA", "AAA");
@@ -50,7 +48,7 @@ public class BootsOfPagos extends GreekItem
 			setIngredient('B', Material.IRON_BOOTS);
 		}
 	};
-	public final static Listener listener = new Listener()
+	public static final Listener LISTENER = new Listener()
 	{
 		@EventHandler(priority = EventPriority.NORMAL)
 		private void onPlayerMove(PlayerMoveEvent event)
@@ -60,7 +58,7 @@ public class BootsOfPagos extends GreekItem
 			// Define variables
 			Player player = event.getPlayer();
 
-			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(item, player.getInventory().getBoots()))
+			if(player.getInventory().getBoots() != null && Items.areEqualIgnoreEnchantments(ITEM, player.getInventory().getBoots()))
 			{
 				Location location = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getLocation();
 
@@ -80,7 +78,7 @@ public class BootsOfPagos extends GreekItem
 
 	private BootsOfPagos()
 	{
-		super(name, description, flags, category, item, recipe, listener);
+		super(NAME, DESCRIPTION, FLAGS, CATEGORY, ITEM, RECIPE, LISTENER);
 	}
 
 	private static final DivineItem INST = new BootsOfPagos();
@@ -88,15 +86,5 @@ public class BootsOfPagos extends GreekItem
 	public static DivineItem inst()
 	{
 		return INST;
-	}
-
-	public static Set<Location> getSquare(Location center)
-	{
-		Set<Location> set = Sets.newHashSet();
-		Set<Integer> range = Ranges.closed(-1, 1).asSet(DiscreteDomains.integers());
-		for(int x : range)
-			for(int z : range)
-				set.add(center.clone().add(x, 0, z));
-		return set;
 	}
 }

@@ -1,5 +1,9 @@
 package com.censoredsoftware.demigods.engine;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.util.Threads;
 import com.censoredsoftware.censoredlib.util.Times;
 import com.censoredsoftware.demigods.engine.data.*;
@@ -10,9 +14,6 @@ import com.censoredsoftware.demigods.engine.util.Admins;
 import com.censoredsoftware.demigods.engine.util.Configs;
 import com.censoredsoftware.demigods.engine.util.Messages;
 import com.censoredsoftware.demigods.engine.util.Zones;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class TaskManager
@@ -21,15 +22,15 @@ public class TaskManager
 
 	public static void startThreads()
 	{
-		// Start sync demigods runnable
+		// Start SYNC demigods runnable
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
-		// Start sync demigods runnable
+		// Start SYNC demigods runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
-		// Start favor runnable
+		// Start FAVOR runnable
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
@@ -53,11 +54,11 @@ public class TaskManager
 
 	private static class Util
 	{
-		private final static BukkitRunnable sync, async, save, favor;
+		private static final BukkitRunnable SYNC, ASYNC, SAVE, FAVOR;
 
 		static
 		{
-			sync = new BukkitRunnable()
+			SYNC = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -76,7 +77,7 @@ public class TaskManager
 					Battle.Util.updateBattleParticles();
 				}
 			};
-			async = new BukkitRunnable()
+			ASYNC = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -88,7 +89,7 @@ public class TaskManager
 					NotificationManager.updateNotifications();
 				}
 			};
-			save = new BukkitRunnable()
+			SAVE = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -103,7 +104,7 @@ public class TaskManager
 					if(SAVE_ALERT) Messages.info(Bukkit.getOnlinePlayers().length + " of " + DataManager.players.size() + " total players saved in " + Times.getSeconds(time) + " seconds.");
 				}
 			};
-			favor = new BukkitRunnable()
+			FAVOR = new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -118,14 +119,14 @@ public class TaskManager
 		}
 
 		/**
-		 * Returns the main sync Demigods runnable. Methods requiring the Bukkit API and a constant
+		 * Returns the main SYNC Demigods runnable. Methods requiring the Bukkit API and a constant
 		 * update should go here.
 		 * 
 		 * @return the runnable to be enabled.
 		 */
 		public static BukkitRunnable getSyncDemigodsRunnable()
 		{
-			return sync;
+			return SYNC;
 		}
 
 		/**
@@ -136,7 +137,7 @@ public class TaskManager
 		 */
 		public static BukkitRunnable getAsyncDemigodsRunnable()
 		{
-			return async;
+			return ASYNC;
 		}
 
 		/**
@@ -146,18 +147,18 @@ public class TaskManager
 		 */
 		public static BukkitRunnable getSaveRunnable()
 		{
-			return save;
+			return SAVE;
 		}
 
 		/**
-		 * Returns the favor regeneration runnable. This must be placed here due to varying favor
+		 * Returns the FAVOR regeneration runnable. This must be placed here due to varying FAVOR
 		 * regeneration frequencies.
 		 * 
 		 * @return the runnable to be enabled.
 		 */
 		public static BukkitRunnable getFavorRunnable()
 		{
-			return favor;
+			return FAVOR;
 		}
 	}
 }

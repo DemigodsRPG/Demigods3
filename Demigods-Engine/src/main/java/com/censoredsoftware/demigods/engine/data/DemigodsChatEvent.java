@@ -1,23 +1,25 @@
 package com.censoredsoftware.demigods.engine.data;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Sets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Sets;
 
 public class DemigodsChatEvent extends Event implements Cancellable
 {
-	private static final HandlerList handlers = new HandlerList();
+	private static final HandlerList HANDLERS = new HandlerList();
 	private boolean cancel = false;
 	private String message;
 	private Set<Player> recipients;
@@ -76,11 +78,11 @@ public class DemigodsChatEvent extends Event implements Cancellable
 	@Override
 	public HandlerList getHandlers()
 	{
-		return handlers;
+		return HANDLERS;
 	}
 
 	public static HandlerList getHandlerList()
 	{
-		return handlers;
+		return HANDLERS;
 	}
 }

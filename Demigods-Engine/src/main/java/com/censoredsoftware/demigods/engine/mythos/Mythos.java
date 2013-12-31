@@ -1,63 +1,64 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import java.util.NoSuchElementException;
+
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Iterables;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
-import java.util.NoSuchElementException;
 
 public interface Mythos
 {
-	public String getTitle();
+	String getTitle();
 
-	public String getTagline();
+	String getTagline();
 
-	public String getAuthor();
+	String getAuthor();
 
-	public Boolean isPrimary();
+	Boolean isPrimary();
 
-	public Boolean allowSecondary();
+	Boolean allowSecondary();
 
-	public String[] getIncompatible();
+	String[] getIncompatible();
 
-	public Boolean useBaseGame();
+	Boolean useBaseGame();
 
-	public ImmutableCollection<DivineItem> getDivineItems();
+	ImmutableCollection<DivineItem> getDivineItems();
 
-	public DivineItem getDivineItem(String itemName);
+	DivineItem getDivineItem(String itemName);
 
-	public DivineItem getDivineItem(ItemStack itemStack);
+	DivineItem getDivineItem(ItemStack itemStack);
 
-	public boolean itemHasFlag(ItemStack itemStack, DivineItem.Flag flag);
+	boolean itemHasFlag(ItemStack itemStack, DivineItem.Flag flag);
 
-	public ImmutableCollection<Alliance> getAlliances();
+	ImmutableCollection<Alliance> getAlliances();
 
-	public Alliance getAlliance(String allianceName);
+	Alliance getAlliance(String allianceName);
 
-	public ImmutableCollection<Deity> getDeities();
+	ImmutableCollection<Deity> getDeities();
 
-	public Deity getDeity(String deityName);
+	Deity getDeity(String deityName);
 
-	public ImmutableCollection<Structure> getStructures();
+	ImmutableCollection<Structure> getStructures();
 
-	public Structure getStructure(String structureName);
+	Structure getStructure(String structureName);
 
-	public Boolean levelSeperateSkills();
+	Boolean levelSeperateSkills();
 
-	public ImmutableCollection<Listener> getListeners();
+	ImmutableCollection<Listener> getListeners();
 
-	public ImmutableCollection<Permission> getPermissions();
+	ImmutableCollection<Permission> getPermissions();
 
-	public ImmutableCollection<Trigger> getTriggers();
+	ImmutableCollection<Trigger> getTriggers();
 
-	public void setSecondary();
+	void setSecondary();
 
-	public void lock();
+	void lock();
 
 	public static class Util
 	{

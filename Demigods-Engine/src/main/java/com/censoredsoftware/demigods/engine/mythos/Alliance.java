@@ -1,28 +1,29 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
+import java.util.Collection;
+
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
+
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
-
-import java.util.Collection;
 
 public interface Alliance
 {
 	@Override
-	public String toString();
+	String toString();
 
-	public String getName();
+	String getName();
 
-	public String getShortDescription();
+	String getShortDescription();
 
-	public String getPermission();
+	String getPermission();
 
-	public PermissionDefault getPermissionDefault();
+	PermissionDefault getPermissionDefault();
 
-	public boolean isPlayable();
+	boolean isPlayable();
 
 	public static class Util
 	{

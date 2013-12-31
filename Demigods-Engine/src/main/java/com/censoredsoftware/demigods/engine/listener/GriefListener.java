@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.engine.listener;
 
-import com.censoredsoftware.demigods.engine.data.CLocationManager;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.StructureData;
-import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,14 +25,18 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import com.censoredsoftware.demigods.engine.data.CLocationManager;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.StructureData;
+import com.censoredsoftware.demigods.engine.mythos.Structure;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 public class GriefListener implements Listener
 {
-	private final static Set<Material> blockInventories = new HashSet<Material>()
+	private static final Set<Material> BLOCK_INVENTORIES = new HashSet<Material>()
 	{
 		{
 			add(Material.CHEST);
@@ -246,7 +247,7 @@ public class GriefListener implements Listener
 		Block block = event.getClickedBlock();
 		StructureData save = Iterables.getFirst(Structure.Util.getInRadiusWithFlag(block.getLocation(), Structure.Flag.NO_GRIEFING), null);
 		if(save == null || !save.hasMembers()) return;
-		if(blockInventories.contains(block.getType()))
+		if(BLOCK_INVENTORIES.contains(block.getType()))
 		{
 			DCharacter character = DPlayer.Util.getPlayer(event.getPlayer()).getCurrent();
 			Collection<UUID> members = save.getSanctifiers();

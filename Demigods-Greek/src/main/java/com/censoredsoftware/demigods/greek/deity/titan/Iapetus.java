@@ -17,23 +17,23 @@ import com.google.common.collect.Sets;
 
 public class Iapetus extends GreekDeity
 {
-	public final static String name = "Iapetus", shortDescription = ChatColor.GRAY + "The Titan of mortality.";
-	public final static Alliance alliance = GreekAlliance.TITAN;
-	public final static String permission = alliance.getPermission() + "." + name.toLowerCase();
-	public final static int accuracy = 15, favorRegen = 5, maxFavor = 20000, maxHealth = 40, favorBank = 10000;
-	public final static ChatColor color = ChatColor.RED;
-	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
-	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
-	public final static List<String> lore = Arrays.asList();
-	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
-	public final static List<Ability> abilities = Lists.newArrayList();
+	public final static String NAME = "Iapetus", SHORT_DESCRIPTION = ChatColor.GRAY + "The Titan of mortality.";
+	public final static Alliance ALLIANCE = GreekAlliance.TITAN;
+	public final static String PERMISSION = ALLIANCE.getPermission() + "." + NAME.toLowerCase();
+	public final static int ACCURACY = 15, FAVOR_REGEN = 5, MAX_FAVOR = 20000, MAX_HEALTH = 40, FAVOR_BANK = 10000;
+	public final static ChatColor COLOR = ChatColor.RED;
+	public final static Map<Material, Integer> CLAIM_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.ARROW, 2, Material.WOOD_SWORD, 1));
+	public final static Map<Material, Integer> FORSAKE_ITEMS = Maps.newHashMap(ImmutableMap.of(Material.GOLD_SWORD, 4));
+	public final static List<String> LORE = Arrays.asList();
+	public final static Set<Deity.Flag> FLAGS = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.NON_PLAYABLE);
+	public final static List<Ability> ABILITIES = Lists.newArrayList();
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);
 
 	private Iapetus()
 	{
-		super(name, permission, alliance, color, claimItems, forsakeItems, shortDescription, lore, flags, abilities, accuracy, favorRegen, maxFavor, maxHealth, favorBank, moodPacks);
+		super(NAME, PERMISSION, ALLIANCE, COLOR, CLAIM_ITEMS, FORSAKE_ITEMS, SHORT_DESCRIPTION, LORE, FLAGS, ABILITIES, ACCURACY, FAVOR_REGEN, MAX_FAVOR, MAX_HEALTH, FAVOR_BANK, moodPacks);
 	}
 
 	private static final Deity INST = new Iapetus();
