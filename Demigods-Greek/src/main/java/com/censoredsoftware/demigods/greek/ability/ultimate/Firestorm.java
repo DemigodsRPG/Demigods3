@@ -1,15 +1,9 @@
 package com.censoredsoftware.demigods.greek.ability.ultimate;
 
-import com.censoredsoftware.demigods.engine.DemigodsPlugin;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,15 +15,22 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
+import com.censoredsoftware.demigods.engine.DemigodsPlugin;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Firestorm implements Ability
 {
 	private final static String name = "Firestorm", command = "firestorm";
 	private final static int cost = 5500, delay = 15, repeat = 0;
-	private final static List<String> details = Lists.newArrayList("Rain down fireballs from the sky.");
+	private final static List<String> details = Lists.newArrayList("Rain fireballs from the sky.");
 	private String deity, permission;
 	private final static Skill.Type type = Skill.Type.ULTIMATE;
 
@@ -143,7 +144,7 @@ public class Firestorm implements Ability
 	{
 		private final static String name = "Fireball", command = "fireball";
 		private final static int cost = 100, delay = 5, repeat = 0;
-		private final static List<String> details = Lists.newArrayList("Shoot a fireball at the cursor's location.");
+		private final static List<String> details = Lists.newArrayList("Send a fireball flying at your enemy.");
 		private String deity, permission;
 		private final static Skill.Type type = Skill.Type.OFFENSE;
 
@@ -307,7 +308,7 @@ public class Firestorm implements Ability
 			if(!Abilities.doAbilityPreProcess(player, cost)) return;
 
 			int total = 3 * ((int) Math.pow(character.getMeta().getAscensions(), 0.35));
-			Deque<LivingEntity> entities = new ArrayDeque<LivingEntity>();
+			Deque<LivingEntity> entities = new ArrayDeque<>();
 
 			for(final Entity entity : player.getNearbyEntities(50, 50, 50)) // TODO: Make this dependent on levels.
 			{

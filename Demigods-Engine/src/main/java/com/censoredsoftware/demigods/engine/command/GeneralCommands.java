@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Maps2;
@@ -17,17 +29,6 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 public class GeneralCommands extends WrappedCommand
 {
@@ -170,9 +171,8 @@ public class GeneralCommands extends WrappedCommand
 		// Define variables
 		List<DCharacter> characters = Lists.newArrayList(DCharacter.Util.getAllUsable());
 		Map<UUID, Double> scores = Maps.newLinkedHashMap();
-		for(int i = 0; i < characters.size(); i++)
+		for(DCharacter character : characters)
 		{
-			DCharacter character = characters.get(i);
 			double score = character.getKillCount() - character.getDeathCount();
 			if(score > 0) scores.put(character.getId(), score);
 		}

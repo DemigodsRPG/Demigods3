@@ -1,5 +1,17 @@
 package com.censoredsoftware.demigods.engine.data;
 
+import java.util.*;
+
+import org.bukkit.*;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.censoredsoftware.censoredlib.data.inventory.CEnderInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CInventory;
 import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
@@ -16,17 +28,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.*;
 
 public class DCharacter implements Participant, ConfigurationSerializable
 {
@@ -253,7 +254,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 	{
 		if(potionEffects == null) potionEffects = Sets.newHashSet();
 
-		Set<PotionEffect> set = new HashSet<PotionEffect>();
+		Set<PotionEffect> set = new HashSet<>();
 		for(String stringId : potionEffects)
 		{
 			try
@@ -1392,6 +1393,30 @@ public class DCharacter implements Participant, ConfigurationSerializable
 				public boolean apply(DCharacter character)
 				{
 					return character.isActive() && character.getOfflinePlayer().isOnline();
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getAllCharactersWithDeity(final String deity)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isActive() && character.getDeity().getName().equalsIgnoreCase(deity);
+				}
+			});
+		}
+
+		public static Collection<DCharacter> getAllCharactersWithAlliance(final Alliance alliance)
+		{
+			return getCharactersWithPredicate(new Predicate<DCharacter>()
+			{
+				@Override
+				public boolean apply(DCharacter character)
+				{
+					return character.isActive() && character.getAlliance().equals(alliance);
 				}
 			});
 		}
