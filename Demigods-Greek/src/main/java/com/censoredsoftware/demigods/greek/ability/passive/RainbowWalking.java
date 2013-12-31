@@ -23,7 +23,7 @@ public class RainbowWalking extends GreekAbility.Passive
 			@Override
 			public void run()
 			{
-				for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity("DrD1sco"))
+				for(DCharacter online : DCharacter.Util.getOnlineCharactersWithDeity(deity))
 				{
 					Player player = online.getOfflinePlayer().getPlayer();
 					if(Zones.inNoDemigodsZone(player.getLocation()) || !player.isSneaking() || player.isFlying() || Zones.inNoPvpZone(player.getLocation()) || Zones.inNoBuildZone(player, player.getLocation())) continue;
