@@ -412,7 +412,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public Deity getDeity()
 	{
-		return Deity.Util.getDeity(this.deity);
+		return Demigods.mythos().getDeity(this.deity);
 	}
 
 	public Collection<Deity> getMinorDeities()
@@ -422,7 +422,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			@Override
 			public Deity apply(String deity)
 			{
-				return Deity.Util.getDeity(deity);
+				return Demigods.mythos().getDeity(deity);
 			}
 		});
 	}
@@ -536,7 +536,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 
 	public void updateUseable()
 	{
-		usable = Deity.Util.getDeity(this.deity) != null && Deity.Util.getDeity(this.deity).getFlags().contains(Deity.Flag.PLAYABLE);
+		usable = Demigods.mythos().getDeity(this.deity) != null && Demigods.mythos().getDeity(this.deity).getFlags().contains(Deity.Flag.PLAYABLE);
 	}
 
 	public UUID getId()
@@ -1108,7 +1108,7 @@ public class DCharacter implements Participant, ConfigurationSerializable
 			if(getCharacterByName(charName) == null)
 			{
 				// Create the DCharacter
-				return create(player, charName, Deity.Util.getDeity(charDeity));
+				return create(player, charName, Demigods.mythos().getDeity(charDeity));
 			}
 			return null;
 		}

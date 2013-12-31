@@ -26,6 +26,7 @@ import com.censoredsoftware.demigods.greek.trigger.ProcessAltars;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.ServicePriority;
 
@@ -100,9 +101,33 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
+	public DivineItem getDivineItem(String itemName)
+	{
+		return Mythos.Util.getDivineItem(this, itemName);
+	}
+
+	@Override
+	public DivineItem getDivineItem(final ItemStack itemStack)
+	{
+		return Mythos.Util.getDivineItem(this, itemStack);
+	}
+
+	@Override
+	public boolean itemHasFlag(ItemStack itemStack, DivineItem.Flag flag)
+	{
+		return Mythos.Util.itemHasFlag(this, itemStack, flag);
+	}
+
+	@Override
 	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ImmutableSet.copyOf((Alliance[]) GreekAlliance.values());
+	}
+
+	@Override
+	public Alliance getAlliance(final String allianceName)
+	{
+		return Mythos.Util.getAlliance(this, allianceName);
 	}
 
 	@Override
@@ -112,9 +137,21 @@ public class GreekMythos extends MythosPlugin
 	}
 
 	@Override
+	public Deity getDeity(final String deityName)
+	{
+		return Mythos.Util.getDeity(this, deityName);
+	}
+
+	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
 		return ImmutableSet.of(Altar.inst(), Obelisk.inst(), Shrine.inst());
+	}
+
+	@Override
+	public Structure getStructure(final String structureName)
+	{
+		return Mythos.Util.getStructure(this, structureName);
 	}
 
 	public Boolean levelSeperateSkills()

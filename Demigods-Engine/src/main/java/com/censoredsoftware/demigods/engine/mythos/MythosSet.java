@@ -9,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
 import java.util.Collections;
@@ -131,9 +132,33 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
+	public DivineItem getDivineItem(String itemName)
+	{
+		return Mythos.Util.getDivineItem(this, itemName);
+	}
+
+	@Override
+	public DivineItem getDivineItem(final ItemStack itemStack)
+	{
+		return Mythos.Util.getDivineItem(this, itemStack);
+	}
+
+	@Override
+	public boolean itemHasFlag(ItemStack itemStack, DivineItem.Flag flag)
+	{
+		return Mythos.Util.itemHasFlag(this, itemStack, flag);
+	}
+
+	@Override
 	public ImmutableCollection<Alliance> getAlliances()
 	{
 		return ALLIANCES;
+	}
+
+	@Override
+	public Alliance getAlliance(final String allianceName)
+	{
+		return Mythos.Util.getAlliance(this, allianceName);
 	}
 
 	@Override
@@ -143,9 +168,21 @@ public class MythosSet implements Mythos
 	}
 
 	@Override
+	public Deity getDeity(final String deityName)
+	{
+		return Mythos.Util.getDeity(this, deityName);
+	}
+
+	@Override
 	public ImmutableCollection<Structure> getStructures()
 	{
 		return STRUCTURES;
+	}
+
+	@Override
+	public Structure getStructure(final String structureName)
+	{
+		return Mythos.Util.getStructure(this, structureName);
 	}
 
 	@Override

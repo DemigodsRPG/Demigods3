@@ -1,5 +1,6 @@
 package com.censoredsoftware.demigods.engine.listener;
 
+import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.data.DataManager;
 import com.censoredsoftware.demigods.engine.item.DivineItem;
@@ -28,7 +29,7 @@ public class FlagListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEnchantEvent(EnchantItemEvent event)
 	{
-		if(DivineItem.Util.hasFlag(event.getItem(), DivineItem.Flag.UNENCHANTABLE)) event.setCancelled(true);
+		if(Demigods.mythos().itemHasFlag(event.getItem(), DivineItem.Flag.UNENCHANTABLE)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

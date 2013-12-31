@@ -6,7 +6,6 @@ import com.censoredsoftware.censoredlib.data.inventory.CItemStack;
 import com.censoredsoftware.censoredlib.data.location.CLocation;
 import com.censoredsoftware.censoredlib.data.player.Notification;
 import com.censoredsoftware.censoredlib.helper.ConfigFile;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.DemigodsPlugin;
 import com.censoredsoftware.demigods.engine.battle.Battle;
 import com.censoredsoftware.demigods.engine.data.util.ServerDatas;
@@ -49,8 +48,13 @@ public class DataManager
 	public static ConcurrentMap<UUID, TributeData> tributeData;
 	private static Table<String, String, Object> tempData;
 
+	public static final String SAVE_PATH;
+
 	static
 	{
+		// Data folder
+		SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.
+
 		for(File file : File.values())
 			file.getConfigFile().loadToData();
 		tempData = Tables.newCustomTable(new ConcurrentHashMap<String, Map<String, Object>>(), new Supplier<ConcurrentHashMap<String, Object>>()
@@ -232,7 +236,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -275,7 +279,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -318,7 +322,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -361,7 +365,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -404,7 +408,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -447,7 +451,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -490,7 +494,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -533,7 +537,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -576,7 +580,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -619,7 +623,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -662,7 +666,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -705,7 +709,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -748,7 +752,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -791,7 +795,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -834,7 +838,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -877,7 +881,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override
@@ -920,7 +924,7 @@ public class DataManager
 			@Override
 			public String getSavePath()
 			{
-				return Demigods.SAVE_PATH;
+				return SAVE_PATH;
 			}
 
 			@Override

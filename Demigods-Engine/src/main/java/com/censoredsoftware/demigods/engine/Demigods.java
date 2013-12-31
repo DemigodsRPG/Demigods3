@@ -56,7 +56,6 @@ public class Demigods extends CensoredCentralizedClass
 	public static Scoreboard BOARD;
 
 	// Public Static Access
-	public static final String SAVE_PATH;
 	public static final ConversationFactory CONVERSATION_FACTORY;
 	public static final ScoreboardManager SCOREBOARD_MANAGER;
 
@@ -74,9 +73,6 @@ public class Demigods extends CensoredCentralizedClass
 	// Load what is possible to load right away.
 	static
 	{
-		// Data folder
-		SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.
-
 		// Conversation factory static access.
 		CONVERSATION_FACTORY = new ConversationFactory(DemigodsPlugin.plugin());
 

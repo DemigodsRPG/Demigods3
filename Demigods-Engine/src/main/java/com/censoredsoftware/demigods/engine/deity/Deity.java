@@ -1,13 +1,10 @@
 package com.censoredsoftware.demigods.engine.deity;
 
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -104,26 +101,6 @@ public interface Deity
 
 	public static class Util
 	{
-		public static Deity getDeity(final String deityName)
-		{
-			try
-			{
-				return Iterables.find(Demigods.mythos().getDeities(), new Predicate<Deity>()
-				{
-					@Override
-					public boolean apply(Deity deity)
-					{
-						return deity.getName().equalsIgnoreCase(deityName);
-					}
-				});
-			}
-			catch(Exception ignored)
-			{
-				// ignored
-			}
-			return null;
-		}
-
 		public static boolean canUseDeity(DCharacter character, String deity)
 		{
 			if(character == null) return false;

@@ -10,6 +10,8 @@ import com.censoredsoftware.demigods.engine.item.DivineItem
 import com.google.common.collect.{ImmutableSet, ImmutableCollection}
 import org.bukkit.Bukkit
 import org.bukkit.plugin.ServicePriority
+import org.bukkit.inventory.ItemStack
+import com.censoredsoftware.demigods.engine.item.DivineItem.Flag
 
 class DemigodsPanelPlugin extends MythosPlugin
 {
@@ -37,11 +39,23 @@ class DemigodsPanelPlugin extends MythosPlugin
 
   override def getDivineItems: ImmutableCollection[DivineItem] = ImmutableSet.of()
 
+  override def getDivineItem(itemName: java.lang.String): DivineItem = Mythos.Util.getDivineItem(this, itemName)
+
+  override def getDivineItem(itemStack: ItemStack): DivineItem = Mythos.Util.getDivineItem(this, itemStack)
+
+  override def itemHasFlag(itemStack: ItemStack, flag: Flag): Boolean = Mythos.Util.itemHasFlag(this, itemStack, flag)
+
   override def getAlliances: ImmutableCollection[Alliance] = ImmutableSet.of()
+
+  override def getAlliance(allianceName: java.lang.String): Alliance = Mythos.Util.getAlliance(this, allianceName)
 
   override def getDeities: ImmutableCollection[Deity] = ImmutableSet.of()
 
+  override def getDeity(deityName: java.lang.String): Deity = Mythos.Util.getDeity(this, deityName)
+
   override def getStructures: ImmutableCollection[Structure] = ImmutableSet.of()
+
+  override def getStructure(structureName: java.lang.String): Structure = Mythos.Util.getStructure(this, structureName)
 
   override def levelSeperateSkills(): java.lang.Boolean = Boolean.box(x = true)
 

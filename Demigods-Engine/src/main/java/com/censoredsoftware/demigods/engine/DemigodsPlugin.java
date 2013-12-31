@@ -31,11 +31,6 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 		return INST;
 	}
 
-	public static DemigodsPlugin inst()
-	{
-		return INST;
-	}
-
 	/**
 	 * The Bukkit enable method.
 	 */
