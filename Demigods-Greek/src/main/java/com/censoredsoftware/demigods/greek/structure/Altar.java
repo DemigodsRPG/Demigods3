@@ -40,6 +40,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Structure.Meta(name = "Altar")
 public class Altar extends GreekStructure
 {
 	private static final String name = "Altar";
@@ -401,7 +402,7 @@ public class Altar extends GreekStructure
 		super(name, AltarDesign.values(), getDesign, createNew, sanctify, corrupt, birth, kill, flags, listener, radius, allow, sanctity, sanctityRegen);
 	}
 
-	public static enum AltarDesign implements GreekStructure.Design
+	public enum AltarDesign implements GreekStructure.Design
 	{
 		GENERAL(general, new Selection(0, 2, 0)), HOLY(holy, new Selection(0, 2, 0)), OASIS(oasis, new Selection(0, 1, 0));
 
@@ -497,7 +498,7 @@ public class Altar extends GreekStructure
 
 		public static boolean isAltarNearby(final Location location)
 		{
-			return Iterables.any(inst().getAll(), new Predicate<StructureData>()
+			return Iterables.any(Structure.Util.getStructureWithType(Altar.class), new Predicate<StructureData>()
 			{
 				@Override
 				public boolean apply(StructureData save)
@@ -511,7 +512,7 @@ public class Altar extends GreekStructure
 		{
 			try
 			{
-				return Iterables.find(inst().getAll(), new Predicate<StructureData>()
+				return Iterables.find(Structure.Util.getStructureWithType(Altar.class), new Predicate<StructureData>()
 				{
 					@Override
 					public boolean apply(StructureData save)

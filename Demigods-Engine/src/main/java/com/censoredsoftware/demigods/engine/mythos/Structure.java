@@ -14,6 +14,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -21,51 +25,54 @@ import java.util.Set;
 
 public interface Structure
 {
-	public String getName();
+	Design getDesign(final String name);
 
-	public Design getDesign(final String name);
+	Collection<Flag> getFlags();
 
-	public Set<Flag> getFlags();
+	Listener getUniqueListener();
 
-	public Listener getUniqueListener();
+	boolean sanctify(StructureData data, DCharacter character);
 
-	public boolean sanctify(StructureData data, DCharacter character);
+	boolean corrupt(StructureData data, DCharacter character);
 
-	public boolean corrupt(StructureData data, DCharacter character);
+	boolean birth(StructureData data, DCharacter character);
 
-	public boolean birth(StructureData data, DCharacter character);
+	boolean kill(StructureData data, DCharacter character);
 
-	public boolean kill(StructureData data, DCharacter character);
+	float getDefSanctity();
 
-	public float getDefSanctity();
+	float getSanctityRegen();
 
-	public float getSanctityRegen();
+	int getRadius();
 
-	public int getRadius();
+	boolean isAllowed(CommandSender sender);
 
-	public Predicate<CommandSender> isAllowed();
-
-	public Collection<StructureData> getAll();
-
-	public StructureData createNew(Location reference, boolean generate);
+	StructureData createNew(Location reference, boolean generate);
 
 	public interface Design
 	{
-		public String getName();
+		String getName();
 
-		public Set<Location> getClickableBlocks(Location reference);
+		Set<Location> getClickableBlocks(Location reference);
 
-		public Schematic getSchematic();
+		Schematic getSchematic();
 	}
 
 	public interface InteractFunction<T>
 	{
-		public T apply(@Nullable StructureData data, @Nullable DCharacter character);
+		T apply(@Nullable StructureData data, @Nullable DCharacter character);
 	}
 
 	public enum Flag
 	{
 		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, INVISIBLE_WALL, NO_OVERLAP
+	}
+
+	@Target({ ElementType.TYPE })
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface Meta
+	{
+		String name();
 	}
 
 	public static class Util
@@ -286,6 +293,21 @@ public interface Structure
 				public boolean apply(StructureData save)
 				{
 					return save.getRawFlags() != null && save.getRawFlags().contains(flag.name());
+				}
+			});
+		}
+
+		public static Collection<StructureData> getStructureWithType(final Class<? extends Structure> clazz)
+		{
+			if(!clazz.isAnnotationPresent(Meta.class)) return Sets.newHashSet();
+			final String name = clazz.getAnnotation(Meta.class).name();
+			return StructureData.Util.findAll(new Predicate<StructureData>()
+			{
+				@Override
+				public boolean apply(StructureData save)
+				{
+
+					return name.equals(save.getTypeName());
 				}
 			});
 		}

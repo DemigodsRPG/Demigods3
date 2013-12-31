@@ -1,36 +1,54 @@
 package com.censoredsoftware.demigods.exclusive.structure;
 
+import com.censoredsoftware.censoredlib.schematic.Schematic;
 import com.censoredsoftware.demigods.engine.data.DCharacter;
 import com.censoredsoftware.demigods.engine.data.StructureData;
 import com.censoredsoftware.demigods.engine.mythos.Structure;
-import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
-import java.util.Collection;
 import java.util.Set;
 
-// TODO
-
-public class InvisibleWall implements Structure
+@Structure.Meta(name = "InvisibleWall")
+public class InvisibleWall extends StructureData implements Structure, Structure.Design
 {
-	@Override
-	public String getName()
+	private final String permission;
+
+	public InvisibleWall(final String permission)
 	{
-		return null;
+		this.permission = permission;
 	}
 
 	@Override
-	public Design getDesign(String name)
+	public String getName()
 	{
-		return null;
+		return "Invisible Wall";
+	}
+
+	@Override
+	public Set<Location> getClickableBlocks(Location reference)
+	{
+		return null; // TODO
+	}
+
+	@Override
+	public Schematic getSchematic()
+	{
+		return null; // TODO
+	}
+
+	@Override
+	public Design getDesign(String unused)
+	{
+		return this;
 	}
 
 	@Override
 	public Set<Flag> getFlags()
 	{
-		return null;
+		return Sets.newHashSet(Flag.INVISIBLE_WALL);
 	}
 
 	@Override
@@ -78,23 +96,17 @@ public class InvisibleWall implements Structure
 	@Override
 	public int getRadius()
 	{
-		return 0;
+		return 16;
 	}
 
 	@Override
-	public Predicate<CommandSender> isAllowed()
+	public boolean isAllowed(CommandSender sender)
 	{
-		return null;
+		return sender.hasPermission(permission);
 	}
 
 	@Override
-	public Collection<StructureData> getAll()
-	{
-		return null;
-	}
-
-	@Override
-	public StructureData createNew(Location reference, boolean generate)
+	public InvisibleWall createNew(Location reference, boolean generate)
 	{
 		return null;
 	}
