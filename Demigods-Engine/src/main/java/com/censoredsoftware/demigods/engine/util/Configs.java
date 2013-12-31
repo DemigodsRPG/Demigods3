@@ -18,9 +18,9 @@ public class Configs
 	 */
 	static
 	{
-		Configuration config = DemigodsPlugin.inst().getConfig();
+		Configuration config = DemigodsPlugin.plugin().getConfig();
 		config.options().copyDefaults(true);
-		DemigodsPlugin.inst().saveConfig();
+		DemigodsPlugin.plugin().saveConfig();
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class Configs
 	 */
 	public static int getSettingInt(String id)
 	{
-		if(DemigodsPlugin.inst().getConfig().isInt(id)) return DemigodsPlugin.inst().getConfig().getInt(id);
+		if(DemigodsPlugin.plugin().getConfig().isInt(id)) return DemigodsPlugin.plugin().getConfig().getInt(id);
 		else return -1;
 	}
 
@@ -43,7 +43,7 @@ public class Configs
 	 */
 	public static String getSettingString(String id)
 	{
-		if(DemigodsPlugin.inst().getConfig().isString(id)) return DemigodsPlugin.inst().getConfig().getString(id);
+		if(DemigodsPlugin.plugin().getConfig().isString(id)) return DemigodsPlugin.plugin().getConfig().getString(id);
 		else return null;
 	}
 
@@ -55,7 +55,7 @@ public class Configs
 	 */
 	public static boolean getSettingBoolean(String id)
 	{
-		return !DemigodsPlugin.inst().getConfig().isBoolean(id) || DemigodsPlugin.inst().getConfig().getBoolean(id);
+		return !DemigodsPlugin.plugin().getConfig().isBoolean(id) || DemigodsPlugin.plugin().getConfig().getBoolean(id);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class Configs
 	public static float getSettingFloat(String id)
 	{
 		String floatValue = "-1F";
-		if(DemigodsPlugin.inst().getConfig().isString(id)) floatValue = DemigodsPlugin.inst().getConfig().getString(id);
+		if(DemigodsPlugin.plugin().getConfig().isString(id)) floatValue = DemigodsPlugin.plugin().getConfig().getString(id);
 		try
 		{
 			return Float.valueOf(floatValue);
@@ -85,7 +85,7 @@ public class Configs
 	 */
 	public static double getSettingDouble(String id)
 	{
-		if(DemigodsPlugin.inst().getConfig().isDouble(id)) return DemigodsPlugin.inst().getConfig().getDouble(id);
+		if(DemigodsPlugin.plugin().getConfig().isDouble(id)) return DemigodsPlugin.plugin().getConfig().getDouble(id);
 		else return -1;
 	}
 
@@ -97,7 +97,7 @@ public class Configs
 	 */
 	public static List<String> getSettingList(String id)
 	{
-		if(DemigodsPlugin.inst().getConfig().isList(id)) return DemigodsPlugin.inst().getConfig().getStringList(id);
+		if(DemigodsPlugin.plugin().getConfig().isList(id)) return DemigodsPlugin.plugin().getConfig().getStringList(id);
 		return null;
 	}
 
@@ -105,15 +105,15 @@ public class Configs
 	{
 		List<String> list = getSettingList(id);
 		list.add(data);
-		DemigodsPlugin.inst().getConfig().set(id, list);
-		DemigodsPlugin.inst().saveConfig();
+		DemigodsPlugin.plugin().getConfig().set(id, list);
+		DemigodsPlugin.plugin().saveConfig();
 	}
 
 	public static void removeFromSettingList(String id, String data)
 	{
 		List<String> list = getSettingList(id);
 		list.remove(data);
-		DemigodsPlugin.inst().getConfig().set(id, list);
-		DemigodsPlugin.inst().saveConfig();
+		DemigodsPlugin.plugin().getConfig().set(id, list);
+		DemigodsPlugin.plugin().saveConfig();
 	}
 }

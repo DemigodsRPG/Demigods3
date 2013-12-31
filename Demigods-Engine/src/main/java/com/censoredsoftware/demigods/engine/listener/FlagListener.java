@@ -98,7 +98,7 @@ public class FlagListener implements Listener
 		if(event.getEntity() == null || Zones.inNoDemigodsZone(event.getEntity().getLocation())) return;
 		final List<StructureData> saves = Lists.newArrayList(Structure.Util.getInRadiusWithFlag(event.getLocation(), Structure.Flag.PROTECTED_BLOCKS, Structure.Flag.DESTRUCT_ON_BREAK));
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -113,7 +113,7 @@ public class FlagListener implements Listener
 		if(DataManager.hasTimed("explode", "structure")) return;
 		DataManager.saveTimed("explode", "structure", true, 2);
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 		{
 			@Override
 			public void run()

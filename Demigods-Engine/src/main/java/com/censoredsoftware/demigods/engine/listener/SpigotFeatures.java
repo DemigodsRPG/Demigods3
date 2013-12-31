@@ -18,7 +18,7 @@ public class SpigotFeatures implements Listener
 {
 	public SpigotFeatures()
 	{
-		Threads.registerTrigger(DemigodsPlugin.inst(), new Trigger()
+		Threads.registerTrigger(DemigodsPlugin.plugin(), new Trigger()
 		{
 			@Override
 			public void processSync()

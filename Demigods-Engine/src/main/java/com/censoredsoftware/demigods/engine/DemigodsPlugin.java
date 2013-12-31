@@ -26,6 +26,11 @@ public class DemigodsPlugin extends CensoredJavaPlugin
 	static DemigodsPlugin INST;
 	static boolean READY = false;
 
+	public static Plugin plugin()
+	{
+		return INST;
+	}
+
 	public static DemigodsPlugin inst()
 	{
 		return INST;

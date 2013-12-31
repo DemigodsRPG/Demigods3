@@ -480,7 +480,7 @@ public class Altar extends GreekStructure
 					location.getWorld().strikeLightningEffect(location);
 					location.getWorld().strikeLightningEffect(location);
 
-					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 					{
 						@Override
 						public void run()

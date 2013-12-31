@@ -28,8 +28,8 @@ public class Messages
 	 */
 	static
 	{
-		LOGGER = DemigodsPlugin.inst().getLogger();
-		PLUGIN_NAME = DemigodsPlugin.inst().getName();
+		LOGGER = DemigodsPlugin.plugin().getLogger();
+		PLUGIN_NAME = DemigodsPlugin.plugin().getName();
 		LINE_SIZE = 59 - PLUGIN_NAME.length();
 		IN_GAME_LINE_SIZE = 54;
 	}
@@ -117,7 +117,7 @@ public class Messages
 	{
 		if(ChatColor.stripColor(msg).length() > IN_GAME_LINE_SIZE)
 		{
-			Server server = DemigodsPlugin.inst().getServer();
+			Server server = DemigodsPlugin.plugin().getServer();
 			for(String line : wrapInGame(msg))
 			{
 				DemigodsChatEvent chatEvent = new DemigodsChatEvent(line);
@@ -128,7 +128,7 @@ public class Messages
 		}
 		DemigodsChatEvent chatEvent = new DemigodsChatEvent(msg);
 		Bukkit.getPluginManager().callEvent(chatEvent);
-		if(!chatEvent.isCancelled()) DemigodsPlugin.inst().getServer().broadcastMessage(msg);
+		if(!chatEvent.isCancelled()) DemigodsPlugin.plugin().getServer().broadcastMessage(msg);
 	}
 
 	public static String[] wrapInGame(String msg)

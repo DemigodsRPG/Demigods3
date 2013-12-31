@@ -440,7 +440,7 @@ public class Battle implements ConfigurationSerializable
 	{
 		final Battle battle = this;
 
-		runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), new BukkitRunnable()
+		runnableId = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 		{
 			@Override
 			public void run()

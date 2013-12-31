@@ -328,7 +328,7 @@ public class Firestorm implements Ability
 			{
 				for(final LivingEntity entity : entities)
 				{
-					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new Runnable()
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new Runnable()
 					{
 						@Override
 						public void run()

@@ -1386,7 +1386,7 @@ public class Prayer implements WrappedConversation
 				player.playSound(player.getLocation(), Sound.AMBIENCE_CAVE, 0.6F, 1F);
 
 				// Delay for dramatic effect
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 				{
 					@Override
 					public void run()

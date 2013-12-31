@@ -170,7 +170,7 @@ public class DPlayer implements ConfigurationSerializable
 			int delay = Configs.getSettingInt("zones.pvp_area_delay_time");
 			DataManager.saveTimed(player.getName(), "pvp_cooldown", true, delay);
 
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
 				@Override
 				public void run()
@@ -296,7 +296,7 @@ public class DPlayer implements ConfigurationSerializable
 			character.setLevel(player.getLevel());
 			character.setExperience(player.getExp());
 			character.setLocation(player.getLocation());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
+			Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 			{
 				@Override
 				public void run()

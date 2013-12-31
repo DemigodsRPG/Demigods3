@@ -28,33 +28,33 @@ public class TaskManager
 	public static void startThreads()
 	{
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), Util.getSyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods SYNC runnable enabled...");
 
 		// Start sync demigods runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getAsyncDemigodsRunnable(), 20, 20);
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getAsyncDemigodsRunnable(), 20, 20);
 		Admins.sendDebug("Main Demigods ASYNC runnable enabled...");
 
 		// Start favor runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getFavorRunnable(), 20, (Configs.getSettingInt("regeneration_rates.favor") * 20));
 		Admins.sendDebug("Favor regeneration runnable enabled...");
 
 		// Start saving runnable
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.inst(), Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(DemigodsPlugin.plugin(), Util.getSaveRunnable(), 20, (Configs.getSettingInt("saving.freq") * 20));
 
 		// Enable Deity runnables
 		for(Deity deity : Demigods.mythos().getDeities())
 			for(Ability ability : deity.getAbilities())
-				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), ability.getRunnable(), ability.getDelay(), ability.getRepeat());
+				if(ability.getRunnable() != null) Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), ability.getRunnable(), ability.getDelay(), ability.getRepeat());
 
 		// Triggers
-		Threads.registerTriggers(DemigodsPlugin.inst(), Demigods.mythos().getTriggers());
+		Threads.registerTriggers(DemigodsPlugin.plugin(), Demigods.mythos().getTriggers());
 	}
 
 	public static void stopThreads()
 	{
-		DemigodsPlugin.inst().getServer().getScheduler().cancelTasks(DemigodsPlugin.inst());
-		Threads.stopHooker(DemigodsPlugin.inst());
+		DemigodsPlugin.plugin().getServer().getScheduler().cancelTasks(DemigodsPlugin.plugin());
+		Threads.stopHooker(DemigodsPlugin.plugin());
 	}
 
 	private static class Util

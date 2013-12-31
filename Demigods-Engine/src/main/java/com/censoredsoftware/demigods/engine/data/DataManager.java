@@ -97,8 +97,8 @@ public class DataManager
 		save();
 
 		// Reload the PLUGIN
-		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.inst());
-		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.inst());
+		Bukkit.getServer().getPluginManager().disablePlugin(DemigodsPlugin.plugin());
+		Bukkit.getServer().getPluginManager().enablePlugin(DemigodsPlugin.plugin());
 	}
 
 	/*

@@ -35,12 +35,12 @@ public class Zones
 		ENABLED_WORLDS = ImmutableSet.copyOf(enabledWorlds);
 
 		// Zone listener (load here for consistency)
-		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.inst());
+		Bukkit.getPluginManager().registerEvents(new ZoneListener(), DemigodsPlugin.plugin());
 
 		// Init WorldGuard stuff
 		WorldGuards.createFlag("STATE", "demigods", true, "ALL");
 		WorldGuards.registerCreatedFlag("demigods");
-		WorldGuards.setWhenToOverridePVP(DemigodsPlugin.inst(), new Predicate<EntityDamageByEntityEvent>()
+		WorldGuards.setWhenToOverridePVP(DemigodsPlugin.plugin(), new Predicate<EntityDamageByEntityEvent>()
 		{
 			@Override
 			public boolean apply(EntityDamageByEntityEvent event)

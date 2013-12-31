@@ -71,7 +71,7 @@ public class PlayerListener implements Listener
 		// Demigods welcome message
 		if(Configs.getSettingBoolean("misc.welcome_message"))
 		{
-			player.sendMessage(Text.RUNNING_DG_VERSION.english().replace("{version}", DemigodsPlugin.inst().getDescription().getVersion()));
+			player.sendMessage(Text.RUNNING_DG_VERSION.english().replace("{version}", DemigodsPlugin.plugin().getDescription().getVersion()));
 			player.sendMessage(Text.DG_FOR_MORE_INFORMATION.english());
 		}
 
@@ -144,7 +144,7 @@ public class PlayerListener implements Listener
 				Battle battle = Battle.Util.getBattle(loggingOff);
 				battle.addDeath(loggingOff);
 				DataManager.saveTemp(name, "quit_during_battle", true);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.inst(), new BukkitRunnable()
+				Bukkit.getScheduler().scheduleSyncDelayedTask(DemigodsPlugin.plugin(), new BukkitRunnable()
 				{
 					@Override
 					public void run()

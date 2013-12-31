@@ -33,7 +33,7 @@ public class GeneralCommands extends WrappedCommand
 {
 	public GeneralCommands()
 	{
-		super(DemigodsPlugin.inst(), false);
+		super(DemigodsPlugin.plugin(), false);
 	}
 
 	@Override

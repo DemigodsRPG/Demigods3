@@ -37,7 +37,7 @@ public class MainCommand extends WrappedCommand
 {
 	public MainCommand()
 	{
-		super(DemigodsPlugin.inst(), false);
+		super(DemigodsPlugin.plugin(), false);
 	}
 
 	@Override
@@ -54,9 +54,9 @@ public class MainCommand extends WrappedCommand
 		{
 			if(args.length == 2 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("reload"))
 			{
-				PluginManager pluginManager = DemigodsPlugin.inst().getServer().getPluginManager();
-				pluginManager.disablePlugin(DemigodsPlugin.inst());
-				pluginManager.enablePlugin(DemigodsPlugin.inst());
+				PluginManager pluginManager = DemigodsPlugin.plugin().getServer().getPluginManager();
+				pluginManager.disablePlugin(DemigodsPlugin.plugin());
+				pluginManager.enablePlugin(DemigodsPlugin.plugin());
 				sender.sendMessage(ChatColor.GREEN + Text.RELOAD_COMPLETE.english());
 				return true;
 			}

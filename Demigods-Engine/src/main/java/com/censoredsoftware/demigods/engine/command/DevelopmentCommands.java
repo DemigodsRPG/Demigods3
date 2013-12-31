@@ -35,7 +35,7 @@ public class DevelopmentCommands extends WrappedCommand
 {
 	public DevelopmentCommands()
 	{
-		super(DemigodsPlugin.inst(), false);
+		super(DemigodsPlugin.plugin(), false);
 	}
 
 	@Override
@@ -92,9 +92,9 @@ public class DevelopmentCommands extends WrappedCommand
 
 			if(player.isOp())
 			{
-				final int theTask = Images.convertImageToSchematic(DemigodsPlugin.inst(), veryImage, 1356);
+				final int theTask = Images.convertImageToSchematic(DemigodsPlugin.plugin(), veryImage, 1356);
 
-				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.inst(), new Runnable()
+				thisTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(DemigodsPlugin.plugin(), new Runnable()
 				{
 
 					@Override

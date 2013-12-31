@@ -75,10 +75,10 @@ public class Demigods extends CensoredCentralizedClass
 	static
 	{
 		// Data folder
-		SAVE_PATH = DemigodsPlugin.inst().getDataFolder() + "/data/"; // Don't change this.
+		SAVE_PATH = DemigodsPlugin.plugin().getDataFolder() + "/data/"; // Don't change this.
 
 		// Conversation factory static access.
-		CONVERSATION_FACTORY = new ConversationFactory(DemigodsPlugin.inst());
+		CONVERSATION_FACTORY = new ConversationFactory(DemigodsPlugin.plugin());
 
 		// Scoreboard manager.
 		SCOREBOARD_MANAGER = Bukkit.getScoreboardManager();
@@ -99,7 +99,7 @@ public class Demigods extends CensoredCentralizedClass
 		// Initialize metrics
 		try
 		{
-			(new MetricsLite(DemigodsPlugin.inst())).start();
+			(new MetricsLite(DemigodsPlugin.plugin())).start();
 		}
 		catch(Exception ignored)
 		{
@@ -115,7 +115,7 @@ public class Demigods extends CensoredCentralizedClass
 				return false;
 			}
 
-			if(!DemigodsPlugin.inst().getServer().getOnlineMode())
+			if(!DemigodsPlugin.plugin().getServer().getOnlineMode())
 			{
 				Messages.severe("Demigods might not work in offline mode.");
 				Messages.severe("We depend on Mojang's servers for ids.");
@@ -147,7 +147,7 @@ public class Demigods extends CensoredCentralizedClass
 
 			if(Util.isRunningSpigot())
 			{
-				Bukkit.getPluginManager().registerEvents(new SpigotFeatures(), DemigodsPlugin.inst());
+				Bukkit.getPluginManager().registerEvents(new SpigotFeatures(), DemigodsPlugin.plugin());
 				Messages.info(("Spigot found, extra API features enabled."));
 			}
 			else Messages.warning(("Without Spigot, some features may not work."));
@@ -167,7 +167,7 @@ public class Demigods extends CensoredCentralizedClass
 
 	protected Mythos loadMythos()
 	{
-		ServicesManager servicesManager = DemigodsPlugin.inst().getServer().getServicesManager();
+		ServicesManager servicesManager = DemigodsPlugin.plugin().getServer().getServicesManager();
 		Collection<RegisteredServiceProvider<Mythos>> mythosProviders = servicesManager.getRegistrations(Mythos.class);
 		if(Iterables.any(mythosProviders, new Predicate<RegisteredServiceProvider<Mythos>>()
 		{
@@ -220,15 +220,15 @@ public class Demigods extends CensoredCentralizedClass
 
 		// Base Game
 		if(mythos().useBaseGame()) for(BaseGameListener baseGameListener : BaseGameListener.values())
-			register.registerEvents(baseGameListener.getListener(), DemigodsPlugin.inst());
+			register.registerEvents(baseGameListener.getListener(), DemigodsPlugin.plugin());
 
 		// Mythos
 		for(Listener listener : mythos().getListeners())
-			register.registerEvents(listener, DemigodsPlugin.inst());
+			register.registerEvents(listener, DemigodsPlugin.plugin());
 
 		// Abilities
 		for(Ability ability : Abilities.getLoadedAbilities())
-			if(ability.getListener() != null) register.registerEvents(ability.getListener(), DemigodsPlugin.inst());
+			if(ability.getListener() != null) register.registerEvents(ability.getListener(), DemigodsPlugin.plugin());
 
 		// Structures
 		for(Structure structure : Collections2.filter(mythos().getStructures(), new Predicate<Structure>()
@@ -239,7 +239,7 @@ public class Demigods extends CensoredCentralizedClass
 				return structure.getUniqueListener() != null;
 			}
 		}))
-			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), DemigodsPlugin.inst());
+			if(structure.getUniqueListener() != null) register.registerEvents(structure.getUniqueListener(), DemigodsPlugin.plugin());
 
 		// Conversations
 		for(WrappedConversation conversation : Collections2.filter(Collections2.transform(Sets.newHashSet(DemigodsConversation.values()), new Function<DemigodsConversation, WrappedConversation>()
@@ -257,13 +257,13 @@ public class Demigods extends CensoredCentralizedClass
 				return conversation.getUniqueListener() != null;
 			}
 		}))
-			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), DemigodsPlugin.inst());
+			if(conversation.getUniqueListener() != null) register.registerEvents(conversation.getUniqueListener(), DemigodsPlugin.plugin());
 
 		// Divine Items
 		for(DivineItem divineItem : enabledMythos.getDivineItems())
 		{
-			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), DemigodsPlugin.inst());
-			if(divineItem.getRecipe() != null) DemigodsPlugin.inst().getServer().addRecipe(divineItem.getRecipe());
+			if(divineItem.getUniqueListener() != null) register.registerEvents(divineItem.getUniqueListener(), DemigodsPlugin.plugin());
+			if(divineItem.getRecipe() != null) DemigodsPlugin.plugin().getServer().addRecipe(divineItem.getRecipe());
 		}
 
 		// Quit reason.
