@@ -1,12 +1,7 @@
 package com.censoredsoftware.demigods.greek.ability.support;
 
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.data.Skill;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,13 +11,19 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.Skill;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 
 public class Carry implements Ability
 {
 	private final static String name = "Carry", command = null;
 	private final static int cost = 0, delay = 0, repeat = 20;
-	private final static List<String> details = Lists.newArrayList("Hold a leash to carry other players on your shoulders.");
+	private final static List<String> details = Lists.newArrayList("Hold a leash to carry others on your shoulders.");
 	private String deity, permission;
 	private boolean needsLead;
 	private final static Skill.Type type = Skill.Type.SUPPORT;

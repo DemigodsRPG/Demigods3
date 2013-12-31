@@ -1,7 +1,10 @@
 package com.censoredsoftware.demigods.greek.deity.god;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
+import java.util.*;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -15,10 +18,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.*;
 
 public class Poseidon extends GreekDeity
 {
@@ -29,23 +28,7 @@ public class Poseidon extends GreekDeity
 	public final static ChatColor color = ChatColor.AQUA;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.INK_SACK, 4));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.WATER_BUCKET, 4));
-	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
-	{
-		{
-			add(" ");
-			add(ChatColor.RED + " Demigods > " + ChatColor.RESET + color + name);
-			add(ChatColor.RESET + "-----------------------------------------------------");
-			add(" ");
-			add(ChatColor.YELLOW + " Claim Items:");
-			add(" ");
-
-			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
-				add(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-			add(" ");
-			add(ChatColor.YELLOW + " Abilities:");
-			add(" ");
-		}
-	};
+	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
 	public final static List<Ability> abilities = Lists.newArrayList(new Swim(name, permission), new NoDrown(name, permission), new Reel(name, permission), new Carry(name, permission, true));
 

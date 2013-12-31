@@ -1,7 +1,10 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
+import java.util.*;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -15,10 +18,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.*;
 
 public class Atropos extends GreekDeity
 {
@@ -29,22 +28,7 @@ public class Atropos extends GreekDeity
 	public final static ChatColor color = ChatColor.DARK_RED;
 	public final static Map<Material, Integer> claimItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 3));
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.BEDROCK, 10));
-	public final static List<String> lore = new ArrayList<String>(9 + claimItems.size())
-	{
-		{
-			add(" ");
-			add(ChatColor.RED + " Demigods > " + ChatColor.RESET + color + name);
-			add(ChatColor.RESET + "-----------------------------------------------------");
-			add(" ");
-			add(ChatColor.YELLOW + " Claim Items:");
-			add(" ");
-			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
-				add(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-			add(" ");
-			add(ChatColor.YELLOW + " Abilities:");
-			add(" ");
-		}
-	};
+	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
 	public final static List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Firestorm.ShootFireball(name, permission), new Carry(name, permission, false));
 

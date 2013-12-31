@@ -1,5 +1,19 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -19,19 +33,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -186,8 +187,7 @@ public class MainCommand extends WrappedCommand
 				{
 					for(final Deity deity : Alliance.Util.getLoadedMajorPlayableDeitiesInAllianceWithPerms(alliance, player))
 					{
-						assert option1 != null;
-						if(option1.equalsIgnoreCase(deity.getName()))
+						if(option1 != null && option1.equalsIgnoreCase(deity.getName()))
 						{
 							try
 							{
@@ -200,27 +200,36 @@ public class MainCommand extends WrappedCommand
 									}
 								});
 
-								// Name of the deity
-								player.sendMessage(" " + deity.getColor() + deity.getName() + ChatColor.GRAY + ": " + deity.getShortDescription() + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.RED + " (" + Symbol.CAUTION + " DIFFICULT)" : ""));
+								// Header information
+								Messages.tagged(player, "Deity Information");
+								player.sendMessage(" ");
+								player.sendMessage("  " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.GRAY + " - " + deity.getShortDescription() + (deity.getFlags().contains(Deity.Flag.DIFFICULT) ? ChatColor.RED + " (" + Symbol.CAUTION + " DIFFICULT)" : ""));
+								player.sendMessage(" ");
 
-								// Claim items
+                                // Claim items
 								if(claimItems.size() == 1)
 								{
-									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.RESET + " requires " + ChatColor.ITALIC + StringUtils.join(claimItems, "") + ChatColor.RESET + " to claim.");
+									player.sendMessage("   " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW_HOLLOW + " Claim Item: " + ChatColor.LIGHT_PURPLE + ChatColor.ITALIC + StringUtils.join(claimItems, ""));
 								}
 								else
 								{
-									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + " " + deity.getColor() + deity.getName() + ChatColor.RESET + " requires " + ChatColor.ITALIC + StringUtils.join(claimItems, ChatColor.RESET + " and " + ChatColor.ITALIC) + ChatColor.RESET + " to claim.");
+									player.sendMessage("   " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW_HOLLOW + " Claim Items: " + ChatColor.LIGHT_PURPLE + ChatColor.ITALIC + StringUtils.join(claimItems, ChatColor.GRAY + ", " + ChatColor.LIGHT_PURPLE + ChatColor.ITALIC));
 								}
 
 								// Abilities
 								for(Ability ability : deity.getAbilities())
 								{
-									player.sendMessage("  " + Symbol.RIGHTWARD_ARROW + ChatColor.GREEN + "/" + ability.getCommand() + ChatColor.GOLD + " (" + ability.getType().getName() + ")" + ChatColor.GRAY + " (" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)");
-									player.sendMessage("    >" + ChatColor.ITALIC + ability.getDetails());
+                                    player.sendMessage(" ");
+									player.sendMessage("   " + ChatColor.GRAY + Symbol.RIGHTWARD_ARROW_HOLLOW + ChatColor.YELLOW + " " + ability.getName() + (ability.getCommand() != null ? ChatColor.GRAY + " (" + ChatColor.GREEN + "/" + ability.getCommand() + ChatColor.GRAY + ")" : ChatColor.GRAY) + " (" + ChatColor.GOLD + ability.getType().getName() + ChatColor.GRAY + ")" + (ability.getCost() > 0 ? ChatColor.GRAY + " (" + ChatColor.RED + ability.getCost() + ChatColor.GRAY + " favor per use)" : ""));
+									for(String detail : ability.getDetails())
+									{
+										player.sendMessage(ChatColor.GRAY + "      " + Symbol.RIGHTWARD_ARROW_SWOOP + ChatColor.ITALIC + " " + detail);
+									}
 								}
 
-								return true;
+								player.sendMessage(" ");
+
+					return true;
 							}
 							catch(Exception errored)
 							{

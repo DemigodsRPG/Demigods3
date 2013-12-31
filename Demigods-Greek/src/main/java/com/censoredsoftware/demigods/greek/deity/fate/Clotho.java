@@ -1,7 +1,13 @@
 package com.censoredsoftware.demigods.greek.deity.fate;
 
-import com.censoredsoftware.censoredlib.language.Symbol;
-import com.censoredsoftware.censoredlib.util.Strings;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
 import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
@@ -12,11 +18,10 @@ import com.censoredsoftware.demigods.greek.ability.support.Carry;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Discoball;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
 import com.censoredsoftware.demigods.greek.deity.GreekDeity;
-import com.google.common.collect.*;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
-import java.util.*;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class Clotho extends GreekDeity
 {
@@ -28,22 +33,7 @@ public class Clotho extends GreekDeity
 	private static final ChatColor color = ChatColor.WHITE;
 	private static final ImmutableMap<Material, Integer> claimItems = ImmutableMap.of(Material.BEDROCK, 3);
 	private static final ImmutableMap<Material, Integer> forsakeItems = ImmutableMap.of(Material.BEDROCK, 10);
-	private static final ImmutableList<String> lore = ImmutableList.copyOf(new ArrayList<String>(9 + claimItems.size())
-	{
-		{
-			add(" ");
-			add(ChatColor.RED + " Demigods > " + ChatColor.RESET + color + name);
-			add(ChatColor.RESET + "-----------------------------------------------------");
-			add(" ");
-			add(ChatColor.YELLOW + " Claim Items:");
-			add(" ");
-			for(Map.Entry<Material, Integer> entry : claimItems.entrySet())
-				add(ChatColor.GRAY + " " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.WHITE + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
-			add(" ");
-			add(ChatColor.YELLOW + " Abilities:");
-			add(" ");
-		}
-	});
+	public final static List<String> lore = Arrays.asList();
 	private static final Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE, Deity.Flag.NO_BATTLE, Deity.Flag.NO_SHRINE);
 	private static final List<Ability> abilities = Lists.newArrayList(new NoDamage(name, permission), new AlwaysInvisible(name, permission), new Swim(name, permission), new Carry(name, permission, false), new Discoball(name, permission));
 
