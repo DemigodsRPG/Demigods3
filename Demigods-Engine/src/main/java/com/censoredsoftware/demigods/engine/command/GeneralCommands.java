@@ -231,8 +231,8 @@ public class GeneralCommands extends WrappedCommand
 		}
 
 		sender.sendMessage(" ");
-		sender.sendMessage(ChatColor.ITALIC + "Values are constantly changing based on how players");
-		sender.sendMessage(ChatColor.ITALIC + "tribute, so check back often!");
+		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "Values are constantly changing based on how players");
+		sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "tribute, so check back often!");
 
 		if(player.getItemInHand() != null && !player.getItemInHand().getType().equals(Material.AIR))
 		{
@@ -246,7 +246,7 @@ public class GeneralCommands extends WrappedCommand
 	private boolean names(CommandSender sender)
 	{
 		// Print info
-		Messages.tagged(sender, "Online Player Names");
+		Messages.tagged(sender, "Online Players");
 		sender.sendMessage(" ");
 		sender.sendMessage(ChatColor.GRAY + "    " + ChatColor.UNDERLINE + "Immortals:");
 		sender.sendMessage(" ");

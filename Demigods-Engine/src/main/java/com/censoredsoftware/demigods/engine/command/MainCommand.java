@@ -1,5 +1,18 @@
 package com.censoredsoftware.demigods.engine.command;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
+
 import com.censoredsoftware.censoredlib.helper.WrappedCommand;
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
@@ -19,19 +32,6 @@ import com.censoredsoftware.demigods.engine.util.Messages;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 public class MainCommand extends WrappedCommand
 {
@@ -41,7 +41,7 @@ public class MainCommand extends WrappedCommand
 	}
 
 	@Override
-	public Set<String> getCommands()
+	public java.util.Set getCommands()
 	{
 		return Sets.newHashSet("demigods", "deity");
 	}
@@ -163,7 +163,7 @@ public class MainCommand extends WrappedCommand
 				player.sendMessage(ChatColor.WHITE + " Re-enact mythological battles and rise from a mere player to a full-fledged Olympian as you form new Alliances with mythical groups and battle to the bitter end.");
 				player.sendMessage(" ");
 				player.sendMessage(ChatColor.GRAY + " Developed by: " + ChatColor.GREEN + "_Alex" + ChatColor.GRAY + " and " + ChatColor.GREEN + "HmmmQuestionMark");
-				player.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "demigodsrpg.com");
+				player.sendMessage(ChatColor.GRAY + " Website: " + ChatColor.YELLOW + "http://demigodsrpg.com");
 				player.sendMessage(ChatColor.GRAY + " Source: " + ChatColor.YELLOW + "http://github.com/CensoredSoftware/Demigods");
 			}
 
@@ -309,7 +309,7 @@ public class MainCommand extends WrappedCommand
 		return true;
 	}
 
-	static class doCheck implements AdminCommand
+	static class Check implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -390,7 +390,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doRemove implements AdminCommand
+	static class Remove implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -457,7 +457,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doSet implements AdminCommand
+	static class Set implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -539,7 +539,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doAdd implements AdminCommand
+	static class Add implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -620,7 +620,7 @@ public class MainCommand extends WrappedCommand
 		}
 	}
 
-	static class doSub implements AdminCommand
+	static class Sub implements AdminCommand
 	{
 		@Override
 		public String getName()
@@ -703,7 +703,7 @@ public class MainCommand extends WrappedCommand
 
 	public enum AdminCommands
 	{
-		CHECK(new doCheck()), REMOVE(new doRemove()), SET(new doSet()), ADD(new doAdd()), SUBTRACT(new doSub());
+		CHECK(new Check()), REMOVE(new Remove()), SET(new Set()), ADD(new Add()), SUBTRACT(new Sub());
 
 		private AdminCommand command;
 

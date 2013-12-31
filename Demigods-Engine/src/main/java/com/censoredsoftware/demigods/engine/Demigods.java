@@ -25,7 +25,10 @@ import com.censoredsoftware.censoredlib.helper.WrappedConversation;
 import com.censoredsoftware.demigods.engine.base.DemigodsConversation;
 import com.censoredsoftware.demigods.engine.base.DemigodsListener;
 import com.censoredsoftware.demigods.engine.base.DemigodsPermission;
-import com.censoredsoftware.demigods.engine.data.*;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.data.DataManager;
+import com.censoredsoftware.demigods.engine.data.Skill;
 import com.censoredsoftware.demigods.engine.listener.ChatListener;
 import com.censoredsoftware.demigods.engine.listener.SpigotFeatures;
 import com.censoredsoftware.demigods.engine.mythos.*;
@@ -130,9 +133,6 @@ public class Demigods extends CensoredCentralizedClass
 
 			// Regenerate structures
 			Structure.Util.regenerateStructures();
-
-			// Initialize tribute tracking
-			TributeManager.initializeTributeTracking();
 
 			if(Util.isRunningSpigot())
 			{
