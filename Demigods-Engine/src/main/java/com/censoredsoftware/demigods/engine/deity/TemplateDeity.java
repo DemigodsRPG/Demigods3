@@ -2,8 +2,6 @@ package com.censoredsoftware.demigods.engine.deity;
 
 import com.censoredsoftware.censoredlib.language.Symbol;
 import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.ability.Ability;
-import com.censoredsoftware.demigods.engine.ability.Template;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -74,5 +72,5 @@ public class TemplateDeity
 		}
 	};
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.NON_PLAYABLE);
-	public final static List<Ability> abilities = Lists.newArrayList((Ability) new Template(name, permission));
+	public final static List<Ability> abilities = Lists.newArrayList((Ability) new TemplateAbility(name, permission));
 }

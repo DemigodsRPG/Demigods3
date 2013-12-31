@@ -2,6 +2,7 @@ package com.censoredsoftware.demigods.engine.listener;
 
 import com.censoredsoftware.demigods.engine.Demigods;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.DemigodsChatEvent;
 import com.censoredsoftware.demigods.engine.util.Zones;
 import com.google.common.collect.Sets;
 import org.bukkit.ChatColor;

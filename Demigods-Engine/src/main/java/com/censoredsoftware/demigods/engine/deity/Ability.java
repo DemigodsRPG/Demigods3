@@ -1,12 +1,11 @@
-package com.censoredsoftware.demigods.engine.ability;
+package com.censoredsoftware.demigods.engine.deity;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.player.Skill;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.player.Skill;
+import java.util.List;
 
 public interface Ability
 {

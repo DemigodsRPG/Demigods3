@@ -1,7 +1,6 @@
 package com.censoredsoftware.demigods.engine.deity;
 
 import com.censoredsoftware.censoredlib.helper.ConfigFile2;
-import com.censoredsoftware.demigods.engine.ability.Ability;
 import com.censoredsoftware.demigods.engine.player.DCharacter;
 import com.censoredsoftware.demigods.engine.player.DPlayer;
 import com.google.common.collect.ImmutableSet;

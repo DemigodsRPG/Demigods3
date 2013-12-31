@@ -1,7 +1,11 @@
-package com.censoredsoftware.demigods.engine.ability;
+package com.censoredsoftware.demigods.engine.deity;
 
-import java.util.List;
-
+import com.censoredsoftware.demigods.engine.player.DCharacter;
+import com.censoredsoftware.demigods.engine.player.DPlayer;
+import com.censoredsoftware.demigods.engine.player.Skill;
+import com.censoredsoftware.demigods.engine.util.Abilities;
+import com.censoredsoftware.demigods.engine.util.Zones;
+import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,15 +15,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.censoredsoftware.demigods.engine.deity.Deity;
-import com.censoredsoftware.demigods.engine.player.DCharacter;
-import com.censoredsoftware.demigods.engine.player.DPlayer;
-import com.censoredsoftware.demigods.engine.player.Skill;
-import com.censoredsoftware.demigods.engine.util.Abilities;
-import com.censoredsoftware.demigods.engine.util.Zones;
-import com.google.common.collect.Lists;
+import java.util.List;
 
-public class Template implements Ability
+public class TemplateAbility implements Ability
 {
 	private final static String name = "Test", command = "test";
 	private final static int cost = 170, delay = 1500, repeat = 0;
@@ -27,7 +25,7 @@ public class Template implements Ability
 	private String deity, permission;
 	private final static Skill.Type type = Skill.Type.OFFENSE;
 
-	public Template(String deity, String permission)
+	public TemplateAbility(String deity, String permission)
 	{
 		this.deity = deity;
 		this.permission = permission;
