@@ -328,11 +328,11 @@ public class Obelisk extends GreekStructure
 	{
 		public static boolean validBlockConfiguration(Block block)
 		{
-			if(!block.getType().equals(Material.EMERALD_BLOCK)) return false;
-			if(!block.getRelative(1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-			if(!block.getRelative(-1, 0, 0).getType().equals(Material.COBBLESTONE)) return false;
-			if(!block.getRelative(0, 0, 1).getType().equals(Material.COBBLESTONE)) return false;
-			if(!block.getRelative(0, 0, -1).getType().equals(Material.COBBLESTONE)) return false;
+			if(!block.getType().equals(Material.REDSTONE_BLOCK)) return false;
+			if(!block.getRelative(1, 0, 0).getType().equals(Material.STONE)) return false;
+			if(!block.getRelative(-1, 0, 0).getType().equals(Material.STONE)) return false;
+			if(!block.getRelative(0, 0, 1).getType().equals(Material.STONE)) return false;
+			if(!block.getRelative(0, 0, -1).getType().equals(Material.STONE)) return false;
 			if(block.getRelative(1, 0, 1).getType().isSolid()) return false;
 			return !block.getRelative(1, 0, -1).getType().isSolid() && !block.getRelative(-1, 0, 1).getType().isSolid() && !block.getRelative(-1, 0, -1).getType().isSolid();
 		}

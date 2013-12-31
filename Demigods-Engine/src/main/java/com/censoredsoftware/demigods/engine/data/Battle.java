@@ -685,6 +685,9 @@ public class Battle implements ConfigurationSerializable
 
 		public static void battleDeath(Participant damager, Participant damagee, Battle battle)
 		{
+			BattleDeathEvent event = new BattleDeathEvent(battle, damagee, damager);
+			Bukkit.getPluginManager().callEvent(event);
+			if(event.isCancelled()) return;
 			if(damager instanceof DCharacter) ((DCharacter) damager).addKill();
 			if(damager.getRelatedCharacter().getOfflinePlayer().isOnline()) damager.getRelatedCharacter().getOfflinePlayer().getPlayer().sendMessage(ChatColor.GREEN + "+1 Kill.");
 			battle.addKill(damager);
@@ -706,6 +709,9 @@ public class Battle implements ConfigurationSerializable
 
 		public static void battleDeath(Participant damagee, Battle battle)
 		{
+			BattleDeathEvent event = new BattleDeathEvent(battle, damagee);
+			Bukkit.getPluginManager().callEvent(event);
+			if(event.isCancelled()) return;
 			damagee.getEntity().setHealth(damagee.getEntity().getMaxHealth());
 			damagee.getEntity().teleport(randomRespawnPoint(battle));
 			if(damagee instanceof DCharacter) ((DCharacter) damagee).addDeath();
