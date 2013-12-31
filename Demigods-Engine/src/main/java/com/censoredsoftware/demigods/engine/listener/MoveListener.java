@@ -76,10 +76,10 @@ public class MoveListener implements Listener
 					return CLocationManager.distanceFlat(from, location) < 1;
 				}
 			});
-			if(toBool && !fromBool && entity instanceof Player && !data.getType().isAllowed().apply((Player) entity)) DataManager.saveTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location", from);
+			if(toBool && !fromBool && entity instanceof Player && !data.getType().isAllowed((Player) entity)) DataManager.saveTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location", from);
 			if(toBool)
 			{
-				if(entity instanceof Player && data.getType().isAllowed().apply((Player) entity)) return;
+				if(entity instanceof Player && data.getType().isAllowed((Player) entity)) return;
 				if(entity instanceof Vehicle) entity.eject();
 				if(!(entity instanceof Player)) return;
 				if(DataManager.hasKeyTemp(DPlayer.Util.getPlayer((Player) entity).getMojangAccount(), "invisible_wall_location"))

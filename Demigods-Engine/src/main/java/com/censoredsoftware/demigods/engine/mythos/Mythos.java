@@ -1,16 +1,15 @@
 package com.censoredsoftware.demigods.engine.mythos;
 
-import java.util.NoSuchElementException;
-
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
-
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.censoredlib.util.Items;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Iterables;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permission;
+
+import java.util.NoSuchElementException;
 
 public interface Mythos
 {
@@ -157,7 +156,7 @@ public interface Mythos
 					@Override
 					public boolean apply(Structure structure)
 					{
-						return structure.getName().equals(structureName);
+						return structure.getClass().isAnnotationPresent(Structure.Meta.class) && structureName.equals(structure.getClass().getAnnotation(Structure.Meta.class).name());
 					}
 				});
 			}

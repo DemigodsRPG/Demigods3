@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public abstract class GreekStructure implements Structure
+public class GreekStructure implements Structure
 {
 	private String name;
 	private Design[] designs;
@@ -88,9 +88,10 @@ public abstract class GreekStructure implements Structure
 		return radius;
 	}
 
-	public Predicate<CommandSender> isAllowed()
+	@Override
+	public boolean isAllowed(CommandSender sender)
 	{
-		return allowed;
+		return allowed.apply(sender);
 	}
 
 	public boolean sanctify(StructureData data, DCharacter dCharacter)

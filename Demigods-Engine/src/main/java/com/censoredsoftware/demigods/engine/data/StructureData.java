@@ -243,7 +243,7 @@ public class StructureData implements ConfigurationSerializable
 	public Structure getType()
 	{
 		for(Structure structure : Demigods.mythos().getStructures())
-			if(structure.getName().equalsIgnoreCase(this.type)) return structure;
+			if(structure.getClass().isAnnotationPresent(Structure.Meta.class) && type.equals(structure.getClass().getAnnotation(Structure.Meta.class).name())) return structure;
 		return null;
 	}
 
