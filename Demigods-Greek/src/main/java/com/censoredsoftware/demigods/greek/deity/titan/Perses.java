@@ -9,6 +9,7 @@ import com.censoredsoftware.demigods.engine.mythos.Ability;
 import com.censoredsoftware.demigods.engine.mythos.Alliance;
 import com.censoredsoftware.demigods.engine.mythos.Deity;
 import com.censoredsoftware.demigods.greek.ability.offense.Blaze;
+import com.censoredsoftware.demigods.greek.ability.offense.Fireball;
 import com.censoredsoftware.demigods.greek.ability.passive.NoFire;
 import com.censoredsoftware.demigods.greek.ability.ultimate.Firestorm;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
@@ -29,7 +30,7 @@ public class Perses extends GreekDeity
 	public final static Map<Material, Integer> forsakeItems = Maps.newHashMap(ImmutableMap.of(Material.FIREWORK, 4));
 	public final static List<String> lore = Arrays.asList();
 	public final static Set<Deity.Flag> flags = Sets.newHashSet(Deity.Flag.MAJOR_DEITY, Deity.Flag.PLAYABLE);
-	public final static List<Ability> abilities = Lists.newArrayList(new Firestorm.ShootFireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
+	public final static List<Ability> abilities = Lists.newArrayList(new Fireball(name, permission), new Blaze(name, permission), new Firestorm(name, permission), new NoFire(name, permission));
 
 	// Mood Manager
 	private static EnumMap<Mood, MoodPack> moodPacks = Maps.newEnumMap(Deity.Mood.class);

@@ -1,18 +1,7 @@
 package com.censoredsoftware.demigods.engine.util;
 
-import com.censoredsoftware.censoredlib.util.Strings;
-import com.censoredsoftware.demigods.engine.Demigods;
-import com.censoredsoftware.demigods.engine.data.Battle;
-import com.censoredsoftware.demigods.engine.data.DCharacter;
-import com.censoredsoftware.demigods.engine.data.DPet;
-import com.censoredsoftware.demigods.engine.data.DPlayer;
-import com.censoredsoftware.demigods.engine.language.English;
-import com.censoredsoftware.demigods.engine.mythos.Ability;
-import com.censoredsoftware.demigods.engine.mythos.Deity;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -27,11 +16,36 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import java.util.*;
+import com.censoredsoftware.censoredlib.util.Strings;
+import com.censoredsoftware.demigods.engine.Demigods;
+import com.censoredsoftware.demigods.engine.data.Battle;
+import com.censoredsoftware.demigods.engine.data.DCharacter;
+import com.censoredsoftware.demigods.engine.data.DPet;
+import com.censoredsoftware.demigods.engine.data.DPlayer;
+import com.censoredsoftware.demigods.engine.language.English;
+import com.censoredsoftware.demigods.engine.mythos.Ability;
+import com.censoredsoftware.demigods.engine.mythos.Deity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class Abilities
 {
 	public static final int TARGET_OFFSET = 5;
+
+	/**
+	 * Processes the ability by removing its cost from the <code>character</code>'s
+	 * current favor and then setting the players cooldown.
+	 * 
+	 * @param character the character to manipulate.
+	 * @param ability the ability whose details to use.
+	 */
+	public static void processAbility(DCharacter character, Ability ability)
+	{
+		DCharacter.Util.setCoolDown(character, ability.getName(), System.currentTimeMillis() + ability.getDelay());
+		character.getMeta().subtractFavor(ability.getCost());
+	}
 
 	public static boolean doAbilityPreProcess(Player player, int cost)
 	{
