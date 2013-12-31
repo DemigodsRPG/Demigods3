@@ -7,6 +7,8 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.censoredsoftware.censoredlib.util.Randoms;
+
 public class TributeManager
 {
 	/**
@@ -18,12 +20,12 @@ public class TributeManager
 		for(Material material : Material.values())
 		{
 			// Don't use certain materials
-			Material[] unused = { Material.AIR, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA };
+			Material[] unused = { Material.AIR, Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA, Material.ENDER_PORTAL, Material.BEDROCK, Material.FIRE, Material.MOB_SPAWNER, Material.BURNING_FURNACE, Material.FLOWER_POT, Material.SKULL, Material.DOUBLE_STEP, Material.PORTAL, Material.CAKE_BLOCK, Material.BREWING_STAND, Material.CARROT, Material.DIODE_BLOCK_OFF, Material.DIODE_BLOCK_ON, Material.DOUBLE_PLANT, Material.EXP_BOTTLE, Material.GLOWING_REDSTONE_ORE, Material.LOG_2, Material.SIGN_POST, Material.SNOW, Material.WALL_SIGN };
 			if(Arrays.asList(unused).contains(material)) continue;
 
 			// Fill it with random data
 			String category = getCategory(material);
-			if(TributeData.Util.find(category, material) == null) TributeData.Util.save(category, material, 1);
+			if(getTributes(material) == 0) TributeData.Util.save(category, material, Randoms.generateIntRange(1, 10));
 		}
 	}
 
