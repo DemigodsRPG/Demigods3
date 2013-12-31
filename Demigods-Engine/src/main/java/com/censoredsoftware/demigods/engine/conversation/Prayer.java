@@ -1186,7 +1186,7 @@ public class Prayer implements WrappedConversation
 					player.sendRawMessage(ChatColor.AQUA + "  you must first sacrifice the following items:");
 					player.sendRawMessage(" ");
 					for(Map.Entry<Material, Integer> entry : Demigods.mythos().getDeity(chosenDeity).getClaimItems().entrySet())
-						player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(entry.getKey().name()).toLowerCase() + (entry.getValue() > 1 ? "s" : ""));
+						player.sendRawMessage(ChatColor.GRAY + "    " + Symbol.RIGHTWARD_ARROW + " " + ChatColor.YELLOW + entry.getValue() + " " + Strings.beautify(Strings.plural(entry.getKey().name().toLowerCase(), entry.getValue())));
 					player.sendRawMessage(" ");
 					player.sendRawMessage(ChatColor.GRAY + "  After you obtain these items, return to an Altar to");
 					player.sendRawMessage(ChatColor.GRAY + "  confirm your new character.");
