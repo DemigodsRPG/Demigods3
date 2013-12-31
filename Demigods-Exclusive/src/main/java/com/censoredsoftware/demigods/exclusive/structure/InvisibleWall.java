@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 
 import java.util.Set;
 
-@Structure.Meta(name = "InvisibleWall")
 public class InvisibleWall extends StructureData implements Structure, Structure.Design
 {
 	private final String permission;

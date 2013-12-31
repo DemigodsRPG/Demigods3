@@ -14,10 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -25,6 +21,8 @@ import java.util.Set;
 
 public interface Structure
 {
+	String getName();
+
 	Design getDesign(final String name);
 
 	Collection<Flag> getFlags();
@@ -66,13 +64,6 @@ public interface Structure
 	public enum Flag
 	{
 		DELETE_WITH_OWNER, DESTRUCT_ON_BREAK, PROTECTED_BLOCKS, NO_GRIEFING, NO_PVP, PRAYER_LOCATION, TRIBUTE_LOCATION, INVISIBLE_WALL, NO_OVERLAP
-	}
-
-	@Target({ ElementType.TYPE })
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Meta
-	{
-		String name();
 	}
 
 	public static class Util
@@ -297,17 +288,14 @@ public interface Structure
 			});
 		}
 
-		public static Collection<StructureData> getStructureWithType(final Class<? extends Structure> clazz)
+		public static Collection<StructureData> getStructureWithType(final String type)
 		{
-			if(!clazz.isAnnotationPresent(Meta.class)) return Sets.newHashSet();
-			final String name = clazz.getAnnotation(Meta.class).name();
 			return StructureData.Util.findAll(new Predicate<StructureData>()
 			{
 				@Override
 				public boolean apply(StructureData save)
 				{
-
-					return name.equals(save.getTypeName());
+					return type.equals(save.getTypeName());
 				}
 			});
 		}

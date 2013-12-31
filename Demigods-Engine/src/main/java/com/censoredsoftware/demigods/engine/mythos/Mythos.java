@@ -156,7 +156,7 @@ public interface Mythos
 					@Override
 					public boolean apply(Structure structure)
 					{
-						return structure.getClass().isAnnotationPresent(Structure.Meta.class) && structureName.equals(structure.getClass().getAnnotation(Structure.Meta.class).name());
+						return structureName.equals(structure.getName());
 					}
 				});
 			}

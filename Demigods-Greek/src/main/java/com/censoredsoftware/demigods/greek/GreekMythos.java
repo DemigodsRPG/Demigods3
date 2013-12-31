@@ -3,6 +3,7 @@ package com.censoredsoftware.demigods.greek;
 import com.censoredsoftware.censoredlib.trigger.Trigger;
 import com.censoredsoftware.demigods.engine.mythos.*;
 import com.censoredsoftware.demigods.greek.deity.GreekAlliance;
+import com.censoredsoftware.demigods.greek.deity.donor.DrD1sco;
 import com.censoredsoftware.demigods.greek.deity.fate.Atropos;
 import com.censoredsoftware.demigods.greek.deity.fate.Clotho;
 import com.censoredsoftware.demigods.greek.deity.fate.Lachesis;
@@ -128,7 +129,7 @@ public class GreekMythos extends MythosPlugin
 	@Override
 	public ImmutableCollection<Deity> getDeities()
 	{
-		return ImmutableSet.of(Zeus.inst(), Poseidon.inst(), Perses.inst(), Oceanus.inst(), Clotho.inst(), Lachesis.inst(), Atropos.inst());
+		return ImmutableSet.of(Zeus.inst(), Poseidon.inst(), Perses.inst(), Oceanus.inst(), Clotho.inst(), Lachesis.inst(), Atropos.inst(), DrD1sco.inst());
 	}
 
 	@Override

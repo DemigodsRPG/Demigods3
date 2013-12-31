@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-@Structure.Meta(name = "Obelisk")
 public class Obelisk extends GreekStructure
 {
 	private static final String name = "Obelisk";
